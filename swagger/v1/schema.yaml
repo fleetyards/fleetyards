@@ -14346,6 +14346,42 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleets":
+    get:
+      summary: Fleet directory
+      tags:
+      - Fleets
+      operationId: fleetDirectory
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetDirectoryQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDirectory"
+        '403':
+          description: the directory is not rolled out
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/squadrons":
     parameters:
     - name: fleetSlug
@@ -22434,6 +22470,142 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetDirectory:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDirectoryEntry"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetDirectory
+    FleetDirectoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        rsiSid:
+          type: string
+        memberCount:
+          type: integer
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        primaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        secondaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        commitment:
+          "$ref": "#/components/schemas/NullableFleetCommitmentEnum"
+        language:
+          "$ref": "#/components/schemas/NullableFleetLanguageEnum"
+        roleplay:
+          type:
+          - boolean
+          - 'null'
+        recruiting:
+          type:
+          - boolean
+          - 'null'
+        defaultTimezone:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - slug
+      - name
+      - rsiSid
+      - memberCount
+      - alignment
+      - primaryActivity
+      - secondaryActivity
+      - commitment
+      - language
+      - roleplay
+      - recruiting
+      - defaultTimezone
+      - createdAt
+      - updatedAt
+      title: FleetDirectoryEntry
+    FleetDirectoryQuery:
+      type: object
+      properties:
+        search:
+          type: string
+        memberCountGteq:
+          type: integer
+        memberCountLteq:
+          type: integer
+        alignmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetAlignmentEnum"
+        activityIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetActivityEnum"
+        languageIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetLanguageEnum"
+        commitmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetCommitmentEnum"
+        roleplayEq:
+          type: boolean
+        recruitingEq:
+          type: boolean
+        defaultTimezoneIn:
+          type: array
+          items:
+            type: string
+        s:
+          "$ref": "#/components/schemas/FleetDirectorySortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDirectorySortingEnum"
+      additionalProperties: false
+      example: {}
+      title: FleetDirectoryQuery
+    FleetDirectorySortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - memberCount asc
+      - memberCount desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - MEMBER_COUNT_ASC
+      - MEMBER_COUNT_DESC
+      title: FleetDirectorySortingEnum
     FleetDiscordChannel:
       type: object
       properties:

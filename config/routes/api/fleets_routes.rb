@@ -195,7 +195,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 end
 
 namespace :public do
-  resources :fleets, param: :slug, only: %i[show] do
+  resources :fleets, param: :slug, only: %i[index show] do
     resources :fleet_vehicles, path: "vehicles", only: %i[index] do
       get :embed, on: :collection
     end
