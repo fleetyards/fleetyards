@@ -97,7 +97,9 @@
     background-color: transparent;
     border-color: transparent;
     color: var(--color-muted, #7a8288);
-    font-size: 22px;
+    // The moon glyph's disc is 400 of its 512 units, so this draws it as wide
+    // as the 26px circle a moon with a colour gets.
+    font-size: 33px;
   }
 
   &__moon-body {
