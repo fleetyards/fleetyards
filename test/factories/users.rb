@@ -75,6 +75,7 @@
 #  youtube                        :string
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  current_location_id            :uuid
 #  supported_fleet_id             :uuid
 #
 # Indexes
@@ -82,6 +83,7 @@
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
 #  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
@@ -97,6 +99,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (current_location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 FactoryBot.define do

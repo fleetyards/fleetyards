@@ -85,9 +85,9 @@
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
 #  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
-#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_last_active_at         (last_active_at)
 #  index_users_on_lower_email            (lower((email)::text))
 #  index_users_on_lower_username         (lower((username)::text))
