@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/shared/components/LocationName/index.vue";
 import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -71,6 +72,11 @@ const subtitle = computed(
   () => props.inventory.vehicle?.name || props.inventory.location,
 );
 
+// The place, as a link where it is one of ours. A ship's inventory has none.
+const linkedPlace = computed(() =>
+  props.inventory.vehicle ? undefined : props.inventory.linkedLocation,
+);
+
 // Everything a ship can hold: the cargo grid plus its own storage container.
 const cargoCapacity = computed(
   () =>
@@ -118,8 +124,13 @@ const { image } = useInventoryImage(() => props.inventory);
           {{ inventory.name }}
         </router-link>
       </template>
-      <template v-if="subtitle" #subtitle>
-        {{ subtitle }}
+      <template v-if="subtitle || linkedPlace" #subtitle>
+        <LocationName
+          v-if="linkedPlace"
+          :text="inventory.location"
+          :linked="linkedPlace"
+        />
+        <template v-else>{{ subtitle }}</template>
       </template>
       <template v-if="editable || showCargoGridsLink" #actions>
         <Btn

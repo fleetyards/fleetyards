@@ -60,6 +60,8 @@ export type InventoryPanelRecord = {
   name: string;
   slug?: string | null;
   location?: string | null;
+  // The place the text names, where it is one of ours.
+  linkedLocation?: { slug: string; name?: string | null } | null;
   entriesCount: number;
   totalScu?: number;
   totalUnits?: number;

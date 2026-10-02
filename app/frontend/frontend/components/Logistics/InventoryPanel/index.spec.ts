@@ -32,6 +32,11 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
+      path: "/locations/:slug",
+      name: "location",
+      component: { template: "<div />" },
+    },
+    {
       path: "/tools/cargo-grids",
       name: "cargo-grids",
       component: { template: "<div />" },
@@ -77,6 +82,20 @@ describe("InventoryPanel", () => {
     const wrapper = await mount(inventory({ location: "Port Olisar" }));
 
     expect(wrapper.text()).toContain("Port Olisar");
+  });
+
+  it("links the location where it is one of our places", async () => {
+    const wrapper = await mount(
+      inventory({
+        location: "Lorville",
+        linkedLocation: { slug: "lorville", name: "Lorville" },
+      }),
+    );
+
+    const link = wrapper.get("[data-test='location-name']");
+
+    expect(link.text()).toBe("Lorville");
+    expect(link.attributes("href")).toContain("/locations/lorville");
   });
 
   it("reports stock against the ship's cargo capacity", async () => {
