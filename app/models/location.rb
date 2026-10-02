@@ -198,6 +198,29 @@ class Location < ApplicationRecord
   # Off the row's own column rather than `name`: that reads through to the
   # build, which a load writes after the row, so a rename would reach the slug
   # one load late.
+  # How a star of each spectral class looks, for the glow it is drawn with. The
+  # hot classes are kept off pure blue-white so they still read as a light on
+  # a dark page.
+  STELLAR_COLORS = {
+    "O" => "#a9c1ff", "B" => "#bcd0ff", "A" => "#dfe7ff", "F" => "#fff3d6",
+    "G" => "#ffe08a", "K" => "#ffb066", "M" => "#ff8352"
+  }.freeze
+
+  # The class the game's description names: "A class-G main sequence star",
+  # "A K-type main sequence flare star". Nyx's star has no description.
+  def stellar_class
+    return unless kind == "star"
+
+    text = description.to_s
+    (text[/\bclass-([OBAFGKM])\b/i, 1] || text[/\b([OBAFGKM])-type\b/, 1])&.upcase
+  end
+
+  # The colour a place is drawn in: the one set in admin, else a star's from
+  # its class.
+  def drawn_color
+    color.presence || STELLAR_COLORS[stellar_class]
+  end
+
   # The game names Pyro's star a "K-type main sequence flare star", and that is
   # all it says about one being unstable.
   def flare_star?

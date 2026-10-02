@@ -4,7 +4,7 @@ json.partial! "admin/api/v1/locations/base", location: @location
 
 json.description @location.description
 
-json.partial! "api/v1/locations/appearance", location: @location
+json.partial! "api/v1/locations/appearance", location: @location, curated: true
 
 if @location.map_parent
   json.map_parent do

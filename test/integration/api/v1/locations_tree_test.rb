@@ -81,6 +81,25 @@ class Api::V1::LocationsTreeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/tree colours a star from its spectral class unless one is set" do
+    @star.update!(description: "A class-G main sequence star.")
+    @star.builds.update_all(description: "A class-G main sequence star.")
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      star = parsed_body["children"].find { |node| node.dig("location", "kind") == "star" }
+
+      assert_equal Location::STELLAR_COLORS["G"], star.dig("location", "color")
+    end
+
+    @star.update!(color: "#ff0000")
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      star = parsed_body["children"].find { |node| node.dig("location", "kind") == "star" }
+
+      assert_equal "#ff0000", star.dig("location", "color")
+    end
+  end
+
   test "GET /locations/{slug}/tree answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end
