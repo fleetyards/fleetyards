@@ -516,6 +516,7 @@
         "tags": "Tags",
         "physical": "Physische Werte",
         "damageTaken": "Erlittener Schaden",
+        "durability": "Haltbarkeit",
         "selfRepair": "Selbstreparatur",
         "distortion": "Distortion",
         "splineJump": "Orbitsprung"
