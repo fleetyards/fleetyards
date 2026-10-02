@@ -23,6 +23,7 @@ module V1
           guilded: {type: :string},
           homepage: {type: :string},
           location: {type: :string},
+          linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
           currentSystem: {type: :string},
           currentSystemCode: {type: :string},
           saleNotify: {type: :boolean},

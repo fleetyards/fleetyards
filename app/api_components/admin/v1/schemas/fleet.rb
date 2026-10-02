@@ -23,6 +23,10 @@ module Admin
             twitch: {type: :string},
             guilded: {type: :string},
             homepage: {type: :string},
+            # Where the fleet is based: free text, linked to one of our places where
+            # it is one.
+            headquarters: {type: [:string, :null]},
+            headquartersLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
             logo: ::Shared::V1::Schemas::MediaFile,

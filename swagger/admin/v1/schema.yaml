@@ -14929,6 +14929,14 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         publicFleet:
           type: boolean
         publicFleetStats:
@@ -14999,6 +15007,15 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         twitch:
           type: string
         youtube:

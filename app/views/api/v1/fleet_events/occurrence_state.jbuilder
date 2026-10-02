@@ -15,5 +15,7 @@ json.description @occurrence_state.description
 json.briefing @occurrence_state.briefing
 json.location @occurrence_state.location
 json.meetup_location @occurrence_state.meetup_location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: @occurrence_state.linked_location
+json.partial! "api/v1/locations/linked", key: :linked_meetup_location, location: @occurrence_state.linked_meetup_location
 json.scenario @occurrence_state.scenario
 json.cover_image_preset @occurrence_state.cover_image_preset

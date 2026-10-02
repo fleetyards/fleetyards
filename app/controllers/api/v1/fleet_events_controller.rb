@@ -202,7 +202,7 @@ module Api
 
         attrs = params.permit(
           :title, :description, :briefing,
-          :location, :meetup_location, :scenario, :cover_image_preset
+          :location, :meetup_location, :location_id, :meetup_location_id, :scenario, :cover_image_preset
         ).to_h
         state.assign_attributes(attrs)
 

@@ -27,6 +27,12 @@ if @occurrence_date
     json.briefing @occurrence_state.briefing.presence || @fleet_event.briefing
     json.location @occurrence_state.location.presence || @fleet_event.location
     json.meetup_location @occurrence_state.meetup_location.presence || @fleet_event.meetup_location
+    # The link follows the text: an overridden place links where the override
+    # does, or nowhere.
+    json.partial! "api/v1/locations/linked", key: :linked_location,
+      location: @occurrence_state.location.present? ? @occurrence_state.linked_location : @fleet_event.linked_location
+    json.partial! "api/v1/locations/linked", key: :linked_meetup_location,
+      location: @occurrence_state.meetup_location.present? ? @occurrence_state.linked_meetup_location : @fleet_event.linked_meetup_location
     json.scenario @occurrence_state.scenario.presence || @fleet_event.scenario
     json.cover_image_preset @occurrence_state.cover_image_preset.presence || @fleet_event.cover_image_preset
     json.status @occurrence_state.status.presence || @fleet_event.status

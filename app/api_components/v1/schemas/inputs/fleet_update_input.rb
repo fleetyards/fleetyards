@@ -29,6 +29,8 @@ module V1
             listed: {type: :boolean},
             alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
             homepage: {type: [:string, :null]},
+            headquarters: {type: [:string, :null]},
+            headquartersLocationId: {type: [:string, :null], format: :uuid},
             rsiSid: {type: [:string, :null]},
             discord: {type: [:string, :null]},
             ts: {type: [:string, :null]},

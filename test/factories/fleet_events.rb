@@ -47,6 +47,8 @@
 #  discord_event_id          :string
 #  discord_message_id        :string
 #  fleet_id                  :uuid             not null
+#  location_id               :uuid
+#  meetup_location_id        :uuid
 #  mission_id                :uuid
 #  split_from_id             :uuid
 #
@@ -57,6 +59,8 @@
 #  index_fleet_events_on_fleet_id_and_slug       (fleet_id,slug) UNIQUE
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
+#  index_fleet_events_on_location_id             (location_id)
+#  index_fleet_events_on_meetup_location_id      (meetup_location_id)
 #  index_fleet_events_on_mission_id              (mission_id)
 #  index_fleet_events_on_split_from_id           (split_from_id)
 #
@@ -64,6 +68,8 @@
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
+#  fk_rails_...  (meetup_location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (mission_id => missions.id)
 #  fk_rails_...  (split_from_id => fleet_events.id) ON DELETE => nullify
 #

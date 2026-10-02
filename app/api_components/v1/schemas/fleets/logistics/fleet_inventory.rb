@@ -20,6 +20,7 @@ module V1
                 items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef
               },
               location: {type: :string},
+              linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
               entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},

@@ -6,6 +6,7 @@ json.slug fleet_inventory.slug
 json.description fleet_inventory.description
 json.visibility fleet_inventory.visibility
 json.location fleet_inventory.location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: fleet_inventory.linked_location
 json.entries_count fleet_inventory.fleet_inventory_items.size
 
 stock = fleet_inventory.current_stock

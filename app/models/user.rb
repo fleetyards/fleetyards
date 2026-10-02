@@ -77,6 +77,7 @@
 #  youtube                        :string
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  location_id                    :uuid
 #  supported_fleet_id             :uuid
 #
 # Indexes
@@ -87,6 +88,7 @@
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
+#  index_users_on_location_id            (location_id)
 #  index_users_on_lower_email            (lower((email)::text))
 #  index_users_on_lower_username         (lower((username)::text))
 #  index_users_on_normalized_email       (normalized_email)
@@ -99,6 +101,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 class User < ApplicationRecord
@@ -140,6 +143,9 @@ class User < ApplicationRecord
   include UrlFieldConcern
   include ActiveStorageVariants
   include InventoryTransferParty
+  include LinkedLocations
+
+  links_location :location
   include Rails.application.routes.url_helpers
 
   geocoded_by :location

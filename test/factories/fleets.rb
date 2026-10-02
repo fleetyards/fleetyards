@@ -16,6 +16,7 @@
 #  discord                     :string
 #  fid                         :string
 #  guilded                     :string
+#  headquarters                :string
 #  homepage                    :string
 #  inventory_transfer_policy   :integer          default("everyone"), not null
 #  language                    :string
@@ -46,13 +47,19 @@
 #  youtube                     :string
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  headquarters_location_id    :uuid
 #
 # Indexes
 #
-#  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
-#  index_fleets_on_discarded_at         (discarded_at)
-#  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
-#  index_fleets_on_rsi_verified_sid     (rsi_verified_sid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_calendar_feed_token       (calendar_feed_token) UNIQUE
+#  index_fleets_on_discarded_at              (discarded_at)
+#  index_fleets_on_fid                       (fid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_headquarters_location_id  (headquarters_location_id)
+#  index_fleets_on_rsi_verified_sid          (rsi_verified_sid) UNIQUE WHERE (discarded_at IS NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (headquarters_location_id => locations.id) ON DELETE => nullify
 #
 FactoryBot.define do
   factory :fleet do

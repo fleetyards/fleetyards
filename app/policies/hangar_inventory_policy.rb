@@ -19,6 +19,6 @@ class HangarInventoryPolicy < ApplicationPolicy
   end
 
   params_filter do |params|
-    params.permit(:name, :description, :location, :image, :image_preset)
+    params.permit(:name, :description, :location, :location_id, :image, :image_preset)
   end
 end

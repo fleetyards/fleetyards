@@ -5,6 +5,7 @@ json.name inventory.name
 json.slug inventory.slug
 json.description inventory.description
 json.location inventory.location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: inventory.linked_location
 json.entries_count inventory.inventory_items.size
 
 stock = inventory.persisted? ? inventory.current_stock : []

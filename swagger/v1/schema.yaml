@@ -21687,6 +21687,14 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         name:
           type: string
         slug:
@@ -22225,6 +22233,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         holder:
           "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
       additionalProperties: false
@@ -22394,6 +22406,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         holder:
           "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
       additionalProperties: false
@@ -23035,6 +23051,14 @@ components:
           type: string
         meetupLocation:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        linkedMeetupLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadrons:
@@ -23228,6 +23252,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadronIds:
@@ -23381,6 +23415,14 @@ components:
           type: string
         meetupLocation:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        linkedMeetupLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         scenario:
           type: string
         coverImagePreset:
@@ -23416,6 +23458,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         scenario:
           type:
           - string
@@ -23959,6 +24011,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadronIds:
@@ -24221,6 +24283,10 @@ components:
             "$ref": "#/components/schemas/FleetSquadronRef"
         location:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -24282,6 +24348,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -24548,6 +24619,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -26324,6 +26400,15 @@ components:
           type:
           - string
           - 'null'
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         rsiSid:
           type:
           - string
@@ -27335,6 +27420,10 @@ components:
           type: string
         location:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -27387,6 +27476,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -27613,6 +27707,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -28512,6 +28611,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -35350,6 +35453,10 @@ components:
           type: string
         location:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         currentSystem:
           type: string
         currentSystemCode:
@@ -35729,6 +35836,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         currentSystem:
           type:
           - string

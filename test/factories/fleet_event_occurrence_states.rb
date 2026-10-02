@@ -23,14 +23,20 @@
 #  updated_at                :datetime         not null
 #  discord_event_id          :string
 #  fleet_event_id            :uuid             not null
+#  location_id               :uuid
+#  meetup_location_id        :uuid
 #
 # Indexes
 #
-#  idx_fleet_event_occurrence_states_on_event_and_date  (fleet_event_id,occurrence_date) UNIQUE
+#  idx_fleet_event_occurrence_states_on_event_and_date        (fleet_event_id,occurrence_date) UNIQUE
+#  index_fleet_event_occurrence_states_on_location_id         (location_id)
+#  index_fleet_event_occurrence_states_on_meetup_location_id  (meetup_location_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (fleet_event_id => fleet_events.id)
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
+#  fk_rails_...  (meetup_location_id => locations.id) ON DELETE => nullify
 #
 FactoryBot.define do
   factory :fleet_event_occurrence_state do

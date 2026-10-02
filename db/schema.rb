@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -757,7 +757,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "status"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.uuid "location_id"
+    t.uuid "meetup_location_id"
     t.index ["fleet_event_id", "occurrence_date"], name: "idx_fleet_event_occurrence_states_on_event_and_date", unique: true
+    t.index ["location_id"], name: "index_fleet_event_occurrence_states_on_location_id"
+    t.index ["meetup_location_id"], name: "index_fleet_event_occurrence_states_on_meetup_location_id"
   end
 
   create_table "fleet_event_ship_models", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -879,11 +883,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.string "visibility", default: "members", null: false
+    t.uuid "location_id"
+    t.uuid "meetup_location_id"
     t.index ["external_uid"], name: "index_fleet_events_on_external_uid", unique: true
     t.index ["fleet_id", "recurring"], name: "index_fleet_events_on_fleet_id_and_recurring"
     t.index ["fleet_id", "slug"], name: "index_fleet_events_on_fleet_id_and_slug", unique: true
     t.index ["fleet_id", "starts_at"], name: "index_fleet_events_on_fleet_id_and_starts_at"
     t.index ["fleet_id", "status"], name: "index_fleet_events_on_fleet_id_and_status"
+    t.index ["location_id"], name: "index_fleet_events_on_location_id"
+    t.index ["meetup_location_id"], name: "index_fleet_events_on_meetup_location_id"
     t.index ["mission_id"], name: "index_fleet_events_on_mission_id"
     t.index ["split_from_id"], name: "index_fleet_events_on_split_from_id"
   end
@@ -919,9 +927,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
+    t.uuid "location_id"
     t.index "fleet_id, lower((name)::text)", name: "index_fleet_inventories_on_fleet_id_and_lower_name", unique: true
     t.index ["fleet_id", "managed_by"], name: "index_fleet_inventories_on_fleet_id_and_managed_by"
     t.index ["fleet_id", "slug"], name: "index_fleet_inventories_on_fleet_id_and_slug", unique: true
+    t.index ["location_id"], name: "index_fleet_inventories_on_location_id"
   end
 
   create_table "fleet_inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1153,9 +1163,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "twitch"
     t.datetime "updated_at", precision: nil, null: false
     t.string "youtube"
+    t.string "headquarters"
+    t.uuid "headquarters_location_id"
     t.index ["calendar_feed_token"], name: "index_fleets_on_calendar_feed_token", unique: true
     t.index ["discarded_at"], name: "index_fleets_on_discarded_at"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["headquarters_location_id"], name: "index_fleets_on_headquarters_location_id"
     t.index ["rsi_verified_sid"], name: "index_fleets_on_rsi_verified_sid", unique: true, where: "(discarded_at IS NULL)"
   end
 
@@ -1431,9 +1444,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.uuid "vehicle_id"
+    t.uuid "location_id"
     t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true, where: "(vehicle_id IS NULL)"
     t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true, where: "(vehicle_id IS NULL)"
     t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
+    t.index ["location_id"], name: "index_inventories_on_location_id"
     t.index ["vehicle_id"], name: "index_inventories_on_vehicle_id", unique: true, where: "(vehicle_id IS NOT NULL)"
   end
 
@@ -2555,6 +2570,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.string "username", limit: 255, default: "", null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
     t.string "youtube"
+    t.uuid "location_id"
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
@@ -2564,6 +2580,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"
     t.index ["last_active_at"], name: "index_users_on_last_active_at"
+    t.index ["location_id"], name: "index_users_on_location_id"
     t.index ["normalized_email"], name: "index_users_on_normalized_email"
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -2702,6 +2719,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"
+  add_foreign_key "fleet_event_occurrence_states", "locations", column: "meetup_location_id", on_delete: :nullify
+  add_foreign_key "fleet_event_occurrence_states", "locations", on_delete: :nullify
   add_foreign_key "fleet_event_ship_models", "fleet_event_ships", on_delete: :cascade
   add_foreign_key "fleet_event_ship_models", "models", on_delete: :cascade
   add_foreign_key "fleet_event_ships", "fleet_event_teams"
@@ -2717,11 +2736,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "fleet_event_teams", "mission_teams", column: "source_team_id", on_delete: :nullify
   add_foreign_key "fleet_events", "fleet_events", column: "split_from_id", on_delete: :nullify
   add_foreign_key "fleet_events", "fleets"
+  add_foreign_key "fleet_events", "locations", column: "meetup_location_id", on_delete: :nullify
+  add_foreign_key "fleet_events", "locations", on_delete: :nullify
   add_foreign_key "fleet_events", "missions"
   add_foreign_key "fleet_events", "users", column: "created_by_id"
   add_foreign_key "fleet_fid_claims", "fleets", column: "claimant_id", on_delete: :cascade
   add_foreign_key "fleet_fid_claims", "fleets", column: "holder_id", on_delete: :nullify
   add_foreign_key "fleet_inventories", "fleets"
+  add_foreign_key "fleet_inventories", "locations", on_delete: :nullify
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
   add_foreign_key "fleet_inventory_items", "fleet_inventories"
   add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
@@ -2741,6 +2763,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
   add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
+  add_foreign_key "fleets", "locations", column: "headquarters_location_id", on_delete: :nullify
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "game_mission_builds", "game_missions", on_delete: :cascade
@@ -2752,6 +2775,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "imports", "admin_users"
   add_foreign_key "imports", "hangar_groups", column: "unmatched_hangar_group_id", on_delete: :nullify
   add_foreign_key "imports", "hangar_groups", on_delete: :nullify
+  add_foreign_key "inventories", "locations", on_delete: :nullify
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict
@@ -2838,5 +2862,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "user_blueprints", "blueprints", on_delete: :cascade
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
+  add_foreign_key "users", "locations", on_delete: :nullify
   add_foreign_key "vehicle_loadouts", "vehicles"
 end

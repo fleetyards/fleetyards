@@ -22,6 +22,7 @@ json.twitch user.twitch if user.twitch.present?
 json.guilded user.guilded if user.guilded.present?
 json.homepage user.homepage if user.homepage.present?
 json.location user.location if user.location.present?
+json.partial! "api/v1/locations/linked", key: :linked_location, location: user.linked_location
 json.current_system user.current_system if user.current_system.present?
 json.current_system_code user.current_system_code if user.current_system_code.present?
 

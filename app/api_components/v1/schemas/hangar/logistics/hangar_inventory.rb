@@ -15,6 +15,7 @@ module V1
               slug: {type: :string},
               description: {type: :string},
               location: {type: :string},
+              linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
               entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},

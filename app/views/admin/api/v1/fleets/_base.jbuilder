@@ -14,6 +14,8 @@ json.youtube fleet.youtube
 json.twitch fleet.twitch
 json.guilded fleet.guilded
 json.homepage fleet.homepage
+json.headquarters fleet.headquarters
+json.partial! "api/v1/locations/linked", key: :headquarters_location, location: fleet.headquarters_location
 json.public_fleet fleet.public_fleet
 json.public_fleet_stats fleet.public_fleet_stats
 json.logo do

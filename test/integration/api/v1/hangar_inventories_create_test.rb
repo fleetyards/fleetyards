@@ -51,6 +51,16 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /hangar/inventories links the place it is at" do
+    lorville = create(:location, name: "Lorville", kind: "city")
+    sign_in @user
+
+    assert_api_response :post, 201, body: {name: "Lorville Locker", locationId: lorville.id} do
+      assert_equal "Lorville", parsed_body["location"]
+      assert_equal lorville.slug, parsed_body.dig("linkedLocation", "slug")
+    end
+  end
+
   test "POST /hangar/inventories returns 400 for duplicate name" do
     create(:inventory, holder: @user, name: "Area 18 Locker")
     sign_in @user
