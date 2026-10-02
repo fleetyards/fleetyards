@@ -1,0 +1,68 @@
+import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "@vue/test-utils";
+import { createRouter, createWebHashHistory } from "vue-router";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import Component from "./index.vue";
+
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/services/fyApi")>()),
+  locations: vi.fn(async () => ({
+    items: [
+      {
+        id: "lorville",
+        name: "Lorville",
+        slug: "lorville",
+        parent: { name: "Hurston" },
+      },
+    ],
+  })),
+}));
+
+const router = async () => {
+  const instance = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      { path: "/", name: "home", component: { template: "<div />" } },
+      {
+        path: "/locations/:slug",
+        name: "location",
+        component: { template: "<div />" },
+      },
+    ],
+  });
+
+  await instance.push({ name: "home" });
+  await instance.isReady();
+
+  return instance;
+};
+
+describe("LocationInput", () => {
+  it("links the place a suggestion names, and drops the link when retyped", async () => {
+    vi.useFakeTimers();
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "location", modelValue: "", locationId: null },
+      plugins: [await router()],
+    });
+
+    await wrapper.find("input").setValue("Lorv");
+    await vi.advanceTimersByTimeAsync(300);
+    await flushPromises();
+
+    const suggestion = wrapper.find(".location-input__suggestion");
+    expect(suggestion.text()).toContain("Lorville");
+
+    await suggestion.trigger("mousedown");
+
+    expect(wrapper.emitted("update:locationId")?.at(-1)).toEqual(["lorville"]);
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["Lorville"]);
+
+    await wrapper.setProps({ modelValue: "Lorville", locationId: "lorville" });
+    await wrapper.find("input").setValue("Lorville, Teasa");
+
+    expect(wrapper.emitted("update:locationId")?.at(-1)).toEqual([null]);
+
+    vi.useRealTimers();
+  });
+});

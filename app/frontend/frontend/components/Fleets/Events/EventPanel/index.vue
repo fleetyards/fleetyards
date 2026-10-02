@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/shared/components/LocationName/index.vue";
 import { markdownToPlainText } from "@/shared/utils/Markdown";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -148,14 +149,22 @@ const unarchive = async () => {
             <div class="metrics-card__row__label">
               {{ t("labels.fleets.events.location") }}
             </div>
-            <div class="metrics-card__row__value">{{ event.location }}</div>
+            <div class="metrics-card__row__value">
+              <LocationName
+                :text="event.location"
+                :linked="event.linkedLocation"
+              />
+            </div>
           </div>
           <div v-if="event.meetupLocation" class="metrics-card__row">
             <div class="metrics-card__row__label">
               {{ t("labels.fleets.events.meetupLocation") }}
             </div>
             <div class="metrics-card__row__value">
-              {{ event.meetupLocation }}
+              <LocationName
+                :text="event.meetupLocation"
+                :linked="event.linkedMeetupLocation"
+              />
             </div>
           </div>
           <div class="metrics-card__row">

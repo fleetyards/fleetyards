@@ -1,6 +1,9 @@
 {
   "es": {
     "labels": {
+      "locationInput": {
+        "linked": "Vinculado a"
+      },
       "galactapedia": "Galactapedia",
       "shopPage": {
         "kind": "Tienda",
@@ -523,6 +526,7 @@
       "yourFlagship": "Su nave insignia",
       "flagship": "Nave insignia",
       "fleet": {
+        "headquarters": "Cuartel general",
         "index": "Flota",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flota",

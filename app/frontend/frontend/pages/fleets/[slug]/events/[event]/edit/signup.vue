@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm, type SubmissionHandler } from "vee-validate";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -37,6 +38,8 @@ const { defineField, handleSubmit, meta, setErrors } =
     initialValues: {
       location: props.event.location ?? "",
       meetupLocation: props.event.meetupLocation ?? "",
+      locationId: props.event.linkedLocation?.id ?? null,
+      meetupLocationId: props.event.linkedMeetupLocation?.id ?? null,
       visibility: props.event.visibility,
       fleetSquadronIds: (props.event.fleetSquadrons ?? []).map(
         (squadron) => squadron.id,
@@ -47,8 +50,10 @@ const { defineField, handleSubmit, meta, setErrors } =
     },
   });
 
-const [location, locationProps] = defineField("location");
-const [meetupLocation, meetupLocationProps] = defineField("meetupLocation");
+const [location] = defineField("location");
+const [meetupLocation] = defineField("meetupLocation");
+const [locationId] = defineField("locationId");
+const [meetupLocationId] = defineField("meetupLocationId");
 const [visibility, visibilityProps] = defineField("visibility");
 const [fleetSquadronIds] = defineField("fleetSquadronIds");
 const [maxAttendees, maxAttendeesProps] = defineField("maxAttendees");
@@ -85,6 +90,8 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         // it, and a dropped key leaves the stored value in place.
         location: values.location || null,
         meetupLocation: values.meetupLocation || null,
+        locationId: values.locationId ?? null,
+        meetupLocationId: values.meetupLocationId ?? null,
         maxAttendees: values.maxAttendees ? Number(values.maxAttendees) : null,
         // Cleared when the visibility is not the squadron one, so switching
         // away does not leave a restriction the form no longer shows.
@@ -114,17 +121,19 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   >
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormInput
+        <LocationInput
           v-model="location"
-          v-bind="locationProps"
+          v-model:location-id="locationId"
+          :linked="event.linkedLocation"
           name="location"
           :label="t('labels.fleets.events.location')"
         />
       </div>
       <div class="col-12 col-md-6">
-        <FormInput
+        <LocationInput
           v-model="meetupLocation"
-          v-bind="meetupLocationProps"
+          v-model:location-id="meetupLocationId"
+          :linked="event.linkedMeetupLocation"
           name="meetupLocation"
           :label="t('labels.fleets.events.meetupLocation')"
         />

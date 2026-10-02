@@ -1,6 +1,9 @@
 {
   "zh-TW": {
     "labels": {
+      "locationInput": {
+        "linked": "已連結到"
+      },
       "galactapedia": "Galactapedia",
       "shopPage": {
         "kind": "商店",
@@ -523,6 +526,7 @@
       "yourFlagship": "您的旗艦",
       "flagship": "旗艦",
       "fleet": {
+        "headquarters": "總部",
         "index": "艦隊",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "艦隊",

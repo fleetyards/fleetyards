@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/shared/components/LocationName/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -218,7 +219,10 @@ const crumbs = computed<Crumb[]>(() => [
             {{ inventory.name }}
           </template>
           <template v-if="inventory.location" #subHeading>
-            {{ inventory.location }}
+            <LocationName
+              :text="inventory.location"
+              :linked="inventory.linkedLocation"
+            />
           </template>
         </Heading>
         <p v-if="inventory.description" class="text-muted">

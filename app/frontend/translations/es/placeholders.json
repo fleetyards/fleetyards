@@ -151,6 +151,7 @@
         "productionNote": "Nota de producción"
       },
       "fleet": {
+        "headquarters": "¿Dónde tiene su base la flota?",
         "fid": "ID de flota",
         "rsiSid": "RSI SID",
         "ts": "Servidor Teamspeak",

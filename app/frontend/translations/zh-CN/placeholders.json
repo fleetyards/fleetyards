@@ -151,6 +151,7 @@
         "productionNote": "生产备注"
       },
       "fleet": {
+        "headquarters": "你们的舰队驻扎在哪里？",
         "fid": "舰队 ID",
         "rsiSid": "RSI SID",
         "ts": "Teamspeak 服务器",

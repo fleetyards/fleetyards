@@ -1,6 +1,9 @@
 {
   "en": {
     "labels": {
+      "locationInput": {
+        "linked": "Linked to"
+      },
       "galactapedia": "Galactapedia",
       "shopPage": {
         "kind": "Shop",
@@ -523,6 +526,7 @@
       "yourFlagship": "Your Flagship",
       "flagship": "Flagship",
       "fleet": {
+        "headquarters": "Headquarters",
         "index": "Fleet",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Fleet",

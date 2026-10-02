@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -59,6 +60,7 @@ const { defineField, handleSubmit } = useForm({
       (squadron) => squadron.id,
     ),
     location: props.inventory?.location ?? "",
+    locationId: props.inventory?.linkedLocation?.id ?? null,
     image: undefined as string | undefined,
     imagePreset: props.inventory?.imagePreset ?? null,
     managedBy:
@@ -99,7 +101,8 @@ const [fleetSquadronIds] = defineField("fleetSquadronIds");
 const restrictedToSquadrons = computed(
   () => visibility.value === "squadron_only",
 );
-const [location, locationProps] = defineField("location");
+const [location] = defineField("location");
+const [locationId] = defineField("locationId");
 const [managedBy] = defineField("managedBy");
 
 const { withSquadronChoice } = useSquadronVisibility(
@@ -158,6 +161,7 @@ const onSubmit = handleSubmit(async (values) => {
       ? (values.fleetSquadronIds ?? [])
       : [],
     location: values.location || undefined,
+    locationId: values.locationId ?? null,
     // Passed through rather than coerced: `undefined` keeps what is attached,
     // `null` is the field saying it was cleared, and a signed id replaces it.
     image: values.image,
@@ -244,9 +248,10 @@ const onSubmit = handleSubmit(async (values) => {
         translation-key="logistics.description"
         :label="t('labels.logistics.description')"
       />
-      <FormInput
+      <LocationInput
         v-model="location"
-        v-bind="locationProps"
+        v-model:location-id="locationId"
+        :linked="inventory?.linkedLocation"
         name="location"
         translation-key="logistics.location"
         :label="t('labels.logistics.location')"

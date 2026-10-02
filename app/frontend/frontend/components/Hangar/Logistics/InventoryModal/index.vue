@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -46,6 +47,7 @@ const { defineField, handleSubmit } = useForm({
     name: props.inventory?.name ?? "",
     description: props.inventory?.description ?? "",
     location: props.inventory?.location ?? "",
+    locationId: props.inventory?.linkedLocation?.id ?? null,
     image: undefined as string | undefined,
     imagePreset: props.inventory?.imagePreset ?? null,
   },
@@ -53,7 +55,8 @@ const { defineField, handleSubmit } = useForm({
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
-const [location, locationProps] = defineField("location");
+const [location] = defineField("location");
+const [locationId] = defineField("locationId");
 const [image, imageProps] = defineField("image");
 const [imagePreset] = defineField("imagePreset");
 
@@ -88,6 +91,7 @@ const onSubmit = handleSubmit(async (values) => {
     name: values.name,
     description: values.description || undefined,
     location: values.location || undefined,
+    locationId: values.locationId ?? null,
     // Passed through rather than coerced: `undefined` keeps what is attached,
     // `null` is the field saying it was cleared, and a signed id replaces it.
     image: values.image,
@@ -166,9 +170,10 @@ const onSubmit = handleSubmit(async (values) => {
         translation-key="logistics.description"
         :label="t('labels.logistics.description')"
       />
-      <FormInput
+      <LocationInput
         v-model="location"
-        v-bind="locationProps"
+        v-model:location-id="locationId"
+        :linked="inventory?.linkedLocation"
         name="location"
         translation-key="logistics.location"
         :label="t('labels.logistics.location')"

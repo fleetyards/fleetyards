@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -18,6 +19,7 @@ import {
   type Fleet,
   type FleetEvent,
   useUpdateFleetEventOccurrence,
+  type LocationLink,
 } from "@/services/fyApi";
 
 type Props = {
@@ -29,6 +31,8 @@ type Props = {
     description?: string | null;
     location?: string | null;
     meetupLocation?: string | null;
+    linkedLocation?: LocationLink | null;
+    linkedMeetupLocation?: LocationLink | null;
     scenario?: string | null;
   };
 };
@@ -47,14 +51,18 @@ const { defineField, handleSubmit } = useForm({
     description: props.initial?.description ?? "",
     location: props.initial?.location ?? "",
     meetupLocation: props.initial?.meetupLocation ?? "",
+    locationId: props.initial?.linkedLocation?.id ?? null,
+    meetupLocationId: props.initial?.linkedMeetupLocation?.id ?? null,
     scenario: props.initial?.scenario ?? "",
   },
 });
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
-const [location, locationProps] = defineField("location");
-const [meetupLocation, meetupLocationProps] = defineField("meetupLocation");
+const [location] = defineField("location");
+const [meetupLocation] = defineField("meetupLocation");
+const [locationId] = defineField("locationId");
+const [meetupLocationId] = defineField("meetupLocationId");
 const [scenario, scenarioProps] = defineField("scenario");
 
 const mutation = useUpdateFleetEventOccurrence();
@@ -71,6 +79,8 @@ const onSubmit = handleSubmit(async (values) => {
         description: values.description || null,
         location: values.location || null,
         meetupLocation: values.meetupLocation || null,
+        locationId: values.locationId ?? null,
+        meetupLocationId: values.meetupLocationId ?? null,
         scenario: values.scenario || null,
       } as never,
     });
@@ -115,15 +125,17 @@ const onSubmit = handleSubmit(async (values) => {
         name="description"
         :label="t('labels.fleets.events.description')"
       />
-      <FormInput
+      <LocationInput
         v-model="location"
-        v-bind="locationProps"
+        v-model:location-id="locationId"
+        :linked="initial?.linkedLocation"
         name="location"
         :label="t('labels.fleets.events.location')"
       />
-      <FormInput
+      <LocationInput
         v-model="meetupLocation"
-        v-bind="meetupLocationProps"
+        v-model:location-id="meetupLocationId"
+        :linked="initial?.linkedMeetupLocation"
         name="meetupLocation"
         :label="t('labels.fleets.events.meetupLocation')"
       />
