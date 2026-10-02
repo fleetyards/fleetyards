@@ -94,7 +94,14 @@ const litBody = computed(() =>
               class="location-strip__moon"
               :class="{ 'location-strip__moon--lit': isLit(moon.location.id) }"
             >
+              <span
+                v-if="globeStyle(moon.location)"
+                class="location-strip__moon-globe"
+                :style="globeStyle(moon.location)"
+                aria-hidden="true"
+              />
               <i
+                v-else
                 :class="LOCATION_KIND_ICONS[moon.location.kind]"
                 aria-hidden="true"
               />

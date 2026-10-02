@@ -17,6 +17,7 @@ import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { globeStyle } from "@/shared/utils/LocationGlobe";
 import {
   LocationKindEnum,
   type LocationTreeNode,
@@ -190,6 +191,20 @@ const { data: missions } = useGameMissions(
   { query: { enabled: computed(() => loaded.value && !isSystemView.value) } },
 );
 
+// A body is drawn before its name, as in the strip; any other place only when
+// it has a picture or a colour of its own.
+const GLOBE_KINDS: string[] = [
+  LocationKindEnum.STAR,
+  LocationKindEnum.PLANET,
+  LocationKindEnum.MOON,
+];
+
+const showGlobe = computed(
+  () =>
+    !!location.value &&
+    (GLOBE_KINDS.includes(location.value.kind) || !!globeStyle(location.value)),
+);
+
 // The export writes line breaks as a literal `\n`.
 const description = computed(() =>
   location.value?.description?.replaceAll("\\n", "\n"),
@@ -218,6 +233,17 @@ watch(
 
           <div class="location-page__masthead">
             <div class="location-page__title">
+              <span
+                v-if="showGlobe"
+                class="location-page__globe"
+                :class="{
+                  'location-page__globe--star':
+                    location.kind === LocationKindEnum.STAR,
+                }"
+                :style="globeStyle(location)"
+                aria-hidden="true"
+                data-test="location-globe"
+              />
               <Heading hero>{{ location.name }}</Heading>
             </div>
 

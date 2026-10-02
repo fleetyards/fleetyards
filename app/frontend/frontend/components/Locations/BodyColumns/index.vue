@@ -71,10 +71,18 @@ const cities = (body: LocationTreeNode) =>
           class="location-columns__moon"
         >
           <span
+            v-if="globeStyle(moon.location)"
             class="location-columns__moon-dot"
             :style="globeStyle(moon.location)"
             aria-hidden="true"
           />
+          <span
+            v-else
+            class="location-columns__moon-dot location-columns__moon-dot--icon"
+            aria-hidden="true"
+          >
+            <i :class="LOCATION_KIND_ICONS[moon.location.kind]" />
+          </span>
           <span class="location-columns__moon-body">
             <span class="location-columns__moon-name">
               {{ moon.location.name }}

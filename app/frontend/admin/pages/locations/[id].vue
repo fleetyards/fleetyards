@@ -218,7 +218,8 @@ const details = computed((): Detail[] => {
     height: 80px;
     border-radius: 50%;
     background-color: #1d2329;
-    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+    border: 1px solid
+      var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
   }
 
   &__appearance-facts {

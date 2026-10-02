@@ -15,8 +15,27 @@
   }
 
   &__title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     flex: 1 1 320px;
     min-width: 0;
+  }
+
+  &__globe {
+    display: block;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #1d2329;
+    border: 1px solid
+      var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
+
+    &--star {
+      background-color: #3a2a17;
+      border-color: rgb(240 179 90 / 0.8);
+    }
   }
 
   &__badges {
