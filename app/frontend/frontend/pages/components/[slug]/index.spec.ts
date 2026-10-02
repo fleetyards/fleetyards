@@ -84,7 +84,13 @@ describe("ComponentPage", () => {
     const wrapper = await mountPage(record({ durability: { health: 100 } }));
 
     expect(wrapper.text()).not.toContain("labels.component.noMetrics");
-    expect(titles(wrapper)).toContain("headlines.component.physical");
+    expect(titles(wrapper)).toContain("headlines.component.durability");
+    expect(
+      wrapper
+        .find("[data-title='headlines.component.durability']")
+        .find("[data-test='durability-physical']")
+        .exists(),
+    ).toBe(true);
     expect(titles(wrapper)).not.toContain("headlines.component.metrics");
   });
 
