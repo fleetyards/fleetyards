@@ -14,13 +14,16 @@ module Catalogue
       "commodity" => ::Commodity,
       "ship" => ::Model,
       "blueprint" => ::Blueprint,
-      "mission" => ::GameMission
+      "mission" => ::GameMission,
+      "location" => ::Location
     }.freeze
 
     # What a token without a prefix can mean. The rest are reached only by
     # their prefix: a blueprint carries the name of the item it crafts, and a
     # ship or a mission can share an item's name, so letting them answer a bare
-    # name would turn tokens already written ambiguous.
+    # name would turn tokens already written ambiguous. A place is reached by
+    # its prefix too: "Lorville" is a city, but a name like "Crusader" is a
+    # planet, a company and a ship maker at once.
     BARE = %w[component equipment commodity].freeze
 
     MAX_TOKENS = 100
@@ -49,6 +52,7 @@ module Catalogue
       when "ship" then ::Model.visible.active
       when "blueprint" then ::Blueprint.with_facts(true)
       when "mission" then ::GameMission.with_facts(true).named
+      when "location" then ::Location.with_facts(true)
       end
     end
 

@@ -18880,6 +18880,7 @@ components:
       - Model
       - Blueprint
       - GameMission
+      - Location
       - FleetContract
       - FleetEvent
       - User
@@ -18890,6 +18891,7 @@ components:
       - MODEL
       - BLUEPRINT
       - GAME_MISSION
+      - LOCATION
       - FLEET_CONTRACT
       - FLEET_EVENT
       - USER
