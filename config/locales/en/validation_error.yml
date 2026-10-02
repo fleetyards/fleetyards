@@ -132,6 +132,8 @@ en:
       update: Squadron membership could not be updated.
     fleet_squadron_roles:
       update: "Squadron rank could not be renamed."
+    fleet_roles:
+      update: "Role could not be renamed."
     fleet_squadrons:
       create: Squadron could not be created.
       update: Squadron could not be updated.

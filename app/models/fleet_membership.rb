@@ -212,6 +212,7 @@ class FleetMembership < ApplicationRecord
     read_vehicles: ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"],
     read_blueprints: ["fleet:manage", "fleet:blueprints:read"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
+    update_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:update"],
     manage_fleet: ["fleet:manage"],
     update_fleet: ["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"],
     destroy_fleet: ["fleet:manage", "fleet:delete"]
