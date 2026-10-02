@@ -70,6 +70,20 @@ class Admin::Api::V1::FleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_equal [admin.username], response.parsed_body["items"].map { |item| item["username"] }
   end
 
+  test "GET /fleets/:fleet_id/members shows a renamed role on a cached list" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    sign_in @user
+
+    with_fragment_caching do
+      get "/admin/api/v1/fleets/#{fleet.id}/members"
+      fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")
+      get "/admin/api/v1/fleets/#{fleet.id}/members"
+    end
+
+    assert_equal ["Commander"], response.parsed_body["items"].map { |item| item["role"] }
+  end
+
   test "GET /fleets/:fleet_id/members returns 404 for missing fleet" do
     sign_in @user
 
