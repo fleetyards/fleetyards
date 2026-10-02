@@ -107,7 +107,13 @@ module ScData
       # Rewritten wholesale, like the rewards: nothing points at a link, and a
       # mission whose pool moved must lose the places it no longer reaches.
       # Runs inside the transaction `one` opens.
+      #
+      # The links are shared by every environment, so only a load of the
+      # default one replaces them; another links a mission only while it has
+      # none, which is a mission that environment alone carries.
       private def persist_locations(mission, mission_data)
+        return if !default_environment? && mission.game_mission_locations.exists?
+
         links = template_locations(mission_data["location_template_refs"]).map { |id| [id, "template"] } +
           text_locations(mission_data).map { |id| [id, "text"] }
 

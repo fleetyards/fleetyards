@@ -83,6 +83,19 @@ module ScData
         assert_equal "lorville", lorville.slug
       end
 
+      # A terminal holds one place for every environment, so only a load of
+      # the one readers get by default may move it.
+      test "#all relinks terminals only on a load of the default environment" do
+        olisar = create(:location, name: "Port Olisar")
+        terminal = create(:terminal, location: olisar)
+
+        loader.all
+        assert_equal olisar.id, terminal.reload.location_id
+
+        loader.tap { |instance| instance.define_singleton_method(:default_environment?) { true } }.all
+        assert_nil terminal.reload.location_id
+      end
+
       test "#all is idempotent" do
         loader.all
         slugs = Location.order(:sc_key).pluck(:sc_key, :slug, :parent_id, :map_parent_id)

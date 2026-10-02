@@ -247,15 +247,35 @@ module ScData
         assert_equal 0, GameMissionLocation.count
       end
 
-      test "#all rewrites a mission's places on a reload" do
+      test "#all rewrites a mission's places on a reload of the default environment" do
         fixture_loader(::ScData::Loader::LocationsLoader).all
         loader.all
-        before = GameMissionLocation.count
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        stale = firesale.game_mission_locations.first
+        stale.update_columns(location_id: create(:location, name: "Port Olisar").id)
+
+        default_loader.all
+
+        assert_not GameMissionLocation.exists?(stale.id)
+        assert_equal ["PYR2 L4", "Pyro"], firesale.reload.locations.pluck(:name).sort
+      end
+
+      # The links are shared by every environment: a ptu load must not hand
+      # live readers its places.
+      test "#all leaves the links of a mission another environment linked" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        olisar = create(:location, name: "Port Olisar")
+        firesale.game_mission_locations.update_all(location_id: olisar.id)
 
         loader.all
 
-        assert_equal before, GameMissionLocation.count
-        assert_operator before, :>, 0
+        assert_equal ["Port Olisar"], firesale.reload.locations.pluck(:name).uniq
+      end
+
+      private def default_loader
+        loader.tap { |instance| instance.define_singleton_method(:default_environment?) { true } }
       end
 
       # What a build whose files failed to sync looks like from the loader's

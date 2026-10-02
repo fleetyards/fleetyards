@@ -116,6 +116,14 @@ module ScData
         ::ScData::Source.new(version: sc_version, environment: sc_environment)
       end
 
+      # Whether this load writes the environment readers get by default. Links
+      # that sit on shared rows -- a terminal's place, a shop's, a mission's --
+      # are that environment's to write: a ptu load rewriting them would hand
+      # live readers ptu places.
+      def default_environment?
+        sc_environment.to_s == ::ScData::Source.default.environment.to_s
+      end
+
       # The build equivalent of `retire_absent`. A record the export dropped
       # keeps its row, but it must stop having a row for the build it is no
       # longer part of -- otherwise asking "is this in the current build?" by
