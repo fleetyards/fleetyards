@@ -100,6 +100,19 @@ class Api::V1::LocationsTreeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/tree colours a body by its type until it has its own" do
+    @aberdeen.update!(body_type: "asteroid")
+    @aberdeen.builds.update_all(body_type: "asteroid")
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body.dig("children", 0, "children").find { |node| node.dig("location", "name") == "Hurston" }
+      aberdeen = hurston["children"].find { |node| node.dig("location", "name") == "Aberdeen" }
+
+      assert_equal Location::BODY_TYPE_COLORS["asteroid"], aberdeen.dig("location", "color")
+      assert_equal "asteroid", aberdeen.dig("location", "bodyType")
+    end
+  end
+
   test "GET /locations/{slug}/tree answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end

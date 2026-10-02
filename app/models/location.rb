@@ -216,10 +216,17 @@ class Location < ApplicationRecord
     (text[/\bclass-([OBAFGKM])\b/i, 1] || text[/\b([OBAFGKM])-type\b/, 1])&.upcase
   end
 
+  # What a body of each type is drawn in until it has a colour of its own:
+  # Delamar's rock, Nyx III's ice. An ordinary body stays plain until set.
+  BODY_TYPE_COLORS = {
+    "gas_giant" => "#c9a46b", "ice_giant" => "#8fb8d0",
+    "asteroid" => "#857a6e", "city" => "#7a756f"
+  }.freeze
+
   # The colour a place is drawn in: the one set in admin, else a star's from
-  # its class.
+  # its class, else its body type's.
   def drawn_color
-    color.presence || STELLAR_COLORS[stellar_class]
+    color.presence || STELLAR_COLORS[stellar_class] || BODY_TYPE_COLORS[body_type]
   end
 
   # The game names Pyro's star a "K-type main sequence flare star", and that is
