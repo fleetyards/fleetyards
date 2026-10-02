@@ -61,6 +61,35 @@ class Admin::Api::V1::LocationsTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
     end
+
+    put("Update Location") do
+      operationId "updateLocation"
+      tags "Locations"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::LocationInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Location
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
   end
 
   setup do
@@ -126,5 +155,36 @@ class Admin::Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 404, params: {id: SecureRandom.uuid}
+  end
+
+  test "PUT /locations/{id} sets the picture and colour a body is drawn with" do
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open,
+      filename: "test.png",
+      content_type: "image/png"
+    )
+
+    assert_api_response :put, 200, path_params: {id: @levski.id}, body: {image: blob.signed_id, color: "#a0522d"} do
+      assert_equal "#a0522d", parsed_body["color"]
+      assert parsed_body.dig("image", "url").present?
+    end
+
+    assert_predicate @levski.reload.image, :attached?
+  end
+
+  test "PUT /locations/{id} refuses a colour that is not a hex code" do
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: @levski.id}, body: {color: "#zzzzzz"}
+
+    assert_nil @levski.reload.color
+  end
+
+  test "PUT /locations/{id} is refused without the privilege" do
+    sign_in create(:admin_user, resource_access: [:missions])
+
+    assert_api_response :put, 403, path_params: {id: @levski.id}, body: {color: "#a0522d"}
   end
 end

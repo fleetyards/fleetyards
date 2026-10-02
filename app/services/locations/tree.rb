@@ -44,7 +44,7 @@ module Locations
     private def children_of
       @children_of ||= Location.current_version
         .where(system_id: @root.id)
-        .includes(:parent, :build, :last_build)
+        .includes(:parent, :build, :last_build, image_attachment: :blob)
         .order(:sc_key)
         .group_by(&:parent_id)
     end

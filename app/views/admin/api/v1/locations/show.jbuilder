@@ -4,6 +4,8 @@ json.partial! "admin/api/v1/locations/base", location: @location
 
 json.description @location.description
 
+json.partial! "api/v1/locations/appearance", location: @location
+
 if @location.map_parent
   json.map_parent do
     json.partial! "api/v1/locations/link", location: @location.map_parent

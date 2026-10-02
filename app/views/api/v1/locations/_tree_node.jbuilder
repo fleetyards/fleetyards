@@ -3,6 +3,7 @@
 json.location do
   json.partial! "api/v1/locations/link", location: node.location
   json.shown_on_starmap node.location.shown_on_starmap
+  json.partial! "api/v1/locations/appearance", location: node.location
 end
 
 json.counts node.counts do |count|

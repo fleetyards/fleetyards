@@ -31,6 +31,8 @@ module V1
 
           # Detail responses only.
           description: {type: [:string, :null]},
+          color: {type: [:string, :null]},
+          image: ::Shared::V1::Schemas::MediaFile,
           resources: {type: :array, items: ::V1::Schemas::LocationResourceGroup},
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
           # Where the game's map draws the place, when that is not where it is:

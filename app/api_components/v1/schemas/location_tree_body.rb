@@ -13,10 +13,12 @@ module V1
           slug: {type: :string},
           kind: ::Shared::V1::Schemas::Enums::LocationKindEnum,
           parentName: {type: [:string, :null]},
-          shownOnStarmap: {type: :boolean}
+          shownOnStarmap: {type: :boolean},
+          color: {type: [:string, :null]},
+          image: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false,
-        required: %w[id slug kind parentName shownOnStarmap]
+        required: %w[id slug kind parentName shownOnStarmap color]
       })
     end
   end

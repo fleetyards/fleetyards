@@ -4629,6 +4629,48 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Location
+      tags:
+      - Locations
+      operationId: updateLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocationInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Location"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/manufacturers":
     post:
       summary: Create Manufacturer
@@ -16781,6 +16823,12 @@ components:
           type:
           - string
           - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         mapParent:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
@@ -16824,6 +16872,20 @@ components:
       - createdAt
       - updatedAt
       title: Location
+    LocationInput:
+      type: object
+      properties:
+        image:
+          type:
+          - string
+          - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+          pattern: "^#[0-9a-fA-F]{6}$"
+      additionalProperties: false
+      title: LocationInput
     LocationKindEnum:
       type: string
       enum:

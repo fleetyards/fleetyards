@@ -56,6 +56,17 @@ class Api::V1::LocationsTreeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/tree carries how a body is drawn" do
+    @hurston.update!(color: "#a0522d")
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      hurston = parsed_body.dig("children", 0, "children").find { |node| node.dig("location", "name") == "Hurston" }
+
+      assert_equal "#a0522d", hurston.dig("location", "color")
+      assert_nil hurston.dig("location", "image")
+    end
+  end
+
   test "GET /locations/{slug}/tree answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end

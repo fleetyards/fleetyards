@@ -236,6 +236,8 @@ es:
     video:
       create: No se pudo crear el vídeo.
       update: No se pudo actualizar el vídeo.
+    location:
+      update: No se pudo actualizar el lugar.
     commodity:
       create: No se pudo crear la mercancía.
       destroy: No se pudo eliminar la mercancía.

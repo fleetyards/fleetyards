@@ -4,6 +4,8 @@ json.partial! "api/v1/locations/base", location: @location
 
 json.description @location.description
 
+json.partial! "api/v1/locations/appearance", location: @location
+
 # What can be mined, harvested or hunted there, by kind, as the description
 # listed it. An item names its commodity where the catalogue has one.
 json.resources Array.wrap(@location.resources) do |group|

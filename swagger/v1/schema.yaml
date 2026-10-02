@@ -28475,6 +28475,12 @@ components:
           type:
           - string
           - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         resources:
           type: array
           items:
@@ -28770,6 +28776,12 @@ components:
           - 'null'
         shownOnStarmap:
           type: boolean
+        color:
+          type:
+          - string
+          - 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - id
@@ -28777,6 +28789,7 @@ components:
       - kind
       - parentName
       - shownOnStarmap
+      - color
       title: LocationTreeBody
     LocationTreeNode:
       type: object

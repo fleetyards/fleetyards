@@ -29,6 +29,8 @@ module Admin
 
             # Detail responses only.
             description: {type: [:string, :null]},
+            color: {type: [:string, :null]},
+            image: ::Shared::V1::Schemas::MediaFile,
             mapParent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             system: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             childrenCount: {type: :integer},

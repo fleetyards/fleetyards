@@ -232,6 +232,8 @@ zh-CN:
     video:
       create: 无法创建视频。
       update: 无法更新视频。
+    location:
+      update: 无法更新地点。
     commodity:
       create: 无法创建商品。
       destroy: 无法删除商品。

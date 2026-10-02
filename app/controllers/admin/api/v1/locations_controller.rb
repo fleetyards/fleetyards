@@ -3,11 +3,12 @@
 module Admin
   module Api
     module V1
-      # Read only: every fact is the next load's to replace. The section shows
-      # what a load produced -- which records became places, where they nest,
-      # what they merged -- and a wrong one is a parser or override fix.
+      # Every fact is the next load's to replace. The section shows what a load
+      # produced -- which records became places, where they nest, what they
+      # merged -- and a wrong one is a parser or override fix. Only how a place
+      # is drawn, its picture and colour, is edited here.
       class LocationsController < ::Admin::Api::BaseController
-        before_action :set_location, only: %i[show]
+        before_action :set_location, only: %i[show update]
 
         def index
           authorize! with: ::Admin::LocationPolicy
@@ -27,6 +28,12 @@ module Admin
         def show
         end
 
+        def update
+          return render :show if @location.update(location_params)
+
+          render json: ValidationError.new("location.update", errors: @location.errors), status: :bad_request
+        end
+
         # Defaulted off, where the public list defaults it on: what a load
         # retired is one of the questions this section answers.
         private def current_version
@@ -39,6 +46,10 @@ module Admin
             .find(params[:id])
 
           authorize! @location, with: ::Admin::LocationPolicy
+        end
+
+        private def location_params
+          params.permit(:image, :color)
         end
 
         private def location_query_params

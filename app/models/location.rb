@@ -9,6 +9,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  always_shown               :boolean          default(FALSE), not null
+#  color                      :string
 #  description                :text
 #  game_type                  :string
 #  kind                       :string
@@ -90,9 +91,15 @@ class Location < ApplicationRecord
   # so setting it does not read as a change to the row.
   attr_accessor :name_shared
 
+  # Curated, where everything else is loaded: no game file carries a picture
+  # of a planet.
+  has_one_attached :image
+
   before_save :update_slugs
 
   validates :sc_key, presence: true, uniqueness: true
+  validates :image, no_vector_image: true
+  validates :color, format: {with: /\A#\h{6}\z/}, allow_blank: true
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
 

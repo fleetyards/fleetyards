@@ -4,6 +4,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  always_shown               :boolean          default(FALSE), not null
+#  color                      :string
 #  description                :text
 #  game_type                  :string
 #  kind                       :string
