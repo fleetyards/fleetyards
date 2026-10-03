@@ -16504,6 +16504,7 @@ components:
       - paints
       - loaners
       - uex_vehicle_prices
+      - ship_matrix_all
       - sc_data
       - sc_data_models
       - uex_commodity_prices
@@ -16516,6 +16517,7 @@ components:
       - PAINTS
       - LOANERS
       - UEX_VEHICLE_PRICES
+      - SHIP_MATRIX_ALL
       - SC_DATA
       - SC_DATA_MODELS
       - UEX_COMMODITY_PRICES

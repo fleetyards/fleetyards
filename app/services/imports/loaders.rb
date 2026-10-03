@@ -8,7 +8,9 @@ module Imports
   class Loaders
     SHIP_MATRIX = %w[ship_matrix modules paints loaners uex_vehicle_prices].freeze
     SC_DATA = %w[sc_data sc_data_models uex_commodity_prices uex_component_prices uex_equipment_prices uex_trade_routes].freeze
-    KEYS = (SHIP_MATRIX + SC_DATA).freeze
+    # Every ship matrix load at once, which is what a new RSI patch needs.
+    SHIP_MATRIX_ALL = "ship_matrix_all"
+    KEYS = (SHIP_MATRIX + [SHIP_MATRIX_ALL] + SC_DATA).freeze
 
     def self.environments
       ::ScData::Source.configured.map(&:environment)
@@ -22,6 +24,7 @@ module Imports
 
     def enqueue
       case @key
+      when SHIP_MATRIX_ALL then SHIP_MATRIX.each { |key| self.class.new(key, admin_user_id: @admin_user_id).enqueue }
       when "ship_matrix" then ::Loaders::ModelsJob.perform_async(@admin_user_id)
       when "modules" then ::Loaders::ModulesImportJob.perform_async(@admin_user_id)
       when "paints" then ::Loaders::PaintsImportJob.perform_async(@admin_user_id)
