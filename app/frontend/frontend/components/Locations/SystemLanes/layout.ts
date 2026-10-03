@@ -60,25 +60,27 @@ export const jumpConnections = (
   return [...connections.values()];
 };
 
-// The jump points that lead out of the listed systems, by the system they are
-// in.
-export const jumpExits = (
-  systemIds: string[],
+// The jump points no line ends at, by the system they are in: those that lead
+// off the page, and a second jump point to a system a line already joins.
+export const unjoinedJumpPoints = (
   jumpPoints: LocationJumpPoint[],
+  connections: JumpConnection[],
 ): Record<string, LocationJumpPoint[]> => {
-  const listed = new Set(systemIds);
+  const joined = new Set(
+    connections.flatMap((connection) =>
+      Object.values(connection.ends).flatMap((end) =>
+        end ? [end.location.id] : [],
+      ),
+    ),
+  );
 
   return jumpPoints.reduce<Record<string, LocationJumpPoint[]>>(
-    (exits, jumpPoint) => {
-      const to = jumpPoint.destinationSystemId;
-
-      if (to && listed.has(to)) {
-        return exits;
+    (unjoined, jumpPoint) => {
+      if (!joined.has(jumpPoint.location.id)) {
+        (unjoined[jumpPoint.systemId] ??= []).push(jumpPoint);
       }
 
-      (exits[jumpPoint.systemId] ??= []).push(jumpPoint);
-
-      return exits;
+      return unjoined;
     },
     {},
   );

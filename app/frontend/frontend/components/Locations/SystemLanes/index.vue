@@ -8,7 +8,7 @@ export default {
 import { useResizeObserver } from "@vueuse/core";
 import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
 import type { Location, LocationJumpPoint } from "@/services/fyApi";
-import { jumpConnections, jumpExits, jumpLaneLayout } from "./layout";
+import { jumpConnections, jumpLaneLayout, unjoinedJumpPoints } from "./layout";
 import PlaceholderCard from "./PlaceholderCard.vue";
 import {
   PLACEHOLDER_SYSTEMS,
@@ -165,11 +165,13 @@ const orderedEntries = computed(() => {
   return layout.value.order.flatMap((id) => byId.get(id) ?? []);
 });
 
-const exits = computed(() => jumpExits(systemIds.value, jumpPoints.value));
+const unjoined = computed(() =>
+  unjoinedJumpPoints(jumpPoints.value, connections.value),
+);
 
 const jumpPointsOf = (system: Location) =>
   hasLanes.value
-    ? (exits.value[system.id] ?? [])
+    ? (unjoined.value[system.id] ?? [])
     : jumpPoints.value.filter((jumpPoint) => jumpPoint.systemId === system.id);
 
 const setCard = (id: string, card: unknown) => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LocationKindEnum, type LocationJumpPoint } from "@/services/fyApi";
-import { jumpConnections, jumpExits, jumpLaneLayout } from "./layout";
+import { jumpConnections, jumpLaneLayout, unjoinedJumpPoints } from "./layout";
 
 const jumpPoint = (
   systemId: string,
@@ -58,20 +58,32 @@ describe("jumpConnections", () => {
   });
 });
 
-describe("jumpExits", () => {
-  it("lists only the jump points that lead out of the listed systems", () => {
-    const exits = jumpExits(
-      ["stanton", "pyro"],
-      [
-        jumpPoint("stanton", "Terra", null),
-        jumpPoint("stanton", "pyro", "pyro"),
-      ],
+describe("unjoinedJumpPoints", () => {
+  it("keeps what no line ends at: the way off the page and a second way across", () => {
+    const systems = ["stanton", "pyro"];
+    const jumpPoints = [
+      jumpPoint("stanton", "Terra", null),
+      jumpPoint("stanton", "pyro", "pyro"),
+      {
+        ...jumpPoint("stanton", "pyro", "pyro"),
+        location: {
+          ...jumpPoint("stanton", "pyro", "pyro").location,
+          id: "second",
+        },
+      },
+      jumpPoint("pyro", "stanton", "stanton"),
+    ];
+
+    const unjoined = unjoinedJumpPoints(
+      jumpPoints,
+      jumpConnections(systems, jumpPoints),
     );
 
-    expect(exits.stanton.map((exit) => exit.destinationName)).toEqual([
-      "Terra",
+    expect(unjoined.stanton.map((point) => point.location.id)).toEqual([
+      "stanton-Terra",
+      "second",
     ]);
-    expect(exits.pyro).toBeUndefined();
+    expect(unjoined.pyro).toBeUndefined();
   });
 });
 
