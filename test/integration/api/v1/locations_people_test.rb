@@ -15,6 +15,8 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "slug", in: :path, schema: {type: :string}, required: true
+      parameter name: "limit", in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 200},
+        description: "How many to list, online first, then by name. Defaults to 50; totalCount says how many there are in all"
 
       security [
         {SessionCookie: []},
@@ -81,6 +83,30 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {slug: @stanton.slug} do
       assert_equal 3, parsed_body["people"].size
     end
+  end
+
+  test "GET /locations/{slug}/people lists who is online first, and counts the rest past the limit" do
+    UserPresence.reset!
+    Flipper.enable(:online_status)
+
+    %w[alpha bravo charlie].each do |username|
+      friend = create(:user, username:, current_location: @lorville)
+      create(:friendship, :accepted, requester: @reader, addressee: friend)
+    end
+    zulu = create(:user, username: "zulu", current_location: @lorville, show_online_status: true)
+    create(:friendship, :accepted, requester: @reader, addressee: zulu)
+    UserPresence.connect(zulu.id, "tab-1")
+
+    sign_in @reader
+
+    assert_api_response :get, 200, params: {slug: @lorville.slug, limit: 2} do
+      assert_equal 4, parsed_body["totalCount"]
+      assert_equal %w[zulu alpha], parsed_body["people"].pluck("username")
+      assert parsed_body["people"].first["online"]
+    end
+  ensure
+    UserPresence.reset!
+    Flipper.disable(:online_status)
   end
 
   test "GET /locations/{slug}/people leaves out the reader and anyone not already shown to them" do

@@ -10,10 +10,12 @@ module V1
       schema({
         type: :object,
         properties: {
+          # How many there are in all; `people` holds the first `limit`.
+          totalCount: {type: :integer},
           people: {type: :array, items: ::V1::Schemas::LocationPerson}
         },
         additionalProperties: false,
-        required: %w[people]
+        required: %w[totalCount people]
       })
     end
   end

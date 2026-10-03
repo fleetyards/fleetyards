@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-json.people @people do |entry|
+json.total_count @people.total_count
+json.people @people.entries do |entry|
   user = entry.user
 
   json.id user.id

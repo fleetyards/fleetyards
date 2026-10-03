@@ -5,6 +5,9 @@ module Api
     class LocationsController < ::Api::PublicBaseController
       skip_verify_authorized only: %i[index show tree contents shops people]
 
+      PEOPLE_LIMIT = 50
+      PEOPLE_MAX_LIMIT = 200
+
       before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[people]
 
       after_action -> { pagination_header(:locations) }, only: [:index]
@@ -55,8 +58,9 @@ module Api
           find_location,
           current_resource_owner,
           friends: feature_enabled?("friends"),
-          fleets: doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read])
-        ).call
+          fleets: doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read]),
+          online: ->(user) { online_status_for(user) }
+        ).call(limit: people_limit)
       end
 
       # What a resource name stands for in the commodity catalogue, matched on
@@ -67,6 +71,12 @@ module Api
         return {} if names.empty?
 
         Commodity.with_facts(true).where("lower(#{Commodity.fact_sql(:name)}) IN (?)", names).index_by { |commodity| commodity.name.downcase }
+      end
+
+      private def people_limit
+        return PEOPLE_LIMIT if params[:limit].blank?
+
+        params[:limit].to_i.clamp(1, PEOPLE_MAX_LIMIT)
       end
 
       private def find_location

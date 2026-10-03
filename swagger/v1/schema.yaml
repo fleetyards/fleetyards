@@ -11426,6 +11426,15 @@ paths:
         schema:
           type: string
         required: true
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+        description: How many to list, online first, then by name. Defaults to 50;
+          totalCount says how many there are in all
       security:
       - SessionCookie: []
       - Oauth2:
@@ -29822,12 +29831,15 @@ components:
     LocationPeople:
       type: object
       properties:
+        totalCount:
+          type: integer
         people:
           type: array
           items:
             "$ref": "#/components/schemas/LocationPerson"
       additionalProperties: false
       required:
+      - totalCount
       - people
       title: LocationPeople
     LocationPerson:
