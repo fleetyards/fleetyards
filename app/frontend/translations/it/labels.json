@@ -49,6 +49,7 @@
           "other": "%{count} lune"
         },
         "gateways": "Portali di salto",
+        "jumpPoints": "Punti di salto",
         "systemStrip": "%{system}, dalla stella verso l'esterno",
         "allSystems": "Tutti i sistemi",
         "allPlaces": "Tutti i luoghi",

@@ -49,6 +49,7 @@
           "other": "%{count} Monde"
         },
         "gateways": "Sprungtore",
+        "jumpPoints": "Sprungpunkte",
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",

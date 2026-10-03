@@ -49,6 +49,7 @@
           "other": "%{count} lunes"
         },
         "gateways": "Portails de saut",
+        "jumpPoints": "Points de saut",
         "systemStrip": "%{system}, de son étoile vers l'extérieur",
         "allSystems": "Tous les systèmes",
         "allPlaces": "Tous les lieux",

@@ -7,10 +7,14 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
+import SystemLanes from "@/frontend/components/Locations/SystemLanes/index.vue";
 import SystemCardSkeleton from "@/frontend/components/Locations/SystemCard/Skeleton.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { LocationKindEnum, useLocations } from "@/services/fyApi";
+import {
+  LocationKindEnum,
+  useLocationJumpPoints,
+  useLocations,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -24,6 +28,9 @@ const {
 } = useLocations({
   q: { kindEq: LocationKindEnum.SYSTEM },
 });
+
+// Without them the systems are still listed, only not joined up.
+const { data: jumpPoints } = useLocationJumpPoints();
 
 // As many placeholders as there are systems to come, near enough: the game
 // has four.
@@ -54,11 +61,10 @@ const PLACEHOLDERS = 4;
       <Btn @click="() => refetch()">{{ t("actions.retry") }}</Btn>
     </p>
 
-    <SystemCard
-      v-for="system in systems?.items ?? []"
+    <SystemLanes
       v-else
-      :key="system.id"
-      :system="system"
+      :systems="systems?.items ?? []"
+      :jump-points="jumpPoints ?? []"
     />
   </section>
 </template>

@@ -49,6 +49,7 @@
           "other": "%{count} moons"
         },
         "gateways": "Jump gateways",
+        "jumpPoints": "Jump points",
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",

@@ -49,6 +49,7 @@
           "other": "%{count} lunas"
         },
         "gateways": "Portales de salto",
+        "jumpPoints": "Puntos de salto",
         "systemStrip": "%{system}, desde su estrella hacia fuera",
         "allSystems": "Todos los sistemas",
         "allPlaces": "Todos los lugares",

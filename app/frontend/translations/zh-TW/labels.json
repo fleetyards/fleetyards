@@ -49,6 +49,7 @@
           "other": "%{count} 顆衛星"
         },
         "gateways": "跳躍門",
+        "jumpPoints": "跳躍點",
         "systemStrip": "%{system}，從恆星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地點",
