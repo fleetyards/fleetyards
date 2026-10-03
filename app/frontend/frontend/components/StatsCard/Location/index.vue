@@ -8,6 +8,7 @@ export default {
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
+import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
 import {
   type StatsCardBadge,
@@ -96,7 +97,7 @@ const image = computed(() => {
 });
 
 // A planet or a moon turns as its globe, a star glows as its sun; anything
-// else keeps the card's own icon.
+// else shows its kind's glyph in the card's own icon box.
 const drawn = computed(() => {
   const kind = props.location?.kind;
 
@@ -142,6 +143,9 @@ const ownRoute = computed(() =>
         :style="sunStyle(location)"
         aria-hidden="true"
       />
+    </template>
+    <template v-else-if="location" #glyph>
+      <LocationKindIcon :kind="location.kind" />
     </template>
   </StatsCard>
 </template>

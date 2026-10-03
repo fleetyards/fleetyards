@@ -71,6 +71,42 @@ describe("LocationStatsCard", () => {
     expect(wrapper.text()).toContain("4");
   });
 
+  it("shows a system's kind glyph in the card's icon box", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        location: {
+          ...lorville,
+          name: "Stanton System",
+          kind: LocationKindEnum.SYSTEM,
+        } as Location,
+      },
+      plugins: [await router()],
+    });
+
+    const icon = wrapper.get(".stats-card__icon");
+    expect(icon.classes()).not.toContain("stats-card__icon--drawn");
+    expect(icon.find(".location-kind-icon").attributes("data-kind")).toBe(
+      LocationKindEnum.SYSTEM,
+    );
+    expect(icon.find("i").exists()).toBe(false);
+  });
+
+  it("draws a star as its sun", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        location: {
+          ...lorville,
+          name: "Stanton",
+          kind: LocationKindEnum.STAR,
+        } as Location,
+      },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.find(".location-stats-card__sun").exists()).toBe(true);
+    expect(wrapper.find(".location-kind-icon").exists()).toBe(false);
+  });
+
   it("marks a flare star unstable", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {

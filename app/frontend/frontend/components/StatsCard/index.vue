@@ -174,8 +174,10 @@ const hasBody = computed(
       <span v-if="$slots.icon" class="stats-card__icon stats-card__icon--drawn">
         <slot name="icon" />
       </span>
-      <span v-else-if="kind" class="stats-card__icon">
-        <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+      <span v-else-if="kind || $slots.glyph" class="stats-card__icon">
+        <slot name="glyph">
+          <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+        </slot>
       </span>
       <div class="stats-card__heading">
         <div v-if="eyebrow || status" class="stats-card__eyebrow-row">
