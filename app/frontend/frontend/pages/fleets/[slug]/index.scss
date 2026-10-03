@@ -25,7 +25,16 @@
     padding-top: 39px;
   }
 
+  // Its width does not count towards the block's, so the title alone decides
+  // where the heading is centred; the pill hangs off the title's left edge.
+  .heading-meta {
+    align-self: stretch;
+    contain: inline-size;
+  }
+
   .fleet-headquarters {
+    width: max-content;
+    max-width: 60ch;
     overflow-wrap: anywhere;
   }
 }
@@ -64,6 +73,16 @@
 
     &.heading-text--headquarters {
       padding-top: 0;
+    }
+
+    .heading-meta {
+      align-self: auto;
+      contain: none;
+    }
+
+    .fleet-headquarters {
+      width: auto;
+      max-width: 100%;
     }
   }
 

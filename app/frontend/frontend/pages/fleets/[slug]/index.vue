@@ -109,18 +109,16 @@ const showFidNotice = computed(
           :class="{ 'heading-text--headquarters': fleet.headquarters }"
         >
           <h1 class="large title">{{ fleet.name }} ({{ fleet.fid }})</h1>
-          <p
-            v-if="fleet.headquarters"
-            class="fleet-headquarters"
-            data-test="fleet-headquarters"
-          >
-            <i class="fa-duotone fa-house-flag" aria-hidden="true" />
-            <span class="sr-only">{{ t("labels.fleet.headquarters") }}</span>
-            <LocationName
-              :text="fleet.headquarters"
-              :linked="fleet.headquartersLocation"
-            />
-          </p>
+          <div v-if="fleet.headquarters" class="heading-meta">
+            <p class="fleet-headquarters" data-test="fleet-headquarters">
+              <i class="fa-duotone fa-house-flag" aria-hidden="true" />
+              <span class="sr-only">{{ t("labels.fleet.headquarters") }}</span>
+              <LocationName
+                :text="fleet.headquarters"
+                :linked="fleet.headquartersLocation"
+              />
+            </p>
+          </div>
         </div>
       </div>
       <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
