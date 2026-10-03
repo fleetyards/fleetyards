@@ -50,6 +50,7 @@
         },
         "gateways": "Sprungtore",
         "jumpPoints": "Sprungpunkte",
+        "notInGameYet": "Noch nicht im Spiel",
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",

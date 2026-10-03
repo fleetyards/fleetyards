@@ -50,6 +50,7 @@
         },
         "gateways": "Jump gateways",
         "jumpPoints": "Jump points",
+        "notInGameYet": "Not in the game yet",
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",

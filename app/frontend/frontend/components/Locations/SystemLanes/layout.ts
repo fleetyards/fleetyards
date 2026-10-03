@@ -6,6 +6,8 @@ export interface JumpConnection {
   // The jump point on each side, by the id of the system it is in. A side is
   // missing when the data has only the other end.
   ends: Record<string, LocationJumpPoint | undefined>;
+  // Announced, with no jump point in the game files at either end.
+  planned?: boolean;
 }
 
 export interface JumpLane {

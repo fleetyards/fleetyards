@@ -9,6 +9,12 @@ import { useResizeObserver } from "@vueuse/core";
 import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
 import type { Location, LocationJumpPoint } from "@/services/fyApi";
 import { jumpConnections, jumpExits, jumpLaneLayout } from "./layout";
+import PlaceholderCard from "./PlaceholderCard.vue";
+import {
+  PLACEHOLDER_SYSTEMS,
+  type PlaceholderSystem,
+  placeholderDestination,
+} from "./placeholders";
 
 type Props = {
   systems: Location[];
@@ -38,11 +44,101 @@ const width = ref(0);
 const anchors = ref<Record<string, Anchor>>({});
 const cards = new Map<string, { body: HTMLElement | null }>();
 
-const systemIds = computed(() => props.systems.map((system) => system.id));
+type Entry =
+  | { id: string; name: string; system: Location; placeholder?: undefined }
+  | {
+      id: string;
+      name: string;
+      system?: undefined;
+      placeholder: PlaceholderSystem;
+    };
 
-const connections = computed(() =>
-  jumpConnections(systemIds.value, props.jumpPoints),
+const placeholders = computed(() =>
+  PLACEHOLDER_SYSTEMS.filter(
+    (placeholder) =>
+      !props.systems.some((system) => system.name === placeholder.name),
+  ),
 );
+
+// By name, the order the systems arrive in, so a placeholder takes the place
+// the system will have once it is in the game.
+const entries = computed<Entry[]>(() =>
+  [
+    ...props.systems.map((system) => ({
+      id: system.id,
+      name: system.name ?? "",
+      system,
+    })),
+    ...placeholders.value.map((placeholder) => ({
+      id: placeholder.id,
+      name: placeholder.name,
+      placeholder,
+    })),
+  ].sort((a, b) => a.name.localeCompare(b.name)),
+);
+
+const systemIds = computed(() => entries.value.map((entry) => entry.id));
+
+// A jump point into a placeholder names it but has no id to point at.
+const jumpPoints = computed(() => {
+  const placeholderIds = new Map(
+    placeholders.value.map((placeholder) => [
+      placeholderDestination(placeholder),
+      placeholder.id,
+    ]),
+  );
+
+  return props.jumpPoints.map((jumpPoint) =>
+    jumpPoint.destinationSystemId
+      ? jumpPoint
+      : {
+          ...jumpPoint,
+          destinationSystemId:
+            placeholderIds.get(jumpPoint.destinationName.toLowerCase()) ?? null,
+        },
+  );
+});
+
+// The name jump points use for a system: "Nyx" for the Nyx System.
+const shortName = (entry: Entry) =>
+  entry.placeholder
+    ? entry.placeholder.star.name
+    : (entry.system.name ?? "").replace(/ System$/, "");
+
+const plannedConnections = computed(() => {
+  const idsByName = new Map(
+    entries.value.map((entry) => [shortName(entry).toLowerCase(), entry.id]),
+  );
+
+  return placeholders.value.flatMap((placeholder) =>
+    placeholder.jumpsTo.flatMap((name) => {
+      const otherId = idsByName.get(name.toLowerCase());
+
+      if (!otherId) {
+        return [];
+      }
+
+      const pair = [placeholder.id, otherId].sort() as [string, string];
+
+      return [
+        { key: pair.join(":"), systemIds: pair, ends: {}, planned: true },
+      ];
+    }),
+  );
+});
+
+// A jump point in the game files outranks an announced connection.
+const connections = computed(() => {
+  const found = jumpConnections(systemIds.value, jumpPoints.value);
+  const keys = new Set(found.map((connection) => connection.key));
+
+  return [
+    ...found,
+    ...plannedConnections.value.filter(
+      (connection) => !keys.has(connection.key),
+    ),
+  ];
+});
 
 const layout = computed(() =>
   jumpLaneLayout(systemIds.value, connections.value),
@@ -59,22 +155,22 @@ const hasLanes = computed(
     columnX(layout.value.columns - 1) <= width.value * LAST_COLUMN,
 );
 
-const orderedSystems = computed(() => {
+const orderedEntries = computed(() => {
   if (!hasLanes.value) {
-    return props.systems;
+    return entries.value;
   }
 
-  const byId = new Map(props.systems.map((system) => [system.id, system]));
+  const byId = new Map(entries.value.map((entry) => [entry.id, entry]));
 
   return layout.value.order.flatMap((id) => byId.get(id) ?? []);
 });
 
-const exits = computed(() => jumpExits(systemIds.value, props.jumpPoints));
+const exits = computed(() => jumpExits(systemIds.value, jumpPoints.value));
 
 const jumpPointsOf = (system: Location) =>
   hasLanes.value
     ? (exits.value[system.id] ?? [])
-    : props.jumpPoints.filter((jumpPoint) => jumpPoint.systemId === system.id);
+    : jumpPoints.value.filter((jumpPoint) => jumpPoint.systemId === system.id);
 
 const setCard = (id: string, card: unknown) => {
   if (card) {
@@ -110,7 +206,7 @@ useResizeObserver(container, measure);
 
 onMounted(measure);
 
-watch(orderedSystems, () => nextTick(measure));
+watch(orderedEntries, () => nextTick(measure));
 
 const lanes = computed(() => {
   if (!hasLanes.value) {
@@ -118,6 +214,9 @@ const lanes = computed(() => {
   }
 
   const { order } = layout.value;
+  const names = new Map(
+    entries.value.map((entry) => [entry.id, shortName(entry)]),
+  );
 
   return layout.value.lanes.flatMap((lane) => {
     const upperId = order[lane.upper];
@@ -130,20 +229,25 @@ const lanes = computed(() => {
     }
 
     const x = columnX(lane.column);
+    const { planned } = lane.connection;
     const leaving = lane.connection.ends[upperId];
     const arriving = lane.connection.ends[lowerId];
 
+    // A planned connection has no jump point to link to, so both ends are
+    // labelled with the name of the other system alone.
     const ends = [
-      leaving && {
+      (leaving || planned) && {
         key: `${lane.connection.key}:leaving`,
         jumpPoint: leaving,
+        name: leaving?.destinationName ?? names.get(lowerId),
         icon: "fa-arrow-down",
         y: upper.bottom,
         labelY: upper.bottom + LABEL_OFFSET,
       },
-      arriving && {
+      (arriving || planned) && {
         key: `${lane.connection.key}:arriving`,
         jumpPoint: arriving,
+        name: arriving?.destinationName ?? names.get(upperId),
         icon: "fa-arrow-up",
         y: lower.top,
         labelY: lower.top - LABEL_OFFSET,
@@ -156,6 +260,7 @@ const lanes = computed(() => {
         x,
         top: upper.bottom,
         bottom: lower.top,
+        planned,
         ends,
       },
     ];
@@ -182,39 +287,58 @@ const lanes = computed(() => {
         :x2="lane.x"
         :y1="lane.top"
         :y2="lane.bottom"
+        :class="{ 'location-lanes__line--planned': lane.planned }"
       />
     </svg>
 
-    <SystemCard
-      v-for="system in orderedSystems"
-      :key="system.id"
-      :ref="(card) => setCard(system.id, card)"
-      :system="system"
-      :jump-points="jumpPointsOf(system)"
-      class="location-lanes__card"
-    />
+    <template v-for="entry in orderedEntries" :key="entry.id">
+      <SystemCard
+        v-if="entry.system"
+        :ref="(card) => setCard(entry.id, card)"
+        :system="entry.system"
+        :jump-points="jumpPointsOf(entry.system)"
+        class="location-lanes__card"
+      />
+      <PlaceholderCard
+        v-else
+        :ref="(card) => setCard(entry.id, card)"
+        :system="entry.placeholder"
+        class="location-lanes__card"
+      />
+    </template>
 
     <template v-for="lane in lanes" :key="lane.key">
       <template v-for="end in lane.ends" :key="end.key">
+        <template v-if="end.jumpPoint">
+          <span
+            class="location-lanes__dot"
+            :style="{ left: `${lane.x}px`, top: `${end.y}px` }"
+            aria-hidden="true"
+          />
+          <router-link
+            :to="{
+              name: 'location',
+              params: { slug: end.jumpPoint.location.slug },
+            }"
+            :aria-label="end.jumpPoint.location.name ?? undefined"
+            :title="end.jumpPoint.location.name ?? undefined"
+            class="location-lanes__label"
+            :style="{ left: `${lane.x}px`, top: `${end.labelY}px` }"
+            data-test="jump-lane-label"
+          >
+            <i class="fa-light" :class="end.icon" aria-hidden="true" />
+            {{ end.name }}
+          </router-link>
+        </template>
         <span
-          class="location-lanes__dot"
-          :style="{ left: `${lane.x}px`, top: `${end.y}px` }"
-          aria-hidden="true"
-        />
-        <router-link
-          :to="{
-            name: 'location',
-            params: { slug: end.jumpPoint.location.slug },
-          }"
-          :aria-label="end.jumpPoint.location.name ?? undefined"
-          :title="end.jumpPoint.location.name ?? undefined"
-          class="location-lanes__label"
+          v-else
+          class="location-lanes__label location-lanes__label--planned"
           :style="{ left: `${lane.x}px`, top: `${end.labelY}px` }"
-          data-test="jump-lane-label"
+          data-test="jump-lane-planned"
         >
           <i class="fa-light" :class="end.icon" aria-hidden="true" />
-          {{ end.jumpPoint.destinationName }}
-        </router-link>
+          {{ end.name }}
+        </span>
       </template>
     </template>
   </div>
@@ -249,6 +373,11 @@ const lanes = computed(() => {
         0 0 4px
           color-mix(in srgb, var(--color-primary, #428bca) 60%, transparent)
       );
+    }
+
+    .location-lanes__line--planned {
+      stroke-dasharray: 6 6;
+      filter: none;
     }
   }
 
@@ -294,6 +423,11 @@ const lanes = computed(() => {
 
     i {
       color: var(--color-primary, #428bca);
+    }
+
+    &--planned {
+      color: var(--color-text-dim, #959595);
+      border-style: dashed;
     }
 
     &:hover,

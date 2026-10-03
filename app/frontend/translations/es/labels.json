@@ -50,6 +50,7 @@
         },
         "gateways": "Portales de salto",
         "jumpPoints": "Puntos de salto",
+        "notInGameYet": "Aún no está en el juego",
         "systemStrip": "%{system}, desde su estrella hacia fuera",
         "allSystems": "Todos los sistemas",
         "allPlaces": "Todos los lugares",

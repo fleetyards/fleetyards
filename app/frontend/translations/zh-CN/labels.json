@@ -50,6 +50,7 @@
         },
         "gateways": "跳跃门",
         "jumpPoints": "跳跃点",
+        "notInGameYet": "尚未加入游戏",
         "systemStrip": "%{system}，从恒星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地点",
