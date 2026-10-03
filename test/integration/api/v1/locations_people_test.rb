@@ -147,6 +147,31 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/people answers 401 to an expired or revoked token" do
+    expired = create(:oauth_access_token, resource_owner_id: @reader.id, scopes: ["public"], created_at: 3.hours.ago)
+    revoked = create(:oauth_access_token, resource_owner_id: @reader.id, scopes: ["public"], revoked_at: 1.minute.ago)
+
+    [expired, revoked].each do |token|
+      assert_api_response :get, 401, params: {slug: @lorville.slug}, headers: {"Authorization" => "Bearer #{token.token}"}
+    end
+  end
+
+  test "GET /locations/{slug}/people answers for the session, not a token sent beside it" do
+    friend = create(:user, username: "alpha", current_location: @lorville)
+    create(:friendship, :accepted, requester: @reader, addressee: friend)
+
+    other = create(:user)
+    other_friend = create(:user, username: "bravo", current_location: @lorville)
+    create(:friendship, :accepted, requester: other, addressee: other_friend)
+    token = create(:oauth_access_token, resource_owner_id: other.id, scopes: ["public"], created_at: 3.hours.ago)
+
+    sign_in @reader
+
+    assert_api_response :get, 200, params: {slug: @lorville.slug}, headers: {"Authorization" => "Bearer #{token.token}"} do
+      assert_equal ["alpha"], parsed_body["people"].pluck("username")
+    end
+  end
+
   test "GET /locations/{slug}/people answers 401 to an anonymous reader" do
     assert_api_response :get, 401, params: {slug: @lorville.slug}
   end
