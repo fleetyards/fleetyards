@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.10.0](https://github.com/fleetyards/fleetyards/compare/v8.9.0...v8.10.0) (2026-10-03)
+
+
+### Features
+
+* **admin:** load the ship matrix and sc_data per loader from the imports page ([#5386](https://github.com/fleetyards/fleetyards/issues/5386)) ([5b9fa51](https://github.com/fleetyards/fleetyards/commit/5b9fa5199a36f58c08e4526c3323ba87a65362a2))
+* **locations:** friends and fleet members on location pages ([#5385](https://github.com/fleetyards/fleetyards/issues/5385)) ([13d3fb0](https://github.com/fleetyards/fleetyards/commit/13d3fb0a39a69a252d5e75cad13b254f6a7f287e))
+* **locations:** join the systems on the systems page by their jump points ([#5390](https://github.com/fleetyards/fleetyards/issues/5390)) ([8b7bf56](https://github.com/fleetyards/fleetyards/commit/8b7bf564b1ffbcfaabea388213685582b39b04c6))
+
+
+### Bug Fixes
+
+* **fleets:** headquarters pill under the fleet name, no duplicate SID in the directory ([#5387](https://github.com/fleetyards/fleetyards/issues/5387)) ([2ebec68](https://github.com/fleetyards/fleetyards/commit/2ebec682a18a8989f4255bb1fb35af93a4f601f3))
+* **locations:** show a place's kind glyph on its hover card ([#5389](https://github.com/fleetyards/fleetyards/issues/5389)) ([0bfa0fb](https://github.com/fleetyards/fleetyards/commit/0bfa0fbe474a7f6277d7e7ea2e339d30d1b577ae))
+
 ## [8.9.0](https://github.com/fleetyards/fleetyards/compare/v8.8.0...v8.9.0) (2026-10-02)
 
 
