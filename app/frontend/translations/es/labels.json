@@ -2536,6 +2536,56 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix": {
+            "name": "Naves",
+            "description": "Todas las naves con sus datos y la tienda, de la matriz de naves de RSI."
+          },
+          "modules": {
+            "name": "Módulos",
+            "description": "Módulos de naves de la tienda de RSI."
+          },
+          "paints": {
+            "name": "Pinturas",
+            "description": "Pinturas de la tienda de RSI."
+          },
+          "loaners": {
+            "name": "Naves de préstamo",
+            "description": "Qué naves de préstamo vienen con cada nave, de RSI."
+          },
+          "uex_vehicle_prices": {
+            "name": "Precios de naves",
+            "description": "Dónde se compran y alquilan las naves en el juego, de UEX."
+          },
+          "sc_data": {
+            "name": "Datos del juego · %{environment}",
+            "description": "Todos los catálogos de los archivos del juego: componentes, equipo, mercancías, planos, misiones y lugares."
+          },
+          "sc_data_models": {
+            "name": "Naves de los archivos del juego",
+            "description": "Solo las naves, de la versión por defecto."
+          },
+          "uex_commodity_prices": {
+            "name": "Precios de mercancías",
+            "description": "Precios y existencias de terminales, de UEX."
+          },
+          "uex_component_prices": {
+            "name": "Precios de componentes",
+            "description": "Dónde se venden los componentes, de UEX."
+          },
+          "uex_equipment_prices": {
+            "name": "Precios de equipo",
+            "description": "Dónde se vende el equipo, de UEX."
+          },
+          "uex_trade_routes": {
+            "name": "Terminales y rutas comerciales",
+            "description": "Las terminales de UEX y las rutas comerciales entre ellas."
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "Superior",
           "system": "Sistema",

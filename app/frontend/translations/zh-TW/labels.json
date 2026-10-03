@@ -2536,6 +2536,56 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix": {
+            "name": "艦船",
+            "description": "來自 RSI 艦船矩陣的全部艦船及其資料與商店資訊。"
+          },
+          "modules": {
+            "name": "模組",
+            "description": "來自 RSI 商店的艦船模組。"
+          },
+          "paints": {
+            "name": "塗裝",
+            "description": "來自 RSI 商店的塗裝。"
+          },
+          "loaners": {
+            "name": "借用艦船",
+            "description": "每艘艦船附帶哪些借用艦船，來自 RSI。"
+          },
+          "uex_vehicle_prices": {
+            "name": "艦船價格",
+            "description": "遊戲內購買和租用艦船的地點，來自 UEX。"
+          },
+          "sc_data": {
+            "name": "遊戲資料 · %{environment}",
+            "description": "解析後遊戲檔案中的全部目錄：元件、裝備、商品、藍圖、任務和地點。"
+          },
+          "sc_data_models": {
+            "name": "遊戲檔案中的艦船",
+            "description": "僅艦船，來自預設版本。"
+          },
+          "uex_commodity_prices": {
+            "name": "商品價格",
+            "description": "終端價格和庫存，來自 UEX。"
+          },
+          "uex_component_prices": {
+            "name": "元件價格",
+            "description": "元件的出售地點，來自 UEX。"
+          },
+          "uex_equipment_prices": {
+            "name": "裝備價格",
+            "description": "裝備的出售地點，來自 UEX。"
+          },
+          "uex_trade_routes": {
+            "name": "終端和貿易路線",
+            "description": "UEX 的終端及其之間的貿易路線。"
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "上級",
           "system": "星系",

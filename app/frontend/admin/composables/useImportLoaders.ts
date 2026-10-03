@@ -1,0 +1,160 @@
+import { computed, ref, watch } from "vue";
+import { useImportsStore } from "@/admin/stores/imports";
+import {
+  type Import,
+  ImportLoaderEnum,
+  ImportLoadInputEnvironment,
+  ImportTypeEnum,
+  useStartImportLoad,
+} from "@/services/fyAdminApi";
+
+export type ImportLoaderGroup = "shipMatrix" | "scData";
+
+export type ImportLoaderOption = {
+  id: string;
+  loader: ImportLoaderEnum;
+  group: ImportLoaderGroup;
+  environment?: ImportLoadInputEnvironment;
+  // The import a run of it writes, which is how the page knows it is running.
+  // Loaners and trade routes write none: they show as running only while the
+  // request to start them is out.
+  types: ImportTypeEnum[];
+};
+
+const SC_DATA_ENVIRONMENTS = Object.values(ImportLoadInputEnvironment);
+
+export const IMPORT_LOADERS: ImportLoaderOption[] = [
+  {
+    id: "ship_matrix",
+    loader: ImportLoaderEnum.SHIP_MATRIX,
+    group: "shipMatrix",
+    types: [ImportTypeEnum.IMPORTS_MODELS_IMPORT],
+  },
+  {
+    id: "modules",
+    loader: ImportLoaderEnum.MODULES,
+    group: "shipMatrix",
+    types: [ImportTypeEnum.IMPORTS_MODULES_IMPORT],
+  },
+  {
+    id: "paints",
+    loader: ImportLoaderEnum.PAINTS,
+    group: "shipMatrix",
+    types: [ImportTypeEnum.IMPORTS_PAINTS_IMPORT],
+  },
+  {
+    id: "loaners",
+    loader: ImportLoaderEnum.LOANERS,
+    group: "shipMatrix",
+    types: [],
+  },
+  {
+    id: "uex_vehicle_prices",
+    loader: ImportLoaderEnum.UEX_VEHICLE_PRICES,
+    group: "shipMatrix",
+    types: [ImportTypeEnum.IMPORTS_UEX_PRICES_IMPORT],
+  },
+  ...SC_DATA_ENVIRONMENTS.map((environment) => ({
+    id: `sc_data_${environment}`,
+    loader: ImportLoaderEnum.SC_DATA,
+    group: "scData" as const,
+    environment,
+    types: [ImportTypeEnum.IMPORTS_SC_DATA_ALL_IMPORT],
+  })),
+  {
+    id: "sc_data_models",
+    loader: ImportLoaderEnum.SC_DATA_MODELS,
+    group: "scData",
+    types: [ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT],
+  },
+  {
+    id: "uex_commodity_prices",
+    loader: ImportLoaderEnum.UEX_COMMODITY_PRICES,
+    group: "scData",
+    types: [ImportTypeEnum.IMPORTS_UEX_COMMODITY_PRICES_IMPORT],
+  },
+  {
+    id: "uex_component_prices",
+    loader: ImportLoaderEnum.UEX_COMPONENT_PRICES,
+    group: "scData",
+    types: [ImportTypeEnum.IMPORTS_UEX_COMPONENT_PRICES_IMPORT],
+  },
+  {
+    id: "uex_equipment_prices",
+    loader: ImportLoaderEnum.UEX_EQUIPMENT_PRICES,
+    group: "scData",
+    types: [ImportTypeEnum.IMPORTS_UEX_EQUIPMENT_PRICES_IMPORT],
+  },
+  {
+    id: "uex_trade_routes",
+    loader: ImportLoaderEnum.UEX_TRADE_ROUTES,
+    group: "scData",
+    types: [],
+  },
+];
+
+// How long a started load counts as running before its import shows up: a
+// job can wait in the queue, and the button should not look idle meanwhile.
+const QUEUED_GRACE_MS = 60_000;
+
+// Shared between the page's buttons and the modals, so both say the same.
+const requested = ref<Record<string, number>>({});
+
+// An sc_data build names its environment: `4.10.1-ptu.12578875`.
+const matches = (option: ImportLoaderOption, imp: Import) =>
+  option.types.includes(imp.type) &&
+  (!option.environment ||
+    (imp.version ?? "").includes(`-${option.environment}.`));
+
+export const useImportLoaders = () => {
+  const importsStore = useImportsStore();
+  const mutation = useStartImportLoad();
+
+  const isRunning = (option: ImportLoaderOption) =>
+    option.id in requested.value ||
+    importsStore.activeImports.some((imp) => matches(option, imp));
+
+  const isGroupRunning = (group: ImportLoaderGroup) =>
+    computed(() =>
+      IMPORT_LOADERS.filter((option) => option.group === group).some(isRunning),
+    );
+
+  const settle = (option: ImportLoaderOption) => {
+    const { [option.id]: _settled, ...rest } = requested.value;
+    requested.value = rest;
+  };
+
+  // A load whose import has arrived is the import's to report from here on.
+  watch(
+    () => importsStore.activeImports,
+    (active) => {
+      IMPORT_LOADERS.filter((option) => option.id in requested.value).forEach(
+        (option) => {
+          if (active.some((imp) => matches(option, imp))) settle(option);
+        },
+      );
+    },
+  );
+
+  const start = async (option: ImportLoaderOption) => {
+    requested.value = { ...requested.value, [option.id]: Date.now() };
+
+    try {
+      await mutation.mutateAsync({
+        data: { loader: option.loader, environment: option.environment },
+      });
+    } catch (error) {
+      settle(option);
+      throw error;
+    }
+
+    if (!option.types.length) {
+      settle(option);
+      return;
+    }
+
+    window.setTimeout(() => settle(option), QUEUED_GRACE_MS);
+  };
+
+  return { isRunning, isGroupRunning, start };
+};

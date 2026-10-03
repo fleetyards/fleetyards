@@ -19,16 +19,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   useImports,
   useCleanupBulkImports,
-  useReloadModelsMatrix,
-  useReloadModelsScData,
-  useReloadPaints,
-  useReloadModules,
-  useReloadLoaners,
   type Import,
   ImportStatusEnum,
-  ImportTypeEnum,
 } from "@/services/fyAdminApi";
-import { useImportLoading } from "@/admin/composables/useImportLoading";
+import { useImportLoaders } from "@/admin/composables/useImportLoaders";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import FilterForm from "@/admin/components/Imports/FilterForm/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -61,41 +56,18 @@ const { data: importsList, ...asyncStatus } = useImports(queryParams);
 
 useImportUpdates(computed(() => true));
 
-const reloadMatrixMutation = useReloadModelsMatrix();
-const reloadScDataMutation = useReloadModelsScData();
-const reloadPaintsMutation = useReloadPaints();
-const reloadModulesMutation = useReloadModules();
-const reloadLoanersMutation = useReloadLoaners();
+const comlink = useComlink();
+const { isGroupRunning } = useImportLoaders();
 
-const { isImporting: isImportingMatrix } = useImportLoading(
-  ImportTypeEnum.IMPORTS_MODELS_IMPORT,
-);
-const { isImporting: isImportingScData } = useImportLoading([
-  ImportTypeEnum.IMPORTS_SC_DATA_ALL_IMPORT,
-  ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT,
-]);
-const { isImporting: isImportingPaints } = useImportLoading(
-  ImportTypeEnum.IMPORTS_PAINTS_IMPORT,
-);
-const { isImporting: isImportingModules } = useImportLoading(
-  ImportTypeEnum.IMPORTS_MODULES_IMPORT,
-);
+const isLoadingShipMatrix = isGroupRunning("shipMatrix");
+const isLoadingScData = isGroupRunning("scData");
 
-const isReloadingMatrix = computed(
-  () => isImportingMatrix.value || reloadMatrixMutation.isPending.value,
-);
-const isReloadingScData = computed(
-  () => isImportingScData.value || reloadScDataMutation.isPending.value,
-);
-const isReloadingPaints = computed(
-  () => isImportingPaints.value || reloadPaintsMutation.isPending.value,
-);
-const isReloadingModules = computed(
-  () => isImportingModules.value || reloadModulesMutation.isPending.value,
-);
-const isReloadingLoaners = computed(
-  () => reloadLoanersMutation.isPending.value,
-);
+const openLoaders = (group: "shipMatrix" | "scData") => {
+  comlink.emit("open-modal", {
+    component: () => import("@/admin/components/Imports/LoadModal/index.vue"),
+    props: { group },
+  });
+};
 
 /*
  * A stuck import is not a state of its own -- the row still says `started`
@@ -133,12 +105,6 @@ const cleanupSelected = async () => {
     displayAlert({ text: t("messages.admin.imports.cleanupError") });
   }
 };
-
-const reloadModels = () => reloadMatrixMutation.mutateAsync();
-const reloadScData = () => reloadScDataMutation.mutateAsync();
-const reloadPaints = () => reloadPaintsMutation.mutateAsync();
-const reloadModules = () => reloadModulesMutation.mutateAsync();
-const reloadLoaners = () => reloadLoanersMutation.mutateAsync();
 
 const formatType = (type: string): string =>
   type
@@ -218,58 +184,25 @@ const columns: BaseTableCol<Import>[] = [
   <Teleport to="#header-right">
     <Btn
       :size="BtnSizesEnum.MD"
-      :loading="isReloadingMatrix"
-      :confirm="t('messages.confirm.model.reloadMatrix')"
-      :aria-label="t('actions.admin.dashboard.reloadModels')"
+      :loading="isLoadingShipMatrix"
+      :aria-label="t('actions.admin.imports.loadShipMatrix')"
       mobile-icon-only
-      @click="reloadModels"
+      data-test="imports-load-ship-matrix"
+      @click="openLoaders('shipMatrix')"
     >
       <i class="fa fa-rotate" />
-      {{ t("actions.admin.dashboard.reloadModels") }}
+      {{ t("actions.admin.imports.loadShipMatrix") }}
     </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
-      :loading="isReloadingScData"
-      :confirm="t('messages.confirm.model.reloadScData')"
-      :aria-label="t('actions.admin.dashboard.reloadScData')"
+      :loading="isLoadingScData"
+      :aria-label="t('actions.admin.imports.loadScData')"
       mobile-icon-only
-      @click="reloadScData"
+      data-test="imports-load-sc-data"
+      @click="openLoaders('scData')"
     >
       <i class="fa fa-database" />
-      {{ t("actions.admin.dashboard.reloadScData") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :loading="isReloadingModules"
-      :confirm="t('messages.confirm.model.reloadModules')"
-      :aria-label="t('actions.admin.dashboard.reloadModules')"
-      mobile-icon-only
-      @click="reloadModules"
-    >
-      <i class="fa fa-puzzle" />
-      {{ t("actions.admin.dashboard.reloadModules") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :loading="isReloadingPaints"
-      :confirm="t('messages.confirm.model.reloadPaints')"
-      :aria-label="t('actions.admin.dashboard.reloadPaints')"
-      mobile-icon-only
-      @click="reloadPaints"
-    >
-      <i class="fa fa-palette" />
-      {{ t("actions.admin.dashboard.reloadPaints") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :loading="isReloadingLoaners"
-      :confirm="t('messages.confirm.model.reloadLoaners')"
-      :aria-label="t('actions.admin.dashboard.reloadLoaners')"
-      mobile-icon-only
-      @click="reloadLoaners"
-    >
-      <i class="fa fa-handshake" />
-      {{ t("actions.admin.dashboard.reloadLoaners") }}
+      {{ t("actions.admin.imports.loadScData") }}
     </Btn>
   </Teleport>
 

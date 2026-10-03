@@ -622,6 +622,10 @@
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },
       "admin": {
+        "importLoaders": {
+          "started": "%{name} avviato.",
+          "failed": "Impossibile avviare %{name}."
+        },
         "supporterContributions": {
           "patreonSyncStarted": "Sincronizzazione con Patreon avviata. Aggiorna la pagina tra un minuto per vedere i sostenitori importati."
         },

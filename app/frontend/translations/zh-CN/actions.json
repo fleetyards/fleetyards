@@ -24,6 +24,9 @@
           "syncFromPatreon": "从 Patreon 同步"
         },
         "imports": {
+          "load": "加载",
+          "loadScData": "加载 SC 数据",
+          "loadShipMatrix": "加载舰船矩阵",
           "cleanup": "标记为失败",
           "cleanupSelected": "将所选标记为失败"
         }

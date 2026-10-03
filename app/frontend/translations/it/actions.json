@@ -24,6 +24,9 @@
           "syncFromPatreon": "Sincronizza da Patreon"
         },
         "imports": {
+          "load": "Carica",
+          "loadScData": "Carica dati SC",
+          "loadShipMatrix": "Carica ship matrix",
           "cleanup": "Segna come fallita",
           "cleanupSelected": "Segna la selezione come fallita"
         }
