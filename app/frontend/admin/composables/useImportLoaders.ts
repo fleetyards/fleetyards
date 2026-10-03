@@ -119,7 +119,9 @@ const ALL_OPTIONS = [
 const QUEUED_GRACE_MS = 60_000;
 
 // Shared between the page's buttons and the modals, so both say the same.
+// Each request is held under its own token.
 const requested = ref<Record<string, number>>({});
+let lastToken = 0;
 
 // An sc_data build names its environment: `4.10.1-ptu.12578875`.
 const matches = (option: ImportLoaderOption, imp: Import) =>
@@ -140,7 +142,11 @@ export const useImportLoaders = () => {
       ALL_OPTIONS.filter((option) => option.group === group).some(isRunning),
     );
 
-  const settle = (option: ImportLoaderOption) => {
+  // With a token, only that request is settled: a timer left over from an
+  // earlier run must not clear a later one still waiting in the queue.
+  const settle = (option: ImportLoaderOption, token?: number) => {
+    if (token !== undefined && requested.value[option.id] !== token) return;
+
     const { [option.id]: _settled, ...rest } = requested.value;
     requested.value = rest;
   };
@@ -158,23 +164,24 @@ export const useImportLoaders = () => {
   );
 
   const start = async (option: ImportLoaderOption) => {
-    requested.value = { ...requested.value, [option.id]: Date.now() };
+    const token = (lastToken += 1);
+    requested.value = { ...requested.value, [option.id]: token };
 
     try {
       await mutation.mutateAsync({
         data: { loader: option.loader, environment: option.environment },
       });
     } catch (error) {
-      settle(option);
+      settle(option, token);
       throw error;
     }
 
     if (!option.types.length) {
-      settle(option);
+      settle(option, token);
       return;
     }
 
-    window.setTimeout(() => settle(option), QUEUED_GRACE_MS);
+    window.setTimeout(() => settle(option, token), QUEUED_GRACE_MS);
   };
 
   return { isRunning, isGroupRunning, start };
