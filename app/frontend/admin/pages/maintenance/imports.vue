@@ -182,26 +182,41 @@ const columns: BaseTableCol<Import>[] = [
   </Heading>
 
   <Teleport to="#header-right">
+    <!-- Running shows on the icon rather than through `loading`, which
+         disables the button: a load already running must not keep the
+         others in its group out of reach. -->
     <Btn
       :size="BtnSizesEnum.MD"
-      :loading="isLoadingShipMatrix"
       :aria-label="t('actions.admin.imports.loadShipMatrix')"
+      :aria-busy="isLoadingShipMatrix"
       mobile-icon-only
       data-test="imports-load-ship-matrix"
       @click="openLoaders('shipMatrix')"
     >
-      <i class="fa fa-rotate" />
+      <i
+        :class="
+          isLoadingShipMatrix
+            ? 'fa-duotone fa-spinner-third fa-spin'
+            : 'fa fa-rotate'
+        "
+      />
       {{ t("actions.admin.imports.loadShipMatrix") }}
     </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
-      :loading="isLoadingScData"
       :aria-label="t('actions.admin.imports.loadScData')"
+      :aria-busy="isLoadingScData"
       mobile-icon-only
       data-test="imports-load-sc-data"
       @click="openLoaders('scData')"
     >
-      <i class="fa fa-database" />
+      <i
+        :class="
+          isLoadingScData
+            ? 'fa-duotone fa-spinner-third fa-spin'
+            : 'fa fa-database'
+        "
+      />
       {{ t("actions.admin.imports.loadScData") }}
     </Btn>
   </Teleport>
