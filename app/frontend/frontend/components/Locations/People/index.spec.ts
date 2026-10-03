@@ -126,4 +126,22 @@ describe("LocationPeople", () => {
       wrapper.find("[data-test='location-people-unlisted']").text(),
     ).toContain("53");
   });
+
+  it("counts who was not sent even when the few that were need no toggle", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        people: [person({ id: "a", username: "alpha" })],
+        totalCount: 4,
+        locationId: lorville.id,
+      },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.find("[data-test='location-people-more']").exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper.find("[data-test='location-people-unlisted']").text(),
+    ).toContain("3");
+  });
 });

@@ -98,7 +98,7 @@ const placeBelow = (person: LocationPerson) =>
     </ul>
 
     <p
-      v-if="expanded && unlisted"
+      v-if="visible.length === people.length && unlisted"
       class="location-people__unlisted"
       data-test="location-people-unlisted"
     >
