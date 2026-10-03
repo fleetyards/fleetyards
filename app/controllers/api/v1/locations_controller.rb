@@ -3,7 +3,9 @@
 module Api
   module V1
     class LocationsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show tree contents shops]
+      skip_verify_authorized only: %i[index show tree contents shops people]
+
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[people]
 
       after_action -> { pagination_header(:locations) }, only: [:index]
 
@@ -44,6 +46,17 @@ module Api
 
       def shops
         @shops = ::Locations::Shops.new(find_location).call
+      end
+
+      # Who of the reader's friends and fleet mates is there. Per reader, so not
+      # on the place itself, which every reader shares.
+      def people
+        @people = ::Locations::People.new(
+          find_location,
+          current_resource_owner,
+          friends: feature_enabled?("friends"),
+          fleets: doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read])
+        ).call
       end
 
       # What a resource name stands for in the commodity catalogue, matched on
