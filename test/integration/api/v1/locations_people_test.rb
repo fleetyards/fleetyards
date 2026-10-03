@@ -10,6 +10,7 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
   api_path "/locations/{slug}/people" do
     get("Location people") do
       operationId "locationPeople"
+      description "The reader's friends and fleet mates at the place or inside it. A token lists fleet mates only with the fleet or fleet:read scope"
       tags "Locations"
       produces "application/json"
 
@@ -17,8 +18,8 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: ["public", "fleet", "fleet:read"]},
-        {OpenId: ["public", "fleet", "fleet:read"]}
+        {Oauth2: ["public"]},
+        {OpenId: ["public"]}
       ]
 
       response(200, "successful") do

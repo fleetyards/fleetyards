@@ -11418,6 +11418,8 @@ paths:
       tags:
       - Locations
       operationId: locationPeople
+      description: The reader's friends and fleet mates at the place or inside it.
+        A token lists fleet mates only with the fleet or fleet:read scope
       parameters:
       - name: slug
         in: path
@@ -11428,12 +11430,8 @@ paths:
       - SessionCookie: []
       - Oauth2:
         - public
-        - fleet
-        - fleet:read
       - OpenId:
         - public
-        - fleet
-        - fleet:read
       responses:
         '200':
           description: successful
