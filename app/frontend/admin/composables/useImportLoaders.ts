@@ -128,15 +128,17 @@ const QUEUED_GRACE_MS = 60_000;
 const requested = ref<Record<string, number>>({});
 let lastToken = 0;
 
-// A load with follow-ups, from its request until its own run has finished:
-// "queued" until that run's import shows up, then "running" until it is gone.
-// Held under the request's token, like `requested`.
+// A load with follow-ups, from its request until its own run has finished.
+// Its run is the first matching import that was not already active at the
+// request (`skip`): another run of the same type finishing must not release
+// the rows while this one still waits in the queue. Held under the request's
+// token, like `requested`.
 const chains = ref<
-  Record<string, { state: "queued" | "running"; token: number }>
+  Record<string, { token: number; skip: string[]; importId?: string }>
 >({});
 
-// Long enough for any matrix run; a chain whose import never arrives must not
-// keep its rows locked for good.
+// How long a chain waits for its import to show up at all. Once it has, the
+// chain lasts as long as the import does, however long the run takes.
 const CHAIN_LIMIT_MS = 30 * 60_000;
 
 // An sc_data build names its environment: `4.10.1-ptu.12578875`.
@@ -194,13 +196,23 @@ export const useImportLoaders = () => {
         if (option.id in requested.value && running) settle(option);
 
         const chain = chains.value[option.id];
-        if (chain?.state === "queued" && running) {
+        if (!chain) return;
+
+        if (chain.importId) {
+          if (!active.some((imp) => imp.id === chain.importId)) {
+            endChain(option);
+          }
+          return;
+        }
+
+        const own = active.find(
+          (imp) => matches(option, imp) && !chain.skip.includes(imp.id),
+        );
+        if (own) {
           chains.value = {
             ...chains.value,
-            [option.id]: { ...chain, state: "running" },
+            [option.id]: { ...chain, importId: own.id },
           };
-        } else if (chain?.state === "running" && !running) {
-          endChain(option);
         }
       });
     },
@@ -213,9 +225,16 @@ export const useImportLoaders = () => {
     if (option.followUps?.length) {
       chains.value = {
         ...chains.value,
-        [option.id]: { state: "queued", token },
+        [option.id]: {
+          token,
+          skip: importsStore.activeImports
+            .filter((imp) => matches(option, imp))
+            .map((imp) => imp.id),
+        },
       };
-      window.setTimeout(() => endChain(option, token), CHAIN_LIMIT_MS);
+      window.setTimeout(() => {
+        if (!chains.value[option.id]?.importId) endChain(option, token);
+      }, CHAIN_LIMIT_MS);
     }
 
     try {
