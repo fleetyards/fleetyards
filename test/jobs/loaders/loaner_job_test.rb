@@ -16,6 +16,26 @@ module Loaders
       ::Loaders::LoanerJob.new.perform
     end
 
+    # The imports page reads a running load off its import, and a loaner run
+    # had none to read.
+    test "#perform records its run as an import" do
+      @loader.stubs(:run).returns([[], []])
+
+      ::Loaders::LoanerJob.new.perform
+
+      assert_predicate Imports::LoanersImport.last, :finished?
+    end
+
+    test "#perform marks the import failed when the loader raises" do
+      @loader.stubs(:run).raises(StandardError, "RSI is down")
+
+      assert_raises(StandardError) { ::Loaders::LoanerJob.new.perform }
+
+      import = Imports::LoanersImport.last
+      assert_predicate import, :failed?
+      assert_equal "RSI is down", import.info
+    end
+
     # `add_loaners` runs over every vehicle of every loaner-bearing model, so
     # without the guard this job alone would file versions at the scale of the
     # whole hangar.

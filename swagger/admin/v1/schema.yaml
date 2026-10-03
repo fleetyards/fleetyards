@@ -16584,6 +16584,7 @@ components:
       - Imports::HangarImport
       - Imports::ModulesImport
       - Imports::PaintsImport
+      - Imports::LoanersImport
       - Imports::UexPricesImport
       - Imports::UexCommodityPricesImport
       - Imports::UexComponentPricesImport
@@ -16598,6 +16599,7 @@ components:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
+      - IMPORTS_LOANERS_IMPORT
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT

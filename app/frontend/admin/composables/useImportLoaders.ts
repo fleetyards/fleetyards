@@ -16,8 +16,8 @@ export type ImportLoaderOption = {
   group: ImportLoaderGroup;
   environment?: ImportLoadInputEnvironment;
   // The import a run of it writes, which is how the page knows it is running.
-  // Loaners and trade routes write none: they show as running only while the
-  // request to start them is out.
+  // Trade routes write none: they show as running only while the request to
+  // start them is out.
   types: ImportTypeEnum[];
 };
 
@@ -46,7 +46,7 @@ export const IMPORT_LOADERS: ImportLoaderOption[] = [
     id: "loaners",
     loader: ImportLoaderEnum.LOANERS,
     group: "shipMatrix",
-    types: [],
+    types: [ImportTypeEnum.IMPORTS_LOANERS_IMPORT],
   },
   {
     id: "uex_vehicle_prices",
