@@ -10,7 +10,7 @@ module Admin
           TYPES = %w[
             Imports::ModelImport Imports::ModelsImport Imports::ScData::AllImport
             Imports::ScData::ModelsImport Imports::ScData::ModelImport Imports::HangarSync
-            Imports::HangarImport Imports::ModulesImport Imports::PaintsImport
+            Imports::HangarImport Imports::ModulesImport Imports::PaintsImport Imports::LoanersImport
             Imports::UexPricesImport Imports::UexCommodityPricesImport
             Imports::UexComponentPricesImport Imports::UexEquipmentPricesImport
           ].freeze

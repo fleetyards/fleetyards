@@ -24,6 +24,10 @@
           "syncFromPatreon": "從 Patreon 同步"
         },
         "imports": {
+          "loadAll": "全部載入",
+          "load": "載入",
+          "loadScData": "載入 SC 資料",
+          "loadShipMatrix": "載入艦船矩陣",
           "cleanup": "標記為失敗",
           "cleanupSelected": "將所選標記為失敗"
         }

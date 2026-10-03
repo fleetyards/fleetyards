@@ -2539,6 +2539,60 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix_all": {
+            "name": "全部",
+            "description": "舰船、模块、涂装、借用舰船和舰船价格，一次全部加载。"
+          },
+          "ship_matrix": {
+            "name": "舰船",
+            "description": "来自 RSI 舰船矩阵的全部舰船及其数据与商店信息。"
+          },
+          "modules": {
+            "name": "模块",
+            "description": "来自 RSI 商店的舰船模块。"
+          },
+          "paints": {
+            "name": "涂装",
+            "description": "来自 RSI 商店的涂装。"
+          },
+          "loaners": {
+            "name": "借用舰船",
+            "description": "每艘舰船附带哪些借用舰船，来自 RSI。"
+          },
+          "uex_vehicle_prices": {
+            "name": "舰船价格",
+            "description": "游戏内购买和租用舰船的地点，来自 UEX。"
+          },
+          "sc_data": {
+            "name": "游戏数据 · %{environment}",
+            "description": "解析后游戏文件中的全部目录：组件、装备、商品、蓝图、任务和地点。"
+          },
+          "sc_data_models": {
+            "name": "游戏文件中的舰船",
+            "description": "仅舰船，来自默认版本。"
+          },
+          "uex_commodity_prices": {
+            "name": "商品价格",
+            "description": "终端价格和库存，来自 UEX。"
+          },
+          "uex_component_prices": {
+            "name": "组件价格",
+            "description": "组件的出售地点，来自 UEX。"
+          },
+          "uex_equipment_prices": {
+            "name": "装备价格",
+            "description": "装备的出售地点，来自 UEX。"
+          },
+          "uex_trade_routes": {
+            "name": "终端和贸易路线",
+            "description": "UEX 的终端及其之间的贸易路线。"
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "上级",
           "system": "星系",

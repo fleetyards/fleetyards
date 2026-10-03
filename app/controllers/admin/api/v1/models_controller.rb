@@ -102,7 +102,7 @@ module Admin
         def reload_loaners
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::LoanerJob.perform_async
+          Loaders::LoanerJob.perform_async(current_admin_user.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end

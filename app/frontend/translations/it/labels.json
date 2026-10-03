@@ -2539,6 +2539,60 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Tutto",
+            "description": "Navi, moduli, livree, navi in prestito e prezzi delle navi, tutto insieme."
+          },
+          "ship_matrix": {
+            "name": "Navi",
+            "description": "Tutte le navi con dati e negozio, dalla ship matrix di RSI."
+          },
+          "modules": {
+            "name": "Moduli",
+            "description": "Moduli delle navi dal negozio RSI."
+          },
+          "paints": {
+            "name": "Livree",
+            "description": "Livree dal negozio RSI."
+          },
+          "loaners": {
+            "name": "Navi in prestito",
+            "description": "Quali navi in prestito arrivano con ogni nave, da RSI."
+          },
+          "uex_vehicle_prices": {
+            "name": "Prezzi delle navi",
+            "description": "Dove si comprano e noleggiano le navi in gioco, da UEX."
+          },
+          "sc_data": {
+            "name": "Dati di gioco · %{environment}",
+            "description": "Tutti i cataloghi dai file di gioco: componenti, equipaggiamento, merci, progetti, missioni e luoghi."
+          },
+          "sc_data_models": {
+            "name": "Navi dai file di gioco",
+            "description": "Solo le navi, dalla build predefinita."
+          },
+          "uex_commodity_prices": {
+            "name": "Prezzi delle merci",
+            "description": "Prezzi e scorte dei terminali, da UEX."
+          },
+          "uex_component_prices": {
+            "name": "Prezzi dei componenti",
+            "description": "Dove si vendono i componenti, da UEX."
+          },
+          "uex_equipment_prices": {
+            "name": "Prezzi dell'equipaggiamento",
+            "description": "Dove si vende l'equipaggiamento, da UEX."
+          },
+          "uex_trade_routes": {
+            "name": "Terminali e rotte commerciali",
+            "description": "I terminali di UEX e le rotte commerciali tra loro."
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "Superiore",
           "system": "Sistema",

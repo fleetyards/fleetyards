@@ -2539,6 +2539,60 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Tout",
+            "description": "Vaisseaux, modules, peintures, vaisseaux de prêt et prix des vaisseaux, tout à la fois."
+          },
+          "ship_matrix": {
+            "name": "Vaisseaux",
+            "description": "Tous les vaisseaux avec leurs données et la boutique, depuis la ship matrix de RSI."
+          },
+          "modules": {
+            "name": "Modules",
+            "description": "Modules de vaisseaux de la boutique RSI."
+          },
+          "paints": {
+            "name": "Peintures",
+            "description": "Peintures de la boutique RSI."
+          },
+          "loaners": {
+            "name": "Vaisseaux de prêt",
+            "description": "Les vaisseaux de prêt fournis avec chaque vaisseau, depuis RSI."
+          },
+          "uex_vehicle_prices": {
+            "name": "Prix des vaisseaux",
+            "description": "Où acheter et louer les vaisseaux en jeu, depuis UEX."
+          },
+          "sc_data": {
+            "name": "Données du jeu · %{environment}",
+            "description": "Tous les catalogues tirés des fichiers du jeu : composants, équipement, marchandises, plans, missions et lieux."
+          },
+          "sc_data_models": {
+            "name": "Vaisseaux des fichiers du jeu",
+            "description": "Seulement les vaisseaux, du build par défaut."
+          },
+          "uex_commodity_prices": {
+            "name": "Prix des marchandises",
+            "description": "Prix et stocks des terminaux, depuis UEX."
+          },
+          "uex_component_prices": {
+            "name": "Prix des composants",
+            "description": "Où les composants sont vendus, depuis UEX."
+          },
+          "uex_equipment_prices": {
+            "name": "Prix de l'équipement",
+            "description": "Où l'équipement est vendu, depuis UEX."
+          },
+          "uex_trade_routes": {
+            "name": "Terminaux et routes commerciales",
+            "description": "Les terminaux d'UEX et les routes commerciales entre eux."
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "Parent",
           "system": "Système",
