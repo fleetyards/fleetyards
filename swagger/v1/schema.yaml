@@ -11358,6 +11358,19 @@ paths:
                 "$ref": "#/components/schemas/Locations"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/jump-points":
+    get:
+      summary: Location jump points
+      tags:
+      - Locations
+      operationId: locationJumpPoints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationJumpPointsList"
   "/locations/{slug}":
     get:
       summary: Location detail
@@ -29756,6 +29769,33 @@ components:
       - count
       - entries
       title: LocationContentsGroup
+    LocationJumpPoint:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        systemId:
+          type: string
+          format: uuid
+        destinationName:
+          type: string
+        destinationSystemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      required:
+      - location
+      - systemId
+      - destinationName
+      - destinationSystemId
+      title: LocationJumpPoint
+    LocationJumpPointsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LocationJumpPoint"
+      title: LocationJumpPointsList
     LocationKindCount:
       type: object
       properties:

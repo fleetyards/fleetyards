@@ -3,7 +3,7 @@
 module Api
   module V1
     class LocationsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show tree contents shops people]
+      skip_verify_authorized only: %i[index show tree contents shops people jump_points]
 
       PEOPLE_LIMIT = 50
       PEOPLE_MAX_LIMIT = 200
@@ -37,6 +37,10 @@ module Api
         @commodities = resource_commodities(@location)
         @children_count = Location.current_version.where(parent_id: @location.id).count
         @places_count = Location.current_version.where(system_id: @location.system_id || @location.id).count
+      end
+
+      def jump_points
+        @jump_points = ::Locations::JumpPoints.new.call
       end
 
       def tree
