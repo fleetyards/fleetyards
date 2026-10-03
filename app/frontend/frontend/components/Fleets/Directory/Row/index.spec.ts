@@ -84,6 +84,13 @@ describe("Fleets/Directory/Row", () => {
     expect(wrapper.findAll(".row-list-item__badge")).toHaveLength(1);
   });
 
+  it("leaves out an SID the FID already shows", async () => {
+    const wrapper = await mount({ rsiSid: "night" });
+
+    expect(wrapper.text()).toContain("NIGHT");
+    expect(wrapper.text()).not.toContain("SID");
+  });
+
   it("leaves out what RSI has not told us", async () => {
     const wrapper = await mount({
       primaryActivity: null,

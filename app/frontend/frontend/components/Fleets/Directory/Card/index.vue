@@ -35,6 +35,13 @@ const filterLink = (key: string, value: string) => ({
   query: { ...route.query, page: undefined, [key]: value },
 });
 
+// A fleet that claimed its SID as its FID would print the same code twice.
+const showSid = computed(
+  () =>
+    !!props.fleet.rsiSid &&
+    props.fleet.rsiSid.toUpperCase() !== props.fleet.fid.toUpperCase(),
+);
+
 const activities = computed(() =>
   [props.fleet.primaryActivity, props.fleet.secondaryActivity].filter(
     (activity): activity is NonNullable<typeof activity> => !!activity,
@@ -82,8 +89,11 @@ const rows = computed(() =>
         <span>
           {{ fleet.name }}
           <small class="fleet-directory-card__ids">
-            {{ fleet.fid }} ·
-            {{ t("labels.fleetDirectory.rsiSid", { sid: fleet.rsiSid }) }}
+            {{ fleet.fid }}
+            <template v-if="showSid">
+              ·
+              {{ t("labels.fleetDirectory.rsiSid", { sid: fleet.rsiSid }) }}
+            </template>
           </small>
         </span>
       </router-link>
