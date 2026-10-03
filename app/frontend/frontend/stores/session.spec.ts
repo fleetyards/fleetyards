@@ -5,6 +5,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   getFleetRsiVerificationQueryKey,
+  getLocationPeopleQueryKey,
   getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
   destroySession,
@@ -118,6 +119,18 @@ describe("session store", () => {
 
     expect(
       queryClient.getQueryData(getFleetRsiVerificationQueryKey("maru")),
+    ).toBeUndefined();
+  });
+
+  it("drops who of the reader's friends is at a place on logout", async () => {
+    queryClient.setQueryData(getLocationPeopleQueryKey("lorville"), {
+      people: [],
+    });
+
+    await useSessionStore().logout();
+
+    expect(
+      queryClient.getQueryData(getLocationPeopleQueryKey("lorville")),
     ).toBeUndefined();
   });
 

@@ -21,6 +21,9 @@ import LocationResources from "@/frontend/components/Locations/Resources/index.v
 import StarmapFacts from "@/frontend/components/Locations/StarmapFacts/index.vue";
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
+import LocationPeople from "@/frontend/components/Locations/People/index.vue";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
@@ -30,6 +33,7 @@ import {
   useGameMissions,
   useLocation,
   useLocationContents,
+  useLocationPeople,
   useLocationShops,
   useLocationTree,
 } from "@/services/fyApi";
@@ -213,6 +217,24 @@ const { data: shops } = useLocationShops(slug, {
   query: { enabled: computed(() => loaded.value && !isSystemView.value) },
 });
 
+const sessionStore = useSessionStore();
+
+const { isAuthenticated } = storeToRefs(sessionStore);
+
+// Friends and fleet mates here or somewhere inside, which only a signed-in
+// reader has. Never from the previous place while this one loads: the
+// client's placeholder carries a result across keys.
+const { data: peopleData, isPlaceholderData: peopleIsPlaceholder } =
+  useLocationPeople(slug, {
+    query: { enabled: computed(() => loaded.value && isAuthenticated.value) },
+  });
+
+const people = computed(() =>
+  isAuthenticated.value && !peopleIsPlaceholder.value
+    ? peopleData.value?.people
+    : undefined,
+);
+
 // A page's worth in the rail, grouped by who offers them; the mission list,
 // filtered to here, has the rest.
 const MISSIONS_PER_PAGE = 100;
@@ -366,6 +388,12 @@ watch(
             />
           </section>
 
+          <LocationPeople
+            v-if="people?.length"
+            :people="people"
+            :location-id="location.id"
+          />
+
           <!-- A mission can name the star itself: Pyro's Firesale contracts. -->
           <LocationMissions
             v-if="missions?.items?.length"
@@ -401,6 +429,11 @@ watch(
           </div>
 
           <aside class="location-page__aside">
+            <LocationPeople
+              v-if="people?.length"
+              :people="people"
+              :location-id="location.id"
+            />
             <MetricsCard
               v-if="location.resources?.length"
               :title="t('labels.location.resources')"

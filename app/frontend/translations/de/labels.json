@@ -22,6 +22,8 @@
       },
       "location": {
         "missionsSample": "Die Zahlen beziehen sich auf die ersten %{shown} von %{total}.",
+        "people": "Freunde & Flotte hier",
+        "peopleFriend": "Freund",
         "systemUnavailable": "Dieses System konnte nicht geladen werden.",
         "systemsUnavailable": "Die Systeme konnten nicht geladen werden.",
         "resourceKinds": {
