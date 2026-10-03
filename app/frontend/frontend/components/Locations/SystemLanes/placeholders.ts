@@ -1,3 +1,6 @@
+import type { JumpConnection } from "./layout";
+import type { LocationJumpPoint } from "@/services/fyApi";
+
 // Systems CIG has shown but the game files do not have yet, drawn so the jump
 // points that already lead to them have somewhere to go. Each one steps aside
 // on its own once a listed system carries its name.
@@ -50,3 +53,49 @@ export const PLACEHOLDER_SYSTEMS: PlaceholderSystem[] = [
 // The name a jump point gives its destination: "Terra" for the Terra System.
 export const placeholderDestination = (placeholder: PlaceholderSystem) =>
   placeholder.star.name.toLowerCase();
+
+// A jump point into a placeholder names it but has no id to point at.
+export const pointIntoPlaceholders = (
+  jumpPoints: LocationJumpPoint[],
+  placeholders: PlaceholderSystem[],
+): LocationJumpPoint[] => {
+  const placeholderIds = new Map(
+    placeholders.map((placeholder) => [
+      placeholderDestination(placeholder),
+      placeholder.id,
+    ]),
+  );
+
+  return jumpPoints.map((jumpPoint) =>
+    jumpPoint.destinationSystemId
+      ? jumpPoint
+      : {
+          ...jumpPoint,
+          destinationSystemId:
+            placeholderIds.get(jumpPoint.destinationName.toLowerCase()) ?? null,
+        },
+  );
+};
+
+// The announced connections, between whatever stands for each end on the
+// page: the system once it is listed, its placeholder until then. Looked up
+// by the name jump points use, lower case.
+export const plannedConnections = (
+  idsByName: Map<string, string>,
+): JumpConnection[] =>
+  PLACEHOLDER_SYSTEMS.flatMap((placeholder) =>
+    placeholder.jumpsTo.flatMap((name) => {
+      const ownId = idsByName.get(placeholderDestination(placeholder));
+      const otherId = idsByName.get(name.toLowerCase());
+
+      if (!ownId || !otherId) {
+        return [];
+      }
+
+      const pair = [ownId, otherId].sort() as [string, string];
+
+      return [
+        { key: pair.join(":"), systemIds: pair, ends: {}, planned: true },
+      ];
+    }),
+  );

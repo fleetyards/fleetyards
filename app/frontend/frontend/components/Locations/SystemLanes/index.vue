@@ -13,7 +13,8 @@ import PlaceholderCard from "./PlaceholderCard.vue";
 import {
   PLACEHOLDER_SYSTEMS,
   type PlaceholderSystem,
-  placeholderDestination,
+  plannedConnections,
+  pointIntoPlaceholders,
 } from "./placeholders";
 
 type Props = {
@@ -79,25 +80,9 @@ const entries = computed<Entry[]>(() =>
 
 const systemIds = computed(() => entries.value.map((entry) => entry.id));
 
-// A jump point into a placeholder names it but has no id to point at.
-const jumpPoints = computed(() => {
-  const placeholderIds = new Map(
-    placeholders.value.map((placeholder) => [
-      placeholderDestination(placeholder),
-      placeholder.id,
-    ]),
-  );
-
-  return props.jumpPoints.map((jumpPoint) =>
-    jumpPoint.destinationSystemId
-      ? jumpPoint
-      : {
-          ...jumpPoint,
-          destinationSystemId:
-            placeholderIds.get(jumpPoint.destinationName.toLowerCase()) ?? null,
-        },
-  );
-});
+const jumpPoints = computed(() =>
+  pointIntoPlaceholders(props.jumpPoints, placeholders.value),
+);
 
 // The name jump points use for a system: "Nyx" for the Nyx System.
 const shortName = (entry: Entry) =>
@@ -105,27 +90,13 @@ const shortName = (entry: Entry) =>
     ? entry.placeholder.star.name
     : (entry.system.name ?? "").replace(/ System$/, "");
 
-const plannedConnections = computed(() => {
-  const idsByName = new Map(
-    entries.value.map((entry) => [shortName(entry).toLowerCase(), entry.id]),
-  );
-
-  return placeholders.value.flatMap((placeholder) =>
-    placeholder.jumpsTo.flatMap((name) => {
-      const otherId = idsByName.get(name.toLowerCase());
-
-      if (!otherId) {
-        return [];
-      }
-
-      const pair = [placeholder.id, otherId].sort() as [string, string];
-
-      return [
-        { key: pair.join(":"), systemIds: pair, ends: {}, planned: true },
-      ];
-    }),
-  );
-});
+const planned = computed(() =>
+  plannedConnections(
+    new Map(
+      entries.value.map((entry) => [shortName(entry).toLowerCase(), entry.id]),
+    ),
+  ),
+);
 
 // A jump point in the game files outranks an announced connection.
 const connections = computed(() => {
@@ -134,9 +105,7 @@ const connections = computed(() => {
 
   return [
     ...found,
-    ...plannedConnections.value.filter(
-      (connection) => !keys.has(connection.key),
-    ),
+    ...planned.value.filter((connection) => !keys.has(connection.key)),
   ];
 });
 
