@@ -24,11 +24,13 @@ module Imports
 
     def enqueue
       case @key
-      when SHIP_MATRIX_ALL then SHIP_MATRIX.each { |key| self.class.new(key, admin_user_id: @admin_user_id).enqueue }
+      # The rest wait for the matrix: started alongside it, they would match
+      # against the ships from before the run and miss the new ones.
+      when SHIP_MATRIX_ALL then ::Loaders::ModelsJob.perform_async(@admin_user_id, SHIP_MATRIX - ["ship_matrix"])
       when "ship_matrix" then ::Loaders::ModelsJob.perform_async(@admin_user_id)
       when "modules" then ::Loaders::ModulesImportJob.perform_async(@admin_user_id)
       when "paints" then ::Loaders::PaintsImportJob.perform_async(@admin_user_id)
-      when "loaners" then ::Loaders::LoanerJob.perform_async
+      when "loaners" then ::Loaders::LoanerJob.perform_async(@admin_user_id)
       when "uex_vehicle_prices" then ::Loaders::UexPricesJob.perform_async(@admin_user_id)
       # By the environment's own source: the job handed an environment alone
       # would pair it with the default environment's version.

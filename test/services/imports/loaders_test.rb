@@ -14,12 +14,13 @@ module Imports
       end
     end
 
-    test "loading the whole ship matrix starts each of its loads" do
+    test "loading the whole ship matrix starts the rest once the matrix is in" do
       Sidekiq::Worker.clear_all
 
       Imports::Loaders.new(Imports::Loaders::SHIP_MATRIX_ALL, admin_user_id: SecureRandom.uuid).enqueue
 
-      assert_equal Imports::Loaders::SHIP_MATRIX.size, Sidekiq::Worker.jobs.size
+      assert_equal 1, ::Loaders::ModelsJob.jobs.size
+      assert_equal Imports::Loaders::SHIP_MATRIX - ["ship_matrix"], ::Loaders::ModelsJob.jobs.first["args"].last
     end
 
     test "an unknown environment is an error, not the default build" do

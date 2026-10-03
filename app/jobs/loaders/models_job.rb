@@ -2,7 +2,9 @@
 
 module Loaders
   class ModelsJob < ::Loaders::BaseJob
-    def perform(admin_user_id = nil)
+    # `follow_ups` are loader keys started once the matrix is in: loaners,
+    # modules, paints and prices all match against the ships this run may add.
+    def perform(admin_user_id = nil, follow_ups = [])
       import = Imports::ModelsImport.create(admin_user_id:)
 
       import.start!
@@ -24,6 +26,8 @@ module Loaders
       )
 
       import.finish!
+
+      Array(follow_ups).each { |key| ::Imports::Loaders.new(key, admin_user_id:).enqueue }
     rescue => e
       import.fail!
       import.update!(info: e.message)
