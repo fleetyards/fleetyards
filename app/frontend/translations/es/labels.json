@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Todo",
+            "description": "Naves, módulos, pinturas, naves de préstamo y precios de naves, todo a la vez."
+          },
           "ship_matrix": {
             "name": "Naves",
             "description": "Todas las naves con sus datos y la tienda, de la matriz de naves de RSI."

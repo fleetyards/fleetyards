@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "全部",
+            "description": "艦船、模組、塗裝、借用艦船和艦船價格，一次全部載入。"
+          },
           "ship_matrix": {
             "name": "艦船",
             "description": "來自 RSI 艦船矩陣的全部艦船及其資料與商店資訊。"

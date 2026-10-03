@@ -24,6 +24,7 @@
           "syncFromPatreon": "从 Patreon 同步"
         },
         "imports": {
+          "loadAll": "全部加载",
           "load": "加载",
           "loadScData": "加载 SC 数据",
           "loadShipMatrix": "加载舰船矩阵",

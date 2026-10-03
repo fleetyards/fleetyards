@@ -23,7 +23,10 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 vi.mock("@/shared/components/AppModal/Inner/index.vue", () => ({
-  default: { name: "Modal", template: "<div><slot /></div>" },
+  default: {
+    name: "Modal",
+    template: "<div><slot /><slot name='footer' /></div>",
+  },
 }));
 
 const ptuLoad = {
@@ -35,9 +38,12 @@ const ptuLoad = {
   updatedAt: "2026-10-03T00:00:00Z",
 } as Import;
 
-const mount = (imports: Record<string, Import> = {}) =>
+const mount = (
+  imports: Record<string, Import> = {},
+  group: "scData" | "shipMatrix" = "scData",
+) =>
   mountWithDefaults(Component, {
-    props: { group: "scData" },
+    props: { group },
     initialState: { adminImports: { imports } },
   });
 
@@ -76,5 +82,24 @@ describe("ImportsLoadModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith({
       data: { loader: "sc_data", environment: "live" },
     });
+  });
+
+  it("loads the whole ship matrix from its footer, and only there", async () => {
+    const shipMatrix = await mount({}, "shipMatrix");
+
+    await shipMatrix
+      .get("[data-test='import-loader-start-all']")
+      .trigger("click");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: { loader: "ship_matrix_all", environment: undefined },
+    });
+
+    const scData = await mount();
+
+    expect(scData.find("[data-test='import-loader-start-all']").exists()).toBe(
+      false,
+    );
   });
 });

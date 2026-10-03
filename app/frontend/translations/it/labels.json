@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Tutto",
+            "description": "Navi, moduli, livree, navi in prestito e prezzi delle navi, tutto insieme."
+          },
           "ship_matrix": {
             "name": "Navi",
             "description": "Tutte le navi con dati e negozio, dalla ship matrix di RSI."

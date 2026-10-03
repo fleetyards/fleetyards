@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Everything",
+            "description": "Ships, modules, paints, loaners and ship prices, all at once."
+          },
           "ship_matrix": {
             "name": "Ships",
             "description": "Every ship with its specs and store data, from the RSI ship matrix."

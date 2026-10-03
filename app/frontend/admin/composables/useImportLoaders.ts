@@ -93,6 +93,27 @@ export const IMPORT_LOADERS: ImportLoaderOption[] = [
   },
 ];
 
+// Every load of a group at once, where the group has one: the whole ship
+// matrix after an RSI patch. Game data already loads every catalogue per row.
+export const LOAD_ALL: Partial<Record<ImportLoaderGroup, ImportLoaderOption>> =
+  {
+    shipMatrix: {
+      id: "ship_matrix_all",
+      loader: ImportLoaderEnum.SHIP_MATRIX_ALL,
+      group: "shipMatrix",
+      types: IMPORT_LOADERS.filter(
+        (option) => option.group === "shipMatrix",
+      ).flatMap((option) => option.types),
+    },
+  };
+
+const ALL_OPTIONS = [
+  ...IMPORT_LOADERS,
+  ...Object.values(LOAD_ALL).filter(
+    (option): option is ImportLoaderOption => !!option,
+  ),
+];
+
 // How long a started load counts as running before its import shows up: a
 // job can wait in the queue, and the button should not look idle meanwhile.
 const QUEUED_GRACE_MS = 60_000;
@@ -116,7 +137,7 @@ export const useImportLoaders = () => {
 
   const isGroupRunning = (group: ImportLoaderGroup) =>
     computed(() =>
-      IMPORT_LOADERS.filter((option) => option.group === group).some(isRunning),
+      ALL_OPTIONS.filter((option) => option.group === group).some(isRunning),
     );
 
   const settle = (option: ImportLoaderOption) => {
@@ -128,7 +149,7 @@ export const useImportLoaders = () => {
   watch(
     () => importsStore.activeImports,
     (active) => {
-      IMPORT_LOADERS.filter((option) => option.id in requested.value).forEach(
+      ALL_OPTIONS.filter((option) => option.id in requested.value).forEach(
         (option) => {
           if (active.some((imp) => matches(option, imp))) settle(option);
         },

@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "全部",
+            "description": "舰船、模块、涂装、借用舰船和舰船价格，一次全部加载。"
+          },
           "ship_matrix": {
             "name": "舰船",
             "description": "来自 RSI 舰船矩阵的全部舰船及其数据与商店信息。"

@@ -24,6 +24,7 @@
           "syncFromPatreon": "Synchroniser depuis Patreon"
         },
         "imports": {
+          "loadAll": "Tout charger",
           "load": "Charger",
           "loadScData": "Charger les données SC",
           "loadShipMatrix": "Charger la ship matrix",

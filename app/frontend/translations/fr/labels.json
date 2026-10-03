@@ -2537,6 +2537,10 @@
       },
       "admin": {
         "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Tout",
+            "description": "Vaisseaux, modules, peintures, vaisseaux de prêt et prix des vaisseaux, tout à la fois."
+          },
           "ship_matrix": {
             "name": "Vaisseaux",
             "description": "Tous les vaisseaux avec leurs données et la boutique, depuis la ship matrix de RSI."

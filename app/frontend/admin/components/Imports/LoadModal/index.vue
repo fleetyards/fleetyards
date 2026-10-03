@@ -12,6 +12,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   IMPORT_LOADERS,
+  LOAD_ALL,
   type ImportLoaderGroup,
   type ImportLoaderOption,
   useImportLoaders,
@@ -25,7 +26,10 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
-const { isRunning, start } = useImportLoaders();
+const { isRunning, isGroupRunning, start } = useImportLoaders();
+
+const loadAll = computed(() => LOAD_ALL[props.group]);
+const groupRunning = isGroupRunning(props.group);
 
 const options = computed(() =>
   IMPORT_LOADERS.filter((option) => option.group === props.group),
@@ -87,6 +91,20 @@ const run = async (option: ImportLoaderOption) => {
         </Btn>
       </li>
     </ul>
+
+    <template v-if="loadAll" #footer>
+      <div class="modal-actions">
+        <Btn
+          :size="BtnSizesEnum.LG"
+          :loading="groupRunning"
+          :disabled="groupRunning"
+          data-test="import-loader-start-all"
+          @click="run(loadAll)"
+        >
+          {{ t("actions.admin.imports.loadAll") }}
+        </Btn>
+      </div>
+    </template>
   </Modal>
 </template>
 
