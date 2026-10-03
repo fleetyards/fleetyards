@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
+  container-type: inline-size;
 
   .avatar {
     margin-right: 20px;
@@ -34,7 +35,9 @@
 
   .fleet-headquarters {
     width: max-content;
-    max-width: 60ch;
+    // A short title starts at most half the logo and its gap right of the
+    // centre, so half the heading less that is always free to its right.
+    max-width: min(60ch, calc(50cqi - 100px));
     overflow-wrap: anywhere;
   }
 }
