@@ -2536,6 +2536,60 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Everything",
+            "description": "Ships, modules, paints, loaners and ship prices, all at once."
+          },
+          "ship_matrix": {
+            "name": "Ships",
+            "description": "Every ship with its specs and store data, from the RSI ship matrix."
+          },
+          "modules": {
+            "name": "Modules",
+            "description": "Ship modules from the RSI pledge store."
+          },
+          "paints": {
+            "name": "Paints",
+            "description": "Paints from the RSI pledge store."
+          },
+          "loaners": {
+            "name": "Loaners",
+            "description": "Which loaners come with each ship, from RSI."
+          },
+          "uex_vehicle_prices": {
+            "name": "Ship prices",
+            "description": "Where ships are bought and rented in game, from UEX."
+          },
+          "sc_data": {
+            "name": "Game data · %{environment}",
+            "description": "Every catalogue from the parsed game files: components, equipment, commodities, blueprints, missions and places."
+          },
+          "sc_data_models": {
+            "name": "Ships from the game files",
+            "description": "Only the ships, from the default build."
+          },
+          "uex_commodity_prices": {
+            "name": "Commodity prices",
+            "description": "Terminal prices and stock, from UEX."
+          },
+          "uex_component_prices": {
+            "name": "Component prices",
+            "description": "Where components are sold, from UEX."
+          },
+          "uex_equipment_prices": {
+            "name": "Equipment prices",
+            "description": "Where equipment is sold, from UEX."
+          },
+          "uex_trade_routes": {
+            "name": "Terminals and trade routes",
+            "description": "UEX's terminals and the trade routes between them."
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "Parent",
           "system": "System",

@@ -166,6 +166,7 @@ class Import < ApplicationRecord
     Imports::ModelsImport
     Imports::ModulesImport
     Imports::PaintsImport
+    Imports::LoanersImport
     Imports::UexPricesImport
     Imports::UexCommodityPricesImport
     Imports::UexComponentPricesImport

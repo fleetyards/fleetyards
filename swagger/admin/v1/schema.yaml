@@ -4260,6 +4260,44 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/imports/load":
+    put:
+      summary: Start a Load
+      tags:
+      - Imports
+      operationId: startImportLoad
+      description: Start one of the loads the imports page offers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImportLoadInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MessageResponse"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/imports/{id}":
     parameters:
     - name: id
@@ -16444,6 +16482,49 @@ components:
       required:
       - count
       title: ImportCleanupResult
+    ImportLoadInput:
+      type: object
+      properties:
+        loader:
+          "$ref": "#/components/schemas/ImportLoaderEnum"
+        environment:
+          type: string
+          enum:
+          - live
+          - ptu
+      additionalProperties: false
+      required:
+      - loader
+      title: ImportLoadInput
+    ImportLoaderEnum:
+      type: string
+      enum:
+      - ship_matrix
+      - modules
+      - paints
+      - loaners
+      - uex_vehicle_prices
+      - ship_matrix_all
+      - sc_data
+      - sc_data_models
+      - uex_commodity_prices
+      - uex_component_prices
+      - uex_equipment_prices
+      - uex_trade_routes
+      x-enumNames:
+      - SHIP_MATRIX
+      - MODULES
+      - PAINTS
+      - LOANERS
+      - UEX_VEHICLE_PRICES
+      - SHIP_MATRIX_ALL
+      - SC_DATA
+      - SC_DATA_MODELS
+      - UEX_COMMODITY_PRICES
+      - UEX_COMPONENT_PRICES
+      - UEX_EQUIPMENT_PRICES
+      - UEX_TRADE_ROUTES
+      title: ImportLoaderEnum
     ImportQuery:
       type: object
       properties:
@@ -16503,6 +16584,7 @@ components:
       - Imports::HangarImport
       - Imports::ModulesImport
       - Imports::PaintsImport
+      - Imports::LoanersImport
       - Imports::UexPricesImport
       - Imports::UexCommodityPricesImport
       - Imports::UexComponentPricesImport
@@ -16517,6 +16599,7 @@ components:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
+      - IMPORTS_LOANERS_IMPORT
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT

@@ -59,6 +59,16 @@ module Admin
           end
         end
 
+        # Starts one of the loads the imports page offers. Each writes its own
+        # import row as it runs, which is what the page then shows.
+        def start_load
+          authorize! with: ::Admin::ImportPolicy
+
+          ::Imports::Loaders.new(params[:loader], admin_user_id: current_admin_user.id, environment: params[:environment]).enqueue
+
+          render json: {message: "Jobs enqueued"}, status: :ok
+        end
+
         private def imports_query_params
           @imports_query_params ||= params.permit(q: [
             :type_eq, :aasm_state_eq, :include_system, type_in: [], type_not_in: [],

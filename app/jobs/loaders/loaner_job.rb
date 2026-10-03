@@ -2,7 +2,11 @@
 
 module Loaders
   class LoanerJob < ::Loaders::BaseJob
-    def perform
+    def perform(admin_user_id = nil)
+      import = Imports::LoanersImport.create(admin_user_id:)
+
+      import.start!
+
       missing_loaners, missing_models = ::Rsi::LoanerLoader.new.run
 
       model_ids = ModelLoaner.pluck(:model_id).uniq
@@ -40,8 +44,16 @@ module Loaders
         # The resolve-loaners-import skill finds its issue by this title.
         title: actionable ? "Missing Loaners" : "Loaner Sync Results",
         body: missing_loaners_body(missing_loaners, missing_models),
-        actionable:
+        actionable:,
+        record: import
       )
+
+      import.finish!
+    rescue => e
+      import&.fail!
+      import&.update!(info: e.message)
+
+      raise e
     end
 
     private def missing_loaners_body(missing_loaners, missing_models)

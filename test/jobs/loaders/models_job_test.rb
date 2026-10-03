@@ -26,6 +26,37 @@ module Loaders
       assert_includes notification.body, "Models added"
     end
 
+    test "#perform starts the follow-ups only once the matrix is in" do
+      Sidekiq::Worker.clear_all
+      Rsi::ModelsLoader.any_instance.stubs(:all).returns(nil)
+
+      ::Loaders::ModelsJob.new.perform(@admin_user.id, %w[loaners paints])
+
+      assert_equal 1, Loaders::LoanerJob.jobs.size
+      assert_equal 1, Loaders::PaintsImportJob.jobs.size
+    end
+
+    test "#perform starts the other follow-ups when one cannot be queued" do
+      Sidekiq::Worker.clear_all
+      Rsi::ModelsLoader.any_instance.stubs(:all).returns(nil)
+      Loaders::PaintsImportJob.stubs(:perform_async).raises(RedisClient::CannotConnectError, "Redis is down")
+      Appsignal.expects(:report_error).once
+
+      ::Loaders::ModelsJob.new.perform(@admin_user.id, %w[paints loaners])
+
+      assert_predicate Imports::ModelsImport.last, :finished?
+      assert_equal 1, Loaders::LoanerJob.jobs.size
+    end
+
+    test "#perform starts no follow-up when the matrix fails" do
+      Sidekiq::Worker.clear_all
+      Rsi::ModelsLoader.any_instance.stubs(:all).raises(StandardError, "RSI is down")
+
+      assert_raises(StandardError) { ::Loaders::ModelsJob.new.perform(@admin_user.id, %w[loaners]) }
+
+      assert_equal 0, Loaders::LoanerJob.jobs.size
+    end
+
     # A quiet run is the normal case for a matrix that moves a few times a
     # month, so it must not open an issue nobody can close.
     test "#perform never opens an issue" do

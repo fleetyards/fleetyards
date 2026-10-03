@@ -24,6 +24,10 @@
           "syncFromPatreon": "Von Patreon synchronisieren"
         },
         "imports": {
+          "loadAll": "Alles laden",
+          "load": "Laden",
+          "loadScData": "SC-Daten laden",
+          "loadShipMatrix": "Ship Matrix laden",
           "cleanup": "Als fehlgeschlagen markieren",
           "cleanupSelected": "Auswahl als fehlgeschlagen markieren"
         }

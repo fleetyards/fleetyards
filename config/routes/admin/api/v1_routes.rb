@@ -217,6 +217,7 @@ v1_admin_api_routes = lambda do
     end
     collection do
       put "cleanup-bulk", to: "imports#cleanup_bulk"
+      put :load, to: "imports#start_load"
     end
   end
 

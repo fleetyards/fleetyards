@@ -2536,6 +2536,60 @@
         }
       },
       "admin": {
+        "importLoaders": {
+          "ship_matrix_all": {
+            "name": "Alles",
+            "description": "Schiffe, Module, Lackierungen, Leihschiffe und Schiffspreise auf einmal."
+          },
+          "ship_matrix": {
+            "name": "Schiffe",
+            "description": "Alle Schiffe mit Daten und Shop-Infos aus der RSI Ship Matrix."
+          },
+          "modules": {
+            "name": "Module",
+            "description": "Schiffsmodule aus dem RSI Pledge Store."
+          },
+          "paints": {
+            "name": "Lackierungen",
+            "description": "Lackierungen aus dem RSI Pledge Store."
+          },
+          "loaners": {
+            "name": "Leihschiffe",
+            "description": "Welche Leihschiffe zu jedem Schiff gehören, von RSI."
+          },
+          "uex_vehicle_prices": {
+            "name": "Schiffspreise",
+            "description": "Wo Schiffe im Spiel gekauft und gemietet werden, von UEX."
+          },
+          "sc_data": {
+            "name": "Spieldaten · %{environment}",
+            "description": "Alle Kataloge aus den ausgelesenen Spieldateien: Komponenten, Ausrüstung, Rohstoffe, Baupläne, Missionen und Orte."
+          },
+          "sc_data_models": {
+            "name": "Schiffe aus den Spieldateien",
+            "description": "Nur die Schiffe, aus dem Standard-Build."
+          },
+          "uex_commodity_prices": {
+            "name": "Rohstoffpreise",
+            "description": "Terminalpreise und Bestände, von UEX."
+          },
+          "uex_component_prices": {
+            "name": "Komponentenpreise",
+            "description": "Wo Komponenten verkauft werden, von UEX."
+          },
+          "uex_equipment_prices": {
+            "name": "Ausrüstungspreise",
+            "description": "Wo Ausrüstung verkauft wird, von UEX."
+          },
+          "uex_trade_routes": {
+            "name": "Terminals und Handelsrouten",
+            "description": "Die Terminals von UEX und die Handelsrouten zwischen ihnen."
+          },
+          "environments": {
+            "live": "Live",
+            "ptu": "PTU"
+          }
+        },
         "locations": {
           "parent": "Übergeordnet",
           "system": "System",
