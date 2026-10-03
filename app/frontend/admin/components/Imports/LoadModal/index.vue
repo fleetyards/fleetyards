@@ -76,6 +76,7 @@ const run = async (option: ImportLoaderOption) => {
           </span>
         </div>
         <Btn
+          class="import-loaders__start"
           :size="BtnSizesEnum.SM"
           :loading="isRunning(option)"
           :disabled="isRunning(option)"
@@ -122,6 +123,13 @@ const run = async (option: ImportLoaderOption) => {
   &__description {
     font-size: 13px;
     color: var(--color-text-dim, #959595);
+  }
+
+  // Its own width, whatever the description beside it needs: squeezed, the
+  // label was cut to "Loa".
+  &__start {
+    flex: none;
+    white-space: nowrap;
   }
 }
 </style>
