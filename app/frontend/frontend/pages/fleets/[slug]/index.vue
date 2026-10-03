@@ -104,7 +104,10 @@ const showFidNotice = computed(
           size="large"
           icon="fa-duotone fa-image"
         />
-        <div class="heading-text">
+        <div
+          class="heading-text"
+          :class="{ 'heading-text--headquarters': fleet.headquarters }"
+        >
           <h1 class="large title">{{ fleet.name }} ({{ fleet.fid }})</h1>
           <p
             v-if="fleet.headquarters"

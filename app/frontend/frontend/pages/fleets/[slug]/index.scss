@@ -10,18 +10,23 @@
 }
 
 .heading-text {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 
   .title {
     margin: 0;
   }
 
-  // Out of the flow, so the title stays centred on the logo.
+  // The pill's height plus the gap, mirrored above the title so it stays
+  // centred on the logo.
+  &.heading-text--headquarters {
+    padding-top: 39px;
+  }
+
   .fleet-headquarters {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -55,13 +60,10 @@
   }
 
   .heading-text {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
 
-    .fleet-headquarters {
-      position: static;
+    &.heading-text--headquarters {
+      padding-top: 0;
     }
   }
 
