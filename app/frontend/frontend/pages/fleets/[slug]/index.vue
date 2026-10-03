@@ -95,7 +95,7 @@ const showFidNotice = computed(
 <template>
   <div class="row">
     <div class="col-12">
-      <h1 class="large heading">
+      <div class="heading">
         <Avatar
           v-if="fleet.logo"
           :avatar="fleet.logo.smallUrl"
@@ -104,20 +104,23 @@ const showFidNotice = computed(
           size="large"
           icon="fa-duotone fa-image"
         />
-        <span class="title"> {{ fleet.name }} ({{ fleet.fid }}) </span>
-      </h1>
-      <p
-        v-if="fleet.headquarters"
-        class="fleet-headquarters"
-        data-test="fleet-headquarters"
-      >
-        <i class="fa-duotone fa-house-flag" aria-hidden="true" />
-        <span class="sr-only">{{ t("labels.fleet.headquarters") }}</span>
-        <LocationName
-          :text="fleet.headquarters"
-          :linked="fleet.headquartersLocation"
-        />
-      </p>
+        <div
+          class="heading-text"
+          :class="{ 'heading-text--headquarters': fleet.headquarters }"
+        >
+          <h1 class="large title">{{ fleet.name }} ({{ fleet.fid }})</h1>
+          <div v-if="fleet.headquarters" class="heading-meta">
+            <p class="fleet-headquarters" data-test="fleet-headquarters">
+              <i class="fa-duotone fa-house-flag" aria-hidden="true" />
+              <span class="sr-only">{{ t("labels.fleet.headquarters") }}</span>
+              <LocationName
+                :text="fleet.headquarters"
+                :linked="fleet.headquartersLocation"
+              />
+            </p>
+          </div>
+        </div>
+      </div>
       <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
         <template #actions>
           <router-link
@@ -282,9 +285,18 @@ const showFidNotice = computed(
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: -8px 0 12px;
+  max-width: 100%;
+  margin: 0;
+  padding: 4px 14px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: 999px;
   font-size: 14px;
   color: var(--color-text-dim, #959595);
+
+  > i {
+    color: var(--color-muted, #7a8288);
+  }
 }
 
 .squadrons {

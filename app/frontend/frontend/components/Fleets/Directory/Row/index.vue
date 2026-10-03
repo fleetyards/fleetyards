@@ -38,6 +38,13 @@ const filterLink = (key: string, value: string) => ({
   query: { ...route.query, page: undefined, [key]: value },
 });
 
+// A fleet that claimed its SID as its FID would print the same code twice.
+const showSid = computed(
+  () =>
+    !!props.fleet.rsiSid &&
+    props.fleet.rsiSid.toUpperCase() !== props.fleet.fid.toUpperCase(),
+);
+
 const chips = computed<RowListItemChip[]>(() =>
   [props.fleet.primaryActivity, props.fleet.secondaryActivity]
     .filter((activity): activity is NonNullable<typeof activity> => !!activity)
@@ -125,7 +132,7 @@ const badges = computed<RowListItemBadge[]>(() => [
 
     <template #sub>
       <span>{{ fleet.fid }}</span>
-      <span>{{
+      <span v-if="showSid">{{
         t("labels.fleetDirectory.rsiSid", { sid: fleet.rsiSid })
       }}</span>
       <router-link

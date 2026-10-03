@@ -2,9 +2,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
+  container-type: inline-size;
 
   .avatar {
     margin-right: 20px;
+  }
+}
+
+.heading-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+
+  .title {
+    margin: 0;
+  }
+
+  // The pill's height plus the gap, mirrored above the title so it stays
+  // centred on the logo.
+  &.heading-text--headquarters {
+    padding-top: 39px;
+  }
+
+  // Its width does not count towards the block's, so the title alone decides
+  // where the heading is centred; the pill hangs off the title's left edge.
+  .heading-meta {
+    align-self: stretch;
+    contain: inline-size;
+  }
+
+  .fleet-headquarters {
+    width: max-content;
+    // A short title starts at most half the logo and its gap right of the
+    // centre, so half the heading less that is always free to its right.
+    max-width: min(60ch, calc(50cqi - 100px));
+    overflow-wrap: anywhere;
   }
 }
 
@@ -34,6 +68,24 @@
     .title {
       margin-top: 15px;
       text-align: center;
+    }
+  }
+
+  .heading-text {
+    align-items: center;
+
+    &.heading-text--headquarters {
+      padding-top: 0;
+    }
+
+    .heading-meta {
+      align-self: auto;
+      contain: none;
+    }
+
+    .fleet-headquarters {
+      width: auto;
+      max-width: 100%;
     }
   }
 
