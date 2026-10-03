@@ -2,9 +2,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
 
   .avatar {
     margin-right: 20px;
+  }
+}
+
+.heading-text {
+  position: relative;
+
+  .title {
+    margin: 0;
+  }
+
+  // Out of the flow, so the title stays centred on the logo.
+  .fleet-headquarters {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    white-space: nowrap;
   }
 }
 
@@ -34,6 +51,17 @@
     .title {
       margin-top: 15px;
       text-align: center;
+    }
+  }
+
+  .heading-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .fleet-headquarters {
+      position: static;
     }
   }
 
