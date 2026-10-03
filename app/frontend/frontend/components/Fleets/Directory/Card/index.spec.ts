@@ -79,6 +79,13 @@ describe("Fleets/Directory/Card", () => {
     expect(text).toContain("Not recruiting");
   });
 
+  it("leaves out an SID the FID already shows", async () => {
+    const wrapper = await mount({ rsiSid: "night" });
+
+    expect(wrapper.text()).toContain("NIGHT");
+    expect(wrapper.text()).not.toContain("SID");
+  });
+
   it("leaves out what RSI has not told us", async () => {
     const wrapper = await mount({
       primaryActivity: null,
