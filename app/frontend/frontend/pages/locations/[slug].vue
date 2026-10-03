@@ -222,10 +222,18 @@ const sessionStore = useSessionStore();
 const { isAuthenticated } = storeToRefs(sessionStore);
 
 // Friends and fleet mates here or somewhere inside, which only a signed-in
-// reader has.
-const { data: people } = useLocationPeople(slug, {
-  query: { enabled: computed(() => loaded.value && isAuthenticated.value) },
-});
+// reader has. Never from the previous place while this one loads: the
+// client's placeholder carries a result across keys.
+const { data: peopleData, isPlaceholderData: peopleIsPlaceholder } =
+  useLocationPeople(slug, {
+    query: { enabled: computed(() => loaded.value && isAuthenticated.value) },
+  });
+
+const people = computed(() =>
+  isAuthenticated.value && !peopleIsPlaceholder.value
+    ? peopleData.value?.people
+    : undefined,
+);
 
 // A page's worth in the rail, grouped by who offers them; the mission list,
 // filtered to here, has the rest.
@@ -381,8 +389,8 @@ watch(
           </section>
 
           <LocationPeople
-            v-if="people?.people.length"
-            :people="people.people"
+            v-if="people?.length"
+            :people="people"
             :location-id="location.id"
           />
 
@@ -422,8 +430,8 @@ watch(
 
           <aside class="location-page__aside">
             <LocationPeople
-              v-if="people?.people.length"
-              :people="people.people"
+              v-if="people?.length"
+              :people="people"
               :location-id="location.id"
             />
             <MetricsCard
