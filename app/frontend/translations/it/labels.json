@@ -22,6 +22,9 @@
       },
       "location": {
         "missionsSample": "I conteggi coprono le prime %{shown} di %{total}.",
+        "people": "Amici e flotta qui",
+        "peopleFriend": "Amico",
+        "peopleUnlisted": "altri %{count} non elencati",
         "systemUnavailable": "Impossibile caricare questo sistema.",
         "systemsUnavailable": "Impossibile caricare i sistemi.",
         "resourceKinds": {

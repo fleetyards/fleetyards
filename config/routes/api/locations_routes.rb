@@ -9,5 +9,7 @@ resources :locations, only: %i[index show], param: :slug do
     get :contents
     # The shops UEX lists at the place, with what each sells.
     get :shops
+    # Who of the reader's friends and fleet mates is there, or inside it.
+    get :people
   end
 end

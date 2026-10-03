@@ -22,6 +22,9 @@
       },
       "location": {
         "missionsSample": "Counts cover the first %{shown} of %{total}.",
+        "people": "Friends & fleet here",
+        "peopleFriend": "Friend",
+        "peopleUnlisted": "%{count} more not listed",
         "systemUnavailable": "Could not load this system.",
         "systemsUnavailable": "Could not load the systems.",
         "resourceKinds": {

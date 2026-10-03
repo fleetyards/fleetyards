@@ -14,6 +14,7 @@ module Api
   class BaseMetalController < ActionController::API
     rescue_from Doorkeeper::Errors::TokenUnknown,
       Doorkeeper::Errors::TokenExpired,
+      Doorkeeper::Errors::TokenRevoked,
       Doorkeeper::Errors::TokenForbidden do |exception|
       render json: {code: "unauthorized", message: exception.message}, status: :unauthorized
     end

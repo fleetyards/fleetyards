@@ -22,6 +22,9 @@
       },
       "location": {
         "missionsSample": "计数仅涵盖 %{total} 个中的前 %{shown} 个。",
+        "people": "在此的好友与舰队成员",
+        "peopleFriend": "好友",
+        "peopleUnlisted": "另有 %{count} 人未列出",
         "systemUnavailable": "无法加载此星系。",
         "systemsUnavailable": "无法加载星系。",
         "resourceKinds": {

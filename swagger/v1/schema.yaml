@@ -11412,6 +11412,56 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/people":
+    get:
+      summary: Location people
+      tags:
+      - Locations
+      operationId: locationPeople
+      description: The reader's friends and fleet mates at the place or inside it.
+        A token lists fleet mates only with the fleet or fleet:read scope
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+        description: How many to list, online first, then by name. Defaults to 50;
+          totalCount says how many there are in all
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - public
+      - OpenId:
+        - public
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationPeople"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/locations/{slug}/shops":
     get:
       summary: Location shops
@@ -29778,6 +29828,50 @@ components:
       - kind
       - parentName
       title: LocationLink
+    LocationPeople:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        people:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationPerson"
+      additionalProperties: false
+      required:
+      - totalCount
+      - people
+      title: LocationPeople
+    LocationPerson:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+        online:
+          type: boolean
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        friend:
+          type: boolean
+        fleets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetRef"
+      additionalProperties: false
+      required:
+      - id
+      - username
+      - currentLocation
+      - friend
+      - fleets
+      title: LocationPerson
     LocationQuery:
       type: object
       properties:

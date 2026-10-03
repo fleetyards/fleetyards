@@ -22,6 +22,9 @@
       },
       "location": {
         "missionsSample": "Les comptes portent sur les %{shown} premières sur %{total}.",
+        "people": "Amis et flotte ici",
+        "peopleFriend": "Ami",
+        "peopleUnlisted": "%{count} de plus non listés",
         "systemUnavailable": "Impossible de charger ce système.",
         "systemsUnavailable": "Impossible de charger les systèmes.",
         "resourceKinds": {

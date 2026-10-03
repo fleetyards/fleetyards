@@ -138,6 +138,13 @@ export const useSessionStore = defineStore("session", {
           query.queryKey[2] === "rsi-verification",
       });
 
+      // Which of the reader's friends and fleet mates are at a place, which
+      // keys the place's slug in the middle.
+      queryClient.removeQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "locations" && query.queryKey[2] === "people",
+      });
+
       this.$reset();
     },
     async logout() {
