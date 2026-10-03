@@ -26,6 +26,16 @@ module Loaders
       assert_predicate Imports::LoanersImport.last, :finished?
     end
 
+    # The run files its own report; the import's own "finished" would repeat it.
+    test "#perform reports a clean run once" do
+      @loader.stubs(:run).returns([[], []])
+      create(:admin_user, resource_access: [:imports])
+
+      assert_no_difference -> { AdminNotification.where(notification_type: "import_run").count } do
+        ::Loaders::LoanerJob.new.perform
+      end
+    end
+
     test "#perform marks the import failed when the loader raises" do
       @loader.stubs(:run).raises(StandardError, "RSI is down")
 
