@@ -111,6 +111,31 @@ describe("useImportLoaders", () => {
     };
     await flushPromises();
 
+    expect(loaders.isRunning(modules)).toBe(true);
+
+    await vi.advanceTimersByTimeAsync(60_000);
+
+    expect(loaders.isRunning(modules)).toBe(false);
+
+    vi.useRealTimers();
+  });
+
+  it("releases the follow-up rows at once when the matrix run fails", async () => {
+    vi.useFakeTimers();
+    const { loaders, store } = await mountLoaders();
+    const modules = IMPORT_LOADERS.find((option) => option.id === "modules")!;
+
+    await loaders.start(LOAD_ALL.shipMatrix!);
+
+    store.imports = {
+      "models-4": matrixImport("models-4", ImportStatusEnum.STARTED),
+    };
+    await flushPromises();
+    store.imports = {
+      "models-4": matrixImport("models-4", ImportStatusEnum.FAILED),
+    };
+    await flushPromises();
+
     expect(loaders.isRunning(modules)).toBe(false);
 
     vi.useRealTimers();
@@ -149,6 +174,8 @@ describe("useImportLoaders", () => {
     };
     await flushPromises();
 
+    await vi.advanceTimersByTimeAsync(60_000);
+
     expect(loaders.isRunning(loaners)).toBe(false);
 
     vi.useRealTimers();
@@ -175,6 +202,8 @@ describe("useImportLoaders", () => {
       "models-3": matrixImport("models-3", ImportStatusEnum.FINISHED),
     };
     await flushPromises();
+
+    await vi.advanceTimersByTimeAsync(60_000);
 
     expect(loaders.isRunning(uexPrices)).toBe(false);
 

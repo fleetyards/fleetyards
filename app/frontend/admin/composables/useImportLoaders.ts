@@ -4,6 +4,7 @@ import {
   type Import,
   ImportLoaderEnum,
   ImportLoadInputEnvironment,
+  ImportStatusEnum,
   ImportTypeEnum,
   useStartImportLoad,
 } from "@/services/fyAdminApi";
@@ -184,9 +185,27 @@ export const useImportLoaders = () => {
     chains.value = rest;
   };
 
+  // A finished run has just queued its follow-ups, whose imports show up only
+  // once their jobs start: each is held like a request of its own meanwhile.
+  // A failed run queues none.
+  const handOff = (option: ImportLoaderOption, active: Import[]) => {
+    option.followUps?.forEach((id) => {
+      const followUp = ALL_OPTIONS.find((candidate) => candidate.id === id);
+      if (
+        !followUp?.types.length ||
+        active.some((imp) => matches(followUp, imp))
+      ) {
+        return;
+      }
+
+      const token = (lastToken += 1);
+      requested.value = { ...requested.value, [id]: token };
+      window.setTimeout(() => settle(followUp, token), QUEUED_GRACE_MS);
+    });
+  };
+
   // A load whose import has arrived is the import's to report from here on.
-  // A chain ends when its own run's import is gone again: its follow-ups are
-  // queued by then, and report themselves.
+  // A chain ends when its own run's import is gone again.
   watch(
     () => importsStore.activeImports,
     (active) => {
@@ -201,6 +220,13 @@ export const useImportLoaders = () => {
         if (chain.importId) {
           if (!active.some((imp) => imp.id === chain.importId)) {
             endChain(option);
+
+            if (
+              importsStore.imports[chain.importId]?.status ===
+              ImportStatusEnum.FINISHED
+            ) {
+              handOff(option, active);
+            }
           }
           return;
         }
