@@ -35,5 +35,5 @@ A signed-in reader sees, on a location page, which friends and fleet mates have 
 - **2026-10-03** Users already carry a linked `current_location` (#5371); friendships and rosters show it.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
