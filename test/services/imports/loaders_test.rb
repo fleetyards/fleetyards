@@ -22,6 +22,12 @@ module Imports
       assert_equal Imports::Loaders::SHIP_MATRIX.size, Sidekiq::Worker.jobs.size
     end
 
+    test "an unknown environment is an error, not the default build" do
+      assert_raises(ArgumentError) do
+        Imports::Loaders.new("sc_data", admin_user_id: nil, environment: "ptuu").enqueue
+      end
+    end
+
     test "an unknown loader is an error, not a silent no-op" do
       assert_raises(ArgumentError) { Imports::Loaders.new("everything", admin_user_id: nil).enqueue }
     end

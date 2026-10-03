@@ -42,8 +42,12 @@ module Imports
       end
     end
 
+    # Named and unknown is an error, never the default build under the wrong
+    # name: a mistyped "ptu" must not start a live load.
     private def source
-      (@environment && ::ScData::Source.find(@environment)) || ::ScData::Source.default
+      return ::ScData::Source.default if @environment.nil?
+
+      ::ScData::Source.find(@environment) || raise(ArgumentError, "unknown sc_data environment: #{@environment}")
     end
   end
 end

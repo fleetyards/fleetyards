@@ -66,6 +66,20 @@ class Admin::Api::V1::ImportsLoadTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, body: {loader: "sc_data"}
   end
 
+  test "PUT /imports/load starts every loader it lists" do
+    sign_in @user
+
+    Imports::Loaders::KEYS.each do |loader|
+      assert_api_response :put, 200, body: {loader:}
+    end
+  end
+
+  test "PUT /imports/load rejects an environment it does not know" do
+    sign_in @user
+
+    assert_api_response :put, 400, body: {loader: "sc_data", environment: "ptuu"}
+  end
+
   test "PUT /imports/load rejects a loader it does not know" do
     sign_in @user
 
