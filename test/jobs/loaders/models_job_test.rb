@@ -36,6 +36,18 @@ module Loaders
       assert_equal 1, Loaders::PaintsImportJob.jobs.size
     end
 
+    test "#perform starts the other follow-ups when one cannot be queued" do
+      Sidekiq::Worker.clear_all
+      Rsi::ModelsLoader.any_instance.stubs(:all).returns(nil)
+      Loaders::PaintsImportJob.stubs(:perform_async).raises(RedisClient::CannotConnectError, "Redis is down")
+      Appsignal.expects(:report_error).once
+
+      ::Loaders::ModelsJob.new.perform(@admin_user.id, %w[paints loaners])
+
+      assert_predicate Imports::ModelsImport.last, :finished?
+      assert_equal 1, Loaders::LoanerJob.jobs.size
+    end
+
     test "#perform starts no follow-up when the matrix fails" do
       Sidekiq::Worker.clear_all
       Rsi::ModelsLoader.any_instance.stubs(:all).raises(StandardError, "RSI is down")

@@ -4,7 +4,15 @@ module Loaders
   class ModelsJob < ::Loaders::BaseJob
     # `follow_ups` are loader keys started once the matrix is in: loaners,
     # modules, paints and prices all match against the ships this run may add.
+    # Outside the run's own rescue, which can fail an import only while it is
+    # still running.
     def perform(admin_user_id = nil, follow_ups = [])
+      load_matrix(admin_user_id)
+
+      start_follow_ups(admin_user_id, follow_ups)
+    end
+
+    private def load_matrix(admin_user_id)
       import = Imports::ModelsImport.create(admin_user_id:)
 
       import.start!
@@ -26,13 +34,22 @@ module Loaders
       )
 
       import.finish!
-
-      Array(follow_ups).each { |key| ::Imports::Loaders.new(key, admin_user_id:).enqueue }
     rescue => e
       import.fail!
       import.update!(info: e.message)
 
       raise e
+    end
+
+    # Each on its own: one that cannot be queued is reported and the rest still
+    # start. Raising here would retry the job, and run the matrix again.
+    private def start_follow_ups(admin_user_id, follow_ups)
+      Array(follow_ups).each do |key|
+        ::Imports::Loaders.new(key, admin_user_id:).enqueue
+      rescue => e
+        Appsignal.report_error(e)
+        Rails.logger.error("[#{self.class.name}] could not start #{key}: #{e.message}")
+      end
     end
 
     # `Rsi::ModelsLoader` returns nothing countable, so the run is measured on
