@@ -64,6 +64,7 @@ describe("LocationPeople", () => {
           person({ id: "a", username: "alpha", currentLocation: clinic }),
           person({ id: "b", username: "bravo" }),
         ],
+        totalCount: 2,
         locationId: lorville.id,
       },
       plugins: [await router()],
@@ -86,6 +87,7 @@ describe("LocationPeople", () => {
             fleets: [{ id: "f", slug: "ninetails", name: "Ninetails" }],
           }),
         ],
+        totalCount: 1,
         locationId: lorville.id,
       },
       plugins: [await router()],
@@ -97,5 +99,31 @@ describe("LocationPeople", () => {
     expect(wrapper.find("a[href='#/fleets/ninetails']").text()).toBe(
       "Ninetails",
     );
+  });
+
+  it("shows five, then the rest it was sent, and counts what it was not", async () => {
+    const people = Array.from({ length: 7 }, (_, index) =>
+      person({ id: `user-${index}`, username: `user-${index}` }),
+    );
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { people, totalCount: 60, locationId: lorville.id },
+      plugins: [await router()],
+    });
+
+    const rows = () => wrapper.findAll("[data-test='location-person']");
+
+    expect(rows()).toHaveLength(5);
+    expect(wrapper.find(".location-people__summary").text()).toBe("60");
+    expect(
+      wrapper.find("[data-test='location-people-unlisted']").exists(),
+    ).toBe(false);
+
+    await wrapper.find("[data-test='location-people-more']").trigger("click");
+
+    expect(rows()).toHaveLength(7);
+    expect(
+      wrapper.find("[data-test='location-people-unlisted']").text(),
+    ).toContain("53");
   });
 });

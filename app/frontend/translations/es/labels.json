@@ -24,6 +24,7 @@
         "missionsSample": "Los recuentos cubren los primeros %{shown} de %{total}.",
         "people": "Amigos y flota aquí",
         "peopleFriend": "Amigo",
+        "peopleUnlisted": "%{count} más sin listar",
         "systemUnavailable": "No se pudo cargar este sistema.",
         "systemsUnavailable": "No se pudieron cargar los sistemas.",
         "resourceKinds": {

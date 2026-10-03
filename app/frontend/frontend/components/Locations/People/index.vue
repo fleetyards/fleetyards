@@ -14,6 +14,7 @@ import { type LocationPerson } from "@/services/fyApi";
 
 type Props = {
   people: LocationPerson[];
+  totalCount: number;
   locationId: string;
 };
 
@@ -22,6 +23,21 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const { onlineFor } = useMemberPresence();
+
+// The list arrives online first, so the few shown are who the reader can meet
+// now.
+const COLLAPSED_LIMIT = 5;
+
+const expanded = ref(false);
+
+const visible = computed(() =>
+  expanded.value ? props.people : props.people.slice(0, COLLAPSED_LIMIT),
+);
+
+// More than the endpoint sends: a whole fleet can be in one system.
+const unlisted = computed(() =>
+  Math.max(props.totalCount - props.people.length, 0),
+);
 
 // The place is only named where it is one inside the page's: on Lorville's
 // page, "Lorville" under every name says nothing.
@@ -38,12 +54,12 @@ const placeBelow = (person: LocationPerson) =>
     variant="slim"
   >
     <template #head>
-      <span class="location-people__summary">{{ people.length }}</span>
+      <span class="location-people__summary">{{ totalCount }}</span>
     </template>
 
     <ul class="location-people__list">
       <li
-        v-for="person in people"
+        v-for="person in visible"
         :key="person.id"
         class="location-people__person"
         data-test="location-person"
@@ -80,6 +96,29 @@ const placeBelow = (person: LocationPerson) =>
         </span>
       </li>
     </ul>
+
+    <p
+      v-if="expanded && unlisted"
+      class="location-people__unlisted"
+      data-test="location-people-unlisted"
+    >
+      {{ t("labels.location.peopleUnlisted", { count: unlisted }) }}
+    </p>
+
+    <button
+      v-if="people.length > COLLAPSED_LIMIT"
+      type="button"
+      class="location-people__more"
+      :aria-expanded="expanded"
+      data-test="location-people-more"
+      @click="expanded = !expanded"
+    >
+      {{
+        expanded
+          ? t("labels.location.showFewer")
+          : t("labels.location.showAll", { count: people.length })
+      }}
+    </button>
   </MetricsCard>
 </template>
 

@@ -225,13 +225,13 @@ const { isAuthenticated } = storeToRefs(sessionStore);
 // reader has. Never from the previous place while this one loads: the
 // client's placeholder carries a result across keys.
 const { data: peopleData, isPlaceholderData: peopleIsPlaceholder } =
-  useLocationPeople(slug, {
+  useLocationPeople(slug, undefined, {
     query: { enabled: computed(() => loaded.value && isAuthenticated.value) },
   });
 
 const people = computed(() =>
   isAuthenticated.value && !peopleIsPlaceholder.value
-    ? peopleData.value?.people
+    ? peopleData.value
     : undefined,
 );
 
@@ -389,8 +389,9 @@ watch(
           </section>
 
           <LocationPeople
-            v-if="people?.length"
-            :people="people"
+            v-if="people?.people.length"
+            :people="people.people"
+            :total-count="people.totalCount"
             :location-id="location.id"
           />
 
@@ -430,8 +431,9 @@ watch(
 
           <aside class="location-page__aside">
             <LocationPeople
-              v-if="people?.length"
-              :people="people"
+              v-if="people?.people.length"
+              :people="people.people"
+              :total-count="people.totalCount"
               :location-id="location.id"
             />
             <MetricsCard
