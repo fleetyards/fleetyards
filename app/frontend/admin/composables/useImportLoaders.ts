@@ -19,6 +19,9 @@ export type ImportLoaderOption = {
   // Trade routes write none: they show as running only while the request to
   // start them is out.
   types: ImportTypeEnum[];
+  // Loads the backend starts by itself once this one's run is in. They count
+  // as running from the start: started by hand meanwhile, they would run twice.
+  followUps?: string[];
 };
 
 const SC_DATA_ENVIRONMENTS = Object.values(ImportLoadInputEnvironment);
@@ -101,9 +104,11 @@ export const LOAD_ALL: Partial<Record<ImportLoaderGroup, ImportLoaderOption>> =
       id: "ship_matrix_all",
       loader: ImportLoaderEnum.SHIP_MATRIX_ALL,
       group: "shipMatrix",
-      types: IMPORT_LOADERS.filter(
-        (option) => option.group === "shipMatrix",
-      ).flatMap((option) => option.types),
+      types: [ImportTypeEnum.IMPORTS_MODELS_IMPORT],
+      followUps: IMPORT_LOADERS.filter(
+        (option) =>
+          option.group === "shipMatrix" && option.id !== "ship_matrix",
+      ).map((option) => option.id),
     },
   };
 
@@ -123,6 +128,17 @@ const QUEUED_GRACE_MS = 60_000;
 const requested = ref<Record<string, number>>({});
 let lastToken = 0;
 
+// A load with follow-ups, from its request until its own run has finished:
+// "queued" until that run's import shows up, then "running" until it is gone.
+// Held under the request's token, like `requested`.
+const chains = ref<
+  Record<string, { state: "queued" | "running"; token: number }>
+>({});
+
+// Long enough for any matrix run; a chain whose import never arrives must not
+// keep its rows locked for good.
+const CHAIN_LIMIT_MS = 30 * 60_000;
+
 // An sc_data build names its environment: `4.10.1-ptu.12578875`.
 const matches = (option: ImportLoaderOption, imp: Import) =>
   option.types.includes(imp.type) &&
@@ -133,8 +149,16 @@ export const useImportLoaders = () => {
   const importsStore = useImportsStore();
   const mutation = useStartImportLoad();
 
+  const inChain = (option: ImportLoaderOption) =>
+    ALL_OPTIONS.some(
+      (chain) =>
+        chain.id in chains.value &&
+        (chain.id === option.id || !!chain.followUps?.includes(option.id)),
+    );
+
   const isRunning = (option: ImportLoaderOption) =>
     option.id in requested.value ||
+    inChain(option) ||
     importsStore.activeImports.some((imp) => matches(option, imp));
 
   const isGroupRunning = (group: ImportLoaderGroup) =>
@@ -151,15 +175,34 @@ export const useImportLoaders = () => {
     requested.value = rest;
   };
 
+  const endChain = (option: ImportLoaderOption, token?: number) => {
+    if (token !== undefined && chains.value[option.id]?.token !== token) return;
+
+    const { [option.id]: _ended, ...rest } = chains.value;
+    chains.value = rest;
+  };
+
   // A load whose import has arrived is the import's to report from here on.
+  // A chain ends when its own run's import is gone again: its follow-ups are
+  // queued by then, and report themselves.
   watch(
     () => importsStore.activeImports,
     (active) => {
-      ALL_OPTIONS.filter((option) => option.id in requested.value).forEach(
-        (option) => {
-          if (active.some((imp) => matches(option, imp))) settle(option);
-        },
-      );
+      ALL_OPTIONS.forEach((option) => {
+        const running = active.some((imp) => matches(option, imp));
+
+        if (option.id in requested.value && running) settle(option);
+
+        const chain = chains.value[option.id];
+        if (chain?.state === "queued" && running) {
+          chains.value = {
+            ...chains.value,
+            [option.id]: { ...chain, state: "running" },
+          };
+        } else if (chain?.state === "running" && !running) {
+          endChain(option);
+        }
+      });
     },
   );
 
@@ -167,12 +210,21 @@ export const useImportLoaders = () => {
     const token = (lastToken += 1);
     requested.value = { ...requested.value, [option.id]: token };
 
+    if (option.followUps?.length) {
+      chains.value = {
+        ...chains.value,
+        [option.id]: { state: "queued", token },
+      };
+      window.setTimeout(() => endChain(option, token), CHAIN_LIMIT_MS);
+    }
+
     try {
       await mutation.mutateAsync({
         data: { loader: option.loader, environment: option.environment },
       });
     } catch (error) {
       settle(option, token);
+      endChain(option, token);
       throw error;
     }
 

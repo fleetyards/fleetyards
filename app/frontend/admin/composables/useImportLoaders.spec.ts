@@ -73,4 +73,41 @@ describe("useImportLoaders", () => {
 
     vi.useRealTimers();
   });
+
+  it("holds the follow-up rows until the load-all matrix run is done", async () => {
+    vi.useFakeTimers();
+    const { loaders, store } = await mountLoaders();
+    const loadAll = LOAD_ALL.shipMatrix!;
+    const matrixImport = (status: ImportStatusEnum) =>
+      ({
+        id: "models-1",
+        type: ImportTypeEnum.IMPORTS_MODELS_IMPORT,
+        status,
+        createdAt: "2026-10-03T00:00:00Z",
+        updatedAt: "2026-10-03T00:00:00Z",
+      }) as Import;
+    // Not paints: the test above leaves a paints request in the shared state.
+    const modules = IMPORT_LOADERS.find((option) => option.id === "modules")!;
+    const scDataModels = IMPORT_LOADERS.find(
+      (option) => option.id === "sc_data_models",
+    )!;
+
+    await loaders.start(loadAll);
+
+    expect(loaders.isRunning(modules)).toBe(true);
+    expect(loaders.isRunning(scDataModels)).toBe(false);
+
+    store.imports = { "models-1": matrixImport(ImportStatusEnum.STARTED) };
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(120_000);
+
+    expect(loaders.isRunning(modules)).toBe(true);
+
+    store.imports = { "models-1": matrixImport(ImportStatusEnum.FINISHED) };
+    await flushPromises();
+
+    expect(loaders.isRunning(modules)).toBe(false);
+
+    vi.useRealTimers();
+  });
 });
