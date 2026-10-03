@@ -100,6 +100,7 @@ defineExpose({ body });
     background-color: var(--color-control, rgb(39 43 48 / 0.9));
     border: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.45));
     border-radius: var(--radius-surface-slim, 12px);
+    overflow-x: auto;
   }
 
   &__orbit {
