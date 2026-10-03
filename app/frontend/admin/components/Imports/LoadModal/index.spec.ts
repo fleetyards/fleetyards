@@ -102,4 +102,14 @@ describe("ImportsLoadModal", () => {
       false,
     );
   });
+
+  it("names each load button after its loader", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper
+        .get("[data-test='import-loader-start-sc_data_ptu']")
+        .attributes("aria-label"),
+    ).toBe("Load: Game data · PTU");
+  });
 });

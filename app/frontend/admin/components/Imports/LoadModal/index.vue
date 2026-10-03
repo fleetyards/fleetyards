@@ -84,6 +84,7 @@ const run = async (option: ImportLoaderOption) => {
           :size="BtnSizesEnum.SM"
           :loading="isRunning(option)"
           :disabled="isRunning(option)"
+          :aria-label="`${t('actions.admin.imports.load')}: ${name(option)}`"
           :data-test="`import-loader-start-${option.id}`"
           @click="run(option)"
         >
