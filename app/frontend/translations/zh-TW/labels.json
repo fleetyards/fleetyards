@@ -22,6 +22,8 @@
       },
       "location": {
         "missionsSample": "計數僅涵蓋 %{total} 個中的前 %{shown} 個。",
+        "people": "在此的好友與艦隊成員",
+        "peopleFriend": "好友",
         "systemUnavailable": "無法載入此星系。",
         "systemsUnavailable": "無法載入星系。",
         "resourceKinds": {
