@@ -123,7 +123,7 @@ describe("LocationSystemLanes", () => {
 
     const labels = wrapper.findAll("[data-test='jump-lane-label']");
 
-    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(4);
+    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(5);
     expect(labels.map((label) => label.attributes("aria-label"))).toEqual(
       expect.arrayContaining([
         "nyx - Pyro Jump Point",
@@ -185,7 +185,7 @@ describe("LocationSystemLanes", () => {
     ).not.toEqual(expect.arrayContaining([expect.stringContaining("Terra")]));
   });
 
-  it("draws an announced connection to a placeholder without linking it", async () => {
+  it("dashes every line into a placeholder and labels its unlinked end", async () => {
     vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
       new DOMRect(0, 0, 1200, 120),
     );
@@ -193,11 +193,11 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
     await flushPromises();
 
-    expect(wrapper.findAll(".location-lanes__line--planned").length).toBe(1);
+    expect(wrapper.findAll(".location-lanes__line--dashed").length).toBe(3);
     expect(
       wrapper
-        .findAll("[data-test='jump-lane-planned']")
+        .findAll("[data-test='jump-lane-plain']")
         .map((label) => label.text()),
-    ).toEqual(expect.arrayContaining(["Castra", "Nyx"]));
+    ).toEqual(expect.arrayContaining(["Castra", "Nyx", "Pyro", "Stanton"]));
   });
 });

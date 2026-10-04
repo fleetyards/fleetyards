@@ -188,6 +188,9 @@ const lanes = computed(() => {
   const names = new Map(
     entries.value.map((entry) => [entry.id, shortName(entry)]),
   );
+  const placeholderIds = new Set(
+    placeholders.value.map((placeholder) => placeholder.id),
+  );
 
   return layout.value.lanes.flatMap((lane) => {
     const upperId = order[lane.upper];
@@ -200,14 +203,19 @@ const lanes = computed(() => {
     }
 
     const x = columnX(lane.column);
-    const { planned } = lane.connection;
     const leaving = lane.connection.ends[upperId];
     const arriving = lane.connection.ends[lowerId];
 
-    // A planned connection has no jump point to link to, so both ends are
-    // labelled with the name of the other system alone.
+    // Dashed when part of it is not in the game yet: an announced connection,
+    // or one into a placeholder. Both of its ends are drawn; one without a
+    // jump point to link to is labelled with the other system's name alone.
+    const dashed =
+      !!lane.connection.planned ||
+      placeholderIds.has(upperId) ||
+      placeholderIds.has(lowerId);
+
     const ends = [
-      (leaving || planned) && {
+      (leaving || dashed) && {
         key: `${lane.connection.key}:leaving`,
         jumpPoint: leaving,
         name: leaving?.destinationName ?? names.get(lowerId),
@@ -215,7 +223,7 @@ const lanes = computed(() => {
         y: upper.bottom,
         labelY: upper.bottom + LABEL_OFFSET,
       },
-      (arriving || planned) && {
+      (arriving || dashed) && {
         key: `${lane.connection.key}:arriving`,
         jumpPoint: arriving,
         name: arriving?.destinationName ?? names.get(upperId),
@@ -231,7 +239,7 @@ const lanes = computed(() => {
         x,
         top: upper.bottom,
         bottom: lower.top,
-        planned,
+        dashed,
         ends,
       },
     ];
@@ -258,7 +266,7 @@ const lanes = computed(() => {
         :x2="lane.x"
         :y1="lane.top"
         :y2="lane.bottom"
-        :class="{ 'location-lanes__line--planned': lane.planned }"
+        :class="{ 'location-lanes__line--dashed': lane.dashed }"
       />
     </svg>
 
@@ -280,32 +288,31 @@ const lanes = computed(() => {
 
     <template v-for="lane in lanes" :key="lane.key">
       <template v-for="end in lane.ends" :key="end.key">
-        <template v-if="end.jumpPoint">
-          <span
-            class="location-lanes__dot"
-            :style="{ left: `${lane.x}px`, top: `${end.y}px` }"
-            aria-hidden="true"
-          />
-          <router-link
-            :to="{
-              name: 'location',
-              params: { slug: end.jumpPoint.location.slug },
-            }"
-            :aria-label="end.jumpPoint.location.name ?? undefined"
-            :title="end.jumpPoint.location.name ?? undefined"
-            class="location-lanes__label"
-            :style="{ left: `${lane.x}px`, top: `${end.labelY}px` }"
-            data-test="jump-lane-label"
-          >
-            <i class="fa-light" :class="end.icon" aria-hidden="true" />
-            {{ end.name }}
-          </router-link>
-        </template>
+        <span
+          class="location-lanes__dot"
+          :style="{ left: `${lane.x}px`, top: `${end.y}px` }"
+          aria-hidden="true"
+        />
+        <router-link
+          v-if="end.jumpPoint"
+          :to="{
+            name: 'location',
+            params: { slug: end.jumpPoint.location.slug },
+          }"
+          :aria-label="end.jumpPoint.location.name ?? undefined"
+          :title="end.jumpPoint.location.name ?? undefined"
+          class="location-lanes__label"
+          :style="{ left: `${lane.x}px`, top: `${end.labelY}px` }"
+          data-test="jump-lane-label"
+        >
+          <i class="fa-light" :class="end.icon" aria-hidden="true" />
+          {{ end.name }}
+        </router-link>
         <span
           v-else
-          class="location-lanes__label location-lanes__label--planned"
+          class="location-lanes__label location-lanes__label--plain"
           :style="{ left: `${lane.x}px`, top: `${end.labelY}px` }"
-          data-test="jump-lane-planned"
+          data-test="jump-lane-plain"
         >
           <i class="fa-light" :class="end.icon" aria-hidden="true" />
           {{ end.name }}
@@ -346,7 +353,7 @@ const lanes = computed(() => {
       );
     }
 
-    .location-lanes__line--planned {
+    .location-lanes__line--dashed {
       stroke-dasharray: 6 6;
       filter: none;
     }
@@ -396,7 +403,7 @@ const lanes = computed(() => {
       color: var(--color-primary, #428bca);
     }
 
-    &--planned {
+    &--plain {
       color: var(--color-text-dim, #959595);
       border-style: dashed;
     }
