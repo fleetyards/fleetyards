@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.12.0](https://github.com/fleetyards/fleetyards/compare/v8.11.0...v8.12.0) (2026-10-04)
+
+
+### Features
+
+* **locations:** tell temporary and planned jump connections apart ([#5393](https://github.com/fleetyards/fleetyards/issues/5393)) ([a3bcfeb](https://github.com/fleetyards/fleetyards/commit/a3bcfebb0e09d6b4541a53085b8a8c230dc10a04))
+
 ## [8.11.0](https://github.com/fleetyards/fleetyards/compare/v8.10.0...v8.11.0) (2026-10-04)
 
 
