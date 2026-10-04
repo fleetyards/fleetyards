@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.11.0](https://github.com/fleetyards/fleetyards/compare/v8.10.0...v8.11.0) (2026-10-04)
+
+
+### Features
+
+* **locations:** dash the lines that are not in the game yet ([#5391](https://github.com/fleetyards/fleetyards/issues/5391)) ([d9c391d](https://github.com/fleetyards/fleetyards/commit/d9c391d089ea933ba92ad4216fef7c2e7c6d299b))
+
 ## [8.10.0](https://github.com/fleetyards/fleetyards/compare/v8.9.0...v8.10.0) (2026-10-03)
 
 
