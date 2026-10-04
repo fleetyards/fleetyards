@@ -7,4 +7,5 @@ json.array! @jump_points do |entry|
   json.system_id entry.system_id
   json.destination_name entry.destination_name
   json.destination_system_id entry.destination_system_id
+  json.temporary entry.temporary
 end

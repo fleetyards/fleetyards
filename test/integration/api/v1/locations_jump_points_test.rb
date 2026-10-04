@@ -36,6 +36,7 @@ class Api::V1::LocationsJumpPointsTest < ActionDispatch::IntegrationTest
       by_name = parsed_body.index_by { |entry| entry.dig("location", "name") }
 
       assert_equal @pyro.id, by_name.dig("Stanton-Pyro Jump Point", "destinationSystemId")
+      refute by_name.dig("Stanton-Pyro Jump Point", "temporary")
       assert_equal @pyro.id, by_name.dig("Pyro-Stanton Jump Point", "systemId")
       assert_equal "Stanton", by_name.dig("Pyro-Stanton Jump Point", "destinationName")
     end
@@ -60,6 +61,7 @@ class Api::V1::LocationsJumpPointsTest < ActionDispatch::IntegrationTest
 
       assert_equal "Nyx", magnus["destinationName"]
       assert_equal @nyx.id, magnus["destinationSystemId"]
+      assert magnus["temporary"]
     end
   end
 

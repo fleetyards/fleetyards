@@ -29784,12 +29784,15 @@ components:
           - string
           - 'null'
           format: uuid
+        temporary:
+          type: boolean
       additionalProperties: false
       required:
       - location
       - systemId
       - destinationName
       - destinationSystemId
+      - temporary
       title: LocationJumpPoint
     LocationJumpPointsList:
       type: array

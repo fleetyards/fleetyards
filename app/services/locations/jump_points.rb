@@ -7,34 +7,33 @@ module Locations
   # the game reuses placeholder records for tunnels it has not named yet. The
   # Stanton-Nyx tunnel is JumpPoint_Stanton_Magnus and JumpPoint_Nyx_Castra, and
   # only the rest stop each one sits under says where it goes: "Nyx Gateway",
-  # "Stanton Gateway". So a gateway's name wins over the key.
+  # "Stanton Gateway". So a gateway's name wins over the key, and a jump point
+  # whose gateway disagrees with its key is temporary: in the game, but on a
+  # record meant for another tunnel.
   class JumpPoints
     KEY = /\AJumpPoint_[A-Za-z]+_([A-Za-z]+)\z/
     GATEWAY_NAME = /\A(.+) Gateway\z/
 
-    Entry = Struct.new(:location, :system_id, :destination_name, :destination_system_id)
+    Entry = Struct.new(:location, :system_id, :destination_name, :destination_system_id, :temporary)
 
+    # The wreck site at the Stanton-Pyro jump point is a jump point by kind but
+    # has a third part to its key, so it never matches.
     def call
       jump_points.filter_map do |point|
-        destination = destination_of(point)
-        next if destination.blank?
+        key_destination = point.sc_key[KEY, 1]
+        next if key_destination.blank?
+
+        gateway = gateway_destination(point.parent)
+        destination = gateway || key_destination
 
         Entry.new(
           location: point,
           system_id: point.system_id,
           destination_name: destination,
-          destination_system_id: systems[destination.downcase]&.id
+          destination_system_id: systems[destination.downcase]&.id,
+          temporary: gateway.present? && !gateway.casecmp?(key_destination)
         )
       end
-    end
-
-    # The wreck site at the Stanton-Pyro jump point is a jump point by kind but
-    # has a third part to its key, so it never matches.
-    private def destination_of(point)
-      key_destination = point.sc_key[KEY, 1]
-      return if key_destination.blank?
-
-      gateway_destination(point.parent) || key_destination
     end
 
     private def gateway_destination(parent)
