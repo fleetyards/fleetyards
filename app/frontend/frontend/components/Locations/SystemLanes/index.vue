@@ -9,6 +9,7 @@ import { useResizeObserver } from "@vueuse/core";
 import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
 import type { Location, LocationJumpPoint } from "@/services/fyApi";
 import { jumpConnections, jumpLaneLayout, unjoinedJumpPoints } from "./layout";
+import Legend, { type JumpStyle } from "./Legend.vue";
 import PlaceholderCard from "./PlaceholderCard.vue";
 import {
   PLACEHOLDER_SYSTEMS,
@@ -264,9 +265,52 @@ const lanes = computed(() => {
     ];
   });
 });
+
+// The styles on the page, read off the lines when they are drawn and off the
+// chips that stand in for them when they are not. Only worth explaining once
+// there is more than the solid one.
+const legendStyles = computed<JumpStyle[]>(() => {
+  const styles = new Set<JumpStyle>();
+
+  if (hasLanes.value) {
+    lanes.value.forEach((lane) => {
+      if (lane.dashed) {
+        styles.add("planned");
+      } else if (lane.dotted) {
+        styles.add("temporary");
+      } else {
+        styles.add("inGame");
+      }
+    });
+  } else {
+    entries.value.forEach((entry) => {
+      if (unlinkedOf(entry.id).length) {
+        styles.add("planned");
+      }
+
+      if (!entry.system) {
+        return;
+      }
+
+      jumpPointsOf(entry.system)
+        .filter((jumpPoint) => jumpPoint.destinationSystemId)
+        .forEach((jumpPoint) =>
+          styles.add(jumpPoint.temporary ? "temporary" : "inGame"),
+        );
+    });
+  }
+
+  return [...styles];
+});
+
+const hasLegend = computed(() =>
+  legendStyles.value.some((style) => style !== "inGame"),
+);
 </script>
 
 <template>
+  <Legend v-if="hasLegend" :styles="legendStyles" :lines="hasLanes" />
+
   <div
     ref="container"
     class="location-lanes"

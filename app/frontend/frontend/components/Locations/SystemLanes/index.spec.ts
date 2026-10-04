@@ -239,4 +239,31 @@ describe("LocationSystemLanes", () => {
 
     expect(wrapper.findAll(".location-lanes__line--dotted")).toHaveLength(1);
   });
+
+  it("explains the line styles on the page in a legend", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const wrapper = await mountLanes({
+      jumpPoints: [
+        ...jumpPoints,
+        { ...jumpPoint("stanton", "Nyx", "nyx"), temporary: true },
+      ],
+    });
+    await flushPromises();
+
+    const legend = wrapper.find("[data-test='jump-legend']");
+
+    expect(legend.findAll("li")).toHaveLength(3);
+    expect(legend.findAll(".location-jump-legend__line")).toHaveLength(3);
+  });
+
+  it("explains the chips instead when there is no room for lines", async () => {
+    const wrapper = await mountLanes();
+
+    const legend = wrapper.find("[data-test='jump-legend']");
+
+    expect(legend.findAll(".location-jump-legend__chip")).toHaveLength(2);
+  });
 });

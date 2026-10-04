@@ -51,6 +51,12 @@
         "gateways": "跳跃门",
         "jumpPoints": "跳跃点",
         "notInGameYet": "尚未加入游戏",
+        "jumpLegend": {
+          "title": "跳跃连接",
+          "inGame": "游戏中",
+          "temporary": "临时",
+          "planned": "计划中"
+        },
         "systemStrip": "%{system}，从恒星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地点",

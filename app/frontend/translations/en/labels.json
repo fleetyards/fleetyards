@@ -51,6 +51,12 @@
         "gateways": "Jump gateways",
         "jumpPoints": "Jump points",
         "notInGameYet": "Not in the game yet",
+        "jumpLegend": {
+          "title": "Jump connections",
+          "inGame": "In game",
+          "temporary": "Temporary",
+          "planned": "Planned"
+        },
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",
