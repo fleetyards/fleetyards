@@ -12,9 +12,14 @@ import type { PlaceholderSystem } from "./placeholders";
 
 type Props = {
   system: PlaceholderSystem;
+  // Its connections, by the other system's name. A placeholder has no jump
+  // point of its own to link to.
+  unlinked?: string[];
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  unlinked: () => [],
+});
 
 const { t } = useI18n();
 
@@ -28,10 +33,25 @@ defineExpose({ body });
 <template>
   <div class="location-placeholder-card" data-test="placeholder-system">
     <div class="location-placeholder-card__head">
-      <span class="location-placeholder-card__title">{{ system.name }}</span>
-      <span class="location-placeholder-card__note">
-        {{ t("labels.location.notInGameYet") }}
-      </span>
+      <div class="location-placeholder-card__heading">
+        <span class="location-placeholder-card__title">{{ system.name }}</span>
+        <span class="location-placeholder-card__note">
+          {{ t("labels.location.notInGameYet") }}
+        </span>
+      </div>
+      <div v-if="unlinked.length" class="location-placeholder-card__jumps">
+        <span class="location-placeholder-card__note">
+          {{ t("labels.location.jumpPoints") }}
+        </span>
+        <span
+          v-for="name in unlinked"
+          :key="name"
+          class="location-placeholder-card__jump"
+          data-test="system-unlinked-jump"
+        >
+          {{ name }}
+        </span>
+      </div>
     </div>
     <div ref="body" class="location-placeholder-card__strip">
       <div class="location-placeholder-card__body">
@@ -76,6 +96,7 @@ defineExpose({ body });
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
+    justify-content: space-between;
     gap: 8px 16px;
   }
 
@@ -88,6 +109,27 @@ defineExpose({ body });
   &__note {
     font-size: 12px;
     color: var(--color-text-dim, #959595);
+  }
+
+  &__heading,
+  &__jumps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 16px;
+  }
+
+  &__jumps {
+    gap: 6px;
+  }
+
+  // A system card's chip for a connection with no jump point yet.
+  &__jump {
+    padding: 2px 8px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+    border: 1px dashed var(--color-primary, #428bca);
+    border-radius: var(--radius-control-bare, 6px);
   }
 
   &__strip {

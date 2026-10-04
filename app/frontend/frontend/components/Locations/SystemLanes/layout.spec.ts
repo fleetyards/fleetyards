@@ -17,6 +17,7 @@ const jumpPoint = (
   systemId,
   destinationName,
   destinationSystemId,
+  temporary: false,
 });
 
 const both = (a: string, b: string) => [jumpPoint(a, b, b), jumpPoint(b, a, a)];

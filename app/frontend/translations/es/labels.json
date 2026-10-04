@@ -51,6 +51,12 @@
         "gateways": "Portales de salto",
         "jumpPoints": "Puntos de salto",
         "notInGameYet": "Aún no está en el juego",
+        "jumpLegend": {
+          "title": "Conexiones de salto",
+          "inGame": "En el juego",
+          "temporary": "Temporal",
+          "planned": "Planeado"
+        },
         "systemStrip": "%{system}, desde su estrella hacia fuera",
         "allSystems": "Todos los sistemas",
         "allPlaces": "Todos los lugares",

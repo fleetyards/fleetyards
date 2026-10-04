@@ -51,6 +51,12 @@
         "gateways": "Sprungtore",
         "jumpPoints": "Sprungpunkte",
         "notInGameYet": "Noch nicht im Spiel",
+        "jumpLegend": {
+          "title": "Sprungverbindungen",
+          "inGame": "Im Spiel",
+          "temporary": "Vorläufig",
+          "planned": "Geplant"
+        },
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",

@@ -43,6 +43,7 @@ const jumpPoint = (
   systemId,
   destinationName,
   destinationSystemId,
+  temporary: false,
 });
 
 const systems = [
@@ -103,14 +104,25 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
 
     expect(wrapper.find("[data-test='jump-lanes']").exists()).toBe(false);
-    expect(chipsOf(wrapper, "Pyro System")).toEqual(["Nyx", "Stanton"]);
+    expect(chipsOf(wrapper, "Pyro System")).toEqual([
+      "Nyx",
+      "Stanton",
+      "Castra",
+    ]);
     expect(
       chipsOf(
         wrapper,
         "Stanton System",
-        ".location-system-card__jump-point--listed",
+        ".location-system-card__jump-point--in-game",
       ),
-    ).toEqual(["Pyro", "Terra"]);
+    ).toEqual(["Pyro"]);
+    expect(
+      chipsOf(
+        wrapper,
+        "Stanton System",
+        ".location-system-card__jump-point--planned",
+      ),
+    ).toEqual(["Terra"]);
   });
 
   it("joins the systems with lines, labelled at both ends, once there is room", async () => {
@@ -123,7 +135,7 @@ describe("LocationSystemLanes", () => {
 
     const labels = wrapper.findAll("[data-test='jump-lane-label']");
 
-    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(5);
+    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(6);
     expect(labels.map((label) => label.attributes("aria-label"))).toEqual(
       expect.arrayContaining([
         "nyx - Pyro Jump Point",
@@ -180,9 +192,9 @@ describe("LocationSystemLanes", () => {
 
     expect(
       wrapper
-        .findAll("[data-test='placeholder-system']")
-        .map((card) => card.text()),
-    ).not.toEqual(expect.arrayContaining([expect.stringContaining("Terra")]));
+        .findAll(".location-placeholder-card__title")
+        .map((title) => title.text()),
+    ).toEqual(["Castra System"]);
   });
 
   it("dashes every line into a placeholder and labels its unlinked end", async () => {
@@ -193,11 +205,116 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
     await flushPromises();
 
-    expect(wrapper.findAll(".location-lanes__line--dashed").length).toBe(3);
+    expect(wrapper.findAll(".location-lanes__line--dashed").length).toBe(4);
     expect(
       wrapper
         .findAll("[data-test='jump-lane-plain']")
         .map((label) => label.text()),
     ).toEqual(expect.arrayContaining(["Castra", "Nyx", "Pyro", "Stanton"]));
+  });
+
+  it("lists a connection with no jump point at a card's end as a plain chip", async () => {
+    const wrapper = await mountLanes();
+
+    expect(
+      cardOf(wrapper, "Nyx System")
+        ?.findAll("[data-test='system-unlinked-jump']")
+        .map((chip) => chip.text()),
+    ).toEqual(["Castra"]);
+    expect(
+      wrapper
+        .findAll("[data-test='placeholder-system']")
+        .find((card) => card.text().includes("Terra System"))
+        ?.findAll("[data-test='system-unlinked-jump']")
+        .map((chip) => chip.text()),
+    ).toEqual(expect.arrayContaining(["Stanton", "Castra"]));
+  });
+
+  it("dots a connection the game runs on records meant for another tunnel", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const wrapper = await mountLanes({
+      jumpPoints: [
+        ...jumpPoints,
+        { ...jumpPoint("stanton", "Nyx", "nyx"), temporary: true },
+        { ...jumpPoint("nyx", "Stanton", "stanton"), temporary: true },
+      ],
+    });
+    await flushPromises();
+
+    expect(wrapper.findAll(".location-lanes__line--dotted")).toHaveLength(1);
+  });
+
+  it("explains the line styles on the page in a legend", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const wrapper = await mountLanes({
+      jumpPoints: [
+        ...jumpPoints,
+        { ...jumpPoint("stanton", "Nyx", "nyx"), temporary: true },
+      ],
+    });
+    await flushPromises();
+
+    const legend = wrapper.find("[data-test='jump-legend']");
+
+    expect(legend.findAll("li")).toHaveLength(3);
+    expect(legend.findAll(".location-jump-legend__line")).toHaveLength(3);
+  });
+
+  it("explains the chips instead when there is no room for lines", async () => {
+    const wrapper = await mountLanes();
+
+    const legend = wrapper.find("[data-test='jump-legend']");
+
+    expect(legend.findAll(".location-jump-legend__chip")).toHaveLength(2);
+  });
+
+  it("styles a line by the jump points it ends at, not a second record", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const second = {
+      ...jumpPoint("nyx", "Pyro", "pyro"),
+      location: { ...jumpPoint("nyx", "Pyro", "pyro").location, id: "second" },
+      temporary: true,
+    };
+
+    const wrapper = await mountLanes({ jumpPoints: [...jumpPoints, second] });
+    await flushPromises();
+
+    expect(wrapper.findAll(".location-lanes__line--dotted")).toHaveLength(0);
+    expect(
+      chipsOf(
+        wrapper,
+        "Nyx System",
+        ".location-system-card__jump-point--temporary",
+      ),
+    ).toEqual(["Pyro"]);
+    expect(wrapper.find("[data-test='jump-legend']").text()).toContain(
+      "Temporary",
+    );
+  });
+
+  it("lists the missing end of a tunnel in the game as in the game", async () => {
+    const wrapper = await mountLanes({
+      jumpPoints: jumpPoints.filter(
+        (point) =>
+          !(point.systemId === "pyro" && point.destinationName === "Nyx"),
+      ),
+    });
+
+    expect(
+      chipsOf(
+        wrapper,
+        "Pyro System",
+        ".location-system-card__jump-point--in-game",
+      ),
+    ).toEqual(["Stanton", "Nyx"]);
   });
 });

@@ -8,7 +8,17 @@ export default {
 import { useResizeObserver } from "@vueuse/core";
 import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
 import type { Location, LocationJumpPoint } from "@/services/fyApi";
-import { jumpConnections, jumpLaneLayout, unjoinedJumpPoints } from "./layout";
+import {
+  connectionStyle,
+  type JumpChip,
+  type JumpConnection,
+  jumpConnections,
+  jumpLaneLayout,
+  jumpPointStyle,
+  type JumpStyle,
+  unjoinedJumpPoints,
+} from "./layout";
+import Legend from "./Legend.vue";
 import PlaceholderCard from "./PlaceholderCard.vue";
 import {
   PLACEHOLDER_SYSTEMS,
@@ -138,10 +148,69 @@ const unjoined = computed(() =>
   unjoinedJumpPoints(jumpPoints.value, connections.value),
 );
 
-const jumpPointsOf = (system: Location) =>
-  hasLanes.value
-    ? (unjoined.value[system.id] ?? [])
-    : jumpPoints.value.filter((jumpPoint) => jumpPoint.systemId === system.id);
+const names = computed(
+  () => new Map(entries.value.map((entry) => [entry.id, shortName(entry)])),
+);
+
+const placeholderIds = computed(
+  () => new Set(placeholders.value.map((placeholder) => placeholder.id)),
+);
+
+const styleOf = (connection: JumpConnection) =>
+  connectionStyle(connection, placeholderIds.value);
+
+// A jump point a line ends at takes that line's style, so its chip says the
+// same as the line wherever the page draws one.
+const endStyles = computed(
+  () =>
+    new Map(
+      connections.value.flatMap((connection) =>
+        Object.values(connection.ends).flatMap((end) =>
+          end ? [[end.location.id, styleOf(connection)] as const] : [],
+        ),
+      ),
+    ),
+);
+
+// What a card lists beside its title. With lines drawn, only what no line
+// ends at. Without them, every jump point, and every connection with no jump
+// point at this end by the other system's name.
+const chipsOf = (id: string): JumpChip[] => {
+  const shown = hasLanes.value
+    ? (unjoined.value[id] ?? [])
+    : jumpPoints.value.filter((jumpPoint) => jumpPoint.systemId === id);
+
+  const pointChips = shown.map((jumpPoint) => ({
+    key: jumpPoint.location.id,
+    name: jumpPoint.destinationName,
+    style:
+      endStyles.value.get(jumpPoint.location.id) ??
+      jumpPointStyle(jumpPoint, placeholderIds.value),
+    jumpPoint,
+  }));
+
+  if (hasLanes.value) {
+    return pointChips;
+  }
+
+  const nameChips = connections.value.flatMap((connection) => {
+    const otherId = connection.systemIds.find((other) => other !== id);
+
+    if (!connection.systemIds.includes(id) || connection.ends[id] || !otherId) {
+      return [];
+    }
+
+    return [
+      {
+        key: `${connection.key}:${id}`,
+        name: names.value.get(otherId) ?? "",
+        style: styleOf(connection),
+      },
+    ];
+  });
+
+  return [...pointChips, ...nameChips];
+};
 
 const setCard = (id: string, card: unknown) => {
   if (card) {
@@ -185,12 +254,6 @@ const lanes = computed(() => {
   }
 
   const { order } = layout.value;
-  const names = new Map(
-    entries.value.map((entry) => [entry.id, shortName(entry)]),
-  );
-  const placeholderIds = new Set(
-    placeholders.value.map((placeholder) => placeholder.id),
-  );
 
   return layout.value.lanes.flatMap((lane) => {
     const upperId = order[lane.upper];
@@ -206,19 +269,17 @@ const lanes = computed(() => {
     const leaving = lane.connection.ends[upperId];
     const arriving = lane.connection.ends[lowerId];
 
-    // Dashed when part of it is not in the game yet: an announced connection,
-    // or one into a placeholder. Both of its ends are drawn; one without a
-    // jump point to link to is labelled with the other system's name alone.
-    const dashed =
-      !!lane.connection.planned ||
-      placeholderIds.has(upperId) ||
-      placeholderIds.has(lowerId);
+    // A planned line has both its ends drawn; one without a jump point to
+    // link to is labelled with the other system's name alone.
+    const style = styleOf(lane.connection);
+    const dashed = style === "planned";
+    const dotted = style === "temporary";
 
     const ends = [
       (leaving || dashed) && {
         key: `${lane.connection.key}:leaving`,
         jumpPoint: leaving,
-        name: leaving?.destinationName ?? names.get(lowerId),
+        name: leaving?.destinationName ?? names.value.get(lowerId),
         icon: "fa-arrow-down",
         y: upper.bottom,
         labelY: upper.bottom + LABEL_OFFSET,
@@ -226,7 +287,7 @@ const lanes = computed(() => {
       (arriving || dashed) && {
         key: `${lane.connection.key}:arriving`,
         jumpPoint: arriving,
-        name: arriving?.destinationName ?? names.get(upperId),
+        name: arriving?.destinationName ?? names.value.get(upperId),
         icon: "fa-arrow-up",
         y: lower.top,
         labelY: lower.top - LABEL_OFFSET,
@@ -239,15 +300,40 @@ const lanes = computed(() => {
         x,
         top: upper.bottom,
         bottom: lower.top,
+        style,
         dashed,
+        dotted,
         ends,
       },
     ];
   });
 });
+
+// The styles on the page: the lines' when they are drawn, and every chip's,
+// which stand in for the lines when they are not and sit beside them when
+// they are. Only worth explaining once there is more than the solid one.
+const legendStyles = computed<JumpStyle[]>(() => {
+  const styles = new Set<JumpStyle>(lanes.value.map((lane) => lane.style));
+
+  entries.value.forEach((entry) =>
+    chipsOf(entry.id).forEach((chip) => {
+      if (chip.style) {
+        styles.add(chip.style);
+      }
+    }),
+  );
+
+  return [...styles];
+});
+
+const hasLegend = computed(() =>
+  legendStyles.value.some((style) => style !== "inGame"),
+);
 </script>
 
 <template>
+  <Legend v-if="hasLegend" :styles="legendStyles" :lines="hasLanes" />
+
   <div
     ref="container"
     class="location-lanes"
@@ -266,7 +352,10 @@ const lanes = computed(() => {
         :x2="lane.x"
         :y1="lane.top"
         :y2="lane.bottom"
-        :class="{ 'location-lanes__line--dashed': lane.dashed }"
+        :class="{
+          'location-lanes__line--dashed': lane.dashed,
+          'location-lanes__line--dotted': lane.dotted,
+        }"
       />
     </svg>
 
@@ -275,13 +364,14 @@ const lanes = computed(() => {
         v-if="entry.system"
         :ref="(card) => setCard(entry.id, card)"
         :system="entry.system"
-        :jump-points="jumpPointsOf(entry.system)"
+        :chips="chipsOf(entry.id)"
         class="location-lanes__card"
       />
       <PlaceholderCard
         v-else
         :ref="(card) => setCard(entry.id, card)"
         :system="entry.placeholder"
+        :unlinked="chipsOf(entry.id).map((chip) => chip.name)"
         class="location-lanes__card"
       />
     </template>
@@ -356,6 +446,11 @@ const lanes = computed(() => {
     .location-lanes__line--dashed {
       stroke-dasharray: 6 6;
       filter: none;
+    }
+
+    .location-lanes__line--dotted {
+      stroke-dasharray: 0 7;
+      stroke-width: 3;
     }
   }
 

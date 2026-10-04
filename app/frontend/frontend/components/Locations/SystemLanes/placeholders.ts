@@ -34,7 +34,7 @@ export const PLACEHOLDER_SYSTEMS: PlaceholderSystem[] = [
       { name: "Castra", color: "#a89a45" },
       { name: "Cascom", color: "#9a5e5a" },
     ],
-    jumpsTo: ["Nyx", "Pyro"],
+    jumpsTo: ["Nyx", "Pyro", "Terra"],
   },
   {
     id: "placeholder-terra",

@@ -24,6 +24,7 @@ const jumpPoint = (
   systemId: "stanton",
   destinationName,
   destinationSystemId,
+  temporary: false,
 });
 
 describe("pointIntoPlaceholders", () => {
