@@ -8,6 +8,8 @@ export interface JumpConnection {
   ends: Record<string, LocationJumpPoint | undefined>;
   // Announced, with no jump point in the game files at either end.
   planned?: boolean;
+  // In the game, but on a jump point record meant for another tunnel.
+  temporary?: boolean;
 }
 
 export interface JumpLane {
@@ -54,6 +56,7 @@ export const jumpConnections = (
     };
 
     connection.ends[from] ??= jumpPoint;
+    connection.temporary ||= jumpPoint.temporary;
     connections.set(key, connection);
   });
 

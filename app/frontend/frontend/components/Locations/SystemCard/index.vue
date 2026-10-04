@@ -20,10 +20,14 @@ type Props = {
   // Shown by name beside the title. A jump point that leads to another listed
   // system is marked out from one that leads off the page.
   jumpPoints?: LocationJumpPoint[];
+  // Connections with no jump point at this end yet, by the other system's
+  // name: listed beside the jump points, without a page to link to.
+  unlinked?: string[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   jumpPoints: () => [],
+  unlinked: () => [],
 });
 
 const { t } = useI18n();
@@ -51,7 +55,7 @@ defineExpose({ body });
         {{ system.name }}
       </router-link>
       <div
-        v-if="jumpPoints.length"
+        v-if="jumpPoints.length || unlinked.length"
         class="location-system-card__jump-points"
         data-test="system-jump-points"
       >
@@ -67,10 +71,19 @@ defineExpose({ body });
           :class="{
             'location-system-card__jump-point--listed':
               jumpPoint.destinationSystemId,
+            'location-system-card__jump-point--temporary': jumpPoint.temporary,
           }"
         >
           {{ jumpPoint.destinationName }}
         </router-link>
+        <span
+          v-for="name in unlinked"
+          :key="name"
+          class="location-system-card__jump-point location-system-card__jump-point--unlinked"
+          data-test="system-unlinked-jump"
+        >
+          {{ name }}
+        </span>
       </div>
     </div>
     <div ref="body">
@@ -136,6 +149,18 @@ defineExpose({ body });
       &:hover {
         color: #fff;
       }
+    }
+
+    // In the game, on a record meant for another tunnel: dotted like its line.
+    &--temporary {
+      border-style: dotted;
+    }
+
+    // A connection with no jump point to go to yet: dashed like its line.
+    &--unlinked,
+    &--unlinked:hover {
+      color: var(--color-text-dim, #959595);
+      border-color: var(--color-primary, #428bca);
     }
   }
 

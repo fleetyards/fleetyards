@@ -43,6 +43,7 @@ const jumpPoint = (
   systemId,
   destinationName,
   destinationSystemId,
+  temporary: false,
 });
 
 const systems = [
@@ -103,7 +104,11 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
 
     expect(wrapper.find("[data-test='jump-lanes']").exists()).toBe(false);
-    expect(chipsOf(wrapper, "Pyro System")).toEqual(["Nyx", "Stanton"]);
+    expect(chipsOf(wrapper, "Pyro System")).toEqual([
+      "Nyx",
+      "Stanton",
+      "Castra",
+    ]);
     expect(
       chipsOf(
         wrapper,
@@ -123,7 +128,7 @@ describe("LocationSystemLanes", () => {
 
     const labels = wrapper.findAll("[data-test='jump-lane-label']");
 
-    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(5);
+    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(6);
     expect(labels.map((label) => label.attributes("aria-label"))).toEqual(
       expect.arrayContaining([
         "nyx - Pyro Jump Point",
@@ -180,9 +185,9 @@ describe("LocationSystemLanes", () => {
 
     expect(
       wrapper
-        .findAll("[data-test='placeholder-system']")
-        .map((card) => card.text()),
-    ).not.toEqual(expect.arrayContaining([expect.stringContaining("Terra")]));
+        .findAll(".location-placeholder-card__title")
+        .map((title) => title.text()),
+    ).toEqual(["Castra System"]);
   });
 
   it("dashes every line into a placeholder and labels its unlinked end", async () => {
@@ -193,11 +198,45 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
     await flushPromises();
 
-    expect(wrapper.findAll(".location-lanes__line--dashed").length).toBe(3);
+    expect(wrapper.findAll(".location-lanes__line--dashed").length).toBe(4);
     expect(
       wrapper
         .findAll("[data-test='jump-lane-plain']")
         .map((label) => label.text()),
     ).toEqual(expect.arrayContaining(["Castra", "Nyx", "Pyro", "Stanton"]));
+  });
+
+  it("lists a connection with no jump point at a card's end as a plain chip", async () => {
+    const wrapper = await mountLanes();
+
+    expect(
+      cardOf(wrapper, "Nyx System")
+        ?.findAll("[data-test='system-unlinked-jump']")
+        .map((chip) => chip.text()),
+    ).toEqual(["Castra"]);
+    expect(
+      wrapper
+        .findAll("[data-test='placeholder-system']")
+        .find((card) => card.text().includes("Terra System"))
+        ?.findAll("[data-test='system-unlinked-jump']")
+        .map((chip) => chip.text()),
+    ).toEqual(expect.arrayContaining(["Stanton", "Castra"]));
+  });
+
+  it("dots a connection the game runs on records meant for another tunnel", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const wrapper = await mountLanes({
+      jumpPoints: [
+        ...jumpPoints,
+        { ...jumpPoint("stanton", "Nyx", "nyx"), temporary: true },
+        { ...jumpPoint("nyx", "Stanton", "stanton"), temporary: true },
+      ],
+    });
+    await flushPromises();
+
+    expect(wrapper.findAll(".location-lanes__line--dotted")).toHaveLength(1);
   });
 });

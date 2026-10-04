@@ -138,6 +138,25 @@ const unjoined = computed(() =>
   unjoinedJumpPoints(jumpPoints.value, connections.value),
 );
 
+const names = computed(
+  () => new Map(entries.value.map((entry) => [entry.id, shortName(entry)])),
+);
+
+// Without lines, a connection with no jump point at this end is listed by the
+// other system's name alone: an announced one, or one into a placeholder.
+const unlinkedOf = (id: string) =>
+  hasLanes.value
+    ? []
+    : connections.value.flatMap((connection) => {
+        if (!connection.systemIds.includes(id) || connection.ends[id]) {
+          return [];
+        }
+
+        const otherId = connection.systemIds.find((other) => other !== id);
+
+        return otherId ? [names.value.get(otherId) ?? ""] : [];
+      });
+
 const jumpPointsOf = (system: Location) =>
   hasLanes.value
     ? (unjoined.value[system.id] ?? [])
@@ -185,9 +204,6 @@ const lanes = computed(() => {
   }
 
   const { order } = layout.value;
-  const names = new Map(
-    entries.value.map((entry) => [entry.id, shortName(entry)]),
-  );
   const placeholderIds = new Set(
     placeholders.value.map((placeholder) => placeholder.id),
   );
@@ -213,12 +229,14 @@ const lanes = computed(() => {
       !!lane.connection.planned ||
       placeholderIds.has(upperId) ||
       placeholderIds.has(lowerId);
+    // In the game today, on records meant for other tunnels.
+    const dotted = !dashed && !!lane.connection.temporary;
 
     const ends = [
       (leaving || dashed) && {
         key: `${lane.connection.key}:leaving`,
         jumpPoint: leaving,
-        name: leaving?.destinationName ?? names.get(lowerId),
+        name: leaving?.destinationName ?? names.value.get(lowerId),
         icon: "fa-arrow-down",
         y: upper.bottom,
         labelY: upper.bottom + LABEL_OFFSET,
@@ -226,7 +244,7 @@ const lanes = computed(() => {
       (arriving || dashed) && {
         key: `${lane.connection.key}:arriving`,
         jumpPoint: arriving,
-        name: arriving?.destinationName ?? names.get(upperId),
+        name: arriving?.destinationName ?? names.value.get(upperId),
         icon: "fa-arrow-up",
         y: lower.top,
         labelY: lower.top - LABEL_OFFSET,
@@ -240,6 +258,7 @@ const lanes = computed(() => {
         top: upper.bottom,
         bottom: lower.top,
         dashed,
+        dotted,
         ends,
       },
     ];
@@ -266,7 +285,10 @@ const lanes = computed(() => {
         :x2="lane.x"
         :y1="lane.top"
         :y2="lane.bottom"
-        :class="{ 'location-lanes__line--dashed': lane.dashed }"
+        :class="{
+          'location-lanes__line--dashed': lane.dashed,
+          'location-lanes__line--dotted': lane.dotted,
+        }"
       />
     </svg>
 
@@ -276,12 +298,14 @@ const lanes = computed(() => {
         :ref="(card) => setCard(entry.id, card)"
         :system="entry.system"
         :jump-points="jumpPointsOf(entry.system)"
+        :unlinked="unlinkedOf(entry.id)"
         class="location-lanes__card"
       />
       <PlaceholderCard
         v-else
         :ref="(card) => setCard(entry.id, card)"
         :system="entry.placeholder"
+        :unlinked="unlinkedOf(entry.id)"
         class="location-lanes__card"
       />
     </template>
@@ -356,6 +380,11 @@ const lanes = computed(() => {
     .location-lanes__line--dashed {
       stroke-dasharray: 6 6;
       filter: none;
+    }
+
+    .location-lanes__line--dotted {
+      stroke-dasharray: 0 7;
+      stroke-width: 3;
     }
   }
 
