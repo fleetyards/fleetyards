@@ -8,8 +8,18 @@ export interface JumpConnection {
   ends: Record<string, LocationJumpPoint | undefined>;
   // Announced, with no jump point in the game files at either end.
   planned?: boolean;
-  // In the game, but on a jump point record meant for another tunnel.
-  temporary?: boolean;
+}
+
+// How a connection is drawn: solid, dotted, dashed.
+export type JumpStyle = "inGame" | "temporary" | "planned";
+
+// A chip on a card: a jump point to go to, or, without one, the name of the
+// system a connection leads to. No style for a way off the page.
+export interface JumpChip {
+  key: string;
+  name: string;
+  style: JumpStyle | null;
+  jumpPoint?: LocationJumpPoint;
 }
 
 export interface JumpLane {
@@ -56,7 +66,6 @@ export const jumpConnections = (
     };
 
     connection.ends[from] ??= jumpPoint;
-    connection.temporary ||= jumpPoint.temporary;
     connections.set(key, connection);
   });
 
@@ -87,6 +96,43 @@ export const unjoinedJumpPoints = (
     },
     {},
   );
+};
+
+// Planned while it is only announced or either side is a placeholder;
+// temporary when a jump point its line ends at runs on another tunnel's
+// record. Read off the ends alone, never a second record the line ignores.
+export const connectionStyle = (
+  connection: JumpConnection,
+  placeholderIds: Set<string>,
+): JumpStyle => {
+  if (
+    connection.planned ||
+    connection.systemIds.some((id) => placeholderIds.has(id))
+  ) {
+    return "planned";
+  }
+
+  return Object.values(connection.ends).some((end) => end?.temporary)
+    ? "temporary"
+    : "inGame";
+};
+
+// A jump point no line ends at, by itself.
+export const jumpPointStyle = (
+  jumpPoint: LocationJumpPoint,
+  placeholderIds: Set<string>,
+): JumpStyle | null => {
+  const to = jumpPoint.destinationSystemId;
+
+  if (!to) {
+    return null;
+  }
+
+  if (placeholderIds.has(to)) {
+    return "planned";
+  }
+
+  return jumpPoint.temporary ? "temporary" : "inGame";
 };
 
 const assignColumns = (order: string[], connections: JumpConnection[]) => {

@@ -8,27 +8,31 @@ export default {
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import SystemCardSkeleton from "@/frontend/components/Locations/SystemCard/Skeleton.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import type {
+  JumpChip,
+  JumpStyle,
+} from "@/frontend/components/Locations/SystemLanes/layout";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type Location,
-  type LocationJumpPoint,
-  useLocationTree,
-} from "@/services/fyApi";
+import { type Location, useLocationTree } from "@/services/fyApi";
 
 type Props = {
   system: Location;
-  // Shown by name beside the title. A jump point that leads to another listed
-  // system is marked out from one that leads off the page.
-  jumpPoints?: LocationJumpPoint[];
-  // Connections with no jump point at this end yet, by the other system's
-  // name: listed beside the jump points, without a page to link to.
-  unlinked?: string[];
+  // Listed by name beside the title, bordered like the line each stands for:
+  // solid, dotted, dashed, or a quiet dashed one for a way off the page.
+  chips?: JumpChip[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  jumpPoints: () => [],
-  unlinked: () => [],
+  chips: () => [],
 });
+
+const STYLE_CLASSES: Record<JumpStyle, string> = {
+  inGame: "location-system-card__jump-point--in-game",
+  temporary: "location-system-card__jump-point--temporary",
+  planned: "location-system-card__jump-point--planned",
+};
+
+const chipClass = (chip: JumpChip) => chip.style && STYLE_CLASSES[chip.style];
 
 const { t } = useI18n();
 
@@ -55,35 +59,35 @@ defineExpose({ body });
         {{ system.name }}
       </router-link>
       <div
-        v-if="jumpPoints.length || unlinked.length"
+        v-if="chips.length"
         class="location-system-card__jump-points"
         data-test="system-jump-points"
       >
         <span class="location-system-card__caption">
           {{ t("labels.location.jumpPoints") }}
         </span>
-        <router-link
-          v-for="jumpPoint in jumpPoints"
-          :key="jumpPoint.location.id"
-          :to="{ name: 'location', params: { slug: jumpPoint.location.slug } }"
-          :title="jumpPoint.location.name ?? undefined"
-          class="location-system-card__jump-point"
-          :class="{
-            'location-system-card__jump-point--listed':
-              jumpPoint.destinationSystemId,
-            'location-system-card__jump-point--temporary': jumpPoint.temporary,
-          }"
-        >
-          {{ jumpPoint.destinationName }}
-        </router-link>
-        <span
-          v-for="name in unlinked"
-          :key="name"
-          class="location-system-card__jump-point location-system-card__jump-point--unlinked"
-          data-test="system-unlinked-jump"
-        >
-          {{ name }}
-        </span>
+        <template v-for="chip in chips" :key="chip.key">
+          <router-link
+            v-if="chip.jumpPoint"
+            :to="{
+              name: 'location',
+              params: { slug: chip.jumpPoint.location.slug },
+            }"
+            :title="chip.jumpPoint.location.name ?? undefined"
+            class="location-system-card__jump-point"
+            :class="chipClass(chip)"
+          >
+            {{ chip.name }}
+          </router-link>
+          <span
+            v-else
+            class="location-system-card__jump-point location-system-card__jump-point--unlinked"
+            :class="chipClass(chip)"
+            data-test="system-unlinked-jump"
+          >
+            {{ chip.name }}
+          </span>
+        </template>
       </div>
     </div>
     <div ref="body">
@@ -141,9 +145,10 @@ defineExpose({ body });
       color: var(--color-text, #c8c8c8);
     }
 
-    &--listed {
+    &--in-game,
+    &--temporary,
+    &--planned {
       color: var(--color-text, #c8c8c8);
-      border-style: solid;
       border-color: var(--color-primary, #428bca);
 
       &:hover {
@@ -151,16 +156,18 @@ defineExpose({ body });
       }
     }
 
-    // In the game, on a record meant for another tunnel: dotted like its line.
+    &--in-game {
+      border-style: solid;
+    }
+
     &--temporary {
       border-style: dotted;
     }
 
-    // A connection with no jump point to go to yet: dashed like its line.
+    // No jump point at this end to go to, so nothing to answer a hover.
     &--unlinked,
     &--unlinked:hover {
       color: var(--color-text-dim, #959595);
-      border-color: var(--color-primary, #428bca);
     }
   }
 

@@ -113,9 +113,16 @@ describe("LocationSystemLanes", () => {
       chipsOf(
         wrapper,
         "Stanton System",
-        ".location-system-card__jump-point--listed",
+        ".location-system-card__jump-point--in-game",
       ),
-    ).toEqual(["Pyro", "Terra"]);
+    ).toEqual(["Pyro"]);
+    expect(
+      chipsOf(
+        wrapper,
+        "Stanton System",
+        ".location-system-card__jump-point--planned",
+      ),
+    ).toEqual(["Terra"]);
   });
 
   it("joins the systems with lines, labelled at both ends, once there is room", async () => {
@@ -265,5 +272,49 @@ describe("LocationSystemLanes", () => {
     const legend = wrapper.find("[data-test='jump-legend']");
 
     expect(legend.findAll(".location-jump-legend__chip")).toHaveLength(2);
+  });
+
+  it("styles a line by the jump points it ends at, not a second record", async () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(0, 0, 1600, 120),
+    );
+
+    const second = {
+      ...jumpPoint("nyx", "Pyro", "pyro"),
+      location: { ...jumpPoint("nyx", "Pyro", "pyro").location, id: "second" },
+      temporary: true,
+    };
+
+    const wrapper = await mountLanes({ jumpPoints: [...jumpPoints, second] });
+    await flushPromises();
+
+    expect(wrapper.findAll(".location-lanes__line--dotted")).toHaveLength(0);
+    expect(
+      chipsOf(
+        wrapper,
+        "Nyx System",
+        ".location-system-card__jump-point--temporary",
+      ),
+    ).toEqual(["Pyro"]);
+    expect(wrapper.find("[data-test='jump-legend']").text()).toContain(
+      "Temporary",
+    );
+  });
+
+  it("lists the missing end of a tunnel in the game as in the game", async () => {
+    const wrapper = await mountLanes({
+      jumpPoints: jumpPoints.filter(
+        (point) =>
+          !(point.systemId === "pyro" && point.destinationName === "Nyx"),
+      ),
+    });
+
+    expect(
+      chipsOf(
+        wrapper,
+        "Pyro System",
+        ".location-system-card__jump-point--in-game",
+      ),
+    ).toEqual(["Stanton", "Nyx"]);
   });
 });

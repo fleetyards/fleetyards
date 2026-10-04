@@ -6,8 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-
-export type JumpStyle = "inGame" | "temporary" | "planned";
+import type { JumpStyle } from "./layout";
 
 type Props = {
   // The styles on the page, in this order: solid, dotted, dashed.
