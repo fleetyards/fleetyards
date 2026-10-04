@@ -123,7 +123,7 @@ describe("LocationSystemLanes", () => {
 
     const labels = wrapper.findAll("[data-test='jump-lane-label']");
 
-    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(4);
+    expect(wrapper.findAll("[data-test='jump-lanes'] line")).toHaveLength(5);
     expect(labels.map((label) => label.attributes("aria-label"))).toEqual(
       expect.arrayContaining([
         "nyx - Pyro Jump Point",
@@ -193,11 +193,11 @@ describe("LocationSystemLanes", () => {
     const wrapper = await mountLanes();
     await flushPromises();
 
-    expect(wrapper.findAll(".location-lanes__line--planned").length).toBe(1);
+    expect(wrapper.findAll(".location-lanes__line--planned").length).toBe(2);
     expect(
       wrapper
         .findAll("[data-test='jump-lane-planned']")
         .map((label) => label.text()),
-    ).toEqual(expect.arrayContaining(["Castra", "Nyx"]));
+    ).toEqual(expect.arrayContaining(["Castra", "Nyx", "Pyro"]));
   });
 });
