@@ -12,6 +12,7 @@ require_relative "../lib/middleware/service_worker_cache_control"
 # REMOVAL: Delete this line and lib/rails_creds_backport/ when upgrading to Rails 8.2.
 require_relative "../lib/rails_creds_backport"
 require_relative "../lib/omniauth/strategies/patreon"
+require_relative "../lib/omniauth/strategies/bluesky"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
