@@ -105,6 +105,23 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: "TestFeature"}
   end
 
+  test "GET /features/:id names each actor, and a fleet by its SID too" do
+    user = create(:user)
+    fleet = create(:fleet, name: "Test", fid: "Test100")
+    Flipper.enable_actor("TestFeature", user)
+    Flipper.enable_actor("TestFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: "TestFeature"} do
+      actors = parsed_body["actors"].sort_by { |actor| actor["type"] }
+
+      assert_equal [
+        {"type" => "Fleet", "id" => fleet.id, "name" => "Test", "fid" => "Test100"},
+        {"type" => "User", "id" => user.id, "name" => user.username, "fid" => nil}
+      ], actors
+    end
+  end
+
   # The flag is permanent because config/feature_flags.yml says so, not because
   # of anything Flipper holds — the admin UI groups the long-lived gates by it.
   test "GET /features/:id reports a flag the registry declares permanent" do

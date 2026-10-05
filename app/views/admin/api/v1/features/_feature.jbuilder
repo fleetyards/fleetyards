@@ -17,16 +17,22 @@ json.percentageOfTime feature.percentage_of_time_value
 
 json.groups feature.groups_value.to_a
 
-actors = feature.actors_value.to_a
-json.actors actors.map { |flipper_id|
-  type, id = flipper_id.split(";", 2)
-  actor_name = case type
+# One lookup per actor type rather than per actor: a rollout flag carries a few
+# hundred, and the index renders every flag.
+actors = feature.actors_value.to_a.map { |flipper_id| flipper_id.split(";", 2) }
+ids_by_type = actors.group_by(&:first).transform_values { |pairs| pairs.map(&:last) }
+users = User.where(id: ids_by_type.fetch("User", [])).pluck(:id, :username).to_h
+fleets = Fleet.where(id: ids_by_type.fetch("Fleet", [])).pluck(:id, :name, :fid).to_h { |id, name, fid| [id, {name:, fid:}] }
+
+json.actors actors.map { |type, id|
+  case type
   when "User"
-    User.find_by(id:)&.username
+    {type:, id:, name: users[id] || "Unknown", fid: nil}
   when "Fleet"
-    Fleet.find_by(id:)&.name
+    {type:, id:, name: fleets.dig(id, :name) || "Unknown", fid: fleets.dig(id, :fid)}
+  else
+    {type:, id:, name: "Unknown", fid: nil}
   end
-  {type:, id:, name: actor_name || "Unknown"}
 }
 
 # The flag's own history, which flipper_gates cannot supply: its timestamps are

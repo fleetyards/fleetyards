@@ -14805,11 +14805,16 @@ components:
           type: string
         name:
           type: string
+        fid:
+          type: string
+          nullable: true
+          description: The fleet's SID, for a fleet actor
       additionalProperties: false
       required:
       - type
       - id
       - name
+      - fid
       title: FeatureActor
     FeatureActorInput:
       type: object

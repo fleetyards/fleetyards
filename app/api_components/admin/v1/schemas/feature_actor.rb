@@ -11,10 +11,11 @@ module Admin
           properties: {
             type: {type: :string},
             id: {type: :string},
-            name: {type: :string}
+            name: {type: :string},
+            fid: {type: :string, nullable: true, description: "The fleet's SID, for a fleet actor"}
           },
           additionalProperties: false,
-          required: %w[type id name]
+          required: %w[type id name fid]
         })
       end
     end
