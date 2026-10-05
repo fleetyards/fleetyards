@@ -111,6 +111,15 @@ watch(loading, (value) => {
   }
 });
 
+// Navigating to another ship can keep this component mounted; its views are a
+// first load again unless the browser already has every one of them.
+watch(
+  () => props.model.id,
+  () => {
+    firstSetShown.value = !loading.value;
+  },
+);
+
 const switching = computed(() => firstSetShown.value && loading.value);
 
 // An image that fails settles too, or the loader would sit over a view that is

@@ -42,8 +42,9 @@ const FLIGHT_VIEWS: Partial<ModelMedia> = {
   sideView: file("side"),
 };
 
-function model(media: Partial<ModelMedia>): Model {
+function model(media: Partial<ModelMedia>, id = "carrack"): Model {
   return {
+    id,
     media: { ...media },
     metrics: { length: 30, beam: 20, height: 10, fleetchartOffsetLength: 32 },
   } as Model;
@@ -248,6 +249,25 @@ describe("while the next set of images is loading", () => {
     await load(landedTop!, false);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+  });
+
+  it("stays away for another ship's first set, without a remount", async () => {
+    const wrapper = await mountViews(FLIGHT_VIEWS);
+    await settleAll(wrapper);
+
+    await wrapper.setProps({
+      model: model(
+        {
+          angledView: file("other-angled"),
+          topView: file("other-top"),
+          frontView: file("other-front"),
+          sideView: file("other-side"),
+        },
+        "polaris",
+      ),
+    });
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });
 
   it("settles a view that fails rather than waiting forever", async () => {
