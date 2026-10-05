@@ -32,7 +32,6 @@ class Api::V1::PayoutTransfersIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
     @organiser = create(:user)
     @tour = create(:tour, created_by: @organiser)
     @ledger = create(:payout_ledger, subject: @tour)

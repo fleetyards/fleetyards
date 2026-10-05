@@ -17,7 +17,7 @@ module Api
 
       before_action :set_viewer
       before_action :set_fleet
-      before_action :check_tour_payouts_feature
+      before_action :check_fleet_tours_feature
       before_action :set_tour, only: %i[show update destroy settle reopen cancel archive unarchive rotate_invite]
       before_action -> { require_fleet_subscription(:tours) }
 
@@ -284,7 +284,7 @@ module Api
 
         fleet_ids = @viewer.fleet_memberships.kept.accepted
           .map(&:fleet)
-          .select { |fleet| fleet.present? && feature_enabled?("tour_payouts", fleet) && feature_enabled?("fleet_tours", fleet) }
+          .select { |fleet| fleet.present? && feature_enabled?("fleet_tours", fleet) }
           .map(&:id)
 
         return scope if fleet_ids.empty?
@@ -301,25 +301,18 @@ module Api
         authorize! @fleet, to: :show?
       end
 
-      # Two flags, stacked. tour_payouts is what makes tours exist at all; a
-      # fleet running them as a fleet -- its own list, its own page, members
-      # asking onto them -- additionally wants fleet_tours, so switching that
-      # one off closes the fleet surface without touching the standalone tool.
-      # `set_fleet` leaves this nil on the slug-addressed actions, which carry
-      # no fleet in the path -- the tour is what knows. Still nil for a
-      # standalone tour, which is the personal tool and stays free.
+      # A fleet running tours as a fleet -- its own list, its own page, members
+      # asking onto them -- wants fleet_tours, so switching that off closes the
+      # fleet surface without touching the standalone tool. `set_fleet` leaves
+      # this nil on the slug-addressed actions, which carry no fleet in the
+      # path -- the tour is what knows. Still nil for a standalone tour, which
+      # is the personal tool and stays free.
       private def subscription_fleet
         @fleet || @tour&.fleet
       end
 
-      private def check_tour_payouts_feature
-        actors = [@fleet].compact
-
-        unless feature_enabled?("tour_payouts", *actors)
-          return render_feature_unavailable
-        end
-
-        return if @fleet.blank? || feature_enabled?("fleet_tours", *actors)
+      private def check_fleet_tours_feature
+        return if @fleet.blank? || feature_enabled?("fleet_tours", @fleet)
 
         render_feature_unavailable
       end

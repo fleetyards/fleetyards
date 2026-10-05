@@ -71,8 +71,6 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
-
     @organiser = create(:user)
     @member = create(:user)
     @stranger = create(:user)
@@ -293,9 +291,8 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
       body: entry_body(payoutParticipantId: participant.id)
   end
 
-  # The other half of the fleet_tours/tour_payouts split, and the one that is
-  # easy to lose: a standalone tour has no fleet, so it must keep working with
-  # the fleet flag off. The personal tool stays free of what prices the fleet
+  # The half of the fleet_tours split that is easy to lose: a standalone tour
+  # has no fleet, so it must keep working with the fleet flag off. The personal tool stays free of what prices the fleet
   # feature.
   test "a standalone tour's ledger does not need the fleet flag" do
     Flipper.disable("fleet_tours")

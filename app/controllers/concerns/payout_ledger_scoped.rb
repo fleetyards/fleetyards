@@ -20,22 +20,17 @@ module PayoutLedgerScoped
     authorize! @payout_ledger, with: PayoutLedgerPolicy, to: :show?
   end
 
-  # Two flags, and which apply depends on what the ledger hangs off -- three
-  # for a contract, which also needs `fleet_contracts`.
-  #
-  # `tour_payouts` is what makes a ledger exist at all and gates every one of
-  # them. A ledger that belongs to a fleet -- an event always, a tour when it
-  # was organised from a fleet's page -- is a *fleet* surface and needs
-  # `fleet_tours` on top. A standalone tour under /tools/ has no fleet to carry
-  # a toggle and stays on `tour_payouts` alone, which is what keeps the personal
-  # tool free of the fleet flag.
-  private def check_tour_payouts_feature
+  # A ledger that belongs to a fleet -- an event always, a tour when it was
+  # organised from a fleet's page -- is a *fleet* surface and needs
+  # `fleet_tours`, and a contract's also needs `fleet_contracts`. A standalone
+  # tour under /tools/ has no fleet to carry a toggle, which is what keeps the
+  # personal tool free of the fleet flag.
+  private def check_payout_features
     fleet = @payout_ledger&.fleet
-    actors = fleet ? [fleet] : []
+    return if fleet.blank?
 
-    return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
-    return render_payouts_unavailable if fleet.present? && !feature_enabled?("fleet_tours", *actors)
-    return if !contract_ledger? || feature_enabled?("fleet_contracts", *actors)
+    return render_payouts_unavailable unless feature_enabled?("fleet_tours", fleet)
+    return if !contract_ledger? || feature_enabled?("fleet_contracts", fleet)
 
     render_payouts_unavailable
   end
@@ -49,7 +44,7 @@ module PayoutLedgerScoped
   end
 
   # Nil for a standalone tour's ledger, which is the personal tool and stays
-  # free -- the same split check_tour_payouts_feature makes above.
+  # free -- the same split check_payout_features makes above.
   private def subscription_fleet
     @payout_ledger&.fleet
   end

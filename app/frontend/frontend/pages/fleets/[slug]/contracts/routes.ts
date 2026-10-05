@@ -77,11 +77,7 @@ export const routes: RouteRecordRaw[] = [
       // Reading the board is enough to open the page: a contractor holds no
       // payout privilege, and the ledger's own policy decides what they see.
       access: READ_ACCESS,
-      feature: [
-        FeatureFlagName.FLEET_CONTRACTS,
-        FeatureFlagName.TOUR_PAYOUTS,
-        FeatureFlagName.FLEET_TOURS,
-      ],
+      feature: [FeatureFlagName.FLEET_CONTRACTS, FeatureFlagName.FLEET_TOURS],
       featureScope: "fleet",
       customTitle: true,
     },

@@ -35,10 +35,7 @@ const resourceAccess = computed(
 
 <template>
   <template
-    v-if="
-      isFleetFeatureEnabled(props.fleet, FeatureFlagName.TOUR_PAYOUTS) &&
-      isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_TOURS)
-    "
+    v-if="isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_TOURS)"
   >
     <SubscriptionRequired v-if="subscriptionRequired" />
     <router-view

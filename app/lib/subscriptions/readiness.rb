@@ -12,17 +12,15 @@ module Subscriptions
   # the people paying today to the fleets they are in -- and flipping the flag
   # without having read this is how they lose access on announcement day.
   class Readiness
-    # Every flag that gates a premium capability, including the second one on
-    # tours. Deliberately the union rather than one flag per capability: a
-    # fleet holding any of them has been reaching functionality that is about
-    # to cost something, and for a grace window the generous reading is the
-    # correct one.
+    # Every flag that gates a premium capability. Deliberately the union rather
+    # than one flag per capability: a fleet holding any of them has been
+    # reaching functionality that is about to cost something, and for a grace
+    # window the generous reading is the correct one.
     FLAGS = %w[
       fleet_contracts
       fleet_mission_builder
       fleet_logistics
       fleet_tours
-      tour_payouts
     ].freeze
 
     # Every way a flag can grant access to a population this cannot list. A

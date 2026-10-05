@@ -54,7 +54,6 @@ export const routes: RouteRecordRaw[] = [
       // flag rather than adding to it, and has to carry it itself.
       feature: [
         FeatureFlagName.FLEET_MISSION_BUILDER,
-        FeatureFlagName.TOUR_PAYOUTS,
         FeatureFlagName.FLEET_TOURS,
       ],
       featureScope: "fleet",

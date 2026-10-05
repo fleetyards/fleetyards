@@ -14,7 +14,7 @@ module Api
         only: %i[create approve decline destroy]
 
       before_action :set_tour
-      before_action :check_tour_payouts_feature
+      before_action :check_fleet_tours_feature
       before_action -> { require_fleet_subscription(:tours) }
       before_action :set_tour_join_request, only: %i[approve decline destroy]
 
@@ -97,18 +97,17 @@ module Api
         @tour_join_request = @tour.join_requests.find(params[:id])
       end
 
-      # Asking onto a tour only exists on the fleet surface, so it wants both
-      # flags -- tour_payouts for tours at all, fleet_tours for a fleet running
-      # them as a fleet.
+      # Asking onto a tour only exists on the fleet surface, so it wants
+      # fleet_tours.
       # nil for a standalone tour, which is the personal tool and stays free.
       private def subscription_fleet
         @tour&.fleet
       end
 
-      private def check_tour_payouts_feature
+      private def check_fleet_tours_feature
         actors = @tour&.fleet ? [@tour.fleet] : []
 
-        return if feature_enabled?("tour_payouts", *actors) && feature_enabled?("fleet_tours", *actors)
+        return if feature_enabled?("fleet_tours", *actors)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

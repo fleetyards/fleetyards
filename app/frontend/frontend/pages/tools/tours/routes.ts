@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -9,7 +8,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.tours.index",
       needsAuthentication: true,
-      feature: FeatureFlagName.TOUR_PAYOUTS,
       backgroundImage: "bg-7",
     },
   },
@@ -20,7 +18,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.tours.add",
       needsAuthentication: true,
-      feature: FeatureFlagName.TOUR_PAYOUTS,
       backgroundImage: "bg-7",
     },
   },
@@ -31,7 +28,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.tours.join",
       needsAuthentication: true,
-      feature: FeatureFlagName.TOUR_PAYOUTS,
       backgroundImage: "bg-7",
     },
   },
@@ -42,7 +38,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.tours.show",
       needsAuthentication: true,
-      feature: FeatureFlagName.TOUR_PAYOUTS,
       backgroundImage: "bg-7",
       customTitle: true,
     },

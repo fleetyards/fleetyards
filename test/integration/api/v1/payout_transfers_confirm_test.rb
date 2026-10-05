@@ -57,8 +57,6 @@ class Api::V1::PayoutTransfersConfirmTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
-
     @organiser = create(:user)
     @sender = create(:user)
     @receiver = create(:user)

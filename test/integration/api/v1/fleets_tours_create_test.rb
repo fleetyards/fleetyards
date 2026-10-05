@@ -43,7 +43,6 @@ class Api::V1::FleetsToursCreateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
     Flipper.enable("fleet_tours")
 
     @admin = create(:user)
@@ -93,7 +92,7 @@ class Api::V1::FleetsToursCreateTest < ActionDispatch::IntegrationTest
   end
 
   test "POST is refused when the feature is off" do
-    Flipper.disable("tour_payouts")
+    Flipper.disable("fleet_tours")
     sign_in @admin
 
     assert_api_response :post, 403, path_params: path_params, body: {title: "Jumptown Run"}
