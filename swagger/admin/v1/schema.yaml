@@ -15253,6 +15253,9 @@ components:
           type: string
         slug:
           type: string
+        memberCount:
+          type: integer
+          description: Accepted members. Only the fleet options list sends it
       additionalProperties: false
       required:
       - id
@@ -15281,6 +15284,9 @@ components:
           type: string
         fidCont:
           type: string
+        search:
+          type: string
+          description: Name or SID, ranked exact, then prefix, then contains
         s:
           anyOf:
           - type: array

@@ -264,6 +264,25 @@ class Fleet < ApplicationRecord
     select(arel_table[Arel.star], Arel.sql("#{accepted_member_count_sql} AS member_count"))
   end
 
+  # Name or SID, ranked for a picker: an exact match first, then the ones that
+  # start with the term, then those that merely contain it, alphabetical within
+  # each. Contains-only in name order buried a fleet called "Test" behind ~370
+  # others with "test" somewhere in them.
+  def self.search_ranked(term)
+    needle = term.to_s.strip.downcase
+    escaped = sanitize_sql_like(needle)
+    rank = sanitize_sql_array([<<~SQL.squish, {exact: needle, prefix: "#{escaped}%"}])
+      CASE
+        WHEN LOWER(fleets.name) = :exact OR LOWER(fleets.fid) = :exact THEN 0
+        WHEN LOWER(fleets.name) LIKE :prefix OR LOWER(fleets.fid) LIKE :prefix THEN 1
+        ELSE 2
+      END
+    SQL
+
+    where("LOWER(fleets.name) LIKE :contains OR LOWER(fleets.fid) LIKE :contains", contains: "%#{escaped}%")
+      .reorder(Arel.sql(rank), Arel.sql("LOWER(fleets.name)"), :id)
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "alignment", "commitment", "created_at", "created_by", "default_timezone",
