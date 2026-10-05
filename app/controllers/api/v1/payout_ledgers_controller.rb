@@ -15,7 +15,7 @@ module Api
 
       before_action :set_subject, only: %i[show_for_subject create]
       before_action :set_payout_ledger, only: %i[show balances settle reopen]
-      before_action :check_tour_payouts_feature
+      before_action :check_payout_features
       before_action -> { require_fleet_subscription(:tours) }
 
       # GET /fleets/:fleet_slug/events/:slug/payouts
@@ -138,13 +138,12 @@ module Api
 
       # See PayoutLedgerScoped for which flags apply. Resolved from the
       # subject as well, because create runs before a ledger exists.
-      private def check_tour_payouts_feature
+      private def check_payout_features
         fleet = @payout_ledger&.fleet || subject_fleet
-        actors = fleet ? [fleet] : []
+        return if fleet.blank?
 
-        return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
-        return render_payouts_unavailable if fleet.present? && !feature_enabled?("fleet_tours", *actors)
-        return if !contract_subject? || feature_enabled?("fleet_contracts", *actors)
+        return render_payouts_unavailable unless feature_enabled?("fleet_tours", fleet)
+        return if !contract_subject? || feature_enabled?("fleet_contracts", fleet)
 
         render_payouts_unavailable
       end

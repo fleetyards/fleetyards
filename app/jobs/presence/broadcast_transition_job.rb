@@ -68,12 +68,6 @@ module Presence
       peer_payload = payload.merge(online: payload[:online] && visible)
 
       ::User.where(id: peer_ids(user)).find_each do |peer|
-        # Per recipient, which is how the REST field and the UI are gated too.
-        # Gating on the subject instead would leave a reader inside the rollout
-        # holding a dot that never updates for a subject outside it, and would
-        # send messages to readers whose UI cannot show them.
-        next unless flipper.enabled?(:online_status, peer)
-
         broadcast_safely(UserPresenceChannel, peer, peer_payload, failures)
       end
     end
@@ -104,21 +98,6 @@ module Presence
       friend_ids = ::User.where(id: ::Friendship.partner_ids_for(user)).pluck(:id)
 
       co_member_ids | friend_ids
-    end
-
-    # An instance of its own, memoizing, scoped to this job object.
-    #
-    # The gate is read per recipient, and against the ActiveRecord adapter that
-    # is two queries each — 1404 of them for the worst-case roster. Flipper
-    # memoizes for the duration of a web request but not inside a job, and
-    # toggling the global adapter would reach every other Sidekiq thread, so the
-    # cache belongs here: fifty actors cost four queries.
-    private def flipper
-      @flipper ||= begin
-        adapter = ::Flipper::Adapters::Memoizable.new(::Flipper.adapter)
-        adapter.memoize = true
-        ::Flipper.new(adapter)
-      end
     end
 
     private def broadcast_safely(channel, recipient, payload, failures)

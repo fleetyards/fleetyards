@@ -44,7 +44,6 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
     Flipper.enable("fleet_tours")
 
     @admin = create(:user)
@@ -141,17 +140,7 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: path_params
   end
 
-  test "GET is refused when the feature is off" do
-    Flipper.disable("tour_payouts")
-    sign_in @admin
-
-    assert_api_response :get, 403, path_params: path_params do
-      assert_equal "forbidden", parsed_body["code"]
-    end
-  end
-
-  # fleet_tours stacks on tour_payouts rather than replacing it, so the fleet
-  # surface closes on its own while the standalone tool stays open.
+  # The fleet surface closes on its own while the standalone tool stays open.
   test "GET is refused when the fleet flag is off" do
     Flipper.disable("fleet_tours")
     sign_in @admin

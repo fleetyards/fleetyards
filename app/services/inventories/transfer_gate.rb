@@ -162,8 +162,6 @@ module Inventories
     # its inventories already ride on. Public so a destination can be offered
     # on the same rule a delivery into it will be judged by.
     def recipient_feature_enabled?
-      return false unless Flipper.enabled?(:inventory_transfers, @recipient)
-
       case @recipient
       when ::User then Flipper.enabled?(:hangar_inventories, @recipient)
       when ::Fleet then Flipper.enabled?(:fleet_logistics, @recipient)

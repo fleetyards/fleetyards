@@ -54,7 +54,6 @@ class PayoutLedgerChannelTest < AsyncapiTestCase
   # they join one, so the fan-out over the participants would never reach them
   # -- and the request is exactly what they are waiting to see appear.
   test "broadcasts to a tour's organiser when somebody asks to join it" do
-    Flipper.enable("tour_payouts")
     Flipper.enable("fleet_tours")
 
     organiser = create(:user)

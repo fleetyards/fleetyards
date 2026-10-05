@@ -159,11 +159,10 @@ const canFulfil = computed(
 // has to reach it.
 const { isFleetFeatureEnabled } = useFeatures();
 
-// The ledger is a payouts surface as well, and the API asks for both of its
-// flags -- without them the button would open a page that 403s.
+// The ledger is a payouts surface as well, and the API asks for fleet_tours --
+// without it the button would open a page that 403s.
 const hasPayouts = computed(
   () =>
-    isFleetFeatureEnabled(props.fleet, FeatureFlagName.TOUR_PAYOUTS) &&
     isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_TOURS) &&
     (contract.value?.state === FleetContractStateEnum.FULFILLED ||
       contract.value?.state === FleetContractStateEnum.SETTLED),

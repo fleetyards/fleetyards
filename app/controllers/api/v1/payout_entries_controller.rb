@@ -17,7 +17,7 @@ module Api
         only: %i[create update destroy approve decline]
 
       before_action :set_payout_ledger
-      before_action :check_tour_payouts_feature
+      before_action :check_payout_features
       before_action -> { require_fleet_subscription(:tours) }
       before_action :set_payout_entry, only: %i[update destroy approve decline]
 

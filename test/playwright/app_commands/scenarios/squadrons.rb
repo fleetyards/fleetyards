@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating squadrons scenario test data..."
 
-Flipper.add(:fleet_squadrons) unless Flipper.exist?(:fleet_squadrons)
-Flipper.enable(:fleet_squadrons)
-
 admin = FactoryBot.create(:user, username: "squadrons", password: "password")
 fleet = FactoryBot.create(:fleet, :with_squadrons, fid: "SQUADS", name: "Squadron Fleet", admins: [admin])
 

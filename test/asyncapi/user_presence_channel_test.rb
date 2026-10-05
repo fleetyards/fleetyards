@@ -27,13 +27,10 @@ class UserPresenceChannelTest < AsyncapiTestCase
     # The job reads the store rather than taking the value, so the subject has
     # to actually be connected.
     UserPresence.connect(@user.id, "tab-1")
-
-    Flipper.enable(:online_status)
   end
 
   teardown do
     UserPresence.reset!
-    Flipper.disable(:online_status)
   end
 
   test "broadcasts the transition to a co-member" do

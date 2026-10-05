@@ -9,7 +9,6 @@ module Api
     # it is what `FleetAlliancePolicy` checks.
     class FleetAlliancesController < ::Api::BaseController
       include RelationshipActions
-      include RelationshipsFeatureConcern
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
@@ -20,7 +19,6 @@ module Api
         only: %i[create destroy accept decline ignore]
 
       before_action :set_fleet
-      before_action -> { check_fleet_allies_feature(@fleet) }
       before_action :set_relationship, only: %i[show destroy accept decline ignore]
 
       after_action -> { pagination_header(:allies) }, only: %i[index]

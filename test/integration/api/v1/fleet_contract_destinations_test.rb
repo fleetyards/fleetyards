@@ -45,7 +45,6 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_contracts")
     Flipper.enable("fleet_logistics")
-    Flipper.enable("inventory_transfers")
     Flipper.enable("hangar_inventories")
 
     @officer = create(:user)

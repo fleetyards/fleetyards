@@ -61,7 +61,6 @@ module Api
         @people = ::Locations::People.new(
           find_location,
           current_resource_owner,
-          friends: feature_enabled?("friends"),
           fleets: doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read]),
           online: ->(user) { online_status_for(user) }
         ).call(limit: people_limit)

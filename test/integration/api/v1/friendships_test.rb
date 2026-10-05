@@ -76,8 +76,6 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("friends")
-
     @user = create(:user)
     @other = create(:user)
   end
@@ -124,11 +122,8 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
   test "GET filters to friends who could receive a transfer, from either side" do
     receiver = create(:user)
     sent_to = create(:user)
-    Flipper.enable_actor("inventory_transfers", receiver)
     Flipper.enable_actor("hangar_inventories", receiver)
-    Flipper.enable_actor("inventory_transfers", sent_to)
     Flipper.enable_actor("hangar_inventories", sent_to)
-    Flipper.enable_actor("inventory_transfers", @user)
     Flipper.enable_actor("hangar_inventories", @user)
 
     create(:friendship, :accepted, requester: receiver, addressee: @user)
@@ -207,22 +202,8 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 401, api_path: "/friends/pending-count"
   end
 
-  test "GET pending-count is forbidden with the feature off" do
-    Flipper.disable("friends")
-    sign_in @user
-
-    assert_api_response :get, 403, api_path: "/friends/pending-count"
-  end
-
   test "GET without a session is unauthorized" do
     assert_api_response :get, 401, api_path: "/friends"
-  end
-
-  test "GET is forbidden with the feature off" do
-    Flipper.disable("friends")
-    sign_in @user
-
-    assert_api_response :get, 403, api_path: "/friends"
   end
 
   test "POST sends a request" do

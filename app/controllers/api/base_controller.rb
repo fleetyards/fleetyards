@@ -81,7 +81,6 @@ module Api
     # that somebody is offline are not the same thing.
     def online_status_for(user)
       return if user.blank?
-      return unless feature_enabled?("online_status")
 
       user.show_online_status? && online_user_ids.include?(user.id)
     end

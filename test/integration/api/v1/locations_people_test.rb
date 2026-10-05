@@ -39,8 +39,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("friends")
-
     @stanton = create(:location, name: "Stanton System", kind: "system")
     @hurston = create(:location, name: "Hurston", kind: "planet", parent: @stanton, system: @stanton)
     @lorville = create(:location, name: "Lorville", kind: "city", parent: @hurston, system: @stanton)
@@ -87,7 +85,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
 
   test "GET /locations/{slug}/people lists who is online first, and counts the rest past the limit" do
     UserPresence.reset!
-    Flipper.enable(:online_status)
 
     %w[alpha bravo charlie].each do |username|
       friend = create(:user, username:, current_location: @lorville)
@@ -106,7 +103,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
     end
   ensure
     UserPresence.reset!
-    Flipper.disable(:online_status)
   end
 
   test "GET /locations/{slug}/people leaves out the reader and anyone not already shown to them" do
@@ -139,20 +135,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {slug: @lorville.slug} do
       assert_empty parsed_body["people"]
-    end
-  end
-
-  test "GET /locations/{slug}/people shows no friends while the feature is off" do
-    Flipper.disable("friends")
-    friend = create(:user, current_location: @lorville)
-    create(:friendship, :accepted, requester: @reader, addressee: friend)
-    mate = create(:user, current_location: @lorville)
-    create(:fleet_membership, :accepted, fleet: @fleet, user: mate)
-
-    sign_in @reader
-
-    assert_api_response :get, 200, params: {slug: @lorville.slug} do
-      assert_equal [[mate.username, false]], parsed_body["people"].map { |person| person.values_at("username", "friend") }
     end
   end
 

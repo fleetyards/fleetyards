@@ -6,8 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName, type UserUpdateInput } from "@/services/fyApi";
+import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -23,12 +22,6 @@ const { t } = useI18n();
 const { displaySuccess } = useAppNotifications();
 
 const sessionStore = useSessionStore();
-
-const { isFeatureEnabled } = useFeatures();
-
-const onlineStatusEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.ONLINE_STATUS),
-);
 
 const submitting = ref(false);
 
@@ -130,7 +123,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </div>
 
-    <div v-if="onlineStatusEnabled" class="row">
+    <div class="row">
       <div class="col-12">
         <p>{{ t("texts.settings.privacy.onlineStatus") }}</p>
       </div>

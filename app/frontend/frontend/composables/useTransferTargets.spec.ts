@@ -12,7 +12,6 @@ const fleets = ref<Partial<Fleet>[] | undefined>();
 const members = ref<{ items: { username: string }[] }[]>([]);
 const allies = ref<{ items: { fleet: { slug: string; name: string } }[] }>();
 const friends = ref<{ items: { user: { username: string } }[] }>();
-const enabledFeatures = ref<string[]>(["friends", "fleet_allies"]);
 const contractDestinations = ref<Record<string, unknown>[] | undefined>();
 
 vi.mock(
@@ -52,13 +51,6 @@ vi.mock("@/services/fyApi/services/friends/friends", () => ({
   useFriends: () => ({ data: friends }),
 }));
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) =>
-      enabledFeatures.value.includes(feature),
-  }),
-}));
-
 vi.mock("@tanstack/vue-query", () => ({
   useQueries: () => computed(() => members.value.map((data) => ({ data }))),
 }));
@@ -76,7 +68,7 @@ const { useTransferTargets } = await import("./useTransferTargets");
 const fleet = (overrides: Partial<Fleet> = {}): Partial<Fleet> => ({
   slug: "crew",
   name: "Crew",
-  features: ["inventory_transfers", "fleet_logistics"],
+  features: ["fleet_logistics"],
   ...overrides,
 });
 
@@ -85,7 +77,6 @@ describe("useTransferTargets", () => {
     allies.value = undefined;
     friends.value = undefined;
     contractDestinations.value = undefined;
-    enabledFeatures.value = ["friends", "fleet_allies"];
   });
 
   it("offers the holder's other inventories, never the one being emptied", () => {
@@ -145,14 +136,13 @@ describe("useTransferTargets", () => {
 
   // A fleet whose logistics are switched off cannot receive, and offering it
   // would mean finding out by being refused.
-  it("drops a fleet that is missing either flag, and the one it acts for", () => {
+  it("drops a fleet without logistics, and the one it acts for", () => {
     hangarInventories.value = { items: [] };
     fleetInventories.value = { items: [] };
     fleets.value = [
       fleet(),
       fleet({ slug: "self", name: "Self" }),
-      fleet({ slug: "no-transfers", features: ["fleet_logistics"] }),
-      fleet({ slug: "no-logistics", features: ["inventory_transfers"] }),
+      fleet({ slug: "no-logistics", features: [] }),
     ];
     members.value = [];
 
@@ -274,7 +264,6 @@ describe("useTransferTargets", () => {
       hangarInventories.value = { items: [] };
       fleets.value = [];
       members.value = [];
-      enabledFeatures.value = ["fleet_contracts"];
       contractDestinations.value = [hangarTarget, fleetTarget];
     });
 
@@ -303,17 +292,6 @@ describe("useTransferTargets", () => {
       });
 
       expect(contractTargets.value).toEqual([]);
-    });
-
-    // Contracts are switched on per fleet, and the endpoint filters by that.
-    it("offers them without the reader's own contracts flag", () => {
-      enabledFeatures.value = [];
-
-      const { contractTargets } = useTransferTargets({
-        source: () => undefined,
-      });
-
-      expect(contractTargets.value).toHaveLength(2);
     });
   });
 });

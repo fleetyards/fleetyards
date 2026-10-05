@@ -454,14 +454,10 @@ class User < ApplicationRecord
   }
 
   # Who a transfer may be addressed to, which is the question
-  # `Inventories::TransferGate` asks of a user recipient -- both flags, because
-  # a transfer to a person lands in their own hangar inventory and they need the
-  # surface as well as the feature. Kept as one scope so the picker and the
-  # refusal cannot drift apart.
-  scope :receiving_transfers, -> {
-    where(id: with_feature(:inventory_transfers).select(:id))
-      .where(id: with_feature(:hangar_inventories).select(:id))
-  }
+  # `Inventories::TransferGate` asks of a user recipient: a transfer to a person
+  # lands in their own hangar inventory, so they need that surface. Kept as one
+  # scope so the picker and the refusal cannot drift apart.
+  scope :receiving_transfers, -> { with_feature(:hangar_inventories) }
 
   def friends
     ::User.where(id: ::Friendship.partner_ids_for(self))

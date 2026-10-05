@@ -165,8 +165,6 @@ module FleetContracts
       @fleet = create(:fleet, admins: [worker])
       Flipper.enable("fleet_contracts")
       Flipper.enable("fleet_logistics")
-      Flipper.enable_actor(:inventory_transfers, worker)
-      Flipper.enable_actor(:inventory_transfers, @fleet)
 
       depot = create(:fleet_inventory, fleet: @fleet)
       contract = create(:fleet_contract, :in_progress, fleet: @fleet,

@@ -145,7 +145,6 @@ export const useFleetNavAccess = (
   const showToursNav = computed(
     () =>
       !!membership.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.TOUR_PAYOUTS) &&
       isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_TOURS),
   );
 

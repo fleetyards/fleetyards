@@ -1,11 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FleetSquadron,
-} from "@/services/fyApi";
+import { type Fleet, type FleetSquadron } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const all = [
@@ -56,10 +52,10 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (features: string[], squadronsEnabled = true) => {
+const mount = async (squadronsEnabled = true) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
-      fleet: { slug: "maru", features, squadronsEnabled } as Fleet,
+      fleet: { slug: "maru", squadronsEnabled } as Fleet,
     },
   });
 
@@ -74,12 +70,12 @@ const segments = (subject: VueWrapper) =>
 
 /*
  * The control is drawn on the roster, the ship list and the stats page, so a
- * fleet that has no squadrons -- or has not been given the feature -- would
- * otherwise meet an empty segmented control on three pages.
+ * fleet that has no squadrons -- or has them switched off -- would otherwise
+ * meet an empty segmented control on three pages.
  */
 describe("FleetSquadronFilter", () => {
-  it("draws nothing without the feature, and does not ask", async () => {
-    const subject = await mount([]);
+  it("draws nothing while the fleet has squadrons off, and does not ask", async () => {
+    const subject = await mount(false);
 
     expect(subject.find("[data-test]").exists()).toBe(false);
     expect(askedWith).toEqual([false]);
@@ -88,7 +84,7 @@ describe("FleetSquadronFilter", () => {
   it("draws nothing once the fleet switches squadrons off, even from cache", async () => {
     cached = true;
 
-    const subject = await mount([FeatureFlagName.FLEET_SQUADRONS], false);
+    const subject = await mount(false);
 
     expect(subject.find("[data-test]").exists()).toBe(false);
   });
@@ -96,13 +92,13 @@ describe("FleetSquadronFilter", () => {
   it("draws nothing for a fleet that has no squadrons", async () => {
     items = [];
 
-    const subject = await mount([FeatureFlagName.FLEET_SQUADRONS]);
+    const subject = await mount();
 
     expect(subject.find("[data-test]").exists()).toBe(false);
   });
 
   it("offers All plus a segment per squadron and team", async () => {
-    const subject = await mount([FeatureFlagName.FLEET_SQUADRONS]);
+    const subject = await mount();
 
     expect(segments(subject)).toEqual([
       "squadron-filter-all",

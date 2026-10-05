@@ -67,8 +67,6 @@ class Api::V1::PayoutParticipantsCreateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
-
     @organiser = create(:user)
     @member = create(:user)
     @outsider = create(:user)

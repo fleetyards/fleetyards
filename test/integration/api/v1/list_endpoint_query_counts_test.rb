@@ -75,7 +75,6 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
   # Each squadron's size is counted outside the cached fragment, so the roster
   # has to be preloaded or the list issues one count per squadron.
   test "the squadrons index issues the same number of queries for one squadron as for many" do
-    Flipper.enable("fleet_squadrons")
     admin = create(:user)
     fleet = create(:fleet, :with_squadrons, admins: [admin])
     sign_in admin

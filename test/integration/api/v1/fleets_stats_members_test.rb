@@ -76,7 +76,6 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
   # Two squadrons named at once is a hand-written URL rather than anything the
   # page offers, but somebody in both is still one person.
   test "GET /fleets/:slug/stats/members counts a member in two named squadrons once" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet)
     team = create(:fleet_squadron, fleet: @fleet, team: true)
     membership = @fleet.fleet_memberships.find_by!(user: @admin)

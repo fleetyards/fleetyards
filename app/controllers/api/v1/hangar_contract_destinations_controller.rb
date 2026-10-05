@@ -15,8 +15,6 @@ module Api
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?
 
-      before_action :check_inventory_transfers_feature
-
       def index
         authorize! with: HangarInventoryPolicy, to: :index?
 

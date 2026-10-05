@@ -181,7 +181,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("hangar_inventories")
     Flipper.enable("fleet_logistics")
-    Flipper.enable("inventory_transfers")
 
     @fleet = create(:fleet)
     @officer = create(:user)
@@ -379,7 +378,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
   # withdraw from the fleet and deposit into their own hangar could already have
   # done both by hand.
   test "an officer moves fleet stock into their own hangar inventory" do
-    Flipper.enable("inventory_transfers")
     locker = create(:inventory, holder: @officer)
 
     sign_in @officer
@@ -414,7 +412,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
   # Sending the same amount again and again, the way a person would: each one
   # has to come out of the fleet, and the fleet has to run out.
   test "repeated sends to my own inventory deplete the fleet" do
-    Flipper.enable("inventory_transfers")
     locker = create(:inventory, holder: @officer)
 
     sign_in @officer
@@ -444,7 +441,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
   # view never rendered it, so a fleet's ledger could not tell an entry a person
   # typed from one a transfer wrote.
   test "the fleet ledger says which entries a transfer wrote" do
-    Flipper.enable("inventory_transfers")
     locker = create(:inventory, holder: @officer)
 
     sign_in @officer
@@ -481,10 +477,9 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
 
   # An immediate transfer never reaches the gate, which is what checks the
   # recipient's flags on the waiting path -- so the create path has to check the
-  # destination itself, or the new flag becomes a way into a feature that is
+  # destination itself, or a transfer becomes a way into a feature that is
   # switched off.
   test "cannot move fleet stock into a hangar inventory whose feature is off" do
-    Flipper.enable("inventory_transfers")
     Flipper.disable("hangar_inventories")
     locker = create(:inventory, holder: @officer)
 

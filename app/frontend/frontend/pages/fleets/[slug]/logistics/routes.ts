@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -44,7 +43,6 @@ export const routes: RouteRecordRaw[] = [
         "fleet:inventories:manage",
         "fleet:manage",
       ],
-      feature: FeatureFlagName.INVENTORY_TRANSFERS,
       customTitle: true,
     },
   },

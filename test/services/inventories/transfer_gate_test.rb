@@ -87,7 +87,7 @@ module Inventories
     end
 
     test "an allowance does not override a missing feature flag" do
-      Flipper.disable_actor(:inventory_transfers, @recipient)
+      Flipper.disable_actor(:hangar_inventories, @recipient)
       create(:inventory_transfer_rule, :allow, user: @recipient, subject_user: @sender)
 
       assert_equal :unavailable, gate.refusal.code
@@ -112,7 +112,6 @@ module Inventories
 
     test "a fleet recipient answers on its own policy and its own flags" do
       fleet = create(:fleet)
-      Flipper.enable_actor(:inventory_transfers, fleet)
       Flipper.enable_actor(:fleet_logistics, fleet)
 
       assert TransferGate.new(sender: @sender, recipient: fleet).allowed?
@@ -215,7 +214,6 @@ module Inventories
     end
 
     private def enable_fleet_transfers(fleet)
-      Flipper.enable_actor(:inventory_transfers, fleet)
       Flipper.enable_actor(:fleet_logistics, fleet)
     end
 
@@ -224,7 +222,6 @@ module Inventories
     end
 
     private def enable_transfers(actor)
-      Flipper.enable_actor(:inventory_transfers, actor)
       Flipper.enable_actor(:hangar_inventories, actor)
     end
   end

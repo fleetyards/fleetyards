@@ -355,11 +355,7 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # The transfer picker asks this endpoint for the members it could address,
   # which is the question `Inventories::TransferGate` asks of a user recipient.
   test "GET /fleets/:slug/members filters to members who could receive a transfer" do
-    Flipper.enable_actor("inventory_transfers", @member)
     Flipper.enable_actor("hangar_inventories", @member)
-    # Half the pair only: the surface without the feature is not enough, and a
-    # transfer to a person lands in their own hangar inventory.
-    Flipper.enable_actor("hangar_inventories", @another_member)
     sign_in @admin
 
     assert_api_response :get, 200,
@@ -370,7 +366,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/members lists everybody without the filter" do
-    Flipper.enable_actor("inventory_transfers", @member)
     Flipper.enable_actor("hangar_inventories", @member)
     sign_in @admin
 
@@ -398,7 +393,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # The badge is cached with the member, so a squadron renamed after the first
   # read must still reach the roster.
   test "GET /fleets/:slug/members shows a squadron's new name after it is renamed" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
     create(:fleet_squadron_membership, fleet_squadron: squadron,
       fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
@@ -417,7 +411,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # Reading the roster and reading squadrons are separate privileges, and the
   # badges are the squadrons.
   test "GET /fleets/:slug/members leaves out squadrons for a reader who may not see them" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet)
     create(:fleet_squadron_membership, fleet_squadron: squadron,
       fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))

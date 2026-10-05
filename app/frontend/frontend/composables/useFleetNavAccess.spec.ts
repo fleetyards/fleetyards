@@ -279,7 +279,7 @@ describe("useFleetNavAccess", () => {
   });
 
   it("hides squadrons from someone who is not a member", () => {
-    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+    const fleet = fleetWith();
 
     expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
   });
@@ -287,32 +287,26 @@ describe("useFleetNavAccess", () => {
   it("hides squadrons from a member whose role cannot read them", () => {
     membership.value = memberAbleTo("readMembers");
 
-    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+    const fleet = fleetWith();
 
     expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
-  });
-
-  it("hides squadrons while the fleet has no squadrons flag", () => {
-    membership.value = memberAbleTo("readSquadrons");
-
-    expect(useFleetNavAccess(fleetWith()).showSquadronsNav.value).toBe(false);
   });
 
   it("hides squadrons while the fleet has them switched off", () => {
     membership.value = memberAbleTo("readSquadrons");
 
     const fleet = {
-      ...fleetWith(FeatureFlagName.FLEET_SQUADRONS),
+      ...fleetWith(),
       squadronsEnabled: false,
     };
 
     expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
   });
 
-  it("shows squadrons to a member who may read them in a flagged fleet", () => {
+  it("shows squadrons to a member who may read them", () => {
     membership.value = memberAbleTo("readSquadrons");
 
-    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+    const fleet = fleetWith();
 
     expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(true);
   });

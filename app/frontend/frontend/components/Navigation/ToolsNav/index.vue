@@ -48,7 +48,6 @@ const active = computed(() => {
         icon="fa-duotone fa-gauge-high"
       />
       <NavItem
-        v-if="isFeatureEnabled(FeatureFlagName.TOUR_PAYOUTS)"
         :to="{ name: 'tours' }"
         :label="t('nav.tools.tours')"
         icon="fa-duotone fa-coins"

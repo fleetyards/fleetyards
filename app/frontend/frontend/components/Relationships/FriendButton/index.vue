@@ -9,10 +9,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { type BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import {
-  FeatureFlagName,
   useAcceptFriendship,
   useCreateFriendship,
   useFriendship,
@@ -27,7 +25,6 @@ const props = withDefaults(defineProps<Props>(), { size: undefined });
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
-const { isFeatureEnabled } = useFeatures();
 const sessionStore = useSessionStore();
 
 const username = computed(() => props.username);
@@ -39,7 +36,6 @@ const reader = computed(() => sessionStore.currentUser?.username);
 const enabled = computed(
   () =>
     !!reader.value &&
-    isFeatureEnabled(FeatureFlagName.FRIENDS) &&
     reader.value.toLowerCase() !== props.username.toLowerCase(),
 );
 

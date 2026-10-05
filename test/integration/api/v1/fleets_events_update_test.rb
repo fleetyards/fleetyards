@@ -68,7 +68,6 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
   # Held to squadrons after it was announced, the event has to come back off
   # the fleet-wide surfaces -- the Discord guild is one.
   test "PUT /fleets/:slug/events/:slug announces an event becoming squadron-only" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet)
     sign_in @admin
 

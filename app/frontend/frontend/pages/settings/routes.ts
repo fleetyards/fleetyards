@@ -67,7 +67,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.friends",
       needsAuthentication: true,
-      feature: FeatureFlagName.FRIENDS,
     },
     redirect: {
       name: "settings-friends",

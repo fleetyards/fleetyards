@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/settings/allies/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -52,8 +51,6 @@ export const routes: RouteRecordRaw[] = [
         "fleet:squadrons:manage",
         "fleet:manage",
       ],
-      feature: FeatureFlagName.FLEET_SQUADRONS,
-      featureScope: "fleet",
       customTitle: true,
     },
   },
@@ -77,8 +74,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.settings.allies",
       needsAuthentication: true,
       access: ["fleet:allies:read", "fleet:allies:manage", "fleet:manage"],
-      feature: FeatureFlagName.FLEET_ALLIES,
-      featureScope: "fleet",
       customTitle: true,
     },
     redirect: {

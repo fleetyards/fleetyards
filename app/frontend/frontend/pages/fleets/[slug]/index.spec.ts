@@ -4,7 +4,6 @@ import type { VueWrapper } from "@vue/test-utils";
 import { computed, defineComponent, h, ref, watchEffect, type Ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import {
-  FeatureFlagName,
   FleetMembershipStatusEnum,
   type Fleet,
   type FleetMember,
@@ -86,13 +85,13 @@ const routerWithSquadron = async () => {
   return router;
 };
 
-const fleet = (features: string[] = [FeatureFlagName.FLEET_SQUADRONS]) =>
+const fleet = (squadronsEnabled = true) =>
   ({
     slug: "maru",
     name: "Maru",
     fid: "MARU",
-    features,
-    squadronsEnabled: true,
+    features: [],
+    squadronsEnabled,
   }) as unknown as Fleet;
 
 const member = (readSquadrons = true) =>
@@ -226,13 +225,13 @@ describe("FleetShow squadrons", () => {
   it("hides both lists when the fleet switches squadrons off", async () => {
     const subject = await mount({ fleet: fleet() });
 
-    await subject.setProps({ fleet: fleet([]) });
+    await subject.setProps({ fleet: fleet(false) });
 
     expect(tests(subject, "fleet-public-squadron-")).toEqual([]);
   });
 
   it("asks for nothing when the fleet has squadrons switched off", async () => {
-    const subject = await mount({ fleet: fleet([]) });
+    const subject = await mount({ fleet: fleet(false) });
 
     expect(tests(subject, "fleet-public-squadron-")).toEqual([]);
     expect(publicAsked.every((enabled) => !enabled)).toBe(true);

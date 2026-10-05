@@ -44,7 +44,6 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("fleet_squadrons")
     @admin = create(:user)
     @officer = create(:user)
     @fleet = create(:fleet, :with_squadrons, admins: [@admin], officers: [@officer])

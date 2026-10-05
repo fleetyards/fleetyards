@@ -64,7 +64,6 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
     # The ledger on a fleet event is a fleet surface, so it needs the fleet flag
     # on top of the one that makes payouts exist at all.
     Flipper.enable("fleet_tours")
@@ -113,13 +112,6 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 403, path_params: path_params
   end
 
-  test "POST is refused when the feature is off for the fleet" do
-    Flipper.disable("tour_payouts")
-    sign_in @admin
-
-    assert_api_response :post, 403, path_params: path_params
-  end
-
   test "GET returns 404 before a ledger is opened" do
     sign_in @admin
 
@@ -141,18 +133,10 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 401, path_params: path_params
   end
 
-  # The flag split: every fleet-scoped payout surface behind
-  # fleet_tours, every personal one behind tour_payouts. Without it the flag
-  # that prices a fleet feature would also price the standalone tool.
+  # Every fleet-scoped payout surface is behind fleet_tours; the standalone
+  # tool is not, so the flag that prices a fleet feature does not price it.
   test "the ledger on a fleet event needs the fleet flag" do
     Flipper.disable("fleet_tours")
-    sign_in @admin
-
-    assert_api_response :post, 403, path_params: path_params
-  end
-
-  test "it still needs tour_payouts as well" do
-    Flipper.disable("tour_payouts")
     sign_in @admin
 
     assert_api_response :post, 403, path_params: path_params

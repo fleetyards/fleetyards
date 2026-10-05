@@ -41,7 +41,6 @@ class Api::V1::TourJoinRequestsApproveTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
     Flipper.enable("fleet_tours")
 
     @organiser = create(:user)

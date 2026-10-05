@@ -14,7 +14,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create accept decline cancel report]
 
-      before_action :check_inventory_transfers_feature
       before_action :set_inventory_transfer, only: %i[show accept decline cancel report]
 
       private def acting_party

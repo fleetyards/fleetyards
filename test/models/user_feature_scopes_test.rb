@@ -53,19 +53,16 @@ class UserFeatureScopesTest < ActiveSupport::TestCase
     assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
   end
 
-  # Both flags, because a transfer to a person lands in their own hangar
-  # inventory -- the same pair `Inventories::TransferGate` asks for.
-  test "receiving_transfers wants the feature and the surface together" do
-    Flipper.enable_actor("inventory_transfers", @user)
+  # A transfer to a person lands in their own hangar inventory -- the flag
+  # `Inventories::TransferGate` asks for.
+  test "receiving_transfers wants the hangar inventory surface" do
     Flipper.enable_actor("hangar_inventories", @user)
-    Flipper.enable_actor("inventory_transfers", @other)
 
     assert_equal [@user.id], User.receiving_transfers.pluck(:id)
   end
 
   # The picker must not offer somebody the send would then refuse.
   test "receiving_transfers agrees with the gate it mirrors" do
-    Flipper.enable_actor("inventory_transfers", @user)
     Flipper.enable_actor("hangar_inventories", @user)
 
     [@user, @other].each do |user|

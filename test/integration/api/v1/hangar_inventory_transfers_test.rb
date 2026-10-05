@@ -79,7 +79,6 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("hangar_inventories")
-    Flipper.enable("inventory_transfers")
 
     @user = create(:user)
     @recipient = create(:user)
@@ -165,17 +164,6 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
   test "POST requires a signed-in user" do
     assert_api_response :post, 401, body: {
       sourceInventoryId: @source.id,
-      lines: [{positionId: @entry.position.id, quantity: 1}]
-    }
-  end
-
-  test "POST is closed while the feature flag is off" do
-    Flipper.disable("inventory_transfers")
-    sign_in @user
-
-    assert_api_response :post, 403, body: {
-      sourceInventoryId: @source.id,
-      inventoryId: @destination.id,
       lines: [{positionId: @entry.position.id, quantity: 1}]
     }
   end

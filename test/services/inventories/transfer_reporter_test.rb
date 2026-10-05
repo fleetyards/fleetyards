@@ -8,7 +8,6 @@ module Inventories
       @sender = create(:user)
       @recipient = create(:user)
       [@sender, @recipient].each do |actor|
-        Flipper.enable_actor(:inventory_transfers, actor)
         Flipper.enable_actor(:hangar_inventories, actor)
       end
 
@@ -90,7 +89,6 @@ module Inventories
       fleet = create(:fleet)
       officer = create(:user)
       create(:fleet_membership, :accepted, :as_officer, fleet:, user: officer)
-      Flipper.enable_actor(:inventory_transfers, fleet)
       Flipper.enable_actor(:fleet_logistics, fleet)
 
       entry = create(:inventory_item, inventory: @source, name: "Tungsten",

@@ -32,8 +32,6 @@ class Api::V1::PayoutLedgersBalancesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("tour_payouts")
-
     @organiser = create(:user)
     @bob = create(:user)
 

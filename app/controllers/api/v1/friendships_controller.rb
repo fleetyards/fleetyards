@@ -8,7 +8,6 @@ module Api
     # handle on a friendship anybody outside the API has.
     class FriendshipsController < ::Api::BaseController
       include RelationshipActions
-      include RelationshipsFeatureConcern
       include TransferTargetFilterConcern
 
       before_action :authenticate_user!, only: []
@@ -17,7 +16,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create destroy accept decline ignore]
 
-      before_action :check_friends_feature
       before_action :set_relationship, only: %i[show destroy accept decline ignore]
 
       after_action -> { pagination_header(:friends) }, only: %i[index]

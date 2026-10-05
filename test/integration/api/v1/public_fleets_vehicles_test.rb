@@ -162,7 +162,6 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
   # Every ship here carries its owner's name, so narrowed to a squadron the list
   # is that squadron's roster -- which a public fleet does not publish.
   test "GET /public/fleets/:fleetSlug/vehicles refuses a squadron filter to an outsider" do
-    Flipper.enable("fleet_squadrons")
     member = create(:user, vehicle_count: 2)
     fleet = create(:fleet, public_fleet: true, members: [member])
     squadron = create(:fleet_squadron, fleet: fleet)
@@ -175,7 +174,6 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /public/fleets/:fleetSlug/vehicles narrows to a squadron for a member" do
-    Flipper.enable("fleet_squadrons")
     inside = create(:user, vehicle_count: 2)
     outside = create(:user, vehicle_count: 1)
     fleet = create(:fleet, public_fleet: true, members: [inside, outside])
