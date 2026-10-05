@@ -17,6 +17,7 @@ import {
 import { useForm } from "vee-validate";
 import { watchDebounced } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -37,9 +38,14 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
+const initialValues = { username: "", name: "" };
+
 const { defineField, handleSubmit, values } = useForm({
-  initialValues: { username: "", name: "" },
+  initialValues,
 });
+
+// Read by AppModal, which asks before a close would throw typed input away.
+defineExpose({ dirty: useFormDirty(values, initialValues) });
 
 const [username, usernameProps] = defineField("username");
 const [name, nameProps] = defineField("name");
@@ -115,7 +121,7 @@ const onSubmit = handleSubmit(async (values) => {
             }),
       });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });

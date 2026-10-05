@@ -95,7 +95,9 @@ const close = async (force = false) => {
     return;
   }
 
-  if (modalComponent.value?.dirty) {
+  // A forced close is the modal closing itself after it saved: what was typed
+  // is not lost, so there is nothing to confirm.
+  if (!force && modalComponent.value?.dirty) {
     displayConfirm({
       text: t("appModal.messages.confirm.dirty"),
       onConfirm: async () => {

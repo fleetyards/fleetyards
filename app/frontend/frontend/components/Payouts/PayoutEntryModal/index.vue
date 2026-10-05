@@ -13,6 +13,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
@@ -74,8 +75,7 @@ const toFieldValue = (value?: string | null) =>
       }).format(Number(value))
     : "";
 
-const { defineField, handleSubmit, setFieldError } = useForm({
-  initialValues: {
+const initialValues = {
     payoutParticipantId:
       props.entry?.payoutParticipantId ?? props.participants[0]?.id,
     entryType: (props.entry?.entryType ??
@@ -83,8 +83,14 @@ const { defineField, handleSubmit, setFieldError } = useForm({
     amount: toFieldValue(props.entry?.amount),
     description: props.entry?.description ?? "",
     notes: props.entry?.notes ?? "",
-  },
+  };
+
+const { defineField, handleSubmit, setFieldError, values } = useForm({
+  initialValues,
 });
+
+// Read by AppModal, which asks before a close would throw typed input away.
+defineExpose({ dirty: useFormDirty(values, initialValues) });
 
 const [payoutParticipantId] = defineField("payoutParticipantId");
 const [entryType] = defineField("entryType");
@@ -133,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
           : t("messages.payouts.entryCreated"),
       });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });
@@ -177,7 +183,7 @@ const onDestroy = async () => {
     .then(() => {
       displaySuccess({ text: t("messages.payouts.entryDestroyed") });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });

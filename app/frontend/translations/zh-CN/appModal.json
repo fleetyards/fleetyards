@@ -3,7 +3,7 @@
     "appModal": {
       "messages": {
         "confirm": {
-          "dirty": "You have unsaved changes that will be lost."
+          "dirty": "你有未保存的更改，关闭后将会丢失。"
         }
       }
     }
