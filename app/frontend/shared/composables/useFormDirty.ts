@@ -11,7 +11,10 @@ export const useFormDirty = <T extends object>(
   initialValues: T,
 ) => {
   const snapshot = Object.fromEntries(
-    Object.entries(initialValues).map(([key, value]) => [key, normalize(value)]),
+    Object.entries(initialValues).map(([key, value]) => [
+      key,
+      normalize(value),
+    ]),
   );
 
   return computed(() => {

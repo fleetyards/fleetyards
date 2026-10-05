@@ -290,7 +290,8 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
         v-else-if="!participant.fleet && Number(participant.weight) !== 1"
         class="payout-participants__weight"
       >
-        {{ formatWeight(participant.weight, currentLocale()) }} {{ t("labels.payouts.shares") }}
+        {{ formatWeight(participant.weight, currentLocale()) }}
+        {{ t("labels.payouts.shares") }}
       </span>
     </div>
 

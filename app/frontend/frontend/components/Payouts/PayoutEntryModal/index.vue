@@ -76,14 +76,14 @@ const toFieldValue = (value?: string | null) =>
     : "";
 
 const initialValues = {
-    payoutParticipantId:
-      props.entry?.payoutParticipantId ?? props.participants[0]?.id,
-    entryType: (props.entry?.entryType ??
-      (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
-    amount: toFieldValue(props.entry?.amount),
-    description: props.entry?.description ?? "",
-    notes: props.entry?.notes ?? "",
-  };
+  payoutParticipantId:
+    props.entry?.payoutParticipantId ?? props.participants[0]?.id,
+  entryType: (props.entry?.entryType ??
+    (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
+  amount: toFieldValue(props.entry?.amount),
+  description: props.entry?.description ?? "",
+  notes: props.entry?.notes ?? "",
+};
 
 const { defineField, handleSubmit, setFieldError, values } = useForm({
   initialValues,

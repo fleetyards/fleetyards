@@ -15,7 +15,11 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <BtnGroup segmented class="tour-archive-switch" data-test="tours-archive-switch">
+  <BtnGroup
+    segmented
+    class="tour-archive-switch"
+    data-test="tours-archive-switch"
+  >
     <Btn
       :active="!archived"
       mobile-icon-only

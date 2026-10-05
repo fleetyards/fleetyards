@@ -151,9 +151,7 @@ const onSubmit = handleSubmit(async (values) => {
             :size="AlertSizesEnum.COMPACT"
             data-test="payout-participant-account-found"
           >
-            {{
-              t("texts.payouts.accountFound", { username: checkedUsername })
-            }}
+            {{ t("texts.payouts.accountFound", { username: checkedUsername }) }}
           </Alert>
           <Alert
             v-else-if="usernameUnknown"
