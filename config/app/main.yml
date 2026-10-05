@@ -46,9 +46,6 @@ shared:
     oauth_client_id: <%= Rails.app.creds.option(:google, :oauth_client_id) %>
     oauth_secret: <%= Rails.app.creds.option(:google, :oauth_secret) %>
 
-  bluesky:
-    client_id: <%= Rails.app.creds.option(:bluesky, :client_id) %>
-
   citizenid:
     oauth_client_id: <%= Rails.app.creds.option(:citizenid, :oauth_client_id) %>
     issuer: <%= ENV["CITIZENID__ISSUER"] || "https://citizenid.dev/" %>
