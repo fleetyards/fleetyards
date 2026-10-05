@@ -21760,18 +21760,14 @@ components:
     FeatureFlagName:
       type: string
       enum:
-      - fleet_allies
       - fleet_contracts
       - fleet_directory
       - fleet_logistics
       - fleet_mission_builder
-      - fleet_squadrons
       - fleet_subscriptions
       - fleet_tours
-      - friends
       - hangar_inventories
       - holo_ar
-      - inventory_transfers
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -21780,24 +21776,18 @@ components:
       - oauth-google
       - oauth-patreon
       - oauth-twitch
-      - online_status
       - push_notifications
       - ship_inventories
-      - tour_payouts
       - trade_routes
       x-enumNames:
-      - FLEET_ALLIES
       - FLEET_CONTRACTS
       - FLEET_DIRECTORY
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
-      - FLEET_SQUADRONS
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
-      - FRIENDS
       - HANGAR_INVENTORIES
       - HOLO_AR
-      - INVENTORY_TRANSFERS
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID
@@ -21806,10 +21796,8 @@ components:
       - OAUTH_GOOGLE
       - OAUTH_PATREON
       - OAUTH_TWITCH
-      - ONLINE_STATUS
       - PUSH_NOTIFICATIONS
       - SHIP_INVENTORIES
-      - TOUR_PAYOUTS
       - TRADE_ROUTES
       title: FeatureFlagName
     FeatureNamesList:

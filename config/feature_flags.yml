@@ -16,9 +16,6 @@
 # push. Seeded from the flags live in Flipper at the time the registry was
 # introduced.
 
-fleet_allies:
-  description: "Fleet alliances — a fleet sharing its ships, stats and roster with another fleet"
-
 fleet_contracts:
   description: "Fleet contracts — jobs members claim, tracked through the transfer ledger"
 
@@ -27,9 +24,6 @@ fleet_logistics:
 
 fleet_mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"
-
-fleet_squadrons:
-  description: "Fleet squadrons — named sub-groups of a fleet's roster, with their own ships and stats"
 
 # Rollout only, never entitlement. This decides whether the supporter-facing
 # subscription surfaces exist at all -- the nomination in settings, and later
@@ -43,26 +37,14 @@ fleet_squadrons:
 fleet_subscriptions:
   description: "Fleet subscriptions — the supporter-facing surfaces of the premium rollout"
 
-# Stacks on tour_payouts rather than replacing it: that flag is what makes
-# tours exist at all, and this one decides whether a fleet runs them as a fleet
-# -- its own tour list, members asking onto them, and the payout ledger on a
-# fleet event. Both have to be on.
+# Whether a fleet runs tours as a fleet -- its own tour list, members asking
+# onto them, and the payout ledger on a fleet event or contract.
 #
 # The split is by owner, not by feature: every fleet-scoped payout surface is
-# behind this, every personal one behind tour_payouts. That is what lets one be
-# priced without the other.
+# behind this, and the personal tool under /tools/ is not gated at all. That
+# is what lets the fleet side be priced without the personal one.
 fleet_tours:
   description: "Fleet tours — a fleet's own tour list and its payouts, with members asking to join"
-
-# Moving stock between two inventories. Rides on top of the three gates above
-# rather than replacing them: a transfer touching a fleet inventory still needs
-# fleet_logistics, and one touching a ship still needs ship_inventories.
-# Otherwise this would be a way around them.
-inventory_transfers:
-  description: "Transfers — moving stock between two inventories"
-
-friends:
-  description: "Friends — a user sharing a hangar, wishlist or stats with people they know"
 
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
@@ -71,14 +53,6 @@ hangar_inventories:
 # separate surface and rolls out on its own schedule.
 ship_inventories:
   description: "Ship inventories — the cargo aboard a vehicle"
-
-# The fan-out is the risky half and it only shows up under real concurrency, so
-# the roster, the friends list and the REST field all sit behind this. The
-# presence store itself is written whether or not the flag is on: Flipper gates
-# are per-actor, and gating the recording would leave a flagged-in reader
-# watching flagged-out users drop offline ninety seconds after they connect.
-online_status:
-  description: "Online status — a live dot on the fleet roster and the friends list, from the cable connection"
 
 push_notifications:
   description: "Push notifications — Web Push delivery of notifications to a subscribed browser"
@@ -117,13 +91,6 @@ oauth-twitch:
 
 trade_routes:
   description: "Trade routes — profitable commodity runs between two terminals, ranked for a chosen ship"
-
-# What makes a payout ledger exist at all, and after the fleet_tours split it
-# owns one surface rather than two: the standalone tour under /tools/ and its
-# ledger. Anything belonging to a fleet -- a fleet's own tours, and the ledger
-# on a fleet event -- needs fleet_tours on top.
-tour_payouts:
-  description: "Tour payouts — a shared expense/income ledger with a settlement list, on fleet events and standalone tours"
 
 holo_ar:
   description: "View in AR — place a ship's to-scale holo in your room from the ship page"
