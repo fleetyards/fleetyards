@@ -37,4 +37,16 @@ describe("parseLocalizedNumber", () => {
   it("keeps a negative sign", () => {
     expect(parseLocalizedNumber("-12,5", "de")).toBe("-12.5");
   });
+
+  it("refuses grouping that is not in threes", () => {
+    expect(parseLocalizedNumber("12,34,567", "en")).toBeNull();
+    expect(parseLocalizedNumber("1.50.000", "de")).toBeNull();
+    expect(parseLocalizedNumber("12,34,567.5", "en")).toBeNull();
+    expect(parseLocalizedNumber("1.2345,5", "de")).toBeNull();
+  });
+
+  // Too many digits in front for a group, so it can only be a decimal.
+  it("reads a long number with a foreign separator as a decimal", () => {
+    expect(parseLocalizedNumber("1500.000", "de")).toBe("1500.000");
+  });
 });
