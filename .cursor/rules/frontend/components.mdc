@@ -65,6 +65,8 @@ Fleetyards frontend. Components here should be:
 - **CommunityLogo/** — Community/project logo
 - **AppNavigation/** — Main navigation (with NavItem, Items, Mobile, etc.), and the header's BackButton, shown only in an installed app
 - **Avatar/** — User avatar
+- **AppIcon/** — Renders an `Icon`: a Font Awesome class string or a drawn glyph
+- **DuotoneGlyph/** — Two-layer SVG glyph in Font Awesome's duotone style, on the 512 or wide 640 grid; `glyph.ts` holds the `Glyph` type and `glyphElement` for hand-built DOM, and the glyphs themselves live in `shared/glyphs/`
 - **BackgroundImage/** — Background image utility
 - **AppFooter/** — Application footer
 - **AppModal/** — Modal dialog (with Inner)
