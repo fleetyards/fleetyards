@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import PresenceDot from "@/shared/components/PresenceDot/index.vue";
+import AppIcon from "@/shared/components/AppIcon/index.vue";
+import { type Icon } from "@/shared/components/DuotoneGlyph/glyph";
 
 type AvatarSizes = "default" | "small" | "large";
 
@@ -15,7 +17,7 @@ type Props = {
   size?: AvatarSizes;
   editable?: boolean;
   creatable?: boolean;
-  icon?: string;
+  icon?: Icon;
   transparent?: boolean;
   round?: boolean;
   /**
@@ -85,7 +87,7 @@ const emitClick = () => {
       @error="loadFailed = true"
     />
     <div v-else class="no-avatar">
-      <i :class="icon" />
+      <AppIcon :icon="icon" />
     </div>
     <div v-if="editable || creatable" class="edit" @click.prevent="emitClick">
       <template v-if="avatar">

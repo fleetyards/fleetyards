@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnTonesEnum,
@@ -170,7 +171,7 @@ watch(
           :variant="action.primary ? undefined : BtnVariantsEnum.GHOST"
           :data-test="actionTestId(action.key)"
         >
-          <i :class="action.icon" />
+          <AppIcon :icon="action.icon" />
           {{ t(`labels.notificationActions.${action.key}`) }}
         </Btn>
       </div>

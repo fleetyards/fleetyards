@@ -8,6 +8,7 @@ export default {
 import { useRoute } from "vue-router";
 import type { RouteLocationNamedRaw, RouterLinkProps } from "vue-router";
 import NavItemInner from "./NavItemInner/index.vue";
+import type { Glyph } from "@/shared/components/DuotoneGlyph/glyph";
 import { NAV_EXPANDED, openFlyout } from "./context";
 import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
@@ -22,7 +23,7 @@ type Props = {
   // Shown in both states, where `label` stands in only once the navigation
   // collapses. For a row whose slot carries something the label does not say.
   tooltip?: string;
-  icon?: string;
+  icon?: string | Glyph;
   image?: string;
   avatar?: boolean;
   menuKey?: string;

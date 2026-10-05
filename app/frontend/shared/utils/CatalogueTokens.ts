@@ -1,3 +1,5 @@
+import type { Icon } from "@/shared/components/DuotoneGlyph/glyph";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 // `[*Name*]` or `[*type:Name*]`: a catalogue item named inline in markdown,
 // or a fleet's contract or event, `[*contract:FID/Title*]`, or a user,
 // `[*user:handle*]`. The name cannot hold `*`, `]` or a line break, which is
@@ -42,11 +44,11 @@ export const catalogueTokenText = (token: string) => `[*${token}*]`;
 // is written with or the type the lookup answers -- the catalogue's own icons.
 // A token written without a prefix is one of the first three, which only the
 // lookup can tell apart.
-const ICONS: Record<string, string> = {
+const ICONS: Record<string, Icon> = {
   component: "fa-duotone fa-microchip",
   equipment: "fa-duotone fa-shirt",
   commodity: "fa-duotone fa-boxes-stacked",
-  ship: "fa-duotone fa-starship",
+  ship: SHIP_GLYPH,
   blueprint: "fa-duotone fa-notes",
   mission: "fa-duotone fa-scroll",
   location: "fa-duotone fa-planet-ringed",
@@ -56,7 +58,7 @@ const ICONS: Record<string, string> = {
   Component: "fa-duotone fa-microchip",
   Equipment: "fa-duotone fa-shirt",
   Commodity: "fa-duotone fa-boxes-stacked",
-  Model: "fa-duotone fa-starship",
+  Model: SHIP_GLYPH,
   Blueprint: "fa-duotone fa-notes",
   GameMission: "fa-duotone fa-scroll",
   Location: "fa-duotone fa-planet-ringed",
@@ -65,7 +67,7 @@ const ICONS: Record<string, string> = {
   User: "fa-duotone fa-user",
 };
 
-export const catalogueTokenIcon = (typeOrPrefix?: string | null) =>
+export const catalogueTokenIcon = (typeOrPrefix?: string | null): Icon =>
   (typeOrPrefix && ICONS[typeOrPrefix]) || "fa-duotone fa-cube";
 
 export const catalogueTokenPrefix = (token: string) => {

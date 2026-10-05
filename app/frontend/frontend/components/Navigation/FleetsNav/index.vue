@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { storeToRefs } from "pinia";
@@ -74,7 +75,7 @@ watch(
     :label="t('nav.fleets.index')"
     :submenu-active="active"
     menu-key="fleets-menu"
-    icon="fa-duotone fa-users"
+    :icon="FLEET_GLYPH"
   >
     <template #submenu>
       <NavItem

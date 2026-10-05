@@ -95,6 +95,14 @@ describe("RelationshipTable", () => {
     expect(wrapper.find(".presence-dot").exists()).toBe(false);
   });
 
+  it("falls back to the fleet glyph for an ally without a logo", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { rows: [allyRow], kind: "fleet" },
+    });
+
+    expect(wrapper.find(".no-avatar .duotone-glyph").exists()).toBe(true);
+  });
+
   it("draws no dot for a row the API answered nothing for", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { rows: [allyRow], kind: "user" },

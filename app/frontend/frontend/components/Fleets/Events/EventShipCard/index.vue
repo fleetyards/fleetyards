@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -189,7 +191,7 @@ const subtitle = computed(() => {
   >
     <template #default>
       <div v-if="!hasShipImage" class="ship-placeholder" aria-hidden="true">
-        <i class="fa-duotone fa-starship ship-placeholder-ship" />
+        <DuotoneGlyph :glyph="SHIP_GLYPH" class="ship-placeholder-ship" />
         <i class="fa-solid fa-question ship-placeholder-question" />
       </div>
       <!-- Same gradient the event card's title gets. Unconditional: without a

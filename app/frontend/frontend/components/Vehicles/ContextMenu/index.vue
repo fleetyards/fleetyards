@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -250,7 +252,7 @@ const cargoVisible = computed(
         },
       }"
     >
-      <i class="fa-duotone fa-starship" />
+      <DuotoneGlyph :glyph="SHIP_GLYPH" />
       <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn

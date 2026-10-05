@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { type CatalogueItemRef } from "@/frontend/components/CatalogueItemPopover/types";
 import MissionText from "@/frontend/components/MissionText/index.vue";
@@ -21,7 +22,7 @@ defineProps<Props>();
      its type's icon, then its name in brackets. -->
 <template>
   <span class="catalogue-token-link" :data-type="item.type">
-    <i :class="catalogueTokenIcon(item.type)" aria-hidden="true" />
+    <AppIcon :icon="catalogueTokenIcon(item.type)" aria-hidden="true" />
     <!-- A mission's name is a game template: its placeholders read as what
          the game will fill in, the way the mission list shows them. -->
     <CatalogueItemPopover :item="item" link-class="catalogue-token-link__link"

@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/index.vue";
@@ -109,7 +111,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
           v-if="currentFleet.publicFleet || currentFleet.myFleet"
           :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
           :active="shipsNavActive"
-          icon="fa-duotone fa-starship"
+          :icon="SHIP_GLYPH"
         />
         <NavItem
           v-if="currentFleet.myFleet"
@@ -155,7 +157,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
           name: 'ships',
           query: filterFor('ships'),
         }"
-        icon="fa-duotone fa-starship"
+        :icon="SHIP_GLYPH"
       />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
@@ -174,7 +176,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         v-if="primaryFleet"
         :to="{ name: 'fleet', params: { slug: primaryFleet.slug } }"
         :image="primaryFleet.logo?.smallUrl"
-        icon="fa-duotone fa-users"
+        :icon="FLEET_GLYPH"
       />
       <NotificationsNav
         v-else-if="isAuthenticated && !myFleetsPending"

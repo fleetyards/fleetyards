@@ -1,19 +1,10 @@
 import { LocationKindEnum } from "@/services/fyApi";
-
-// One glyph per kind on Font Awesome's 512 grid, in its duotone shape: a
-// faded secondary layer under a full primary one. `{id}` is replaced per
-// rendered icon, so two icons on a page never share a mask.
-export type Glyph = {
-  defs?: string;
-  secondary: string;
-  primary: string;
-};
-
-const SECONDARY_STROKE = 'stroke="var(--fa-secondary-color, currentColor)"';
-const PRIMARY_STROKE = 'stroke="var(--fa-primary-color, currentColor)"';
-
-const mask = (id: string, content: string) =>
-  `<mask id="{id}-${id}" maskUnits="userSpaceOnUse" x="-64" y="-64" width="640" height="640"><rect x="-64" y="-64" width="640" height="640" fill="#fff"/>${content}</mask>`;
+import {
+  type Glyph,
+  PRIMARY_STROKE,
+  SECONDARY_STROKE,
+  mask,
+} from "@/shared/components/DuotoneGlyph/glyph";
 
 export const GLYPHS: Record<LocationKindEnum, Glyph> = {
   [LocationKindEnum.SYSTEM]: {

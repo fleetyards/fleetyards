@@ -1,3 +1,5 @@
+import type { Icon } from "@/shared/components/DuotoneGlyph/glyph";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import {
   NotificationRecordTypeEnum,
   type Notification,
@@ -6,7 +8,7 @@ import {
 
 export type NotificationLink = {
   key: string;
-  icon: string;
+  icon: Icon;
   to?: string;
   href?: string;
   primary?: boolean;
@@ -79,10 +81,10 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   announcement: "open",
 };
 
-const ACTION_ICONS: Record<string, string> = {
+const ACTION_ICONS: Record<string, Icon> = {
   openHangar: "fa-duotone fa-warehouse",
   openWishlist: "fa-duotone fa-heart",
-  openModel: "fa-duotone fa-starship",
+  openModel: SHIP_GLYPH,
   openInvite: "fa-duotone fa-envelope-open",
   reviewRequest: "fa-duotone fa-user-check",
   openMembers: "fa-duotone fa-users",

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import { type RouteLocationRaw } from "vue-router";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
@@ -176,7 +177,7 @@ const hasBody = computed(
       </span>
       <span v-else-if="kind || $slots.glyph" class="stats-card__icon">
         <slot name="glyph">
-          <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+          <AppIcon :icon="catalogueTokenIcon(kind)" aria-hidden="true" />
         </slot>
       </span>
       <div class="stats-card__heading">

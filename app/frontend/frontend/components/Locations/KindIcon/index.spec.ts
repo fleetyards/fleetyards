@@ -20,8 +20,8 @@ describe("LocationKindIcon", () => {
     const layers = wrapper.findAll("g").map((layer) => layer.classes()[0]);
 
     expect(layers).toEqual([
-      "location-kind-icon__secondary",
-      "location-kind-icon__primary",
+      "duotone-glyph__secondary",
+      "duotone-glyph__primary",
     ]);
     expect(wrapper.attributes("aria-hidden")).toBe("true");
   });

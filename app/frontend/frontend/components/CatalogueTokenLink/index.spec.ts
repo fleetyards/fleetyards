@@ -30,7 +30,7 @@ describe("CatalogueTokenLink", () => {
       plugins: [router()],
     });
 
-    expect(wrapper.find("i").classes()).toContain("fa-starship");
+    expect(wrapper.find(".duotone-glyph").exists()).toBe(true);
     expect(wrapper.text()).toBe("[Carrack]");
   });
 

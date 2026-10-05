@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -73,7 +74,7 @@ const run = async (action: NotificationAction) => {
       :data-test="actionTestId(action.key)"
       @click="run(action)"
     >
-      <i :class="action.icon" />
+      <AppIcon :icon="action.icon" />
       {{ t(`labels.notificationActions.${action.key}`) }}
     </Btn>
     <Btn
@@ -83,7 +84,7 @@ const run = async (action: NotificationAction) => {
       :variant="BtnVariantsEnum.GHOST"
       :data-test="actionTestId(externalLink.key)"
     >
-      <i :class="externalLink.icon" />
+      <AppIcon :icon="externalLink.icon" />
       {{ t(`labels.notificationActions.${externalLink.key}`) }}
     </Btn>
   </template>

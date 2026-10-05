@@ -520,9 +520,9 @@ describe("FormMarkdownEditor", () => {
     await nextFrames();
 
     expect(lookupCatalogue).not.toHaveBeenCalled();
-    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
-      "fa-starship",
-    );
+    expect(
+      subject.find(".ProseMirror .catalogue-token .duotone-glyph").exists(),
+    ).toBe(true);
   });
 
   it("closes the link panel when the image dialog opens", async () => {

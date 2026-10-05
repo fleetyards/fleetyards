@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import { type LocationQueryRaw, useRouter } from "vue-router";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -188,7 +189,7 @@ const settingsActive = computed(() => {
           }"
           :label="t('nav.ships.index')"
           :active="isShipRoute"
-          icon="fa-duotone fa-starship"
+          :icon="SHIP_GLYPH"
         />
         <!-- Route meta alone does not put anything here: both menus are written
              out by hand and read none of it, so `nav: "main"` on the route left
