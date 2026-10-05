@@ -555,6 +555,10 @@ class Model < ApplicationRecord
 
   validates :size, inclusion: {in: SIZES}, allow_nil: true
 
+  # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
+  # clearing one sends it back there rather than into a constraint violation.
+  normalizes :length, :beam, :height, :mass, with: ->(value) { value || 0 }, apply_to_nil: true
+
   VEHICLE_SIZES = %w[
     extra_extra_small extra_small small medium large extra_large extra_extra_large
   ].freeze
