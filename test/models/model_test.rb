@@ -181,6 +181,14 @@ class ModelTest < ActiveSupport::TestCase
     end
   end
 
+  test "clearing a NOT NULL dimension resets it to zero" do
+    model = create(:model, length: 10.0, beam: 5.0, height: 3.0, mass: 1000.0)
+
+    model.update!(length: nil, beam: nil, height: nil, mass: nil)
+
+    assert_equal [0, 0, 0, 0], model.reload.attributes.values_at("length", "beam", "height", "mass")
+  end
+
   # The loader rewrites sc_* on every import while the curated columns -- the
   # ones fits? and the public payload read -- stay put. Nothing kept them in
   # step, so this is how the drift becomes findable.

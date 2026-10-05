@@ -34,7 +34,10 @@ const asTrue = (value: unknown): boolean | undefined =>
 const asNumber = (value: unknown): number | undefined => {
   const number = Number(value);
 
-  return value === undefined || value === "" || Number.isNaN(number)
+  return value === undefined ||
+    value === null ||
+    value === "" ||
+    Number.isNaN(number)
     ? undefined
     : number;
 };

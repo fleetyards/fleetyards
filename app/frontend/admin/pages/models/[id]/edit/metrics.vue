@@ -225,6 +225,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="lengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="length"
+          type="number"
+          clearable
           translation-key="model.length"
           :suffix="t('number.units.distance')"
         >
@@ -251,6 +253,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="beam"
           v-bind="beamProps"
           name="beam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.beam"
           :suffix="t('number.units.distance')"
@@ -278,6 +282,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="height"
           v-bind="heightProps"
           name="height"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.height"
           :suffix="t('number.units.distance')"
@@ -308,6 +314,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="fleetchartOffsetLengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="fleetchartOffsetLength"
+          type="number"
+          clearable
           translation-key="model.fleetchartOffsetLength"
           :suffix="t('number.units.distance')"
         />
@@ -317,6 +325,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="fleetchartOffsetBeam"
           v-bind="fleetchartOffsetBeamProps"
           name="fleetchartOffsetBeam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.fleetchartOffsetBeam"
           :suffix="t('number.units.distance')"
@@ -331,6 +341,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="landedLengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="landedLength"
+          type="number"
+          clearable
           translation-key="model.landedLength"
           :suffix="t('number.units.distance')"
         />
@@ -340,6 +352,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="landedBeam"
           v-bind="landedBeamProps"
           name="landedBeam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.landedBeam"
           :suffix="t('number.units.distance')"
@@ -350,6 +364,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="landedHeight"
           v-bind="landedHeightProps"
           name="landedHeight"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.landedHeight"
           :suffix="t('number.units.distance')"
@@ -364,6 +380,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="landedFleetchartOffsetLengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="landedFleetchartOffsetLength"
+          type="number"
+          clearable
           translation-key="model.landedFleetchartOffsetLength"
           :suffix="t('number.units.distance')"
         />
@@ -373,6 +391,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="landedFleetchartOffsetBeam"
           v-bind="landedFleetchartOffsetBeamProps"
           name="landedFleetchartOffsetBeam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.landedFleetchartOffsetBeam"
           :suffix="t('number.units.distance')"
@@ -387,6 +407,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="extendedLengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="extendedLength"
+          type="number"
+          clearable
           translation-key="model.extendedLength"
           :suffix="t('number.units.distance')"
         />
@@ -396,6 +418,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="extendedBeam"
           v-bind="extendedBeamProps"
           name="extendedBeam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.extendedBeam"
           :suffix="t('number.units.distance')"
@@ -406,6 +430,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="extendedHeight"
           v-bind="extendedHeightProps"
           name="extendedHeight"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.extendedHeight"
           :suffix="t('number.units.distance')"
@@ -419,6 +445,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="extendedFleetchartOffsetLengthProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="extendedFleetchartOffsetLength"
+          type="number"
+          clearable
           translation-key="model.extendedFleetchartOffsetLength"
           :suffix="t('number.units.distance')"
         />
@@ -428,6 +456,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="extendedFleetchartOffsetBeam"
           v-bind="extendedFleetchartOffsetBeamProps"
           name="extendedFleetchartOffsetBeam"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.extendedFleetchartOffsetBeam"
           :suffix="t('number.units.distance')"
@@ -442,6 +472,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="massProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="mass"
+          type="number"
+          clearable
           translation-key="model.mass"
           :suffix="t('number.units.weight')"
         />
@@ -454,6 +486,9 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="minCrew"
           v-bind="minCrewProps"
           name="minCrew"
+          type="number"
+          :step="1"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.minCrew"
           :suffix="t('number.units.person')"
@@ -464,6 +499,9 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="maxCrew"
           v-bind="maxCrewProps"
           name="maxCrew"
+          type="number"
+          :step="1"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.maxCrew"
           :suffix="t('number.units.person')"
@@ -478,6 +516,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="scmSpeedProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="scmSpeed"
+          type="number"
+          clearable
           translation-key="model.scmSpeed"
           :suffix="t('number.units.speed')"
         />
@@ -487,6 +527,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="scmSpeedBoosted"
           v-bind="scmSpeedBoostedProps"
           name="scmSpeedBoosted"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.scmSpeedBoosted"
           :suffix="t('number.units.speed')"
@@ -497,6 +539,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="maxSpeed"
           v-bind="maxSpeedProps"
           name="maxSpeed"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.maxSpeed"
           :suffix="t('number.units.speed')"
@@ -507,6 +551,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="reverseSpeedBoosted"
           v-bind="reverseSpeedBoostedProps"
           name="reverseSpeedBoosted"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.reverseSpeedBoosted"
           :suffix="t('number.units.speed')"
@@ -519,6 +565,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="pitch"
           v-bind="pitchProps"
           name="pitch"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.pitch"
           :suffix="t('number.units.speed')"
@@ -530,6 +578,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="yawProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="yaw"
+          type="number"
+          clearable
           translation-key="model.yaw"
           :suffix="t('number.units.speed')"
         />
@@ -539,6 +589,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="roll"
           v-bind="rollProps"
           name="roll"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.roll"
           :suffix="t('number.units.speed')"
@@ -551,6 +603,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="pitchBoosted"
           v-bind="pitchBoostedProps"
           name="pitchBoosted"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.pitchBoosted"
           :suffix="t('number.units.speed')"
@@ -562,6 +616,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-bind="yawBoostedProps"
           :alignment="InputAlignmentsEnum.RIGHT"
           name="yawBoosted"
+          type="number"
+          clearable
           translation-key="model.yawBoosted"
           :suffix="t('number.units.speed')"
         />
@@ -571,6 +627,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           v-model="rollBoosted"
           v-bind="rollBoostedProps"
           name="rollBoosted"
+          type="number"
+          clearable
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.rollBoosted"
           :suffix="t('number.units.speed')"

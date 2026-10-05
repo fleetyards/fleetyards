@@ -225,16 +225,36 @@ onMounted(() => {
 
 const emit = defineEmits(["update:modelValue", "clear"]);
 
+/*
+ * An emptied number field is null rather than "": the API types these
+ * `number | null`, and an empty string is a 400. Resetting to the initial value
+ * would put back the very number being cleared, so a number field is set
+ * instead.
+ */
 const clear = () => {
-  handleReset();
-  emit("update:modelValue", undefined);
+  if (props.type === "number") {
+    handleChange(null);
+    emit("update:modelValue", null);
+  } else {
+    handleReset();
+    emit("update:modelValue", undefined);
+  }
   emit("clear");
 };
 
 const onChange = (event: Event) => {
-  handleChange(event);
+  const empty = (event.target as HTMLInputElement).value === "";
+
+  handleChange(props.type === "number" && empty ? null : event);
   emit("update:modelValue", inputValue.value);
 };
+
+const hasValue = computed(
+  () =>
+    inputValue.value !== undefined &&
+    inputValue.value !== null &&
+    inputValue.value !== "",
+);
 
 /*
  * Options are passed through rather than fixed here. Focusing normally scrolls
@@ -286,7 +306,7 @@ defineExpose({
   >
     <transition name="fade">
       <div
-        v-show="!hideLabelOnEmpty || inputValue"
+        v-show="!hideLabelOnEmpty || hasValue"
         v-if="innerLabel && !noLabel"
         class="field-label"
       >
@@ -350,7 +370,7 @@ defineExpose({
         </slot>
       </div>
       <div
-        v-if="inputValue && clearable"
+        v-if="hasValue && clearable"
         class="base-input__clear"
         @click="clear"
       >
