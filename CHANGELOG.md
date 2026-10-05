@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.14.0](https://github.com/fleetyards/fleetyards/compare/v8.13.2...v8.14.0) (2026-10-05)
+
+
+### Features
+
+* **hardpoints:** show each item type's key figures on the row, the rest in its stats card ([#5432](https://github.com/fleetyards/fleetyards/issues/5432)) ([f3435ab](https://github.com/fleetyards/fleetyards/commit/f3435ab27135bef56a81b85d897c9a7726952d7c))
+
+
+### Bug Fixes
+
+* **ships:** keep the detail page loaders inside their sections ([#5431](https://github.com/fleetyards/fleetyards/issues/5431)) ([5c522c3](https://github.com/fleetyards/fleetyards/commit/5c522c39c6965b8c975d819ffe4919284c346f0b))
+
+
+### Chores
+
+* **feature-flags:** retire the six fully-on flags from the registry ([#5426](https://github.com/fleetyards/fleetyards/issues/5426)) ([73b3818](https://github.com/fleetyards/fleetyards/commit/73b38180f4b59b30f834b525536322a3451535e7)), closes [#4966](https://github.com/fleetyards/fleetyards/issues/4966) [#4967](https://github.com/fleetyards/fleetyards/issues/4967) [#4968](https://github.com/fleetyards/fleetyards/issues/4968) [#4969](https://github.com/fleetyards/fleetyards/issues/4969) [#5422](https://github.com/fleetyards/fleetyards/issues/5422) [#5423](https://github.com/fleetyards/fleetyards/issues/5423)
+
 ## [8.13.2](https://github.com/fleetyards/fleetyards/compare/v8.13.1...v8.13.2) (2026-10-05)
 
 
