@@ -4,7 +4,7 @@ shared:
   # be parsed independently.
   sources:
     live: "4.10.1-live.12660092"
-    ptu: "4.10.1-ptu.12578875"
+    ptu: "4.10.2-ptu.12852255"
 
   # What a request that does not name a source gets.
   default: live
