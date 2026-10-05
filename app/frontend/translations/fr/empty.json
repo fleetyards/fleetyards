@@ -27,6 +27,7 @@
         "fleetFeatures": "Il n'y a actuellement aucune fonctionnalité qu'une flotte peut activer elle-même. Revenez plus tard car de nouvelles fonctionnalités sont ajoutées régulièrement."
       },
       "payouts": {
+        "archivedTours": "Aucune expédition archivée",
         "entries": "Rien d'enregistré pour l'instant",
         "participants": "Personne sur cette expédition",
         "transfers": "Clôturez pour voir qui paie qui",

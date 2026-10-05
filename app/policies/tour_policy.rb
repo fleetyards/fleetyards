@@ -38,7 +38,7 @@ class TourPolicy < FleetBasePolicy
 
   def update? = organiser? || fleet_access?(MANAGE_PRIVILEGES)
 
-  alias_rule :destroy?, :settle?, :reopen?, :cancel?, :rotate_invite?, to: :update?
+  alias_rule :destroy?, :settle?, :reopen?, :cancel?, :archive?, :unarchive?, :rotate_invite?, to: :update?
 
   # Anyone with the link may join; the token is the credential.
   def join? = user.present?

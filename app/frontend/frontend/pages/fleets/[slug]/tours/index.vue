@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ToursTable from "@/frontend/components/Payouts/ToursTable/index.vue";
+import TourArchiveSwitch from "@/frontend/components/Payouts/TourArchiveSwitch/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFleetTours } from "@/services/fyApi";
@@ -26,10 +27,25 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const router = useRouter();
+const route = useRoute();
+
+// In the address, so the archive is a page somebody can come back to.
+const archived = computed({
+  get: () => route.query.archived === "1",
+  set: (value: boolean) => {
+    void router.replace({
+      query: { ...route.query, archived: value ? "1" : undefined },
+    });
+  },
+});
+
+const tourParams = computed(() => ({
+  archived: archived.value ? true : undefined,
+}));
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const { data: tours, isLoading } = useFleetTours(fleetSlug);
+const { data: tours, isLoading } = useFleetTours(fleetSlug, tourParams);
 
 const canCreate = computed(() =>
   checkAccess(props.resourceAccess, [
@@ -76,9 +92,15 @@ const crumbs = computed<Crumb[]>(() => [
     </Btn>
   </Teleport>
 
+  <TourArchiveSwitch v-model="archived" />
+
   <ToursTable
     :tours="tours?.items ?? []"
     :loading="isLoading"
     @row-click="onRowClick"
-  />
+  >
+    <template v-if="archived" #empty>
+      {{ t("empty.payouts.archivedTours") }}
+    </template>
+  </ToursTable>
 </template>

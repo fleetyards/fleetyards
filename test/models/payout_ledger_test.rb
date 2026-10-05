@@ -138,7 +138,9 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_not PayoutParticipant.exists?(alice.id)
   end
 
-  test "a tour with a settled ledger can still be deleted" do
+  # Others are on it, so only the organiser's account going takes it -- and the
+  # frozen transfers must not hold that up.
+  test "a tour with a settled ledger goes with its organiser's account" do
     tour = create(:tour)
     ledger = create(:payout_ledger, subject: tour)
     create(:payout_participant, payout_ledger: ledger)
@@ -146,7 +148,11 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     create(:payout_entry, payout_ledger: ledger, payout_participant: bob, amount: 40)
     ledger.settle!
 
-    assert tour.destroy
+    assert_not tour.destroy
+
+    tour.created_by.destroy!
+
+    assert_not Tour.exists?(tour.id)
     assert_not PayoutLedger.exists?(ledger.id)
   end
 

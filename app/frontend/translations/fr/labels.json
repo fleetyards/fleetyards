@@ -3608,6 +3608,8 @@
       },
       "payouts": {
         "currency": "Devise",
+        "archived": "Archivée",
+        "activeTours": "En cours",
         "amount": "Montant",
         "description": "Description",
         "entryType": "Type",

@@ -27,6 +27,7 @@
         "fleetFeatures": "Attualmente non ci sono funzionalità che una flotta può attivare da sé. Torna più tardi poiché vengono aggiunte regolarmente nuove funzioni."
       },
       "payouts": {
+        "archivedTours": "Nessuna spedizione archiviata",
         "entries": "Ancora nessun movimento",
         "participants": "Ancora nessuno in questa spedizione",
         "transfers": "Chiudi per vedere chi paga chi",

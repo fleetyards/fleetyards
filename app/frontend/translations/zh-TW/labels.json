@@ -3599,6 +3599,8 @@
       },
       "payouts": {
         "currency": "貨幣",
+        "archived": "已封存",
+        "activeTours": "目前",
         "amount": "金額",
         "description": "說明",
         "entryType": "類型",

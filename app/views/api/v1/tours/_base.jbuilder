@@ -8,6 +8,8 @@ json.status tour.status
 json.currency tour.currency
 json.starts_at tour.starts_at&.utc&.iso8601
 json.settled_at tour.settled_at&.utc&.iso8601
+json.archived tour.archived?
+json.archived_at tour.archived_at&.utc&.iso8601
 
 json.created_by do
   json.id tour.created_by_id

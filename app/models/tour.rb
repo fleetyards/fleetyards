@@ -5,6 +5,7 @@
 # Table name: tours
 #
 #  id            :uuid             not null, primary key
+#  archived_at   :datetime
 #  cancelled_at  :datetime
 #  currency      :string           default("auec"), not null
 #  description   :text
@@ -59,8 +60,11 @@ class Tour < ApplicationRecord
   before_validation :ensure_id, on: :create
   before_validation :set_invite_token, on: :create
   before_save :update_slug
+  before_destroy :ensure_deletable, prepend: true
 
   scope :active, -> { where(cancelled_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
+  scope :not_archived, -> { where(archived_at: nil) }
   scope :standalone, -> { where(fleet_id: nil) }
 
   DEFAULT_SORTING_PARAMS = ["created_at desc"]
@@ -104,6 +108,28 @@ class Tour < ApplicationRecord
 
   def cancelled? = cancelled_at.present?
 
+  def archived? = archived_at.present?
+
+  def archive!
+    update!(archived_at: Time.current) unless archived?
+  end
+
+  def unarchive!
+    update!(archived_at: nil) if archived?
+  end
+
+  # The organiser is put on the ledger the moment a tour is created, so a tour
+  # nobody else has joined and nothing was recorded on holds no one else's
+  # money. Anything more is history somebody may still need, and is archived
+  # instead.
+  def deletable?
+    ledger = payout_ledger
+    return true if ledger.blank?
+
+    ledger.payout_entries.none? &&
+      ledger.payout_participants.where("user_id IS DISTINCT FROM ?", created_by_id).none?
+  end
+
   def rotate_invite_token!
     update!(invite_token: self.class.generate_invite_token)
   end
@@ -122,6 +148,16 @@ class Tour < ApplicationRecord
   # Run" would collide. The id prefix is what makes that impossible, the same
   # way FleetEvent does it within a fleet, and it reads as
   # `<short-id>-<title>` in the URL.
+  # Only guards someone deleting the tour. An organiser deleting their account
+  # takes their tours with them, and refusing would leave the account stuck.
+  private def ensure_deletable
+    return if destroyed_by_association.present?
+    return if deletable?
+
+    errors.add(:base, :has_participants)
+    throw :abort
+  end
+
   private def update_slug
     base = generate_slug(title)
     prefix = id.to_s.split("-").first

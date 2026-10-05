@@ -76,6 +76,10 @@ class Api::V1::ToursShowTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Payouts::Tour
       end
 
+      response(400, "others are on it") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -98,6 +102,16 @@ class Api::V1::ToursShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {slug: @tour.slug} do
       assert_equal @tour.invite_token, parsed_body["inviteToken"]
+    end
+  end
+
+  test "GET says a tour with someone else on it cannot be deleted" do
+    sign_in @organiser
+
+    assert_api_response :get, 200, path_params: {slug: @tour.slug} do
+      assert_equal false, parsed_body["deletable"]
+      assert_equal false, parsed_body["archived"]
+      assert_equal "auec", parsed_body["currency"]
     end
   end
 
@@ -137,32 +151,52 @@ class Api::V1::ToursShowTest < ActionDispatch::IntegrationTest
     assert_api_response :patch, 401, path_params: {slug: @tour.slug}, body: {title: "Renamed"}
   end
 
-  test "DELETE removes the tour" do
+  test "DELETE removes a tour only its organiser is on" do
+    tour = create(:tour, created_by: @organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: @organiser)
     sign_in @organiser
 
-    assert_api_response :delete, 200, path_params: {slug: @tour.slug} do
-      assert_not Tour.exists?(@tour.id)
+    assert_api_response :delete, 200, path_params: {slug: tour.slug} do
+      assert_not Tour.exists?(tour.id)
+      assert_not PayoutLedger.exists?(ledger.id)
     end
+  end
+
+  test "DELETE refuses a tour someone else is on" do
+    sign_in @organiser
+
+    assert_api_response :delete, 400, path_params: {slug: @tour.slug} do
+      assert Tour.exists?(@tour.id)
+      assert PayoutParticipant.exists?(payout_ledger: @tour.payout_ledger, user: @participant)
+    end
+  end
+
+  test "DELETE refuses a tour with a guest on it" do
+    tour = create(:tour, created_by: @organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: @organiser)
+    create(:payout_participant, :guest, payout_ledger: ledger)
+    sign_in @organiser
+
+    assert_api_response :delete, 400, path_params: {slug: tour.slug}
+
+    assert Tour.exists?(tour.id)
+  end
+
+  test "DELETE refuses a tour with entries, even the organiser's own" do
+    tour = create(:tour, created_by: @organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    organiser_participant = create(:payout_participant, payout_ledger: ledger, user: @organiser)
+    create(:payout_entry, :income, payout_ledger: ledger, payout_participant: organiser_participant, amount: 900)
+    sign_in @organiser
+
+    assert_api_response :delete, 400, path_params: {slug: tour.slug}
+
+    assert Tour.exists?(tour.id)
   end
 
   test "DELETE returns 401 when not signed in" do
     assert_api_response :delete, 401, path_params: {slug: @tour.slug}
-  end
-
-  test "DELETE removes a tour whose ledger is settled" do
-    ledger = @tour.payout_ledger
-    organiser_participant = create(:payout_participant, payout_ledger: ledger, user: @organiser)
-    other = create(:payout_participant, payout_ledger: ledger)
-    create(:payout_entry, :income, payout_ledger: ledger,
-      payout_participant: other, amount: 900)
-    ledger.settle!(@organiser)
-
-    sign_in @organiser
-
-    assert_api_response :delete, 200, path_params: {slug: @tour.slug} do
-      assert_not Tour.exists?(@tour.id)
-      assert_not PayoutLedger.exists?(ledger.id)
-      assert_not PayoutParticipant.exists?(organiser_participant.id)
-    end
   end
 end

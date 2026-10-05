@@ -408,6 +408,10 @@ zh-TW:
           attributes:
             base:
               invalid_holder: "需要且僅需要一個擁有者"
+        tour:
+          attributes:
+            base:
+              has_participants: "此行程已有其他參與者或已有紀錄，只能封存"
         tour_join_request:
           attributes:
             base:

@@ -483,6 +483,9 @@
       "applyGameFileValue": "Übernehmen",
       "applyAllGameFileValues": "Alle übernehmen",
       "payouts": {
+        "archiveTour": "Archivieren",
+        "unarchiveTour": "Wiederherstellen",
+        "deleteTour": "Löschen",
         "openLedger": "Auszahlungsbuch öffnen",
         "addEntry": "Geld erfassen",
         "addParticipant": "Teilnehmer hinzufügen",

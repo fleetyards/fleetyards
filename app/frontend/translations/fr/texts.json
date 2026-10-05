@@ -198,6 +198,7 @@
         "accountFound": "%{username} a un compte FleetYards et sera lié à ce participant.",
         "accountMissing": "Aucun compte FleetYards ne porte ce nom d'utilisateur. Vérifiez l'orthographe ou ajoutez la personne ci-dessous par son nom, comme invité.",
         "guestHint": "Pour quelqu'un sans compte FleetYards. La personne apparaît comme invitée.",
+        "deleteHint": "Personne d'autre ne participe encore à cette expédition, elle peut donc être supprimée.",
         "tourInvite": "%{username} vous invite à rejoindre cette expédition.",
         "contractReady": "Le contrat est rempli. Ouvrez son registre de paiements pour verser la récompense aux prestataires.",
         "contractNotReady": "Aucun registre de paiements n'a encore été ouvert pour ce contrat.",

@@ -3608,6 +3608,8 @@
       },
       "payouts": {
         "currency": "Währung",
+        "archived": "Archiviert",
+        "activeTours": "Aktuell",
         "amount": "Betrag",
         "description": "Beschreibung",
         "entryType": "Art",

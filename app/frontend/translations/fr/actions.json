@@ -483,6 +483,9 @@
       "applyGameFileValue": "Appliquer",
       "applyAllGameFileValues": "Tout appliquer",
       "payouts": {
+        "archiveTour": "Archiver",
+        "unarchiveTour": "Restaurer",
+        "deleteTour": "Supprimer",
         "openLedger": "Ouvrir le registre",
         "addEntry": "Enregistrer un montant",
         "addParticipant": "Ajouter un participant",

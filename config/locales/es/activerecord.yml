@@ -408,6 +408,10 @@ es:
           attributes:
             base:
               invalid_holder: "necesita exactamente un propietario"
+        tour:
+          attributes:
+            base:
+              has_participants: "Hay más participantes en esta expedición o ya se registró algo, así que solo se puede archivar"
         tour_join_request:
           attributes:
             base:

@@ -3608,6 +3608,8 @@
       },
       "payouts": {
         "currency": "Moneda",
+        "archived": "Archivada",
+        "activeTours": "Actuales",
         "amount": "Importe",
         "description": "Descripción",
         "entryType": "Tipo",

@@ -1033,10 +1033,15 @@
         }
       },
       "payouts": {
-        "currencyUpdated": "Currency updated",
         "participantAddedUser": "%{name} added with their FleetYards account",
         "participantAddedGuest": "%{name} added as a guest",
         "invalidAmount": "Enter an amount, e.g. 1,500.50",
+        "currencyUpdated": "Currency updated",
+        "tourArchived": "Tour archived",
+        "tourUnarchived": "Tour restored",
+        "tourDeleted": "Tour deleted",
+        "deleteTourConfirm": "Delete this tour? This cannot be undone.",
+        "archiveTourConfirm": "Archive this tour? It leaves the list but keeps its ledger.",
         "entryCreated": "Entry recorded",
         "entryUpdated": "Entry updated",
         "entryDestroyed": "Entry removed",

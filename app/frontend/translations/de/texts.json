@@ -198,6 +198,7 @@
         "accountFound": "%{username} hat ein FleetYards-Konto und wird mit diesem Teilnehmer verknüpft.",
         "accountMissing": "Kein FleetYards-Konto hat diesen Benutzernamen. Prüfe die Schreibweise oder füge die Person unten per Name als Gast hinzu.",
         "guestHint": "Für jemanden ohne FleetYards-Konto. Die Person wird als Gast geführt.",
+        "deleteHint": "Auf dieser Tour ist noch niemand sonst, daher kann sie gelöscht werden.",
         "tourInvite": "%{username} lädt dich zu dieser Tour ein.",
         "contractReady": "Der Auftrag ist erfüllt. Öffne sein Auszahlungsbuch, um die Belohnung an die Auftragnehmer auszuzahlen.",
         "contractNotReady": "Für diesen Auftrag wurde noch kein Auszahlungsbuch eröffnet.",

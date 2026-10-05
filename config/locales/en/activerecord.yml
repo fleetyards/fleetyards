@@ -391,6 +391,10 @@ en:
           attributes:
             base:
               invalid_holder: "needs exactly one owner"
+        tour:
+          attributes:
+            base:
+              has_participants: "Others are on this tour or something was recorded, so it can only be archived"
         tour_join_request:
           attributes:
             base:

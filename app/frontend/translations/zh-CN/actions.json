@@ -483,6 +483,9 @@
       "applyGameFileValue": "采用",
       "applyAllGameFileValues": "全部采用",
       "payouts": {
+        "archiveTour": "归档",
+        "unarchiveTour": "恢复",
+        "deleteTour": "删除",
         "openLedger": "打开分账簿",
         "addEntry": "记一笔",
         "addParticipant": "添加参与者",

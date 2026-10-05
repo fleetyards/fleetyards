@@ -17,6 +17,10 @@ module V1
             currency: ::V1::Schemas::Enums::TourCurrencyEnum,
             startsAt: {type: [:string, :null], format: "date-time"},
             settledAt: {type: [:string, :null], format: "date-time"},
+            archived: {type: :boolean},
+            archivedAt: {type: [:string, :null], format: "date-time"},
+            # Whether DELETE removes it. Only on a single tour, not in a list.
+            deletable: {type: :boolean},
             createdBy: ::V1::Schemas::UserRefWithAvatar,
             # Only on a tour organised from a fleet's page; a standalone tour
             # omits the key rather than sending a null object.
@@ -34,7 +38,7 @@ module V1
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id title slug status currency participating joinRequestPending],
+          required: %w[id title slug status currency archived participating joinRequestPending],
           additionalProperties: false
         })
       end

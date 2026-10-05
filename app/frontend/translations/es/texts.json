@@ -198,6 +198,7 @@
         "accountFound": "%{username} tiene una cuenta de FleetYards y se vinculará a este participante.",
         "accountMissing": "Ninguna cuenta de FleetYards tiene este usuario. Revisa cómo está escrito o añádela abajo por nombre como invitado.",
         "guestHint": "Para alguien sin cuenta de FleetYards. Aparecerá como invitado.",
+        "deleteHint": "Aún no hay nadie más en esta expedición, así que se puede eliminar.",
         "tourInvite": "%{username} te invita a unirte a esta expedición.",
         "contractReady": "El contrato está cumplido. Abre su libro de pagos para pagar la recompensa a los contratistas.",
         "contractNotReady": "Todavía no se ha abierto un libro de pagos para este contrato.",

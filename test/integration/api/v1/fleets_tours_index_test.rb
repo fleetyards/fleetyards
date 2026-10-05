@@ -17,6 +17,7 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
 
       parameter ::Shared::V1::Parameters::PageParameter
       parameter ::Shared::V1::Parameters::SortingParameter
+      parameter name: :archived, in: :query, schema: {type: :boolean}, required: false
 
       security [
         {SessionCookie: []},
@@ -65,6 +66,19 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: path_params do
       assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "GET lists the fleet's archived tours apart" do
+    archived = create(:tour, fleet: @fleet, created_by: @admin, archived_at: Time.current)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_api_response :get, 200, path_params: path_params, params: {archived: true} do
+      assert_equal [archived.id], parsed_body["items"].map { |item| item["id"] }
     end
   end
 
