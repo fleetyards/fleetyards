@@ -1023,6 +1023,8 @@
         }
       },
       "payouts": {
+        "participantAddedUser": "%{name} mit FleetYards-Konto hinzugefügt",
+        "participantAddedGuest": "%{name} als Gast hinzugefügt",
         "invalidAmount": "Gib einen Betrag ein, z. B. 1.500,50",
         "entryCreated": "Eintrag erfasst",
         "entryUpdated": "Eintrag aktualisiert",

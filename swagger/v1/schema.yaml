@@ -34090,7 +34090,7 @@ components:
         weight:
           type: string
         user:
-          "$ref": "#/components/schemas/UserRef"
+          "$ref": "#/components/schemas/UserRefWithAvatar"
         fleet:
           "$ref": "#/components/schemas/FleetRef"
         createdAt:

@@ -14,6 +14,7 @@ import {
 import PayoutWeightControl from "@/frontend/components/Payouts/PayoutWeightControl/index.vue";
 import { formatWeight } from "@/frontend/components/Payouts/PayoutWeightControl/types";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -154,6 +155,21 @@ const onDecline = async (joinRequest: TourJoinRequest) => {
     });
 };
 
+// A payer is shown by its fleet's logo; a guest has no account to draw one
+// from, and the icon says so.
+const avatarFor = (participant: PayoutParticipant) =>
+  participant.user?.avatar?.smallUrl ??
+  participant.fleet?.logo?.smallUrl ??
+  undefined;
+
+const avatarIconFor = (participant: PayoutParticipant) => {
+  if (participant.fleet) {
+    return "fa-duotone fa-people-group";
+  }
+
+  return participant.guest ? "fa-duotone fa-user-secret" : "fa-duotone fa-user";
+};
+
 const entryCountFor = (participant: PayoutParticipant) =>
   props.entryCounts[participant.id] ?? 0;
 
@@ -227,6 +243,11 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
     >
       <div class="payout-participants__head">
         <span class="payout-participants__name">
+          <Avatar
+            :avatar="avatarFor(participant)"
+            :icon="avatarIconFor(participant)"
+            size="small"
+          />
           {{ participant.displayName }}
           <span v-if="participant.guest" class="payout-participants__tag">
             {{ t("labels.payouts.guest") }}
@@ -281,6 +302,10 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
     >
       <div class="payout-participants__head">
         <span class="payout-participants__name">
+          <Avatar
+            :avatar="joinRequest.user.avatar?.smallUrl ?? undefined"
+            size="small"
+          />
           {{ joinRequest.user.username }}
           <span class="payout-participants__tag">
             {{ t("labels.payouts.joinRequestPending") }}

@@ -23,7 +23,7 @@ module Api
         authorize! with: PayoutTransferPolicy, context: ledger_context
 
         @payout_transfers = @payout_ledger.payout_transfers
-          .includes(from_participant: :user, to_participant: :user)
+          .includes(from_participant: {user: {avatar_attachment: :blob}}, to_participant: {user: {avatar_attachment: :blob}})
           .order(:created_at)
       end
 

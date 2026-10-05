@@ -161,6 +161,17 @@ class Api::V1::PayoutParticipantsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET shows a participant's avatar" do
+    pictured = create(:user, :with_avatar)
+    create(:payout_participant, payout_ledger: @ledger, user: pictured)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id} do
+      row = parsed_body.find { |participant| participant.dig("user", "id") == pictured.id }
+      assert_not_nil row.dig("user", "avatar", "smallUrl")
+    end
+  end
+
   test "GET returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {payoutLedgerId: @ledger.id}
   end

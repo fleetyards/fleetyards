@@ -29,7 +29,7 @@ module Api
         query_params["sorts"] = sorting_params(PayoutEntry, query_params["sorts"])
 
         @q = @payout_ledger.payout_entries
-          .includes(:reviewed_by, payout_participant: [:user, :fleet])
+          .includes(:reviewed_by, payout_participant: [{user: {avatar_attachment: :blob}}, :fleet])
           .ransack(query_params)
 
         @payout_entries = result_with_pagination(@q.result(distinct: true), per_page(PayoutEntry))
