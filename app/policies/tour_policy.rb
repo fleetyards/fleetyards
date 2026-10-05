@@ -63,7 +63,7 @@ class TourPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:title, :description, :starts_at)
+    params.permit(:title, :description, :starts_at, :currency)
   end
 
   private def organiser?

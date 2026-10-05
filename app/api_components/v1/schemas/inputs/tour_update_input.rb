@@ -11,7 +11,8 @@ module V1
           properties: {
             title: {type: :string},
             description: {type: [:string, :null]},
-            startsAt: {type: [:string, :null], format: "date-time"}
+            startsAt: {type: [:string, :null], format: "date-time"},
+            currency: ::V1::Schemas::Enums::TourCurrencyEnum
           },
           additionalProperties: false
         })

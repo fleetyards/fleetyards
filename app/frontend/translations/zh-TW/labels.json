@@ -3598,6 +3598,7 @@
         "cargogrid": "貨運格柵"
       },
       "payouts": {
+        "currency": "貨幣",
         "amount": "金額",
         "description": "說明",
         "entryType": "類型",

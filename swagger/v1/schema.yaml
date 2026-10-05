@@ -35431,6 +35431,8 @@ components:
           - 'null'
         status:
           "$ref": "#/components/schemas/TourStatusEnum"
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
         startsAt:
           type:
           - string
@@ -35474,6 +35476,7 @@ components:
       - title
       - slug
       - status
+      - currency
       - participating
       - joinRequestPending
       additionalProperties: false
@@ -35492,10 +35495,53 @@ components:
           - string
           - 'null'
           format: date-time
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
       required:
       - title
       additionalProperties: false
       title: TourCreateInput
+    TourCurrencyEnum:
+      type: string
+      enum:
+      - auec
+      - usd
+      - eur
+      - gbp
+      - cad
+      - aud
+      - nzd
+      - chf
+      - sek
+      - nok
+      - dkk
+      - pln
+      - czk
+      - jpy
+      - cny
+      - twd
+      - brl
+      - mxn
+      x-enumNames:
+      - AUEC
+      - USD
+      - EUR
+      - GBP
+      - CAD
+      - AUD
+      - NZD
+      - CHF
+      - SEK
+      - NOK
+      - DKK
+      - PLN
+      - CZK
+      - JPY
+      - CNY
+      - TWD
+      - BRL
+      - MXN
+      title: TourCurrencyEnum
     TourJoinRequest:
       type: object
       properties:
@@ -35570,6 +35616,8 @@ components:
           - string
           - 'null'
           format: date-time
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
       additionalProperties: false
       title: TourUpdateInput
     ToursList:

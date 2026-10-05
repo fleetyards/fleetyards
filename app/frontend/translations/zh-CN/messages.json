@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "currencyUpdated": "货币已更新",
         "participantAddedUser": "已添加 %{name}（已关联 FleetYards 账户）",
         "participantAddedGuest": "已将 %{name} 添加为访客",
         "invalidAmount": "请输入金额，例如 1,500.50",

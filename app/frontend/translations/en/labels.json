@@ -3612,6 +3612,7 @@
         "cargogrid": "Cargo grid"
       },
       "payouts": {
+        "currency": "Currency",
         "amount": "Amount",
         "description": "Description",
         "entryType": "Type",

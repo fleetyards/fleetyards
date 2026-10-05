@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "currencyUpdated": "Devise mise à jour",
         "participantAddedUser": "%{name} ajouté avec son compte FleetYards",
         "participantAddedGuest": "%{name} ajouté comme invité",
         "invalidAmount": "Saisissez un montant, par ex. 1 500,50",

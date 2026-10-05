@@ -22,6 +22,7 @@ import { useSubscription } from "@/shared/composables/useSubscription";
 import { PayoutLedgerChannel } from "@/services/fyCable/channels/PayoutLedgerChannel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
+import { providePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import {
   usePayoutLedger,
   usePayoutLedgerBalances,
@@ -31,6 +32,7 @@ import {
   PayoutLedgerSubjectTypeEnum,
   useSettlePayoutLedger as useSettlePayoutLedgerMutation,
   useReopenPayoutLedger as useReopenPayoutLedgerMutation,
+  type TourCurrencyEnum,
 } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
@@ -46,6 +48,7 @@ type Props = {
   // False for a contract that does not reimburse expenses: the reward is the
   // whole payout, and the API refuses an expense on its ledger.
   expensesAllowed?: boolean;
+  currency?: TourCurrencyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -53,7 +56,10 @@ const props = withDefaults(defineProps<Props>(), {
   contributable: false,
   tourSlug: undefined,
   expensesAllowed: true,
+  currency: undefined,
 });
+
+providePayoutCurrency(() => props.currency);
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -246,6 +252,7 @@ const onAddEntry = () => {
       payoutLedgerId: props.payoutLedgerId,
       participants: recordableParticipants.value,
       expensesAllowed: props.expensesAllowed,
+      currency: props.currency,
     },
   });
 };

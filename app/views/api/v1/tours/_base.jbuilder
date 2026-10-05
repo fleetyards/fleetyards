@@ -5,6 +5,7 @@ json.title tour.title
 json.slug tour.slug
 json.description tour.description
 json.status tour.status
+json.currency tour.currency
 json.starts_at tour.starts_at&.utc&.iso8601
 json.settled_at tour.settled_at&.utc&.iso8601
 

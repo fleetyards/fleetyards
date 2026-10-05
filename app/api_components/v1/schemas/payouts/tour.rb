@@ -14,6 +14,7 @@ module V1
             slug: {type: :string},
             description: {type: [:string, :null]},
             status: ::V1::Schemas::Enums::TourStatusEnum,
+            currency: ::V1::Schemas::Enums::TourCurrencyEnum,
             startsAt: {type: [:string, :null], format: "date-time"},
             settledAt: {type: [:string, :null], format: "date-time"},
             createdBy: ::V1::Schemas::UserRefWithAvatar,
@@ -33,7 +34,7 @@ module V1
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id title slug status participating joinRequestPending],
+          required: %w[id title slug status currency participating joinRequestPending],
           additionalProperties: false
         })
       end

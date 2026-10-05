@@ -1033,6 +1033,7 @@
         }
       },
       "payouts": {
+        "currencyUpdated": "Currency updated",
         "participantAddedUser": "%{name} added with their FleetYards account",
         "participantAddedGuest": "%{name} added as a guest",
         "invalidAmount": "Enter an amount, e.g. 1,500.50",

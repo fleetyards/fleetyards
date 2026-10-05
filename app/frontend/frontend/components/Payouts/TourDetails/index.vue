@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -14,11 +15,13 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
+import { usePayoutCurrencyOptions } from "@/frontend/composables/usePayoutCurrency";
 import {
   useCreateTourJoinRequest as useCreateTourJoinRequestMutation,
   useDestroyTourJoinRequest as useDestroyTourJoinRequestMutation,
+  useUpdateTour as useUpdateTourMutation,
 } from "@/services/fyApi";
-import type { Tour } from "@/services/fyApi";
+import type { Tour, TourCurrencyEnum } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
 type Props = {
@@ -47,6 +50,31 @@ const isOrganiser = computed(
 );
 
 const canManage = computed(() => isOrganiser.value || props.manageable);
+
+const currencyOptions = usePayoutCurrencyOptions();
+
+// Once settled, the transfers people pay against are frozen in a currency.
+const currencyEditable = computed(
+  () => canManage.value && props.tour.status === "open",
+);
+
+const updateTourMutation = useUpdateTourMutation();
+
+const onCurrency = async (currency: TourCurrencyEnum) => {
+  if (currency === props.tour.currency) {
+    return;
+  }
+
+  await updateTourMutation
+    .mutateAsync({ slug: props.tour.slug, data: { currency } })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.currencyUpdated") });
+      emit("reload");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    });
+};
 
 // Asking onto the tour only exists on a fleet's: a standalone one is not
 // listed anywhere a stranger could have found it, so its link is the way in.
@@ -202,6 +230,20 @@ const shareUrl = computed(() => {
     <span v-if="tour.startsAt" class="tour-meta__date">
       {{ l(tour.startsAt, "datetime.formats.dateTime") }}
     </span>
+    <BaseSelect
+      v-if="currencyEditable"
+      :model-value="tour.currency"
+      name="currency"
+      class="tour-meta__currency"
+      :options="currencyOptions"
+      unsorted
+      :searchable="true"
+      :label="t('labels.payouts.currency')"
+      :no-label="true"
+      inline
+      data-test="tour-currency"
+      @update:model-value="(value) => onCurrency(value as TourCurrencyEnum)"
+    />
   </div>
 
   <p v-if="tour.description" class="tour-description">
@@ -218,15 +260,22 @@ const shareUrl = computed(() => {
     :manageable="canManage"
     :contributable="true"
     :tour-slug="tour.fleet ? tour.slug : undefined"
+    :currency="tour.currency"
   />
 </template>
 
 <style lang="scss" scoped>
 .tour-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+}
+
+.tour-meta__currency {
+  margin-left: auto;
+  min-width: 200px;
 }
 
 .tour-meta__date {

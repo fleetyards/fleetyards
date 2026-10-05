@@ -8,6 +8,7 @@ require "test_helper"
 #
 #  id            :uuid             not null, primary key
 #  cancelled_at  :datetime
+#  currency      :string           default("auec"), not null
 #  description   :text
 #  invite_token  :string           not null
 #  settled_at    :datetime
@@ -122,5 +123,10 @@ class TourTest < ActiveSupport::TestCase
 
     assert tour.destroy
     assert_not PayoutLedger.exists?(ledger.id)
+  end
+
+  test "rejects a currency it does not know" do
+    assert_not build(:tour, currency: "doge").valid?
+    assert build(:tour, currency: "eur").valid?
   end
 end

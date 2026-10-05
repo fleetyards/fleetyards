@@ -6,6 +6,7 @@
 #
 #  id            :uuid             not null, primary key
 #  cancelled_at  :datetime
+#  currency      :string           default("auec"), not null
 #  description   :text
 #  invite_token  :string           not null
 #  settled_at    :datetime
@@ -48,7 +49,12 @@ class Tour < ApplicationRecord
   # stranger can see it, so the invite link is the only way onto one.
   has_many :join_requests, class_name: "TourJoinRequest", dependent: :destroy
 
+  # Mostly a game run counted in aUEC, but some groups split real money too.
+  # Only labels the ledger's figures -- nothing is ever converted.
+  CURRENCIES = %w[auec usd eur gbp cad aud nzd chf sek nok dkk pln czk jpy cny twd brl mxn].freeze
+
   validates :title, presence: true
+  validates :currency, inclusion: {in: CURRENCIES}
 
   before_validation :ensure_id, on: :create
   before_validation :set_invite_token, on: :create

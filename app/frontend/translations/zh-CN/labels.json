@@ -3598,6 +3598,7 @@
         "cargogrid": "货运格栅"
       },
       "payouts": {
+        "currency": "货币",
         "amount": "金额",
         "description": "说明",
         "entryType": "类型",

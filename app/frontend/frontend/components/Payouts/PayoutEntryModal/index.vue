@@ -15,6 +15,7 @@ import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import { parseLocalizedNumber } from "@/shared/utils/parseLocalizedNumber";
 import {
   useCreatePayoutEntry as useCreatePayoutEntryMutation,
@@ -23,6 +24,7 @@ import {
   type PayoutEntry,
   type PayoutEntryTypeEnum,
   type PayoutParticipant,
+  type TourCurrencyEnum,
 } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
@@ -31,14 +33,17 @@ type Props = {
   participants: PayoutParticipant[];
   entry?: PayoutEntry;
   expensesAllowed?: boolean;
+  currency?: TourCurrencyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   entry: undefined,
   expensesAllowed: true,
+  currency: undefined,
 });
 
 const { t, currentLocale } = useI18n();
+const { currencyLabel } = usePayoutCurrency(() => props.currency);
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -199,6 +204,7 @@ const onDestroy = async () => {
             inputmode="decimal"
             rules="required"
             v-bind="amountProps"
+            :suffix="currencyLabel"
             :label="t('labels.payouts.amount')"
           />
         </div>

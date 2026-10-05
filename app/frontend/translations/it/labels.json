@@ -3607,6 +3607,7 @@
         "capital": "Capitale (C)"
       },
       "payouts": {
+        "currency": "Valuta",
         "amount": "Importo",
         "description": "Descrizione",
         "entryType": "Tipo",

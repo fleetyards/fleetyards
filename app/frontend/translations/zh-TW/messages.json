@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "currencyUpdated": "貨幣已更新",
         "participantAddedUser": "已新增 %{name}（已連結 FleetYards 帳戶）",
         "participantAddedGuest": "已將 %{name} 新增為訪客",
         "invalidAmount": "請輸入金額，例如 1,500.50",

@@ -11,10 +11,12 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { TourCreateInput } from "@/services/fyApi";
+import { TourCurrencyEnum, type TourCreateInput } from "@/services/fyApi";
+import { usePayoutCurrencyOptions } from "@/frontend/composables/usePayoutCurrency";
 
 type Props = {
   submitting?: boolean;
@@ -28,13 +30,21 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+const currencyOptions = usePayoutCurrencyOptions();
+
 const { defineField, handleSubmit } = useForm({
-  initialValues: { title: "", description: "", startsAt: null },
+  initialValues: {
+    title: "",
+    description: "",
+    startsAt: null,
+    currency: TourCurrencyEnum.AUEC as TourCurrencyEnum,
+  },
 });
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
 const [startsAt, startsAtProps] = defineField("startsAt");
+const [currency] = defineField("currency");
 
 // FormDateTime emits a local "YYYY-MM-DDTHH:MM", which the schema's date-time
 // format rejects.
@@ -51,6 +61,7 @@ const onSubmit = handleSubmit((values) => {
     title: values.title as string,
     description: (values.description as string) || null,
     startsAt: toIsoOrNull(values.startsAt),
+    currency: values.currency,
   });
 });
 </script>
@@ -75,6 +86,19 @@ const onSubmit = handleSubmit((values) => {
               name="startsAt"
               v-bind="startsAtProps"
               :label="t('labels.payouts.startsAt')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <BaseSelect
+              v-model="currency"
+              name="currency"
+              :options="currencyOptions"
+              unsorted
+              :searchable="true"
+              :label="t('labels.payouts.currency')"
+              @update:model-value="
+                (value) => (currency = value as TourCurrencyEnum)
+              "
             />
           </div>
           <div class="col-12">
