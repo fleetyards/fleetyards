@@ -1529,7 +1529,7 @@ export const useHardpointStats = (
       if (thruster.fuelBurnRatePer10KNewton) {
         result.push({
           key: "thrusters.fuelBurn",
-          label: "Fuel Burn",
+          label: t("labels.hardpoint.thrusters.fuelBurn"),
           value: String(
             toNumber(thruster.fuelBurnRatePer10KNewton, "fuelRate"),
           ),
