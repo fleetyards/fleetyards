@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
@@ -86,9 +87,7 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
         <Avatar
           :avatar="(record as RelationshipRow).avatar?.smallUrl"
           size="small"
-          :icon="
-            kind === 'fleet' ? 'fa-duotone fa-users' : 'fa-duotone fa-user'
-          "
+          :icon="kind === 'fleet' ? FLEET_GLYPH : 'fa-duotone fa-user'"
           :online="rowOnline(record as RelationshipRow)"
         />
         <span class="relationship-party__body">

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
@@ -175,7 +176,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         v-if="primaryFleet"
         :to="{ name: 'fleet', params: { slug: primaryFleet.slug } }"
         :image="primaryFleet.logo?.smallUrl"
-        icon="fa-duotone fa-users"
+        :icon="FLEET_GLYPH"
       />
       <NotificationsNav
         v-else-if="isAuthenticated && !myFleetsPending"

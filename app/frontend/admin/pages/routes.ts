@@ -1,3 +1,4 @@
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import { routes as visualTestsRoutes } from "@/admin/pages/visual-tests/routes";
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
@@ -189,7 +190,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.fleets.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-users-class",
+      icon: FLEET_GLYPH,
       mobileNav: 2,
       access: ["fleets"],
     },
