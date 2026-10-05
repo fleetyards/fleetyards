@@ -84,3 +84,60 @@ describe("FormInput standalone", () => {
     );
   });
 });
+
+describe("FormInput number", () => {
+  it("emits null when emptied", async () => {
+    const wrapper = await mountInput({
+      name: "length",
+      type: "number",
+      modelValue: 12,
+    });
+
+    await wrapper.find("input").setValue("");
+
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([null]);
+  });
+
+  it("emits the typed number", async () => {
+    const wrapper = await mountInput({ name: "length", type: "number" });
+
+    await wrapper.find("input").setValue("12.5");
+
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([12.5]);
+  });
+
+  it("clears to null rather than back to the initial value", async () => {
+    const wrapper = await mountInput({
+      name: "length",
+      type: "number",
+      modelValue: 12,
+      clearable: true,
+    });
+
+    await wrapper.find(".base-input__clear").trigger("click");
+
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([null]);
+    expect((wrapper.find("input").element as HTMLInputElement).value).toBe("");
+  });
+
+  it("offers to clear a zero", async () => {
+    const wrapper = await mountInput({
+      name: "length",
+      type: "number",
+      modelValue: 0,
+      clearable: true,
+    });
+
+    expect(wrapper.find(".base-input__clear").exists()).toBe(true);
+  });
+});
+
+describe("FormInput text", () => {
+  it("still emits an empty string when emptied", async () => {
+    const wrapper = await mountInput({ name: "username", modelValue: "Maru" });
+
+    await wrapper.find("input").setValue("");
+
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([""]);
+  });
+});
