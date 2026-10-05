@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.13.1](https://github.com/fleetyards/fleetyards/compare/v8.13.0...v8.13.1) (2026-10-05)
+
+
+### Chores
+
+* **sc_data:** bump ptu to 4.10.2-ptu.12852255 ([#5420](https://github.com/fleetyards/fleetyards/issues/5420)) ([9ddb976](https://github.com/fleetyards/fleetyards/commit/9ddb976667e2e7069dc4c3f4a3edcf3545e8ebd1))
+
 ## [8.13.0](https://github.com/fleetyards/fleetyards/compare/v8.12.0...v8.13.0) (2026-10-05)
 
 
