@@ -1,5 +1,6 @@
 import { Extension, Node, mergeAttributes, type Editor } from "@tiptap/core";
 import { VueRenderer } from "@tiptap/vue-3";
+import { glyphElement, isGlyph } from "@/shared/components/DuotoneGlyph/glyph";
 import { PluginKey } from "@tiptap/pm/state";
 import Suggestion, { type SuggestionOptions } from "@tiptap/suggestion";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
@@ -73,24 +74,24 @@ export const CatalogueToken = Node.create({
     const token = node.attrs.token as string;
     const unresolved = node.attrs.state === "unresolved";
     const name = catalogueTokenName(token);
+    const icon = () => {
+      const tokenIcon = unresolved
+        ? "fa-duotone fa-circle-question"
+        : catalogueTokenIcon(
+            (node.attrs.type as string | null) ?? catalogueTokenPrefix(token),
+          );
+
+      return isGlyph(tokenIcon)
+        ? glyphElement(tokenIcon)
+        : ["i", { class: tokenIcon, "aria-hidden": "true" }];
+    };
 
     return [
       "span",
       mergeAttributes(HTMLAttributes, {
         class: `catalogue-token catalogue-token--chip${unresolved ? " catalogue-token--unresolved" : ""}`,
       }),
-      [
-        "i",
-        {
-          class: unresolved
-            ? "fa-duotone fa-circle-question"
-            : catalogueTokenIcon(
-                (node.attrs.type as string | null) ??
-                  catalogueTokenPrefix(token),
-              ),
-          "aria-hidden": "true",
-        },
-      ],
+      icon(),
       unresolved ? name : `[${name}]`,
     ];
   },

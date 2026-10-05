@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
@@ -73,7 +74,7 @@ const badges = computed<RowListItemBadge[]>(() =>
   <RowListItem class="shop-item-row" :to="to" :badges="badges">
     <template #leading>
       <span class="shop-item-row__icon" aria-hidden="true">
-        <i :class="catalogueTokenIcon(item.itemType)" />
+        <AppIcon :icon="catalogueTokenIcon(item.itemType)" />
       </span>
     </template>
 

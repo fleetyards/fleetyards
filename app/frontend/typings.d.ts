@@ -1,5 +1,6 @@
 import "vue-router";
 import type { FeatureFlagName } from "@/services/fyApi";
+import type { Icon } from "@/shared/components/DuotoneGlyph/glyph";
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -8,7 +9,7 @@ declare module "vue-router" {
     needsAuthentication?: boolean;
     primaryAction?: boolean;
     backgroundImage?: string;
-    icon?: string;
+    icon?: Icon;
     exact?: boolean;
     activeRoute?: string;
     /*

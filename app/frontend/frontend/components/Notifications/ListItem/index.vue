@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -109,7 +110,7 @@ defineExpose({ focus: () => select.value?.focus() });
         :to="primary.to"
         data-test="notification-item-open"
       >
-        <i :class="primary.icon" />
+        <AppIcon :icon="primary.icon" />
       </Btn>
       <Btn
         v-if="notification.archived"

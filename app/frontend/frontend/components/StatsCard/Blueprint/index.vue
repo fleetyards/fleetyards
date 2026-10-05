@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import {
@@ -112,11 +113,17 @@ const ownRoute = computed(() =>
           data-test="blueprint-stats-card-makes"
           @click="emit('navigate')"
         >
-          <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+          <AppIcon
+            :icon="catalogueTokenIcon(craftable.type)"
+            aria-hidden="true"
+          />
           [{{ craftable.name }}]
         </router-link>
         <span v-else class="blueprint-stats-card__makes">
-          <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+          <AppIcon
+            :icon="catalogueTokenIcon(craftable.type)"
+            aria-hidden="true"
+          />
           [{{ craftable.name }}]
         </span>
       </div>

@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -117,7 +119,7 @@ const openDisplayOptionsModal = () => {
       mobile-icon-only
       @click="toggleFleetchart"
     >
-      <i class="fa-duotone fa-starship" />
+      <DuotoneGlyph :glyph="SHIP_GLYPH" />
       {{ t("labels.fleetchart") }}
     </Btn>
   </Teleport>

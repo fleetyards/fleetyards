@@ -10,7 +10,8 @@
   gap: 0.25em;
   white-space: nowrap;
 
-  i {
+  i,
+  .duotone-glyph {
     font-size: 0.85em;
     color: var(--color-primary, #428bca);
   }

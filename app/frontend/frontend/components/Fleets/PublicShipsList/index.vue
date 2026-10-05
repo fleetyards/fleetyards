@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useFleetSortFields } from "@/frontend/composables/useFleetSortFields";
@@ -160,7 +162,7 @@ const refetch = async () => {
           data-test="fleetchart-link"
           @click="toggleFleetchart"
         >
-          <i class="fa-duotone fa-starship" />
+          <DuotoneGlyph :glyph="SHIP_GLYPH" />
         </Btn>
       </template>
 

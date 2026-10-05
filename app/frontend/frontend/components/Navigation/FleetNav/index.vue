@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -103,7 +104,7 @@ onMounted(() => {
         :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
         :label="t('nav.fleets.ships')"
         :active="shipsNavActive"
-        icon="fa-duotone fa-starship"
+        :icon="SHIP_GLYPH"
       />
 
       <NavItem

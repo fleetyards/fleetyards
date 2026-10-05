@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -79,7 +81,7 @@ const toggleFleetchart = () => {
       data-test="fleetchart-link"
       @click="toggleFleetchart"
     >
-      <i class="fa-duotone fa-starship" />
+      <DuotoneGlyph :glyph="SHIP_GLYPH" />
       {{ t("labels.fleetchart") }}
     </Btn>
 

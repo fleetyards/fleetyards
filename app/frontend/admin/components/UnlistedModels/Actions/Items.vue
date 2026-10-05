@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import {
   type ScDataUnlistedModel,
   useScDataUnlistedModelIgnore,
@@ -106,7 +108,7 @@ const ignore = async () => {
     :disabled="!canCreate"
     @click="createModel"
   >
-    <i class="fa-duotone fa-starship" />
+    <DuotoneGlyph :glyph="SHIP_GLYPH" />
     <span v-if="withLabels">{{ t("actions.unlistedModel.createModel") }}</span>
   </Btn>
   <Btn

@@ -1,3 +1,4 @@
+import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import { routes as visualTestsRoutes } from "@/admin/pages/visual-tests/routes";
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
@@ -64,7 +65,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.models.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-starship",
+      icon: SHIP_GLYPH,
       mobileNav: 1,
       access: ["models"],
     },
