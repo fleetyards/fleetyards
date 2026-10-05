@@ -25,7 +25,8 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
+import { pageKey as routePageKey } from "@/frontend/utils/pageKey";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
@@ -274,13 +275,8 @@ const activeLocale = (locale: string) => {
   );
 };
 
-// `/compare` and `/compare/` are one page but not one key: route records are
-// declared with a trailing slash, so a link without one lands on `/compare` and the
-// first `router.replace` a filter makes canonicalises the path. Keyed on the raw
-// path, that one navigation threw the page away and rebuilt it — on compare, taking
-// the table's scroll position and its collapsed sections with it.
-const pageKey = (viewRoute: { path: string }) =>
-  `${locale.value}-${viewRoute.path.replace(/\/$/, "")}`;
+const pageKey = (viewRoute: RouteLocationNormalizedLoaded) =>
+  `${locale.value}-${routePageKey(viewRoute)}`;
 
 const setLocale = (locale: string) => {
   i18nStore.locale = locale;
