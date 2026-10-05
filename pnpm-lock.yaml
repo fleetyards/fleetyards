@@ -270,8 +270,8 @@ importers:
         specifier: ^1.15.7
         version: 1.15.7
       swagger-ui-dist:
-        specifier: ^5.33.0
-        version: 5.33.0
+        specifier: ^5.33.1
+        version: 5.33.1
       three:
         specifier: 0.186.1
         version: 0.186.1
@@ -6622,8 +6622,8 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  swagger-ui-dist@5.33.0:
-    resolution: {integrity: sha512-wpdK+m6BU5yj6pmUdMskZVTSWYG4DLglAx3sIhylloY37i8O37IrH+YEpqdXNfpaTGxILRBFzUqLF2jKqbfI7A==}
+  swagger-ui-dist@5.33.1:
+    resolution: {integrity: sha512-H872wWkA53bFIsGgi7OWgmq+CRWw3nFQGdJWRqOB9wNwTm6e5ol34+qPDkV4AJlK+gglM2EsJiOOzsGsEGbluA==}
 
   synckit@0.11.13:
     resolution: {integrity: sha512-eNRKgb3z66Yp3D2CixVujOUvXLFUTij/zVnV8KRyvFdQwpz7I5DS8UfRkTeLzb64u+dkzDSdelE24izu+zSSUg==}
@@ -14025,7 +14025,7 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  swagger-ui-dist@5.33.0:
+  swagger-ui-dist@5.33.1:
     dependencies:
       '@scarf/scarf': 1.4.0
 
