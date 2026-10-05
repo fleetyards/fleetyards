@@ -51,6 +51,7 @@ describe("useHardpointStats for mounts", () => {
 
     expect(stats).toEqual([
       {
+        key: "turrets.turnRate",
         label: "labels.hardpoint.turrets.turnRate",
         value: "80 °/s",
         primary: true,
@@ -82,8 +83,18 @@ describe("useHardpointStats for mounts", () => {
     );
 
     expect(stats.slice(1)).toEqual([
-      { label: "labels.hardpoint.turrets.yawRange", value: "±80°" },
-      { label: "labels.hardpoint.turrets.pitchRange", value: "±20°" },
+      {
+        key: "turrets.yawRange",
+        label: "labels.hardpoint.turrets.yawRange",
+        value: "±80°",
+        row: 0,
+      },
+      {
+        key: "turrets.pitchRange",
+        label: "labels.hardpoint.turrets.pitchRange",
+        value: "±20°",
+        row: 1,
+      },
     ]);
   });
 

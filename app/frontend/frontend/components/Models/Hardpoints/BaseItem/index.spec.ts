@@ -40,6 +40,34 @@ const gun = (id: string, catalogued: boolean) =>
     },
   }) as unknown as Hardpoint;
 
+const quantumDrive = (source: HardpointSourceEnum) =>
+  ({
+    id: "qd",
+    name: "hardpoint_quantum_drive",
+    groupKey: "quantum",
+    source,
+    category: HardpointCategoryEnum.QUANTUMDRIVE,
+    maxSize: 2,
+    component: {
+      id: "c2",
+      name: "Bolon",
+      slug: "bolon",
+      catalogued: true,
+      category: "quantumdrive",
+      typeData: {
+        driveSpeed: 263_400_000,
+        engageSpeed: 84_000_000,
+        calibrationRate: 1000,
+        disconnectRange: 34_693,
+        interdictionEffectTime: 2.6,
+        spoolUpTime: 7.3,
+        cooldownTime: 14.3,
+        stageOneAccelRate: 6_005_714,
+        stageTwoAccelRate: 8_631_428,
+      },
+    },
+  }) as unknown as Hardpoint;
+
 const wrappers: VueWrapper[] = [];
 
 const mountStack = async (catalogued: boolean) => {
@@ -104,5 +132,27 @@ describe("HardpointBaseItem", () => {
     await wrapper.find(".hardpoint-item").trigger("click");
 
     expect(expanded(wrapper)).toBe(true);
+  });
+
+  it("shows the figures a quantum drive ranks, in their order, on a row with a stats card", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [quantumDrive(HardpointSourceEnum.GAME_FILES)] },
+      plugins: [router()],
+    });
+    wrappers.push(wrapper);
+
+    expect(
+      wrapper.findAll(".hardpoint-item__stat-k").map((label) => label.text()),
+    ).toEqual(["Spool Up", "Cooldown"]);
+  });
+
+  it("lists every figure on a row without a stats card", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [quantumDrive(HardpointSourceEnum.SHIP_MATRIX)] },
+      plugins: [router()],
+    });
+    wrappers.push(wrapper);
+
+    expect(wrapper.findAll(".hardpoint-item__stat").length).toBeGreaterThan(4);
   });
 });

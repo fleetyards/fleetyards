@@ -106,7 +106,11 @@ describe("useHardpointStats for flight controllers", () => {
 
   it("gives a controller without speeds no flight rows", () => {
     expect(statsFor(controller({ signatureEm: 10 }))).toEqual([
-      { label: "labels.hardpoint.signatureEm", value: "10" },
+      {
+        key: "signatureEm",
+        label: "labels.hardpoint.signatureEm",
+        value: "10",
+      },
     ]);
   });
 });
