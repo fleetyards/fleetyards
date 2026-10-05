@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { type Feature } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import FeatureHistory from "@/admin/components/FeatureHistory/index.vue";
 
 type Props = {
@@ -18,6 +19,8 @@ defineProps<Props>();
 
 <template>
   <Panel>
-    <FeatureHistory :name="feature.name" />
+    <PanelBody>
+      <FeatureHistory :name="feature.name" />
+    </PanelBody>
   </Panel>
 </template>

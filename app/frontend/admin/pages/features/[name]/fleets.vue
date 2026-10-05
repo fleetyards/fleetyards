@@ -11,6 +11,8 @@ import {
   type FleetOption,
 } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ActorList from "@/admin/components/Features/ActorList/index.vue";
 import FleetActorSearch from "@/admin/components/Features/FleetActorSearch/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -40,30 +42,36 @@ const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
 <template>
   <div class="feature-actors-page">
     <Panel>
-      <section class="feature-section">
-        <h3>{{ t("headlines.admin.features.addFleet") }}</h3>
-        <FleetActorSearch
-          :enabled-ids="enabledIds"
-          :busy="actions.busy.value"
-          @add="add"
-        />
-      </section>
+      <PanelHeading>
+        {{ t("headlines.admin.features.addFleet") }}
+      </PanelHeading>
+      <PanelBody>
+        <section class="feature-section">
+          <FleetActorSearch
+            :enabled-ids="enabledIds"
+            :busy="actions.busy.value"
+            @add="add"
+          />
+        </section>
+      </PanelBody>
     </Panel>
 
     <Panel>
-      <section class="feature-section">
-        <h3>
-          {{ t("headlines.admin.features.enabledFleets") }}
-          <span class="text-muted">({{ fleets.length }})</span>
-        </h3>
-        <ActorList
-          :actors="fleets"
-          name="fleets"
-          :filter-label="t('labels.features.filterFleets')"
-          :empty-text="t('labels.features.noFleets')"
-          @remove="remove"
-        />
-      </section>
+      <PanelHeading>
+        {{ t("headlines.admin.features.enabledFleets") }}
+        <span class="text-muted">({{ fleets.length }})</span>
+      </PanelHeading>
+      <PanelBody>
+        <section class="feature-section">
+          <ActorList
+            :actors="fleets"
+            name="fleets"
+            :filter-label="t('labels.features.filterFleets')"
+            :empty-text="t('labels.features.noFleets')"
+            @remove="remove"
+          />
+        </section>
+      </PanelBody>
     </Panel>
   </div>
 </template>
