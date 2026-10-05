@@ -35,6 +35,9 @@ updates:
         patterns:
           - "playwright"
           - "@playwright/*"
+      tiptap:
+        patterns:
+          - "@tiptap/*"
 
   - package-ecosystem: docker
     directory: /
