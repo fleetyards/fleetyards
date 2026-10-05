@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { engineUrls } from "@/admin/utils/EngineUrls";
+import { routes as featureRoutes } from "@/admin/pages/features/[name]/routes";
 
 /*
  * Top-level, not nested. These were children of a `/maintenance` route whose
@@ -57,14 +58,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/features/:name",
-    name: "admin-feature",
+    path: "/features/:name/",
     component: () => import("@/admin/pages/features/[name].vue"),
+    children: featureRoutes,
+    redirect: { name: "admin-feature" },
     meta: {
       title: "admin.features.show",
       needsAuthentication: true,
       access: ["features"],
       nav: "hidden",
+      activeRoute: "admin-features",
     },
   },
   {

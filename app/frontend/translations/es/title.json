@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "Indicadores de características",
-          "show": "Detalles de la función"
+          "show": "Detalles de la función",
+          "overview": "Indicador de característica",
+          "users": "Usuarios del indicador",
+          "fleets": "Flotas del indicador",
+          "history": "Historial del indicador"
         },
         "images": {
           "index": "Imágenes"

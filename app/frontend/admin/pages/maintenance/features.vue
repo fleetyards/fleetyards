@@ -11,32 +11,20 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
-import BaseSelect from "@/shared/components/base/Select/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
-import UserSelect from "@/admin/components/base/UserSelect/index.vue";
-import FeatureHistory from "@/admin/components/FeatureHistory/index.vue";
-import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import {
   useAdminFeatures,
   getAdminFeaturesQueryKey,
   enableAdminFeature,
   disableAdminFeature,
-  enableAdminFeatureActor,
-  disableAdminFeatureActor,
-  enableAdminFeatureGroup,
-  disableAdminFeatureGroup,
-  enableAdminFeaturePercentageOfActors,
-  enableAdminFeaturePercentageOfTime,
-  toggleAdminFeatureUserSelfService,
-  toggleAdminFeatureFleetSelfService,
   type Feature,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { useFeatureState } from "@/admin/composables/useFeatureState";
 
 const { t } = useI18n();
+const { stateVariant, stateLabel } = useFeatureState();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const { data: features, isLoading } = useAdminFeatures();
@@ -91,23 +79,6 @@ const visibleFeatureItems = computed<FeatureItem[]>(() => {
   }
 });
 
-const editableList = ref<{
-  editingId: string | null;
-  finishEdit: () => void;
-} | null>(null);
-
-// Edit form state
-const editActorType = ref("User");
-const selectedUser = ref<string | undefined>(undefined);
-const selectedFleet = ref<string | undefined>(undefined);
-
-const actorTypeOptions = [
-  { label: t("labels.features.user"), value: "User" },
-  { label: t("labels.features.fleet"), value: "Fleet" },
-];
-
-const availableGroups = ["testers", "admins"];
-
 const toggleFeature = async (feature: FeatureItem) => {
   try {
     if (feature.state === "on") {
@@ -122,114 +93,6 @@ const toggleFeature = async (feature: FeatureItem) => {
   }
 };
 
-const addActor = async (feature: FeatureItem) => {
-  const actorId =
-    editActorType.value === "User" ? selectedUser.value : selectedFleet.value;
-  if (!actorId) return;
-
-  try {
-    await enableAdminFeatureActor(feature.name, {
-      actor_type: editActorType.value,
-      actor_id: actorId,
-    });
-    void invalidateFeatures();
-    selectedUser.value = undefined;
-    selectedFleet.value = undefined;
-    displaySuccess({ text: t("messages.features.actorAdded") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const removeActor = async (featureName: string, type: string, id: string) => {
-  try {
-    await disableAdminFeatureActor(featureName, {
-      actor_type: type,
-      actor_id: id,
-    });
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.actorRemoved") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const addGroup = async (featureName: string, group: string) => {
-  try {
-    await enableAdminFeatureGroup(featureName, { group });
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.groupAdded") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const removeGroup = async (featureName: string, group: string) => {
-  try {
-    await disableAdminFeatureGroup(featureName, { group });
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.groupRemoved") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const updatePercentageOfActors = async (
-  feature: FeatureItem,
-  percentage: number,
-) => {
-  try {
-    await enableAdminFeaturePercentageOfActors(feature.name, { percentage });
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.updated") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const updatePercentageOfTime = async (
-  feature: FeatureItem,
-  percentage: number,
-) => {
-  try {
-    await enableAdminFeaturePercentageOfTime(feature.name, { percentage });
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.updated") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const toggleUserSelfService = async (feature: FeatureItem) => {
-  try {
-    await toggleAdminFeatureUserSelfService(feature.name);
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.updated") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const toggleFleetSelfService = async (feature: FeatureItem) => {
-  try {
-    await toggleAdminFeatureFleetSelfService(feature.name);
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.updated") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
-const onStartEdit = (_item: FeatureItem) => {
-  editActorType.value = "User";
-  selectedUser.value = undefined;
-  selectedFleet.value = undefined;
-};
-
-const onSaveEdit = () => {
-  editableList.value?.finishEdit();
-};
-
 // Whole days open, which is what the removal decision is made on. The date
 // itself is in the history panel for anyone who wants it.
 const daysOpen = (fullyOnSince?: string | null) => {
@@ -239,38 +102,6 @@ const daysOpen = (fullyOnSince?: string | null) => {
     (Date.now() - new Date(fullyOnSince).getTime()) / (1000 * 60 * 60 * 24),
   );
 };
-
-const stateVariant = (state: string): `${PillVariantsEnum}` => {
-  switch (state) {
-    case "on":
-      return PillVariantsEnum.SUCCESS;
-    case "off":
-      return PillVariantsEnum.DANGER;
-    case "conditional":
-      return PillVariantsEnum.WARNING;
-    default:
-      return PillVariantsEnum.DEFAULT;
-  }
-};
-
-const stateLabel = (state: string) => {
-  switch (state) {
-    case "on":
-      return t("labels.features.stateOn");
-    case "off":
-      return t("labels.features.stateOff");
-    case "conditional":
-      return t("labels.features.stateConditional");
-    default:
-      return state;
-  }
-};
-
-const hasSelectedActor = computed(() => {
-  return editActorType.value === "User"
-    ? !!selectedUser.value
-    : !!selectedFleet.value;
-});
 </script>
 
 <template>
@@ -289,21 +120,23 @@ const hasSelectedActor = computed(() => {
 
     <template #content>
       <InlineEditableList
-        ref="editableList"
         empty-name="features"
         :loading="isLoading"
         :items="visibleFeatureItems"
         hide-destroy
-        @start-edit="onStartEdit"
-        @save-edit="onSaveEdit"
+        hide-edit
       >
         <template #display="{ item }">
           <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
             {{ stateLabel(item.state) }}
           </BasePill>
-          <span class="feature-name" data-test="feature-name">{{
-            item.name
-          }}</span>
+          <router-link
+            :to="{ name: 'admin-feature', params: { name: item.name } }"
+            class="feature-name"
+            data-test="feature-name"
+          >
+            {{ item.name }}
+          </router-link>
           <BasePill v-if="item.permanent" margin-right>
             {{ t("labels.features.permanent") }}
           </BasePill>
@@ -342,6 +175,16 @@ const hasSelectedActor = computed(() => {
 
         <template #actions="{ item, mobile }">
           <Btn
+            v-tooltip="t('actions.edit')"
+            :to="{ name: 'admin-feature', params: { name: item.name } }"
+            :variant="BtnVariantsEnum.GHOST"
+            :aria-label="`${t('actions.edit')} ${item.name}`"
+            data-test="edit-feature"
+          >
+            <i class="fa-duotone fa-pencil" />
+            <span v-if="mobile">{{ t("actions.edit") }}</span>
+          </Btn>
+          <Btn
             v-tooltip="t('labels.features.toggle')"
             data-test="toggle-feature"
             @click="toggleFeature(item)"
@@ -354,154 +197,6 @@ const hasSelectedActor = computed(() => {
             <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
           </Btn>
         </template>
-
-        <template #edit="{ item }">
-          <div class="edit-feature" data-test="edit-feature">
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.selfService") }}</h4>
-              <Toggle
-                :active="item.selfServiceUser"
-                :label="t('labels.features.selfServiceUser')"
-                data-test="toggle-self-service"
-                @toggle="toggleUserSelfService(item)"
-              />
-              <Toggle
-                :active="item.selfServiceFleet"
-                :label="t('labels.features.selfServiceFleet')"
-                data-test="toggle-fleet-self-service"
-                @toggle="toggleFleetSelfService(item)"
-              />
-            </div>
-
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.percentageOfActors") }}</h4>
-              <div class="edit-percentage">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  :value="item.percentageOfActors"
-                  @change="
-                    updatePercentageOfActors(
-                      item,
-                      Number(($event.target as HTMLInputElement).value),
-                    )
-                  "
-                />
-                <span class="percentage-value"
-                  >{{ item.percentageOfActors }}%</span
-                >
-              </div>
-            </div>
-
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.percentageOfTime") }}</h4>
-              <div class="edit-percentage">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  :value="item.percentageOfTime"
-                  @change="
-                    updatePercentageOfTime(
-                      item,
-                      Number(($event.target as HTMLInputElement).value),
-                    )
-                  "
-                />
-                <span class="percentage-value"
-                  >{{ item.percentageOfTime }}%</span
-                >
-              </div>
-            </div>
-
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.groups") }}</h4>
-              <div class="edit-groups">
-                <div
-                  v-for="group in item.groups"
-                  :key="group"
-                  class="edit-group-item"
-                >
-                  <BasePill margin-right>{{ group }}</BasePill>
-                  <Btn @click.prevent="removeGroup(item.name, group)">
-                    <i class="fa-duotone fa-times" />
-                  </Btn>
-                </div>
-                <Btn
-                  v-for="group in availableGroups.filter(
-                    (g) => !item.groups.includes(g),
-                  )"
-                  :key="group"
-                  :data-test="`add-group-${group}`"
-                  @click.prevent="addGroup(item.name, group)"
-                >
-                  <i class="fa-duotone fa-plus" />
-                  {{ group }}
-                </Btn>
-              </div>
-            </div>
-
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.actors") }}</h4>
-              <div v-if="item.actors.length > 0" class="edit-actors">
-                <div
-                  v-for="actor in item.actors"
-                  :key="`${actor.type};${actor.id}`"
-                  class="edit-actor-item"
-                >
-                  <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
-                  <span class="edit-actor-name">{{ actor.name }}</span>
-                  <Btn
-                    class="edit-actor-remove"
-                    @click.prevent="
-                      removeActor(item.name, actor.type, actor.id)
-                    "
-                  >
-                    <i class="fa-duotone fa-times" />
-                  </Btn>
-                </div>
-              </div>
-
-              <div class="add-actor-form">
-                <BaseSelect
-                  v-model="editActorType"
-                  inline
-                  name="actor-type"
-                  :options="actorTypeOptions"
-                  :nullable="false"
-                  :label="t('labels.features.actorType')"
-                />
-                <UserSelect
-                  v-if="editActorType === 'User'"
-                  v-model="selectedUser"
-                  name="feature-user"
-                  inline
-                  :no-label="false"
-                />
-                <FleetSelect
-                  v-if="editActorType === 'Fleet'"
-                  v-model="selectedFleet"
-                  name="feature-fleet"
-                  inline
-                  :no-label="false"
-                />
-                <Btn
-                  :disabled="!hasSelectedActor"
-                  @click.prevent="addActor(item)"
-                >
-                  <i class="fa-duotone fa-plus" />
-                  {{ t("actions.addActor") }}
-                </Btn>
-              </div>
-            </div>
-
-            <div class="edit-section" data-test="edit-section">
-              <h4>{{ t("headlines.admin.features.history") }}</h4>
-              <FeatureHistory :name="item.name" />
-            </div>
-          </div>
-        </template>
       </InlineEditableList>
     </template>
   </TabNavView>
@@ -511,84 +206,5 @@ const hasSelectedActor = computed(() => {
 .feature-name {
   font-weight: 600;
   margin-right: 0.5rem;
-}
-
-.edit-feature {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-}
-
-.edit-section {
-  h4 {
-    margin: 0 0 0.5rem;
-    font-size: 0.9rem;
-  }
-}
-
-.edit-percentage {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  input[type="range"] {
-    flex: 1;
-  }
-
-  .percentage-value {
-    min-width: 3rem;
-    text-align: right;
-    font-weight: 600;
-  }
-}
-
-.edit-groups {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.edit-group-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-// A flag can carry a few dozen actors, and one per row left the panel a narrow
-// strip down the left with the rest of the width empty.
-.edit-actors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  gap: 0.25rem 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.edit-actor-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
-.edit-actor-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-// Against the right edge of its own column, so the buttons line up instead of
-// stepping in and out with the length of each name.
-.edit-actor-remove {
-  margin-left: auto;
-}
-
-.add-actor-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
 }
 </style>

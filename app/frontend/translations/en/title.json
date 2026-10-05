@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "Feature Flags",
-          "show": "Feature Details"
+          "show": "Feature Details",
+          "overview": "Feature Flag",
+          "users": "Feature Flag Users",
+          "fleets": "Feature Flag Fleets",
+          "history": "Feature Flag History"
         },
         "images": {
           "index": "Images"

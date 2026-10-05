@@ -30,9 +30,19 @@ module Admin
         def options
           authorize! with: ::Admin::FleetPolicy
 
+          search = fleet_query_params.delete(:search).presence
+          scope = Fleet.kept.with_member_count
+
+          if search
+            @fleets = scope.search_ranked(search)
+              .page(page_params)
+              .per(per_page(Fleet))
+            return
+          end
+
           fleet_query_params["sorts"] = "name asc"
 
-          @q = Fleet.kept.ransack(fleet_query_params)
+          @q = scope.ransack(fleet_query_params)
 
           @fleets = @q.result(distinct: true)
             .page(page_params)
@@ -83,7 +93,7 @@ module Admin
 
         private def fleet_query_params
           @fleet_query_params ||= params.permit(q: [
-            :name_cont, :fid_cont, :s, :sorts, s: [], sorts: []
+            :name_cont, :fid_cont, :search, :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

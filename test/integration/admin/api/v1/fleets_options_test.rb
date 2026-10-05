@@ -41,6 +41,52 @@ class Admin::Api::V1::FleetsOptionsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200
   end
 
+  # Contains-only in name order put a fleet called "Test" behind every other
+  # name with "test" in it. The term is hyphenated so no random factory name
+  # can match it.
+  test "GET /fleets/options ranks a search exact, then prefix, then contains" do
+    contains = create(:fleet, name: "A Big Ze-ro Fleet", fid: "BIGZERO")
+    prefix = create(:fleet, name: "Ze-ro Squadron", fid: "ZSQUAD")
+    exact = create(:fleet, name: "Ze-ro", fid: "ZERO100")
+    create(:fleet, name: "Unrelated", fid: "UNREL")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"search" => "ze-ro"}} do
+      assert_equal [exact.fid, prefix.fid, contains.fid], parsed_body["items"].pluck("fid")
+    end
+  end
+
+  test "GET /fleets/options searches the SID as well as the name" do
+    by_sid = create(:fleet, name: "Opiepal", fid: "Ze-roSquadron")
+    exact_sid = create(:fleet, name: "Woot", fid: "ze-ro")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"search" => "Ze-ro"}} do
+      assert_equal [exact_sid.fid, by_sid.fid], parsed_body["items"].pluck("fid")
+    end
+  end
+
+  test "GET /fleets/options counts each fleet's accepted members" do
+    fleet = create(:fleet, name: "Ze-ro", fid: "ZERO100")
+    create_list(:fleet_membership, 2, :accepted, fleet:)
+    create(:fleet_membership, fleet:)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"search" => "ze-ro"}} do
+      assert_equal [fleet.member_count], parsed_body["items"].pluck("memberCount")
+    end
+  end
+
+  # The feature page grants a flag to a fleet through this picker.
+  test "GET /fleets/options answers an admin who manages features" do
+    fleet = create(:fleet, name: "Ze-ro", fid: "ZERO100")
+    sign_in create(:admin_user, resource_access: [:features])
+
+    assert_api_response :get, 200, params: {q: {"search" => "ze-ro"}} do
+      assert_equal [fleet.fid], parsed_body["items"].pluck("fid")
+    end
+  end
+
   test "GET /fleets/options returns 401 when not signed in" do
     assert_api_response :get, 401
   end

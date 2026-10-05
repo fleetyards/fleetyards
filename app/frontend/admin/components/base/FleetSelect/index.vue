@@ -55,10 +55,20 @@ watch(
   },
 );
 
+// The option row is a single label, so the SID and roster size travel in it.
+// Fleet names are not unique; the SID is what tells them apart.
 const formatter = (response: FleetOptions) => {
   return response.items.map((fleet) => {
+    const parts = [`${fleet.name} (${fleet.fid})`];
+
+    if (fleet.memberCount !== undefined) {
+      parts.push(
+        t("labels.features.memberCount", { count: fleet.memberCount }),
+      );
+    }
+
     return {
-      label: `${fleet.name} (${fleet.fid})`,
+      label: parts.join(" · "),
       value: fleet.fid,
     };
   });
@@ -68,7 +78,7 @@ const fetch = async (params: BaseSelectParams<FleetOption>) => {
   const q: FleetQuery = {};
 
   if (params.search) {
-    q.nameCont = params.search;
+    q.search = params.search.trim();
   }
 
   if (params.missing) {
@@ -98,6 +108,7 @@ const fetch = async (params: BaseSelectParams<FleetOption>) => {
     :name="name"
     :paginated="true"
     :searchable="true"
+    :unsorted="true"
     :multiple="multiple"
     :no-label="noLabel"
     :inline="inline"

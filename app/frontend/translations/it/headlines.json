@@ -159,7 +159,11 @@
           "percentageOfActors": "Percentuale degli attori",
           "percentageOfTime": "Percentuale di tempo",
           "addActor": "Aggiungi attore",
-          "history": "Cronologia"
+          "history": "Cronologia",
+          "addUser": "Abilita per un utente",
+          "addFleet": "Abilita per una flotta",
+          "enabledUsers": "Utenti abilitati",
+          "enabledFleets": "Flotte abilitate"
         },
         "rsiApiStatus": {
           "index": "Stato API RSI"

@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "功能標誌",
-          "show": "功能詳情"
+          "show": "功能詳情",
+          "overview": "功能標誌",
+          "users": "功能標誌使用者",
+          "fleets": "功能標誌艦隊",
+          "history": "功能標誌歷史"
         },
         "images": {
           "index": "圖片"

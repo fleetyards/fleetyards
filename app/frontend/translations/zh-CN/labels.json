@@ -218,7 +218,17 @@
         "managedFeature": "此功能已为您的账户启用，无法在此处更改。",
         "managedFeatureFleet": "此功能已为该舰队启用，无法在此处更改。",
         "selfServiceUser": "用户可自行切换",
-        "selfServiceFleet": "舰队管理员可切换"
+        "selfServiceFleet": "舰队管理员可切换",
+        "globalHint": "开启后对所有人开放此功能。关闭会清除所有规则，包括下方的用户、舰队和分组。",
+        "selfServiceHint": "谁可以自行开启此功能。",
+        "lastChanged": "最后修改于 %{date}",
+        "filterUsers": "按用户名筛选",
+        "filterFleets": "按名称或 SID 筛选",
+        "noUsers": "没有用户单独启用此功能。",
+        "noFleets": "没有舰队单独启用此功能。",
+        "noMatches": "没有符合筛选条件的结果。",
+        "memberCount": "%{count} 名成员",
+        "alreadyEnabled": "该舰队已启用此功能。"
       },
       "oauthApplication": {
         "name": "应用名称",

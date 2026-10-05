@@ -161,7 +161,11 @@
           "percentageOfActors": "Percentage of Actors",
           "percentageOfTime": "Percentage of Time",
           "addActor": "Add Actor",
-          "history": "History"
+          "history": "History",
+          "addUser": "Enable for a user",
+          "addFleet": "Enable for a fleet",
+          "enabledUsers": "Enabled users",
+          "enabledFleets": "Enabled fleets"
         },
         "rsiApiStatus": {
           "index": "RSI API Status"

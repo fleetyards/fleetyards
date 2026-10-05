@@ -14,7 +14,8 @@ module Admin
                 id: {type: :string, format: :uuid},
                 fid: {type: :string},
                 name: {type: :string},
-                slug: {type: :string}
+                slug: {type: :string},
+                memberCount: {type: :integer, description: "Accepted members. Only the fleet options list sends it"}
               },
               additionalProperties: false,
               required: %w[id fid name slug]

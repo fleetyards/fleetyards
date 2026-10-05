@@ -218,7 +218,17 @@
         "managedFeature": "Cette fonctionnalité a été activée pour votre compte et ne peut pas être modifiée ici.",
         "managedFeatureFleet": "Cette fonctionnalité a été activée pour cette flotte et ne peut pas être modifiée ici.",
         "selfServiceUser": "Les utilisateurs peuvent basculer",
-        "selfServiceFleet": "Les admins de flotte peuvent basculer"
+        "selfServiceFleet": "Les admins de flotte peuvent basculer",
+        "globalHint": "Activée, la fonctionnalité est ouverte à tous. Désactivée, toutes les règles sont effacées, y compris les utilisateurs, flottes et groupes ci-dessous.",
+        "selfServiceHint": "Qui peut activer cette fonctionnalité soi-même.",
+        "lastChanged": "Dernière modification : %{date}",
+        "filterUsers": "Filtrer par nom d'utilisateur",
+        "filterFleets": "Filtrer par nom ou SID",
+        "noUsers": "Aucun utilisateur n'a cette fonctionnalité activée individuellement.",
+        "noFleets": "Aucune flotte n'a cette fonctionnalité activée individuellement.",
+        "noMatches": "Rien ne correspond au filtre.",
+        "memberCount": "%{count} membres",
+        "alreadyEnabled": "Cette flotte a déjà la fonctionnalité."
       },
       "oauthApplication": {
         "name": "Nom de l'application",

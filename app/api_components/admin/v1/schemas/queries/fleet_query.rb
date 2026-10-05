@@ -12,6 +12,7 @@ module Admin
             properties: {
               nameCont: {type: :string},
               fidCont: {type: :string},
+              search: {type: :string, description: "Name or SID, ranked exact, then prefix, then contains"},
               s: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::FleetSortEnum
               }, ::Admin::V1::Schemas::Sorts::FleetSortEnum]},

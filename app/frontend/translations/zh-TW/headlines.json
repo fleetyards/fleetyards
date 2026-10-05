@@ -159,7 +159,11 @@
           "percentageOfActors": "角色百分比",
           "percentageOfTime": "時間百分比",
           "addActor": "新增角色",
-          "history": "變更歷史"
+          "history": "變更歷史",
+          "addUser": "為使用者啟用",
+          "addFleet": "為艦隊啟用",
+          "enabledUsers": "已啟用的使用者",
+          "enabledFleets": "已啟用的艦隊"
         },
         "rsiApiStatus": {
           "index": "RSI API 狀態"

@@ -179,6 +179,12 @@
         "themes": "Themes"
       },
       "admin": {
+        "features": {
+          "overview": "Overview",
+          "users": "Users",
+          "fleets": "Fleets",
+          "history": "History"
+        },
         "locations": {
           "index": "Locations"
         },

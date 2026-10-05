@@ -290,6 +290,50 @@ describe("BaseSelect", () => {
       });
     });
 
+    it("matches a search typed with surrounding spaces", async () => {
+      const wrapper = await mount({ searchable: true });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await wrapper.find("input").setValue("  aurora ");
+
+      expect(labelsIn(wrapper, ".base-select-items-wrapper")).toEqual([
+        "Aurora",
+      ]);
+    });
+
+    // An exact match the server ranks first must not land below the partial
+    // matches an earlier search left behind.
+    it("lets an unsorted select's new search replace the earlier one", async () => {
+      const queryFn = vi.fn(({ search }: { search?: string }) =>
+        Promise.resolve(
+          search === "test"
+            ? [
+                { value: "exact", label: "Test" },
+                { value: "partial", label: "1test" },
+              ]
+            : [{ value: "partial", label: "1test" }],
+        ),
+      );
+      const wrapper = await mount({
+        options: undefined,
+        queryFn,
+        searchable: true,
+        unsorted: true,
+      });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      vi.useFakeTimers();
+      await wrapper.find("input").setValue("test");
+      await wrapper.find("input").trigger("input");
+      await vi.advanceTimersByTimeAsync(500);
+      await flushPromises();
+
+      expect(labelsIn(wrapper, ".base-select-items-wrapper")).toEqual([
+        "Test",
+        "1test",
+      ]);
+    });
+
     it("offers more only while the response says there are more pages", async () => {
       const paged = (currentPage: number, totalPages: number) => ({
         data: [],
@@ -321,6 +365,61 @@ describe("BaseSelect", () => {
       });
 
       expect(wrapper.find(".base-select-fetch-more").exists()).toBe(false);
+    });
+
+    // The button disables itself while the next page loads, and a disabled
+    // focused button drops focus with no target. That is not leaving the group.
+    it("stays open while fetching more drops focus from the button", async () => {
+      const queryFn = vi.fn().mockResolvedValue({
+        data: [],
+        meta: { pagination: { currentPage: 1, totalPages: 3 } },
+      });
+
+      const wrapper = await mount({
+        options: undefined,
+        queryFn,
+        queryResponseFormatter: (r: { data: unknown[] }) => r.data,
+        paginated: true,
+      });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await flushPromises();
+
+      const fetchMore = wrapper.find(".base-select-fetch-more");
+      await fetchMore.trigger("click");
+      // Dispatched by hand: `trigger` refuses a disabled element, which is the
+      // state the button is in by the time the browser drops its focus.
+      fetchMore.element.dispatchEvent(
+        new FocusEvent("focusout", { bubbles: true, relatedTarget: null }),
+      );
+      await flushPromises();
+
+      expect(queryFn.mock.calls.at(-1)?.[0]).toMatchObject({ page: 2 });
+      expect(
+        wrapper
+          .find('[data-test="base-select-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("true");
+    });
+
+    it("closes when focus moves to something outside", async () => {
+      const outside = document.createElement("button");
+      document.body.appendChild(outside);
+
+      const wrapper = await mount();
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await wrapper
+        .find('[data-test="base-select-title"]')
+        .trigger("focusout", { relatedTarget: outside });
+
+      expect(
+        wrapper
+          .find('[data-test="base-select-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("false");
+
+      outside.remove();
     });
   });
   describe("combobox semantics", () => {

@@ -255,7 +255,18 @@ watch(
   () => data.value,
   async () => {
     if (data.value) {
-      addOptions(data.value);
+      // An unsorted select keeps the order the server answered in, so the
+      // first page of a search replaces what earlier searches left behind
+      // rather than queueing below it. Chosen rows stay, for the trigger.
+      if (props.unsorted && page.value === 1 && search.value) {
+        const fresh = data.value;
+        const chosen = selectedOptions.value.filter(
+          (option) => !fresh.some((item) => item.value === option.value),
+        );
+        internalOptions.value = [...fresh, ...chosen];
+      } else {
+        addOptions(data.value);
+      }
       await fetchMissingOption();
     }
   },
@@ -387,9 +398,11 @@ const selectedOptions = computed(() => {
  * one popover, ordered differently, from one sort that only half-ran.
  */
 const filteredOptions = computed(() => {
-  if (search.value) {
+  const needle = search.value?.trim().toLowerCase();
+
+  if (needle) {
     return availableOptions.value.filter((item) =>
-      item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
+      item.label.toLowerCase().includes(needle),
     );
   }
 
@@ -592,10 +605,16 @@ const onKeydown = async (event: KeyboardEvent) => {
 
 // A pointer click outside already closes the group; this is the same rule for
 // focus, so tabbing out of an open group does not leave the popover hanging.
+//
+// Only focus that lands somewhere else counts. A `null` target means focus went
+// nowhere: the fetch-more button disabling itself while it loads, or being
+// removed on the last page, or Safari not focusing a clicked button at all. All
+// three are a click inside, and reading them as leaving closed the list instead
+// of growing it.
 const onFocusout = (event: FocusEvent) => {
   const next = event.relatedTarget as Node | null;
 
-  if (next && baseSelect.value?.contains(next)) {
+  if (!next || baseSelect.value?.contains(next)) {
     return;
   }
 
@@ -913,6 +932,14 @@ const fetchMissingOption = async () => {
 const fetchMore = async () => {
   page.value += 1;
   missing.value = undefined;
+
+  // The button disables itself while the page loads, which drops its focus on
+  // the body, out of reach of the group's own keys. Hand it on first.
+  if (props.searchable) {
+    await focusSearch();
+  } else {
+    trigger.value?.focus({ preventScroll: true });
+  }
 
   await refetch();
 };

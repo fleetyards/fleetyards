@@ -14805,11 +14805,17 @@ components:
           type: string
         name:
           type: string
+        fid:
+          type:
+          - string
+          - 'null'
+          description: The fleet's SID, for a fleet actor
       additionalProperties: false
       required:
       - type
       - id
       - name
+      - fid
       title: FeatureActor
     FeatureActorInput:
       type: object
@@ -15253,6 +15259,9 @@ components:
           type: string
         slug:
           type: string
+        memberCount:
+          type: integer
+          description: Accepted members. Only the fleet options list sends it
       additionalProperties: false
       required:
       - id
@@ -15281,6 +15290,9 @@ components:
           type: string
         fidCont:
           type: string
+        search:
+          type: string
+          description: Name or SID, ranked exact, then prefix, then contains
         s:
           anyOf:
           - type: array

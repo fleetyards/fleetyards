@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "Flag funzionalità",
-          "show": "Dettagli funzionalità"
+          "show": "Dettagli funzionalità",
+          "overview": "Flag funzionalità",
+          "users": "Utenti del flag",
+          "fleets": "Flotte del flag",
+          "history": "Cronologia del flag"
         },
         "images": {
           "index": "Immagini"
