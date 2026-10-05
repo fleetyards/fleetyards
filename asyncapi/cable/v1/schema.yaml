@@ -4824,7 +4824,7 @@ components:
         weight:
           type: string
         user:
-          "$ref": "#/components/schemas/UserRef"
+          "$ref": "#/components/schemas/UserRefWithAvatar"
         fleet:
           "$ref": "#/components/schemas/FleetRef"
         createdAt:
@@ -4915,7 +4915,7 @@ components:
       required:
       - userId
       - online
-    UserRef:
+    UserRefWithAvatar:
       type: object
       properties:
         id:
@@ -4923,6 +4923,8 @@ components:
           format: uuid
         username:
           type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
     Vehicle:
       type: object
       properties:
