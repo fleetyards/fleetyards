@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.13.2](https://github.com/fleetyards/fleetyards/compare/v8.13.1...v8.13.2) (2026-10-05)
+
+
+### Bug Fixes
+
+* **admin:** number fields can be cleared, so fleetchart offsets reset ([#5430](https://github.com/fleetyards/fleetyards/issues/5430)) ([bda6509](https://github.com/fleetyards/fleetyards/commit/bda6509c9d4d67d0e297bf1d8e67d9de6aaa01e0))
+* **models:** leave multi-view crops to the job so a folder upload stops timing out ([#5428](https://github.com/fleetyards/fleetyards/issues/5428)) ([36b942b](https://github.com/fleetyards/fleetyards/commit/36b942b99cd419a04740d09eebe6ab5dd49857a9))
+* **ships:** keep the views loader inside the section before the images load ([#5429](https://github.com/fleetyards/fleetyards/issues/5429)) ([a1b00d8](https://github.com/fleetyards/fleetyards/commit/a1b00d8125f68632fd21de444d7a597b8adfddf9))
+
+
+### Chores
+
+* **feature-flags:** remove the six fully-on flags ([#5424](https://github.com/fleetyards/fleetyards/issues/5424)) ([2089a9b](https://github.com/fleetyards/fleetyards/commit/2089a9b97206ac7d946a98b925c7145441e491e1))
+
 ## [8.13.1](https://github.com/fleetyards/fleetyards/compare/v8.13.0...v8.13.1) (2026-10-05)
 
 
