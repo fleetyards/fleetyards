@@ -1606,6 +1606,7 @@
             "Retro": "Fix",
             "Light": "Light"
           },
+          "fuelBurn": "Consumo de combustible",
           "mode": "Modo",
           "vtolOnly": "Solo VTOL",
           "vectorPitch": "Vectorización cabeceo",

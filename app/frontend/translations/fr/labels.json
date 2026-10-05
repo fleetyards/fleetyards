@@ -1606,6 +1606,7 @@
             "Retro": "Fix",
             "Light": "Light"
           },
+          "fuelBurn": "Consommation de carburant",
           "mode": "Mode",
           "vtolOnly": "VTOL uniquement",
           "vectorPitch": "Vectorisation tangage",

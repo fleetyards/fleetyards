@@ -86,9 +86,8 @@ const count = computed(() => {
 // any stacked parent (e.g. a gimbal mount present ×4 that each hold this gun).
 const effectiveCount = computed(() => count.value * props.countMultiplier);
 
-// The single primary stat is promoted to a right-aligned gold headline; every
-// remaining stat renders inline on the card — there is no separate details
-// panel, so the row surfaces the component's full stat set.
+// The single primary stat is promoted to a right-aligned gold headline; the
+// remaining stats render inline on the card.
 const detailStats = useHardpointStats(
   () => hardpoint.value,
   () => effectiveCount.value,
@@ -97,16 +96,30 @@ const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
 
 // A consumer that repeats this row across many columns — the compare table — can cap the
 // strip so a cell shows the key metrics instead of the component's whole stat set. The
-// gold headline is never capped; it is the key figure. Unset means "show everything",
-// which is what the ship page wants.
+// gold headline is never capped; it is the key figure.
 const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
+
+// A named game-files component opens its stats card from the name, and the
+// card lists every figure, so the row keeps to the ones its type ranks. A row
+// without a card is the only place its figures appear and keeps them all.
+const hasStatsCard = computed(
+  () =>
+    hardpoint.value.source === HardpointSourceEnum.GAME_FILES &&
+    !!hardpoint.value.component?.name,
+);
 
 // Everything except the headline, rather than everything not flagged key. A
 // category can mark more than one figure key -- a gun marks sustained and burst
 // DPS -- and only the first becomes the gold headline, so filtering on the flag
 // dropped the others off the row altogether.
 const inlineStats = computed(() => {
-  const stats = detailStats.value.filter((s) => s !== primaryStat.value);
+  let stats = detailStats.value.filter((s) => s !== primaryStat.value);
+
+  if (hasStatsCard.value) {
+    stats = stats
+      .filter((s) => typeof s.row === "number")
+      .sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
+  }
 
   return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
 });

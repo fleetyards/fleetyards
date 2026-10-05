@@ -1606,6 +1606,7 @@
             "Retro": "Fix",
             "Light": "Light"
           },
+          "fuelBurn": "燃料消耗",
           "mode": "模式",
           "vtolOnly": "仅限垂直起降",
           "vectorPitch": "推力矢量俯仰",

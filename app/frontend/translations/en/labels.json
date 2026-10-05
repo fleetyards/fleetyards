@@ -1606,6 +1606,7 @@
             "Retro": "Fix",
             "Light": "Light"
           },
+          "fuelBurn": "Fuel Burn",
           "mode": "Mode",
           "vtolOnly": "VTOL only",
           "vectorPitch": "Vectoring Pitch",

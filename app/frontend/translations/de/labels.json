@@ -1606,6 +1606,7 @@
             "Retro": "Fix",
             "Light": "Light"
           },
+          "fuelBurn": "Treibstoffverbrauch",
           "mode": "Modus",
           "vtolOnly": "Nur VTOL",
           "vectorPitch": "Schubvektor Nicken",

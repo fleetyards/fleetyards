@@ -58,7 +58,66 @@ export type HardpointStat = {
   // a quantum drive's spline jump -- which a detail page gives a card of their
   // own. A row lists them with the rest; their labels already name the mode.
   group?: string;
+  // The `labels.hardpoint` key the label was translated from.
+  key?: string;
+  // Position on a ship page's hardpoint row; unset when only the stats card
+  // shows the figure.
+  row?: number;
 };
+
+const ROW_STATS = {
+  gun: [
+    "weapons.burstDps",
+    "weapons.fireRate",
+    "weapons.speed",
+    "weapons.range",
+    "weapons.fullDamageRange",
+    "weapons.zeroDamageRange",
+  ],
+  miningLaser: ["mining.fracturePower", "mining.range", "mining.moduleSlots"],
+  missile: [
+    "missiles.lockTime",
+    "missiles.trackingSignal",
+    "missiles.speed",
+    "missiles.range",
+  ],
+  bomb: ["missiles.blastRadius", "missiles.armTime"],
+  shield: [
+    "shields.regenTime",
+    "shields.downedRegenDelay",
+    "shields.damagedRegenDelay",
+  ],
+  cooler: ["powerConsumption", "signatureIr"],
+  powerPlant: ["powerPlants.pips", "signatureEm"],
+  flightController: [
+    "flightControllers.boostSpeed",
+    "flightControllers.navSpeed",
+    "flightControllers.rotation",
+  ],
+  quantumDrive: [
+    "quantumDrives.range",
+    "quantumDrives.fuelConsumption",
+    "quantumDrives.spoolUpTime",
+    "quantumDrives.cooldownTime",
+  ],
+  jumpDrive: [
+    "jumpDrives.exitSpeed",
+    "jumpDrives.maxTunnelSpeed",
+    "jumpDrives.respoolTime",
+  ],
+  radar: ["radar.ir", "radar.em", "radar.cs"],
+  turret: ["turrets.yawRange", "turrets.pitchRange", "turrets.gunPorts"],
+  countermeasure: ["countermeasureStats.duration", "weapons.fireRate"],
+  armor: ["armor.physical", "armor.energy", "armor.distortion"],
+  quantumEnforcement: [
+    "quantumEnforcement.jammerRange",
+    "quantumEnforcement.pulseRadius",
+    "quantumEnforcement.chargeTime",
+    "quantumEnforcement.cooldownTime",
+  ],
+  emp: ["emp.radius", "emp.chargeTime", "emp.cooldownTime"],
+  tractorBeam: ["tractorBeams.range", "tractorBeams.towForce"],
+} as const;
 
 // Ordered, human-readable stats for a hardpoint's mounted component, most
 // important first. Shared by the inline row summary (first couple) and the
@@ -117,6 +176,7 @@ export const useHardpointStats = (
     format: string,
     primary = false,
   ): HardpointStat => ({
+    key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(Math.round(value), format)),
     primary,
@@ -125,6 +185,7 @@ export const useHardpointStats = (
   // One decimal, not rounded to a whole second: spool, cooldown and
   // interdiction times are tenths (7.3 s, 2.6 s).
   const secondsStat = (labelKey: string, value: number): HardpointStat => ({
+    key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, "seconds")),
   });
@@ -146,6 +207,7 @@ export const useHardpointStats = (
 
   // Shield delays run to hundredths (4.55 s), which `secondsStat` rounds.
   const delayStat = (labelKey: string, value: number): HardpointStat => ({
+    key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: `${precise(value, 2)} s`,
   });
@@ -154,6 +216,7 @@ export const useHardpointStats = (
     `${precise(stageOne / 1000)} / ${precise(stageTwo / 1000)} km/s²`;
 
   const resistanceStat = (labelKey: string, value: number): HardpointStat => ({
+    key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: `${Math.round(value * 100)}%`,
   });
@@ -235,6 +298,7 @@ export const useHardpointStats = (
       const value = modifiers[key];
       if (typeof value === "number" && value !== 0) {
         result.push({
+          key: `mining.modifiers.${key}`,
           label: t(`labels.hardpoint.mining.modifiers.${key}`),
           value: signedPercent(value),
         });
@@ -251,6 +315,7 @@ export const useHardpointStats = (
     const { fracturePowerMin: min, fracturePowerMax: max } = mining;
     if (typeof max === "number") {
       result.push({
+        key: "mining.fracturePower",
         label: t("labels.hardpoint.mining.fracturePower"),
         value:
           typeof min === "number" && min < max
@@ -266,6 +331,7 @@ export const useHardpointStats = (
     }
     if (mining.maxRange) {
       result.push({
+        key: "mining.range",
         label: t("labels.hardpoint.mining.range"),
         value: mining.optimalRange
           ? `${String(toNumber(mining.optimalRange))} - ${String(toNumber(mining.maxRange, "weaponRange"))}`
@@ -277,6 +343,7 @@ export const useHardpointStats = (
     }
     if (mining.chargeUpTime || mining.chargeDownTime) {
       result.push({
+        key: "mining.chargeTime",
         label: t("labels.hardpoint.mining.chargeTime"),
         // `toNumber` reads 0 as "not available", and an instant charge is 0 s.
         value: `${mining.chargeUpTime ? String(toNumber(mining.chargeUpTime)) : "0"} / ${mining.chargeDownTime ? String(toNumber(mining.chargeDownTime, "seconds")) : "0 s"}`,
@@ -290,12 +357,14 @@ export const useHardpointStats = (
     miningModule: ComponentMiningModule,
   ) => {
     result.push({
+      key: "mining.activation",
       label: t("labels.hardpoint.mining.activation"),
       value: t(`labels.hardpoint.mining.${miningModule.activation}`),
       primary: true,
     });
     if (typeof miningModule.fracturePower === "number") {
       result.push({
+        key: "mining.fracturePower",
         label: t("labels.hardpoint.mining.fracturePower"),
         value: signedPercent(miningModule.fracturePower),
         primary: true,
@@ -303,6 +372,7 @@ export const useHardpointStats = (
     }
     if (typeof miningModule.extractionPower === "number") {
       result.push({
+        key: "mining.extractionPower",
         label: t("labels.hardpoint.mining.extractionPower"),
         value: signedPercent(miningModule.extractionPower),
       });
@@ -312,6 +382,7 @@ export const useHardpointStats = (
     }
     if (miningModule.duration) {
       result.push({
+        key: "mining.duration",
         label: t("labels.hardpoint.mining.duration"),
         value: String(toNumber(miningModule.duration, "seconds")),
       });
@@ -329,6 +400,7 @@ export const useHardpointStats = (
       if (typeof value !== "number") return;
 
       result.push({
+        key: `salvage.${labelKey}`,
         label: t(`labels.hardpoint.salvage.${labelKey}`),
         value: `${String(toNumber(value))}×`,
         primary: labelKey === "salvageSpeed",
@@ -339,6 +411,7 @@ export const useHardpointStats = (
     multiplier("radius", salvage.radius);
     if (typeof salvage.extractionEfficiency === "number") {
       result.push({
+        key: "salvage.extractionEfficiency",
         label: t("labels.hardpoint.salvage.extractionEfficiency"),
         value: `${Math.round(salvage.extractionEfficiency * 100)}%`,
       });
@@ -396,6 +469,7 @@ export const useHardpointStats = (
       // The block the power allocator always keeps powered, as it sizes it.
       const minimum = criticalSize(full, data.powerMinimumFraction);
       powered.push({
+        key: "powerConsumption",
         label: t("labels.hardpoint.powerConsumption"),
         value:
           minimum < full
@@ -405,12 +479,14 @@ export const useHardpointStats = (
     }
     if (typeof data.signatureEm === "number" && data.signatureEm) {
       powered.push({
+        key: "signatureEm",
         label: t("labels.hardpoint.signatureEm"),
         value: String(toNumber(data.signatureEm, "integer")),
       });
     }
     if (typeof data.signatureIr === "number" && data.signatureIr) {
       powered.push({
+        key: "signatureIr",
         label: t("labels.hardpoint.signatureIr"),
         value: String(toNumber(data.signatureIr, "integer")),
       });
@@ -485,6 +561,7 @@ export const useHardpointStats = (
     value: number,
     format: string,
   ): HardpointStat => ({
+    key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, format)),
   });
@@ -510,6 +587,10 @@ export const useHardpointStats = (
 
     const category = hp.category;
     const result: HardpointStat[] = [];
+    // The figures a ship page's row shows, in order; the stats card lists
+    // the rest. A category without a list shows its own figures, but not the
+    // power and signature figures every powered item carries.
+    let rowKeys: readonly string[] | undefined;
 
     // Lead with total payload damage as the key metric; only spell out the
     // per-type split when the warhead actually mixes damage types.
@@ -534,6 +615,7 @@ export const useHardpointStats = (
     const pushFuse = (ordnance: ComponentMissile | ComponentBomb) => {
       if (ordnance.blastRadiusMin || ordnance.blastRadiusMax) {
         result.push({
+          key: "missiles.blastRadius",
           label: t("labels.hardpoint.missiles.blastRadius"),
           value: span(
             ordnance.blastRadiusMin,
@@ -558,6 +640,7 @@ export const useHardpointStats = (
     // gun's stats, so the parsed `tractorBeam` flag is the signal to use — the
     // game files even type some of them as SalvageHead.
     if ("tractorBeam" in typeData) {
+      rowKeys = ROW_STATS.tractorBeam;
       const tractor = typeData as ComponentTractorBeam;
       const towing = tractor.towing;
       // Beams pull together, so the force figures sum across a collapsed stack
@@ -574,6 +657,7 @@ export const useHardpointStats = (
         fullStrength: number | undefined,
         max: number,
       ): HardpointStat => ({
+        key: labelKey,
         label: t(`labels.hardpoint.${labelKey}`),
         value: fullStrength
           ? `${String(toNumber(fullStrength))} - ${String(toNumber(max, "weaponRange"))}`
@@ -655,6 +739,7 @@ export const useHardpointStats = (
       }
       if (tractor.tetherBreakTime) {
         result.push({
+          key: "tractorBeams.tetherBreak",
           label: t("labels.hardpoint.tractorBeams.tetherBreak"),
           value: String(toNumber(tractor.tetherBreakTime, "seconds")),
         });
@@ -674,6 +759,7 @@ export const useHardpointStats = (
         );
       }
     } else if ("empRadius" in typeData) {
+      rowKeys = ROW_STATS.emp;
       // An EMP sits in a weapons slot but fires a charged burst, not rounds.
       const emp = typeData as ComponentEmp;
 
@@ -684,6 +770,7 @@ export const useHardpointStats = (
       }
       if (emp.empRadius) {
         result.push({
+          key: "emp.radius",
           label: t("labels.hardpoint.emp.radius"),
           value: emp.minEmpRadius
             ? `${String(toNumber(emp.minEmpRadius, "integer"))} – ${String(toNumber(emp.empRadius, "integer"))} m`
@@ -701,6 +788,7 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.WEAPONS) {
       const weapon = typeData as ComponentWeapon;
+      rowKeys = ROW_STATS.gun;
       // A missile or bomb is told apart by its type first; a field of its
       // own is the fallback for a payload that does not say.
       const componentType = hp.component?.type;
@@ -734,6 +822,7 @@ export const useHardpointStats = (
           // figure has no idea what they gave up for the duty cycle.
           result.push(stat("weapons.burstDps", burstTotal, "integer", true));
           result.push({
+            key: "weapons.efficiency",
             label: t("labels.hardpoint.weapons.efficiency"),
             value: `${Math.round(efficiency * 100)}%`,
           });
@@ -743,6 +832,7 @@ export const useHardpointStats = (
       };
 
       if (weapon.mining) {
+        rowKeys = ROW_STATS.miningLaser;
         pushMiningLaser(result, weapon.mining);
       } else if (weapon.beam) {
         if (weapon.damagePerSecond) {
@@ -783,6 +873,7 @@ export const useHardpointStats = (
         "trackingSignal" in typeData
       ) {
         const missile = typeData as ComponentMissile;
+        rowKeys = ROW_STATS.missile;
         pushOrdnanceDamage(missile.damagePerShot);
         if (missile.speed) {
           result.push(stat("missiles.speed", missile.speed, "missileSpeed"));
@@ -792,6 +883,7 @@ export const useHardpointStats = (
         }
         if (missile.lockRangeMin || missile.lockRangeMax) {
           result.push({
+            key: "missiles.lockRange",
             label: t("labels.hardpoint.missiles.lockRange"),
             value: `${String(toNumber(missile.lockRangeMin || 0, "missileRange"))} - ${String(toNumber(missile.lockRangeMax || 0, "missileRange"))}`,
           });
@@ -801,6 +893,7 @@ export const useHardpointStats = (
         }
         if (missile.trackingSignal) {
           result.push({
+            key: "missiles.trackingSignal",
             label: t("labels.hardpoint.missiles.trackingSignal"),
             value: String(missile.trackingSignal),
           });
@@ -810,6 +903,7 @@ export const useHardpointStats = (
         }
         if (missile.signalResilienceMin || missile.signalResilienceMax) {
           result.push({
+            key: "missiles.signalResilience",
             label: t("labels.hardpoint.missiles.signalResilience"),
             value: span(
               missile.signalResilienceMin,
@@ -846,6 +940,7 @@ export const useHardpointStats = (
         }
         if (typeof missile.dumbfire === "boolean") {
           result.push({
+            key: "missiles.dumbfire",
             label: t("labels.hardpoint.missiles.dumbfire"),
             value: t(
               missile.dumbfire
@@ -860,6 +955,7 @@ export const useHardpointStats = (
         "maxDropAngle" in typeData
       ) {
         const bomb = typeData as ComponentBomb;
+        rowKeys = ROW_STATS.bomb;
         pushOrdnanceDamage(bomb.damagePerShot);
         if (bomb.maxDropAngle) {
           result.push(stat("bombs.maxDropAngle", bomb.maxDropAngle, "degrees"));
@@ -872,6 +968,7 @@ export const useHardpointStats = (
         }
         if (weapon.penetration?.baseDistance) {
           result.push({
+            key: "weapons.penetration",
             label: t("labels.hardpoint.weapons.penetration"),
             value: String(
               toNumber(weapon.penetration.baseDistance, "weaponRange"),
@@ -886,6 +983,7 @@ export const useHardpointStats = (
           result.push(
             stat("weapons.magazineDamage", magazine.damage, "integer"),
             {
+              key: "weapons.timeToEmpty",
               label: t("labels.hardpoint.weapons.timeToEmpty"),
               // Unrounded, and floored at the format's one decimal: a fast
               // gun with a small magazine empties in well under a second, and
@@ -902,6 +1000,7 @@ export const useHardpointStats = (
         if (weapon.spread?.max) {
           const { min, max, firstAttack, attack, decay } = weapon.spread;
           result.push({
+            key: "weapons.spread",
             label: t("labels.hardpoint.weapons.spread"),
             value:
               min != null && min !== max
@@ -914,18 +1013,21 @@ export const useHardpointStats = (
           // where it differs from what every shot after it adds.
           if (grows && firstAttack && firstAttack !== attack) {
             result.push({
+              key: "weapons.spreadFirstShot",
               label: t("labels.hardpoint.weapons.spreadFirstShot"),
               value: degrees(firstAttack),
             });
           }
           if (grows && attack) {
             result.push({
+              key: "weapons.spreadPerShot",
               label: t("labels.hardpoint.weapons.spreadPerShot"),
               value: degrees(attack),
             });
           }
           if (grows && decay) {
             result.push({
+              key: "weapons.spreadRecovery",
               label: t("labels.hardpoint.weapons.spreadRecovery"),
               value: `${degrees(decay)}/s`,
             });
@@ -962,12 +1064,14 @@ export const useHardpointStats = (
         })();
         if (spreadValue) {
           result.push({
+            key: "weapons.gimbalSpread",
             label: t("labels.hardpoint.weapons.gimbalSpread"),
             value: spreadValue,
           });
         }
         if (weapon.aimAssist?.nudgeAngle) {
           result.push({
+            key: "weapons.aimAssist",
             label: t("labels.hardpoint.weapons.aimAssist"),
             value: `${preciseNumber(weapon.aimAssist.nudgeAngle)}°`,
           });
@@ -979,6 +1083,7 @@ export const useHardpointStats = (
               ? `${preciseNumber(assist.closeRangeMin)}–${preciseNumber(assist.closeRangeMax)} m`
               : `≤ ${preciseNumber(assist.closeRangeMax)} m`;
           result.push({
+            key: "weapons.closeAimAssist",
             label: t("labels.hardpoint.weapons.closeAimAssist"),
             value: `${preciseNumber(assist.closeOuterAngle)}° (${band})`,
           });
@@ -1029,6 +1134,7 @@ export const useHardpointStats = (
       }
       if (typeof rack.igniteOnPylon === "boolean") {
         result.push({
+          key: "missileRacks.ignition",
           label: t("labels.hardpoint.missileRacks.ignition"),
           value: t(
             rack.igniteOnPylon
@@ -1039,6 +1145,7 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.SHIELDGENERATOR) {
       const shield = typeData as ComponentShield;
+      rowKeys = ROW_STATS.shield;
 
       if (shield.maxHealth) {
         result.push(stat("shields.hp", shield.maxHealth, "integer", true));
@@ -1097,12 +1204,14 @@ export const useHardpointStats = (
         const low = Math.round((range.min ?? range.max) * 100);
         const high = Math.round(range.max * 100);
         result.push({
+          key: `shields.absorption.${type}`,
           label: t(`labels.hardpoint.shields.absorption.${type}`),
           value: low === high ? `${high}%` : `${low} – ${high}%`,
         });
       });
     } else if (category === HardpointCategoryEnum.COOLER) {
       const cooler = typeData as ComponentCooler;
+      rowKeys = ROW_STATS.cooler;
       if (cooler.coolingRate) {
         result.push(
           stat("coolers.coolingRate", cooler.coolingRate, "integer", true),
@@ -1110,6 +1219,7 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.POWERPLANT) {
       const pp = typeData as ComponentPowerPlant;
+      rowKeys = ROW_STATS.powerPlant;
       // Output is a per-plant rating, so it stays as-is even on a stacked row.
       // Pips are a ship-pool contribution, so they sum across the stack (the
       // total the category header used to show).
@@ -1135,6 +1245,7 @@ export const useHardpointStats = (
       // Only a flight controller carries speeds; shield and missile
       // controllers share the category and have none of these.
       const flight = typeData as ComponentController;
+      rowKeys = ROW_STATS.flightController;
 
       result.push(
         stat("flightControllers.scmSpeed", flight.scmSpeed!, "speed", true),
@@ -1164,6 +1275,7 @@ export const useHardpointStats = (
       const rotation = axes(flight.angularVelocity);
       if (rotation) {
         result.push({
+          key: "flightControllers.rotation",
           label: t("labels.hardpoint.flightControllers.rotation"),
           value: rotation,
         });
@@ -1171,6 +1283,7 @@ export const useHardpointStats = (
       const boostedRotation = axes(flight.boostedAngularVelocity);
       if (boostedRotation && boostedRotation !== rotation) {
         result.push({
+          key: "flightControllers.boostedRotation",
           label: t("labels.hardpoint.flightControllers.boostedRotation"),
           value: boostedRotation,
         });
@@ -1179,29 +1292,34 @@ export const useHardpointStats = (
       const capacitor = flight.boostCapacitor;
       if (capacitor?.capacity) {
         result.push({
+          key: "flightControllers.boostCapacity",
           label: t("labels.hardpoint.flightControllers.boostCapacity"),
           value: boostFigure(capacitor.capacity),
         });
       }
       if (capacitor?.regenPerSecond) {
         result.push({
+          key: "flightControllers.boostRegen",
           label: t("labels.hardpoint.flightControllers.boostRegen"),
           value: `${boostFigure(capacitor.regenPerSecond)}/s`,
         });
       }
       if (capacitor?.regenDelay) {
         result.push({
+          key: "flightControllers.boostRegenDelay",
           label: t("labels.hardpoint.flightControllers.boostRegenDelay"),
           value: `${boostFigure(capacitor.regenDelay)} s`,
         });
       }
       if (capacitor?.rampUpTime || capacitor?.rampDownTime) {
         result.push({
+          key: "flightControllers.boostRamp",
           label: t("labels.hardpoint.flightControllers.boostRamp"),
           value: `${boostFigure(capacitor.rampUpTime)} / ${boostFigure(capacitor.rampDownTime)} s`,
         });
       }
     } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
+      rowKeys = ROW_STATS.quantumDrive;
       const qd = typeData as ComponentQuantumDrive;
 
       if (qd.driveSpeed) {
@@ -1214,6 +1332,7 @@ export const useHardpointStats = (
       const quantumFuelTank = toValue(quantumFuelTankSize);
       if (qd.quantumFuelConsumption && quantumFuelTank) {
         result.push({
+          key: "quantumDrives.range",
           label: t("labels.hardpoint.quantumDrives.range"),
           value: `${String(
             toNumber(
@@ -1225,6 +1344,7 @@ export const useHardpointStats = (
       }
       if (qd.quantumFuelConsumption) {
         result.push({
+          key: "quantumDrives.fuelConsumption",
           label: t("labels.hardpoint.quantumDrives.fuelConsumption"),
           value: `${String(toNumber(qd.quantumFuelConsumption, "integer"))} mSCU/Gm`,
         });
@@ -1248,6 +1368,7 @@ export const useHardpointStats = (
         : [];
       if (jumpHeat.length) {
         result.push({
+          key: "quantumDrives.jumpHeat",
           label: t("labels.hardpoint.quantumDrives.jumpHeat"),
           value: (new Set(jumpHeat).size === 1
             ? jumpHeat.slice(0, 1)
@@ -1263,6 +1384,7 @@ export const useHardpointStats = (
       }
       if (qd.stageOneAccelRate && qd.stageTwoAccelRate) {
         result.push({
+          key: "quantumDrives.accel",
           label: t("labels.hardpoint.quantumDrives.accel"),
           value: `${String(
             toNumber(qd.stageOneAccelRate / 1000, "integer"),
@@ -1276,12 +1398,14 @@ export const useHardpointStats = (
       }
       if (qd.calibrationRate) {
         result.push({
+          key: "quantumDrives.calibrationRate",
           label: t("labels.hardpoint.quantumDrives.calibrationRate"),
           value: `${String(toNumber(qd.calibrationRate, "integer"))}/s`,
         });
       }
       if (qd.disconnectRange) {
         result.push({
+          key: "quantumDrives.disconnectRange",
           label: t("labels.hardpoint.quantumDrives.disconnectRange"),
           value: `${String(toNumber(qd.disconnectRange / 1000))} km`,
         });
@@ -1309,6 +1433,7 @@ export const useHardpointStats = (
         spline.stageTwoAccelRate
       ) {
         splineStats.push({
+          key: "quantumDrives.splineAccel",
           label: t("labels.hardpoint.quantumDrives.splineAccel"),
           value: splineAccel(
             spline.stageOneAccelRate,
@@ -1339,6 +1464,7 @@ export const useHardpointStats = (
       );
     } else if (category === HardpointCategoryEnum.JUMPDRIVE) {
       const jump = typeData as ComponentJumpDrive;
+      rowKeys = ROW_STATS.jumpDrive;
       // Alignment/tuning rates are small per-second fractions (0.2 vs 0.24) that
       // collapse under the default single-decimal rounding, so format them with
       // two decimals to keep them distinct.
@@ -1347,6 +1473,7 @@ export const useHardpointStats = (
 
       if (jump.fuelUsageEfficiencyMultiplier) {
         result.push({
+          key: "jumpDrives.fuelEfficiency",
           label: t("labels.hardpoint.jumpDrives.fuelEfficiency"),
           value: `×${String(toNumber(jump.fuelUsageEfficiencyMultiplier))}`,
           primary: true,
@@ -1365,24 +1492,28 @@ export const useHardpointStats = (
       }
       if (jump.alignmentRate) {
         result.push({
+          key: "jumpDrives.alignRate",
           label: t("labels.hardpoint.jumpDrives.alignRate"),
           value: rate(jump.alignmentRate),
         });
       }
       if (jump.tuningRate) {
         result.push({
+          key: "jumpDrives.tuneRate",
           label: t("labels.hardpoint.jumpDrives.tuneRate"),
           value: rate(jump.tuningRate),
         });
       }
       if (jump.alignmentDecayRate) {
         result.push({
+          key: "jumpDrives.alignDecay",
           label: t("labels.hardpoint.jumpDrives.alignDecay"),
           value: rate(jump.alignmentDecayRate),
         });
       }
       if (jump.tuningDecayRate) {
         result.push({
+          key: "jumpDrives.tuneDecay",
           label: t("labels.hardpoint.jumpDrives.tuneDecay"),
           value: rate(jump.tuningDecayRate),
         });
@@ -1397,7 +1528,8 @@ export const useHardpointStats = (
       }
       if (thruster.fuelBurnRatePer10KNewton) {
         result.push({
-          label: "Fuel Burn",
+          key: "thrusters.fuelBurn",
+          label: t("labels.hardpoint.thrusters.fuelBurn"),
           value: String(
             toNumber(thruster.fuelBurnRatePer10KNewton, "fuelRate"),
           ),
@@ -1405,6 +1537,7 @@ export const useHardpointStats = (
       }
       if (thruster.vtolOnly) {
         result.push({
+          key: "thrusters.mode",
           label: t("labels.hardpoint.thrusters.mode"),
           value: t("labels.hardpoint.thrusters.vtolOnly"),
         });
@@ -1415,12 +1548,14 @@ export const useHardpointStats = (
         const yaw = turretRange(gimbal.minYaw, gimbal.maxYaw);
         if (pitch) {
           result.push({
+            key: "thrusters.vectorPitch",
             label: t("labels.hardpoint.thrusters.vectorPitch"),
             value: pitch,
           });
         }
         if (yaw) {
           result.push({
+            key: "thrusters.vectorYaw",
             label: t("labels.hardpoint.thrusters.vectorYaw"),
             value: yaw,
           });
@@ -1428,6 +1563,7 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.RADAR) {
       const radar = typeData as Record<string, unknown>;
+      rowKeys = ROW_STATS.radar;
 
       if (radar.aimAssistRange) {
         result.push(
@@ -1457,6 +1593,7 @@ export const useHardpointStats = (
 
         // Which signatures it sees while silent, and which only on a ping.
         const modes = (["ir", "em", "cs", "rs"] as const).map((type) => ({
+          key: `radar.${type}`,
           label: t(`labels.hardpoint.radar.${type}`),
           ...(sigs[type] as { passive?: boolean; active?: boolean }),
         }));
@@ -1464,12 +1601,14 @@ export const useHardpointStats = (
         const active = modes.filter((mode) => mode.active);
         if (passive.length) {
           result.push({
+            key: "radar.passive",
             label: t("labels.hardpoint.radar.passive"),
             value: passive.map((mode) => mode.label).join(" · "),
           });
         }
         if (active.length) {
           result.push({
+            key: "radar.active",
             label: t("labels.hardpoint.radar.active"),
             value: active.map((mode) => mode.label).join(" · "),
           });
@@ -1477,6 +1616,7 @@ export const useHardpointStats = (
       }
       if (typeof radar.aimAssistBuffer === "number" && radar.aimAssistBuffer) {
         result.push({
+          key: "radar.aimAssistBuffer",
           label: t("labels.hardpoint.radar.aimAssistBuffer"),
           value: `${String(toNumber(radar.aimAssistBuffer, "integer"))} m`,
         });
@@ -1519,6 +1659,7 @@ export const useHardpointStats = (
       category === HardpointCategoryEnum.WEAPON_MOUNTS
     ) {
       const turret = typeData as ComponentTurret;
+      rowKeys = ROW_STATS.turret;
       const speeds = [turret.yawSpeed, turret.pitchSpeed].filter(
         (speed): speed is number => typeof speed === "number" && speed > 0,
       );
@@ -1530,6 +1671,7 @@ export const useHardpointStats = (
           .map((speed) => String(toNumber(speed, "integer")))
           .join(" / ");
         result.push({
+          key: "turrets.turnRate",
           label: t("labels.hardpoint.turrets.turnRate"),
           value: `${value} °/s`,
           primary: true,
@@ -1542,6 +1684,7 @@ export const useHardpointStats = (
       );
       if (yawRange) {
         result.push({
+          key: "turrets.yawRange",
           label: t("labels.hardpoint.turrets.yawRange"),
           value: yawRange,
         });
@@ -1553,12 +1696,14 @@ export const useHardpointStats = (
       );
       if (pitchRange) {
         result.push({
+          key: "turrets.pitchRange",
           label: t("labels.hardpoint.turrets.pitchRange"),
           value: pitchRange,
         });
       }
       if (turret.control) {
         result.push({
+          key: "turrets.control",
           label: t("labels.hardpoint.turrets.control"),
           value: t(`labels.combat.controlGroups.${turret.control}`),
         });
@@ -1570,6 +1715,7 @@ export const useHardpointStats = (
         gunPorts(hp.hardpoints) ?? gunPorts(hp.component?.hardpoints);
       if (ports) {
         result.push({
+          key: "turrets.gunPorts",
           label: t("labels.hardpoint.turrets.gunPorts"),
           value: ports,
         });
@@ -1578,6 +1724,7 @@ export const useHardpointStats = (
       const lifeSupport = typeData as ComponentLifeSupport;
       if (lifeSupport.lifeSupportGeneration) {
         result.push({
+          key: "lifeSupport.output",
           label: t("labels.hardpoint.lifeSupport.output"),
           value: `${precise(lifeSupport.lifeSupportGeneration)}/s`,
           primary: true,
@@ -1589,6 +1736,7 @@ export const useHardpointStats = (
 
       if (controller.faceType) {
         result.push({
+          key: "controllers.faceType",
           label: t("labels.hardpoint.controllers.faceType"),
           value: t(`labels.hardpoint.controllers.faces.${controller.faceType}`),
           primary: true,
@@ -1600,6 +1748,7 @@ export const useHardpointStats = (
       ) {
         const cooldown = controller.reconfigurationCooldown;
         result.push({
+          key: "controllers.reconfigurationCooldown",
           label: t("labels.hardpoint.controllers.reconfigurationCooldown"),
           value: `${cooldown ? toNumber(cooldown) : "0"} s`,
         });
@@ -1619,17 +1768,20 @@ export const useHardpointStats = (
       if (typeof controller.launchCooldown === "number") {
         const cooldown = controller.launchCooldown;
         result.push({
+          key: "controllers.launchCooldown",
           label: t("labels.hardpoint.controllers.launchCooldown"),
           value: `${cooldown ? toNumber(cooldown) : "0"} s`,
         });
       }
       if (controller.lockAngle) {
         result.push({
+          key: "controllers.lockAngle",
           label: t("labels.hardpoint.controllers.lockAngle"),
           value: `${toNumber(controller.lockAngle)}°`,
         });
       }
     } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {
+      rowKeys = ROW_STATS.countermeasure;
       const cm = typeData as Record<string, unknown>;
       if (cm.fireRate) {
         result.push(
@@ -1650,12 +1802,14 @@ export const useHardpointStats = (
       const launched = (typeData as ComponentWeapon).countermeasure;
       if (launched?.lifetime) {
         result.push({
+          key: "countermeasureStats.duration",
           label: t("labels.hardpoint.countermeasureStats.duration"),
           value: `${toNumber(launched.lifetime)} s`,
         });
       }
       if (launched?.spawnDelay) {
         result.push({
+          key: "countermeasureStats.spawnDelay",
           label: t("labels.hardpoint.countermeasureStats.spawnDelay"),
           value: `${toNumber(launched.spawnDelay)} s`,
         });
@@ -1670,12 +1824,14 @@ export const useHardpointStats = (
         const value = signatureRange(signature);
         if (value) {
           result.push({
+            key: `countermeasureStats.${key}`,
             label: t(`labels.hardpoint.countermeasureStats.${key}`),
             value,
           });
         }
       });
     } else if (category === HardpointCategoryEnum.ARMOR) {
+      rowKeys = ROW_STATS.armor;
       const armor = typeData as ComponentArmor;
       if (armor.health && armor.health > 0) {
         result.push(stat("armor.hp", armor.health, "integer", true));
@@ -1720,6 +1876,7 @@ export const useHardpointStats = (
       // Fuel rates are small fractions (e.g. 0.2, 2.5); format with toNumber
       // directly — the shared `stat` helper integer-rounds, collapsing them to 0.
       const fuelRate = (labelKey: string, value: number, primary = false) => ({
+        key: labelKey,
         label: t(`labels.hardpoint.${labelKey}`),
         value: String(toNumber(value, "fuelRate")),
         primary,
@@ -1757,6 +1914,7 @@ export const useHardpointStats = (
       const radius = num(sd.radius);
       if (radius) {
         result.push({
+          key: "selfDestruct.radius",
           label: t("labels.hardpoint.selfDestruct.radius"),
           value: `${String(toNumber(radius, "integer"))} m`,
         });
@@ -1765,6 +1923,7 @@ export const useHardpointStats = (
       const time = num(sd.time);
       if (time) {
         result.push({
+          key: "selfDestruct.time",
           label: t("labels.hardpoint.selfDestruct.time"),
           value: String(toNumber(time, "seconds")),
         });
@@ -1774,6 +1933,7 @@ export const useHardpointStats = (
       // ones that say what the device does to somebody else's quantum drive;
       // the rest describe its own charge curve.
       const qed = typeData as Record<string, unknown>;
+      rowKeys = ROW_STATS.quantumEnforcement;
       const jammer = (qed.jammerSettings ?? {}) as Record<string, unknown>;
       const pulse = (qed.quantumInterdictionPulseSettings ?? {}) as Record<
         string,
@@ -1782,24 +1942,28 @@ export const useHardpointStats = (
 
       if (typeof jammer.jammerRange === "number") {
         result.push({
+          key: "quantumEnforcement.jammerRange",
           label: t("labels.hardpoint.quantumEnforcement.jammerRange"),
           value: `${String(toNumber(jammer.jammerRange, "integer"))} m`,
         });
       }
       if (typeof pulse.radiusMeters === "number") {
         result.push({
+          key: "quantumEnforcement.pulseRadius",
           label: t("labels.hardpoint.quantumEnforcement.pulseRadius"),
           value: `${String(toNumber(pulse.radiusMeters, "integer"))} m`,
         });
       }
       if (typeof pulse.chargeTimeSecs === "number") {
         result.push({
+          key: "quantumEnforcement.chargeTime",
           label: t("labels.hardpoint.quantumEnforcement.chargeTime"),
           value: String(toNumber(pulse.chargeTimeSecs, "seconds")),
         });
       }
       if (typeof pulse.cooldownTimeSecs === "number") {
         result.push({
+          key: "quantumEnforcement.cooldownTime",
           label: t("labels.hardpoint.quantumEnforcement.cooldownTime"),
           value: String(toNumber(pulse.cooldownTimeSecs, "seconds")),
         });
@@ -1814,18 +1978,21 @@ export const useHardpointStats = (
     ) {
       if (refuel.captureRadius != null) {
         result.push({
+          key: "refuelBoom.captureRadius",
           label: t("labels.hardpoint.refuelBoom.captureRadius"),
           value: `${String(toNumber(refuel.captureRadius as number, "integer"))} m`,
         });
       }
       if (refuel.fuelFlowRate != null) {
         result.push({
+          key: "refuelBoom.fuelFlowRate",
           label: t("labels.hardpoint.refuelBoom.fuelFlowRate"),
           value: `${String(toNumber(refuel.fuelFlowRate as number, "cargo"))}/s`,
         });
       }
       if (refuel.quantumFuelFlowRate != null) {
         result.push({
+          key: "refuelBoom.quantumFuelFlowRate",
           label: t("labels.hardpoint.refuelBoom.quantumFuelFlowRate"),
           value: `${String(toNumber(refuel.quantumFuelFlowRate as number, "cargo"))}/s`,
           wide: true,
@@ -1833,8 +2000,17 @@ export const useHardpointStats = (
       }
     }
 
+    const ownCount = result.length;
     result.push(...poweredStats(typeData as PoweredTypeData, category));
 
-    return result;
+    return result.map((entry, index) => {
+      const row = rowKeys
+        ? rowKeys.indexOf(entry.key ?? "")
+        : index < ownCount
+          ? index
+          : -1;
+
+      return row >= 0 ? { ...entry, row } : entry;
+    });
   });
 };
