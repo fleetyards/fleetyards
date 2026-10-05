@@ -335,6 +335,9 @@ useMetricsMasonry(metricsGrid);
         class="hardpoints__list"
         :class="{ 'hardpoints__list--loading': isLoading || isFetching }"
       >
+        <!-- First, so it sits at the top of the slot rather than after the
+             rows a refetch keeps on screen. -->
+        <Loader :loading="isLoading || isFetching" />
         <div v-if="hardpoints?.length" class="row">
           <div class="col-12 col-md-6 col-lg-4">
             <HardpointGroup
@@ -381,7 +384,6 @@ useMetricsMasonry(metricsGrid);
             />
           </div>
         </div>
-        <Loader :loading="isLoading || isFetching" />
       </div>
     </div>
   </div>
