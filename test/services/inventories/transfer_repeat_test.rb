@@ -9,7 +9,6 @@ module Inventories
       @officer = create(:user)
       create(:fleet_membership, :accepted, :as_officer, fleet: @fleet, user: @officer)
       [@officer, @fleet].each do |actor|
-        Flipper.enable_actor(:inventory_transfers, actor)
       end
       Flipper.enable_actor(:hangar_inventories, @officer)
       Flipper.enable_actor(:fleet_logistics, @fleet)

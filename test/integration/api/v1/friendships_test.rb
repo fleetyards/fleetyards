@@ -122,11 +122,8 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
   test "GET filters to friends who could receive a transfer, from either side" do
     receiver = create(:user)
     sent_to = create(:user)
-    Flipper.enable_actor("inventory_transfers", receiver)
     Flipper.enable_actor("hangar_inventories", receiver)
-    Flipper.enable_actor("inventory_transfers", sent_to)
     Flipper.enable_actor("hangar_inventories", sent_to)
-    Flipper.enable_actor("inventory_transfers", @user)
     Flipper.enable_actor("hangar_inventories", @user)
 
     create(:friendship, :accepted, requester: receiver, addressee: @user)

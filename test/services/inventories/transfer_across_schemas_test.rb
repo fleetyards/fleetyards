@@ -16,7 +16,6 @@ module Inventories
       @depot = create(:fleet_inventory, fleet: @fleet)
 
       [@user, @officer].each { |actor| enable_transfers(actor) }
-      Flipper.enable_actor(:inventory_transfers, @fleet)
       Flipper.enable_actor(:fleet_logistics, @fleet)
     end
 
@@ -196,7 +195,6 @@ module Inventories
     end
 
     private def enable_transfers(actor)
-      Flipper.enable_actor(:inventory_transfers, actor)
       Flipper.enable_actor(:hangar_inventories, actor)
     end
   end

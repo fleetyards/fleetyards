@@ -68,7 +68,7 @@ const { useTransferTargets } = await import("./useTransferTargets");
 const fleet = (overrides: Partial<Fleet> = {}): Partial<Fleet> => ({
   slug: "crew",
   name: "Crew",
-  features: ["inventory_transfers", "fleet_logistics"],
+  features: ["fleet_logistics"],
   ...overrides,
 });
 
@@ -136,14 +136,13 @@ describe("useTransferTargets", () => {
 
   // A fleet whose logistics are switched off cannot receive, and offering it
   // would mean finding out by being refused.
-  it("drops a fleet that is missing either flag, and the one it acts for", () => {
+  it("drops a fleet without logistics, and the one it acts for", () => {
     hangarInventories.value = { items: [] };
     fleetInventories.value = { items: [] };
     fleets.value = [
       fleet(),
       fleet({ slug: "self", name: "Self" }),
-      fleet({ slug: "no-transfers", features: ["fleet_logistics"] }),
-      fleet({ slug: "no-logistics", features: ["inventory_transfers"] }),
+      fleet({ slug: "no-logistics", features: [] }),
     ];
     members.value = [];
 

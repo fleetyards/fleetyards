@@ -157,7 +157,6 @@ module Inventories
     end
 
     private def enable_transfers(actor)
-      Flipper.enable_actor(:inventory_transfers, actor)
       Flipper.enable_actor(:hangar_inventories, actor)
     end
   end

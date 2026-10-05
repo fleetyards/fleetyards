@@ -51,7 +51,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.transfers",
       backgroundImage: "bg-5",
-      feature: FeatureFlagName.INVENTORY_TRANSFERS,
     },
   },
   {

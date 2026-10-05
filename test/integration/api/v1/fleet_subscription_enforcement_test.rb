@@ -232,7 +232,6 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
 
   test "a fleet inventory transfer is enforced" do
     Flipper.enable("fleet_subscriptions")
-    Flipper.enable("inventory_transfers")
     sign_in @user
 
     get "/api/v1/fleets/#{@fleet.slug}/inventory-transfers"

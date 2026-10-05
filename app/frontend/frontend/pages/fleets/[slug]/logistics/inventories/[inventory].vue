@@ -22,7 +22,6 @@ import {
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
-  FeatureFlagName,
   useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -117,13 +116,6 @@ const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
 
 const canManageInventory = computed(
   () => props.membership?.capabilities?.updateInventories ?? false,
-);
-
-const transfersEnabled = computed(
-  () =>
-    canManageInventory.value &&
-    (props.fleet?.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) ??
-      false),
 );
 
 const { openTransferModal, openTransferForSelection } = useTransferModal({
@@ -348,9 +340,9 @@ const crumbs = computed<Crumb[]>(() => [
               show-member
               show-added-by
               show-notes
-              :stock-selectable="transfersEnabled"
+              :stock-selectable="canManageInventory"
             >
-              <template v-if="transfersEnabled" #stock-actions="{ record }">
+              <template v-if="canManageInventory" #stock-actions="{ record }">
                 <Btn
                   :size="BtnSizesEnum.SM"
                   :aria-label="t('actions.logistics.transfer')"
@@ -362,7 +354,7 @@ const crumbs = computed<Crumb[]>(() => [
                 </Btn>
               </template>
               <template
-                v-if="transfersEnabled"
+                v-if="canManageInventory"
                 #stock-selected-actions="{ selected }"
               >
                 <Btn

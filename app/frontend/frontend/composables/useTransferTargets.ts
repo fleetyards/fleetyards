@@ -141,7 +141,6 @@ export const useTransferTargets = (options: Options) => {
 
   const canReceive = (fleet: Fleet) =>
     fleet.slug !== actingFleet.value &&
-    fleet.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) &&
     fleet.features?.includes(FeatureFlagName.FLEET_LOGISTICS);
 
   // An ally carries no feature list -- the alliance payload names the fleet and

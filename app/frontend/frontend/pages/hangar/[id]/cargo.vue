@@ -13,7 +13,6 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import {
-  FeatureFlagName,
   type InventoryItem,
   type Vehicle,
   useVehicleInventory,
@@ -32,7 +31,6 @@ import type {
   InventoryStockRecord,
   InventoryTarget,
 } from "@/frontend/types/logistics";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -48,7 +46,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-const { isFeatureEnabled } = useFeatures();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const vehicleId = computed(() => props.vehicle.id);
@@ -147,18 +144,9 @@ const showCargoGridsLink = computed(
     storedScu.value >= 1,
 );
 
-// A ship's cargo moves the same way a locker's does. The transfer itself is a
-// hangar-mount call either way: what decides the source is the inventory id,
-// and a ship inventory is one of the user's own.
-const transfersEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
-);
-
 // Only once the ship has an inventory to move out of -- one does not exist
 // until something is put in it.
-const canTransfer = computed(
-  () => transfersEnabled.value && !!inventory.value?.id && hasCargo.value,
-);
+const canTransfer = computed(() => !!inventory.value?.id && hasCargo.value);
 
 const { openTransferModal, openTransferForSelection } = useTransferModal({
   source: () => inventory.value,

@@ -5,7 +5,6 @@ require "test_helper"
 module Contracts
   class DestinationOptionsTest < ActiveSupport::TestCase
     setup do
-      Flipper.enable(:inventory_transfers)
       Flipper.enable(:hangar_inventories)
       Flipper.enable(:fleet_logistics)
 
@@ -62,7 +61,7 @@ module Contracts
     end
 
     test "no hangar inventory is offered to an author who cannot receive transfers" do
-      Flipper.disable(:inventory_transfers)
+      Flipper.disable(:hangar_inventories)
 
       assert_empty DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories
     end

@@ -6,7 +6,7 @@ require "openapi_helper"
 # inventories, worked from posting to fulfilment through the API.
 class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
   setup do
-    %w[fleet_contracts fleet_logistics inventory_transfers hangar_inventories].each { |flag| Flipper.enable(flag) }
+    %w[fleet_contracts fleet_logistics hangar_inventories].each { |flag| Flipper.enable(flag) }
 
     @author = create(:user)
     @contractor = create(:user)

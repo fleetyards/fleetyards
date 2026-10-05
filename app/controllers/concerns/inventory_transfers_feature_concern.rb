@@ -1,20 +1,10 @@
 # frozen_string_literal: true
 
-# Declare `before_action :check_inventory_transfers_feature` after the
-# doorkeeper callbacks so unauthenticated requests still get a 401.
-#
-# The new flag composes with the three that already gate inventories rather
-# than replacing them: a transfer touching a fleet inventory still needs
-# `fleet_logistics`, and one touching a ship still needs `ship_inventories`.
-# Otherwise this would be a way around them.
+# A transfer is gated by the flags its inventories already ride on: one
+# touching a fleet inventory needs `fleet_logistics`, and one touching a ship
+# needs `ship_inventories`.
 module InventoryTransfersFeatureConcern
   extend ActiveSupport::Concern
-
-  private def check_inventory_transfers_feature
-    return if feature_enabled?("inventory_transfers")
-
-    render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
-  end
 
   # Both ends of a transfer have to be open, and the two ends may be in
   # different families. Asked of the inventory rather than of the request,

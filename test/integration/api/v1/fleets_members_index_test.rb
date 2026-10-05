@@ -355,11 +355,7 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # The transfer picker asks this endpoint for the members it could address,
   # which is the question `Inventories::TransferGate` asks of a user recipient.
   test "GET /fleets/:slug/members filters to members who could receive a transfer" do
-    Flipper.enable_actor("inventory_transfers", @member)
     Flipper.enable_actor("hangar_inventories", @member)
-    # Half the pair only: the surface without the feature is not enough, and a
-    # transfer to a person lands in their own hangar inventory.
-    Flipper.enable_actor("hangar_inventories", @another_member)
     sign_in @admin
 
     assert_api_response :get, 200,
@@ -370,7 +366,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/members lists everybody without the filter" do
-    Flipper.enable_actor("inventory_transfers", @member)
     Flipper.enable_actor("hangar_inventories", @member)
     sign_in @admin
 

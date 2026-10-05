@@ -21,7 +21,6 @@ import {
   useHangarInventoryItems,
   useHangarInventoryStock,
   useDestroyHangarInventoryItem,
-  FeatureFlagName,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
@@ -36,7 +35,6 @@ import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -158,12 +156,6 @@ const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
     },
   });
 };
-
-const { isFeatureEnabled } = useFeatures();
-
-const transfersEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
-);
 
 const { openTransferModal, openTransferForSelection } = useTransferModal({
   source: () => inventory.value,
@@ -310,10 +302,10 @@ const crumbs = computed<Crumb[]>(() => [
               :log-records="itemsList"
               :stock-loading="stockLoading"
               :log-loading="logLoading"
-              :stock-selectable="transfersEnabled"
+              stock-selectable
               show-notes
             >
-              <template v-if="transfersEnabled" #stock-actions="{ record }">
+              <template #stock-actions="{ record }">
                 <Btn
                   :size="BtnSizesEnum.SM"
                   :aria-label="t('actions.logistics.transfer')"
@@ -324,10 +316,7 @@ const crumbs = computed<Crumb[]>(() => [
                   <i class="fa-duotone fa-right-left" />
                 </Btn>
               </template>
-              <template
-                v-if="transfersEnabled"
-                #stock-selected-actions="{ selected }"
-              >
+              <template #stock-selected-actions="{ selected }">
                 <Btn
                   :size="BtnSizesEnum.SM"
                   data-test="stock-transfer-selected"

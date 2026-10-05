@@ -20,8 +20,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create accept decline cancel report]
 
-      before_action :check_inventory_transfers_feature
-
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
       before_action -> { require_fleet_subscription(:logistics) }

@@ -14,7 +14,6 @@ module Inventories
       @sender = create(:user)
       @recipient = create(:user)
       [@sender, @recipient].each do |actor|
-        Flipper.enable_actor(:inventory_transfers, actor)
         Flipper.enable_actor(:hangar_inventories, actor)
       end
 

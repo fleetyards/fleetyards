@@ -20,7 +20,6 @@ import Empty from "@/shared/components/Empty/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import {
-  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetInventory,
@@ -57,15 +56,6 @@ const canCreateInventories = computed(
 
 const canUpdateInventories = computed(
   () => props.membership?.capabilities?.updateInventories ?? false,
-);
-
-// The fleet's own flags decide, not the reader's: the transfers page acts for
-// the fleet.
-const canSeeTransfers = computed(
-  () =>
-    canUpdateInventories.value &&
-    (props.fleet?.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) ??
-      false),
 );
 
 const { activeTab } = useLedgerTab();
@@ -209,7 +199,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   <Teleport to="#header-right">
     <Btn
-      v-if="canSeeTransfers"
+      v-if="canUpdateInventories"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-logistics-transfers' }"
       data-test="fleet-transfers-link"
