@@ -36,4 +36,19 @@ describe("NavItemInner", () => {
 
     expect(wrapper.find(".nav-item-badge--dot").exists()).toBe(true);
   });
+
+  it("draws a glyph in place of a font icon", async () => {
+    const wrapper = await mount({
+      icon: { secondary: "<circle r='1'/>", primary: "<rect/>" },
+    });
+
+    expect(wrapper.find(".nav-item-icon .duotone-glyph").exists()).toBe(true);
+    expect(wrapper.find(".nav-item-icon i").exists()).toBe(false);
+  });
+
+  it("keeps a font icon as a class", async () => {
+    const wrapper = await mount({});
+
+    expect(wrapper.find(".nav-item-icon i").classes()).toContain("fa-bell");
+  });
 });

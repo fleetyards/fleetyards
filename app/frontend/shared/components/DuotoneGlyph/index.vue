@@ -15,6 +15,8 @@ const props = defineProps<Props>();
 
 const id = useId();
 
+const width = computed(() => props.glyph.width ?? 512);
+
 const layers = computed(() => {
   const scoped = (markup?: string) => markup?.replaceAll("{id}", id) ?? "";
 
@@ -29,7 +31,8 @@ const layers = computed(() => {
 <template>
   <svg
     class="duotone-glyph"
-    viewBox="0 0 512 512"
+    :viewBox="`0 0 ${width} 512`"
+    :style="{ width: `${width / 512}em` }"
     aria-hidden="true"
     focusable="false"
   >

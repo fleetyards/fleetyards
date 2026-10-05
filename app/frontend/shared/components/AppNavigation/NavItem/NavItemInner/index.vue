@@ -5,9 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { type Glyph, isGlyph } from "@/shared/components/DuotoneGlyph/glyph";
+
 type Props = {
   label?: string;
-  icon?: string;
+  icon?: string | Glyph;
   image?: string;
   slim?: boolean;
   avatar?: boolean;
@@ -51,6 +54,7 @@ const badgeLabel = computed(() => {
         class="nav-item-image"
         :class="{ 'nav-item-image-avatar': avatar }"
       />
+      <DuotoneGlyph v-else-if="isGlyph(icon)" :glyph="icon" />
       <i
         v-else-if="icon"
         :class="{
