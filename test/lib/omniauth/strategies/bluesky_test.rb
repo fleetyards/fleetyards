@@ -50,12 +50,13 @@ class OmniAuth::Strategies::BlueskyTest < ActiveSupport::TestCase
 
     assert_requested(:post, PAR_URL) { |request|
       params = URI.decode_www_form(request.body).to_h
-      assertion, = JWT.decode(params["client_assertion"], KEY, true, algorithm: "ES256")
+      assertion, assertion_header = JWT.decode(params["client_assertion"], KEY, true, algorithm: "ES256")
       dpop, = JWT.decode(request.headers["Dpop"], KEY, true, algorithm: "ES256")
 
       params.values_at("client_id", "response_type", "redirect_uri", "scope", "code_challenge_method") ==
         [CLIENT_ID, "code", "https://fleetyards.test/users/auth/bluesky/callback", "atproto transition:generic", "S256"] &&
         assertion.values_at("iss", "aud") == [CLIENT_ID, "https://bsky.social"] &&
+        assertion_header["kid"] == "key-1" &&
         dpop.values_at("htm", "htu") == ["POST", PAR_URL]
     }
   end
@@ -93,7 +94,7 @@ class OmniAuth::Strategies::BlueskyTest < ActiveSupport::TestCase
   private def request_phase
     app = ->(_env) { [404, {}, []] }
     strategy = OmniAuth::Strategies::Bluesky.new(app, CLIENT_ID, "",
-      private_key: KEY, client_jwk: {kid: "key-1"}, scope: "atproto transition:generic")
+      private_key: KEY, client_jwk: JSON.parse({kid: "key-1"}.to_json), scope: "atproto transition:generic")
     env = Rack::MockRequest.env_for("https://fleetyards.test/users/auth/bluesky", method: "POST")
     env["rack.session"] = {}
 
