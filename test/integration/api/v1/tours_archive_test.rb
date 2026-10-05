@@ -56,6 +56,21 @@ class Api::V1::ToursArchiveTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # There is no fleet-scoped archive route: a fleet tour is archived by its own
+  # slug, where its fleet's payout managers may manage it.
+  test "PUT archive lets a fleet's payout manager archive its tour" do
+    Flipper.enable("fleet_tours")
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    tour = create(:tour, fleet: fleet, created_by: create(:user))
+    create(:payout_ledger, subject: tour)
+    sign_in admin
+
+    assert_api_response :put, 200, path_params: {slug: tour.slug} do
+      assert parsed_body["archived"]
+    end
+  end
+
   test "PUT archive is refused for a participant" do
     sign_in @participant
 
