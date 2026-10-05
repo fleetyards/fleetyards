@@ -16,14 +16,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useAcceptFriendship: () => ({ mutateAsync: acceptFriendship }),
 }));
 
-const features = ref<string[]>(["friends"]);
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) => features.value.includes(feature),
-  }),
-}));
-
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
@@ -65,7 +57,6 @@ describe("RelationshipsFriendButton", () => {
   beforeEach(() => {
     friendship.value = undefined;
     isLoading.value = false;
-    features.value = ["friends"];
     createFriendship.mockClear();
     acceptFriendship.mockClear();
   });
@@ -133,13 +124,6 @@ describe("RelationshipsFriendButton", () => {
 
   it("stays away from a reader who is not signed in", async () => {
     const wrapper = await mountButton();
-
-    expect(wrapper.find("button").exists()).toBe(false);
-  });
-
-  it("stays away while the flag is off", async () => {
-    features.value = [];
-    const wrapper = await mountButton("marten");
 
     expect(wrapper.find("button").exists()).toBe(false);
   });

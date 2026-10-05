@@ -14,10 +14,9 @@ module Locations
 
     # `online` answers for a user the way the reader may see it: true, false, or
     # nil where they get no answer, which ranks with the offline.
-    def initialize(location, reader, friends: true, fleets: true, online: ->(_user) {})
+    def initialize(location, reader, fleets: true, online: ->(_user) {})
       @location = location
       @reader = reader
-      @friends = friends
       @fleets = fleets
       @online = online
     end
@@ -25,7 +24,7 @@ module Locations
     # Online first, then by name, so a cut keeps who the reader can meet now. A
     # 400-member fleet can all be in one system; the count says how many more.
     def call(limit:)
-      friend_ids = @friends ? friends_here : Set.new
+      friend_ids = friends_here
       fleet_ids_by_user = fleet_mates
 
       ids = (friend_ids.to_a + fleet_ids_by_user.keys).uniq - [@reader.id]

@@ -19,14 +19,12 @@ class OnlineStatusPayloadTest < ActionDispatch::IntegrationTest
     UserPresence.connect(@member.id, "tab-1")
 
     Flipper.enable(:online_status)
-    Flipper.enable(:friends)
     sign_in @reader
   end
 
   teardown do
     UserPresence.reset!
     Flipper.disable(:online_status)
-    Flipper.disable(:friends)
   end
 
   def roster_row_for(user)

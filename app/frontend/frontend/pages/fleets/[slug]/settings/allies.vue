@@ -5,12 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FleetMember,
-} from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -18,16 +13,11 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
-const { isFleetFeatureEnabled } = useFeatures();
 </script>
 
 <template>
   <router-view
-    v-if="
-      isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_ALLIES) &&
-      props.membership.capabilities?.readAllies
-    "
+    v-if="props.membership.capabilities?.readAllies"
     :fleet="props.fleet"
     :membership="props.membership"
   />

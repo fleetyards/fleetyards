@@ -12,7 +12,6 @@ const fleets = ref<Partial<Fleet>[] | undefined>();
 const members = ref<{ items: { username: string }[] }[]>([]);
 const allies = ref<{ items: { fleet: { slug: string; name: string } }[] }>();
 const friends = ref<{ items: { user: { username: string } }[] }>();
-const enabledFeatures = ref<string[]>(["friends", "fleet_allies"]);
 const contractDestinations = ref<Record<string, unknown>[] | undefined>();
 
 vi.mock(
@@ -52,13 +51,6 @@ vi.mock("@/services/fyApi/services/friends/friends", () => ({
   useFriends: () => ({ data: friends }),
 }));
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) =>
-      enabledFeatures.value.includes(feature),
-  }),
-}));
-
 vi.mock("@tanstack/vue-query", () => ({
   useQueries: () => computed(() => members.value.map((data) => ({ data }))),
 }));
@@ -85,7 +77,6 @@ describe("useTransferTargets", () => {
     allies.value = undefined;
     friends.value = undefined;
     contractDestinations.value = undefined;
-    enabledFeatures.value = ["friends", "fleet_allies"];
   });
 
   it("offers the holder's other inventories, never the one being emptied", () => {
@@ -274,7 +265,6 @@ describe("useTransferTargets", () => {
       hangarInventories.value = { items: [] };
       fleets.value = [];
       members.value = [];
-      enabledFeatures.value = ["fleet_contracts"];
       contractDestinations.value = [hangarTarget, fleetTarget];
     });
 
@@ -303,17 +293,6 @@ describe("useTransferTargets", () => {
       });
 
       expect(contractTargets.value).toEqual([]);
-    });
-
-    // Contracts are switched on per fleet, and the endpoint filters by that.
-    it("offers them without the reader's own contracts flag", () => {
-      enabledFeatures.value = [];
-
-      const { contractTargets } = useTransferTargets({
-        source: () => undefined,
-      });
-
-      expect(contractTargets.value).toHaveLength(2);
     });
   });
 });

@@ -103,8 +103,6 @@ class Api::V1::FriendshipActionsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("friends")
-
     @user = create(:user)
     @other = create(:user)
   end

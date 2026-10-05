@@ -1,8 +1,4 @@
-import {
-  FeatureFlagName,
-  useFriendsPendingCount as useFriendsPendingCountQuery,
-} from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFriendsPendingCount as useFriendsPendingCountQuery } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 
 // How many requests are waiting on this user, for the badges that say so.
@@ -12,13 +8,9 @@ import { useSessionStore } from "@/frontend/stores/session";
 // request arrives over the cable, so the interval only covers what was answered
 // somewhere else -- the same arrangement the unread-notification badge uses.
 export const usePendingFriendRequests = () => {
-  const { isFeatureEnabled } = useFeatures();
   const sessionStore = useSessionStore();
 
-  const enabled = computed(
-    () =>
-      sessionStore.isAuthenticated && isFeatureEnabled(FeatureFlagName.FRIENDS),
-  );
+  const enabled = computed(() => sessionStore.isAuthenticated);
 
   const { data } = useFriendsPendingCountQuery({
     query: { enabled, refetchInterval: 60_000, retry: false },

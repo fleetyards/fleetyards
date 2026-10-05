@@ -77,8 +77,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.settings.allies",
       needsAuthentication: true,
       access: ["fleet:allies:read", "fleet:allies:manage", "fleet:manage"],
-      feature: FeatureFlagName.FLEET_ALLIES,
-      featureScope: "fleet",
       customTitle: true,
     },
     redirect: {

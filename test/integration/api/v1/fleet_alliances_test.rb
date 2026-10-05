@@ -118,8 +118,6 @@ class Api::V1::FleetAlliancesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("fleet_allies")
-
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
     @other_fleet = create(:fleet, created_by: create(:user).id)
@@ -257,13 +255,6 @@ class Api::V1::FleetAlliancesTest < ActionDispatch::IntegrationTest
 
   test "without a session it is unauthorized" do
     assert_api_response :get, 401, path_params: {fleet_slug: @fleet.slug}
-  end
-
-  test "it is forbidden with the feature off" do
-    Flipper.disable("fleet_allies")
-    sign_in @admin
-
-    assert_api_response :get, 403, path_params: {fleet_slug: @fleet.slug}
   end
 
   test "an unknown fleet is a 404" do

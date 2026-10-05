@@ -10,7 +10,6 @@ import {
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { TransferTargetOption } from "@/frontend/components/Logistics/TransferModal/types";
 
@@ -59,7 +58,6 @@ export const useTransferTargets = (options: Options) => {
   const actingFleet = computed(() => toValue(options.fleetSlug));
   const sourceId = computed(() => toValue(options.source)?.id);
 
-  const { isFeatureEnabled } = useFeatures();
   const { t } = useI18n();
 
   // Always fetched, even when acting for a fleet: a fleet issuing kit to one of
@@ -125,11 +123,7 @@ export const useTransferTargets = (options: Options) => {
     computed(() => ({ state: "accepted" as const })),
     {
       query: {
-        enabled: computed(
-          () =>
-            !!actingFleet.value &&
-            isFeatureEnabled(FeatureFlagName.FLEET_ALLIES),
-        ),
+        enabled: computed(() => !!actingFleet.value),
       },
     },
   );
@@ -140,9 +134,7 @@ export const useTransferTargets = (options: Options) => {
     computed(() => ({ state: "accepted" as const, transferTargets: true })),
     {
       query: {
-        enabled: computed(
-          () => !actingFleet.value && isFeatureEnabled(FeatureFlagName.FRIENDS),
-        ),
+        enabled: computed(() => !actingFleet.value),
       },
     },
   );
