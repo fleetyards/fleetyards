@@ -170,4 +170,16 @@ class TourTest < ActiveSupport::TestCase
     tour.unarchive!
     assert_includes Tour.not_archived, tour
   end
+
+  test "keeps its currency once settled" do
+    tour = create(:tour)
+
+    tour.update!(currency: "eur")
+    tour.settle!
+
+    assert_not tour.update(currency: "usd")
+    assert tour.errors.added?(:currency, :fixed_once_settled)
+    assert tour.reload.update(title: "Renamed")
+    assert_equal "eur", tour.currency
+  end
 end

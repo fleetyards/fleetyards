@@ -56,6 +56,7 @@ class Tour < ApplicationRecord
 
   validates :title, presence: true
   validates :currency, inclusion: {in: CURRENCIES}
+  validate :currency_fixed_once_settled, on: :update
 
   before_validation :ensure_id, on: :create
   before_validation :set_invite_token, on: :create
@@ -150,6 +151,15 @@ class Tour < ApplicationRecord
   # `<short-id>-<title>` in the URL.
   # Only guards someone deleting the tour. An organiser deleting their account
   # takes their tours with them, and refusing would leave the account stuck.
+  # The settled transfers are what people pay each other, and relabelling them
+  # would change what they owe without converting anything.
+  private def currency_fixed_once_settled
+    return unless will_save_change_to_currency?
+    return if open?
+
+    errors.add(:currency, :fixed_once_settled)
+  end
+
   private def ensure_deletable
     return if destroyed_by_association.present?
     return if deletable?

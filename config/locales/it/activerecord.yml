@@ -410,6 +410,8 @@ it:
               invalid_holder: "richiede esattamente un proprietario"
         tour:
           attributes:
+            currency:
+              fixed_once_settled: "non può essere modificata dopo la liquidazione dei pagamenti"
             base:
               has_participants: "Altri partecipano a questa spedizione o è già stato registrato qualcosa, quindi può solo essere archiviata"
         tour_join_request:

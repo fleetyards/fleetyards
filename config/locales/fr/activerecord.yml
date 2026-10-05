@@ -410,6 +410,8 @@ fr:
               invalid_holder: "doit avoir exactement un propriétaire"
         tour:
           attributes:
+            currency:
+              fixed_once_settled: "ne peut plus être modifiée une fois les paiements réglés"
             base:
               has_participants: "D'autres participent à cette expédition ou des écritures existent, elle ne peut donc qu'être archivée"
         tour_join_request:

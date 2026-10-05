@@ -410,6 +410,8 @@ es:
               invalid_holder: "necesita exactamente un propietario"
         tour:
           attributes:
+            currency:
+              fixed_once_settled: "no se puede cambiar una vez liquidados los pagos"
             base:
               has_participants: "Hay más participantes en esta expedición o ya se registró algo, así que solo se puede archivar"
         tour_join_request:
