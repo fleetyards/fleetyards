@@ -100,6 +100,19 @@ const loading = computed(() =>
   currentUrls.value.some((url) => !settledUrls.value.has(url)),
 );
 
+// Only a switch has a previous set to dim and hold the loader over. On the first
+// load the images have no size yet, so the grid is a bare gap and a loader centred
+// on it would cover the sections around it.
+const firstSetShown = ref(false);
+
+watch(loading, (value) => {
+  if (!value) {
+    firstSetShown.value = true;
+  }
+});
+
+const switching = computed(() => firstSetShown.value && loading.value);
+
 // An image that fails settles too, or the loader would sit over a view that is
 // never going to arrive.
 const settleImage = (event: Event) => {
@@ -197,13 +210,13 @@ onMounted(() => {
     </BtnGroup>
     <div
       class="fleetchart-views"
-      :class="{ 'fleetchart-views--loading': loading }"
+      :class="{ 'fleetchart-views--loading': switching }"
     >
       <!-- Announced here rather than inside Loader: it is a leaf component
            mounted without a store in several specs, and useI18n needs pinia. -->
       <Loader
         relative
-        :loading="loading"
+        :loading="switching"
         role="status"
         :aria-label="t('labels.loading')"
       />

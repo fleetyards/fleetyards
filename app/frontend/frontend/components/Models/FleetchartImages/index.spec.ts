@@ -165,16 +165,34 @@ describe("while the next set of images is loading", () => {
     }
   };
 
-  it("holds the loader until every view has reported", async () => {
+  // Nothing is on screen to dim yet, and the grid has no height for the loader
+  // to sit in until the images arrive.
+  it("stays away while the first set loads", async () => {
     const wrapper = await mountViews(FLIGHT_VIEWS);
 
-    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+    expect(wrapper.find(".fleetchart-views--loading").exists()).toBe(false);
+  });
 
-    await load(wrapper.findAll("img")[0]);
-
-    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
-
+  it("holds the loader until every view of the switch has reported", async () => {
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      landedTopView: file("landed-top"),
+      landedSideView: file("landed-side"),
+    });
     await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    const landed = wrapper
+      .findAll("img")
+      .filter((img) => img.attributes("src")?.includes("landed"));
+
+    await load(landed[0]);
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+
+    await load(landed[1]);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });
@@ -233,11 +251,19 @@ describe("while the next set of images is loading", () => {
   });
 
   it("settles a view that fails rather than waiting forever", async () => {
-    const wrapper = await mountViews(FLIGHT_VIEWS);
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      landedTopView: file("landed-top"),
+    });
+    await settleAll(wrapper);
 
-    for (const img of wrapper.findAll("img")) {
-      await img.trigger("error");
-    }
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    const landedTop = wrapper
+      .findAll("img")
+      .find((img) => img.attributes("src")?.includes("landed-top"));
+
+    await landedTop!.trigger("error");
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });
