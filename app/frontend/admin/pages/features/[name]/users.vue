@@ -50,7 +50,7 @@ const remove = (actor: FeatureActor) => actions.removeActor("User", actor.id);
       </PanelHeading>
       <PanelBody>
         <section class="feature-section">
-          <div class="feature-add-user">
+          <div class="feature-add-actor">
             <UserSelect
               v-model="selectedUser"
               name="feature-user"
@@ -93,17 +93,4 @@ const remove = (actor: FeatureActor) => actions.removeActor("User", actor.id);
 
 <style lang="scss" scoped>
 @import "./actors";
-
-.feature-add-user {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.75rem;
-  max-width: 32rem;
-
-  > :first-child {
-    flex: 1;
-    min-width: 14rem;
-  }
-}
 </style>

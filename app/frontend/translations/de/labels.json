@@ -227,8 +227,6 @@
         "noUsers": "Kein Benutzer hat diese Funktion einzeln aktiviert.",
         "noFleets": "Keine Flotte hat diese Funktion einzeln aktiviert.",
         "noMatches": "Nichts passt zum Filter.",
-        "fleetSearch": "Flotten nach Name oder SID suchen",
-        "fleetSearchEmpty": "Keine Flotte passt zu „%{search}“.",
         "memberCount": "%{count} Mitglieder",
         "alreadyEnabled": "Aktiviert"
       },

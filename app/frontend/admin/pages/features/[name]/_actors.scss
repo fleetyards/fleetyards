@@ -9,3 +9,16 @@
   flex-direction: column;
   gap: 0.75rem;
 }
+
+.feature-add-actor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  max-width: 40rem;
+
+  > :first-child {
+    flex: 1;
+    min-width: 14rem;
+  }
+}

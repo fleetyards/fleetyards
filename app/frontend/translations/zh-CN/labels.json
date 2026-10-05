@@ -227,8 +227,6 @@
         "noUsers": "没有用户单独启用此功能。",
         "noFleets": "没有舰队单独启用此功能。",
         "noMatches": "没有符合筛选条件的结果。",
-        "fleetSearch": "按名称或 SID 搜索舰队",
-        "fleetSearchEmpty": "没有舰队匹配“%{search}”。",
         "memberCount": "%{count} 名成员",
         "alreadyEnabled": "已启用"
       },

@@ -5,16 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  type Feature,
-  type FeatureActor,
-  type FleetOption,
-} from "@/services/fyAdminApi";
+import { type Feature, type FeatureActor } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ActorList from "@/admin/components/Features/ActorList/index.vue";
-import FleetActorSearch from "@/admin/components/Features/FleetActorSearch/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatureActions } from "@/admin/composables/useFeatureActions";
 
@@ -32,9 +29,24 @@ const fleets = computed(() =>
 
 const actions = useFeatureActions(() => props.feature.name);
 
-const enabledIds = computed(() => fleets.value.map((fleet) => fleet.id));
+const enabledFids = computed(() =>
+  fleets.value.flatMap((fleet) => (fleet.fid ? [fleet.fid] : [])),
+);
 
-const add = (fleet: FleetOption) => actions.addActor("Fleet", fleet.id);
+const selectedFleet = ref<string>();
+
+const alreadyEnabled = computed(
+  () =>
+    !!selectedFleet.value && enabledFids.value.includes(selectedFleet.value),
+);
+
+const add = async () => {
+  if (!selectedFleet.value || alreadyEnabled.value) return;
+
+  if (await actions.addActor("Fleet", selectedFleet.value)) {
+    selectedFleet.value = undefined;
+  }
+};
 
 const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
 </script>
@@ -47,11 +59,24 @@ const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
       </PanelHeading>
       <PanelBody>
         <section class="feature-section">
-          <FleetActorSearch
-            :enabled-ids="enabledIds"
-            :busy="actions.busy.value"
-            @add="add"
-          />
+          <div class="feature-add-actor">
+            <FleetSelect
+              v-model="selectedFleet"
+              name="feature-fleet"
+              :marked-fids="enabledFids"
+              :marked-label="t('labels.features.alreadyEnabled')"
+              inline
+            />
+            <Btn
+              :disabled="!selectedFleet || alreadyEnabled"
+              :loading="actions.busy.value"
+              data-test="feature-add-fleet"
+              @click="add"
+            >
+              <i class="fa-duotone fa-plus" />
+              {{ t("actions.add") }}
+            </Btn>
+          </div>
         </section>
       </PanelBody>
     </Panel>
