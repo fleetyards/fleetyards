@@ -159,7 +159,11 @@
           "percentageOfActors": "Pourcentage des acteurs",
           "percentageOfTime": "Pourcentage du temps",
           "addActor": "Ajouter un acteur",
-          "history": "Historique"
+          "history": "Historique",
+          "addUser": "Activer pour un utilisateur",
+          "addFleet": "Activer pour une flotte",
+          "enabledUsers": "Utilisateurs activés",
+          "enabledFleets": "Flottes activées"
         },
         "rsiApiStatus": {
           "index": "Statut de l'API RSI"

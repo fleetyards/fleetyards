@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "功能标志",
-          "show": "功能详情"
+          "show": "功能详情",
+          "overview": "功能标志",
+          "users": "功能标志用户",
+          "fleets": "功能标志舰队",
+          "history": "功能标志历史"
         },
         "images": {
           "index": "图片"

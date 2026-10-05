@@ -218,7 +218,19 @@
         "managedFeature": "Questa funzionalità è stata attivata per il tuo account e non può essere modificata qui.",
         "managedFeatureFleet": "Questa funzionalità è stata attivata per questa flotta e non può essere modificata qui.",
         "selfServiceUser": "Gli utenti possono attivarla",
-        "selfServiceFleet": "Gli amministratori della flotta possono attivarla"
+        "selfServiceFleet": "Gli amministratori della flotta possono attivarla",
+        "globalHint": "Attiva, la funzionalità è aperta a tutti. Disattiva, cancella ogni regola, compresi utenti, flotte e gruppi qui sotto.",
+        "selfServiceHint": "Chi può attivare questa funzionalità da sé.",
+        "lastChanged": "Ultima modifica: %{date}",
+        "filterUsers": "Filtra per nome utente",
+        "filterFleets": "Filtra per nome o SID",
+        "noUsers": "Nessun utente ha questa funzionalità abilitata individualmente.",
+        "noFleets": "Nessuna flotta ha questa funzionalità abilitata individualmente.",
+        "noMatches": "Nessun risultato per il filtro.",
+        "fleetSearch": "Cerca flotte per nome o SID",
+        "fleetSearchEmpty": "Nessuna flotta corrisponde a «%{search}».",
+        "memberCount": "%{count} membri",
+        "alreadyEnabled": "Abilitata"
       },
       "oauthApplication": {
         "name": "Nome applicazione",

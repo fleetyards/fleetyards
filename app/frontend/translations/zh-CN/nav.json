@@ -179,6 +179,12 @@
         "themes": "主题"
       },
       "admin": {
+        "features": {
+          "overview": "概览",
+          "users": "用户",
+          "fleets": "舰队",
+          "history": "历史"
+        },
         "locations": {
           "index": "地点"
         },

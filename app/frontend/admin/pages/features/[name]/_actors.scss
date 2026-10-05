@@ -1,0 +1,16 @@
+.feature-actors-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feature-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+}

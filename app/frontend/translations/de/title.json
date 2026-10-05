@@ -311,7 +311,11 @@
         },
         "features": {
           "index": "Feature-Flags",
-          "show": "Funktionsdetails"
+          "show": "Funktionsdetails",
+          "overview": "Feature-Flag",
+          "users": "Feature-Flag: Benutzer",
+          "fleets": "Feature-Flag: Flotten",
+          "history": "Feature-Flag: Verlauf"
         },
         "images": {
           "index": "Bilder"

@@ -218,7 +218,19 @@
         "managedFeature": "This feature was enabled for your account and cannot be changed here.",
         "managedFeatureFleet": "This feature was enabled for this fleet and cannot be changed here.",
         "selfServiceUser": "Users can toggle",
-        "selfServiceFleet": "Fleet admins can toggle"
+        "selfServiceFleet": "Fleet admins can toggle",
+        "globalHint": "On opens the feature to everyone. Off clears every gate, the users, fleets and groups below included.",
+        "selfServiceHint": "Who may switch this feature on for themselves.",
+        "lastChanged": "Last changed %{date}",
+        "filterUsers": "Filter by username",
+        "filterFleets": "Filter by name or SID",
+        "noUsers": "No user has this feature enabled individually.",
+        "noFleets": "No fleet has this feature enabled individually.",
+        "noMatches": "Nothing matches the filter.",
+        "fleetSearch": "Search fleets by name or SID",
+        "fleetSearchEmpty": "No fleet matches “%{search}”.",
+        "memberCount": "%{count} members",
+        "alreadyEnabled": "Enabled"
       },
       "oauthApplication": {
         "name": "Application Name",

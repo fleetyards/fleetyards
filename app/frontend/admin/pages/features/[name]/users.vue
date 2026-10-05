@@ -1,0 +1,101 @@
+<script lang="ts">
+export default {
+  name: "AdminFeatureUsersPage",
+};
+</script>
+
+<script lang="ts" setup>
+import { type Feature, type FeatureActor } from "@/services/fyAdminApi";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import ActorList from "@/admin/components/Features/ActorList/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatureActions } from "@/admin/composables/useFeatureActions";
+
+type Props = {
+  feature: Feature;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const users = computed(() =>
+  props.feature.actors.filter((actor) => actor.type === "User"),
+);
+
+const actions = useFeatureActions(() => props.feature.name);
+
+const selectedUser = ref<string>();
+
+const add = async () => {
+  if (!selectedUser.value) return;
+
+  if (await actions.addActor("User", selectedUser.value)) {
+    selectedUser.value = undefined;
+  }
+};
+
+const remove = (actor: FeatureActor) => actions.removeActor("User", actor.id);
+</script>
+
+<template>
+  <div class="feature-actors-page">
+    <Panel>
+      <section class="feature-section">
+        <h3>{{ t("headlines.admin.features.addUser") }}</h3>
+        <div class="feature-add-user">
+          <UserSelect
+            v-model="selectedUser"
+            name="feature-user"
+            value-attr="id"
+            inline
+          />
+          <Btn
+            :disabled="!selectedUser"
+            :loading="actions.busy.value"
+            data-test="feature-add-user"
+            @click="add"
+          >
+            <i class="fa-duotone fa-plus" />
+            {{ t("actions.add") }}
+          </Btn>
+        </div>
+      </section>
+    </Panel>
+
+    <Panel>
+      <section class="feature-section">
+        <h3>
+          {{ t("headlines.admin.features.enabledUsers") }}
+          <span class="text-muted">({{ users.length }})</span>
+        </h3>
+        <ActorList
+          :actors="users"
+          name="users"
+          :filter-label="t('labels.features.filterUsers')"
+          :empty-text="t('labels.features.noUsers')"
+          @remove="remove"
+        />
+      </section>
+    </Panel>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "./actors";
+
+.feature-add-user {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  max-width: 32rem;
+
+  > :first-child {
+    flex: 1;
+    min-width: 14rem;
+  }
+}
+</style>

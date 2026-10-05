@@ -78,6 +78,9 @@ export type AdminRouteLocation =
   // OAuth (id)
   | ParamRoute<"admin-oauth-application-edit", IdParams>
   // Features (name)
-  | ParamRoute<"admin-feature", FeatureNameParams>;
+  | ParamRoute<"admin-feature", FeatureNameParams>
+  | ParamRoute<"admin-feature-users", FeatureNameParams>
+  | ParamRoute<"admin-feature-fleets", FeatureNameParams>
+  | ParamRoute<"admin-feature-history", FeatureNameParams>;
 
 export type AdminRouteName = AdminRouteLocation["name"];

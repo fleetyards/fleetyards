@@ -218,7 +218,19 @@
         "managedFeature": "Diese Funktion wurde für Ihr Konto aktiviert und kann hier nicht geändert werden.",
         "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden.",
         "selfServiceUser": "Benutzer können umschalten",
-        "selfServiceFleet": "Flotten-Admins können umschalten"
+        "selfServiceFleet": "Flotten-Admins können umschalten",
+        "globalHint": "Ein öffnet die Funktion für alle. Aus entfernt jede Freigabe, auch die Benutzer, Flotten und Gruppen weiter unten.",
+        "selfServiceHint": "Wer diese Funktion selbst einschalten darf.",
+        "lastChanged": "Zuletzt geändert %{date}",
+        "filterUsers": "Nach Benutzername filtern",
+        "filterFleets": "Nach Name oder SID filtern",
+        "noUsers": "Kein Benutzer hat diese Funktion einzeln aktiviert.",
+        "noFleets": "Keine Flotte hat diese Funktion einzeln aktiviert.",
+        "noMatches": "Nichts passt zum Filter.",
+        "fleetSearch": "Flotten nach Name oder SID suchen",
+        "fleetSearchEmpty": "Keine Flotte passt zu „%{search}“.",
+        "memberCount": "%{count} Mitglieder",
+        "alreadyEnabled": "Aktiviert"
       },
       "oauthApplication": {
         "name": "Anwendungsname",

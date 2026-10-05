@@ -179,6 +179,12 @@
         "themes": "Temi"
       },
       "admin": {
+        "features": {
+          "overview": "Panoramica",
+          "users": "Utenti",
+          "fleets": "Flotte",
+          "history": "Cronologia"
+        },
         "locations": {
           "index": "Luoghi"
         },

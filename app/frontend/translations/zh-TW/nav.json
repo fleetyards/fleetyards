@@ -179,6 +179,12 @@
         "themes": "主題"
       },
       "admin": {
+        "features": {
+          "overview": "概覽",
+          "users": "使用者",
+          "fleets": "艦隊",
+          "history": "歷史"
+        },
         "locations": {
           "index": "地點"
         },
