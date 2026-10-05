@@ -255,7 +255,18 @@ watch(
   () => data.value,
   async () => {
     if (data.value) {
-      addOptions(data.value);
+      // An unsorted select keeps the order the server answered in, so the
+      // first page of a search replaces what earlier searches left behind
+      // rather than queueing below it. Chosen rows stay, for the trigger.
+      if (props.unsorted && page.value === 1 && search.value) {
+        const fresh = data.value;
+        const chosen = selectedOptions.value.filter(
+          (option) => !fresh.some((item) => item.value === option.value),
+        );
+        internalOptions.value = [...fresh, ...chosen];
+      } else {
+        addOptions(data.value);
+      }
       await fetchMissingOption();
     }
   },
@@ -387,9 +398,11 @@ const selectedOptions = computed(() => {
  * one popover, ordered differently, from one sort that only half-ran.
  */
 const filteredOptions = computed(() => {
-  if (search.value) {
+  const needle = search.value?.trim().toLowerCase();
+
+  if (needle) {
     return availableOptions.value.filter((item) =>
-      item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
+      item.label.toLowerCase().includes(needle),
     );
   }
 

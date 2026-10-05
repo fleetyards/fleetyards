@@ -290,6 +290,50 @@ describe("BaseSelect", () => {
       });
     });
 
+    it("matches a search typed with surrounding spaces", async () => {
+      const wrapper = await mount({ searchable: true });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await wrapper.find("input").setValue("  aurora ");
+
+      expect(labelsIn(wrapper, ".base-select-items-wrapper")).toEqual([
+        "Aurora",
+      ]);
+    });
+
+    // An exact match the server ranks first must not land below the partial
+    // matches an earlier search left behind.
+    it("lets an unsorted select's new search replace the earlier one", async () => {
+      const queryFn = vi.fn(({ search }: { search?: string }) =>
+        Promise.resolve(
+          search === "test"
+            ? [
+                { value: "exact", label: "Test" },
+                { value: "partial", label: "1test" },
+              ]
+            : [{ value: "partial", label: "1test" }],
+        ),
+      );
+      const wrapper = await mount({
+        options: undefined,
+        queryFn,
+        searchable: true,
+        unsorted: true,
+      });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      vi.useFakeTimers();
+      await wrapper.find("input").setValue("test");
+      await wrapper.find("input").trigger("input");
+      await vi.advanceTimersByTimeAsync(500);
+      await flushPromises();
+
+      expect(labelsIn(wrapper, ".base-select-items-wrapper")).toEqual([
+        "Test",
+        "1test",
+      ]);
+    });
+
     it("offers more only while the response says there are more pages", async () => {
       const paged = (currentPage: number, totalPages: number) => ({
         data: [],
