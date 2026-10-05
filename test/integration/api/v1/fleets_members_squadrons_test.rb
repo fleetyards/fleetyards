@@ -8,7 +8,6 @@ require "openapi_helper"
 # `Api::V1::FleetsMembersIndexTest` already documents.
 class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("fleet_squadrons")
     @admin = create(:user)
     @pilot = create(:user)
     @miner = create(:user)

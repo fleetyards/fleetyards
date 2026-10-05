@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
 
 const SQUADRON_READ_ACCESS = [
@@ -65,8 +64,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.index",
       needsAuthentication: true,
       access: SQUADRON_READ_ACCESS,
-      feature: FeatureFlagName.FLEET_SQUADRONS,
-      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },
@@ -81,8 +78,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.create",
       needsAuthentication: true,
       access: SQUADRON_CREATE_ACCESS,
-      feature: FeatureFlagName.FLEET_SQUADRONS,
-      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },
@@ -98,8 +93,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.edit",
       needsAuthentication: true,
       access: SQUADRON_UPDATE_ACCESS,
-      feature: FeatureFlagName.FLEET_SQUADRONS,
-      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },
@@ -115,8 +108,6 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.squadrons.index",
       needsAuthentication: true,
       access: SQUADRON_READ_ACCESS,
-      feature: FeatureFlagName.FLEET_SQUADRONS,
-      featureScope: "fleet",
       fleetSetting: "squadronsEnabled",
       customTitle: true,
     },

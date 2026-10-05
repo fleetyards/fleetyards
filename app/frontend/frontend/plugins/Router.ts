@@ -109,10 +109,10 @@ export const beforeResolve = async (
     };
   }
 
-  if (to.meta.fleetSetting && fleetSlug) {
+  if (to.meta.fleetSetting && to.params.slug) {
     const settingEnabled = await fleetSettingEnabled(
       to.meta.fleetSetting,
-      fleetSlug,
+      String(to.params.slug),
     );
 
     if (!settingEnabled) {

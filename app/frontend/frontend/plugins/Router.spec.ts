@@ -86,19 +86,11 @@ describe("frontend router feature guard", () => {
   it("sends a fleet route to the 404 while the fleet has the setting off", async () => {
     queryClient.setQueryData(getFeaturesQueryKey(), []);
     queryClient.setQueryData(getFleetQueryKey("the-fleet"), {
-      features: [FeatureFlagName.FLEET_SQUADRONS],
       squadronsEnabled: false,
     });
 
     const redirect = await beforeResolve(
-      route(
-        {
-          feature: FeatureFlagName.FLEET_SQUADRONS,
-          featureScope: "fleet",
-          fleetSetting: "squadronsEnabled",
-        },
-        { slug: "the-fleet" },
-      ),
+      route({ fleetSetting: "squadronsEnabled" }, { slug: "the-fleet" }),
     );
 
     expect(redirect).toEqual({ routeName: "404" });
@@ -107,19 +99,11 @@ describe("frontend router feature guard", () => {
   it("lets a fleet route through once the fleet has the setting on", async () => {
     queryClient.setQueryData(getFeaturesQueryKey(), []);
     queryClient.setQueryData(getFleetQueryKey("the-fleet"), {
-      features: [FeatureFlagName.FLEET_SQUADRONS],
       squadronsEnabled: true,
     });
 
     const redirect = await beforeResolve(
-      route(
-        {
-          feature: FeatureFlagName.FLEET_SQUADRONS,
-          featureScope: "fleet",
-          fleetSetting: "squadronsEnabled",
-        },
-        { slug: "the-fleet" },
-      ),
+      route({ fleetSetting: "squadronsEnabled" }, { slug: "the-fleet" }),
     );
 
     expect(redirect).toBeUndefined();

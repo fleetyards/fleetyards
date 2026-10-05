@@ -1,11 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FleetSquadron,
-} from "@/services/fyApi";
+import { type Fleet, type FleetSquadron } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const items = [
@@ -45,7 +41,6 @@ const mount = async (props: Record<string, unknown>) => {
     props: {
       fleet: {
         slug: "maru",
-        features: [FeatureFlagName.FLEET_SQUADRONS],
         squadronsEnabled: true,
       } as Fleet,
       ...props,
@@ -105,7 +100,6 @@ describe("FleetSquadronSelect", () => {
     const subject = await mount({
       fleet: {
         slug: "maru",
-        features: [FeatureFlagName.FLEET_SQUADRONS],
         squadronsEnabled: false,
       } as Fleet,
       modelValue: ["b"],

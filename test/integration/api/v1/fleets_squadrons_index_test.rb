@@ -44,7 +44,6 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("fleet_squadrons")
     @admin = create(:user)
     @member = create(:user)
     @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member])
@@ -134,15 +133,6 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /fleets/:slug/squadrons is forbidden when fleet_squadrons is disabled" do
-    Flipper.disable("fleet_squadrons")
-    sign_in @admin
-
-    get "/api/v1/fleets/#{@fleet.slug}/squadrons"
-
-    assert_response :forbidden
-  end
-
   test "GET /fleets/:slug/squadrons is forbidden when the fleet has squadrons switched off" do
     @fleet.update_column(:squadrons_enabled, false)
     sign_in @admin
@@ -150,17 +140,6 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     get "/api/v1/fleets/#{@fleet.slug}/squadrons"
 
     assert_response :forbidden
-  end
-
-  test "GET /fleets/:slug/squadrons is allowed when fleet_squadrons is enabled for the fleet actor" do
-    Flipper.disable("fleet_squadrons")
-    Flipper.enable_actor("fleet_squadrons", @fleet)
-    create(:fleet_squadron, fleet: @fleet)
-    sign_in @member
-
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal 1, parsed_body["items"].count
-    end
   end
 
   test "GET /fleets/:slug/squadrons returns 404 for unknown fleet" do

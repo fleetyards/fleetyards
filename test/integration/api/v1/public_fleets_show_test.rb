@@ -104,10 +104,10 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
 
   test "GET /public/fleets/:slug lists the features switched on for the fleet" do
     fleet = create(:fleet)
-    Flipper.enable("fleet_squadrons", fleet)
+    Flipper.enable("fleet_logistics", fleet)
 
     assert_api_response :get, 200, path_params: {slug: fleet.slug} do
-      assert_includes parsed_body["features"], "fleet_squadrons"
+      assert_includes parsed_body["features"], "fleet_logistics"
     end
   end
 

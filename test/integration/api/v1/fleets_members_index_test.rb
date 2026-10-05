@@ -393,7 +393,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # The badge is cached with the member, so a squadron renamed after the first
   # read must still reach the roster.
   test "GET /fleets/:slug/members shows a squadron's new name after it is renamed" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
     create(:fleet_squadron_membership, fleet_squadron: squadron,
       fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
@@ -412,7 +411,6 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   # Reading the roster and reading squadrons are separate privileges, and the
   # badges are the squadrons.
   test "GET /fleets/:slug/members leaves out squadrons for a reader who may not see them" do
-    Flipper.enable("fleet_squadrons")
     squadron = create(:fleet_squadron, fleet: @fleet)
     create(:fleet_squadron_membership, fleet_squadron: squadron,
       fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))

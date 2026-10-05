@@ -51,7 +51,6 @@ class Api::V1::PublicFleetsStatsMembersTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /public/fleets/:fleetSlug/stats/members counts a member in two named squadrons once" do
-    Flipper.enable("fleet_squadrons")
     member = create(:user)
     fleet = create(:fleet, public_fleet_stats: true, members: [member])
     squadron = create(:fleet_squadron, fleet: fleet)
