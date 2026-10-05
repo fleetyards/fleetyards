@@ -1,5 +1,12 @@
 .crew-positions {
+  position: relative;
   margin-top: 20px;
+
+  // Only the heading renders until the positions arrive; the loader needs room
+  // below it rather than escaping to the nearest positioned ancestor.
+  &--loading {
+    min-height: 200px;
+  }
 
   &__label {
     font-size: 20px;

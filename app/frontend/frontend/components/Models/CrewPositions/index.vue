@@ -70,7 +70,11 @@ const groupedPositions = computed(() => {
 </script>
 
 <template>
-  <div v-if="positions?.length || isLoading" class="crew-positions">
+  <div
+    v-if="positions?.length || isLoading"
+    class="crew-positions"
+    :class="{ 'crew-positions--loading': isLoading }"
+  >
     <h2 class="crew-positions__label">
       {{ t("labels.model.crewPositions") }}
     </h2>
@@ -96,7 +100,7 @@ const groupedPositions = computed(() => {
         </span>
       </div>
     </div>
-    <Loader :loading="isLoading" fixed />
+    <Loader :loading="isLoading" />
   </div>
 </template>
 
