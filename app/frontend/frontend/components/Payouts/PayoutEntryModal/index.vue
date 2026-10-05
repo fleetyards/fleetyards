@@ -143,6 +143,28 @@ const onSubmit = handleSubmit(async (values) => {
     });
 });
 
+// The save button lives in the modal footer, outside the form, so the
+// browser's own submit-on-enter never fires. Plain Enter submits from a text
+// field only: in the notes it is a newline, and the selects use it to pick.
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key !== "Enter" || event.isComposing || submitting.value) {
+    return;
+  }
+
+  const withModifier = event.metaKey || event.ctrlKey;
+  const target = event.target as HTMLElement;
+
+  if (
+    !withModifier &&
+    (!(target instanceof HTMLInputElement) || target.closest(".base-select"))
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  void onSubmit();
+};
+
 const onDestroy = async () => {
   if (!props.entry) {
     return;
@@ -172,7 +194,11 @@ const onDestroy = async () => {
       entry ? t('headlines.payouts.editEntry') : t('headlines.payouts.addEntry')
     "
   >
-    <form id="payout-entry-form" @submit.prevent="onSubmit">
+    <form
+      id="payout-entry-form"
+      @submit.prevent="onSubmit"
+      @keydown="onKeydown"
+    >
       <div class="row">
         <div class="col-12 col-md-6">
           <BaseSelect
