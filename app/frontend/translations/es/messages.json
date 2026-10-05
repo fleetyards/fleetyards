@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "invalidAmount": "Introduce un importe, p. ej. 1.500,50",
         "entryCreated": "Movimiento registrado",
         "entryUpdated": "Movimiento actualizado",
         "entryDestroyed": "Movimiento eliminado",

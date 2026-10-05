@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { formatWeight } from "@/frontend/components/Payouts/PayoutWeightControl/types";
 import type { PayoutBalance } from "@/services/fyApi";
 
 type Props = {
@@ -23,7 +24,7 @@ const skeletonVisible = computed(() => props.loading && !props.balances.length);
 // smallest number that still reads as a list rather than as one stray row.
 const SKELETON_ROWS = 3;
 
-const { t, toUEC } = useI18n();
+const { t, toUEC, currentLocale } = useI18n();
 
 // A positive net means they are holding more than their share and owe the
 // difference; negative means they are owed. Zero is settled up.
@@ -100,7 +101,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
         :class="{ 'payout-balances__weight--adjusted': row.adjusted }"
         :data-label="t('labels.payouts.weight')"
       >
-        {{ row.balance.participant.weight }}
+        {{ formatWeight(row.weight, currentLocale()) }}
       </span>
       <span
         :data-label="t('labels.payouts.paid')"

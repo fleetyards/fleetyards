@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "invalidAmount": "请输入金额，例如 1,500.50",
         "entryCreated": "已记录",
         "entryUpdated": "已更新",
         "entryDestroyed": "已删除",

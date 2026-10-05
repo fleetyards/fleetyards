@@ -15,6 +15,7 @@ import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { parseLocalizedNumber } from "@/shared/utils/parseLocalizedNumber";
 import {
   useCreatePayoutEntry as useCreatePayoutEntryMutation,
   useUpdatePayoutEntry as useUpdatePayoutEntryMutation,
@@ -37,7 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   expensesAllowed: true,
 });
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -58,13 +59,23 @@ const entryTypeOptions = computed(() => [
   { value: "income", label: t("labels.payouts.income") },
 ]);
 
-const { defineField, handleSubmit } = useForm({
+// Shown the way the reader writes numbers, and without grouping, so reading it
+// back can never mistake the API's "1500.000" for a million and a half.
+const toFieldValue = (value?: string | null) =>
+  value
+    ? new Intl.NumberFormat(currentLocale(), {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+      }).format(Number(value))
+    : "";
+
+const { defineField, handleSubmit, setFieldError } = useForm({
   initialValues: {
     payoutParticipantId:
       props.entry?.payoutParticipantId ?? props.participants[0]?.id,
     entryType: (props.entry?.entryType ??
       (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
-    amount: props.entry?.amount ?? "",
+    amount: toFieldValue(props.entry?.amount),
     description: props.entry?.description ?? "",
     notes: props.entry?.notes ?? "",
   },
@@ -81,12 +92,19 @@ const updateMutation = useUpdatePayoutEntryMutation();
 const destroyMutation = useDestroyPayoutEntryMutation();
 
 const onSubmit = handleSubmit(async (values) => {
+  const parsedAmount = parseLocalizedNumber(values.amount, currentLocale());
+
+  if (parsedAmount === null) {
+    setFieldError("amount", t("messages.payouts.invalidAmount"));
+    return;
+  }
+
   submitting.value = true;
 
   const data = {
     payoutParticipantId: values.payoutParticipantId as string,
     entryType: values.entryType as PayoutEntryTypeEnum,
-    amount: String(values.amount),
+    amount: parsedAmount,
     description: values.description as string,
     notes: (values.notes as string) || null,
   };
@@ -178,7 +196,7 @@ const onDestroy = async () => {
           <FormInput
             v-model="amount"
             name="amount"
-            type="number"
+            inputmode="decimal"
             rules="required"
             v-bind="amountProps"
             :label="t('labels.payouts.amount')"

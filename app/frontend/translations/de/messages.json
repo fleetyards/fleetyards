@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "invalidAmount": "Gib einen Betrag ein, z. B. 1.500,50",
         "entryCreated": "Eintrag erfasst",
         "entryUpdated": "Eintrag aktualisiert",
         "entryDestroyed": "Eintrag entfernt",

@@ -12,6 +12,7 @@ import {
   BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 import PayoutWeightControl from "@/frontend/components/Payouts/PayoutWeightControl/index.vue";
+import { formatWeight } from "@/frontend/components/Payouts/PayoutWeightControl/types";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -46,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   tourSlug: undefined,
 });
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -268,7 +269,7 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
         v-else-if="!participant.fleet && Number(participant.weight) !== 1"
         class="payout-participants__weight"
       >
-        {{ participant.weight }} {{ t("labels.payouts.shares") }}
+        {{ formatWeight(participant.weight, currentLocale()) }} {{ t("labels.payouts.shares") }}
       </span>
     </div>
 

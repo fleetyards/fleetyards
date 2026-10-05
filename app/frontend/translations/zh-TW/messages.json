@@ -1023,6 +1023,7 @@
         }
       },
       "payouts": {
+        "invalidAmount": "請輸入金額，例如 1,500.50",
         "entryCreated": "已紀錄",
         "entryUpdated": "已更新",
         "entryDestroyed": "已刪除",

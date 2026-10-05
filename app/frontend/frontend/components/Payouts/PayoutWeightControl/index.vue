@@ -11,9 +11,11 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { parseLocalizedNumber } from "@/shared/utils/parseLocalizedNumber";
 import {
   PRESET_WEIGHTS,
   FULL_WEIGHT,
+  formatWeight,
 } from "@/frontend/components/Payouts/PayoutWeightControl/types";
 
 interface Props {
@@ -30,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ update: [weight: string] }>();
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 // The column is a decimal carried as a string, so every comparison is made on
 // the number rather than the text -- "0.5" and "0.50" are the same share and
@@ -45,12 +47,14 @@ const isPreset = computed(() =>
 // that already carries one does not hide it behind a button.
 const customOpen = ref(!isPreset.value);
 
-const customValue = ref(String(current.value));
+const toFieldValue = (value: number) => formatWeight(value, currentLocale());
+
+const customValue = ref(toFieldValue(current.value));
 
 watch(
   () => props.weight,
   () => {
-    customValue.value = String(current.value);
+    customValue.value = toFieldValue(current.value);
 
     if (!isPreset.value) {
       customOpen.value = true;
@@ -108,12 +112,13 @@ const onCustom = () => {
     return;
   }
 
-  const value = Number(String(customValue.value).replace(",", "."));
+  const parsed = parseLocalizedNumber(customValue.value, currentLocale());
+  const value = parsed === null ? NaN : Number(parsed);
 
   // The API refuses these too. Declined here so a mistyped share does not cost
   // a round trip and an error toast.
-  if (!Number.isFinite(value) || value <= 0) {
-    customValue.value = String(current.value);
+  if (!Number.isFinite(value) || value <= 0 || value > 999.99) {
+    customValue.value = toFieldValue(current.value);
     return;
   }
 
@@ -167,10 +172,8 @@ const onCustom = () => {
       v-if="customOpen"
       v-model="customValue"
       class="payout-weight__field"
-      type="number"
-      min="0.01"
-      max="999.99"
-      step="0.05"
+      type="text"
+      inputmode="decimal"
       :disabled="disabled"
       :aria-label="t('labels.payouts.weight')"
       data-test="payout-weight-field"
