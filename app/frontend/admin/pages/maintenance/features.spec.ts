@@ -34,15 +34,6 @@ vi.mock("@/services/fyAdminApi", () => ({
   getAdminFeaturesQueryKey: () => ["features"],
   enableAdminFeature: vi.fn(),
   disableAdminFeature: vi.fn(),
-  enableAdminFeatureActor: vi.fn(),
-  disableAdminFeatureActor: vi.fn(),
-  enableAdminFeatureGroup: vi.fn(),
-  disableAdminFeatureGroup: vi.fn(),
-  enableAdminFeaturePercentageOfActors: vi.fn(),
-  enableAdminFeaturePercentageOfTime: vi.fn(),
-  toggleAdminFeatureUserSelfService: vi.fn(),
-  toggleAdminFeatureFleetSelfService: vi.fn(),
-  useAdminFeatureHistory: () => ({ data: ref([]), isLoading: ref(false) }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -67,6 +58,11 @@ const mountPage = async (tab?: string) => {
         name: "admin-features",
         component: { template: "<div />" },
       },
+      {
+        path: "/features/:name/",
+        name: "admin-feature",
+        component: { template: "<div />" },
+      },
     ],
   });
 
@@ -81,10 +77,6 @@ const mountPage = async (tab?: string) => {
         Heading: { template: "<div><slot /></div>" },
         BasePill: { template: "<span><slot /></span>" },
         Btn: { template: "<button><slot /></button>" },
-        Toggle: true,
-        BaseSelect: true,
-        UserSelect: true,
-        FleetSelect: true,
         TabNavView: {
           template: "<div><slot name='nav' /><slot name='content' /></div>",
         },
@@ -184,6 +176,18 @@ describe("AdminFeaturesPage", () => {
     const { wrapper } = await mountPage();
 
     expect(wrapper.find('[data-test="feature-open-for"]').exists()).toBe(false);
+  });
+
+  it("links each flag to a page of its own", async () => {
+    const { wrapper } = await mountPage();
+
+    expect(
+      wrapper.findAll(FEATURE_NAME).map((el) => el.attributes("href")),
+    ).toEqual([
+      "/features/fleet_logistics/",
+      "/features/oauth-discord/",
+      "/features/ship_inventories/",
+    ]);
   });
 
   it("puts the chosen tab in the query and takes it out again", async () => {
