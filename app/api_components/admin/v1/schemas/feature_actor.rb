@@ -12,7 +12,7 @@ module Admin
             type: {type: :string},
             id: {type: :string},
             name: {type: :string},
-            fid: {type: :string, nullable: true, description: "The fleet's SID, for a fleet actor"}
+            fid: {type: [:string, :null], description: "The fleet's SID, for a fleet actor"}
           },
           additionalProperties: false,
           required: %w[type id name fid]

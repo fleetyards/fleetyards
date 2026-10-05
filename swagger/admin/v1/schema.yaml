@@ -14806,8 +14806,9 @@ components:
         name:
           type: string
         fid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The fleet's SID, for a fleet actor
       additionalProperties: false
       required:
