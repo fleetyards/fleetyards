@@ -17,6 +17,12 @@ module ActiveStorageVariants
     xlarge: {format: :webp, resize_to_limit: [3000, 3000], saver: {quality: 82}}
   }.freeze
 
+  # Each inline crop is a download, a decode and an upload, run one after the
+  # other before the response. One is what a single picture costs; a folder of
+  # fleetchart views made it twenty-four and ran the request into the proxy's
+  # timeout, so a save carrying more than this leaves all of them to the job.
+  INLINE_TRIM_LIMIT = 1
+
   included do
     class_attribute :trimmed_attachment_names, default: [], instance_writer: false
 
@@ -40,6 +46,8 @@ module ActiveStorageVariants
   # record with twenty views would otherwise queue every one of them again for
   # every single crop.
   def preprocess_representations
+    trim_inline = uploaded_attachment_names.count { |name| trim_pending?(name) } <= INLINE_TRIM_LIMIT
+
     new_attachment_names.each do |name|
       attachment = send(name)
       next unless attachment.attached? && attachment.representable?
@@ -49,7 +57,7 @@ module ActiveStorageVariants
       # again on the blob worth building them from.
       if !trim_pending?(name)
         PreprocessRepresentationsJob.perform_async(attachment.blob.id)
-      elsif uploaded_attachment_names.include?(name)
+      elsif trim_inline && uploaded_attachment_names.include?(name)
         trim_now(name)
       else
         TrimAttachmentJob.perform_async(self.class.name, id, name)
