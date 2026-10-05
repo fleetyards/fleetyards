@@ -27,7 +27,14 @@ const page = (
   totalPages = 1,
 ): FleetOptions => ({
   items,
-  meta: { pagination: { currentPage, totalPages } },
+  meta: {
+    pagination: {
+      currentPage,
+      totalPages,
+      perPage: 25,
+      totalCount: items.length,
+    },
+  },
 });
 
 const mountSearch = (enabledIds: string[] = []) =>
