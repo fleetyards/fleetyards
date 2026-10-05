@@ -8,11 +8,10 @@ module Oauth
       return head(:not_found) if jwk_json.blank?
 
       jwk = JSON.parse(jwk_json)
-      client_id = Rails.configuration.app.bluesky[:client_id]
-      base_url = AppEndpointResolver.new.frontend_endpoint
+      base_url = FRONTEND_ENDPOINT
 
       render json: {
-        client_id: client_id,
+        client_id: BLUESKY_CLIENT_ID,
         application_type: "web",
         client_name: Rails.configuration.app.name,
         client_uri: base_url,

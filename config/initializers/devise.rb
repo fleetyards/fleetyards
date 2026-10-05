@@ -258,7 +258,7 @@ Devise.setup do |config|
   bluesky_private_key = Rails.application.credentials.dig(:bluesky, :private_key)
   bluesky_jwk = Rails.application.credentials.dig(:bluesky, :jwk)
   if bluesky_private_key.present? && bluesky_jwk.present?
-    config.omniauth :bluesky, Rails.configuration.app.bluesky[:client_id], "", {
+    config.omniauth :bluesky, BLUESKY_CLIENT_ID, "", {
       private_key: OpenSSL::PKey::EC.new(bluesky_private_key),
       client_jwk: JSON.parse(bluesky_jwk),
       scope: "atproto transition:generic"

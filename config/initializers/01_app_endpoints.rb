@@ -7,6 +7,10 @@ endpoints = AppEndpointResolver.new
 FRONTEND_DOMAIN = endpoints.frontend_domain
 FRONTEND_ENDPOINT = endpoints.frontend_endpoint
 
+# Bluesky fetches its client metadata from the client_id itself and refuses a
+# document that names any other URL, so it is derived rather than configured.
+BLUESKY_CLIENT_ID = "#{FRONTEND_ENDPOINT}/oauth/client-metadata.json"
+
 API_DOMAIN = endpoints.api_domain
 API_ENDPOINT = endpoints.api_endpoint
 
