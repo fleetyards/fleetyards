@@ -90,7 +90,7 @@ gem "thor"
 gem "aasm"
 gem "after_commit_everywhere"
 
-gem "image_processing", "~> 2.1"
+gem "image_processing", "~> 2.2"
 gem "mini_magick"
 gem "ruby-vips", require: false
 
