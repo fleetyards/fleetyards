@@ -92,6 +92,25 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
       assert_equal 1, TrimAttachmentJob.jobs.size
     end
 
+    # Every inline crop is a round trip to storage before the response, and a
+    # folder of views ran the save into the proxy's timeout.
+    test "a save carrying several signed ids leaves every crop to the job" do
+      @model.update!(top_view: padded_blob.signed_id, side_view: padded_blob.signed_id)
+
+      assert_equal [["Model", @model.id, "side_view"], ["Model", @model.id, "top_view"]],
+        TrimAttachmentJob.jobs.map { |job| job["args"] }.sort
+      refute @model.reload.top_view.blob.metadata["trimmed"]
+    end
+
+    # Only a pending crop counts: a store image alongside the one view is
+    # preprocessed, not trimmed, and costs the request nothing.
+    test "an attachment nobody trims does not push a view out of the request" do
+      @model.update!(top_view: padded_blob.signed_id, store_image: padded_blob.signed_id)
+
+      assert_equal 0, TrimAttachmentJob.jobs.size
+      assert @model.reload.top_view.blob.metadata["trimmed"]
+    end
+
     # A purge is a change like any other, and the record asks every change what
     # it is carrying before anything has decided which attachments are still
     # there. `DeleteOne` carries no attachable at all.
