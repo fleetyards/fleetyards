@@ -153,6 +153,7 @@ const askable = computed(
   () =>
     !!props.tour.fleet &&
     props.tour.status === "open" &&
+    !props.tour.archived &&
     !props.tour.participating &&
     !props.tour.joinRequestPending,
 );

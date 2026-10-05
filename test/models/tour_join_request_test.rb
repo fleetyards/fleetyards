@@ -59,6 +59,24 @@ class TourJoinRequestTest < ActiveSupport::TestCase
     assert_not build(:tour_join_request, tour: @tour, user: @member).valid?
   end
 
+  test "refuses an archived tour" do
+    @tour.archive!
+
+    request = build(:tour_join_request, tour: @tour, user: @member)
+
+    assert_not request.valid?
+    assert_includes request.errors.attribute_names, :tour
+  end
+
+  test "approving answers false once the tour is archived" do
+    request = create(:tour_join_request, tour: @tour, user: @member)
+    @tour.archive!
+
+    assert_not request.approve_by(@organiser)
+    assert_predicate request.reload, :pending?
+    assert_not @ledger.payout_participants.exists?(user_id: @member.id)
+  end
+
   test "refuses somebody already on the tour" do
     create(:payout_participant, payout_ledger: @ledger, user: @member)
 
