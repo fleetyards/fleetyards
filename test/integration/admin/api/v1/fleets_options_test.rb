@@ -77,6 +77,16 @@ class Admin::Api::V1::FleetsOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The feature page grants a flag to a fleet through this picker.
+  test "GET /fleets/options answers an admin who manages features" do
+    fleet = create(:fleet, name: "Ze-ro", fid: "ZERO100")
+    sign_in create(:admin_user, resource_access: [:features])
+
+    assert_api_response :get, 200, params: {q: {"search" => "ze-ro"}} do
+      assert_equal [fleet.fid], parsed_body["items"].pluck("fid")
+    end
+  end
+
   test "GET /fleets/options returns 401 when not signed in" do
     assert_api_response :get, 401
   end

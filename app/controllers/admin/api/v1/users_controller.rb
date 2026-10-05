@@ -34,7 +34,9 @@ module Admin
 
           user_query_params["sorts"] = "username asc"
 
-          @q = authorized_scope(User.all).ransack(user_query_params)
+          # Not authorized_scope: that scope is all-or-nothing on `users`
+          # access, and `options?` already admits the feature admins too.
+          @q = User.all.ransack(user_query_params)
 
           @users = @q.result(distinct: true)
             .page(page_params)

@@ -45,6 +45,16 @@ class Admin::Api::V1::UsersOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The feature page grants a flag to a user through this picker.
+  test "GET /users/options answers an admin who manages features" do
+    user = create(:user)
+    sign_in create(:admin_user, resource_access: [:features])
+
+    assert_api_response :get, 200 do
+      assert_includes parsed_body["items"].pluck("id"), user.id
+    end
+  end
+
   test "GET /users/options returns 401 when not signed in" do
     assert_api_response :get, 401
   end
