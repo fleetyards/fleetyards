@@ -22,9 +22,6 @@ type Props = {
   multiple?: boolean;
   noLabel?: boolean;
   inline?: boolean;
-  // SIDs to mark as already taken, e.g. the fleets a feature is enabled for.
-  markedFids?: string[];
-  markedLabel?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,8 +29,6 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   noLabel: true,
   inline: false,
-  markedFids: () => [],
-  markedLabel: undefined,
 });
 
 const { t } = useI18n();
@@ -60,8 +55,8 @@ watch(
   },
 );
 
-// The option row is a single label, so the SID, roster size and any mark
-// travel in it. Fleet names are not unique; the SID is what tells them apart.
+// The option row is a single label, so the SID and roster size travel in it.
+// Fleet names are not unique; the SID is what tells them apart.
 const formatter = (response: FleetOptions) => {
   return response.items.map((fleet) => {
     const parts = [`${fleet.name} (${fleet.fid})`];
@@ -70,10 +65,6 @@ const formatter = (response: FleetOptions) => {
       parts.push(
         t("labels.features.memberCount", { count: fleet.memberCount }),
       );
-    }
-
-    if (props.markedLabel && props.markedFids.includes(fleet.fid)) {
-      parts.push(props.markedLabel);
     }
 
     return {

@@ -228,7 +228,7 @@
         "noFleets": "Keine Flotte hat diese Funktion einzeln aktiviert.",
         "noMatches": "Nichts passt zum Filter.",
         "memberCount": "%{count} Mitglieder",
-        "alreadyEnabled": "Aktiviert"
+        "alreadyEnabled": "Diese Flotte hat die Funktion bereits."
       },
       "oauthApplication": {
         "name": "Anwendungsname",

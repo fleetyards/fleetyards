@@ -228,7 +228,7 @@
         "noFleets": "No fleet has this feature enabled individually.",
         "noMatches": "Nothing matches the filter.",
         "memberCount": "%{count} members",
-        "alreadyEnabled": "Enabled"
+        "alreadyEnabled": "This fleet already has the feature."
       },
       "oauthApplication": {
         "name": "Application Name",

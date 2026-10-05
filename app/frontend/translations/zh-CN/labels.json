@@ -228,7 +228,7 @@
         "noFleets": "没有舰队单独启用此功能。",
         "noMatches": "没有符合筛选条件的结果。",
         "memberCount": "%{count} 名成员",
-        "alreadyEnabled": "已启用"
+        "alreadyEnabled": "该舰队已启用此功能。"
       },
       "oauthApplication": {
         "name": "应用名称",

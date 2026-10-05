@@ -78,16 +78,4 @@ describe("FleetSelect", () => {
       { label: "1test (1test) · 1 members", value: "1test" },
     ]);
   });
-
-  it("marks the fleets it is told are taken", () => {
-    const select = mountSelect({
-      markedFids: ["Test100"],
-      markedLabel: "Enabled",
-    });
-
-    expect(select.queryResponseFormatter(response)).toEqual([
-      { label: "Test (Test100) · 4 members · Enabled", value: "Test100" },
-      { label: "1test (1test) · 1 members", value: "1test" },
-    ]);
-  });
 });

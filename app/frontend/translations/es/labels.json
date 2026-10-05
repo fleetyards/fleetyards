@@ -228,7 +228,7 @@
         "noFleets": "Ninguna flota tiene esta función habilitada individualmente.",
         "noMatches": "Nada coincide con el filtro.",
         "memberCount": "%{count} miembros",
-        "alreadyEnabled": "Habilitada"
+        "alreadyEnabled": "Esta flota ya tiene la función."
       },
       "oauthApplication": {
         "name": "Nombre de la aplicación",

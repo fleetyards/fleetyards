@@ -228,7 +228,7 @@
         "noFleets": "沒有艦隊個別啟用此功能。",
         "noMatches": "沒有符合篩選條件的結果。",
         "memberCount": "%{count} 名成員",
-        "alreadyEnabled": "已啟用"
+        "alreadyEnabled": "該艦隊已啟用此功能。"
       },
       "oauthApplication": {
         "name": "應用程式名稱",

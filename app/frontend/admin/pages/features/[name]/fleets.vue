@@ -60,13 +60,7 @@ const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
       <PanelBody>
         <section class="feature-section">
           <div class="feature-add-actor">
-            <FleetSelect
-              v-model="selectedFleet"
-              name="feature-fleet"
-              :marked-fids="enabledFids"
-              :marked-label="t('labels.features.alreadyEnabled')"
-              inline
-            />
+            <FleetSelect v-model="selectedFleet" name="feature-fleet" inline />
             <Btn
               :disabled="!selectedFleet || alreadyEnabled"
               :loading="actions.busy.value"
@@ -77,6 +71,14 @@ const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
               {{ t("actions.add") }}
             </Btn>
           </div>
+          <p
+            v-if="alreadyEnabled"
+            class="text-muted"
+            data-test="feature-fleet-already-enabled"
+          >
+            <i class="fa-duotone fa-check" />
+            {{ t("labels.features.alreadyEnabled") }}
+          </p>
         </section>
       </PanelBody>
     </Panel>
