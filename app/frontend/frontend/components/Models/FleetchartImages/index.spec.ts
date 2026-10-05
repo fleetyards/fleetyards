@@ -42,8 +42,9 @@ const FLIGHT_VIEWS: Partial<ModelMedia> = {
   sideView: file("side"),
 };
 
-function model(media: Partial<ModelMedia>): Model {
+function model(media: Partial<ModelMedia>, id = "carrack"): Model {
   return {
+    id,
     media: { ...media },
     metrics: { length: 30, beam: 20, height: 10, fleetchartOffsetLength: 32 },
   } as Model;
@@ -165,16 +166,34 @@ describe("while the next set of images is loading", () => {
     }
   };
 
-  it("holds the loader until every view has reported", async () => {
+  // Nothing is on screen to dim yet, and the grid has no height for the loader
+  // to sit in until the images arrive.
+  it("stays away while the first set loads", async () => {
     const wrapper = await mountViews(FLIGHT_VIEWS);
 
-    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+    expect(wrapper.find(".fleetchart-views--loading").exists()).toBe(false);
+  });
 
-    await load(wrapper.findAll("img")[0]);
-
-    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
-
+  it("holds the loader until every view of the switch has reported", async () => {
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      landedTopView: file("landed-top"),
+      landedSideView: file("landed-side"),
+    });
     await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    const landed = wrapper
+      .findAll("img")
+      .filter((img) => img.attributes("src")?.includes("landed"));
+
+    await load(landed[0]);
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+
+    await load(landed[1]);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });
@@ -232,12 +251,39 @@ describe("while the next set of images is loading", () => {
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
   });
 
-  it("settles a view that fails rather than waiting forever", async () => {
+  it("stays away for another ship's first set, without a remount", async () => {
     const wrapper = await mountViews(FLIGHT_VIEWS);
+    await settleAll(wrapper);
 
-    for (const img of wrapper.findAll("img")) {
-      await img.trigger("error");
-    }
+    await wrapper.setProps({
+      model: model(
+        {
+          angledView: file("other-angled"),
+          topView: file("other-top"),
+          frontView: file("other-front"),
+          sideView: file("other-side"),
+        },
+        "polaris",
+      ),
+    });
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+
+  it("settles a view that fails rather than waiting forever", async () => {
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      landedTopView: file("landed-top"),
+    });
+    await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    const landedTop = wrapper
+      .findAll("img")
+      .find((img) => img.attributes("src")?.includes("landed-top"));
+
+    await landedTop!.trigger("error");
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });

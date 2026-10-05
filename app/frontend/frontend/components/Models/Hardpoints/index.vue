@@ -331,53 +331,60 @@ useMetricsMasonry(metricsGrid);
           </Btn>
         </BtnGroup>
       </div>
-      <div v-if="hardpoints?.length" class="row">
-        <div class="col-12 col-md-6 col-lg-4">
-          <HardpointGroup
-            v-for="group in [
-              HardpointGroupEnum.AVIONIC,
-              HardpointGroupEnum.SYSTEM,
-              HardpointGroupEnum.OTHER,
-              HardpointGroupEnum.EXTERNAL_FUEL_TANK,
-            ]"
-            :key="group"
-            :group="group"
-            :hardpoints="hardpointsForGroup(group)"
-          />
+      <div
+        class="hardpoints__list"
+        :class="{ 'hardpoints__list--loading': isLoading || isFetching }"
+      >
+        <!-- First, so it sits at the top of the slot rather than after the
+             rows a refetch keeps on screen. -->
+        <Loader :loading="isLoading || isFetching" />
+        <div v-if="hardpoints?.length" class="row">
+          <div class="col-12 col-md-6 col-lg-4">
+            <HardpointGroup
+              v-for="group in [
+                HardpointGroupEnum.AVIONIC,
+                HardpointGroupEnum.SYSTEM,
+                HardpointGroupEnum.OTHER,
+                HardpointGroupEnum.EXTERNAL_FUEL_TANK,
+              ]"
+              :key="group"
+              :group="group"
+              :hardpoints="hardpointsForGroup(group)"
+            />
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <HardpointGroup
+              v-for="group in [
+                HardpointGroupEnum.PROPULSION,
+                HardpointGroupEnum.THRUSTER,
+              ]"
+              :key="group"
+              :group="group"
+              :hardpoints="hardpointsForGroup(group)"
+            />
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <HardpointGroup
+              v-for="group in [
+                HardpointGroupEnum.WEAPON,
+                HardpointGroupEnum.DEFENSE,
+                HardpointGroupEnum.AUXILIARY,
+              ]"
+              :key="group"
+              :group="group"
+              :hardpoints="hardpointsForGroup(group)"
+            />
+          </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-4">
-          <HardpointGroup
-            v-for="group in [
-              HardpointGroupEnum.PROPULSION,
-              HardpointGroupEnum.THRUSTER,
-            ]"
-            :key="group"
-            :group="group"
-            :hardpoints="hardpointsForGroup(group)"
-          />
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-          <HardpointGroup
-            v-for="group in [
-              HardpointGroupEnum.WEAPON,
-              HardpointGroupEnum.DEFENSE,
-              HardpointGroupEnum.AUXILIARY,
-            ]"
-            :key="group"
-            :group="group"
-            :hardpoints="hardpointsForGroup(group)"
-          />
+        <div v-else-if="!isLoading && !isFetching" class="row">
+          <div class="col-12">
+            <Empty
+              :name="t('resources.hardpoints')"
+              :variant="EmptyVariantsEnum.BOX"
+            />
+          </div>
         </div>
       </div>
-      <div v-else-if="!isLoading && !isFetching" class="row">
-        <div class="col-12">
-          <Empty
-            :name="t('resources.hardpoints')"
-            :variant="EmptyVariantsEnum.BOX"
-          />
-        </div>
-      </div>
-      <Loader :loading="isLoading || isFetching" fixed />
     </div>
   </div>
 </template>

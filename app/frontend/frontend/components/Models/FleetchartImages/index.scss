@@ -12,11 +12,7 @@
 
 // Dimmed rather than hidden while the next set arrives: the previous state stays
 // readable, and the loader over it says the change was taken.
-// Before the first set arrives the images have no size and the grid collapses
-// to its gap, leaving the loader hanging out of it.
 .fleetchart-views--loading {
-  min-height: 200px;
-
   img {
     opacity: 0.3;
   }

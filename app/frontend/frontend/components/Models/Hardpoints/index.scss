@@ -122,6 +122,16 @@
     align-items: center;
     margin: 4px 0 16px;
   }
+
+  // The loader sits where the groups arrive rather than over the metrics above
+  // them. Before the first answer the slot is empty, so it keeps room for it.
+  &__list {
+    position: relative;
+  }
+
+  &__list--loading {
+    min-height: 160px;
+  }
 }
 
 // Metrics cards are packed rather than assigned to fixed columns: each spans a
