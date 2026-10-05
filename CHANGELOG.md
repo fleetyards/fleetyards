@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.13.0](https://github.com/fleetyards/fleetyards/compare/v8.12.0...v8.13.0) (2026-10-05)
+
+
+### Features
+
+* **frontend:** escort the fleet icon's Idris with two Gladius ([0bdacfb](https://github.com/fleetyards/fleetyards/commit/0bdacfbb13d4aad9a29c83caaf0bc3c046e93dea))
+* **frontend:** replace the starship and fleet icons with Star Citizen ships ([#5418](https://github.com/fleetyards/fleetyards/issues/5418)) ([cc97660](https://github.com/fleetyards/fleetyards/commit/cc976601fb3697def782c5b5eedba61419972d63))
+
+
+### Bug Fixes
+
+* **routing:** keep an editor mounted across its tabs ([#5412](https://github.com/fleetyards/fleetyards/issues/5412)) ([f3b5792](https://github.com/fleetyards/fleetyards/commit/f3b5792d8024ad51f3b635a25d953d759806fc30))
+
+
+### Chores
+
+* **deps-dev:** bump @types/node from 26.6.3 to 26.6.4 ([#5408](https://github.com/fleetyards/fleetyards/issues/5408)) ([7d4be78](https://github.com/fleetyards/fleetyards/commit/7d4be789fba3a53216874ec8639c55d42b88550d))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#5416](https://github.com/fleetyards/fleetyards/issues/5416)) ([34b26bb](https://github.com/fleetyards/fleetyards/commit/34b26bbf89ab72d08a98fff717e6782ceb3d39d1))
+* **deps-dev:** bump globals from 17.12.0 to 17.13.0 ([#5407](https://github.com/fleetyards/fleetyards/issues/5407)) ([6d3b976](https://github.com/fleetyards/fleetyards/commit/6d3b976597809c455061868fa2afa8e78f31b609))
+* **deps-dev:** bump knip from 6.38.0 to 6.39.0 ([#5396](https://github.com/fleetyards/fleetyards/issues/5396)) ([cc1e3bb](https://github.com/fleetyards/fleetyards/commit/cc1e3bbe596f4a5ef5cacdd0bf92fc56093895a6))
+* **deps-dev:** bump listen from 3.10.0 to 3.10.1 ([#5402](https://github.com/fleetyards/fleetyards/issues/5402)) ([0015b02](https://github.com/fleetyards/fleetyards/commit/0015b0246285e4bd32b1ba28dd139c23c06e408c))
+* **deps-dev:** bump mocha from 12.0.2 to 12.0.3 ([#5417](https://github.com/fleetyards/fleetyards/issues/5417)) ([602c811](https://github.com/fleetyards/fleetyards/commit/602c8118f4356931af0e520e0d2d9aa32cd53326))
+* **deps-dev:** bump orval from 8.38.0 to 8.39.0 ([#5406](https://github.com/fleetyards/fleetyards/issues/5406)) ([280605c](https://github.com/fleetyards/fleetyards/commit/280605c887f9c2c34cfd6de996d1e2c0139e0b4b))
+* **deps-dev:** bump sass from 1.105.0 to 1.105.1 ([#5399](https://github.com/fleetyards/fleetyards/issues/5399)) ([914688b](https://github.com/fleetyards/fleetyards/commit/914688b8bee49b1cdbf20df863c450efd99c8572))
+* **deps-dev:** bump simplecov from 1.3.1 to 1.3.2 ([#5395](https://github.com/fleetyards/fleetyards/issues/5395)) ([d265ffd](https://github.com/fleetyards/fleetyards/commit/d265ffdddcc2873b9d036311390b386f03fba5c3))
+* **deps-dev:** bump stylelint from 17.15.0 to 17.16.0 ([#5403](https://github.com/fleetyards/fleetyards/issues/5403)) ([fbe5f6f](https://github.com/fleetyards/fleetyards/commit/fbe5f6f165f71663ad6e6654d51cd6b8a2cbaccf))
+* **deps-dev:** bump vite from 8.3.1 to 8.3.2 ([#5400](https://github.com/fleetyards/fleetyards/issues/5400)) ([6c94b9e](https://github.com/fleetyards/fleetyards/commit/6c94b9ed0a4aced26b10771daa043ae1d1df97d9))
+* **deps-dev:** bump vitest from 5.0.2 to 5.0.3 ([#5410](https://github.com/fleetyards/fleetyards/issues/5410)) ([84e3200](https://github.com/fleetyards/fleetyards/commit/84e32003a3b542efe782d54abd2a84d775efb458))
+* **deps:** bump appsignal from 5.0.0 to 5.0.1 ([#5414](https://github.com/fleetyards/fleetyards/issues/5414)) ([c729438](https://github.com/fleetyards/fleetyards/commit/c7294387ccdcd653a94a58820046154338b9806c))
+* **deps:** bump aws-sdk-s3 from 1.232.3 to 1.233.1 ([#5411](https://github.com/fleetyards/fleetyards/issues/5411)) ([531d9c9](https://github.com/fleetyards/fleetyards/commit/531d9c96647b379d98e40f1c3be52a8b2321c652))
+* **deps:** bump image_processing from 2.1.0 to 2.2.0 ([#5404](https://github.com/fleetyards/fleetyards/issues/5404)) ([342cd5b](https://github.com/fleetyards/fleetyards/commit/342cd5b4f73222a598fe44475724b03d8a835cc1))
+* **deps:** bump lograge from 0.15.0 to 0.15.1 ([#5398](https://github.com/fleetyards/fleetyards/issues/5398)) ([a921029](https://github.com/fleetyards/fleetyards/commit/a921029311b4ea18dd7a76b83d1943086288b17d))
+* **deps:** bump oj from 3.17.6 to 3.17.7 ([#5401](https://github.com/fleetyards/fleetyards/issues/5401)) ([85587e9](https://github.com/fleetyards/fleetyards/commit/85587e96b8141b9ce98e050eb68c6c34f4b11fc6))
+* **deps:** bump pg_query from 6.2.3 to 6.2.5 ([#5409](https://github.com/fleetyards/fleetyards/issues/5409)) ([fbf0a5b](https://github.com/fleetyards/fleetyards/commit/fbf0a5be7431e8686c7688b7ab4ba72e83e85c76))
+* **deps:** bump swagger-ui-dist from 5.33.0 to 5.33.1 ([#5397](https://github.com/fleetyards/fleetyards/issues/5397)) ([e5f9a40](https://github.com/fleetyards/fleetyards/commit/e5f9a40e9b8ff821fe8ea4483f5b1de6d5e5d89c))
+* **deps:** bump the tiptap group across 1 directory with 7 updates ([#5415](https://github.com/fleetyards/fleetyards/issues/5415)) ([d2666d4](https://github.com/fleetyards/fleetyards/commit/d2666d400fb086afdd08c2e01a881222731e1f68))
+* **deps:** group @tiptap/* npm updates in dependabot ([398d60c](https://github.com/fleetyards/fleetyards/commit/398d60ce937bc1823eedbe5c44991a9d6f4b8f1a))
+* ignore output directory ([90c098e](https://github.com/fleetyards/fleetyards/commit/90c098ed02f1cf9ad4ab4c5f87f03ebc1283f834))
+
 ## [8.12.0](https://github.com/fleetyards/fleetyards/compare/v8.11.0...v8.12.0) (2026-10-04)
 
 
