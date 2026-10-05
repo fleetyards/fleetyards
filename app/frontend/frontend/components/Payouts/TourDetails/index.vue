@@ -356,6 +356,7 @@ const shareUrl = computed(() => {
       name="currency"
       class="tour-meta__currency"
       :options="currencyOptions"
+      :nullable="false"
       unsorted
       :searchable="true"
       :label="t('labels.payouts.currency')"

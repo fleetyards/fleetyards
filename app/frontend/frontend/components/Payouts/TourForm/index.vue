@@ -93,6 +93,7 @@ const onSubmit = handleSubmit((values) => {
               v-model="currency"
               name="currency"
               :options="currencyOptions"
+              :nullable="false"
               unsorted
               :searchable="true"
               :label="t('labels.payouts.currency')"
