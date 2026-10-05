@@ -56,6 +56,12 @@ describe("pageKey", () => {
     );
   });
 
+  it("recognises a tab typed in another case", () => {
+    expect(keyOf("/fleets/black-sun/squadrons/new/Appearance/")).toBe(
+      "/fleets/black-sun/squadrons/new",
+    );
+  });
+
   it("keeps editors of different records apart", () => {
     expect(keyOf("/fleets/black-sun/squadrons/new/appearance/")).not.toBe(
       keyOf("/fleets/red-moon/squadrons/new/appearance/"),

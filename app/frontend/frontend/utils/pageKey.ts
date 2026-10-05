@@ -29,7 +29,9 @@ export const pageKey = (
     tab.path.slice(editor.path.length),
   ).replace(/^\//, "");
 
-  return tabSegment && path.endsWith(`/${tabSegment}`)
+  // The router matches paths case-insensitively, so `/Appearance/` is the tab too.
+  return tabSegment &&
+    path.toLowerCase().endsWith(`/${tabSegment.toLowerCase()}`)
     ? path.slice(0, -(tabSegment.length + 1))
     : path;
 };
