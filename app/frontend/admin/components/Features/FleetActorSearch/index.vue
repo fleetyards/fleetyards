@@ -45,6 +45,8 @@ const load = async (nextPage: number) => {
     results.value = [];
     hasMore.value = false;
     searched.value = false;
+    // A search still in flight no longer owns the flag, so it cannot reset it.
+    loading.value = false;
     return;
   }
 
@@ -76,6 +78,10 @@ const onSearch = debounce(() => load(1), 300);
 
 watch(search, () => {
   void onSearch();
+});
+
+onBeforeUnmount(() => {
+  onSearch.cancel();
 });
 
 const enabled = (fleet: FleetOption) => props.enabledIds.includes(fleet.id);

@@ -94,9 +94,7 @@ describe("FeatureFleetActorSearch", () => {
 
     await searchFor(wrapper, "x");
 
-    const [first, second] = wrapper.findAll(
-      '[data-test="fleet-actor-result"]',
-    );
+    const [first, second] = wrapper.findAll('[data-test="fleet-actor-result"]');
     expect(first.find('[data-test="fleet-actor-enabled"]').exists()).toBe(true);
     expect(first.find('[data-test="fleet-actor-add"]').exists()).toBe(false);
 
@@ -122,9 +120,9 @@ describe("FeatureFleetActorSearch", () => {
       q: { search: "x" },
     });
     expect(rows(wrapper)).toEqual(["A", "B"]);
-    expect(
-      wrapper.find('[data-test="fleet-actor-search-more"]').exists(),
-    ).toBe(false);
+    expect(wrapper.find('[data-test="fleet-actor-search-more"]').exists()).toBe(
+      false,
+    );
   });
 
   it("does not let an older search overwrite a newer one", async () => {
@@ -144,6 +142,26 @@ describe("FeatureFleetActorSearch", () => {
     await flushPromises();
 
     expect(rows(wrapper)).toEqual(["NEW"]);
+  });
+
+  it("drops a search in flight when the box is cleared", async () => {
+    let answer: (value: FleetOptions) => void = () => {};
+    fleetOptions.mockReturnValueOnce(
+      new Promise<FleetOptions>((resolve) => {
+        answer = resolve;
+      }),
+    );
+    const wrapper = mountSearch();
+
+    await searchFor(wrapper, "slow");
+    await searchFor(wrapper, "");
+    answer(page([fleet("LATE")], 1, 2));
+    await flushPromises();
+
+    expect(rows(wrapper)).toEqual([]);
+    expect(wrapper.find('[data-test="fleet-actor-search-more"]').exists()).toBe(
+      false,
+    );
   });
 
   it("says so when nothing matches", async () => {
