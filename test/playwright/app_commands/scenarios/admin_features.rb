@@ -15,4 +15,8 @@ end
 Flipper.add(:fleet_logistics) unless Flipper.exist?(:fleet_logistics)
 Flipper.add(:ship_inventories) unless Flipper.exist?(:ship_inventories)
 
+# Something for the fleet picker on a feature's page to find.
+Fleet.find_by(fid: "E2EFEATUREFLEET") ||
+  FactoryBot.create(:fleet, name: "E2E Feature Fleet", fid: "E2EFEATUREFLEET")
+
 Rails.logger.info "E2E: Created admin_features scenario test data"

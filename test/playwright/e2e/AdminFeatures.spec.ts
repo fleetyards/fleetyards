@@ -1,6 +1,17 @@
 import { app, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
+const openFirstFeature = async (page: import("@playwright/test").Page) => {
+  await page.goto("/admin/features/");
+  await page.waitForLoadState("networkidle");
+  await page
+    .getByTestId("list-group-item")
+    .first()
+    .getByTestId("edit-feature")
+    .click();
+  await expect(page.getByTestId("feature-heading")).toBeVisible();
+};
+
 test.describe("Admin Features", () => {
   test.beforeEach(async ({ page }) => {
     await app("clean");
@@ -64,61 +75,57 @@ test.describe("Admin Features", () => {
     await notification.success("updated");
   });
 
-  test("Opens edit mode for a feature", async ({ page }) => {
+  test("Opens a feature's own page from the list", async ({ page }) => {
     await page.goto("/admin/features/");
 
-    // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
     await expect(page.getByTestId("list-group-item").first()).toBeVisible();
 
-    // Click edit button
-    const editBtn = page
+    await page
       .getByTestId("list-group-item")
       .first()
-      .getByTestId("start-edit");
-    await editBtn.click();
+      .getByTestId("edit-feature")
+      .click();
 
-    // Edit form should appear with self-service toggle and group buttons
-    await expect(page.getByTestId("edit-feature")).toBeVisible();
+    await expect(page).toHaveURL(/\/admin\/features\/[^/]+\/$/);
+    await expect(page.getByTestId("feature-heading")).toBeVisible();
+    await expect(page.getByTestId("feature-global")).toBeVisible();
   });
 
   test("Toggles self-service flag", async ({ page, notification }) => {
-    await page.goto("/admin/features/");
+    await openFirstFeature(page);
 
-    // Wait for feature list to load from API
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
-
-    // Open edit mode
-    const editBtn = page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("start-edit");
-    await editBtn.click();
-
-    // Click self-service toggle
     await page.getByTestId("toggle-self-service").click();
 
     await notification.success("updated");
   });
 
   test("Adds a group to a feature", async ({ page, notification }) => {
-    await page.goto("/admin/features/");
+    await openFirstFeature(page);
 
-    // Wait for feature list to load from API
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByTestId("list-group-item").first()).toBeVisible();
-
-    // Open edit mode
-    const editBtn = page
-      .getByTestId("list-group-item")
-      .first()
-      .getByTestId("start-edit");
-    await editBtn.click();
-
-    // Click the "testers" group add button
     await page.getByTestId("add-group-testers").click();
 
     await notification.success("added");
+  });
+
+  test("Adds a fleet through the picker on the fleets tab", async ({
+    page,
+    notification,
+  }) => {
+    await openFirstFeature(page);
+    await page.goto(`${page.url()}fleets/`);
+
+    const picker = page.getByTestId("base-select-feature-fleet");
+    await picker.getByTestId("base-select-title").click();
+    await picker.locator("input").fill("E2EFEATUREFLEET");
+    await picker
+      .getByRole("option", { name: /E2E Feature Fleet \(E2EFEATUREFLEET\)/ })
+      .click();
+    await page.getByTestId("feature-add-fleet").click();
+
+    await notification.success("added");
+    await expect(page.getByTestId("feature-actors-fleets")).toContainText(
+      "E2EFEATUREFLEET",
+    );
   });
 });
