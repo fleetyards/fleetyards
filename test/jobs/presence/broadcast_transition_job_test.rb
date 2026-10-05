@@ -16,13 +16,10 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
 
     UserPresence.reset!
     connect_user
-
-    Flipper.enable(:online_status)
   end
 
   teardown do
     UserPresence.reset!
-    Flipper.disable(:online_status)
   end
 
   def presence_broadcasts_to(user)
@@ -123,42 +120,6 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
     run_job
 
     assert last_payload(AdminPresenceChannel.broadcasting_for(admin_user))["online"]
-  end
-
-  test "the flag gates the roster fan-out but not the admin one" do
-    Flipper.disable(:online_status)
-    admin_user = create(:admin_user)
-
-    assert_no_difference -> { presence_broadcasts_to(@co_member).size } do
-      assert_difference -> { broadcasts(AdminPresenceChannel.broadcasting_for(admin_user)).size }, 1 do
-        run_job
-      end
-    end
-  end
-
-  # Per recipient, not per subject: the REST field and the UI are gated on the
-  # reader, so gating the fan-out on the subject would leave a reader inside the
-  # rollout holding a dot that never updates.
-  test "the flag is read against each recipient" do
-    Flipper.disable(:online_status)
-    Flipper.enable_actor(:online_status, @co_member)
-    outside = create(:user)
-    create(:fleet_membership, fleet: @fleet, user: outside, aasm_state: "accepted")
-
-    assert_difference -> { presence_broadcasts_to(@co_member).size }, 1 do
-      assert_no_difference -> { presence_broadcasts_to(outside).size } do
-        run_job
-      end
-    end
-  end
-
-  test "a subject outside the rollout still reaches a reader inside it" do
-    Flipper.disable(:online_status)
-    Flipper.enable_actor(:online_status, @co_member)
-
-    assert_difference -> { presence_broadcasts_to(@co_member).size }, 1 do
-      run_job
-    end
   end
 
   test "one unreachable recipient does not stop the rest, and the job still fails" do

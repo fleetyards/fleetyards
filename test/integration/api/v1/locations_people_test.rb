@@ -85,7 +85,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
 
   test "GET /locations/{slug}/people lists who is online first, and counts the rest past the limit" do
     UserPresence.reset!
-    Flipper.enable(:online_status)
 
     %w[alpha bravo charlie].each do |username|
       friend = create(:user, username:, current_location: @lorville)
@@ -104,7 +103,6 @@ class Api::V1::LocationsPeopleTest < ActionDispatch::IntegrationTest
     end
   ensure
     UserPresence.reset!
-    Flipper.disable(:online_status)
   end
 
   test "GET /locations/{slug}/people leaves out the reader and anyone not already shown to them" do

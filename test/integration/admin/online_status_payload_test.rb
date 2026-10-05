@@ -14,10 +14,6 @@ class Admin::OnlineStatusPayloadTest < ActionDispatch::IntegrationTest
 
     UserPresence.connect(@user.id, "tab-1")
 
-    # Explicit, because that is half of what this asserts: the admin view reads
-    # the store directly, so the answer must not depend on the rollout either.
-    Flipper.disable(:online_status)
-
     sign_in @admin_user, scope: :admin_user
   end
 
@@ -25,9 +21,7 @@ class Admin::OnlineStatusPayloadTest < ActionDispatch::IntegrationTest
     UserPresence.reset!
   end
 
-  test "an admin sees a connected user as online despite the switch and the flag" do
-    refute Flipper.enabled?(:online_status), "the flag must be off for this to prove anything"
-
+  test "an admin sees a connected user as online despite the switch" do
     get "/admin/api/v1/users", params: {q: {search: @user.username}}, as: :json
 
     assert_equal 200, response.status

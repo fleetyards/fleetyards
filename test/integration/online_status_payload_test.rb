@@ -18,13 +18,11 @@ class OnlineStatusPayloadTest < ActionDispatch::IntegrationTest
 
     UserPresence.connect(@member.id, "tab-1")
 
-    Flipper.enable(:online_status)
     sign_in @reader
   end
 
   teardown do
     UserPresence.reset!
-    Flipper.disable(:online_status)
   end
 
   def roster_row_for(user)
@@ -41,12 +39,6 @@ class OnlineStatusPayloadTest < ActionDispatch::IntegrationTest
 
   test "a roster reads offline for a co-member with no connection" do
     assert_equal false, roster_row_for(@reader)["online"]
-  end
-
-  test "the field is absent entirely with the flag off" do
-    Flipper.disable(:online_status)
-
-    refute roster_row_for(@member).key?("online")
   end
 
   test "a co-member who opted out reads offline" do
