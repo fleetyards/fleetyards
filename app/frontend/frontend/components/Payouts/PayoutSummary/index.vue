@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import type { PayoutLedger } from "@/services/fyApi";
 
 type Props = {
@@ -14,7 +15,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC } = useI18n();
+const { t } = useI18n();
+const { formatAmount } = usePayoutCurrency();
 
 const profit = computed(() => Number(props.ledger.profit ?? 0));
 
@@ -42,7 +44,7 @@ const weighted = computed(
       </span>
       <span
         class="payout-summary__value payout-summary__value--income"
-        v-html="toUEC(Number(ledger.totalIncome ?? 0))"
+        v-html="formatAmount(Number(ledger.totalIncome ?? 0))"
       />
     </div>
     <div class="payout-summary__item">
@@ -51,7 +53,7 @@ const weighted = computed(
       </span>
       <span
         class="payout-summary__value payout-summary__value--expense"
-        v-html="toUEC(Number(ledger.totalExpenses ?? 0))"
+        v-html="formatAmount(Number(ledger.totalExpenses ?? 0))"
       />
     </div>
     <div class="payout-summary__item">
@@ -64,7 +66,7 @@ const weighted = computed(
           'payout-summary__value--income': profit > 0,
           'payout-summary__value--expense': profit < 0,
         }"
-        v-html="toUEC(profit)"
+        v-html="formatAmount(profit)"
       />
     </div>
     <div class="payout-summary__item">

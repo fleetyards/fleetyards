@@ -1023,6 +1023,15 @@
         }
       },
       "payouts": {
+        "participantAddedUser": "已新增 %{name}（已連結 FleetYards 帳戶）",
+        "participantAddedGuest": "已將 %{name} 新增為訪客",
+        "invalidAmount": "請輸入金額，例如 1,500.50",
+        "currencyUpdated": "貨幣已更新",
+        "tourArchived": "行程已封存",
+        "tourUnarchived": "行程已還原",
+        "tourDeleted": "行程已刪除",
+        "deleteTourConfirm": "刪除此行程？此操作無法復原。",
+        "archiveTourConfirm": "封存此行程？它將從清單中移除，但帳目會保留。",
         "entryCreated": "已紀錄",
         "entryUpdated": "已更新",
         "entryDestroyed": "已刪除",

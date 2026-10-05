@@ -8,3 +8,10 @@ export const PRESET_WEIGHTS = [
   { value: 0.5, label: "½" },
   { value: 0.25, label: "¼" },
 ];
+
+// Two places, like the API's validation; the column's own six are rounding.
+export const formatWeight = (weight: number | string, locale: string) =>
+  new Intl.NumberFormat(locale, {
+    useGrouping: false,
+    maximumFractionDigits: 2,
+  }).format(Number(weight));

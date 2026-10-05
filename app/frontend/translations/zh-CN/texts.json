@@ -195,6 +195,10 @@
         "returnedToReview": "修改重定向 URI 或权限范围会使已批准的应用重新进入审核。"
       },
       "payouts": {
+        "accountFound": "%{username} 拥有 FleetYards 账户，将关联到此参与者。",
+        "accountMissing": "没有使用此用户名的 FleetYards 账户。请检查拼写，或在下方按名称将其添加为访客。",
+        "guestHint": "用于没有 FleetYards 账户的人，将显示为访客。",
+        "deleteHint": "此行程尚无其他参与者，因此可以删除。",
         "tourInvite": "%{username} 邀请你加入此行程。",
         "contractReady": "合同已完成。打开分账账本，将报酬支付给承接人。",
         "contractNotReady": "此合同尚未开启分账账本。",

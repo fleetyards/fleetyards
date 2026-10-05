@@ -27,6 +27,7 @@
         "fleetFeatures": "Derzeit gibt es keine Funktionen, die eine Flotte selbst einschalten kann. Schauen Sie später wieder vorbei, da regelmäßig neue Funktionen hinzugefügt werden."
       },
       "payouts": {
+        "archivedTours": "Keine archivierten Touren",
         "entries": "Noch nichts erfasst",
         "participants": "Noch niemand auf dieser Tour",
         "transfers": "Rechne ab, um zu sehen wer wem zahlt",

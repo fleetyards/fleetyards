@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ["v1", tour, tour.created_by, tour.fleet] do
+json.cache! ["v2", tour, tour.created_by, tour.fleet] do
   json.partial!("api/v1/tours/base", tour:)
 end
 

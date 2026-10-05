@@ -16,7 +16,7 @@ module V1
             # What this participant is entitled to relative to the others.
             # A decimal like every other, so it is carried as a string.
             weight: {type: :string},
-            user: ::V1::Schemas::UserRef,
+            user: ::V1::Schemas::UserRefWithAvatar,
             fleet: ::V1::Schemas::FleetRef,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

@@ -30,6 +30,7 @@
         "recentEdits": "No admin has changed anything yet"
       },
       "payouts": {
+        "archivedTours": "No archived tours",
         "entries": "Nothing recorded yet",
         "participants": "Nobody on this tour yet",
         "transfers": "Settle the ledger to see who pays whom",

@@ -15,6 +15,7 @@ class Api::V1::ToursIndexTest < ActionDispatch::IntegrationTest
 
       parameter ::Shared::V1::Parameters::PageParameter
       parameter ::Shared::V1::Parameters::SortingParameter
+      parameter name: :archived, in: :query, schema: {type: :boolean}, required: false
 
       security [
         {SessionCookie: []},
@@ -48,6 +49,35 @@ class Api::V1::ToursIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "GET /tours lists the newest tours first" do
+    older = create(:tour, created_by: @organiser, created_at: 2.days.ago)
+    newer = create(:tour, created_by: @organiser, created_at: 1.hour.ago)
+    sign_in @organiser
+
+    assert_api_response :get, 200 do
+      ids = parsed_body["items"].map { |item| item["id"] }
+      assert_equal [@tour.id, newer.id, older.id], ids
+    end
+  end
+
+  test "GET /tours leaves archived tours out" do
+    @tour.archive!
+    sign_in @organiser
+
+    assert_api_response :get, 200 do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /tours lists only archived tours when asked" do
+    archived = create(:tour, created_by: @organiser, archived_at: Time.current)
+    sign_in @organiser
+
+    assert_api_response :get, 200, params: {archived: true} do
+      assert_equal [archived.id], parsed_body["items"].map { |item| item["id"] }
     end
   end
 

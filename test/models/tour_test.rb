@@ -7,7 +7,9 @@ require "test_helper"
 # Table name: tours
 #
 #  id            :uuid             not null, primary key
+#  archived_at   :datetime
 #  cancelled_at  :datetime
+#  currency      :string           default("auec"), not null
 #  description   :text
 #  invite_token  :string           not null
 #  settled_at    :datetime
@@ -122,5 +124,62 @@ class TourTest < ActiveSupport::TestCase
 
     assert tour.destroy
     assert_not PayoutLedger.exists?(ledger.id)
+  end
+
+  test "is deletable while only its organiser is on it" do
+    tour = create(:tour)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: tour.created_by)
+
+    assert tour.deletable?
+    assert tour.destroy
+  end
+
+  test "refuses to be deleted once someone else is on it" do
+    tour = create(:tour)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: tour.created_by)
+    create(:payout_participant, payout_ledger: ledger)
+
+    assert_not tour.deletable?
+    assert_not tour.destroy
+    assert tour.errors.added?(:base, :has_participants)
+  end
+
+  test "goes with its organiser's account even when others are on it" do
+    tour = create(:tour)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger)
+
+    tour.created_by.destroy!
+
+    assert_not Tour.exists?(tour.id)
+  end
+
+  test "rejects a currency it does not know" do
+    assert_not build(:tour, currency: "doge").valid?
+    assert build(:tour, currency: "eur").valid?
+  end
+
+  test "archiving keeps the tour" do
+    tour = create(:tour)
+
+    tour.archive!
+    assert_includes Tour.archived, tour
+
+    tour.unarchive!
+    assert_includes Tour.not_archived, tour
+  end
+
+  test "keeps its currency once settled" do
+    tour = create(:tour)
+
+    tour.update!(currency: "eur")
+    tour.settle!
+
+    assert_not tour.update(currency: "usd")
+    assert tour.errors.added?(:currency, :fixed_once_settled)
+    assert tour.reload.update(title: "Renamed")
+    assert_equal "eur", tour.currency
   end
 end

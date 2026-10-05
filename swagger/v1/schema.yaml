@@ -8344,6 +8344,11 @@ paths:
       parameters:
       - "$ref": "#/components/parameters/PageParameter"
       - "$ref": "#/components/parameters/SortingParameter"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -16327,6 +16332,11 @@ paths:
       parameters:
       - "$ref": "#/components/parameters/PageParameter"
       - "$ref": "#/components/parameters/SortingParameter"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -16527,8 +16537,51 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Tour"
+        '400':
+          description: others are on it
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/tours/{slug}/archive":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Archive Tour
+      tags:
+      - Tours
+      operationId: archiveTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -16574,6 +16627,45 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '409':
           description: cannot be settled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{slug}/unarchive":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Unarchive Tour
+      tags:
+      - Tours
+      operationId: unarchiveTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -34090,7 +34182,7 @@ components:
         weight:
           type: string
         user:
-          "$ref": "#/components/schemas/UserRef"
+          "$ref": "#/components/schemas/UserRefWithAvatar"
         fleet:
           "$ref": "#/components/schemas/FleetRef"
         createdAt:
@@ -35431,6 +35523,8 @@ components:
           - 'null'
         status:
           "$ref": "#/components/schemas/TourStatusEnum"
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
         startsAt:
           type:
           - string
@@ -35441,6 +35535,15 @@ components:
           - string
           - 'null'
           format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        deletable:
+          type: boolean
         createdBy:
           "$ref": "#/components/schemas/UserRefWithAvatar"
         fleet:
@@ -35474,6 +35577,8 @@ components:
       - title
       - slug
       - status
+      - currency
+      - archived
       - participating
       - joinRequestPending
       additionalProperties: false
@@ -35492,10 +35597,53 @@ components:
           - string
           - 'null'
           format: date-time
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
       required:
       - title
       additionalProperties: false
       title: TourCreateInput
+    TourCurrencyEnum:
+      type: string
+      enum:
+      - auec
+      - usd
+      - eur
+      - gbp
+      - cad
+      - aud
+      - nzd
+      - chf
+      - sek
+      - nok
+      - dkk
+      - pln
+      - czk
+      - jpy
+      - cny
+      - twd
+      - brl
+      - mxn
+      x-enumNames:
+      - AUEC
+      - USD
+      - EUR
+      - GBP
+      - CAD
+      - AUD
+      - NZD
+      - CHF
+      - SEK
+      - NOK
+      - DKK
+      - PLN
+      - CZK
+      - JPY
+      - CNY
+      - TWD
+      - BRL
+      - MXN
+      title: TourCurrencyEnum
     TourJoinRequest:
       type: object
       properties:
@@ -35570,6 +35718,8 @@ components:
           - string
           - 'null'
           format: date-time
+        currency:
+          "$ref": "#/components/schemas/TourCurrencyEnum"
       additionalProperties: false
       title: TourUpdateInput
     ToursList:

@@ -13,8 +13,11 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
+import { parseLocalizedNumber } from "@/shared/utils/parseLocalizedNumber";
 import {
   useCreatePayoutEntry as useCreatePayoutEntryMutation,
   useUpdatePayoutEntry as useUpdatePayoutEntryMutation,
@@ -22,6 +25,7 @@ import {
   type PayoutEntry,
   type PayoutEntryTypeEnum,
   type PayoutParticipant,
+  type TourCurrencyEnum,
 } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
@@ -30,14 +34,17 @@ type Props = {
   participants: PayoutParticipant[];
   entry?: PayoutEntry;
   expensesAllowed?: boolean;
+  currency?: TourCurrencyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   entry: undefined,
   expensesAllowed: true,
+  currency: undefined,
 });
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
+const { currencyLabel } = usePayoutCurrency(() => props.currency);
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -58,17 +65,32 @@ const entryTypeOptions = computed(() => [
   { value: "income", label: t("labels.payouts.income") },
 ]);
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    payoutParticipantId:
-      props.entry?.payoutParticipantId ?? props.participants[0]?.id,
-    entryType: (props.entry?.entryType ??
-      (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
-    amount: props.entry?.amount ?? "",
-    description: props.entry?.description ?? "",
-    notes: props.entry?.notes ?? "",
-  },
+// Shown the way the reader writes numbers, and without grouping, so reading it
+// back can never mistake the API's "1500.000" for a million and a half.
+const toFieldValue = (value?: string | null) =>
+  value
+    ? new Intl.NumberFormat(currentLocale(), {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+      }).format(Number(value))
+    : "";
+
+const initialValues = {
+  payoutParticipantId:
+    props.entry?.payoutParticipantId ?? props.participants[0]?.id,
+  entryType: (props.entry?.entryType ??
+    (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
+  amount: toFieldValue(props.entry?.amount),
+  description: props.entry?.description ?? "",
+  notes: props.entry?.notes ?? "",
+};
+
+const { defineField, handleSubmit, setFieldError, values } = useForm({
+  initialValues,
 });
+
+// Read by AppModal, which asks before a close would throw typed input away.
+defineExpose({ dirty: useFormDirty(values, initialValues) });
 
 const [payoutParticipantId] = defineField("payoutParticipantId");
 const [entryType] = defineField("entryType");
@@ -81,12 +103,19 @@ const updateMutation = useUpdatePayoutEntryMutation();
 const destroyMutation = useDestroyPayoutEntryMutation();
 
 const onSubmit = handleSubmit(async (values) => {
+  const parsedAmount = parseLocalizedNumber(values.amount, currentLocale());
+
+  if (parsedAmount === null) {
+    setFieldError("amount", t("messages.payouts.invalidAmount"));
+    return;
+  }
+
   submitting.value = true;
 
   const data = {
     payoutParticipantId: values.payoutParticipantId as string,
     entryType: values.entryType as PayoutEntryTypeEnum,
-    amount: String(values.amount),
+    amount: parsedAmount,
     description: values.description as string,
     notes: (values.notes as string) || null,
   };
@@ -110,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
           : t("messages.payouts.entryCreated"),
       });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });
@@ -119,6 +148,28 @@ const onSubmit = handleSubmit(async (values) => {
       submitting.value = false;
     });
 });
+
+// The save button lives in the modal footer, outside the form, so the
+// browser's own submit-on-enter never fires. Plain Enter submits from a text
+// field only: in the notes it is a newline, and the selects use it to pick.
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key !== "Enter" || event.isComposing || submitting.value) {
+    return;
+  }
+
+  const withModifier = event.metaKey || event.ctrlKey;
+  const target = event.target as HTMLElement;
+
+  if (
+    !withModifier &&
+    (!(target instanceof HTMLInputElement) || target.closest(".base-select"))
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  void onSubmit();
+};
 
 const onDestroy = async () => {
   if (!props.entry) {
@@ -132,7 +183,7 @@ const onDestroy = async () => {
     .then(() => {
       displaySuccess({ text: t("messages.payouts.entryDestroyed") });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });
@@ -149,7 +200,11 @@ const onDestroy = async () => {
       entry ? t('headlines.payouts.editEntry') : t('headlines.payouts.addEntry')
     "
   >
-    <form id="payout-entry-form" @submit.prevent="onSubmit">
+    <form
+      id="payout-entry-form"
+      @submit.prevent="onSubmit"
+      @keydown="onKeydown"
+    >
       <div class="row">
         <div class="col-12 col-md-6">
           <BaseSelect
@@ -178,9 +233,10 @@ const onDestroy = async () => {
           <FormInput
             v-model="amount"
             name="amount"
-            type="number"
+            inputmode="decimal"
             rules="required"
             v-bind="amountProps"
+            :suffix="currencyLabel"
             :label="t('labels.payouts.amount')"
           />
         </div>

@@ -483,6 +483,9 @@
       "applyGameFileValue": "Apply",
       "applyAllGameFileValues": "Apply all",
       "payouts": {
+        "archiveTour": "Archive",
+        "unarchiveTour": "Restore",
+        "deleteTour": "Delete",
         "openLedger": "Open payout ledger",
         "addEntry": "Record money",
         "addParticipant": "Add participant",

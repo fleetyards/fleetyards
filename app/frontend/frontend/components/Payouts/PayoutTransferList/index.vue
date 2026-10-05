@@ -12,6 +12,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -38,7 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
 });
 
-const { t, toUEC } = useI18n();
+const { t } = useI18n();
+const { formatAmount } = usePayoutCurrency();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
@@ -96,7 +98,7 @@ const onToggle = async (transfer: PayoutTransfer) => {
 
       <span
         class="payout-transfers__amount"
-        v-html="toUEC(Number(transfer.amount ?? 0))"
+        v-html="formatAmount(Number(transfer.amount ?? 0))"
       />
 
       <Btn

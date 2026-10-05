@@ -408,6 +408,12 @@ zh-CN:
           attributes:
             base:
               invalid_holder: "需要且仅需要一个所有者"
+        tour:
+          attributes:
+            currency:
+              fixed_once_settled: "结算后无法更改"
+            base:
+              has_participants: "此行程已有其他参与者或已有记录，只能归档"
         tour_join_request:
           attributes:
             base:

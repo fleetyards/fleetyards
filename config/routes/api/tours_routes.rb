@@ -3,6 +3,8 @@ resources :tours, param: :slug, only: %i[index show create update destroy], cons
     put :settle
     put :reopen
     put :cancel
+    put :archive
+    put :unarchive
     post "rotate-invite", action: :rotate_invite
   end
 

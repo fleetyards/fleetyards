@@ -195,6 +195,10 @@
         "returnedToReview": "修改重新導向 URI 或權限範圍會使已核准的應用程式重新進入審核。"
       },
       "payouts": {
+        "accountFound": "%{username} 擁有 FleetYards 帳戶，將連結到此參與者。",
+        "accountMissing": "沒有使用此使用者名稱的 FleetYards 帳戶。請檢查拼字，或在下方以名稱將其新增為訪客。",
+        "guestHint": "用於沒有 FleetYards 帳戶的人，將顯示為訪客。",
+        "deleteHint": "此行程尚無其他參與者，因此可以刪除。",
         "tourInvite": "%{username} 邀請你加入此行程。",
         "contractReady": "合約已完成。開啟分帳帳本，將報酬支付給承接人。",
         "contractNotReady": "此合約尚未開啟分帳帳本。",

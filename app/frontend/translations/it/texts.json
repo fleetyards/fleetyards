@@ -195,6 +195,10 @@
         "returnedToReview": "Modificare l'URI di reindirizzamento o gli ambiti riporta in revisione un'applicazione approvata."
       },
       "payouts": {
+        "accountFound": "%{username} ha un account FleetYards e verrà collegato a questo partecipante.",
+        "accountMissing": "Nessun account FleetYards ha questo nome utente. Controlla come è scritto oppure aggiungilo qui sotto per nome come ospite.",
+        "guestHint": "Per chi non ha un account FleetYards. Viene elencato come ospite.",
+        "deleteHint": "Nessun altro partecipa ancora a questa spedizione, quindi può essere eliminata.",
         "tourInvite": "%{username} ti invita a unirti a questa spedizione.",
         "contractReady": "Il contratto è completato. Apri il suo registro dei pagamenti per pagare la ricompensa ai contraenti.",
         "contractNotReady": "Per questo contratto non è ancora stato aperto un registro dei pagamenti.",

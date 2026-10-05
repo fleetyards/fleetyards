@@ -110,6 +110,17 @@ class Api::V1::PayoutParticipantsCreateTest < ActionDispatch::IntegrationTest
       body: {username: "nobody-here-at-all"}
   end
 
+  test "POST answers an unknown username in the reader's language" do
+    sign_in @organiser
+
+    assert_api_response :post, 404,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: {username: "nobody-here-at-all"},
+      headers: {"Accept-Language" => "de"} do
+      assert_equal I18n.t("messages.record_not_found.user", locale: :de), parsed_body["message"]
+    end
+  end
+
   test "POST rejects a participant with neither a username nor a name" do
     sign_in @organiser
 
@@ -147,6 +158,17 @@ class Api::V1::PayoutParticipantsCreateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id} do
       assert_equal 2, parsed_body.size
+    end
+  end
+
+  test "GET shows a participant's avatar" do
+    pictured = create(:user, :with_avatar)
+    create(:payout_participant, payout_ledger: @ledger, user: pictured)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id} do
+      row = parsed_body.find { |participant| participant.dig("user", "id") == pictured.id }
+      assert_not_nil row.dig("user", "avatar", "smallUrl")
     end
   end
 

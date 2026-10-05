@@ -12,6 +12,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -61,7 +62,8 @@ const editableEntry = (entry: PayoutEntry) =>
   !!entry.payoutParticipantId &&
   editableParticipantIds.value.has(entry.payoutParticipantId);
 
-const { t, toUEC, l } = useI18n();
+const { t, l } = useI18n();
+const { currency, formatAmount } = usePayoutCurrency();
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -95,7 +97,11 @@ const onDecline = (entry: PayoutEntry) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Payouts/PayoutEntryDeclineModal/index.vue"),
-    props: { payoutLedgerId: props.payoutLedgerId, entry },
+    props: {
+      payoutLedgerId: props.payoutLedgerId,
+      entry,
+      currency: currency.value,
+    },
   });
 };
 
@@ -107,6 +113,7 @@ const onEdit = (entry: PayoutEntry) => {
       payoutLedgerId: props.payoutLedgerId,
       participants: props.participants,
       expensesAllowed: props.expensesAllowed,
+      currency: currency.value,
       entry,
     },
   });
@@ -165,7 +172,7 @@ const onEdit = (entry: PayoutEntry) => {
               entry.reviewStatus !== PayoutEntryReviewStatusEnum.APPROVED,
           },
         ]"
-        v-html="toUEC(Number(entry.amount ?? 0))"
+        v-html="formatAmount(Number(entry.amount ?? 0))"
       />
 
       <template v-if="reviewing(entry)">

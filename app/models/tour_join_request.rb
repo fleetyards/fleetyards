@@ -64,6 +64,8 @@ class TourJoinRequest < ApplicationRecord
     approved = with_lock do
       next false unless pending?
 
+      next false if tour.archived?
+
       ledger = tour.payout_ledger
       next false if ledger.blank?
 
@@ -172,7 +174,7 @@ class TourJoinRequest < ApplicationRecord
   end
 
   private def tour_is_open
-    return if tour.blank? || tour.open?
+    return if tour.blank? || (tour.open? && !tour.archived?)
 
     errors.add(:tour, :not_open)
   end

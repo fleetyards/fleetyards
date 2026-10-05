@@ -27,6 +27,7 @@
         "fleetFeatures": "目前没有舰队可以自行启用的功能。请稍后再查看，我们会定期添加新功能。"
       },
       "payouts": {
+        "archivedTours": "没有已归档的行程",
         "entries": "还没有任何记录",
         "participants": "这个行程还没有参与者",
         "transfers": "结算后即可看到谁付给谁",

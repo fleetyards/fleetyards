@@ -1023,6 +1023,15 @@
         }
       },
       "payouts": {
+        "participantAddedUser": "%{name} ajouté avec son compte FleetYards",
+        "participantAddedGuest": "%{name} ajouté comme invité",
+        "invalidAmount": "Saisissez un montant, par ex. 1 500,50",
+        "currencyUpdated": "Devise mise à jour",
+        "tourArchived": "Expédition archivée",
+        "tourUnarchived": "Expédition restaurée",
+        "tourDeleted": "Expédition supprimée",
+        "deleteTourConfirm": "Supprimer cette expédition ? Cette action est irréversible.",
+        "archiveTourConfirm": "Archiver cette expédition ? Elle quitte la liste mais conserve son registre.",
         "entryCreated": "Écriture enregistrée",
         "entryUpdated": "Écriture mise à jour",
         "entryDestroyed": "Écriture supprimée",

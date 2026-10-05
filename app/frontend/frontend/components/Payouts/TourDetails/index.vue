@@ -6,7 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { useQueryClient } from "@tanstack/vue-query";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -14,11 +16,16 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
+import { usePayoutCurrencyOptions } from "@/frontend/composables/usePayoutCurrency";
 import {
   useCreateTourJoinRequest as useCreateTourJoinRequestMutation,
   useDestroyTourJoinRequest as useDestroyTourJoinRequestMutation,
+  useUpdateTour as useUpdateTourMutation,
+  useArchiveTour as useArchiveTourMutation,
+  useUnarchiveTour as useUnarchiveTourMutation,
+  useDestroyTour as useDestroyTourMutation,
 } from "@/services/fyApi";
-import type { Tour } from "@/services/fyApi";
+import type { Tour, TourCurrencyEnum } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
 type Props = {
@@ -48,12 +55,105 @@ const isOrganiser = computed(
 
 const canManage = computed(() => isOrganiser.value || props.manageable);
 
+const queryClient = useQueryClient();
+
+// Archiving or deleting moves the tour between lists the reader is about to
+// go back to.
+const invalidateTourLists = () =>
+  queryClient.invalidateQueries({
+    predicate: (query) => {
+      const [key] = query.queryKey;
+
+      return typeof key === "string" && key.endsWith("/tours");
+    },
+  });
+
+const currencyOptions = usePayoutCurrencyOptions();
+
+// Once settled, the transfers people pay against are frozen in a currency.
+const currencyEditable = computed(
+  () => canManage.value && props.tour.status === "open" && !props.tour.archived,
+);
+
+const updateTourMutation = useUpdateTourMutation();
+
+const onCurrency = async (currency: TourCurrencyEnum) => {
+  if (currency === props.tour.currency) {
+    return;
+  }
+
+  await updateTourMutation
+    .mutateAsync({ slug: props.tour.slug, data: { currency } })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.currencyUpdated") });
+      emit("reload");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    });
+};
+
+const archiveMutation = useArchiveTourMutation();
+const unarchiveMutation = useUnarchiveTourMutation();
+const destroyMutation = useDestroyTourMutation();
+
+const archiving = ref(false);
+
+const onArchive = async () => {
+  archiving.value = true;
+
+  const mutation = props.tour.archived ? unarchiveMutation : archiveMutation;
+
+  await mutation
+    .mutateAsync({ slug: props.tour.slug })
+    .then(() => {
+      displaySuccess({
+        text: props.tour.archived
+          ? t("messages.payouts.tourUnarchived")
+          : t("messages.payouts.tourArchived"),
+      });
+      void invalidateTourLists();
+      emit("reload");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      archiving.value = false;
+    });
+};
+
+const deleting = ref(false);
+
+const onDelete = async () => {
+  deleting.value = true;
+
+  await destroyMutation
+    .mutateAsync({ slug: props.tour.slug })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.tourDeleted") });
+      void invalidateTourLists();
+      void router.push(
+        props.tour.fleet
+          ? { name: "fleet-tours", params: { slug: props.tour.fleet.slug } }
+          : { name: "tours" },
+      );
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      deleting.value = false;
+    });
+};
+
 // Asking onto the tour only exists on a fleet's: a standalone one is not
 // listed anywhere a stranger could have found it, so its link is the way in.
 const askable = computed(
   () =>
     !!props.tour.fleet &&
     props.tour.status === "open" &&
+    !props.tour.archived &&
     !props.tour.participating &&
     !props.tour.joinRequestPending,
 );
@@ -181,6 +281,51 @@ const shareUrl = computed(() => {
       <span>{{ t("actions.payouts.withdrawJoinRequest") }}</span>
     </Btn>
 
+    <!-- One button, whichever it does: a tour nobody else is on can go, one
+         with other people's money on it is only put away. -->
+    <Btn
+      v-if="canManage && tour.deletable && !tour.archived"
+      :size="BtnSizesEnum.MD"
+      :tone="BtnTonesEnum.DANGER"
+      :loading="deleting"
+      :confirm="t('messages.payouts.deleteTourConfirm')"
+      :aria-label="t('actions.payouts.deleteTour')"
+      :title="t('texts.payouts.deleteHint')"
+      data-test="tour-delete"
+      mobile-icon-only
+      @click="onDelete"
+    >
+      <i class="fa-light fa-trash" />
+      <span>{{ t("actions.payouts.deleteTour") }}</span>
+    </Btn>
+    <Btn
+      v-else-if="canManage"
+      :size="BtnSizesEnum.MD"
+      :loading="archiving"
+      :confirm="
+        tour.archived ? undefined : t('messages.payouts.archiveTourConfirm')
+      "
+      :aria-label="
+        tour.archived
+          ? t('actions.payouts.unarchiveTour')
+          : t('actions.payouts.archiveTour')
+      "
+      data-test="tour-archive"
+      mobile-icon-only
+      @click="onArchive"
+    >
+      <i
+        :class="
+          tour.archived ? 'fa-light fa-box-open' : 'fa-light fa-box-archive'
+        "
+      />
+      <span>{{
+        tour.archived
+          ? t("actions.payouts.unarchiveTour")
+          : t("actions.payouts.archiveTour")
+      }}</span>
+    </Btn>
+
     <ShareBtn
       :url="shareUrl"
       :title="tour.title"
@@ -196,12 +341,30 @@ const shareUrl = computed(() => {
         t(`labels.payouts.${tour.status === "settled" ? "settled" : "open"}`)
       }}
     </Pill>
+    <Pill v-if="tour.archived" data-test="tour-archived">
+      {{ t("labels.payouts.archived") }}
+    </Pill>
     <Pill v-if="tour.joinRequestPending" data-test="tour-join-request-pending">
       {{ t("labels.payouts.joinRequestPending") }}
     </Pill>
     <span v-if="tour.startsAt" class="tour-meta__date">
       {{ l(tour.startsAt, "datetime.formats.dateTime") }}
     </span>
+    <BaseSelect
+      v-if="currencyEditable"
+      :model-value="tour.currency"
+      name="currency"
+      class="tour-meta__currency"
+      :options="currencyOptions"
+      :nullable="false"
+      unsorted
+      :searchable="true"
+      :label="t('labels.payouts.currency')"
+      :no-label="true"
+      inline
+      data-test="tour-currency"
+      @update:model-value="(value) => onCurrency(value as TourCurrencyEnum)"
+    />
   </div>
 
   <p v-if="tour.description" class="tour-description">
@@ -218,15 +381,22 @@ const shareUrl = computed(() => {
     :manageable="canManage"
     :contributable="true"
     :tour-slug="tour.fleet ? tour.slug : undefined"
+    :currency="tour.currency"
   />
 </template>
 
 <style lang="scss" scoped>
 .tour-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+}
+
+.tour-meta__currency {
+  margin-left: auto;
+  min-width: 200px;
 }
 
 .tour-meta__date {

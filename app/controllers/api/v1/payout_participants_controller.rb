@@ -23,7 +23,7 @@ module Api
       def index
         authorize! with: PayoutParticipantPolicy, context: ledger_context
 
-        @payout_participants = @payout_ledger.payout_participants.includes(:user, fleet: {logo_attachment: :blob}).order(:created_at)
+        @payout_participants = @payout_ledger.payout_participants.includes(user: {avatar_attachment: :blob}, fleet: {logo_attachment: :blob}).order(:created_at)
       end
 
       def create
@@ -95,7 +95,7 @@ module Api
         @resolved_user = User.find_by(normalized_username: username.to_s.downcase)
         return if @resolved_user.present?
 
-        render json: {code: "not_found", message: "No user with that username"}, status: :not_found
+        render json: {code: "not_found", message: I18n.t("messages.record_not_found.user")}, status: :not_found
       end
 
       private def set_payout_participant

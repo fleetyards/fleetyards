@@ -1023,6 +1023,15 @@
         }
       },
       "payouts": {
+        "participantAddedUser": "%{name} aggiunto con il suo account FleetYards",
+        "participantAddedGuest": "%{name} aggiunto come ospite",
+        "invalidAmount": "Inserisci un importo, ad es. 1.500,50",
+        "currencyUpdated": "Valuta aggiornata",
+        "tourArchived": "Spedizione archiviata",
+        "tourUnarchived": "Spedizione ripristinata",
+        "tourDeleted": "Spedizione eliminata",
+        "deleteTourConfirm": "Eliminare questa spedizione? L'operazione non può essere annullata.",
+        "archiveTourConfirm": "Archiviare questa spedizione? Esce dall'elenco ma il registro resta.",
         "entryCreated": "Movimento registrato",
         "entryUpdated": "Movimento aggiornato",
         "entryDestroyed": "Movimento rimosso",

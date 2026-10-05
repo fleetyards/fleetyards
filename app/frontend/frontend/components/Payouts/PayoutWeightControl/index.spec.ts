@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it } from "vitest";
 import Component from "./index.vue";
+import { useI18nStore } from "@/shared/stores/i18n";
 
 // A wrapper left mounted keeps its pinia store alive, which makes the next
 // test assert against a second store and pass either way.
@@ -18,6 +19,8 @@ afterEach(() => {
   while (wrappers.length) {
     wrappers.pop()?.unmount();
   }
+
+  useI18nStore().locale = "en";
 });
 
 describe("PayoutWeightControl", () => {
@@ -171,5 +174,29 @@ describe("PayoutWeightControl", () => {
     await wrapper.find("[data-test='payout-weight-0.5']").trigger("click");
 
     expect(wrapper.emitted("update")).toBeUndefined();
+  });
+
+  // A native number field followed the browser's language, not the page's,
+  // so a German page in an English browser threw a typed "1,25" away.
+  it("reads a weight typed the German way", async () => {
+    const wrapper = await mount({ weight: "1.5" });
+    useI18nStore().locale = "de";
+
+    const field = wrapper.find("[data-test='payout-weight-field']");
+    await field.setValue("1,25");
+    await field.trigger("change");
+
+    expect(wrapper.emitted("update")).toEqual([["1.25"]]);
+  });
+
+  it("shows a custom weight the German way", async () => {
+    const wrapper = await mount();
+    useI18nStore().locale = "de";
+    await wrapper.setProps({ weight: "1.5" });
+
+    const field = wrapper.find("[data-test='payout-weight-field']")
+      .element as HTMLInputElement;
+
+    expect(field.value).toBe("1,5");
   });
 });

@@ -27,6 +27,9 @@ type Props = {
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
+  // The keyboard a touch device offers. "decimal" is how a text field takes a
+  // number it parses itself, where a native number field would not.
+  inputmode?: "text" | "decimal" | "numeric" | "tel" | "email" | "url";
   hideLabelOnEmpty?: boolean;
   label?: string;
   min?: number;
@@ -60,6 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
+  inputmode: undefined,
   hideLabelOnEmpty: false,
   label: undefined,
   min: undefined,
@@ -328,6 +332,7 @@ defineExpose({
         :aria-label="innerLabel"
         :autofocus="autofocus"
         :autocomplete="autocomplete"
+        :inputmode="inputmode"
         :disabled="disabled"
         :name="name"
         :min="min"

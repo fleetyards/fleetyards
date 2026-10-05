@@ -3598,6 +3598,9 @@
         "cargogrid": "货运格栅"
       },
       "payouts": {
+        "currency": "货币",
+        "archived": "已归档",
+        "activeTours": "当前",
         "amount": "金额",
         "description": "说明",
         "entryType": "类型",

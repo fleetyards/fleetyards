@@ -408,6 +408,12 @@ de:
           attributes:
             base:
               invalid_holder: "braucht genau einen Besitzer"
+        tour:
+          attributes:
+            currency:
+              fixed_once_settled: "kann nach der Abrechnung nicht mehr geändert werden"
+            base:
+              has_participants: "Auf dieser Tour sind weitere Teilnehmer oder es wurde etwas erfasst, daher kann sie nur archiviert werden"
         tour_join_request:
           attributes:
             base:

@@ -11,30 +11,40 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useDeclinePayoutEntry as useDeclinePayoutEntryMutation,
   type PayoutEntry,
+  type TourCurrencyEnum,
 } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
 type Props = {
   payoutLedgerId: string;
   entry: PayoutEntry;
+  currency?: TourCurrencyEnum;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { currency: undefined });
 
-const { t, toUEC } = useI18n();
+const { t } = useI18n();
+const { formatAmount } = usePayoutCurrency(() => props.currency);
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: { reason: "" },
+const initialValues = { reason: "" };
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+// Read by AppModal, which asks before a close would throw typed input away.
+defineExpose({ dirty: useFormDirty(values, initialValues) });
 
 const [reason, reasonProps] = defineField("reason");
 
@@ -52,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
     .then(() => {
       displaySuccess({ text: t("messages.payouts.expenseDeclined") });
       comlink.emit("payout-ledger-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error: ApiError) => {
       displayAlert({ text: error.response?.data?.message });
@@ -69,7 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
       <p class="payout-entry-decline__summary">
         {{ entry.description }} · {{ entry.participant?.displayName }} ·
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="toUEC(Number(entry.amount ?? 0))" />
+        <span v-html="formatAmount(Number(entry.amount ?? 0))" />
       </p>
       <FormTextarea
         v-model="reason"

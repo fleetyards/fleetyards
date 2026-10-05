@@ -5,7 +5,9 @@
 # Table name: tours
 #
 #  id            :uuid             not null, primary key
+#  archived_at   :datetime
 #  cancelled_at  :datetime
+#  currency      :string           default("auec"), not null
 #  description   :text
 #  invite_token  :string           not null
 #  settled_at    :datetime

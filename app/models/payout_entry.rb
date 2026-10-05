@@ -69,7 +69,7 @@ class PayoutEntry < ApplicationRecord
   # look at, or a participant has one that will not be paid back.
   after_commit :notify_review_change, on: %i[create update], if: :saved_change_to_review_status?
 
-  DEFAULT_SORTING_PARAMS = ["createdAt desc"]
+  DEFAULT_SORTING_PARAMS = ["created_at desc"]
   ALLOWED_SORTING_PARAMS = [
     "amount asc", "amount desc",
     "entryType asc", "entryType desc",

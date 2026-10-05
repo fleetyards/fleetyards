@@ -54,7 +54,7 @@ module Payouts
     def initialize(ledger, rule: self.class.rule_for(ledger))
       @ledger = ledger
       @rule = rule
-      @participants = ledger.payout_participants.includes(:user, fleet: {logo_attachment: :blob}).order(:created_at, :id).to_a
+      @participants = ledger.payout_participants.includes({user: {avatar_attachment: :blob}}, fleet: {logo_attachment: :blob}).order(:created_at, :id).to_a
       # A pending or declined expense is a claim nobody has agreed to yet, so
       # it moves no balance.
       @entries = ledger.payout_entries.review_approved.to_a

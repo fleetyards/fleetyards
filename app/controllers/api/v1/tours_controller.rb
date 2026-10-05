@@ -13,12 +13,12 @@ module Api
         only: %i[index show find_by_invite]
       before_action -> { doorkeeper_authorize! "user:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy settle reopen cancel rotate_invite join]
+        only: %i[create update destroy settle reopen cancel archive unarchive rotate_invite join]
 
       before_action :set_viewer
       before_action :set_fleet
       before_action :check_tour_payouts_feature
-      before_action :set_tour, only: %i[show update destroy settle reopen cancel rotate_invite]
+      before_action :set_tour, only: %i[show update destroy settle reopen cancel archive unarchive rotate_invite]
       before_action -> { require_fleet_subscription(:tours) }
 
       def index
@@ -28,7 +28,9 @@ module Api
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(Tour, query_params["sorts"])
 
-        @q = index_scope.includes(created_by: {avatar_attachment: :blob}, fleet: {logo_attachment: :blob}).ransack(query_params)
+        scope = (params[:archived] == "true") ? index_scope.archived : index_scope.not_archived
+
+        @q = scope.includes(created_by: {avatar_attachment: :blob}, fleet: {logo_attachment: :blob}).ransack(query_params)
 
         @tours = result_with_pagination(@q.result(distinct: true), per_page(Tour))
       end
@@ -141,6 +143,22 @@ module Api
         render :show
       end
 
+      # A tour with other people on it is never deleted -- see Tour#deletable? --
+      # so this is how it leaves the list.
+      def archive
+        authorize! @tour, to: :archive?
+
+        @tour.archive!
+        render :show
+      end
+
+      def unarchive
+        authorize! @tour, to: :unarchive?
+
+        @tour.unarchive!
+        render :show
+      end
+
       def rotate_invite
         authorize! @tour, to: :rotate_invite?
 
@@ -187,7 +205,7 @@ module Api
       # The invite page names and pictures whoever is inviting, so the organiser
       # and their avatar come along with the lookup.
       private def invite_scope
-        Tour.active.includes(created_by: {avatar_attachment: :blob})
+        Tour.active.not_archived.includes(created_by: {avatar_attachment: :blob})
       end
 
       # The invite token is only rendered for whoever may hand it out, and a

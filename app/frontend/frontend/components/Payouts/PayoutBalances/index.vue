@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { formatWeight } from "@/frontend/components/Payouts/PayoutWeightControl/types";
+import { usePayoutCurrency } from "@/frontend/composables/usePayoutCurrency";
 import type { PayoutBalance } from "@/services/fyApi";
 
 type Props = {
@@ -23,7 +25,8 @@ const skeletonVisible = computed(() => props.loading && !props.balances.length);
 // smallest number that still reads as a list rather than as one stray row.
 const SKELETON_ROWS = 3;
 
-const { t, toUEC } = useI18n();
+const { t, currentLocale } = useI18n();
+const { formatAmount } = usePayoutCurrency();
 
 // A positive net means they are holding more than their share and owe the
 // difference; negative means they are owed. Zero is settled up.
@@ -100,19 +103,19 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
         :class="{ 'payout-balances__weight--adjusted': row.adjusted }"
         :data-label="t('labels.payouts.weight')"
       >
-        {{ row.balance.participant.weight }}
+        {{ formatWeight(row.weight, currentLocale()) }}
       </span>
       <span
         :data-label="t('labels.payouts.paid')"
-        v-html="toUEC(Number(row.balance.paid ?? 0))"
+        v-html="formatAmount(Number(row.balance.paid ?? 0))"
       />
       <span
         :data-label="t('labels.payouts.held')"
-        v-html="toUEC(Number(row.balance.held ?? 0))"
+        v-html="formatAmount(Number(row.balance.held ?? 0))"
       />
       <span
         :data-label="t('labels.payouts.share')"
-        v-html="toUEC(Number(row.balance.share ?? 0))"
+        v-html="formatAmount(Number(row.balance.share ?? 0))"
       />
       <!-- The sign carries owe-vs-owed on its own; the colour only
            reinforces it, so the column still reads in print or to someone who
@@ -125,7 +128,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
         }"
         :data-label="t('labels.payouts.net')"
       >
-        <!-- toUEC renders 0 as "-", which reads as a figure nobody worked out
+        <!-- formatAmount renders 0 as "-", which reads as a figure nobody worked out
              rather than as the one good outcome. -->
         <template v-if="!row.owes && !row.owed">
           {{ t("labels.payouts.even") }}
@@ -133,7 +136,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
         <template v-else>
           <template v-if="row.owes">−</template>
           <template v-else>+</template>
-          <span v-html="toUEC(Math.abs(row.net))" />
+          <span v-html="formatAmount(Math.abs(row.net))" />
         </template>
       </span>
     </div>

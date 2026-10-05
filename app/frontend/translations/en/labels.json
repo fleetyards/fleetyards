@@ -3612,6 +3612,9 @@
         "cargogrid": "Cargo grid"
       },
       "payouts": {
+        "currency": "Currency",
+        "archived": "Archived",
+        "activeTours": "Current",
         "amount": "Amount",
         "description": "Description",
         "entryType": "Type",

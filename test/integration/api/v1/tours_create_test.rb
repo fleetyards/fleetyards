@@ -62,6 +62,28 @@ class Api::V1::ToursCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /tours keeps the currency it is counted in" do
+    sign_in @user
+
+    assert_api_response :post, 201, body: {title: "Euro split", currency: "eur"} do
+      assert_equal "eur", parsed_body["currency"]
+    end
+  end
+
+  test "POST /tours defaults to aUEC" do
+    sign_in @user
+
+    assert_api_response :post, 201, body: {title: "Jumptown Run"} do
+      assert_equal "auec", parsed_body["currency"]
+    end
+  end
+
+  test "POST /tours rejects an unknown currency" do
+    sign_in @user
+
+    assert_api_response :post, 400, body: {title: "Jumptown Run", currency: "doge"}
+  end
+
   test "POST /tours rejects a tour with no title" do
     sign_in @user
 
