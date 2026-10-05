@@ -228,6 +228,19 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Inserted out of order on purpose: with no ORDER BY, the database hands rows
+  # back in whatever order it likes, and insertion order would hide that.
+  test "GET lists the newest entries first" do
+    middle = create(:payout_entry, payout_ledger: @ledger, payout_participant: @member_participant, created_at: 2.days.ago)
+    newest = create(:payout_entry, payout_ledger: @ledger, payout_participant: @member_participant, created_at: 1.day.ago)
+    oldest = create(:payout_entry, payout_ledger: @ledger, payout_participant: @member_participant, created_at: 3.days.ago)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id} do
+      assert_equal [newest.id, middle.id, oldest.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   # What the ledger asks for to put every waiting expense in front of a
   # manager, however far down the paginated list it would otherwise sit.
   test "GET filters to the expenses waiting for review" do

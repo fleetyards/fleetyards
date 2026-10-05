@@ -57,7 +57,7 @@ class Tour < ApplicationRecord
   scope :active, -> { where(cancelled_at: nil) }
   scope :standalone, -> { where(fleet_id: nil) }
 
-  DEFAULT_SORTING_PARAMS = ["createdAt desc"]
+  DEFAULT_SORTING_PARAMS = ["created_at desc"]
   ALLOWED_SORTING_PARAMS = [
     "title asc", "title desc",
     "startsAt asc", "startsAt desc",

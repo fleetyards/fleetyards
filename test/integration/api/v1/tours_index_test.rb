@@ -51,6 +51,17 @@ class Api::V1::ToursIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /tours lists the newest tours first" do
+    older = create(:tour, created_by: @organiser, created_at: 2.days.ago)
+    newer = create(:tour, created_by: @organiser, created_at: 1.hour.ago)
+    sign_in @organiser
+
+    assert_api_response :get, 200 do
+      ids = parsed_body["items"].map { |item| item["id"] }
+      assert_equal [@tour.id, newer.id, older.id], ids
+    end
+  end
+
   test "GET /tours lists the tours a user is a participant of" do
     sign_in @participant
 
