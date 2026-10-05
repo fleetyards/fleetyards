@@ -592,10 +592,16 @@ const onKeydown = async (event: KeyboardEvent) => {
 
 // A pointer click outside already closes the group; this is the same rule for
 // focus, so tabbing out of an open group does not leave the popover hanging.
+//
+// Only focus that lands somewhere else counts. A `null` target means focus went
+// nowhere: the fetch-more button disabling itself while it loads, or being
+// removed on the last page, or Safari not focusing a clicked button at all. All
+// three are a click inside, and reading them as leaving closed the list instead
+// of growing it.
 const onFocusout = (event: FocusEvent) => {
   const next = event.relatedTarget as Node | null;
 
-  if (next && baseSelect.value?.contains(next)) {
+  if (!next || baseSelect.value?.contains(next)) {
     return;
   }
 
@@ -913,6 +919,14 @@ const fetchMissingOption = async () => {
 const fetchMore = async () => {
   page.value += 1;
   missing.value = undefined;
+
+  // The button disables itself while the page loads, which drops its focus on
+  // the body, out of reach of the group's own keys. Hand it on first.
+  if (props.searchable) {
+    await focusSearch();
+  } else {
+    trigger.value?.focus({ preventScroll: true });
+  }
 
   await refetch();
 };

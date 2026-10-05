@@ -322,6 +322,61 @@ describe("BaseSelect", () => {
 
       expect(wrapper.find(".base-select-fetch-more").exists()).toBe(false);
     });
+
+    // The button disables itself while the next page loads, and a disabled
+    // focused button drops focus with no target. That is not leaving the group.
+    it("stays open while fetching more drops focus from the button", async () => {
+      const queryFn = vi.fn().mockResolvedValue({
+        data: [],
+        meta: { pagination: { currentPage: 1, totalPages: 3 } },
+      });
+
+      const wrapper = await mount({
+        options: undefined,
+        queryFn,
+        queryResponseFormatter: (r: { data: unknown[] }) => r.data,
+        paginated: true,
+      });
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await flushPromises();
+
+      const fetchMore = wrapper.find(".base-select-fetch-more");
+      await fetchMore.trigger("click");
+      // Dispatched by hand: `trigger` refuses a disabled element, which is the
+      // state the button is in by the time the browser drops its focus.
+      fetchMore.element.dispatchEvent(
+        new FocusEvent("focusout", { bubbles: true, relatedTarget: null }),
+      );
+      await flushPromises();
+
+      expect(queryFn.mock.calls.at(-1)?.[0]).toMatchObject({ page: 2 });
+      expect(
+        wrapper
+          .find('[data-test="base-select-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("true");
+    });
+
+    it("closes when focus moves to something outside", async () => {
+      const outside = document.createElement("button");
+      document.body.appendChild(outside);
+
+      const wrapper = await mount();
+
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await wrapper
+        .find('[data-test="base-select-title"]')
+        .trigger("focusout", { relatedTarget: outside });
+
+      expect(
+        wrapper
+          .find('[data-test="base-select-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("false");
+
+      outside.remove();
+    });
   });
   describe("combobox semantics", () => {
     it("makes the trigger a button that announces itself as a combobox", async () => {
