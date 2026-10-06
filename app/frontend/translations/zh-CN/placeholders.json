@@ -266,6 +266,10 @@
         "fleets": {
           "name": "名称",
           "fid": "FID",
+          "memberCountGteq": "最少成员数",
+          "memberCountLteq": "最多成员数",
+          "createdOnGteq": "2026-01-01",
+          "createdOnLteq": "2026-12-31",
           "members": {
             "search": "用户名或昵称"
           }

@@ -2266,6 +2266,13 @@
         "fleets": {
           "name": "名稱",
           "fid": "FID",
+          "memberCountGteq": "最少成員數",
+          "memberCountLteq": "最多成員數",
+          "rsiVerified": "已通過 RSI 驗證",
+          "publicFleet": "公開",
+          "recruiting": "招募中",
+          "createdOnGteq": "建立日期從",
+          "createdOnLteq": "建立日期至",
           "member": "成員",
           "members": {
             "search": "使用者名稱或暱稱",

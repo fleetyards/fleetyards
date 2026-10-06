@@ -266,6 +266,10 @@
         "fleets": {
           "name": "Name",
           "fid": "FID",
+          "memberCountGteq": "Minimum members",
+          "memberCountLteq": "Maximum members",
+          "createdOnGteq": "2026-01-01",
+          "createdOnLteq": "2026-12-31",
           "members": {
             "search": "Username or nickname"
           }

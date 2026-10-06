@@ -9,8 +9,8 @@ module Admin
 
           schema({
             type: :string,
-            enum: ::Fleet::ALLOWED_SORTING_PARAMS,
-            "x-enumNames": ::Fleet::ALLOWED_SORTING_PARAMS.map { |v| transform_enum_key(v) }
+            enum: ::Fleet::ADMIN_SORTING_PARAMS,
+            "x-enumNames": ::Fleet::ADMIN_SORTING_PARAMS.map { |v| transform_enum_key(v) }
           })
         end
       end

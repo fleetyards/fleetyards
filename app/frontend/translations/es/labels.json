@@ -2266,6 +2266,13 @@
         "fleets": {
           "name": "Nombre",
           "fid": "FID",
+          "memberCountGteq": "Mínimo de miembros",
+          "memberCountLteq": "Máximo de miembros",
+          "rsiVerified": "Verificada en RSI",
+          "publicFleet": "Pública",
+          "recruiting": "Reclutando",
+          "createdOnGteq": "Creada desde",
+          "createdOnLteq": "Creada hasta",
           "member": "Miembro",
           "members": {
             "search": "Nombre de usuario o apodo",

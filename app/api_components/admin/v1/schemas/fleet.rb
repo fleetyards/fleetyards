@@ -29,6 +29,7 @@ module Admin
             headquartersLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
+            memberCount: {type: :integer, description: "Accepted members. Only the fleets list sends it"},
             logo: ::Shared::V1::Schemas::MediaFile,
             backgroundImage: ::Shared::V1::Schemas::MediaFile,
             fleetRoles: {
