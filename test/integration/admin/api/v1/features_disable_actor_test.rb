@@ -49,6 +49,22 @@ class Admin::Api::V1::FeaturesDisableActorTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: "TestFeature"}, body: {actor_type: "User", actor_id: @target_user.id}
   end
 
+  test "PUT /features/:id/disable-actor removes an actor whose record is gone" do
+    sign_in @user
+    orphan_id = SecureRandom.uuid
+    Flipper.feature("TestFeature").enable_actor(Flipper::Actor.new("User;#{orphan_id}"))
+
+    assert_api_response :put, 200, path_params: {id: "TestFeature"}, body: {actor_type: "User", actor_id: orphan_id}
+
+    assert_equal Set[@target_user.flipper_id], Flipper.feature("TestFeature").actors_value
+  end
+
+  test "PUT /features/:id/disable-actor returns 404 for an actor the flag does not hold" do
+    sign_in @user
+
+    assert_api_response :put, 404, path_params: {id: "TestFeature"}, body: {actor_type: "User", actor_id: SecureRandom.uuid}
+  end
+
   test "PUT /features/:id/disable-actor returns 404 for unknown feature" do
     sign_in @user
 

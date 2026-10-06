@@ -144,6 +144,7 @@ class User < ApplicationRecord
   include ActiveStorageVariants
   include InventoryTransferParty
   include LinkedLocations
+  include FeatureFlagActor
 
   links_location :current_system, foreign_key: :current_location_id, as: :current_location
   include Rails.application.routes.url_helpers
