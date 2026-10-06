@@ -61,12 +61,14 @@ const remove = (actor: FeatureActor) => actions.removeActor("Fleet", actor.id);
       <PanelBody>
         <section class="feature-section" data-test="feature-self-service">
           <p class="text-muted">{{ t("labels.features.selfServiceHint") }}</p>
-          <Toggle
-            :active="feature.selfServiceFleet"
-            :label="t('labels.features.selfServiceFleet')"
-            data-test="toggle-fleet-self-service"
-            @toggle="actions.toggleFleetSelfService()"
-          />
+          <div class="feature-toggles">
+            <Toggle
+              :active="feature.selfServiceFleet"
+              :label="t('labels.features.selfServiceFleet')"
+              data-test="toggle-fleet-self-service"
+              @toggle="actions.toggleFleetSelfService()"
+            />
+          </div>
         </section>
       </PanelBody>
     </Panel>

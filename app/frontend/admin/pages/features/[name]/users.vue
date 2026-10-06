@@ -52,12 +52,14 @@ const remove = (actor: FeatureActor) => actions.removeActor("User", actor.id);
       <PanelBody>
         <section class="feature-section" data-test="feature-self-service">
           <p class="text-muted">{{ t("labels.features.selfServiceHint") }}</p>
-          <Toggle
-            :active="feature.selfServiceUser"
-            :label="t('labels.features.selfServiceUser')"
-            data-test="toggle-self-service"
-            @toggle="actions.toggleUserSelfService()"
-          />
+          <div class="feature-toggles">
+            <Toggle
+              :active="feature.selfServiceUser"
+              :label="t('labels.features.selfServiceUser')"
+              data-test="toggle-self-service"
+              @toggle="actions.toggleUserSelfService()"
+            />
+          </div>
         </section>
       </PanelBody>
     </Panel>
