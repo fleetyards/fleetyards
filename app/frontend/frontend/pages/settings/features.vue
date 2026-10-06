@@ -81,6 +81,13 @@ const grantPill = (feature: FeatureItem) => {
   return t("labels.features.managedFeatureShort");
 };
 
+const toggleLabel = (feature: FeatureItem) => {
+  if (readOnly(feature)) return grantTooltip(feature);
+  if (isFleetFeature(feature)) return t("labels.features.toggleForSelf");
+
+  return t("labels.features.toggle");
+};
+
 const toggleFeature = async (feature: FeatureItem) => {
   if (readOnly(feature)) return;
 
@@ -179,13 +186,8 @@ const toggleFeature = async (feature: FeatureItem) => {
 
     <template #actions="{ item }">
       <Btn
-        v-tooltip="
-          readOnly(item)
-            ? grantTooltip(item)
-            : isFleetFeature(item)
-              ? t('labels.features.toggleForSelf')
-              : t('labels.features.toggle')
-        "
+        v-tooltip="toggleLabel(item)"
+        :aria-label="toggleLabel(item)"
         :disabled="readOnly(item)"
         @click="toggleFeature(item)"
         :variant="BtnVariantsEnum.GHOST"
