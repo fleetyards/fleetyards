@@ -38,6 +38,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
     assert_equal "en", @fleet.language
     assert @fleet.recruiting
     assert @fleet.roleplay
+    assert_equal 24578, @fleet.rsi_member_count
     assert_not_nil @fleet.rsi_synced_at
   end
 
@@ -49,7 +50,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
   end
 
   test "a source that cannot be read leaves its columns as they were" do
-    @fleet.update_columns(language: "de", recruiting: false, primary_activity: "piracy") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(language: "de", recruiting: false, primary_activity: "piracy", rsi_member_count: 12) # rubocop:disable Rails/SkipsModelValidations
     stub_page
     stub_search(status: 500)
 
@@ -59,6 +60,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
     assert_equal "social", @fleet.primary_activity
     assert_equal "de", @fleet.language
     assert_not @fleet.recruiting
+    assert_equal 12, @fleet.rsi_member_count
   end
 
   test "neither source answering fails and keeps every column" do

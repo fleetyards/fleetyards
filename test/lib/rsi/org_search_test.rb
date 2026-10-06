@@ -21,6 +21,7 @@ module Rsi
       assert result.recruiting
       assert result.roleplay
       assert_equal "casual", result.commitment
+      assert_equal 24578, result.member_count
     end
 
     def empty_page
@@ -63,6 +64,12 @@ module Rsi
 
       assert_nil result.language
       assert result.recruiting
+    end
+
+    test "a member count that is not a number is left blank" do
+      stub_request(:post, URL).to_return(status: 200, body: search_body.gsub(">24578<", ">many<"))
+
+      assert_nil OrgSearch.fetch("TEST").member_count
     end
 
     test "a response that is not the search's JSON fails" do

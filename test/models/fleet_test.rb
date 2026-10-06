@@ -30,6 +30,7 @@
 #  public_fleet_stats          :boolean          default(FALSE)
 #  recruiting                  :boolean
 #  roleplay                    :boolean
+#  rsi_member_count            :integer
 #  rsi_sid                     :string
 #  rsi_sync_attempted_at       :datetime
 #  rsi_synced_at               :datetime
