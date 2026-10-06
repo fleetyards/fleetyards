@@ -56,6 +56,29 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug} lists the hangars and pads a pilot can land in" do
+    facilities = {
+      "hangars" => [{"size" => "large", "door" => "front", "count" => 6, "length" => 128.0, "beam" => 72.0, "height" => 48.0}],
+      "landing_pads" => [{"size" => "medium", "count" => 2, "atc_assigned" => false, "length" => 88.0, "beam" => 58.0, "height" => 32.0}],
+      "vehicle_pads" => [],
+      "docking_tubes" => 4
+    }
+    @levski.update!(facilities:)
+    @levski.builds.update_all(facilities:)
+
+    assert_api_response :get, 200, params: {slug: "levski"} do
+      assert_equal [["large", "front", 6]], parsed_body.dig("facilities", "hangars").map { |hangar| hangar.values_at("size", "door", "count") }
+      assert_equal [false], parsed_body.dig("facilities", "landingPads").pluck("atcAssigned")
+      assert_equal 4, parsed_body.dig("facilities", "dockingTubes")
+    end
+  end
+
+  test "GET /locations/{slug} leaves facilities empty where the game counts none" do
+    assert_api_response :get, 200, params: {slug: "delamar"} do
+      assert_nil parsed_body["facilities"]
+    end
+  end
+
   test "GET /locations/{slug} leaves the map parent empty where it is the parent" do
     assert_api_response :get, 200, params: {slug: "delamar"} do
       assert_nil parsed_body["mapParent"]

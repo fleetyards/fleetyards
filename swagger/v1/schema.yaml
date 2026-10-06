@@ -30107,6 +30107,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LocationResourceGroup"
+        facilities:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationFacilities"
+          - type: 'null'
         ancestors:
           type: array
           items:
@@ -30192,6 +30196,79 @@ components:
       - count
       - entries
       title: LocationContentsGroup
+    LocationFacilities:
+      type: object
+      properties:
+        hangars:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationHangar"
+        landingPads:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationPad"
+        vehiclePads:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationPad"
+        dockingTubes:
+          type: integer
+      additionalProperties: false
+      required:
+      - hangars
+      - landingPads
+      - vehiclePads
+      - dockingTubes
+      title: LocationFacilities
+    LocationFacilitySizeEnum:
+      type: string
+      enum:
+      - extra_extra_small
+      - extra_small
+      - small
+      - medium
+      - large
+      - extra_large
+      x-enumNames:
+      - EXTRA_EXTRA_SMALL
+      - EXTRA_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - EXTRA_LARGE
+      title: LocationFacilitySizeEnum
+    LocationHangar:
+      type: object
+      properties:
+        size:
+          "$ref": "#/components/schemas/LocationFacilitySizeEnum"
+        door:
+          type:
+          - string
+          - 'null'
+        count:
+          type: integer
+        length:
+          type:
+          - number
+          - 'null'
+        beam:
+          type:
+          - number
+          - 'null'
+        height:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - size
+      - door
+      - count
+      - length
+      - beam
+      - height
+      title: LocationHangar
     LocationJumpPoint:
       type: object
       properties:
@@ -30242,6 +30319,7 @@ components:
       - planet
       - moon
       - city
+      - spaceport
       - station
       - outpost
       - clinic
@@ -30258,6 +30336,7 @@ components:
       - PLANET
       - MOON
       - CITY
+      - SPACEPORT
       - STATION
       - OUTPOST
       - CLINIC
@@ -30294,6 +30373,36 @@ components:
       - kind
       - parentName
       title: LocationLink
+    LocationPad:
+      type: object
+      properties:
+        size:
+          "$ref": "#/components/schemas/LocationFacilitySizeEnum"
+        count:
+          type: integer
+        atcAssigned:
+          type: boolean
+        length:
+          type:
+          - number
+          - 'null'
+        beam:
+          type:
+          - number
+          - 'null'
+        height:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - size
+      - count
+      - atcAssigned
+      - length
+      - beam
+      - height
+      title: LocationPad
     LocationPeople:
       type: object
       properties:

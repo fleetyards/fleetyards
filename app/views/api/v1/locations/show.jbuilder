@@ -26,6 +26,24 @@ json.resources Array.wrap(@location.resources) do |group|
   end
 end
 
+if (facilities = @location.facilities)
+  json.facilities do
+    json.hangars Array.wrap(facilities["hangars"]) do |hangar|
+      json.extract! hangar, "size", "door", "count", "length", "beam", "height"
+    end
+
+    %w[landing_pads vehicle_pads].each do |kind|
+      json.set! kind, Array.wrap(facilities[kind]) do |pad|
+        json.extract! pad, "size", "count", "atc_assigned", "length", "beam", "height"
+      end
+    end
+
+    json.docking_tubes facilities["docking_tubes"].to_i
+  end
+else
+  json.facilities nil
+end
+
 # From the system down to the parent, for the breadcrumb.
 json.ancestors @ancestors do |ancestor|
   json.partial! "api/v1/locations/link", location: ancestor
