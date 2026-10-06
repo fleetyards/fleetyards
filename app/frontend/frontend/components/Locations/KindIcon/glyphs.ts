@@ -48,12 +48,11 @@ export const GLYPHS: Record<LocationKindEnum, Glyph> = {
     primary:
       '<g mask="url(#{id}-windows)"><rect x="104" y="200" width="88" height="240" rx="10"/><rect x="264" y="164" width="88" height="276" rx="10"/></g><rect x="40" y="432" width="432" height="40" rx="12"/>',
   },
-  // A ship coming down on its thrusters onto a lit pad.
+  // A delta hull over the landing ring on its pad.
   [LocationKindEnum.SPACEPORT]: {
     secondary:
-      '<ellipse cx="256" cy="440" rx="236" ry="56"/><path d="M214 316 L242 316 L234 380 L222 380 Z"/><path d="M270 316 L298 316 L290 380 L278 380 Z"/>',
-    primary:
-      '<path d="M256 16 L296 120 L302 176 L432 260 L432 298 L316 284 L306 312 L206 312 L196 284 L80 298 L80 260 L210 176 L216 120 Z"/><rect x="96" y="428" width="56" height="24" rx="12"/><rect x="360" y="428" width="56" height="24" rx="12"/>',
+      '<ellipse cx="256" cy="436" rx="236" ry="60"/><rect x="212" y="306" width="32" height="34" rx="8"/><rect x="268" y="306" width="32" height="34" rx="8"/>',
+    primary: `<path d="M256 16 L328 166 L448 276 L448 306 L330 296 L318 320 L194 320 L182 296 L64 306 L64 276 L184 166 Z"/><ellipse cx="256" cy="436" rx="150" ry="30" fill="none" ${PRIMARY_STROKE} stroke-width="20"/>`,
   },
   [LocationKindEnum.STATION]: {
     secondary:
