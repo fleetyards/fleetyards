@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { type LocationKindEnum } from "@/services/fyApi";
-import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import { GLYPHS } from "./glyphs";
 
 type Props = {
@@ -15,9 +15,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const glyph = computed(() => GLYPHS[props.kind] ?? GLYPHS.other);
+const icon = computed(() => GLYPHS[props.kind] ?? GLYPHS.other);
 </script>
 
 <template>
-  <DuotoneGlyph class="location-kind-icon" :glyph="glyph" :data-kind="kind" />
+  <AppIcon class="location-kind-icon" :icon="icon" :data-kind="kind" />
 </template>

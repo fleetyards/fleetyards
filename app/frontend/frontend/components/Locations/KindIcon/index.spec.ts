@@ -26,6 +26,18 @@ describe("LocationKindIcon", () => {
     expect(wrapper.attributes("aria-hidden")).toBe("true");
   });
 
+  it("shows a Font Awesome icon where the kind has no glyph of its own", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { kind: LocationKindEnum.SPACEPORT },
+    });
+
+    expect(wrapper.element.tagName).toBe("I");
+    expect(wrapper.classes()).toEqual(
+      expect.arrayContaining(["fa-plane-arrival", "location-kind-icon"]),
+    );
+    expect(wrapper.attributes("data-kind")).toBe("spaceport");
+  });
+
   // Two planets on one page must not share a mask, or the second draws the
   // first one's ring.
   it("scopes its masks to the rendered icon", async () => {
