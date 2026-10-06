@@ -63,7 +63,7 @@ module Admin
         end
 
         def disable_actor
-          actor = find_actor
+          actor = find_actor || stored_actor
           return not_found(I18n.t("messages.record_not_found.base")) unless actor
 
           @feature.disable_actor(actor)
@@ -165,6 +165,13 @@ module Admin
           when "Fleet"
             Fleet.find_by(id: params[:actor_id]) || Fleet.find_by(fid: params[:actor_id])
           end
+        end
+
+        # The gate as Flipper stored it, for an actor whose record is gone:
+        # removing it must not depend on finding something that no longer exists.
+        private def stored_actor
+          flipper_id = "#{params[:actor_type]};#{params[:actor_id]}"
+          Flipper::Actor.new(flipper_id) if @feature.actors_value.include?(flipper_id)
         end
       end
     end
