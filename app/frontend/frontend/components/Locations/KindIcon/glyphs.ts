@@ -48,6 +48,12 @@ export const GLYPHS: Record<LocationKindEnum, Glyph> = {
     primary:
       '<g mask="url(#{id}-windows)"><rect x="104" y="200" width="88" height="240" rx="10"/><rect x="264" y="164" width="88" height="276" rx="10"/></g><rect x="40" y="432" width="432" height="40" rx="12"/>',
   },
+  // A control tower over the pad it watches.
+  [LocationKindEnum.SPACEPORT]: {
+    secondary: '<ellipse cx="256" cy="400" rx="232" ry="72"/>',
+    primary:
+      '<rect x="228" y="136" width="56" height="264" rx="12"/><rect x="164" y="72" width="184" height="80" rx="18"/><rect x="248" y="32" width="16" height="48" rx="8"/>',
+  },
   [LocationKindEnum.STATION]: {
     secondary:
       '<rect x="24" y="136" width="120" height="104" rx="10"/><rect x="24" y="272" width="120" height="104" rx="10"/><rect x="368" y="136" width="120" height="104" rx="10"/><rect x="368" y="272" width="120" height="104" rx="10"/>',

@@ -18,6 +18,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import BodyColumns from "@/frontend/components/Locations/BodyColumns/index.vue";
 import ContentsList from "@/frontend/components/Locations/Contents/index.vue";
 import LocationResources from "@/frontend/components/Locations/Resources/index.vue";
+import LocationFacilities from "@/frontend/components/Locations/Facilities/index.vue";
 import StarmapFacts from "@/frontend/components/Locations/StarmapFacts/index.vue";
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
@@ -436,6 +437,13 @@ watch(
               :total-count="people.totalCount"
               :location-id="location.id"
             />
+            <MetricsCard
+              v-if="location.facilities"
+              :title="t('labels.location.facilities')"
+              variant="slim"
+            >
+              <LocationFacilities :facilities="location.facilities" />
+            </MetricsCard>
             <MetricsCard
               v-if="location.resources?.length"
               :title="t('labels.location.resources')"
