@@ -24,12 +24,7 @@ module Api
 
         @fleet_squadron_requests = @fleet_squadron.fleet_squadron_requests
           .pending
-          .includes(fleet_membership: [
-            :fleet,
-            :fleet_role,
-            {user: [{current_location: :parent}, :omniauth_connections, {avatar_attachment: :blob}]},
-            {fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]}
-          ])
+          .includes(fleet_membership: FleetMembership::ROSTER_PRELOADS)
           .order(created_at: :asc)
       end
 
