@@ -10,6 +10,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Toggle from "@/shared/components/base/Toggle/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import ActorList from "@/admin/components/Features/ActorList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -44,6 +45,25 @@ const remove = (actor: FeatureActor) => actions.removeActor("User", actor.id);
 
 <template>
   <div class="feature-actors-page">
+    <Panel>
+      <PanelHeading>
+        {{ t("headlines.admin.features.selfService") }}
+      </PanelHeading>
+      <PanelBody>
+        <section class="feature-section" data-test="feature-self-service">
+          <p class="text-muted">{{ t("labels.features.selfServiceHint") }}</p>
+          <div class="feature-toggles">
+            <Toggle
+              :active="feature.selfServiceUser"
+              :label="t('labels.features.selfServiceUser')"
+              data-test="toggle-self-service"
+              @toggle="actions.toggleUserSelfService()"
+            />
+          </div>
+        </section>
+      </PanelBody>
+    </Panel>
+
     <Panel>
       <PanelHeading>
         {{ t("headlines.admin.features.addUser") }}

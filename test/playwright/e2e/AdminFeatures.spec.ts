@@ -92,10 +92,26 @@ test.describe("Admin Features", () => {
     await expect(page.getByTestId("feature-global")).toBeVisible();
   });
 
-  test("Toggles self-service flag", async ({ page, notification }) => {
+  test("Toggles user self-service on the users tab", async ({
+    page,
+    notification,
+  }) => {
     await openFirstFeature(page);
+    await page.goto(`${page.url()}users/`);
 
     await page.getByTestId("toggle-self-service").click();
+
+    await notification.success("updated");
+  });
+
+  test("Toggles fleet self-service on the fleets tab", async ({
+    page,
+    notification,
+  }) => {
+    await openFirstFeature(page);
+    await page.goto(`${page.url()}fleets/`);
+
+    await page.getByTestId("toggle-fleet-self-service").click();
 
     await notification.success("updated");
   });
