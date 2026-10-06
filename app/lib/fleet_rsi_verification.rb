@@ -44,10 +44,18 @@ class FleetRsiVerification
       status_for(Rsi::OrgPage.fetch(sid), sid:, token:)
     end
 
-    applied = apply(status, sid:, token:)
+    sync_if_verified(apply(status, sid:, token:))
+  end
 
-    # Straight away, so a fleet that has just verified need not wait for the
-    # daily sync to show up in the directory with its activities.
+  # An admin's word in place of the org page, for a fleet that cannot show the
+  # token there. It takes the SID over like a check would.
+  def confirm!
+    sync_if_verified(apply(:verified, sid: fleet.rsi_sid, token: fleet.rsi_verification_token))
+  end
+
+  # Straight away, so a fleet that has just verified need not wait for the
+  # daily sync to show up in the directory with its activities.
+  private def sync_if_verified(applied)
     FleetRsiSyncJob.perform_async(fleet.id) if applied == :verified
 
     applied

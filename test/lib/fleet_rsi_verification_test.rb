@@ -101,6 +101,27 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
     assert_nil holder.public_rsi_sid
   end
 
+  test "an admin confirming the fleet verifies it without asking RSI" do
+    assert_difference -> { FleetRsiSyncJob.jobs.size }, 1 do
+      assert_equal :verified, FleetRsiVerification.new(@fleet).confirm!
+    end
+
+    assert @fleet.reload.rsi_verified?
+    assert_equal "TEST", @fleet.rsi_verified_sid
+  end
+
+  test "an admin confirming the fleet takes the SID from the fleet that held it" do
+    holder_manager = create(:user)
+    holder = create(:fleet, :rsi_verified, created_by: holder_manager.id, rsi_sid: "TEST")
+
+    assert_difference -> { Notification.where(user: holder_manager, notification_type: :fleet_rsi_verification_lost).count }, 1 do
+      FleetRsiVerification.new(@fleet).confirm!
+    end
+
+    assert @fleet.reload.rsi_verified?
+    assert_not holder.reload.rsi_verified?
+  end
+
   test "an answer about a SID the fleet has since changed is dropped" do
     body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
     stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
