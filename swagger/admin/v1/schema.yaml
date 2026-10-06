@@ -17189,6 +17189,7 @@ components:
       - planet
       - moon
       - city
+      - spaceport
       - station
       - outpost
       - clinic
@@ -17205,6 +17206,7 @@ components:
       - PLANET
       - MOON
       - CITY
+      - SPACEPORT
       - STATION
       - OUTPOST
       - CLINIC

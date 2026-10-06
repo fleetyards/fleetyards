@@ -18,6 +18,26 @@ module ScData
       TAGS_FILE = "TagDatabase/tagdatabase.tagdatabase.records.xml"
       TEMPLATES_PATH = "missiondata/pu_locations/templates"
 
+      # Written by the exporter from the object containers in `Data.p4k`, which
+      # the raw tree does not carry. Exports before it existed have no file.
+      LANDING_ZONES_FILE = "derived/landingzones.json"
+
+      # The game's `LandingPadSize` names, onto the sizes a ship is sold in.
+      # The game's Small hangar holds an XSmall-sized pad; the size is the one
+      # the game calls it, and the pad's box is kept beside it.
+      PAD_SIZES = {
+        "Tiny" => "extra_extra_small",
+        "XSmall" => "extra_small",
+        "Small" => "small",
+        "Medium" => "medium",
+        "Large" => "large",
+        "XLarge" => "extra_large"
+      }.freeze
+
+      # A city's spaceport is an ATC zone of its own, and the only one whose
+      # container is named like this: `lorville_sp_ext`, `a18_sp_ext`.
+      SPACEPORT_ZONE = /_sp_ext\z/
+
       # What the export writes where nobody has named a place yet. 148 of the
       # 2047 records in 4.10.1 resolve to one of these, or to nothing.
       FILLER_NAMES = ["<= UNINITIALIZED =>", "<= PLACEHOLDER =>"].freeze
@@ -111,6 +131,7 @@ module ScData
       def locations
         @locations ||= begin
           places = place_records
+          place_facilities(places)
           templates = template_owners(places)
 
           places.values.map do |place|
@@ -138,7 +159,8 @@ module ScData
           shown_with_parent_only: record ? record[:parent_only] : false,
           always_shown: record ? record[:permanent] : false,
           quantum_travel_destination: record ? record[:quantum_travel] : false,
-          mission_template_refs: template_refs.to_a.sort
+          mission_template_refs: template_refs.to_a.sort,
+          facilities: place[:facilities]
         }
       end
 
@@ -506,6 +528,116 @@ module ScData
         return "jump_point" if record[:key].start_with?("JumpPoint_")
 
         ICON_KINDS[record[:icon]] || KINDS[record[:type]] || "other"
+      end
+
+      # What a pilot can land in or dock at, counted per place. The game has no
+      # record for a city's spaceport, so one is made from the spaceport's zone,
+      # and the city keeps what lies outside it.
+      #
+      # Joined by ref: a merged place's key may no longer be the record's, while
+      # every ref it absorbed stays with it.
+      private def place_facilities(places)
+        by_ref = places.each_value.with_object({}) do |place, all|
+          place[:refs].each { |ref| all[ref] = place[:key] }
+        end
+
+        landing_zones.each do |entry|
+          key = by_ref[entry["starmapRef"]] || resolve_key(entry["starmapRecord"].presence, places)
+
+          if key.nil?
+            Rails.logger.warn("starmap: no place for landing zone #{entry["name"].inspect} (#{entry["container"]})")
+            next
+          end
+
+          place = places[key]
+          zones = Array.wrap(entry["zones"])
+          port = zones.find { |zone| zone["container"].to_s.match?(SPACEPORT_ZONE) } if place[:kind] == "city"
+
+          if port
+            add_facilities(spaceport_for(places, place), [port])
+            add_facilities(place, zones - [port])
+          else
+            add_facilities(place, zones.presence || [entry])
+          end
+        end
+      end
+
+      private def spaceport_for(places, city)
+        key = "#{city[:key]}_Spaceport"
+
+        places[key] ||= {
+          key:,
+          refs: [],
+          record: nil,
+          name: overrides[key].to_h["name"] || "#{city[:name]} Spaceport",
+          description: nil,
+          kind: "spaceport",
+          parent: city[:key],
+          map_parent: city[:key],
+          shown_on_starmap: false
+        }
+      end
+
+      # Two entries can land on one place -- copies the starmap merged -- so
+      # each adds to what the place already has.
+      private def add_facilities(place, zones)
+        current = place[:facilities] || {hangars: [], landing_pads: [], vehicle_pads: [], docking_tubes: 0}
+
+        zones.each do |zone|
+          Array.wrap(zone["hangars"]).each do |hangar|
+            entry = facility_entry(hangar, hangar["padDimensions"])
+            current[:hangars] << entry.merge(door: hangar["door"]) if entry
+          end
+
+          Array.wrap(zone["pads"]).each do |pad|
+            entry = facility_entry(pad, pad["dimensions"])
+            next if entry.nil?
+
+            list = pad["groundVehiclesOnly"] ? current[:vehicle_pads] : current[:landing_pads]
+            list << entry.merge(atc_assigned: pad["atcAssigned"] || false)
+          end
+
+          current[:docking_tubes] += zone["dockingTubes"].to_i
+        end
+
+        place[:facilities] = summed(current)
+      end
+
+      # Dimensions as the exporter writes them, across by along by up.
+      private def facility_entry(item, dimensions)
+        size = PAD_SIZES[item["size"]]
+
+        if size.nil?
+          Rails.logger.warn("starmap: unknown landing pad size #{item["size"].inspect}")
+          return
+        end
+
+        beam, length, height = Array.wrap(dimensions)
+
+        {size:, count: item["count"].to_i, length:, beam:, height:}
+      end
+
+      private def summed(facilities)
+        lists = %i[hangars landing_pads vehicle_pads].to_h do |kind|
+          entries = facilities[kind]
+            .group_by { |entry| entry.except(:count) }
+            .map { |entry, group| entry.merge(count: group.sum { |item| item[:count] }) }
+            .reject { |entry| entry[:count].zero? }
+            .sort_by { |entry| [-PAD_SIZES.values.index(entry[:size]), entry[:door].to_s, entry[:length].to_f, entry[:beam].to_f] }
+
+          [kind, entries]
+        end
+
+        return if lists.values.all?(&:empty?) && facilities[:docking_tubes].zero?
+
+        lists.merge(docking_tubes: facilities[:docking_tubes])
+      end
+
+      private def landing_zones
+        file = "#{base_path}/#{LANDING_ZONES_FILE}"
+        return [] unless File.exist?(file)
+
+        Array.wrap(JSON.parse(File.read(file))["locations"])
       end
 
       # Each mission location template links to the place its most specific

@@ -1,0 +1,27 @@
+{
+  "sc_key": "Stanton1_Lorville_Spaceport",
+  "sc_refs": [],
+  "name": "Teasa Spaceport",
+  "description": null,
+  "resources": [],
+  "kind": "spaceport",
+  "body_type": null,
+  "game_type": null,
+  "parent_key": "Stanton1_Lorville",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": false,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": [],
+  "facilities": {
+    "hangars": [
+      {"size": "extra_large", "count": 3, "length": 272.0, "beam": 160.0, "height": 64.0, "door": "top"},
+      {"size": "large", "count": 2, "length": 128.0, "beam": 72.0, "height": 48.0, "door": "front"}
+    ],
+    "landing_pads": [],
+    "vehicle_pads": [],
+    "docking_tubes": 0
+  }
+}

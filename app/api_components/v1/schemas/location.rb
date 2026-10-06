@@ -36,6 +36,9 @@ module V1
           bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
           image: ::Shared::V1::Schemas::MediaFile,
           resources: {type: :array, items: ::V1::Schemas::LocationResourceGroup},
+          # Null where the game places no hangar, pad or docking tube, and for
+          # every place in a build from before they were counted.
+          facilities: {anyOf: [::V1::Schemas::LocationFacilities, {type: :null}]},
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
           # Where the game's map draws the place, when that is not where it is:
           # Levski under the Nyx star, while it sits inside Delamar.

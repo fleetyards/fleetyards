@@ -21,11 +21,23 @@ module ScData
       test "#all loads every place with a current build" do
         loader.all
 
-        assert_equal 15, Location.count
+        assert_equal 16, Location.count
         assert_equal Location.count, LocationBuild.current(fixture_source).distinct.count(:location_id)
 
         slugs = Location.pluck(:slug)
         assert_equal slugs.uniq.size, slugs.size
+      end
+
+      test "#all loads a place's hangars and pads as a fact of the build" do
+        loader.all
+
+        spaceport = Location.find_by!(sc_key: "Stanton1_Lorville_Spaceport")
+
+        assert_equal "spaceport", spaceport.kind
+        assert_equal "Stanton1_Lorville", spaceport.parent.sc_key
+        assert_equal [3, 2], spaceport.facilities["hangars"].pluck("count")
+        assert_equal spaceport.facilities, spaceport.builds.sole.facilities
+        assert_nil Location.find_by!(sc_key: "Stanton1_Lorville").facilities
       end
 
       test "#all nests a place where it is and keeps the game's map parent beside it" do
@@ -124,7 +136,7 @@ module ScData
 
         empty_tree_loader(::ScData::Loader::LocationsLoader).all
 
-        assert_equal 15, Location.where.not(version: nil).count
+        assert_equal 16, Location.where.not(version: nil).count
       end
     end
   end

@@ -48,6 +48,12 @@ export const GLYPHS: Record<LocationKindEnum, Glyph> = {
     primary:
       '<g mask="url(#{id}-windows)"><rect x="104" y="200" width="88" height="240" rx="10"/><rect x="264" y="164" width="88" height="276" rx="10"/></g><rect x="40" y="432" width="432" height="40" rx="12"/>',
   },
+  // A delta hull over the landing ring on its pad.
+  [LocationKindEnum.SPACEPORT]: {
+    secondary:
+      '<ellipse cx="256" cy="436" rx="236" ry="60"/><rect x="212" y="306" width="32" height="34" rx="8"/><rect x="268" y="306" width="32" height="34" rx="8"/>',
+    primary: `<path d="M256 16 L328 166 L448 276 L448 306 L330 296 L318 320 L194 320 L182 296 L64 306 L64 276 L184 166 Z"/><ellipse cx="256" cy="436" rx="150" ry="30" fill="none" ${PRIMARY_STROKE} stroke-width="20"/>`,
+  },
   [LocationKindEnum.STATION]: {
     secondary:
       '<rect x="24" y="136" width="120" height="104" rx="10"/><rect x="24" y="272" width="120" height="104" rx="10"/><rect x="368" y="136" width="120" height="104" rx="10"/><rect x="368" y="272" width="120" height="104" rx="10"/>',
