@@ -379,6 +379,37 @@
               "success": "Membro rimosso dallo squadrone.",
               "failure": "Non è stato possibile rimuovere il membro."
             }
+          },
+          "join": {
+            "success": "Ti sei unito al team.",
+            "failure": "Impossibile unirsi al team."
+          },
+          "leave": {
+            "confirm": "Lasciare lo squadrone %{squadron}? Resti nella flotta.",
+            "success": "Hai lasciato lo squadrone.",
+            "failure": "Impossibile lasciare lo squadrone."
+          },
+          "requests": {
+            "create": {
+              "success": "Richiesta inviata. I responsabili dello squadrone risponderanno.",
+              "failure": "Impossibile inviare la richiesta."
+            },
+            "withdraw": {
+              "success": "Richiesta ritirata.",
+              "failure": "Impossibile ritirare la richiesta."
+            },
+            "accept": {
+              "success": "%{username} si è unito allo squadrone.",
+              "failure": "Impossibile accettare la richiesta."
+            },
+            "decline": {
+              "success": "Richiesta rifiutata.",
+              "failure": "Impossibile rifiutare la richiesta."
+            }
+          },
+          "rank": {
+            "success": "Grado modificato.",
+            "failure": "Impossibile modificare il grado."
           }
         },
         "calendarSubscription": {

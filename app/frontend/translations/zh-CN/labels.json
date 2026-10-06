@@ -732,7 +732,13 @@
             "singleHolder": "每个中队一名",
             "managesMembers": "可添加和移除职级低于自己的成员",
             "managesRanks": "可设置低于自己的职级"
-          }
+          },
+          "views": {
+            "members": "成员",
+            "requests": "申请"
+          },
+          "requestedAt": "申请时间",
+          "requests": "申请"
         },
         "roles": {
           "permanent": "永久",

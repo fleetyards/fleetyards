@@ -389,6 +389,37 @@
               "success": "Member removed from the squadron.",
               "failure": "Member could not be removed."
             }
+          },
+          "join": {
+            "success": "You joined the team.",
+            "failure": "Could not join the team."
+          },
+          "leave": {
+            "confirm": "Leave the %{squadron} squadron? You stay in the fleet.",
+            "success": "You left the squadron.",
+            "failure": "Could not leave the squadron."
+          },
+          "requests": {
+            "create": {
+              "success": "Request sent. The squadron's leadership will answer it.",
+              "failure": "Request could not be sent."
+            },
+            "withdraw": {
+              "success": "Request withdrawn.",
+              "failure": "Request could not be withdrawn."
+            },
+            "accept": {
+              "success": "%{username} joined the squadron.",
+              "failure": "Request could not be accepted."
+            },
+            "decline": {
+              "success": "Request declined.",
+              "failure": "Request could not be declined."
+            }
+          },
+          "rank": {
+            "success": "Rank changed.",
+            "failure": "Rank could not be changed."
           }
         },
         "calendarSubscription": {

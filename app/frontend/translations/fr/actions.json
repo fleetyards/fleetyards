@@ -260,7 +260,15 @@
           "addMembers": "Ajouter %{count}",
           "viewMembers": "Membres de l'escadron",
           "viewShips": "Vaisseaux de l'escadron",
-          "viewStats": "Statistiques de l'escadron"
+          "viewStats": "Statistiques de l'escadron",
+          "join": "Rejoindre l'équipe",
+          "leave": "Quitter",
+          "requestJoin": "Demander à rejoindre",
+          "withdrawRequest": "Retirer la demande",
+          "acceptRequest": "Accepter",
+          "declineRequest": "Refuser",
+          "promote": "Promouvoir",
+          "demote": "Rétrograder"
         },
         "manageInvites": "Invitations",
         "worldmap": "Carte du monde",

@@ -732,7 +732,13 @@
             "singleHolder": "Uno por escuadrón",
             "managesMembers": "Añade y quita a los miembros de rango inferior",
             "managesRanks": "Asigna los rangos por debajo del suyo"
-          }
+          },
+          "views": {
+            "members": "Miembros",
+            "requests": "Solicitudes"
+          },
+          "requestedAt": "Solicitado el",
+          "requests": "Solicitudes"
         },
         "roles": {
           "permanent": "Permanente",

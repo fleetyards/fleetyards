@@ -732,7 +732,13 @@
             "singleHolder": "Einer pro Staffel",
             "managesMembers": "Fügt Mitglieder mit niedrigerem Rang hinzu und entfernt sie",
             "managesRanks": "Legt die Ränge unter dem eigenen fest"
-          }
+          },
+          "views": {
+            "members": "Mitglieder",
+            "requests": "Anfragen"
+          },
+          "requestedAt": "Angefragt am",
+          "requests": "Anfragen"
         },
         "roles": {
           "permanent": "Permanent",

@@ -260,7 +260,15 @@
           "addMembers": "Add %{count}",
           "viewMembers": "Squadron members",
           "viewShips": "Squadron ships",
-          "viewStats": "Squadron stats"
+          "viewStats": "Squadron stats",
+          "join": "Join team",
+          "leave": "Leave",
+          "requestJoin": "Request to join",
+          "withdrawRequest": "Withdraw request",
+          "acceptRequest": "Accept",
+          "declineRequest": "Decline",
+          "promote": "Promote",
+          "demote": "Demote"
         },
         "manageInvites": "Invites",
         "worldmap": "Worldmap",

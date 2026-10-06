@@ -379,6 +379,37 @@
               "success": "已將成員移出中隊。",
               "failure": "無法移除該成員。"
             }
+          },
+          "join": {
+            "success": "你已加入該團隊。",
+            "failure": "無法加入該團隊。"
+          },
+          "leave": {
+            "confirm": "退出 %{squadron} 中隊？你仍會留在艦隊中。",
+            "success": "你已退出該中隊。",
+            "failure": "無法退出該中隊。"
+          },
+          "requests": {
+            "create": {
+              "success": "申請已送出，中隊負責人將進行處理。",
+              "failure": "無法送出申請。"
+            },
+            "withdraw": {
+              "success": "申請已撤回。",
+              "failure": "無法撤回申請。"
+            },
+            "accept": {
+              "success": "%{username} 已加入該中隊。",
+              "failure": "無法接受該申請。"
+            },
+            "decline": {
+              "success": "申請已拒絕。",
+              "failure": "無法拒絕該申請。"
+            }
+          },
+          "rank": {
+            "success": "職級已變更。",
+            "failure": "無法變更職級。"
           }
         },
         "calendarSubscription": {

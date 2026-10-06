@@ -379,6 +379,37 @@
               "success": "Miembro quitado del escuadrón.",
               "failure": "No se pudo quitar al miembro."
             }
+          },
+          "join": {
+            "success": "Te has unido al equipo.",
+            "failure": "No se pudo unir al equipo."
+          },
+          "leave": {
+            "confirm": "¿Salir del escuadrón %{squadron}? Seguirás en la flota.",
+            "success": "Has salido del escuadrón.",
+            "failure": "No se pudo salir del escuadrón."
+          },
+          "requests": {
+            "create": {
+              "success": "Solicitud enviada. Los líderes del escuadrón la responderán.",
+              "failure": "No se pudo enviar la solicitud."
+            },
+            "withdraw": {
+              "success": "Solicitud retirada.",
+              "failure": "No se pudo retirar la solicitud."
+            },
+            "accept": {
+              "success": "%{username} se ha unido al escuadrón.",
+              "failure": "No se pudo aceptar la solicitud."
+            },
+            "decline": {
+              "success": "Solicitud rechazada.",
+              "failure": "No se pudo rechazar la solicitud."
+            }
+          },
+          "rank": {
+            "success": "Rango cambiado.",
+            "failure": "No se pudo cambiar el rango."
           }
         },
         "calendarSubscription": {

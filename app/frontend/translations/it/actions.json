@@ -260,7 +260,15 @@
           "addMembers": "Aggiungi %{count}",
           "viewMembers": "Membri dello squadrone",
           "viewShips": "Navi dello squadrone",
-          "viewStats": "Statistiche dello squadrone"
+          "viewStats": "Statistiche dello squadrone",
+          "join": "Unisciti al team",
+          "leave": "Lascia",
+          "requestJoin": "Chiedi di unirti",
+          "withdrawRequest": "Ritira richiesta",
+          "acceptRequest": "Accetta",
+          "declineRequest": "Rifiuta",
+          "promote": "Promuovi",
+          "demote": "Retrocedi"
         },
         "manageInvites": "Inviti",
         "worldmap": "Mappa mondiale",

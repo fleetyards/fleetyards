@@ -12,6 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import SquadronMembershipBtn from "@/frontend/components/Fleets/Squadrons/SquadronMembershipBtn/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { type TabNavLink } from "@/shared/components/TabNavView/types";
 import { squadronDetailRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
@@ -188,6 +189,11 @@ const crumbs = computed<Crumb[]>(() => [
     </div>
 
     <Teleport to="#header-right">
+      <SquadronMembershipBtn
+        v-if="props.membership?.status === 'accepted'"
+        :fleet="props.fleet"
+        :squadron="squadron"
+      />
       <Btn
         v-if="canManageMembers"
         :size="BtnSizesEnum.MD"

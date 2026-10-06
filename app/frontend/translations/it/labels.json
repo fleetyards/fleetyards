@@ -732,7 +732,13 @@
             "singleHolder": "Uno per squadrone",
             "managesMembers": "Aggiunge e rimuove i membri di grado inferiore",
             "managesRanks": "Stabilisce i gradi inferiori al proprio"
-          }
+          },
+          "views": {
+            "members": "Membri",
+            "requests": "Richieste"
+          },
+          "requestedAt": "Richiesto il",
+          "requests": "Richieste"
         },
         "roles": {
           "permanent": "Permanente",

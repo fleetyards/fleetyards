@@ -10,6 +10,9 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import SquadronMembersFilterForm from "@/frontend/components/Fleets/Squadrons/SquadronMembersFilterForm/index.vue";
+import SquadronRequestsList from "@/frontend/components/Fleets/Squadrons/SquadronRequestsList/index.vue";
+import SquadronMembersViewSwitch from "@/frontend/components/Fleets/Squadrons/SquadronMembersViewSwitch/index.vue";
+import { type SquadronMembersView } from "@/frontend/components/Fleets/Squadrons/SquadronMembersViewSwitch/types";
 import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -18,6 +21,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import {
   outranks,
   rankOptionsFor,
@@ -27,6 +31,7 @@ import {
   useFleetSquadronMembers,
   useFleetSquadronRoles,
   useDestroyFleetSquadronMember,
+  useUpdateFleetSquadronMember,
   getFleetSquadronMembersQueryKey,
   type Fleet,
   type FleetMember,
@@ -65,6 +70,15 @@ const canManageRanks = computed(
 );
 
 const viewerRole = computed(() => props.squadron.viewerRole);
+
+// The roster and the requests to join it, switched in the query the way the
+// fleet's own member list switches to its invites. Only whoever answers the
+// requests is offered them.
+const view = computed<SquadronMembersView>(() =>
+  route.query.view === "requests" && canManageMembers.value
+    ? "requests"
+    : "members",
+);
 
 const { data: ranks } = useFleetSquadronRoles(fleetSlug);
 
@@ -121,6 +135,55 @@ const rankOptionsForMember = (member: FleetMember): FleetSquadronRole[] =>
     rank: entryFor(member)?.role,
     isSelf: isSelf(member),
   });
+
+const sortedRanks = computed(() =>
+  [...(ranks.value ?? [])].sort((a, b) => a.position - b.position),
+);
+
+// One step up or down the squadron's ranks, offered only where the update
+// would be accepted -- the same rule the edit modal's rank select follows.
+const neighbourRank = (member: FleetMember, step: -1 | 1) => {
+  const current = entryFor(member)?.role;
+  if (!current) return undefined;
+
+  const index = sortedRanks.value.findIndex((rank) => rank.id === current.id);
+  const target = index < 0 ? undefined : sortedRanks.value[index + step];
+  if (!target) return undefined;
+
+  return rankOptionsForMember(member).some((rank) => rank.id === target.id)
+    ? target
+    : undefined;
+};
+
+const updateMutation = useUpdateFleetSquadronMember();
+
+const changingRank = ref<string>();
+
+const moveRank = async (member: FleetMember, step: -1 | 1) => {
+  const target = neighbourRank(member, step);
+  if (!target) return;
+
+  changingRank.value = member.username;
+
+  try {
+    await updateMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      fleetSquadronSlug: squadronSlug.value,
+      username: member.username,
+      data: { fleetSquadronRoleId: target.id },
+    });
+    displaySuccess({ text: t("messages.fleet.squadrons.rank.success") });
+    comlink.emit("fleet-squadron-members-updated");
+  } catch (error) {
+    displayAlert({
+      text:
+        firstErrorMessageFrom(error) ??
+        t("messages.fleet.squadrons.rank.failure"),
+    });
+  } finally {
+    changingRank.value = undefined;
+  }
+};
 
 // The rank select fills in once the ranks are in; until then, or if they fail
 // to load, the modal still edits the join date.
@@ -195,7 +258,22 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <template v-if="view === 'requests'">
+    <div class="squadron-members-toolbar">
+      <SquadronMembersViewSwitch
+        :fleet-slug="props.fleet.slug"
+        :squadron-slug="squadronSlug"
+        :view="view"
+        :pending-request-count="props.squadron.pendingRequestCount"
+      />
+    </div>
+    <SquadronRequestsList
+      :fleet-slug="props.fleet.slug"
+      :squadron-slug="squadronSlug"
+    />
+  </template>
   <FilteredList
+    v-else
     key="fleet-squadron-members"
     :records="memberItems"
     :name="route.name?.toString() || ''"
@@ -206,6 +284,15 @@ onUnmounted(() => {
   >
     <template #filter>
       <SquadronMembersFilterForm />
+    </template>
+
+    <template v-if="canManageMembers" #actions-left>
+      <SquadronMembersViewSwitch
+        :fleet-slug="props.fleet.slug"
+        :squadron-slug="squadronSlug"
+        :view="view"
+        :pending-request-count="props.squadron.pendingRequestCount"
+      />
     </template>
 
     <template #default="{ emptyVisible, loading }">
@@ -222,6 +309,28 @@ onUnmounted(() => {
       >
         <template v-if="canManageMembers" #row-actions="{ member }">
           <BtnGroup>
+            <Btn
+              v-if="neighbourRank(member, -1)"
+              v-tooltip="t('actions.fleet.squadrons.promote')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.fleet.squadrons.promote')"
+              :disabled="changingRank === member.username"
+              :data-test="`squadron-member-promote-${member.username}`"
+              @click="moveRank(member, -1)"
+            >
+              <i class="fa-light fa-chevron-up" />
+            </Btn>
+            <Btn
+              v-if="neighbourRank(member, 1)"
+              v-tooltip="t('actions.fleet.squadrons.demote')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.fleet.squadrons.demote')"
+              :disabled="changingRank === member.username"
+              :data-test="`squadron-member-demote-${member.username}`"
+              @click="moveRank(member, 1)"
+            >
+              <i class="fa-light fa-chevron-down" />
+            </Btn>
             <Btn
               v-if="canEdit(member)"
               v-tooltip="t('actions.edit')"
@@ -264,3 +373,10 @@ onUnmounted(() => {
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.squadron-members-toolbar {
+  display: flex;
+  margin-bottom: 15px;
+}
+</style>

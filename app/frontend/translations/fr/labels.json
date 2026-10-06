@@ -732,7 +732,13 @@
             "singleHolder": "Un par escadron",
             "managesMembers": "Ajoute et retire les membres de grade inférieur",
             "managesRanks": "Fixe les grades inférieurs au sien"
-          }
+          },
+          "views": {
+            "members": "Membres",
+            "requests": "Demandes"
+          },
+          "requestedAt": "Demandé le",
+          "requests": "Demandes"
         },
         "roles": {
           "permanent": "Permanent",

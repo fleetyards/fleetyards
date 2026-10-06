@@ -732,7 +732,13 @@
             "singleHolder": "One per squadron",
             "managesMembers": "Adds and removes the members ranked below",
             "managesRanks": "Sets the ranks below their own"
-          }
+          },
+          "views": {
+            "members": "Members",
+            "requests": "Requests"
+          },
+          "requestedAt": "Asked on",
+          "requests": "Requests"
         },
         "roles": {
           "permanent": "Permanent",
