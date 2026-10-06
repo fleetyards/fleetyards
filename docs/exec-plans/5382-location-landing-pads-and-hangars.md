@@ -30,9 +30,9 @@ Station, city and spaceport pages list their hangars, landing pads, vehicle pads
 
 ## Intent Verification
 
-- [ ] A station page lists its landing pads by size and its hangar count, from the game files.
-- [ ] Each city's spaceport is a place inside it, with the same facts.
-- [ ] The numbers follow each new build (a `LocationBuild` fact).
+- [x] A station page lists its landing pads by size and its hangar count, from the game files.
+- [x] Each city's spaceport is a place inside it, with the same facts.
+- [x] The numbers follow each new build (a `LocationBuild` fact).
 
 ## Key files
 
@@ -47,15 +47,17 @@ Station, city and spaceport pages list their hangars, landing pads, vehicle pads
 
 ## Not in scope (deferred)
 
-- **Checking against a real export** — no export in the bucket carries `derived/landingzones.json` yet; the exporter change is not merged. Built against a fixture of the documented shape.
+- Nothing.
 
 ## Discovery Log
 
-- **2026-10-07** No export in S3 carries `derived/landingzones.json` (only `groundvehicles.json`, 4.9.0 onwards).
+- **2026-10-07** At the start no export carried `derived/landingzones.json`; it arrived for `4.10.1-live.12660092` during the work.
+- **2026-10-07** Parsed against it: 58 places with facilities, 547 hangar doors (559 less the 12 at the collector base, which has no starmap record), 233 landing + 159 vehicle pads, 108 docking tubes. Matches the exporter's totals.
+- **2026-10-07** Loaded into the worktree DB and checked Everus Harbor and Teasa Spaceport in the browser.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
-- [ ] Phase 5
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
+- [x] Phase 5
