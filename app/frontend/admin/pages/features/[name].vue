@@ -62,6 +62,20 @@ const crumbs = computed<Crumb[]>(() => [
             <BasePill v-if="feature.permanent" margin-right>
               {{ t("labels.features.permanent") }}
             </BasePill>
+            <BasePill
+              v-if="feature.selfServiceUser"
+              margin-right
+              data-test="feature-self-service-user"
+            >
+              {{ t("labels.features.selfServiceUser") }}
+            </BasePill>
+            <BasePill
+              v-if="feature.selfServiceFleet"
+              margin-right
+              data-test="feature-self-service-fleet"
+            >
+              {{ t("labels.features.selfServiceFleet") }}
+            </BasePill>
           </template>
         </Heading>
 

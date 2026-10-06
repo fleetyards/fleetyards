@@ -97,31 +97,6 @@ const rangeValue = (event: Event) =>
 
     <Panel>
       <PanelHeading>
-        {{ t("headlines.admin.features.selfService") }}
-      </PanelHeading>
-      <PanelBody>
-        <section class="feature-section" data-test="feature-self-service">
-          <p class="text-muted">{{ t("labels.features.selfServiceHint") }}</p>
-          <div class="feature-toggles">
-            <Toggle
-              :active="feature.selfServiceUser"
-              :label="t('labels.features.selfServiceUser')"
-              data-test="toggle-self-service"
-              @toggle="actions.toggleUserSelfService()"
-            />
-            <Toggle
-              :active="feature.selfServiceFleet"
-              :label="t('labels.features.selfServiceFleet')"
-              data-test="toggle-fleet-self-service"
-              @toggle="actions.toggleFleetSelfService()"
-            />
-          </div>
-        </section>
-      </PanelBody>
-    </Panel>
-
-    <Panel>
-      <PanelHeading>
         {{ t("headlines.admin.features.groups") }}
       </PanelHeading>
       <PanelBody>
@@ -224,7 +199,6 @@ const rangeValue = (event: Event) =>
   gap: 0.25rem;
 }
 
-.feature-toggles,
 .feature-groups {
   display: flex;
   flex-wrap: wrap;
