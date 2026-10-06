@@ -1512,3 +1512,4 @@ GET /catalogue/lookup added the new `Location` enum value to the `items/items/ty
 GET /catalogue/search added the new `Location` enum value to the `items/items/type` response property for the response status `200`
 DELETE /tours/{slug} removed the required property `details` from the response with the `400` status
 DELETE /tours/{slug} removed the required property `error` from the response with the `400` status
+GET /public/fleets the response property `items/items/memberCount` became nullable for the status `200`
