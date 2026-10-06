@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Copies what a verified fleet's RSI org says about itself -- its activities,
-# language, commitment, role play and whether it is recruiting -- onto the
-# fleet, for the fleet directory to filter by.
+# language, commitment, role play, member count and whether it is recruiting --
+# onto the fleet, for the fleet directory to show and filter by.
 #
 # RSI is where the org's officers keep these, so the fleet does not ask for
 # them a second time. A source that cannot be read leaves its columns as they
@@ -37,6 +37,7 @@ class FleetRsiSync
 
     if search.status == :ok
       columns.merge!(language: search.language, recruiting: search.recruiting, roleplay: search.roleplay)
+      columns[:rsi_member_count] = search.member_count unless search.member_count.nil?
       columns[:commitment] ||= search.commitment
     end
 

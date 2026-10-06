@@ -17,12 +17,13 @@ module Api
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
         end
 
-        DEFAULT_SORTS = ["member_count desc", "name asc"].freeze
+        DEFAULT_SORTS = ["rsi_member_count desc", "name asc"].freeze
 
         def index
           normalize_sort_params(directory_query_params)
           sorts = sorting_params(Fleet, directory_query_params.delete("sorts"), DEFAULT_SORTS,
             allowed: Fleet::DIRECTORY_SORTING_PARAMS)
+          sorts = sorts.map { |sort| sort.sub(/\Amember_count /, "rsi_member_count ") }
 
           search = directory_query_params.delete(:search)
           directory_query_params[:name_or_fid_or_rsi_verified_sid_cont] = search if search.present?
@@ -30,7 +31,14 @@ module Api
           activities = directory_query_params.delete(:activity_in)
           directory_query_params[:primary_activity_or_secondary_activity_in] = activities if activities.present?
 
-          @q = Fleet.directory.with_member_count
+          # The directory counts an org's members the way RSI does, so the
+          # member filters answer from RSI's count too.
+          %i[gteq lteq].each do |predicate|
+            value = directory_query_params.delete(:"member_count_#{predicate}")
+            directory_query_params[:"rsi_member_count_#{predicate}"] = value if value.present?
+          end
+
+          @q = Fleet.directory
             .includes(logo_attachment: :blob)
             .ransack(directory_query_params)
           # Many fleets share a member count, and names are not unique either,

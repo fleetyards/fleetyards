@@ -45,6 +45,7 @@ module V1
             roleplay: {type: [:boolean, :null]},
             recruiting: {type: [:boolean, :null]},
             rsiSyncedAt: {type: [:string, :null], format: "date-time"},
+            rsiMemberCount: {type: [:integer, :null], description: "Members of the verified RSI org. Null until RSI has been asked"},
             calendarFeedToken: {type: :string},
             logo: ::Shared::V1::Schemas::MediaFile,
             backgroundImage: ::Shared::V1::Schemas::MediaFile,

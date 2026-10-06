@@ -681,6 +681,7 @@
             }
           },
           "total": "Total: %{count}",
+          "rsiTotal": "En RSI: %{count}",
           "joined": "Unido el",
           "invited": "Invitado",
           "invitedAt": "Invitado / Solicitado el",

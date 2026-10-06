@@ -21930,6 +21930,11 @@ components:
           - string
           - 'null'
           format: date-time
+        rsiMemberCount:
+          type:
+          - integer
+          - 'null'
+          description: Members of the verified RSI org. Null until RSI has been asked
         calendarFeedToken:
           type: string
         logo:
@@ -23045,7 +23050,10 @@ components:
         rsiSid:
           type: string
         memberCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
+          description: Members of the RSI org. Null until RSI has been asked
         alignment:
           "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
         primaryActivity:

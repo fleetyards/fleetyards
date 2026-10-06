@@ -134,7 +134,7 @@ const rows = computed(() =>
       </div>
 
       <div class="metrics-card__hero">
-        <div class="metrics-card__tile">
+        <div v-if="fleet.memberCount != null" class="metrics-card__tile">
           <div class="metrics-card__tile__label">
             {{ t("labels.fleetDirectory.memberCount") }}
           </div>

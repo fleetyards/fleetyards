@@ -34,10 +34,11 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_directory")
 
-    @pirates = listed_fleet("PIRATES", name: "Night Pirates", members: 3,
+    # Fewer members on Fleetyards than the miners, more on RSI.
+    @pirates = listed_fleet("PIRATES", name: "Night Pirates", members: 2, rsi_member_count: 120,
       primary_activity: "piracy", secondary_activity: "smuggling", language: "en",
       commitment: "hardcore", roleplay: true, recruiting: true, alignment: "outlaw")
-    @miners = listed_fleet("DIGDEEP", name: "Deep Diggers", members: 2,
+    @miners = listed_fleet("DIGDEEP", name: "Deep Diggers", members: 3, rsi_member_count: 40,
       primary_activity: "resources", secondary_activity: "piracy", language: "de",
       commitment: "casual", roleplay: false, recruiting: false, alignment: "lawful",
       default_timezone: "Europe/Berlin")
@@ -57,7 +58,7 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
     parsed_body["items"].map { |item| item["name"] }
   end
 
-  test "GET /public/fleets lists listed fleets, the largest first" do
+  test "GET /public/fleets lists listed fleets, the largest RSI org first" do
     create(:fleet, rsi_sid: "UNVERIFIED", created_by: create(:user).id, members: [create(:user)])
     listed_fleet("HIDDEN", members: 2, listed: false)
     listed_fleet("PRIVATE", members: 2).update!(public_fleet: false)
@@ -67,7 +68,7 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
 
       entry = parsed_body["items"].first
       assert_equal "PIRATES", entry["rsiSid"]
-      assert_equal 3, entry["memberCount"]
+      assert_equal 120, entry["memberCount"]
       assert_equal "piracy", entry["primaryActivity"]
       assert_equal "en", entry["language"]
       assert entry["recruiting"]
@@ -125,8 +126,12 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /public/fleets filters and sorts by member count" do
-    assert_api_response :get, 200, params: {q: {"memberCountGteq" => 3}} do
+    assert_api_response :get, 200, params: {q: {"memberCountGteq" => 100}} do
       assert_equal ["Night Pirates"], names
+    end
+
+    assert_api_response :get, 200, params: {q: {"memberCountLteq" => 100}} do
+      assert_equal ["Deep Diggers"], names
     end
 
     assert_api_response :get, 200, params: {q: {"s" => "memberCount asc"}} do
@@ -134,8 +139,17 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets sorts a fleet RSI has not counted yet last" do
+    listed_fleet("NEWCOMER", name: "Newcomers", members: 5)
+
+    assert_api_response :get, 200, params: {q: {"s" => "memberCount desc"}} do
+      assert_equal ["Night Pirates", "Deep Diggers", "Newcomers"], names
+      assert_nil parsed_body["items"].last["memberCount"]
+    end
+  end
+
   test "GET /public/fleets breaks a tie on member count by name" do
-    listed_fleet("ALPHA", name: "Alpha Wing", members: 2)
+    listed_fleet("ALPHA", name: "Alpha Wing", members: 2, rsi_member_count: 40)
 
     assert_api_response :get, 200, params: {q: {"s" => "memberCount desc"}} do
       assert_equal ["Night Pirates", "Alpha Wing", "Deep Diggers"], names

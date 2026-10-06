@@ -84,6 +84,12 @@ describe("Fleets/Directory/Row", () => {
     expect(wrapper.findAll(".row-list-item__badge")).toHaveLength(1);
   });
 
+  it("leaves out a member count RSI has not given us yet", async () => {
+    const wrapper = await mount({ memberCount: null });
+
+    expect(wrapper.findAll(".row-list-item__badge")).toHaveLength(0);
+  });
+
   it("leaves out an SID the FID already shows", async () => {
     const wrapper = await mount({ rsiSid: "night" });
 

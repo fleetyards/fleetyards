@@ -104,13 +104,17 @@ const tags = computed<RowListItemTag[]>(() => {
 // One badge, like the catalogue rows: badges never wrap, so a second and third
 // pushed the name off a phone screen. The rest sits in the sub-line and the
 // tags, which give way on a narrow screen.
-const badges = computed<RowListItemBadge[]>(() => [
-  {
-    key: "members",
-    label: t("labels.fleetDirectory.memberCount"),
-    value: String(toNumber(props.fleet.memberCount, "integer")),
-  },
-]);
+const badges = computed<RowListItemBadge[]>(() => {
+  if (props.fleet.memberCount == null) return [];
+
+  return [
+    {
+      key: "members",
+      label: t("labels.fleetDirectory.memberCount"),
+      value: String(toNumber(props.fleet.memberCount, "integer")),
+    },
+  ];
+});
 </script>
 
 <template>

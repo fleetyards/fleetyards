@@ -15003,6 +15003,11 @@ components:
         rsiVerifiedAt:
           type: string
           format: date-time
+        rsiMemberCount:
+          type:
+          - integer
+          - 'null'
+          description: Members of the verified RSI org. Null until RSI has been asked
         ts:
           type: string
         discord:
@@ -15384,6 +15389,8 @@ components:
       - fid desc
       - updatedAt asc
       - updatedAt desc
+      - rsiMemberCount asc
+      - rsiMemberCount desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
@@ -15395,6 +15402,8 @@ components:
       - FID_DESC
       - UPDATED_AT_ASC
       - UPDATED_AT_DESC
+      - RSI_MEMBER_COUNT_ASC
+      - RSI_MEMBER_COUNT_DESC
       title: FleetSortEnum
     FleetSubscription:
       type: object

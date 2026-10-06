@@ -133,6 +133,12 @@ const columns: BaseTableCol<AdminFleetMember>[] = [
           total: members?.meta.pagination?.totalCount,
         })
       }}
+      <template v-if="fleet.rsiMemberCount != null">
+        &middot;
+        {{
+          t("labels.fleet.members.rsiTotal", { count: fleet.rsiMemberCount })
+        }}
+      </template>
     </HeadingSmall>
   </Heading>
 

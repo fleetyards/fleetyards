@@ -681,6 +681,7 @@
             }
           },
           "total": "Gesamt: %{count}",
+          "rsiTotal": "Auf RSI: %{count}",
           "joined": "Beigetreten am",
           "invited": "Eingeladen",
           "invitedAt": "Eingeladen / Angefragt am",

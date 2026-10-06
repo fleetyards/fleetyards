@@ -30,6 +30,7 @@
 #  public_fleet_stats          :boolean          default(FALSE)
 #  recruiting                  :boolean
 #  roleplay                    :boolean
+#  rsi_member_count            :integer
 #  rsi_sid                     :string
 #  rsi_sync_attempted_at       :datetime
 #  rsi_synced_at               :datetime
@@ -229,7 +230,9 @@ class Fleet < ApplicationRecord
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
   DIRECTORY_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["memberCount asc", "memberCount desc"]
-  ADMIN_SORTING_PARAMS = DIRECTORY_SORTING_PARAMS + ["fid asc", "fid desc", "updatedAt asc", "updatedAt desc"]
+  ADMIN_SORTING_PARAMS = DIRECTORY_SORTING_PARAMS + [
+    "fid asc", "fid desc", "updatedAt asc", "updatedAt desc", "rsiMemberCount asc", "rsiMemberCount desc"
+  ]
 
   def self.accepted_member_count_sql
     <<~SQL.squish
@@ -242,6 +245,12 @@ class Fleet < ApplicationRecord
 
   ransacker :member_count, type: :integer do
     Arel.sql(accepted_member_count_sql)
+  end
+
+  # A fleet RSI has not answered for yet sorts and filters as an empty org,
+  # rather than ahead of every other one in a descending sort.
+  ransacker :rsi_member_count, type: :integer do
+    Arel.sql("COALESCE(fleets.rsi_member_count, 0)")
   end
 
   # A verified SID is a query rather than a flag: a revoke and a takeover write
@@ -302,7 +311,7 @@ class Fleet < ApplicationRecord
       "alignment", "commitment", "created_at", "created_by", "created_on", "default_timezone",
       "description", "fid", "id", "id_value", "language", "member_count",
       "name", "normalized_fid", "primary_activity", "public_fleet",
-      "public_fleet_stats", "recruiting", "roleplay", "rsi_verified", "rsi_verified_sid",
+      "public_fleet_stats", "recruiting", "roleplay", "rsi_member_count", "rsi_verified", "rsi_verified_sid",
       "secondary_activity", "slug", "updated_at"
     ]
   end
@@ -400,6 +409,12 @@ class Fleet < ApplicationRecord
   # anyone can type any SID.
   def public_rsi_sid
     rsi_sid if rsi_verified?
+  end
+
+  # Only the sync of a verified org writes the count, and a revoke leaves the
+  # last one behind.
+  def verified_rsi_member_count
+    rsi_member_count if rsi_verified?
   end
 
   # Written past validation: neither column is something a form edits, and a

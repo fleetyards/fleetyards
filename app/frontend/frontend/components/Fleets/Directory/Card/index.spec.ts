@@ -70,6 +70,12 @@ describe("Fleets/Directory/Card", () => {
     expect(hrefs).toContain("#/fleets/directory?languageIn=de");
   });
 
+  it("leaves out a member count RSI has not given us yet", async () => {
+    const wrapper = await mount({ memberCount: null });
+
+    expect(wrapper.text()).not.toContain("Members");
+  });
+
   it("names the SID, the language and whether the fleet recruits", async () => {
     const wrapper = await mount();
     const text = wrapper.text();

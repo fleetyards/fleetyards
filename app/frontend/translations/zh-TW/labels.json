@@ -681,6 +681,7 @@
             }
           },
           "total": "總計: %{count}",
+          "rsiTotal": "RSI 上: %{count}",
           "joined": "加入於",
           "invited": "已邀請",
           "invitedAt": "邀請/請求於",

@@ -2,7 +2,8 @@
 
 module Rsi
   # An organisation's row in RSI's org directory. The org page leaves out the
-  # language and whether the org is recruiting; the directory's search has both.
+  # language, whether the org is recruiting and how many members it has; the
+  # directory's search has all three.
   #
   # The search matches names and SIDs loosely -- "TEST" finds every org with
   # "test" anywhere in it -- so only the row whose symbol is the SID answers.
@@ -10,9 +11,9 @@ module Rsi
   # asked for, so a short SID's own org can sit pages in: the search walks a
   # few of them before it gives up.
   class OrgSearch
-    Result = Data.define(:status, :language, :recruiting, :roleplay, :commitment) do
+    Result = Data.define(:status, :language, :recruiting, :roleplay, :commitment, :member_count) do
       def self.unavailable(status)
-        new(status:, language: nil, recruiting: nil, roleplay: nil, commitment: nil)
+        new(status:, language: nil, recruiting: nil, roleplay: nil, commitment: nil, member_count: nil)
       end
     end
 
@@ -73,7 +74,8 @@ module Rsi
         language: Languages.code_for(info["Lang"]),
         recruiting: yes_no(info["Recruiting"]),
         roleplay: yes_no(info["Role play"]),
-        commitment: OrgAttributes.commitment_for(info["Commitment"])
+        commitment: OrgAttributes.commitment_for(info["Commitment"]),
+        member_count: Integer(info["Members"], exception: false)
       )
     end
 

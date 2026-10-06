@@ -2,13 +2,13 @@
 
 # Narrower than the fleet page on purpose: no settings and no features, which
 # are per fleet and would cost a lookup for every row.
-json.cache! ["v1", "directory", fleet, fleet.rsi_verification_cache_key, fleet.member_count] do
+json.cache! ["v1", "directory", fleet, fleet.rsi_verification_cache_key] do
   json.id fleet.id
   json.fid fleet.fid
   json.slug fleet.slug
   json.name fleet.name
   json.rsi_sid fleet.public_rsi_sid
-  json.member_count fleet.member_count
+  json.member_count fleet.verified_rsi_member_count
   json.alignment fleet.alignment
   json.primary_activity fleet.primary_activity
   json.secondary_activity fleet.secondary_activity
