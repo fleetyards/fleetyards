@@ -14985,6 +14985,9 @@ components:
           type: boolean
         publicFleetStats:
           type: boolean
+        memberCount:
+          type: integer
+          description: Accepted members. Only the fleets list sends it
         logo:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
@@ -15293,6 +15296,24 @@ components:
         search:
           type: string
           description: Name or SID, ranked exact, then prefix, then contains
+        memberCountGteq:
+          type: integer
+          description: Accepted members
+        memberCountLteq:
+          type: integer
+          description: Accepted members
+        rsiVerifiedEq:
+          type: boolean
+        publicFleetEq:
+          type: boolean
+        recruitingEq:
+          type: boolean
+        createdOnGteq:
+          type: string
+          format: date
+        createdOnLteq:
+          type: string
+          format: date
         s:
           anyOf:
           - type: array
@@ -15315,6 +15336,8 @@ components:
       - name desc
       - createdAt asc
       - createdAt desc
+      - memberCount asc
+      - memberCount desc
       - fid asc
       - fid desc
       - updatedAt asc
@@ -15324,6 +15347,8 @@ components:
       - NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - MEMBER_COUNT_ASC
+      - MEMBER_COUNT_DESC
       - FID_ASC
       - FID_DESC
       - UPDATED_AT_ASC

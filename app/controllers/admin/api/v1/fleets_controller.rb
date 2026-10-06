@@ -16,7 +16,7 @@ module Admin
           normalize_sort_params(fleet_query_params)
           fleet_query_params["sorts"] = sorting_params(Fleet, fleet_query_params[:sorts], allowed: Fleet::ADMIN_SORTING_PARAMS)
 
-          @q = Fleet.kept.ransack(fleet_query_params)
+          @q = Fleet.kept.with_member_count.ransack(fleet_query_params)
 
           @fleets = @q.result
             .includes(:fleet_roles)
@@ -93,7 +93,10 @@ module Admin
 
         private def fleet_query_params
           @fleet_query_params ||= params.permit(q: [
-            :name_cont, :fid_cont, :search, :s, :sorts, s: [], sorts: []
+            :name_cont, :fid_cont, :search,
+            :member_count_gteq, :member_count_lteq, :rsi_verified_eq, :public_fleet_eq, :recruiting_eq,
+            :created_on_gteq, :created_on_lteq,
+            :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

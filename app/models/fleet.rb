@@ -229,7 +229,7 @@ class Fleet < ApplicationRecord
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
   DIRECTORY_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["memberCount asc", "memberCount desc"]
-  ADMIN_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["fid asc", "fid desc", "updatedAt asc", "updatedAt desc"]
+  ADMIN_SORTING_PARAMS = DIRECTORY_SORTING_PARAMS + ["fid asc", "fid desc", "updatedAt asc", "updatedAt desc"]
 
   def self.accepted_member_count_sql
     <<~SQL.squish
@@ -250,6 +250,18 @@ class Fleet < ApplicationRecord
   # its `listed` choice. `listed` is nil until a manager picks, and nil follows
   # `public_fleet`, which this already requires.
   scope :rsi_verified, -> { where.not(rsi_verified_at: nil).where("fleets.rsi_verified_sid = fleets.rsi_sid") }
+
+  # The scope above as a boolean, so a filter can ask for the unverified ones
+  # too. COALESCE because a fleet without a SID compares to NULL, not false.
+  ransacker :rsi_verified, type: :boolean do
+    Arel.sql(<<~SQL.squish)
+      COALESCE(fleets.rsi_verified_at IS NOT NULL AND fleets.rsi_verified_sid = fleets.rsi_sid, FALSE)
+    SQL
+  end
+
+  ransacker :created_on, type: :date do
+    Arel.sql("DATE(fleets.created_at)")
+  end
 
   scope :directory, -> {
     kept
@@ -287,10 +299,10 @@ class Fleet < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alignment", "commitment", "created_at", "created_by", "default_timezone",
+      "alignment", "commitment", "created_at", "created_by", "created_on", "default_timezone",
       "description", "fid", "id", "id_value", "language", "member_count",
       "name", "normalized_fid", "primary_activity", "public_fleet",
-      "public_fleet_stats", "recruiting", "roleplay", "rsi_verified_sid",
+      "public_fleet_stats", "recruiting", "roleplay", "rsi_verified", "rsi_verified_sid",
       "secondary_activity", "slug", "updated_at"
     ]
   end
