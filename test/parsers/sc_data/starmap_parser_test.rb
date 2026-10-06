@@ -375,6 +375,15 @@ module ScData
         assert_equal "Lorville Spaceport", location("Stanton1_Lorville_Spaceport")[:name]
       end
 
+      test "#locations makes the spaceport even where it is the city's only zone" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        landing_zones([landing_zone("Stanton1_Lorville", zones: [zone("lorville_sp_ext", hangars: [hangar("Large", 2)])])])
+
+        assert_equal [2], location("Stanton1_Lorville_Spaceport")[:facilities][:hangars].pluck(:count)
+        assert_nil location("Stanton1_Lorville")[:facilities]
+      end
+
       test "#locations keeps every zone on a city with no spaceport of its own" do
         stanton
         place("Nyx_Levski", "Levski", type: "LandingZone", parent: "Stanton1")
@@ -396,6 +405,18 @@ module ScData
 
         assert_equal [2], location("RR_HUR_LEO")[:facilities][:hangars].pluck(:count)
         assert_nil location("RR_HUR_LEO_2")
+      end
+
+      test "#locations follows a merge from the record key when the ref matches nothing" do
+        stanton
+        place("RR_HUR_LEO", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        place("RR_HUR_LEO_2", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        @overrides = {"RR_HUR_LEO" => {"merge" => ["RR_HUR_LEO_2"]}}
+        landing_zones([
+          landing_zone("RR_HUR_LEO_2", ref: "00000000-0000-4000-8000-00000000beef", zones: [zone("rs_ext_hur_leo", hangars: [hangar("Medium", 2)])])
+        ])
+
+        assert_equal [2], location("RR_HUR_LEO")[:facilities][:hangars].pluck(:count)
       end
 
       test "#locations leaves facilities out of an export without the landing zones file" do

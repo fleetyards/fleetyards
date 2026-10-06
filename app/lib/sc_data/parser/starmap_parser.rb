@@ -542,7 +542,7 @@ module ScData
         end
 
         landing_zones.each do |entry|
-          key = by_ref[entry["starmapRef"]] || entry["starmapRecord"].presence&.then { |record| record if places[record] }
+          key = by_ref[entry["starmapRef"]] || resolve_key(entry["starmapRecord"].presence, places)
 
           if key.nil?
             Rails.logger.warn("starmap: no place for landing zone #{entry["name"].inspect} (#{entry["container"]})")
@@ -551,7 +551,7 @@ module ScData
 
           place = places[key]
           zones = Array.wrap(entry["zones"])
-          port = zones.find { |zone| zone["container"].to_s.match?(SPACEPORT_ZONE) } if place[:kind] == "city" && zones.size > 1
+          port = zones.find { |zone| zone["container"].to_s.match?(SPACEPORT_ZONE) } if place[:kind] == "city"
 
           if port
             add_facilities(spaceport_for(places, place), [port])
