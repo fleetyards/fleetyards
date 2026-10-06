@@ -70,6 +70,15 @@ module ScData
       "models" => Catalogue.new(key: "key", floor: 880, icons: false)
     }.freeze
 
+    # Places that have had hangars in every build since the exporter began
+    # counting them. Only asked once some place in the tree carries facilities:
+    # an export from before the count has none anywhere, and that is no fault.
+    HANGAR_FLOOR = %w[
+      Stanton1_Lorville_Spaceport Stanton2_Orison_Spaceport
+      Stanton3_Area18_Spaceport Stanton4_NewBabbage_Spaceport
+      Nyx_Levski RR_HUR_LEO RR_CRU_LEO RR_ARC_LEO RR_MIC_LEO
+    ].freeze
+
     # A record may name art the export does not ship -- eight manufacturers are
     # in exactly that position, which is why an admin uploaded their logos by
     # hand. That is the game's omission and not a broken parse, so it is counted
@@ -105,6 +114,7 @@ module ScData
         stats[folder] = folder_stats
       end
 
+      problems.concat(facility_problems)
       problems.concat(empty_file_problems)
 
       Result.new(problems, stats)
@@ -208,6 +218,28 @@ module ScData
       end
 
       [problems, stats]
+    end
+
+    # A join that stopped matching -- a renamed record, a ref the starmap no
+    # longer carries -- leaves the counts on no place at all, or on the wrong
+    # one, and the tree still loads.
+    private def facility_problems
+      places = Dir.glob(root.join("locations", "*.json")).filter_map do |file|
+        data = JSON.parse(File.read(file))
+        data if data.is_a?(Hash)
+      rescue JSON::ParserError
+        nil
+      end
+
+      return [] if places.none? { |place| place["facilities"].present? }
+
+      by_key = places.index_by { |place| place["sc_key"] }
+
+      HANGAR_FLOOR.filter_map do |key|
+        hangars = Array.wrap(by_key[key]&.dig("facilities", "hangars")).sum { |hangar| hangar["count"].to_i }
+
+        "locations: #{key} has no hangars" if hangars.zero?
+      end
     end
 
     # Resolved the way `BaseLoader#parsed_icon` resolves it: a record names the

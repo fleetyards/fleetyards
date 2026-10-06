@@ -163,6 +163,22 @@ module ScData
       end
     end
 
+    test "#call asks nothing of hangars in a tree where no place has facilities" do
+      write_tree
+
+      assert_predicate check, :ok?
+    end
+
+    test "#call reports a place that always has hangars coming back without them" do
+      write_tree
+      ::ScData::ParsedCheck::HANGAR_FLOOR.each do |key|
+        write_record("locations", key.downcase, {sc_key: key, facilities: {hangars: [{size: "large", count: 2}]}})
+      end
+      write_record("locations", "rr_hur_leo", {sc_key: "RR_HUR_LEO", facilities: {hangars: [], landing_pads: [{size: "small", count: 2}]}})
+
+      assert_equal ["locations: RR_HUR_LEO has no hangars"], check.problems
+    end
+
     test "#call reports a record with no key of its own" do
       write_tree
       write_record("items", "nameless", {"key" => " "})
