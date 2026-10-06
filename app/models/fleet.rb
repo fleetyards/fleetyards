@@ -409,6 +409,12 @@ class Fleet < ApplicationRecord
     rsi_sid if rsi_verified?
   end
 
+  # Only the sync of a verified org writes the count, and a revoke leaves the
+  # last one behind.
+  def verified_rsi_member_count
+    rsi_member_count if rsi_verified?
+  end
+
   # Written past validation: neither column is something a form edits, and a
   # fleet saved before a later format check must still be able to get a token.
   # rubocop:disable Rails/SkipsModelValidations

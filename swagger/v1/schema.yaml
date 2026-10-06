@@ -21930,6 +21930,11 @@ components:
           - string
           - 'null'
           format: date-time
+        rsiMemberCount:
+          type:
+          - integer
+          - 'null'
+          description: Members of the verified RSI org. Null until RSI has been asked
         calendarFeedToken:
           type: string
         logo:

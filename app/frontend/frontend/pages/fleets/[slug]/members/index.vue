@@ -119,6 +119,11 @@ const statsQueryParams = computed<FleetMembersStatsParams>(() => ({
   } as FleetMemberQuery,
 }));
 
+// The org's size on RSI sits beside the roster, not beside the invites.
+const rsiMemberCount = computed(() =>
+  view.value === "members" ? props.fleet.rsiMemberCount : null,
+);
+
 const { data: stats, refetch: refetchStats } = useFleetMembersStatsQuery(
   props.fleet.slug,
   statsQueryParams,
@@ -205,6 +210,10 @@ const crumbs = computed<Crumb[]>(() => {
           count: stats.total,
         })
       }}
+      <template v-if="rsiMemberCount != null">
+        &middot;
+        {{ t("labels.fleet.members.rsiTotal", { count: rsiMemberCount }) }}
+      </template>
     </template>
   </Heading>
 

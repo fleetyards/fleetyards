@@ -32,6 +32,7 @@ json.language fleet.language
 json.roleplay fleet.roleplay
 json.recruiting fleet.recruiting
 json.rsi_synced_at fleet.rsi_synced_at&.utc&.iso8601
+json.rsi_member_count fleet.verified_rsi_member_count
 json.logo do
   json.partial! "api/v1/shared/file", record: fleet, attr: :logo
 end
