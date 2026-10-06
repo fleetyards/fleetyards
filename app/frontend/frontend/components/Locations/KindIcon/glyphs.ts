@@ -1,12 +1,12 @@
 import { LocationKindEnum } from "@/services/fyApi";
 import {
-  type Icon,
+  type Glyph,
   PRIMARY_STROKE,
   SECONDARY_STROKE,
   mask,
 } from "@/shared/components/DuotoneGlyph/glyph";
 
-export const GLYPHS: Record<LocationKindEnum, Icon> = {
+export const GLYPHS: Record<LocationKindEnum, Glyph> = {
   [LocationKindEnum.SYSTEM]: {
     secondary: `<g fill="none" ${SECONDARY_STROKE} stroke-width="22"><circle cx="256" cy="256" r="124"/><circle cx="256" cy="256" r="216"/></g>`,
     primary:
@@ -48,8 +48,13 @@ export const GLYPHS: Record<LocationKindEnum, Icon> = {
     primary:
       '<g mask="url(#{id}-windows)"><rect x="104" y="200" width="88" height="240" rx="10"/><rect x="264" y="164" width="88" height="276" rx="10"/></g><rect x="40" y="432" width="432" height="40" rx="12"/>',
   },
-  // Font Awesome's arrivals sign says "port" better than anything drawn here.
-  [LocationKindEnum.SPACEPORT]: "fa-duotone fa-plane-arrival",
+  // A ship coming down on its thrusters onto a lit pad.
+  [LocationKindEnum.SPACEPORT]: {
+    secondary:
+      '<ellipse cx="256" cy="440" rx="236" ry="56"/><path d="M214 316 L242 316 L234 380 L222 380 Z"/><path d="M270 316 L298 316 L290 380 L278 380 Z"/>',
+    primary:
+      '<path d="M256 16 L296 120 L302 176 L432 260 L432 298 L316 284 L306 312 L206 312 L196 284 L80 298 L80 260 L210 176 L216 120 Z"/><rect x="96" y="428" width="56" height="24" rx="12"/><rect x="360" y="428" width="56" height="24" rx="12"/>',
+  },
   [LocationKindEnum.STATION]: {
     secondary:
       '<rect x="24" y="136" width="120" height="104" rx="10"/><rect x="24" y="272" width="120" height="104" rx="10"/><rect x="368" y="136" width="120" height="104" rx="10"/><rect x="368" y="272" width="120" height="104" rx="10"/>',
