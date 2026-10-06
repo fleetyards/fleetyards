@@ -13,6 +13,7 @@
 #  body_type                  :string
 #  color                      :string
 #  description                :text
+#  facilities                 :jsonb
 #  game_type                  :string
 #  kind                       :string
 #  mission_template_refs      :text             default([]), not null, is an Array

@@ -12,6 +12,7 @@
 #  body_type                  :string
 #  description                :text
 #  environment                :string           not null
+#  facilities                 :jsonb
 #  game_type                  :string
 #  kind                       :string
 #  name                       :string
@@ -41,6 +42,7 @@ class LocationBuild < ApplicationRecord
   FACTS = %i[
     name description resources kind body_type game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
+    facilities
   ].freeze
 
   READ_THROUGH = FACTS
