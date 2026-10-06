@@ -48,9 +48,10 @@ class FleetRsiVerification
   end
 
   # An admin's word in place of the org page, for a fleet that cannot show the
-  # token there. It takes the SID over like a check would.
+  # token there. It takes the SID over like a check would, and counts as the
+  # latest check, so one still out cannot answer over it.
   def confirm!
-    sync_if_verified(apply(:verified, sid: fleet.rsi_sid, token: fleet.rsi_verification_token))
+    sync_if_verified(apply(:verified, sid: fleet.rsi_sid, token: fleet.rsi_verification_token, supersede: true))
   end
 
   # Straight away, so a fleet that has just verified need not wait for the
@@ -77,18 +78,22 @@ class FleetRsiVerification
   # holder to take the SID from this time. Two fleets taking each other's SIDs
   # at once can deadlock on the pair of rows; PostgreSQL aborts one, which goes
   # again the same way.
-  private def apply(status, sid:, token:, attempts: 2)
+  private def apply(status, sid:, token:, supersede: false, attempts: 2)
     previous = []
 
     applied = Fleet.transaction do
       fleet.lock!
 
-      next :stale unless self.class.generation_of(fleet.rsi_verification_checked_at) == @generation
-
-      if fleet.rsi_sid != sid || fleet.rsi_verification_token != token
-        write(rsi_verification_status: nil) if fleet.rsi_verification_pending?
+      unless supersede || self.class.generation_of(fleet.rsi_verification_checked_at) == @generation
         next :stale
       end
+
+      if fleet.rsi_sid != sid || fleet.rsi_verification_token != token
+        write(rsi_verification_status: nil) if fleet.rsi_verification_pending? && !supersede
+        next :stale
+      end
+
+      write(rsi_verification_checked_at: Time.current.floor(6)) if supersede
 
       if status == :verified
         previous = take_over!(sid)
