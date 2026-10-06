@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.16.0](https://github.com/fleetyards/fleetyards/compare/v8.15.0...v8.16.0) (2026-10-06)
+
+
+### Features
+
+* **fleets:** sync and show the RSI org's member count ([#5447](https://github.com/fleetyards/fleetyards/issues/5447)) ([3725c9a](https://github.com/fleetyards/fleetyards/commit/3725c9a5798e546ceed79dab19dd9ea06b9dae72))
+
 ## [8.15.0](https://github.com/fleetyards/fleetyards/compare/v8.14.0...v8.15.0) (2026-10-06)
 
 
