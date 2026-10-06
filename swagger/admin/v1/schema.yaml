@@ -15315,11 +15315,19 @@ components:
       - name desc
       - createdAt asc
       - createdAt desc
+      - fid asc
+      - fid desc
+      - updatedAt asc
+      - updatedAt desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - FID_ASC
+      - FID_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
       title: FleetSortEnum
     FleetSubscription:
       type: object

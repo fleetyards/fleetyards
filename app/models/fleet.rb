@@ -229,6 +229,7 @@ class Fleet < ApplicationRecord
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
   DIRECTORY_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["memberCount asc", "memberCount desc"]
+  ADMIN_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["fid asc", "fid desc", "updatedAt asc", "updatedAt desc"]
 
   def self.accepted_member_count_sql
     <<~SQL.squish

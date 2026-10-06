@@ -14,7 +14,7 @@ module Admin
           authorize! with: ::Admin::FleetPolicy
 
           normalize_sort_params(fleet_query_params)
-          fleet_query_params["sorts"] = sorting_params(Fleet, fleet_query_params[:sorts])
+          fleet_query_params["sorts"] = sorting_params(Fleet, fleet_query_params[:sorts], allowed: Fleet::ADMIN_SORTING_PARAMS)
 
           @q = Fleet.kept.ransack(fleet_query_params)
 
