@@ -43,11 +43,7 @@ module Api
         result = by_joined_at(result, sort: joined_sort.first, from: joined_from, until_date: joined_until)
         result = result
           .order(@q.result.order_values)
-          .includes(
-            :user,
-            :fleet_role,
-            fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]
-          )
+          .includes(*FleetMembership::ROSTER_PRELOADS)
           .joins(:user)
 
         @members = result_with_pagination(result, per_page(FleetMembership))

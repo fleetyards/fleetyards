@@ -22,11 +22,20 @@ export const NEUTRAL_COLOR = "#8899aa";
  * a choice: a squadron without a colour keeps having none unless somebody
  * picked one, or an edit of its name would turn its outlined emblem into a
  * filled grey tile.
+ *
+ * Compared against the stand-in rather than asked of the form: the colour
+ * input re-seeds the field's initial value on every change, so vee-validate
+ * never reports it dirty and a picked colour was dropped.
  */
 export const colorToSubmit = (
   value: string | null | undefined,
-  { previous, changed }: { previous?: string | null; changed: boolean },
-) => (changed || previous ? value || null : null);
+  previous?: string | null,
+) => {
+  if (!value) return null;
+  if (previous) return value;
+
+  return value.toLowerCase() === NEUTRAL_COLOR ? null : value;
+};
 
 export type SquadronFormFields = ReturnType<typeof useSquadronForm>["fields"];
 
@@ -61,7 +70,7 @@ export const useSquadronForm = (
     description: `max:${DESCRIPTION_MAX}`,
   };
 
-  const { defineField, handleSubmit, setErrors, meta, isFieldDirty } = useForm({
+  const { defineField, handleSubmit, setErrors, meta } = useForm({
     initialValues: {
       name: squadron?.value?.name ?? "",
       shortDescription: squadron?.value?.shortDescription ?? "",
@@ -117,10 +126,7 @@ export const useSquadronForm = (
       name: values.name,
       shortDescription: values.shortDescription || null,
       description: values.description || null,
-      color: colorToSubmit(values.color, {
-        previous: squadron?.value?.color,
-        changed: isFieldDirty("color"),
-      }),
+      color: colorToSubmit(values.color, squadron?.value?.color),
       team: values.team,
       discordChannelId: values.discordChannelId || null,
       // Passed through rather than coerced: `undefined` keeps what is attached,

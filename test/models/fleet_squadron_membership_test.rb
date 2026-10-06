@@ -126,4 +126,27 @@ class FleetSquadronMembershipTest < ActiveSupport::TestCase
 
     assert_equal "officer", row.fleet_squadron_role.key
   end
+
+  # Joining touches the fleet membership, which tells every member of the fleet
+  # about it. Looking each of them up separately made a join cost one query per
+  # fleet member.
+  test "joining costs the same number of queries in a small fleet and a large one" do
+    in_small = queries_to_join(@squadron, @membership)
+
+    create_list(:fleet_membership, 8, :accepted, fleet: @fleet)
+    other = create(:fleet_membership, :accepted, fleet: @fleet)
+
+    assert_equal in_small, queries_to_join(@squadron, other)
+  end
+
+  private def queries_to_join(squadron, membership)
+    count = 0
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      count += 1 unless payload[:name].to_s.match?(/SCHEMA|TRANSACTION/)
+    end
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: membership)
+    count
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscriber)
+  end
 end

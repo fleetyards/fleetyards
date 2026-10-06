@@ -144,4 +144,60 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
     assert_equal for_one, for_many,
       "defenses queries grew from #{for_one} to #{for_many} between 1 and 9 ships"
   end
+
+  # Every row renders the member partial: the user's avatar and connected
+  # accounts, the fleet's verification, the role and the squadron badges.
+  test "the fleet members index issues the same number of queries for one member as for many" do
+    admin = create(:user)
+    fleet = create(:fleet, :with_squadrons, admins: [admin])
+    team = create(:fleet_squadron, fleet:, team: true)
+    sign_in admin
+
+    member_on_team = lambda do
+      membership = create(:fleet_membership, :accepted, fleet:)
+      create(:fleet_squadron_membership, fleet_squadron: team, fleet_membership: membership)
+    end
+
+    path = "/api/v1/fleets/#{fleet.slug}/members"
+
+    member_on_team.call
+    get path
+    assert_response :success
+    for_one = count_queries { get path }
+
+    8.times { member_on_team.call }
+    for_many = count_queries { get path }
+
+    assert_response :success
+    assert_equal 10, response.parsed_body["items"].size
+    assert_equal for_one, for_many,
+      "fleet members queries grew from #{for_one} to #{for_many} between 1 and 9 members"
+  end
+
+  test "the squadron members index issues the same number of queries for one member as for many" do
+    admin = create(:user)
+    fleet = create(:fleet, :with_squadrons, admins: [admin])
+    squadron = create(:fleet_squadron, fleet:)
+    sign_in admin
+
+    member_in_squadron = lambda do
+      membership = create(:fleet_membership, :accepted, fleet:)
+      create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: membership)
+    end
+
+    path = "/api/v1/fleets/#{fleet.slug}/squadrons/#{squadron.slug}/members"
+
+    member_in_squadron.call
+    get path
+    assert_response :success
+    for_one = count_queries { get path }
+
+    8.times { member_in_squadron.call }
+    for_many = count_queries { get path }
+
+    assert_response :success
+    assert_equal 9, response.parsed_body["items"].size
+    assert_equal for_one, for_many,
+      "squadron members queries grew from #{for_one} to #{for_many} between 1 and 9 members"
+  end
 end

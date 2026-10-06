@@ -123,6 +123,15 @@ class FleetMembership < ApplicationRecord
     "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
   ].freeze
 
+  # Everything the member partial reads, so a roster renders in a fixed number
+  # of queries rather than a handful per row.
+  ROSTER_PRELOADS = [
+    :fleet,
+    :fleet_role,
+    {user: [{current_location: :parent}, :omniauth_connections, {avatar_attachment: :blob}]},
+    {fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]}
+  ].freeze
+
   ransack_alias :username, :user_username
   ransack_alias :rsi_handle, :user_rsi_handle
   ransack_alias :last_active_at, :user_last_active_at
@@ -480,26 +489,34 @@ class FleetMembership < ApplicationRecord
   def broadcast_update
     return if saved_change_to_discarded_at?
 
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
+    payload = to_jbuilder_hash
 
-      next unless ships_filter_changed?
-
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
+    each_fleet_recipient do |user|
+      FleetMembersChannel.broadcast_to(user, payload)
+      FleetVehiclesChannel.broadcast_to(user, payload) if ships_filter_changed?
     end
   end
 
   def broadcast_create
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
-    end
+    payload = to_jbuilder_hash
+
+    each_fleet_recipient { |user| FleetMembersChannel.broadcast_to(user, payload) }
   end
 
   def broadcast_destroy
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
+    payload = to_jbuilder_hash
+
+    each_fleet_recipient do |user|
+      FleetMembersChannel.broadcast_to(user, payload)
+      FleetVehiclesChannel.broadcast_to(user, payload)
     end
+  end
+
+  # The users in one query rather than one per member: every squadron join or
+  # rank change touches the membership and lands here, so a lookup per member
+  # made those writes scale with the size of the fleet.
+  private def each_fleet_recipient(&)
+    User.where(id: fleet.fleet_memberships.kept.select(:user_id)).find_each(&)
   end
 
   def promote
