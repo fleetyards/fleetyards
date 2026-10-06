@@ -153,6 +153,7 @@ v1_admin_api_routes = lambda do
     end
 
     member do
+      post "rsi-verification", to: "fleets#confirm_rsi_verification"
       delete "rsi-verification", to: "fleets#revoke_rsi_verification"
     end
 

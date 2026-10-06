@@ -3693,6 +3693,48 @@ paths:
         type: string
         format: uuid
       required: true
+    post:
+      summary: Verify a fleet's RSI org without the token check
+      tags:
+      - Fleets
+      operationId: confirmFleetRsiVerification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '400':
+          description: no RSI SID
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '409':
+          description: the SID changed while verifying
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     delete:
       summary: Revoke a fleet's RSI verification
       tags:
