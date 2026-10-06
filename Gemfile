@@ -6,7 +6,7 @@ ruby file: ".tool-versions"
 
 gem "rails", "8.1.4"
 
-gem "pg", "~> 1.0"
+gem "pg", "~> 1.7"
 
 gem "sidekiq", "~> 8.1"
 gem "sidekiq-scheduler"
