@@ -69,6 +69,7 @@ class Fleet < ApplicationRecord
   include ActiveStorageVariants
   include InventoryTransferParty
   include LinkedLocations
+  include FeatureFlagActor
 
   # Where the fleet is based: free text, linked to one of our places where it
   # is one.
