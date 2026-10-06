@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.17.0](https://github.com/fleetyards/fleetyards/compare/v8.16.0...v8.17.0) (2026-10-06)
+
+
+### Features
+
+* **locations:** hangars and landing pads per station, and city spaceports as places ([#5453](https://github.com/fleetyards/fleetyards/issues/5453)) ([78a8c29](https://github.com/fleetyards/fleetyards/commit/78a8c29acd9a4f0d85a013d2ec8028def0f1694f))
+* **squadrons:** join requests, promote/demote and rank-sorted roster ([#5450](https://github.com/fleetyards/fleetyards/issues/5450)) ([c6ceebb](https://github.com/fleetyards/fleetyards/commit/c6ceebb3f30bd80273738025ba42342760587206))
+
+
+### Bug Fixes
+
+* **session:** ignore 401s from requests sent before sign-in ([#5452](https://github.com/fleetyards/fleetyards/issues/5452)) ([a43022e](https://github.com/fleetyards/fleetyards/commit/a43022e568de6faa5b5cc619b9824ba619089de2))
+* **squadrons:** faster member writes and rosters, squadron colour, description gap ([#5449](https://github.com/fleetyards/fleetyards/issues/5449)) ([a9bf329](https://github.com/fleetyards/fleetyards/commit/a9bf3296aa96efb67c3e29c34ca32d3c7c72e13b))
+
 ## [8.16.0](https://github.com/fleetyards/fleetyards/compare/v8.15.0...v8.16.0) (2026-10-06)
 
 
