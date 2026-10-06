@@ -8,7 +8,7 @@ module V1
       class LocationFacilitySizeEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = ::ScData::Parser::StarmapParser::PAD_SIZES.values.freeze
+        VALUES = (::Dock.ship_sizes.keys - %w[capital]).freeze
 
         schema({
           type: :string,
