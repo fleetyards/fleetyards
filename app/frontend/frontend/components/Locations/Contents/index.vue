@@ -40,11 +40,12 @@ const toggle = (group: LocationContentsGroup) => {
   };
 };
 
-// A room inside a station or city is never on the map, so saying so on every
-// clinic only adds noise.
+// A room inside a station or city is never on the map, and neither is a
+// city's spaceport, so saying so on every one only adds noise.
 const ROOM_KINDS: string[] = [
   LocationKindEnum.CLINIC,
   LocationKindEnum.DISTRICT,
+  LocationKindEnum.SPACEPORT,
 ];
 
 // A name several places share opens the list of all of them; a single place
