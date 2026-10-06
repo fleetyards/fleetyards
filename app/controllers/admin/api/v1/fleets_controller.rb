@@ -78,7 +78,9 @@ module Admin
             return render json: ValidationError.new("fleet.update", errors: @fleet.errors), status: :bad_request
           end
 
-          FleetRsiVerification.new(@fleet).confirm!
+          unless FleetRsiVerification.new(@fleet).confirm! == :verified
+            return render json: {code: "rsi_sid_changed", message: "The fleet's RSI SID changed while verifying it"}, status: :conflict
+          end
 
           render :show
         end

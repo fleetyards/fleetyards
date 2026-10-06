@@ -23,6 +23,10 @@ class Admin::Api::V1::FleetsConfirmRsiVerificationTest < ActionDispatch::Integra
         schema ::Shared::V1::Schemas::ValidationError
       end
 
+      response(409, "the SID changed while verifying") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -50,6 +54,15 @@ class Admin::Api::V1::FleetsConfirmRsiVerificationTest < ActionDispatch::Integra
     end
 
     assert @fleet.reload.rsi_verified?
+  end
+
+  test "POST /fleets/:id/rsi-verification returns 409 when the SID changes underneath it" do
+    sign_in @user
+    FleetRsiVerification.any_instance.stubs(:confirm!).returns(nil)
+
+    assert_api_response :post, 409, path_params: {id: @fleet.id} do
+      assert_equal "rsi_sid_changed", parsed_body["code"]
+    end
   end
 
   test "POST /fleets/:id/rsi-verification returns 400 for a fleet without an SID" do
