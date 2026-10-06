@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.15.0](https://github.com/fleetyards/fleetyards/compare/v8.14.0...v8.15.0) (2026-10-06)
+
+
+### Features
+
+* **admin:** expand fleet filters ([#5445](https://github.com/fleetyards/fleetyards/issues/5445)) ([d88077f](https://github.com/fleetyards/fleetyards/commit/d88077fd11caab19eda753a00f31c6e8de305d3b))
+* **admin:** put each self-service switch on the tab it fills ([#5444](https://github.com/fleetyards/fleetyards/issues/5444)) ([d608e9f](https://github.com/fleetyards/fleetyards/commit/d608e9fd679e4540eb2bdc433f05f922ee2867d6))
+* **admin:** verify a fleet's RSI org from the admin UI ([#5446](https://github.com/fleetyards/fleetyards/issues/5446)) ([d7f9043](https://github.com/fleetyards/fleetyards/commit/d7f904370180bef7b3b4322b6c10da8ee14d5d05))
+
+
+### Bug Fixes
+
+* **auth:** make Bluesky login complete against bsky.social ([#5434](https://github.com/fleetyards/fleetyards/issues/5434)) ([d67f659](https://github.com/fleetyards/fleetyards/commit/d67f659634d609049a56e9dfbcf463b206218406))
+* **feature-flags:** clean up and remove actors whose record was deleted ([#5443](https://github.com/fleetyards/fleetyards/issues/5443)) ([6dd0514](https://github.com/fleetyards/fleetyards/commit/6dd0514bfbfc096e7491d6cac91147b8246ca3a4))
+* **features:** let the feature list rows wrap on mobile ([#5442](https://github.com/fleetyards/fleetyards/issues/5442)) ([0eaf1da](https://github.com/fleetyards/fleetyards/commit/0eaf1da2e0947c5c7dabbd6b9cf5b024edf246e0))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5437](https://github.com/fleetyards/fleetyards/issues/5437)) ([2ab2bf5](https://github.com/fleetyards/fleetyards/commit/2ab2bf545e006767fbd5e55dae8c725ae5ad60e2))
+* **deps-dev:** bump eslint from 10.11.0 to 10.12.0 ([#5438](https://github.com/fleetyards/fleetyards/issues/5438)) ([4eb1546](https://github.com/fleetyards/fleetyards/commit/4eb154666d53a4c257d7fdc63d956d4ee4a4c2cb))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.11 to 3.3.12 ([#5441](https://github.com/fleetyards/fleetyards/issues/5441)) ([3013274](https://github.com/fleetyards/fleetyards/commit/3013274126e9b5e867423136c2c51c839c193bfd))
+* **deps:** bump @tanstack/vue-query from 5.104.0 to 5.104.1 ([#5440](https://github.com/fleetyards/fleetyards/issues/5440)) ([71c80f0](https://github.com/fleetyards/fleetyards/commit/71c80f08f8372112703f871788dfdba786141e88))
+* **deps:** bump pg from 1.6.3 to 1.7.0 ([#5436](https://github.com/fleetyards/fleetyards/issues/5436)) ([8eb9a4f](https://github.com/fleetyards/fleetyards/commit/8eb9a4f9fc9b8b115a5d0bbb3c428132a92cf346))
+* update credentails for bluesky ([09cc092](https://github.com/fleetyards/fleetyards/commit/09cc092e1cad5e58f48c37be26c16626cdb3275f))
+
 ## [8.14.0](https://github.com/fleetyards/fleetyards/compare/v8.13.2...v8.14.0) (2026-10-05)
 
 

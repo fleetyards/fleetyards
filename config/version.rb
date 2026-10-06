@@ -4,5 +4,5 @@ require "yaml"
 
 module Fleetyards
   CODENAME = YAML.load_file(File.expand_path("release.yml", __dir__)).fetch("codename").freeze
-  VERSION = "v8.14.0" # x-release-please-version
+  VERSION = "v8.15.0" # x-release-please-version
 end
