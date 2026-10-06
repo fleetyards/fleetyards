@@ -200,4 +200,34 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
     assert_equal for_one, for_many,
       "squadron members queries grew from #{for_one} to #{for_many} between 1 and 9 members"
   end
+
+  # Every request renders the member who asked, squadron badges included.
+  test "the squadron requests index issues the same number of queries for one request as for many" do
+    admin = create(:user)
+    fleet = create(:fleet, :with_squadrons, admins: [admin])
+    squadron = create(:fleet_squadron, fleet:)
+    team = create(:fleet_squadron, fleet:, team: true)
+    sign_in admin
+
+    request_with_team = lambda do
+      membership = create(:fleet_membership, :accepted, fleet:)
+      create(:fleet_squadron_membership, fleet_squadron: team, fleet_membership: membership)
+      create(:fleet_squadron_request, fleet_squadron: squadron, fleet_membership: membership)
+    end
+
+    path = "/api/v1/fleets/#{fleet.slug}/squadrons/#{squadron.slug}/requests"
+
+    request_with_team.call
+    get path
+    assert_response :success
+    for_one = count_queries { get path }
+
+    8.times { request_with_team.call }
+    for_many = count_queries { get path }
+
+    assert_response :success
+    assert_equal 9, response.parsed_body.size
+    assert_equal for_one, for_many,
+      "squadron requests queries grew from #{for_one} to #{for_many} between 1 and 9 requests"
+  end
 end

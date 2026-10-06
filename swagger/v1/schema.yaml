@@ -7739,6 +7739,204 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/requests":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    post:
+      summary: Request to join a Fleet Squadron
+      tags:
+      - FleetSquadrons
+      operationId: createFleetSquadronRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRequest"
+        '400':
+          description: bad request - a team, already a member, already asked, or in
+            another squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Fleet Squadron Requests List
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronRequests
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRequestsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - only whoever manages the roster answers requests
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/requests/{username}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username of the member who asked
+      required: true
+    delete:
+      summary: Withdraw or decline a Fleet Squadron Request
+      tags:
+      - FleetSquadrons
+      operationId: destroyFleetSquadronRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - somebody else's request, and not the roster's to
+            answer
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/requests/{username}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetSquadronSlug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username of the member who asked
+      required: true
+    put:
+      summary: Accept a Fleet Squadron Request
+      tags:
+      - FleetSquadrons
+      operationId: acceptFleetSquadronRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: bad request - the member joined another squadron since asking
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - only whoever manages the roster answers requests
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/squadrons/{slug}":
     parameters:
     - name: fleetSlug
@@ -7867,6 +8065,104 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{slug}/join":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    post:
+      summary: Join Fleet Squadron
+      tags:
+      - FleetSquadrons
+      operationId: joinFleetSquadron
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - an ordinary squadron is asked for, not joined
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{slug}/leave":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    delete:
+      summary: Leave Fleet Squadron
+      tags:
+      - FleetSquadrons
+      operationId: leaveFleetSquadron
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found - not in this squadron
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{slug}/move":
     parameters:
     - name: fleetSlug
@@ -26180,6 +26476,15 @@ components:
           "$ref": "#/components/schemas/FleetSquadronRole"
         capabilities:
           "$ref": "#/components/schemas/FleetSquadronCapabilities"
+        viewerIsMember:
+          type: boolean
+        viewerRequestedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        pendingRequestCount:
+          type: integer
         icon:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -26427,6 +26732,32 @@ components:
       - slug
       - team
       title: FleetSquadronRef
+    FleetSquadronRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        member:
+          "$ref": "#/components/schemas/FleetMember"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - member
+      - createdAt
+      - updatedAt
+      title: FleetSquadronRequest
+    FleetSquadronRequestsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetSquadronRequest"
+      title: FleetSquadronRequestsList
     FleetSquadronRole:
       type: object
       properties:

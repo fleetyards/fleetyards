@@ -37,6 +37,9 @@ class FleetSquadronMembership < ApplicationRecord
 
   before_validation :assign_default_role, on: :create
 
+  # Somebody posted to the squadron directly has had their answer.
+  after_create :close_request
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[fleet_squadron_id fleet_membership_id fleet_squadron_role_id created_at updated_at]
   end
@@ -69,16 +72,15 @@ class FleetSquadronMembership < ApplicationRecord
     # for the same member must recheck after the preceding join commits.
     FleetMembership.where(id: fleet_membership_id).lock.take
 
-    held = FleetSquadron
-      .joins(:fleet_squadron_memberships)
-      .where(fleet_id: fleet_squadron.fleet_id, team: false)
-      .where(fleet_squadron_memberships: {fleet_membership_id: fleet_membership_id})
-      .where.not(id: fleet_squadron_id)
-      .first
+    held = fleet_membership.exclusive_squadron(except: fleet_squadron)
 
     return if held.blank?
 
     errors.add(:fleet_squadron, :exclusive_conflict, squadron: held.name)
+  end
+
+  private def close_request
+    FleetSquadronRequest.where(fleet_squadron_id:, fleet_membership_id:).delete_all
   end
 
   private def assign_default_role

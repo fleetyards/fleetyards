@@ -93,6 +93,10 @@ de:
       create: Mitglied konnte der Staffel nicht hinzugefügt werden.
       destroy: Mitglied konnte nicht aus der Staffel entfernt werden.
       update: Staffelmitgliedschaft konnte nicht aktualisiert werden.
+    fleet_squadron_requests:
+      create: "Beitrittsanfrage konnte nicht gesendet werden."
+      accept: "Anfrage konnte nicht angenommen werden."
+      destroy: "Anfrage konnte nicht entfernt werden."
     fleet_squadron_roles:
       update: "Der Staffelrang konnte nicht umbenannt werden."
     fleet_roles:
@@ -101,6 +105,8 @@ de:
       create: Staffel konnte nicht erstellt werden.
       update: Staffel konnte nicht aktualisiert werden.
       destroy: Staffel konnte nicht aufgelöst werden.
+      join: "Dem Team konnte nicht beigetreten werden."
+      leave: "Die Staffel konnte nicht verlassen werden."
     fleet_inventory_items:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.

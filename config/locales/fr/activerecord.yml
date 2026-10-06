@@ -2,6 +2,9 @@
 fr:
   activerecord:
     attributes:
+      fleet_squadron_request:
+        fleet_membership: "Membre"
+        fleet_squadron: "Escadron"
       vehicle:
         bought_via:
           pledge_store: Magasin de Pledge
@@ -448,6 +451,15 @@ fr:
             fleet_squadron_role:
               not_in_fleet: "doit être l'un des grades d'escadron de cette flotte"
               single_holder_taken: "est déjà attribué à un autre membre de cet escadron : il n'y a qu'un %{role} par escadron"
+        fleet_squadron_request:
+          attributes:
+            fleet_membership:
+              not_a_member: "doit être un membre accepté de cette flotte"
+              already_requested: "a déjà demandé à rejoindre cet escadron"
+            fleet_squadron:
+              team: "est une équipe — rejoignez-la directement"
+              already_a_member: "vous inclut déjà"
+              exclusive_conflict: "entre en conflit avec %{squadron} — un membre appartient à un seul escadron, sauf s'il s'agit d'une équipe"
         fleet_squadron_role:
           attributes:
             default_rank:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_06_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1065,6 +1065,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_120000) do
     t.index ["fleet_membership_id"], name: "index_fleet_squadron_memberships_on_fleet_membership_id"
     t.index ["fleet_squadron_id", "fleet_membership_id"], name: "index_fleet_squadron_memberships_on_squadron_and_membership", unique: true
     t.index ["fleet_squadron_role_id"], name: "index_fleet_squadron_memberships_on_fleet_squadron_role_id"
+  end
+
+  create_table "fleet_squadron_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "fleet_membership_id", null: false
+    t.uuid "fleet_squadron_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_membership_id"], name: "index_fleet_squadron_requests_on_fleet_membership_id"
+    t.index ["fleet_squadron_id", "fleet_membership_id"], name: "index_fleet_squadron_requests_on_squadron_and_membership", unique: true
   end
 
   create_table "fleet_squadron_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2762,6 +2771,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_120000) do
   add_foreign_key "fleet_squadron_memberships", "fleet_memberships"
   add_foreign_key "fleet_squadron_memberships", "fleet_squadron_roles"
   add_foreign_key "fleet_squadron_memberships", "fleet_squadrons"
+  add_foreign_key "fleet_squadron_requests", "fleet_memberships"
+  add_foreign_key "fleet_squadron_requests", "fleet_squadrons"
   add_foreign_key "fleet_squadron_roles", "fleets"
   add_foreign_key "fleet_squadrons", "fleets"
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade

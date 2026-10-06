@@ -13,11 +13,11 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy move]
+        only: %i[create update destroy move join leave]
 
       before_action :set_fleet
       before_action :check_fleet_squadrons_feature
-      before_action :set_fleet_squadron, only: %i[show update destroy move]
+      before_action :set_fleet_squadron, only: %i[show update destroy move join leave]
 
       def index
         authorize! with: FleetSquadronPolicy, context: {fleet: @fleet}
@@ -74,6 +74,32 @@ module Api
         head :no_content
       end
 
+      # A team is open: joining one needs nobody's answer. An ordinary squadron
+      # is asked for through its requests instead.
+      def join
+        row = @fleet_squadron.fleet_squadron_memberships.new(fleet_membership: viewer_membership)
+
+        authorize! row, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+
+        if row.save
+          head :no_content
+        else
+          render json: ValidationError.new("fleet_squadrons.join", errors: row.errors), status: :bad_request
+        end
+      end
+
+      def leave
+        row = @fleet_squadron.fleet_squadron_memberships.find_by!(fleet_membership: viewer_membership)
+
+        authorize! row, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+
+        if row.destroy
+          head :no_content
+        else
+          render json: ValidationError.new("fleet_squadrons.leave", errors: row.errors), status: :bad_request
+        end
+      end
+
       def destroy
         authorize! @fleet_squadron
 
@@ -104,6 +130,17 @@ module Api
         }
 
         @viewer_squadron_role = policy.actor_rank
+
+        membership = viewer_membership
+        @viewer_is_member = membership.present? && @fleet_squadron.fleet_squadron_memberships.exists?(fleet_membership: membership)
+        @viewer_request = membership && @fleet_squadron.fleet_squadron_requests.find_by(fleet_membership: membership)
+        @pending_request_count = @fleet_squadron.fleet_squadron_requests.pending.count if @squadron_capabilities[:manage_members]
+      end
+
+      private def viewer_membership
+        return @viewer_membership if defined?(@viewer_membership)
+
+        @viewer_membership = @fleet.fleet_memberships.kept.accepted.find_by(user: current_resource_owner)
       end
 
       private def fleet_squadron_params

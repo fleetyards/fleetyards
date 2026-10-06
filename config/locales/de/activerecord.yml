@@ -2,6 +2,9 @@
 de:
   activerecord:
     attributes:
+      fleet_squadron_request:
+        fleet_membership: "Mitglied"
+        fleet_squadron: "Staffel"
       vehicle:
         bought_via:
           pledge_store: Pledge-Store
@@ -448,6 +451,15 @@ de:
             fleet_squadron_role:
               not_in_fleet: "muss einer der Staffelränge dieser Flotte sein"
               single_holder_taken: "ist in dieser Staffel bereits vergeben – es gibt nur einen %{role} pro Staffel"
+        fleet_squadron_request:
+          attributes:
+            fleet_membership:
+              not_a_member: "muss ein bestätigtes Mitglied dieser Flotte sein"
+              already_requested: "hat bereits um Aufnahme in diese Staffel gebeten"
+            fleet_squadron:
+              team: "ist ein Team — tritt ihm stattdessen direkt bei"
+              already_a_member: "enthält dich bereits"
+              exclusive_conflict: "kollidiert mit %{squadron} — ein Mitglied gehört zu einer Staffel, außer es ist ein Team"
         fleet_squadron_role:
           attributes:
             default_rank:

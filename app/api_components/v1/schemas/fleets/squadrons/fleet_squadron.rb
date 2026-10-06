@@ -25,6 +25,12 @@ module V1
               # cannot describe.
               viewerRole: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRole,
               capabilities: ::V1::Schemas::Fleets::Squadrons::FleetSquadronCapabilities,
+              # Also only on a single squadron: whether the reader is in it,
+              # when they asked to join it, and -- for whoever answers those
+              # requests -- how many are waiting.
+              viewerIsMember: {type: :boolean},
+              viewerRequestedAt: {type: [:string, :null], format: "date-time"},
+              pendingRequestCount: {type: :integer},
               icon: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

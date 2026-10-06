@@ -34,9 +34,15 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show create update destroy] do
     member do
       put :move
+      post :join
+      delete :leave
     end
 
     resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create update destroy]
+
+    resources :fleet_squadron_requests, path: "requests", param: :username, only: %i[index create destroy] do
+      put :accept, on: :member
+    end
   end
 
   resources :fleet_squadron_roles, path: "squadron-roles", only: %i[index update]
