@@ -123,6 +123,15 @@ class FleetMembership < ApplicationRecord
     "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
   ].freeze
 
+  # Everything the member partial reads, so a roster renders in a fixed number
+  # of queries rather than a handful per row.
+  ROSTER_PRELOADS = [
+    :fleet,
+    :fleet_role,
+    {user: [{current_location: :parent}, :omniauth_connections, {avatar_attachment: :blob}]},
+    {fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]}
+  ].freeze
+
   ransack_alias :username, :user_username
   ransack_alias :rsi_handle, :user_rsi_handle
   ransack_alias :last_active_at, :user_last_active_at
