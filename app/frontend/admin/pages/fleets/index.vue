@@ -81,6 +81,12 @@ const columns: BaseTableCol<Fleet>[] = [
     sortable: true,
   },
   {
+    name: "memberCount",
+    label: "Members",
+    mobile: false,
+    sortable: true,
+  },
+  {
     name: "publicFleet",
     label: "Public",
     mobile: false,
@@ -176,6 +182,9 @@ const { t, l } = useI18n();
         </template>
         <template #col-fid="{ record }">
           {{ record.fid }}
+        </template>
+        <template #col-memberCount="{ record }">
+          {{ record.memberCount }}
         </template>
         <template #col-publicFleet="{ record }">
           <i v-if="record.publicFleet" class="fa-duotone fa-check" />
