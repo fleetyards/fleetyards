@@ -69,6 +69,18 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets sorts by the RSI org's member count and sends it" do
+    create(:fleet, :rsi_verified, name: "Large", rsi_sid: "LARGE").update_columns(rsi_member_count: 900) # rubocop:disable Rails/SkipsModelValidations
+    create(:fleet, :rsi_verified, name: "Small", rsi_sid: "SMALL").update_columns(rsi_member_count: 30) # rubocop:disable Rails/SkipsModelValidations
+    create(:fleet, name: "Uncounted")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"s" => "rsiMemberCount desc"}} do
+      assert_equal ["Large", "Small", "Uncounted"], names
+      assert_equal [900, 30, nil], parsed_body["items"].map { |item| item["rsiMemberCount"] }
+    end
+  end
+
   test "GET /fleets filters by RSI verification either way" do
     create(:fleet, :rsi_verified, name: "Verified", rsi_sid: "VERIFIED")
     create(:fleet, name: "Unclaimed")

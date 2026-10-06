@@ -17,6 +17,7 @@ module Admin
             rsiSid: {type: :string},
             rsiVerified: {type: :boolean},
             rsiVerifiedAt: {type: :string, format: "date-time"},
+            rsiMemberCount: {type: [:integer, :null], description: "Members of the verified RSI org. Null until RSI has been asked"},
             ts: {type: :string},
             discord: {type: :string},
             youtube: {type: :string},

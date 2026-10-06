@@ -8,6 +8,7 @@ json.description fleet.description
 json.rsi_sid fleet.rsi_sid
 json.rsi_verified fleet.rsi_verified?
 json.rsi_verified_at fleet.rsi_verified_at&.utc&.iso8601
+json.rsi_member_count fleet.verified_rsi_member_count
 json.ts fleet.ts
 json.discord fleet.discord
 json.youtube fleet.youtube
