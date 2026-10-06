@@ -115,12 +115,13 @@ class FleetMembership < ApplicationRecord
     "lastActiveAt asc", "lastActiveAt desc"
   ]
 
-  # When somebody joined is a question about one squadron, so only that
-  # squadron's roster can sort by it -- across the whole fleet a member has no
-  # single answer, or none.
+  # When somebody joined, and at which rank, are questions about one squadron,
+  # so only that squadron's roster can sort by them -- across the whole fleet
+  # a member has no single answer, or none.
   SQUADRON_ROSTER_SORTING_PARAMS = [
     *ALLOWED_SORTING_PARAMS,
-    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
+    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc",
+    "squadronRank asc", "squadronRank desc"
   ].freeze
 
   # Everything the member partial reads, so a roster renders in a fixed number

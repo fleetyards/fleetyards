@@ -26336,6 +26336,8 @@ components:
       - lastActiveAt desc
       - squadronMembershipCreatedAt asc
       - squadronMembershipCreatedAt desc
+      - squadronRank asc
+      - squadronRank desc
       x-enumNames:
       - RSI_HANDLE_ASC
       - RSI_HANDLE_DESC
@@ -26349,6 +26351,8 @@ components:
       - LAST_ACTIVE_AT_DESC
       - SQUADRON_MEMBERSHIP_CREATED_AT_ASC
       - SQUADRON_MEMBERSHIP_CREATED_AT_DESC
+      - SQUADRON_RANK_ASC
+      - SQUADRON_RANK_DESC
       title: FleetSquadronMemberSortEnum
     FleetSquadronMemberUpdateInput:
       type: object

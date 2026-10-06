@@ -101,6 +101,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
           name: "squadronRank",
           label: t("labels.fleet.squadrons.rank"),
           width: "15%",
+          sortable: true,
         },
       ]
     : []),

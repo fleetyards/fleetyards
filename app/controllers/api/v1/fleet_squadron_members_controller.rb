@@ -10,6 +10,8 @@ module Api
       include FleetSquadronScoped
       include FleetMemberFiltersConcern
 
+      ROSTER_ROW_SORTS = ["squadron_membership_created_at ", "squadron_rank "].freeze
+
       after_action -> { pagination_header(:members) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -30,9 +32,11 @@ module Api
         scope = @fleet_squadron.accepted_fleet_memberships
 
         normalize_sort_params(member_query_params)
-        sorts = sorting_params(FleetMembership, member_query_params["sorts"],
+        # Leaders first: a squadron is read top down, so its own ranks are the
+        # order it opens on.
+        sorts = sorting_params(FleetMembership, member_query_params["sorts"], ["squadron_rank asc"],
           allowed: FleetMembership::SQUADRON_ROSTER_SORTING_PARAMS)
-        joined_sort, member_query_params["sorts"] = sorts.partition { |sort| sort.start_with?("squadron_membership_created_at ") }
+        roster_sorts, member_query_params["sorts"] = sorts.partition { |sort| sort.start_with?(*ROSTER_ROW_SORTS) }
         joined_from = member_query_params.delete("squadron_membership_created_at_gteq")
         joined_until = member_query_params.delete("squadron_membership_created_at_lteq")
 
@@ -40,9 +44,10 @@ module Api
         result = FleetMembership.where(
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-        result = by_joined_at(result, sort: joined_sort.first, from: joined_from, until_date: joined_until)
+        result = on_roster_row(result, sorts: roster_sorts, from: joined_from, until_date: joined_until)
         result = result
           .order(@q.result.order_values)
+          .order(User.arel_table[:normalized_username].asc)
           .includes(*FleetMembership::ROSTER_PRELOADS)
           .joins(:user)
 
@@ -97,25 +102,30 @@ module Api
         end
       end
 
-      # The join date belongs to this squadron's own row. Ransack reaches it
-      # only through a join over every squadron and team the member is on --
-      # a team joined last week would pass a filter this squadron's date
-      # fails -- and a sort it adds there is invisible to the outer query. So
-      # the outer query joins this squadron's row itself, under an alias that
-      # leaves the preloaded badges alone, and filters and sorts on that.
-      private def by_joined_at(result, sort:, from:, until_date:)
+      # The join date and the rank belong to this squadron's own row. Ransack
+      # reaches them only through a join over every squadron and team the
+      # member is on -- a team joined last week would pass a filter this
+      # squadron's date fails -- and a sort it adds there is invisible to the
+      # outer query. So the outer query joins this squadron's row itself, under
+      # an alias that leaves the preloaded badges alone, and filters and sorts
+      # on that.
+      private def on_roster_row(result, sorts:, from:, until_date:)
         rows = FleetSquadronMembership.arel_table.alias("roster_rows")
+        ranks = FleetSquadronRole.arel_table.alias("roster_ranks")
         members = FleetMembership.arel_table
-        join = members.join(rows).on(
-          rows[:fleet_membership_id].eq(members[:id]).and(rows[:fleet_squadron_id].eq(@fleet_squadron.id))
-        ).join_sources
+        join = members
+          .join(rows).on(rows[:fleet_membership_id].eq(members[:id]).and(rows[:fleet_squadron_id].eq(@fleet_squadron.id)))
+          .join(ranks).on(ranks[:id].eq(rows[:fleet_squadron_role_id]))
+          .join_sources
 
         result = result.joins(join)
         result = result.where(rows[:created_at].gteq(Time.zone.parse(from))) if from.present?
         result = result.where(rows[:created_at].lteq(Time.zone.parse(until_date))) if until_date.present?
-        return result if sort.blank?
 
-        result.order(sort.end_with?(" desc") ? rows[:created_at].desc : rows[:created_at].asc)
+        sorts.reduce(result) do |sorted, sort|
+          column = sort.start_with?("squadron_rank ") ? ranks[:position] : rows[:created_at]
+          sorted.order(sort.end_with?(" desc") ? column.desc : column.asc)
+        end
       end
 
       private def set_fleet
