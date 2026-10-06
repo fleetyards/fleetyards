@@ -113,41 +113,45 @@ const toggleFeature = async (feature: FeatureItem) => {
     hide-edit
   >
     <template #display="{ item }">
-      <BasePill
-        :variant="
-          item.enabled ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DANGER
-        "
-        uppercase
-        margin-right
-      >
-        {{
-          item.enabled
-            ? t("labels.features.stateOn")
-            : t("labels.features.stateOff")
-        }}
-      </BasePill>
-      <span class="feature-name">
-        {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
-      </span>
-      <span
-        v-if="readOnly(item)"
-        v-tooltip="grantTooltip(item)"
-        class="feature-scope"
-      >
-        <BasePill uppercase>
-          {{
-            item.groups.length
-              ? t("labels.features.groupFeatureGrantedShort")
-              : t("labels.features.managedFeatureShort")
-          }}
-        </BasePill>
-      </span>
-      <span v-if="item.groups.length" class="feature-groups">
-        {{ item.groups.join(", ") }}
-      </span>
+      <div class="feature-row">
+        <div class="feature-row__title">
+          <BasePill
+            :variant="
+              item.enabled ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DANGER
+            "
+            uppercase
+          >
+            {{
+              item.enabled
+                ? t("labels.features.stateOn")
+                : t("labels.features.stateOff")
+            }}
+          </BasePill>
+          <span class="feature-name">
+            {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
+          </span>
+        </div>
+        <div
+          v-if="readOnly(item) || item.groups.length"
+          class="feature-row__meta"
+        >
+          <span v-if="readOnly(item)" v-tooltip="grantTooltip(item)">
+            <BasePill uppercase>
+              {{
+                item.groups.length
+                  ? t("labels.features.groupFeatureGrantedShort")
+                  : t("labels.features.managedFeatureShort")
+              }}
+            </BasePill>
+          </span>
+          <span v-if="item.groups.length" class="feature-source">
+            {{ item.groups.join(", ") }}
+          </span>
+        </div>
+      </div>
     </template>
 
-    <template #actions="{ item, mobile }">
+    <template #actions="{ item }">
       <Btn
         v-tooltip="
           readOnly(item) ? grantTooltip(item) : t('labels.features.toggle')
@@ -160,7 +164,6 @@ const toggleFeature = async (feature: FeatureItem) => {
           class="fa-duotone fa-power-off"
           :class="item.enabled ? 'text-success' : 'text-muted'"
         />
-        <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
       </Btn>
     </template>
   </InlineEditableList>
@@ -172,17 +175,30 @@ const toggleFeature = async (feature: FeatureItem) => {
   color: var(--text-muted);
 }
 
+.feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  min-width: 0;
+}
+
+.feature-row__title,
+.feature-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+}
+
 .feature-name {
   font-weight: 600;
   text-transform: capitalize;
+  overflow-wrap: anywhere;
 }
 
-.feature-scope {
-  margin-left: 0.5rem;
-}
-
-.feature-groups {
-  margin-left: 0.5rem;
+.feature-source {
   color: var(--text-muted);
 }
 </style>
