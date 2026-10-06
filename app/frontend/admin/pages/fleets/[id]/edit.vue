@@ -11,6 +11,7 @@ import {
   type Fleet,
   type FleetInput,
   useUpdateFleet,
+  useConfirmFleetRsiVerification,
   useRevokeFleetRsiVerification,
   getFleetsQueryKey,
   getFleetQueryKey,
@@ -100,20 +101,38 @@ const updateMutation = useUpdateFleet({
   },
 });
 
-const revokeMutation = useRevokeFleetRsiVerification({
+const invalidateFleet = () =>
+  Promise.all([
+    queryClient.invalidateQueries({
+      queryKey: getFleetsQueryKey(),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: getFleetQueryKey(props.fleet.id),
+    }),
+  ]);
+
+const confirmMutation = useConfirmFleetRsiVerification({
   mutation: {
     onSettled: () => {
-      void Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: getFleetsQueryKey(),
-        }),
-        queryClient.invalidateQueries({
-          queryKey: getFleetQueryKey(props.fleet.id),
-        }),
-      ]);
+      void invalidateFleet();
     },
   },
 });
+
+const revokeMutation = useRevokeFleetRsiVerification({
+  mutation: {
+    onSettled: () => {
+      void invalidateFleet();
+    },
+  },
+});
+
+const confirmVerification = async () => {
+  await confirmMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
+    console.error("Error verifying the RSI org:", error);
+    alert(error);
+  });
+};
 
 const revokeVerification = async () => {
   await revokeMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
@@ -187,6 +206,17 @@ const handleCancel = async () => {
               </a>
             </template>
           </FormInput>
+          <BtnConfirm
+            v-if="!fleet.rsiVerified && fleet.rsiSid"
+            :size="BtnSizesEnum.SM"
+            :disabled="
+              confirmMutation.isPending.value || rsiSid !== fleet.rsiSid
+            "
+            data-test="admin-fleet-rsi-confirm"
+            @confirm="confirmVerification"
+          >
+            {{ t("actions.fleet.rsiVerification.verify") }}
+          </BtnConfirm>
           <BtnConfirm
             v-if="fleet.rsiVerified"
             :size="BtnSizesEnum.SM"
