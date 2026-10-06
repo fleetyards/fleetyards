@@ -12,6 +12,9 @@
 # Only for names that are plainly wrong. A record the export names nothing at
 # all stays skipped -- there is nothing here to say what it is called.
 #
+# A city's spaceport has no record: the parser makes one, keyed after the city
+# with `_Spaceport` on the end, and `name:` is the only key it reads for it.
+#
 # Delete an entry once CIG fixes the record upstream.
 ---
 # The default clinic name, never changed when the clinic was copied to the
@@ -78,3 +81,14 @@ Pyro5:
 # it a city planet.
 Stanton3:
   body_type: city
+
+# The game files carry no spaceport names. Teasa and August Dunlow appear in
+# the localisation only as destination labels.
+Stanton1_Lorville_Spaceport:
+  name: Teasa Spaceport
+Stanton2_Orison_Spaceport:
+  name: August Dunlow Spaceport
+Stanton3_Area18_Spaceport:
+  name: Riker Memorial Spaceport
+Stanton4_NewBabbage_Spaceport:
+  name: New Babbage Interstellar Spaceport

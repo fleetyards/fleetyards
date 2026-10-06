@@ -320,6 +320,92 @@ module ScData
         assert_empty location("Stanton1")[:mission_template_refs]
       end
 
+      test "#locations counts a station's hangars, pads and docking tubes by size" do
+        stanton
+        place("RR_HUR_LEO", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        landing_zones([
+          landing_zone("RR_HUR_LEO", zones: [
+            zone("rs_ext_hur_leo",
+              hangars: [hangar("Large", 6), hangar("Small", 4, dimensions: [24, 32, 16])],
+              pads: [pad("Medium", 2, dimensions: [58, 88, 32]), pad("Small", 3, vehicles: true, dimensions: [8, 16, 6])],
+              tubes: 2),
+            zone("secdock_hur_leo", pads: [pad("Medium", 1, dimensions: [58, 88, 32])], tubes: 1)
+          ])
+        ])
+
+        facilities = location("RR_HUR_LEO")[:facilities]
+
+        assert_equal [
+          {size: "large", count: 6, length: 128, beam: 72, height: 48, door: "front"},
+          {size: "small", count: 4, length: 32, beam: 24, height: 16, door: "front"}
+        ], facilities[:hangars]
+        assert_equal [{size: "medium", count: 3, length: 88, beam: 58, height: 32, atc_assigned: false}], facilities[:landing_pads]
+        assert_equal [{size: "small", count: 3, length: 16, beam: 8, height: 6, atc_assigned: false}], facilities[:vehicle_pads]
+        assert_equal 3, facilities[:docking_tubes]
+        assert_nil location("Stanton1")[:facilities]
+      end
+
+      test "#locations makes a city's spaceport a place inside it, and the city keeps the rest" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        @overrides = {"Stanton1_Lorville_Spaceport" => {"name" => "Teasa Spaceport"}}
+        landing_zones([
+          landing_zone("Stanton1_Lorville", zones: [
+            zone("lorville_sp_ext", hangars: [hangar("XLarge", 3)]),
+            zone("lorville_gate_01", pads: [pad("Small", 4, vehicles: true)])
+          ])
+        ])
+
+        spaceport = location("Stanton1_Lorville_Spaceport")
+
+        assert_equal ["Teasa Spaceport", "spaceport", "Stanton1_Lorville", "StantonSolarSystem"],
+          spaceport.values_at(:name, :kind, :parent_key, :system_key)
+        assert_equal [3], spaceport[:facilities][:hangars].pluck(:count)
+        assert_empty location("Stanton1_Lorville")[:facilities][:hangars]
+        assert_equal [4], location("Stanton1_Lorville")[:facilities][:vehicle_pads].pluck(:count)
+      end
+
+      test "#locations names a spaceport after its city when the overrides do not" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        landing_zones([
+          landing_zone("Stanton1_Lorville", zones: [zone("lorville_sp_ext", hangars: [hangar("Large", 1)]), zone("lorville_gate_01")])
+        ])
+
+        assert_equal "Lorville Spaceport", location("Stanton1_Lorville_Spaceport")[:name]
+      end
+
+      test "#locations keeps every zone on a city with no spaceport of its own" do
+        stanton
+        place("Nyx_Levski", "Levski", type: "LandingZone", parent: "Stanton1")
+        landing_zones([landing_zone("Nyx_Levski", zones: [zone("levski_all", hangars: [hangar("Large", 10)])])])
+
+        assert_equal [10], location("Nyx_Levski")[:facilities][:hangars].pluck(:count)
+        assert_nil location("Nyx_Levski_Spaceport")
+      end
+
+      test "#locations finds the place a landing zone belongs to by the ref a merge left on it" do
+        stanton
+        place("RR_HUR_LEO", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        place("RR_HUR_LEO_2", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        @overrides = {"RR_HUR_LEO" => {"merge" => ["RR_HUR_LEO_2"]}}
+        landing_zones([
+          landing_zone("RR_HUR_LEO_2", zones: [zone("rs_ext_hur_leo", hangars: [hangar("Medium", 2)])]),
+          landing_zone(nil, ref: "00000000-0000-4000-8000-00000000dead", zones: [zone("collector_ext", hangars: [hangar("XLarge", 12)])])
+        ])
+
+        assert_equal [2], location("RR_HUR_LEO")[:facilities][:hangars].pluck(:count)
+        assert_nil location("RR_HUR_LEO_2")
+      end
+
+      test "#locations leaves facilities out of an export without the landing zones file" do
+        stanton
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+
+        assert_nil location("Stanton1_Lorville")[:facilities]
+        assert_nil location("Stanton1_Lorville_Spaceport")
+      end
+
       private def parser
         tags_file
         File.write("#{localization_path}/global.ini", @translations.map { |key, value| "#{key}=#{value}" }.join("\n"))
@@ -370,6 +456,29 @@ module ScData
         }.compact
 
         write("starmap/pu/#{key.downcase}", "StarMapObject", key, ref, attributes)
+      end
+
+      private def landing_zones(locations)
+        target = "#{@raw_path}/derived/landingzones.json"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, JSON.generate({padSizes: [], locations:}))
+      end
+
+      private def landing_zone(key, zones:, ref: nil)
+        {name: key, starmapRecord: key, starmapRef: ref || (key && ref_for(key)), container: zones.first[:container], zones:}
+      end
+
+      private def zone(container, hangars: [], pads: [], tubes: 0)
+        {container:, hangars:, pads:, dockingTubes: tubes}
+      end
+
+      private def hangar(size, count, dimensions: [72, 128, 48])
+        {size:, door: "front", count:, padDimensions: dimensions}
+      end
+
+      private def pad(size, count, vehicles: false, dimensions: [56, 88, 32])
+        {size:, sizeSource: "fit", dimensions:, groundVehiclesOnly: vehicles, atcAssigned: false, count:}
       end
 
       private def mission_template(key, ref, tags:)
