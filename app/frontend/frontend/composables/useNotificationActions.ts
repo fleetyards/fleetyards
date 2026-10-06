@@ -60,6 +60,9 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   // it starts to mean something.
   tour_join_request_received: "reviewRequest",
   tour_join_request_accepted: "openTour",
+  // The request leads to the squadron's requests tab, where it is answered.
+  fleet_squadron_request_received: "reviewRequest",
+  fleet_squadron_request_accepted: "openSquadron",
   fleet_contract_published: "openContract",
   fleet_contract_claimed: "openContract",
   fleet_contract_crew_requested: "openContract",
@@ -96,6 +99,7 @@ const ACTION_ICONS: Record<string, Icon> = {
   openContract: "fa-duotone fa-clipboard-list",
   openEvent: "fa-duotone fa-calendar-day",
   openTour: "fa-duotone fa-coins",
+  openSquadron: "fa-duotone fa-users",
   openPayouts: "fa-duotone fa-coins",
   openRoster: "fa-duotone fa-list-check",
   addToCalendar: "fa-duotone fa-calendar-plus",

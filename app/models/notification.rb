@@ -70,6 +70,8 @@ class Notification < ApplicationRecord
     fleet_ally_request_accepted: "fleet_ally_request_accepted",
     tour_join_request_received: "tour_join_request_received",
     tour_join_request_accepted: "tour_join_request_accepted",
+    fleet_squadron_request_received: "fleet_squadron_request_received",
+    fleet_squadron_request_accepted: "fleet_squadron_request_accepted",
     fleet_contract_published: "fleet_contract_published",
     fleet_contract_claimed: "fleet_contract_claimed",
     fleet_contract_crew_requested: "fleet_contract_crew_requested",
@@ -283,6 +285,17 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: false, push: false}
     },
     tour_join_request_accepted: {
+      retention: 30.days,
+      channels: %i[app push discord],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_squadron_request_received: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_squadron_request_accepted: {
       retention: 30.days,
       channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}

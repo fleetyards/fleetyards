@@ -109,6 +109,10 @@ zh-CN:
       title: "%{username} 想加入 %{tour}"
     tour_join_request_accepted:
       title: "你已加入 %{tour}"
+    fleet_squadron_request_received:
+      title: "%{username} 申请加入 %{squadron}"
+    fleet_squadron_request_accepted:
+      title: "你已加入 %{squadron}"
     payout_ledger_settled:
       title: "%{subject} 的分账已结算"
     payout_entry_pending_review:

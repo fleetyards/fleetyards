@@ -109,6 +109,10 @@ es:
       title: "%{username} quiere unirse a %{tour}"
     tour_join_request_accepted:
       title: "Ya participas en %{tour}"
+    fleet_squadron_request_received:
+      title: "%{username} quiere unirse a %{squadron}"
+    fleet_squadron_request_accepted:
+      title: "Te has unido a %{squadron}"
     payout_ledger_settled:
       title: "Los pagos de %{subject} están cerrados"
     payout_entry_pending_review:

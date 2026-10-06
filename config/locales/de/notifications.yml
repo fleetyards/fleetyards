@@ -109,6 +109,10 @@ de:
       title: "%{username} möchte bei %{tour} mitmachen"
     tour_join_request_accepted:
       title: "Du bist bei %{tour} dabei"
+    fleet_squadron_request_received:
+      title: "%{username} möchte %{squadron} beitreten"
+    fleet_squadron_request_accepted:
+      title: "Du bist jetzt in %{squadron}"
     payout_ledger_settled:
       title: "Die Auszahlung für %{subject} steht fest"
     payout_entry_pending_review:

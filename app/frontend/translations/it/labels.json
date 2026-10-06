@@ -3094,6 +3094,7 @@
         "openFriends": "Apri gli amici",
         "openAllies": "Apri gli alleati",
         "openTour": "Apri spedizione",
+        "openSquadron": "Apri squadrone",
         "openContract": "Apri contratto",
         "openPayouts": "Apri i pagamenti"
       },
@@ -3148,6 +3149,8 @@
         "fleet_ally_request_accepted": "Richiesta di alleanza accettata",
         "tour_join_request_received": "Richiesta di partecipazione ricevuta",
         "tour_join_request_accepted": "Richiesta di partecipazione accettata",
+        "fleet_squadron_request_received": "Richiesta di adesione allo squadrone",
+        "fleet_squadron_request_accepted": "Richiesta di squadrone accettata",
         "fleet_contract_published": "Contratto pubblicato",
         "fleet_contract_claimed": "Contratto preso in carico",
         "fleet_contract_crew_requested": "Qualcuno vuole unirsi a un contratto",

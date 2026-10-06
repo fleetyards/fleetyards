@@ -3108,6 +3108,7 @@
         "openFriends": "Open friends",
         "openAllies": "Open allies",
         "openTour": "Open tour",
+        "openSquadron": "Open squadron",
         "openContract": "Open contract",
         "openPayouts": "Open payouts"
       },
@@ -3162,6 +3163,8 @@
         "fleet_ally_request_accepted": "Ally request accepted",
         "tour_join_request_received": "Join request received",
         "tour_join_request_accepted": "Join request accepted",
+        "fleet_squadron_request_received": "Squadron join request",
+        "fleet_squadron_request_accepted": "Squadron request accepted",
         "fleet_contract_published": "Contract posted",
         "fleet_contract_claimed": "Contract claimed",
         "fleet_contract_crew_requested": "Crew wants to join a contract",

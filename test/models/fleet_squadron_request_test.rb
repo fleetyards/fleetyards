@@ -89,4 +89,44 @@ class FleetSquadronRequestTest < ActiveSupport::TestCase
     refute FleetSquadronRequest.exists?(request.id)
   end
 
+  test "tells whoever may answer it, and nobody else" do
+    admin = create(:user)
+    squadron_officer = create(:user)
+    plain = create(:user)
+    fleet = create(:fleet, :with_squadrons, admins: [admin], members: [squadron_officer, plain])
+    squadron = create(:fleet_squadron, fleet:)
+    officer_rank = fleet.fleet_squadron_roles.find_by!(key: "officer")
+    create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_squadron_role: officer_rank,
+      fleet_membership: fleet.fleet_memberships.kept.find_by(user: squadron_officer))
+    requester = create(:fleet_membership, :accepted, fleet:)
+
+    create(:fleet_squadron_request, fleet_squadron: squadron, fleet_membership: requester)
+
+    notified = Notification.where(notification_type: "fleet_squadron_request_received").map(&:user)
+    assert_equal [admin, squadron_officer].map(&:id).sort, notified.map(&:id).sort
+
+    notification = Notification.find_by(notification_type: "fleet_squadron_request_received", user: admin)
+    assert_equal "/fleets/#{fleet.slug}/squadrons/#{squadron.slug}/members/?view=requests", notification.link
+    assert_includes notification.title, requester.user.username
+  end
+
+  test "accept! tells the member they are in" do
+    request = create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    assert_difference "Notification.where(notification_type: 'fleet_squadron_request_accepted').count", 1 do
+      request.accept!
+    end
+
+    notification = Notification.find_by(notification_type: "fleet_squadron_request_accepted")
+    assert_equal @membership.user, notification.user
+    assert_equal "/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/", notification.link
+  end
+
+  test "a declined request tells nobody" do
+    request = create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    assert_no_difference "Notification.where(notification_type: 'fleet_squadron_request_accepted').count" do
+      request.destroy!
+    end
+  end
 end

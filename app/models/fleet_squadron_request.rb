@@ -34,6 +34,8 @@ class FleetSquadronRequest < ApplicationRecord
   validate :not_already_a_member
   validate :no_other_exclusive_squadron
 
+  after_create_commit :notify_roster_managers
+
   # Leaving the fleet discards the membership rather than deleting it, so a
   # request from somebody who has since left is still a row.
   scope :pending, -> { joins(:fleet_membership).merge(FleetMembership.kept.accepted) }
@@ -42,11 +44,72 @@ class FleetSquadronRequest < ApplicationRecord
   # go. The squadron membership runs its own checks, so a member who joined
   # another squadron since asking is refused here rather than posted twice.
   def accept!
-    transaction do
-      row = fleet_squadron.fleet_squadron_memberships.create!(fleet_membership:)
+    row = transaction do
+      created = fleet_squadron.fleet_squadron_memberships.create!(fleet_membership:)
       destroy!
-      row
+      created
     end
+
+    notify_member_accepted
+    row
+  end
+
+  # Whoever may answer this request: the same rule the requests list and the
+  # accept endpoint ask, applied to the people who could possibly pass it --
+  # fleet-wide roster managers and the squadron's own leadership.
+  def roster_managers
+    fleet = fleet_squadron.fleet
+    members = fleet.fleet_memberships.kept.accepted.includes(:fleet_role, :user)
+
+    fleet_wide = members.select { |member| member.has_access?(FleetSquadron::MEMBERS_MANAGE_PRIVILEGES) }
+    leadership = members
+      .joins(fleet_squadron_memberships: :fleet_squadron_role)
+      .where(fleet_squadron_memberships: {fleet_squadron_id:})
+      .where(fleet_squadron_roles: {key: FleetSquadronRole::MEMBERS_MANAGER_KEYS})
+
+    (fleet_wide + leadership.to_a).uniq(&:id)
+      .reject { |member| member.id == fleet_membership_id }
+      .filter_map(&:user)
+      .select do |user|
+        FleetSquadronRequestPolicy.new(self, user:, fleet:).apply(:accept?)
+      end
+  end
+
+  private def notify_roster_managers
+    username = fleet_membership.user&.username
+
+    roster_managers.each do |manager|
+      I18n.with_locale(manager.notification_locale) do
+        Notification.notify!(
+          user: manager,
+          type: :fleet_squadron_request_received,
+          title: I18n.t("notifications.fleet_squadron_request_received.title", username:, squadron: fleet_squadron.name),
+          link: "#{squadron_path}members/?view=requests",
+          icon: "fa-duotone fa-hand",
+          record: fleet_squadron
+        )
+      end
+    end
+  end
+
+  private def notify_member_accepted
+    user = fleet_membership.user
+    return if user.blank?
+
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :fleet_squadron_request_accepted,
+        title: I18n.t("notifications.fleet_squadron_request_accepted.title", squadron: fleet_squadron.name),
+        link: squadron_path,
+        icon: "fa-duotone fa-users",
+        record: fleet_squadron
+      )
+    end
+  end
+
+  private def squadron_path
+    "/fleets/#{fleet_squadron.fleet.slug}/squadrons/#{fleet_squadron.slug}/"
   end
 
   private def membership_is_on_the_roster

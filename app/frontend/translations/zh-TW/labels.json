@@ -3094,6 +3094,7 @@
         "openFriends": "開啟好友",
         "openAllies": "開啟盟友",
         "openTour": "開啟行程",
+        "openSquadron": "開啟中隊",
         "openContract": "開啟合約",
         "openPayouts": "打開分帳"
       },
@@ -3148,6 +3149,8 @@
         "fleet_ally_request_accepted": "結盟請求已接受",
         "tour_join_request_received": "收到參加申請",
         "tour_join_request_accepted": "參加申請已通過",
+        "fleet_squadron_request_received": "中隊加入申請",
+        "fleet_squadron_request_accepted": "中隊申請已通過",
         "fleet_contract_published": "合約已發布",
         "fleet_contract_claimed": "合約已接取",
         "fleet_contract_crew_requested": "有人想加入合約",
