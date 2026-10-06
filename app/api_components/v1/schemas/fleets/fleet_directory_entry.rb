@@ -16,7 +16,7 @@ module V1
             slug: {type: :string},
             name: {type: :string},
             rsiSid: {type: :string},
-            memberCount: {type: :integer},
+            memberCount: {type: [:integer, :null], description: "Members of the RSI org. Null until RSI has been asked"},
             alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
             primaryActivity: ::V1::Schemas::Enums::NullableFleetActivityEnum,
             secondaryActivity: ::V1::Schemas::Enums::NullableFleetActivityEnum,

@@ -23045,7 +23045,10 @@ components:
         rsiSid:
           type: string
         memberCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
+          description: Members of the RSI org. Null until RSI has been asked
         alignment:
           "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
         primaryActivity:

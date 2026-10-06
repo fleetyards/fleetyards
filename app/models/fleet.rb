@@ -245,6 +245,12 @@ class Fleet < ApplicationRecord
     Arel.sql(accepted_member_count_sql)
   end
 
+  # A fleet RSI has not answered for yet sorts and filters as an empty org,
+  # rather than ahead of every other one in a descending sort.
+  ransacker :rsi_member_count, type: :integer do
+    Arel.sql("COALESCE(fleets.rsi_member_count, 0)")
+  end
+
   # A verified SID is a query rather than a flag: a revoke and a takeover write
   # their columns past the callbacks, and a fleet that loses its verification,
   # goes private or drops below the floor has to leave without anyone touching
@@ -303,7 +309,7 @@ class Fleet < ApplicationRecord
       "alignment", "commitment", "created_at", "created_by", "created_on", "default_timezone",
       "description", "fid", "id", "id_value", "language", "member_count",
       "name", "normalized_fid", "primary_activity", "public_fleet",
-      "public_fleet_stats", "recruiting", "roleplay", "rsi_verified", "rsi_verified_sid",
+      "public_fleet_stats", "recruiting", "roleplay", "rsi_member_count", "rsi_verified", "rsi_verified_sid",
       "secondary_activity", "slug", "updated_at"
     ]
   end
