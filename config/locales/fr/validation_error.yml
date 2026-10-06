@@ -86,6 +86,10 @@ fr:
       create: Le membre n'a pas pu être ajouté à l'escadron.
       destroy: Le membre n'a pas pu être retiré de l'escadron.
       update: L'adhésion à l'escadron n'a pas pu être mise à jour.
+    fleet_squadron_requests:
+      create: "La demande d'adhésion n'a pas pu être envoyée."
+      accept: "La demande n'a pas pu être acceptée."
+      destroy: "La demande n'a pas pu être supprimée."
     fleet_squadron_roles:
       update: "Le grade d'escadron n'a pas pu être renommé."
     fleet_roles:
@@ -94,6 +98,8 @@ fr:
       create: L'escadron n'a pas pu être créé.
       update: L'escadron n'a pas pu être mis à jour.
       destroy: L'escadron n'a pas pu être dissous.
+      join: "Impossible de rejoindre l'équipe."
+      leave: "Impossible de quitter l'escadron."
     fleet_inventory_items:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.

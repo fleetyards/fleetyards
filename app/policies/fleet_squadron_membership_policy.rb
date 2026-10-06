@@ -28,6 +28,16 @@ class FleetSquadronMembershipPolicy < FleetBasePolicy
     fleet_wide? || actor_rank&.manages_members? || false
   end
 
+  # A team is open to anyone in the fleet; an ordinary squadron is asked for.
+  def join?
+    (accepted_fleet_membership.present? && record.fleet_squadron&.team?) || false
+  end
+
+  # Anyone may leave a squadron, whatever their rank in it.
+  def leave?
+    accepted_fleet_membership.present? && record.fleet_membership_id == accepted_fleet_membership.id
+  end
+
   def manage_ranks?
     fleet_wide? || actor_rank&.manages_ranks? || false
   end

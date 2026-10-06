@@ -86,6 +86,10 @@ it:
       create: Impossibile aggiungere il membro allo squadrone.
       destroy: Impossibile rimuovere il membro dallo squadrone.
       update: Impossibile aggiornare l'appartenenza allo squadrone.
+    fleet_squadron_requests:
+      create: "Impossibile inviare la richiesta di adesione."
+      accept: "Impossibile accettare la richiesta."
+      destroy: "Impossibile rimuovere la richiesta."
     fleet_squadron_roles:
       update: "Non è stato possibile rinominare il grado di squadrone."
     fleet_roles:
@@ -94,6 +98,8 @@ it:
       create: Impossibile creare lo squadrone.
       update: Impossibile aggiornare lo squadrone.
       destroy: Impossibile sciogliere lo squadrone.
+      join: "Impossibile unirsi al team."
+      leave: "Impossibile lasciare lo squadrone."
     fleet_inventory_items:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.

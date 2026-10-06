@@ -2,6 +2,9 @@
 zh-CN:
   activerecord:
     attributes:
+      fleet_squadron_request:
+        fleet_membership: "成员"
+        fleet_squadron: "中队"
       vehicle:
         bought_via:
           pledge_store: 质押商店
@@ -448,6 +451,15 @@ zh-CN:
             fleet_squadron_role:
               not_in_fleet: "必须是本舰队的中队职级之一"
               single_holder_taken: "已由本中队的其他成员担任——每个中队只能有一名%{role}"
+        fleet_squadron_request:
+          attributes:
+            fleet_membership:
+              not_a_member: "必须是该舰队已接受的成员"
+              already_requested: "已申请加入该中队"
+            fleet_squadron:
+              team: "是一个团队——请直接加入"
+              already_a_member: "已包含你"
+              exclusive_conflict: "与 %{squadron} 冲突——除团队外，成员只能属于一个中队"
         fleet_squadron_role:
           attributes:
             default_rank:

@@ -158,4 +158,21 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
       path_params: path_params,
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  # Leaders first, then down the ranks; within one rank, by name.
+  test "GET squadron members opens on the squadron's ranks" do
+    leader = @fleet.fleet_squadron_roles.find_by!(key: "leader")
+    @admin.update!(username: "zz-admin")
+    admin_membership = @fleet.fleet_memberships.kept.find_by(user: @admin)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: admin_membership, fleet_squadron_role: leader)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal [@admin.username, @member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+
+    assert_api_response :get, 200, path_params: path_params, params: {q: {s: "squadronRank desc"}} do
+      assert_equal [@member.username, @admin.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
 end

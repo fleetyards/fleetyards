@@ -732,7 +732,13 @@
             "singleHolder": "每个中队一名",
             "managesMembers": "可添加和移除职级低于自己的成员",
             "managesRanks": "可设置低于自己的职级"
-          }
+          },
+          "views": {
+            "members": "成员",
+            "requests": "申请"
+          },
+          "requestedAt": "申请时间",
+          "requests": "申请"
         },
         "roles": {
           "permanent": "永久",
@@ -3088,6 +3094,7 @@
         "openFriends": "打开好友",
         "openAllies": "打开盟友",
         "openTour": "打开行程",
+        "openSquadron": "打开中队",
         "openContract": "打开合约",
         "openPayouts": "打开分账"
       },
@@ -3142,6 +3149,8 @@
         "fleet_ally_request_accepted": "结盟请求已通过",
         "tour_join_request_received": "收到参加申请",
         "tour_join_request_accepted": "参加申请已通过",
+        "fleet_squadron_request_received": "中队加入申请",
+        "fleet_squadron_request_accepted": "中队申请已通过",
         "fleet_contract_published": "合约已发布",
         "fleet_contract_claimed": "合约已接取",
         "fleet_contract_crew_requested": "有人想加入合约",

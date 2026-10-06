@@ -45,3 +45,14 @@ export const standardErrorFrom = (error: unknown) => {
     message: payload?.message,
   };
 };
+
+/*
+ * The first reason a record was refused, as a sentence. An action with no form
+ * to mark up has nowhere to put field errors, and the envelope's own message
+ * only says that it failed -- not that the member is already in another
+ * squadron.
+ */
+export const firstErrorMessageFrom = (error: unknown) =>
+  validationErrorFrom(error).errors.flatMap((fieldError) =>
+    fieldError.messages.map((message) => message.message),
+  )[0];

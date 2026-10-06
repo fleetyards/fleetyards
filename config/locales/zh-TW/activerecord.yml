@@ -2,6 +2,9 @@
 zh-TW:
   activerecord:
     attributes:
+      fleet_squadron_request:
+        fleet_membership: "成員"
+        fleet_squadron: "中隊"
       vehicle:
         bought_via:
           pledge_store: 質押商店
@@ -448,6 +451,15 @@ zh-TW:
             fleet_squadron_role:
               not_in_fleet: "必須是本艦隊的中隊職級之一"
               single_holder_taken: "已由本中隊的其他成員擔任——每個中隊只能有一名%{role}"
+        fleet_squadron_request:
+          attributes:
+            fleet_membership:
+              not_a_member: "必須是該艦隊已接受的成員"
+              already_requested: "已申請加入該中隊"
+            fleet_squadron:
+              team: "是一個團隊——請直接加入"
+              already_a_member: "已包含你"
+              exclusive_conflict: "與 %{squadron} 衝突——除團隊外，成員只能屬於一個中隊"
         fleet_squadron_role:
           attributes:
             default_rank:

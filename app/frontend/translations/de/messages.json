@@ -379,6 +379,37 @@
               "success": "Mitglied aus der Staffel entfernt.",
               "failure": "Mitglied konnte nicht entfernt werden."
             }
+          },
+          "join": {
+            "success": "Du bist dem Team beigetreten.",
+            "failure": "Dem Team konnte nicht beigetreten werden."
+          },
+          "leave": {
+            "confirm": "Die Staffel %{squadron} verlassen? Du bleibst in der Flotte.",
+            "success": "Du hast die Staffel verlassen.",
+            "failure": "Die Staffel konnte nicht verlassen werden."
+          },
+          "requests": {
+            "create": {
+              "success": "Anfrage gesendet. Die Staffelführung wird sie beantworten.",
+              "failure": "Anfrage konnte nicht gesendet werden."
+            },
+            "withdraw": {
+              "success": "Anfrage zurückgezogen.",
+              "failure": "Anfrage konnte nicht zurückgezogen werden."
+            },
+            "accept": {
+              "success": "%{username} ist der Staffel beigetreten.",
+              "failure": "Anfrage konnte nicht angenommen werden."
+            },
+            "decline": {
+              "success": "Anfrage abgelehnt.",
+              "failure": "Anfrage konnte nicht abgelehnt werden."
+            }
+          },
+          "rank": {
+            "success": "Rang geändert.",
+            "failure": "Rang konnte nicht geändert werden."
           }
         },
         "calendarSubscription": {

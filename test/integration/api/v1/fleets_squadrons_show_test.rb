@@ -118,4 +118,31 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
       assert_equal({"manageMembers" => true, "manageRanks" => false}, parsed_body["capabilities"])
     end
   end
+
+  test "GET /fleets/:slug/squadrons/:slug tells a member whether they are in it or asked to be" do
+    membership = @fleet.fleet_memberships.kept.find_by(user: @member)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal false, parsed_body["viewerIsMember"]
+      assert_nil parsed_body["viewerRequestedAt"]
+      refute parsed_body.key?("pendingRequestCount")
+    end
+
+    create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: membership)
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert parsed_body["viewerRequestedAt"].present?
+    end
+  end
+
+  test "GET /fleets/:slug/squadrons/:slug counts waiting requests for whoever answers them" do
+    create(:fleet_squadron_request, fleet_squadron: @squadron,
+      fleet_membership: @fleet.fleet_memberships.kept.find_by(user: @member))
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal 1, parsed_body["pendingRequestCount"]
+    end
+  end
 end

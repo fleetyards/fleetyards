@@ -260,7 +260,15 @@
           "addMembers": "%{count} hinzufügen",
           "viewMembers": "Mitglieder der Staffel",
           "viewShips": "Schiffe der Staffel",
-          "viewStats": "Statistiken der Staffel"
+          "viewStats": "Statistiken der Staffel",
+          "join": "Team beitreten",
+          "leave": "Verlassen",
+          "requestJoin": "Beitritt anfragen",
+          "withdrawRequest": "Anfrage zurückziehen",
+          "acceptRequest": "Annehmen",
+          "declineRequest": "Ablehnen",
+          "promote": "Befördern",
+          "demote": "Degradieren"
         },
         "manageInvites": "Einladungen",
         "worldmap": "Weltkarte",

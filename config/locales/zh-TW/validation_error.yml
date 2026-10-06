@@ -85,6 +85,10 @@ zh-TW:
       create: 無法將成員新增至中隊。
       destroy: 無法將成員從中隊移除。
       update: 無法更新中隊成員關係。
+    fleet_squadron_requests:
+      create: "無法送出加入申請。"
+      accept: "無法接受該申請。"
+      destroy: "無法移除該申請。"
     fleet_squadron_roles:
       update: "無法重新命名中隊職級。"
     fleet_roles:
@@ -93,6 +97,8 @@ zh-TW:
       create: 無法建立中隊。
       update: 無法更新中隊。
       destroy: 無法解散中隊。
+      join: "無法加入該團隊。"
+      leave: "無法退出該中隊。"
     fleet_inventory_items:
       create: 無法建立庫存記錄。
       update: 無法更新庫存記錄。

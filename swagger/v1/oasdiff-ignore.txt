@@ -1513,3 +1513,17 @@ GET /catalogue/search added the new `Location` enum value to the `items/items/ty
 DELETE /tours/{slug} removed the required property `details` from the response with the `400` status
 DELETE /tours/{slug} removed the required property `error` from the response with the `400` status
 GET /public/fleets the response property `items/items/memberCount` became nullable for the status `200`
+GET /notification-preferences added the new `fleet_squadron_request_received` enum value to the `items/notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_squadron_request_received` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_squadron_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_squadron_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_squadron_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_squadron_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_squadron_request_received` enum value to the `notificationType` response property for the response status `200`
+GET /notification-preferences added the new `fleet_squadron_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_squadron_request_accepted` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_squadron_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_squadron_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_squadron_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_squadron_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_squadron_request_accepted` enum value to the `notificationType` response property for the response status `200`

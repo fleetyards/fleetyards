@@ -732,7 +732,13 @@
             "singleHolder": "Uno por escuadrón",
             "managesMembers": "Añade y quita a los miembros de rango inferior",
             "managesRanks": "Asigna los rangos por debajo del suyo"
-          }
+          },
+          "views": {
+            "members": "Miembros",
+            "requests": "Solicitudes"
+          },
+          "requestedAt": "Solicitado el",
+          "requests": "Solicitudes"
         },
         "roles": {
           "permanent": "Permanente",
@@ -3088,6 +3094,7 @@
         "openFriends": "Abrir amigos",
         "openAllies": "Abrir aliados",
         "openTour": "Abrir expedición",
+        "openSquadron": "Abrir escuadrón",
         "openContract": "Abrir contrato",
         "openPayouts": "Abrir pagos"
       },
@@ -3142,6 +3149,8 @@
         "fleet_ally_request_accepted": "Solicitud de alianza aceptada",
         "tour_join_request_received": "Solicitud de participación recibida",
         "tour_join_request_accepted": "Solicitud de participación aceptada",
+        "fleet_squadron_request_received": "Solicitud para unirse al escuadrón",
+        "fleet_squadron_request_accepted": "Solicitud de escuadrón aceptada",
         "fleet_contract_published": "Contrato publicado",
         "fleet_contract_claimed": "Contrato aceptado",
         "fleet_contract_crew_requested": "Alguien quiere unirse a un contrato",

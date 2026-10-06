@@ -16,3 +16,7 @@ json.capabilities do
   json.manage_members @squadron_capabilities.fetch(:manage_members)
   json.manage_ranks @squadron_capabilities.fetch(:manage_ranks)
 end
+
+json.viewer_is_member @viewer_is_member
+json.viewer_requested_at @viewer_request&.created_at&.utc&.iso8601
+json.pending_request_count @pending_request_count unless @pending_request_count.nil?

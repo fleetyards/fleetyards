@@ -89,6 +89,10 @@ es:
       create: No se pudo añadir el miembro al escuadrón.
       destroy: No se pudo quitar el miembro del escuadrón.
       update: No se pudo actualizar la membresía del escuadrón.
+    fleet_squadron_requests:
+      create: "No se pudo enviar la solicitud de ingreso."
+      accept: "No se pudo aceptar la solicitud."
+      destroy: "No se pudo eliminar la solicitud."
     fleet_squadron_roles:
       update: "No se pudo cambiar el nombre del rango de escuadrón."
     fleet_roles:
@@ -97,6 +101,8 @@ es:
       create: No se pudo crear el escuadrón.
       update: No se pudo actualizar el escuadrón.
       destroy: No se pudo disolver el escuadrón.
+      join: "No se pudo unir al equipo."
+      leave: "No se pudo abandonar el escuadrón."
     fleet_inventory_items:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.

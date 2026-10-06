@@ -71,6 +71,7 @@ class FleetMembership < ApplicationRecord
 
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadrons, through: :fleet_squadron_memberships
+  has_many :fleet_squadron_requests, dependent: :destroy
 
   # A squadron membership can be added after this association was loaded, so
   # make the dependent destroy callback read the current rows before deleting
@@ -115,12 +116,13 @@ class FleetMembership < ApplicationRecord
     "lastActiveAt asc", "lastActiveAt desc"
   ]
 
-  # When somebody joined is a question about one squadron, so only that
-  # squadron's roster can sort by it -- across the whole fleet a member has no
-  # single answer, or none.
+  # When somebody joined, and at which rank, are questions about one squadron,
+  # so only that squadron's roster can sort by them -- across the whole fleet
+  # a member has no single answer, or none.
   SQUADRON_ROSTER_SORTING_PARAMS = [
     *ALLOWED_SORTING_PARAMS,
-    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
+    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc",
+    "squadronRank asc", "squadronRank desc"
   ].freeze
 
   # Everything the member partial reads, so a roster renders in a fixed number
@@ -517,6 +519,17 @@ class FleetMembership < ApplicationRecord
   # made those writes scale with the size of the fleet.
   private def each_fleet_recipient(&)
     User.where(id: fleet.fleet_memberships.kept.select(:user_id)).find_each(&)
+  end
+
+  # The ordinary squadron this member already holds, if any. A member holds at
+  # most one; teams sit outside the rule and never count.
+  def exclusive_squadron(except: nil)
+    FleetSquadron
+      .joins(:fleet_squadron_memberships)
+      .where(fleet_id:, team: false)
+      .where(fleet_squadron_memberships: {fleet_membership_id: id})
+      .where.not(id: except&.id)
+      .first
   end
 
   def promote

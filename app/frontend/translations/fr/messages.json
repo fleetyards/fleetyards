@@ -379,6 +379,37 @@
               "success": "Membre retiré de l'escadron.",
               "failure": "Le membre n'a pas pu être retiré."
             }
+          },
+          "join": {
+            "success": "Vous avez rejoint l'équipe.",
+            "failure": "Impossible de rejoindre l'équipe."
+          },
+          "leave": {
+            "confirm": "Quitter l'escadron %{squadron} ? Vous restez dans la flotte.",
+            "success": "Vous avez quitté l'escadron.",
+            "failure": "Impossible de quitter l'escadron."
+          },
+          "requests": {
+            "create": {
+              "success": "Demande envoyée. La direction de l'escadron y répondra.",
+              "failure": "La demande n'a pas pu être envoyée."
+            },
+            "withdraw": {
+              "success": "Demande retirée.",
+              "failure": "La demande n'a pas pu être retirée."
+            },
+            "accept": {
+              "success": "%{username} a rejoint l'escadron.",
+              "failure": "La demande n'a pas pu être acceptée."
+            },
+            "decline": {
+              "success": "Demande refusée.",
+              "failure": "La demande n'a pas pu être refusée."
+            }
+          },
+          "rank": {
+            "success": "Grade modifié.",
+            "failure": "Le grade n'a pas pu être modifié."
           }
         },
         "calendarSubscription": {

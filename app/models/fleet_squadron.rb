@@ -44,6 +44,7 @@ class FleetSquadron < ApplicationRecord
 
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadron_assignments, dependent: :destroy
+  has_many :fleet_squadron_requests, dependent: :destroy
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
