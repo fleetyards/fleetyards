@@ -24,6 +24,8 @@ interface SessionState {
 // then carry the same number as the one before it.
 let sessionEpoch = 0;
 
+export const currentSessionEpoch = () => sessionEpoch;
+
 export const useSessionStore = defineStore("session", {
   state: (): SessionState => ({
     authenticated: false,

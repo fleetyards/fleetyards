@@ -23,8 +23,8 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { AXIOS_INSTANCE } from "@/services/axiosClient";
 
 const respondWith = (status: number) => {
-  AXIOS_INSTANCE.defaults.adapter = () =>
-    Promise.reject({ response: { status } });
+  AXIOS_INSTANCE.defaults.adapter = (config) =>
+    Promise.reject({ response: { status }, config });
 };
 
 const signedIn = () => {
@@ -54,6 +54,30 @@ describe("useAxiosInterceptors", () => {
     // Signing out here would spend the remember-me cookie: DELETE /sessions
     // authenticates with it and then deletes it.
     expect(destroySession).not.toHaveBeenCalled();
+  });
+
+  it("keeps a new session when a request from the previous one comes back 401", async () => {
+    const sessionStore = signedIn();
+
+    let respond: (status: number) => void = () => {};
+    const sent = new Promise<void>((markSent) => {
+      AXIOS_INSTANCE.defaults.adapter = (config) =>
+        new Promise((_resolve, reject) => {
+          respond = (status) => reject({ response: { status }, config });
+          markSent();
+        });
+    });
+
+    const stale = AXIOS_INSTANCE.get("/users/me");
+    await sent;
+
+    sessionStore.login({ id: "user-1", username: "torlek" } as never);
+    respond(401);
+
+    await expect(stale).rejects.toBeDefined();
+
+    expect(sessionStore.isAuthenticated).toBe(true);
+    expect(sessionStore.currentUser).toBeDefined();
   });
 
   it("leaves the session alone for other errors", async () => {
