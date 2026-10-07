@@ -200,6 +200,16 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_equal 1, user.buyback_pledges.count
   end
 
+  test "PUT /hangar/sync-rsi-buybacks does not read a null list as an empty one" do
+    user = create(:user)
+    buyback(user)
+    sign_in user
+
+    assert_api_response :put, 400, body: {items: nil}
+
+    assert_equal 1, user.buyback_pledges.count
+  end
+
   test "PUT /hangar/sync-rsi-buybacks requires a session or token" do
     assert_api_response :put, 401, body: {items: []}
   end

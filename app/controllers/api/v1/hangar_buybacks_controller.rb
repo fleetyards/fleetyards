@@ -23,12 +23,13 @@ module Api
           .per(per_page(BuybackPledge))
       end
 
-      # An empty list is a valid answer -- every pledge was bought back -- so
-      # only a missing one is refused.
+      # An empty list is a valid answer -- every pledge was bought back -- but
+      # anything that is not a list is refused rather than read as one: the
+      # sync deletes whatever the list leaves out.
       def sync
         authorize! with: ::BuybackPledgePolicy
 
-        unless params.key?(:items)
+        unless params[:items].is_a?(Array)
           render json: ValidationError.new("buyback_pledges.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request
           return
         end
