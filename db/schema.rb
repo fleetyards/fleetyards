@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_07_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_07_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -287,6 +287,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_120000) do
     t.index ["sc_ref"], name: "index_blueprints_on_sc_ref", unique: true
     t.index ["slug"], name: "index_blueprints_on_slug", unique: true
     t.index ["version"], name: "index_blueprints_on_version"
+  end
+
+  create_table "buyback_pledges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "rsi_pledge_id", null: false
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.boolean "upgraded", default: false, null: false
+    t.date "reclaimed_on"
+    t.string "contained"
+    t.string "image_url"
+    t.integer "upgrade_from_ship_id"
+    t.integer "upgrade_to_ship_id"
+    t.integer "upgrade_to_sku_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "rsi_pledge_id"], name: "index_buyback_pledges_on_user_id_and_rsi_pledge_id", unique: true
   end
 
   create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2709,6 +2726,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_120000) do
   add_foreign_key "blueprint_cost_options", "commodities", on_delete: :nullify
   add_foreign_key "blueprint_cost_slots", "blueprint_builds", on_delete: :cascade
   add_foreign_key "blueprint_sources", "blueprint_builds", on_delete: :cascade
+  add_foreign_key "buyback_pledges", "users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodities", "commodities", column: "refines_into_id", on_delete: :nullify
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
