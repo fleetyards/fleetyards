@@ -1,7 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
-import { defineComponent, h, onBeforeUnmount } from "vue";
+import { defineComponent, h } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
 
