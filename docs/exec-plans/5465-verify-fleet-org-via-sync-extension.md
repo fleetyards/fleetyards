@@ -13,9 +13,10 @@ With the FleetYards Sync extension installed and an RSI session that can edit th
 Each needs a capture from a signed-in RSI session with content rights on an org (DevTools → Network, "Preserve log"):
 
 - **Captured 2026-10-07:** the org content editor (`/en/orgs/<SID>/admin/content`) saves a field with `POST /api/orgs/saveDraft` `{"symbol": "<SID>", "<field>": "<whole text>"}` (seen with `history`), headers `x-rsi-token` and `x-requested-with: XMLHttpRequest`. One field per call, whole value. A draft does not go live by itself: `POST /api/orgs/publishDraft` `{"symbol": "<SID>"}` publishes it, and it takes no field, so it publishes **every** pending draft change of the org, including other officers' unpublished edits.
-- **Unpublished drafts.** Because publishing is all-or-nothing, the extension may only write when the draft matches what is live (no one else's pending edits), or it would make them public. It needs to read the draft and the live text of every field, compare, and refuse (409) on any difference. Same read source as below.
+- **Unpublished drafts** (decided in #5465: write only when nothing is pending). The extension reads the draft and the live text of every field, compares, and refuses (409) on any difference. RSI renders the draft at `/en/orgs/<SID>/admin/preview`; comparing it with the public `/orgs/<SID>` page works if both render the same way, but the raw text for the write still needs a source (see below).
 - **Org field save request.** URL and payload when RSI saves one org text field (introduction, history, manifesto or charter). Does it replace the whole field, like the bio's `UpdateField`? Which field should the token go in? The one least likely to be long and formatted is the obvious pick.
 - **Raw field read.** The request the org editor makes to load that field's current text. The public org page renders these fields as formatted HTML, so unlike the bio it cannot be read back exactly. Without a raw source the extension must not write (decision pending, see the issue).
+- **Edit rights, found so far:** without content rights, `/en/orgs/<SID>/admin/content` renders a client-side "Restricted area / Insufficient permissions" screen; the page's only data requests are `graphql` calls, so the HTTP status likely says nothing and the rights come from a GraphQL answer.
 - **Edit rights.** Where RSI says which orgs the signed-in account can edit (a rank or permission list), so the modal can say "this account cannot edit SID" before writing anything rather than after a refused save.
 - **Field length limit** for the chosen field.
 
@@ -57,6 +58,7 @@ None expected: `FleetRsiVerification` already searches the whole org page.
 
 ## Discovery Log
 
+- **2026-10-07** Draft preview at `/admin/preview`; no-rights admin page is a client-side restricted screen fed by GraphQL.
 - **2026-10-07** Org publish captured: `POST /api/orgs/publishDraft` with only the SID; publishes the whole draft.
 - **2026-10-07** Org save captured: `POST /api/orgs/saveDraft`, one field, whole value (see Open questions).
 - **2026-10-07** Initial research. The fleet modal matches the handle modal's structure (token, cooldown, polling, statuses incl. `symbol_mismatch`); `FleetRsiVerification` reads the whole org page text, so any org text field works. Blocked on the RSI captures above.
