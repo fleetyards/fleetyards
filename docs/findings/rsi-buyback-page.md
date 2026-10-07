@@ -27,7 +27,16 @@ An account with no buy-backs at all renders the same: the wrapper and `section.a
 
 `/pledge/buyback/<id>` (packages, ships, paints, add-ons):
 
-- Price: `strong.final-price[data-value][data-currency]`, e.g. `data-value="15708" data-currency="EUR"`. The value is in cents, in the currency the account shows prices in, tax included. The page carries no USD figure.
+- Price: `strong.final-price[data-value][data-currency]`, e.g. `data-value="15708" data-currency="EUR"`. The value is in cents, in the currency the account shows prices in, tax included (`.taxes-details` names it, "VAT 19%"). The page carries no USD figure. The only SKU on it is the add-to-cart link's `data-sku`, and the public store does not list that SKU (a ship off sale has `skus: []`).
+- The price is what the pledge was originally bought for, not today's store price. Converted back to USD: Cutter $40 and Cutlass Black $100, while the store asked $45 and $110 on 2026-10-07.
+
+## Account pricing
+
+Converting a page price back to USD needs the rate RSI converted it with. `app { pricing { currencyCode exchangeRate taxRate isTaxInclusive } }` on the upgrade GraphQL endpoint answers it:
+
+- Only once the session has a store token from `POST /api/account/v2/setAuthToken` (body `{}`, `X-Rsi-Token` header), which RSI's own upgrade modal asks for. Without one it answers the anonymous store: `USD`, `exchangeRate: 1`, `taxRate: 0`. Reading that as the account's pricing would store a euro price as dollars.
+- With one, an EUR account answered `exchangeRate: 8800`, `taxRate: 1900`, `isTaxInclusive: true`: ten-thousandths, so 0.88 and 19 %. RSI's store script only displays converted amounts; the scale is inferred from these values, not documented.
+- USD = page cents ÷ (0.88 × 1.19), rounded to the cent. That gave whole dollars for all six pledges tried: 15708 → 15000, 9425 → 9000, 4189 → 4000, 10472 → 10000, 3665 → 3500, 99484 → 95000.
 - Contents: `.package-listing.ship li` per ship, and `.package-listing.item li` for the rest, insurance included: `6 Month Insurance`, `60 Month Insurance`, `120 Month Insurance`, `Lifetime Insurance`, next to hangars, paints and name reservations.
 
 ## Upgrade price
