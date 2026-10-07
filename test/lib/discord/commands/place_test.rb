@@ -183,6 +183,14 @@ module Discord
         assert names.any? { |name| name.end_with?(" · outpost54_sloane") }
       end
 
+      test "leaves a detail whole when a short name lets it fit" do
+        parent = create(:location, name: "M" * 80, kind: "moon", parent: @hurston, system: @stanton)
+        create(:location, name: "Hub", kind: "outpost", parent:, system: @stanton, sc_key: "Hub_Reyes")
+        create(:location, name: "Hub", kind: "outpost", parent:, system: @stanton, sc_key: "Hub_Slone")
+
+        assert_includes ::Discord::Commands::Place.autocomplete("name", "hub").pluck(:name), "Hub · #{"M" * 80} · hub_reyes"
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 

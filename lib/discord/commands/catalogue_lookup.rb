@@ -52,7 +52,7 @@ module Discord
       def self.choice_name(name, rest)
         max = Discord::MessageLength::CHOICE_MAX
         suffix = rest.map { |part| " · #{part}" }.join
-        room = max - MIN_NAME_LENGTH
+        room = max - [MIN_NAME_LENGTH, Discord::MessageLength.of(name)].min
         suffix = "…#{Discord::MessageLength.truncate(suffix.reverse, room - 1).reverse}" unless Discord::MessageLength.fits?(suffix, room)
 
         room = max - Discord::MessageLength.of(suffix)
