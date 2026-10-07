@@ -141,7 +141,10 @@ onMounted(() => {
   }
 });
 
+let unmounted = false;
+
 onBeforeUnmount(() => {
+  unmounted = true;
   hangarStore.syncModalOpen = false;
   window.removeEventListener("message", onExtensionMessage as EventListener);
 
@@ -197,7 +200,8 @@ const checkRSIIdentity = async () => {
   const identity = await extension
     .request(FleetyardsSyncAction.IDENTIFY)
     .catch(() => undefined);
-  if (current !== identityCheck) return;
+  // A check still out when the modal closed answers nobody.
+  if (unmounted || current !== identityCheck) return;
   const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
 
   loadingIdentity.value = false;
