@@ -35,7 +35,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const RSI_PROFILE_SETTINGS_URL =
-  "https://robertsspaceindustries.com/account/profile";
+  "https://robertsspaceindustries.com/account/settings/profile";
 
 const { t, l } = useI18n();
 
