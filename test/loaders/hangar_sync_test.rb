@@ -136,6 +136,19 @@ class HangarSyncTest < ActiveSupport::TestCase
       refute Vehicle.exists?(@jav_ship.id)
     end
 
+    # What a changed RSI page sends once only components and paints parse.
+    test "deletes nothing from a pledge list without a single ship" do
+      input = @input.reject { |item| item["type"] == "ship" }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input:, unmatched_vehicles_action: "delete")
+
+      result = ::HangarSync.new(input).run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_equal [], result[:deleted_vehicles]
+      assert_includes result[:unchanged_vehicles], @jav_ship.id
+    end
+
     test "takes what hangs off a deleted vehicle with it" do
       task_force = TaskForce.create!(
         vehicle: @jav_ship,

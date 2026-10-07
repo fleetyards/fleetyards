@@ -350,6 +350,11 @@ class HangarSync < HangarImporter
     # survivable under `delete`, so the row is read once more here.
     return outcome if @cancelled || @import&.cancel_requested?
 
+    # A pledge list without a single ship is what a changed RSI page looks like
+    # once only the components and paints still parse. Every ship would read as
+    # unmatched, and under `delete` the hangar would go with them.
+    return outcome.merge(unchanged_vehicles: scope.pluck(:id)) if ships.blank?
+
     case @import&.unmatched_vehicles_action
     when "keep" then outcome.merge(unchanged_vehicles: scope.pluck(:id))
     when "delete" then outcome.merge(deleted_vehicles: delete_unmatched(scope))
