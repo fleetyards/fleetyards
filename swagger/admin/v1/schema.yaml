@@ -10640,6 +10640,7 @@ components:
       - new_supporter
       - rsi_api_blocked
       - rsi_api_unblocked
+      - rsi_markup_changed
       - weekly_stats
       - ship_matrix_import
       - sc_data_import
@@ -10659,6 +10660,7 @@ components:
       - NEW_SUPPORTER
       - RSI_API_BLOCKED
       - RSI_API_UNBLOCKED
+      - RSI_MARKUP_CHANGED
       - WEEKLY_STATS
       - SHIP_MATRIX_IMPORT
       - SC_DATA_IMPORT

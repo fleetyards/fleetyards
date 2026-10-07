@@ -3121,6 +3121,7 @@
           "new_supporter": "Neuer Unterstützer",
           "rsi_api_blocked": "RSI-API blockiert",
           "rsi_api_unblocked": "RSI-API wiederhergestellt",
+          "rsi_markup_changed": "RSI-Seite geändert",
           "weekly_stats": "Wochenbericht",
           "ship_matrix_import": "Ship-Matrix-Import",
           "sc_data_import": "sc_data-Import",

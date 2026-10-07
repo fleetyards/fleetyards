@@ -53,6 +53,7 @@ class AdminNotification < ApplicationRecord
     new_supporter: "new_supporter",
     rsi_api_blocked: "rsi_api_blocked",
     rsi_api_unblocked: "rsi_api_unblocked",
+    rsi_markup_changed: "rsi_markup_changed",
     weekly_stats: "weekly_stats",
     ship_matrix_import: "ship_matrix_import",
     sc_data_import: "sc_data_import",
@@ -123,6 +124,13 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:"rsi-api-status"],
       icon: "fa-duotone fa-plug-circle-check"
+    },
+    # One row per page and failed check: every sync that meets the changed page
+    # reports it, and the count says how many users it is stopping.
+    rsi_markup_changed: {
+      retention: 30.days,
+      access: [:"rsi-api-status"],
+      icon: "fa-duotone fa-code-compare"
     },
     weekly_stats: {
       retention: 30.days,
