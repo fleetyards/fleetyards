@@ -1,5 +1,7 @@
 import type { InternalAxiosRequestConfig } from "axios";
 import { AXIOS_INSTANCE } from "@/services/axiosClient";
+import { useComlink } from "@/shared/composables/useComlink";
+import { VISUAL_TEARDOWN_DELAY } from "@/frontend/composables/useVisualExtensionStub";
 
 export type VisualApiRoute = {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -38,9 +40,18 @@ export const useVisualApiMock = (routes: VisualApiRoute[]) => {
     });
   });
 
+  const comlink = useComlink();
+
+  // The modal outlives the page: closed here, and answered until nothing it
+  // still had out can reach the real API.
   onBeforeUnmount(() => {
-    if (interceptor !== undefined) {
-      AXIOS_INSTANCE.interceptors.request.eject(interceptor);
-    }
+    comlink.emit("close-modal");
+
+    const installed = interceptor;
+    setTimeout(() => {
+      if (installed !== undefined) {
+        AXIOS_INSTANCE.interceptors.request.eject(installed);
+      }
+    }, VISUAL_TEARDOWN_DELAY);
   });
 };

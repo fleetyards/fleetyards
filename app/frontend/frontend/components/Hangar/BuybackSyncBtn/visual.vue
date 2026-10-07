@@ -46,7 +46,7 @@ useVisualApiMock([
   {
     method: "PUT",
     path: /^\/hangar\/sync-rsi-buybacks$/,
-    respond: () => ({ total: 2, added: 2, removed: 0 }),
+    respond: () => ({ total: 2, added: 2, removed: 0, detailsPending: [] }),
   },
 ]);
 const startScreens: StartScreen[] = [

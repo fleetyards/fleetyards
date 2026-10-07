@@ -2,7 +2,15 @@ import {
   FleetyardsSyncAction,
   type FleetyardsSyncMessage,
 } from "@/frontend/lib/FleetyardsSyncHandler";
-import { overrideSyncExtension } from "@/frontend/composables/useSyncExtension";
+import {
+  clearSyncExtensionOverride,
+  overrideSyncExtension,
+} from "@/frontend/composables/useSyncExtension";
+import { useComlink } from "@/shared/composables/useComlink";
+
+// Longer than any extension request waits, so nothing a closing demo still has
+// out can reach the real extension once the stub is gone.
+export const VISUAL_TEARDOWN_DELAY = 35_000;
 
 export type ExtensionStubAnswer = { code: number; payload?: unknown };
 
@@ -59,28 +67,38 @@ export const useVisualExtensionStub = () => {
     return reply && ({ action, ...reply } as FleetyardsSyncMessage);
   };
 
-  onMounted(() => {
-    overrideSyncExtension(
-      (action, params = {}, timeout) =>
-        new Promise((resolve, reject) => {
-          const reply = answer(action, params);
-          if (reply) {
-            resolve(reply);
-          } else {
-            const timer = setTimeout(() => {
-              timers.delete(timer);
-              reject(new Error("no answer"));
-            }, timeout);
-            timers.add(timer);
-          }
-        }),
-    );
-  });
+  const stub = (
+    action: FleetyardsSyncAction,
+    params: Record<string, unknown> = {},
+    timeout = 0,
+  ) =>
+    new Promise<FleetyardsSyncMessage>((resolve, reject) => {
+      const reply = answer(action, params);
+      if (reply) {
+        resolve(reply);
+      } else {
+        const timer = setTimeout(() => {
+          timers.delete(timer);
+          reject(new Error("no answer"));
+        }, timeout);
+        timers.add(timer);
+      }
+    });
 
+  const comlink = useComlink();
+
+  onMounted(() => overrideSyncExtension(stub));
+
+  // The modal lives above the page, so leaving the page leaves it open: it is
+  // closed here, and the stub stays until anything it still had out is done.
   onBeforeUnmount(() => {
-    overrideSyncExtension(undefined);
-    timers.forEach(clearTimeout);
-    timers.clear();
+    comlink.emit("close-modal");
+
+    setTimeout(() => {
+      clearSyncExtensionOverride(stub);
+      timers.forEach(clearTimeout);
+      timers.clear();
+    }, VISUAL_TEARDOWN_DELAY);
   });
 
   return {

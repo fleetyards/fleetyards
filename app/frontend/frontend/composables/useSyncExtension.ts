@@ -25,8 +25,14 @@ let requestOverride: SyncExtensionRequest | undefined;
 // cannot do that over `window`: an extension installed in the same browser
 // hears every message there, answers too, and acts on what it is asked -- a
 // demo card's `verify-write` would land in the tester's real RSI bio.
-export const overrideSyncExtension = (request?: SyncExtensionRequest) => {
+export const overrideSyncExtension = (request: SyncExtensionRequest) => {
   requestOverride = request;
+};
+
+// Only the override it installed: a page removing its own late must not take
+// out the next page's.
+export const clearSyncExtensionOverride = (request: SyncExtensionRequest) => {
+  if (requestOverride === request) requestOverride = undefined;
 };
 
 // Any script on the page can post into this channel, answers included. That is
