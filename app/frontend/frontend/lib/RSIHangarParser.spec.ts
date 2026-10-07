@@ -18,7 +18,7 @@ const item = (kind: string, title: string) => `
 </div>`;
 
 const pledgesPage = (entries: string) =>
-  `<div class="page-wrapper"><ul class="list-items">${entries}</ul></div>`;
+  `<title>My Hangar - Roberts Space Industries</title><div class="page-wrapper"><ul class="list-items">${entries}</ul></div>`;
 
 const extract = (html: string) => new RSIHangarParser().extractPage(html);
 
@@ -35,8 +35,48 @@ describe("RSIHangarParser.extractPage", () => {
 
   it("reads RSI's empty list as the end", () => {
     expect(
-      extract('<div class="list-items"><div class="empty-list"></div></div>'),
+      extract(
+        '<title>My Hangar - Roberts Space Industries</title><div class="list-items"><div class="empty-list"></div></div>',
+      ),
     ).toEqual({ status: RsiPageStatus.END });
+  });
+
+  it("does not read the empty marker on another page as the end", () => {
+    expect(
+      extract('<title>Sign In</title><div class="empty-list"></div>'),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_LIST,
+    });
+  });
+
+  it("does not read a page where one pledge lost its id", () => {
+    expect(
+      extract(
+        pledgesPage(
+          `${pledge("101", item("Ship", "Cutter"))}<li><div class="item"><div class="kind">Ship</div></div></li>`,
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+    });
+  });
+
+  it("does not read a page where one item lost its kind", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            `${item("Ship", "Cutter")}<div class="item"><div class="title">Paint</div></div>`,
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
+    });
   });
 
   it("does not read a page without the pledge list as the end", () => {

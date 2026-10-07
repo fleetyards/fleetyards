@@ -157,7 +157,11 @@ describe("extractBuybackPage", () => {
   });
 
   it("reads RSI's empty list as the end", () => {
-    expect(extractBuybackPage(buybackPage(""))).toEqual({
+    expect(
+      extractBuybackPage(
+        buybackPage('<li class="no-buy-backs">No pledges available</li>'),
+      ),
+    ).toEqual({
       status: RsiPageStatus.END,
     });
   });
@@ -200,9 +204,29 @@ describe("extractBuybackPage", () => {
   it("reads a link to buy-backs outside the list as nothing", () => {
     expect(
       extractBuybackPage(
-        `<a href="/pledge/buyback/1">Banner</a>${buybackPage("")}`,
+        `<a href="/pledge/buyback/1">Banner</a>${buybackPage('<li class="no-buy-backs">No pledges available</li>')}`,
       ),
     ).toEqual({ status: RsiPageStatus.END });
+  });
+
+  it("does not read a list without entries or RSI's end row", () => {
+    expect(extractBuybackPage(buybackPage(""))).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_ENTRIES,
+    });
+  });
+
+  it("does not read a page where one entry with an id did not read", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(
+          `${packageArticle}<li><article class="pledge"><a class="holosmallbtn" href="/pledge/buyback/2000002">Buy Back</a></article></li>`,
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNPARSED_ENTRIES,
+    });
   });
 
   it("does not read entries none of which it could read", () => {

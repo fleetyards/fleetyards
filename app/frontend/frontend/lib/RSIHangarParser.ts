@@ -40,7 +40,9 @@ export class RSIHangarParser {
       };
     }
 
-    const entries = Array.from(pledgeList.getElementsByTagName("li"));
+    const entries = Array.from(pledgeList.children).filter(
+      (child) => child.tagName === "LI",
+    );
 
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
@@ -64,7 +66,9 @@ export class RSIHangarParser {
       });
     });
 
-    if (pledgeIds.length === 0) {
+    // Every pledge row, not just one: a row that no longer reads would drop
+    // its ships out of the sync, and the unmatched action would act on them.
+    if (pledgeIds.length === 0 || pledgeIds.length < entries.length) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
@@ -73,10 +77,7 @@ export class RSIHangarParser {
 
     const items = Array.from(pledgeList.getElementsByClassName("item"));
 
-    if (
-      items.length > 0 &&
-      !items.some((item) => item.getElementsByClassName("kind")[0])
-    ) {
+    if (items.some((item) => !item.getElementsByClassName("kind")[0])) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
@@ -143,10 +144,13 @@ export class RSIHangarParser {
     return imageUrl.replace("subscribers_vault_thumbnail", "source");
   }
 
+  // An empty hangar shows this marker. Past the last page RSI repeats the
+  // last one instead, which the sync reads as nothing new. Only on the hangar
+  // page itself: another page using the class is not the end of anything.
   checkForLastPage(htmlDoc: Document): boolean {
     const emptyList = htmlDoc.getElementsByClassName("empty-list")[0];
     const empyList = htmlDoc.getElementsByClassName("empy-list")[0];
 
-    return !!(emptyList || empyList);
+    return !!(emptyList || empyList) && /^\s*My Hangar\b/.test(htmlDoc.title);
   }
 }

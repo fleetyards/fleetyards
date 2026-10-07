@@ -86,7 +86,10 @@ const buybackPage = (id: string) =>
   <a class="holosmallbtn" href="/pledge/buyback/${id}">Buy Back</a>
 </article></li>`);
 
-const emptyBuybackPage = buybackList("");
+// What RSI renders past the last page.
+const emptyBuybackPage = buybackList(
+  '<li class="no-buy-backs">No pledges available</li>',
+);
 
 const askedFor = (action: string) =>
   vi

@@ -31,7 +31,7 @@ export type RSIBuybackPage =
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
-const BUYBACK_LINK = "a[href*='/pledge/buyback/']";
+const END_OF_LIST = "li.no-buy-backs";
 
 export const extractBuybackPage = (html: string): RSIBuybackPage => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
@@ -48,22 +48,29 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
 
   const entries = Array.from(list.querySelectorAll("article.pledge"));
 
-  // Rows or links to buy-backs inside the list without entries around them is
-  // what renamed entries look like.
+  // Past the last page RSI renders the list with this one row in it. A list
+  // without entries and without it is markup this no longer reads.
   if (entries.length === 0) {
-    return list.querySelector(`li, ${BUYBACK_LINK}`)
-      ? {
+    return list.querySelector(END_OF_LIST)
+      ? { status: RsiPageStatus.END }
+      : {
           status: RsiPageStatus.UNRECOGNISED,
           check: RsiPageCheckEnum.MISSING_ENTRIES,
-        }
-      : { status: RsiPageStatus.END };
+        };
   }
 
   const pledges = entries
     .map(parseBuybackEntry)
     .filter((pledge): pledge is RsiBuybackItemInput => !!pledge);
 
-  if (pledges.length === 0) {
+  // An entry without a pledge id was never a buy-back to keep. One with an id
+  // that still does not read would drop out of the snapshot, and the sync
+  // would delete it.
+  const unread = entries.some(
+    (entry) => !parseBuybackEntry(entry) && buybackEntryId(entry),
+  );
+
+  if (pledges.length === 0 || unread) {
     return {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.UNPARSED_ENTRIES,
@@ -88,7 +95,7 @@ export const parseBuybackEntry = (
   const upgradeLink = entry.querySelector<HTMLElement>(
     ".js-open-ship-upgrades",
   );
-  const id = upgradeLink?.dataset.pledgeid || extractBuybackLinkId(entry);
+  const id = buybackEntryId(entry);
 
   if (!id || !name) {
     return undefined;
@@ -123,6 +130,10 @@ const headingText = (heading: Element | null) => {
 
   return copy.textContent || "";
 };
+
+const buybackEntryId = (entry: Element) =>
+  entry.querySelector<HTMLElement>(".js-open-ship-upgrades")?.dataset
+    .pledgeid || extractBuybackLinkId(entry);
 
 const extractBuybackLinkId = (entry: Element) =>
   entry

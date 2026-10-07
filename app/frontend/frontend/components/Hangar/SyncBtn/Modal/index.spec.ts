@@ -124,7 +124,7 @@ const submitEmptyHangar = async (
 
   extensionReplies(
     "sync",
-    '<div class="list-items"><div class="empty-list"></div></div>',
+    '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
   );
   await flushPromises();
 };
@@ -174,7 +174,7 @@ describe("HangarSyncModal", () => {
     await flushPromises();
     extensionReplies(
       "sync",
-      '<div class="list-items"><div class="empty-list"></div></div>',
+      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
     );
     await flushPromises();
 
