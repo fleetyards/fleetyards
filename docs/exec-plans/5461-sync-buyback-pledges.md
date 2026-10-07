@@ -15,8 +15,9 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 ### Phase 2 — Buy-back sync modal
 1. `RSIBuybackParser` + spec against a trimmed copy of the real page markup.
 2. `Hangar/BuybackSyncBtn` + its modal: own health and identity check, page crawl, 30s reply timeout, submit after the last page.
-3. Entry in the hangar page's actions dropdown, next to Import.
-4. Labels in all seven locales.
+3. `/hangar/buybacks` page: `FilteredList` with name search and kind filter (`Hangar/BuybacksFilterForm`), rows (`Hangar/BuybacksList`), sync button in the toolbar; refetches on `buyback-sync-finished`.
+4. Link to the page in the hangar actions dropdown, next to Import.
+5. Labels in all seven locales.
 
 ## Intent Verification
 
@@ -34,6 +35,7 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 | `app/controllers/api/v1/hangar_buybacks_controller.rb` | Index + sync |
 | `app/frontend/frontend/lib/RSIBuybackParser.ts` | Page → items |
 | `app/frontend/frontend/components/Hangar/BuybackSyncBtn/Modal/index.vue` | The fetch loop |
+| `app/frontend/frontend/pages/hangar/buybacks.vue` | The page |
 
 ## Discovery Log
 
@@ -41,7 +43,8 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 - **2026-10-07** One real account has 130 pages, so a full buy-back read is ~2–3 minutes at the modal's 60 requests/minute.
 - **2026-10-07** Assumed, not seen: an account with no buy-backs still renders `section.available-pledges` (a page past the end does). If it does not, the parser reads that account's page as foreign and the step fails without deleting anything.
 - **2026-10-07** Not exercised end to end against RSI yet. The extension's dev build now also accepts `localhost:8xxx` worktree origins, so this worktree's dev server can run it.
-- **2026-10-07** First built as a step of the hangar sync modal; moved to its own modal on request (decision in the issue).
+- **2026-10-07** First built as a step of the hangar sync modal; moved to its own modal, then onto its own page, on request (decision in the issue).
+- **2026-10-07** Page checked on the worktree dev server: heading, filter panel (search, kind), sync button and empty state render; no console errors from the page.
 
 ## Progress
 - [x] Phase 1
