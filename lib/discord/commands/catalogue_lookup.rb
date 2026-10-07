@@ -33,9 +33,13 @@ module Discord
       # name, so both rank and list the same way.
       Candidate = Data.define(:prefix, :name, :slug, :value, :detail)
 
+      # A command offering one catalogue leaves its type off: every choice
+      # would carry it, and it spends the 100 characters the detail telling two
+      # entries apart needs.
       def self.choices(query, within:)
         candidates(query, within:).map do |candidate|
-          {name: [candidate.name, type_label(candidate.prefix), candidate.detail].compact.join(" · "), value: candidate.value}
+          type = type_label(candidate.prefix) unless within.one?
+          {name: [candidate.name, type, candidate.detail].compact.join(" · "), value: candidate.value}
         end
       end
 
@@ -89,7 +93,7 @@ module Discord
         variant = CatalogueVariants.find(query, within:)
         return [variant.prefix, variant.record] if variant
 
-        exact = ::Catalogue::TokenResolver.new.resolve([query], within:)
+        exact = ::Catalogue::TokenResolver.new.resolve([exact_token(query, within)], within:)
         return listed_entry(query, CatalogueLookup.prefix_for(exact.first), exact.first.slug, strings) if exact.one?
 
         carriers = CatalogueVariants.carriers(query, within:)
@@ -102,6 +106,14 @@ module Discord
         return listed_entry(query, candidates.first.prefix, candidates.first.slug, strings) if candidates.one?
 
         [nil, entry_candidate_list(query, candidates, strings)]
+      end
+
+      # A bare name resolves only in the item catalogues, so a command offering
+      # one other catalogue names it for the reader: "Area18" is the place, not
+      # a list beside "Area18 Spaceport".
+      private def exact_token(query, within)
+        prefix, = ::Catalogue::TokenResolver.parse(query)
+        (prefix.nil? && within.one?) ? "#{within.first}:#{query}" : query
       end
 
       private def listed_entry(query, prefix, slug, strings)

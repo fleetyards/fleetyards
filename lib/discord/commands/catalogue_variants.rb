@@ -62,7 +62,8 @@ module Discord
           next [] if names.empty?
 
           rows = scope.where("#{name} IN (?)", names).includes(:build)
-          rows = rows.includes(:parent) if prefix == "location"
+          # A place's parent names it through its build, so that is loaded too.
+          rows = rows.includes(parent: [:build, :last_build]) if prefix == "location"
           rows.map { |record| Variant.new(prefix:, record:) }
         end
       end

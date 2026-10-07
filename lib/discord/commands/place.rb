@@ -32,7 +32,7 @@ module Discord
         page = entry_page_url("location", place.slug)
 
         {
-          author: {name: [kind_label(place.kind), (place.system.name if place.system && place.system != place)].compact_blank.join(" · ")},
+          author: {name: kind_label(place.kind)}.compact_blank.presence,
           title: place.name,
           url: page,
           color: EMBED_COLOR,
@@ -88,7 +88,7 @@ module Discord
         shops = place.shops.order(:name).to_a
         return nil if shops.empty?
 
-        links = shops.map { |shop| "[#{Markdown.escape(shop.name)}](#{url_for_path("/shops/#{shop.slug}/")})" }
+        links = shops.map { |shop| shop_link(shop) }
         value = fit_field(links, separator: ", ") { |hidden| I18n.t("discord.commands.location.more_shops", count: hidden, url: page) }
 
         {name: I18n.t("discord.commands.location.fields.shops"), value: value}

@@ -28,7 +28,7 @@ module Discord
 
         assert_equal "Everus Harbor", embed[:title]
         assert_includes embed[:url], "/locations/#{@harbor.slug}/"
-        assert_equal "#{I18n.t("discord.commands.location.kinds.station")} · Stanton", embed.dig(:author, :name)
+        assert_equal I18n.t("discord.commands.location.kinds.station"), embed.dig(:author, :name)
       end
 
       test "leads the description with where the place sits, each step linked" do
@@ -93,7 +93,7 @@ module Discord
 
         choices = ::Discord::Commands::Place.autocomplete("name", "outpost 54")
 
-        assert_includes choices, {name: "Outpost 54 · #{I18n.t("discord.commands.item.types.location")} · Aberdeen · outpost54_reyes", value: "location~#{reyes.id}"}
+        assert_includes choices, {name: "Outpost 54 · Aberdeen · outpost54_reyes", value: "location~#{reyes.id}"}
         assert_equal 2, choices.size
       end
 
@@ -101,6 +101,14 @@ module Discord
         create(:commodity, name: "Everus Ore")
 
         assert_equal ["location:Everus Harbor"], ::Discord::Commands::Place.autocomplete("name", "everus").pluck(:value)
+      end
+
+      # A bare name resolves only in the item catalogues; a typed place name
+      # must still open the place another place's name contains.
+      test "a full name typed by hand opens that place, not a list" do
+        create(:location, name: "Everus Harbor Spaceport", kind: "spaceport", parent: @harbor, system: @stanton)
+
+        assert_equal "Everus Harbor", call("Everus Harbor")[:embeds].first[:title]
       end
     end
   end

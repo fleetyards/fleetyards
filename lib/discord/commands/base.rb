@@ -76,6 +76,10 @@ module Discord
         shown.join(separator)
       end
 
+      private def shop_link(shop, name = shop.name)
+        "[#{Markdown.escape(name)}](#{url_for_path("/shops/#{shop.slug}/")})"
+      end
+
       private def url_for_path(path)
         "https://#{Rails.configuration.app.domain}#{path}"
       end
