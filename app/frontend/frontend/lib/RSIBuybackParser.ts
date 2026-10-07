@@ -1,6 +1,7 @@
 import { parse, format, isValid } from "date-fns";
 import {
   BuybackPledgeKindEnum,
+  RsiPageCheckEnum,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
 
@@ -8,6 +9,9 @@ export type RSIBuybackPage = {
   pledges: RsiBuybackItemInput[];
   pledgeIds: string[];
   entryCount: number;
+  // Set when this is not a buy-back page this parser understands. The sync
+  // must stop on it rather than read it as the end of the list.
+  unrecognised?: RsiPageCheckEnum;
 };
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
@@ -22,23 +26,40 @@ const DEFAULT_IMAGE = "default-image";
 
 const BUYBACK_LIST = "section.available-pledges, .buy-back";
 
-// `undefined` when the HTML is not a buy-back page at all -- a login redirect
-// or an error page arrives as a 200 too. RSI renders a page past the last one
-// as the page with an empty list, so `entryCount: 0` is the end-of-list signal.
-export const extractBuybackPage = (
-  html: string,
-): RSIBuybackPage | undefined => {
+const unrecognised = (check: RsiPageCheckEnum): RSIBuybackPage => ({
+  pledges: [],
+  pledgeIds: [],
+  entryCount: 0,
+  unrecognised: check,
+});
+
+// RSI renders a page past the last one as the page with an empty list, so
+// `entryCount: 0` is the end-of-list signal -- unless the page still links to
+// buy-backs, which is what renamed entries look like. A login redirect or an
+// error page arrives as a 200 too, and has no buy-back list at all.
+export const extractBuybackPage = (html: string): RSIBuybackPage => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
 
   if (!htmlDoc.querySelector(BUYBACK_LIST)) {
-    return undefined;
+    return unrecognised(RsiPageCheckEnum.MISSING_LIST);
   }
 
   const entries = Array.from(htmlDoc.querySelectorAll("article.pledge"));
 
+  if (
+    entries.length === 0 &&
+    htmlDoc.querySelector("a[href*='/pledge/buyback/']")
+  ) {
+    return unrecognised(RsiPageCheckEnum.MISSING_ENTRIES);
+  }
+
   const pledges = entries
     .map(parseBuybackEntry)
     .filter((pledge): pledge is RsiBuybackItemInput => !!pledge);
+
+  if (entries.length > 0 && pledges.length === 0) {
+    return unrecognised(RsiPageCheckEnum.UNPARSED_ENTRIES);
+  }
 
   return {
     pledges,

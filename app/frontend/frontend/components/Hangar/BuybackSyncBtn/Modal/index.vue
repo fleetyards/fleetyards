@@ -15,6 +15,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { extensionUrls } from "@/types/extension";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import { useRsiPageReport } from "@/frontend/composables/useRsiPageReport";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
@@ -23,6 +24,7 @@ import {
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
+  RsiPageKindEnum,
   useSyncRsiBuybacks,
   type BuybackSyncResult,
   type RsiBuybackItemInput,
@@ -254,13 +256,23 @@ const fail = () => {
   displayAlert({ text: t("messages.buybackSync.failure") });
 };
 
+const reportRsiPage = useRsiPageReport();
+
 const handlePage = async (html: string) => {
   const page = extractBuybackPage(html);
 
-  // Not the buy-back page (a login redirect, an error page), or a page whose
-  // entries could not be read: either way the list is incomplete.
-  if (!page || (page.entryCount > 0 && page.pledges.length === 0)) {
-    fail();
+  // Not a buy-back page this parser understands: the list read so far is
+  // incomplete, and submitting it would delete every buy-back after it.
+  if (page.unrecognised) {
+    clearReplyTimer();
+    status.value = "failed";
+    displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+    reportRsiPage({
+      page: RsiPageKindEnum.BUYBACK,
+      check: page.unrecognised,
+      pageNumber: currentPage.value,
+      extensionVersion: extensionInfo.value.version,
+    });
     return;
   }
 

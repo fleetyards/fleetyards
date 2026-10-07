@@ -24,7 +24,11 @@ import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Resul
 import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
-import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
+import {
+  HangarSyncUnmatchedActionEnum,
+  RsiPageKindEnum,
+} from "@/services/fyApi";
+import { useRsiPageReport } from "@/frontend/composables/useRsiPageReport";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
@@ -271,13 +275,28 @@ const fetchPage = (page: number) => {
   });
 };
 
+const reportRsiPage = useRsiPageReport();
+
 const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
   const parser = new RSIHangarParser();
   const result = parser.extractPage(htmlPage);
 
-  if (result === undefined) {
+  // Nothing is submitted: what was read so far is only part of the hangar, and
+  // every ship on the pages after it would count as unmatched.
+  if (result.status === "unrecognised") {
+    updateStep("fetchHangar", "failure");
+    displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+    reportRsiPage({
+      page: RsiPageKindEnum.HANGAR,
+      check: result.check,
+      pageNumber: currentPage.value,
+    });
+    return;
+  }
+
+  if (result.status === "end") {
     updateStep("fetchHangar", "success");
     await finishSync();
     return;

@@ -14,11 +14,13 @@ const mutateAsync = vi.fn<
 );
 
 const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
+const reportMutateAsync = vi.fn(() => Promise.resolve());
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
   useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -125,6 +127,7 @@ describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
     submitDetails.mockClear();
+    reportMutateAsync.mockClear();
     vi.mocked(window.postMessage).mockClear();
   });
 
@@ -227,6 +230,28 @@ describe("HangarBuybackSyncModal", () => {
     await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("reports a page it does not recognise", async () => {
+    await startSync();
+
+    extensionReplies("syncBuyback", buybackPage("1"));
+    await flushPromises();
+    extensionReplies(
+      "syncBuyback",
+      buybackList(`<li><a href="/pledge/buyback/2">Buy Back</a></li>`),
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).toHaveBeenCalledWith({
+      data: {
+        page: "buyback",
+        check: "missing_entries",
+        pageNumber: 2,
+        extensionVersion: "1.3.0",
+      },
+    });
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {

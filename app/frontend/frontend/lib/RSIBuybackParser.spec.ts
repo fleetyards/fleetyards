@@ -157,15 +157,25 @@ describe("extractBuybackPage", () => {
       extractBuybackPage(
         "<html><body><form id='sign-in'></form></body></html>",
       ),
-    ).toBeUndefined();
+    ).toMatchObject({ unrecognised: "missing_list", entryCount: 0 });
   });
 
-  it("counts entries it could not read", () => {
+  it("does not read renamed entries as the end of the list", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(
+          `<li><div class="pledge-card"><a href="/pledge/buyback/1000001">Buy Back</a></div></li>`,
+        ),
+      ),
+    ).toMatchObject({ unrecognised: "missing_entries" });
+  });
+
+  it("does not read entries none of which it could read", () => {
     const page = extractBuybackPage(
       buybackPage(`<li><article class="pledge"><h1>Gear</h1></article></li>`),
     );
 
-    expect(page).toMatchObject({ pledges: [], entryCount: 1 });
+    expect(page).toMatchObject({ unrecognised: "unparsed_entries" });
   });
 
   it("leaves the upgraded marker out of a name read from the text", () => {

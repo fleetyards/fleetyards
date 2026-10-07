@@ -7,9 +7,12 @@ import Component from "./index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
 
+const reportMutateAsync = vi.fn(() => Promise.resolve());
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiHangar: () => ({ mutateAsync }),
+  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
   useSyncRsiHangarStatus: () => ({ data: ref(undefined) }),
 }));
 
@@ -94,21 +97,45 @@ const mountModal = async () => {
   return { wrapper, hangarStore };
 };
 
-// A page the parser finds no pledge list in ends the fetch loop, which is the
-// shortest route from "start" to the request this spec is about.
+// RSI's empty list ends the fetch loop, which is the shortest route from
+// "start" to the request this spec is about.
 const submitEmptyHangar = async (
   wrapper: Awaited<ReturnType<typeof mountModal>>["wrapper"],
 ) => {
   await wrapper.find("[data-test='start-sync']").trigger("click");
   await flushPromises();
 
-  extensionReplies("sync", "<html><body></body></html>");
+  extensionReplies(
+    "sync",
+    '<div class="list-items"><div class="empty-list"></div></div>',
+  );
   await flushPromises();
 };
 
 describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+    reportMutateAsync.mockClear();
+  });
+
+  // An error or login page in the middle of the run, read as the end, would
+  // submit a partial hangar and leave every later ship unmatched.
+  it("submits nothing and reports a page it does not recognise", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).toHaveBeenCalledWith({
+      data: { page: "hangar", check: "missing_list", pageNumber: 1 },
+    });
   });
 
   afterEach(() => {
