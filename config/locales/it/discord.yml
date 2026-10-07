@@ -103,7 +103,6 @@ it:
           sell: Vendi a
         more: '…e altri %{count} sulla [pagina dell’oggetto](%{url}).'
         none: 'Al momento nessun negozio vende o compra %{item}.'
-        title: 'Dove trovare %{item}'
     channel_capability:
       fleet: la flotta
       officers: gli ufficiali

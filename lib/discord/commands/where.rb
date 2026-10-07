@@ -37,7 +37,7 @@ module Discord
         return message(content: I18n.t("discord.commands.where.none", item: item_link(found.name, prefix, found.slug))) if fields.empty?
 
         message(embeds: [{
-          title: I18n.t("discord.commands.where.title", item: found.name),
+          title: found.name,
           url: page,
           color: EMBED_COLOR,
           fields: fields

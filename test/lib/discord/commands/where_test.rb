@@ -41,6 +41,12 @@ module Discord
         assert_includes lines.second, "80 aUEC"
       end
 
+      test "titles the reply with the item alone, whichever directions it lists" do
+        price(:buy, 80, "TDD - Area18 - ArcCorp")
+
+        assert_equal "Quantainium", call("Quantainium")[:embeds].first[:title]
+      end
+
       test "links the shop's page where a shop is matched" do
         shop = Shop.create!(name: "Admin", location: create(:location, name: "Everus Harbor"))
         price(:sell, 95, "Admin - Everus Harbor - Hurston", shop: shop)

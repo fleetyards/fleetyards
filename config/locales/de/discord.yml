@@ -103,7 +103,6 @@ de:
           sell: Verkaufen bei
         more: '…und %{count} weitere auf [der Seite des Gegenstands](%{url}).'
         none: 'Gerade verkauft oder kauft kein Shop %{item}.'
-        title: 'Wo es %{item} gibt'
     channel_capability:
       fleet: die Flotte
       officers: die Offiziere

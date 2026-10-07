@@ -103,7 +103,6 @@ en:
           sell: Sell at
         more: '…and %{count} more on [the item page](%{url}).'
         none: 'No shop sells or buys %{item} right now.'
-        title: 'Where to get %{item}'
     channel_capability:
       fleet: the fleet
       officers: the officers

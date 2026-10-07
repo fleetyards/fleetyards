@@ -103,7 +103,6 @@ zh-TW:
           sell: 出售地點
         more: '……另有 %{count} 處，見[物品頁面](%{url})。'
         none: '目前沒有商店出售或收購 %{item}。'
-        title: '在哪裡取得 %{item}'
     channel_capability:
       fleet: 艦隊
       officers: 軍官

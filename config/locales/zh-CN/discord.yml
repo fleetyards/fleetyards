@@ -103,7 +103,6 @@ zh-CN:
           sell: 出售地点
         more: '……另有 %{count} 处，见[物品页面](%{url})。'
         none: '目前没有商店出售或收购 %{item}。'
-        title: '在哪里获得 %{item}'
     channel_capability:
       fleet: 舰队
       officers: 军官

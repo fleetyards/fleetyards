@@ -103,7 +103,6 @@ fr:
           sell: Vendre chez
         more: '…et %{count} autres sur [la page de l’objet](%{url}).'
         none: 'Aucune boutique ne vend ni n’achète %{item} en ce moment.'
-        title: 'Où trouver %{item}'
     channel_capability:
       fleet: la flotte
       officers: les officiers
