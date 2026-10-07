@@ -263,12 +263,16 @@ class AdminNotification < ApplicationRecord
       )
 
       if existing
-        existing.update!(
-          title:, body:, severity:, link:, icon:, record:,
-          occurrences: existing.occurrences + 1,
-          last_occurred_at: Time.current,
-          expires_at: Time.current + retention_for(type)
-        )
+        # Reloaded under the lock: two reports counting from the same read
+        # would record one.
+        existing.with_lock do
+          existing.update!(
+            title:, body:, severity:, link:, icon:, record:,
+            occurrences: existing.occurrences + 1,
+            last_occurred_at: Time.current,
+            expires_at: Time.current + retention_for(type)
+          )
+        end
 
         return existing
       end
