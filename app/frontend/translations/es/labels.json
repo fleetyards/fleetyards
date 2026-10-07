@@ -599,7 +599,6 @@
             "install": "Instala la extensión FleetYards Sync para verificar tu flota con un clic.",
             "update": "Actualiza la extensión FleetYards Sync para verificar tu flota con un clic: la versión instalada aún no lo admite.",
             "notSignedIn": "Inicia sesión en RSI en este navegador con una cuenta que pueda editar %{sid}, o verifica a mano más abajo.",
-            "handleMismatch": "La extensión escribió en la organización de %{rsiHandle}, no en %{handle}. Verifica a mano más abajo.",
             "noRights": "La cuenta de RSI con la que este navegador ha iniciado sesión no puede editar la página de %{sid}. Inicia sesión con una cuenta de oficial o verifica a mano más abajo.",
             "pendingChanges": "%{sid} tiene cambios sin publicar en RSI. Publica o borra ese borrador primero, para que la extensión no publique la edición de otra persona, o verifica a mano más abajo.",
             "orgUnreadable": "La extensión no pudo leer la página de %{sid} en RSI. Verifica a mano más abajo.",

@@ -31,9 +31,10 @@ type Options = {
   // Whether the signed-in RSI account can verify the target at all. Without
   // one, any signed-in account can try, and the extension says if it cannot.
   accountMatches?: (rsiHandle: string, target: string) => boolean;
-  // Whether a write landed where the check will look: the extension writes
-  // into whichever account the browser is signed in to by the time it runs.
-  wroteToTarget: (answer: FleetyardsSyncMessage, target: string) => boolean;
+  // Whether a write landed where the check will look, for an extension that
+  // writes into whichever account the browser is signed in to by the time it
+  // runs. Without one, a write goes where it was asked to.
+  wroteToTarget?: (answer: FleetyardsSyncMessage, target: string) => boolean;
   // Starts the server's check; resolves once it has been asked for.
   check: () => Promise<void>;
   // The latest check's status, and the one it has while still running.
@@ -68,9 +69,9 @@ export const useExtensionVerification = (options: Options) => {
 
   const running = ref(false);
 
-  // The token the extension may have written, until it has been asked to take
-  // it out again.
-  const tokenWritten = ref<string>();
+  // What the extension may have written, as it was asked: the removal goes to
+  // the same place even if the modal's data has moved on since.
+  const written = ref<{ params: Record<string, unknown> }>();
 
   // Set once the check has been asked for: before that, the token has to stay
   // where the check will look for it.
@@ -147,13 +148,13 @@ export const useExtensionVerification = (options: Options) => {
   // Fired while the page may already be going away, so nothing waits for it;
   // a failure is still reported, as the token would otherwise stay public.
   const removeToken = () => {
-    const token = tokenWritten.value;
-    if (!token) return;
+    const params = written.value?.params;
+    if (!params) return;
 
-    tokenWritten.value = undefined;
+    written.value = undefined;
     checkStarted.value = false;
     extension
-      .request(options.removeAction, options.params(token))
+      .request(options.removeAction, params)
       .then((answer) => {
         if (answer.code !== 200) throw new Error(answer.error);
       })
@@ -169,15 +170,21 @@ export const useExtensionVerification = (options: Options) => {
     checkedByExtension.value = false;
     running.value = true;
 
+    // A token from an earlier try, since regenerated, comes out first; the
+    // extension handles one request per page at a time, in order.
+    removeToken();
+
+    const params = options.params(token);
+
     try {
       const answer = await extension
-        .request(options.writeAction, options.params(token))
+        .request(options.writeAction, params)
         .catch(() => undefined);
 
       // No answer in time says nothing about whether the write landed, so the
       // token is treated as there: closing the modal takes it out.
       if (!answer) {
-        tokenWritten.value = token;
+        written.value = { params };
         error.value = "failed";
         return;
       }
@@ -188,10 +195,10 @@ export const useExtensionVerification = (options: Options) => {
       }
 
       if ((answer.payload as { changed?: boolean })?.changed) {
-        tokenWritten.value = token;
+        written.value = { params };
       }
 
-      if (!options.wroteToTarget(answer, target)) {
+      if (options.wroteToTarget && !options.wroteToTarget(answer, target)) {
         rsiHandle.value = (answer.payload as { handle?: string })?.handle;
         state.value = ExtensionVerificationState.MISMATCH;
         removeToken();
@@ -216,9 +223,9 @@ export const useExtensionVerification = (options: Options) => {
   // job still queued when the cooldown ends has not read the page yet. One
   // that never answers leaves the token until the modal closes.
   watch(
-    [tokenWritten, checkStarted, options.checkStatus],
-    ([token, started, status]) => {
-      if (token && started && status !== options.pendingStatus) removeToken();
+    [written, checkStarted, options.checkStatus],
+    ([write, started, status]) => {
+      if (write && started && status !== options.pendingStatus) removeToken();
     },
   );
 

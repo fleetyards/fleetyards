@@ -599,7 +599,6 @@
             "install": "安装 FleetYards Sync 扩展，即可一键验证你的舰队。",
             "update": "更新 FleetYards Sync 扩展即可一键验证你的舰队：当前安装的版本尚不支持。",
             "notSignedIn": "请在此浏览器中使用可以编辑 %{sid} 的账户登录 RSI，或在下方手动验证。",
-            "handleMismatch": "扩展写入的是 %{rsiHandle} 的组织，而不是 %{handle}。请在下方手动验证。",
             "noRights": "此浏览器登录的 RSI 账户无法编辑 %{sid} 的页面。请使用军官账户登录，或在下方手动验证。",
             "pendingChanges": "%{sid} 在 RSI 上有未发布的更改。请先发布或清除该草稿，以免扩展发布他人的修改，或在下方手动验证。",
             "orgUnreadable": "扩展无法读取 %{sid} 在 RSI 上的页面。请在下方手动验证。",

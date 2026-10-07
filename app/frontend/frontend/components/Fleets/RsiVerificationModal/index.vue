@@ -165,8 +165,6 @@ const extension = useExtensionVerification({
   writeAction: FleetyardsSyncAction.ORG_VERIFY_WRITE,
   removeAction: FleetyardsSyncAction.ORG_VERIFY_REMOVE,
   params: (token) => ({ sid: verification.value?.sid, token }),
-  wroteToTarget: (answer, sid) =>
-    (answer.payload as { sid?: string } | undefined)?.sid === sid,
   check,
   checkStatus: () => verification.value?.status,
   pendingStatus: StatusEnum.PENDING,

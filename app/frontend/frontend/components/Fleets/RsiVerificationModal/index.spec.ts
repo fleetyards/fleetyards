@@ -291,6 +291,52 @@ describe("FleetRsiVerificationModal", () => {
       expect(removals()).toHaveLength(1);
     });
 
+    it("removes from the org it wrote to, whatever the modal shows now", async () => {
+      signedIn();
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountPanel({ fleet: fleet() });
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({
+        sid: "OTHER",
+        status: "token_missing",
+      });
+      await flushPromises();
+
+      expect(removals()).toEqual([
+        ["org-verify-remove", { sid: "TEST", token: "FLEETYARDS-ABCDEFGHIJ" }],
+      ]);
+    });
+
+    it("takes an older token out before writing a regenerated one", async () => {
+      signedIn();
+      extensionAnswers["org-verify-write"] = new Error("no answer");
+
+      const wrapper = await mountPanel({ fleet: fleet() });
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({ token: "FLEETYARDS-NEWTOKEN00" });
+      writes();
+      checkStartsJob();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      const calls = extensionRequest.mock.calls.filter(([action]) =>
+        String(action).startsWith("org-verify"),
+      );
+      expect(calls.slice(1, 3)).toEqual([
+        ["org-verify-remove", { sid: "TEST", token: "FLEETYARDS-ABCDEFGHIJ" }],
+        ["org-verify-write", { sid: "TEST", token: "FLEETYARDS-NEWTOKEN00" }],
+      ]);
+    });
+
     it("shows the check's result next to the extension", async () => {
       signedIn();
       writes();
