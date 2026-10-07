@@ -612,7 +612,6 @@
             "check": "Check the page"
           },
           "openOrgPage": "Open %{sid} on RSI",
-          "locked": "A verified SID is locked. Ask support if it needs to change.",
           "fidAtRiskTitle": "Your fleet ID is not protected",
           "saveFirst": "Save the SID before verifying it.",
           "title": "RSI verification",

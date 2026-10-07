@@ -612,7 +612,6 @@
             "check": "检查页面"
           },
           "openOrgPage": "在 RSI 上打开 %{sid}",
-          "locked": "已验证的 SID 已锁定。如需更改，请联系支持团队。",
           "fidAtRiskTitle": "你的舰队 ID 未受保护",
           "saveFirst": "请先保存 SID 再进行验证。",
           "title": "RSI 验证",

@@ -612,7 +612,6 @@
             "check": "Vérifie la page"
           },
           "openOrgPage": "Ouvrir %{sid} sur RSI",
-          "locked": "Un SID vérifié est verrouillé. Contacte le support s’il doit changer.",
           "fidAtRiskTitle": "L’ID de ta flotte n’est pas protégé",
           "saveFirst": "Enregistre le SID avant de le vérifier.",
           "title": "Vérification RSI",

@@ -9,7 +9,7 @@ import {
   it,
   vi,
 } from "vitest";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, ref } from "vue";
 import { RouterView, createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetMember } from "@/services/fyApi";
 import { defineRule } from "vee-validate";
@@ -17,6 +17,7 @@ import { alpha_dash, min, required } from "@vee-validate/rules";
 import Component from "./rsi.vue";
 
 const mutateAsync = vi.fn();
+const revokeMutateAsync = vi.fn();
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
@@ -29,7 +30,14 @@ vi.mock("@/services/fyApi", async () => {
   const actual =
     await vi.importActual<Record<string, unknown>>("@/services/fyApi");
 
-  return { ...actual, useUpdateFleet: () => ({ mutateAsync }) };
+  return {
+    ...actual,
+    useUpdateFleet: () => ({ mutateAsync }),
+    useDestroyFleetRsiVerification: () => ({
+      mutateAsync: revokeMutateAsync,
+      isPending: ref(false),
+    }),
+  };
 });
 
 const emit = vi.fn();
@@ -75,6 +83,7 @@ beforeAll(() => {
 beforeEach(() => {
   fleet = { slug: "test", fid: "TEST", rsiSid: "TEST" } as Fleet;
   mutateAsync.mockReset();
+  revokeMutateAsync.mockReset();
   emit.mockReset();
 });
 
@@ -176,5 +185,27 @@ describe("FleetRsiSettingsPage", () => {
     expect(
       subject.find('input[name="rsiSid"]').attributes("disabled"),
     ).toBeDefined();
+  });
+
+  it("offers no revoke for an unverified SID", async () => {
+    const { wrapper: subject } = await mount();
+
+    expect(
+      subject.find('[data-test="fleet-rsi-verification-revoke"]').exists(),
+    ).toBe(false);
+  });
+
+  it("revokes the verification once confirmed and reloads the fleet", async () => {
+    fleet = { ...fleet, rsiVerified: true };
+    revokeMutateAsync.mockResolvedValue({});
+    const { wrapper: subject } = await mount();
+
+    const revoke = subject.find('[data-test="fleet-rsi-verification-revoke"]');
+    await revoke.find('[data-test="btn-confirm-trigger"]').trigger("click");
+    await revoke.find('[data-test="btn-confirm-yes"]').trigger("click");
+    await flushPromises();
+
+    expect(revokeMutateAsync).toHaveBeenCalledWith({ fleetSlug: "test" });
+    expect(emit).toHaveBeenCalledWith("fleet-update");
   });
 });

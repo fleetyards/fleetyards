@@ -612,7 +612,6 @@
             "check": "Prüfe die Seite"
           },
           "openOrgPage": "%{sid} auf RSI öffnen",
-          "locked": "Eine verifizierte SID ist gesperrt. Wende dich an den Support, wenn sie sich ändern muss.",
           "fidAtRiskTitle": "Deine Flotten-ID ist nicht geschützt",
           "saveFirst": "Speichere die SID, bevor du sie verifizierst.",
           "title": "RSI-Verifizierung",

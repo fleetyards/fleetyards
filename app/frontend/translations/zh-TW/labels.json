@@ -612,7 +612,6 @@
             "check": "檢查頁面"
           },
           "openOrgPage": "在 RSI 上開啟 %{sid}",
-          "locked": "已驗證的 SID 已鎖定。如需變更，請聯絡支援團隊。",
           "fidAtRiskTitle": "你的艦隊 ID 未受保護",
           "saveFirst": "請先儲存 SID 再進行驗證。",
           "title": "RSI 驗證",

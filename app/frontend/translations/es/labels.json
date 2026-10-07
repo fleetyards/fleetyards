@@ -612,7 +612,6 @@
             "check": "Comprueba la página"
           },
           "openOrgPage": "Abrir %{sid} en RSI",
-          "locked": "Un SID verificado está bloqueado. Contacta con soporte si necesitas cambiarlo.",
           "fidAtRiskTitle": "El ID de tu flota no está protegido",
           "saveFirst": "Guarda el SID antes de verificarlo.",
           "title": "Verificación de RSI",
