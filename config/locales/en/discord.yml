@@ -51,7 +51,7 @@ en:
         more: '…and %{count} more.'
         not_available: 'No public hangar for "%{username}".'
       item:
-        ambiguous: '%{count} items match "%{query}":'
+        ambiguous: 'Items matching "%{query}":'
         fields:
           buy: Buy
           class: Class

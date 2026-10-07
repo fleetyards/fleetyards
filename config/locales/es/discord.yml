@@ -51,7 +51,7 @@ es:
         more: '…y %{count} más.'
         not_available: 'No hay hangar público para «%{username}».'
       item:
-        ambiguous: '%{count} objetos coinciden con «%{query}»:'
+        ambiguous: 'Objetos que coinciden con «%{query}»:'
         fields:
           buy: Comprar
           class: Clase

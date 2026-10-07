@@ -99,6 +99,7 @@ module Discord
               description: "Item name",
               type: STRING,
               required: true,
+              max_length: 100,
               autocomplete: true
             }
           ]

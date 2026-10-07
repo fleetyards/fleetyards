@@ -51,7 +51,7 @@ zh-CN:
         more: '…还有 %{count} 艘。'
         not_available: '未找到“%{username}”的公开机库。'
       item:
-        ambiguous: '有 %{count} 个物品匹配“%{query}”：'
+        ambiguous: '匹配“%{query}”的物品：'
         fields:
           buy: 购买
           class: 类别

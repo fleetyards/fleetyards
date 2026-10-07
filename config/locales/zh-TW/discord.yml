@@ -51,7 +51,7 @@ zh-TW:
         more: '…還有 %{count} 艘。'
         not_available: '找不到「%{username}」的公開機庫。'
       item:
-        ambiguous: '有 %{count} 個物品符合「%{query}」：'
+        ambiguous: '符合「%{query}」的物品：'
         fields:
           buy: 購買
           class: 類別

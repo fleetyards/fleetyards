@@ -138,6 +138,35 @@ module Discord
 
         assert_empty ::Discord::Commands::Item.autocomplete("other", "quan")
       end
+
+      test "a craft time over an hour reads in hours, not months" do
+        create(:blueprint, name: "Long Recipe", craft_time: 3725)
+
+        assert_equal "1h 2m 5s", fields(call("blueprint:Long Recipe"))[I18n.t("discord.commands.item.fields.craft_time")]
+      end
+
+      test "a listed name cannot break the link it sits in" do
+        create(:commodity, name: "Gold [Refined]")
+        create(:commodity, name: "Gold Ore")
+
+        assert_includes call("Gold")[:content], "[Gold \\[Refined\\]]("
+      end
+
+      # Discord cannot draw an SVG; a raster icon behind one still gets used.
+      test "passes over a vector image for a raster one" do
+        component = create(:component, name: "Mercury Drive")
+        component.store_image.attach(io: file_fixture("vector.svg").open, filename: "vector.svg", content_type: "image/svg+xml")
+        component.icon.attach(io: file_fixture("test.png").open, filename: "test.png", content_type: "image/png")
+
+        assert call("Mercury Drive")[:embeds].first.dig(:thumbnail, :url).present?
+      end
+
+      test "leaves out a picture it cannot draw" do
+        component = create(:component, name: "Mercury Drive")
+        component.icon.attach(io: file_fixture("vector.svg").open, filename: "vector.svg", content_type: "image/svg+xml")
+
+        assert_nil call("Mercury Drive")[:embeds].first[:thumbnail]
+      end
     end
   end
 end

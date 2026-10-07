@@ -51,7 +51,7 @@ de:
         more: '…und %{count} weitere.'
         not_available: 'Kein öffentlicher Hangar für „%{username}“.'
       item:
-        ambiguous: '%{count} Gegenstände passen zu „%{query}“:'
+        ambiguous: 'Gegenstände, die zu „%{query}“ passen:'
         fields:
           buy: Kaufen
           class: Klasse

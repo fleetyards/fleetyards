@@ -57,25 +57,21 @@ module Discord
       # that names no one item falls back to what the suggestions would offer.
       private def resolved(query)
         resolver = ::Catalogue::TokenResolver.new
-        exact = resolver.resolve([query]).select { |match| catalogued?(match) }
+        exact = resolver.resolve([query], within: CATALOGUES)
         return exact if exact.any?
 
-        resolver.search(query, within: CATALOGUES).select { |match| catalogued?(match) }
-      end
-
-      private def catalogued?(match)
-        CATALOGUES.include?(self.class.prefix_for(match))
+        resolver.search(query, within: CATALOGUES)
       end
 
       private def candidate_list(query, matches)
         shown = matches.first(MAX_CANDIDATES)
         lines = shown.map do |match|
           prefix = self.class.prefix_for(match)
-          "• [#{match.name}](#{page_url(prefix, match.slug)}) · #{self.class.type_label(prefix)}"
+          "• #{link(match.name, prefix, match.slug)} · #{self.class.type_label(prefix)}"
         end
 
         content = [
-          I18n.t("discord.commands.item.ambiguous", query: query, count: shown.size),
+          I18n.t("discord.commands.item.ambiguous", query: query),
           lines.join("\n"),
           (I18n.t("discord.commands.item.more") if matches.size > MAX_CANDIDATES)
         ].compact.join("\n")
@@ -91,7 +87,7 @@ module Discord
           color: EMBED_COLOR,
           description: description(prefix, record),
           fields: send(:"#{prefix}_fields", record).compact_blank.map { |name, value| {name: name, value: value, inline: true} },
-          thumbnail: thumbnail((prefix == "blueprint") ? record.craftable : record),
+          thumbnail: thumbnail(*images((prefix == "blueprint") ? record.craftable : record)),
           footer: {text: record.try(:manufacturer)&.name}.compact_blank.presence
         }.compact_blank
       end
@@ -125,7 +121,7 @@ module Discord
 
         [
           (I18n.t("discord.commands.item.makes", item: craftable_link(craftable)) if craftable.present?),
-          (I18n.t("discord.commands.item.materials", items: materials.map { |commodity| "[#{commodity.name}](#{page_url("commodity", commodity.slug)})" }.join(", ")) if materials.any?)
+          (I18n.t("discord.commands.item.materials", items: materials.map { |commodity| link(commodity.name, "commodity", commodity.slug) }.join(", ")) if materials.any?)
         ].compact.join("\n").presence
       end
 
@@ -133,7 +129,7 @@ module Discord
         prefix = ::Catalogue::TokenResolver::CATALOGUES.key(craftable.class)
         listed = prefix && ::Catalogue::TokenResolver.listed(prefix).exists?(slug: craftable.slug)
 
-        listed ? "[#{craftable.name}](#{page_url(prefix, craftable.slug)})" : craftable.name
+        listed ? link(craftable.name, prefix, craftable.slug) : Markdown.escape(craftable.name)
       end
 
       private def component_fields(record)
@@ -177,28 +173,29 @@ module Discord
         "#{number_with_delimiter(number_with_precision(value, precision: 2, strip_insignificant_zeros: true))} aUEC"
       end
 
+      # Hours at most: a recipe takes minutes, and Duration's own parts would
+      # spell a month and a minute with the same letter.
       private def craft_time(seconds)
         return if seconds.blank?
 
-        ActiveSupport::Duration.build(seconds.to_i).parts.map { |unit, amount| "#{amount}#{unit.to_s.first}" }.join(" ")
+        hours, rest = seconds.to_i.divmod(3600)
+        minutes, seconds = rest.divmod(60)
+
+        {"h" => hours, "m" => minutes, "s" => seconds}
+          .filter_map { |unit, amount| "#{amount}#{unit}" if amount.positive? }
+          .join(" ").presence || "0s"
       end
 
-      # Discord cannot draw a vector, and most game icons are SVGs with no raster
-      # variant, so those leave the embed without a picture rather than broken.
-      private def thumbnail(record)
-        image = %i[store_image icon].filter_map { |name| record.try(name) }.find(&:attached?)
-        return nil unless image&.representable?
-        return nil if ActiveStorageVariants::VECTOR_CONTENT_TYPES.include?(image.content_type)
+      private def images(record)
+        %i[store_image icon].filter_map { |name| record.try(name) }
+      end
 
-        {url: url_helpers.rails_representation_url(image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))}
+      private def link(name, prefix, slug)
+        "[#{Markdown.escape(name)}](#{page_url(prefix, slug)})"
       end
 
       private def page_url(prefix, slug)
         url_for_path("/catalogue/#{PAGES.fetch(prefix)}/#{slug}/")
-      end
-
-      private def url_helpers
-        Rails.application.routes.url_helpers
       end
     end
   end

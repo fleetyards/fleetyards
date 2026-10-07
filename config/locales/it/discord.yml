@@ -51,7 +51,7 @@ it:
         more: '…e altre %{count}.'
         not_available: 'Nessun hangar pubblico per «%{username}».'
       item:
-        ambiguous: '%{count} oggetti corrispondono a «%{query}»:'
+        ambiguous: 'Oggetti che corrispondono a «%{query}»:'
         fields:
           buy: Acquisto
           class: Classe
