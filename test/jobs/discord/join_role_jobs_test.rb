@@ -146,7 +146,7 @@ module Discord
       assert_predicate membership_of(unlinked), :accepted?
     end
 
-    test "the sync does not tell the officers about each player it admits" do
+    test "the sync for a newly picked role does not tell the officers about each player it admits" do
       holder = linked_user("uid-1")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
 
@@ -154,6 +154,16 @@ module Discord
 
       assert_predicate membership_of(holder), :accepted?
       refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
+    end
+
+    test "the daily sync tells the officers about a player it admits" do
+      holder = linked_user("uid-1")
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert_predicate membership_of(holder), :accepted?
+      assert Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 
     test "a sync that cannot read the guild ends nobody's membership" do

@@ -393,10 +393,7 @@ class FleetMembership < ApplicationRecord
 
   def on_accept_invitation
     notify_fleet_admins
-
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
-    end
+    broadcast_to_members
   end
 
   def notify_fleet_admins
@@ -453,12 +450,8 @@ class FleetMembership < ApplicationRecord
 
   def on_join
     notify_new_member
-    return if quiet
-
-    notify_fleet_admins
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
-    end
+    notify_fleet_admins unless quiet
+    broadcast_to_members
   end
 
   def post_discord_join_request
@@ -480,7 +473,10 @@ class FleetMembership < ApplicationRecord
 
   def on_accept_request
     notify_new_member
+    broadcast_to_members
+  end
 
+  def broadcast_to_members
     fleet.fleet_memberships.kept.find_each do |member|
       FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
     end

@@ -20,6 +20,10 @@ module Discord
       join_role = JoinRole.new(fleet)
       return unless join_role.configured?
 
+      # Admitting everyone who already holds a newly picked role would bury
+      # the officers in notifications; anyone the daily run admits is news.
+      @quiet = reset
+
       seen = apply_guild_members(join_role)
       return if seen.nil?
 
@@ -47,7 +51,7 @@ module Discord
 
         linked_users(roles_by_uid.keys).each do |user, uid|
           seen << user.id
-          join_role.apply(user, roles_by_uid[uid], quiet: true)
+          join_role.apply(user, roles_by_uid[uid], quiet: @quiet)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE

@@ -90,7 +90,10 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
-    test "a quiet admission tells the player but not the officers" do
+    test "a quiet admission tells the player and the members' views but not the officers" do
+      FleetVehiclesChannel.expects(:broadcast_to).with(@admin, anything).at_least_once
+      FleetVehiclesChannel.stubs(:broadcast_to).with(@user, anything)
+
       join_role.apply(@user, [JOIN_ROLE], quiet: true)
 
       assert_predicate membership, :accepted?
