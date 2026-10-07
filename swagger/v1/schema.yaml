@@ -9823,6 +9823,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/buybacks":
+    get:
+      summary: Hangar Buy-back Pledges
+      tags:
+      - Hangar
+      operationId: hangarBuybacks
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BuybackPledgeQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackPledges"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/contract-destinations":
     get:
       summary: Hangar Contract Destinations
@@ -11367,6 +11411,45 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-buybacks":
+    put:
+      summary: Sync RSI Buy-back Pledges
+      tags:
+      - Hangar
+      operationId: syncRsiBuybacks
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SyncRsiBuybacksInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackSyncResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -19227,6 +19310,106 @@ components:
       - PLEDGE_STORE
       - INGAME
       title: BoughtViaEnum
+    BuybackPledge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        rsiPledgeId:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/BuybackPledgeKindEnum"
+        name:
+          type: string
+        upgraded:
+          type: boolean
+        reclaimedOn:
+          type: string
+          format: date
+        contained:
+          type: string
+        image:
+          type: string
+          format: uri
+        upgradeFromShipId:
+          type: integer
+        upgradeToShipId:
+          type: integer
+        upgradeToSkuId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - rsiPledgeId
+      - kind
+      - name
+      - upgraded
+      - createdAt
+      - updatedAt
+      title: BuybackPledge
+    BuybackPledgeKindEnum:
+      type: string
+      enum:
+      - package
+      - ship
+      - upgrade
+      - paint
+      - addon
+      - other
+      x-enumNames:
+      - PACKAGE
+      - SHIP
+      - UPGRADE
+      - PAINT
+      - ADDON
+      - OTHER
+      title: BuybackPledgeKindEnum
+    BuybackPledgeQuery:
+      type: object
+      properties:
+        kindEq:
+          "$ref": "#/components/schemas/BuybackPledgeKindEnum"
+        nameCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: BuybackPledgeQuery
+    BuybackPledges:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BuybackPledge"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: BuybackPledges
+    BuybackSyncResult:
+      type: object
+      properties:
+        total:
+          type: integer
+        added:
+          type: integer
+        removed:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      - added
+      - removed
+      title: BuybackSyncResult
     CalendarSubscription:
       type: object
       properties:
@@ -34977,6 +35160,37 @@ components:
       - id
       - username
       title: RelationshipUser
+    RsiBuybackItemInput:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/BuybackPledgeKindEnum"
+        name:
+          type: string
+        upgraded:
+          type: boolean
+        reclaimedOn:
+          type: string
+          format: date
+        contained:
+          type: string
+        image:
+          type: string
+          format: uri
+        upgradeFromShipId:
+          type: integer
+        upgradeToShipId:
+          type: integer
+        upgradeToSkuId:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - kind
+      - name
+      title: RsiBuybackItemInput
     RsiHandleVerifiedViaEnum:
       type: string
       enum:
@@ -35849,6 +36063,17 @@ components:
       - fleetId
       additionalProperties: false
       title: SupporterNominationInput
+    SyncRsiBuybacksInput:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RsiBuybackItemInput"
+      additionalProperties: false
+      required:
+      - items
+      title: SyncRsiBuybacksInput
     SyncRsiHangarInput:
       type: object
       properties:

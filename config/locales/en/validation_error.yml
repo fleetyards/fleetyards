@@ -104,6 +104,8 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
+    buyback_pledges:
+      sync: Buy-back pledges could not be synchronised.
     fleet_contracts:
       create: Contract could not be created.
       update: Contract could not be updated.

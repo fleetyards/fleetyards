@@ -67,6 +67,8 @@ de:
       create: Gruppe konnte nicht erstellt werden
       destroy: Gruppe konnte nicht gelöscht werden
       update: Gruppe konnte nicht aktualisiert werden
+    buyback_pledges:
+      sync: Rückkauf-Pledges konnten nicht synchronisiert werden.
     fleet_contracts:
       create: Auftrag konnte nicht erstellt werden.
       update: Auftrag konnte nicht aktualisiert werden.

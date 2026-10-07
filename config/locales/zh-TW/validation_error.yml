@@ -59,6 +59,8 @@ zh-TW:
       create: 無法建立群組
       destroy: 無法刪除群組
       update: 無法更新群組
+    buyback_pledges:
+      sync: 無法同步可回購的承諾。
     fleet_contracts:
       create: 無法建立合約。
       update: 無法更新合約。
