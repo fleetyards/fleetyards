@@ -4,15 +4,7 @@ import {
   RsiPageCheckEnum,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
-
-export type RSIBuybackPage = {
-  pledges: RsiBuybackItemInput[];
-  pledgeIds: string[];
-  entryCount: number;
-  // Set when this is not a buy-back page this parser understands. The sync
-  // must stop on it rather than read it as the end of the list.
-  unrecognised?: RsiPageCheckEnum;
-};
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
   ["Package", BuybackPledgeKindEnum.PACKAGE],
@@ -26,45 +18,62 @@ const DEFAULT_IMAGE = "default-image";
 
 const BUYBACK_LIST = "section.available-pledges, .buy-back";
 
-const unrecognised = (check: RsiPageCheckEnum): RSIBuybackPage => ({
-  pledges: [],
-  pledgeIds: [],
-  entryCount: 0,
-  unrecognised: check,
-});
+// Only RSI's own empty list ends the list, the same three answers the hangar
+// parser gives. A page past the last one renders with an empty list; anything
+// else that is not a readable buy-back page stops the sync, since submitting
+// the list read so far would delete every buy-back after it.
+export type RSIBuybackPage =
+  | {
+      status: RsiPageStatus.PAGE;
+      pledges: RsiBuybackItemInput[];
+      pledgeIds: string[];
+    }
+  | { status: RsiPageStatus.END }
+  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
-// RSI renders a page past the last one as the page with an empty list, so
-// `entryCount: 0` is the end-of-list signal -- unless the page still links to
-// buy-backs, which is what renamed entries look like. A login redirect or an
-// error page arrives as a 200 too, and has no buy-back list at all.
+const BUYBACK_LINK = "a[href*='/pledge/buyback/']";
+
 export const extractBuybackPage = (html: string): RSIBuybackPage => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
 
-  if (!htmlDoc.querySelector(BUYBACK_LIST)) {
-    return unrecognised(RsiPageCheckEnum.MISSING_LIST);
+  // A login redirect or an error page arrives as a 200 too.
+  const list = htmlDoc.querySelector(BUYBACK_LIST);
+
+  if (!list) {
+    return {
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_LIST,
+    };
   }
 
-  const entries = Array.from(htmlDoc.querySelectorAll("article.pledge"));
+  const entries = Array.from(list.querySelectorAll("article.pledge"));
 
-  if (
-    entries.length === 0 &&
-    htmlDoc.querySelector("a[href*='/pledge/buyback/']")
-  ) {
-    return unrecognised(RsiPageCheckEnum.MISSING_ENTRIES);
+  // Links to buy-backs inside the list without entries around them is what
+  // renamed entries look like.
+  if (entries.length === 0) {
+    return list.querySelector(BUYBACK_LINK)
+      ? {
+          status: RsiPageStatus.UNRECOGNISED,
+          check: RsiPageCheckEnum.MISSING_ENTRIES,
+        }
+      : { status: RsiPageStatus.END };
   }
 
   const pledges = entries
     .map(parseBuybackEntry)
     .filter((pledge): pledge is RsiBuybackItemInput => !!pledge);
 
-  if (entries.length > 0 && pledges.length === 0) {
-    return unrecognised(RsiPageCheckEnum.UNPARSED_ENTRIES);
+  if (pledges.length === 0) {
+    return {
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNPARSED_ENTRIES,
+    };
   }
 
   return {
+    status: RsiPageStatus.PAGE,
     pledges,
     pledgeIds: pledges.map((pledge) => pledge.id),
-    entryCount: entries.length,
   };
 };
 

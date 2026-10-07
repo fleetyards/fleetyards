@@ -11,6 +11,7 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
@@ -285,7 +286,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   // Nothing is submitted: what was read so far is only part of the hangar, and
   // every ship on the pages after it would count as unmatched.
-  if (result.status === "unrecognised") {
+  if (result.status === RsiPageStatus.UNRECOGNISED) {
     updateStep("fetchHangar", "failure");
     displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
     reportRsiPage({
@@ -296,7 +297,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
     return;
   }
 
-  if (result.status === "end") {
+  if (result.status === RsiPageStatus.END) {
     updateStep("fetchHangar", "success");
     await finishSync();
     return;

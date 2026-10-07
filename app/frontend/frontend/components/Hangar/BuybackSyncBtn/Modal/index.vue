@@ -15,6 +15,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { extensionUrls } from "@/types/extension";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { useRsiPageReport } from "@/frontend/composables/useRsiPageReport";
 import {
   FleetyardsSyncAction,
@@ -250,33 +251,38 @@ const clearReplyTimer = () => {
   }
 };
 
-const fail = () => {
+const fail = (text = t("messages.buybackSync.failure")) => {
   clearReplyTimer();
   status.value = "failed";
-  displayAlert({ text: t("messages.buybackSync.failure") });
+  displayAlert({ text });
 };
 
 const reportRsiPage = useRsiPageReport();
 
 const handlePage = async (html: string) => {
-  const page = extractBuybackPage(html);
+  const result = extractBuybackPage(html);
 
   // Not a buy-back page this parser understands: the list read so far is
   // incomplete, and submitting it would delete every buy-back after it.
-  if (page.unrecognised) {
-    clearReplyTimer();
-    status.value = "failed";
-    displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+  if (result.status === RsiPageStatus.UNRECOGNISED) {
+    fail(t("messages.syncExtension.pageNotRecognised"));
     reportRsiPage({
       page: RsiPageKindEnum.BUYBACK,
-      check: page.unrecognised,
+      check: result.check,
       pageNumber: currentPage.value,
       extensionVersion: extensionInfo.value.version,
     });
     return;
   }
 
-  const newBuybacks = page.pledges.filter((pledge) => !seenIds.has(pledge.id));
+  if (result.status === RsiPageStatus.END) {
+    await submit();
+    return;
+  }
+
+  const newBuybacks = result.pledges.filter(
+    (pledge) => !seenIds.has(pledge.id),
+  );
 
   if (newBuybacks.length === 0) {
     await submit();

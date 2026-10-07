@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { RSIHangarParser } from "./RSIHangarParser";
+import { RsiPageStatus } from "./RsiPageStatus";
+import { RsiPageCheckEnum } from "@/services/fyApi";
 
 // The structure the parser reads off the pledges page; ids are made up.
 const pledge = (id: string, items: string) => `
@@ -25,7 +27,7 @@ describe("RSIHangarParser.extractPage", () => {
     const page = extract(pledgesPage(pledge("101", item("Ship", "Cutter"))));
 
     expect(page).toMatchObject({
-      status: "page",
+      status: RsiPageStatus.PAGE,
       pledgeIds: ["101"],
       pledges: [{ id: "101", name: "Cutter", type: "ship" }],
     });
@@ -34,19 +36,22 @@ describe("RSIHangarParser.extractPage", () => {
   it("reads RSI's empty list as the end", () => {
     expect(
       extract('<div class="list-items"><div class="empty-list"></div></div>'),
-    ).toEqual({ status: "end" });
+    ).toEqual({ status: RsiPageStatus.END });
   });
 
   it("does not read a page without the pledge list as the end", () => {
     expect(
       extract("<html><body><form id='sign-in'></form></body></html>"),
-    ).toEqual({ status: "unrecognised", check: "missing_list" });
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_LIST,
+    });
   });
 
   it("does not read pledges without ids", () => {
     expect(extract(pledgesPage(`<li><div class="item"></div></li>`))).toEqual({
-      status: "unrecognised",
-      check: "missing_pledge_ids",
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
     });
   });
 
@@ -60,12 +65,19 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({ status: "unrecognised", check: "missing_kinds" });
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
+    });
   });
 
   it("still reads a pledge whose items are all of kinds it skips", () => {
     const page = extract(pledgesPage(pledge("101", item("Credits", "UEC"))));
 
-    expect(page).toEqual({ status: "page", pledges: [], pledgeIds: ["101"] });
+    expect(page).toEqual({
+      status: RsiPageStatus.PAGE,
+      pledges: [],
+      pledgeIds: ["101"],
+    });
   });
 });

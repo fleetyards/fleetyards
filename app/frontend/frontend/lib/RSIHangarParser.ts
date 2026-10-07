@@ -1,13 +1,18 @@
 import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
 import { RsiPageCheckEnum } from "@/services/fyApi";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 
 // Only RSI's own empty-list markup ends the list. Anything else that does not
 // look like a pledge page is a page this parser no longer understands: read as
 // the end, it would cut the sync short and leave every ship after it unmatched.
 export type RSIHangarPage =
-  | { status: "page"; pledges: RSIHangarItem[]; pledgeIds: string[] }
-  | { status: "end" }
-  | { status: "unrecognised"; check: RsiPageCheckEnum };
+  | {
+      status: RsiPageStatus.PAGE;
+      pledges: RSIHangarItem[];
+      pledgeIds: string[];
+    }
+  | { status: RsiPageStatus.END }
+  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
@@ -23,13 +28,16 @@ export class RSIHangarParser {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
     if (this.checkForLastPage(htmlDoc)) {
-      return { status: "end" };
+      return { status: RsiPageStatus.END };
     }
 
     const pledgeList = htmlDoc.getElementsByClassName("list-items")[0];
 
     if (!pledgeList) {
-      return { status: "unrecognised", check: RsiPageCheckEnum.MISSING_LIST };
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_LIST,
+      };
     }
 
     const entries = Array.from(pledgeList.getElementsByTagName("li"));
@@ -58,7 +66,7 @@ export class RSIHangarParser {
 
     if (pledgeIds.length === 0) {
       return {
-        status: "unrecognised",
+        status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
       };
     }
@@ -69,10 +77,13 @@ export class RSIHangarParser {
       items.length > 0 &&
       !items.some((item) => item.getElementsByClassName("kind")[0])
     ) {
-      return { status: "unrecognised", check: RsiPageCheckEnum.MISSING_KINDS };
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_KINDS,
+      };
     }
 
-    return { status: "page", pledges, pledgeIds };
+    return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {

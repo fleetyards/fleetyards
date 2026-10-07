@@ -1,4 +1,5 @@
 import { mount, flushPromises } from "@vue/test-utils";
+import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
@@ -246,8 +247,8 @@ describe("HangarBuybackSyncModal", () => {
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).toHaveBeenCalledWith({
       data: {
-        page: "buyback",
-        check: "missing_entries",
+        page: RsiPageKindEnum.BUYBACK,
+        check: RsiPageCheckEnum.MISSING_ENTRIES,
         pageNumber: 2,
         extensionVersion: "1.3.0",
       },

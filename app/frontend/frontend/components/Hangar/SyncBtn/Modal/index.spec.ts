@@ -2,7 +2,11 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
+import {
+  HangarSyncUnmatchedActionEnum,
+  RsiPageCheckEnum,
+  RsiPageKindEnum,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
@@ -134,7 +138,11 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).toHaveBeenCalledWith({
-      data: { page: "hangar", check: "missing_list", pageNumber: 1 },
+      data: {
+        page: RsiPageKindEnum.HANGAR,
+        check: RsiPageCheckEnum.MISSING_LIST,
+        pageNumber: 1,
+      },
     });
   });
 
