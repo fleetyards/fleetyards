@@ -1,4 +1,5 @@
 import { mount, flushPromises } from "@vue/test-utils";
+import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
@@ -14,11 +15,48 @@ const mutateAsync = vi.fn<
 );
 
 const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
+const reportMutateAsync = vi.fn(() => Promise.resolve());
+
+// What the extension says about the RSI session when the modal checks it
+// before reporting a page.
+const rsiIdentity = vi.fn(
+  async (): Promise<{ code: number; payload: { handle?: string } }> => ({
+    code: 200,
+    payload: { handle: "ACaptain" },
+  }),
+);
+
+// Only the identify check: the detail pass talks to the extension through the
+// same composable, and its requests have to reach `postMessage`.
+vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import("@/frontend/composables/useSyncExtension")
+    >();
+
+  return {
+    useSyncExtension: () => {
+      const extension = actual.useSyncExtension();
+
+      return {
+        ...extension,
+        request: (action: string, ...rest: unknown[]) =>
+          action === "identify"
+            ? rsiIdentity()
+            : (extension.request as (...args: unknown[]) => unknown)(
+                action,
+                ...rest,
+              ),
+      };
+    },
+  };
+});
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
   useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -70,7 +108,10 @@ const buybackPage = (id: string) =>
   <a class="holosmallbtn" href="/pledge/buyback/${id}">Buy Back</a>
 </article></li>`);
 
-const emptyBuybackPage = buybackList("");
+// What RSI renders past the last page.
+const emptyBuybackPage = buybackList(
+  '<li class="no-buy-backs">No pledges available</li>',
+);
 
 const askedFor = (action: string) =>
   vi
@@ -125,6 +166,8 @@ describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
     submitDetails.mockClear();
+    reportMutateAsync.mockClear();
+    rsiIdentity.mockClear();
     vi.mocked(window.postMessage).mockClear();
   });
 
@@ -227,6 +270,39 @@ describe("HangarBuybackSyncModal", () => {
     await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("reports a page it does not recognise", async () => {
+    await startSync();
+
+    extensionReplies("syncBuyback", buybackPage("1"));
+    await flushPromises();
+    extensionReplies(
+      "syncBuyback",
+      buybackList(`<li><a href="/pledge/buyback/2">Buy Back</a></li>`),
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).toHaveBeenCalledWith({
+      data: {
+        page: RsiPageKindEnum.BUYBACK,
+        check: RsiPageCheckEnum.MISSING_ENTRIES,
+        pageNumber: 2,
+        extensionVersion: "1.3.0",
+      },
+    });
+  });
+
+  it("reports nothing when the RSI session has run out", async () => {
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+    await startSync();
+
+    extensionReplies("syncBuyback", "<html><body></body></html>");
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).not.toHaveBeenCalled();
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {

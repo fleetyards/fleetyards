@@ -107,11 +107,13 @@ class HangarSyncTest < ActiveSupport::TestCase
   end
 
   # The javelin is the one existing ship the pledge list does not carry, so it
-  # is what every action below is about.
+  # is what every action below is about. The andromeda is one it does carry: a
+  # run that recognises none of the user's ships acts on nothing.
   class UnmatchedVehiclesTest < HangarSyncTest
     setup do
       @javelin_model = Model.find_by!(slug: "aegs-javelin")
       @jav_ship = create(:vehicle, user: @user, model: @javelin_model, name: "Ozymandias", wanted: false)
+      create(:vehicle, user: @user, model: Model.find_by!(slug: "rsi-constellation-andromeda"), wanted: false)
     end
 
     def run_with(**attributes)
@@ -134,6 +136,32 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal ["Ozymandias"], result[:deleted_vehicles]
       assert_equal [], result[:moved_vehicles_to_wanted]
       refute Vehicle.exists?(@jav_ship.id)
+    end
+
+    # What a changed RSI page sends once only components and paints parse.
+    test "deletes nothing from a pledge list without a single ship" do
+      input = @input.reject { |item| item["type"] == "ship" }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input:, unmatched_vehicles_action: "delete")
+
+      result = ::HangarSync.new(input).run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_equal [], result[:deleted_vehicles]
+      assert_includes result[:unchanged_vehicles], @jav_ship.id
+    end
+
+    # Ships the user added by hand and RSI lists only new models: the run
+    # matched none of them, but it did recognise ships, so the choice applies.
+    test "acts on what it did not find when it only imported new ships" do
+      user = create(:user)
+      javelin = create(:vehicle, user:, model: @javelin_model, name: "Ozymandias", wanted: false)
+      import = ::Imports::HangarSync.create!(user_id: user.id, input: @input, unmatched_vehicles_action: "delete")
+
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      refute Vehicle.exists?(javelin.id)
+      assert_equal ["Ozymandias"], result[:deleted_vehicles]
     end
 
     test "takes what hangs off a deleted vehicle with it" do
@@ -299,6 +327,8 @@ class HangarSyncTest < ActiveSupport::TestCase
       # about whether the ship is owned.
       javelin = create(:vehicle, user: @user, model: javelin_model, wanted: false)
       bundled = Vehicle.find_by!(bundled: true, vehicle_id: javelin.id)
+      # One the pledge list carries, so the run recognises the hangar at all.
+      create(:vehicle, user: @user, model: @andromeda_model, wanted: false)
       refute_predicate bundled, :wanted?
 
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, add_bundled_vehicles: false)

@@ -1,14 +1,10 @@
 import { parse, format, isValid } from "date-fns";
 import {
   BuybackPledgeKindEnum,
+  RsiPageCheckEnum,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
-
-export type RSIBuybackPage = {
-  pledges: RsiBuybackItemInput[];
-  pledgeIds: string[];
-  entryCount: number;
-};
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
   ["Package", BuybackPledgeKindEnum.PACKAGE],
@@ -22,28 +18,69 @@ const DEFAULT_IMAGE = "default-image";
 
 const BUYBACK_LIST = "section.available-pledges, .buy-back";
 
-// `undefined` when the HTML is not a buy-back page at all -- a login redirect
-// or an error page arrives as a 200 too. RSI renders a page past the last one
-// as the page with an empty list, so `entryCount: 0` is the end-of-list signal.
-export const extractBuybackPage = (
-  html: string,
-): RSIBuybackPage | undefined => {
+// Only RSI's own empty list ends the list, the same three answers the hangar
+// parser gives. A page past the last one renders with an empty list; anything
+// else that is not a readable buy-back page stops the sync, since submitting
+// the list read so far would delete every buy-back after it.
+export type RSIBuybackPage =
+  | {
+      status: RsiPageStatus.PAGE;
+      pledges: RsiBuybackItemInput[];
+      pledgeIds: string[];
+    }
+  | { status: RsiPageStatus.END }
+  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
+
+const END_OF_LIST = "li.no-buy-backs";
+
+export const extractBuybackPage = (html: string): RSIBuybackPage => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
 
-  if (!htmlDoc.querySelector(BUYBACK_LIST)) {
-    return undefined;
+  // A login redirect or an error page arrives as a 200 too.
+  const list = htmlDoc.querySelector(BUYBACK_LIST);
+
+  if (!list) {
+    return {
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_LIST,
+    };
   }
 
-  const entries = Array.from(htmlDoc.querySelectorAll("article.pledge"));
+  const entries = Array.from(list.querySelectorAll("article.pledge"));
+
+  // Past the last page RSI renders the list with this one row in it. A list
+  // without entries and without it is markup this no longer reads.
+  if (entries.length === 0) {
+    return list.querySelector(END_OF_LIST)
+      ? { status: RsiPageStatus.END }
+      : {
+          status: RsiPageStatus.UNRECOGNISED,
+          check: RsiPageCheckEnum.MISSING_ENTRIES,
+        };
+  }
 
   const pledges = entries
     .map(parseBuybackEntry)
     .filter((pledge): pledge is RsiBuybackItemInput => !!pledge);
 
+  // An entry without a pledge id was never a buy-back to keep. One with an id
+  // that still does not read would drop out of the snapshot, and the sync
+  // would delete it.
+  const unread = entries.some(
+    (entry) => !parseBuybackEntry(entry) && buybackEntryId(entry),
+  );
+
+  if (pledges.length === 0 || unread) {
+    return {
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNPARSED_ENTRIES,
+    };
+  }
+
   return {
+    status: RsiPageStatus.PAGE,
     pledges,
     pledgeIds: pledges.map((pledge) => pledge.id),
-    entryCount: entries.length,
   };
 };
 
@@ -58,7 +95,7 @@ export const parseBuybackEntry = (
   const upgradeLink = entry.querySelector<HTMLElement>(
     ".js-open-ship-upgrades",
   );
-  const id = upgradeLink?.dataset.pledgeid || extractBuybackLinkId(entry);
+  const id = buybackEntryId(entry);
 
   if (!id || !name) {
     return undefined;
@@ -93,6 +130,10 @@ const headingText = (heading: Element | null) => {
 
   return copy.textContent || "";
 };
+
+const buybackEntryId = (entry: Element) =>
+  entry.querySelector<HTMLElement>(".js-open-ship-upgrades")?.dataset
+    .pledgeid || extractBuybackLinkId(entry);
 
 const extractBuybackLinkId = (entry: Element) =>
   entry

@@ -659,6 +659,7 @@
         "started": "Sincronizzazione del tuo Hangar in corso...",
         "success": "Il tuo Hangar è stato sincronizzato.",
         "failure": "Il tuo Hangar non può essere sincronizzato.",
+        "pageNotRecognised": "La pagina di RSI è diversa da quella che FleetYards si aspetta, quindi la sincronizzazione si è fermata senza modificare nulla.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },
       "admin": {

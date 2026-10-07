@@ -11,6 +11,7 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
@@ -24,7 +25,14 @@ import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Resul
 import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
-import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
+import {
+  HangarSyncUnmatchedActionEnum,
+  RsiPageKindEnum,
+} from "@/services/fyApi";
+import {
+  RsiPageReportOutcome,
+  useRsiPageReport,
+} from "@/frontend/composables/useRsiPageReport";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
@@ -145,7 +153,17 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
-    if (message.action === "sync") {
+    // A reply after the fetch has ended belongs to a run that is over: read
+    // now, it could submit the pages collected before an unrecognised one.
+    const fetchStatus = processSteps.value.find(
+      (step) => step.name === "fetchHangar",
+    )?.status;
+
+    if (
+      message.action === "sync" &&
+      fetchStatus !== "failure" &&
+      fetchStatus !== "success"
+    ) {
       if (message.code === 200) {
         await fetchRSIHangar(message.payload as string);
       } else {
@@ -271,13 +289,36 @@ const fetchPage = (page: number) => {
   });
 };
 
+const reportRsiPage = useRsiPageReport();
+
 const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
   const parser = new RSIHangarParser();
   const result = parser.extractPage(htmlPage);
 
-  if (result === undefined) {
+  // Nothing is submitted: what was read so far is only part of the hangar, and
+  // every ship on the pages after it would count as unmatched.
+  if (result.status === RsiPageStatus.UNRECOGNISED) {
+    updateStep("fetchHangar", "failure");
+
+    const outcome = await reportRsiPage({
+      page: RsiPageKindEnum.HANGAR,
+      check: result.check,
+      pageNumber: currentPage.value,
+      extensionVersion: hangarStore.extensionVersion,
+    });
+
+    // Signed out, the identify answer has already said so.
+    if (outcome === RsiPageReportOutcome.REPORTED) {
+      displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      displayAlert({ text: t("messages.syncExtension.failure") });
+    }
+    return;
+  }
+
+  if (result.status === RsiPageStatus.END) {
     updateStep("fetchHangar", "success");
     await finishSync();
     return;

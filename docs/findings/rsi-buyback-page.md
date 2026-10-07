@@ -19,9 +19,9 @@ What the RSI buy-back list (`/account/buy-back-pledges`) looks like, as read thr
 
 ## End of list
 
-A page past the last one renders the full page with an empty list: no `article.pledge`, and no `empty-list`/`empy-list` marker (the pledges page uses those). So "the wrapper is there but holds no entries" means done, and "no wrapper" means the HTML is not the buy-back page, e.g. a login redirect served as 200.
+A page past the last one renders the full page with no `article.pledge` and a single `li.no-buy-backs` row ("No pledges available") in the list. There is no `empty-list`/`empy-list` marker; the pledges page uses those. An account with no buy-backs at all renders the same.
 
-An account with no buy-backs at all renders the same: the wrapper and `section.available-pledges` are there, with no entries. It also says "No pledges available" (seen 2026-10-07).
+`RSIBuybackParser` ends the list only at that row. A list with neither entries nor the row, or no `section.available-pledges` at all (a login redirect served as 200), is markup it no longer reads: the sync stops and reports the page instead of submitting what it has, since the list sync replaces the whole stored list.
 
 ## Detail page
 

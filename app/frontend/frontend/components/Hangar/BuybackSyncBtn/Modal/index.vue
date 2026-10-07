@@ -15,6 +15,11 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { extensionUrls } from "@/types/extension";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
+import {
+  RsiPageReportOutcome,
+  useRsiPageReport,
+} from "@/frontend/composables/useRsiPageReport";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
@@ -23,6 +28,7 @@ import {
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
+  RsiPageKindEnum,
   useSyncRsiBuybacks,
   type BuybackSyncResult,
   type RsiBuybackItemInput,
@@ -248,23 +254,47 @@ const clearReplyTimer = () => {
   }
 };
 
-const fail = () => {
+const fail = (text = t("messages.buybackSync.failure")) => {
   clearReplyTimer();
   status.value = "failed";
-  displayAlert({ text: t("messages.buybackSync.failure") });
+  displayAlert({ text });
 };
 
-const handlePage = async (html: string) => {
-  const page = extractBuybackPage(html);
+const reportRsiPage = useRsiPageReport();
 
-  // Not the buy-back page (a login redirect, an error page), or a page whose
-  // entries could not be read: either way the list is incomplete.
-  if (!page || (page.entryCount > 0 && page.pledges.length === 0)) {
-    fail();
+const handlePage = async (html: string) => {
+  const result = extractBuybackPage(html);
+
+  // Not a buy-back page this parser understands: the list read so far is
+  // incomplete, and submitting it would delete every buy-back after it.
+  if (result.status === RsiPageStatus.UNRECOGNISED) {
+    clearReplyTimer();
+    status.value = "failed";
+
+    const outcome = await reportRsiPage({
+      page: RsiPageKindEnum.BUYBACK,
+      check: result.check,
+      pageNumber: currentPage.value,
+      extensionVersion: extensionInfo.value.version,
+    });
+
+    // Signed out, the identify answer has already said so.
+    if (outcome === RsiPageReportOutcome.REPORTED) {
+      fail(t("messages.syncExtension.pageNotRecognised"));
+    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      fail();
+    }
     return;
   }
 
-  const newBuybacks = page.pledges.filter((pledge) => !seenIds.has(pledge.id));
+  if (result.status === RsiPageStatus.END) {
+    await submit();
+    return;
+  }
+
+  const newBuybacks = result.pledges.filter(
+    (pledge) => !seenIds.has(pledge.id),
+  );
 
   if (newBuybacks.length === 0) {
     await submit();

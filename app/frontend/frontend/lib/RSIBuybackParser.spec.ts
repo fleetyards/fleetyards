@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { extractBuybackPage } from "./RSIBuybackParser";
+import { RsiPageStatus } from "./RsiPageStatus";
+import { RsiPageCheckEnum } from "@/services/fyApi";
 
 // Trimmed from the live buy-back page; ids are made up.
 const buybackPage = (articles: string) => `
@@ -72,16 +74,26 @@ const titledArticle = (title: string, id: string) => `
   </article>
 </li>`;
 
+// A page the parser reads, narrowed so a test can look at its entries.
+const readPage = (html: string) => {
+  const result = extractBuybackPage(html);
+  if (result.status !== RsiPageStatus.PAGE) {
+    throw new Error(`expected a page, got ${JSON.stringify(result)}`);
+  }
+
+  return result;
+};
+
 describe("extractBuybackPage", () => {
   beforeEach(() => {
     window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
   });
 
   it("reads a package entry", () => {
-    const page = extractBuybackPage(buybackPage(packageArticle));
+    const page = readPage(buybackPage(packageArticle));
 
-    expect(page?.pledgeIds).toEqual(["1000001"]);
-    expect(page?.pledges[0]).toEqual({
+    expect(page.pledgeIds).toEqual(["1000001"]);
+    expect(page.pledges[0]).toEqual({
       id: "1000001",
       name: "Standalone Ship - Cutter plus Groundswell Paint",
       kind: "ship",
@@ -98,9 +110,9 @@ describe("extractBuybackPage", () => {
   });
 
   it("reads an upgrade entry with its ship ids", () => {
-    const page = extractBuybackPage(buybackPage(upgradeArticle));
+    const page = readPage(buybackPage(upgradeArticle));
 
-    expect(page?.pledges[0]).toMatchObject({
+    expect(page.pledges[0]).toMatchObject({
       id: "1000002",
       kind: "upgrade",
       upgraded: false,
@@ -109,11 +121,11 @@ describe("extractBuybackPage", () => {
       upgradeToShipId: 322,
       upgradeToSkuId: 19461,
     });
-    expect(page?.pledges[0].image).toBeUndefined();
+    expect(page.pledges[0].image).toBeUndefined();
   });
 
   it("derives the kind from the title prefix", () => {
-    const page = extractBuybackPage(
+    const page = readPage(
       buybackPage(
         [
           titledArticle("Package - Aurora MR Starter", "1"),
@@ -125,7 +137,7 @@ describe("extractBuybackPage", () => {
       ),
     );
 
-    expect(page?.pledges.map((pledge) => pledge.kind)).toEqual([
+    expect(page.pledges.map((pledge) => pledge.kind)).toEqual([
       "package",
       "paint",
       "addon",
@@ -135,20 +147,22 @@ describe("extractBuybackPage", () => {
   });
 
   it("skips an entry without a pledge id", () => {
-    const page = extractBuybackPage(
+    const page = readPage(
       buybackPage(
         `<li><article class="pledge"><h1 title="Gear - Helmet">Gear - Helmet</h1></article></li>${packageArticle}`,
       ),
     );
 
-    expect(page?.pledgeIds).toEqual(["1000001"]);
+    expect(page.pledgeIds).toEqual(["1000001"]);
   });
 
-  it("reads a page past the end as an empty list", () => {
-    expect(extractBuybackPage(buybackPage(""))).toEqual({
-      pledges: [],
-      pledgeIds: [],
-      entryCount: 0,
+  it("reads RSI's empty list as the end", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage('<li class="no-buy-backs">No pledges available</li>'),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.END,
     });
   });
 
@@ -157,37 +171,95 @@ describe("extractBuybackPage", () => {
       extractBuybackPage(
         "<html><body><form id='sign-in'></form></body></html>",
       ),
-    ).toBeUndefined();
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_LIST,
+    });
   });
 
-  it("counts entries it could not read", () => {
+  it("does not read renamed entries as the end of the list", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(
+          `<li><div class="pledge-card"><a href="/pledge/buyback/1000001">Buy Back</a></div></li>`,
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_ENTRIES,
+    });
+  });
+
+  it("does not read rows whose markup and links both changed as the end", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(`<li><div class="card">Cutter</div></li>`),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_ENTRIES,
+    });
+  });
+
+  it("reads a link to buy-backs outside the list as nothing", () => {
+    expect(
+      extractBuybackPage(
+        `<a href="/pledge/buyback/1">Banner</a>${buybackPage('<li class="no-buy-backs">No pledges available</li>')}`,
+      ),
+    ).toEqual({ status: RsiPageStatus.END });
+  });
+
+  it("does not read a list without entries or RSI's end row", () => {
+    expect(extractBuybackPage(buybackPage(""))).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_ENTRIES,
+    });
+  });
+
+  it("does not read a page where one entry with an id did not read", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(
+          `${packageArticle}<li><article class="pledge"><a class="holosmallbtn" href="/pledge/buyback/2000002">Buy Back</a></article></li>`,
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNPARSED_ENTRIES,
+    });
+  });
+
+  it("does not read entries none of which it could read", () => {
     const page = extractBuybackPage(
       buybackPage(`<li><article class="pledge"><h1>Gear</h1></article></li>`),
     );
 
-    expect(page).toMatchObject({ pledges: [], entryCount: 1 });
+    expect(page).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNPARSED_ENTRIES,
+    });
   });
 
   it("leaves the upgraded marker out of a name read from the text", () => {
-    const page = extractBuybackPage(
+    const page = readPage(
       buybackPage(
         `<li><article class="pledge"><h1>Standalone Ship - Cutlass Black<span class="upgraded"> - upgraded</span></h1><a href="/pledge/buyback/7">Buy Back</a></article></li>`,
       ),
     );
 
-    expect(page?.pledges[0]).toMatchObject({
+    expect(page.pledges[0]).toMatchObject({
       name: "Standalone Ship - Cutlass Black",
       upgraded: true,
     });
   });
 
   it("reads an entry RSI marks as not available", () => {
-    const page = extractBuybackPage(
+    const page = readPage(
       buybackPage(
         `<li><article class="pledge" data-disabled="1"><h1 title="Package - Limited Edition">Package - Limited Edition</h1><a class="holosmallbtn" href="/pledge/buyback/8">Buy Back</a></article></li>`,
       ),
     );
 
-    expect(page?.pledges[0]?.available).toBe(false);
+    expect(page.pledges[0]?.available).toBe(false);
   });
 });

@@ -3121,6 +3121,7 @@
           "new_supporter": "新支持者",
           "rsi_api_blocked": "RSI API 已封鎖",
           "rsi_api_unblocked": "RSI API 已恢復",
+          "rsi_markup_changed": "RSI 頁面已變更",
           "weekly_stats": "每週報告",
           "ship_matrix_import": "Ship Matrix 匯入",
           "sc_data_import": "sc_data 匯入",

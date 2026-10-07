@@ -1,4 +1,30 @@
 import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
+import { RsiPageCheckEnum } from "@/services/fyApi";
+import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
+
+// Only RSI's own empty-list markup ends the list. Anything else that does not
+// look like a pledge page is a page this parser no longer understands: read as
+// the end, it would cut the sync short and leave every ship after it unmatched.
+export type RSIHangarPage =
+  | {
+      status: RsiPageStatus.PAGE;
+      pledges: RSIHangarItem[];
+      pledgeIds: string[];
+    }
+  | { status: RsiPageStatus.END }
+  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
+
+const READ_KINDS = ["Ship", "Component", "Skin"];
+
+// Kinds that never become a vehicle. Any other label may be a ship RSI has
+// relabelled: skipped, it would drop out of the sync and the unmatched action
+// would act on it.
+const SKIPPED_KINDS = [
+  "Insurance",
+  "Credits",
+  "Hangar decoration",
+  "FPS Equipment",
+];
 
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
@@ -10,27 +36,30 @@ const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
 export class RSIHangarParser {
   parser = new DOMParser();
 
-  extractPage(
-    html: string,
-  ): { pledges: RSIHangarItem[]; pledgeIds: string[] } | undefined {
+  extractPage(html: string): RSIHangarPage {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
     if (this.checkForLastPage(htmlDoc)) {
-      return undefined;
+      return { status: RsiPageStatus.END };
     }
 
     const pledgeList = htmlDoc.getElementsByClassName("list-items")[0];
 
     if (!pledgeList) {
-      return undefined;
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_LIST,
+      };
     }
 
-    const entries = pledgeList.getElementsByTagName("li");
+    const entries = Array.from(pledgeList.children).filter(
+      (child) => child.tagName === "LI",
+    );
 
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
 
-    Array.from(entries).forEach((entry) => {
+    entries.forEach((entry) => {
       const id = (
         entry.getElementsByClassName("js-pledge-id")[0] as HTMLInputElement
       )?.value;
@@ -49,13 +78,40 @@ export class RSIHangarParser {
       });
     });
 
-    return { pledges, pledgeIds };
+    // Every pledge row, not just one: a row that no longer reads would drop
+    // its ships out of the sync, and the unmatched action would act on them.
+    if (pledgeIds.length === 0 || pledgeIds.length < entries.length) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+      };
+    }
+
+    const items = Array.from(pledgeList.getElementsByClassName("item"));
+
+    if (items.some((item) => !item.getElementsByClassName("kind")[0])) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_KINDS,
+      };
+    }
+
+    const known = [...READ_KINDS, ...SKIPPED_KINDS];
+
+    if (items.some((item) => !known.includes(this.itemKind(item)))) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.UNKNOWN_KINDS,
+      };
+    }
+
+    return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {
-    const kind = item.getElementsByClassName("kind")[0]?.textContent;
+    const kind = this.itemKind(item);
 
-    if (!kind || !["Ship", "Component", "Skin"].includes(kind)) {
+    if (!READ_KINDS.includes(kind)) {
       return undefined;
     }
 
@@ -89,6 +145,10 @@ export class RSIHangarParser {
     };
   }
 
+  itemKind(item: Element): string {
+    return item.getElementsByClassName("kind")[0]?.textContent || "";
+  }
+
   extractImage(item: Element): string | undefined {
     const imageElement = item.getElementsByClassName(
       "image",
@@ -109,10 +169,13 @@ export class RSIHangarParser {
     return imageUrl.replace("subscribers_vault_thumbnail", "source");
   }
 
+  // An empty hangar shows this marker. Past the last page RSI repeats the
+  // last one instead, which the sync reads as nothing new. Only on the hangar
+  // page itself: another page using the class is not the end of anything.
   checkForLastPage(htmlDoc: Document): boolean {
     const emptyList = htmlDoc.getElementsByClassName("empty-list")[0];
     const empyList = htmlDoc.getElementsByClassName("empy-list")[0];
 
-    return !!(emptyList || empyList);
+    return !!(emptyList || empyList) && /^\s*My Hangar\b/.test(htmlDoc.title);
   }
 }

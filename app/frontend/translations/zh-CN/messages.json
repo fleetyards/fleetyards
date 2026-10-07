@@ -659,6 +659,7 @@
         "started": "正在同步您的机库...",
         "success": "您的机库已同步。",
         "failure": "您的机库无法同步。",
+        "pageNotRecognised": "RSI 的页面与 FleetYards 预期的不同，因此同步已停止，未做任何更改。",
         "notLoggedIn": "您需要登录 <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> 以同步您的机库。"
       },
       "admin": {

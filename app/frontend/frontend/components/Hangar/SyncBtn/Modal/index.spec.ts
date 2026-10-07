@@ -2,14 +2,34 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
+import {
+  HangarSyncUnmatchedActionEnum,
+  RsiPageCheckEnum,
+  RsiPageKindEnum,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
 
+const reportMutateAsync = vi.fn(() => Promise.resolve());
+
+// What the extension says about the RSI session when the modal checks it
+// before reporting a page.
+const rsiIdentity = vi.fn(
+  async (): Promise<{ code: number; payload: { handle?: string } }> => ({
+    code: 200,
+    payload: { handle: "ACaptain" },
+  }),
+);
+
+vi.mock("@/frontend/composables/useSyncExtension", () => ({
+  useSyncExtension: () => ({ request: rsiIdentity, supports: vi.fn() }),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiHangar: () => ({ mutateAsync }),
+  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
   useSyncRsiHangarStatus: () => ({ data: ref(undefined) }),
 }));
 
@@ -94,21 +114,90 @@ const mountModal = async () => {
   return { wrapper, hangarStore };
 };
 
-// A page the parser finds no pledge list in ends the fetch loop, which is the
-// shortest route from "start" to the request this spec is about.
+// RSI's empty list ends the fetch loop, which is the shortest route from
+// "start" to the request this spec is about.
 const submitEmptyHangar = async (
   wrapper: Awaited<ReturnType<typeof mountModal>>["wrapper"],
 ) => {
   await wrapper.find("[data-test='start-sync']").trigger("click");
   await flushPromises();
 
-  extensionReplies("sync", "<html><body></body></html>");
+  extensionReplies(
+    "sync",
+    '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
+  );
   await flushPromises();
 };
 
 describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+    reportMutateAsync.mockClear();
+    rsiIdentity.mockClear();
+  });
+
+  // An error or login page in the middle of the run, read as the end, would
+  // submit a partial hangar and leave every later ship unmatched.
+  it("submits nothing and reports a page it does not recognise", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).toHaveBeenCalledWith({
+      data: {
+        page: RsiPageKindEnum.HANGAR,
+        check: RsiPageCheckEnum.MISSING_LIST,
+        pageNumber: 1,
+        extensionVersion: undefined,
+      },
+    });
+  });
+
+  it("ignores a late reply once a page was not recognised", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+    extensionReplies(
+      "sync",
+      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  // An expired RSI session answers with the sign-in page: nothing about RSI's
+  // markup changed, so nobody is told it did.
+  it("reports nothing when the RSI session has run out", async () => {
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).not.toHaveBeenCalled();
   });
 
   afterEach(() => {

@@ -11272,6 +11272,41 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/rsi-page-reports":
+    post:
+      summary: Report an RSI Page the Sync Does Not Recognise
+      tags:
+      - Hangar
+      operationId: reportRsiPage
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RsiPageReportInput"
+      responses:
+        '204':
+          description: reported
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -35317,6 +35352,50 @@ components:
       - UPGRADE
       - SKIN
       title: RsiHangarItemKindEnum
+    RsiPageCheckEnum:
+      type: string
+      enum:
+      - missing_list
+      - missing_pledge_ids
+      - missing_kinds
+      - unknown_kinds
+      - missing_entries
+      - unparsed_entries
+      x-enumNames:
+      - MISSING_LIST
+      - MISSING_PLEDGE_IDS
+      - MISSING_KINDS
+      - UNKNOWN_KINDS
+      - MISSING_ENTRIES
+      - UNPARSED_ENTRIES
+      title: RsiPageCheckEnum
+    RsiPageKindEnum:
+      type: string
+      enum:
+      - hangar
+      - buyback
+      x-enumNames:
+      - HANGAR
+      - BUYBACK
+      title: RsiPageKindEnum
+    RsiPageReportInput:
+      type: object
+      properties:
+        page:
+          "$ref": "#/components/schemas/RsiPageKindEnum"
+        check:
+          "$ref": "#/components/schemas/RsiPageCheckEnum"
+        pageNumber:
+          type: integer
+          minimum: 1
+        extensionVersion:
+          type: string
+          pattern: "^[0-9A-Za-z.+-]{1,32}$"
+      additionalProperties: false
+      required:
+      - page
+      - check
+      title: RsiPageReportInput
     ScDataBuilds:
       type: object
       properties:
