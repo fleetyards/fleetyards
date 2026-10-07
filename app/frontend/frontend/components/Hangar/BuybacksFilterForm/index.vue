@@ -84,6 +84,7 @@ const kindOptions = computed(() =>
       :label="t('labels.buybacks.priceRange')"
       :multiple="true"
       :no-label="true"
+      unsorted
     />
 
     <div class="row">
