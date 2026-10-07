@@ -19472,6 +19472,18 @@ components:
           "$ref": "#/components/schemas/BuybackPledgeKindEnum"
         nameCont:
           type: string
+        priceGteq:
+          type: number
+        priceLteq:
+          type: number
+        priceIn:
+          type: array
+          items:
+            type: string
+        upgradeFromModelSlugEq:
+          type: string
+        upgradeToModelSlugEq:
+          type: string
       additionalProperties: false
       example: {}
       title: BuybackPledgeQuery

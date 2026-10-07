@@ -2515,7 +2515,12 @@
           "one": "%{count} 個月",
           "other": "%{count} 個月"
         },
-        "openOnRsi": "在 RSI 回購"
+        "openOnRsi": "在 RSI 回購",
+        "priceRange": "價格範圍",
+        "priceMin": "最低價格（USD）",
+        "priceMax": "最高價格（USD）",
+        "upgradeFrom": "升級自",
+        "upgradeTo": "升級至"
       },
       "buybackSync": {
         "extensionVersion": "已安裝的擴充功能版本",

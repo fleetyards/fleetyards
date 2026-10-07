@@ -2515,7 +2515,12 @@
           "one": "%{count} mois",
           "other": "%{count} mois"
         },
-        "openOnRsi": "Racheter sur RSI"
+        "openOnRsi": "Racheter sur RSI",
+        "priceRange": "Fourchette de prix",
+        "priceMin": "Prix min. (USD)",
+        "priceMax": "Prix max. (USD)",
+        "upgradeFrom": "Amélioration depuis",
+        "upgradeTo": "Amélioration vers"
       },
       "buybackSync": {
         "extensionVersion": "Version installée de l'extension",

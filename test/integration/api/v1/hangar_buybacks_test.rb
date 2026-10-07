@@ -171,6 +171,60 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks filters by a price range, upgrades priced from their ships" do
+    user = create(:user)
+    create(:model, rsi_id: 308, pledge_price: 150)
+    create(:model, rsi_id: 322, pledge_price: 175)
+    buyback(user, price: 10)
+    mid = buyback(user, price: 60)
+    upgrade = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 322)
+    buyback(user, price: 500)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"priceGteq" => 20, "priceLteq" => 100}} do
+      assert_equal [mid.id, upgrade.id].sort, parsed_body["items"].pluck("id").sort
+    end
+  end
+
+  test "GET /hangar/buybacks filters by preset price ranges" do
+    user = create(:user)
+    cheap = buyback(user, price: 10)
+    buyback(user, price: 60)
+    expensive = buyback(user, price: 1500)
+    buyback(user, price: nil)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"priceIn" => ["-25", "1000-"]}} do
+      assert_equal [cheap.id, expensive.id].sort, parsed_body["items"].pluck("id").sort
+    end
+  end
+
+  test "GET /hangar/buybacks filters upgrades by the ship they start from and lead to" do
+    user = create(:user)
+    clipper = create(:model, rsi_id: 308)
+    stingray = create(:model, rsi_id: 322)
+    cutlass = create(:model, rsi_id: 100)
+    to_stingray = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 322)
+    to_cutlass = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to Cutlass Black",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 100)
+    buyback(user)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"upgradeFromModelSlugEq" => clipper.slug}} do
+      assert_equal [to_stingray.id, to_cutlass.id].sort, parsed_body["items"].pluck("id").sort
+    end
+
+    assert_api_response :get, 200, params: {q: {"upgradeToModelSlugEq" => stingray.slug}} do
+      assert_equal [to_stingray.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"upgradeFromModelSlugEq" => cutlass.slug}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end
