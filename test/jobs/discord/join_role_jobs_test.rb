@@ -198,6 +198,23 @@ module Discord
       assert_predicate membership_of(kept), :accepted?
     end
 
+    test "a newly picked role does not bring back a player whose membership ended" do
+      removed = linked_user("uid-1")
+      create(:fleet_membership, :accepted, fleet: @fleet, user: removed).discard
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert_nil membership_of(removed)
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: removed)
+
+      JoinRole.new(@fleet).apply(removed, [])
+      JoinRole.new(@fleet).apply(removed, [JOIN_ROLE])
+
+      assert_predicate membership_of(removed), :accepted?
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])

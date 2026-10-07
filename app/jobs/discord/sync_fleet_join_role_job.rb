@@ -9,8 +9,8 @@ module Discord
 
     # Positional on purpose: Sidekiq replays arguments positionally. `reset`
     # forgets who held the previous role, so the new one is applied as gained
-    # by everyone holding it and as lost by nobody -- changing the role keeps
-    # the members the old one brought in.
+    # by everyone holding it whose membership has not ended, and as lost by
+    # nobody -- changing the role keeps the members the old one brought in.
     def perform(fleet_id, reset = false)
       fleet = Fleet.find_by(id: fleet_id)
       return if fleet.blank?
@@ -60,7 +60,7 @@ module Discord
           changed = users.reject { |user| @held.include?(user.id) == holds }
           next if changed.empty?
 
-          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet)
+          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet, readmit: !@quiet)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE
