@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useVisualApiMock } from "@/frontend/composables/useVisualApiMock";
 import {
   type ExtensionStubConfig,
   signedInExtension,
@@ -55,13 +56,22 @@ type State = {
   description: string;
   verification: FleetRsiVerification;
   answers: ExtensionStubConfig;
+  // What a check finds, answered by the mocked API.
+  checkFinds?: NullableFleetRsiVerificationStatusEnum;
 };
 
 const readyWith = (
-  orgVerifyWrite: ExtensionStubConfig[FleetyardsSyncAction],
+  orgVerifyWrite: ExtensionStubConfig[FleetyardsSyncAction] = {
+    code: 200,
+    payload: { sid: SID, changed: true },
+  },
 ): ExtensionStubConfig => ({
   ...signedInExtension("VisualOfficer"),
   [FleetyardsSyncAction.ORG_VERIFY_WRITE]: orgVerifyWrite,
+  [FleetyardsSyncAction.ORG_VERIFY_REMOVE]: {
+    code: 200,
+    payload: { sid: SID, changed: true },
+  },
 });
 
 const states: State[] = [
@@ -102,9 +112,19 @@ const states: State[] = [
     key: "ready",
     label: "Ready",
     description:
-      "Signed in to RSI. Verifying sends a real check, so the button is better left alone here.",
+      "Signed in to RSI. Press Verify with extension: the check finds the token and the fleet is verified.",
     verification: unverified,
-    answers: signedInExtension("VisualOfficer"),
+    answers: readyWith(),
+    checkFinds: NullableFleetRsiVerificationStatusEnum.VERIFIED,
+  },
+  {
+    key: "token-missing",
+    label: "Check finds no token",
+    description:
+      "Press Verify with extension: the check answers next to the button that the token is not on the org page.",
+    verification: unverified,
+    answers: readyWith(),
+    checkFinds: NullableFleetRsiVerificationStatusEnum.TOKEN_MISSING,
   },
   {
     key: "signed-out",
@@ -154,6 +174,54 @@ const queryClient = useQueryClient();
 
 const queryKey = getFleetRsiVerificationQueryKey(fleet.slug);
 
+// The verification the open card shows, as the mocked API answers it.
+let current = unverified;
+let checkFinds: NullableFleetRsiVerificationStatusEnum =
+  NullableFleetRsiVerificationStatusEnum.TOKEN_MISSING;
+
+const answerWith = (verification: FleetRsiVerification) => {
+  current = verification;
+
+  return current;
+};
+
+const FLEET_PATH = `/fleets/${fleet.slug}/rsi-verification`;
+
+useVisualApiMock([
+  {
+    method: "POST",
+    path: new RegExp(`^${FLEET_PATH}/check$`),
+    respond: () =>
+      answerWith({
+        ...current,
+        status: NullableFleetRsiVerificationStatusEnum.PENDING,
+        nextCheckAt: new Date(Date.now() + 60_000).toISOString(),
+      }),
+  },
+  {
+    // The modal polls while a check is pending: the next read has its answer.
+    method: "GET",
+    path: new RegExp(`^${FLEET_PATH}$`),
+    respond: () =>
+      answerWith(
+        checkFinds === NullableFleetRsiVerificationStatusEnum.VERIFIED
+          ? { ...verified, verifiedAt: new Date().toISOString() }
+          : { ...current, status: checkFinds },
+      ),
+  },
+  {
+    method: "POST",
+    path: new RegExp(`^${FLEET_PATH}$`),
+    respond: () =>
+      answerWith({ ...current, token: "FLEETYARDS-DEMO2", status: null }),
+  },
+  {
+    method: "DELETE",
+    path: new RegExp(`^${FLEET_PATH}$`),
+    respond: () => answerWith(unverified),
+  },
+]);
+
 const previousDefaults = queryClient.getQueryDefaults(queryKey);
 
 /*
@@ -162,6 +230,9 @@ const previousDefaults = queryClient.getQueryDefaults(queryKey);
  */
 const open = (state: State) => {
   extension.configure(state.answers);
+  current = state.verification;
+  checkFinds =
+    state.checkFinds ?? NullableFleetRsiVerificationStatusEnum.TOKEN_MISSING;
   queryClient.setQueryDefaults(queryKey, { staleTime: Infinity });
   queryClient.setQueryData(queryKey, state.verification);
 
