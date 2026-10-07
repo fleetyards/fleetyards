@@ -32,12 +32,14 @@ ActiveSupport::LogSubscriber.logger = stdout_logger if defined?(ActiveSupport::L
 # Drop back to :normal once everything's stable.
 Discordrb::LOGGER.mode = (ENV["DISCORD_BOT_DEBUG"] == "true") ? :debug : :normal
 
+# Server Members is a privileged intent: unless it is enabled for the
+# application in the Discord developer portal, the Gateway refuses the whole
+# connection, RSVPs included. Opt-in so this process never depends on it.
+members_intent = ENV["DISCORD_SERVER_MEMBERS_INTENT"] == "true"
+
 bot = Discordrb::Bot.new(
   token: token,
-  # Server Members is a privileged intent: it has to be enabled for the
-  # application in the Discord developer portal, or the Gateway refuses to
-  # connect at all.
-  intents: [:servers, :server_members, SCHEDULED_EVENTS_INTENT]
+  intents: [:servers, SCHEDULED_EVENTS_INTENT, *(members_intent ? [:server_members] : [])]
 )
 
 # Catch-all dispatch logger — temporary, lets us see whether the
@@ -71,6 +73,7 @@ rescue => e
 end
 
 # A member's roles changed, or they left the guild, which drops every role.
+# Delivered only with the Server Members intent.
 %i[GUILD_MEMBER_UPDATE GUILD_MEMBER_REMOVE].each do |type|
   bot.raw(type:) do |event|
     Discord::JoinRole.member_changed(event.data["guild_id"], event.data.dig("user", "id"))
