@@ -25,11 +25,23 @@ module Discord
     end
 
     # Called for every member update in every guild the bot is in, so only a
-    # linked player in a guild with a join role costs a job.
-    def self.member_changed(guild_id, discord_uid)
+    # linked player in a guild with a join role costs a job, and only when the
+    # roles the event carries differ from what was recorded -- a nickname or
+    # an avatar changes nothing. The job reads the roles again regardless.
+    def self.member_changed(guild_id, discord_uid, role_ids)
       return if guild_id.blank? || discord_uid.blank?
-      return unless FleetNotificationSetting.where(discord_guild_id: guild_id).where.not(discord_join_role_id: nil).exists?
-      return unless OmniauthConnection.discord.exists?(uid: discord_uid)
+
+      join_roles = FleetNotificationSetting.where(discord_guild_id: guild_id).where.not(discord_join_role_id: nil).pluck(:fleet_id, :discord_join_role_id)
+      return if join_roles.empty?
+
+      user_ids = OmniauthConnection.discord.where(uid: discord_uid).pluck(:user_id)
+      return if user_ids.empty?
+
+      held = FleetDiscordRoleHolder.where(fleet_id: join_roles.map(&:first), user_id: user_ids).pluck(:fleet_id, :user_id).to_set
+      changed = join_roles.any? do |fleet_id, role_id|
+        user_ids.any? { |user_id| held.include?([fleet_id, user_id]) != Array(role_ids).include?(role_id) }
+      end
+      return unless changed
 
       ApplyJoinRolesJob.perform_async(discord_uid, guild_id)
     end

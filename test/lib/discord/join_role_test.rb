@@ -216,12 +216,23 @@ module Discord
     test "a member update queues a job only for a linked player in a guild with a join role" do
       ApplyJoinRolesJob.jobs.clear
 
-      JoinRole.member_changed("100000000000000099", "discord-uid-1")
-      JoinRole.member_changed(GUILD, "discord-uid-unlinked")
+      JoinRole.member_changed("100000000000000099", "discord-uid-1", [JOIN_ROLE])
+      JoinRole.member_changed(GUILD, "discord-uid-unlinked", [JOIN_ROLE])
       assert_empty ApplyJoinRolesJob.jobs
 
-      JoinRole.member_changed(GUILD, "discord-uid-1")
+      JoinRole.member_changed(GUILD, "discord-uid-1", [JOIN_ROLE])
       assert_equal [["discord-uid-1", GUILD]], ApplyJoinRolesJob.jobs.pluck("args")
+    end
+
+    test "a member update that leaves the join role as recorded queues nothing" do
+      join_role.apply(@user, [JOIN_ROLE])
+      ApplyJoinRolesJob.jobs.clear
+
+      JoinRole.member_changed(GUILD, "discord-uid-1", [JOIN_ROLE, OTHER_ROLE])
+      assert_empty ApplyJoinRolesJob.jobs
+
+      JoinRole.member_changed(GUILD, "discord-uid-1", [OTHER_ROLE])
+      assert_equal 1, ApplyJoinRolesJob.jobs.size
     end
   end
 end

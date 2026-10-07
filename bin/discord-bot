@@ -76,7 +76,7 @@ end
 # Delivered only with the Server Members intent.
 %i[GUILD_MEMBER_UPDATE GUILD_MEMBER_REMOVE].each do |type|
   bot.raw(type:) do |event|
-    Discord::JoinRole.member_changed(event.data["guild_id"], event.data.dig("user", "id"))
+    Discord::JoinRole.member_changed(event.data["guild_id"], event.data.dig("user", "id"), Array(event.data["roles"]))
   rescue => e
     Rails.logger.error("[discord-bot] #{type} failed: #{e.class}: #{e.message}")
   end
