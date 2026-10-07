@@ -3,6 +3,15 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const { ref } = await import("vue");
+
+  return {
+    ...(await importOriginal<Record<string, unknown>>()),
+    useModel: () => ({ data: ref(undefined) }),
+  };
+});
+
 const setup = async (query: Record<string, string | string[]> = {}) => {
   const router = createRouter({
     history: createWebHashHistory(),
