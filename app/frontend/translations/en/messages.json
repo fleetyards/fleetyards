@@ -669,7 +669,7 @@
         "started": "Syncing your Hangar...",
         "success": "Your Hangar has been synced.",
         "failure": "Your Hangar could not be synced.",
-        "pageNotRecognised": "RSI's page looks different from what FleetYards expects, so the sync stopped without changing anything. We have been notified and will update the sync.",
+        "pageNotRecognised": "RSI's page looks different from what FleetYards expects, so the sync stopped without changing anything.",
         "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
       },
       "admin": {

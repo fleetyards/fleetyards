@@ -16,7 +16,10 @@ import { extensionUrls } from "@/types/extension";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
-import { useRsiPageReport } from "@/frontend/composables/useRsiPageReport";
+import {
+  RsiPageReportOutcome,
+  useRsiPageReport,
+} from "@/frontend/composables/useRsiPageReport";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
@@ -265,13 +268,22 @@ const handlePage = async (html: string) => {
   // Not a buy-back page this parser understands: the list read so far is
   // incomplete, and submitting it would delete every buy-back after it.
   if (result.status === RsiPageStatus.UNRECOGNISED) {
-    fail(t("messages.syncExtension.pageNotRecognised"));
-    reportRsiPage({
+    clearReplyTimer();
+    status.value = "failed";
+
+    const outcome = await reportRsiPage({
       page: RsiPageKindEnum.BUYBACK,
       check: result.check,
       pageNumber: currentPage.value,
       extensionVersion: extensionInfo.value.version,
     });
+
+    // Signed out, the identify answer has already said so.
+    if (outcome === RsiPageReportOutcome.REPORTED) {
+      fail(t("messages.syncExtension.pageNotRecognised"));
+    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      fail();
+    }
     return;
   }
 

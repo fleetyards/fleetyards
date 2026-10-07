@@ -17,6 +17,19 @@ const mutateAsync = vi.fn<
 const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
 const reportMutateAsync = vi.fn(() => Promise.resolve());
 
+// What the extension says about the RSI session when the modal checks it
+// before reporting a page.
+const rsiIdentity = vi.fn(
+  async (): Promise<{ code: number; payload: { handle?: string } }> => ({
+    code: 200,
+    payload: { handle: "ACaptain" },
+  }),
+);
+
+vi.mock("@/frontend/composables/useSyncExtension", () => ({
+  useSyncExtension: () => ({ request: rsiIdentity, supports: vi.fn() }),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
@@ -129,6 +142,7 @@ describe("HangarBuybackSyncModal", () => {
     mutateAsync.mockClear();
     submitDetails.mockClear();
     reportMutateAsync.mockClear();
+    rsiIdentity.mockClear();
     vi.mocked(window.postMessage).mockClear();
   });
 
@@ -253,6 +267,17 @@ describe("HangarBuybackSyncModal", () => {
         extensionVersion: "1.3.0",
       },
     });
+  });
+
+  it("reports nothing when the RSI session has run out", async () => {
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+    await startSync();
+
+    extensionReplies("syncBuyback", "<html><body></body></html>");
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).not.toHaveBeenCalled();
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {

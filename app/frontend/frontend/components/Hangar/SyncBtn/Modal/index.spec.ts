@@ -13,6 +13,19 @@ const mutateAsync = vi.fn(() => Promise.resolve());
 
 const reportMutateAsync = vi.fn(() => Promise.resolve());
 
+// What the extension says about the RSI session when the modal checks it
+// before reporting a page.
+const rsiIdentity = vi.fn(
+  async (): Promise<{ code: number; payload: { handle?: string } }> => ({
+    code: 200,
+    payload: { handle: "ACaptain" },
+  }),
+);
+
+vi.mock("@/frontend/composables/useSyncExtension", () => ({
+  useSyncExtension: () => ({ request: rsiIdentity, supports: vi.fn() }),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiHangar: () => ({ mutateAsync }),
@@ -120,6 +133,7 @@ describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
     reportMutateAsync.mockClear();
+    rsiIdentity.mockClear();
   });
 
   // An error or login page in the middle of the run, read as the end, would
@@ -142,8 +156,28 @@ describe("HangarSyncModal", () => {
         page: RsiPageKindEnum.HANGAR,
         check: RsiPageCheckEnum.MISSING_LIST,
         pageNumber: 1,
+        extensionVersion: undefined,
       },
     });
+  });
+
+  // An expired RSI session answers with the sign-in page: nothing about RSI's
+  // markup changed, so nobody is told it did.
+  it("reports nothing when the RSI session has run out", async () => {
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).not.toHaveBeenCalled();
   });
 
   afterEach(() => {

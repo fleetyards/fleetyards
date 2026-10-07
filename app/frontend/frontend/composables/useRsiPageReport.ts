@@ -3,19 +3,48 @@ import {
   type RsiPageKindEnum,
   useReportRsiPage,
 } from "@/services/fyApi";
+import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
+import {
+  FleetyardsSyncAction,
+  type FleetyardsSyncSessionPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 
-// Tells the admins a sync met an RSI page its parser no longer recognises.
-// Fired and forgotten: the sync has already stopped, and a report that does not
-// arrive must not turn into a second error for the user.
+export enum RsiPageReportOutcome {
+  REPORTED = "reported",
+  // The RSI session ran out mid-sync: RSI answers with its sign-in page, which
+  // no parser recognises, and nothing about RSI's markup changed.
+  SIGNED_OUT = "signedOut",
+  NO_ANSWER = "noAnswer",
+}
+
+// Tells the admins a sync met an RSI page its parser no longer recognises,
+// once the extension confirms the RSI session is still there. The report itself
+// is fired and forgotten: the sync has already stopped.
 export const useRsiPageReport = () => {
   const mutation = useReportRsiPage();
+  const extension = useSyncExtension();
 
-  return (report: {
+  return async (report: {
     page: RsiPageKindEnum;
     check: RsiPageCheckEnum;
     pageNumber?: number;
     extensionVersion?: string;
   }) => {
+    const identity = await extension
+      .request(FleetyardsSyncAction.IDENTIFY)
+      .catch(() => undefined);
+
+    if (!identity) return RsiPageReportOutcome.NO_ANSWER;
+
+    if (
+      identity.code !== 200 ||
+      !(identity.payload as FleetyardsSyncSessionPayload)?.handle
+    ) {
+      return RsiPageReportOutcome.SIGNED_OUT;
+    }
+
     mutation.mutateAsync({ data: report }).catch(() => undefined);
+
+    return RsiPageReportOutcome.REPORTED;
   };
 };

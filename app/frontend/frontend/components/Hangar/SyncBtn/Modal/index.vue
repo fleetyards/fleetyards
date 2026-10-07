@@ -29,7 +29,10 @@ import {
   HangarSyncUnmatchedActionEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
-import { useRsiPageReport } from "@/frontend/composables/useRsiPageReport";
+import {
+  RsiPageReportOutcome,
+  useRsiPageReport,
+} from "@/frontend/composables/useRsiPageReport";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
@@ -288,12 +291,20 @@ const fetchRSIHangar = async (htmlPage: string) => {
   // every ship on the pages after it would count as unmatched.
   if (result.status === RsiPageStatus.UNRECOGNISED) {
     updateStep("fetchHangar", "failure");
-    displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
-    reportRsiPage({
+
+    const outcome = await reportRsiPage({
       page: RsiPageKindEnum.HANGAR,
       check: result.check,
       pageNumber: currentPage.value,
+      extensionVersion: hangarStore.extensionVersion,
     });
+
+    // Signed out, the identify answer has already said so.
+    if (outcome === RsiPageReportOutcome.REPORTED) {
+      displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      displayAlert({ text: t("messages.syncExtension.failure") });
+    }
     return;
   }
 

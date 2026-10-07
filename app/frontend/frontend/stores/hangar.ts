@@ -56,6 +56,7 @@ interface HangarState extends ShipListState {
   starterGuideVisible: boolean;
   money: boolean;
   extensionReady: boolean;
+  extensionVersion?: string;
   syncModalOpen: boolean;
   syncRunning: boolean;
   syncAddBundledVehicles: boolean;
@@ -76,6 +77,7 @@ export const useHangarStore = defineStore("hangar", {
     starterGuideVisible: false,
     gridView: true,
     extensionReady: false,
+    extensionVersion: undefined,
     syncModalOpen: false,
     syncRunning: false,
     syncAddBundledVehicles: true,

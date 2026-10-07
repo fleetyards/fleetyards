@@ -10,7 +10,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import type { FleetyardsSyncEvent } from "@/frontend/lib/FleetyardsSyncHandler";
+import type {
+  FleetyardsSyncEvent,
+  FleetyardsSyncHealthPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -66,6 +69,9 @@ const handleExtensionMessage = (event: FleetyardsSyncEvent) => {
       if (message.code === 200) {
         console.info("FY Extension: Ready");
         hangarStore.extensionReady = true;
+        hangarStore.extensionVersion = (
+          message.payload as FleetyardsSyncHealthPayload | undefined
+        )?.version;
       } else {
         console.info("FY Extension: Unavailable");
         hangarStore.extensionReady = false;
