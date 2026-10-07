@@ -36,7 +36,9 @@ module Discord
       end
 
       # A query written with a prefix searches that type alone, as the
-      # resolver's own search does.
+      # resolver's own search does. Names that start with the query come
+      # first, then shorter ones, so the name budget cannot drop a better
+      # match for weaker ones.
       def self.search(query, within:)
         typed, query = ::Catalogue::TokenResolver.parse(query)
         return [] if query.length < 2 || query.length > ::Catalogue::TokenResolver::MAX_NAME_LENGTH
@@ -47,10 +49,12 @@ module Discord
         prefixes.flat_map do |prefix|
           scope = ::Catalogue::TokenResolver.listed(prefix)
           name = Arel.sql("lower(#{model(prefix).fact_sql(:name)})")
+          starts_with = Arel.sql(ActiveRecord::Base.sanitize_sql_array(["CASE WHEN #{name} LIKE ? THEN 0 ELSE 1 END", "#{escaped}%"]))
 
           names = scope.where("#{name} LIKE ?", "%#{escaped}%")
             .group(name)
             .having("count(*) BETWEEN 2 AND ?", MAX_CARRIERS)
+            .order(starts_with, Arel.sql("length(#{name})"), name)
             .limit(NAMES_PER_CATALOGUE)
             .pluck(name)
           next [] if names.empty?

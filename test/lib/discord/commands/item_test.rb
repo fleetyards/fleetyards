@@ -207,6 +207,17 @@ module Discord
         assert_equal 2, choices.size
       end
 
+      test "keeps a shared name that starts with the query over ones that only contain it" do
+        ::Discord::Commands::ItemVariants::NAMES_PER_CATALOGUE.times do |index|
+          create_list(:component, 2, name: "Laser #{index}")
+        end
+        create_list(:component, 2, name: "Ser Cooler Extended Edition")
+
+        names = ::Discord::Commands::ItemVariants.search("ser", within: %w[component]).map(&:name)
+
+        assert_includes names, "Ser Cooler Extended Edition"
+      end
+
       test "suggests no single items of a name many items share" do
         create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
 
