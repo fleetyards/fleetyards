@@ -69,6 +69,9 @@ export const parseBuybackEntry = (
     name,
     kind: upgradeLink ? BuybackPledgeKindEnum.UPGRADE : kindFromName(name),
     upgraded: !!heading?.querySelector(".upgraded"),
+    // RSI renders the "Not available" block on every entry and shows it only
+    // on one marked like this.
+    available: !entry.hasAttribute("data-disabled"),
     reclaimedOn: parseReclaimDate(definition(entry, "Reclaim Date")),
     contained: definition(entry, "Contained"),
     image: extractImage(entry),
