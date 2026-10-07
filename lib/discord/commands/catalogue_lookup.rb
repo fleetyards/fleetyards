@@ -111,7 +111,7 @@ module Discord
         return [nil, entry_not_found(query, strings)] if candidates.empty?
         return listed_entry(query, candidates.first.prefix, candidates.first.slug, strings) if candidates.one?
 
-        [nil, entry_candidate_list(query, candidates, strings)]
+        [nil, entry_candidate_list(query, candidates, strings, within)]
       end
 
       # A bare name resolves only in the item catalogues, so a command offering
@@ -154,9 +154,12 @@ module Discord
         message(content: [I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines].join("\n"))
       end
 
-      private def entry_candidate_list(query, candidates, strings)
+      # The type is left off where the command offers one catalogue, as in
+      # its suggestions.
+      private def entry_candidate_list(query, candidates, strings, within)
         lines = candidates.first(MAX_CANDIDATES).map do |candidate|
-          ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", CatalogueLookup.type_label(candidate.prefix), candidate.detail]
+          type = CatalogueLookup.type_label(candidate.prefix) unless within.one?
+          ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", type, Markdown.escape(candidate.detail.to_s).presence]
             .compact.join(" · ")
         end
 

@@ -146,6 +146,19 @@ module Discord
         assert names.any? { |name| name.end_with?("Aberdeen · outpost_long_sloane") }
       end
 
+      test "a shared name typed with its prefix lists each place, escaped and without the type" do
+        aberdeen = create(:location, name: "Aber_deen", kind: "moon", parent: @hurston, system: @stanton)
+        create(:location, name: "Outpost 54", kind: "outpost", parent: aberdeen, system: @stanton, sc_key: "Outpost54_Reyes")
+        create(:location, name: "Outpost 54", kind: "outpost", parent: aberdeen, system: @stanton, sc_key: "Outpost54_Sloane")
+
+        content = call("location:Outpost 54")[:content]
+
+        assert_includes content, I18n.t("discord.commands.location.ambiguous", query: "location:Outpost 54")
+        assert_includes content, "Aber\\_deen · outpost54\\_reyes"
+        assert_includes content, "Aber\\_deen · outpost54\\_sloane"
+        assert_no_match(/ · #{Regexp.escape(I18n.t("discord.commands.types.location"))} · /, content)
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 
