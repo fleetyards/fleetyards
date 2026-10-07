@@ -27,14 +27,27 @@ module Discord
 
         # The game key is the one thing two carriers never share -- the slug
         # is not: the first of a name keeps the bare one. What a reader can make
-        # sense of leads: an item's size, a place's parent -- which alone is not
-        # enough, as both Outpost 54s sit on Aberdeen.
+        # sense of leads (LEADS): an item's size, a place's parent -- which alone
+        # is not enough, as both Outpost 54s sit on Aberdeen.
         def detail
           key = record.sc_key.to_s.downcase.presence || slug
-          lead = record.is_a?(::Location) ? record.parent&.name : record.try(:size).presence&.then { |size| "S#{size}" }
 
-          [lead.presence, key].compact.join(" · ")
+          [CatalogueVariants.lead(prefix).label.call(record).presence, key].compact.join(" · ")
         end
+      end
+
+      # What leads a variant's detail, and what reading it needs loaded.
+      Lead = Data.define(:label, :preload)
+
+      SIZE_LEAD = Lead.new(label: ->(record) { record.try(:size).presence&.then { |size| "S#{size}" } }, preload: nil)
+
+      # A place's parent names it through its build.
+      LEADS = {
+        "location" => Lead.new(label: ->(record) { record.parent&.name }, preload: {parent: [:build, :last_build]})
+      }.freeze
+
+      def self.lead(prefix)
+        LEADS.fetch(prefix, SIZE_LEAD)
       end
 
       # A query written with a prefix searches that type alone, as the
@@ -62,8 +75,7 @@ module Discord
           next [] if names.empty?
 
           rows = scope.where("#{name} IN (?)", names).includes(:build)
-          # A place's parent names it through its build, so that is loaded too.
-          rows = rows.includes(parent: [:build, :last_build]) if prefix == "location"
+          rows = rows.includes(lead(prefix).preload) if lead(prefix).preload
           rows.map { |record| Variant.new(prefix:, record:) }
         end
       end
