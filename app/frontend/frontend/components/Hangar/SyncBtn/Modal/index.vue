@@ -45,7 +45,6 @@ import { differenceInMinutes } from "date-fns";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncMessage,
-  type FleetyardsSyncEvent,
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
@@ -121,20 +120,10 @@ const processSteps = ref<SyncProcessStep[]>([
   },
 ]);
 
-const onExtensionMessage = (event: FleetyardsSyncEvent) => {
-  handleExtensionMessage(event).catch((error) => {
-    console.error("Hangar sync error:", error);
-    updateStep("fetchHangar", "failure");
-    displayAlert({ text: t("messages.syncExtension.failure") });
-  });
-};
-
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
   hangarStore.syncModalOpen = true;
-
-  window.addEventListener("message", onExtensionMessage as EventListener);
 
   if (hangarStore.extensionReady) {
     void checkRSIIdentity();
@@ -146,36 +135,36 @@ let unmounted = false;
 onBeforeUnmount(() => {
   unmounted = true;
   hangarStore.syncModalOpen = false;
-  window.removeEventListener("message", onExtensionMessage as EventListener);
 
   if (pollingDelayTimer) {
     clearTimeout(pollingDelayTimer);
   }
 });
 
-const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
-  if (event.data.direction === "fy-sync") {
-    const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
+const failFetch = () => {
+  displayAlert({ text: t("messages.syncExtension.failure") });
+  updateStep("fetchHangar", "failure");
+};
 
-    // A reply after the fetch has ended belongs to a run that is over: read
-    // now, it could submit the pages collected before an unrecognised one.
-    const fetchStatus = processSteps.value.find(
-      (step) => step.name === "fetchHangar",
-    )?.status;
+const onSyncReply = async (message?: FleetyardsSyncMessage) => {
+  if (unmounted) return;
 
-    if (
-      message.action === "sync" &&
-      fetchStatus !== "failure" &&
-      fetchStatus !== "success"
-    ) {
-      if (message.code === 200) {
-        await fetchRSIHangar(message.payload as string);
-      } else {
-        displayAlert({ text: t("messages.syncExtension.failure") });
-        updateStep("fetchHangar", "failure");
-      }
-    }
+  // A reply after the fetch has ended belongs to a run that is over: read
+  // now, it could submit the pages collected before an unrecognised one.
+  const fetchStatus = processSteps.value.find(
+    (step) => step.name === "fetchHangar",
+  )?.status;
+  if (fetchStatus === "failure" || fetchStatus === "success") return;
+
+  if (message?.code !== 200) {
+    failFetch();
+    return;
   }
+
+  await fetchRSIHangar(message.payload as string).catch((error) => {
+    console.error("Hangar sync error:", error);
+    failFetch();
+  });
 };
 
 watch(
@@ -289,10 +278,10 @@ const fetchPage = (page: number) => {
 
   fetchCount.value += 1;
 
-  window.postMessage({
-    direction: "fy",
-    message: `{ "action": "sync", "page": ${page} }`,
-  });
+  void extension
+    .request(FleetyardsSyncAction.SYNC, { page })
+    .catch(() => undefined)
+    .then(onSyncReply);
 };
 
 const reportRsiPage = useRsiPageReport();

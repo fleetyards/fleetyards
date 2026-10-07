@@ -22,7 +22,6 @@ import {
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   FleetyardsSyncAction,
-  type FleetyardsSyncEvent,
   type FleetyardsSyncHealthPayload,
   type FleetyardsSyncMessage,
   type FleetyardsSyncSessionPayload,
@@ -100,8 +99,6 @@ const maxMessagesPerMinute = 60;
 // An extension that never answers would otherwise leave the sync spinning.
 const REPLY_TIMEOUT = 30000;
 
-let replyTimer: ReturnType<typeof setTimeout> | null = null;
-
 const working = computed(
   () =>
     loadingIdentity.value ||
@@ -109,13 +106,6 @@ const working = computed(
     status.value === "submitting" ||
     status.value === "details",
 );
-
-const onExtensionMessage = (event: FleetyardsSyncEvent) => {
-  handleExtensionMessage(event).catch((error) => {
-    console.error("Buy-back sync error:", error);
-    fail();
-  });
-};
 
 const extension = useSyncExtension();
 
@@ -134,8 +124,6 @@ const checkExtension = async () => {
 };
 
 onMounted(() => {
-  window.addEventListener("message", onExtensionMessage as EventListener);
-
   void checkExtension();
 });
 
@@ -145,32 +133,22 @@ onBeforeUnmount(() => {
   if (status.value === "details") {
     cancelDetails();
   }
-  window.removeEventListener("message", onExtensionMessage as EventListener);
-
-  clearReplyTimer();
 });
 
-const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
-  if (event.data.direction !== "fy-sync") {
-    return;
-  }
+// A reply landing after the sync failed or the modal closed belongs to a crawl
+// that is over. No reply at all is a timeout.
+const onSyncReply = async (message?: FleetyardsSyncMessage) => {
+  if (unmounted || status.value !== "fetching") return;
 
-  const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
-
-  // A reply landing after the sync timed out belongs to a crawl that is over.
-  if (
-    message.action === FleetyardsSyncAction.SYNC_BUYBACK &&
-    status.value === "fetching"
-  ) {
-    clearReplyTimer();
-
-    if (message.code === 200) {
-      await handlePage(message.payload as string);
-    } else if (isUnknownAction(message)) {
-      status.value = "unsupported";
-    } else {
+  if (message?.code === 200) {
+    await handlePage(message.payload as string).catch((error) => {
+      console.error("Buy-back sync error:", error);
       fail();
-    }
+    });
+  } else if (message && isUnknownAction(message)) {
+    status.value = "unsupported";
+  } else {
+    fail();
   }
 };
 
@@ -235,26 +213,13 @@ const fetchPage = (page: number) => {
 
   fetchCount.value += 1;
 
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({
-      action: FleetyardsSyncAction.SYNC_BUYBACK,
-      page,
-    }),
-  });
-
-  replyTimer = setTimeout(fail, REPLY_TIMEOUT);
-};
-
-const clearReplyTimer = () => {
-  if (replyTimer) {
-    clearTimeout(replyTimer);
-    replyTimer = null;
-  }
+  void extension
+    .request(FleetyardsSyncAction.SYNC_BUYBACK, { page }, REPLY_TIMEOUT)
+    .catch(() => undefined)
+    .then(onSyncReply);
 };
 
 const fail = (text = t("messages.buybackSync.failure")) => {
-  clearReplyTimer();
   status.value = "failed";
   displayAlert({ text });
 };
@@ -267,7 +232,6 @@ const handlePage = async (html: string) => {
   // Not a buy-back page this parser understands: the list read so far is
   // incomplete, and submitting it would delete every buy-back after it.
   if (result.status === RsiPageStatus.UNRECOGNISED) {
-    clearReplyTimer();
     status.value = "failed";
 
     const outcome = await reportRsiPage({
