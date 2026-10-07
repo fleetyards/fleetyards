@@ -81,23 +81,20 @@ export const useSyncExtension = () => {
     });
   };
 
+  // Undefined when nothing answers: no extension installed.
+  const health = () =>
+    request(FleetyardsSyncAction.HEALTH, {}, HEALTH_TIMEOUT).catch(
+      () => undefined,
+    );
+
   // An extension from before an action existed answers it with "Unknown
   // Action", so the health check's list is asked instead.
   const supports = async (action: FleetyardsSyncAction) => {
-    try {
-      const health = await request(
-        FleetyardsSyncAction.HEALTH,
-        {},
-        HEALTH_TIMEOUT,
-      );
+    const answer = await health();
+    const actions = (answer?.payload as FleetyardsSyncHealthPayload)?.actions;
 
-      const actions = (health.payload as FleetyardsSyncHealthPayload)?.actions;
-
-      return health.code === 200 && !!actions?.includes(action);
-    } catch {
-      return false;
-    }
+    return answer?.code === 200 && !!actions?.includes(action);
   };
 
-  return { request, supports };
+  return { request, health, supports };
 };

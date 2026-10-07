@@ -7,8 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import LoadingDots from "@/shared/components/LoadingDots/index.vue";
+import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -20,6 +19,7 @@ import {
   RsiPageReportOutcome,
   useRsiPageReport,
 } from "@/frontend/composables/useRsiPageReport";
+import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
@@ -117,13 +117,24 @@ const onExtensionMessage = (event: FleetyardsSyncEvent) => {
   });
 };
 
+const extension = useSyncExtension();
+
+const checkExtension = async () => {
+  const health = await extension.health();
+
+  extensionReady.value = health?.code === 200;
+  extensionInfo.value =
+    (health?.payload as FleetyardsSyncHealthPayload | undefined) || {};
+
+  if (extensionReady.value && extensionSupportsBuybacks.value) {
+    await checkRSIIdentity();
+  }
+};
+
 onMounted(() => {
   window.addEventListener("message", onExtensionMessage as EventListener);
 
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({ action: FleetyardsSyncAction.HEALTH }),
-  });
+  void checkExtension();
 });
 
 let unmounted = false;
@@ -146,34 +157,6 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
 
   const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
-  if (message.action === FleetyardsSyncAction.HEALTH) {
-    extensionReady.value = message.code === 200;
-    extensionInfo.value =
-      (message.payload as FleetyardsSyncHealthPayload | undefined) || {};
-
-    if (extensionReady.value && extensionSupportsBuybacks.value) {
-      checkRSIIdentity();
-    }
-  }
-
-  if (message.action === FleetyardsSyncAction.IDENTIFY) {
-    loadingIdentity.value = false;
-
-    if (
-      message.code !== 200 ||
-      !(message.payload as FleetyardsSyncSessionPayload)?.handle
-    ) {
-      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
-      identityStatus.value = "notFound";
-      rsiHandle.value = undefined;
-    } else {
-      identityStatus.value = "connected";
-      rsiHandle.value = (
-        message.payload as FleetyardsSyncSessionPayload
-      ).handle;
-    }
-  }
-
   // A reply landing after the sync timed out belongs to a crawl that is over.
   if (
     message.action === FleetyardsSyncAction.SYNC_BUYBACK &&
@@ -191,14 +174,25 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   }
 };
 
-const checkRSIIdentity = () => {
+const checkRSIIdentity = async () => {
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({ action: FleetyardsSyncAction.IDENTIFY }),
-  });
+  const identity = await extension
+    .request(FleetyardsSyncAction.IDENTIFY)
+    .catch(() => undefined);
+  const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
+
+  loadingIdentity.value = false;
+
+  if (identity?.code !== 200 || !handle) {
+    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    identityStatus.value = "notFound";
+    rsiHandle.value = undefined;
+  } else {
+    identityStatus.value = "connected";
+    rsiHandle.value = handle;
+  }
 };
 
 // An extension released before buy-backs answers the action it does not know
@@ -415,35 +409,12 @@ const close = () => {
       </div>
     </div>
     <div v-else-if="status === 'idle'">
-      <p
-        class="flex justify-center gap-2 text-uppercase relative mt-4"
-        :class="{
-          'text-warning': identityStatus === 'pending',
-          'text-success': identityStatus === 'connected',
-          'text-danger': identityStatus === 'notFound',
-        }"
-      >
-        {{ t("labels.syncExtension.sessionStatus") }}:
-        {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-        <LoadingDots :loading="loadingIdentity" />
-        <Btn
-          v-if="identityStatus === 'notFound'"
-          v-tooltip="t('labels.syncExtension.checkIdentity')"
-          class="check-identity-btn"
-          :disabled="loadingIdentity"
-          :variant="BtnVariantsEnum.BARE"
-          @click="checkRSIIdentity"
-        >
-          <i class="fa-light fa-sync" />
-        </Btn>
-      </p>
-      <p
-        v-if="identityStatus === 'connected' && rsiHandle"
-        class="text-center"
-        data-test="sync-extension-signed-in-as"
-      >
-        {{ t("labels.syncExtension.signedInAs", { handle: rsiHandle }) }}
-      </p>
+      <SyncSessionStatus
+        :status="identityStatus"
+        :loading="loadingIdentity"
+        :handle="rsiHandle"
+        @recheck="checkRSIIdentity"
+      />
       <p>{{ t("texts.buybackSync.info") }}</p>
       <p v-if="extensionSupportsDetails">
         {{ t("texts.buybackSync.detailsInfo") }}
@@ -533,9 +504,5 @@ const close = () => {
 <style lang="scss" scoped>
 .sync-extension-platforms {
   margin-bottom: 20px;
-}
-
-.check-identity-btn {
-  margin-left: 10px;
 }
 </style>

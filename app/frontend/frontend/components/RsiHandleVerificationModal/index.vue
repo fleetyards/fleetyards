@@ -35,6 +35,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
+import RsiSignedInAs from "@/frontend/components/RsiSignedInAs/index.vue";
+import { RSI_SIGN_IN_URL } from "@/frontend/lib/rsiLinks";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncSessionPayload,
@@ -236,6 +238,15 @@ watch(
   { immediate: true },
 );
 
+// After signing in to RSI, or switching account there, in another tab.
+const redetectExtension = () => {
+  const handle = verification.value?.handle;
+  if (!handle) return;
+
+  extensionState.value = "detecting";
+  void detectExtension(handle);
+};
+
 const EXTENSION_ERRORS: Record<number, "bioTooLong" | "bioUnreadable"> = {
   413: "bioTooLong",
   422: "bioUnreadable",
@@ -415,6 +426,32 @@ const copyToken = () => {
         >
           {{ t("labels.user.rsiVerification.extension.notSignedIn") }}
         </Alert>
+        <div
+          v-if="
+            extensionState === 'mismatch' || extensionState === 'notSignedIn'
+          "
+          class="rsi-verification__extension-session"
+        >
+          <Btn
+            :href="RSI_SIGN_IN_URL"
+            target="_blank"
+            :size="BtnSizesEnum.SM"
+            data-test="user-rsi-verification-extension-sign-in"
+          >
+            <i class="icon icon-rsi" />
+            {{ t("labels.syncExtension.signInToRsi") }}
+            <i class="fa-light fa-arrow-up-right-from-square" />
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            data-test="user-rsi-verification-extension-recheck"
+            @click="redetectExtension"
+          >
+            <i class="fa-light fa-sync" />
+            {{ t("labels.syncExtension.checkIdentity") }}
+          </Btn>
+        </div>
         <template v-else-if="extensionState === 'ready'">
           <Alert
             v-if="extensionError"
@@ -428,9 +465,7 @@ const copyToken = () => {
             class="rsi-verification__extension-account"
             data-test="user-rsi-verification-extension-account"
           >
-            {{
-              t("labels.syncExtension.signedInAs", { handle: extensionHandle })
-            }}
+            <RsiSignedInAs v-if="extensionHandle" :handle="extensionHandle" />
           </div>
           <Btn
             :size="BtnSizesEnum.SM"
@@ -580,6 +615,12 @@ const copyToken = () => {
   &__extension-description {
     margin: 0;
     color: var(--color-text-dim);
+  }
+
+  &__extension-session {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   &__extension-account {

@@ -275,6 +275,27 @@ describe("RsiHandleVerificationModal", () => {
       expect(verifyButton(wrapper).exists()).toBe(false);
     });
 
+    it("looks again after switching RSI account", async () => {
+      signedInAs("SomeoneElse");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-sign-in"]')
+          .exists(),
+      ).toBe(true);
+
+      signedInAs("TestPilot");
+      await wrapper
+        .find('[data-test="user-rsi-verification-extension-recheck"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(verifyButton(wrapper).exists()).toBe(true);
+    });
+
     it("asks for an RSI sign-in without one", async () => {
       extensionSupports.mockResolvedValue(true);
       extensionAnswers.identify = { code: 400 };

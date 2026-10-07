@@ -2546,6 +2546,7 @@
         },
         "sessionStatus": "RSI-Sitzungsstatus",
         "signedInAs": "Bei RSI angemeldet als %{handle}",
+        "signInToRsi": "Bei RSI anmelden",
         "checkIdentity": "RSI-Sitzung prüfen",
         "targetGroup": "Gruppe für die gefundenen Schiffe",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",

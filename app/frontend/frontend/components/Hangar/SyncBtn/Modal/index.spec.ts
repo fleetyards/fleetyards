@@ -73,6 +73,8 @@ vi.spyOn(window, "postMessage").mockImplementation(() => {});
 const extensionReplies = (action: string, payload?: unknown) => {
   window.dispatchEvent(
     new MessageEvent("message", {
+      // What the extension's content script posts from: the page's own window.
+      source: window,
       data: {
         direction: "fy-sync",
         message: JSON.stringify({ action, code: 200, payload }),
@@ -86,7 +88,7 @@ const extensionReplies = (action: string, payload?: unknown) => {
 // second sync carrying its own store's value.
 let mounted: ReturnType<typeof mount> | undefined;
 
-const mountModal = async () => {
+const mountModal = async (identity: unknown = { handle: "ACaptain" }) => {
   const wrapper = mount(Component, {
     global: {
       plugins: [createTestingPinia({ stubActions: false })],
@@ -108,7 +110,7 @@ const mountModal = async () => {
   hangarStore.extensionReady = true;
   await flushPromises();
 
-  extensionReplies("identify", { handle: "ACaptain" });
+  extensionReplies("identify", identity);
   await flushPromises();
 
   return { wrapper, hangarStore };
@@ -214,10 +216,7 @@ describe("HangarSyncModal", () => {
   });
 
   it("names no account without an RSI session", async () => {
-    const { wrapper } = await mountModal();
-
-    extensionReplies("identify", {});
-    await flushPromises();
+    const { wrapper } = await mountModal({});
 
     expect(
       wrapper.find("[data-test='sync-extension-signed-in-as']").exists(),

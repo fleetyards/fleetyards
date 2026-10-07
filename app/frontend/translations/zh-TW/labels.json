@@ -2546,6 +2546,7 @@
         },
         "sessionStatus": "RSI 工作階段狀態",
         "signedInAs": "已以 %{handle} 登入 RSI",
+        "signInToRsi": "登入 RSI",
         "checkIdentity": "檢查 RSI 工作階段",
         "targetGroup": "找到的飛船歸入的分組",
         "addBundledVehicles": "新增附帶的小型飛船",

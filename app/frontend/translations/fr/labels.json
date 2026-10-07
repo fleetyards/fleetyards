@@ -2546,6 +2546,7 @@
         },
         "sessionStatus": "Statut de session RSI",
         "signedInAs": "Connecté à RSI en tant que %{handle}",
+        "signInToRsi": "Se connecter à RSI",
         "checkIdentity": "Vérifier la session RSI",
         "targetGroup": "Groupe pour les vaisseaux trouvés",
         "addBundledVehicles": "Ajouter les snub crafts inclus",

@@ -2546,6 +2546,7 @@
         },
         "sessionStatus": "RSI 会话状态",
         "signedInAs": "已以 %{handle} 登录 RSI",
+        "signInToRsi": "登录 RSI",
         "checkIdentity": "检查 RSI 会话",
         "targetGroup": "找到的飞船归入的分组",
         "addBundledVehicles": "添加附带的小型飞船",
