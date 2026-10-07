@@ -9,7 +9,6 @@ module Discord
       include CatalogueLookup
 
       CATALOGUES = %w[component equipment commodity blueprint].freeze
-      DESCRIPTION_LENGTH = 300
 
       def call
         prefix, found = lookup_entry

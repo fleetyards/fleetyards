@@ -9,7 +9,6 @@ module Discord
       include CatalogueLookup
 
       CATALOGUES = %w[location].freeze
-      DESCRIPTION_LENGTH = 300
       SIZE_ORDER = ::Dock.ship_sizes.keys.freeze
 
       def self.autocomplete(option, value)

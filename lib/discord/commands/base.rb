@@ -22,6 +22,9 @@ module Discord
       # an unanswered interaction stays on "thinking..." for good.
       FIELD_LIMIT = 1024
 
+      # How much of a description an embed shows before pointing to the page.
+      DESCRIPTION_LENGTH = 300
+
       attr_reader :options, :guild_id, :discord_user_id
 
       def initialize(options: {}, guild_id: nil, discord_user_id: nil)
