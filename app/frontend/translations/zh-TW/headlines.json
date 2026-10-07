@@ -458,6 +458,8 @@
         "states": "狀態",
         "notifications": "通知",
         "syncModal": "同步彈窗",
+        "buybackSyncModal": "回購同步彈窗",
+        "rsiVerificationModal": "RSI 驗證彈窗",
         "overlays": "覆蓋層",
         "installPrompt": "安裝提示",
         "supportHint": "支援提示",

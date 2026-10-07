@@ -194,6 +194,8 @@
         "states": "状态 - 视觉测试",
         "notifications": "通知 - 视觉测试",
         "syncModal": "同步弹窗 - 视觉测试",
+        "buybackSyncModal": "回购同步弹窗 - 视觉测试",
+        "rsiVerificationModal": "RSI 验证弹窗 - 视觉测试",
         "overlays": "浮层 - 视觉测试",
         "installPrompt": "安装提示 - 视觉测试",
         "supportHint": "支持提示 - 视觉测试",

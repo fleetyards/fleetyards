@@ -129,6 +129,26 @@ export const routes = [
     },
   },
   {
+    path: "buyback-sync-modal/",
+    name: "visual-tests-buyback-sync-modal",
+    component: () =>
+      import("@/frontend/components/Hangar/BuybackSyncBtn/visual.vue"),
+    meta: {
+      title: "visualTests.buybackSyncModal",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "rsi-verification-modal/",
+    name: "visual-tests-rsi-verification-modal",
+    component: () =>
+      import("@/frontend/components/RsiHandleVerificationModal/visual.vue"),
+    meta: {
+      title: "visualTests.rsiVerificationModal",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "install-prompt/",
     name: "visual-tests-install-prompt",
     component: () => import("@/frontend/pages/visual-tests/install-prompt.vue"),

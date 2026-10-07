@@ -194,6 +194,8 @@
         "states": "Stati - Test visivi",
         "notifications": "Notifiche - Test Visivi",
         "syncModal": "Modal sincronizzazione - Test Visivi",
+        "buybackSyncModal": "Modale sincronizzazione riacquisti - Test Visivi",
+        "rsiVerificationModal": "Modale verifica RSI - Test Visivi",
         "overlays": "Overlay - Test Visivi",
         "installPrompt": "Invito all'installazione - Test Visivi",
         "supportHint": "Suggerimento supporto - Test Visivi",

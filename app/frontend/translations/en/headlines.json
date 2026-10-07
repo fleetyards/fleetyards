@@ -460,6 +460,8 @@
         "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
+        "buybackSyncModal": "Buy-back Sync Modal",
+        "rsiVerificationModal": "RSI Verification Modal",
         "overlays": "Overlays",
         "installPrompt": "Install Prompt",
         "supportHint": "Support Hint",

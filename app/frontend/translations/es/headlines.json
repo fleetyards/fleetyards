@@ -458,6 +458,8 @@
         "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
+        "buybackSyncModal": "Modal de sincronización de recompras",
+        "rsiVerificationModal": "Modal de verificación de RSI",
         "overlays": "Superposiciones",
         "installPrompt": "Aviso de instalación",
         "supportHint": "Aviso de apoyo",

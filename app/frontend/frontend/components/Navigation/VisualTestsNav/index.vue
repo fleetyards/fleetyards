@@ -48,6 +48,8 @@ const GROUPS = [
       "install-prompt",
       "support-hint",
       "sync-modal",
+      "buyback-sync-modal",
+      "rsi-verification-modal",
       "overlays",
     ],
   },
@@ -144,6 +146,16 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-sync-modal",
     label: "syncModal",
     icon: "fadt fa-arrows-rotate",
+  },
+  "buyback-sync-modal": {
+    route: "visual-tests-buyback-sync-modal",
+    label: "buybackSyncModal",
+    icon: "fadt fa-clock-rotate-left",
+  },
+  "rsi-verification-modal": {
+    route: "visual-tests-rsi-verification-modal",
+    label: "rsiVerificationModal",
+    icon: "fadt fa-badge-check",
   },
   overlays: {
     route: "visual-tests-overlays",
