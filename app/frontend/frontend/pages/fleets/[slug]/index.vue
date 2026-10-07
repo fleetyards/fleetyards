@@ -206,7 +206,10 @@ const showFidNotice = computed(
   </div>
   <div v-if="fleet.description" class="row md:justify-center">
     <div class="col-12 col-md-8">
-      <Markdown class="description" :source="fleet.description" />
+      <!-- Markdown renders a fragment, so it never carries this page's scope id. -->
+      <div class="description">
+        <Markdown :source="fleet.description" />
+      </div>
     </div>
   </div>
   <!-- Unlabelled: the front page introduces the fleet, and a strip of emblems
