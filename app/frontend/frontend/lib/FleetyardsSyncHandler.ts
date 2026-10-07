@@ -8,10 +8,17 @@ export enum FleetyardsSyncAction {
   SYNC = "sync",
   SYNC_BUYBACK = "syncBuyback",
   IDENTIFY = "identify",
+  VERIFY_WRITE = "verify-write",
+  VERIFY_REMOVE = "verify-remove",
 }
 
 export type FleetyardsSyncSessionPayload = {
   handle: string;
+};
+
+export type FleetyardsSyncVerifyPayload = {
+  handle: string;
+  changed?: boolean;
 };
 
 // What an extension can do. Released versions before buy-backs answer the
@@ -25,7 +32,12 @@ export type FleetyardsSyncMessage = {
   action: FleetyardsSyncAction;
   code?: number;
   error?: string;
-  payload?: string | FleetyardsSyncSessionPayload | FleetyardsSyncHealthPayload;
+  actions?: FleetyardsSyncAction[];
+  payload?:
+    | string
+    | FleetyardsSyncSessionPayload
+    | FleetyardsSyncHealthPayload
+    | FleetyardsSyncVerifyPayload;
 };
 
 export interface FleetyardsSyncEvent extends Event {
