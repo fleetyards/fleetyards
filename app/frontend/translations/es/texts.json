@@ -183,6 +183,9 @@
         "requestingAccess": "%{clientName} está solicitando acceso a su cuenta.",
         "scopesIntro": "Esta aplicación podrá:"
       },
+      "buybacks": {
+        "intro": "Los pledges que fundiste en RSI y podrías recomprar, según tu última sincronización. La sincronización lee tu lista de recompra de RSI mediante la extensión Fleetyards Sync."
+      },
       "buybackSync": {
         "info": "Lee cada página de tu lista de recompra de RSI y reemplaza con ella los pledges de recompra guardados en Fleetyards. Tu hangar no se modifica. Las listas largas tardan unos minutos.",
         "unsupported": "Tu extensión Fleetyards Sync todavía no puede leer los pledges de recompra. Actualízala para sincronizarlos."

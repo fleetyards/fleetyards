@@ -235,6 +235,7 @@
         "publicStats": "Estadísticas",
         "publicWishlist": "Lista de deseos de %{user}",
         "resetIngame": "Restablecer naves del juego después del reinicio",
+        "buybacks": "Pledges de recompra",
         "imports": "Importaciones"
       },
       "buybackSync": "Sincronizar pledges de recompra de RSI",

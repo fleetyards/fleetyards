@@ -28,6 +28,7 @@ type Events = {
   "hangar-change": () => void | Promise<unknown>;
   "hangar-delete-all": () => void | Promise<unknown>;
   "hangar-sync-finished": () => void | Promise<unknown>;
+  "buyback-sync-finished": () => void | Promise<unknown>;
   "hangar-group-save": () => void | Promise<unknown>;
   "hangar-group-delete": (group: HangarGroup) => void | Promise<unknown>;
   "fleet-squadron-created": () => void | Promise<unknown>;

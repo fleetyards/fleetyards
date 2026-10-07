@@ -2481,6 +2481,21 @@
         "type": "Type",
         "shop": "Magasin"
       },
+      "buybacks": {
+        "name": "Pledges rachetables",
+        "search": "Rechercher des pledges rachetables",
+        "kind": "Type",
+        "kinds": {
+          "package": "Pack",
+          "ship": "Vaisseau seul",
+          "upgrade": "Amélioration",
+          "paint": "Peinture",
+          "addon": "Extension",
+          "other": "Autre"
+        },
+        "upgraded": "Amélioré",
+        "reclaimedOn": "Fondu"
+      },
       "buybackSync": {
         "pages": "Pages",
         "found": "Pledges rachetables trouvés",

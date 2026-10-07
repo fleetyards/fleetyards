@@ -183,6 +183,9 @@
         "requestingAccess": "%{clientName} sta richiedendo l'accesso al tuo account.",
         "scopesIntro": "Questa applicazione potrà:"
       },
+      "buybacks": {
+        "intro": "I pledge che hai fuso su RSI e potresti riacquistare, alla tua ultima sincronizzazione. La sincronizzazione legge la tua lista di riacquisto RSI tramite l'estensione Fleetyards Sync."
+      },
       "buybackSync": {
         "info": "Legge ogni pagina della tua lista di riacquisto RSI e sostituisce con essa i pledge riacquistabili salvati su Fleetyards. Il tuo hangar non viene modificato. Le liste lunghe richiedono qualche minuto.",
         "unsupported": "La tua estensione Fleetyards Sync non può ancora leggere i pledge riacquistabili. Aggiornala per sincronizzarli."

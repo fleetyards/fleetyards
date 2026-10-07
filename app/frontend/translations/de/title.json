@@ -46,6 +46,7 @@
         "inventories": "Meine Hangar Inventare",
         "inventory": "%{inventory}",
         "vehicleCargo": "Schiffsfracht",
+        "buybacks": "Rückkauf-Pledges",
         "imports": "Importe",
         "transfers": "Transfers"
       },

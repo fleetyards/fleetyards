@@ -2481,6 +2481,21 @@
         "type": "類型",
         "shop": "商店"
       },
+      "buybacks": {
+        "name": "可回購承諾",
+        "search": "搜尋可回購承諾",
+        "kind": "類型",
+        "kinds": {
+          "package": "禮包",
+          "ship": "單船",
+          "upgrade": "升級",
+          "paint": "塗裝",
+          "addon": "附加內容",
+          "other": "其他"
+        },
+        "upgraded": "已升級",
+        "reclaimedOn": "熔煉於"
+      },
       "buybackSync": {
         "pages": "頁數",
         "found": "找到的可回購承諾",

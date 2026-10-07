@@ -235,6 +235,7 @@
         "publicStats": "統計",
         "publicWishlist": "%{user} 的願望清單",
         "resetIngame": "資料重置後重設遊戲內飛船",
+        "buybacks": "可回購承諾",
         "imports": "匯入記錄"
       },
       "buybackSync": "同步 RSI 可回購承諾",

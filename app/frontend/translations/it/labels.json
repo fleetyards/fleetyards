@@ -2481,6 +2481,21 @@
         "type": "Tipo",
         "shop": "Negozio"
       },
+      "buybacks": {
+        "name": "Pledge riacquistabili",
+        "search": "Cerca pledge riacquistabili",
+        "kind": "Tipo",
+        "kinds": {
+          "package": "Pacchetto",
+          "ship": "Nave singola",
+          "upgrade": "Upgrade",
+          "paint": "Verniciatura",
+          "addon": "Add-on",
+          "other": "Altro"
+        },
+        "upgraded": "Potenziato",
+        "reclaimedOn": "Fuso"
+      },
       "buybackSync": {
         "pages": "Pagine",
         "found": "Pledge riacquistabili trovati",

@@ -2481,6 +2481,21 @@
         "type": "类型",
         "shop": "商店"
       },
+      "buybacks": {
+        "name": "可回购承诺",
+        "search": "搜索可回购承诺",
+        "kind": "类型",
+        "kinds": {
+          "package": "礼包",
+          "ship": "单船",
+          "upgrade": "升级",
+          "paint": "涂装",
+          "addon": "附加内容",
+          "other": "其他"
+        },
+        "upgraded": "已升级",
+        "reclaimedOn": "熔炼于"
+      },
       "buybackSync": {
         "pages": "页数",
         "found": "找到的可回购承诺",

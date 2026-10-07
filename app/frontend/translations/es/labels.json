@@ -2481,6 +2481,21 @@
         "type": "Tipo",
         "shop": "Tienda"
       },
+      "buybacks": {
+        "name": "Pledges de recompra",
+        "search": "Buscar pledges de recompra",
+        "kind": "Tipo",
+        "kinds": {
+          "package": "Paquete",
+          "ship": "Nave individual",
+          "upgrade": "Mejora",
+          "paint": "Pintura",
+          "addon": "Complemento",
+          "other": "Otro"
+        },
+        "upgraded": "Mejorado",
+        "reclaimedOn": "Fundido"
+      },
       "buybackSync": {
         "pages": "Páginas",
         "found": "Pledges de recompra encontrados",

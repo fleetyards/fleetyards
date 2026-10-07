@@ -183,6 +183,9 @@
         "requestingAccess": "%{clientName} fordert Zugriff auf Ihr Konto an.",
         "scopesIntro": "Diese Anwendung wird in der Lage sein:"
       },
+      "buybacks": {
+        "intro": "Die Pledges, die du bei RSI eingeschmolzen hast und zurückkaufen könntest, Stand deiner letzten Synchronisierung. Die Synchronisierung liest deine RSI-Rückkaufliste über die Fleetyards-Sync-Erweiterung."
+      },
       "buybackSync": {
         "info": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die auf Fleetyards gespeicherten Rückkauf-Pledges. Dein Hangar bleibt unverändert. Lange Listen dauern einige Minuten.",
         "unsupported": "Deine Fleetyards-Sync-Erweiterung kann Rückkauf-Pledges noch nicht lesen. Aktualisiere sie, um sie zu synchronisieren."

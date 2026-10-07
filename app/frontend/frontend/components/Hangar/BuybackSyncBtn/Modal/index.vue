@@ -239,6 +239,7 @@ const submit = async () => {
     });
     status.value = "finished";
     displaySuccess({ text: t("messages.buybackSync.success") });
+    comlink.emit("buyback-sync-finished");
   } catch (error) {
     console.error(error);
     fail();
