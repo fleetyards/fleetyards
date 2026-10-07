@@ -170,10 +170,14 @@ module Discord
       private def blueprint_description(record)
         craftable = record.craftable
         materials = record.materials
+        listed = ::Catalogue::TokenResolver.listed("commodity").where(id: materials.map(&:id)).pluck(:id).to_set
+        material_links = materials.map do |commodity|
+          listed.include?(commodity.id) ? link(commodity.name, "commodity", commodity.slug) : Markdown.escape(commodity.name)
+        end
 
         [
           (I18n.t("discord.commands.item.makes", item: craftable_link(craftable)) if craftable.present?),
-          (I18n.t("discord.commands.item.materials", items: materials.map { |commodity| link(commodity.name, "commodity", commodity.slug) }.join(", ")) if materials.any?)
+          (I18n.t("discord.commands.item.materials", items: material_links.join(", ")) if materials.any?)
         ].compact.join("\n").presence
       end
 

@@ -72,6 +72,17 @@ module Discord
         assert_equal "2m 30s", fields(payload)[I18n.t("discord.commands.item.fields.craft_time")]
       end
 
+      test "names a material the catalogue does not list without linking it" do
+        blueprint = create(:blueprint, name: "Omnisky IX Cannon", craftable: create(:component, name: "Omnisky IX Cannon"))
+        commodity = create(:commodity, :without_build, name: "Retired Ore")
+        create(:blueprint_cost_option, slot: create(:blueprint_cost_slot, build: blueprint.build), commodity:)
+
+        description = call("blueprint:Omnisky IX Cannon")[:embeds].first[:description]
+
+        assert_includes description, "Retired Ore"
+        assert_not_includes description, "/catalogue/commodities/"
+      end
+
       test "a bare name shared with a blueprint answers the item" do
         component = create(:component, name: "Omnisky IX Cannon")
         create(:blueprint, name: "Omnisky IX Cannon", craftable: component)
