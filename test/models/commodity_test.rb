@@ -291,4 +291,15 @@ class CommodityTest < ActiveSupport::TestCase
 
     assert_equal [90, 100, 120], commodity.sold_at.map(&:price)
   end
+
+  test "#bought_at keeps a terminal's best-paid quote" do
+    commodity = create(:commodity)
+    terminal = create(:terminal, name: "TDD - Area 18")
+    [80, 110].each do |price|
+      create(:item_price, item: commodity, price_type: "buy", time_range: nil, price:, location: "TDD - Area 18", terminal:)
+    end
+    create(:item_price, item: commodity, price_type: "buy", time_range: nil, price: 95, location: "Elsewhere")
+
+    assert_equal [95, 110], commodity.bought_at.map(&:price)
+  end
 end
