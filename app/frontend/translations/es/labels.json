@@ -2013,6 +2013,7 @@
           "extension": {
             "title": "Verificar con la extensión FleetYards Sync",
             "description": "La extensión añade tu código a la biografía de la cuenta de RSI con la que este navegador ha iniciado sesión, comprueba tu página de ciudadano y vuelve a quitar el código.",
+            "detecting": "Buscando la extensión FleetYards Sync",
             "handleMismatch": "Este navegador ha iniciado sesión en RSI como %{rsiHandle}, no como %{handle}. Inicia sesión en RSI como %{handle} o verifica a mano más abajo.",
             "notSignedIn": "Inicia sesión en RSI en este navegador para verificar con la extensión, o verifica a mano más abajo.",
             "bioTooLong": "Tu biografía de RSI es demasiado larga para añadir el código. Acórtala o verifica a mano más abajo.",

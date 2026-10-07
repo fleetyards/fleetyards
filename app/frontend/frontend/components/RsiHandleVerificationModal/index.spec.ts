@@ -213,6 +213,46 @@ describe("RsiHandleVerificationModal", () => {
     const verifyButton = (wrapper: Awaited<ReturnType<typeof mountModal>>) =>
       wrapper.find('[data-test="user-rsi-verification-extension-verify"]');
 
+    it("says it is looking for the extension until it knows", async () => {
+      let answerHealth: (supported: boolean) => void = () => {};
+      extensionSupports.mockImplementation(
+        () => new Promise((resolve) => (answerHealth = resolve)),
+      );
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-detecting"]')
+          .exists(),
+      ).toBe(true);
+      expect(verifyButton(wrapper).exists()).toBe(false);
+
+      answerHealth(false);
+      await flushPromises();
+
+      expect(extensionBlock(wrapper).exists()).toBe(false);
+    });
+
+    it("names the RSI account it would verify through", async () => {
+      signedInAs("TestPilot");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-account"]')
+          .text(),
+      ).toContain("TestPilot");
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-detecting"]')
+          .exists(),
+      ).toBe(false);
+    });
+
     it("offers nothing without an extension that can verify", async () => {
       const wrapper = await mountModal();
       await flushPromises();

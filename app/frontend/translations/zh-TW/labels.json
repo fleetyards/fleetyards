@@ -2013,6 +2013,7 @@
           "extension": {
             "title": "使用 FleetYards Sync 擴充功能驗證",
             "description": "擴充功能會將驗證碼加入此瀏覽器所登入 RSI 帳號的簡介，檢查你的公民頁面，然後再將驗證碼移除。",
+            "detecting": "正在尋找 FleetYards Sync 擴充功能",
             "handleMismatch": "此瀏覽器登入的 RSI 帳號是 %{rsiHandle}，而不是 %{handle}。請以 %{handle} 登入 RSI，或在下方手動驗證。",
             "notSignedIn": "請在此瀏覽器中登入 RSI 以使用擴充功能驗證，或在下方手動驗證。",
             "bioTooLong": "你的 RSI 簡介太長，無法加入驗證碼。請縮短簡介，或在下方手動驗證。",

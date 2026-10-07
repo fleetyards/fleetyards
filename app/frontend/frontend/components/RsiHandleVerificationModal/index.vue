@@ -33,6 +33,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   FleetyardsSyncAction,
@@ -164,7 +165,8 @@ watch(
 
 const extension = useSyncExtension();
 
-type ExtensionState = "unavailable" | "notSignedIn" | "mismatch" | "ready";
+type ExtensionState =
+  "unavailable" | "detecting" | "notSignedIn" | "mismatch" | "ready";
 
 const extensionState = ref<ExtensionState>("unavailable");
 
@@ -196,7 +198,11 @@ const detectExtension = async (handle: string) => {
   const stale = () => closed || current !== detection;
 
   const supported = await extension.supports(FleetyardsSyncAction.VERIFY_WRITE);
-  if (!supported || stale()) return;
+  if (stale()) return;
+  if (!supported) {
+    extensionState.value = "unavailable";
+    return;
+  }
 
   const identity = await extension
     .request(FleetyardsSyncAction.IDENTIFY)
@@ -220,7 +226,7 @@ watch(
       : undefined,
   (handle) => {
     detection += 1;
-    extensionState.value = "unavailable";
+    extensionState.value = handle ? "detecting" : "unavailable";
     if (handle) void detectExtension(handle);
   },
   { immediate: true },
@@ -366,7 +372,15 @@ const copyToken = () => {
         <div class="rsi-verification__step-title">
           {{ t("labels.user.rsiVerification.extension.title") }}
         </div>
-        <p class="rsi-verification__extension-description">
+        <p
+          v-if="extensionState === 'detecting'"
+          class="rsi-verification__extension-description"
+          data-test="user-rsi-verification-extension-detecting"
+        >
+          {{ t("labels.user.rsiVerification.extension.detecting") }}
+          <LoadingDots loading />
+        </p>
+        <p v-else class="rsi-verification__extension-description">
           {{ t("labels.user.rsiVerification.extension.description") }}
         </p>
         <Alert
@@ -390,7 +404,7 @@ const copyToken = () => {
         >
           {{ t("labels.user.rsiVerification.extension.notSignedIn") }}
         </Alert>
-        <template v-else>
+        <template v-else-if="extensionState === 'ready'">
           <Alert
             v-if="extensionError"
             :variant="AlertVariantsEnum.DANGER"
@@ -399,6 +413,14 @@ const copyToken = () => {
           >
             {{ t(`labels.user.rsiVerification.extension.${extensionError}`) }}
           </Alert>
+          <div
+            class="rsi-verification__extension-account"
+            data-test="user-rsi-verification-extension-account"
+          >
+            {{
+              t("labels.syncExtension.signedInAs", { handle: extensionHandle })
+            }}
+          </div>
           <Btn
             :size="BtnSizesEnum.SM"
             :loading="extensionRunning || pending"
@@ -538,6 +560,10 @@ const copyToken = () => {
   &__extension-description {
     margin: 0;
     color: var(--color-text-dim);
+  }
+
+  &__extension-account {
+    font-weight: 600;
   }
 
   &__extension-manual {

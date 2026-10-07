@@ -2013,6 +2013,7 @@
           "extension": {
             "title": "Verifica con l’estensione FleetYards Sync",
             "description": "L’estensione aggiunge il tuo codice alla bio dell’account RSI con cui questo browser ha effettuato l’accesso, controlla la tua pagina cittadino e poi rimuove il codice.",
+            "detecting": "Ricerca dell’estensione FleetYards Sync",
             "handleMismatch": "Questo browser ha effettuato l’accesso a RSI come %{rsiHandle}, non come %{handle}. Accedi a RSI come %{handle} oppure verifica a mano qui sotto.",
             "notSignedIn": "Accedi a RSI in questo browser per verificare con l’estensione, oppure verifica a mano qui sotto.",
             "bioTooLong": "La tua bio RSI è troppo lunga per aggiungere il codice. Accorciala oppure verifica a mano qui sotto.",
