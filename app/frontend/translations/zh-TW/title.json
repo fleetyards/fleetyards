@@ -196,6 +196,7 @@
         "syncModal": "同步彈窗 - 視覺測試",
         "buybackSyncModal": "回購同步彈窗 - 視覺測試",
         "rsiVerificationModal": "RSI 驗證彈窗 - 視覺測試",
+        "fleetRsiVerificationModal": "艦隊 RSI 驗證彈窗 - 視覺測試",
         "overlays": "覆蓋層 - 視覺測試",
         "installPrompt": "安裝提示 - 視覺測試",
         "supportHint": "支援提示 - 視覺測試",

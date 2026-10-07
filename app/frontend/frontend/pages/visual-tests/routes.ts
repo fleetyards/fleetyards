@@ -149,6 +149,16 @@ export const routes = [
     },
   },
   {
+    path: "fleet-rsi-verification-modal/",
+    name: "visual-tests-fleet-rsi-verification-modal",
+    component: () =>
+      import("@/frontend/components/Fleets/RsiVerificationModal/visual.vue"),
+    meta: {
+      title: "visualTests.fleetRsiVerificationModal",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "install-prompt/",
     name: "visual-tests-install-prompt",
     component: () => import("@/frontend/pages/visual-tests/install-prompt.vue"),

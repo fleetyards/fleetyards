@@ -460,6 +460,7 @@
         "syncModal": "Sync-Modal",
         "buybackSyncModal": "Rückkauf-Sync-Modal",
         "rsiVerificationModal": "RSI-Verifizierungs-Modal",
+        "fleetRsiVerificationModal": "Flotten-RSI-Verifizierungs-Modal",
         "overlays": "Overlays",
         "installPrompt": "Installationshinweis",
         "supportHint": "Support-Hinweis",

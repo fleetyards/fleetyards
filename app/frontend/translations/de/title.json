@@ -196,6 +196,7 @@
         "syncModal": "Sync-Modal - Visuelle Tests",
         "buybackSyncModal": "Rückkauf-Sync-Modal - Visuelle Tests",
         "rsiVerificationModal": "RSI-Verifizierungs-Modal - Visuelle Tests",
+        "fleetRsiVerificationModal": "Flotten-RSI-Verifizierungs-Modal - Visuelle Tests",
         "overlays": "Overlays - Visuelle Tests",
         "installPrompt": "Installationshinweis - Visuelle Tests",
         "supportHint": "Support-Hinweis - Visuelle Tests",
