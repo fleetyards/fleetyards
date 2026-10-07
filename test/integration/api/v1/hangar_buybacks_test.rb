@@ -334,6 +334,35 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate upgrade.details_synced_at, :present?
   end
 
+  test "PUT /hangar/sync-rsi-buybacks asks again for details read too long ago" do
+    user = create(:user)
+    buyback(user, rsi_pledge_id: "1", price: 10, price_currency: "EUR", details_synced_at: 31.days.ago)
+    buyback(user, rsi_pledge_id: "2", price: 10, price_currency: "EUR", details_synced_at: 29.days.ago)
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius"},
+      {id: "2", kind: "ship", name: "Standalone Ship - Cutlass Black"}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal %w[1], parsed_body["detailsPending"]
+    end
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details stores no price without its currency" do
+    user = create(:user)
+    pledge = buyback(user, rsi_pledge_id: "1")
+    sign_in user
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: {items: [{id: "1", price: 10}]}
+
+    pledge.reload
+
+    assert_nil pledge.price
+    assert_nil pledge.price_currency
+  end
+
   test "PUT /hangar/sync-rsi-buyback-details leaves somebody else's pledge alone" do
     user = create(:user)
     other = buyback(create(:user), rsi_pledge_id: "1")

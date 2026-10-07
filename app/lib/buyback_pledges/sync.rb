@@ -15,6 +15,10 @@ module BuybackPledges
       upgrade_from_ship_id upgrade_to_ship_id upgrade_to_sku_id
     ].freeze
 
+    # Buy-back prices follow RSI's store prices, and an upgrade's follows both
+    # ships', so stored details are read again once they are this old.
+    DETAILS_MAX_AGE = 30.days
+
     attr_reader :user, :items
 
     def initialize(user, items)
@@ -38,9 +42,15 @@ module BuybackPledges
           total: rows.size,
           added: (pledge_ids - existing_ids).size,
           removed:,
-          detailsPending: user.buyback_pledges.where(details_synced_at: nil).pluck(:rsi_pledge_id)
+          detailsPending: details_pending.pluck(:rsi_pledge_id)
         }
       end
+    end
+
+    private def details_pending
+      stale = user.buyback_pledges.where(details_synced_at: ...DETAILS_MAX_AGE.ago)
+
+      user.buyback_pledges.where(details_synced_at: nil).or(stale)
     end
 
     # One row per pledge id: a duplicate inside one `upsert_all` is an error in
