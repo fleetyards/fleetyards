@@ -33,6 +33,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
+import {
+  FleetyardsSyncAction,
+  type FleetyardsSyncSessionPayload,
+  type FleetyardsSyncVerifyPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
 
 const RSI_PROFILE_SETTINGS_URL =
   "https://robertsspaceindustries.com/account/settings/profile";
@@ -156,6 +162,100 @@ watch(
   },
 );
 
+const extension = useSyncExtension();
+
+type ExtensionState = "unavailable" | "notSignedIn" | "mismatch" | "ready";
+
+const extensionState = ref<ExtensionState>("unavailable");
+
+const extensionHandle = ref<string>();
+
+const extensionError = ref<"bioTooLong" | "bioUnreadable" | "failed">();
+
+const extensionRunning = ref(false);
+
+// The token the extension added to the bio, until it has taken it out again.
+const tokenInBio = ref<string>();
+
+const detectExtension = async (handle: string) => {
+  if (!(await extension.supports(FleetyardsSyncAction.VERIFY_WRITE))) return;
+
+  const identity = await extension
+    .request(FleetyardsSyncAction.IDENTIFY)
+    .catch(() => undefined);
+  const rsiHandle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
+
+  if (identity?.code !== 200 || !rsiHandle) {
+    extensionState.value = "notSignedIn";
+  } else {
+    extensionHandle.value = rsiHandle;
+    extensionState.value =
+      rsiHandle.toLowerCase() === handle.toLowerCase() ? "ready" : "mismatch";
+  }
+};
+
+watch(
+  () =>
+    verification.value?.verified === false
+      ? verification.value.handle
+      : undefined,
+  (handle) => {
+    extensionState.value = "unavailable";
+    if (handle) void detectExtension(handle);
+  },
+  { immediate: true },
+);
+
+const EXTENSION_ERRORS: Record<number, "bioTooLong" | "bioUnreadable"> = {
+  413: "bioTooLong",
+  422: "bioUnreadable",
+};
+
+const removeTokenFromBio = () => {
+  const token = tokenInBio.value;
+  if (!token) return;
+
+  tokenInBio.value = undefined;
+  extension
+    .request(FleetyardsSyncAction.VERIFY_REMOVE, { token })
+    .catch(() => undefined);
+};
+
+const verifyWithExtension = async () => {
+  const token = verification.value?.token;
+  if (!token) return;
+
+  extensionError.value = undefined;
+  extensionRunning.value = true;
+
+  try {
+    const result = await extension
+      .request(FleetyardsSyncAction.VERIFY_WRITE, { token })
+      .catch(() => undefined);
+
+    if (result?.code !== 200) {
+      extensionError.value = EXTENSION_ERRORS[result?.code ?? 0] ?? "failed";
+      return;
+    }
+
+    await check();
+
+    if ((result.payload as FleetyardsSyncVerifyPayload)?.changed) {
+      tokenInBio.value = token;
+    }
+  } finally {
+    extensionRunning.value = false;
+  }
+};
+
+// The check reads the bio once and is done with it, so the token comes out as
+// soon as there is an answer. Closing the modal takes it out regardless.
+watch([tokenInBio, pending], () => {
+  if (tokenInBio.value && !pending.value) removeTokenFromBio();
+});
+
+onBeforeUnmount(removeTokenFromBio);
+
 const copyToken = () => {
   const token = verification.value?.token;
   if (!token) return;
@@ -192,7 +292,64 @@ const copyToken = () => {
         </template>
       </Alert>
 
-      <ol v-else class="rsi-verification__steps">
+      <div
+        v-if="!verification.verified && extensionState !== 'unavailable'"
+        class="rsi-verification__extension"
+        data-test="user-rsi-verification-extension"
+      >
+        <div class="rsi-verification__step-title">
+          {{ t("labels.user.rsiVerification.extension.title") }}
+        </div>
+        <p class="rsi-verification__extension-description">
+          {{ t("labels.user.rsiVerification.extension.description") }}
+        </p>
+        <Alert
+          v-if="extensionState === 'mismatch'"
+          :variant="AlertVariantsEnum.DANGER"
+          :size="AlertSizesEnum.COMPACT"
+          data-test="user-rsi-verification-extension-mismatch"
+        >
+          {{
+            t("labels.user.rsiVerification.extension.handleMismatch", {
+              rsiHandle: extensionHandle,
+              handle: verification.handle,
+            })
+          }}
+        </Alert>
+        <Alert
+          v-else-if="extensionState === 'notSignedIn'"
+          :variant="AlertVariantsEnum.WARNING"
+          :size="AlertSizesEnum.COMPACT"
+          data-test="user-rsi-verification-extension-signed-out"
+        >
+          {{ t("labels.user.rsiVerification.extension.notSignedIn") }}
+        </Alert>
+        <template v-else>
+          <Alert
+            v-if="extensionError"
+            :variant="AlertVariantsEnum.DANGER"
+            :size="AlertSizesEnum.COMPACT"
+            data-test="user-rsi-verification-extension-error"
+          >
+            {{ t(`labels.user.rsiVerification.extension.${extensionError}`) }}
+          </Alert>
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :loading="extensionRunning || pending"
+            :disabled="coolingDown && !pending"
+            data-test="user-rsi-verification-extension-verify"
+            @click="verifyWithExtension"
+          >
+            <i class="fa-light fa-puzzle-piece" />
+            {{ t("actions.user.rsiVerification.verifyWithExtension") }}
+          </Btn>
+        </template>
+        <div class="rsi-verification__extension-manual">
+          {{ t("labels.user.rsiVerification.extension.manual") }}
+        </div>
+      </div>
+
+      <ol v-if="!verification.verified" class="rsi-verification__steps">
         <li class="rsi-verification__step">
           <div class="rsi-verification__step-title">
             {{ t("labels.user.rsiVerification.steps.copy") }}
@@ -298,4 +455,32 @@ const copyToken = () => {
 
 <style lang="scss" scoped>
 @import "@/frontend/components/rsiVerification";
+
+.rsi-verification {
+  &__extension {
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+    margin-bottom: 20px;
+
+    > :deep(.base-alert) {
+      justify-self: stretch;
+      margin-bottom: 0;
+    }
+  }
+
+  &__extension-description {
+    margin: 0;
+    color: var(--color-text-dim);
+  }
+
+  &__extension-manual {
+    justify-self: stretch;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    color: var(--color-text-dim);
+    font-size: 0.9em;
+  }
+}
 </style>

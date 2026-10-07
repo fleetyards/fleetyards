@@ -2010,6 +2010,16 @@
             "paste": "Pégalo en la biografía breve de tu perfil de RSI. Puedes quitarlo cuando tu handle esté verificado.",
             "check": "Comprueba la página de ciudadano de %{handle}"
           },
+          "extension": {
+            "title": "Verificar con la extensión FleetYards Sync",
+            "description": "La extensión añade tu código a la biografía de la cuenta de RSI con la que este navegador ha iniciado sesión, comprueba tu página de ciudadano y vuelve a quitar el código.",
+            "handleMismatch": "Este navegador ha iniciado sesión en RSI como %{rsiHandle}, no como %{handle}. Inicia sesión en RSI como %{handle} o verifica a mano más abajo.",
+            "notSignedIn": "Inicia sesión en RSI en este navegador para verificar con la extensión, o verifica a mano más abajo.",
+            "bioTooLong": "Tu biografía de RSI es demasiado larga para añadir el código. Acórtala o verifica a mano más abajo.",
+            "bioUnreadable": "Tu biografía de RSI tiene un formato que la extensión no puede conservar tal cual. Verifica a mano más abajo.",
+            "failed": "La extensión no pudo actualizar tu biografía de RSI. Inténtalo de nuevo o verifica a mano más abajo.",
+            "manual": "O verifica a mano:"
+          },
           "statuses": {
             "pending": "Comprobando tu página de ciudadano…",
             "token_missing": "El código aún no está en tu biografía. RSI puede tardar unos minutos en mostrar un cambio.",

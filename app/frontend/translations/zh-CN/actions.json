@@ -159,6 +159,7 @@
           "verify": "通过 RSI 个人资料验证",
           "check": "立即检查",
           "checkIn": "%{seconds} 秒后可再次检查",
+          "verifyWithExtension": "使用扩展验证",
           "copyToken": "复制验证码",
           "regenerateToken": "生成新的验证码",
           "revoke": "撤销"
