@@ -210,6 +210,24 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_equal 1, user.buyback_pledges.count
   end
 
+  # Dropping the entry instead would delete its stored row while the sync
+  # reported success.
+  test "PUT /hangar/sync-rsi-buybacks refuses the whole list when one entry has no name" do
+    user = create(:user)
+    buyback(user, rsi_pledge_id: "1")
+    buyback(user, rsi_pledge_id: "2")
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "ship", name: "Standalone Ship - Cutlass Black"},
+      {id: "2", kind: "ship", name: ""}
+    ]}
+
+    assert_api_response :put, 400, body: body
+
+    assert_equal %w[1 2], user.buyback_pledges.order(:rsi_pledge_id).pluck(:rsi_pledge_id)
+  end
+
   test "PUT /hangar/sync-rsi-buybacks requires a session or token" do
     assert_api_response :put, 401, body: {items: []}
   end

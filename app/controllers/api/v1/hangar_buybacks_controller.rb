@@ -35,6 +35,8 @@ module Api
         end
 
         render json: ::BuybackPledges::Sync.new(current_resource_owner, sync_params.fetch(:items, [])).run
+      rescue ::BuybackPledges::Sync::InvalidSnapshot
+        render json: ValidationError.new("buyback_pledges.sync"), status: :bad_request
       end
 
       private def buyback_query_params
