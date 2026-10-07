@@ -6,7 +6,7 @@ module Discord
     # availability list shows it. Blueprints are not offered: no shop sells
     # one.
     class Where < Base
-      include ItemLookup
+      include CatalogueLookup
 
       CATALOGUES = %w[component equipment commodity].freeze
       # Discord rejects the whole message over one embed field past this, and
@@ -14,18 +14,18 @@ module Discord
       FIELD_LIMIT = 1024
 
       def call
-        prefix, found = lookup_item
+        prefix, found = lookup_entry
         return found if prefix.nil?
 
         # Both directions off one query and one shop-link preload rather than
         # one each.
         ItemPrice.with_shop_links(found.item_prices.to_a)
-        page = item_page_url(prefix, found.slug)
+        page = entry_page_url(prefix, found.slug)
         fields = [
           field(:buy, found.sold_at, page),
           field(:sell, found.bought_at, page)
         ].compact
-        return message(content: I18n.t("discord.commands.where.none", item: item_link(found.name, prefix, found.slug))) if fields.empty?
+        return message(content: I18n.t("discord.commands.where.none", item: entry_link(found.name, prefix, found.slug))) if fields.empty?
 
         message(embeds: [{
           title: found.name,

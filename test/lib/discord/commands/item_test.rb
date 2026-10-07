@@ -236,34 +236,34 @@ module Discord
       end
 
       test "keeps a shared name that starts with the query over ones that only contain it" do
-        ::Discord::Commands::ItemVariants::NAMES_PER_CATALOGUE.times do |index|
+        ::Discord::Commands::CatalogueVariants::NAMES_PER_CATALOGUE.times do |index|
           create_list(:component, 2, name: "Laser #{index}")
         end
         create_list(:component, 2, name: "Ser Cooler Extended Edition")
 
-        names = ::Discord::Commands::ItemVariants.search("ser", within: %w[component]).map(&:name)
+        names = ::Discord::Commands::CatalogueVariants.search("ser", within: %w[component]).map(&:name)
 
         assert_includes names, "Ser Cooler Extended Edition"
       end
 
       test "suggests no single items of a name many items share" do
-        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:component, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
 
         assert_empty ::Discord::Commands::Item.autocomplete("name", "internal")
       end
 
       test "a typed name too many items share points at the catalogue narrowed to it" do
-        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:component, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
         create(:component, name: "Internal Tank Mk2")
 
         content = call("Internal Tank")[:content]
 
         assert_includes content, I18n.t("discord.commands.item.too_common", query: "Internal Tank")
-        assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::ItemVariants::MAX_CARRIERS + 1}"
+        assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1}"
       end
 
       test "a typed name too many items of another catalogue share still links the one item" do
-        create_list(:equipment, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:equipment, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
         component = create(:component, name: "Internal Tank")
 
         content = call("Internal Tank")[:content]

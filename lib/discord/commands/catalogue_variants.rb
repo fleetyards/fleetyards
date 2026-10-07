@@ -2,14 +2,15 @@
 
 module Discord
   module Commands
-    # The items a name cannot pick out, because more than one item of a
-    # catalogue carries it -- both "Serac" coolers, both "BR-2 Shotgun"s. A
-    # markdown token leaves those unnamed; the bot offers each one instead,
-    # told apart by size and its game key, and keyed by id.
+    # The entries a name cannot pick out, because more than one entry of a
+    # catalogue carries it -- both "Serac" coolers, both "Outpost 54"s on
+    # Aberdeen. A markdown token leaves those unnamed; the bot offers each one
+    # instead, told apart by what it sits in or by size and game key, and keyed
+    # by id.
     #
     # Only names a handful of items share. Past that it is a generic ship part
     # -- 313 "Internal Tank"s -- that would crowd every other suggestion out.
-    module ItemVariants
+    module CatalogueVariants
       MAX_CARRIERS = 5
       NAMES_PER_CATALOGUE = 10
 
@@ -25,13 +26,14 @@ module Discord
         def slug = record.slug
 
         # The game key is the one thing two carriers never share -- the slug
-        # is not: the first item of a name keeps the bare one. The size leads
-        # because it is the difference a reader can make sense of.
+        # is not: the first of a name keeps the bare one. What a reader can make
+        # sense of leads: an item's size, a place's parent -- which alone is not
+        # enough, as both Outpost 54s sit on Aberdeen.
         def detail
           key = record.sc_key.to_s.downcase.presence || slug
-          size = record.try(:size)
+          lead = record.is_a?(::Location) ? record.parent&.name : record.try(:size).presence&.then { |size| "S#{size}" }
 
-          [("S#{size}" if size.present?), key].compact.join(" · ")
+          [lead.presence, key].compact.join(" · ")
         end
       end
 
@@ -59,7 +61,9 @@ module Discord
             .pluck(name)
           next [] if names.empty?
 
-          scope.where("#{name} IN (?)", names).includes(:build).map { |record| Variant.new(prefix:, record:) }
+          rows = scope.where("#{name} IN (?)", names).includes(:build)
+          rows = rows.includes(:parent) if prefix == "location"
+          rows.map { |record| Variant.new(prefix:, record:) }
         end
       end
 
