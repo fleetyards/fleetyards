@@ -2012,6 +2012,7 @@
           },
           "extension": {
             "title": "Vérifier avec l’extension FleetYards Sync",
+            "verify": "Vérifier avec l’extension",
             "description": "L’extension ajoute ton code à la bio du compte RSI connecté dans ce navigateur, vérifie ta page citoyen, puis retire le code.",
             "detecting": "Recherche de l’extension FleetYards Sync",
             "install": "Installe l’extension FleetYards Sync pour vérifier ton pseudo en un clic.",

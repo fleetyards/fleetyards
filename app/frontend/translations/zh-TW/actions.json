@@ -159,7 +159,6 @@
           "verify": "透過 RSI 個人資料驗證",
           "check": "立即檢查",
           "checkIn": "%{seconds} 秒後可再次檢查",
-          "verifyWithExtension": "使用擴充功能驗證",
           "copyToken": "複製驗證碼",
           "regenerateToken": "產生新的驗證碼",
           "revoke": "撤銷"

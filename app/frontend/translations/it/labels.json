@@ -2012,6 +2012,7 @@
           },
           "extension": {
             "title": "Verifica con l’estensione FleetYards Sync",
+            "verify": "Verifica con l’estensione",
             "description": "L’estensione aggiunge il tuo codice alla bio dell’account RSI con cui questo browser ha effettuato l’accesso, controlla la tua pagina cittadino e poi rimuove il codice.",
             "detecting": "Ricerca dell’estensione FleetYards Sync",
             "install": "Installa l’estensione FleetYards Sync per verificare il tuo handle con un clic.",

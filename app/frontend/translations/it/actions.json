@@ -159,7 +159,6 @@
           "verify": "Verifica tramite profilo RSI",
           "check": "Controlla ora",
           "checkIn": "Ricontrolla tra %{seconds} s",
-          "verifyWithExtension": "Verifica con l’estensione",
           "copyToken": "Copia codice",
           "regenerateToken": "Genera un nuovo codice",
           "revoke": "Revoca"

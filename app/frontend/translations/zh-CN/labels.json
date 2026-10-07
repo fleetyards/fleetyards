@@ -2012,6 +2012,7 @@
           },
           "extension": {
             "title": "使用 FleetYards Sync 扩展验证",
+            "verify": "使用扩展验证",
             "description": "扩展会将验证码添加到此浏览器所登录 RSI 账户的简介中，检查你的公民页面，然后再将验证码移除。",
             "detecting": "正在查找 FleetYards Sync 扩展",
             "install": "安装 FleetYards Sync 扩展，即可一键验证你的 Handle。",

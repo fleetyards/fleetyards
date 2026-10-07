@@ -2012,6 +2012,7 @@
           },
           "extension": {
             "title": "Mit der FleetYards-Sync-Erweiterung verifizieren",
+            "verify": "Mit Erweiterung verifizieren",
             "description": "Die Erweiterung fügt deinen Code in die Biografie des RSI-Kontos ein, mit dem dieser Browser angemeldet ist, prüft deine Bürgerseite und entfernt den Code danach wieder.",
             "detecting": "Suche nach der FleetYards-Sync-Erweiterung",
             "install": "Installiere die FleetYards-Sync-Erweiterung, um dein Handle mit einem Klick zu verifizieren.",

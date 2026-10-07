@@ -2012,6 +2012,7 @@
           },
           "extension": {
             "title": "使用 FleetYards Sync 擴充功能驗證",
+            "verify": "使用擴充功能驗證",
             "description": "擴充功能會將驗證碼加入此瀏覽器所登入 RSI 帳號的簡介，檢查你的公民頁面，然後再將驗證碼移除。",
             "detecting": "正在尋找 FleetYards Sync 擴充功能",
             "install": "安裝 FleetYards Sync 擴充功能，即可一鍵驗證你的 Handle。",
