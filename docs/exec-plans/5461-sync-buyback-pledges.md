@@ -20,9 +20,9 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 
 ## Intent Verification
 
-- [ ] **Full replace only** — a fetch that fails halfway submits nothing; rows survive.
-- [ ] **Old extension** — `500 Unknown Action` on `syncBuyback` marks the step skipped and the sync reads as finished.
-- [ ] **Isolation** — no hangar, fleet or stats scope reads `buyback_pledges`.
+- [x] **Full replace only** — a fetch that fails halfway submits nothing; rows survive.
+- [x] **Old extension** — `500 Unknown Action` on `syncBuyback` marks the step skipped and the sync reads as finished.
+- [x] **Isolation** — no hangar, fleet or stats scope reads `buyback_pledges`.
 
 ## Key files
 
@@ -38,7 +38,8 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 
 - **2026-10-07** Buy-back page markup: `section.available-pledges ul.pledges > li > article.pledge`. Title in `h1[title]` (an `upgraded` span is appended to the text, not the attribute), `dl` with "Reclaim Date" / "Contained". Packages link `/pledge/buyback/<id>`; upgrades carry `a.js-open-ship-upgrades[data-pledgeid][data-fromshipid][data-toshipid][data-toskuid]`. 10 per page; a page past the end renders no `article.pledge` and no empty-list marker. Availability is not in the markup (both the action and the "unavailable" block are rendered, CSS picks one).
 - **2026-10-07** One real account has 130 pages, so a full buy-back read is ~2–3 minutes at the modal's 60 requests/minute.
+- **2026-10-07** Not exercised end to end against RSI: that needs the unreleased extension build loaded in a browser on a running dev server. The modal spec drives the same message sequence.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
