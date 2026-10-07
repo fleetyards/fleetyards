@@ -3,8 +3,9 @@
 module Discord
   # Applies the join roles one Discord user holds, in one guild or in every
   # guild a fleet has a join role in. The roles are read from Discord rather
-  # than from whatever triggered this, so two updates handled out of order
-  # still end on the roles the member holds now.
+  # than from whatever triggered this, and the read and the write happen under
+  # one lock per user, so two updates handled at once still end on the roles
+  # the member holds now.
   class ApplyJoinRolesJob < ::ApplicationJob
     sidekiq_options retry: 3, queue: "notifications"
 
@@ -19,10 +20,12 @@ module Discord
       join_roles = JoinRole.for_guild(guild_id || guild_ids).group_by(&:guild_id)
 
       join_roles.each do |guild, fleets|
-        role_ids = member_role_ids(guild, discord_uid)
-        next if role_ids.nil?
+        ::ActiveRecord::Base.with_advisory_lock("discord-join-roles:#{guild}:#{discord_uid}") do
+          role_ids = member_role_ids(guild, discord_uid)
+          next if role_ids.nil?
 
-        fleets.product(users).each { |join_role, user| join_role.apply(user, role_ids) }
+          fleets.product(users).each { |join_role, user| join_role.apply(user, role_ids) }
+        end
       end
     end
 

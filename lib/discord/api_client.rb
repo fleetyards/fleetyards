@@ -63,8 +63,11 @@ module Discord
       bot_token.present?
     end
 
-    def initialize(token: self.class.bot_token)
+    # `timeout` bounds each attempt in seconds, for a call made while a player
+    # waits on the response. Unset, Faraday waits as long as the socket does.
+    def initialize(token: self.class.bot_token, timeout: nil)
       @token = token
+      @timeout = timeout
     end
 
     def get_guild(guild_id)
@@ -184,6 +187,7 @@ module Discord
         c.request :retry, max: 3, interval: 0.5, backoff_factor: 2,
           retry_statuses: [429, 502, 503, 504],
           methods: %i[get post patch delete put]
+        c.options.timeout = @timeout if @timeout
         c.headers["Authorization"] = "Bot #{@token}"
         c.headers["Content-Type"] = "application/json"
         c.headers["User-Agent"] = "Fleetyards (https://fleetyards.net, 1.0)"

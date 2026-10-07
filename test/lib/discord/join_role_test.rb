@@ -38,6 +38,12 @@ module Discord
       refute join_role.held_by?(@user)
     end
 
+    test "a player Discord does not answer for in time does not hold the role" do
+      @api.stubs(:get_guild_member).raises(Faraday::TimeoutError)
+
+      refute join_role.held_by?(@user)
+    end
+
     test "a player without a linked Discord account does not hold the role" do
       @api.expects(:get_guild_member).never
 
@@ -62,6 +68,34 @@ module Discord
 
       assert_predicate request.reload, :accepted?
       assert_predicate request, :discord_role_granted?
+    end
+
+    test "gaining the role accepts an officer's invitation without handing the membership to the role" do
+      invitation = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      invitation.invite!
+
+      join_role.apply(@user, [JOIN_ROLE])
+      join_role.apply(@user, [])
+
+      assert_predicate invitation.reload, :accepted?
+      assert_predicate invitation, :kept?
+      refute_predicate invitation, :discord_role_granted?
+    end
+
+    test "a player mid-way through asking to join is tried again on the next update" do
+      @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+
+      join_role.apply(@user, [JOIN_ROLE])
+
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "a quiet admission tells the player but not the officers" do
+      join_role.apply(@user, [JOIN_ROLE], quiet: true)
+
+      assert_predicate membership, :accepted?
+      assert Notification.exists?(user: @user, notification_type: "fleet_request_accepted")
+      refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 
     test "losing the role ends a membership the role created" do
@@ -111,10 +145,11 @@ module Discord
       assert_nil membership
     end
 
-    test "a member update queues a job only for a guild with a join role" do
+    test "a member update queues a job only for a linked player in a guild with a join role" do
       ApplyJoinRolesJob.jobs.clear
 
       JoinRole.member_changed("100000000000000099", "discord-uid-1")
+      JoinRole.member_changed(GUILD, "discord-uid-unlinked")
       assert_empty ApplyJoinRolesJob.jobs
 
       JoinRole.member_changed(GUILD, "discord-uid-1")

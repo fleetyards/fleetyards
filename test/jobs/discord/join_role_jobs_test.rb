@@ -9,7 +9,8 @@ module Discord
 
     setup do
       ::Discord::ApiClient.stubs(:configured?).returns(true)
-      @fleet = create(:fleet)
+      @admin = create(:user)
+      @fleet = create(:fleet, admins: [@admin])
       @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: GUILD, discord_join_role_id: JOIN_ROLE)
       @api = mock("Discord::ApiClient")
       ::Discord::ApiClient.stubs(:new).returns(@api)
@@ -66,6 +67,20 @@ module Discord
       assert_equal [[@fleet.id, true]], SyncFleetJoinRoleJob.jobs.pluck("args")
     end
 
+    test "another guild clears the join role, and switching back does not restore it" do
+      @setting.update!(discord_guild_id: "100000000000000002")
+      assert_nil @setting.reload.discord_join_role_id
+
+      @setting.update!(discord_guild_id: GUILD)
+      assert_nil @setting.reload.discord_join_role_id
+    end
+
+    test "a new guild and a new join role saved together keep the role" do
+      @setting.update!(discord_guild_id: "100000000000000002", discord_join_role_id: "300000000000000002")
+
+      assert_equal "300000000000000002", @setting.reload.discord_join_role_id
+    end
+
     test "the sync admits every linked holder in the guild and ignores everyone else" do
       holder = linked_user("uid-1")
       bystander = linked_user("uid-2")
@@ -102,6 +117,27 @@ module Discord
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_nil membership_of(gone)
+    end
+
+    test "the sync leaves a holder who unlinked Discord alone" do
+      unlinked = linked_user("uid-1")
+      JoinRole.new(@fleet).apply(unlinked, [JOIN_ROLE])
+      unlinked.omniauth_connections.discord.destroy_all
+      @api.stubs(:list_guild_members).returns([])
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert_predicate membership_of(unlinked), :accepted?
+    end
+
+    test "the sync does not tell the officers about each player it admits" do
+      holder = linked_user("uid-1")
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+
+      assert_predicate membership_of(holder), :accepted?
+      refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 
     test "a sync that cannot read the guild ends nobody's membership" do

@@ -9,9 +9,12 @@ module Discord
   #
   # Membership follows the role changing, not the role being held. Gaining it
   # admits the player and losing it -- leaving the guild included -- ends a
-  # membership the role created. A membership an officer approved or an invite
-  # brought in is never ended by Discord.
+  # membership the role created. A membership an officer approved or invited is
+  # never ended by Discord.
   class JoinRole
+    # Seconds per attempt while a player waits on an invite link.
+    TIMEOUT = 3
+
     def self.for_guild(guild_id)
       FleetNotificationSetting
         .where(discord_guild_id: guild_id)
@@ -21,10 +24,11 @@ module Discord
     end
 
     # Called for every member update in every guild the bot is in, so only a
-    # guild with a join role costs a job.
+    # linked player in a guild with a join role costs a job.
     def self.member_changed(guild_id, discord_uid)
       return if guild_id.blank? || discord_uid.blank?
       return unless FleetNotificationSetting.where(discord_guild_id: guild_id).where.not(discord_join_role_id: nil).exists?
+      return unless OmniauthConnection.discord.exists?(uid: discord_uid)
 
       ApplyJoinRolesJob.perform_async(discord_uid, guild_id)
     end
@@ -58,34 +62,46 @@ module Discord
       return false if uid.blank?
 
       Array(api.get_guild_member(guild_id, uid)&.dig("roles")).include?(role_id)
-    rescue ApiClient::Error
+    rescue ApiClient::Error, Faraday::Error
       false
     end
 
     # Applies the roles a player holds now. Nothing happens unless that differs
-    # from what was recorded the last time.
-    def apply(user, role_ids)
+    # from what was recorded the last time. `quiet` is for admitting a whole
+    # guild at once, where telling the officers about each one would bury them.
+    def apply(user, role_ids, quiet: false)
       return unless configured?
 
       if Array(role_ids).include?(role_id)
-        admit(user) if FleetDiscordRoleHolder.remember(fleet, user)
+        return unless FleetDiscordRoleHolder.remember(fleet, user)
+
+        # Not recorded as held unless it took effect, so the next update tries
+        # again rather than finding nothing changed.
+        FleetDiscordRoleHolder.forget(fleet, user) unless admit(user, quiet:)
       elsif FleetDiscordRoleHolder.forget(fleet, user)
         release(user)
       end
     end
 
-    private def admit(user)
+    # Whether the player is now where the role puts them.
+    private def admit(user, quiet:)
       membership = fleet.fleet_memberships.kept.find_by(user:)
 
       case membership&.aasm_state
       when nil
         membership = fleet.fleet_memberships.new(user:, fleet_role: fleet.default_member_role, discord_role_granted: true)
-        membership.join! if membership.save_without_conflict
+        membership.quiet = quiet
+        membership.save_without_conflict && membership.join!
       when "requested"
-        membership.update!(discord_role_granted: true) if membership.answer_request(accept: true) == :done
+        membership.answer_request(accept: true) == :done && membership.update!(discord_role_granted: true)
       when "invited"
-        membership.discord_role_granted = true
+        # An officer chose them, so the role is not what keeps them in.
         membership.accept_invitation!
+      when "created"
+        # Mid-way through asking to join, which checks the role itself.
+        false
+      else
+        true
       end
     end
 
@@ -103,7 +119,7 @@ module Discord
     end
 
     private def api
-      @api ||= ApiClient.new
+      @api ||= ApiClient.new(timeout: TIMEOUT)
     end
   end
 end

@@ -46,6 +46,9 @@ class FleetMembership < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
+  # Joined as one of many at once, so the officers are not told about each.
+  attr_accessor :quiet
+
   AVAILABLE_PRIVILEGES = [
     "fleet:memberships:read",
     "fleet:memberships:create",
@@ -442,17 +445,20 @@ class FleetMembership < ApplicationRecord
   # What a player asking to join gets: a request, unless they hold the fleet's
   # join role in its Discord server.
   def request_or_join!
-    join_role = ::Discord::JoinRole.new(fleet)
-    return request! unless join_role.held_by?(user)
+    return request! unless ::Discord::JoinRole.new(fleet).held_by?(user)
 
-    FleetDiscordRoleHolder.remember(fleet, user)
     self.discord_role_granted = true
-    join!
+    join!.tap { |joined| FleetDiscordRoleHolder.remember(fleet, user) if joined }
   end
 
   def on_join
+    notify_new_member
+    return if quiet
+
     notify_fleet_admins
-    on_accept_request
+    fleet.fleet_memberships.kept.find_each do |member|
+      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
+    end
   end
 
   def post_discord_join_request

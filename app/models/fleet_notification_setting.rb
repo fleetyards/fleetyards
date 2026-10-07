@@ -80,8 +80,11 @@ class FleetNotificationSetting < ApplicationRecord
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
-  # A role id names one guild's role, so another guild makes it a new role too.
-  after_commit :sync_discord_join_role, if: -> { saved_change_to_discord_join_role_id? || saved_change_to_discord_guild_id? }
+  # A role id names one guild's role, so another guild leaves the join role
+  # pointing at nothing -- and switching back must not bring it, and everyone
+  # holding it, back in without the invite privilege the role needs.
+  before_save -> { self.discord_join_role_id = nil }, if: -> { discord_guild_id_changed? && !discord_join_role_id_changed? }
+  after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
 
   DEFAULT_IN_APP_EVENTS = %w[
     fleet_event.published

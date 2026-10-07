@@ -177,7 +177,7 @@ module Api
           used_invite_token: invite_url.token
         )
 
-        return if member.blank?
+        return unless member.persisted?
 
         member.request_or_join!
       end

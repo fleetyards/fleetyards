@@ -23,9 +23,13 @@ module Discord
       seen = apply_guild_members(join_role)
       return if seen.nil?
 
-      fleet.fleet_discord_role_holders.where.not(user_id: seen).includes(:user).find_each do |holder|
-        join_role.apply(holder.user, [])
-      end
+      # Someone who unlinked Discord is not seen either, but nothing says they
+      # lost the role.
+      fleet.fleet_discord_role_holders
+        .where.not(user_id: seen)
+        .where(user_id: OmniauthConnection.discord.select(:user_id))
+        .includes(:user)
+        .find_each { |holder| join_role.apply(holder.user, []) }
     end
 
     # Returns the ids of the linked users found in the guild, or nil when the
@@ -43,7 +47,7 @@ module Discord
 
         linked_users(roles_by_uid.keys).each do |user, uid|
           seen << user.id
-          join_role.apply(user, roles_by_uid[uid])
+          join_role.apply(user, roles_by_uid[uid], quiet: true)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE
