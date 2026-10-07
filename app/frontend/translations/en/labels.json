@@ -2014,6 +2014,8 @@
             "title": "Verify with the FleetYards Sync extension",
             "description": "The extension adds your token to the bio of the RSI account this browser is signed in to, checks your citizen page, and takes the token out again.",
             "detecting": "Looking for the FleetYards Sync extension",
+            "install": "Install the FleetYards Sync extension to verify your handle in one click.",
+            "update": "Update the FleetYards Sync extension to verify your handle in one click: the installed version does not support it yet.",
             "handleMismatch": "This browser is signed in to RSI as %{rsiHandle}, not %{handle}. Sign in to RSI as %{handle}, or verify by hand below.",
             "notSignedIn": "Sign in to RSI in this browser to verify with the extension, or verify by hand below.",
             "bioTooLong": "Your RSI bio is too long to add the token. Shorten it, or verify by hand below.",

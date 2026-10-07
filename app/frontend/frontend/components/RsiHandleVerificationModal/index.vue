@@ -36,9 +36,11 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import RsiSignedInAs from "@/frontend/components/RsiSignedInAs/index.vue";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { RSI_SIGN_IN_URL } from "@/frontend/lib/rsiLinks";
 import {
   FleetyardsSyncAction,
+  type FleetyardsSyncHealthPayload,
   type FleetyardsSyncSessionPayload,
   type FleetyardsSyncVerifyPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
@@ -167,10 +169,19 @@ watch(
 
 const extension = useSyncExtension();
 
-type ExtensionState =
-  "unavailable" | "detecting" | "notSignedIn" | "mismatch" | "ready";
+enum ExtensionState {
+  // No handle to verify, or already verified: nothing to offer.
+  NONE = "none",
+  DETECTING = "detecting",
+  NOT_INSTALLED = "notInstalled",
+  // Answers the health check, but from before verification existed.
+  OUTDATED = "outdated",
+  NOT_SIGNED_IN = "notSignedIn",
+  MISMATCH = "mismatch",
+  READY = "ready",
+}
 
-const extensionState = ref<ExtensionState>("unavailable");
+const extensionState = ref<ExtensionState>(ExtensionState.NONE);
 
 const extensionHandle = ref<string>();
 
@@ -203,10 +214,17 @@ const detectExtension = async (handle: string) => {
   const current = ++detection;
   const stale = () => closed || current !== detection;
 
-  const supported = await extension.supports(FleetyardsSyncAction.VERIFY_WRITE);
+  const health = await extension.health();
   if (stale()) return;
-  if (!supported) {
-    extensionState.value = "unavailable";
+
+  if (health?.code !== 200) {
+    extensionState.value = ExtensionState.NOT_INSTALLED;
+    return;
+  }
+
+  const actions = (health.payload as FleetyardsSyncHealthPayload)?.actions;
+  if (!actions?.includes(FleetyardsSyncAction.VERIFY_WRITE)) {
+    extensionState.value = ExtensionState.OUTDATED;
     return;
   }
 
@@ -218,10 +236,12 @@ const detectExtension = async (handle: string) => {
   const rsiHandle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
 
   if (identity?.code !== 200 || !rsiHandle) {
-    extensionState.value = "notSignedIn";
+    extensionState.value = ExtensionState.NOT_SIGNED_IN;
   } else {
     extensionHandle.value = rsiHandle;
-    extensionState.value = sameHandle(rsiHandle, handle) ? "ready" : "mismatch";
+    extensionState.value = sameHandle(rsiHandle, handle)
+      ? ExtensionState.READY
+      : ExtensionState.MISMATCH;
   }
 };
 
@@ -232,7 +252,9 @@ watch(
       : undefined,
   (handle) => {
     detection += 1;
-    extensionState.value = handle ? "detecting" : "unavailable";
+    extensionState.value = handle
+      ? ExtensionState.DETECTING
+      : ExtensionState.NONE;
     if (handle) void detectExtension(handle);
   },
   { immediate: true },
@@ -243,7 +265,7 @@ const redetectExtension = () => {
   const handle = verification.value?.handle;
   if (!handle) return;
 
-  extensionState.value = "detecting";
+  extensionState.value = ExtensionState.DETECTING;
   void detectExtension(handle);
 };
 
@@ -305,7 +327,7 @@ const verifyWithExtension = async () => {
     // need not be the one detected when the modal opened.
     if (!sameHandle(payload?.handle, verification.value?.handle)) {
       extensionHandle.value = payload?.handle;
-      extensionState.value = "mismatch";
+      extensionState.value = ExtensionState.MISMATCH;
       removeTokenFromBio();
       return;
     }
@@ -387,7 +409,7 @@ const copyToken = () => {
       </Alert>
 
       <div
-        v-if="!verification.verified && extensionState !== 'unavailable'"
+        v-if="!verification.verified && extensionState !== ExtensionState.NONE"
         class="rsi-verification__extension"
         data-test="user-rsi-verification-extension"
       >
@@ -395,18 +417,36 @@ const copyToken = () => {
           {{ t("labels.user.rsiVerification.extension.title") }}
         </div>
         <p
-          v-if="extensionState === 'detecting'"
+          v-if="extensionState === ExtensionState.DETECTING"
           class="rsi-verification__extension-description"
           data-test="user-rsi-verification-extension-detecting"
         >
           {{ t("labels.user.rsiVerification.extension.detecting") }}
           <LoadingDots loading />
         </p>
+        <template
+          v-else-if="
+            extensionState === ExtensionState.NOT_INSTALLED ||
+            extensionState === ExtensionState.OUTDATED
+          "
+        >
+          <p
+            class="rsi-verification__extension-description"
+            data-test="user-rsi-verification-extension-install"
+          >
+            {{
+              extensionState === ExtensionState.OUTDATED
+                ? t("labels.user.rsiVerification.extension.update")
+                : t("labels.user.rsiVerification.extension.install")
+            }}
+          </p>
+          <SyncExtensionLinks compact />
+        </template>
         <p v-else class="rsi-verification__extension-description">
           {{ t("labels.user.rsiVerification.extension.description") }}
         </p>
         <Alert
-          v-if="extensionState === 'mismatch'"
+          v-if="extensionState === ExtensionState.MISMATCH"
           :variant="AlertVariantsEnum.DANGER"
           :size="AlertSizesEnum.COMPACT"
           data-test="user-rsi-verification-extension-mismatch"
@@ -419,7 +459,7 @@ const copyToken = () => {
           }}
         </Alert>
         <Alert
-          v-else-if="extensionState === 'notSignedIn'"
+          v-else-if="extensionState === ExtensionState.NOT_SIGNED_IN"
           :variant="AlertVariantsEnum.WARNING"
           :size="AlertSizesEnum.COMPACT"
           data-test="user-rsi-verification-extension-signed-out"
@@ -428,7 +468,8 @@ const copyToken = () => {
         </Alert>
         <div
           v-if="
-            extensionState === 'mismatch' || extensionState === 'notSignedIn'
+            extensionState === ExtensionState.MISMATCH ||
+            extensionState === ExtensionState.NOT_SIGNED_IN
           "
           class="rsi-verification__extension-session"
         >
@@ -452,7 +493,7 @@ const copyToken = () => {
             {{ t("labels.syncExtension.checkIdentity") }}
           </Btn>
         </div>
-        <template v-else-if="extensionState === 'ready'">
+        <template v-else-if="extensionState === ExtensionState.READY">
           <Alert
             v-if="extensionError"
             :variant="AlertVariantsEnum.DANGER"

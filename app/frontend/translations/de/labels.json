@@ -2014,6 +2014,8 @@
             "title": "Mit der FleetYards-Sync-Erweiterung verifizieren",
             "description": "Die Erweiterung fügt deinen Code in die Biografie des RSI-Kontos ein, mit dem dieser Browser angemeldet ist, prüft deine Bürgerseite und entfernt den Code danach wieder.",
             "detecting": "Suche nach der FleetYards-Sync-Erweiterung",
+            "install": "Installiere die FleetYards-Sync-Erweiterung, um dein Handle mit einem Klick zu verifizieren.",
+            "update": "Aktualisiere die FleetYards-Sync-Erweiterung, um dein Handle mit einem Klick zu verifizieren: Die installierte Version unterstützt das noch nicht.",
             "handleMismatch": "Dieser Browser ist bei RSI als %{rsiHandle} angemeldet, nicht als %{handle}. Melde dich bei RSI als %{handle} an oder verifiziere unten von Hand.",
             "notSignedIn": "Melde dich in diesem Browser bei RSI an, um mit der Erweiterung zu verifizieren, oder verifiziere unten von Hand.",
             "bioTooLong": "Deine RSI-Biografie ist zu lang, um den Code einzufügen. Kürze sie oder verifiziere unten von Hand.",

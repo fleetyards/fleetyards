@@ -63,9 +63,22 @@ const states: State[] = [
   {
     key: "no-extension",
     label: "Without the extension",
-    description: "Only the manual steps.",
+    description: "The store links above the manual steps.",
     verification: unverified,
     answers: {},
+  },
+  {
+    key: "outdated",
+    label: "Extension too old",
+    description:
+      "An extension from before verification: it answers, but does not list verify-write.",
+    verification: unverified,
+    answers: {
+      [FleetyardsSyncAction.HEALTH]: {
+        code: 200,
+        payload: { version: "1.2.6", actions: ["health", "identify", "sync"] },
+      },
+    },
   },
   {
     key: "detecting",
