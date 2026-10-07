@@ -147,5 +147,19 @@ module Catalogue
 
       assert_empty @resolver.search("ship:carrack", within: %w[commodity])
     end
+
+    test "resolves only to the catalogues a caller offers" do
+      create(:model, name: "Carrack")
+
+      assert_empty @resolver.resolve(["ship:Carrack"], within: %w[commodity])
+    end
+
+    # Narrowing must not turn a name two catalogues share into one that resolves.
+    test "weighs a bare name against every catalogue it could mean, whatever the caller offers" do
+      create(:component, name: "Mercury")
+      create(:commodity, name: "Mercury")
+
+      assert_empty @resolver.resolve(["Mercury"], within: %w[commodity])
+    end
   end
 end

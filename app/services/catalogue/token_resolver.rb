@@ -63,18 +63,22 @@ module Catalogue
       [prefix.strip.downcase, name.strip]
     end
 
-    def resolve(tokens)
+    # `within` narrows what a token may resolve to. A bare name is still
+    # weighed against every catalogue it could mean, so narrowing never turns
+    # a name two catalogues share into one that resolves.
+    def resolve(tokens, within: PREFIXES)
       parsed = Array(tokens).map(&:to_s).uniq.first(MAX_TOKENS)
         .map { |token| [token, *self.class.parse(token)] }
         .reject { |_, _, name| name.blank? || name.length > MAX_NAME_LENGTH }
 
       restricted, catalogued = parsed.partition { |_, prefix, _| RestrictedTokenResolver::PREFIXES.include?(prefix) }
+      restricted = restricted.select { |_, prefix, _| within.include?(prefix) }
 
-      rows = rows_named(catalogued.map { |_, _, name| name.downcase }.uniq)
+      rows = rows_named(catalogued.map { |_, _, name| name.downcase }.uniq, within | BARE)
 
       catalogued.filter_map do |token, prefix, name|
         candidates = rows.fetch(name.downcase, []).select { |row| prefix ? row[:prefix] == prefix : BARE.include?(row[:prefix]) }
-        next unless candidates.one?
+        next unless candidates.one? && within.include?(candidates.first[:prefix])
 
         row = candidates.first
         Match.new(token:, name: row[:name], type: CATALOGUES.fetch(row[:prefix]).name, slug: row[:slug])
@@ -109,7 +113,7 @@ module Catalogue
           .pluck(Arel.sql("min(#{name})"))
       end
 
-      rows = rows_named(found.map(&:downcase).uniq)
+      rows = rows_named(found.map(&:downcase).uniq, prefixes | BARE)
 
       rows.flat_map do |lower, named|
         named.group_by { |row| row[:prefix] }.filter_map do |prefix, in_catalogue|
@@ -124,11 +128,12 @@ module Catalogue
         .sort_by { |starts, length, match| [starts, length, match.name] }.first(SEARCH_LIMIT).map(&:last)
     end
 
-    # Every listed row carrying one of `names`, keyed by its lowered name.
-    private def rows_named(names)
+    # Every listed row carrying one of `names` in the catalogues `prefixes`
+    # names, keyed by its lowered name.
+    private def rows_named(names, prefixes)
       return {} if names.empty?
 
-      CATALOGUES.keys.flat_map do |prefix|
+      (CATALOGUES.keys & prefixes).flat_map do |prefix|
         self.class.listed(prefix)
           .where("lower(#{name_sql(prefix)}) IN (?)", names)
           .pluck(Arel.sql(name_sql(prefix)), Arel.sql("#{CATALOGUES.fetch(prefix).table_name}.slug"))
