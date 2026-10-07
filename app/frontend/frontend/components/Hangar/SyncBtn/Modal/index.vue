@@ -153,7 +153,17 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
-    if (message.action === "sync") {
+    // A reply after the fetch has ended belongs to a run that is over: read
+    // now, it could submit the pages collected before an unrecognised one.
+    const fetchStatus = processSteps.value.find(
+      (step) => step.name === "fetchHangar",
+    )?.status;
+
+    if (
+      message.action === "sync" &&
+      fetchStatus !== "failure" &&
+      fetchStatus !== "success"
+    ) {
       if (message.code === 200) {
         await fetchRSIHangar(message.payload as string);
       } else {

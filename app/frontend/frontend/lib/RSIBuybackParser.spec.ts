@@ -186,6 +186,17 @@ describe("extractBuybackPage", () => {
     });
   });
 
+  it("does not read rows whose markup and links both changed as the end", () => {
+    expect(
+      extractBuybackPage(
+        buybackPage(`<li><div class="card">Cutter</div></li>`),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_ENTRIES,
+    });
+  });
+
   it("reads a link to buy-backs outside the list as nothing", () => {
     expect(
       extractBuybackPage(

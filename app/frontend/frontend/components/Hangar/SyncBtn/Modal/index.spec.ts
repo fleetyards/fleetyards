@@ -161,6 +161,26 @@ describe("HangarSyncModal", () => {
     });
   });
 
+  it("ignores a late reply once a page was not recognised", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+    extensionReplies(
+      "sync",
+      '<div class="list-items"><div class="empty-list"></div></div>',
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
   // An expired RSI session answers with the sign-in page: nothing about RSI's
   // markup changed, so nobody is told it did.
   it("reports nothing when the RSI session has run out", async () => {

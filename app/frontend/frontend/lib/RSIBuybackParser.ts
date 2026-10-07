@@ -48,10 +48,10 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
 
   const entries = Array.from(list.querySelectorAll("article.pledge"));
 
-  // Links to buy-backs inside the list without entries around them is what
-  // renamed entries look like.
+  // Rows or links to buy-backs inside the list without entries around them is
+  // what renamed entries look like.
   if (entries.length === 0) {
-    return list.querySelector(BUYBACK_LINK)
+    return list.querySelector(`li, ${BUYBACK_LINK}`)
       ? {
           status: RsiPageStatus.UNRECOGNISED,
           check: RsiPageCheckEnum.MISSING_ENTRIES,
