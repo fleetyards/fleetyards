@@ -134,6 +134,15 @@ module Api
         membership = viewer_membership
         @viewer_is_member = membership.present? && @fleet_squadron.fleet_squadron_memberships.exists?(fleet_membership: membership)
         @viewer_request = membership && @fleet_squadron.fleet_squadron_requests.find_by(fleet_membership: membership)
+
+        # Whatever already commits the reader elsewhere: the ordinary squadron
+        # they hold, or the one they are waiting to hear back from. Either
+        # rules out asking for this one.
+        if membership.present? && @fleet_squadron.exclusive? && !@viewer_is_member && @viewer_request.blank?
+          @viewer_exclusive_squadron = membership.exclusive_squadron(except: @fleet_squadron)
+          @viewer_requested_squadron = membership.requested_squadron(except: @fleet_squadron)
+        end
+
         @pending_request_count = @fleet_squadron.fleet_squadron_requests.pending.count if @squadron_capabilities[:manage_members]
       end
 

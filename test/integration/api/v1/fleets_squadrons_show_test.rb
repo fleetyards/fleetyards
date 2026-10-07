@@ -136,6 +136,25 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/squadrons/:slug names what already commits the reader elsewhere" do
+    membership = @fleet.fleet_memberships.kept.find_by(user: @member)
+    asked = create(:fleet_squadron, fleet: @fleet, name: "Bravo")
+    create(:fleet_squadron_request, fleet_squadron: asked, fleet_membership: membership)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal "bravo", parsed_body.dig("viewerRequestedSquadron", "slug")
+      refute parsed_body.key?("viewerExclusiveSquadron")
+    end
+
+    create(:fleet_squadron_membership, fleet_squadron: create(:fleet_squadron, fleet: @fleet, name: "Charlie"), fleet_membership: membership)
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal "charlie", parsed_body.dig("viewerExclusiveSquadron", "slug")
+      refute parsed_body.key?("viewerRequestedSquadron")
+    end
+  end
+
   test "GET /fleets/:slug/squadrons/:slug counts waiting requests for whoever answers them" do
     create(:fleet_squadron_request, fleet_squadron: @squadron,
       fleet_membership: @fleet.fleet_memberships.kept.find_by(user: @member))
