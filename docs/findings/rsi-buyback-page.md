@@ -39,6 +39,8 @@ An upgrade's buy-back opens a modal on the list page that asks `POST /pledge-sto
 - No CSRF token is needed. A JSON array of operations is one batch, capped at **5 operations**: a sixth fails the whole batch with `GRAPHQL_SECURITY_VIOLATION`. Aliasing `price` inside one query is capped at 5 duplicated fields as well.
 - A pair RSI does not know fails only its own operation (`Ship not found`, `data: null`).
 
+FleetYards does not use this. An upgrade's buy-back costs what the upgrade costs today, which is the difference between both ships' `pledge_price` (`models.rsi_id` is RSI's ship id, the same as `data-fromshipid`/`data-toshipid`). Our price sync keeps that current. The API is noted here in case the two ever disagree.
+
 ## Size
 
-One real account had 130 pages (1,293 stored pledges). At the modal's 60 requests per minute and roughly 1–1.5 s per RSI response, a full read takes 2–3 minutes. Reading one detail page per non-upgrade pledge on top of that is about 1,000 requests, roughly 17 minutes at the same rate. So details are read once per pledge and kept; upgrades share from/to pairs, and four pairs fit in one request.
+One real account had 130 pages (1,293 stored pledges). At the modal's 60 requests per minute and roughly 1–1.5 s per RSI response, a full read takes 2–3 minutes. Reading one detail page per non-upgrade pledge on top of that is about 1,000 requests, roughly 17 minutes at the same rate. A buy-back costs what the pledge was bought for, so details are read once per pledge and kept.
