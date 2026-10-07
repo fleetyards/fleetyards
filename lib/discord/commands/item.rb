@@ -110,7 +110,7 @@ module Discord
       private def commodity_fields(record)
         {
           I18n.t("discord.commands.item.fields.buy") => uec(record.sell_price),
-          I18n.t("discord.commands.item.fields.sell") => uec(record.bought_at.first&.price)
+          I18n.t("discord.commands.item.fields.sell") => uec(record.best_buy_price)
         }
       end
 

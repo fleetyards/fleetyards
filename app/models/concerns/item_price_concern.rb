@@ -83,6 +83,12 @@ module ItemPriceConcern
     cheapest_price(:sell?)
   end
 
+  # What the best-paid shop buys it back at -- the figure a seller wants, where
+  # `buy_price` is the cheapest buy-back the catalogue filters on.
+  def best_buy_price
+    item_prices.to_a.select(&:buy?).filter_map(&:price).max
+  end
+
   # The UEX snapshot writes prices without touching the item it prices, so a
   # payload cached on the item alone keeps serving yesterday's numbers. The
   # count catches a removed row, whose deletion moves no timestamp, and the
