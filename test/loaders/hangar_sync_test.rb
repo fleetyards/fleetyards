@@ -151,18 +151,17 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_includes result[:unchanged_vehicles], @jav_ship.id
     end
 
-    # A relabelled ship kind drops every real ship, but a beacon the client
-    # types as a ship still arrives: the list is not empty, yet it matches
-    # nothing the user has.
-    test "deletes nothing when the run matched none of the user's ships" do
-      input = [{"id" => "999", "name" => "GreyCat Estate Geotack Planetary Beacon", "type" => "ship"}]
-      import = ::Imports::HangarSync.create!(user_id: @user.id, input:, unmatched_vehicles_action: "delete")
+    # Ships the user added by hand and RSI lists only new models: the run
+    # matched none of them, but it did recognise ships, so the choice applies.
+    test "acts on what it did not find when it only imported new ships" do
+      user = create(:user)
+      javelin = create(:vehicle, user:, model: @javelin_model, name: "Ozymandias", wanted: false)
+      import = ::Imports::HangarSync.create!(user_id: user.id, input: @input, unmatched_vehicles_action: "delete")
 
-      result = ::HangarSync.new(input).run_with_import(import)
+      result = ::HangarSync.new(@input).run_with_import(import)
 
-      assert Vehicle.exists?(@jav_ship.id)
-      assert_equal [], result[:deleted_vehicles]
-      assert_includes result[:unchanged_vehicles], @jav_ship.id
+      refute Vehicle.exists?(javelin.id)
+      assert_equal ["Ozymandias"], result[:deleted_vehicles]
     end
 
     test "takes what hangs off a deleted vehicle with it" do
