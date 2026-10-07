@@ -37,8 +37,9 @@ class FleetSquadronMembership < ApplicationRecord
 
   before_validation :assign_default_role, on: :create
 
-  # Somebody posted to the squadron directly has had their answer.
-  after_create :close_request
+  # Somebody posted to the squadron directly has had their answer -- and once
+  # they hold an ordinary squadron, every other one they asked is moot too.
+  after_create :close_requests
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[fleet_squadron_id fleet_membership_id fleet_squadron_role_id created_at updated_at]
@@ -79,8 +80,10 @@ class FleetSquadronMembership < ApplicationRecord
     errors.add(:fleet_squadron, :exclusive_conflict, squadron: held.name)
   end
 
-  private def close_request
-    FleetSquadronRequest.where(fleet_squadron_id:, fleet_membership_id:).delete_all
+  private def close_requests
+    requests = FleetSquadronRequest.where(fleet_membership_id:)
+    requests = requests.where(fleet_squadron_id:) unless fleet_squadron.exclusive?
+    requests.delete_all
   end
 
   private def assign_default_role

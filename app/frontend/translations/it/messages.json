@@ -398,6 +398,10 @@
               "success": "Richiesta ritirata.",
               "failure": "Impossibile ritirare la richiesta."
             },
+            "blocked": {
+              "member": "Sei già in %{squadron}. Lascialo prima di chiedere di unirti a un altro squadrone.",
+              "requested": "Hai chiesto di unirti a %{squadron}. Ritira quella richiesta prima di chiederne un'altra."
+            },
             "accept": {
               "success": "%{username} si è unito allo squadrone.",
               "failure": "Impossibile accettare la richiesta."

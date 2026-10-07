@@ -460,6 +460,7 @@ de:
               team: "ist ein Team — tritt ihm stattdessen direkt bei"
               already_a_member: "enthält dich bereits"
               exclusive_conflict: "kollidiert mit %{squadron} — ein Mitglied gehört zu einer Staffel, außer es ist ein Team"
+              request_pending: "kann nicht angefragt werden, solange deine Anfrage bei %{squadron} offen ist — ziehe diese zuerst zurück"
         fleet_squadron_role:
           attributes:
             default_rank:

@@ -20,3 +20,15 @@ end
 json.viewer_is_member @viewer_is_member
 json.viewer_requested_at @viewer_request&.created_at&.utc&.iso8601
 json.pending_request_count @pending_request_count unless @pending_request_count.nil?
+
+{viewer_exclusive_squadron: @viewer_exclusive_squadron, viewer_requested_squadron: @viewer_requested_squadron}.each do |key, squadron|
+  next if squadron.blank?
+
+  json.set! key do
+    json.id squadron.id
+    json.name squadron.name
+    json.slug squadron.slug
+    json.color squadron.color
+    json.team squadron.team
+  end
+end

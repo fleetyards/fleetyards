@@ -26,7 +26,7 @@ class Api::V1::FleetsSquadronRequestsCreateTest < ActionDispatch::IntegrationTes
         schema ::V1::Schemas::Fleets::Squadrons::FleetSquadronRequest
       end
 
-      response(400, "bad request - a team, already a member, already asked, or in another squadron") do
+      response(400, "bad request - a team, already a member, already asked, in another squadron, or waiting on another") do
         schema ::Shared::V1::Schemas::ValidationError
       end
 
@@ -77,6 +77,17 @@ class Api::V1::FleetsSquadronRequestsCreateTest < ActionDispatch::IntegrationTes
 
     assert_api_response :post, 400, path_params: path_params do
       assert_includes parsed_body.to_json, "Bravo"
+    end
+  end
+
+  test "POST requests names the squadron the member is still waiting on" do
+    other = create(:fleet_squadron, fleet: @fleet, name: "Bravo")
+    create(:fleet_squadron_request, fleet_squadron: other, fleet_membership: @membership)
+    sign_in @member
+
+    assert_api_response :post, 400, path_params: path_params do
+      assert_includes parsed_body.to_json, "Bravo"
+      refute @squadron.fleet_squadron_requests.exists?(fleet_membership: @membership)
     end
   end
 

@@ -408,6 +408,10 @@
               "success": "Request withdrawn.",
               "failure": "Request could not be withdrawn."
             },
+            "blocked": {
+              "member": "You are already in %{squadron}. Leave it before asking to join another squadron.",
+              "requested": "You asked to join %{squadron}. Withdraw that request before asking another squadron."
+            },
             "accept": {
               "success": "%{username} joined the squadron.",
               "failure": "Request could not be accepted."

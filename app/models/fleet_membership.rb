@@ -532,6 +532,17 @@ class FleetMembership < ApplicationRecord
       .first
   end
 
+  # The squadron this member is waiting to hear back from, if any. A member
+  # asks one squadron at a time.
+  def requested_squadron(except: nil)
+    FleetSquadron
+      .joins(:fleet_squadron_requests)
+      .where(fleet_squadron_requests: {fleet_membership_id: id})
+      .where.not(id: except&.id)
+      .order("fleet_squadron_requests.created_at")
+      .first
+  end
+
   def promote
     return if next_fleet_role == fleet_role || next_fleet_role.nil?
 

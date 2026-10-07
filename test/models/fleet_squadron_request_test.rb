@@ -72,6 +72,15 @@ class FleetSquadronRequestTest < ActiveSupport::TestCase
     assert request.errors.of_kind?(:fleet_squadron, :exclusive_conflict)
   end
 
+  test "rejects a second request while the first is waiting" do
+    create(:fleet_squadron_request, fleet_squadron: create(:fleet_squadron, fleet: @fleet, name: "Bravo"), fleet_membership: @membership)
+    request = build(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    refute request.valid?
+    assert request.errors.of_kind?(:fleet_squadron, :request_pending)
+    assert_includes request.errors.full_messages.join, "Bravo"
+  end
+
   test "accept! adds the member at the default rank and closes the request" do
     request = create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
 
@@ -85,6 +94,18 @@ class FleetSquadronRequestTest < ActiveSupport::TestCase
     request = create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
 
     create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    refute FleetSquadronRequest.exists?(request.id)
+  end
+
+  test "joining an ordinary squadron closes every request, joining a team none" do
+    request = create(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    create(:fleet_squadron_membership, fleet_squadron: create(:fleet_squadron, fleet: @fleet, team: true), fleet_membership: @membership)
+
+    assert FleetSquadronRequest.exists?(request.id)
+
+    create(:fleet_squadron_membership, fleet_squadron: create(:fleet_squadron, fleet: @fleet), fleet_membership: @membership)
 
     refute FleetSquadronRequest.exists?(request.id)
   end

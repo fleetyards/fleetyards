@@ -33,6 +33,7 @@ class FleetSquadronRequest < ApplicationRecord
   validate :squadron_is_not_a_team
   validate :not_already_a_member
   validate :no_other_exclusive_squadron
+  validate :no_other_pending_request, on: :create
 
   after_create_commit :notify_roster_managers
 
@@ -142,5 +143,19 @@ class FleetSquadronRequest < ApplicationRecord
     return if held.blank?
 
     errors.add(:fleet_squadron, :exclusive_conflict, squadron: held.name)
+  end
+
+  # One question at a time: a member withdraws the request they have before
+  # asking another squadron, so no roster answers somebody who has moved on.
+  private def no_other_pending_request
+    return if fleet_squadron.blank? || fleet_membership.blank?
+
+    # Serialises two requests from the same member, as a join does.
+    FleetMembership.where(id: fleet_membership_id).lock.take
+
+    asked = fleet_membership.requested_squadron(except: fleet_squadron)
+    return if asked.blank?
+
+    errors.add(:fleet_squadron, :request_pending, squadron: asked.name)
   end
 end

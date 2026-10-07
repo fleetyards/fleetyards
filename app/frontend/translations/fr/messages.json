@@ -398,6 +398,10 @@
               "success": "Demande retirée.",
               "failure": "La demande n'a pas pu être retirée."
             },
+            "blocked": {
+              "member": "Tu es déjà dans %{squadron}. Quitte-le avant de demander à rejoindre un autre escadron.",
+              "requested": "Tu as demandé à rejoindre %{squadron}. Retire cette demande avant d'en faire une autre."
+            },
             "accept": {
               "success": "%{username} a rejoint l'escadron.",
               "failure": "La demande n'a pas pu être acceptée."

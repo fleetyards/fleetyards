@@ -7774,8 +7774,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetSquadronRequest"
         '400':
-          description: bad request - a team, already a member, already asked, or in
-            another squadron
+          description: bad request - a team, already a member, already asked, in another
+            squadron, or waiting on another
           content:
             application/json:
               schema:
@@ -26485,6 +26485,10 @@ components:
           format: date-time
         pendingRequestCount:
           type: integer
+        viewerExclusiveSquadron:
+          "$ref": "#/components/schemas/FleetSquadronRef"
+        viewerRequestedSquadron:
+          "$ref": "#/components/schemas/FleetSquadronRef"
         icon:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:

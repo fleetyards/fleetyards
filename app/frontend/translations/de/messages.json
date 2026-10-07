@@ -398,6 +398,10 @@
               "success": "Anfrage zurückgezogen.",
               "failure": "Anfrage konnte nicht zurückgezogen werden."
             },
+            "blocked": {
+              "member": "Du bist bereits in %{squadron}. Verlasse sie, bevor du eine andere Staffel anfragst.",
+              "requested": "Du hast angefragt, %{squadron} beizutreten. Ziehe diese Anfrage zurück, bevor du eine andere Staffel anfragst."
+            },
             "accept": {
               "success": "%{username} ist der Staffel beigetreten.",
               "failure": "Anfrage konnte nicht angenommen werden."

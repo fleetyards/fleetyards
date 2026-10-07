@@ -31,6 +31,11 @@ module V1
               viewerIsMember: {type: :boolean},
               viewerRequestedAt: {type: [:string, :null], format: "date-time"},
               pendingRequestCount: {type: :integer},
+              # Only on an ordinary squadron the reader is neither in nor has
+              # asked: the squadron they already hold, or the one whose answer
+              # they are waiting for -- either rules out asking for this one.
+              viewerExclusiveSquadron: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef,
+              viewerRequestedSquadron: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef,
               icon: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

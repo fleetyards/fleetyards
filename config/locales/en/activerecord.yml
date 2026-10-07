@@ -491,6 +491,7 @@ en:
               team: "is a team — join it directly instead"
               already_a_member: "already includes you"
               exclusive_conflict: "conflicts with %{squadron} — a member belongs to one squadron unless it is a team"
+              request_pending: "cannot be asked while your request to join %{squadron} is waiting — withdraw that one first"
         fleet_squadron_role:
           attributes:
             default_rank:

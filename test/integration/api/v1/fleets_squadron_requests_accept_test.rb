@@ -67,9 +67,11 @@ class Api::V1::FleetsSquadronRequestsAcceptTest < ActionDispatch::IntegrationTes
     end
   end
 
-  test "PUT accept keeps the request when the member joined another squadron since" do
+  test "PUT accept keeps the request when the member is in another squadron" do
     other = create(:fleet_squadron, fleet: @fleet)
     create(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: @membership)
+    # Joining closes every request, so only one that predates the rule is left.
+    build(:fleet_squadron_request, fleet_squadron: @squadron, fleet_membership: @membership).save!(validate: false)
     sign_in @admin
 
     assert_api_response :put, 400, path_params: path_params do

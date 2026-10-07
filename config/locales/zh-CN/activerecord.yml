@@ -460,6 +460,7 @@ zh-CN:
               team: "是一个团队——请直接加入"
               already_a_member: "已包含你"
               exclusive_conflict: "与 %{squadron} 冲突——除团队外，成员只能属于一个中队"
+              request_pending: "无法申请：你加入 %{squadron} 的申请仍在等待中——请先撤回"
         fleet_squadron_role:
           attributes:
             default_rank:

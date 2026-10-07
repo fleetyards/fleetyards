@@ -48,6 +48,28 @@ const action = computed(() => {
   return "requestJoin";
 });
 
+/*
+ * A member asks one ordinary squadron at a time and holds at most one, so
+ * asking for this one waits until they leave or withdraw the other.
+ */
+const blockedReason = computed(() => {
+  if (action.value !== "requestJoin") return undefined;
+
+  if (props.squadron.viewerExclusiveSquadron) {
+    return t("messages.fleet.squadrons.requests.blocked.member", {
+      squadron: props.squadron.viewerExclusiveSquadron.name,
+    });
+  }
+
+  if (props.squadron.viewerRequestedSquadron) {
+    return t("messages.fleet.squadrons.requests.blocked.requested", {
+      squadron: props.squadron.viewerRequestedSquadron.name,
+    });
+  }
+
+  return undefined;
+});
+
 const icon = computed(
   () =>
     ({
@@ -137,14 +159,22 @@ const onClick = () =>
 </script>
 
 <template>
-  <Btn
-    :size="BtnSizesEnum.MD"
-    mobile-icon-only
-    :disabled="submitting"
-    :data-test="`squadron-${action}`"
-    @click="onClick"
-  >
-    <i :class="icon" />
-    {{ t(`actions.fleet.squadrons.${action}`) }}
-  </Btn>
+  <span v-tooltip="blockedReason" class="squadron-membership-btn">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      :disabled="submitting || !!blockedReason"
+      :data-test="`squadron-${action}`"
+      @click="onClick"
+    >
+      <i :class="icon" />
+      {{ t(`actions.fleet.squadrons.${action}`) }}
+    </Btn>
+  </span>
 </template>
+
+<style lang="scss" scoped>
+.squadron-membership-btn {
+  display: inline-flex;
+}
+</style>
