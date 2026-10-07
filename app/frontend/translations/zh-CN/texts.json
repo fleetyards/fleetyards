@@ -186,8 +186,7 @@
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
-        "alreadyRunning": "机库同步已在进行中。请等待完成。",
-        "buybacksUnsupported": "你的 Fleetyards Sync 扩展还无法读取可回购的承诺。请更新扩展以同步它们。"
+        "alreadyRunning": "机库同步已在进行中。请等待完成。"
       },
       "setEmail": "要设置密码、启用双重认证或接收邮件通知，您需要为账户添加电子邮件地址。您将收到一封确认邮件来验证该地址。",
       "oauthApplications": {

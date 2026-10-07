@@ -654,7 +654,6 @@
         "started": "Sincronizzazione del tuo Hangar in corso...",
         "success": "Il tuo Hangar è stato sincronizzato.",
         "failure": "Il tuo Hangar non può essere sincronizzato.",
-        "buybackFailure": "Non è stato possibile sincronizzare i tuoi pledge riacquistabili.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },
       "admin": {

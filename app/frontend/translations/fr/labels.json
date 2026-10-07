@@ -2490,7 +2490,6 @@
         },
         "processSteps": {
           "fetchHangar": "Récupération des données du hangar RSI",
-          "fetchBuybacks": "Récupération des données de la page de rachat RSI",
           "submitData": "Envoi des données au backend de Fleetyards.net"
         },
         "sessionStatus": "Statut de session RSI",
@@ -2498,8 +2497,6 @@
         "targetGroup": "Groupe pour les vaisseaux trouvés",
         "addBundledVehicles": "Ajouter les snub crafts inclus",
         "addBundledVehiclesHint": "Ajoute le snub craft fourni avec un vaisseau. Ceux déjà dans votre hangar sont conservés.",
-        "syncBuybacks": "Synchroniser les pledges rachetables",
-        "syncBuybacksHint": "Lit aussi votre liste de rachat RSI, pour planifier ce que vous voulez racheter. Les longues listes ajoutent quelques minutes à la synchronisation.",
         "unmatchedVehiclesAction": "Vaisseaux absents de votre hangar RSI",
         "unmatchedVehiclesActionHint": "Ce qu'il advient des vaisseaux présents ici que la synchronisation ne trouve pas dans votre liste de pledges RSI.",
         "unmatchedHangarGroup": "Groupe dans lequel les classer",
@@ -2524,7 +2521,6 @@
         },
         "pledgeItems": {
           "pages": "Pages",
-          "buybacks": "Pledges rachetables",
           "all": "Tous les articles de promesse",
           "ships": "Vaisseaux",
           "components": "Modules",

@@ -2490,7 +2490,6 @@
         },
         "processSteps": {
           "fetchHangar": "Obteniendo datos del hangar RSI",
-          "fetchBuybacks": "Obteniendo datos de la página de recompra de RSI",
           "submitData": "Enviando datos al backend de Fleetyards.net"
         },
         "sessionStatus": "Estado de sesión RSI",
@@ -2498,8 +2497,6 @@
         "targetGroup": "Grupo para las naves que encuentre",
         "addBundledVehicles": "Añadir snub crafts incluidas",
         "addBundledVehiclesHint": "Añade la snub craft que viene con una nave. Las que ya están en tu hangar se conservan.",
-        "syncBuybacks": "Sincronizar pledges de recompra",
-        "syncBuybacksHint": "También lee tu lista de recompra de RSI, para planificar qué recomprar. Las listas largas añaden unos minutos a la sincronización.",
         "unmatchedVehiclesAction": "Naves que no están en tu hangar RSI",
         "unmatchedVehiclesActionHint": "Qué hacer con las naves que tienes aquí y que la sincronización no encuentra en tu lista de pledges de RSI.",
         "unmatchedHangarGroup": "Grupo en el que archivarlas",
@@ -2524,7 +2521,6 @@
         },
         "pledgeItems": {
           "pages": "Páginas",
-          "buybacks": "Pledges de recompra",
           "all": "Todos los objetos de Pledge",
           "ships": "Naves",
           "components": "Módulos",

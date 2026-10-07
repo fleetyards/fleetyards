@@ -2490,7 +2490,6 @@
         },
         "processSteps": {
           "fetchHangar": "Fetching Data from the RSI Hangar",
-          "fetchBuybacks": "Fetching Data from the RSI Buy-Back Page",
           "submitData": "Submitting Data to the Fleetyards.net Backend"
         },
         "sessionStatus": "RSI Session status",
@@ -2498,8 +2497,6 @@
         "targetGroup": "Group for the ships it finds",
         "addBundledVehicles": "Add bundled snub crafts",
         "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way.",
-        "syncBuybacks": "Sync buy-back pledges",
-        "syncBuybacksHint": "Also reads your RSI buy-back list, for planning what to buy back. Large lists add a few minutes to the sync.",
         "unmatchedVehiclesAction": "Ships not in your RSI hangar",
         "unmatchedVehiclesActionHint": "What to do with ships you have here that the sync cannot find in your RSI pledge list.",
         "unmatchedHangarGroup": "Group to file them into",
@@ -2524,7 +2521,6 @@
         },
         "pledgeItems": {
           "pages": "Pages",
-          "buybacks": "Buy-back pledges",
           "all": "All Pledge Items",
           "ships": "Ships",
           "components": "Modules",
