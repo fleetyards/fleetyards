@@ -92,4 +92,33 @@ class Admin::Api::V1::DashboardTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, response.parsed_body["stuckImportsCount"]
   end
+
+  # A half-finished period against a whole one starts every day near -100%.
+  test "GET /dashboard cuts last week's baselines at the same point in time" do
+    travel_to Time.zone.local(2026, 10, 7, 12, 0) do
+      last_wednesday = Time.zone.local(2026, 9, 30)
+
+      [10, 14].each do |hour|
+        Ahoy::Visit.create!(
+          visit_token: SecureRandom.hex,
+          visitor_token: SecureRandom.hex,
+          started_at: last_wednesday.change(hour:)
+        )
+      end
+
+      create(:user, created_at: Time.zone.local(2026, 9, 29, 9, 0))
+      create(:user, created_at: Time.zone.local(2026, 10, 2, 9, 0))
+      create(:user, created_at: Time.zone.local(2026, 10, 6, 9, 0))
+
+      sign_in create(:admin_user, super_admin: true)
+
+      assert_api_response :get, 200
+
+      body = response.parsed_body
+
+      assert_equal 1, body["visitsSameWeekdayLastWeek"]
+      assert_equal 1, body["signupsThisWeek"]
+      assert_equal 1, body["signupsLastWeek"]
+    end
+  end
 end
