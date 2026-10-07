@@ -47,9 +47,13 @@ module Discord
       end
 
       # From the system down to the parent, each linked, as the page's own
-      # breadcrumb reads.
+      # breadcrumb reads. Each name is read off its build, loaded for all of
+      # them at once rather than per step.
       private def breadcrumb(place)
-        place.ancestors.reverse.map { |ancestor| entry_link(ancestor.name, "location", ancestor.slug) }.join(" › ").presence
+        ancestors = place.ancestors
+        ActiveRecord::Associations::Preloader.new(records: ancestors, associations: [:build, :last_build]).call
+
+        ancestors.reverse.map { |ancestor| entry_link(ancestor.name, "location", ancestor.slug) }.join(" › ").presence
       end
 
       # A free pad is one a pilot lands on without ATC handing it out, so it
@@ -88,10 +92,10 @@ module Discord
       # The shops the place page lists: those selling something the catalogue
       # lists, so the count past the field matches what the page shows.
       private def shops_field(place, page)
-        shops = ::Locations::Shops.new(place).call
+        shops = ::Locations::Shops.new(place).shops
         return nil if shops.empty?
 
-        links = shops.map { |summary| shop_link(summary.shop) }
+        links = shops.map { |shop| shop_link(shop) }
         value = fit_field(links, separator: ", ") { |hidden| I18n.t("discord.commands.location.more_shops", count: hidden, url: page) }
 
         {name: I18n.t("discord.commands.location.fields.shops"), value: value}
