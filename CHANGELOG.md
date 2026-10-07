@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.19.0](https://github.com/fleetyards/fleetyards/compare/v8.18.0...v8.19.0) (2026-10-07)
+
+
+### Features
+
+* **hangar:** buy-back pledges page with sync via the sync extension ([#5463](https://github.com/fleetyards/fleetyards/issues/5463)) ([2a7ed15](https://github.com/fleetyards/fleetyards/commit/2a7ed1540b7e2bc88e9c3ddcf8bf1f4999f82b9f))
+* **rsi-verification:** verify an RSI handle through the sync extension ([#5464](https://github.com/fleetyards/fleetyards/issues/5464)) ([92ea568](https://github.com/fleetyards/fleetyards/commit/92ea568c6c74245b596c6d5e4005cdf8b59632f1))
+
+
+### Bug Fixes
+
+* **admin:** compare dashboard traffic against the same elapsed period ([#5462](https://github.com/fleetyards/fleetyards/issues/5462)) ([9699e7c](https://github.com/fleetyards/fleetyards/commit/9699e7c53f4488fe29c453cd29c752918399237e))
+* **admin:** use the catalogue's equipment icon for UEX equipment notifications ([#5466](https://github.com/fleetyards/fleetyards/issues/5466)) ([9b7c1c8](https://github.com/fleetyards/fleetyards/commit/9b7c1c8c2c1c2d24c28e73e5cdd0f06c057a5ce0))
+* **fleets:** space the start page description from the squadrons ([7456b84](https://github.com/fleetyards/fleetyards/commit/7456b8446fc7cfe647cdf5abe878cea208f6d55b))
+
+
+### Chores
+
+* **db:** dump schema.rb in database column order ([5ea6932](https://github.com/fleetyards/fleetyards/commit/5ea693279b263d14c3a744b028e5c147423473fb))
+* **superset:** run bin/teardown when a workspace is removed ([#5458](https://github.com/fleetyards/fleetyards/issues/5458)) ([177151d](https://github.com/fleetyards/fleetyards/commit/177151d5daf386c1bf8f3518f41626255ff14edd))
+
 ## [8.18.0](https://github.com/fleetyards/fleetyards/compare/v8.17.0...v8.18.0) (2026-10-07)
 
 
