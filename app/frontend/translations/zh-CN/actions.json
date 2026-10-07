@@ -140,6 +140,7 @@
       "linkExisting": "链接现有",
       "loadMore": "加载更多",
       "unlink": "取消链接",
+      "syncRsiBuybacks": "同步 RSI 回购",
       "syncRsiHangar": "同步RSI机库",
       "oauthApplications": {
         "create": "新建应用",

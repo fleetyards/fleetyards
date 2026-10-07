@@ -2481,6 +2481,19 @@
         "type": "Tipo",
         "shop": "Negozio"
       },
+      "buybackSync": {
+        "pages": "Pagine",
+        "found": "Pledge riacquistabili trovati",
+        "added": "Nuovi",
+        "removed": "Rimossi",
+        "status": {
+          "fetching": "Lettura delle pagine di riacquisto",
+          "submitting": "Salvataggio",
+          "finished": "Completato",
+          "unsupported": "Non supportato",
+          "failed": "Non riuscito"
+        }
+      },
       "syncExtension": {
         "warnings": "Avvisi",
         "status": {

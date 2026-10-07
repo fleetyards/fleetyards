@@ -2481,6 +2481,19 @@
         "type": "類型",
         "shop": "商店"
       },
+      "buybackSync": {
+        "pages": "頁數",
+        "found": "找到的可回購承諾",
+        "added": "新增",
+        "removed": "已移除",
+        "status": {
+          "fetching": "正在讀取回購頁面",
+          "submitting": "正在儲存",
+          "finished": "已完成",
+          "unsupported": "不支援",
+          "failed": "失敗"
+        }
+      },
       "syncExtension": {
         "warnings": "警告",
         "status": {

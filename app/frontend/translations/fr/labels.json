@@ -2481,6 +2481,19 @@
         "type": "Type",
         "shop": "Magasin"
       },
+      "buybackSync": {
+        "pages": "Pages",
+        "found": "Pledges rachetables trouvés",
+        "added": "Nouveaux",
+        "removed": "Supprimés",
+        "status": {
+          "fetching": "Lecture des pages de rachat",
+          "submitting": "Enregistrement",
+          "finished": "Terminé",
+          "unsupported": "Non pris en charge",
+          "failed": "Échec"
+        }
+      },
       "syncExtension": {
         "warnings": "Avertissements",
         "status": {

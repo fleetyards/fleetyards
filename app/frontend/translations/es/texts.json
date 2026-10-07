@@ -183,6 +183,10 @@
         "requestingAccess": "%{clientName} está solicitando acceso a su cuenta.",
         "scopesIntro": "Esta aplicación podrá:"
       },
+      "buybackSync": {
+        "info": "Lee cada página de tu lista de recompra de RSI y reemplaza con ella los pledges de recompra guardados en Fleetyards. Tu hangar no se modifica. Las listas largas tardan unos minutos.",
+        "unsupported": "Tu extensión Fleetyards Sync todavía no puede leer los pledges de recompra. Actualízala para sincronizarlos."
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",

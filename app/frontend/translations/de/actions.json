@@ -140,6 +140,7 @@
       "linkExisting": "Vorhandenes verknüpfen",
       "loadMore": "Mehr laden",
       "unlink": "Verknüpfung aufheben",
+      "syncRsiBuybacks": "RSI-Rückkäufe synchronisieren",
       "syncRsiHangar": "RSI-Hangar synchronisieren",
       "oauthApplications": {
         "create": "Neue Anwendung",

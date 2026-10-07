@@ -1,0 +1,363 @@
+<script lang="ts">
+export default {
+  name: "HangarBuybackSyncModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import LoadingDots from "@/shared/components/LoadingDots/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { extensionUrls } from "@/types/extension";
+import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
+import {
+  FleetyardsSyncAction,
+  type FleetyardsSyncEvent,
+  type FleetyardsSyncMessage,
+  type FleetyardsSyncSessionPayload,
+} from "@/frontend/lib/FleetyardsSyncHandler";
+import {
+  useSyncRsiBuybacks,
+  type BuybackSyncResult,
+  type RsiBuybackItemInput,
+} from "@/services/fyApi";
+import { differenceInMinutes } from "date-fns";
+
+type SyncStatus =
+  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
+
+const { t } = useI18n();
+
+const { displayInfo, displaySuccess, displayWarning, displayAlert } =
+  useAppNotifications();
+
+const comlink = useComlink();
+
+const extensionReady = ref(false);
+
+const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
+
+const loadingIdentity = ref(false);
+
+const status = ref<SyncStatus>("idle");
+
+const currentPage = ref(1);
+
+const buybacks = ref<RsiBuybackItemInput[]>([]);
+
+const seenIds = new Set<string>();
+
+const result = ref<BuybackSyncResult | undefined>();
+
+const syncStartedAt = ref<Date>(new Date());
+
+const fetchCount = ref(0);
+
+const maxMessagesPerMinute = 60;
+
+// An extension that never answers would otherwise leave the sync spinning.
+const REPLY_TIMEOUT = 30000;
+
+let replyTimer: ReturnType<typeof setTimeout> | null = null;
+
+const working = computed(
+  () =>
+    loadingIdentity.value ||
+    status.value === "fetching" ||
+    status.value === "submitting",
+);
+
+const onExtensionMessage = (event: FleetyardsSyncEvent) => {
+  handleExtensionMessage(event).catch((error) => {
+    console.error("Buy-back sync error:", error);
+    fail();
+  });
+};
+
+onMounted(() => {
+  window.addEventListener("message", onExtensionMessage as EventListener);
+
+  window.postMessage({
+    direction: "fy",
+    message: JSON.stringify({ action: FleetyardsSyncAction.HEALTH }),
+  });
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("message", onExtensionMessage as EventListener);
+
+  clearReplyTimer();
+});
+
+const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
+  if (event.data.direction !== "fy-sync") {
+    return;
+  }
+
+  const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
+
+  if (message.action === FleetyardsSyncAction.HEALTH) {
+    extensionReady.value = message.code === 200;
+
+    if (extensionReady.value) {
+      checkRSIIdentity();
+    }
+  }
+
+  if (message.action === FleetyardsSyncAction.IDENTIFY) {
+    loadingIdentity.value = false;
+
+    if (
+      message.code !== 200 ||
+      !(message.payload as FleetyardsSyncSessionPayload)?.handle
+    ) {
+      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+      identityStatus.value = "notFound";
+    } else {
+      identityStatus.value = "connected";
+    }
+  }
+
+  // A reply landing after the sync timed out belongs to a crawl that is over.
+  if (
+    message.action === FleetyardsSyncAction.SYNC_BUYBACK &&
+    status.value === "fetching"
+  ) {
+    clearReplyTimer();
+
+    if (message.code === 200) {
+      await handlePage(message.payload as string);
+    } else if (isUnknownAction(message)) {
+      status.value = "unsupported";
+    } else {
+      fail();
+    }
+  }
+};
+
+const checkRSIIdentity = () => {
+  identityStatus.value = "pending";
+  loadingIdentity.value = true;
+
+  window.postMessage({
+    direction: "fy",
+    message: JSON.stringify({ action: FleetyardsSyncAction.IDENTIFY }),
+  });
+};
+
+// An extension released before buy-backs answers the action it does not know
+// with this.
+const isUnknownAction = (message: FleetyardsSyncMessage) =>
+  message.code === 500 && message.error === "Unknown Action";
+
+const start = () => {
+  status.value = "fetching";
+  buybacks.value = [];
+  seenIds.clear();
+  result.value = undefined;
+  currentPage.value = 1;
+  syncStartedAt.value = new Date();
+  fetchCount.value = 0;
+
+  displayInfo({ text: t("messages.buybackSync.started") });
+
+  fetchPage(currentPage.value);
+};
+
+const fetchPage = (page: number) => {
+  const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
+
+  if (fetchCount.value >= (elapsedMinutes + 1) * maxMessagesPerMinute) {
+    setTimeout(() => fetchPage(page), 500);
+    return;
+  }
+
+  fetchCount.value += 1;
+
+  window.postMessage({
+    direction: "fy",
+    message: JSON.stringify({
+      action: FleetyardsSyncAction.SYNC_BUYBACK,
+      page,
+    }),
+  });
+
+  replyTimer = setTimeout(fail, REPLY_TIMEOUT);
+};
+
+const clearReplyTimer = () => {
+  if (replyTimer) {
+    clearTimeout(replyTimer);
+    replyTimer = null;
+  }
+};
+
+const fail = () => {
+  clearReplyTimer();
+  status.value = "failed";
+  displayAlert({ text: t("messages.buybackSync.failure") });
+};
+
+const handlePage = async (html: string) => {
+  const page = extractBuybackPage(html);
+
+  // Not the buy-back page (a login redirect, an error page), or a page whose
+  // entries could not be read: either way the list is incomplete.
+  if (!page || (page.entryCount > 0 && page.pledges.length === 0)) {
+    fail();
+    return;
+  }
+
+  const newBuybacks = page.pledges.filter((pledge) => !seenIds.has(pledge.id));
+
+  if (newBuybacks.length === 0) {
+    await submit();
+    return;
+  }
+
+  newBuybacks.forEach((pledge) => seenIds.add(pledge.id));
+  buybacks.value = [...buybacks.value, ...newBuybacks];
+
+  currentPage.value += 1;
+  setTimeout(() => fetchPage(currentPage.value), 500);
+};
+
+const mutation = useSyncRsiBuybacks();
+
+// Only ever after the last page: the endpoint replaces the whole list, so a
+// partial one would drop every buy-back on the pages that were never read.
+const submit = async () => {
+  status.value = "submitting";
+
+  try {
+    result.value = await mutation.mutateAsync({
+      data: { items: buybacks.value },
+    });
+    status.value = "finished";
+    displaySuccess({ text: t("messages.buybackSync.success") });
+  } catch (error) {
+    console.error(error);
+    fail();
+  }
+};
+
+const close = () => {
+  comlink.emit("close-modal", true);
+};
+</script>
+
+<template>
+  <Modal :title="t('headlines.buybackSync')" :fixed="true" :loading="working">
+    <div v-if="!extensionReady">
+      <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
+      <div class="sync-extension-platforms">
+        <a
+          v-for="link in extensionUrls"
+          :key="`extension-link-${link.platform}`"
+          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
+          :href="link.url"
+          target="_blank"
+        >
+          <i :class="`fa-brands fa-${link.platform}`" />
+        </a>
+      </div>
+    </div>
+    <div v-else-if="status === 'idle'">
+      <p
+        class="flex justify-center gap-2 text-uppercase relative mt-4"
+        :class="{
+          'text-warning': identityStatus === 'pending',
+          'text-success': identityStatus === 'connected',
+          'text-danger': identityStatus === 'notFound',
+        }"
+      >
+        {{ t("labels.syncExtension.sessionStatus") }}:
+        {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
+        <LoadingDots :loading="loadingIdentity" />
+        <Btn
+          v-if="identityStatus === 'notFound'"
+          v-tooltip="t('labels.syncExtension.checkIdentity')"
+          class="check-identity-btn"
+          :disabled="loadingIdentity"
+          :variant="BtnVariantsEnum.BARE"
+          @click="checkRSIIdentity"
+        >
+          <i class="fa-light fa-sync" />
+        </Btn>
+      </p>
+      <p>{{ t("texts.buybackSync.info") }}</p>
+    </div>
+    <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
+      <p
+        class="text-uppercase text-center"
+        :class="{
+          'text-warning': working || status === 'unsupported',
+          'text-success': status === 'finished',
+          'text-danger': status === 'failed',
+        }"
+      >
+        <b>{{ t(`labels.buybackSync.status.${status}`) }}</b>
+      </p>
+      <p v-if="status === 'unsupported'" class="text-warning">
+        {{ t("texts.buybackSync.unsupported") }}
+      </p>
+      <dl v-else class="row">
+        <dt class="col-sm-7">{{ t("labels.buybackSync.pages") }}:</dt>
+        <dd class="col-sm-5 text-right">{{ currentPage }}</dd>
+        <dt class="col-sm-7">{{ t("labels.buybackSync.found") }}:</dt>
+        <dd class="col-sm-5 text-right">{{ buybacks.length }}</dd>
+        <template v-if="result">
+          <dt class="col-sm-7">{{ t("labels.buybackSync.added") }}:</dt>
+          <dd class="col-sm-5 text-right" data-test="buyback-sync-added">
+            {{ result.added }}
+          </dd>
+          <dt class="col-sm-7">{{ t("labels.buybackSync.removed") }}:</dt>
+          <dd class="col-sm-5 text-right" data-test="buyback-sync-removed">
+            {{ result.removed }}
+          </dd>
+        </template>
+      </dl>
+    </div>
+    <template #footer>
+      <Btn
+        data-test="close-buyback-sync"
+        :disabled="working && status !== 'idle'"
+        @click="close"
+      >
+        {{
+          status === "finished"
+            ? t("actions.syncExtension.close")
+            : t("actions.syncExtension.cancel")
+        }}
+      </Btn>
+      <Btn
+        v-if="extensionReady && ['idle', 'failed'].includes(status)"
+        data-test="start-buyback-sync"
+        :loading="loadingIdentity"
+        :disabled="identityStatus !== 'connected'"
+        @click="start"
+      >
+        {{
+          status === "failed"
+            ? t("actions.syncExtension.retry")
+            : t("actions.syncExtension.start")
+        }}
+      </Btn>
+    </template>
+  </Modal>
+</template>
+
+<style lang="scss" scoped>
+.sync-extension-platforms {
+  margin-bottom: 20px;
+}
+
+.check-identity-btn {
+  margin-left: 10px;
+}
+</style>

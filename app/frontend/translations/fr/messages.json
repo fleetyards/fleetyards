@@ -650,6 +650,11 @@
         "finished": "Import de %{type} terminé avec succès.",
         "failed": "Import de %{type} échoué : %{info}"
       },
+      "buybackSync": {
+        "started": "Synchronisation de vos pledges rachetables...",
+        "success": "Vos pledges rachetables ont été synchronisés.",
+        "failure": "Vos pledges rachetables n'ont pas pu être synchronisés."
+      },
       "syncExtension": {
         "started": "Synchronisation de votre Hangar...",
         "success": "Votre Hangar a été synchronisé.",

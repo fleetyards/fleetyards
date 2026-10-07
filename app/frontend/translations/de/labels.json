@@ -2481,6 +2481,19 @@
         "type": "Typ",
         "shop": "Geschäft"
       },
+      "buybackSync": {
+        "pages": "Seiten",
+        "found": "Gefundene Rückkauf-Pledges",
+        "added": "Neu",
+        "removed": "Entfernt",
+        "status": {
+          "fetching": "Rückkaufseiten werden gelesen",
+          "submitting": "Wird gespeichert",
+          "finished": "Abgeschlossen",
+          "unsupported": "Nicht unterstützt",
+          "failed": "Fehlgeschlagen"
+        }
+      },
       "syncExtension": {
         "warnings": "Warnungen",
         "status": {

@@ -2481,6 +2481,19 @@
         "type": "Type",
         "shop": "Shop"
       },
+      "buybackSync": {
+        "pages": "Pages",
+        "found": "Buy-back pledges found",
+        "added": "New",
+        "removed": "Removed",
+        "status": {
+          "fetching": "Reading buy-back pages",
+          "submitting": "Saving",
+          "finished": "Finished",
+          "unsupported": "Not supported",
+          "failed": "Failed"
+        }
+      },
       "syncExtension": {
         "warnings": "Warnings",
         "status": {

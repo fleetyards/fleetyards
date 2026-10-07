@@ -2481,6 +2481,19 @@
         "type": "Tipo",
         "shop": "Tienda"
       },
+      "buybackSync": {
+        "pages": "Páginas",
+        "found": "Pledges de recompra encontrados",
+        "added": "Nuevos",
+        "removed": "Eliminados",
+        "status": {
+          "fetching": "Leyendo páginas de recompra",
+          "submitting": "Guardando",
+          "finished": "Finalizado",
+          "unsupported": "No compatible",
+          "failed": "Fallido"
+        }
+      },
       "syncExtension": {
         "warnings": "Avisos",
         "status": {

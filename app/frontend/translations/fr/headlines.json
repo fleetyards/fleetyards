@@ -237,6 +237,7 @@
         "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu",
         "imports": "Imports"
       },
+      "buybackSync": "Synchroniser les pledges rachetables RSI",
       "syncExtension": "Synchroniser le hangar RSI",
       "editMyVehicle": "Éditer mon %{vehicle}",
       "nameMyVehicle": "Nommer mon %{vehicle}",

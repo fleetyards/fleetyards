@@ -237,6 +237,7 @@
         "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen",
         "imports": "Importe"
       },
+      "buybackSync": "RSI-Rückkauf-Pledges synchronisieren",
       "syncExtension": "RSI-Hangar synchronisieren",
       "editMyVehicle": "Edit my %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",

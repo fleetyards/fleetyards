@@ -22,6 +22,7 @@ import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
+import HangarBuybackSyncBtn from "@/frontend/components/Hangar/BuybackSyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
@@ -557,6 +558,8 @@ const openDisplayOptionsModal = () => {
         </Btn>
 
         <HangarImportBtn :size="BtnSizesEnum.SM" />
+
+        <HangarBuybackSyncBtn :size="BtnSizesEnum.SM" />
 
         <Btn
           :aria-label="t('nav.hangar.imports')"

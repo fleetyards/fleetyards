@@ -237,6 +237,7 @@
         "resetIngame": "数据重置后重置游戏内飞船",
         "imports": "导入记录"
       },
+      "buybackSync": "同步 RSI 可回购承诺",
       "syncExtension": "同步 RSI 机库",
       "editMyVehicle": "Edit my %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",
