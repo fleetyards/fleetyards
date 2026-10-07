@@ -79,17 +79,17 @@ module ItemPriceConcern
   end
 
   def buy_price
-    cheapest_price(:buy?)
+    quoted_prices(:buy?).min
   end
 
   def sell_price
-    cheapest_price(:sell?)
+    quoted_prices(:sell?).min
   end
 
   # What the best-paid shop buys it back at -- the figure a seller wants, where
   # `buy_price` is the cheapest buy-back the catalogue filters on.
   def best_buy_price
-    item_prices.to_a.select(&:buy?).filter_map(&:price).max
+    quoted_prices(:buy?).max
   end
 
   # The UEX snapshot writes prices without touching the item it prices, so a
@@ -106,7 +106,7 @@ module ItemPriceConcern
 
   # Read off the loaded association rather than through a scope, so a list that
   # preloads `item_prices` answers both price columns without a query per row.
-  private def cheapest_price(price_type)
-    item_prices.to_a.select(&price_type).filter_map(&:price).min
+  private def quoted_prices(price_type)
+    item_prices.to_a.select(&price_type).filter_map(&:price)
   end
 end
