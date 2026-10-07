@@ -6,7 +6,7 @@ Working plan for #5478. Decisions live in the issue body. Deleted before the PR 
 A fleet can name a role in its bound Discord guild; a player whose linked Discord account holds it becomes an accepted member with the fleet's default role, without an approval step, and losing it ends that membership.
 
 ## Open questions
-- None. Ops step before deploy: enable the Server Members intent for the bot in the Discord developer portal. With the intent requested but not enabled, the Gateway refuses the connection and the scheduled-event RSVP sync stops too.
+- None. Ops step to switch it on: enable the Server Members intent in the Discord developer portal, then set `DISCORD_SERVER_MEMBERS_INTENT=true` for the `discord_bot` role. Requesting the intent before the portal grants it makes the Gateway refuse the whole connection, RSVPs included, so the flag is opt-in.
 
 ## What changed
 
@@ -57,6 +57,7 @@ A fleet can name a role in its bound Discord guild; a player whose linked Discor
 - **2026-10-08** Initial research. #5174 and #5377 are still open; no guild-role picker or lister existed.
 - **2026-10-08** `bin/discord-bot` already runs a Gateway listener for scheduled-event RSVPs; member events go through it. Needs the privileged Server Members intent.
 - **2026-10-08** `FleetMembershipsController#create_by_invite` has no route; left alone.
+- **2026-10-08** Review: invite-link role check got a timeout, guild changes clear the join role, sweep admissions are quiet, per-user lock on role updates, unlinked holders are not released.
 
 ## Progress
 - [x] Phase 1
