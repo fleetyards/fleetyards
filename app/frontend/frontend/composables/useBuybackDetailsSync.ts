@@ -1,5 +1,9 @@
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import { extractBuybackDetail } from "@/frontend/lib/RSIBuybackDetailParser";
+import {
+  toUsdCents,
+  type RSIStorePricing,
+} from "@/frontend/lib/RSIStorePricing";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
   BuybackPledgeKindEnum,
@@ -27,7 +31,9 @@ const MAX_CONSECUTIVE_FAILURES = 3;
 
 // Reads price and insurance from the RSI buy-back page of each pledge the list
 // sync named as having none yet. Upgrades are priced from our own ship prices
-// and have no such page.
+// and have no such page. A page prices in the account's currency with tax, so
+// the account's store pricing is read first to turn that back into RSI's USD
+// figure, the one every other price here is in.
 export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
   const { request } = useSyncExtension();
 
@@ -44,6 +50,8 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
   let pending: RsiBuybackDetailInput[] = [];
 
   let failures = 0;
+
+  let pricing: RSIStorePricing | undefined;
 
   const submit = async (force = false) => {
     if (
@@ -95,14 +103,41 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
         ? extractBuybackDetail(message.payload as string)
         : undefined;
 
-    if (!detail) {
+    if (!detail || !pricing) {
+      return recordFailure();
+    }
+
+    const { cents, currency, ...insurance } = detail;
+    const usdCents =
+      cents === undefined || !currency
+        ? undefined
+        : toUsdCents(cents, currency, pricing);
+
+    // A price in another currency than the pricing read at the start means
+    // the account's currency changed during the pass; nothing read from here
+    // on can be converted.
+    if (cents !== undefined && usdCents === undefined) {
       return recordFailure();
     }
 
     failures = 0;
-    pending.push({ id, ...detail });
+    pending.push({
+      id,
+      ...insurance,
+      ...(usdCents === undefined ? {} : { price: usdCents / 100 }),
+    });
 
     return false;
+  };
+
+  const readPricing = async () => {
+    const message = await request(
+      FleetyardsSyncAction.SYNC_BUYBACK_PRICING,
+    ).catch(() => undefined);
+
+    return message?.code === 200
+      ? (message.payload as RSIStorePricing)
+      : undefined;
   };
 
   const run = async (buybacks: RsiBuybackItemInput[], pendingIds: string[]) => {
@@ -121,7 +156,22 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     failures = 0;
     cancelled = false;
 
+    if (pages.length === 0) {
+      status.value = "finished";
+      return;
+    }
+
     try {
+      await waitForSlot();
+      if (cancelled) return;
+
+      // Without it no page's price could be stored, so none is read.
+      pricing = await readPricing();
+      if (!pricing) {
+        status.value = "incomplete";
+        return;
+      }
+
       for (const id of pages) {
         await waitForSlot();
         if (cancelled) return await submit(true);

@@ -86,14 +86,11 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
     });
   }
 
-  if (buyback.price !== undefined && buyback.priceCurrency) {
+  if (buyback.price !== undefined) {
     result.push({
       key: "price",
       label: t("labels.buybacks.price"),
-      value: formatCents(
-        Math.round(buyback.price * 100),
-        buyback.priceCurrency,
-      ),
+      value: formatCents(Math.round(buyback.price * 100), "USD"),
     });
   }
 

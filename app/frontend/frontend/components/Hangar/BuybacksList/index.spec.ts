@@ -98,12 +98,10 @@ describe("Hangar/BuybacksList", () => {
     ).toBe("https://robertsspaceindustries.com/account/buy-back-pledges");
   });
 
-  it("shows the price in the currency RSI charges", async () => {
-    const wrapper = await mount([
-      buyback({ price: 104.72, priceCurrency: "EUR" }),
-    ]);
+  it("shows the price in USD", async () => {
+    const wrapper = await mount([buyback({ price: 100 })]);
 
-    expect(wrapper.text()).toContain("€104.72");
+    expect(wrapper.text()).toContain("$100.00");
   });
 
   it("shows the insurance", async () => {

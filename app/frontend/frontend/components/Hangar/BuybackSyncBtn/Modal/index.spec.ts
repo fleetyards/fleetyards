@@ -286,7 +286,11 @@ describe("HangarBuybackSyncModal", () => {
   describe("prices and insurance", () => {
     const detailExtension = {
       version: "1.4.0",
-      actions: [...currentExtension.actions, "syncBuybackDetail"],
+      actions: [
+        ...currentExtension.actions,
+        "syncBuybackDetail",
+        "syncBuybackPricing",
+      ],
     };
 
     const detailPage = `<strong class="final-price" data-value="10472" data-currency="EUR"></strong>
@@ -318,6 +322,16 @@ describe("HangarBuybackSyncModal", () => {
     it("reads the buy-back page of a pledge the list sync has no details for", async () => {
       const wrapper = await syncList(detailExtension);
 
+      expect(askedFor("syncBuybackPricing")).toBe(true);
+
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+
       expect(askedFor("syncBuybackDetail")).toBe(true);
 
       extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
@@ -328,8 +342,7 @@ describe("HangarBuybackSyncModal", () => {
           items: [
             {
               id: "1",
-              price: 104.72,
-              currency: "EUR",
+              price: 100,
               insuranceMonths: 6,
               lifetimeInsurance: false,
             },
@@ -344,6 +357,7 @@ describe("HangarBuybackSyncModal", () => {
     it("syncs only the list with an extension that cannot read prices", async () => {
       const wrapper = await syncList(currentExtension);
 
+      expect(askedFor("syncBuybackPricing")).toBe(false);
       expect(askedFor("syncBuybackDetail")).toBe(false);
       expect(submitDetails).not.toHaveBeenCalled();
       expect(

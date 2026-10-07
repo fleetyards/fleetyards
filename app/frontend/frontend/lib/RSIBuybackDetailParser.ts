@@ -1,5 +1,7 @@
+// `cents` is the page's price in `currency`, the account's currency with tax as
+// RSI applies it; see `toUsdCents` for RSI's own USD figure.
 export type RSIBuybackDetail = {
-  price?: number;
+  cents?: number;
   currency?: string;
   insuranceMonths?: number;
   lifetimeInsurance: boolean;
@@ -12,8 +14,7 @@ const LIFETIME_INSURANCE = /^Lifetime\s+Insurance$/i;
 // The buy-back page of one pledge (`/pledge/buyback/<id>`). `undefined` when the
 // HTML is not a pledge page at all, such as a login redirect or an error page.
 // A pledge page without a readable price still answers, with its insurance, so
-// that pledge is not asked about on every sync. The price is what RSI charges
-// this account, in the currency the account shows prices in, tax included.
+// that pledge is not asked about on every sync.
 export const extractBuybackDetail = (
   html: string,
 ): RSIBuybackDetail | undefined => {
@@ -43,7 +44,7 @@ export const extractBuybackDetail = (
     .filter((value) => !Number.isNaN(value));
 
   return {
-    ...(priced ? { price: cents / 100, currency } : {}),
+    ...(priced ? { cents, currency } : {}),
     insuranceMonths:
       lifetimeInsurance || months.length === 0
         ? undefined

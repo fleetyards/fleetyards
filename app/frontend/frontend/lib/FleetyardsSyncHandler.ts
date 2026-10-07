@@ -8,6 +8,7 @@ export enum FleetyardsSyncAction {
   SYNC = "sync",
   SYNC_BUYBACK = "syncBuyback",
   SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
+  SYNC_BUYBACK_PRICING = "syncBuybackPricing",
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",

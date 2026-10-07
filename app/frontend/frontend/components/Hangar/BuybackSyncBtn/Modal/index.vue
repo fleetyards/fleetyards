@@ -60,11 +60,11 @@ const extensionSupportsBuybacks = computed(
 
 // An extension that can read the list but not yet a pledge's price still
 // syncs the list.
-const extensionSupportsDetails = computed(
-  () =>
-    extensionInfo.value.actions?.includes(
-      FleetyardsSyncAction.SYNC_BUYBACK_DETAIL,
-    ) ?? false,
+const extensionSupportsDetails = computed(() =>
+  [
+    FleetyardsSyncAction.SYNC_BUYBACK_DETAIL,
+    FleetyardsSyncAction.SYNC_BUYBACK_PRICING,
+  ].every((action) => extensionInfo.value.actions?.includes(action)),
 );
 
 const identityStatus = ref<"pending" | "connected" | "notFound">("pending");

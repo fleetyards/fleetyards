@@ -22,13 +22,13 @@ const detailPage = (items: string[], price = "15708", currency = "EUR") => `
 </div>`;
 
 describe("extractBuybackDetail", () => {
-  it("reads the price and a term insurance", () => {
+  it("reads the price in the account's currency and a term insurance", () => {
     expect(
       extractBuybackDetail(
         detailPage(["6 Month Insurance", "VFG Industrial Hangar"]),
       ),
     ).toEqual({
-      price: 157.08,
+      cents: 15708,
       currency: "EUR",
       insuranceMonths: 6,
       lifetimeInsurance: false,
@@ -59,7 +59,7 @@ describe("extractBuybackDetail", () => {
     expect(
       extractBuybackDetail(detailPage(["Sabre - Beyond Paint"], "1047")),
     ).toEqual({
-      price: 10.47,
+      cents: 1047,
       currency: "EUR",
       insuranceMonths: undefined,
       lifetimeInsurance: false,
