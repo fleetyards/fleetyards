@@ -68,6 +68,30 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_equal 2, notifications.sole.occurrences
   end
 
+  test "POST /hangar/rsi-page-reports counts a user once per page and check" do
+    previous_store = Rails.cache
+    Rails.cache = ActiveSupport::Cache::MemoryStore.new
+
+    sign_in @user
+    2.times { post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_list"}, as: :json }
+    sign_in create(:user)
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_list"}, as: :json
+
+    assert_response :no_content
+    assert_equal 2, notifications.sole.occurrences
+  ensure
+    Rails.cache = previous_store
+  end
+
+  test "POST /hangar/rsi-page-reports refuses an extension version that is not one" do
+    sign_in @user
+
+    assert_api_response :post, 400,
+      body: {page: "hangar", check: "missing_list", extensionVersion: "[x](https://x.test)"}
+
+    assert_empty notifications
+  end
+
   test "POST /hangar/rsi-page-reports keeps different failures apart" do
     sign_in @user
 

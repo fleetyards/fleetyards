@@ -35388,7 +35388,7 @@ components:
           minimum: 1
         extensionVersion:
           type: string
-          maxLength: 32
+          pattern: "^[0-9A-Za-z.+-]{1,32}$"
       additionalProperties: false
       required:
       - page

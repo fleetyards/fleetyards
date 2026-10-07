@@ -12,7 +12,7 @@ module V1
             page: {"$ref": "#/components/schemas/RsiPageKindEnum"},
             check: {"$ref": "#/components/schemas/RsiPageCheckEnum"},
             pageNumber: {type: :integer, minimum: 1},
-            extensionVersion: {type: :string, maxLength: 32}
+            extensionVersion: {type: :string, pattern: "^[0-9A-Za-z.+-]{1,32}$"}
           },
           additionalProperties: false,
           required: %w[page check]

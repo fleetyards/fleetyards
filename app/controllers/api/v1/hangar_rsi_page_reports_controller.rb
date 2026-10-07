@@ -12,6 +12,7 @@ module Api
         authorize! to: :update?, with: ::HangarPolicy
 
         ::RsiPageReport.record!(
+          user: current_resource_owner,
           page: report_params[:page],
           check: report_params[:check],
           page_number: report_params[:page_number],
