@@ -26,9 +26,31 @@ const rsiIdentity = vi.fn(
   }),
 );
 
-vi.mock("@/frontend/composables/useSyncExtension", () => ({
-  useSyncExtension: () => ({ request: rsiIdentity, supports: vi.fn() }),
-}));
+// Only the identify check: the detail pass talks to the extension through the
+// same composable, and its requests have to reach `postMessage`.
+vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import("@/frontend/composables/useSyncExtension")
+    >();
+
+  return {
+    useSyncExtension: () => {
+      const extension = actual.useSyncExtension();
+
+      return {
+        ...extension,
+        request: (action: string, ...rest: unknown[]) =>
+          action === "identify"
+            ? rsiIdentity()
+            : (extension.request as (...args: unknown[]) => unknown)(
+                action,
+                ...rest,
+              ),
+      };
+    },
+  };
+});
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),

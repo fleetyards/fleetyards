@@ -254,12 +254,12 @@ describe("extractBuybackPage", () => {
   });
 
   it("reads an entry RSI marks as not available", () => {
-    const page = extractBuybackPage(
+    const page = readPage(
       buybackPage(
         `<li><article class="pledge" data-disabled="1"><h1 title="Package - Limited Edition">Package - Limited Edition</h1><a class="holosmallbtn" href="/pledge/buyback/8">Buy Back</a></article></li>`,
       ),
     );
 
-    expect(page?.pledges[0]?.available).toBe(false);
+    expect(page.pledges[0]?.available).toBe(false);
   });
 });
