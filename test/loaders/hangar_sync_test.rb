@@ -107,11 +107,13 @@ class HangarSyncTest < ActiveSupport::TestCase
   end
 
   # The javelin is the one existing ship the pledge list does not carry, so it
-  # is what every action below is about.
+  # is what every action below is about. The andromeda is one it does carry: a
+  # run that recognises none of the user's ships acts on nothing.
   class UnmatchedVehiclesTest < HangarSyncTest
     setup do
       @javelin_model = Model.find_by!(slug: "aegs-javelin")
       @jav_ship = create(:vehicle, user: @user, model: @javelin_model, name: "Ozymandias", wanted: false)
+      create(:vehicle, user: @user, model: Model.find_by!(slug: "rsi-constellation-andromeda"), wanted: false)
     end
 
     def run_with(**attributes)
@@ -145,6 +147,20 @@ class HangarSyncTest < ActiveSupport::TestCase
 
       assert Vehicle.exists?(@jav_ship.id)
       refute_predicate @jav_ship.reload, :wanted?
+      assert_equal [], result[:deleted_vehicles]
+      assert_includes result[:unchanged_vehicles], @jav_ship.id
+    end
+
+    # A relabelled ship kind drops every real ship, but a beacon the client
+    # types as a ship still arrives: the list is not empty, yet it matches
+    # nothing the user has.
+    test "deletes nothing when the run matched none of the user's ships" do
+      input = [{"id" => "999", "name" => "GreyCat Estate Geotack Planetary Beacon", "type" => "ship"}]
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input:, unmatched_vehicles_action: "delete")
+
+      result = ::HangarSync.new(input).run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
       assert_equal [], result[:deleted_vehicles]
       assert_includes result[:unchanged_vehicles], @jav_ship.id
     end
@@ -312,6 +328,8 @@ class HangarSyncTest < ActiveSupport::TestCase
       # about whether the ship is owned.
       javelin = create(:vehicle, user: @user, model: javelin_model, wanted: false)
       bundled = Vehicle.find_by!(bundled: true, vehicle_id: javelin.id)
+      # One the pledge list carries, so the run recognises the hangar at all.
+      create(:vehicle, user: @user, model: @andromeda_model, wanted: false)
       refute_predicate bundled, :wanted?
 
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, add_bundled_vehicles: false)

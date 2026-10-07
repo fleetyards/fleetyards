@@ -315,7 +315,7 @@ class HangarSync < HangarImporter
       imported_vehicles:,
       found_vehicles:,
       missing_models:,
-      **handle_unmatched_vehicles(vehicle_scope.purchased.where.not(id: vehicle_ids))
+      **handle_unmatched_vehicles(vehicle_scope.purchased.where.not(id: vehicle_ids), matched_any: found_vehicles.any?)
     }
   end
 
@@ -330,7 +330,7 @@ class HangarSync < HangarImporter
   # move never touched those rows either: `reset_pledge_id_if_wanted` has
   # already cleared what it writes, so the `update!` was a no-op that the
   # `updated_at` check below kept out of the report.
-  private def handle_unmatched_vehicles(scope)
+  private def handle_unmatched_vehicles(scope, matched_any: true)
     outcome = {
       moved_vehicles_to_wanted: [],
       deleted_vehicles: [],
@@ -350,10 +350,12 @@ class HangarSync < HangarImporter
     # survivable under `delete`, so the row is read once more here.
     return outcome if @cancelled || @import&.cancel_requested?
 
-    # A pledge list without a single ship is what a changed RSI page looks like
-    # once only the components and paints still parse. Every ship would read as
-    # unmatched, and under `delete` the hangar would go with them.
-    return outcome.merge(unchanged_vehicles: scope.pluck(:id)) if ships.blank?
+    # A run that recognised none of the user's ships is what a changed RSI page
+    # looks like once only some items still parse -- a relabelled ship kind, or
+    # a lone beacon the client reads as a ship. Every ship would read as
+    # unmatched, and under `delete` the hangar would go with them. A hangar
+    # whose ships really are all gone keeps them, listed as unchanged.
+    return outcome.merge(unchanged_vehicles: scope.pluck(:id)) unless matched_any
 
     case @import&.unmatched_vehicles_action
     when "keep" then outcome.merge(unchanged_vehicles: scope.pluck(:id))
