@@ -140,6 +140,7 @@
       "linkExisting": "連結現有",
       "loadMore": "載入更多",
       "unlink": "取消連結",
+      "syncRsiBuybacks": "同步 RSI 回購",
       "syncRsiHangar": "同步RSI機庫",
       "oauthApplications": {
         "create": "新增應用程式",

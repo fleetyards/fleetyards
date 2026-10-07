@@ -140,6 +140,7 @@
       "linkExisting": "Lier existant",
       "loadMore": "Charger plus",
       "unlink": "Délier",
+      "syncRsiBuybacks": "Synchroniser les rachats RSI",
       "syncRsiHangar": "Synchroniser le hangar RSI",
       "oauthApplications": {
         "create": "Nouvelle application",

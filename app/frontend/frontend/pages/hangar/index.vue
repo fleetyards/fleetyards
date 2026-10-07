@@ -559,6 +559,14 @@ const openDisplayOptionsModal = () => {
         <HangarImportBtn :size="BtnSizesEnum.SM" />
 
         <Btn
+          :aria-label="t('nav.hangar.buybacks')"
+          :to="{ name: 'hangar-buybacks' }"
+        >
+          <i class="fa-light fa-rotate-left" />
+          <span>{{ t("nav.hangar.buybacks") }}</span>
+        </Btn>
+
+        <Btn
           :aria-label="t('nav.hangar.imports')"
           :to="{ name: 'hangar-imports' }"
         >

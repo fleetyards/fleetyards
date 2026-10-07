@@ -2481,6 +2481,35 @@
         "type": "Type",
         "shop": "Shop"
       },
+      "buybacks": {
+        "name": "Buy-back pledges",
+        "search": "Search buy-back pledges",
+        "kind": "Kind",
+        "kinds": {
+          "package": "Package",
+          "ship": "Standalone ship",
+          "upgrade": "Upgrade",
+          "paint": "Paint",
+          "addon": "Add-on",
+          "other": "Other"
+        },
+        "upgraded": "Upgraded",
+        "reclaimedOn": "Reclaimed"
+      },
+      "buybackSync": {
+        "extensionVersion": "Installed extension version",
+        "pages": "Pages",
+        "found": "Buy-back pledges found",
+        "added": "New",
+        "removed": "Removed",
+        "status": {
+          "fetching": "Reading buy-back pages",
+          "submitting": "Saving",
+          "finished": "Finished",
+          "unsupported": "Not supported",
+          "failed": "Failed"
+        }
+      },
       "syncExtension": {
         "warnings": "Warnings",
         "status": {

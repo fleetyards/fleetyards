@@ -235,8 +235,10 @@
         "publicStats": "Statistiken",
         "publicWishlist": "%{user} Wunschliste",
         "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen",
+        "buybacks": "Rückkauf-Pledges",
         "imports": "Importe"
       },
+      "buybackSync": "RSI-Rückkauf-Pledges synchronisieren",
       "syncExtension": "RSI-Hangar synchronisieren",
       "editMyVehicle": "Edit my %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",

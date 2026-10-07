@@ -22,6 +22,7 @@
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "vehicleCargo": "货物",
+        "buybacks": "回购",
         "imports": "导入记录",
         "transfers": "转移"
       },

@@ -660,6 +660,11 @@
         "finished": "%{type} import completed successfully.",
         "failed": "%{type} import failed: %{info}"
       },
+      "buybackSync": {
+        "started": "Syncing your buy-back pledges...",
+        "success": "Your buy-back pledges have been synced.",
+        "failure": "Your buy-back pledges could not be synced."
+      },
       "syncExtension": {
         "started": "Syncing your Hangar...",
         "success": "Your Hangar has been synced.",

@@ -140,6 +140,7 @@
       "linkExisting": "Collega esistente",
       "loadMore": "Carica altro",
       "unlink": "Scollega",
+      "syncRsiBuybacks": "Sincronizza riacquisti RSI",
       "syncRsiHangar": "Sincronizza hangar RSI",
       "oauthApplications": {
         "create": "Nuova applicazione",

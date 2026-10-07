@@ -46,6 +46,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Cargaison du vaisseau",
+        "buybacks": "Pledges rachetables",
         "imports": "Imports",
         "transfers": "Transferts"
       },

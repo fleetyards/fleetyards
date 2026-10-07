@@ -5,6 +5,8 @@ resource :hangar, only: %i[show destroy] do
   get "export/hangar-link", to: "hangars#export_hangar_link"
   put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
   get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
+  put "sync-rsi-buybacks", to: "hangar_buybacks#sync"
+  get "buybacks", to: "hangar_buybacks#index"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 

@@ -2481,6 +2481,35 @@
         "type": "Tipo",
         "shop": "Tienda"
       },
+      "buybacks": {
+        "name": "Pledges de recompra",
+        "search": "Buscar pledges de recompra",
+        "kind": "Tipo",
+        "kinds": {
+          "package": "Paquete",
+          "ship": "Nave individual",
+          "upgrade": "Mejora",
+          "paint": "Pintura",
+          "addon": "Complemento",
+          "other": "Otro"
+        },
+        "upgraded": "Mejorado",
+        "reclaimedOn": "Fundido"
+      },
+      "buybackSync": {
+        "extensionVersion": "Versión instalada de la extensión",
+        "pages": "Páginas",
+        "found": "Pledges de recompra encontrados",
+        "added": "Nuevos",
+        "removed": "Eliminados",
+        "status": {
+          "fetching": "Leyendo páginas de recompra",
+          "submitting": "Guardando",
+          "finished": "Finalizado",
+          "unsupported": "No compatible",
+          "failed": "Fallido"
+        }
+      },
       "syncExtension": {
         "warnings": "Avisos",
         "status": {

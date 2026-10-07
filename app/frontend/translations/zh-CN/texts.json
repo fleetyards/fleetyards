@@ -183,6 +183,13 @@
         "requestingAccess": "%{clientName} 正在请求访问您的账户。",
         "scopesIntro": "此应用将能够："
       },
+      "buybacks": {
+        "intro": "你在 RSI 熔炼并可回购的承诺，以你上次同步为准。同步会通过 Fleetyards Sync 扩展读取你的 RSI 回购列表。"
+      },
+      "buybackSync": {
+        "info": "读取你的 RSI 回购列表的每一页，并用它替换 Fleetyards 上保存的可回购承诺。你的机库不会被改动。列表较长时需要几分钟。",
+        "unsupported": "你的 Fleetyards Sync 扩展还无法读取可回购的承诺。请更新扩展以同步它们。"
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",

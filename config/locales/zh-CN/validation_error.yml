@@ -59,6 +59,8 @@ zh-CN:
       create: 无法创建群组
       destroy: 无法删除群组
       update: 无法更新群组
+    buyback_pledges:
+      sync: 无法同步可回购的承诺。
     fleet_contracts:
       create: 无法创建合约。
       update: 无法更新合约。

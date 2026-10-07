@@ -2481,6 +2481,35 @@
         "type": "類型",
         "shop": "商店"
       },
+      "buybacks": {
+        "name": "可回購承諾",
+        "search": "搜尋可回購承諾",
+        "kind": "類型",
+        "kinds": {
+          "package": "禮包",
+          "ship": "單船",
+          "upgrade": "升級",
+          "paint": "塗裝",
+          "addon": "附加內容",
+          "other": "其他"
+        },
+        "upgraded": "已升級",
+        "reclaimedOn": "熔煉於"
+      },
+      "buybackSync": {
+        "extensionVersion": "已安裝的擴充功能版本",
+        "pages": "頁數",
+        "found": "找到的可回購承諾",
+        "added": "新增",
+        "removed": "已移除",
+        "status": {
+          "fetching": "正在讀取回購頁面",
+          "submitting": "正在儲存",
+          "finished": "已完成",
+          "unsupported": "不支援",
+          "failed": "失敗"
+        }
+      },
       "syncExtension": {
         "warnings": "警告",
         "status": {

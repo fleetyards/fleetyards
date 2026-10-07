@@ -60,6 +60,8 @@ fr:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
       update: Le groupe n'a pas pu être mise à jour
+    buyback_pledges:
+      sync: Les pledges rachetables n'ont pas pu être synchronisés.
     fleet_contracts:
       create: Le contrat n'a pas pu être créé.
       update: Le contrat n'a pas pu être mis à jour.

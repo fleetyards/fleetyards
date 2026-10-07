@@ -2481,6 +2481,35 @@
         "type": "Typ",
         "shop": "Geschäft"
       },
+      "buybacks": {
+        "name": "Rückkauf-Pledges",
+        "search": "Rückkauf-Pledges durchsuchen",
+        "kind": "Art",
+        "kinds": {
+          "package": "Paket",
+          "ship": "Einzelschiff",
+          "upgrade": "Upgrade",
+          "paint": "Lackierung",
+          "addon": "Add-on",
+          "other": "Sonstiges"
+        },
+        "upgraded": "Aufgewertet",
+        "reclaimedOn": "Eingeschmolzen"
+      },
+      "buybackSync": {
+        "extensionVersion": "Installierte Erweiterungsversion",
+        "pages": "Seiten",
+        "found": "Gefundene Rückkauf-Pledges",
+        "added": "Neu",
+        "removed": "Entfernt",
+        "status": {
+          "fetching": "Rückkaufseiten werden gelesen",
+          "submitting": "Wird gespeichert",
+          "finished": "Abgeschlossen",
+          "unsupported": "Nicht unterstützt",
+          "failed": "Fehlgeschlagen"
+        }
+      },
       "syncExtension": {
         "warnings": "Warnungen",
         "status": {

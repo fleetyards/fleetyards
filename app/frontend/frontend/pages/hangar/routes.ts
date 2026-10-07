@@ -129,6 +129,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "buybacks/",
+    name: "hangar-buybacks",
+    component: () => import("@/frontend/pages/hangar/buybacks.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.buybacks",
+      backgroundImage: "bg-5",
+    },
+  },
+  {
     path: "stats/",
     name: "hangar-stats",
     component: () => import("@/frontend/pages/hangar/stats.vue"),

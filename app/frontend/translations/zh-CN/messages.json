@@ -650,6 +650,11 @@
         "finished": "%{type} 导入成功完成。",
         "failed": "%{type} 导入失败: %{info}"
       },
+      "buybackSync": {
+        "started": "正在同步你的可回购承诺...",
+        "success": "你的可回购承诺已同步。",
+        "failure": "无法同步你的可回购承诺。"
+      },
       "syncExtension": {
         "started": "正在同步您的机库...",
         "success": "您的机库已同步。",

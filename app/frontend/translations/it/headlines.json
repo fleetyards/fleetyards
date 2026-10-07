@@ -235,8 +235,10 @@
         "publicStats": "Statistiche",
         "publicWishlist": "Lista dei desideri di %{user}",
         "resetIngame": "Resetta le navi in gioco dopo il wipe",
+        "buybacks": "Pledge riacquistabili",
         "imports": "Importazioni"
       },
+      "buybackSync": "Sincronizza i pledge riacquistabili RSI",
       "syncExtension": "Sincronizza hangar RSI",
       "editMyVehicle": "Modifica il mio %{vehicle}",
       "nameMyVehicle": "Dai un nome al mio %{vehicle}",
