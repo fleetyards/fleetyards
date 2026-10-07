@@ -19390,8 +19390,7 @@ components:
           type: integer
         price:
           type: number
-        priceCurrency:
-          type: string
+          description: What buying the pledge back costs, in USD before tax
         insuranceMonths:
           type: integer
         lifetimeInsurance:
@@ -35233,9 +35232,7 @@ components:
         price:
           type: number
           minimum: 0
-        currency:
-          type: string
-          pattern: "^[A-Z]{3}$"
+          description: In USD before tax
         insuranceMonths:
           type: integer
           minimum: 0

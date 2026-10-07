@@ -14,7 +14,6 @@
 #  lifetime_insurance   :boolean          default(FALSE), not null
 #  name                 :string           not null
 #  price                :decimal(15, 2)
-#  price_currency       :string
 #  reclaimed_on         :date
 #  upgraded             :boolean          default(FALSE), not null
 #  created_at           :datetime         not null
@@ -51,9 +50,10 @@ class BuybackPledge < ApplicationRecord
   validates :name, presence: true
   validates :kind, inclusion: {in: KINDS}
 
-  # Buying an upgrade back costs what the upgrade costs today, the difference
-  # between both ships' store prices. Ours follow RSI's store, so it is
-  # computed rather than read from RSI and stored.
+  # In USD, like every price here. Buying an upgrade back costs what the
+  # upgrade costs today, the difference between both ships' store prices.
+  # Ours follow RSI's store, so it is computed rather than read from RSI and
+  # stored.
   def upgrade_price
     return unless kind == "upgrade"
 

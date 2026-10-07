@@ -131,14 +131,13 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       priced, unknown = parsed_body["items"].sort_by { |item| item["name"] }
 
       assert_in_delta 25.0, priced["price"]
-      assert_equal "USD", priced["priceCurrency"]
       assert_nil unknown["price"]
     end
   end
 
   test "GET /hangar/buybacks includes price, insurance and availability" do
     user = create(:user)
-    buyback(user, available: false, price: 157.08, price_currency: "EUR", insurance_months: 120)
+    buyback(user, available: false, price: 157.08, insurance_months: 120)
     sign_in user
 
     assert_api_response :get, 200 do
@@ -146,7 +145,6 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
       assert_equal false, item["available"]
       assert_in_delta 157.08, item["price"]
-      assert_equal "EUR", item["priceCurrency"]
       assert_equal 120, item["insuranceMonths"]
       assert_equal false, item["lifetimeInsurance"]
     end
@@ -206,7 +204,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
   test "PUT /hangar/sync-rsi-buybacks keeps stored details and only lists pledges without them" do
     user = create(:user)
-    priced = buyback(user, rsi_pledge_id: "1", price: 94.25, price_currency: "EUR", insurance_months: 6,
+    priced = buyback(user, rsi_pledge_id: "1", price: 94.25, insurance_months: 6,
       details_synced_at: 1.day.ago)
     sign_in user
 
@@ -328,8 +326,8 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     sign_in user
 
     body = {items: [
-      {id: "1", price: 94.25, currency: "EUR", insuranceMonths: 6},
-      {id: "2", price: 41.89, currency: "EUR", lifetimeInsurance: true},
+      {id: "1", price: 94.25, insuranceMonths: 6},
+      {id: "2", price: 41.89, lifetimeInsurance: true},
       {id: "3"}
     ]}
 
@@ -340,7 +338,6 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     gladius.reload
 
     assert_in_delta 94.25, gladius.price
-    assert_equal "EUR", gladius.price_currency
     assert_equal 6, gladius.insurance_months
     assert_not gladius.lifetime_insurance?
     assert_predicate gladius.details_synced_at, :present?
@@ -354,7 +351,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
   test "PUT /hangar/sync-rsi-buybacks reads stored details only once" do
     user = create(:user)
-    buyback(user, rsi_pledge_id: "1", price: 10, price_currency: "EUR", details_synced_at: 1.year.ago)
+    buyback(user, rsi_pledge_id: "1", price: 10, details_synced_at: 1.year.ago)
     sign_in user
 
     body = {items: [{id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius"}]}
@@ -364,25 +361,12 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT /hangar/sync-rsi-buyback-details stores no price without its currency" do
-    user = create(:user)
-    pledge = buyback(user, rsi_pledge_id: "1")
-    sign_in user
-
-    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: {items: [{id: "1", price: 10}]}
-
-    pledge.reload
-
-    assert_nil pledge.price
-    assert_nil pledge.price_currency
-  end
-
   test "PUT /hangar/sync-rsi-buyback-details leaves somebody else's pledge alone" do
     user = create(:user)
     other = buyback(create(:user), rsi_pledge_id: "1")
     sign_in user
 
-    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: {items: [{id: "1", price: 10, currency: "USD"}]} do
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: {items: [{id: "1", price: 10}]} do
       assert_equal 0, parsed_body["updated"]
     end
 

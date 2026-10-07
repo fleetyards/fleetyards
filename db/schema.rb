@@ -305,7 +305,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.datetime "updated_at", null: false
     t.boolean "available", default: true, null: false
     t.decimal "price", precision: 15, scale: 2
-    t.string "price_currency"
     t.integer "insurance_months"
     t.boolean "lifetime_insurance", default: false, null: false
     t.datetime "details_synced_at"

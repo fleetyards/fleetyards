@@ -63,7 +63,7 @@ module Api
       end
 
       private def sync_details_params
-        params.permit(items: %i[id price currency insurance_months lifetime_insurance])
+        params.permit(items: %i[id price insurance_months lifetime_insurance])
       end
     end
   end

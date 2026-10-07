@@ -18,7 +18,7 @@ module BuybackPledges
       updated = BuybackPledge.transaction do
         items.uniq { |item| item[:id].to_s }.sum do |item|
           user.buyback_pledges.where(rsi_pledge_id: item[:id].to_s).update_all(
-            **price(item),
+            price: item[:price],
             insurance_months: item[:insurance_months],
             lifetime_insurance: ActiveModel::Type::Boolean.new.cast(item[:lifetime_insurance]) || false,
             details_synced_at: synced_at,
@@ -28,16 +28,6 @@ module BuybackPledges
       end
 
       {updated:}
-    end
-
-    # A price is only stored with the currency it is in; one without reads as a
-    # figure in no currency at all.
-    private def price(item)
-      if item[:price].nil? || item[:currency].blank?
-        {price: nil, price_currency: nil}
-      else
-        {price: item[:price], price_currency: item[:currency]}
-      end
     end
   end
 end

@@ -10,8 +10,7 @@ module V1
           type: :object,
           properties: {
             id: {type: :string},
-            price: {type: :number, minimum: 0},
-            currency: {type: :string, pattern: "^[A-Z]{3}$"},
+            price: {type: :number, minimum: 0, description: "In USD before tax"},
             insuranceMonths: {type: :integer, minimum: 0},
             lifetimeInsurance: {type: :boolean}
           },
