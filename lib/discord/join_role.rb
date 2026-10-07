@@ -93,7 +93,9 @@ module Discord
       uid = discord_uid(user) if configured?
       return membership.request! if uid.blank?
 
-      locked = self.class.with_member_lock(guild_id, uid, timeout_seconds: TIMEOUT) do
+      acquired = false
+      result = self.class.with_member_lock(guild_id, uid, timeout_seconds: TIMEOUT) do
+        acquired = true
         # An update for them may have handled it while this waited.
         next membership.accepted? unless membership.reload.kept? && membership.created?
 
@@ -104,8 +106,11 @@ module Discord
           membership.request!
         end
       end
+      return result if acquired
 
-      locked || (membership.reload.created? && membership.request!)
+      # Without the member lock, the row lock is what orders this against the
+      # update that holds it and may be admitting this very membership.
+      membership.with_lock { membership.created? ? membership.request! : membership.accepted? }
     end
 
     # Applies the roles a player holds now. Nothing happens unless that differs
@@ -115,11 +120,13 @@ module Discord
       return unless configured?
 
       if Array(role_ids).include?(role_id)
-        return unless FleetDiscordRoleHolder.remember(fleet, user)
+        # Not recorded as held unless it took effect -- failing or raising --
+        # so the next update tries again rather than finding nothing changed.
+        FleetDiscordRoleHolder.transaction(requires_new: true) do
+          next unless FleetDiscordRoleHolder.remember(fleet, user)
 
-        # Not recorded as held unless it took effect, so the next update tries
-        # again rather than finding nothing changed.
-        FleetDiscordRoleHolder.forget(fleet, user) unless admit(user, quiet:)
+          raise ActiveRecord::Rollback unless admit(user, quiet:)
+        end
       elsif FleetDiscordRoleHolder.forget(fleet, user)
         release(user)
       end
@@ -139,9 +146,10 @@ module Discord
       when nil
         join(fleet.fleet_memberships.new(user:, fleet_role: fleet.default_member_role), quiet:)
       when "created"
-        # Asking to join takes the same lock and stands aside once it sees
-        # this, so the membership is either abandoned or the role's to finish.
-        join(membership, quiet:)
+        # Asking to join stands aside once it sees this, so the membership is
+        # either abandoned or the role's to finish. The row lock covers asking
+        # to join that gave up waiting for the member lock.
+        membership.with_lock { membership.created? && join(membership, quiet:) }
       when "requested"
         membership.answer_request(accept: true) == :done && membership.update!(discord_role_granted: true)
       when "invited"

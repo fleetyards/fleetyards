@@ -126,6 +126,25 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
+    test "an admission that raises leaves the role unrecorded, so the next update tries again" do
+      invitation = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      invitation.invite!
+      FleetMembership.any_instance.stubs(:accept_invitation!).raises(ActiveRecord::RecordInvalid)
+
+      assert_raises(ActiveRecord::RecordInvalid) { join_role.apply(@user, [JOIN_ROLE]) }
+
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "asking to join that gave up waiting leaves a membership the role admitted alone" do
+      JoinRole.stubs(:with_member_lock).returns(false)
+      asking = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      join_role.apply(@user, [JOIN_ROLE])
+
+      assert join_role.request_or_join(asking)
+      assert_predicate asking.reload, :accepted?
+    end
+
     test "gaining the role does not overrule an officer who declined the player" do
       declined = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
       declined.update!(aasm_state: "declined")
