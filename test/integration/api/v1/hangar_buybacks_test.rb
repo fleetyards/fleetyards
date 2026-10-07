@@ -68,6 +68,35 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/hangar/sync-rsi-buyback-details" do
+    put("Sync RSI Buy-back Pledge Details") do
+      operationId "syncRsiBuybackDetails"
+      tags "Hangar"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::V1::Schemas::Inputs::SyncRsiBuybackDetailsInput
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:write"]},
+        {OpenId: ["hangar", "hangar:write"]}
+      ]
+
+      response(200, "successful") do
+        schema ::V1::Schemas::Hangar::BuybackDetailsSyncResult
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   def buyback(user, **attributes)
     BuybackPledge.create!(
       user:, rsi_pledge_id: SecureRandom.random_number(10**8).to_s, kind: "ship", name: "Standalone Ship - Cutlass Black",
@@ -86,6 +115,22 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       assert_equal [newer.id, older.id], parsed_body["items"].pluck("id")
       assert_equal "2026-09-21", parsed_body["items"].first["reclaimedOn"]
       assert_equal 322, parsed_body["items"].first["upgradeToShipId"]
+    end
+  end
+
+  test "GET /hangar/buybacks includes price, insurance and availability" do
+    user = create(:user)
+    buyback(user, available: false, price: 157.08, price_currency: "EUR", insurance_months: 120)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].first
+
+      assert_equal false, item["available"]
+      assert_in_delta 157.08, item["price"]
+      assert_equal "EUR", item["priceCurrency"]
+      assert_equal 120, item["insuranceMonths"]
+      assert_equal false, item["lifetimeInsurance"]
     end
   end
 
@@ -123,11 +168,12 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
        reclaimedOn: "2023-11-26", contained: "Cutter Scout and 3 items",
        image: "https://robertsspaceindustries.com/media/s1pzv94jrc3jhr/heap_infobox/cutter.jpg"},
       {id: "111313560", kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
-       upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461}
+       available: false, upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461}
     ]}
 
-    assert_api_response :put, 200, body: body do
-      assert_equal({"total" => 2, "added" => 2, "removed" => 0}, parsed_body)
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal({"total" => 2, "added" => 2, "removed" => 0}, parsed_body.except("detailsPending"))
+      assert_equal %w[111313560 44725819], parsed_body["detailsPending"].sort
     end
 
     cutter = user.buyback_pledges.find_by!(rsi_pledge_id: "44725819")
@@ -135,7 +181,31 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate cutter, :upgraded?
     assert_equal Date.new(2023, 11, 26), cutter.reclaimed_on
     assert_equal "Cutter Scout and 3 items", cutter.contained
+    assert_predicate cutter, :available?
     assert_equal 19461, user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").upgrade_to_sku_id
+    assert_not user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").available?
+  end
+
+  test "PUT /hangar/sync-rsi-buybacks keeps stored details and only lists pledges without them" do
+    user = create(:user)
+    priced = buyback(user, rsi_pledge_id: "1", price: 94.25, price_currency: "EUR", insurance_months: 6,
+      details_synced_at: 1.day.ago)
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius", available: false},
+      {id: "2", kind: "paint", name: "Paints - Sabre - Tribunal Paint"}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal %w[2], parsed_body["detailsPending"]
+    end
+
+    priced.reload
+
+    assert_in_delta 94.25, priced.price
+    assert_equal 6, priced.insurance_months
+    assert_not priced.available?
   end
 
   test "PUT /hangar/sync-rsi-buybacks replaces the previous list" do
@@ -149,8 +219,8 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       {id: "3", kind: "paint", name: "Paints - Sabre - Tribunal Paint"}
     ]}
 
-    assert_api_response :put, 200, body: body do
-      assert_equal({"total" => 2, "added" => 1, "removed" => 1}, parsed_body)
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal({"total" => 2, "added" => 1, "removed" => 1}, parsed_body.except("detailsPending"))
     end
 
     assert_equal %w[1 3], user.buyback_pledges.order(:rsi_pledge_id).pluck(:rsi_pledge_id)
@@ -162,7 +232,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     buyback(user)
     sign_in user
 
-    assert_api_response :put, 200, body: {items: []} do
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: {items: []} do
       assert_equal 1, parsed_body["removed"]
     end
 
@@ -175,7 +245,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     item = {id: "1", kind: "ship", name: "Standalone Ship - Cutlass Black"}
 
-    assert_api_response :put, 200, body: {items: [item, item]} do
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: {items: [item, item]} do
       assert_equal 1, parsed_body["total"]
     end
   end
@@ -185,7 +255,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     other = buyback(create(:user))
     sign_in user
 
-    assert_api_response :put, 200, body: {items: []}
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: {items: []}
 
     assert BuybackPledge.exists?(other.id)
   end
@@ -195,7 +265,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     buyback(user)
     sign_in user
 
-    assert_api_response :put, 400, body: {}
+    assert_api_response :put, 400, api_path: "/hangar/sync-rsi-buybacks", body: {}
 
     assert_equal 1, user.buyback_pledges.count
   end
@@ -205,7 +275,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     buyback(user)
     sign_in user
 
-    assert_api_response :put, 400, body: {items: nil}
+    assert_api_response :put, 400, api_path: "/hangar/sync-rsi-buybacks", body: {items: nil}
 
     assert_equal 1, user.buyback_pledges.count
   end
@@ -223,12 +293,66 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       {id: "2", kind: "ship", name: ""}
     ]}
 
-    assert_api_response :put, 400, body: body
+    assert_api_response :put, 400, api_path: "/hangar/sync-rsi-buybacks", body: body
 
     assert_equal %w[1 2], user.buyback_pledges.order(:rsi_pledge_id).pluck(:rsi_pledge_id)
   end
 
   test "PUT /hangar/sync-rsi-buybacks requires a session or token" do
-    assert_api_response :put, 401, body: {items: []}
+    assert_api_response :put, 401, api_path: "/hangar/sync-rsi-buybacks", body: {items: []}
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details stores price and insurance" do
+    user = create(:user)
+    gladius = buyback(user, rsi_pledge_id: "1")
+    cutter = buyback(user, rsi_pledge_id: "2")
+    upgrade = buyback(user, rsi_pledge_id: "3", kind: "upgrade")
+    sign_in user
+
+    body = {items: [
+      {id: "1", price: 94.25, currency: "EUR", insuranceMonths: 6},
+      {id: "2", price: 41.89, currency: "EUR", lifetimeInsurance: true},
+      {id: "3"}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body do
+      assert_equal({"updated" => 3}, parsed_body)
+    end
+
+    gladius.reload
+
+    assert_in_delta 94.25, gladius.price
+    assert_equal "EUR", gladius.price_currency
+    assert_equal 6, gladius.insurance_months
+    assert_not gladius.lifetime_insurance?
+    assert_predicate gladius.details_synced_at, :present?
+    assert_predicate cutter.reload, :lifetime_insurance?
+
+    upgrade.reload
+
+    assert_nil upgrade.price
+    assert_predicate upgrade.details_synced_at, :present?
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details leaves somebody else's pledge alone" do
+    user = create(:user)
+    other = buyback(create(:user), rsi_pledge_id: "1")
+    sign_in user
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: {items: [{id: "1", price: 10, currency: "USD"}]} do
+      assert_equal 0, parsed_body["updated"]
+    end
+
+    assert_nil other.reload.price
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details without a list is refused" do
+    sign_in create(:user)
+
+    assert_api_response :put, 400, api_path: "/hangar/sync-rsi-buyback-details", body: {}
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details requires a session or token" do
+    assert_api_response :put, 401, api_path: "/hangar/sync-rsi-buyback-details", body: {items: []}
   end
 end

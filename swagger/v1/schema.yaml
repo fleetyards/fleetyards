@@ -11417,6 +11417,45 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-buyback-details":
+    put:
+      summary: Sync RSI Buy-back Pledge Details
+      tags:
+      - Hangar
+      operationId: syncRsiBuybackDetails
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SyncRsiBuybackDetailsInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackDetailsSyncResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/sync-rsi-buybacks":
     put:
       summary: Sync RSI Buy-back Pledges
@@ -19310,6 +19349,15 @@ components:
       - PLEDGE_STORE
       - INGAME
       title: BoughtViaEnum
+    BuybackDetailsSyncResult:
+      type: object
+      properties:
+        updated:
+          type: integer
+      additionalProperties: false
+      required:
+      - updated
+      title: BuybackDetailsSyncResult
     BuybackPledge:
       type: object
       properties:
@@ -19323,6 +19371,8 @@ components:
         name:
           type: string
         upgraded:
+          type: boolean
+        available:
           type: boolean
         reclaimedOn:
           type: string
@@ -19338,6 +19388,14 @@ components:
           type: integer
         upgradeToSkuId:
           type: integer
+        price:
+          type: number
+        priceCurrency:
+          type: string
+        insuranceMonths:
+          type: integer
+        lifetimeInsurance:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -19351,6 +19409,8 @@ components:
       - kind
       - name
       - upgraded
+      - available
+      - lifetimeInsurance
       - createdAt
       - updatedAt
       title: BuybackPledge
@@ -19404,11 +19464,16 @@ components:
           type: integer
         removed:
           type: integer
+        detailsPending:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       required:
       - total
       - added
       - removed
+      - detailsPending
       title: BuybackSyncResult
     CalendarSubscription:
       type: object
@@ -35160,6 +35225,26 @@ components:
       - id
       - username
       title: RelationshipUser
+    RsiBuybackDetailInput:
+      type: object
+      properties:
+        id:
+          type: string
+        price:
+          type: number
+          minimum: 0
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+        insuranceMonths:
+          type: integer
+          minimum: 0
+        lifetimeInsurance:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      title: RsiBuybackDetailInput
     RsiBuybackItemInput:
       type: object
       properties:
@@ -35170,6 +35255,8 @@ components:
         name:
           type: string
         upgraded:
+          type: boolean
+        available:
           type: boolean
         reclaimedOn:
           type: string
@@ -36063,6 +36150,18 @@ components:
       - fleetId
       additionalProperties: false
       title: SupporterNominationInput
+    SyncRsiBuybackDetailsInput:
+      type: object
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items:
+            "$ref": "#/components/schemas/RsiBuybackDetailInput"
+      additionalProperties: false
+      required:
+      - items
+      title: SyncRsiBuybackDetailsInput
     SyncRsiBuybacksInput:
       type: object
       properties:

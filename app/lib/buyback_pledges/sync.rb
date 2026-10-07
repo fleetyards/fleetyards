@@ -11,7 +11,7 @@ module BuybackPledges
     class InvalidSnapshot < StandardError; end
 
     ATTRIBUTES = %i[
-      kind name upgraded reclaimed_on contained image_url
+      kind name upgraded available reclaimed_on contained image_url
       upgrade_from_ship_id upgrade_to_ship_id upgrade_to_sku_id
     ].freeze
 
@@ -37,7 +37,8 @@ module BuybackPledges
         {
           total: rows.size,
           added: (pledge_ids - existing_ids).size,
-          removed:
+          removed:,
+          detailsPending: user.buyback_pledges.where(details_synced_at: nil).pluck(:rsi_pledge_id)
         }
       end
     end
@@ -59,6 +60,8 @@ module BuybackPledges
         user_id: user.id,
         rsi_pledge_id: item[:id].to_s,
         upgraded: ActiveModel::Type::Boolean.new.cast(item[:upgraded]) || false,
+        # Missing from a list read before availability was, so it says nothing.
+        available: ActiveModel::Type::Boolean.new.cast(item[:available]) != false,
         image_url: item[:image]
       )
     end

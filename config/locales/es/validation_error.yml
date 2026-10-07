@@ -65,6 +65,7 @@ es:
       update: No se pudo actualizar el grupo
     buyback_pledges:
       sync: No se pudieron sincronizar los pledges de recompra.
+      sync_details: No se pudieron guardar los detalles de recompra.
     fleet_contracts:
       create: No se pudo crear el contrato.
       update: No se pudo actualizar el contrato.

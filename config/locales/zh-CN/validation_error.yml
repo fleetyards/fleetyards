@@ -61,6 +61,7 @@ zh-CN:
       update: 无法更新群组
     buyback_pledges:
       sync: 无法同步可回购的承诺。
+      sync_details: 无法保存回购详情。
     fleet_contracts:
       create: 无法创建合约。
       update: 无法更新合约。

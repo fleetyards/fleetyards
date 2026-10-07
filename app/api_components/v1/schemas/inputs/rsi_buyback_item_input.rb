@@ -13,6 +13,7 @@ module V1
             kind: ::V1::Schemas::Enums::BuybackPledgeKindEnum,
             name: {type: :string},
             upgraded: {type: :boolean},
+            available: {type: :boolean},
             reclaimedOn: {type: :string, format: :date},
             contained: {type: :string},
             image: {type: :string, format: :uri},

@@ -1,5 +1,5 @@
 class BuybackPledgePolicy < ApplicationPolicy
-  alias_rule :sync?, to: :index?
+  alias_rule :sync?, :sync_details?, to: :index?
 
   def index?
     user.present?
