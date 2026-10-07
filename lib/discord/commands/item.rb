@@ -103,12 +103,20 @@ module Discord
       end
 
       # Too many items to list or offer, so the catalogue pages narrowed to
-      # the name stand in for them.
+      # the name stand in for them. A catalogue with only a few of them still
+      # lists each, so the one component among six pieces of equipment is not
+      # buried with them.
       private def too_common(query, carriers)
         name = ::Catalogue::TokenResolver.parse(query).last
-        lines = carriers.map do |prefix, count|
-          url = url_for_path("/catalogue/#{PAGES.fetch(prefix)}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
-          "• [#{self.class.type_label(prefix)}](#{url}) · #{count}"
+        lines = carriers.flat_map do |prefix, count|
+          if count > ItemVariants::MAX_CARRIERS
+            url = url_for_path("/catalogue/#{PAGES.fetch(prefix)}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
+            ["• [#{self.class.type_label(prefix)}](#{url}) · #{count}"]
+          else
+            ItemVariants.named(prefix, name).map do |record|
+              "• #{link(record.name, prefix, record.slug)} · #{self.class.type_label(prefix)}"
+            end
+          end
         end
 
         message(content: [I18n.t("discord.commands.item.too_common", query: Markdown.escape(query)), *lines].join("\n"))

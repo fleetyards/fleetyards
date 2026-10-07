@@ -69,11 +69,13 @@ module Discord
         typed, query = ::Catalogue::TokenResolver.parse(query)
         return {} if query.blank? || query.length > ::Catalogue::TokenResolver::MAX_NAME_LENGTH
 
-        (typed ? within & [typed] : within).to_h do |prefix|
-          name = "lower(#{model(prefix).fact_sql(:name)})"
+        (typed ? within & [typed] : within).to_h { |prefix| [prefix, named(prefix, query).count] }
+          .select { |_, count| count.positive? }
+      end
 
-          [prefix, ::Catalogue::TokenResolver.listed(prefix).where("#{name} = ?", query.downcase).count]
-        end.select { |_, count| count.positive? }
+      # The listed items of one catalogue that carry exactly `name`.
+      def self.named(prefix, name)
+        ::Catalogue::TokenResolver.listed(prefix).where("lower(#{model(prefix).fact_sql(:name)}) = ?", name.downcase)
       end
 
       # The variant a picked suggestion's value names, if it still is listed.

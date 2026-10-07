@@ -254,6 +254,16 @@ module Discord
         assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::ItemVariants::MAX_CARRIERS + 1}"
       end
 
+      test "a typed name too many items of another catalogue share still links the one item" do
+        create_list(:equipment, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        component = create(:component, name: "Internal Tank")
+
+        content = call("Internal Tank")[:content]
+
+        assert_includes content, "/catalogue/equipment/?nameOrSlugCont=Internal+Tank"
+        assert_includes content, "[Internal Tank](https://#{Rails.configuration.app.domain}/catalogue/components/#{component.slug}/)"
+      end
+
       test "a typed name a few items share in each of two catalogues lists them" do
         create_list(:component, 3, name: "Serac")
         create_list(:equipment, 3, name: "Serac")
