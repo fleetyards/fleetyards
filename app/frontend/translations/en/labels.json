@@ -2533,6 +2533,7 @@
           "submitData": "Submitting Data to the Fleetyards.net Backend"
         },
         "sessionStatus": "RSI Session status",
+        "signedInAs": "Signed in to RSI as %{handle}",
         "checkIdentity": "Check RSI Session",
         "targetGroup": "Group for the ships it finds",
         "addBundledVehicles": "Add bundled snub crafts",

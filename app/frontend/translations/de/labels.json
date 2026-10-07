@@ -2533,6 +2533,7 @@
           "submitData": "Daten an das Fleetyards.net-Backend senden"
         },
         "sessionStatus": "RSI-Sitzungsstatus",
+        "signedInAs": "Bei RSI angemeldet als %{handle}",
         "checkIdentity": "RSI-Sitzung prüfen",
         "targetGroup": "Gruppe für die gefundenen Schiffe",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",

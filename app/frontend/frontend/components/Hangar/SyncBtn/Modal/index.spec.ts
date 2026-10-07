@@ -116,6 +116,25 @@ describe("HangarSyncModal", () => {
     mounted = undefined;
   });
 
+  it("shows which RSI account the extension is signed in to", async () => {
+    const { wrapper } = await mountModal();
+
+    expect(
+      wrapper.find("[data-test='sync-extension-signed-in-as']").exists(),
+    ).toBe(true);
+  });
+
+  it("names no account without an RSI session", async () => {
+    const { wrapper } = await mountModal();
+
+    extensionReplies("identify", {});
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='sync-extension-signed-in-as']").exists(),
+    ).toBe(false);
+  });
+
   it("adds bundled snub crafts by default", async () => {
     const { wrapper, hangarStore } = await mountModal();
 

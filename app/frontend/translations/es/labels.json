@@ -2533,6 +2533,7 @@
           "submitData": "Enviando datos al backend de Fleetyards.net"
         },
         "sessionStatus": "Estado de sesión RSI",
+        "signedInAs": "Sesión iniciada en RSI como %{handle}",
         "checkIdentity": "Verificar sesión RSI",
         "targetGroup": "Grupo para las naves que encuentre",
         "addBundledVehicles": "Añadir snub crafts incluidas",
