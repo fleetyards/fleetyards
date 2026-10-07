@@ -67,11 +67,16 @@ const extensionReplies = (
   );
 };
 
-const buybackPage = (id: string) => `
-<ul class="pledges"><li><article class="pledge">
+const buybackList = (entries: string) =>
+  `<section class="available-pledges"><ul class="pledges">${entries}</ul></section>`;
+
+const buybackPage = (id: string) =>
+  buybackList(`<li><article class="pledge">
   <h1 title="Standalone Ship - Cutlass Black">Standalone Ship - Cutlass Black</h1>
   <a class="holosmallbtn" href="/pledge/buyback/${id}">Buy Back</a>
-</article></li></ul>`;
+</article></li>`);
+
+const emptyBuybackPage = buybackList("");
 
 const emptyPage = "<html><body></body></html>";
 
@@ -134,7 +139,7 @@ const submitEmptyHangar = async (
 ) => {
   await startSync(wrapper);
 
-  extensionReplies("syncBuyback", emptyPage);
+  extensionReplies("syncBuyback", emptyBuybackPage);
   await flushPromises();
 };
 
@@ -260,13 +265,20 @@ describe("HangarSyncModal", () => {
   });
 
   describe("buy-back pledges", () => {
-    it("reads every buy-back page before submitting the list", async () => {
+    it("submits the hangar before it reads the buy-back pages", async () => {
       const { wrapper } = await mountModal();
 
       await startSync(wrapper);
 
+      expect(mutateAsync).toHaveBeenCalled();
       expect(askedFor("syncBuyback")).toBe(true);
-      expect(mutateAsync).not.toHaveBeenCalled();
+      expect(buybackMutateAsync).not.toHaveBeenCalled();
+    });
+
+    it("reads every buy-back page before submitting the list", async () => {
+      const { wrapper } = await mountModal();
+
+      await startSync(wrapper);
 
       extensionReplies("syncBuyback", buybackPage("1"));
       await flushPromises();
@@ -275,7 +287,7 @@ describe("HangarSyncModal", () => {
 
       expect(buybackMutateAsync).not.toHaveBeenCalled();
 
-      extensionReplies("syncBuyback", emptyPage);
+      extensionReplies("syncBuyback", emptyBuybackPage);
       await flushPromises();
 
       expect(buybackMutateAsync).toHaveBeenCalledWith({
@@ -286,7 +298,35 @@ describe("HangarSyncModal", () => {
           ],
         },
       });
-      expect(mutateAsync).toHaveBeenCalled();
+    });
+
+    // An expired RSI session answers with the login page, and a 200 at that.
+    // Read as an empty list, it would delete every stored buy-back.
+    it("submits nothing for a page that is not the buy-back page", async () => {
+      const { wrapper } = await mountModal();
+
+      await startSync(wrapper);
+
+      extensionReplies("syncBuyback", emptyPage);
+      await flushPromises();
+
+      expect(buybackMutateAsync).not.toHaveBeenCalled();
+    });
+
+    it("submits nothing when a page's entries cannot be read", async () => {
+      const { wrapper } = await mountModal();
+
+      await startSync(wrapper);
+
+      extensionReplies("syncBuyback", buybackPage("1"));
+      await flushPromises();
+      extensionReplies(
+        "syncBuyback",
+        buybackList(`<li><article class="pledge"><h1>Gear</h1></article></li>`),
+      );
+      await flushPromises();
+
+      expect(buybackMutateAsync).not.toHaveBeenCalled();
     });
 
     // The same guard the hangar loop has: a page repeating ids already read

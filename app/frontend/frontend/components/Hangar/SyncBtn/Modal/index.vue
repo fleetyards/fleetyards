@@ -115,10 +115,10 @@ const result = ref<HangarSyncResult | undefined>();
 
 const buildProcessSteps = (): SyncProcessStep[] => [
   { name: "fetchHangar", status: "pending" },
+  { name: "submitData", status: "pending" },
   ...(hangarStore.syncBuybacks
     ? [{ name: "fetchBuybacks", status: "pending" } as SyncProcessStep]
     : []),
-  { name: "submitData", status: "pending" },
 ];
 
 const processSteps = ref<SyncProcessStep[]>(buildProcessSteps());
@@ -150,6 +150,8 @@ onBeforeUnmount(() => {
   if (pollingDelayTimer) {
     clearTimeout(pollingDelayTimer);
   }
+
+  clearBuybackReplyTimer();
 });
 
 const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
@@ -165,17 +167,20 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
       }
     }
 
-    if (message.action === FleetyardsSyncAction.SYNC_BUYBACK) {
+    // A reply landing after the step timed out belongs to a crawl that is over.
+    if (
+      message.action === FleetyardsSyncAction.SYNC_BUYBACK &&
+      processSteps.value.find(isBuybackStep)?.status === "processing"
+    ) {
+      clearBuybackReplyTimer();
+
       if (message.code === 200) {
         await fetchRSIBuybacks(message.payload as string);
       } else if (isUnknownAction(message)) {
         console.info("FY Extension: syncBuyback not supported");
         updateStep("fetchBuybacks", "skipped");
-        await finishSync();
       } else {
-        displayAlert({ text: t("messages.syncExtension.buybackFailure") });
-        updateStep("fetchBuybacks", "failure");
-        await finishSync();
+        failBuybacks();
       }
     }
 
@@ -227,10 +232,22 @@ const working = computed(
   () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
 );
 
-const finished = computed(() => processSteps.value.every(isSyncStepDone));
+// The buy-back list is an extra on top of the hangar sync: once it has stopped
+// running, how it ended does not decide whether the sync did.
+const isBuybackStep = (step: SyncProcessStep) => step.name === "fetchBuybacks";
+
+const finished = computed(() =>
+  processSteps.value.every((step) =>
+    isBuybackStep(step)
+      ? isSyncStepDone(step) || step.status === "failure"
+      : isSyncStepDone(step),
+  ),
+);
 
 const finishedWithErrors = computed(() =>
-  processSteps.value.some((step) => step.status === "failure"),
+  processSteps.value.some(
+    (step) => !isBuybackStep(step) && step.status === "failure",
+  ),
 );
 
 const retryable = computed(() => {
@@ -297,6 +314,10 @@ const fetchPage = (action: FleetyardsSyncAction, page: number) => {
     direction: "fy",
     message: JSON.stringify({ action, page }),
   });
+
+  if (action === FleetyardsSyncAction.SYNC_BUYBACK) {
+    buybackReplyTimer = setTimeout(failBuybacks, BUYBACK_REPLY_TIMEOUT);
+  }
 };
 
 const fetchRSIHangar = async (htmlPage: string) => {
@@ -336,26 +357,51 @@ const fetchRSIHangar = async (htmlPage: string) => {
   );
 };
 
+// The hangar goes first and on its own: the buy-back crawl can run for minutes
+// and must never hold up, or take down, the sync it was added to.
 const hangarFetched = async () => {
-  if (!processSteps.value.some((step) => step.name === "fetchBuybacks")) {
-    await finishSync();
-    return;
-  }
+  await finishSync();
 
-  updateStep("fetchBuybacks", "processing");
-  fetchPage(FleetyardsSyncAction.SYNC_BUYBACK, currentBuybackPage.value);
+  if (processSteps.value.some(isBuybackStep)) {
+    updateStep("fetchBuybacks", "processing");
+    fetchPage(FleetyardsSyncAction.SYNC_BUYBACK, currentBuybackPage.value);
+  }
+};
+
+// An extension that never answers would otherwise leave the step spinning.
+const BUYBACK_REPLY_TIMEOUT = 30000;
+
+let buybackReplyTimer: ReturnType<typeof setTimeout> | null = null;
+
+const clearBuybackReplyTimer = () => {
+  if (buybackReplyTimer) {
+    clearTimeout(buybackReplyTimer);
+    buybackReplyTimer = null;
+  }
+};
+
+const failBuybacks = () => {
+  clearBuybackReplyTimer();
+  displayAlert({ text: t("messages.syncExtension.buybackFailure") });
+  updateStep("fetchBuybacks", "failure");
 };
 
 const fetchRSIBuybacks = async (htmlPage: string) => {
   const result = extractBuybackPage(htmlPage);
 
-  const newBuybacks = (result?.pledges || []).filter(
+  // Not the buy-back page (a login redirect, an error page), or a page whose
+  // entries could not be read: either way the list is incomplete.
+  if (!result || (result.entryCount > 0 && result.pledges.length === 0)) {
+    failBuybacks();
+    return;
+  }
+
+  const newBuybacks = result.pledges.filter(
     (buyback) => !seenBuybackIds.has(buyback.id),
   );
 
   if (newBuybacks.length === 0) {
     await submitBuybacks();
-    await finishSync();
     return;
   }
 
@@ -380,8 +426,7 @@ const submitBuybacks = async () => {
     updateStep("fetchBuybacks", "success");
   } catch (error) {
     console.error(error);
-    displayAlert({ text: t("messages.syncExtension.buybackFailure") });
-    updateStep("fetchBuybacks", "failure");
+    failBuybacks();
   }
 };
 
