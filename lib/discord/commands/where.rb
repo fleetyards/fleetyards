@@ -9,9 +9,6 @@ module Discord
       include CatalogueLookup
 
       CATALOGUES = %w[component equipment commodity].freeze
-      # Discord rejects the whole message over one embed field past this, and
-      # an unanswered interaction stays on "thinking..." for good.
-      FIELD_LIMIT = 1024
 
       def call
         prefix, found = lookup_entry
@@ -36,29 +33,15 @@ module Discord
       end
 
       # As many rows as fit, in the order given, and a pointer to the item page
-      # for the rest -- whose own length is reserved before the rows are counted.
+      # for the rest.
       private def field(direction, prices, page)
         return nil if prices.empty?
 
         # Two terminals can share a name and a price, and a row says nothing
         # that tells them apart.
         lines = prices.map { |item_price| line(item_price) }.uniq
-        shown = []
-        length = 0
-        lines.each_with_index do |line, index|
-          rest = lines.size - index - 1
-          reserve = rest.positive? ? more(rest, page).length + 1 : 0
-          grown = length + (shown.empty? ? 0 : 1) + line.length
-          break if grown + reserve > FIELD_LIMIT
-
-          shown << line
-          length = grown
-        end
-
-        hidden = lines.size - shown.size
-        shown << more(hidden, page) if hidden.positive?
-
-        {name: I18n.t("discord.commands.where.fields.#{direction}"), value: shown.join("\n")}
+        value = fit_field(lines) { |hidden| more(hidden, page) }
+        {name: I18n.t("discord.commands.where.fields.#{direction}"), value: value}
       end
 
       private def more(count, page)
