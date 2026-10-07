@@ -46,7 +46,7 @@ module Discord
           Candidate.new(prefix: variant.prefix, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail)
         end
 
-        lowered = query.to_s.strip.downcase
+        lowered = ::Catalogue::TokenResolver.parse(query).last.downcase
         (unique + shared).sort_by do |candidate|
           [candidate.name.downcase.start_with?(lowered) ? 0 : 1, candidate.name.length, candidate.name.downcase, candidate.detail.to_s]
         end

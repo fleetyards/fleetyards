@@ -35,17 +35,20 @@ module Discord
         end
       end
 
+      # A query written with a prefix searches that type alone, as the
+      # resolver's own search does.
       def self.search(query, within:)
-        query = query.to_s.strip
+        typed, query = ::Catalogue::TokenResolver.parse(query)
         return [] if query.length < 2 || query.length > ::Catalogue::TokenResolver::MAX_NAME_LENGTH
 
-        pattern = "%#{ActiveRecord::Base.sanitize_sql_like(query.downcase)}%"
+        escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
+        prefixes = typed ? within & [typed] : within
 
-        within.flat_map do |prefix|
+        prefixes.flat_map do |prefix|
           scope = ::Catalogue::TokenResolver.listed(prefix)
           name = Arel.sql("lower(#{model(prefix).fact_sql(:name)})")
 
-          names = scope.where("#{name} LIKE ?", pattern)
+          names = scope.where("#{name} LIKE ?", "%#{escaped}%")
             .group(name)
             .having("count(*) BETWEEN 2 AND ?", MAX_CARRIERS)
             .limit(NAMES_PER_CATALOGUE)

@@ -199,6 +199,14 @@ module Discord
         assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.item.types.component")} · S4 · cool_orig_s04_890j_scitem"
       end
 
+      test "suggests each item of a shared name for a query written with its type" do
+        create_list(:component, 2, name: "Serac")
+
+        choices = ::Discord::Commands::Item.autocomplete("name", "component:serac")
+
+        assert_equal 2, choices.size
+      end
+
       test "suggests no single items of a name many items share" do
         create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
 
