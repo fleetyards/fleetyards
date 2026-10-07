@@ -1,0 +1,128 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { type RsiBuybackItemInput } from "@/services/fyApi";
+import { useBuybackDetailsSync } from "./useBuybackDetailsSync";
+
+const request = vi.fn();
+
+vi.mock("@/frontend/composables/useSyncExtension", () => ({
+  useSyncExtension: () => ({ request }),
+}));
+
+const submitDetails = vi.fn((_: unknown) => Promise.resolve({ updated: 0 }));
+
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+}));
+
+const waitForSlot = () => Promise.resolve();
+
+const ship = (id: string): RsiBuybackItemInput => ({
+  id,
+  kind: "ship",
+  name: `Standalone Ship - ${id}`,
+});
+
+const upgrade = (
+  id: string,
+  from: number,
+  to: number,
+): RsiBuybackItemInput => ({
+  id,
+  kind: "upgrade",
+  name: `Upgrade - ${id}`,
+  upgradeFromShipId: from,
+  upgradeToSkuId: to,
+});
+
+const detailPage = (cents: number) =>
+  `<strong class="final-price" data-value="${cents}" data-currency="EUR"></strong>`;
+
+const submitted = () =>
+  submitDetails.mock.calls.flatMap(
+    ([variables]) => (variables as { data: { items: unknown[] } }).data.items,
+  );
+
+describe("useBuybackDetailsSync", () => {
+  beforeEach(() => {
+    request.mockReset();
+    submitDetails.mockClear();
+  });
+
+  it("reads only the pledges the list sync named", async () => {
+    request.mockResolvedValue({ code: 200, id: "2", payload: detailPage(500) });
+
+    const { run, status } = useBuybackDetailsSync({ waitForSlot });
+    await run([ship("1"), ship("2")], ["2"]);
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(request).toHaveBeenCalledWith("syncBuybackDetail", { id: "2" });
+    expect(submitted()).toEqual([
+      { id: "2", price: 5, currency: "EUR", lifetimeInsurance: false },
+    ]);
+    expect(status.value).toBe("finished");
+  });
+
+  it("asks for each upgrade price once, however many pledges share it", async () => {
+    request.mockResolvedValue({
+      code: 200,
+      payload: {
+        currency: "EUR",
+        prices: [
+          { from: 308, to: 19461, amount: 2618 },
+          { from: 47, to: 19337, amount: null },
+        ],
+      },
+    });
+
+    const { run } = useBuybackDetailsSync({ waitForSlot });
+    await run(
+      [
+        upgrade("1", 308, 19461),
+        upgrade("2", 308, 19461),
+        upgrade("3", 47, 19337),
+      ],
+      ["1", "2", "3"],
+    );
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(request).toHaveBeenCalledWith("syncBuybackUpgradePrices", {
+      upgrades: [
+        { from: 308, to: 19461 },
+        { from: 47, to: 19337 },
+      ],
+    });
+    expect(submitted()).toEqual([
+      { id: "1", price: 26.18, currency: "EUR" },
+      { id: "2", price: 26.18, currency: "EUR" },
+      { id: "3" },
+    ]);
+  });
+
+  // RSI changing its markup, or the session ending, fails every page the same
+  // way; reading another thousand of them would only take a quarter of an hour.
+  it("stops after three unreadable pages in a row and keeps what it read", async () => {
+    request
+      .mockResolvedValueOnce({ code: 200, id: "1", payload: detailPage(500) })
+      .mockResolvedValue({ code: 200, payload: "<html></html>" });
+
+    const ids = ["1", "2", "3", "4", "5", "6"];
+
+    const { run, status, done } = useBuybackDetailsSync({ waitForSlot });
+    await run(ids.map(ship), ids);
+
+    expect(request).toHaveBeenCalledTimes(4);
+    expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
+    expect(status.value).toBe("incomplete");
+    expect(done.value).toBe(4);
+  });
+
+  it("does not take a page for one pledge as another's", async () => {
+    request.mockResolvedValue({ code: 200, id: "9", payload: detailPage(500) });
+
+    const { run } = useBuybackDetailsSync({ waitForSlot });
+    await run([ship("1")], ["1"]);
+
+    expect(submitted()).toEqual([]);
+  });
+});

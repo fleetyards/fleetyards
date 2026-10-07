@@ -14,6 +14,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { extensionUrls } from "@/types/extension";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
+import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
@@ -29,7 +30,13 @@ import {
 import { differenceInMinutes } from "date-fns";
 
 type SyncStatus =
-  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
+  | "idle"
+  | "fetching"
+  | "submitting"
+  | "details"
+  | "finished"
+  | "unsupported"
+  | "failed";
 
 const { t } = useI18n();
 
@@ -49,6 +56,15 @@ const extensionSupportsBuybacks = computed(
   () =>
     extensionInfo.value.actions?.includes(FleetyardsSyncAction.SYNC_BUYBACK) ??
     false,
+);
+
+// An extension that can read the list but not yet a pledge's price still
+// syncs the list.
+const extensionSupportsDetails = computed(() =>
+  [
+    FleetyardsSyncAction.SYNC_BUYBACK_DETAIL,
+    FleetyardsSyncAction.SYNC_BUYBACK_UPGRADE_PRICES,
+  ].every((action) => extensionInfo.value.actions?.includes(action)),
 );
 
 const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
@@ -84,7 +100,8 @@ const working = computed(
   () =>
     loadingIdentity.value ||
     status.value === "fetching" ||
-    status.value === "submitting",
+    status.value === "submitting" ||
+    status.value === "details",
 );
 
 const onExtensionMessage = (event: FleetyardsSyncEvent) => {
@@ -107,6 +124,10 @@ let unmounted = false;
 
 onBeforeUnmount(() => {
   unmounted = true;
+
+  if (status.value === "details") {
+    cancelDetails();
+  }
   window.removeEventListener("message", onExtensionMessage as EventListener);
 
   clearReplyTimer();
@@ -257,6 +278,29 @@ const handlePage = async (html: string) => {
   setTimeout(() => fetchPage(currentPage.value), 500);
 };
 
+// The detail pass runs after the list crawl and counts against the same limit,
+// so a long list followed by its prices stays at one request a second.
+const waitForSlot = async () => {
+  while (
+    !unmounted &&
+    fetchCount.value >=
+      (differenceInMinutes(new Date(), syncStartedAt.value) + 1) *
+        maxMessagesPerMinute
+  ) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+
+  fetchCount.value += 1;
+};
+
+const {
+  status: detailsStatus,
+  total: detailsTotal,
+  done: detailsDone,
+  run: runDetails,
+  cancel: cancelDetails,
+} = useBuybackDetailsSync({ waitForSlot });
+
 const mutation = useSyncRsiBuybacks();
 
 // Only ever after the last page: the endpoint replaces the whole list, so a
@@ -268,13 +312,32 @@ const submit = async () => {
     result.value = await mutation.mutateAsync({
       data: { items: buybacks.value },
     });
-    status.value = "finished";
-    displaySuccess({ text: t("messages.buybackSync.success") });
-    comlink.emit("buyback-sync-finished");
   } catch (error) {
     console.error(error);
     fail();
+    return;
   }
+
+  comlink.emit("buyback-sync-finished");
+
+  if (result.value.detailsPending.length && extensionSupportsDetails.value) {
+    status.value = "details";
+
+    await runDetails(buybacks.value, result.value.detailsPending);
+
+    if (unmounted) {
+      return;
+    }
+
+    comlink.emit("buyback-sync-finished");
+
+    if (detailsStatus.value === "incomplete") {
+      displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
+    }
+  }
+
+  status.value = "finished";
+  displaySuccess({ text: t("messages.buybackSync.success") });
 };
 
 const close = () => {
@@ -352,6 +415,9 @@ const close = () => {
         {{ t("labels.syncExtension.signedInAs", { handle: rsiHandle }) }}
       </p>
       <p>{{ t("texts.buybackSync.info") }}</p>
+      <p v-if="extensionSupportsDetails">
+        {{ t("texts.buybackSync.detailsInfo") }}
+      </p>
     </div>
     <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
       <p
@@ -382,12 +448,29 @@ const close = () => {
             {{ result.removed }}
           </dd>
         </template>
+        <template v-if="detailsTotal">
+          <dt class="col-sm-7">{{ t("labels.buybackSync.prices") }}:</dt>
+          <dd class="col-sm-5 text-right" data-test="buyback-sync-prices">
+            {{ detailsDone }} / {{ detailsTotal }}
+          </dd>
+        </template>
       </dl>
+      <p
+        v-if="
+          status === 'finished' &&
+          result?.detailsPending.length &&
+          !extensionSupportsDetails
+        "
+        class="text-warning"
+        data-test="buyback-sync-details-unsupported"
+      >
+        {{ t("texts.buybackSync.detailsUnsupported") }}
+      </p>
     </div>
     <template #footer>
       <Btn
         data-test="close-buyback-sync"
-        :disabled="working && status !== 'idle'"
+        :disabled="working && !['idle', 'details'].includes(status)"
         @click="close"
       >
         {{

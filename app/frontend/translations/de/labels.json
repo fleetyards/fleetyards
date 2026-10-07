@@ -2506,7 +2506,13 @@
           "other": "Sonstiges"
         },
         "upgraded": "Aufgewertet",
-        "reclaimedOn": "Eingeschmolzen"
+        "reclaimedOn": "Eingeschmolzen",
+        "notAvailable": "Nicht verfügbar",
+        "price": "Preis",
+        "insurance": "Versicherung",
+        "lifetimeInsurance": "LTI",
+        "insuranceMonths": "%{count} Monate",
+        "openOnRsi": "Auf RSI zurückkaufen"
       },
       "buybackSync": {
         "extensionVersion": "Installierte Erweiterungsversion",
@@ -2514,9 +2520,11 @@
         "found": "Gefundene Rückkauf-Pledges",
         "added": "Neu",
         "removed": "Entfernt",
+        "prices": "Preise gelesen",
         "status": {
           "fetching": "Rückkaufseiten werden gelesen",
           "submitting": "Wird gespeichert",
+          "details": "Preise werden gelesen",
           "finished": "Abgeschlossen",
           "unsupported": "Nicht unterstützt",
           "failed": "Fehlgeschlagen"

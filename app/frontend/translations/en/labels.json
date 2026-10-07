@@ -2506,7 +2506,13 @@
           "other": "Other"
         },
         "upgraded": "Upgraded",
-        "reclaimedOn": "Reclaimed"
+        "reclaimedOn": "Reclaimed",
+        "notAvailable": "Not available",
+        "price": "Price",
+        "insurance": "Insurance",
+        "lifetimeInsurance": "LTI",
+        "insuranceMonths": "%{count} months",
+        "openOnRsi": "Buy back on RSI"
       },
       "buybackSync": {
         "extensionVersion": "Installed extension version",
@@ -2514,9 +2520,11 @@
         "found": "Buy-back pledges found",
         "added": "New",
         "removed": "Removed",
+        "prices": "Prices read",
         "status": {
           "fetching": "Reading buy-back pages",
           "submitting": "Saving",
+          "details": "Reading prices",
           "finished": "Finished",
           "unsupported": "Not supported",
           "failed": "Failed"

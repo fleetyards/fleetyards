@@ -2506,7 +2506,13 @@
           "other": "Otro"
         },
         "upgraded": "Mejorado",
-        "reclaimedOn": "Fundido"
+        "reclaimedOn": "Fundido",
+        "notAvailable": "No disponible",
+        "price": "Precio",
+        "insurance": "Seguro",
+        "lifetimeInsurance": "LTI",
+        "insuranceMonths": "%{count} meses",
+        "openOnRsi": "Recomprar en RSI"
       },
       "buybackSync": {
         "extensionVersion": "Versión instalada de la extensión",
@@ -2514,9 +2520,11 @@
         "found": "Pledges de recompra encontrados",
         "added": "Nuevos",
         "removed": "Eliminados",
+        "prices": "Precios leídos",
         "status": {
           "fetching": "Leyendo páginas de recompra",
           "submitting": "Guardando",
+          "details": "Leyendo precios",
           "finished": "Finalizado",
           "unsupported": "No compatible",
           "failed": "Fallido"

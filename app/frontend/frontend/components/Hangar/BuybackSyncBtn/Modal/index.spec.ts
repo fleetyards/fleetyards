@@ -2,13 +2,23 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
-const mutateAsync = vi.fn(() =>
-  Promise.resolve({ total: 2, added: 2, removed: 0 }),
+const mutateAsync = vi.fn<
+  () => Promise<{
+    total: number;
+    added: number;
+    removed: number;
+    detailsPending: string[];
+  }>
+>(() =>
+  Promise.resolve({ total: 2, added: 2, removed: 0, detailsPending: [] }),
 );
+
+const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
+  useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
 }));
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -34,13 +44,18 @@ vi.spyOn(window, "postMessage").mockImplementation(() => {});
 const extensionReplies = (
   action: string,
   payload?: unknown,
-  { code = 200, error }: { code?: number; error?: string } = {},
+  {
+    code = 200,
+    error,
+    id,
+  }: { code?: number; error?: string; id?: string } = {},
 ) => {
   window.dispatchEvent(
     new MessageEvent("message", {
+      source: window,
       data: {
         direction: "fy-sync",
-        message: JSON.stringify({ action, code, payload, error }),
+        message: JSON.stringify({ action, code, payload, error, id }),
       },
     }),
   );
@@ -109,6 +124,7 @@ const startSync = async () => {
 describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+    submitDetails.mockClear();
     vi.mocked(window.postMessage).mockClear();
   });
 
@@ -265,5 +281,78 @@ describe("HangarBuybackSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(wrapper.text()).toContain("texts.buybackSync.unsupported");
+  });
+
+  describe("prices and insurance", () => {
+    const detailExtension = {
+      version: "1.4.0",
+      actions: [
+        ...currentExtension.actions,
+        "syncBuybackDetail",
+        "syncBuybackUpgradePrices",
+      ],
+    };
+
+    const detailPage = `<strong class="final-price" data-value="10472" data-currency="EUR"></strong>
+<div class="package-listing item"><ul><li>6 Month Insurance</li></ul></div>`;
+
+    const syncList = async (health: unknown) => {
+      mutateAsync.mockResolvedValueOnce({
+        total: 1,
+        added: 1,
+        removed: 0,
+        detailsPending: ["1"],
+      });
+
+      const wrapper = await mountModal(health);
+
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
+      await flushPromises();
+
+      extensionReplies("syncBuyback", buybackPage("1"));
+      await flushPromises();
+      extensionReplies("syncBuyback", emptyBuybackPage);
+      await flushPromises();
+
+      return wrapper;
+    };
+
+    it("reads the buy-back page of a pledge the list sync has no details for", async () => {
+      const wrapper = await syncList(detailExtension);
+
+      expect(askedFor("syncBuybackDetail")).toBe(true);
+
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+
+      expect(submitDetails).toHaveBeenCalledWith({
+        data: {
+          items: [
+            {
+              id: "1",
+              price: 104.72,
+              currency: "EUR",
+              insuranceMonths: 6,
+              lifetimeInsurance: false,
+            },
+          ],
+        },
+      });
+      expect(wrapper.find("[data-test='buyback-sync-prices']").text()).toBe(
+        "1 / 1",
+      );
+    });
+
+    it("syncs only the list with an extension that cannot read prices", async () => {
+      const wrapper = await syncList(currentExtension);
+
+      expect(askedFor("syncBuybackDetail")).toBe(false);
+      expect(submitDetails).not.toHaveBeenCalled();
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-unsupported']").exists(),
+      ).toBe(true);
+    });
   });
 });
