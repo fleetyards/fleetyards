@@ -7,6 +7,7 @@ import {
 export type RSIBuybackPage = {
   pledges: RsiBuybackItemInput[];
   pledgeIds: string[];
+  entryCount: number;
 };
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
@@ -19,33 +20,38 @@ const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
 
 const DEFAULT_IMAGE = "default-image";
 
-// RSI renders a page past the last one as an empty list rather than an error,
-// so "no entries" is the only end-of-list signal there is.
+const BUYBACK_LIST = "section.available-pledges, .buy-back";
+
+// `undefined` when the HTML is not a buy-back page at all -- a login redirect
+// or an error page arrives as a 200 too. RSI renders a page past the last one
+// as the page with an empty list, so `entryCount: 0` is the end-of-list signal.
 export const extractBuybackPage = (
   html: string,
 ): RSIBuybackPage | undefined => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
 
-  const entries = Array.from(htmlDoc.querySelectorAll("article.pledge"));
-
-  if (entries.length === 0) {
+  if (!htmlDoc.querySelector(BUYBACK_LIST)) {
     return undefined;
   }
+
+  const entries = Array.from(htmlDoc.querySelectorAll("article.pledge"));
 
   const pledges = entries
     .map(parseBuybackEntry)
     .filter((pledge): pledge is RsiBuybackItemInput => !!pledge);
 
-  return { pledges, pledgeIds: pledges.map((pledge) => pledge.id) };
+  return {
+    pledges,
+    pledgeIds: pledges.map((pledge) => pledge.id),
+    entryCount: entries.length,
+  };
 };
 
 export const parseBuybackEntry = (
   entry: Element,
 ): RsiBuybackItemInput | undefined => {
   const heading = entry.querySelector("h1");
-  // The text carries an appended " - upgraded" span; the title attribute is
-  // the pledge's own name.
-  const name = (heading?.getAttribute("title") || heading?.textContent || "")
+  const name = (heading?.getAttribute("title") || headingText(heading))
     .trim()
     .replace(/\s+/g, " ");
 
@@ -70,6 +76,19 @@ export const parseBuybackEntry = (
     upgradeToShipId: toInteger(upgradeLink?.dataset.toshipid),
     upgradeToSkuId: toInteger(upgradeLink?.dataset.toskuid),
   };
+};
+
+// The text carries an appended " - upgraded" span that is not part of the
+// pledge's name.
+const headingText = (heading: Element | null) => {
+  if (!heading) {
+    return "";
+  }
+
+  const copy = heading.cloneNode(true) as Element;
+  copy.querySelector(".upgraded")?.remove();
+
+  return copy.textContent || "";
 };
 
 const extractBuybackLinkId = (entry: Element) =>

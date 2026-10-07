@@ -143,7 +143,40 @@ describe("extractBuybackPage", () => {
     expect(page?.pledgeIds).toEqual(["1000001"]);
   });
 
-  it("reads a page past the end as the end of the list", () => {
-    expect(extractBuybackPage(buybackPage(""))).toBeUndefined();
+  it("reads a page past the end as an empty list", () => {
+    expect(extractBuybackPage(buybackPage(""))).toEqual({
+      pledges: [],
+      pledgeIds: [],
+      entryCount: 0,
+    });
+  });
+
+  it("does not read a page that is not the buy-back page", () => {
+    expect(
+      extractBuybackPage(
+        "<html><body><form id='sign-in'></form></body></html>",
+      ),
+    ).toBeUndefined();
+  });
+
+  it("counts entries it could not read", () => {
+    const page = extractBuybackPage(
+      buybackPage(`<li><article class="pledge"><h1>Gear</h1></article></li>`),
+    );
+
+    expect(page).toMatchObject({ pledges: [], entryCount: 1 });
+  });
+
+  it("leaves the upgraded marker out of a name read from the text", () => {
+    const page = extractBuybackPage(
+      buybackPage(
+        `<li><article class="pledge"><h1>Standalone Ship - Cutlass Black<span class="upgraded"> - upgraded</span></h1><a href="/pledge/buyback/7">Buy Back</a></article></li>`,
+      ),
+    );
+
+    expect(page?.pledges[0]).toMatchObject({
+      name: "Standalone Ship - Cutlass Black",
+      upgraded: true,
+    });
   });
 });
