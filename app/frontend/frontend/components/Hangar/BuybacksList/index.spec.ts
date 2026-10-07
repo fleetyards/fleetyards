@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type BuybackPledge } from "@/services/fyApi";
@@ -29,6 +29,8 @@ const buyback = (attrs: Partial<BuybackPledge> = {}) =>
     kind: "ship",
     name: "Standalone Ship - Cutter plus Groundswell Paint",
     upgraded: false,
+    available: true,
+    lifetimeInsurance: false,
     reclaimedOn: "2023-11-26",
     contained: "Cutter Scout and 3 items",
     createdAt: "2026-10-07T12:00:00Z",
@@ -43,6 +45,10 @@ const mount = async (buybacks: BuybackPledge[], emptyVisible = false) =>
   });
 
 describe("Hangar/BuybacksList", () => {
+  beforeEach(() => {
+    window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
+  });
+
   it("shows the pledge with what it contains", async () => {
     const wrapper = await mount([buyback()]);
 
@@ -70,6 +76,50 @@ describe("Hangar/BuybacksList", () => {
     const wrapper = await mount([buyback({ upgraded: true })]);
 
     expect(wrapper.text()).toContain("Upgraded");
+  });
+
+  it("links a pledge to its buy-back on RSI", async () => {
+    const wrapper = await mount([buyback()]);
+
+    const link = wrapper.find("[data-test='buyback-rsi-link']");
+
+    expect(link.attributes("href")).toBe(
+      "https://robertsspaceindustries.com/pledge/buyback/1000001",
+    );
+    expect(link.attributes("target")).toBe("_blank");
+  });
+
+  // An upgrade's buy-back is a modal on RSI's list, with no page of its own.
+  it("links an upgrade to RSI's buy-back list", async () => {
+    const wrapper = await mount([buyback({ kind: "upgrade" })]);
+
+    expect(
+      wrapper.find("[data-test='buyback-rsi-link']").attributes("href"),
+    ).toBe("https://robertsspaceindustries.com/account/buy-back-pledges");
+  });
+
+  it("shows the price in the currency RSI charges", async () => {
+    const wrapper = await mount([
+      buyback({ price: 104.72, priceCurrency: "EUR" }),
+    ]);
+
+    expect(wrapper.text()).toContain("€104.72");
+  });
+
+  it("shows the insurance", async () => {
+    const wrapper = await mount([
+      buyback({ insuranceMonths: 120 }),
+      buyback({ id: "lti", lifetimeInsurance: true }),
+    ]);
+
+    expect(wrapper.text()).toContain("120 months");
+    expect(wrapper.text()).toContain("LTI");
+  });
+
+  it("marks a pledge RSI no longer offers for buy-back", async () => {
+    const wrapper = await mount([buyback({ available: false })]);
+
+    expect(wrapper.text()).toContain("Not available");
   });
 
   it("shows the empty state", async () => {
