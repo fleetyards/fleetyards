@@ -637,6 +637,10 @@
           "digestTimeHint": "使用你的時區（%{timezone}）。",
           "channelMissing": "此頻道在 Discord 上已不存在或無法再發文。選擇其他頻道之前不會發布任何內容。",
           "missingChannel": "無法使用的頻道",
+          "joinRole": "加入身分組",
+          "joinRoleHint": "在伺服器中擁有此身分組的玩家無需申請即可加入艦隊，並獲得預設職級。移除該身分組後，透過它加入的成員也會被移出艦隊。留空則手動審核每個申請。",
+          "roleMissing": "此身分組在 Discord 上已不存在。在選擇其他身分組之前，任何人都無法透過它加入。",
+          "missingRole": "無法使用的身分組",
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",

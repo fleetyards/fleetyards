@@ -637,6 +637,10 @@
           "digestTimeHint": "En tu zona horaria (%{timezone}).",
           "channelMissing": "Este canal ya no existe en Discord o ya no admite publicaciones. No se publica nada hasta elegir otro.",
           "missingChannel": "Canal no disponible",
+          "joinRole": "Rol de ingreso",
+          "joinRoleHint": "Los jugadores con este rol en el servidor se unen a la flota sin solicitud, con el rango predeterminado. Si se les quita el rol, los miembros que entraron con él salen de la flota. Déjalo vacío para aprobar cada solicitud a mano.",
+          "roleMissing": "Este rol ya no existe en Discord. Nadie se une con él hasta que se elija otro.",
+          "missingRole": "Rol no disponible",
           "postingCodes": {
             "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
             "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",

@@ -36,6 +36,13 @@ vi.mock("@/services/fyApi", async () => {
       data: ref({ code: FleetDiscordConnectionCodeEnum.OK, items: [] }),
       isLoading: ref(false),
     }),
+    useFleetDiscordRoles: () => ({
+      data: ref({
+        code: FleetDiscordConnectionCodeEnum.OK,
+        items: [{ id: "300000000000000001", name: "Member" }],
+      }),
+      isLoading: ref(false),
+    }),
     fleetNotificationDiscordStatus: vi.fn().mockResolvedValue({ ok: true }),
   };
 });
@@ -60,11 +67,11 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async () => {
+const mount = async (membership = {} as FleetMember) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
       fleet: { slug: "maru", defaultTimezone: "Europe/Berlin" } as Fleet,
-      membership: {} as FleetMember,
+      membership,
     },
   });
   await flushPromises();
@@ -229,5 +236,46 @@ describe("FleetDiscordSettingsPage save", () => {
     expect(displayAlert).toHaveBeenCalledWith({
       text: "Could not save notification settings.",
     });
+  });
+});
+
+describe("FleetDiscordSettingsPage join role", () => {
+  const inviter = { capabilities: { createInvites: true } } as FleetMember;
+
+  const joinRoleSelect = (subject: VueWrapper) =>
+    subject
+      .findAllComponents(BaseSelect)
+      .find((select) => selectProps(select).name === "discordJoinRoleId");
+
+  it("is hidden from a member who may not hand out invites", async () => {
+    setting.discordJoinRoleId = "300000000000000001";
+    const subject = await mount();
+
+    expect(joinRoleSelect(subject)).toBeUndefined();
+    expect(await save(subject)).not.toHaveProperty("discordJoinRoleId");
+  });
+
+  it("saves the role picked by a member who may hand out invites", async () => {
+    const subject = await mount(inviter);
+
+    joinRoleSelect(subject)!.vm.$emit(
+      "update:modelValue",
+      "300000000000000001",
+    );
+    await flushPromises();
+
+    expect(await save(subject)).toMatchObject({
+      discordJoinRoleId: "300000000000000001",
+    });
+  });
+
+  it("clears the role", async () => {
+    setting.discordJoinRoleId = "300000000000000001";
+    const subject = await mount(inviter);
+
+    joinRoleSelect(subject)!.vm.$emit("update:modelValue", null);
+    await flushPromises();
+
+    expect(await save(subject)).toMatchObject({ discordJoinRoleId: null });
   });
 });

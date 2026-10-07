@@ -637,6 +637,10 @@
           "digestTimeHint": "Nel tuo fuso orario (%{timezone}).",
           "channelMissing": "Questo canale non esiste più su Discord o non accetta più pubblicazioni. Non viene pubblicato nulla finché non ne scegli un altro.",
           "missingChannel": "Canale non disponibile",
+          "joinRole": "Ruolo di ingresso",
+          "joinRoleHint": "I giocatori con questo ruolo nel server entrano nella flotta senza richiesta, con il grado predefinito. Togliendo il ruolo, i membri entrati grazie a esso lasciano la flotta. Lascia vuoto per approvare ogni richiesta a mano.",
+          "roleMissing": "Questo ruolo non esiste più su Discord. Nessuno entra tramite esso finché non ne viene scelto un altro.",
+          "missingRole": "Ruolo non disponibile",
           "postingCodes": {
             "missing_send_messages": "Il bot non può inviare messaggi in questo server. Usa il link di installazione per autorizzarlo di nuovo.",
             "channel_locked": "Il bot non può pubblicare nel canale scelto per %{names}. Consentilo nei permessi di quel canale.",
