@@ -291,6 +291,30 @@ describe("FleetRsiVerificationModal", () => {
       expect(removals()).toHaveLength(1);
     });
 
+    it("takes the token out when the write times out after the modal closed", async () => {
+      signedIn();
+      let timeOut: (reason: Error) => void = () => {};
+      extensionAnswers["org-verify-write"] = new Promise((_resolve, reject) => {
+        timeOut = reject;
+      });
+
+      const wrapper = await mountPanel({ fleet: fleet() });
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+      wrapper.unmount();
+
+      expect(removals()).toHaveLength(0);
+
+      timeOut(new Error("no answer"));
+      await flushPromises();
+
+      expect(removals()).toEqual([
+        ["org-verify-remove", { sid: "TEST", token: "FLEETYARDS-ABCDEFGHIJ" }],
+      ]);
+      expect(checkFleet).not.toHaveBeenCalled();
+    });
+
     it("removes from the org it wrote to, whatever the modal shows now", async () => {
       signedIn();
       writes();
