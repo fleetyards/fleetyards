@@ -227,6 +227,22 @@ describe("HangarBuybackSyncModal", () => {
     expect(mutateAsync).not.toHaveBeenCalled();
   });
 
+  // The next page is asked for on a timer, which can fire after the crawl was
+  // given up on.
+  it("asks for no further page once the sync has failed", async () => {
+    await startSync();
+
+    extensionReplies("syncBuyback", buybackPage("1"));
+    await flushPromises();
+    extensionReplies("syncBuyback", "", { code: 403 });
+    await flushPromises();
+
+    vi.mocked(window.postMessage).mockClear();
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    expect(askedFor("syncBuyback")).toBe(false);
+  });
+
   it("says so when the extension predates buy-backs", async () => {
     const wrapper = await startSync();
 

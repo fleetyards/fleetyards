@@ -99,7 +99,10 @@ onMounted(() => {
   });
 });
 
+let unmounted = false;
+
 onBeforeUnmount(() => {
+  unmounted = true;
   window.removeEventListener("message", onExtensionMessage as EventListener);
 
   clearReplyTimer();
@@ -182,7 +185,13 @@ const start = () => {
   fetchPage(currentPage.value);
 };
 
+// Every later page and every throttled retry arrives through a timer, which
+// can fire after the sync failed or the modal closed.
 const fetchPage = (page: number) => {
+  if (unmounted || status.value !== "fetching") {
+    return;
+  }
+
   const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
 
   if (fetchCount.value >= (elapsedMinutes + 1) * maxMessagesPerMinute) {
