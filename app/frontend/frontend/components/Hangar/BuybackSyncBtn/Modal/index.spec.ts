@@ -286,11 +286,7 @@ describe("HangarBuybackSyncModal", () => {
   describe("prices and insurance", () => {
     const detailExtension = {
       version: "1.4.0",
-      actions: [
-        ...currentExtension.actions,
-        "syncBuybackDetail",
-        "syncBuybackUpgradePrices",
-      ],
+      actions: [...currentExtension.actions, "syncBuybackDetail"],
     };
 
     const detailPage = `<strong class="final-price" data-value="10472" data-currency="EUR"></strong>

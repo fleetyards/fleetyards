@@ -68,45 +68,14 @@ describe("useBuybackDetailsSync", () => {
     expect(status.value).toBe("finished");
   });
 
-  it("asks for each upgrade price once, however many pledges share it", async () => {
-    request.mockResolvedValue({
-      code: 200,
-      payload: {
-        currency: "EUR",
-        prices: [
-          { from: 308, to: 19461, amount: 2618 },
-          { from: 47, to: 19337, amount: null },
-        ],
-      },
-    });
+  // An upgrade has no buy-back page; its price comes from our ship prices.
+  it("reads no page for an upgrade", async () => {
+    const { run, total } = useBuybackDetailsSync({ waitForSlot });
+    await run([upgrade("1", 308, 19461)], ["1"]);
 
-    const { run } = useBuybackDetailsSync({ waitForSlot });
-    await run(
-      [
-        upgrade("1", 308, 19461),
-        upgrade("2", 308, 19461),
-        upgrade("3", 47, 19337),
-      ],
-      ["1", "2", "3"],
-    );
-
-    expect(request).toHaveBeenCalledTimes(1);
-    expect(request).toHaveBeenCalledWith(
-      "syncBuybackUpgradePrices",
-      {
-        upgrades: [
-          { from: 308, to: 19461 },
-          { from: 47, to: 19337 },
-        ],
-      },
-      undefined,
-      expect.any(Function),
-    );
-    expect(submitted()).toEqual([
-      { id: "1", price: 26.18, currency: "EUR" },
-      { id: "2", price: 26.18, currency: "EUR" },
-      { id: "3" },
-    ]);
+    expect(request).not.toHaveBeenCalled();
+    expect(submitted()).toEqual([]);
+    expect(total.value).toBe(0);
   });
 
   // RSI changing its markup, or the session ending, fails every page the same

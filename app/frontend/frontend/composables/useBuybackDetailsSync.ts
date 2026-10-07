@@ -1,10 +1,6 @@
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import { extractBuybackDetail } from "@/frontend/lib/RSIBuybackDetailParser";
-import {
-  FleetyardsSyncAction,
-  type FleetyardsSyncUpgradePair,
-  type FleetyardsSyncUpgradePricesPayload,
-} from "@/frontend/lib/FleetyardsSyncHandler";
+import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
   BuybackPledgeKindEnum,
   useSyncRsiBuybackDetails,
@@ -21,9 +17,6 @@ type Options = {
   waitForSlot: () => Promise<void>;
 };
 
-// The most from/to pairs the extension asks RSI to price in one request.
-const UPGRADE_PRICES_PER_REQUEST = 4;
-
 // Stored as they arrive, so a pass that stops halfway keeps what it read and
 // the next sync carries on from there.
 const DETAILS_PER_SUBMIT = 25;
@@ -32,11 +25,9 @@ const DETAILS_PER_SUBMIT = 25;
 // ending, not one pledge that is gone: the rest would fail the same way.
 const MAX_CONSECUTIVE_FAILURES = 3;
 
-const pairKey = (pair: FleetyardsSyncUpgradePair) => `${pair.from}:${pair.to}`;
-
-// Reads price and insurance for the buy-backs the list sync named as having
-// none yet: the buy-back page of each package, ship, paint or add-on, and RSI's
-// upgrade price for each upgrade.
+// Reads price and insurance from the RSI buy-back page of each pledge the list
+// sync named as having none yet. Upgrades are priced from our own ship prices
+// and have no such page.
 export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
   const { request } = useSyncExtension();
 
@@ -114,108 +105,23 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     return false;
   };
 
-  const readUpgradePrices = async (
-    pairs: FleetyardsSyncUpgradePair[],
-    idsByPair: Map<string, string[]>,
-  ) => {
-    const asked = pairs.map(pairKey).join(",");
-
-    const message = await request(
-      FleetyardsSyncAction.SYNC_BUYBACK_UPGRADE_PRICES,
-      { upgrades: pairs },
-      undefined,
-      (reply) =>
-        reply.code !== 200 ||
-        (
-          reply.payload as FleetyardsSyncUpgradePricesPayload | undefined
-        )?.prices
-          ?.map(pairKey)
-          .join(",") === asked,
-    ).catch(() => undefined);
-
-    const payload =
-      message?.code === 200
-        ? (message.payload as FleetyardsSyncUpgradePricesPayload)
-        : undefined;
-
-    pairs.forEach((pair) => {
-      done.value += idsByPair.get(pairKey(pair))?.length || 0;
-    });
-
-    if (!payload?.currency || !Array.isArray(payload.prices)) {
-      return recordFailure();
-    }
-
-    failures = 0;
-
-    payload.prices.forEach((price) => {
-      idsByPair.get(pairKey(price))?.forEach((id) => {
-        // Stored without a price all the same, so a pair RSI no longer prices
-        // is not asked about on every sync.
-        pending.push(
-          price.amount === null
-            ? { id }
-            : { id, price: price.amount / 100, currency: payload.currency },
-        );
-      });
-    });
-
-    return false;
-  };
-
   const run = async (buybacks: RsiBuybackItemInput[], pendingIds: string[]) => {
     const wanted = new Set(pendingIds);
-    const targets = buybacks.filter((buyback) => wanted.has(buyback.id));
-
-    const pages: string[] = [];
-    const idsByPair = new Map<string, string[]>();
-
-    targets.forEach((buyback) => {
-      if (buyback.kind !== BuybackPledgeKindEnum.UPGRADE) {
-        pages.push(buyback.id);
-      } else if (buyback.upgradeFromShipId && buyback.upgradeToSkuId) {
-        const key = pairKey({
-          from: buyback.upgradeFromShipId,
-          to: buyback.upgradeToSkuId,
-        });
-        idsByPair.set(key, [...(idsByPair.get(key) || []), buyback.id]);
-      } else {
-        pending.push({ id: buyback.id });
-      }
-    });
-
-    // Many upgrades share a from/to pair, and the price depends on nothing else.
-    const pairs = Array.from(idsByPair.keys()).map((key) => {
-      const [from, to] = key.split(":").map(Number);
-      return { from, to };
-    });
-    const pairBatches = Array.from(
-      { length: Math.ceil(pairs.length / UPGRADE_PRICES_PER_REQUEST) },
-      (_, index) =>
-        pairs.slice(
-          index * UPGRADE_PRICES_PER_REQUEST,
-          (index + 1) * UPGRADE_PRICES_PER_REQUEST,
-        ),
-    );
+    const pages = buybacks
+      .filter(
+        (buyback) =>
+          wanted.has(buyback.id) &&
+          buyback.kind !== BuybackPledgeKindEnum.UPGRADE,
+      )
+      .map((buyback) => buyback.id);
 
     status.value = "running";
-    total.value = targets.length;
-    done.value = targets.length - pages.length - countIds(idsByPair);
+    total.value = pages.length;
+    done.value = 0;
     failures = 0;
     cancelled = false;
 
     try {
-      for (const batch of pairBatches) {
-        await waitForSlot();
-        if (cancelled) return await submit(true);
-
-        if (await readUpgradePrices(batch, idsByPair)) {
-          return await stop();
-        }
-        await submit(cancelled);
-        if (cancelled) return;
-      }
-
       for (const id of pages) {
         await waitForSlot();
         if (cancelled) return await submit(true);
@@ -248,6 +154,3 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
 
   return { status, total, done, run, cancel };
 };
-
-const countIds = (idsByPair: Map<string, string[]>) =>
-  Array.from(idsByPair.values()).reduce((sum, ids) => sum + ids.length, 0);

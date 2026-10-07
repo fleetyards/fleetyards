@@ -8,7 +8,6 @@ export enum FleetyardsSyncAction {
   SYNC = "sync",
   SYNC_BUYBACK = "syncBuyback",
   SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
-  SYNC_BUYBACK_UPGRADE_PRICES = "syncBuybackUpgradePrices",
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",
@@ -30,18 +29,6 @@ export type FleetyardsSyncHealthPayload = {
   actions?: string[];
 };
 
-export type FleetyardsSyncUpgradePair = {
-  from: number;
-  to: number;
-};
-
-// RSI's upgrade prices, in cents of `currency`. `amount` is null for a pair RSI
-// no longer prices.
-export type FleetyardsSyncUpgradePricesPayload = {
-  currency: string;
-  prices: (FleetyardsSyncUpgradePair & { amount: number | null })[];
-};
-
 export type FleetyardsSyncMessage = {
   action: FleetyardsSyncAction;
   code?: number;
@@ -52,8 +39,7 @@ export type FleetyardsSyncMessage = {
     | string
     | FleetyardsSyncSessionPayload
     | FleetyardsSyncHealthPayload
-    | FleetyardsSyncVerifyPayload
-    | FleetyardsSyncUpgradePricesPayload;
+    | FleetyardsSyncVerifyPayload;
 };
 
 export interface FleetyardsSyncEvent extends Event {
