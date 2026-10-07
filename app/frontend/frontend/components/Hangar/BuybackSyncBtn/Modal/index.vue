@@ -278,8 +278,8 @@ const handlePage = async (html: string) => {
   setTimeout(() => fetchPage(currentPage.value), 500);
 };
 
-// The detail pass runs after the list crawl and counts against the same limit,
-// so a long list followed by its prices stays at one request a second.
+// The detail pass runs after the list crawl and draws on the same budget of 60
+// requests a minute since the sync started, so the two together stay inside it.
 const waitForSlot = async () => {
   while (
     !unmounted &&

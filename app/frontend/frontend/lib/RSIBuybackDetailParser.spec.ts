@@ -74,9 +74,9 @@ describe("extractBuybackDetail", () => {
     ).toBeUndefined();
   });
 
-  it("does not read a price without a currency", () => {
+  it("reads the insurance of a pledge page without a readable price", () => {
     expect(
       extractBuybackDetail(detailPage(["6 Month Insurance"], "15708", "")),
-    ).toBeUndefined();
+    ).toEqual({ insuranceMonths: 6, lifetimeInsurance: false });
   });
 });

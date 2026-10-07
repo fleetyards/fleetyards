@@ -1,6 +1,6 @@
 export type RSIBuybackDetail = {
-  price: number;
-  currency: string;
+  price?: number;
+  currency?: string;
   insuranceMonths?: number;
   lifetimeInsurance: boolean;
 };
@@ -10,21 +10,25 @@ const MONTHS_INSURANCE = /^(\d+)\s+Months?\s+Insurance$/i;
 const LIFETIME_INSURANCE = /^Lifetime\s+Insurance$/i;
 
 // The buy-back page of one pledge (`/pledge/buyback/<id>`). `undefined` when the
-// HTML has no price on it: a login redirect, an error page, or a pledge that is
-// gone. The price is what RSI charges this account, in the currency the
-// account shows prices in, tax included.
+// HTML is not a pledge page at all, such as a login redirect or an error page.
+// A pledge page without a readable price still answers, with its insurance, so
+// that pledge is not asked about on every sync. The price is what RSI charges
+// this account, in the currency the account shows prices in, tax included.
 export const extractBuybackDetail = (
   html: string,
 ): RSIBuybackDetail | undefined => {
   const htmlDoc = new DOMParser().parseFromString(html, "text/html");
 
   const finalPrice = htmlDoc.querySelector<HTMLElement>("strong.final-price");
-  const cents = Number.parseInt(finalPrice?.dataset.value || "", 10);
-  const currency = finalPrice?.dataset.currency?.trim().toUpperCase();
 
-  if (Number.isNaN(cents) || !currency || !/^[A-Z]{3}$/.test(currency)) {
+  if (!finalPrice && !htmlDoc.querySelector(".package-listing")) {
     return undefined;
   }
+
+  const cents = Number.parseInt(finalPrice?.dataset.value || "", 10);
+  const currency = finalPrice?.dataset.currency?.trim().toUpperCase();
+  const priced =
+    !Number.isNaN(cents) && !!currency && /^[A-Z]{3}$/.test(currency);
 
   const items = Array.from(
     htmlDoc.querySelectorAll(".package-listing.item li"),
@@ -39,8 +43,7 @@ export const extractBuybackDetail = (
     .filter((value) => !Number.isNaN(value));
 
   return {
-    price: cents / 100,
-    currency,
+    ...(priced ? { price: cents / 100, currency } : {}),
     insuranceMonths:
       lifetimeInsurance || months.length === 0
         ? undefined

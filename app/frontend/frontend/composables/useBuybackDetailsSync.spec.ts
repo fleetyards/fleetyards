@@ -56,7 +56,12 @@ describe("useBuybackDetailsSync", () => {
     await run([ship("1"), ship("2")], ["2"]);
 
     expect(request).toHaveBeenCalledTimes(1);
-    expect(request).toHaveBeenCalledWith("syncBuybackDetail", { id: "2" });
+    expect(request).toHaveBeenCalledWith(
+      "syncBuybackDetail",
+      { id: "2" },
+      undefined,
+      expect.any(Function),
+    );
     expect(submitted()).toEqual([
       { id: "2", price: 5, currency: "EUR", lifetimeInsurance: false },
     ]);
@@ -86,12 +91,17 @@ describe("useBuybackDetailsSync", () => {
     );
 
     expect(request).toHaveBeenCalledTimes(1);
-    expect(request).toHaveBeenCalledWith("syncBuybackUpgradePrices", {
-      upgrades: [
-        { from: 308, to: 19461 },
-        { from: 47, to: 19337 },
-      ],
-    });
+    expect(request).toHaveBeenCalledWith(
+      "syncBuybackUpgradePrices",
+      {
+        upgrades: [
+          { from: 308, to: 19461 },
+          { from: 47, to: 19337 },
+        ],
+      },
+      undefined,
+      expect.any(Function),
+    );
     expect(submitted()).toEqual([
       { id: "1", price: 26.18, currency: "EUR" },
       { id: "2", price: 26.18, currency: "EUR" },
@@ -117,12 +127,45 @@ describe("useBuybackDetailsSync", () => {
     expect(done.value).toBe(4);
   });
 
+  // A late answer to a request that timed out arrives while the next one waits.
   it("does not take a page for one pledge as another's", async () => {
-    request.mockResolvedValue({ code: 200, id: "9", payload: detailPage(500) });
+    request.mockImplementation((_action, _params, _timeout, matches) => {
+      const reply = { code: 200, id: "9", payload: detailPage(500) };
+
+      return matches(reply)
+        ? Promise.resolve(reply)
+        : Promise.reject(new Error("no answer"));
+    });
 
     const { run } = useBuybackDetailsSync({ waitForSlot });
     await run([ship("1")], ["1"]);
 
     expect(submitted()).toEqual([]);
+  });
+
+  it("stores a pledge RSI has no page for any more without details", async () => {
+    request.mockResolvedValue({ code: 404, id: "1", payload: "" });
+
+    const { run, status } = useBuybackDetailsSync({ waitForSlot });
+    await run([ship("1")], ["1"]);
+
+    expect(submitted()).toEqual([{ id: "1" }]);
+    expect(status.value).toBe("finished");
+  });
+
+  it("keeps the answer in flight when the pass is cancelled", async () => {
+    let answer: (reply: unknown) => void = () => {};
+    request.mockReturnValue(new Promise((resolve) => (answer = resolve)));
+
+    const { run, cancel } = useBuybackDetailsSync({ waitForSlot });
+    const running = run([ship("1"), ship("2")], ["1", "2"]);
+    await Promise.resolve();
+
+    cancel();
+    answer({ code: 200, id: "1", payload: detailPage(500) });
+    await running;
+
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
   });
 });

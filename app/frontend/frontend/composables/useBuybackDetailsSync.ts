@@ -65,7 +65,12 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     const items = pending;
     pending = [];
 
-    await mutation.mutateAsync({ data: { items } });
+    try {
+      await mutation.mutateAsync({ data: { items } });
+    } catch (error) {
+      pending = [...items, ...pending];
+      throw error;
+    }
   };
 
   const recordFailure = () => {
@@ -75,16 +80,29 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
   };
 
   const readDetailPage = async (id: string) => {
-    const message = await request(FleetyardsSyncAction.SYNC_BUYBACK_DETAIL, {
-      id,
-    }).catch(() => undefined);
-
-    const detail =
-      message?.code === 200 && message.id === id
-        ? extractBuybackDetail(message.payload as string)
-        : undefined;
+    const message = await request(
+      FleetyardsSyncAction.SYNC_BUYBACK_DETAIL,
+      { id },
+      undefined,
+      (reply) => reply.id === id,
+    ).catch(() => undefined);
 
     done.value += 1;
+
+    // A pledge RSI has no page for any more is stored without details, so it is
+    // not asked about on every sync. Anything else unreadable may be the session
+    // or RSI's markup, and is asked about again.
+    if (message?.code === 404) {
+      failures = 0;
+      pending.push({ id });
+
+      return false;
+    }
+
+    const detail =
+      message?.code === 200
+        ? extractBuybackDetail(message.payload as string)
+        : undefined;
 
     if (!detail) {
       return recordFailure();
@@ -100,9 +118,19 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     pairs: FleetyardsSyncUpgradePair[],
     idsByPair: Map<string, string[]>,
   ) => {
+    const asked = pairs.map(pairKey).join(",");
+
     const message = await request(
       FleetyardsSyncAction.SYNC_BUYBACK_UPGRADE_PRICES,
       { upgrades: pairs },
+      undefined,
+      (reply) =>
+        reply.code !== 200 ||
+        (
+          reply.payload as FleetyardsSyncUpgradePricesPayload | undefined
+        )?.prices
+          ?.map(pairKey)
+          .join(",") === asked,
     ).catch(() => undefined);
 
     const payload =
@@ -179,22 +207,24 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     try {
       for (const batch of pairBatches) {
         await waitForSlot();
-        if (cancelled) return;
+        if (cancelled) return await submit(true);
 
         if (await readUpgradePrices(batch, idsByPair)) {
           return await stop();
         }
-        await submit();
+        await submit(cancelled);
+        if (cancelled) return;
       }
 
       for (const id of pages) {
         await waitForSlot();
-        if (cancelled) return;
+        if (cancelled) return await submit(true);
 
         if (await readDetailPage(id)) {
           return await stop();
         }
-        await submit();
+        await submit(cancelled);
+        if (cancelled) return;
       }
 
       await submit(true);
@@ -210,13 +240,10 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     status.value = "incomplete";
   };
 
-  // What was read before the modal closed is kept, like a pass that stopped.
+  // The pass stops at the next request, and what was read up to then, the
+  // answer in flight included, is still stored.
   const cancel = () => {
     cancelled = true;
-
-    submit(true).catch((error) => {
-      console.error("Buy-back details sync error:", error);
-    });
   };
 
   return { status, total, done, run, cancel };
