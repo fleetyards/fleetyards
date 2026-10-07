@@ -225,8 +225,9 @@ module Discord
       end
 
       test "a picked value naming no listed item says so" do
-        assert_equal I18n.t("discord.commands.item.not_found", query: "component~#{SecureRandom.uuid}").length,
-          call("component~#{SecureRandom.uuid}")[:content].length
+        value = "component~#{SecureRandom.uuid}"
+
+        assert_equal I18n.t("discord.commands.item.not_found", query: value), call(value)[:content]
       end
     end
   end
