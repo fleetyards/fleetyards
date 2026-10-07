@@ -64,7 +64,7 @@ es:
         makes: 'Fabrica %{item}'
         materials: 'Materiales: %{items}'
         missing_query: Indica el nombre de un objeto.
-        more: '…y más. Elige uno de las sugerencias.'
+        more: '…y más. Elige una de las sugerencias.'
         not_found: 'No se encontró ningún objeto para «%{query}».'
         types:
           blueprint: Plano
