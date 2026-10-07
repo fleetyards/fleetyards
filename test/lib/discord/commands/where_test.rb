@@ -87,6 +87,18 @@ module Discord
         assert_equal [{name: "Quantainium · #{I18n.t("discord.commands.item.types.commodity")}", value: "Quantainium"}],
           ::Discord::Commands::Where.autocomplete("name", "quanta")
       end
+
+      test "a place from the price source cannot format the message" do
+        price(:sell, 95, "Admin - Port_Tressler - Micro*tech")
+
+        assert_includes field(call("Quantainium"), :buy), "Port\\_Tressler · Micro\\*tech"
+      end
+
+      test "a source link with a space stays one link" do
+        price(:sell, 95, "Admin - Everus Harbor", location_url: "https://uex.space/terminal/Admin Office (1)")
+
+        assert_includes field(call("Quantainium"), :buy), "[Admin](https://uex.space/terminal/Admin%20Office%20%281%29)"
+      end
     end
   end
 end

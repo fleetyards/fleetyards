@@ -9,8 +9,6 @@ module Discord
       include ItemLookup
 
       CATALOGUES = %w[component equipment commodity].freeze
-      EMBED_COLOR = 0x2d9cdb
-
       # Discord rejects the whole message over one embed field past this, and
       # an unanswered interaction stays on "thinking..." for good.
       FIELD_LIMIT = 1024
@@ -28,6 +26,8 @@ module Discord
         prefix, found = resolve_item(query, within: CATALOGUES)
         return found if prefix.nil?
 
+        # Both directions off one query rather than one each.
+        found.item_prices.load
         page = item_page_url(prefix, found.slug)
         fields = [
           field(:buy, found.sold_at, page),
@@ -75,7 +75,7 @@ module Discord
       private def line(item_price)
         shop, *place = item_price.location.to_s.split(" - ")
 
-        ["• #{shop_link(item_price, shop)}", place.join(" · ").presence, uec(item_price.price)]
+        ["• #{shop_link(item_price, shop)}", Markdown.escape(place.join(" · ")).presence, uec(item_price.price)]
           .compact.join(" · ")
       end
 
@@ -85,9 +85,15 @@ module Discord
       private def shop_link(item_price, name)
         text = Markdown.escape(name)
         return "[#{text}](#{url_for_path("/shops/#{item_price.shop.slug}/")})" if item_price.shop&.slug.present?
-        return "[#{text}](#{item_price.location_url.gsub(")", "%29")})" if item_price.location_url.to_s.match?(%r{\Ahttps?://}i)
+        return "[#{text}](#{link_safe(item_price.location_url)})" if item_price.location_url.to_s.match?(%r{\Ahttps?://}i)
 
         text
+      end
+
+      # A space or a bracket ends a markdown link early, and the rest of the
+      # address spills into the message as text.
+      private def link_safe(url)
+        url.gsub(/[\s()<>\[\]]/) { |char| format("%%%02X", char.ord) }
       end
     end
   end
