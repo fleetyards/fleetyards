@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            page: {"$ref": "#/components/schemas/RsiPageKindEnum"},
-            check: {"$ref": "#/components/schemas/RsiPageCheckEnum"},
+            page: ::V1::Schemas::Enums::RsiPageKindEnum,
+            check: ::V1::Schemas::Enums::RsiPageCheckEnum,
             pageNumber: {type: :integer, minimum: 1},
             extensionVersion: {type: :string, pattern: "^[0-9A-Za-z.+-]{1,32}$"}
           },
