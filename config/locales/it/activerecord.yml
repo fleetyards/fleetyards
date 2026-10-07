@@ -460,6 +460,7 @@ it:
               team: "è un team — unisciti direttamente"
               already_a_member: "ti include già"
               exclusive_conflict: "è in conflitto con %{squadron} — un membro appartiene a un solo squadrone, a meno che non sia un team"
+              request_pending: "non può essere richiesto finché la tua richiesta di unirti a %{squadron} è in attesa — ritirala prima"
         fleet_squadron_role:
           attributes:
             default_rank:
