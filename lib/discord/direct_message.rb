@@ -19,10 +19,6 @@ module Discord
   # retry into a rate limit: the reader's Discord privacy settings are not
   # something a retry changes.
   class DirectMessage
-    # Discord's own colour-free default; the embed is deliberately plain so a DM
-    # does not look like an advert.
-    EMBED_COLOR = 0x2d9cdb
-
     # Discord refuses an embed over either limit, and a retry sends the same
     # text again. An announcement's body has no length limit of its own.
     EMBED_TITLE_MAX = 256
@@ -72,7 +68,7 @@ module Discord
         title: MessageLength.truncate(@notification.title, EMBED_TITLE_MAX),
         description: description,
         url: link,
-        color: EMBED_COLOR,
+        color: Commands::Base::EMBED_COLOR,
         footer: {text: I18n.t("discord.direct_message.footer")}
       }.compact_blank
     end
