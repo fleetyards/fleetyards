@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.18.0](https://github.com/fleetyards/fleetyards/compare/v8.17.0...v8.18.0) (2026-10-07)
+
+
+### Features
+
+* **squadrons:** one join request at a time ([#5457](https://github.com/fleetyards/fleetyards/issues/5457)) ([0315cfd](https://github.com/fleetyards/fleetyards/commit/0315cfdf00b6cc1c541fdb0e199fe6f78a8b162e))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.0 to 6.3.1 ([#5454](https://github.com/fleetyards/fleetyards/issues/5454)) ([94c813c](https://github.com/fleetyards/fleetyards/commit/94c813c599d92cc28fa6a1454db542f55960e73c))
+* **deps-dev:** bump vite-plugin-pwa from 1.3.0 to 2.0.0 ([#5455](https://github.com/fleetyards/fleetyards/issues/5455)) ([1e129c5](https://github.com/fleetyards/fleetyards/commit/1e129c5c67ccd3e7202ec0fe579361a4742b036d))
+
 ## [8.17.0](https://github.com/fleetyards/fleetyards/compare/v8.16.0...v8.17.0) (2026-10-06)
 
 
