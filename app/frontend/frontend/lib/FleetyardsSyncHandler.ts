@@ -5,6 +5,7 @@ export enum FleetyardsSyncDirection {
 
 export enum FleetyardsSyncAction {
   SYNC = "sync",
+  SYNC_BUYBACK = "syncBuyback",
   IDENTIFY = "identify",
 }
 
@@ -15,6 +16,7 @@ export type FleetyardsSyncSessionPayload = {
 export type FleetyardsSyncMessage = {
   action: FleetyardsSyncAction;
   code?: number;
+  error?: string;
   payload?: string | FleetyardsSyncSessionPayload;
 };
 

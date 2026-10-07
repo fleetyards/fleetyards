@@ -2490,6 +2490,7 @@
         },
         "processSteps": {
           "fetchHangar": "正在從 RSI 機庫取得資料",
+          "fetchBuybacks": "正在從 RSI 回購頁面取得資料",
           "submitData": "正在提交資料到 Fleetyards.net 後台"
         },
         "sessionStatus": "RSI 工作階段狀態",
@@ -2497,6 +2498,8 @@
         "targetGroup": "找到的飛船歸入的分組",
         "addBundledVehicles": "新增附帶的小型飛船",
         "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。",
+        "syncBuybacks": "同步可回購的承諾",
+        "syncBuybacksHint": "同時讀取你的 RSI 回購清單，用於規劃要回購的內容。清單較長時同步會多花幾分鐘。",
         "unmatchedVehiclesAction": "不在 RSI 機庫中的飛船",
         "unmatchedVehiclesActionHint": "如何處理這裡有、但同步在你的 RSI 認購清單中找不到的飛船。",
         "unmatchedHangarGroup": "歸入的分組",
@@ -2521,6 +2524,7 @@
         },
         "pledgeItems": {
           "pages": "頁面",
+          "buybacks": "可回購的承諾",
           "all": "所有質押物品",
           "ships": "飛船",
           "components": "模組",

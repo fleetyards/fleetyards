@@ -9,13 +9,19 @@ import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+import type {
+  RsiHangarItemInput,
+  RsiBuybackItemInput,
+  HangarSyncResult,
+} from "@/services/fyApi";
 import type { SyncProcessStep } from "./types";
 
 type Props = {
   processSteps: SyncProcessStep[];
   currentPage: number;
   pledges: RsiHangarItemInput[];
+  currentBuybackPage?: number;
+  buybacks?: RsiBuybackItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
   finishedWithErrors: boolean;
@@ -23,6 +29,8 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  currentBuybackPage: 1,
+  buybacks: () => [],
   result: undefined,
   showSupportHint: false,
 });
@@ -132,6 +140,30 @@ const hasWarnings = computed(
             v-if="step.status === 'failure'"
             class="fa-light fa-times text-danger"
           />
+          <i
+            v-if="step.status === 'skipped'"
+            class="fa-light fa-forward text-warning"
+          />
+        </div>
+        <div
+          v-if="step.name === 'fetchBuybacks'"
+          class="process-steps-item-info"
+        >
+          <p v-if="step.status === 'skipped'" class="text-warning">
+            {{ t("texts.syncExtension.buybacksUnsupported") }}
+          </p>
+          <dl v-else class="row">
+            <dt class="col-sm-7">
+              {{ t("labels.syncExtension.pledgeItems.pages") }}:
+            </dt>
+            <dd class="col-sm-5 text-right">{{ currentBuybackPage }}</dd>
+            <template v-if="buybacks.length">
+              <dt class="col-sm-7">
+                {{ t("labels.syncExtension.pledgeItems.buybacks") }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ buybacks.length }}</dd>
+            </template>
+          </dl>
         </div>
         <div v-if="step.name === 'fetchHangar'" class="process-steps-item-info">
           <dl class="row">

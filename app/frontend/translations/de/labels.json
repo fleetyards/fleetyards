@@ -2490,6 +2490,7 @@
         },
         "processSteps": {
           "fetchHangar": "Daten aus dem RSI-Hangar abrufen",
+          "fetchBuybacks": "Daten von der RSI-Rückkaufseite abrufen",
           "submitData": "Daten an das Fleetyards.net-Backend senden"
         },
         "sessionStatus": "RSI-Sitzungsstatus",
@@ -2497,6 +2498,8 @@
         "targetGroup": "Gruppe für die gefundenen Schiffe",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",
         "addBundledVehiclesHint": "Fügt den Snub Craft hinzu, der zu einem Schiff gehört. Bereits vorhandene bleiben in jedem Fall erhalten.",
+        "syncBuybacks": "Rückkauf-Pledges synchronisieren",
+        "syncBuybacksHint": "Liest auch deine RSI-Rückkaufliste, um zu planen, was du zurückkaufen möchtest. Lange Listen verlängern die Synchronisierung um einige Minuten.",
         "unmatchedVehiclesAction": "Schiffe, die nicht im RSI-Hangar sind",
         "unmatchedVehiclesActionHint": "Was mit Schiffen passiert, die hier stehen, die der Sync aber nicht in deiner RSI-Pledge-Liste findet.",
         "unmatchedHangarGroup": "Gruppe, in die sie einsortiert werden",
@@ -2521,6 +2524,7 @@
         },
         "pledgeItems": {
           "pages": "Seiten",
+          "buybacks": "Rückkauf-Pledges",
           "all": "Alle Pledge-Gegenstände",
           "ships": "Schiffe",
           "components": "Module",

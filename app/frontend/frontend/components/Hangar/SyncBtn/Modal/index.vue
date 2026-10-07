@@ -11,6 +11,7 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
+import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
@@ -21,13 +22,21 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
-import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
+import {
+  isSyncStepDone,
+  isSyncStepRunning,
+} from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
-import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+import type {
+  RsiHangarItemInput,
+  RsiBuybackItemInput,
+  HangarSyncResult,
+} from "@/services/fyApi";
 import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
+  useSyncRsiBuybacks,
 } from "@/services/fyApi";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import {
@@ -36,6 +45,7 @@ import {
 } from "@/services/fyCable/channels/HangarSyncChannel";
 import { differenceInMinutes } from "date-fns";
 import {
+  FleetyardsSyncAction,
   type FleetyardsSyncMessage,
   type FleetyardsSyncEvent,
   type FleetyardsSyncSessionPayload,
@@ -63,6 +73,12 @@ const maxMessagesPerMinute = 60;
 const hangarStore = useHangarStore();
 
 const pledges = ref<RsiHangarItemInput[]>([]);
+
+const currentBuybackPage = ref(1);
+
+const buybacks = ref<RsiBuybackItemInput[]>([]);
+
+const seenBuybackIds = new Set<string>();
 
 const hangarGroupId = ref<string | undefined>(undefined);
 
@@ -97,16 +113,15 @@ const seenPledgeIds = new Set<string>();
 
 const result = ref<HangarSyncResult | undefined>();
 
-const processSteps = ref<SyncProcessStep[]>([
-  {
-    name: "fetchHangar",
-    status: "pending",
-  },
-  {
-    name: "submitData",
-    status: "pending",
-  },
-]);
+const buildProcessSteps = (): SyncProcessStep[] => [
+  { name: "fetchHangar", status: "pending" },
+  ...(hangarStore.syncBuybacks
+    ? [{ name: "fetchBuybacks", status: "pending" } as SyncProcessStep]
+    : []),
+  { name: "submitData", status: "pending" },
+];
+
+const processSteps = ref<SyncProcessStep[]>(buildProcessSteps());
 
 const onExtensionMessage = (event: FleetyardsSyncEvent) => {
   handleExtensionMessage(event).catch((error) => {
@@ -141,12 +156,26 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   if (event.data.direction === "fy-sync") {
     const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
 
-    if (message.action === "sync") {
+    if (message.action === FleetyardsSyncAction.SYNC) {
       if (message.code === 200) {
         await fetchRSIHangar(message.payload as string);
       } else {
         displayAlert({ text: t("messages.syncExtension.failure") });
         updateStep("fetchHangar", "failure");
+      }
+    }
+
+    if (message.action === FleetyardsSyncAction.SYNC_BUYBACK) {
+      if (message.code === 200) {
+        await fetchRSIBuybacks(message.payload as string);
+      } else if (isUnknownAction(message)) {
+        console.info("FY Extension: syncBuyback not supported");
+        updateStep("fetchBuybacks", "skipped");
+        await finishSync();
+      } else {
+        displayAlert({ text: t("messages.syncExtension.buybackFailure") });
+        updateStep("fetchBuybacks", "failure");
+        await finishSync();
       }
     }
 
@@ -198,9 +227,7 @@ const working = computed(
   () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
 );
 
-const finished = computed(() =>
-  processSteps.value.every((step) => step.status === "success"),
-);
+const finished = computed(() => processSteps.value.every(isSyncStepDone));
 
 const finishedWithErrors = computed(() =>
   processSteps.value.some((step) => step.status === "failure"),
@@ -232,24 +259,33 @@ const cancel = async () => {
 
 const start = async () => {
   started.value = true;
+  processSteps.value = buildProcessSteps();
   pledges.value = [];
   currentPage.value = 1;
   seenPledgeIds.clear();
+  buybacks.value = [];
+  currentBuybackPage.value = 1;
+  seenBuybackIds.clear();
   syncStartedAt.value = new Date();
   fetchCount.value = 0;
-  fetchPage(currentPage.value);
+  fetchPage(FleetyardsSyncAction.SYNC, currentPage.value);
 
   displayInfo({ text: t("messages.syncExtension.started") });
 };
 
-const fetchPage = (page: number) => {
+// An extension released before buy-backs answers the action it does not know
+// with this, and the hangar half of the sync is still worth finishing.
+const isUnknownAction = (message: FleetyardsSyncMessage) =>
+  message.code === 500 && message.error === "Unknown Action";
+
+const fetchPage = (action: FleetyardsSyncAction, page: number) => {
   const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
 
   const allowedMessages = (elapsedMinutes + 1) * maxMessagesPerMinute;
 
   if (fetchCount.value >= allowedMessages) {
     setTimeout(() => {
-      fetchPage(page);
+      fetchPage(action, page);
     }, 500);
 
     return;
@@ -259,7 +295,7 @@ const fetchPage = (page: number) => {
 
   window.postMessage({
     direction: "fy",
-    message: `{ "action": "sync", "page": ${page} }`,
+    message: JSON.stringify({ action, page }),
   });
 };
 
@@ -271,7 +307,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   if (result === undefined) {
     updateStep("fetchHangar", "success");
-    await finishSync();
+    await hangarFetched();
     return;
   }
 
@@ -279,7 +315,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   if (newPledgeIds.length === 0) {
     updateStep("fetchHangar", "success");
-    await finishSync();
+    await hangarFetched();
     return;
   }
 
@@ -294,7 +330,59 @@ const fetchRSIHangar = async (htmlPage: string) => {
   }
 
   currentPage.value += 1;
-  setTimeout(() => fetchPage(currentPage.value), 500);
+  setTimeout(
+    () => fetchPage(FleetyardsSyncAction.SYNC, currentPage.value),
+    500,
+  );
+};
+
+const hangarFetched = async () => {
+  if (!processSteps.value.some((step) => step.name === "fetchBuybacks")) {
+    await finishSync();
+    return;
+  }
+
+  updateStep("fetchBuybacks", "processing");
+  fetchPage(FleetyardsSyncAction.SYNC_BUYBACK, currentBuybackPage.value);
+};
+
+const fetchRSIBuybacks = async (htmlPage: string) => {
+  const result = extractBuybackPage(htmlPage);
+
+  const newBuybacks = (result?.pledges || []).filter(
+    (buyback) => !seenBuybackIds.has(buyback.id),
+  );
+
+  if (newBuybacks.length === 0) {
+    await submitBuybacks();
+    await finishSync();
+    return;
+  }
+
+  newBuybacks.forEach((buyback) => seenBuybackIds.add(buyback.id));
+  buybacks.value = [...buybacks.value, ...newBuybacks];
+
+  currentBuybackPage.value += 1;
+  setTimeout(
+    () =>
+      fetchPage(FleetyardsSyncAction.SYNC_BUYBACK, currentBuybackPage.value),
+    500,
+  );
+};
+
+const buybackMutation = useSyncRsiBuybacks();
+
+// Only ever after the last page: the endpoint replaces the whole list, so a
+// partial one would drop every buy-back on the pages that were never read.
+const submitBuybacks = async () => {
+  try {
+    await buybackMutation.mutateAsync({ data: { items: buybacks.value } });
+    updateStep("fetchBuybacks", "success");
+  } catch (error) {
+    console.error(error);
+    displayAlert({ text: t("messages.syncExtension.buybackFailure") });
+    updateStep("fetchBuybacks", "failure");
+  }
 };
 
 const mutation = useSyncRsiHangarMutation();
@@ -462,6 +550,13 @@ const refreshPage = async () => {
           :info="t('labels.syncExtension.addBundledVehiclesHint')"
           no-placeholder
         />
+        <FormToggle
+          v-model="hangarStore.syncBuybacks"
+          name="syncBuybacks"
+          :label="t('labels.syncExtension.syncBuybacks')"
+          :info="t('labels.syncExtension.syncBuybacksHint')"
+          no-placeholder
+        />
         <BaseSelect
           v-model="hangarStore.syncUnmatchedVehiclesAction"
           name="syncUnmatchedVehiclesAction"
@@ -491,6 +586,8 @@ const refreshPage = async () => {
           :process-steps="processSteps"
           :current-page="currentPage"
           :pledges="pledges"
+          :current-buyback-page="currentBuybackPage"
+          :buybacks="buybacks"
           :result="result"
           :finished="finished"
           :finished-with-errors="finishedWithErrors"
