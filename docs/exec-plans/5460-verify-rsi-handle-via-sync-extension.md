@@ -54,7 +54,7 @@ No change: the citizen page shows a bio edit right away, so the existing check j
 
 ## Not in scope (deferred)
 
-- **Fleet RSI verification via the extension** — same idea for the org page token (`FleetRsiVerification`). Needs org-admin rights on RSI, so it is a separate flow. Becomes its own issue if wanted.
+- **Fleet RSI verification via the extension**: #5465.
 
 ## Discovery Log
 
