@@ -16,10 +16,10 @@ export type FleetyardsSyncSessionPayload = {
   handle: string;
 };
 
-export type FleetyardsSyncVerifyPayload = {
+export interface FleetyardsSyncVerifyPayload {
   handle: string;
   changed?: boolean;
-};
+}
 
 // What an extension can do. Released versions before buy-backs answer the
 // health check without a payload at all.
