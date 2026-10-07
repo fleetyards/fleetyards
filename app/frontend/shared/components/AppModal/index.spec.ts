@@ -1,7 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, onBeforeUnmount } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
 
@@ -60,5 +60,35 @@ describe("AppModal", () => {
 
     expect(confirm).not.toHaveBeenCalled();
     expect(wrapper?.find('[data-test="modal"]').exists()).toBe(false);
+  });
+
+  it("reports itself closed only once its content has unmounted", async () => {
+    vi.useFakeTimers();
+    wrapper = await mountWithDefaults<typeof Component>(Component, {});
+
+    const order: string[] = [];
+    const Content = defineComponent({
+      setup() {
+        onBeforeUnmount(() => order.push("unmounted"));
+        return () => h("div");
+      },
+    });
+    stopListening = useComlink().on("modal-closed", () => {
+      order.push("closed");
+    });
+
+    const modal = wrapper.vm as unknown as {
+      open: (options: object) => Promise<void>;
+      close: (force?: boolean) => Promise<void>;
+    };
+    await modal.open({ component: () => Promise.resolve(Content) });
+    vi.runAllTimers();
+    await flushPromises();
+
+    await modal.close(true);
+    vi.runAllTimers();
+    await flushPromises();
+
+    expect(order).toEqual(["unmounted", "closed"]);
   });
 });

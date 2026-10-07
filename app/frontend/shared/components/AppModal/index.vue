@@ -121,7 +121,9 @@ const internalHide = async () => {
       componentProps.value = {};
 
       emit("modal-closed");
-      comlink.emit("modal-closed");
+
+      // Listeners may tear down what the content's unmount hooks still use.
+      void nextTick(() => comlink.emit("modal-closed"));
     }, 300);
   });
 };
