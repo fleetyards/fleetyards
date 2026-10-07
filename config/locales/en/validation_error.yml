@@ -106,6 +106,7 @@ en:
       update: Group could not be updated
     buyback_pledges:
       sync: Buy-back pledges could not be synchronised.
+      sync_details: Buy-back details could not be stored.
     fleet_contracts:
       create: Contract could not be created.
       update: Contract could not be updated.

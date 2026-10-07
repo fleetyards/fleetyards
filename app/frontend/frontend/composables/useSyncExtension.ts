@@ -14,10 +14,13 @@ const REQUEST_TIMEOUT = 30000;
 // fine for what the answers are used for here: what the UI offers. Nothing the
 // extension reports is proof of anything to the server.
 export const useSyncExtension = () => {
+  // `matches` tells this request's answer from a late one to an earlier
+  // request of the same action that already timed out.
   const request = (
     action: FleetyardsSyncAction,
     params: Record<string, unknown> = {},
     timeout = REQUEST_TIMEOUT,
+    matches: (message: FleetyardsSyncMessage) => boolean = () => true,
   ) =>
     new Promise<FleetyardsSyncMessage>((resolve, reject) => {
       const onMessage = (event: MessageEvent) => {
@@ -30,7 +33,7 @@ export const useSyncExtension = () => {
         } catch {
           return;
         }
-        if (message.action !== action) return;
+        if (message.action !== action || !matches(message)) return;
 
         cleanup();
         resolve(message);

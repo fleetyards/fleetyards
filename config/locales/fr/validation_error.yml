@@ -62,6 +62,7 @@ fr:
       update: Le groupe n'a pas pu être mise à jour
     buyback_pledges:
       sync: Les pledges rachetables n'ont pas pu être synchronisés.
+      sync_details: "Les détails des pledges rachetables n'ont pas pu être enregistrés."
     fleet_contracts:
       create: Le contrat n'a pas pu être créé.
       update: Le contrat n'a pas pu être mis à jour.

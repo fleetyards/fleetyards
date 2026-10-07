@@ -3,19 +3,16 @@
 module V1
   module Schemas
     module Hangar
-      class BuybackSyncResult
+      class BuybackDetailsSyncResult
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            total: {type: :integer},
-            added: {type: :integer},
-            removed: {type: :integer},
-            detailsPending: {type: :array, items: {type: :string}}
+            updated: {type: :integer}
           },
           additionalProperties: false,
-          required: %w[total added removed detailsPending]
+          required: %w[updated]
         })
       end
     end

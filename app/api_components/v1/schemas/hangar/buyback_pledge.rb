@@ -14,17 +14,21 @@ module V1
             kind: ::V1::Schemas::Enums::BuybackPledgeKindEnum,
             name: {type: :string},
             upgraded: {type: :boolean},
+            available: {type: :boolean},
             reclaimedOn: {type: :string, format: :date},
             contained: {type: :string},
             image: {type: :string, format: :uri},
             upgradeFromShipId: {type: :integer},
             upgradeToShipId: {type: :integer},
             upgradeToSkuId: {type: :integer},
+            price: {type: :number, description: "What buying the pledge back costs, in USD before tax"},
+            insuranceMonths: {type: :integer},
+            lifetimeInsurance: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id rsiPledgeId kind name upgraded createdAt updatedAt]
+          required: %w[id rsiPledgeId kind name upgraded available lifetimeInsurance createdAt updatedAt]
         })
       end
     end

@@ -5,10 +5,15 @@
 # Table name: buyback_pledges
 #
 #  id                   :uuid             not null, primary key
+#  available            :boolean          default(TRUE), not null
 #  contained            :string
+#  details_synced_at    :datetime
 #  image_url            :string
+#  insurance_months     :integer
 #  kind                 :string           not null
+#  lifetime_insurance   :boolean          default(FALSE), not null
 #  name                 :string           not null
+#  price                :decimal(15, 2)
 #  reclaimed_on         :date
 #  upgraded             :boolean          default(FALSE), not null
 #  created_at           :datetime         not null
@@ -36,10 +41,28 @@ class BuybackPledge < ApplicationRecord
   KINDS = %w[package ship upgrade paint addon other].freeze
 
   belongs_to :user
+  belongs_to :upgrade_from_model, class_name: "Model", primary_key: :rsi_id,
+    foreign_key: :upgrade_from_ship_id, optional: true, inverse_of: false
+  belongs_to :upgrade_to_model, class_name: "Model", primary_key: :rsi_id,
+    foreign_key: :upgrade_to_ship_id, optional: true, inverse_of: false
 
   validates :rsi_pledge_id, presence: true, uniqueness: {scope: :user_id}
   validates :name, presence: true
   validates :kind, inclusion: {in: KINDS}
+
+  # In USD, like every price here. Buying an upgrade back costs what the
+  # upgrade costs today, the difference between both ships' store prices.
+  # Ours follow RSI's store, so it is computed rather than read from RSI and
+  # stored.
+  def upgrade_price
+    return unless kind == "upgrade"
+
+    from_price = upgrade_from_model&.pledge_price
+    to_price = upgrade_to_model&.pledge_price
+    return if from_price.nil? || to_price.nil?
+
+    to_price - from_price
+  end
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[kind name]

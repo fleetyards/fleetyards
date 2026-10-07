@@ -188,7 +188,10 @@
       },
       "buybackSync": {
         "info": "Lit chaque page de votre liste de rachat RSI et remplace par celle-ci les pledges rachetables enregistrés sur Fleetyards. Votre hangar n'est pas modifié. Les longues listes prennent quelques minutes.",
-        "unsupported": "Votre extension Fleetyards Sync ne sait pas encore lire les pledges rachetables. Mettez-la à jour pour les synchroniser."
+        "unsupported": "Votre extension Fleetyards Sync ne sait pas encore lire les pledges rachetables. Mettez-la à jour pour les synchroniser.",
+        "detailsInfo": "La première synchronisation lit aussi le prix et l'assurance de chaque pledge, une page RSI par pledge, ce qui peut prendre un quart d'heure pour une longue liste. Les suivantes ne lisent que les nouveaux.",
+        "detailsUnsupported": "Mettez à jour votre extension Fleetyards Sync pour lire aussi les prix et les assurances.",
+        "detailsIncomplete": "Certains prix n'ont pas pu être lus sur RSI. La prochaine synchronisation réessaiera."
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

@@ -11,7 +11,7 @@ module BuybackPledges
     class InvalidSnapshot < StandardError; end
 
     ATTRIBUTES = %i[
-      kind name upgraded reclaimed_on contained image_url
+      kind name upgraded available reclaimed_on contained image_url
       upgrade_from_ship_id upgrade_to_ship_id upgrade_to_sku_id
     ].freeze
 
@@ -37,9 +37,17 @@ module BuybackPledges
         {
           total: rows.size,
           added: (pledge_ids - existing_ids).size,
-          removed:
+          removed:,
+          detailsPending: details_pending.pluck(:rsi_pledge_id)
         }
       end
+    end
+
+    # A buy-back costs what the pledge was bought for, so its details are read
+    # once. An upgrade is priced from our own ship prices and has no buy-back
+    # page, so it is never read.
+    private def details_pending
+      user.buyback_pledges.where(details_synced_at: nil).where.not(kind: "upgrade")
     end
 
     # One row per pledge id: a duplicate inside one `upsert_all` is an error in
@@ -59,6 +67,8 @@ module BuybackPledges
         user_id: user.id,
         rsi_pledge_id: item[:id].to_s,
         upgraded: ActiveModel::Type::Boolean.new.cast(item[:upgraded]) || false,
+        # Missing from a list read before availability was, so it says nothing.
+        available: ActiveModel::Type::Boolean.new.cast(item[:available]) != false,
         image_url: item[:image]
       )
     end

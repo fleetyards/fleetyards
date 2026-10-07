@@ -69,6 +69,7 @@ de:
       update: Gruppe konnte nicht aktualisiert werden
     buyback_pledges:
       sync: Rückkauf-Pledges konnten nicht synchronisiert werden.
+      sync_details: Rückkauf-Details konnten nicht gespeichert werden.
     fleet_contracts:
       create: Auftrag konnte nicht erstellt werden.
       update: Auftrag konnte nicht aktualisiert werden.

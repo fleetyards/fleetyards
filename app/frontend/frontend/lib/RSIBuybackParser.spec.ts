@@ -86,6 +86,7 @@ describe("extractBuybackPage", () => {
       name: "Standalone Ship - Cutter plus Groundswell Paint",
       kind: "ship",
       upgraded: true,
+      available: true,
       reclaimedOn: "2023-11-26",
       contained: "Cutter Scout and 3 items",
       image:
@@ -178,5 +179,15 @@ describe("extractBuybackPage", () => {
       name: "Standalone Ship - Cutlass Black",
       upgraded: true,
     });
+  });
+
+  it("reads an entry RSI marks as not available", () => {
+    const page = extractBuybackPage(
+      buybackPage(
+        `<li><article class="pledge" data-disabled="1"><h1 title="Package - Limited Edition">Package - Limited Edition</h1><a class="holosmallbtn" href="/pledge/buyback/8">Buy Back</a></article></li>`,
+      ),
+    );
+
+    expect(page?.pledges[0]?.available).toBe(false);
   });
 });

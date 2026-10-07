@@ -7,6 +7,8 @@ export enum FleetyardsSyncAction {
   HEALTH = "health",
   SYNC = "sync",
   SYNC_BUYBACK = "syncBuyback",
+  SYNC_BUYBACK_DETAIL = "syncBuybackDetail",
+  SYNC_BUYBACK_PRICING = "syncBuybackPricing",
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",
@@ -32,6 +34,8 @@ export type FleetyardsSyncMessage = {
   action: FleetyardsSyncAction;
   code?: number;
   error?: string;
+  // The pledge a buy-back detail page belongs to.
+  id?: string;
   payload?:
     | string
     | FleetyardsSyncSessionPayload
