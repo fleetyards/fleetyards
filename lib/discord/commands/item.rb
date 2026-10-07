@@ -79,7 +79,9 @@ module Discord
         return answer(query, self.class.prefix_for(exact.first), exact.first.slug) if exact.one?
 
         carriers = ItemVariants.carriers(query, within: CATALOGUES)
-        return too_common(query, carriers) if carriers.values.sum > ItemVariants::MAX_CARRIERS
+        # Per catalogue, as the suggestions count them, so a name they offered
+        # item by item is listed the same way when typed out.
+        return too_common(query, carriers) if carriers.values.any? { |count| count > ItemVariants::MAX_CARRIERS }
 
         candidates = self.class.candidates(query)
         return not_found(query) if candidates.empty?

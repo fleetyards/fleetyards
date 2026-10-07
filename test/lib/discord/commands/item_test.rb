@@ -234,6 +234,15 @@ module Discord
         assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::ItemVariants::MAX_CARRIERS + 1}"
       end
 
+      test "a typed name a few items share in each of two catalogues lists them" do
+        create_list(:component, 3, name: "Serac")
+        create_list(:equipment, 3, name: "Serac")
+
+        content = call("Serac")[:content]
+
+        assert content.start_with?(I18n.t("discord.commands.item.ambiguous", query: "Serac"))
+      end
+
       test "a picked item of a shared name answers that item" do
         create(:component, name: "Serac")
         polaris = create(:component, name: "Serac")
