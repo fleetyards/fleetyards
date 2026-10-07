@@ -141,7 +141,7 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
           {{ record.contained }}
         </template>
 
-        <template #actions>
+        <template v-if="record.available" #actions>
           <Btn
             :href="rsiUrl(record)"
             :variant="BtnVariantsEnum.GHOST"

@@ -2511,7 +2511,10 @@
         "price": "價格",
         "insurance": "保險",
         "lifetimeInsurance": "終身保險",
-        "insuranceMonths": "%{count} 個月",
+        "insuranceMonths": {
+          "one": "%{count} 個月",
+          "other": "%{count} 個月"
+        },
         "openOnRsi": "在 RSI 回購"
       },
       "buybackSync": {

@@ -120,6 +120,7 @@ describe("Hangar/BuybacksList", () => {
     const wrapper = await mount([buyback({ available: false })]);
 
     expect(wrapper.text()).toContain("Not available");
+    expect(wrapper.find("[data-test='buyback-rsi-link']").exists()).toBe(false);
   });
 
   it("shows the empty state", async () => {

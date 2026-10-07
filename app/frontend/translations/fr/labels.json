@@ -2511,7 +2511,10 @@
         "price": "Prix",
         "insurance": "Assurance",
         "lifetimeInsurance": "LTI",
-        "insuranceMonths": "%{count} mois",
+        "insuranceMonths": {
+          "one": "%{count} mois",
+          "other": "%{count} mois"
+        },
         "openOnRsi": "Racheter sur RSI"
       },
       "buybackSync": {
