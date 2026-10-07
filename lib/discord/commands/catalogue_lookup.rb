@@ -21,6 +21,9 @@ module Discord
         "blueprint" => "nameCont"
       }.freeze
 
+      # Discord's cap on a choice's name.
+      CHOICE_LENGTH = 100
+
       PAGES = {
         "component" => "/catalogue/components",
         "equipment" => "/catalogue/equipment",
@@ -35,11 +38,14 @@ module Discord
 
       # A command offering one catalogue leaves its type off: every choice
       # would carry it, and it spends the 100 characters the detail telling two
-      # entries apart needs.
+      # entries apart needs. A name too long for the rest is what gets cut, as
+      # the game key at the end is all that tells two carriers apart.
       def self.choices(query, within:)
         candidates(query, within:).map do |candidate|
-          type = type_label(candidate.prefix) unless within.one?
-          {name: [candidate.name, type, candidate.detail].compact.join(" · "), value: candidate.value}
+          rest = [(type_label(candidate.prefix) unless within.one?), candidate.detail].compact
+          budget = CHOICE_LENGTH - rest.sum { |part| part.length + 3 }
+          name = (budget >= 10) ? candidate.name.truncate(budget) : candidate.name
+          {name: [name, *rest].join(" · "), value: candidate.value}
         end
       end
 

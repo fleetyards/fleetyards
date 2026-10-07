@@ -130,6 +130,22 @@ module Discord
         assert_equal "location:Lorville", ::Discord::Commands::Place.autocomplete("name", "location:lor").first[:value]
       end
 
+      # Discord cuts a choice at 100 characters; the key that tells two places
+      # apart has to survive it, so the name gives way.
+      test "shortens a long shared name rather than the key after it" do
+        long = "A Very Long Outpost Name That Goes On And On Well Past What Fits Into A Choice"
+        aberdeen = create(:location, name: "Aberdeen", kind: "moon", parent: @hurston, system: @stanton)
+        create(:location, name: long, kind: "outpost", parent: aberdeen, system: @stanton, sc_key: "Outpost_Long_Reyes")
+        create(:location, name: long, kind: "outpost", parent: aberdeen, system: @stanton, sc_key: "Outpost_Long_Sloane")
+
+        names = ::Discord::Commands::Place.autocomplete("name", "very long outpost").pluck(:name)
+
+        assert_equal 2, names.size
+        names.each { |name| assert_operator name.length, :<=, 100 }
+        assert names.any? { |name| name.end_with?("Aberdeen · outpost_long_reyes") }
+        assert names.any? { |name| name.end_with?("Aberdeen · outpost_long_sloane") }
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 
