@@ -64,11 +64,46 @@ class BuybackPledge < ApplicationRecord
     to_price - from_price
   end
 
+  # The price the list shows, `upgrade_price` included, so a filter matches it.
+  def self.price_sql
+    ship_price = ->(column) {
+      "(SELECT models.pledge_price FROM models WHERE models.rsi_id = buyback_pledges.#{column} LIMIT 1)"
+    }
+
+    <<~SQL.squish
+      CASE WHEN buyback_pledges.kind = 'upgrade'
+        THEN #{ship_price.call(:upgrade_to_ship_id)} - #{ship_price.call(:upgrade_from_ship_id)}
+        ELSE buyback_pledges.price
+      END
+    SQL
+  end
+
+  ransacker(:price) { Arel.sql(price_sql) }
+
+  # Preset ranges such as "25-50", "-25" or "1000-", any of which matches.
+  scope :price_in, ->(*ranges) {
+    conditions = ranges.flatten.filter_map do |range|
+      from, to = range.to_s.split("-", 2)
+      next if from.blank? && to.blank?
+
+      bounds = []
+      bounds << sanitize_sql_array(["#{price_sql} >= ?", from.to_i]) if from.present?
+      bounds << sanitize_sql_array(["#{price_sql} < ?", to.to_i]) if to.present?
+      "(#{bounds.join(" AND ")})"
+    end
+
+    conditions.empty? ? all : where(conditions.join(" OR "))
+  }
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[kind name]
+    %w[kind name price]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    []
+    %w[upgrade_from_model upgrade_to_model]
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[price_in]
   end
 end

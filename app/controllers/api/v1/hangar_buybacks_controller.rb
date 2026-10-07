@@ -52,7 +52,10 @@ module Api
       end
 
       private def buyback_query_params
-        @buyback_query_params ||= params.permit(q: [:kind_eq, :name_cont]).fetch(:q, {})
+        @buyback_query_params ||= params.permit(q: [
+          :kind_eq, :name_cont, :price_gteq, :price_lteq,
+          :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq, price_in: []
+        ]).fetch(:q, {})
       end
 
       private def sync_params

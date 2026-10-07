@@ -10,7 +10,12 @@ module V1
           type: :object,
           properties: {
             kindEq: ::V1::Schemas::Enums::BuybackPledgeKindEnum,
-            nameCont: {type: :string}
+            nameCont: {type: :string},
+            priceGteq: {type: :number},
+            priceLteq: {type: :number},
+            priceIn: {type: :array, items: {type: :string}},
+            upgradeFromModelSlugEq: {type: :string},
+            upgradeToModelSlugEq: {type: :string}
           },
           additionalProperties: false,
           example: {}
