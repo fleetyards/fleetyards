@@ -46,22 +46,25 @@ module ItemPriceConcern
   # The best-paid quote of each terminal, best paid first: a seller flies to
   # the highest offer, and a terminal's lower quotes are ones nobody takes.
   def bought_at
-    priced(:buy)
-      .sort_by { |item_price| [-(item_price.price || -Float::INFINITY), *price_tie_break(item_price)] }
-      .uniq { |item_price| price_location_key(item_price) }
+    priced(:buy, best_paid_first: true).uniq { |item_price| price_location_key(item_price) }
   end
 
-  # Cheapest first, off the loaded prices where a list preloaded them -- shop
-  # links and all -- and in one query otherwise. A price nobody quoted sorts
-  # last, as Postgres sorts a NULL.
-  private def priced(price_type)
+  # Cheapest first unless asked otherwise, off the loaded prices where a list
+  # preloaded them -- shop links and all -- and in one query otherwise. A price
+  # nobody quoted sorts last either way, as Postgres sorts a NULL.
+  private def priced(price_type, best_paid_first: false)
     rows = if item_prices.loaded?
       item_prices.select { |item_price| item_price.price_type == price_type.to_s }
     else
       item_prices.public_send(price_type).to_a
     end
 
-    ItemPrice.with_shop_links(rows.sort_by { |item_price| [item_price.price || Float::INFINITY, *price_tie_break(item_price)] })
+    direction = best_paid_first ? -1 : 1
+    sorted = rows.sort_by do |item_price|
+      [item_price.price.nil? ? 1 : 0, direction * item_price.price.to_f, *price_tie_break(item_price)]
+    end
+
+    ItemPrice.with_shop_links(sorted)
   end
 
   # sort_by is not stable: without this, two quotes of one price swap places
