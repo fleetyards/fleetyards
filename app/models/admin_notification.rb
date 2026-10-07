@@ -102,7 +102,7 @@ class AdminNotification < ApplicationRecord
     uex_equipment_prices_import: {
       retention: 30.days,
       access: [:models],
-      icon: "fa-duotone fa-helmet-battle"
+      icon: "fa-duotone fa-shirt"
     },
     uex_trade_routes_sync: {
       retention: 30.days,
