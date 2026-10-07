@@ -8,18 +8,18 @@ With the FleetYards Sync extension installed, the RSI verification modal can put
 
 ## Open questions
 
-- **RSI bio endpoint.** Which request does `robertsspaceindustries.com/account/profile` send to save the bio, with what payload, and does it need anything beyond `X-Rsi-Token` + cookies (CSRF, a full profile payload that would reset other fields)? Find it from a signed-in session before writing extension code. Known so far: the editor lives at `/en/account/settings/profile` (the old `/account/profile` URL redirects there), the bio limit is 1024 characters, and the save is not sent through the page's `window.fetch`/XHR and does not show in the tab's network log (worker or socket?). The form definitions come from `/api/settings/Page`. Next step: DevTools → Network with "Preserve log" while saving a changed bio, by hand.
+- None. RSI saves the bio with `POST /api/settings/UpdateField` `{pageId: "my_profile", fieldId: "biography", value}` (captured from a signed-in session).
 
 ## What changed
 
 ### Phase 1 — Extension (fleetyards/sync)
-1. `lib/rsi.ts`: `fetchBio(token)` and `updateBio(token, bio)` against the endpoint found above.
-2. `lib/message-handler.ts`: `bio-write` action (stores the previous bio in `browser.storage.session`, appends the token, answers an error code instead of writing when the result would exceed RSI's bio limit) and `bio-restore` action (writes the stored bio back). Same origin allow-list as `sync`/`identify`.
+1. `lib/rsi.ts`: `fetchCitizenPage(handle)` and `updateBio(token, bio)`.
+2. `lib/bio.ts` + `lib/message-handler.ts`: `verify-write` appends the token after a blank line; `verify-remove` strips exactly that suffix from the current bio. No snapshot: the bio is read back from the citizen page, which renders it escaped with `<br />`, so a restore from a snapshot could overwrite the user's bio with a near copy. A bio with other markup answers 422 and is never written. The handle is always the signed-in account's own (`identify`), and only a `FLEETYARDS-` token is accepted.
 3. Tests in `__tests__/message-handler.test.ts` and `__tests__/rsi.test.ts`.
 4. Release the extension (release-please) before the site ships the UI. The site must work with older extension versions that do not know the action (an "Unknown Action" 500 → manual steps).
 
 ### Phase 2 — Site: extension detection outside the hangar
-1. Move the health check out of `Hangar/SyncBtn/index.vue` into a shared composable (e.g. `useSyncExtension`) that both the hangar and the verification modal use. Today `hangarStore.extensionReady` is only set when the hangar sync button is mounted, so the profile page never knows about the extension.
+1. `useSyncExtension` composable: one request, the matching answer, a timeout. `supports(action)` reads the health check's `actions` list. The hangar keeps its own health check in `hangarStore.extensionReady`; moving it over was not needed for this.
 2. Add the new actions to `FleetyardsSyncAction` in `lib/FleetyardsSyncHandler.ts`.
 
 ### Phase 3 — Site: modal flow
@@ -63,7 +63,8 @@ No change: the citizen page shows a bio edit right away, so the existing check j
 
 ## Progress
 
-- [ ] Open questions answered (RSI bio endpoint)
-- [ ] Phase 1 — Extension
-- [ ] Phase 2 — Shared extension detection
-- [ ] Phase 3 — Modal flow
+- [x] Open questions answered (RSI bio endpoint)
+- [x] Phase 1 — Extension (fleetyards/sync, `feat/rsi-handle-verification`)
+- [x] Phase 2 — Shared extension detection
+- [x] Phase 3 — Modal flow
+- [ ] Live run against RSI with the unpacked extension
