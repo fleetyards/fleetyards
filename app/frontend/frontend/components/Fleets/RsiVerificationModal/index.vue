@@ -169,10 +169,10 @@ const extension = useExtensionVerification({
   checkStatus: () => verification.value?.status,
   pendingStatus: StatusEnum.PENDING,
   errors: { 403: "noRights", 409: "pendingChanges", 422: "orgUnreadable" },
-  onRemoveFailed: () =>
+  onRemoveFailed: (params) =>
     displayAlert({
       text: t("labels.fleet.rsiVerification.extension.removeFailed", {
-        sid: verification.value?.sid,
+        sid: params.sid,
       }),
     }),
 });

@@ -42,7 +42,9 @@ type Options = {
   pendingStatus: string;
   // Error keys for the extension's answers; any other failure is `failed`.
   errors: Record<number, string>;
-  onRemoveFailed: () => void;
+  // With the request the removal was sent with, which names where the token
+  // still is.
+  onRemoveFailed: (params: Record<string, unknown>) => void;
 };
 
 const sameHandle = (a?: string | null, b?: string | null) =>
@@ -158,7 +160,7 @@ export const useExtensionVerification = (options: Options) => {
       .then((answer) => {
         if (answer.code !== 200) throw new Error(answer.error);
       })
-      .catch(options.onRemoveFailed);
+      .catch(() => options.onRemoveFailed(params));
   };
 
   const verify = async () => {
@@ -186,10 +188,18 @@ export const useExtensionVerification = (options: Options) => {
       if (!answer) {
         written.value = { params };
         error.value = "failed";
+        // Closed while the write was out: the cleanup has already run.
+        if (closed) removeToken();
         return;
       }
 
       if (answer.code !== 200) {
+        // A failure can still leave the token written (a draft the extension
+        // could not put back): then it has to come out like any other.
+        if ((answer.payload as { changed?: boolean })?.changed) {
+          written.value = { params };
+          if (closed) removeToken();
+        }
         error.value = options.errors[answer.code ?? 0] ?? "failed";
         return;
       }

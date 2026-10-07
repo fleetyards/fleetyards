@@ -154,6 +154,8 @@ const queryClient = useQueryClient();
 
 const queryKey = getFleetRsiVerificationQueryKey(fleet.slug);
 
+const previousDefaults = queryClient.getQueryDefaults(queryKey);
+
 /*
  * The modal loads the verification itself. Seeding it as fresh for good keeps
  * the modal from asking the API, which a visual test page is not signed in to.
@@ -172,7 +174,7 @@ const open = (state: State) => {
 
 onBeforeUnmount(() => {
   queryClient.removeQueries({ queryKey });
-  queryClient.setQueryDefaults(queryKey, {});
+  queryClient.setQueryDefaults(queryKey, previousDefaults);
 });
 </script>
 
