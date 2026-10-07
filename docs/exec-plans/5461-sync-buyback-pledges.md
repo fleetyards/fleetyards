@@ -12,16 +12,17 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 2. `BuybackPledges::Sync`: upsert the list, delete what is no longer listed, in one transaction.
 3. `PUT /hangar/sync-rsi-buybacks` and `GET /hangar/buybacks`, components, integration tests, `bin/generate-schema`.
 
-### Phase 2 — Sync modal
+### Phase 2 — Buy-back sync modal
 1. `RSIBuybackParser` + spec against a trimmed copy of the real page markup.
-2. `fetchBuybacks` step after the hangar is submitted, so it never holds the hangar sync up; `skipped` status for an extension without `syncBuyback`, a 30s reply timeout, and a buy-back failure does not fail the sync.
-3. `syncBuybacks` toggle in the hangar store (persisted, on by default).
+2. `Hangar/BuybackSyncBtn` + its modal: own health and identity check, page crawl, 30s reply timeout, submit after the last page.
+3. Entry in the hangar page's actions dropdown, next to Import.
 4. Labels in all seven locales.
 
 ## Intent Verification
 
 - [x] **Full replace only** — a fetch that fails halfway submits nothing; rows survive.
-- [x] **Old extension** — `500 Unknown Action` on `syncBuyback` marks the step skipped and the sync reads as finished.
+- [x] **Old extension** — `500 Unknown Action` on `syncBuyback` shows the update hint and submits nothing.
+- [x] **Hangar sync untouched** — `Hangar/SyncBtn` and the hangar store are identical to main.
 - [x] **Isolation** — no hangar, fleet or stats scope reads `buyback_pledges`.
 
 ## Key files
@@ -32,14 +33,15 @@ The hangar sync also reads the RSI buy-back list through the extension's `syncBu
 | `app/lib/buyback_pledges/sync.rb` | Replace a user's list |
 | `app/controllers/api/v1/hangar_buybacks_controller.rb` | Index + sync |
 | `app/frontend/frontend/lib/RSIBuybackParser.ts` | Page → items |
-| `app/frontend/frontend/components/Hangar/SyncBtn/Modal/index.vue` | The fetch loop |
+| `app/frontend/frontend/components/Hangar/BuybackSyncBtn/Modal/index.vue` | The fetch loop |
 
 ## Discovery Log
 
 - **2026-10-07** Buy-back page markup: `section.available-pledges ul.pledges > li > article.pledge`. Title in `h1[title]` (an `upgraded` span is appended to the text, not the attribute), `dl` with "Reclaim Date" / "Contained". Packages link `/pledge/buyback/<id>`; upgrades carry `a.js-open-ship-upgrades[data-pledgeid][data-fromshipid][data-toshipid][data-toskuid]`. 10 per page; a page past the end renders no `article.pledge` and no empty-list marker. Availability is not in the markup (both the action and the "unavailable" block are rendered, CSS picks one).
 - **2026-10-07** One real account has 130 pages, so a full buy-back read is ~2–3 minutes at the modal's 60 requests/minute.
 - **2026-10-07** Assumed, not seen: an account with no buy-backs still renders `section.available-pledges` (a page past the end does). If it does not, the parser reads that account's page as foreign and the step fails without deleting anything.
-- **2026-10-07** Not exercised end to end against RSI: that needs the unreleased extension build loaded in a browser on a running dev server. The modal spec drives the same message sequence.
+- **2026-10-07** Not exercised end to end against RSI yet. The extension's dev build now also accepts `localhost:8xxx` worktree origins, so this worktree's dev server can run it.
+- **2026-10-07** First built as a step of the hangar sync modal; moved to its own modal on request (decision in the issue).
 
 ## Progress
 - [x] Phase 1
