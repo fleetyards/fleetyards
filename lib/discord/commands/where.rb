@@ -31,9 +31,7 @@ module Discord
         page = item_page_url(prefix, found.slug)
         fields = [
           field(:buy, found.sold_at, page),
-          # Of several shops buying the item back, the best paid is the one
-          # worth flying to -- the opposite order to buying.
-          field(:sell, found.bought_at.sort_by { |item_price| -(item_price.price || 0) }, page)
+          field(:sell, found.bought_at, page)
         ].compact
         return message(content: I18n.t("discord.commands.where.none", item: item_link(found.name, prefix, found.slug))) if fields.empty?
 
@@ -45,8 +43,8 @@ module Discord
         }])
       end
 
-      # As many rows as fit, cheapest first, and a pointer to the item page for
-      # the rest -- whose own length is reserved before the rows are counted.
+      # As many rows as fit, in the order given, and a pointer to the item page
+      # for the rest -- whose own length is reserved before the rows are counted.
       private def field(direction, prices, page)
         return nil if prices.empty?
 

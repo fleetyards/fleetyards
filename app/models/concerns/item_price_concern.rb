@@ -43,14 +43,12 @@ module ItemPriceConcern
     priced(:sell).uniq { |item_price| price_location_key(item_price) }
   end
 
-  # The best-paid quote of each terminal, listed cheapest first like the rest.
-  # Deduplicating the cheapest-first list directly kept a terminal's lowest
-  # offer, which is the one a seller would never take.
+  # The best-paid quote of each terminal, best paid first: a seller flies to
+  # the highest offer, and a terminal's lower quotes are ones nobody takes.
   def bought_at
     priced(:buy)
       .sort_by { |item_price| -(item_price.price || -Float::INFINITY) }
       .uniq { |item_price| price_location_key(item_price) }
-      .sort_by { |item_price| item_price.price || Float::INFINITY }
   end
 
   # Cheapest first, off the loaded prices where a list preloaded them -- shop

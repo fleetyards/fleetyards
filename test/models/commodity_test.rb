@@ -300,6 +300,6 @@ class CommodityTest < ActiveSupport::TestCase
     end
     create(:item_price, item: commodity, price_type: "buy", time_range: nil, price: 95, location: "Elsewhere")
 
-    assert_equal [95, 110], commodity.bought_at.map(&:price)
+    assert_equal [110, 95], commodity.bought_at.map(&:price)
   end
 end

@@ -48,7 +48,7 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {slug: @gold.slug} do
       assert_equal 5_900.0, parsed_body["buyPrice"]
       assert_equal 6_450.0, parsed_body["sellPrice"]
-      assert_equal ["Lorville CBD", "Area18 TDD"],
+      assert_equal ["Area18 TDD", "Lorville CBD"],
         parsed_body["availability"]["boughtAt"].map { |price| price["location"] }
     end
   end
