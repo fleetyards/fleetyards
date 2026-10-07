@@ -63,8 +63,9 @@ module Discord
       bot_token.present?
     end
 
-    # `timeout` bounds each attempt in seconds, for a call made while a player
-    # waits on the response. Unset, Faraday waits as long as the socket does.
+    # `timeout` bounds a call in seconds, for one made while a player waits on
+    # the response, and makes it a single attempt. Unset, Faraday waits as
+    # long as the socket does and retries.
     def initialize(token: self.class.bot_token, timeout: nil)
       @token = token
       @timeout = timeout
@@ -184,9 +185,11 @@ module Discord
 
     private def connection
       @connection ||= Faraday.new(url: BASE_URL) do |c|
-        c.request :retry, max: 3, interval: 0.5, backoff_factor: 2,
-          retry_statuses: [429, 502, 503, 504],
-          methods: %i[get post patch delete put]
+        unless @timeout
+          c.request :retry, max: 3, interval: 0.5, backoff_factor: 2,
+            retry_statuses: [429, 502, 503, 504],
+            methods: %i[get post patch delete put]
+        end
         c.options.timeout = @timeout if @timeout
         c.headers["Authorization"] = "Bot #{@token}"
         c.headers["Content-Type"] = "application/json"
