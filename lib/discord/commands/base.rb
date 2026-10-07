@@ -14,6 +14,10 @@ module Discord
       # decides it before the job runs.
       EPHEMERAL = 64
 
+      # Same colour the site uses for its primary accent, so an embed reads as
+      # Fleetyards rather than as a generic bot post.
+      EMBED_COLOR = 0x2d9cdb
+
       attr_reader :options, :guild_id, :discord_user_id
 
       def initialize(options: {}, guild_id: nil, discord_user_id: nil)
@@ -36,6 +40,15 @@ module Discord
         payload[:content] = content if content.present?
         payload[:embeds] = embeds if embeds.present?
         payload
+      end
+
+      # Prices are aUEC, the in-game currency the UEX snapshot quotes.
+      private def uec(value)
+        return if value.blank?
+
+        rounded = ActiveSupport::NumberHelper.number_to_rounded(value, precision: 2, strip_insignificant_zeros: true,
+          delimiter: I18n.t("number.format.delimiter"))
+        "#{rounded} aUEC"
       end
 
       private def url_for_path(path)

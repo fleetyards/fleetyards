@@ -9,7 +9,6 @@ module Discord
       include ItemLookup
 
       CATALOGUES = %w[component equipment commodity blueprint].freeze
-      EMBED_COLOR = 0x2d9cdb
       DESCRIPTION_LENGTH = 300
 
       def self.autocomplete(option, value)

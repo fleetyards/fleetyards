@@ -7,10 +7,6 @@ module Discord
     class Ship < Base
       include ModelLookup
 
-      # Same colour the site uses for its primary accent, so an embed reads as
-      # Fleetyards rather than as a generic bot post.
-      EMBED_COLOR = 0x2d9cdb
-
       def call
         query = option("name").to_s.strip
         return message(content: I18n.t("discord.commands.ship.missing_query")) if query.blank?
