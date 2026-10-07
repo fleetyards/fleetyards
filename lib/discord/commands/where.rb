@@ -51,12 +51,15 @@ module Discord
 
         lines = prices.map { |item_price| line(item_price) }
         shown = []
+        length = 0
         lines.each_with_index do |line, index|
           rest = lines.size - index - 1
           reserve = rest.positive? ? more(rest, page).length + 1 : 0
-          break if (shown + [line]).join("\n").length + reserve > FIELD_LIMIT
+          grown = length + (shown.empty? ? 0 : 1) + line.length
+          break if grown + reserve > FIELD_LIMIT
 
           shown << line
+          length = grown
         end
 
         hidden = lines.size - shown.size

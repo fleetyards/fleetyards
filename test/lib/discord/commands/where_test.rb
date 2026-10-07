@@ -80,6 +80,7 @@ module Discord
         value = field(call("Quantainium"), :buy)
 
         assert_operator value.length, :<=, 1024
+        assert_operator value.length, :>, 1024 - value.lines.first.length, "room for another row was left unused"
         assert_includes value.lines.last, "/catalogue/commodities/#{@commodity.slug}/"
       end
 
