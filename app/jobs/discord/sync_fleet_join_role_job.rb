@@ -24,6 +24,7 @@ module Discord
       # the officers in notifications; anyone the daily run admits is news.
       @quiet = reset
       @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
+      started_at = Time.current
 
       seen = apply_guild_members(join_role)
       return if seen.nil?
@@ -34,7 +35,9 @@ module Discord
         .where(user_id: @held - seen)
         .includes(:user)
         .group_by(&:uid)
-      gone.each { |uid, connections| apply(join_role, uid, connections.map(&:user)) }
+      gone.each do |uid, connections|
+        JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
+      end
     end
 
     # Returns the ids of the linked users found in the guild, or nil when the
@@ -45,6 +48,7 @@ module Discord
       after = nil
 
       loop do
+        read_at = Time.current
         page = api.list_guild_members(join_role.guild_id, after:)
         break if page.blank?
 
@@ -54,7 +58,9 @@ module Discord
           seen.merge(users.map(&:id))
           holds = roles_by_uid[uid].include?(join_role.role_id)
           changed = users.reject { |user| @held.include?(user.id) == holds }
-          apply(join_role, uid, changed) if changed.any?
+          next if changed.empty?
+
+          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE
@@ -63,15 +69,9 @@ module Discord
       end
 
       seen
-    rescue ApiClient::Error => e
+    rescue ApiClient::Error, Faraday::Error => e
       Rails.logger.warn("[Discord::SyncFleetJoinRoleJob] fleet=#{join_role.fleet.id}: #{e.message}")
       nil
-    end
-
-    # The page is only a hint of who changed: by the time it is applied an
-    # update may have handled the member, so their roles are read again.
-    private def apply(join_role, uid, users)
-      JoinRole.apply_current([join_role], users, uid, api:, quiet: @quiet)
     end
 
     private def linked_users(uids)

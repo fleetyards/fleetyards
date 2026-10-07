@@ -26,10 +26,6 @@ module Discord
       {"user" => {"id" => uid}, "roles" => roles}
     end
 
-    def roles_now(uid, *roles)
-      @api.stubs(:get_guild_member).with(GUILD, uid).returns({"user" => {"id" => uid}, "roles" => roles})
-    end
-
     def membership_of(user)
       @fleet.fleet_memberships.kept.find_by(user:)
     end
@@ -109,7 +105,6 @@ module Discord
         member("uid-2"),
         member("uid-unlinked", JOIN_ROLE)
       ])
-      roles_now("uid-1", JOIN_ROLE)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
 
@@ -123,8 +118,6 @@ module Discord
       full_page = Array.new(ApiClient::MEMBER_PAGE_SIZE - 1) { |index| member("uid-unlinked-#{index}") } + [member("uid-1", JOIN_ROLE)]
       @api.stubs(:list_guild_members).with(GUILD, after: nil).returns(full_page)
       @api.stubs(:list_guild_members).with(GUILD, after: "uid-1").returns([member("uid-2", JOIN_ROLE)])
-      roles_now("uid-1", JOIN_ROLE)
-      roles_now("uid-2", JOIN_ROLE)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
@@ -136,7 +129,6 @@ module Discord
       gone = linked_user("uid-1")
       JoinRole.new(@fleet).apply(gone, [JOIN_ROLE])
       @api.stubs(:list_guild_members).returns([])
-      @api.stubs(:get_guild_member).with(GUILD, "uid-1").raises(ApiClient::Error.new(404, "Unknown Member"))
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
@@ -157,7 +149,6 @@ module Discord
     test "the sync for a newly picked role does not tell the officers about each player it admits" do
       holder = linked_user("uid-1")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
-      roles_now("uid-1", JOIN_ROLE)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
 
@@ -168,7 +159,6 @@ module Discord
     test "the daily sync tells the officers about a player it admits" do
       holder = linked_user("uid-1")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
-      roles_now("uid-1", JOIN_ROLE)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
@@ -176,22 +166,32 @@ module Discord
       assert Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 
-    test "the sync reads a changed member again rather than trusting its page" do
+    test "the sync leaves alone a member whose own roles were read after its list" do
+      Rails.stubs(:cache).returns(ActiveSupport::Cache::MemoryStore.new)
       lost = linked_user("uid-1")
-      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
-      roles_now("uid-1")
+      @api.stubs(:get_guild_member).with(GUILD, "uid-1").returns({"roles" => []})
+      # The role is lost, and the update for it handled, while the list is read.
+      @api.stubs(:list_guild_members).with { ApplyJoinRolesJob.new.perform("uid-1", GUILD) || true }.returns([member("uid-1", JOIN_ROLE)])
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_nil membership_of(lost)
     end
 
-    test "the sync asks Discord only about members whose role changed" do
+    test "the sync takes the roles from its list without asking about each member" do
+      holder = linked_user("uid-1")
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+      @api.expects(:get_guild_member).never
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+
+      assert_predicate membership_of(holder), :accepted?
+    end
+
+    test "a sync cut off by the network ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
-      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE), member("uid-2")])
-      linked_user("uid-2")
-      @api.expects(:get_guild_member).never
+      @api.stubs(:list_guild_members).raises(Faraday::ConnectionFailed.new("reset"))
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
@@ -213,7 +213,6 @@ module Discord
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
       @setting.update!(discord_join_role_id: "300000000000000002")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
-      roles_now("uid-1", JOIN_ROLE)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
 
