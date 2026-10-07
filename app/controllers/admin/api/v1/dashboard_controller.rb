@@ -108,24 +108,26 @@ module Admin
           )
         end
 
+        # Each baseline stops at the same point in its period as the figure it is
+        # compared to. Against the whole of that day last week, today reads -90% at
+        # breakfast every day and only becomes a fair comparison at midnight.
         private def traffic_figures
-          today = Time.zone.today
+          now = Time.current
+          week_ago = now - 1.week
 
           {
-            visits_today: visits_on(today),
+            visits_today: visits_between(now.beginning_of_day, now),
             # The same weekday, not yesterday: traffic has a weekly shape, and a
             # Monday compared against a Sunday reads as a spike every week.
-            visits_same_weekday_last_week: visits_on(today - 1.week),
-            signups_this_week: User.where(created_at: today.beginning_of_week..).count,
-            signups_last_week: User.where(
-              created_at: (today - 1.week).beginning_of_week...today.beginning_of_week
-            ).count
+            visits_same_weekday_last_week: visits_between(week_ago.beginning_of_day, week_ago),
+            signups_this_week: User.where(created_at: now.beginning_of_week..now).count,
+            signups_last_week: User.where(created_at: week_ago.beginning_of_week..week_ago).count
           }
         end
 
-        private def visits_on(date)
+        private def visits_between(from, to)
           Ahoy::Visit.without_users(tracking_blocklist)
-            .where(started_at: date.beginning_of_day..date.end_of_day)
+            .where(started_at: from..to)
             .count
         end
       end
