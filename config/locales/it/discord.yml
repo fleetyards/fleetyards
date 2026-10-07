@@ -72,10 +72,41 @@ it:
           commodity: Merce
           component: Componente
           equipment: Equipaggiamento
+          location: Luogo
       loaner:
         heading: '[%{ship}](%{url}) include %{count} nave(i) in prestito:'
         missing_query: Indica il nome di una nave.
         none: '%{ship} non ha navi in prestito.'
+      location:
+        ambiguous: 'Luoghi che corrispondono a «%{query}»:'
+        fields:
+          docking_tubes: 'Tubi di attracco'
+          free_landing_pads: 'Piattaforme di atterraggio libere'
+          hangars: 'Hangar'
+          landing_pads: 'Piattaforme di atterraggio'
+          shops: 'Negozi'
+          vehicle_pads: 'Piattaforme per veicoli di terra'
+        kinds:
+          anomaly: 'Anomalia'
+          asteroid: 'Asteroide'
+          city: 'Città'
+          clinic: 'Clinica'
+          district: 'Distretto'
+          jump_point: 'Punto di salto'
+          moon: 'Luna'
+          nav_point: 'Punto di navigazione'
+          other: 'Altro'
+          outpost: 'Avamposto'
+          planet: 'Pianeta'
+          point_of_interest: 'Punto di interesse'
+          spaceport: 'Spazioporto'
+          star: 'Stella'
+          station: 'Stazione'
+          system: 'Sistema stellare'
+        missing_query: Indica il nome di un luogo.
+        more: '…e altri. Scegline uno dai suggerimenti.'
+        more_shops: '…e altri %{count} sulla [pagina del luogo](%{url})'
+        not_found: 'Nessun luogo trovato per «%{query}».'
       my_hangar:
         empty: 'Non hai ancora navi nel [tuo hangar](%{url}).'
         heading: '[Il tuo hangar](%{url}) — %{count} navi, %{models} tipi'

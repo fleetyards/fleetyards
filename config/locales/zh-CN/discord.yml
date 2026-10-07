@@ -72,10 +72,41 @@ zh-CN:
           commodity: 商品
           component: 组件
           equipment: 装备
+          location: 地点
       loaner:
         heading: '[%{ship}](%{url}) 附带 %{count} 艘替代飞船：'
         missing_query: 请提供飞船名称。
         none: '%{ship} 没有替代飞船。'
+      location:
+        ambiguous: '匹配“%{query}”的地点：'
+        fields:
+          docking_tubes: '对接舱口'
+          free_landing_pads: '自由着陆平台'
+          hangars: '机库'
+          landing_pads: '着陆平台'
+          shops: '商店'
+          vehicle_pads: '地面载具平台'
+        kinds:
+          anomaly: '异常点'
+          asteroid: '小行星'
+          city: '城市'
+          clinic: '诊所'
+          district: '街区'
+          jump_point: '跳跃点'
+          moon: '卫星'
+          nav_point: '导航点'
+          other: '其他'
+          outpost: '前哨站'
+          planet: '行星'
+          point_of_interest: '兴趣点'
+          spaceport: '太空港'
+          star: '恒星'
+          station: '空间站'
+          system: '星系'
+        missing_query: 请提供地点名称。
+        more: '……还有更多。请从建议中选择一个。'
+        more_shops: '……另有 %{count} 家，见[地点页面](%{url})'
+        not_found: '未找到“%{query}”对应的地点。'
       my_hangar:
         empty: '[你的机库](%{url})中还没有飞船。'
         heading: '[你的机库](%{url}) — %{count} 艘飞船，%{models} 种型号'

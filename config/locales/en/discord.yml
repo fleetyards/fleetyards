@@ -72,10 +72,41 @@ en:
           commodity: Commodity
           component: Component
           equipment: Equipment
+          location: Place
       loaner:
         heading: '[%{ship}](%{url}) comes with %{count} loaner(s):'
         missing_query: Please provide a ship name.
         none: '%{ship} has no loaners.'
+      location:
+        ambiguous: 'Places matching "%{query}":'
+        fields:
+          docking_tubes: 'Docking collars'
+          free_landing_pads: 'Free landing pads'
+          hangars: 'Hangars'
+          landing_pads: 'Landing pads'
+          shops: 'Shops'
+          vehicle_pads: 'Ground vehicle pads'
+        kinds:
+          anomaly: 'Anomaly'
+          asteroid: 'Asteroid'
+          city: 'City'
+          clinic: 'Clinic'
+          district: 'District'
+          jump_point: 'Jump point'
+          moon: 'Moon'
+          nav_point: 'Nav point'
+          other: 'Other'
+          outpost: 'Outpost'
+          planet: 'Planet'
+          point_of_interest: 'Point of interest'
+          spaceport: 'Spaceport'
+          star: 'Star'
+          station: 'Station'
+          system: 'Star system'
+        missing_query: Please provide a place name.
+        more: '…and more. Pick one from the suggestions.'
+        more_shops: '…and %{count} more on [the place page](%{url})'
+        not_found: 'No place found for "%{query}".'
       my_hangar:
         empty: 'You have no ships in [your hangar](%{url}) yet.'
         heading: '[Your hangar](%{url}) — %{count} ships, %{models} types'

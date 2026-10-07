@@ -72,10 +72,41 @@ zh-TW:
           commodity: 商品
           component: 組件
           equipment: 裝備
+          location: 地點
       loaner:
         heading: '[%{ship}](%{url}) 附帶 %{count} 艘替代船艦：'
         missing_query: 請提供船艦名稱。
         none: '%{ship} 沒有替代船艦。'
+      location:
+        ambiguous: '符合「%{query}」的地點：'
+        fields:
+          docking_tubes: '對接艙口'
+          free_landing_pads: '自由著陸平台'
+          hangars: '機庫'
+          landing_pads: '著陸平台'
+          shops: '商店'
+          vehicle_pads: '地面載具平台'
+        kinds:
+          anomaly: '異常點'
+          asteroid: '小行星'
+          city: '城市'
+          clinic: '診所'
+          district: '街區'
+          jump_point: '跳躍點'
+          moon: '衛星'
+          nav_point: '導航點'
+          other: '其他'
+          outpost: '前哨站'
+          planet: '行星'
+          point_of_interest: '興趣點'
+          spaceport: '太空港'
+          star: '恆星'
+          station: '太空站'
+          system: '星系'
+        missing_query: 請提供地點名稱。
+        more: '……還有更多。請從建議中選擇一個。'
+        more_shops: '……另有 %{count} 家，見[地點頁面](%{url})'
+        not_found: '找不到「%{query}」對應的地點。'
       my_hangar:
         empty: '[你的機庫](%{url})中還沒有飛船。'
         heading: '[你的機庫](%{url}) — %{count} 艘飛船，%{models} 種型號'

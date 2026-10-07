@@ -72,10 +72,41 @@ fr:
           commodity: Marchandise
           component: Composant
           equipment: Équipement
+          location: Lieu
       loaner:
         heading: '[%{ship}](%{url}) donne accès à %{count} vaisseau(x) de prêt :'
         missing_query: Merci d'indiquer le nom d'un vaisseau.
         none: '%{ship} ne donne accès à aucun vaisseau de prêt.'
+      location:
+        ambiguous: 'Lieux correspondant à « %{query} » :'
+        fields:
+          docking_tubes: 'Sas d''amarrage'
+          free_landing_pads: 'Plateformes d''atterrissage libres'
+          hangars: 'Hangars'
+          landing_pads: 'Plateformes d''atterrissage'
+          shops: 'Boutiques'
+          vehicle_pads: 'Plateformes pour véhicules terrestres'
+        kinds:
+          anomaly: 'Anomalie'
+          asteroid: 'Astéroïde'
+          city: 'Ville'
+          clinic: 'Clinique'
+          district: 'Quartier'
+          jump_point: 'Point de saut'
+          moon: 'Lune'
+          nav_point: 'Point de navigation'
+          other: 'Autre'
+          outpost: 'Avant-poste'
+          planet: 'Planète'
+          point_of_interest: 'Point d''intérêt'
+          spaceport: 'Spatioport'
+          star: 'Étoile'
+          station: 'Station'
+          system: 'Système stellaire'
+        missing_query: Indique le nom d’un lieu.
+        more: '…et d’autres. Choisis-en un parmi les suggestions.'
+        more_shops: '…et %{count} autres sur [la page du lieu](%{url})'
+        not_found: 'Aucun lieu trouvé pour « %{query} ».'
       my_hangar:
         empty: 'Tu n''as encore aucun vaisseau dans [ton hangar](%{url}).'
         heading: '[Ton hangar](%{url}) — %{count} vaisseaux, %{models} types'

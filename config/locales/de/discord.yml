@@ -72,10 +72,41 @@ de:
           commodity: Rohstoff
           component: Komponente
           equipment: Ausrüstung
+          location: Ort
       loaner:
         heading: '[%{ship}](%{url}) kommt mit %{count} Leihschiff(en):'
         missing_query: Bitte gib einen Schiffsnamen an.
         none: 'Für %{ship} gibt es keine Leihschiffe.'
+      location:
+        ambiguous: 'Orte, die zu „%{query}“ passen:'
+        fields:
+          docking_tubes: 'Andockschleusen'
+          free_landing_pads: 'Freie Landeplätze'
+          hangars: 'Hangars'
+          landing_pads: 'Landeplätze'
+          shops: 'Läden'
+          vehicle_pads: 'Landeplätze für Bodenfahrzeuge'
+        kinds:
+          anomaly: 'Anomalie'
+          asteroid: 'Asteroid'
+          city: 'Stadt'
+          clinic: 'Klinik'
+          district: 'Bezirk'
+          jump_point: 'Sprungpunkt'
+          moon: 'Mond'
+          nav_point: 'Navigationspunkt'
+          other: 'Sonstiges'
+          outpost: 'Außenposten'
+          planet: 'Planet'
+          point_of_interest: 'Ort von Interesse'
+          spaceport: 'Raumhafen'
+          star: 'Stern'
+          station: 'Station'
+          system: 'Sternsystem'
+        missing_query: Bitte gib einen Ortsnamen an.
+        more: '…und weitere. Wähle einen aus den Vorschlägen.'
+        more_shops: '…und %{count} weitere auf [der Seite des Orts](%{url})'
+        not_found: 'Kein Ort gefunden für „%{query}“.'
       my_hangar:
         empty: 'Du hast noch keine Schiffe in [deinem Hangar](%{url}).'
         heading: '[Dein Hangar](%{url}) — %{count} Schiffe, %{models} Typen'
