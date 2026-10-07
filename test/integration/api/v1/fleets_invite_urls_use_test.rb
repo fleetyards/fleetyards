@@ -61,6 +61,37 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
     assert_kind_of FleetMembership, notification.record
   end
 
+  test "POST /fleets/use-invite admits a player holding the fleet's Discord join role" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    create(:omniauth_connection, user: @author, provider: "discord", uid: "discord-uid-1")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild_member).with("100000000000000001", "discord-uid-1").returns({"roles" => ["300000000000000001"]})
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:new).returns(api)
+    sign_in @author
+
+    assert_api_response :post, 201, body: {token: @invite_url.token} do
+      assert_equal "accepted", parsed_body["status"]
+    end
+
+    assert_predicate @fleet.fleet_memberships.find_by(user: @author), :discord_role_granted?
+    assert Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
+  end
+
+  test "POST /fleets/use-invite asks a player without the join role to wait for approval" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    create(:omniauth_connection, user: @author, provider: "discord", uid: "discord-uid-1")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild_member).returns({"roles" => []})
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:new).returns(api)
+    sign_in @author
+
+    assert_api_response :post, 201, body: {token: @invite_url.token} do
+      assert_equal "requested", parsed_body["status"]
+    end
+  end
+
   test "POST /fleets/use-invite returns 404 for unknown token" do
     sign_in @author
 

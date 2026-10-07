@@ -117,6 +117,17 @@ module Discord
       request(:get, "guilds/#{guild_id}/members/#{user_id}")
     end
 
+    # Discord caps a page at 1000 and paginates by user id. Needs the Server
+    # Members intent enabled for the application.
+    MEMBER_PAGE_SIZE = 1000
+
+    def list_guild_members(guild_id, after: nil, limit: MEMBER_PAGE_SIZE)
+      query = {limit: limit}
+      query[:after] = after if after.present?
+
+      request(:get, "guilds/#{guild_id}/members?#{query.to_query}")
+    end
+
     def add_guild_member_role(guild_id, user_id, role_id)
       request(:put, "guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}")
     end

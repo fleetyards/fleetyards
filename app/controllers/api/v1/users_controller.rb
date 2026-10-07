@@ -179,7 +179,7 @@ module Api
 
         return if member.blank?
 
-        member.request!
+        member.request_or_join!
       end
     end
   end

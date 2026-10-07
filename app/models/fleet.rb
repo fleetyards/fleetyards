@@ -106,6 +106,7 @@ class Fleet < ApplicationRecord
     dependent: :destroy
   has_many :fleet_invite_urls,
     dependent: :destroy
+  has_many :fleet_discord_role_holders, dependent: :delete_all
   has_many :fleet_inventories, dependent: :destroy
   # Ordered here rather than at every call site: the strip on the front page,
   # the filter segments and the roster badges all read this association, and a

@@ -66,7 +66,7 @@ module Api
         )
 
         if @membership.save_without_conflict
-          @membership.request!
+          @membership.request_or_join!
           invite_url.reduce_limit
 
           render "api/v1/fleet_memberships/show", status: :created

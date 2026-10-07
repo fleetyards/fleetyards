@@ -45,6 +45,8 @@ class OmniauthConnection < ApplicationRecord
   # links Discord after being accepted never receives the roles their fleets
   # already mapped.
   after_create_commit :backfill_discord_member_roles, if: :discord?
+  # Linking is the first moment a fleet's join role can be seen on someone.
+  after_create_commit :apply_discord_join_roles, if: :discord?
   after_create_commit :link_patreon_contributions, if: :patreon?
   # A user being deleted loses its memberships before its connections, so
   # User captures the fleets itself and this hook stands aside.
@@ -61,6 +63,10 @@ class OmniauthConnection < ApplicationRecord
 
   private def backfill_discord_member_roles
     ::Discord::BackfillUserMemberRolesJob.perform_async(user_id)
+  end
+
+  private def apply_discord_join_roles
+    ::Discord::ApplyJoinRolesJob.perform_async(uid)
   end
 
   private def revoke_discord_member_roles

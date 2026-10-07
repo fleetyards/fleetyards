@@ -80,6 +80,8 @@ class FleetNotificationSetting < ApplicationRecord
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
+  # A role id names one guild's role, so another guild makes it a new role too.
+  after_commit :sync_discord_join_role, if: -> { saved_change_to_discord_join_role_id? || saved_change_to_discord_guild_id? }
 
   DEFAULT_IN_APP_EVENTS = %w[
     fleet_event.published
@@ -144,6 +146,10 @@ class FleetNotificationSetting < ApplicationRecord
 
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
+  end
+
+  private def sync_discord_join_role
+    ::Discord::SyncFleetJoinRoleJob.perform_async(fleet_id, true)
   end
 
   private def backfill_discord_member_roles

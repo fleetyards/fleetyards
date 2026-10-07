@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_100200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -749,6 +749,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
   end
 
+  create_table "fleet_discord_role_holders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "user_id"], name: "index_fleet_discord_role_holders_on_fleet_id_and_user_id", unique: true
+    t.index ["user_id"], name: "index_fleet_discord_role_holders_on_user_id"
+  end
+
   create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fleet_event_id", null: false
     t.uuid "user_id", null: false
@@ -1026,6 +1035,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
     t.integer "blueprints_filter", default: 0, null: false
     t.string "discord_request_channel_id"
     t.string "discord_request_message_id"
+    t.boolean "discord_role_granted", default: false, null: false
     t.index ["discarded_at"], name: "index_fleet_memberships_on_discarded_at"
     t.index ["fleet_id"], name: "index_fleet_memberships_on_fleet_id_accepted", where: "(((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))"
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
@@ -2755,6 +2765,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100000) do
   add_foreign_key "fleet_contracts", "fleets"
   add_foreign_key "fleet_contracts", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "fleet_discord_role_holders", "fleets"
+  add_foreign_key "fleet_discord_role_holders", "users"
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"

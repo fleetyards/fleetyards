@@ -10,6 +10,7 @@
 #  blueprints_filter          :integer          default("all"), not null
 #  declined_at                :datetime
 #  discarded_at               :datetime
+#  discord_role_granted       :boolean          default(FALSE), not null
 #  hide_ships                 :boolean          default(FALSE)
 #  invited_at                 :datetime
 #  invited_by                 :uuid
@@ -263,6 +264,12 @@ class FleetMembership < ApplicationRecord
       transitions from: :requested, to: :accepted
     end
 
+    # Holding the fleet's join role in its Discord server: the server vetted
+    # the player already, so nobody answers a request.
+    event :join, after_commit: :on_join do
+      transitions from: :created, to: :accepted
+    end
+
     event :decline do
       transitions from: %i[invited requested], to: :declined
     end
@@ -430,6 +437,22 @@ class FleetMembership < ApplicationRecord
         :failed
       end
     end
+  end
+
+  # What a player asking to join gets: a request, unless they hold the fleet's
+  # join role in its Discord server.
+  def request_or_join!
+    join_role = ::Discord::JoinRole.new(fleet)
+    return request! unless join_role.held_by?(user)
+
+    FleetDiscordRoleHolder.remember(fleet, user)
+    self.discord_role_granted = true
+    join!
+  end
+
+  def on_join
+    notify_fleet_admins
+    on_accept_request
   end
 
   def post_discord_join_request

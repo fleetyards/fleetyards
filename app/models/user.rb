@@ -196,6 +196,7 @@ class User < ApplicationRecord
     -> { order(primary: :desc) },
     dependent: :destroy,
     inverse_of: false
+  has_many :fleet_discord_role_holders, dependent: :delete_all
   has_many :kept_fleet_memberships,
     -> { kept.order(primary: :desc) },
     class_name: "FleetMembership",

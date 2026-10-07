@@ -115,6 +115,11 @@ discord_weekly_digest_dispatch_job:
   cron: '*/15 * * * *' # Every 15 minutes
   class: 'Discord::WeeklyDigestDispatchJob'
   queue: 'notifications'
+discord_sync_join_roles_dispatch_job:
+  cron: '40 4 * * *' # Daily at 4:40
+  class: 'Discord::SyncJoinRolesDispatchJob'
+  queue: 'notifications'
+  enabled: <%= Discord::ApiClient.configured? %>
 discord_poll_event_rsvps_dispatch_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'Discord::PollEventRsvpsDispatchJob'
