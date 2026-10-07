@@ -178,7 +178,7 @@ module Discord
       private def blueprint_description(record)
         craftable = record.craftable
         materials = record.materials
-        listed = ::Catalogue::TokenResolver.listed("commodity").where(id: materials.map(&:id)).pluck(:id).to_set
+        listed = materials.any? ? ::Catalogue::TokenResolver.listed("commodity").where(id: materials.map(&:id)).pluck(:id).to_set : Set.new
         material_links = materials.map do |commodity|
           listed.include?(commodity.id) ? link(commodity.name, "commodity", commodity.slug) : Markdown.escape(commodity.name)
         end
