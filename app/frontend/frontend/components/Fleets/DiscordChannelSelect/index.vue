@@ -19,11 +19,13 @@ type Props = {
   name: string;
   label: string;
   info?: string;
+  disabled?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: null,
   info: undefined,
+  disabled: false,
 });
 
 const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
@@ -94,7 +96,7 @@ const selected = computed({
       :name="props.name"
       :label="props.label"
       :info="props.info"
-      :disabled="!connected && !props.modelValue"
+      :disabled="props.disabled || (!connected && !props.modelValue)"
       searchable
       unsorted
     />

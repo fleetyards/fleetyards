@@ -79,7 +79,11 @@ const mount = async (membership = {} as FleetMember) => {
   return wrapper;
 };
 
-type SelectProps = { name?: string; options?: FilterOption[] };
+type SelectProps = {
+  name?: string;
+  options?: FilterOption[];
+  disabled?: boolean;
+};
 
 // BaseSelect is generic, so its props type narrows to nothing from outside.
 const selectProps = (select: VueWrapper) => select.props() as SelectProps;
@@ -277,5 +281,40 @@ describe("FleetDiscordSettingsPage join role", () => {
     await flushPromises();
 
     expect(await save(subject)).toMatchObject({ discordJoinRoleId: null });
+  });
+});
+
+describe("FleetDiscordSettingsPage server change", () => {
+  const inviter = { capabilities: { createInvites: true } } as FleetMember;
+
+  const picker = (subject: VueWrapper, name: string) =>
+    subject
+      .findAllComponents(BaseSelect)
+      .find((select) => selectProps(select).name === name)!;
+
+  it("holds back the old server's channels and role until the new one is saved", async () => {
+    setting.discordGuildId = "100000000000000001";
+    setting.discordAnnouncementChannelId = "200000000000000001";
+    setting.discordJoinRoleId = "300000000000000001";
+    const subject = await mount(inviter);
+
+    await subject
+      .find('input[name="discordGuildId"]')
+      .setValue("100000000000000002");
+    await flushPromises();
+
+    expect(subject.find('[data-test="save-guild-first"]').exists()).toBe(true);
+    expect(selectProps(picker(subject, "discordJoinRoleId")).disabled).toBe(
+      true,
+    );
+    expect(
+      selectProps(picker(subject, "discordAnnouncementChannelId")).disabled,
+    ).toBe(true);
+
+    const data = await save(subject);
+    expect(data).toMatchObject({ discordGuildId: "100000000000000002" });
+    expect(data).not.toHaveProperty("discordJoinRoleId");
+    expect(data).not.toHaveProperty("discordAnnouncementChannelId");
+    expect(data).not.toHaveProperty("discordOfficersChannelId");
   });
 });

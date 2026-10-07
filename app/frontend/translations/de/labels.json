@@ -641,6 +641,7 @@
           "joinRoleHint": "Spieler mit dieser Rolle auf dem Server treten der Flotte ohne Anfrage bei, mit dem Standardrang. Wird ihnen die Rolle entzogen, verlassen die Mitglieder, die über sie beigetreten sind, die Flotte wieder. Leer lassen, um jede Anfrage von Hand zu bestätigen.",
           "roleMissing": "Diese Rolle gibt es auf Discord nicht mehr. Niemand tritt über sie bei, bis eine andere gewählt ist.",
           "missingRole": "Nicht verfügbare Rolle",
+          "saveGuildFirst": "Speichere zuerst den neuen Server und wähle dann seine Kanäle und Rollen.",
           "postingCodes": {
             "missing_send_messages": "Der Bot darf auf diesem Server keine Nachrichten senden. Autorisiere ihn über den Installationslink neu.",
             "channel_locked": "Der Bot kann nicht im Kanal posten, der für %{names} gewählt ist. Erlaube es in den Berechtigungen des Kanals.",

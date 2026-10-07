@@ -85,6 +85,14 @@ const digestTimezone = computed(() => {
 });
 const discordWebhookUrl = ref<string>("");
 
+// The pickers list the saved server's channels and roles, so a server typed
+// in but not saved yet would be paired with the old one's. Left out of the
+// save, they are cleared along with the server change.
+const guildUnsaved = computed(
+  () =>
+    (discordGuildId.value || null) !== (setting.value?.discordGuildId ?? null),
+);
+
 const hydrate = (s: FleetNotificationSetting) => {
   discordGuildId.value = s.discordGuildId ?? "";
   discordChannelId.value = s.discordChannelId ?? "";
@@ -145,8 +153,6 @@ const save = async () => {
     const payload: Record<string, unknown> = {
       discordGuildId: discordGuildId.value || null,
       discordChannelId: discordChannelId.value || null,
-      discordAnnouncementChannelId: discordAnnouncementChannelId.value || null,
-      discordOfficersChannelId: discordOfficersChannelId.value || null,
       discordDigestWeekday: discordDigestWeekday.value
         ? Number(discordDigestWeekday.value)
         : null,
@@ -157,8 +163,13 @@ const save = async () => {
         ? digestTimezone.value
         : null,
     };
-    if (canSetJoinRole.value) {
-      payload.discordJoinRoleId = discordJoinRoleId.value || null;
+    if (!guildUnsaved.value) {
+      payload.discordAnnouncementChannelId =
+        discordAnnouncementChannelId.value || null;
+      payload.discordOfficersChannelId = discordOfficersChannelId.value || null;
+      if (canSetJoinRole.value) {
+        payload.discordJoinRoleId = discordJoinRoleId.value || null;
+      }
     }
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
@@ -319,6 +330,13 @@ const postingProblem = computed(() => {
           icon="fa-brands fa-discord"
           translation-key="fleet.discord.guildId"
         />
+        <p
+          v-if="guildUnsaved"
+          class="text-muted small"
+          data-test="save-guild-first"
+        >
+          {{ t("labels.fleet.discord.saveGuildFirst") }}
+        </p>
       </div>
       <div class="col-12 col-md-6">
         <FormInput
@@ -335,6 +353,7 @@ const postingProblem = computed(() => {
         <DiscordChannelSelect
           v-model="discordAnnouncementChannelId"
           :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
           name="discordAnnouncementChannelId"
           :label="t('labels.fleet.discord.announcementChannel')"
           :info="t('labels.fleet.discord.announcementChannelHint')"
@@ -344,6 +363,7 @@ const postingProblem = computed(() => {
         <DiscordChannelSelect
           v-model="discordOfficersChannelId"
           :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
           name="discordOfficersChannelId"
           :label="t('labels.fleet.discord.officersChannel')"
           :info="t('labels.fleet.discord.officersChannelHint')"
@@ -356,6 +376,7 @@ const postingProblem = computed(() => {
         <DiscordRoleSelect
           v-model="discordJoinRoleId"
           :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
           name="discordJoinRoleId"
           :label="t('labels.fleet.discord.joinRole')"
           :info="t('labels.fleet.discord.joinRoleHint')"

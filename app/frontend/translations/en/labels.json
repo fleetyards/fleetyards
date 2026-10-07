@@ -641,6 +641,7 @@
           "joinRoleHint": "Players holding this role in the server join the fleet without a request, at the default rank. Taking the role away removes the members it brought in. Leave empty to approve every request by hand.",
           "roleMissing": "This role no longer exists on Discord. Nobody joins through it until another one is picked.",
           "missingRole": "Unavailable role",
+          "saveGuildFirst": "Save the new server first, then pick its channels and roles.",
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
