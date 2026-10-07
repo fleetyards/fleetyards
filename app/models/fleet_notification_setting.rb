@@ -80,10 +80,13 @@ class FleetNotificationSetting < ApplicationRecord
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
-  # A role id names one guild's role, so another guild leaves the join role
-  # pointing at nothing -- and switching back must not bring it, and everyone
-  # holding it, back in without the invite privilege the role needs.
-  before_save -> { self.discord_join_role_id = nil }, if: -> { discord_guild_id_changed? && !discord_join_role_id_changed? }
+  # Every other id, and each rank's role, names a channel or role in one
+  # guild, so another guild leaves them pointing at nothing -- and switching
+  # back must not bring them back either: the join role would let everyone
+  # holding it in without the invite privilege it needs. Ids saved along with
+  # the new guild are its own.
+  before_save :clear_guild_scoped_ids, if: :discord_guild_id_changed?
+  after_save :clear_rank_role_ids, if: :saved_change_to_discord_guild_id?
   after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
 
   DEFAULT_IN_APP_EVENTS = %w[
@@ -149,6 +152,16 @@ class FleetNotificationSetting < ApplicationRecord
 
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
+  end
+
+  private def clear_guild_scoped_ids
+    (DISCORD_ID_ATTRIBUTES - [:discord_guild_id]).each do |attribute|
+      self[attribute] = nil unless attribute_changed?(attribute)
+    end
+  end
+
+  private def clear_rank_role_ids
+    fleet.fleet_roles.where.not(discord_role_id: nil).update_all(discord_role_id: nil, updated_at: Time.current)
   end
 
   private def sync_discord_join_role

@@ -67,12 +67,28 @@ module Discord
       assert_equal [[@fleet.id, true]], SyncFleetJoinRoleJob.jobs.pluck("args")
     end
 
-    test "another guild clears the join role, and switching back does not restore it" do
-      @setting.update!(discord_guild_id: "100000000000000002")
-      assert_nil @setting.reload.discord_join_role_id
+    test "another guild clears every id from the previous one, and switching back does not restore them" do
+      @setting.update!(discord_channel_id: "200000000000000001", discord_member_role_id: "300000000000000003",
+        discord_announcement_channel_id: "200000000000000002", discord_officers_channel_id: "200000000000000003")
+      rank = @fleet.default_member_role
+      rank.update!(discord_role_id: "300000000000000004")
 
+      @setting.update!(discord_guild_id: "100000000000000002")
       @setting.update!(discord_guild_id: GUILD)
-      assert_nil @setting.reload.discord_join_role_id
+
+      @setting.reload
+      assert_nil @setting.discord_join_role_id
+      assert_nil @setting.discord_channel_id
+      assert_nil @setting.discord_member_role_id
+      assert_nil @setting.discord_announcement_channel_id
+      assert_nil @setting.discord_officers_channel_id
+      assert_nil rank.reload.discord_role_id
+    end
+
+    test "a guild change keeps the ids saved along with it" do
+      @setting.update!(discord_guild_id: "100000000000000002", discord_channel_id: "200000000000000009")
+
+      assert_equal "200000000000000009", @setting.reload.discord_channel_id
     end
 
     test "a new guild and a new join role saved together keep the role" do
