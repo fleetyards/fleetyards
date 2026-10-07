@@ -87,6 +87,54 @@ describe("SquadronMembershipBtn", () => {
     ).toBe(true);
   });
 
+  it("cannot ask while another request is waiting", async () => {
+    const subject = await mount({
+      viewerRequestedSquadron: {
+        id: "2",
+        name: "Bravo",
+        slug: "bravo",
+        team: false,
+      },
+    });
+
+    const btn = subject.find('[data-test="squadron-requestJoin"]');
+    expect(btn.attributes("disabled")).toBeDefined();
+
+    await click(subject, "requestJoin");
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it("cannot ask while already in another squadron", async () => {
+    const subject = await mount({
+      viewerExclusiveSquadron: {
+        id: "2",
+        name: "Bravo",
+        slug: "bravo",
+        team: false,
+      },
+    });
+
+    expect(
+      subject.find('[data-test="squadron-requestJoin"]').attributes("disabled"),
+    ).toBeDefined();
+  });
+
+  it("still joins a team while committed elsewhere", async () => {
+    const subject = await mount({
+      team: true,
+      viewerRequestedSquadron: {
+        id: "2",
+        name: "Bravo",
+        slug: "bravo",
+        team: false,
+      },
+    });
+
+    await click(subject, "join");
+
+    expect(join).toHaveBeenCalled();
+  });
+
   it("offers a member to leave, team or not", async () => {
     const subject = await mount({ team: true, viewerIsMember: true });
 

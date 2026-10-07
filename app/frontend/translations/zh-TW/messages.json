@@ -398,6 +398,10 @@
               "success": "申請已撤回。",
               "failure": "無法撤回申請。"
             },
+            "blocked": {
+              "member": "你已在 %{squadron} 中。請先退出，再申請加入其他中隊。",
+              "requested": "你已申請加入 %{squadron}。請先撤回該申請，再申請其他中隊。"
+            },
             "accept": {
               "success": "%{username} 已加入該中隊。",
               "failure": "無法接受該申請。"
