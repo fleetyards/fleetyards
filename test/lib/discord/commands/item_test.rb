@@ -186,6 +186,48 @@ module Discord
 
         assert_includes author, I18n.t("discord.commands.item.types.equipment")
       end
+
+      # Two coolers called "Serac" cannot be told apart by a token; the bot
+      # offers each, keyed by id, with its size and game key beside the name.
+      test "suggests each item of a name a few items share" do
+        origin = create(:component, name: "Serac", sc_key: "COOL_ORIG_S04_890J_SCItem", size: 4)
+        polaris = create(:component, name: "Serac", sc_key: "COOL_RSI_S04_Polaris_SCItem", size: 4)
+
+        choices = ::Discord::Commands::Item.autocomplete("name", "serac")
+
+        assert_equal ["component~#{origin.id}", "component~#{polaris.id}"].sort, choices.pluck(:value).sort
+        assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.item.types.component")} · S4 · cool_orig_s04_890j_scitem"
+      end
+
+      test "suggests no single items of a name many items share" do
+        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+
+        assert_empty ::Discord::Commands::Item.autocomplete("name", "internal")
+      end
+
+      test "a picked item of a shared name answers that item" do
+        create(:component, name: "Serac")
+        polaris = create(:component, name: "Serac")
+
+        embed = call("component~#{polaris.id}")[:embeds].first
+
+        assert_includes embed[:url], "/catalogue/components/#{polaris.slug}/"
+      end
+
+      test "a typed shared name lists each item that carries it" do
+        first = create(:component, name: "Serac")
+        second = create(:component, name: "Serac")
+
+        content = call("Serac")[:content]
+
+        assert_includes content, "/catalogue/components/#{first.slug}/"
+        assert_includes content, "/catalogue/components/#{second.slug}/"
+      end
+
+      test "a picked value naming no listed item says so" do
+        assert_equal I18n.t("discord.commands.item.not_found", query: "component~#{SecureRandom.uuid}").length,
+          call("component~#{SecureRandom.uuid}")[:content].length
+      end
     end
   end
 end

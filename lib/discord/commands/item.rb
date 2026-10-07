@@ -7,6 +7,8 @@ module Discord
     # it under. Names resolve through the same resolver as an inline `[*Name*]`
     # in a text, so the bot finds the item the site would for the same words,
     # and a suggestion's value is that token -- a picked one always resolves.
+    # A name several items share, which no token can name, is offered per item
+    # by ItemVariants.
     class Item < Base
       include ActionView::Helpers::NumberHelper
 
@@ -22,11 +24,31 @@ module Discord
         "blueprint" => "blueprints"
       }.freeze
 
+      # One shape for a name the resolver offers and for one item of a shared
+      # name, so both rank and list the same way.
+      Candidate = Data.define(:prefix, :name, :slug, :value, :detail)
+
       def self.autocomplete(option, value)
         return [] unless option == "name"
 
-        ::Catalogue::TokenResolver.new.search(value, within: CATALOGUES).map do |match|
-          {name: "#{match.name} · #{type_label(prefix_for(match))}", value: match.token}
+        candidates(value).map do |candidate|
+          {name: [candidate.name, type_label(candidate.prefix), candidate.detail].compact.join(" · "), value: candidate.value}
+        end
+      end
+
+      # Names that start with the query first, then shorter ones, as the
+      # resolver ranks its own.
+      def self.candidates(query)
+        unique = ::Catalogue::TokenResolver.new.search(query, within: CATALOGUES).map do |match|
+          Candidate.new(prefix: prefix_for(match), name: match.name, slug: match.slug, value: match.token, detail: nil)
+        end
+        shared = ItemVariants.search(query, within: CATALOGUES).map do |variant|
+          Candidate.new(prefix: variant.prefix, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail)
+        end
+
+        lowered = query.to_s.strip.downcase
+        (unique + shared).sort_by do |candidate|
+          [candidate.name.downcase.start_with?(lowered) ? 0 : 1, candidate.name.length, candidate.name.downcase, candidate.detail.to_s]
         end
       end
 
@@ -42,38 +64,41 @@ module Discord
         query = option("name").to_s.strip
         return message(content: I18n.t("discord.commands.item.missing_query")) if query.blank?
 
-        matches = resolved(query)
-        return message(content: I18n.t("discord.commands.item.not_found", query: query)) if matches.empty?
-        return candidate_list(query, matches) unless matches.one?
+        variant = ItemVariants.find(query, within: CATALOGUES)
+        return message(embeds: [embed(variant.prefix, variant.record)]) if variant
 
-        prefix = self.class.prefix_for(matches.first)
-        record = ::Catalogue::TokenResolver.listed(prefix).find_by(slug: matches.first.slug)
-        return message(content: I18n.t("discord.commands.item.not_found", query: query)) if record.nil?
+        exact = ::Catalogue::TokenResolver.new.resolve([query], within: CATALOGUES)
+        return answer(query, self.class.prefix_for(exact.first), exact.first.slug) if exact.one?
+
+        candidates = self.class.candidates(query)
+        return not_found(query) if candidates.empty?
+        return answer(query, candidates.first.prefix, candidates.first.slug) if candidates.one?
+
+        candidate_list(query, candidates)
+      end
+
+      private def answer(query, prefix, slug)
+        record = ::Catalogue::TokenResolver.listed(prefix)
+          .find_by(ItemVariants.model(prefix).table_name => {slug:})
+        return not_found(query) if record.nil?
 
         message(embeds: [embed(prefix, record)])
       end
 
-      # The token first, as a picked suggestion sends it; a name typed by hand
-      # that names no one item falls back to what the suggestions would offer.
-      private def resolved(query)
-        resolver = ::Catalogue::TokenResolver.new
-        exact = resolver.resolve([query], within: CATALOGUES)
-        return exact if exact.any?
-
-        resolver.search(query, within: CATALOGUES)
+      private def not_found(query)
+        message(content: I18n.t("discord.commands.item.not_found", query: query))
       end
 
-      private def candidate_list(query, matches)
-        shown = matches.first(MAX_CANDIDATES)
-        lines = shown.map do |match|
-          prefix = self.class.prefix_for(match)
-          "• #{link(match.name, prefix, match.slug)} · #{self.class.type_label(prefix)}"
+      private def candidate_list(query, candidates)
+        lines = candidates.first(MAX_CANDIDATES).map do |candidate|
+          ["• #{link(candidate.name, candidate.prefix, candidate.slug)}", self.class.type_label(candidate.prefix), candidate.detail]
+            .compact.join(" · ")
         end
 
         content = [
           I18n.t("discord.commands.item.ambiguous", query: query),
           lines.join("\n"),
-          (I18n.t("discord.commands.item.more") if matches.size > MAX_CANDIDATES)
+          (I18n.t("discord.commands.item.more") if candidates.size > MAX_CANDIDATES)
         ].compact.join("\n")
 
         message(content: content)
