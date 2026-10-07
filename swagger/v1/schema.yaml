@@ -26396,6 +26396,10 @@ components:
           - 'null'
         discordMemberRoleId:
           type: string
+        discordJoinRoleId:
+          type:
+          - string
+          - 'null'
         discordWebhookConfigured:
           type: boolean
       required:
@@ -26438,6 +26442,10 @@ components:
           - string
           - 'null'
         discordMemberRoleId:
+          type:
+          - string
+          - 'null'
+        discordJoinRoleId:
           type:
           - string
           - 'null'

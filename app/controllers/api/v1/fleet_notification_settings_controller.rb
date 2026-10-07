@@ -133,6 +133,7 @@ module Api
 
       def update
         authorize! @setting, with: FleetNotificationSettingPolicy
+        authorize! @setting, with: FleetNotificationSettingPolicy, to: :update_join_role? if join_role_changing?
 
         if @setting.update(setting_params)
           render :show
@@ -141,9 +142,17 @@ module Api
         end
       end
 
+      # The settings form sends every field back, so only a different role
+      # needs the invite privilege; resending the current one does not.
+      private def join_role_changing?
+        params.key?(:discord_join_role_id) &&
+          params[:discord_join_role_id].to_s.strip.presence != @setting.discord_join_role_id
+      end
+
       private def setting_params
         permitted = params.permit(
           :discord_member_role_id,
+          :discord_join_role_id,
           :discord_guild_id,
           :discord_channel_id,
           :discord_announcement_channel_id,

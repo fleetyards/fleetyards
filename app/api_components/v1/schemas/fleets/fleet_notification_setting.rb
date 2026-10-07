@@ -23,6 +23,7 @@ module V1
             discordDigestTime: {type: [:string, :null], pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
             discordDigestTimezone: {type: [:string, :null]},
             discordMemberRoleId: {type: :string},
+            discordJoinRoleId: {type: [:string, :null]},
             # discord_webhook_url is encrypted; never returned, only writable.
             discordWebhookConfigured: {type: :boolean}
           },

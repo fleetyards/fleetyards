@@ -16,6 +16,7 @@
 #  discord_announcement_channel_id :string
 #  discord_channel_id              :string
 #  discord_guild_id                :string
+#  discord_join_role_id            :string
 #  discord_member_role_id          :string
 #  discord_officers_channel_id     :string
 #  fleet_id                        :uuid             not null
@@ -41,6 +42,7 @@ class FleetNotificationSetting < ApplicationRecord
     discord_guild_id
     discord_channel_id
     discord_member_role_id
+    discord_join_role_id
     discord_announcement_channel_id
     discord_officers_channel_id
   ].freeze
