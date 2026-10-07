@@ -20,7 +20,7 @@ A sync that meets a page it does not recognise stops without changing anything a
 
 ### Phase 2 — Parsers
 1. `RSIHangarParser.extractPage` answers `page`, `end` or `unrecognised` (with the check that failed): only `.empty-list` / `.empy-list` is the end; no `.list-items`, entries without pledge ids, or items without a `.kind` are unrecognised.
-2. `extractBuybackPage` adds the case it reads as the end today: no entries while the page still links to `/pledge/buyback/`.
+2. `extractBuybackPage` keeps its shape and adds `unrecognised` (the failed check): no buy-back list, no entries while the page still links to `/pledge/buyback/`, or entries none of which parse.
 
 ### Phase 3 — Modals
 1. Hangar and buy-back sync modals: an unrecognised page fails the sync with its own message and sends the report; nothing is submitted.
@@ -52,6 +52,6 @@ A sync that meets a page it does not recognise stops without changing anything a
 
 ## Progress
 
-- [ ] Phase 1 — Backend
-- [ ] Phase 2 — Parsers
-- [ ] Phase 3 — Modals
+- [x] Phase 1 — Backend
+- [x] Phase 2 — Parsers
+- [x] Phase 3 — Modals
