@@ -86,7 +86,7 @@ module Discord
       end
 
       private def not_found(query)
-        message(content: I18n.t("discord.commands.item.not_found", query: query))
+        message(content: I18n.t("discord.commands.item.not_found", query: Markdown.escape(query)))
       end
 
       private def candidate_list(query, candidates)
@@ -96,7 +96,7 @@ module Discord
         end
 
         content = [
-          I18n.t("discord.commands.item.ambiguous", query: query),
+          I18n.t("discord.commands.item.ambiguous", query: Markdown.escape(query)),
           lines.join("\n"),
           (I18n.t("discord.commands.item.more") if candidates.size > MAX_CANDIDATES)
         ].compact.join("\n")

@@ -246,7 +246,13 @@ module Discord
       test "a picked value naming no listed item says so" do
         value = "component~#{SecureRandom.uuid}"
 
-        assert_equal I18n.t("discord.commands.item.not_found", query: value), call(value)[:content]
+        assert_equal I18n.t("discord.commands.item.not_found", query: ::Discord::Markdown.escape(value)), call(value)[:content]
+      end
+
+      test "sets a typed name in the answer as plain text" do
+        content = call("[Free aUEC](https://evil.example)")[:content]
+
+        assert_includes content, "\\[Free aUEC\\]\\(https://evil.example\\)"
       end
     end
   end
