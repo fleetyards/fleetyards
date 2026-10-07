@@ -2497,6 +2497,7 @@
         "reclaimedOn": "熔煉於"
       },
       "buybackSync": {
+        "extensionVersion": "已安裝的擴充功能版本",
         "pages": "頁數",
         "found": "找到的可回購承諾",
         "added": "新增",

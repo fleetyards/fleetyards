@@ -2497,6 +2497,7 @@
         "reclaimedOn": "Fundido"
       },
       "buybackSync": {
+        "extensionVersion": "Versión instalada de la extensión",
         "pages": "Páginas",
         "found": "Pledges de recompra encontrados",
         "added": "Nuevos",

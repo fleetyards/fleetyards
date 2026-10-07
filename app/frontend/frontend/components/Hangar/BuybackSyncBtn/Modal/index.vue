@@ -17,6 +17,7 @@ import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncEvent,
+  type FleetyardsSyncHealthPayload,
   type FleetyardsSyncMessage,
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
@@ -38,6 +39,17 @@ const { displayInfo, displaySuccess, displayWarning, displayAlert } =
 const comlink = useComlink();
 
 const extensionReady = ref(false);
+
+const extensionInfo = ref<FleetyardsSyncHealthPayload>({});
+
+// Asked by capability rather than by version number: a local dev build only
+// carries the next version once the release is cut, but already lists the
+// action.
+const extensionSupportsBuybacks = computed(
+  () =>
+    extensionInfo.value.actions?.includes(FleetyardsSyncAction.SYNC_BUYBACK) ??
+    false,
+);
 
 const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 
@@ -102,8 +114,10 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
 
   if (message.action === FleetyardsSyncAction.HEALTH) {
     extensionReady.value = message.code === 200;
+    extensionInfo.value =
+      (message.payload as FleetyardsSyncHealthPayload | undefined) || {};
 
-    if (extensionReady.value) {
+    if (extensionReady.value && extensionSupportsBuybacks.value) {
       checkRSIIdentity();
     }
   }
@@ -268,6 +282,28 @@ const close = () => {
         </a>
       </div>
     </div>
+    <div
+      v-else-if="!extensionSupportsBuybacks"
+      data-test="buyback-sync-outdated"
+    >
+      <p class="text-warning">{{ t("texts.buybackSync.unsupported") }}</p>
+      <p v-if="extensionInfo.version">
+        {{ t("labels.buybackSync.extensionVersion") }}:
+        {{ extensionInfo.version }}
+      </p>
+      <div class="sync-extension-platforms">
+        <a
+          v-for="link in extensionUrls"
+          :key="`extension-update-link-${link.platform}`"
+          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
+          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
+          :href="link.url"
+          target="_blank"
+        >
+          <i :class="`fa-brands fa-${link.platform}`" />
+        </a>
+      </div>
+    </div>
     <div v-else-if="status === 'idle'">
       <p
         class="flex justify-center gap-2 text-uppercase relative mt-4"
@@ -337,7 +373,11 @@ const close = () => {
         }}
       </Btn>
       <Btn
-        v-if="extensionReady && ['idle', 'failed'].includes(status)"
+        v-if="
+          extensionReady &&
+          extensionSupportsBuybacks &&
+          ['idle', 'failed'].includes(status)
+        "
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
         :disabled="identityStatus !== 'connected'"

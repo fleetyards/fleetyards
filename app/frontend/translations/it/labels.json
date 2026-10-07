@@ -2497,6 +2497,7 @@
         "reclaimedOn": "Fuso"
       },
       "buybackSync": {
+        "extensionVersion": "Versione installata dell'estensione",
         "pages": "Pagine",
         "found": "Pledge riacquistabili trovati",
         "added": "Nuovi",

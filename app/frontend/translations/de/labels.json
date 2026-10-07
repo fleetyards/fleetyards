@@ -2497,6 +2497,7 @@
         "reclaimedOn": "Eingeschmolzen"
       },
       "buybackSync": {
+        "extensionVersion": "Installierte Erweiterungsversion",
         "pages": "Seiten",
         "found": "Gefundene Rückkauf-Pledges",
         "added": "Neu",

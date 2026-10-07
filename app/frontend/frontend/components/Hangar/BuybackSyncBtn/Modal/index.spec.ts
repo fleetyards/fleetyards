@@ -66,11 +66,16 @@ const askedFor = (action: string) =>
       ),
     );
 
+const currentExtension = {
+  version: "1.3.0",
+  actions: ["health", "identify", "sync", "syncBuyback"],
+};
+
 // The modal listens on `window` while mounted, so one left behind would answer
 // the next test's extension replies as well.
 let mounted: ReturnType<typeof mount> | undefined;
 
-const startSync = async () => {
+const mountModal = async (health?: unknown) => {
   const wrapper = mount(Component, {
     global: {
       stubs: {
@@ -83,8 +88,15 @@ const startSync = async () => {
   mounted = wrapper;
   await flushPromises();
 
-  extensionReplies("health");
+  extensionReplies("health", health);
   await flushPromises();
+
+  return wrapper;
+};
+
+const startSync = async () => {
+  const wrapper = await mountModal(currentExtension);
+
   extensionReplies("identify", { handle: "ACaptain" });
   await flushPromises();
 
@@ -103,6 +115,34 @@ describe("HangarBuybackSyncModal", () => {
   afterEach(() => {
     mounted?.unmount();
     mounted = undefined;
+  });
+
+  // Every released version before buy-backs answers the health check with no
+  // payload at all.
+  it("asks for an update from an extension that reports nothing", async () => {
+    const wrapper = await mountModal();
+
+    expect(wrapper.find("[data-test='buyback-sync-outdated']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='start-buyback-sync']").exists()).toBe(
+      false,
+    );
+    expect(askedFor("identify")).toBe(false);
+  });
+
+  it("names the installed version of an extension without buy-backs", async () => {
+    const wrapper = await mountModal({
+      version: "1.2.6",
+      actions: ["health", "identify", "sync"],
+    });
+
+    expect(
+      wrapper.find("[data-test='buyback-sync-outdated']").text(),
+    ).toContain("1.2.6");
+    expect(wrapper.find("[data-test='start-buyback-sync']").exists()).toBe(
+      false,
+    );
   });
 
   it("asks only for the buy-back pages, never the hangar", async () => {

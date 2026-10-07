@@ -2497,6 +2497,7 @@
         "reclaimedOn": "Reclaimed"
       },
       "buybackSync": {
+        "extensionVersion": "Installed extension version",
         "pages": "Pages",
         "found": "Buy-back pledges found",
         "added": "New",
