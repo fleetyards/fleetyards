@@ -122,6 +122,34 @@ const askedFor = (action: string) =>
       ),
     );
 
+const pageRequests = () =>
+  vi
+    .mocked(window.postMessage)
+    .mock.calls.filter(([data]) =>
+      String((data as { message?: string })?.message).includes(
+        '"action":"syncBuyback"',
+      ),
+    ).length;
+
+let pagesAnswered = 0;
+
+// The modal asks for the next page a moment after the last one: an answer only
+// lands once it has been asked for.
+const answerNextPage = async (
+  html: string | undefined,
+  options?: { code?: number; error?: string },
+) => {
+  await vi.waitFor(
+    () => expect(pageRequests()).toBeGreaterThan(pagesAnswered),
+    {
+      timeout: 2000,
+    },
+  );
+  pagesAnswered += 1;
+  extensionReplies("syncBuyback", html, options);
+  await flushPromises();
+};
+
 const currentExtension = {
   version: "1.3.0",
   actions: ["health", "identify", "sync", "syncBuyback"],
@@ -169,6 +197,7 @@ describe("HangarBuybackSyncModal", () => {
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
     vi.mocked(window.postMessage).mockClear();
+    pagesAnswered = 0;
   });
 
   afterEach(() => {
@@ -225,15 +254,12 @@ describe("HangarBuybackSyncModal", () => {
   it("reads every page before submitting the list", async () => {
     const wrapper = await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies("syncBuyback", buybackPage("2"));
-    await flushPromises();
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(buybackPage("2"));
 
     expect(mutateAsync).not.toHaveBeenCalled();
 
-    extensionReplies("syncBuyback", emptyBuybackPage);
-    await flushPromises();
+    await answerNextPage(emptyBuybackPage);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: {
@@ -251,10 +277,8 @@ describe("HangarBuybackSyncModal", () => {
   it("stops at a page with nothing new on it", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(buybackPage("1"));
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: { items: [expect.objectContaining({ id: "1" })] },
@@ -266,8 +290,7 @@ describe("HangarBuybackSyncModal", () => {
   it("submits nothing for a page that is not the buy-back page", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", "<html><body></body></html>");
-    await flushPromises();
+    await answerNextPage("<html><body></body></html>");
 
     expect(mutateAsync).not.toHaveBeenCalled();
   });
@@ -275,13 +298,10 @@ describe("HangarBuybackSyncModal", () => {
   it("reports a page it does not recognise", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies(
-      "syncBuyback",
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(
       buybackList(`<li><a href="/pledge/buyback/2">Buy Back</a></li>`),
     );
-    await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).toHaveBeenCalledWith({
@@ -295,26 +315,23 @@ describe("HangarBuybackSyncModal", () => {
   });
 
   it("reports nothing when the RSI session has run out", async () => {
-    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
     await startSync();
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
 
-    extensionReplies("syncBuyback", "<html><body></body></html>");
-    await flushPromises();
+    await answerNextPage("<html><body></body></html>");
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(rsiIdentity).toHaveBeenCalledTimes(2);
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies(
-      "syncBuyback",
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(
       buybackList(`<li><article class="pledge"><h1>Gear</h1></article></li>`),
     );
-    await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
   });
@@ -322,10 +339,8 @@ describe("HangarBuybackSyncModal", () => {
   it("submits nothing when a page cannot be fetched", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies("syncBuyback", "", { code: 403 });
-    await flushPromises();
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage("", { code: 403 });
 
     expect(mutateAsync).not.toHaveBeenCalled();
   });
@@ -335,10 +350,8 @@ describe("HangarBuybackSyncModal", () => {
   it("asks for no further page once the sync has failed", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies("syncBuyback", "", { code: 403 });
-    await flushPromises();
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage("", { code: 403 });
 
     vi.mocked(window.postMessage).mockClear();
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -349,11 +362,10 @@ describe("HangarBuybackSyncModal", () => {
   it("says so when the extension predates buy-backs", async () => {
     const wrapper = await startSync();
 
-    extensionReplies("syncBuyback", undefined, {
+    await answerNextPage(undefined, {
       code: 500,
       error: "Unknown Action",
     });
-    await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(wrapper.text()).toContain("texts.buybackSync.unsupported");
@@ -387,10 +399,8 @@ describe("HangarBuybackSyncModal", () => {
       await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
       await flushPromises();
 
-      extensionReplies("syncBuyback", buybackPage("1"));
-      await flushPromises();
-      extensionReplies("syncBuyback", emptyBuybackPage);
-      await flushPromises();
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
 
       return wrapper;
     };

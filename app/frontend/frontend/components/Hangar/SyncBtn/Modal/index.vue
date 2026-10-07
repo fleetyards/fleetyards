@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
@@ -15,8 +14,8 @@ import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
-import { extensionUrls } from "@/types/extension";
-import LoadingDots from "@/shared/components/LoadingDots/index.vue";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
+import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -44,10 +43,11 @@ import {
 } from "@/services/fyCable/channels/HangarSyncChannel";
 import { differenceInMinutes } from "date-fns";
 import {
+  FleetyardsSyncAction,
   type FleetyardsSyncMessage,
-  type FleetyardsSyncEvent,
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 
 const { t } = useI18n();
 
@@ -120,95 +120,90 @@ const processSteps = ref<SyncProcessStep[]>([
   },
 ]);
 
-const onExtensionMessage = (event: FleetyardsSyncEvent) => {
-  handleExtensionMessage(event).catch((error) => {
-    console.error("Hangar sync error:", error);
-    updateStep("fetchHangar", "failure");
-    displayAlert({ text: t("messages.syncExtension.failure") });
-  });
-};
-
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
   hangarStore.syncModalOpen = true;
 
-  window.addEventListener("message", onExtensionMessage as EventListener);
-
   if (hangarStore.extensionReady) {
-    checkRSIIdentity();
+    void checkRSIIdentity();
   }
 });
 
+let unmounted = false;
+
 onBeforeUnmount(() => {
+  unmounted = true;
   hangarStore.syncModalOpen = false;
-  window.removeEventListener("message", onExtensionMessage as EventListener);
 
   if (pollingDelayTimer) {
     clearTimeout(pollingDelayTimer);
   }
 });
 
-const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
-  if (event.data.direction === "fy-sync") {
-    const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
+const failFetch = () => {
+  displayAlert({ text: t("messages.syncExtension.failure") });
+  updateStep("fetchHangar", "failure");
+};
 
-    // A reply after the fetch has ended belongs to a run that is over: read
-    // now, it could submit the pages collected before an unrecognised one.
-    const fetchStatus = processSteps.value.find(
-      (step) => step.name === "fetchHangar",
-    )?.status;
+const onSyncReply = async (message?: FleetyardsSyncMessage) => {
+  if (unmounted) return;
 
-    if (
-      message.action === "sync" &&
-      fetchStatus !== "failure" &&
-      fetchStatus !== "success"
-    ) {
-      if (message.code === 200) {
-        await fetchRSIHangar(message.payload as string);
-      } else {
-        displayAlert({ text: t("messages.syncExtension.failure") });
-        updateStep("fetchHangar", "failure");
-      }
-    }
+  // A reply after the fetch has ended belongs to a run that is over: read
+  // now, it could submit the pages collected before an unrecognised one.
+  const fetchStatus = processSteps.value.find(
+    (step) => step.name === "fetchHangar",
+  )?.status;
+  if (fetchStatus === "failure" || fetchStatus === "success") return;
 
-    if (message.action === "identify") {
-      loadingIdentity.value = false;
-      if (
-        message.code !== 200 ||
-        !(message.payload as FleetyardsSyncSessionPayload)?.handle
-      ) {
-        console.info("FY Extension: No RSI Session found");
-        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
-        identityStatus.value = "notFound";
-        rsiHandle.value = undefined;
-      } else {
-        identityStatus.value = "connected";
-        rsiHandle.value = (
-          message.payload as FleetyardsSyncSessionPayload
-        ).handle;
-      }
-    }
+  if (message?.code !== 200) {
+    failFetch();
+    return;
   }
+
+  await fetchRSIHangar(message.payload as string).catch((error) => {
+    console.error("Hangar sync error:", error);
+    failFetch();
+  });
 };
 
 watch(
   () => hangarStore.extensionReady,
   () => {
     if (hangarStore.extensionReady) {
-      checkRSIIdentity();
+      void checkRSIIdentity();
     }
   },
 );
 
-const checkRSIIdentity = () => {
+const extension = useSyncExtension();
+
+// Only the latest check answers: retry can be pressed while one is out.
+let identityCheck = 0;
+
+const checkRSIIdentity = async () => {
+  const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
-  window.postMessage({
-    direction: "fy",
-    message: '{ "action": "identify" }',
-  });
+  const identity = await extension
+    .request(FleetyardsSyncAction.IDENTIFY)
+    .catch(() => undefined);
+  // A check still out when the modal closed answers nobody.
+  if (unmounted || current !== identityCheck) return;
+  const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
+
+  loadingIdentity.value = false;
+
+  if (identity?.code !== 200 || !handle) {
+    console.info("FY Extension: No RSI Session found");
+    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    identityStatus.value = "notFound";
+    rsiHandle.value = undefined;
+  } else {
+    identityStatus.value = "connected";
+    rsiHandle.value = handle;
+  }
 };
 
 const updateStep = (step: string, status: SyncProcessStep["status"]) => {
@@ -283,10 +278,10 @@ const fetchPage = (page: number) => {
 
   fetchCount.value += 1;
 
-  window.postMessage({
-    direction: "fy",
-    message: `{ "action": "sync", "page": ${page} }`,
-  });
+  void extension
+    .request(FleetyardsSyncAction.SYNC, { page })
+    .catch(() => undefined)
+    .then(onSyncReply);
 };
 
 const reportRsiPage = useRsiPageReport();
@@ -458,49 +453,15 @@ const refreshPage = async () => {
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-        <div class="sync-extension-platforms">
-          <a
-            v-for="link in extensionUrls"
-            :key="`extension-link-${link.platform}`"
-            v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-            :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-            :href="link.url"
-            target="_blank"
-          >
-            <i :class="`fa-brands fa-${link.platform}`" />
-          </a>
-        </div>
+        <SyncExtensionLinks />
       </div>
       <div v-else-if="!started">
-        <p
-          class="flex justify-center gap-2 text-uppercase relative mt-4"
-          :class="{
-            'text-warning': identityStatus === 'pending',
-            'text-success': identityStatus === 'connected',
-            'text-danger': identityStatus === 'notFound',
-          }"
-        >
-          {{ t("labels.syncExtension.sessionStatus") }}:
-          {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-          <LoadingDots :loading="loadingIdentity" />
-          <Btn
-            v-if="identityStatus === 'notFound'"
-            v-tooltip="t('labels.syncExtension.checkIdentity')"
-            class="check-identity-btn"
-            :disabled="loadingIdentity"
-            @click="checkRSIIdentity"
-            :variant="BtnVariantsEnum.BARE"
-          >
-            <i class="fa-light fa-sync" />
-          </Btn>
-        </p>
-        <p
-          v-if="identityStatus === 'connected' && rsiHandle"
-          class="text-center"
-          data-test="sync-extension-signed-in-as"
-        >
-          {{ t("labels.syncExtension.signedInAs", { handle: rsiHandle }) }}
-        </p>
+        <SyncSessionStatus
+          :status="identityStatus"
+          :loading="loadingIdentity"
+          :handle="rsiHandle"
+          @recheck="checkRSIIdentity"
+        />
         <p v-html="t('texts.syncExtension.info')" />
         <hr />
         <HangarGroupsSelect

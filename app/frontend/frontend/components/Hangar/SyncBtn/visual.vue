@@ -12,6 +12,14 @@ import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Resul
 import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useVisualApiMock } from "@/frontend/composables/useVisualApiMock";
+import {
+  type ExtensionStubConfig,
+  signedInExtension,
+  signedOutExtension,
+  useVisualExtensionStub,
+} from "@/frontend/composables/useVisualExtensionStub";
 
 type State = {
   key: string;
@@ -157,42 +165,81 @@ const hangarStore = useHangarStore();
 
 /*
  * The real modal, not a stand-in: the options on its start screen are the point
- * of this card, and a copy of the markup here would drift from the one users
+ * of these cards, and a copy of the markup here would drift from the one users
  * see.
  *
- * The modal talks to the browser extension, which is not installed on a demo
- * page, so this stands in for it and answers the two probes the start screen
- * waits on. It deliberately does not answer `sync`: pressing Start would then
- * submit to the real endpoint, and the cards below already cover every state
- * that follows.
+ * Nothing reaches the extension, RSI or the API: the stub serves one page of
+ * pledges (and the same page again, which reads as the end), and the mocked
+ * API takes the submission and reports it finished.
  */
-const extensionStub = (event: MessageEvent) => {
-  if (event.data?.direction !== "fy") {
-    return;
-  }
+const extension = useVisualExtensionStub();
 
-  const { action } = JSON.parse(event.data.message);
+const PLEDGES_PAGE = `<title>My Hangar</title><ul class="list-items">${[
+  ["1", "Ship", "Aurora MR"],
+  ["2", "Ship", "300i"],
+  ["3", "Skin", "300i - Ironclad Paint"],
+]
+  .map(
+    ([id, kind, title]) =>
+      `<li><input type="hidden" class="js-pledge-id" value="${id}"><div class="item"><div class="title">${title}</div><div class="kind">${kind}</div></div></li>`,
+  )
+  .join("")}</ul>`;
 
-  const reply = (payload?: unknown) =>
-    window.postMessage({
-      direction: "fy-sync",
-      message: JSON.stringify({ action, code: 200, payload }),
-    });
+const signedInWithHangar = (): ExtensionStubConfig => ({
+  ...signedInExtension("VisualTester"),
+  [FleetyardsSyncAction.SYNC]: { code: 200, payload: PLEDGES_PAGE },
+});
 
-  if (action === "health") {
-    reply();
-  }
+useVisualApiMock([
+  {
+    method: "PUT",
+    path: /^\/hangar\/sync-rsi-hangar$/,
+    respond: () => ({ id: "visual-sync", status: "pending" }),
+  },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-hangar\/status$/,
+    respond: () => ({ status: "finished", result: successResult }),
+  },
+]);
 
-  if (action === "identify") {
-    reply({ handle: "VisualTester" });
-  }
+type StartScreen = {
+  key: string;
+  label: string;
+  description: string;
+  extensionReady: boolean;
+  answers: ExtensionStubConfig;
 };
 
-onMounted(() => window.addEventListener("message", extensionStub));
-onBeforeUnmount(() => window.removeEventListener("message", extensionStub));
+const startScreens: StartScreen[] = [
+  {
+    key: "start",
+    label: "Before start",
+    description:
+      "Signed in to RSI: target group, bundled snub craft and the unmatched ships option. Start runs a demo sync against a stubbed hangar.",
+    extensionReady: true,
+    answers: signedInWithHangar(),
+  },
+  {
+    key: "signed-out",
+    label: "Not signed in to RSI",
+    description:
+      "The extension answers, but finds no RSI session: Start stays disabled.",
+    extensionReady: true,
+    answers: signedOutExtension(),
+  },
+  {
+    key: "no-extension",
+    label: "Without the extension",
+    description: "No extension installed: the install links.",
+    extensionReady: false,
+    answers: {},
+  },
+];
 
-const openStartScreen = () => {
-  hangarStore.extensionReady = true;
+const openStartScreen = (screen: StartScreen) => {
+  extension.configure(screen.answers);
+  hangarStore.extensionReady = screen.extensionReady;
   hangarStore.syncRunning = false;
 
   comlink.emit("open-modal", {
@@ -226,13 +273,17 @@ const openState = (state: State) => {
     <code>AppModal</code> with mocked input — same layout as production.
   </p>
   <div class="row">
-    <div class="col-12 col-md-6 col-lg-4 sync-state-card">
-      <h4>Before start</h4>
-      <p class="text-muted">
-        The real modal before a sync runs: target group and the bundled snub
-        craft option. Start does nothing here.
-      </p>
-      <Btn data-test="open-sync-modal-start" @click="openStartScreen">
+    <div
+      v-for="screen in startScreens"
+      :key="screen.key"
+      class="col-12 col-md-6 col-lg-4 sync-state-card"
+    >
+      <h4>{{ screen.label }}</h4>
+      <p class="text-muted">{{ screen.description }}</p>
+      <Btn
+        :data-test="`open-sync-modal-${screen.key}`"
+        @click="openStartScreen(screen)"
+      >
         Open
       </Btn>
     </div>

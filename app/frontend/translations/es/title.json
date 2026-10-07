@@ -194,6 +194,8 @@
         "states": "Estados - Pruebas visuales",
         "notifications": "Notificaciones - Pruebas Visuales",
         "syncModal": "Modal de sincronización - Pruebas Visuales",
+        "buybackSyncModal": "Modal de sincronización de recompras - Pruebas Visuales",
+        "rsiVerificationModal": "Modal de verificación de RSI - Pruebas Visuales",
         "overlays": "Superposiciones - Pruebas Visuales",
         "installPrompt": "Aviso de instalación - Pruebas Visuales",
         "supportHint": "Aviso de apoyo - Pruebas Visuales",

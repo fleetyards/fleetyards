@@ -10,7 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { extensionUrls } from "@/types/extension";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
@@ -72,20 +72,7 @@ const openGuide = () => {
           </p>
           <div v-if="!hangarStore.extensionReady">
             <p>{{ t("empty.info.extension") }}</p>
-            <div class="sync-extension-platforms">
-              <a
-                v-for="link in extensionUrls"
-                :key="`extension-link-${link.platform}`"
-                v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-                :aria-label="
-                  t(`labels.syncExtension.platforms.${link.platform}`)
-                "
-                :href="link.url"
-                target="_blank"
-              >
-                <i :class="`fa-brands fa-${link.platform}`" />
-              </a>
-            </div>
+            <SyncExtensionLinks />
           </div>
         </template>
       </div>

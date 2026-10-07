@@ -7,12 +7,11 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import LoadingDots from "@/shared/components/LoadingDots/index.vue";
+import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { extensionUrls } from "@/types/extension";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
@@ -20,9 +19,9 @@ import {
   RsiPageReportOutcome,
   useRsiPageReport,
 } from "@/frontend/composables/useRsiPageReport";
+import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   FleetyardsSyncAction,
-  type FleetyardsSyncEvent,
   type FleetyardsSyncHealthPayload,
   type FleetyardsSyncMessage,
   type FleetyardsSyncSessionPayload,
@@ -100,8 +99,6 @@ const maxMessagesPerMinute = 60;
 // An extension that never answers would otherwise leave the sync spinning.
 const REPLY_TIMEOUT = 30000;
 
-let replyTimer: ReturnType<typeof setTimeout> | null = null;
-
 const working = computed(
   () =>
     loadingIdentity.value ||
@@ -110,23 +107,25 @@ const working = computed(
     status.value === "details",
 );
 
-const onExtensionMessage = (event: FleetyardsSyncEvent) => {
-  handleExtensionMessage(event).catch((error) => {
-    console.error("Buy-back sync error:", error);
-    fail();
-  });
+const extension = useSyncExtension();
+
+let unmounted = false;
+
+const checkExtension = async () => {
+  const health = await extension.health();
+
+  extensionReady.value = health?.code === 200;
+  extensionInfo.value =
+    (health?.payload as FleetyardsSyncHealthPayload | undefined) || {};
+
+  if (!unmounted && extensionReady.value && extensionSupportsBuybacks.value) {
+    await checkRSIIdentity();
+  }
 };
 
 onMounted(() => {
-  window.addEventListener("message", onExtensionMessage as EventListener);
-
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({ action: FleetyardsSyncAction.HEALTH }),
-  });
+  void checkExtension();
 });
-
-let unmounted = false;
 
 onBeforeUnmount(() => {
   unmounted = true;
@@ -134,71 +133,49 @@ onBeforeUnmount(() => {
   if (status.value === "details") {
     cancelDetails();
   }
-  window.removeEventListener("message", onExtensionMessage as EventListener);
-
-  clearReplyTimer();
 });
 
-const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
-  if (event.data.direction !== "fy-sync") {
-    return;
-  }
+// A reply landing after the sync failed or the modal closed belongs to a crawl
+// that is over. No reply at all is a timeout.
+const onSyncReply = async (message?: FleetyardsSyncMessage) => {
+  if (unmounted || status.value !== "fetching") return;
 
-  const message = JSON.parse(event.data.message) as FleetyardsSyncMessage;
-
-  if (message.action === FleetyardsSyncAction.HEALTH) {
-    extensionReady.value = message.code === 200;
-    extensionInfo.value =
-      (message.payload as FleetyardsSyncHealthPayload | undefined) || {};
-
-    if (extensionReady.value && extensionSupportsBuybacks.value) {
-      checkRSIIdentity();
-    }
-  }
-
-  if (message.action === FleetyardsSyncAction.IDENTIFY) {
-    loadingIdentity.value = false;
-
-    if (
-      message.code !== 200 ||
-      !(message.payload as FleetyardsSyncSessionPayload)?.handle
-    ) {
-      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
-      identityStatus.value = "notFound";
-      rsiHandle.value = undefined;
-    } else {
-      identityStatus.value = "connected";
-      rsiHandle.value = (
-        message.payload as FleetyardsSyncSessionPayload
-      ).handle;
-    }
-  }
-
-  // A reply landing after the sync timed out belongs to a crawl that is over.
-  if (
-    message.action === FleetyardsSyncAction.SYNC_BUYBACK &&
-    status.value === "fetching"
-  ) {
-    clearReplyTimer();
-
-    if (message.code === 200) {
-      await handlePage(message.payload as string);
-    } else if (isUnknownAction(message)) {
-      status.value = "unsupported";
-    } else {
+  if (message?.code === 200) {
+    await handlePage(message.payload as string).catch((error) => {
+      console.error("Buy-back sync error:", error);
       fail();
-    }
+    });
+  } else if (message && isUnknownAction(message)) {
+    status.value = "unsupported";
+  } else {
+    fail();
   }
 };
 
-const checkRSIIdentity = () => {
+// Only the latest check answers: retry can be pressed while one is out.
+let identityCheck = 0;
+
+const checkRSIIdentity = async () => {
+  const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({ action: FleetyardsSyncAction.IDENTIFY }),
-  });
+  const identity = await extension
+    .request(FleetyardsSyncAction.IDENTIFY)
+    .catch(() => undefined);
+  if (unmounted || current !== identityCheck) return;
+  const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
+
+  loadingIdentity.value = false;
+
+  if (identity?.code !== 200 || !handle) {
+    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    identityStatus.value = "notFound";
+    rsiHandle.value = undefined;
+  } else {
+    identityStatus.value = "connected";
+    rsiHandle.value = handle;
+  }
 };
 
 // An extension released before buy-backs answers the action it does not know
@@ -236,26 +213,13 @@ const fetchPage = (page: number) => {
 
   fetchCount.value += 1;
 
-  window.postMessage({
-    direction: "fy",
-    message: JSON.stringify({
-      action: FleetyardsSyncAction.SYNC_BUYBACK,
-      page,
-    }),
-  });
-
-  replyTimer = setTimeout(fail, REPLY_TIMEOUT);
-};
-
-const clearReplyTimer = () => {
-  if (replyTimer) {
-    clearTimeout(replyTimer);
-    replyTimer = null;
-  }
+  void extension
+    .request(FleetyardsSyncAction.SYNC_BUYBACK, { page }, REPLY_TIMEOUT)
+    .catch(() => undefined)
+    .then(onSyncReply);
 };
 
 const fail = (text = t("messages.buybackSync.failure")) => {
-  clearReplyTimer();
   status.value = "failed";
   displayAlert({ text });
 };
@@ -268,7 +232,6 @@ const handlePage = async (html: string) => {
   // Not a buy-back page this parser understands: the list read so far is
   // incomplete, and submitting it would delete every buy-back after it.
   if (result.status === RsiPageStatus.UNRECOGNISED) {
-    clearReplyTimer();
     status.value = "failed";
 
     const outcome = await reportRsiPage({
@@ -379,18 +342,7 @@ const close = () => {
   <Modal :title="t('headlines.buybackSync')" :fixed="true" :loading="working">
     <div v-if="!extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-      <div class="sync-extension-platforms">
-        <a
-          v-for="link in extensionUrls"
-          :key="`extension-link-${link.platform}`"
-          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :href="link.url"
-          target="_blank"
-        >
-          <i :class="`fa-brands fa-${link.platform}`" />
-        </a>
-      </div>
+      <SyncExtensionLinks />
     </div>
     <div
       v-else-if="!extensionSupportsBuybacks"
@@ -401,49 +353,15 @@ const close = () => {
         {{ t("labels.buybackSync.extensionVersion") }}:
         {{ extensionInfo.version }}
       </p>
-      <div class="sync-extension-platforms">
-        <a
-          v-for="link in extensionUrls"
-          :key="`extension-update-link-${link.platform}`"
-          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :href="link.url"
-          target="_blank"
-        >
-          <i :class="`fa-brands fa-${link.platform}`" />
-        </a>
-      </div>
+      <SyncExtensionLinks />
     </div>
     <div v-else-if="status === 'idle'">
-      <p
-        class="flex justify-center gap-2 text-uppercase relative mt-4"
-        :class="{
-          'text-warning': identityStatus === 'pending',
-          'text-success': identityStatus === 'connected',
-          'text-danger': identityStatus === 'notFound',
-        }"
-      >
-        {{ t("labels.syncExtension.sessionStatus") }}:
-        {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-        <LoadingDots :loading="loadingIdentity" />
-        <Btn
-          v-if="identityStatus === 'notFound'"
-          v-tooltip="t('labels.syncExtension.checkIdentity')"
-          class="check-identity-btn"
-          :disabled="loadingIdentity"
-          :variant="BtnVariantsEnum.BARE"
-          @click="checkRSIIdentity"
-        >
-          <i class="fa-light fa-sync" />
-        </Btn>
-      </p>
-      <p
-        v-if="identityStatus === 'connected' && rsiHandle"
-        class="text-center"
-        data-test="sync-extension-signed-in-as"
-      >
-        {{ t("labels.syncExtension.signedInAs", { handle: rsiHandle }) }}
-      </p>
+      <SyncSessionStatus
+        :status="identityStatus"
+        :loading="loadingIdentity"
+        :handle="rsiHandle"
+        @recheck="checkRSIIdentity"
+      />
       <p>{{ t("texts.buybackSync.info") }}</p>
       <p v-if="extensionSupportsDetails">
         {{ t("texts.buybackSync.detailsInfo") }}
@@ -533,9 +451,5 @@ const close = () => {
 <style lang="scss" scoped>
 .sync-extension-platforms {
   margin-bottom: 20px;
-}
-
-.check-identity-btn {
-  margin-left: 10px;
 }
 </style>

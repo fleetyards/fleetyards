@@ -161,6 +161,8 @@
         "states": "Zustände",
         "notifications": "Benachrichtigungen",
         "syncModal": "Sync-Modal",
+        "buybackSyncModal": "Rückkauf-Sync-Modal",
+        "rsiVerificationModal": "RSI-Verifizierungs-Modal",
         "overlays": "Overlays",
         "installPrompt": "Installationshinweis",
         "supportHint": "Support-Hinweis",

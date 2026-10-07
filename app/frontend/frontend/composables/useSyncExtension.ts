@@ -10,19 +10,46 @@ import {
 const HEALTH_TIMEOUT = 2000;
 const REQUEST_TIMEOUT = 30000;
 
+// `matches` tells this request's answer from a late one to an earlier request
+// of the same action that already timed out.
+type SyncExtensionRequest = (
+  action: FleetyardsSyncAction,
+  params?: Record<string, unknown>,
+  timeout?: number,
+  matches?: (message: FleetyardsSyncMessage) => boolean,
+) => Promise<FleetyardsSyncMessage>;
+
+let requestOverride: SyncExtensionRequest | undefined;
+
+// For the visual test pages, which answer for the extension themselves. They
+// cannot do that over `window`: an extension installed in the same browser
+// hears every message there, answers too, and acts on what it is asked -- a
+// demo card's `verify-write` would land in the tester's real RSI bio.
+export const overrideSyncExtension = (request: SyncExtensionRequest) => {
+  requestOverride = request;
+};
+
+// Only the override it installed: a page removing its own late must not take
+// out the next page's.
+export const clearSyncExtensionOverride = (request: SyncExtensionRequest) => {
+  if (requestOverride === request) requestOverride = undefined;
+};
+
 // Any script on the page can post into this channel, answers included. That is
 // fine for what the answers are used for here: what the UI offers. Nothing the
 // extension reports is proof of anything to the server.
 export const useSyncExtension = () => {
-  // `matches` tells this request's answer from a late one to an earlier
-  // request of the same action that already timed out.
-  const request = (
-    action: FleetyardsSyncAction,
-    params: Record<string, unknown> = {},
+  const request: SyncExtensionRequest = (
+    action,
+    params = {},
     timeout = REQUEST_TIMEOUT,
-    matches: (message: FleetyardsSyncMessage) => boolean = () => true,
-  ) =>
-    new Promise<FleetyardsSyncMessage>((resolve, reject) => {
+    matches = () => true,
+  ) => {
+    if (requestOverride) {
+      return requestOverride(action, params, timeout, matches);
+    }
+
+    return new Promise<FleetyardsSyncMessage>((resolve, reject) => {
       const onMessage = (event: MessageEvent) => {
         if (event.source !== window) return;
         if (event.data?.direction !== FleetyardsSyncDirection.TO) return;
@@ -58,24 +85,22 @@ export const useSyncExtension = () => {
         window.location.origin,
       );
     });
+  };
+
+  // Undefined when nothing answers: no extension installed.
+  const health = () =>
+    request(FleetyardsSyncAction.HEALTH, {}, HEALTH_TIMEOUT).catch(
+      () => undefined,
+    );
 
   // An extension from before an action existed answers it with "Unknown
   // Action", so the health check's list is asked instead.
   const supports = async (action: FleetyardsSyncAction) => {
-    try {
-      const health = await request(
-        FleetyardsSyncAction.HEALTH,
-        {},
-        HEALTH_TIMEOUT,
-      );
+    const answer = await health();
+    const actions = (answer?.payload as FleetyardsSyncHealthPayload)?.actions;
 
-      const actions = (health.payload as FleetyardsSyncHealthPayload)?.actions;
-
-      return health.code === 200 && !!actions?.includes(action);
-    } catch {
-      return false;
-    }
+    return answer?.code === 200 && !!actions?.includes(action);
   };
 
-  return { request, supports };
+  return { request, health, supports };
 };

@@ -458,6 +458,8 @@
         "states": "États",
         "notifications": "Notifications",
         "syncModal": "Modale Sync",
+        "buybackSyncModal": "Modale Sync des rachats",
+        "rsiVerificationModal": "Modale de vérification RSI",
         "overlays": "Superpositions",
         "installPrompt": "Invite d'installation",
         "supportHint": "Indicateur de soutien",

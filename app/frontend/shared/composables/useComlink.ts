@@ -9,6 +9,8 @@ type Events = {
   "show-confirm": (options: AppConfirmOptions) => void | Promise<unknown>;
   "hide-confirm": () => void | Promise<unknown>;
   "close-modal": (force?: boolean) => void | Promise<unknown>;
+  // Once the modal's component is gone, not when closing starts.
+  "modal-closed": () => void | Promise<unknown>;
   "payout-ledger-changed": () => void | Promise<unknown>;
   "open-off-canvas": (options: OffCanvasOptions) => void | Promise<unknown>;
   "close-off-canvas": () => void | Promise<unknown>;

@@ -43,12 +43,20 @@ const extensionRequest = vi.fn(
     return answer;
   },
 );
-const extensionSupports = vi.fn(async () => false);
+// What the extension answers to the health check: nothing, without one.
+const CURRENT_HEALTH = {
+  code: 200,
+  payload: {
+    version: "1.3.0",
+    actions: ["health", "identify", "verify-write"],
+  },
+};
+const extensionHealth = vi.fn(async (): Promise<unknown> => undefined);
 
 vi.mock("@/frontend/composables/useSyncExtension", () => ({
   useSyncExtension: () => ({
     request: extensionRequest,
-    supports: extensionSupports,
+    health: extensionHealth,
   }),
 }));
 
@@ -92,7 +100,7 @@ describe("RsiHandleVerificationModal", () => {
     checkHandle.mockReset();
     extensionRequest.mockClear();
     displayAlert.mockClear();
-    extensionSupports.mockReset().mockResolvedValue(false);
+    extensionHealth.mockReset().mockResolvedValue(undefined);
     Object.keys(extensionAnswers).forEach(
       (key) => delete extensionAnswers[key],
     );
@@ -178,7 +186,7 @@ describe("RsiHandleVerificationModal", () => {
 
   describe("with the sync extension", () => {
     const signedInAs = (handle: string) => {
-      extensionSupports.mockResolvedValue(true);
+      extensionHealth.mockResolvedValue(CURRENT_HEALTH);
       extensionAnswers.identify = { code: 200, payload: { handle } };
       extensionAnswers["verify-remove"] = { code: 200, payload: { handle } };
     };
@@ -207,15 +215,12 @@ describe("RsiHandleVerificationModal", () => {
         return verification.value;
       });
 
-    const extensionBlock = (wrapper: Awaited<ReturnType<typeof mountModal>>) =>
-      wrapper.find('[data-test="user-rsi-verification-extension"]');
-
     const verifyButton = (wrapper: Awaited<ReturnType<typeof mountModal>>) =>
       wrapper.find('[data-test="user-rsi-verification-extension-verify"]');
 
     it("says it is looking for the extension until it knows", async () => {
-      let answerHealth: (supported: boolean) => void = () => {};
-      extensionSupports.mockImplementation(
+      let answerHealth: (health: unknown) => void = () => {};
+      extensionHealth.mockImplementation(
         () => new Promise((resolve) => (answerHealth = resolve)),
       );
 
@@ -229,10 +234,14 @@ describe("RsiHandleVerificationModal", () => {
       ).toBe(true);
       expect(verifyButton(wrapper).exists()).toBe(false);
 
-      answerHealth(false);
+      answerHealth(CURRENT_HEALTH);
       await flushPromises();
 
-      expect(extensionBlock(wrapper).exists()).toBe(false);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-detecting"]')
+          .exists(),
+      ).toBe(false);
     });
 
     it("names the RSI account it would verify through", async () => {
@@ -253,12 +262,37 @@ describe("RsiHandleVerificationModal", () => {
       ).toBe(false);
     });
 
-    it("offers nothing without an extension that can verify", async () => {
+    it("offers the extension's store links without one", async () => {
       const wrapper = await mountModal();
       await flushPromises();
 
-      expect(extensionBlock(wrapper).exists()).toBe(false);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-install"]')
+          .text(),
+      ).toContain("Install");
+      expect(wrapper.find('[data-test="sync-extension-links"]').exists()).toBe(
+        true,
+      );
+      expect(verifyButton(wrapper).exists()).toBe(false);
       expect(extensionRequest).not.toHaveBeenCalled();
+    });
+
+    it("asks for an update from an extension that cannot verify yet", async () => {
+      extensionHealth.mockResolvedValue({
+        code: 200,
+        payload: { version: "1.2.6", actions: ["health", "identify", "sync"] },
+      });
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-install"]')
+          .text(),
+      ).toContain("Update");
+      expect(verifyButton(wrapper).exists()).toBe(false);
     });
 
     it("explains a browser signed in to a different handle", async () => {
@@ -275,8 +309,29 @@ describe("RsiHandleVerificationModal", () => {
       expect(verifyButton(wrapper).exists()).toBe(false);
     });
 
+    it("looks again after switching RSI account", async () => {
+      signedInAs("SomeoneElse");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-sign-in"]')
+          .exists(),
+      ).toBe(true);
+
+      signedInAs("TestPilot");
+      await wrapper
+        .find('[data-test="user-rsi-verification-extension-recheck"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(verifyButton(wrapper).exists()).toBe(true);
+    });
+
     it("asks for an RSI sign-in without one", async () => {
-      extensionSupports.mockResolvedValue(true);
+      extensionHealth.mockResolvedValue(CURRENT_HEALTH);
       extensionAnswers.identify = { code: 400 };
 
       const wrapper = await mountModal();
