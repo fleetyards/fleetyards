@@ -402,10 +402,8 @@ describe("HangarBuybackSyncModal", () => {
       await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
       await flushPromises();
 
-      extensionReplies("syncBuyback", buybackPage("1"));
-      await flushPromises();
-      extensionReplies("syncBuyback", emptyBuybackPage);
-      await flushPromises();
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
 
       return wrapper;
     };
