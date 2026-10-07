@@ -134,5 +134,18 @@ module Catalogue
 
       assert_empty @resolver.search("q")
     end
+
+    test "searches only the catalogues a caller offers" do
+      create(:commodity, name: "Carrack Ore")
+      create(:model, name: "Carrack")
+
+      assert_equal ["Carrack Ore"], @resolver.search("carrack", within: %w[commodity]).map(&:name)
+    end
+
+    test "a prefix outside the offered catalogues finds nothing" do
+      create(:model, name: "Carrack")
+
+      assert_empty @resolver.search("ship:carrack", within: %w[commodity])
+    end
   end
 end

@@ -84,12 +84,13 @@ module Catalogue
     # Names that begin or contain `query`, each offered only when it resolves:
     # one item in its catalogue. A name another catalogue carries too gets its
     # prefix, so the inserted token cannot be read two ways. A query written
-    # with a prefix searches that type alone.
-    def search(query)
+    # with a prefix searches that type alone; `within` narrows the types a
+    # caller offers at all.
+    def search(query, within: PREFIXES)
       prefix, query = self.class.parse(query)
       return [] if query.length < 2 || query.length > MAX_NAME_LENGTH
 
-      prefixes = prefix ? [prefix] : PREFIXES
+      prefixes = (prefix ? [prefix] : PREFIXES) & within
 
       escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
       pattern = "%#{escaped}%"
