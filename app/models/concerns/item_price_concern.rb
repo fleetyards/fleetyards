@@ -47,7 +47,7 @@ module ItemPriceConcern
   # the highest offer, and a terminal's lower quotes are ones nobody takes.
   def bought_at
     priced(:buy)
-      .sort_by { |item_price| -(item_price.price || -Float::INFINITY) }
+      .sort_by { |item_price| [-(item_price.price || -Float::INFINITY), *price_tie_break(item_price)] }
       .uniq { |item_price| price_location_key(item_price) }
   end
 
@@ -61,7 +61,13 @@ module ItemPriceConcern
       item_prices.public_send(price_type).to_a
     end
 
-    ItemPrice.with_shop_links(rows.sort_by { |item_price| item_price.price || Float::INFINITY })
+    ItemPrice.with_shop_links(rows.sort_by { |item_price| [item_price.price || Float::INFINITY, *price_tie_break(item_price)] })
+  end
+
+  # sort_by is not stable: without this, two quotes of one price swap places
+  # between calls, and which of a terminal's equal quotes survives is a toss.
+  private def price_tie_break(item_price)
+    [item_price.location.to_s, item_price.id.to_s]
   end
 
   # Two commodity terminals can share a name; the terminal tells them apart.

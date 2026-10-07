@@ -302,4 +302,13 @@ class CommodityTest < ActiveSupport::TestCase
 
     assert_equal [110, 95], commodity.bought_at.map(&:price)
   end
+
+  test "#bought_at orders terminals of one price by location" do
+    commodity = create(:commodity)
+    %w[Orison Area18 Lorville].each do |location|
+      create(:item_price, item: commodity, price_type: "buy", time_range: nil, price: 100, location:)
+    end
+
+    assert_equal %w[Area18 Lorville Orison], commodity.bought_at.map(&:location)
+  end
 end
