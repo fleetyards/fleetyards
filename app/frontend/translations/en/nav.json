@@ -163,6 +163,7 @@
         "syncModal": "Sync Modal",
         "buybackSyncModal": "Buy-back Sync Modal",
         "rsiVerificationModal": "RSI Verification Modal",
+        "fleetRsiVerificationModal": "Fleet RSI Verification Modal",
         "overlays": "Overlays",
         "installPrompt": "Install Prompt",
         "supportHint": "Support Hint",

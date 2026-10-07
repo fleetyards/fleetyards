@@ -159,7 +159,6 @@
           "verify": "Verify via RSI profile",
           "check": "Check now",
           "checkIn": "Check again in %{seconds}s",
-          "verifyWithExtension": "Verify with extension",
           "copyToken": "Copy token",
           "regenerateToken": "Generate new token",
           "revoke": "Revoke"

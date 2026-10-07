@@ -591,13 +591,27 @@
           "createTaken": "Wenn %{fid} deine RSI-Organisation ist, starte mit %{suggestion} und der SID %{fid}. Sobald deine Flotte für %{fid} verifiziert ist, kann sie die Flotten-ID von der Flotte beanspruchen, die sie hat."
         },
         "rsiVerification": {
+          "extension": {
+            "title": "Mit der FleetYards-Sync-Erweiterung verifizieren",
+            "verify": "Mit Erweiterung verifizieren",
+            "description": "Die Erweiterung fügt deinen Code in die Geschichte deiner Organisation bei RSI ein, veröffentlicht sie, prüft die Seite und entfernt den Code danach wieder.",
+            "detecting": "Suche nach der FleetYards-Sync-Erweiterung",
+            "install": "Installiere die FleetYards-Sync-Erweiterung, um deine Flotte mit einem Klick zu verifizieren.",
+            "update": "Aktualisiere die FleetYards-Sync-Erweiterung, um deine Flotte mit einem Klick zu verifizieren: Die installierte Version unterstützt das noch nicht.",
+            "notSignedIn": "Melde dich in diesem Browser bei RSI mit einem Konto an, das %{sid} bearbeiten darf, oder verifiziere unten von Hand.",
+            "noRights": "Das RSI-Konto, mit dem dieser Browser angemeldet ist, darf die Seite von %{sid} nicht bearbeiten. Melde dich mit einem Offizierskonto an oder verifiziere unten von Hand.",
+            "pendingChanges": "%{sid} hat unveröffentlichte Änderungen bei RSI. Veröffentliche oder lösche diesen Entwurf zuerst, damit die Erweiterung keine fremde Änderung veröffentlicht, oder verifiziere unten von Hand.",
+            "orgUnreadable": "Die Erweiterung konnte die Seite von %{sid} bei RSI nicht lesen. Verifiziere unten von Hand.",
+            "failed": "Die Erweiterung konnte die Seite von %{sid} nicht ändern. Versuche es erneut oder verifiziere unten von Hand.",
+            "removeFailed": "Die Erweiterung konnte den Code nicht aus der Geschichte von %{sid} entfernen. Entferne ihn dort von Hand.",
+            "manual": "Oder von Hand verifizieren:"
+          },
           "steps": {
             "copy": "Kopiere deinen Verifizierungscode",
             "paste": "Füge ihn irgendwo auf der öffentlichen RSI-Seite deiner Organisation ein: in der Einleitung, der Geschichte, dem Manifest oder der Charta. Sobald die Flotte verifiziert ist, kannst du ihn wieder entfernen.",
             "check": "Prüfe die Seite"
           },
           "openOrgPage": "%{sid} auf RSI öffnen",
-          "locked": "Eine verifizierte SID ist gesperrt. Wende dich an den Support, wenn sie sich ändern muss.",
           "fidAtRiskTitle": "Deine Flotten-ID ist nicht geschützt",
           "saveFirst": "Speichere die SID, bevor du sie verifizierst.",
           "title": "RSI-Verifizierung",
@@ -2012,6 +2026,7 @@
           },
           "extension": {
             "title": "Mit der FleetYards-Sync-Erweiterung verifizieren",
+            "verify": "Mit Erweiterung verifizieren",
             "description": "Die Erweiterung fügt deinen Code in die Biografie des RSI-Kontos ein, mit dem dieser Browser angemeldet ist, prüft deine Bürgerseite und entfernt den Code danach wieder.",
             "detecting": "Suche nach der FleetYards-Sync-Erweiterung",
             "install": "Installiere die FleetYards-Sync-Erweiterung, um dein Handle mit einem Klick zu verifizieren.",

@@ -10,6 +10,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -20,6 +21,7 @@ import {
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
+  useDestroyFleetRsiVerification,
   useUpdateFleet as useUpdateFleetMutation,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -114,6 +116,17 @@ const canVerify = computed(
   () => !!props.fleet.rsiSid && rsiSid.value === props.fleet.rsiSid,
 );
 
+const revokeMutation = useDestroyFleetRsiVerification();
+
+const revokeVerification = async () => {
+  try {
+    await revokeMutation.mutateAsync({ fleetSlug: props.fleet.slug });
+    comlink.emit("fleet-update");
+  } catch (error) {
+    displayAlert({ text: validationErrorFrom(error).message });
+  }
+};
+
 const openVerification = () => {
   comlink.emit("open-modal", {
     component: () =>
@@ -184,12 +197,18 @@ const openVerification = () => {
                 data-test="fleet-rsi-sid-unverified"
               />
             </template>
-            <template v-if="fleet.rsiVerified" #subline>
-              {{ t("labels.fleet.rsiVerification.locked") }}
-            </template>
           </FormInput>
+          <BtnConfirm
+            v-if="fleet.rsiVerified"
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            data-test="fleet-rsi-verification-revoke"
+            @confirm="revokeVerification"
+          >
+            {{ t("actions.fleet.rsiVerification.revoke") }}
+          </BtnConfirm>
           <Btn
-            v-if="!fleet.rsiVerified"
+            v-else
             v-tooltip="
               canVerify
                 ? undefined

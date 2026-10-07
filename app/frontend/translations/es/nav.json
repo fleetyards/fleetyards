@@ -163,6 +163,7 @@
         "syncModal": "Modal de sincronización",
         "buybackSyncModal": "Modal de sincronización de recompras",
         "rsiVerificationModal": "Modal de verificación de RSI",
+        "fleetRsiVerificationModal": "Modal de verificación de RSI de la flota",
         "overlays": "Superposiciones",
         "installPrompt": "Aviso de instalación",
         "supportHint": "Aviso de apoyo",

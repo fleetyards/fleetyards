@@ -591,13 +591,27 @@
           "createTaken": "如果 %{fid} 是你的 RSI 组织，请先使用 %{suggestion} 并填写 SID %{fid}。你的舰队通过 %{fid} 的验证后，即可从持有该 ID 的舰队申领它。"
         },
         "rsiVerification": {
+          "extension": {
+            "title": "使用 FleetYards Sync 扩展验证",
+            "verify": "使用扩展验证",
+            "description": "扩展会将验证码添加到你的组织在 RSI 上的历史中并发布，检查页面，然后再将验证码移除。",
+            "detecting": "正在查找 FleetYards Sync 扩展",
+            "install": "安装 FleetYards Sync 扩展，即可一键验证你的舰队。",
+            "update": "更新 FleetYards Sync 扩展即可一键验证你的舰队：当前安装的版本尚不支持。",
+            "notSignedIn": "请在此浏览器中使用可以编辑 %{sid} 的账户登录 RSI，或在下方手动验证。",
+            "noRights": "此浏览器登录的 RSI 账户无法编辑 %{sid} 的页面。请使用军官账户登录，或在下方手动验证。",
+            "pendingChanges": "%{sid} 在 RSI 上有未发布的更改。请先发布或清除该草稿，以免扩展发布他人的修改，或在下方手动验证。",
+            "orgUnreadable": "扩展无法读取 %{sid} 在 RSI 上的页面。请在下方手动验证。",
+            "failed": "扩展无法更新 %{sid} 的页面。请重试，或在下方手动验证。",
+            "removeFailed": "扩展无法从 %{sid} 的历史中移除验证码。请在那里手动移除。",
+            "manual": "或手动验证："
+          },
           "steps": {
             "copy": "复制你的验证码",
             "paste": "将它粘贴到你的组织 RSI 公开页面的任意位置：简介、历史、宣言或章程。舰队验证后即可将其删除。",
             "check": "检查页面"
           },
           "openOrgPage": "在 RSI 上打开 %{sid}",
-          "locked": "已验证的 SID 已锁定。如需更改，请联系支持团队。",
           "fidAtRiskTitle": "你的舰队 ID 未受保护",
           "saveFirst": "请先保存 SID 再进行验证。",
           "title": "RSI 验证",
@@ -2012,6 +2026,7 @@
           },
           "extension": {
             "title": "使用 FleetYards Sync 扩展验证",
+            "verify": "使用扩展验证",
             "description": "扩展会将验证码添加到此浏览器所登录 RSI 账户的简介中，检查你的公民页面，然后再将验证码移除。",
             "detecting": "正在查找 FleetYards Sync 扩展",
             "install": "安装 FleetYards Sync 扩展，即可一键验证你的 Handle。",

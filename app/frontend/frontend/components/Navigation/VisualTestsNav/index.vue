@@ -50,6 +50,7 @@ const GROUPS = [
       "sync-modal",
       "buyback-sync-modal",
       "rsi-verification-modal",
+      "fleet-rsi-verification-modal",
       "overlays",
     ],
   },
@@ -156,6 +157,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-rsi-verification-modal",
     label: "rsiVerificationModal",
     icon: "fadt fa-badge-check",
+  },
+  "fleet-rsi-verification-modal": {
+    route: "visual-tests-fleet-rsi-verification-modal",
+    label: "fleetRsiVerificationModal",
+    icon: "fadt fa-shield-check",
   },
   overlays: {
     route: "visual-tests-overlays",

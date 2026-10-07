@@ -66,7 +66,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
-  resource :fleet_rsi_verification, path: "rsi-verification", only: %i[show create] do
+  resource :fleet_rsi_verification, path: "rsi-verification", only: %i[show create destroy] do
     post :check
   end
 

@@ -9,7 +9,7 @@ module Api
         only: %i[show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create check]
+        only: %i[create check destroy]
 
       before_action :set_fleet
 
@@ -53,6 +53,12 @@ module Api
         if checked_at
           FleetRsiVerificationJob.perform_async(@fleet.id, FleetRsiVerification.generation_of(checked_at))
         end
+
+        render :show
+      end
+
+      def destroy
+        @fleet.revoke_rsi_verification!
 
         render :show
       end
