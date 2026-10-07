@@ -127,7 +127,6 @@ es:
         commodity: Mercancía
         component: Componente
         equipment: Equipo
-        location: Lugar
       where:
         fields:
           buy: Comprar en

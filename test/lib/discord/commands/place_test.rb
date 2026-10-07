@@ -164,9 +164,8 @@ module Discord
         content = call("location:Outpost 54")[:content]
 
         assert_includes content, I18n.t("discord.commands.location.ambiguous", query: "location:Outpost 54")
-        assert_includes content, "Aber\\_deen · outpost54\\_reyes"
-        assert_includes content, "Aber\\_deen · outpost54\\_sloane"
-        assert_no_match(/ · #{Regexp.escape(I18n.t("discord.commands.types.location"))} · /, content)
+        assert_includes content, "/) · Aber\\_deen · outpost54\\_reyes"
+        assert_includes content, "/) · Aber\\_deen · outpost54\\_sloane"
       end
 
       # A parent name long enough to leave no room for the name: the front of

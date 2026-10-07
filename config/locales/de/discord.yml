@@ -127,7 +127,6 @@ de:
         commodity: Rohstoff
         component: Komponente
         equipment: Ausrüstung
-        location: Ort
       where:
         fields:
           buy: Kaufen bei

@@ -127,7 +127,6 @@ it:
         commodity: Merce
         component: Componente
         equipment: Equipaggiamento
-        location: Luogo
       where:
         fields:
           buy: Compra da

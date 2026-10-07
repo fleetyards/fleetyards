@@ -127,7 +127,6 @@ en:
         commodity: Commodity
         component: Component
         equipment: Equipment
-        location: Place
       where:
         fields:
           buy: Buy at

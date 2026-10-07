@@ -127,7 +127,6 @@ zh-TW:
         commodity: 商品
         component: 組件
         equipment: 裝備
-        location: 地點
       where:
         fields:
           buy: 購買地點

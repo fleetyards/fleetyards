@@ -127,7 +127,6 @@ fr:
         commodity: Marchandise
         component: Composant
         equipment: Équipement
-        location: Lieu
       where:
         fields:
           buy: Acheter chez

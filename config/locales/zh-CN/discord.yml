@@ -127,7 +127,6 @@ zh-CN:
         commodity: 商品
         component: 组件
         equipment: 装备
-        location: 地点
       where:
         fields:
           buy: 购买地点
