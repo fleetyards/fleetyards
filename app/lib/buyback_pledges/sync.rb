@@ -11,7 +11,7 @@ module BuybackPledges
     class InvalidSnapshot < StandardError; end
 
     ATTRIBUTES = %i[
-      kind name upgraded available reclaimed_on contained image_url
+      kind name upgraded reclaimed_on contained image_url
       upgrade_from_ship_id upgrade_to_ship_id upgrade_to_sku_id
     ].freeze
 
@@ -32,7 +32,11 @@ module BuybackPledges
         existing_ids = user.buyback_pledges.pluck(:rsi_pledge_id)
         removed = user.buyback_pledges.where.not(rsi_pledge_id: pledge_ids).delete_all
 
-        BuybackPledge.upsert_all(rows, unique_by: %i[user_id rsi_pledge_id]) if rows.any?
+        # One `upsert_all` per set of columns, since it writes every column it
+        # is given: rows without availability must leave the stored one alone.
+        rows.group_by(&:keys).each_value do |group|
+          BuybackPledge.upsert_all(group, unique_by: %i[user_id rsi_pledge_id])
+        end
 
         {
           total: rows.size,
@@ -62,15 +66,18 @@ module BuybackPledges
       items.map { |item| row(item) }.uniq { |row| row[:rsi_pledge_id] }
     end
 
+    # A list read before availability was has none, which says nothing about
+    # it: a new pledge takes the column's default, a stored one keeps its own.
     private def row(item)
-      ATTRIBUTES.index_with { |attribute| item[attribute] }.merge(
+      row = ATTRIBUTES.index_with { |attribute| item[attribute] }.merge(
         user_id: user.id,
         rsi_pledge_id: item[:id].to_s,
         upgraded: ActiveModel::Type::Boolean.new.cast(item[:upgraded]) || false,
-        # Missing from a list read before availability was, so it says nothing.
-        available: ActiveModel::Type::Boolean.new.cast(item[:available]) != false,
         image_url: item[:image]
       )
+
+      available = ActiveModel::Type::Boolean.new.cast(item[:available])
+      available.nil? ? row : row.merge(available:)
     end
   end
 end

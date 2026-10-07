@@ -349,6 +349,26 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate upgrade.details_synced_at, :present?
   end
 
+  # An extension from before availability sends none; that is no evidence the
+  # pledge became available again.
+  test "PUT /hangar/sync-rsi-buybacks keeps the stored availability of an entry without one" do
+    user = create(:user)
+    stored = buyback(user, rsi_pledge_id: "1", available: false)
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius"},
+      {id: "2", kind: "ship", name: "Standalone Ship - Cutlass Black"},
+      {id: "3", kind: "ship", name: "Standalone Ship - Cutter", available: false}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body
+
+    assert_not stored.reload.available?
+    assert_predicate user.buyback_pledges.find_by!(rsi_pledge_id: "2"), :available?
+    assert_not user.buyback_pledges.find_by!(rsi_pledge_id: "3").available?
+  end
+
   test "PUT /hangar/sync-rsi-buybacks reads stored details only once" do
     user = create(:user)
     buyback(user, rsi_pledge_id: "1", price: 10, details_synced_at: 1.year.ago)
