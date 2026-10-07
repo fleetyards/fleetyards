@@ -66,6 +66,7 @@ en:
         missing_query: Please provide an item name.
         more: '…and more. Pick one from the suggestions.'
         not_found: 'No item found for "%{query}".'
+        too_common: 'Too many items are named "%{query}" to list here. The catalogue has them all:'
         types:
           blueprint: Blueprint
           commodity: Commodity

@@ -66,6 +66,7 @@ zh-TW:
         missing_query: 請提供物品名稱。
         more: '……還有更多。請從建議中選擇一個。'
         not_found: '找不到「%{query}」對應的物品。'
+        too_common: '名為「%{query}」的物品太多，無法在此列出。目錄中有全部物品：'
         types:
           blueprint: 藍圖
           commodity: 商品

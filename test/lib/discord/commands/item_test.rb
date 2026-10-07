@@ -224,6 +224,16 @@ module Discord
         assert_empty ::Discord::Commands::Item.autocomplete("name", "internal")
       end
 
+      test "a typed name too many items share points at the catalogue narrowed to it" do
+        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create(:component, name: "Internal Tank Mk2")
+
+        content = call("Internal Tank")[:content]
+
+        assert_includes content, I18n.t("discord.commands.item.too_common", query: "Internal Tank")
+        assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::ItemVariants::MAX_CARRIERS + 1}"
+      end
+
       test "a picked item of a shared name answers that item" do
         create(:component, name: "Serac")
         polaris = create(:component, name: "Serac")

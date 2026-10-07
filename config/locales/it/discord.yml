@@ -66,6 +66,7 @@ it:
         missing_query: Indica il nome di un oggetto.
         more: '…e altri. Scegline uno dai suggerimenti.'
         not_found: 'Nessun oggetto trovato per «%{query}».'
+        too_common: 'Troppi oggetti si chiamano «%{query}» per elencarli qui. Il catalogo li ha tutti:'
         types:
           blueprint: Progetto
           commodity: Merce

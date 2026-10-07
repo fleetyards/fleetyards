@@ -66,6 +66,7 @@ de:
         missing_query: Bitte gib einen Gegenstandsnamen an.
         more: '…und weitere. Wähle einen aus den Vorschlägen.'
         not_found: 'Kein Gegenstand gefunden für „%{query}“.'
+        too_common: 'Zu viele Gegenstände heißen „%{query}“, um sie hier aufzulisten. Im Katalog stehen alle:'
         types:
           blueprint: Bauplan
           commodity: Rohstoff

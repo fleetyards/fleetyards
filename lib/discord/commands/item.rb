@@ -17,6 +17,14 @@ module Discord
       EMBED_COLOR = 0x2d9cdb
       DESCRIPTION_LENGTH = 300
 
+      # The filter each catalogue page narrows its list by a name with.
+      NAME_FILTERS = {
+        "component" => "nameCont",
+        "equipment" => "nameOrSlugCont",
+        "commodity" => "nameCont",
+        "blueprint" => "nameCont"
+      }.freeze
+
       PAGES = {
         "component" => "components",
         "equipment" => "equipment",
@@ -70,6 +78,9 @@ module Discord
         exact = ::Catalogue::TokenResolver.new.resolve([query], within: CATALOGUES)
         return answer(query, self.class.prefix_for(exact.first), exact.first.slug) if exact.one?
 
+        carriers = ItemVariants.carriers(query, within: CATALOGUES)
+        return too_common(query, carriers) if carriers.values.sum > ItemVariants::MAX_CARRIERS
+
         candidates = self.class.candidates(query)
         return not_found(query) if candidates.empty?
         return answer(query, candidates.first.prefix, candidates.first.slug) if candidates.one?
@@ -87,6 +98,18 @@ module Discord
 
       private def not_found(query)
         message(content: I18n.t("discord.commands.item.not_found", query: Markdown.escape(query)))
+      end
+
+      # Too many items to list or offer, so the catalogue pages narrowed to
+      # the name stand in for them.
+      private def too_common(query, carriers)
+        name = ::Catalogue::TokenResolver.parse(query).last
+        lines = carriers.map do |prefix, count|
+          url = url_for_path("/catalogue/#{PAGES.fetch(prefix)}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
+          "• [#{self.class.type_label(prefix)}](#{url}) · #{count}"
+        end
+
+        message(content: [I18n.t("discord.commands.item.too_common", query: Markdown.escape(query)), *lines].join("\n"))
       end
 
       private def candidate_list(query, candidates)

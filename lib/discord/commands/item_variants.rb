@@ -63,6 +63,19 @@ module Discord
         end
       end
 
+      # How many listed items carry exactly the name `query` gives, per
+      # catalogue -- what is left to say about one too common to offer.
+      def self.carriers(query, within:)
+        typed, query = ::Catalogue::TokenResolver.parse(query)
+        return {} if query.blank? || query.length > ::Catalogue::TokenResolver::MAX_NAME_LENGTH
+
+        (typed ? within & [typed] : within).to_h do |prefix|
+          name = "lower(#{model(prefix).fact_sql(:name)})"
+
+          [prefix, ::Catalogue::TokenResolver.listed(prefix).where("#{name} = ?", query.downcase).count]
+        end.select { |_, count| count.positive? }
+      end
+
       # The variant a picked suggestion's value names, if it still is listed.
       def self.find(value, within:)
         parts = VALUE.match(value.to_s.strip)

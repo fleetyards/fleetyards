@@ -66,6 +66,7 @@ fr:
         missing_query: Indique le nom d’un objet.
         more: '…et d’autres. Choisis-en un parmi les suggestions.'
         not_found: 'Aucun objet trouvé pour « %{query} ».'
+        too_common: 'Trop d’objets s’appellent « %{query} » pour les lister ici. Le catalogue les a tous :'
         types:
           blueprint: Plan
           commodity: Marchandise

@@ -66,6 +66,7 @@ zh-CN:
         missing_query: 请提供物品名称。
         more: '……还有更多。请从建议中选择一个。'
         not_found: '未找到“%{query}”对应的物品。'
+        too_common: '名为“%{query}”的物品太多，无法在此列出。目录中有全部物品：'
         types:
           blueprint: 蓝图
           commodity: 商品
