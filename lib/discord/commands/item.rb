@@ -103,7 +103,9 @@ module Discord
         when "commodity"
           I18n.t("filter.commodity.commodity_type.items.#{record.commodity_type}", default: record.commodity_type.to_s.titleize) if record.commodity_type.present?
         when "blueprint"
-          type = record.craftable_type
+          # Off the output the embed links, which the served build names; the
+          # row's column holds whichever source loaded last.
+          type = record.craftable&.class&.name
           I18n.t("discord.commands.item.types.#{type.underscore}", default: type) if type.present?
         end
       end

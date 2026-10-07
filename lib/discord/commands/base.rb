@@ -42,15 +42,15 @@ module Discord
         "https://#{Rails.configuration.app.domain}#{path}"
       end
 
-      # The first of `attachments` Discord can draw. It cannot draw a vector,
-      # and most game icons are SVGs with no raster variant, so those are
-      # passed over rather than sent as a broken picture.
+      # The first of `attachments` Discord can draw: an image, and not a vector.
+      # Most game icons are SVGs with no raster variant, so those are passed
+      # over rather than sent as a broken picture.
       #
       # rails_representation_url only builds a redirect URL -- it does not
       # process the variant here, so a cold image costs the job nothing.
       private def thumbnail(*attachments)
         image = attachments.compact.find do |attachment|
-          attachment.attached? && ActiveStorageVariants::VECTOR_CONTENT_TYPES.exclude?(attachment.content_type)
+          attachment.attached? && attachment.image? && ActiveStorageVariants::VECTOR_CONTENT_TYPES.exclude?(attachment.content_type)
         end
         return nil if image.nil?
 

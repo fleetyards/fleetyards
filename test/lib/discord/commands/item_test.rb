@@ -167,6 +167,25 @@ module Discord
 
         assert_nil call("Mercury Drive")[:embeds].first[:thumbnail]
       end
+
+      test "leaves out an upload that is not an image" do
+        commodity = create(:commodity, name: "Quantainium")
+        commodity.store_image.attach(io: StringIO.new("not a picture"), filename: "notes.txt", content_type: "text/plain")
+
+        assert_nil call("Quantainium")[:embeds].first[:thumbnail]
+      end
+
+      # The row's column holds whichever source loaded last; the embed links
+      # the output the served build names, and its label has to agree.
+      test "labels a blueprint by the output its served build names" do
+        equipment = create(:equipment, name: "Serac Armor")
+        blueprint = create(:blueprint, name: "Serac Armor", craftable: equipment)
+        blueprint.update_column(:craftable_type, "Component")
+
+        author = call("blueprint:Serac Armor")[:embeds].first.dig(:author, :name)
+
+        assert_includes author, I18n.t("discord.commands.item.types.equipment")
+      end
     end
   end
 end
