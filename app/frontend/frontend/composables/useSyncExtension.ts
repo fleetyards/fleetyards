@@ -10,19 +10,40 @@ import {
 const HEALTH_TIMEOUT = 2000;
 const REQUEST_TIMEOUT = 30000;
 
+// `matches` tells this request's answer from a late one to an earlier request
+// of the same action that already timed out.
+type SyncExtensionRequest = (
+  action: FleetyardsSyncAction,
+  params?: Record<string, unknown>,
+  timeout?: number,
+  matches?: (message: FleetyardsSyncMessage) => boolean,
+) => Promise<FleetyardsSyncMessage>;
+
+let requestOverride: SyncExtensionRequest | undefined;
+
+// For the visual test pages, which answer for the extension themselves. They
+// cannot do that over `window`: an extension installed in the same browser
+// hears every message there, answers too, and acts on what it is asked -- a
+// demo card's `verify-write` would land in the tester's real RSI bio.
+export const overrideSyncExtension = (request?: SyncExtensionRequest) => {
+  requestOverride = request;
+};
+
 // Any script on the page can post into this channel, answers included. That is
 // fine for what the answers are used for here: what the UI offers. Nothing the
 // extension reports is proof of anything to the server.
 export const useSyncExtension = () => {
-  // `matches` tells this request's answer from a late one to an earlier
-  // request of the same action that already timed out.
-  const request = (
-    action: FleetyardsSyncAction,
-    params: Record<string, unknown> = {},
+  const request: SyncExtensionRequest = (
+    action,
+    params = {},
     timeout = REQUEST_TIMEOUT,
-    matches: (message: FleetyardsSyncMessage) => boolean = () => true,
-  ) =>
-    new Promise<FleetyardsSyncMessage>((resolve, reject) => {
+    matches = () => true,
+  ) => {
+    if (requestOverride) {
+      return requestOverride(action, params, timeout, matches);
+    }
+
+    return new Promise<FleetyardsSyncMessage>((resolve, reject) => {
       const onMessage = (event: MessageEvent) => {
         if (event.source !== window) return;
         if (event.data?.direction !== FleetyardsSyncDirection.TO) return;
@@ -58,6 +79,7 @@ export const useSyncExtension = () => {
         window.location.origin,
       );
     });
+  };
 
   // An extension from before an action existed answers it with "Unknown
   // Action", so the health check's list is asked instead.
