@@ -36,6 +36,14 @@ module Discord
         assert_equal "1.234.567,5 aUEC", price
       end
 
+      test "quotes the best-paid shop as a commodity's sell price" do
+        commodity = create(:commodity, name: "Quantainium")
+        create(:item_price, item: commodity, price_type: :buy, price: 80, location: "TDD - Area18")
+        create(:item_price, item: commodity, price_type: :buy, price: 110, location: "TDD - Orison")
+
+        assert_equal "110 aUEC", fields(call("Quantainium"))[I18n.t("discord.commands.item.fields.sell")]
+      end
+
       test "carries no flags, since a follow-up cannot set them" do
         create(:commodity, name: "Quantainium")
 

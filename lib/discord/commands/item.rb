@@ -106,11 +106,11 @@ module Discord
 
       # Prices are stored from the shop's side: what a shop sells at is what the
       # reader pays to buy, so the two columns trade places on the way out, as
-      # they do on the site.
+      # they do on the site. Selling quotes the best-paid shop, not the lowest.
       private def commodity_fields(record)
         {
           I18n.t("discord.commands.item.fields.buy") => uec(record.sell_price),
-          I18n.t("discord.commands.item.fields.sell") => uec(record.buy_price)
+          I18n.t("discord.commands.item.fields.sell") => uec(record.bought_at.first&.price)
         }
       end
 
