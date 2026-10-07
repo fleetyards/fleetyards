@@ -2018,6 +2018,7 @@
             "bioTooLong": "Your RSI bio is too long to add the token. Shorten it, or verify by hand below.",
             "bioUnreadable": "Your RSI bio has formatting the extension cannot keep as it is. Verify by hand below.",
             "failed": "The extension could not update your RSI bio. Try again, or verify by hand below.",
+            "removeFailed": "The extension could not take the token out of your RSI bio. Remove it there by hand.",
             "manual": "Or verify by hand:"
           },
           "statuses": {

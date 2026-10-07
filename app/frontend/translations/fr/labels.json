@@ -2018,6 +2018,7 @@
             "bioTooLong": "Ta bio RSI est trop longue pour y ajouter le code. Raccourcis-la, ou vérifie à la main ci-dessous.",
             "bioUnreadable": "Ta bio RSI contient une mise en forme que l’extension ne peut pas conserver telle quelle. Vérifie à la main ci-dessous.",
             "failed": "L’extension n’a pas pu mettre à jour ta bio RSI. Réessaie, ou vérifie à la main ci-dessous.",
+            "removeFailed": "L’extension n’a pas pu retirer le code de ta bio RSI. Retire-le à la main.",
             "manual": "Ou vérifie à la main :"
           },
           "statuses": {

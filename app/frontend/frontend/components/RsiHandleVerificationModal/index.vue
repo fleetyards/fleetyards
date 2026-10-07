@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useQueryClient } from "@tanstack/vue-query";
-import { useIntervalFn, useNow } from "@vueuse/core";
+import { useEventListener, useIntervalFn, useNow } from "@vueuse/core";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -174,23 +174,42 @@ const extensionError = ref<"bioTooLong" | "bioUnreadable" | "failed">();
 
 const extensionRunning = ref(false);
 
-// The token the extension added to the bio, until it has taken it out again.
+// The token the extension may have added to the bio, until it has asked for it
+// to be taken out again.
 const tokenInBio = ref<string>();
 
+// Set once the check that reads the bio has been asked for: before that, the
+// token has to stay where the check will look for it.
+const checkStarted = ref(false);
+
+let closed = false;
+
+// Each detection answers for the handle it was started with. A newer one, or
+// a closed modal, makes it stale.
+let detection = 0;
+
+const sameHandle = (a?: string | null, b?: string | null) =>
+  !!a && !!b && a.toLowerCase() === b.toLowerCase();
+
 const detectExtension = async (handle: string) => {
-  if (!(await extension.supports(FleetyardsSyncAction.VERIFY_WRITE))) return;
+  const current = ++detection;
+  const stale = () => closed || current !== detection;
+
+  const supported = await extension.supports(FleetyardsSyncAction.VERIFY_WRITE);
+  if (!supported || stale()) return;
 
   const identity = await extension
     .request(FleetyardsSyncAction.IDENTIFY)
     .catch(() => undefined);
+  if (stale()) return;
+
   const rsiHandle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
 
   if (identity?.code !== 200 || !rsiHandle) {
     extensionState.value = "notSignedIn";
   } else {
     extensionHandle.value = rsiHandle;
-    extensionState.value =
-      rsiHandle.toLowerCase() === handle.toLowerCase() ? "ready" : "mismatch";
+    extensionState.value = sameHandle(rsiHandle, handle) ? "ready" : "mismatch";
   }
 };
 
@@ -200,6 +219,7 @@ watch(
       ? verification.value.handle
       : undefined,
   (handle) => {
+    detection += 1;
     extensionState.value = "unavailable";
     if (handle) void detectExtension(handle);
   },
@@ -211,14 +231,24 @@ const EXTENSION_ERRORS: Record<number, "bioTooLong" | "bioUnreadable"> = {
   422: "bioUnreadable",
 };
 
+// Fired while the page may already be going away, so nothing waits for it;
+// a failure is still reported, as the token would otherwise stay public.
 const removeTokenFromBio = () => {
   const token = tokenInBio.value;
   if (!token) return;
 
   tokenInBio.value = undefined;
+  checkStarted.value = false;
   extension
     .request(FleetyardsSyncAction.VERIFY_REMOVE, { token })
-    .catch(() => undefined);
+    .then((result) => {
+      if (result.code !== 200) throw new Error(result.error);
+    })
+    .catch(() => {
+      displayAlert({
+        text: t("labels.user.rsiVerification.extension.removeFailed"),
+      });
+    });
 };
 
 const verifyWithExtension = async () => {
@@ -233,28 +263,64 @@ const verifyWithExtension = async () => {
       .request(FleetyardsSyncAction.VERIFY_WRITE, { token })
       .catch(() => undefined);
 
-    if (result?.code !== 200) {
-      extensionError.value = EXTENSION_ERRORS[result?.code ?? 0] ?? "failed";
+    // No answer in time says nothing about whether the write landed, so the
+    // token is treated as there: closing the modal takes it out.
+    if (!result) {
+      tokenInBio.value = token;
+      extensionError.value = "failed";
+      return;
+    }
+
+    if (result.code !== 200) {
+      extensionError.value = EXTENSION_ERRORS[result.code ?? 0] ?? "failed";
+      return;
+    }
+
+    const payload = result.payload as FleetyardsSyncVerifyPayload;
+    if (payload?.changed) tokenInBio.value = token;
+
+    // Written into whichever account the browser is signed in to now, which
+    // need not be the one detected when the modal opened.
+    if (!sameHandle(payload?.handle, verification.value?.handle)) {
+      extensionHandle.value = payload?.handle;
+      extensionState.value = "mismatch";
+      removeTokenFromBio();
+      return;
+    }
+
+    if (closed) {
+      removeTokenFromBio();
       return;
     }
 
     await check();
-
-    if ((result.payload as FleetyardsSyncVerifyPayload)?.changed) {
-      tokenInBio.value = token;
-    }
+    checkStarted.value = true;
   } finally {
     extensionRunning.value = false;
   }
 };
 
 // The check reads the bio once and is done with it, so the token comes out as
-// soon as there is an answer. Closing the modal takes it out regardless.
-watch([tokenInBio, pending], () => {
-  if (tokenInBio.value && !pending.value) removeTokenFromBio();
-});
+// soon as it has answered. Its status rather than the cooldown says so: a job
+// still queued when the cooldown ends has not read the bio yet. One that never
+// answers leaves the token until the modal closes.
+watch(
+  [tokenInBio, checkStarted, () => verification.value?.status],
+  ([token, started, status]) => {
+    if (token && started && status !== StatusEnum.PENDING) {
+      removeTokenFromBio();
+    }
+  },
+);
 
-onBeforeUnmount(removeTokenFromBio);
+const closeExtension = () => {
+  closed = true;
+  removeTokenFromBio();
+};
+
+useEventListener(window, "pagehide", closeExtension);
+
+onBeforeUnmount(closeExtension);
 
 const copyToken = () => {
   const token = verification.value?.token;

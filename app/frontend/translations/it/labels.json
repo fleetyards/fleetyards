@@ -2018,6 +2018,7 @@
             "bioTooLong": "La tua bio RSI è troppo lunga per aggiungere il codice. Accorciala oppure verifica a mano qui sotto.",
             "bioUnreadable": "La tua bio RSI contiene una formattazione che l’estensione non può mantenere invariata. Verifica a mano qui sotto.",
             "failed": "L’estensione non è riuscita ad aggiornare la tua bio RSI. Riprova oppure verifica a mano qui sotto.",
+            "removeFailed": "L’estensione non è riuscita a rimuovere il codice dalla tua bio RSI. Rimuovilo a mano.",
             "manual": "Oppure verifica a mano:"
           },
           "statuses": {

@@ -1,6 +1,6 @@
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { UserRsiVerification } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -24,6 +24,15 @@ vi.mock("@/services/fyApi", async () => {
     useCheckMyRsiVerification: () => mutation(checkHandle),
   };
 });
+
+const displayAlert = vi.fn();
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displaySuccess: vi.fn(),
+    displayAlert,
+  }),
+}));
 
 const extensionAnswers: Record<string, unknown> = {};
 const extensionRequest = vi.fn(
@@ -56,13 +65,33 @@ const unverified = (
   ...attributes,
 });
 
-const mountModal = () => mountWithDefaults(Component);
+// Unmounted after each test: a modal left mounted keeps its watchers, and
+// would answer the next test's verification with an extension call of its own.
+const mounted: { unmount: () => void }[] = [];
+
+const mountModal = async () => {
+  const wrapper = await mountWithDefaults(Component);
+  mounted.push(wrapper);
+
+  return wrapper;
+};
+
+afterEach(() => {
+  mounted.splice(0).forEach((wrapper) => {
+    try {
+      wrapper.unmount();
+    } catch {
+      // Already unmounted by the test.
+    }
+  });
+});
 
 describe("RsiHandleVerificationModal", () => {
   beforeEach(() => {
     verification.value = unverified();
     checkHandle.mockReset();
     extensionRequest.mockClear();
+    displayAlert.mockClear();
     extensionSupports.mockReset().mockResolvedValue(false);
     Object.keys(extensionAnswers).forEach(
       (key) => delete extensionAnswers[key],
@@ -151,6 +180,14 @@ describe("RsiHandleVerificationModal", () => {
     const signedInAs = (handle: string) => {
       extensionSupports.mockResolvedValue(true);
       extensionAnswers.identify = { code: 200, payload: { handle } };
+      extensionAnswers["verify-remove"] = { code: 200, payload: { handle } };
+    };
+
+    const writes = (handle = "TestPilot") => {
+      extensionAnswers["verify-write"] = {
+        code: 200,
+        payload: { handle, changed: true },
+      };
     };
 
     const removals = () =>
@@ -309,5 +346,100 @@ describe("RsiHandleVerificationModal", () => {
         expect(checkHandle).not.toHaveBeenCalled();
       },
     );
+
+    it("keeps the token while a queued check outlasts the cooldown", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({
+        status: "pending",
+        nextCheckAt: new Date(Date.now() - 1000).toISOString(),
+      });
+      await flushPromises();
+
+      expect(removals()).toHaveLength(0);
+    });
+
+    it("takes the token out when the modal closed during the write", async () => {
+      signedInAs("TestPilot");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      let answerWrite: (answer: unknown) => void = () => {};
+      extensionRequest.mockImplementationOnce(
+        () => new Promise((resolve) => (answerWrite = resolve)),
+      );
+      await verifyButton(wrapper).trigger("click");
+      wrapper.unmount();
+      answerWrite({
+        code: 200,
+        payload: { handle: "TestPilot", changed: true },
+      });
+      await flushPromises();
+
+      expect(removals()).toHaveLength(1);
+      expect(checkHandle).not.toHaveBeenCalled();
+    });
+
+    it("takes a write that never answered out on close", async () => {
+      signedInAs("TestPilot");
+      extensionAnswers["verify-write"] = new Error("no answer");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(checkHandle).not.toHaveBeenCalled();
+      expect(removals()).toHaveLength(0);
+
+      wrapper.unmount();
+
+      expect(removals()).toHaveLength(1);
+    });
+
+    it("undoes a write that landed in another RSI account", async () => {
+      signedInAs("TestPilot");
+      writes("AltAccount");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(checkHandle).not.toHaveBeenCalled();
+      expect(removals()).toHaveLength(1);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-mismatch"]')
+          .text(),
+      ).toContain("AltAccount");
+    });
+
+    it("says so when the token could not be taken out", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      extensionAnswers["verify-remove"] = { code: 500 };
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+
+      expect(displayAlert).toHaveBeenCalledWith({
+        text: expect.stringContaining("Remove it there by hand"),
+      });
+    });
   });
 });

@@ -2018,6 +2018,7 @@
             "bioTooLong": "Deine RSI-Biografie ist zu lang, um den Code einzufügen. Kürze sie oder verifiziere unten von Hand.",
             "bioUnreadable": "Deine RSI-Biografie enthält Formatierungen, die die Erweiterung nicht unverändert erhalten kann. Verifiziere unten von Hand.",
             "failed": "Die Erweiterung konnte deine RSI-Biografie nicht ändern. Versuche es erneut oder verifiziere unten von Hand.",
+            "removeFailed": "Die Erweiterung konnte den Code nicht aus deiner RSI-Biografie entfernen. Entferne ihn dort von Hand.",
             "manual": "Oder von Hand verifizieren:"
           },
           "statuses": {

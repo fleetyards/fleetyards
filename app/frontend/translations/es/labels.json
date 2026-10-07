@@ -2018,6 +2018,7 @@
             "bioTooLong": "Tu biografía de RSI es demasiado larga para añadir el código. Acórtala o verifica a mano más abajo.",
             "bioUnreadable": "Tu biografía de RSI tiene un formato que la extensión no puede conservar tal cual. Verifica a mano más abajo.",
             "failed": "La extensión no pudo actualizar tu biografía de RSI. Inténtalo de nuevo o verifica a mano más abajo.",
+            "removeFailed": "La extensión no pudo quitar el código de tu biografía de RSI. Quítalo allí a mano.",
             "manual": "O verifica a mano:"
           },
           "statuses": {
