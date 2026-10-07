@@ -12,6 +12,8 @@ export enum FleetyardsSyncAction {
   IDENTIFY = "identify",
   VERIFY_WRITE = "verify-write",
   VERIFY_REMOVE = "verify-remove",
+  ORG_VERIFY_WRITE = "org-verify-write",
+  ORG_VERIFY_REMOVE = "org-verify-remove",
 }
 
 export type FleetyardsSyncSessionPayload = {

@@ -591,6 +591,22 @@
           "createTaken": "Si %{fid} es tu organización de RSI, empieza con %{suggestion} y el SID %{fid}. En cuanto tu flota esté verificada para %{fid}, podrá reclamar el ID de flota a la flota que lo tiene."
         },
         "rsiVerification": {
+          "extension": {
+            "title": "Verificar con la extensión FleetYards Sync",
+            "verify": "Verificar con la extensión",
+            "description": "La extensión añade tu código a la historia de tu organización en RSI, la publica, comprueba la página y vuelve a quitar el código.",
+            "detecting": "Buscando la extensión FleetYards Sync",
+            "install": "Instala la extensión FleetYards Sync para verificar tu flota con un clic.",
+            "update": "Actualiza la extensión FleetYards Sync para verificar tu flota con un clic: la versión instalada aún no lo admite.",
+            "notSignedIn": "Inicia sesión en RSI en este navegador con una cuenta que pueda editar %{sid}, o verifica a mano más abajo.",
+            "handleMismatch": "La extensión escribió en la organización de %{rsiHandle}, no en %{handle}. Verifica a mano más abajo.",
+            "noRights": "La cuenta de RSI con la que este navegador ha iniciado sesión no puede editar la página de %{sid}. Inicia sesión con una cuenta de oficial o verifica a mano más abajo.",
+            "pendingChanges": "%{sid} tiene cambios sin publicar en RSI. Publica o borra ese borrador primero, para que la extensión no publique la edición de otra persona, o verifica a mano más abajo.",
+            "orgUnreadable": "La extensión no pudo leer la página de %{sid} en RSI. Verifica a mano más abajo.",
+            "failed": "La extensión no pudo actualizar la página de %{sid}. Inténtalo de nuevo o verifica a mano más abajo.",
+            "removeFailed": "La extensión no pudo quitar el código de la historia de %{sid}. Quítalo allí a mano.",
+            "manual": "O verifica a mano:"
+          },
           "steps": {
             "copy": "Copia tu código de verificación",
             "paste": "Pégalo en cualquier parte de la página pública de RSI de tu organización: la introducción, la historia, el manifiesto o la carta. Puedes quitarlo cuando la flota esté verificada.",

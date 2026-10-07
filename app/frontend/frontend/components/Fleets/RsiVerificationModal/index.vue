@@ -33,6 +33,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import {
+  ExtensionVerificationState,
+  useExtensionVerification,
+} from "@/frontend/composables/useExtensionVerification";
+import ExtensionVerificationBlock from "@/frontend/components/ExtensionVerificationBlock/index.vue";
 
 type Props = {
   fleet: Fleet;
@@ -152,6 +158,32 @@ watch(
   },
 );
 
+const extension = useExtensionVerification({
+  target: () =>
+    verification.value?.verified === false ? verification.value.sid : null,
+  token: () => verification.value?.token,
+  writeAction: FleetyardsSyncAction.ORG_VERIFY_WRITE,
+  removeAction: FleetyardsSyncAction.ORG_VERIFY_REMOVE,
+  params: (token) => ({ sid: verification.value?.sid, token }),
+  wroteToTarget: (answer, sid) =>
+    (answer.payload as { sid?: string } | undefined)?.sid === sid,
+  check,
+  checkStatus: () => verification.value?.status,
+  pendingStatus: StatusEnum.PENDING,
+  errors: { 403: "noRights", 409: "pendingChanges", 422: "orgUnreadable" },
+  onRemoveFailed: () =>
+    displayAlert({
+      text: t("labels.fleet.rsiVerification.extension.removeFailed", {
+        sid: verification.value?.sid,
+      }),
+    }),
+});
+
+const checkManually = () => {
+  extension.forgetCheck();
+  void check();
+};
+
 const copyToken = () => {
   const token = verification.value?.token;
   if (!token) return;
@@ -188,7 +220,25 @@ const copyToken = () => {
         </template>
       </Alert>
 
-      <ol v-else class="rsi-verification__steps">
+      <ExtensionVerificationBlock
+        v-if="extension.state.value !== ExtensionVerificationState.NONE"
+        scope="fleet"
+        test-prefix="fleet-rsi-verification"
+        :state="extension.state.value"
+        :target="verification.sid"
+        :rsi-handle="extension.rsiHandle.value"
+        :error="extension.error.value"
+        :running="extension.running.value"
+        :checked-by-extension="extension.checkedByExtension.value"
+        :status-text="statusText"
+        :status-variant="statusVariant"
+        :pending="pending"
+        :cooling-down="coolingDown"
+        @verify="extension.verify"
+        @redetect="extension.redetect"
+      />
+
+      <ol v-if="!verification.verified" class="rsi-verification__steps">
         <li class="rsi-verification__step">
           <div class="rsi-verification__step-title">
             {{ t("labels.fleet.rsiVerification.steps.copy") }}
@@ -251,7 +301,7 @@ const copyToken = () => {
             {{ t("labels.fleet.rsiVerification.steps.check") }}
           </div>
           <Alert
-            v-if="statusText"
+            v-if="statusText && !extension.checkedByExtension.value"
             :variant="statusVariant"
             :icon="pending ? 'fa-duotone fa-spinner-third fa-spin' : undefined"
             :size="AlertSizesEnum.COMPACT"
@@ -278,7 +328,7 @@ const copyToken = () => {
           :loading="checkMutation.isPending.value || pending"
           :disabled="coolingDown && !pending"
           data-test="fleet-rsi-verification-check"
-          @click="check"
+          @click="checkManually"
         >
           {{ t("actions.fleet.rsiVerification.check") }}
         </Btn>

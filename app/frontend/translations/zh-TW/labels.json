@@ -591,6 +591,22 @@
           "createTaken": "如果 %{fid} 是你的 RSI 組織，請先使用 %{suggestion} 並填寫 SID %{fid}。你的艦隊通過 %{fid} 的驗證後，即可從持有該 ID 的艦隊申領它。"
         },
         "rsiVerification": {
+          "extension": {
+            "title": "使用 FleetYards Sync 擴充功能驗證",
+            "verify": "使用擴充功能驗證",
+            "description": "擴充功能會將驗證碼加入你的組織在 RSI 上的歷史並發布，檢查頁面，然後再將驗證碼移除。",
+            "detecting": "正在尋找 FleetYards Sync 擴充功能",
+            "install": "安裝 FleetYards Sync 擴充功能，即可一鍵驗證你的艦隊。",
+            "update": "更新 FleetYards Sync 擴充功能即可一鍵驗證你的艦隊：目前安裝的版本尚不支援。",
+            "notSignedIn": "請在此瀏覽器中使用可以編輯 %{sid} 的帳號登入 RSI，或在下方手動驗證。",
+            "handleMismatch": "擴充功能寫入的是 %{rsiHandle} 的組織，而不是 %{handle}。請在下方手動驗證。",
+            "noRights": "此瀏覽器登入的 RSI 帳號無法編輯 %{sid} 的頁面。請使用軍官帳號登入，或在下方手動驗證。",
+            "pendingChanges": "%{sid} 在 RSI 上有未發布的變更。請先發布或清除該草稿，以免擴充功能發布他人的修改，或在下方手動驗證。",
+            "orgUnreadable": "擴充功能無法讀取 %{sid} 在 RSI 上的頁面。請在下方手動驗證。",
+            "failed": "擴充功能無法更新 %{sid} 的頁面。請重試，或在下方手動驗證。",
+            "removeFailed": "擴充功能無法從 %{sid} 的歷史中移除驗證碼。請在那裡手動移除。",
+            "manual": "或手動驗證："
+          },
           "steps": {
             "copy": "複製你的驗證碼",
             "paste": "將它貼到你的組織 RSI 公開頁面的任意位置：簡介、歷史、宣言或章程。艦隊驗證後即可將其刪除。",

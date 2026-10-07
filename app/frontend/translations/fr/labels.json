@@ -591,6 +591,22 @@
           "createTaken": "Si %{fid} est ton organisation RSI, commence avec %{suggestion} et le SID %{fid}. Dès que ta flotte est vérifiée pour %{fid}, elle peut réclamer l’ID de flotte à la flotte qui le détient."
         },
         "rsiVerification": {
+          "extension": {
+            "title": "Vérifier avec l’extension FleetYards Sync",
+            "verify": "Vérifier avec l’extension",
+            "description": "L’extension ajoute ton code à l’histoire de ton organisation sur RSI, la publie, vérifie la page, puis retire le code.",
+            "detecting": "Recherche de l’extension FleetYards Sync",
+            "install": "Installe l’extension FleetYards Sync pour vérifier ta flotte en un clic.",
+            "update": "Mets à jour l’extension FleetYards Sync pour vérifier ta flotte en un clic : la version installée ne le permet pas encore.",
+            "notSignedIn": "Connecte-toi à RSI dans ce navigateur avec un compte qui peut modifier %{sid}, ou vérifie à la main ci-dessous.",
+            "handleMismatch": "L’extension a écrit dans l’organisation de %{rsiHandle}, et non %{handle}. Vérifie à la main ci-dessous.",
+            "noRights": "Le compte RSI connecté dans ce navigateur ne peut pas modifier la page de %{sid}. Connecte-toi avec un compte d’officier, ou vérifie à la main ci-dessous.",
+            "pendingChanges": "%{sid} a des modifications non publiées sur RSI. Publie ou efface d’abord ce brouillon, pour que l’extension ne publie pas la modification de quelqu’un d’autre, ou vérifie à la main ci-dessous.",
+            "orgUnreadable": "L’extension n’a pas pu lire la page de %{sid} sur RSI. Vérifie à la main ci-dessous.",
+            "failed": "L’extension n’a pas pu mettre à jour la page de %{sid}. Réessaie, ou vérifie à la main ci-dessous.",
+            "removeFailed": "L’extension n’a pas pu retirer le code de l’histoire de %{sid}. Retire-le à la main.",
+            "manual": "Ou vérifie à la main :"
+          },
           "steps": {
             "copy": "Copie ton code de vérification",
             "paste": "Colle-le n’importe où sur la page RSI publique de ton organisation : l’introduction, l’histoire, le manifeste ou la charte. Tu pourras le retirer une fois la flotte vérifiée.",

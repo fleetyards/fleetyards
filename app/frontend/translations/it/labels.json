@@ -591,6 +591,22 @@
           "createTaken": "Se %{fid} è la tua organizzazione RSI, inizia con %{suggestion} e il SID %{fid}. Appena la tua flotta è verificata per %{fid}, può rivendicare l’ID flotta dalla flotta che lo ha."
         },
         "rsiVerification": {
+          "extension": {
+            "title": "Verifica con l’estensione FleetYards Sync",
+            "verify": "Verifica con l’estensione",
+            "description": "L’estensione aggiunge il tuo codice alla storia della tua organizzazione su RSI, la pubblica, controlla la pagina e poi rimuove il codice.",
+            "detecting": "Ricerca dell’estensione FleetYards Sync",
+            "install": "Installa l’estensione FleetYards Sync per verificare la tua flotta con un clic.",
+            "update": "Aggiorna l’estensione FleetYards Sync per verificare la tua flotta con un clic: la versione installata non lo supporta ancora.",
+            "notSignedIn": "Accedi a RSI in questo browser con un account che può modificare %{sid}, oppure verifica a mano qui sotto.",
+            "handleMismatch": "L’estensione ha scritto nell’organizzazione di %{rsiHandle}, non di %{handle}. Verifica a mano qui sotto.",
+            "noRights": "L’account RSI con cui questo browser ha effettuato l’accesso non può modificare la pagina di %{sid}. Accedi con un account da ufficiale oppure verifica a mano qui sotto.",
+            "pendingChanges": "%{sid} ha modifiche non pubblicate su RSI. Pubblica o cancella prima quella bozza, così l’estensione non pubblica la modifica di qualcun altro, oppure verifica a mano qui sotto.",
+            "orgUnreadable": "L’estensione non è riuscita a leggere la pagina di %{sid} su RSI. Verifica a mano qui sotto.",
+            "failed": "L’estensione non è riuscita ad aggiornare la pagina di %{sid}. Riprova oppure verifica a mano qui sotto.",
+            "removeFailed": "L’estensione non è riuscita a rimuovere il codice dalla storia di %{sid}. Rimuovilo a mano.",
+            "manual": "Oppure verifica a mano:"
+          },
           "steps": {
             "copy": "Copia il tuo codice di verifica",
             "paste": "Incollalo in un punto qualsiasi della pagina RSI pubblica della tua organizzazione: introduzione, storia, manifesto o statuto. Puoi rimuoverlo una volta verificata la flotta.",
