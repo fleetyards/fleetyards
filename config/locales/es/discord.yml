@@ -67,12 +67,6 @@ es:
         more: '…y más. Elige una de las sugerencias.'
         not_found: 'No se encontró ningún objeto para «%{query}».'
         too_common: 'Hay demasiados objetos llamados «%{query}» para listarlos aquí. El catálogo los tiene todos:'
-        types:
-          blueprint: Plano
-          commodity: Mercancía
-          component: Componente
-          equipment: Equipo
-          location: Lugar
       loaner:
         heading: '[%{ship}](%{url}) incluye %{count} nave(s) de préstamo:'
         missing_query: Indica el nombre de una nave.
@@ -128,6 +122,12 @@ es:
         missing_query: Indica el nombre de una nave.
         more: '…y más. Prueba con un nombre más preciso.'
         not_found: 'No se ha encontrado ninguna nave para «%{query}».'
+      types:
+        blueprint: Plano
+        commodity: Mercancía
+        component: Componente
+        equipment: Equipo
+        location: Lugar
       where:
         fields:
           buy: Comprar en

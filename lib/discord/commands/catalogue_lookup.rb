@@ -64,7 +64,7 @@ module Discord
       end
 
       def self.type_label(prefix)
-        I18n.t("discord.commands.item.types.#{prefix}")
+        I18n.t("discord.commands.types.#{prefix}")
       end
 
       class_methods do

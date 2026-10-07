@@ -67,12 +67,6 @@ de:
         more: '…und weitere. Wähle einen aus den Vorschlägen.'
         not_found: 'Kein Gegenstand gefunden für „%{query}“.'
         too_common: 'Zu viele Gegenstände heißen „%{query}“, um sie hier aufzulisten. Im Katalog stehen alle:'
-        types:
-          blueprint: Bauplan
-          commodity: Rohstoff
-          component: Komponente
-          equipment: Ausrüstung
-          location: Ort
       loaner:
         heading: '[%{ship}](%{url}) kommt mit %{count} Leihschiff(en):'
         missing_query: Bitte gib einen Schiffsnamen an.
@@ -128,6 +122,12 @@ de:
         missing_query: Bitte gib einen Schiffsnamen an.
         more: '…und weitere. Versuche einen genaueren Namen.'
         not_found: 'Kein Schiff für „%{query}“ gefunden.'
+      types:
+        blueprint: Bauplan
+        commodity: Rohstoff
+        component: Komponente
+        equipment: Ausrüstung
+        location: Ort
       where:
         fields:
           buy: Kaufen bei

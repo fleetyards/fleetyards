@@ -61,7 +61,7 @@ module Discord
         assert_equal "Behring", embed.dig(:footer, :text)
         assert_equal "2", fields(payload)[I18n.t("discord.commands.item.fields.size")]
         assert_equal "A", fields(payload)[I18n.t("discord.commands.item.fields.grade")]
-        assert_includes embed.dig(:author, :name), I18n.t("discord.commands.item.types.component")
+        assert_includes embed.dig(:author, :name), I18n.t("discord.commands.types.component")
       end
 
       test "answers equipment" do
@@ -148,8 +148,8 @@ module Discord
 
         assert_equal(
           [
-            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.component")}", value: "Omnisky IX Cannon"},
-            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.blueprint")}", value: "blueprint:Omnisky IX Cannon"}
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.types.component")}", value: "Omnisky IX Cannon"},
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.types.blueprint")}", value: "blueprint:Omnisky IX Cannon"}
           ].sort_by { |choice| choice[:value] },
           choices.sort_by { |choice| choice[:value] }
         )
@@ -212,7 +212,7 @@ module Discord
 
         author = call("blueprint:Serac Armor")[:embeds].first.dig(:author, :name)
 
-        assert_includes author, I18n.t("discord.commands.item.types.equipment")
+        assert_includes author, I18n.t("discord.commands.types.equipment")
       end
 
       # Two coolers called "Serac" cannot be told apart by a token; the bot
@@ -224,7 +224,7 @@ module Discord
         choices = ::Discord::Commands::Item.autocomplete("name", "serac")
 
         assert_equal ["component~#{origin.id}", "component~#{polaris.id}"].sort, choices.pluck(:value).sort
-        assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.item.types.component")} · S4 · cool_orig_s04_890j_scitem"
+        assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.types.component")} · S4 · cool_orig_s04_890j_scitem"
       end
 
       test "suggests each item of a shared name for a query written with its type" do

@@ -67,12 +67,6 @@ en:
         more: '…and more. Pick one from the suggestions.'
         not_found: 'No item found for "%{query}".'
         too_common: 'Too many items are named "%{query}" to list here. The catalogue has them all:'
-        types:
-          blueprint: Blueprint
-          commodity: Commodity
-          component: Component
-          equipment: Equipment
-          location: Place
       loaner:
         heading: '[%{ship}](%{url}) comes with %{count} loaner(s):'
         missing_query: Please provide a ship name.
@@ -128,6 +122,12 @@ en:
         missing_query: Please provide a ship name.
         more: '…and more. Try a more specific name.'
         not_found: 'No ship found for "%{query}".'
+      types:
+        blueprint: Blueprint
+        commodity: Commodity
+        component: Component
+        equipment: Equipment
+        location: Place
       where:
         fields:
           buy: Buy at

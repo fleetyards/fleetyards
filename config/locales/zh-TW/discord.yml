@@ -67,12 +67,6 @@ zh-TW:
         more: '……還有更多。請從建議中選擇一個。'
         not_found: '找不到「%{query}」對應的物品。'
         too_common: '名為「%{query}」的物品太多，無法在此列出。目錄中有全部物品：'
-        types:
-          blueprint: 藍圖
-          commodity: 商品
-          component: 組件
-          equipment: 裝備
-          location: 地點
       loaner:
         heading: '[%{ship}](%{url}) 附帶 %{count} 艘替代船艦：'
         missing_query: 請提供船艦名稱。
@@ -128,6 +122,12 @@ zh-TW:
         missing_query: 請提供船艦名稱。
         more: '…還有更多，請使用更精確的名稱。'
         not_found: '找不到符合「%{query}」的船艦。'
+      types:
+        blueprint: 藍圖
+        commodity: 商品
+        component: 組件
+        equipment: 裝備
+        location: 地點
       where:
         fields:
           buy: 購買地點

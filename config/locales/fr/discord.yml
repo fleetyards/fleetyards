@@ -67,12 +67,6 @@ fr:
         more: '…et d’autres. Choisis-en un parmi les suggestions.'
         not_found: 'Aucun objet trouvé pour « %{query} ».'
         too_common: 'Trop d’objets s’appellent « %{query} » pour les lister ici. Le catalogue les a tous :'
-        types:
-          blueprint: Plan
-          commodity: Marchandise
-          component: Composant
-          equipment: Équipement
-          location: Lieu
       loaner:
         heading: '[%{ship}](%{url}) donne accès à %{count} vaisseau(x) de prêt :'
         missing_query: Merci d'indiquer le nom d'un vaisseau.
@@ -128,6 +122,12 @@ fr:
         missing_query: "Merci d'indiquer le nom d'un vaisseau."
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
+      types:
+        blueprint: Plan
+        commodity: Marchandise
+        component: Composant
+        equipment: Équipement
+        location: Lieu
       where:
         fields:
           buy: Acheter chez

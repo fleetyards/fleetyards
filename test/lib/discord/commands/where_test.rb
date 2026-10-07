@@ -111,7 +111,7 @@ module Discord
       end
 
       test "suggests what /item suggests for the catalogues it covers" do
-        assert_equal [{name: "Quantainium · #{I18n.t("discord.commands.item.types.commodity")}", value: "Quantainium"}],
+        assert_equal [{name: "Quantainium · #{I18n.t("discord.commands.types.commodity")}", value: "Quantainium"}],
           ::Discord::Commands::Where.autocomplete("name", "quanta")
       end
 

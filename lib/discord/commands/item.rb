@@ -45,7 +45,7 @@ module Discord
           # Off the output the embed links, which the served build names; the
           # row's column holds whichever source loaded last.
           type = record.craftable&.class&.name
-          I18n.t("discord.commands.item.types.#{type.underscore}", default: type) if type.present?
+          I18n.t("discord.commands.types.#{type.underscore}", default: type) if type.present?
         end
       end
 
