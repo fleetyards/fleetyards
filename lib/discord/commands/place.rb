@@ -70,25 +70,28 @@ module Discord
       end
 
       # One count per size, largest first: a station's hangars come as several
-      # entries of one size, one per door and pad box.
+      # entries of one size, one per door and pad box. A size the dock sizes do
+      # not know has no label to show, so it is left out.
       private def facility_field(kind, entries)
         counts = Array.wrap(entries).each_with_object(Hash.new(0)) do |entry, sums|
           sums[entry["size"].to_s] += entry["count"].to_i
-        end.select { |_, count| count.positive? }
+        end.select { |size, count| count.positive? && SIZE_ORDER.include?(size) }
         return nil if counts.empty?
 
-        value = counts.sort_by { |size, _| -SIZE_ORDER.index(size).to_i }
+        value = counts.sort_by { |size, _| -SIZE_ORDER.index(size) }
           .map { |size, count| "#{::Dock.human_enum_name(:ship_size, size)} ×#{count}" }
           .join("\n")
 
         {name: I18n.t("discord.commands.location.fields.#{kind}"), value: value, inline: true}
       end
 
+      # The shops the place page lists: those selling something the catalogue
+      # lists, so the count past the field matches what the page shows.
       private def shops_field(place, page)
-        shops = place.shops.order(:name).to_a
+        shops = ::Locations::Shops.new(place).call
         return nil if shops.empty?
 
-        links = shops.map { |shop| shop_link(shop) }
+        links = shops.map { |summary| shop_link(summary.shop) }
         value = fit_field(links, separator: ", ") { |hidden| I18n.t("discord.commands.location.more_shops", count: hidden, url: page) }
 
         {name: I18n.t("discord.commands.location.fields.shops"), value: value}

@@ -23,6 +23,12 @@ module Discord
         I18n.t("discord.commands.location.fields.#{key}")
       end
 
+      def shop(name, sells: (@ore ||= create(:commodity, name: "Agricium")))
+        Shop.create!(name:, location: @harbor).tap do |shop|
+          create(:item_price, shop:, item: sells) if sells
+        end
+      end
+
       test "answers a place with its kind, system and page" do
         embed = call("location:Everus Harbor")[:embeds].first
 
@@ -62,18 +68,38 @@ module Discord
       end
 
       test "lists its shops, linked" do
-        shop = Shop.create!(name: "Casaba Outlet", location: @harbor)
+        shop = shop("Casaba Outlet")
 
         assert_includes fields(call("location:Everus Harbor"))[label(:shops)], "[Casaba Outlet](https://#{Rails.configuration.app.domain}/shops/#{shop.slug}/)"
       end
 
       test "keeps a long shop list within a field and points to the place page" do
-        40.times { |index| Shop.create!(name: "A Rather Long Shop Name Number #{index}", location: @harbor) }
+        40.times { |index| shop("A Rather Long Shop Name Number #{index}") }
 
         value = fields(call("location:Everus Harbor"))[label(:shops)]
 
         assert_operator value.length, :<=, 1024
         assert_includes value, "/locations/#{@harbor.slug}/"
+      end
+
+      # The place page leaves a shop out until it sells something listed, and
+      # the "more on the place page" count has to agree with it.
+      test "leaves out a shop selling nothing the catalogue lists" do
+        shop("Casaba Outlet")
+        shop("Empty Counter", sells: nil)
+
+        value = fields(call("location:Everus Harbor"))[label(:shops)]
+
+        assert_includes value, "Casaba Outlet"
+        assert_not_includes value, "Empty Counter"
+      end
+
+      test "leaves out a pad size the dock sizes do not know" do
+        facilities = {"landing_pads" => [{"size" => "small", "count" => 2, "atc_assigned" => true}, {"size" => "colossal", "count" => 1, "atc_assigned" => true}]}
+        @harbor.update!(facilities:)
+        @harbor.builds.update_all(facilities:)
+
+        assert_equal "#{::Dock.human_enum_name(:ship_size, "small")} ×2", fields(call("location:Everus Harbor"))[label(:landing_pads)]
       end
 
       test "a place without facilities or shops answers without those fields" do
