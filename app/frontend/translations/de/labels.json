@@ -2515,7 +2515,12 @@
           "one": "%{count} Monat",
           "other": "%{count} Monate"
         },
-        "openOnRsi": "Auf RSI zurückkaufen"
+        "openOnRsi": "Auf RSI zurückkaufen",
+        "priceRange": "Preisbereich",
+        "priceMin": "Mindestpreis (USD)",
+        "priceMax": "Höchstpreis (USD)",
+        "upgradeFrom": "Upgrade von",
+        "upgradeTo": "Upgrade auf"
       },
       "buybackSync": {
         "extensionVersion": "Installierte Erweiterungsversion",
