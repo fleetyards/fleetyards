@@ -46,8 +46,8 @@ module Discord
       end
 
       # From the system down to the parent, each linked, as the page's own
-      # breadcrumb reads. Each name is read off its build, loaded for all of
-      # them at once rather than per step.
+      # breadcrumb reads. The walk loads one parent per step; the builds the
+      # names are read off then load for all of them at once.
       private def breadcrumb(place)
         ancestors = place.ancestors
         ActiveRecord::Associations::Preloader.new(records: ancestors, associations: [:build, :last_build]).call
