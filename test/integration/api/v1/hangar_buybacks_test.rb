@@ -118,6 +118,24 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks prices an upgrade from both ships' store prices" do
+    user = create(:user)
+    create(:model, rsi_id: 308, pledge_price: 150)
+    create(:model, rsi_id: 322, pledge_price: 175)
+    buyback(user, kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 322, upgrade_to_sku_id: 19461)
+    buyback(user, kind: "upgrade", name: "Upgrade - Unknown", upgrade_from_ship_id: 308, upgrade_to_ship_id: 99999)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      priced, unknown = parsed_body["items"].sort_by { |item| item["name"] }
+
+      assert_in_delta 25.0, priced["price"]
+      assert_equal "USD", priced["priceCurrency"]
+      assert_nil unknown["price"]
+    end
+  end
+
   test "GET /hangar/buybacks includes price, insurance and availability" do
     user = create(:user)
     buyback(user, available: false, price: 157.08, price_currency: "EUR", insurance_months: 120)
@@ -173,7 +191,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
       assert_equal({"total" => 2, "added" => 2, "removed" => 0}, parsed_body.except("detailsPending"))
-      assert_equal %w[111313560 44725819], parsed_body["detailsPending"].sort
+      assert_equal %w[44725819], parsed_body["detailsPending"]
     end
 
     cutter = user.buyback_pledges.find_by!(rsi_pledge_id: "44725819")
@@ -334,19 +352,15 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate upgrade.details_synced_at, :present?
   end
 
-  test "PUT /hangar/sync-rsi-buybacks asks again for details read too long ago" do
+  test "PUT /hangar/sync-rsi-buybacks reads stored details only once" do
     user = create(:user)
-    buyback(user, rsi_pledge_id: "1", price: 10, price_currency: "EUR", details_synced_at: 31.days.ago)
-    buyback(user, rsi_pledge_id: "2", price: 10, price_currency: "EUR", details_synced_at: 29.days.ago)
+    buyback(user, rsi_pledge_id: "1", price: 10, price_currency: "EUR", details_synced_at: 1.year.ago)
     sign_in user
 
-    body = {items: [
-      {id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius"},
-      {id: "2", kind: "ship", name: "Standalone Ship - Cutlass Black"}
-    ]}
+    body = {items: [{id: "1", kind: "ship", name: "Standalone Ship - Aegis Gladius"}]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
-      assert_equal %w[1], parsed_body["detailsPending"]
+      assert_empty parsed_body["detailsPending"]
     end
   end
 

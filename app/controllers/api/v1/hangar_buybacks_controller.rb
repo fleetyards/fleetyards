@@ -18,6 +18,7 @@ module Api
 
         @q = authorized_scope(BuybackPledge.all).ransack(buyback_query_params)
         @buyback_pledges = @q.result
+          .includes(:upgrade_from_model, :upgrade_to_model)
           .order(reclaimed_on: :desc, name: :asc, id: :asc)
           .page(page_params)
           .per(per_page(BuybackPledge))
