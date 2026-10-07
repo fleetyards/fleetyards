@@ -326,6 +326,59 @@ describe("RsiHandleVerificationModal", () => {
       ]);
     });
 
+    it("shows a failed check next to the extension, not under the steps", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({
+        status: "token_missing",
+        nextCheckAt: new Date(Date.now() + 60_000).toISOString(),
+      });
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-status"]')
+          .text(),
+      ).toContain("not in your bio");
+      expect(
+        wrapper.find('[data-test="user-rsi-verification-status"]').exists(),
+      ).toBe(false);
+    });
+
+    it("shows a manual check's result under the steps again", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+      await wrapper
+        .find('[data-test="user-rsi-verification-check"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(
+        wrapper.find('[data-test="user-rsi-verification-status"]').exists(),
+      ).toBe(true);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-status"]')
+          .exists(),
+      ).toBe(false);
+    });
+
     it("leaves a token it did not add", async () => {
       signedInAs("TestPilot");
       extensionAnswers["verify-write"] = {

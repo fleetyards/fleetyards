@@ -184,6 +184,10 @@ const tokenInBio = ref<string>();
 // token has to stay where the check will look for it.
 const checkStarted = ref(false);
 
+// Whether the latest check was the extension's: its answer then shows next
+// to the button that started it, rather than under the manual steps.
+const checkedByExtension = ref(false);
+
 let closed = false;
 
 // Each detection answers for the handle it was started with. A newer one, or
@@ -262,6 +266,7 @@ const verifyWithExtension = async () => {
   if (!token) return;
 
   extensionError.value = undefined;
+  checkedByExtension.value = false;
   extensionRunning.value = true;
 
   try {
@@ -299,6 +304,7 @@ const verifyWithExtension = async () => {
       return;
     }
 
+    checkedByExtension.value = true;
     await check();
     checkStarted.value = true;
   } finally {
@@ -327,6 +333,11 @@ const closeExtension = () => {
 useEventListener(window, "pagehide", closeExtension);
 
 onBeforeUnmount(closeExtension);
+
+const checkManually = () => {
+  checkedByExtension.value = false;
+  void check();
+};
 
 const copyToken = () => {
   const token = verification.value?.token;
@@ -431,6 +442,15 @@ const copyToken = () => {
             <i class="fa-light fa-puzzle-piece" />
             {{ t("actions.user.rsiVerification.verifyWithExtension") }}
           </Btn>
+          <Alert
+            v-if="statusText && checkedByExtension"
+            :variant="statusVariant"
+            :icon="pending ? 'fa-duotone fa-spinner-third fa-spin' : undefined"
+            :size="AlertSizesEnum.COMPACT"
+            data-test="user-rsi-verification-extension-status"
+          >
+            {{ statusText }}
+          </Alert>
         </template>
         <div class="rsi-verification__extension-manual">
           {{ t("labels.user.rsiVerification.extension.manual") }}
@@ -499,7 +519,7 @@ const copyToken = () => {
             }}
           </div>
           <Alert
-            v-if="statusText"
+            v-if="statusText && !checkedByExtension"
             :variant="statusVariant"
             :icon="pending ? 'fa-duotone fa-spinner-third fa-spin' : undefined"
             :size="AlertSizesEnum.COMPACT"
@@ -523,7 +543,7 @@ const copyToken = () => {
           :loading="checkMutation.isPending.value || pending"
           :disabled="coolingDown && !pending"
           data-test="user-rsi-verification-check"
-          @click="check"
+          @click="checkManually"
         >
           <template v-if="coolingDown && !pending">
             {{
