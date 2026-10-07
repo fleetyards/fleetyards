@@ -2010,6 +2010,18 @@
             "paste": "將它貼到你的 RSI 個人資料的簡介中。使用者名驗證後即可將其刪除。",
             "check": "檢查 %{handle} 的公民頁面"
           },
+          "extension": {
+            "title": "使用 FleetYards Sync 擴充功能驗證",
+            "description": "擴充功能會將驗證碼加入此瀏覽器所登入 RSI 帳號的簡介，檢查你的公民頁面，然後再將驗證碼移除。",
+            "detecting": "正在尋找 FleetYards Sync 擴充功能",
+            "handleMismatch": "此瀏覽器登入的 RSI 帳號是 %{rsiHandle}，而不是 %{handle}。請以 %{handle} 登入 RSI，或在下方手動驗證。",
+            "notSignedIn": "請在此瀏覽器中登入 RSI 以使用擴充功能驗證，或在下方手動驗證。",
+            "bioTooLong": "你的 RSI 簡介太長，無法加入驗證碼。請縮短簡介，或在下方手動驗證。",
+            "bioUnreadable": "你的 RSI 簡介包含擴充功能無法原樣保留的格式。請在下方手動驗證。",
+            "failed": "擴充功能無法更新你的 RSI 簡介。請重試，或在下方手動驗證。",
+            "removeFailed": "擴充功能無法從你的 RSI 簡介中移除驗證碼。請在 RSI 上手動移除。",
+            "manual": "或手動驗證："
+          },
           "statuses": {
             "pending": "正在檢查你的公民頁面…",
             "token_missing": "你的簡介中還沒有該驗證碼。RSI 可能需要幾分鐘才會顯示修改。",
@@ -2522,6 +2534,7 @@
           "submitData": "正在提交資料到 Fleetyards.net 後台"
         },
         "sessionStatus": "RSI 工作階段狀態",
+        "signedInAs": "已以 %{handle} 登入 RSI",
         "checkIdentity": "檢查 RSI 工作階段",
         "targetGroup": "找到的飛船歸入的分組",
         "addBundledVehicles": "新增附帶的小型飛船",

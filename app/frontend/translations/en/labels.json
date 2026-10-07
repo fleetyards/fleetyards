@@ -2010,6 +2010,18 @@
             "paste": "Paste it into the short bio on your RSI profile. You can remove it once your handle is verified.",
             "check": "Check the citizen page of %{handle}"
           },
+          "extension": {
+            "title": "Verify with the FleetYards Sync extension",
+            "description": "The extension adds your token to the bio of the RSI account this browser is signed in to, checks your citizen page, and takes the token out again.",
+            "detecting": "Looking for the FleetYards Sync extension",
+            "handleMismatch": "This browser is signed in to RSI as %{rsiHandle}, not %{handle}. Sign in to RSI as %{handle}, or verify by hand below.",
+            "notSignedIn": "Sign in to RSI in this browser to verify with the extension, or verify by hand below.",
+            "bioTooLong": "Your RSI bio is too long to add the token. Shorten it, or verify by hand below.",
+            "bioUnreadable": "Your RSI bio has formatting the extension cannot keep as it is. Verify by hand below.",
+            "failed": "The extension could not update your RSI bio. Try again, or verify by hand below.",
+            "removeFailed": "The extension could not take the token out of your RSI bio. Remove it there by hand.",
+            "manual": "Or verify by hand:"
+          },
           "statuses": {
             "pending": "Checking your citizen page…",
             "token_missing": "The token is not in your bio yet. RSI can take a few minutes to show an edit.",
@@ -2522,6 +2534,7 @@
           "submitData": "Submitting Data to the Fleetyards.net Backend"
         },
         "sessionStatus": "RSI Session status",
+        "signedInAs": "Signed in to RSI as %{handle}",
         "checkIdentity": "Check RSI Session",
         "targetGroup": "Group for the ships it finds",
         "addBundledVehicles": "Add bundled snub crafts",

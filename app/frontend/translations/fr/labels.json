@@ -2010,6 +2010,18 @@
             "paste": "Colle-le dans la courte bio de ton profil RSI. Tu pourras le retirer une fois ton pseudo vérifié.",
             "check": "Vérifie la page citoyen de %{handle}"
           },
+          "extension": {
+            "title": "Vérifier avec l’extension FleetYards Sync",
+            "description": "L’extension ajoute ton code à la bio du compte RSI connecté dans ce navigateur, vérifie ta page citoyen, puis retire le code.",
+            "detecting": "Recherche de l’extension FleetYards Sync",
+            "handleMismatch": "Ce navigateur est connecté à RSI en tant que %{rsiHandle}, et non %{handle}. Connecte-toi à RSI en tant que %{handle}, ou vérifie à la main ci-dessous.",
+            "notSignedIn": "Connecte-toi à RSI dans ce navigateur pour vérifier avec l’extension, ou vérifie à la main ci-dessous.",
+            "bioTooLong": "Ta bio RSI est trop longue pour y ajouter le code. Raccourcis-la, ou vérifie à la main ci-dessous.",
+            "bioUnreadable": "Ta bio RSI contient une mise en forme que l’extension ne peut pas conserver telle quelle. Vérifie à la main ci-dessous.",
+            "failed": "L’extension n’a pas pu mettre à jour ta bio RSI. Réessaie, ou vérifie à la main ci-dessous.",
+            "removeFailed": "L’extension n’a pas pu retirer le code de ta bio RSI. Retire-le à la main.",
+            "manual": "Ou vérifie à la main :"
+          },
           "statuses": {
             "pending": "Vérification de ta page citoyen…",
             "token_missing": "Le code n’est pas encore dans ta bio. RSI peut mettre quelques minutes à afficher une modification.",
@@ -2522,6 +2534,7 @@
           "submitData": "Envoi des données au backend de Fleetyards.net"
         },
         "sessionStatus": "Statut de session RSI",
+        "signedInAs": "Connecté à RSI en tant que %{handle}",
         "checkIdentity": "Vérifier la session RSI",
         "targetGroup": "Groupe pour les vaisseaux trouvés",
         "addBundledVehicles": "Ajouter les snub crafts inclus",

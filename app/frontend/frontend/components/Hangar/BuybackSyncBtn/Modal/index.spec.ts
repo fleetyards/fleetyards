@@ -117,6 +117,17 @@ describe("HangarBuybackSyncModal", () => {
     mounted = undefined;
   });
 
+  it("shows which RSI account the extension is signed in to", async () => {
+    const wrapper = await mountModal(currentExtension);
+
+    extensionReplies("identify", { handle: "ACaptain" });
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='sync-extension-signed-in-as']").exists(),
+    ).toBe(true);
+  });
+
   // Every released version before buy-backs answers the health check with no
   // payload at all.
   it("asks for an update from an extension that reports nothing", async () => {

@@ -2010,6 +2010,18 @@
             "paste": "Incollalo nella breve bio del tuo profilo RSI. Puoi rimuoverlo una volta verificato l’handle.",
             "check": "Controlla la pagina cittadino di %{handle}"
           },
+          "extension": {
+            "title": "Verifica con l’estensione FleetYards Sync",
+            "description": "L’estensione aggiunge il tuo codice alla bio dell’account RSI con cui questo browser ha effettuato l’accesso, controlla la tua pagina cittadino e poi rimuove il codice.",
+            "detecting": "Ricerca dell’estensione FleetYards Sync",
+            "handleMismatch": "Questo browser ha effettuato l’accesso a RSI come %{rsiHandle}, non come %{handle}. Accedi a RSI come %{handle} oppure verifica a mano qui sotto.",
+            "notSignedIn": "Accedi a RSI in questo browser per verificare con l’estensione, oppure verifica a mano qui sotto.",
+            "bioTooLong": "La tua bio RSI è troppo lunga per aggiungere il codice. Accorciala oppure verifica a mano qui sotto.",
+            "bioUnreadable": "La tua bio RSI contiene una formattazione che l’estensione non può mantenere invariata. Verifica a mano qui sotto.",
+            "failed": "L’estensione non è riuscita ad aggiornare la tua bio RSI. Riprova oppure verifica a mano qui sotto.",
+            "removeFailed": "L’estensione non è riuscita a rimuovere il codice dalla tua bio RSI. Rimuovilo a mano.",
+            "manual": "Oppure verifica a mano:"
+          },
           "statuses": {
             "pending": "Controllo della tua pagina cittadino…",
             "token_missing": "Il codice non è ancora nella tua bio. RSI può impiegare qualche minuto a mostrare una modifica.",
@@ -2522,6 +2534,7 @@
           "submitData": "Invio dati al backend di Fleetyards.net"
         },
         "sessionStatus": "Stato sessione RSI",
+        "signedInAs": "Accesso a RSI effettuato come %{handle}",
         "checkIdentity": "Verifica sessione RSI",
         "targetGroup": "Gruppo per le navi trovate",
         "addBundledVehicles": "Aggiungi gli snub craft inclusi",

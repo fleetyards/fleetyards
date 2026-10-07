@@ -2010,6 +2010,18 @@
             "paste": "Füge ihn in die Kurzbiografie deines RSI-Profils ein. Sobald dein Handle verifiziert ist, kannst du ihn wieder entfernen.",
             "check": "Prüfe die Bürgerseite von %{handle}"
           },
+          "extension": {
+            "title": "Mit der FleetYards-Sync-Erweiterung verifizieren",
+            "description": "Die Erweiterung fügt deinen Code in die Biografie des RSI-Kontos ein, mit dem dieser Browser angemeldet ist, prüft deine Bürgerseite und entfernt den Code danach wieder.",
+            "detecting": "Suche nach der FleetYards-Sync-Erweiterung",
+            "handleMismatch": "Dieser Browser ist bei RSI als %{rsiHandle} angemeldet, nicht als %{handle}. Melde dich bei RSI als %{handle} an oder verifiziere unten von Hand.",
+            "notSignedIn": "Melde dich in diesem Browser bei RSI an, um mit der Erweiterung zu verifizieren, oder verifiziere unten von Hand.",
+            "bioTooLong": "Deine RSI-Biografie ist zu lang, um den Code einzufügen. Kürze sie oder verifiziere unten von Hand.",
+            "bioUnreadable": "Deine RSI-Biografie enthält Formatierungen, die die Erweiterung nicht unverändert erhalten kann. Verifiziere unten von Hand.",
+            "failed": "Die Erweiterung konnte deine RSI-Biografie nicht ändern. Versuche es erneut oder verifiziere unten von Hand.",
+            "removeFailed": "Die Erweiterung konnte den Code nicht aus deiner RSI-Biografie entfernen. Entferne ihn dort von Hand.",
+            "manual": "Oder von Hand verifizieren:"
+          },
           "statuses": {
             "pending": "Deine Bürgerseite wird geprüft…",
             "token_missing": "Der Code steht noch nicht in deiner Biografie. RSI kann einige Minuten brauchen, bis eine Änderung sichtbar ist.",
@@ -2522,6 +2534,7 @@
           "submitData": "Daten an das Fleetyards.net-Backend senden"
         },
         "sessionStatus": "RSI-Sitzungsstatus",
+        "signedInAs": "Bei RSI angemeldet als %{handle}",
         "checkIdentity": "RSI-Sitzung prüfen",
         "targetGroup": "Gruppe für die gefundenen Schiffe",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",

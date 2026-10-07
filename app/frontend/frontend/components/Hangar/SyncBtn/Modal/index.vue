@@ -50,6 +50,10 @@ const started = ref(false);
 
 const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 
+// The RSI account the extension found signed in, shown so a sync into the
+// wrong hangar is caught before it starts.
+const rsiHandle = ref<string>();
+
 const loadingIdentity = ref(false);
 
 const currentPage = ref(1);
@@ -159,8 +163,12 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
         console.info("FY Extension: No RSI Session found");
         displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
         identityStatus.value = "notFound";
+        rsiHandle.value = undefined;
       } else {
         identityStatus.value = "connected";
+        rsiHandle.value = (
+          message.payload as FleetyardsSyncSessionPayload
+        ).handle;
       }
     }
   }
@@ -444,6 +452,13 @@ const refreshPage = async () => {
           >
             <i class="fa-light fa-sync" />
           </Btn>
+        </p>
+        <p
+          v-if="identityStatus === 'connected' && rsiHandle"
+          class="text-center"
+          data-test="sync-extension-signed-in-as"
+        >
+          {{ t("labels.syncExtension.signedInAs", { handle: rsiHandle }) }}
         </p>
         <p v-html="t('texts.syncExtension.info')" />
         <hr />

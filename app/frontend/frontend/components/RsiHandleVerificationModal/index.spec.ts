@@ -1,5 +1,6 @@
+import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { UserRsiVerification } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -24,6 +25,33 @@ vi.mock("@/services/fyApi", async () => {
   };
 });
 
+const displayAlert = vi.fn();
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displaySuccess: vi.fn(),
+    displayAlert,
+  }),
+}));
+
+const extensionAnswers: Record<string, unknown> = {};
+const extensionRequest = vi.fn(
+  async (action: string, _params?: Record<string, unknown>) => {
+    const answer = extensionAnswers[action];
+    if (answer instanceof Error) throw answer;
+
+    return answer;
+  },
+);
+const extensionSupports = vi.fn(async () => false);
+
+vi.mock("@/frontend/composables/useSyncExtension", () => ({
+  useSyncExtension: () => ({
+    request: extensionRequest,
+    supports: extensionSupports,
+  }),
+}));
+
 const unverified = (
   attributes: Partial<UserRsiVerification> = {},
 ): UserRsiVerification => ({
@@ -37,12 +65,37 @@ const unverified = (
   ...attributes,
 });
 
-const mountModal = () => mountWithDefaults(Component);
+// Unmounted after each test: a modal left mounted keeps its watchers, and
+// would answer the next test's verification with an extension call of its own.
+const mounted: { unmount: () => void }[] = [];
+
+const mountModal = async () => {
+  const wrapper = await mountWithDefaults(Component);
+  mounted.push(wrapper);
+
+  return wrapper;
+};
+
+afterEach(() => {
+  mounted.splice(0).forEach((wrapper) => {
+    try {
+      wrapper.unmount();
+    } catch {
+      // Already unmounted by the test.
+    }
+  });
+});
 
 describe("RsiHandleVerificationModal", () => {
   beforeEach(() => {
     verification.value = unverified();
     checkHandle.mockReset();
+    extensionRequest.mockClear();
+    displayAlert.mockClear();
+    extensionSupports.mockReset().mockResolvedValue(false);
+    Object.keys(extensionAnswers).forEach(
+      (key) => delete extensionAnswers[key],
+    );
   });
 
   it("shows the token to put in the bio", async () => {
@@ -121,5 +174,365 @@ describe("RsiHandleVerificationModal", () => {
     expect(
       wrapper.find('[data-test="user-rsi-verification-remove"]').exists(),
     ).toBe(false);
+  });
+
+  describe("with the sync extension", () => {
+    const signedInAs = (handle: string) => {
+      extensionSupports.mockResolvedValue(true);
+      extensionAnswers.identify = { code: 200, payload: { handle } };
+      extensionAnswers["verify-remove"] = { code: 200, payload: { handle } };
+    };
+
+    const writes = (handle = "TestPilot") => {
+      extensionAnswers["verify-write"] = {
+        code: 200,
+        payload: { handle, changed: true },
+      };
+    };
+
+    const removals = () =>
+      extensionRequest.mock.calls.filter(
+        ([action]) => action === "verify-remove",
+      );
+
+    // The check starts a job: the modal waits for it while the status reads
+    // pending inside the cooldown, the way the endpoint answers.
+    const checkStartsJob = () =>
+      checkHandle.mockImplementation(async () => {
+        verification.value = unverified({
+          status: "pending",
+          nextCheckAt: new Date(Date.now() + 60_000).toISOString(),
+        });
+
+        return verification.value;
+      });
+
+    const extensionBlock = (wrapper: Awaited<ReturnType<typeof mountModal>>) =>
+      wrapper.find('[data-test="user-rsi-verification-extension"]');
+
+    const verifyButton = (wrapper: Awaited<ReturnType<typeof mountModal>>) =>
+      wrapper.find('[data-test="user-rsi-verification-extension-verify"]');
+
+    it("says it is looking for the extension until it knows", async () => {
+      let answerHealth: (supported: boolean) => void = () => {};
+      extensionSupports.mockImplementation(
+        () => new Promise((resolve) => (answerHealth = resolve)),
+      );
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-detecting"]')
+          .exists(),
+      ).toBe(true);
+      expect(verifyButton(wrapper).exists()).toBe(false);
+
+      answerHealth(false);
+      await flushPromises();
+
+      expect(extensionBlock(wrapper).exists()).toBe(false);
+    });
+
+    it("names the RSI account it would verify through", async () => {
+      signedInAs("TestPilot");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-account"]')
+          .text(),
+      ).toContain("TestPilot");
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-detecting"]')
+          .exists(),
+      ).toBe(false);
+    });
+
+    it("offers nothing without an extension that can verify", async () => {
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(extensionBlock(wrapper).exists()).toBe(false);
+      expect(extensionRequest).not.toHaveBeenCalled();
+    });
+
+    it("explains a browser signed in to a different handle", async () => {
+      signedInAs("SomeoneElse");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      const mismatch = wrapper.find(
+        '[data-test="user-rsi-verification-extension-mismatch"]',
+      );
+      expect(mismatch.text()).toContain("SomeoneElse");
+      expect(mismatch.text()).toContain("TestPilot");
+      expect(verifyButton(wrapper).exists()).toBe(false);
+    });
+
+    it("asks for an RSI sign-in without one", async () => {
+      extensionSupports.mockResolvedValue(true);
+      extensionAnswers.identify = { code: 400 };
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-signed-out"]')
+          .exists(),
+      ).toBe(true);
+      expect(verifyButton(wrapper).exists()).toBe(false);
+    });
+
+    it("matches the signed-in handle in any case", async () => {
+      signedInAs("testpilot");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      expect(verifyButton(wrapper).exists()).toBe(true);
+    });
+
+    it("writes the token, checks, and takes the token out once answered", async () => {
+      signedInAs("TestPilot");
+      extensionAnswers["verify-write"] = {
+        code: 200,
+        payload: { handle: "TestPilot", changed: true },
+      };
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(extensionRequest).toHaveBeenCalledWith("verify-write", {
+        token: "FLEETYARDS-ABCDEFGHIJ",
+      });
+      expect(checkHandle).toHaveBeenCalled();
+      expect(removals()).toHaveLength(0);
+
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+
+      expect(removals()).toEqual([
+        ["verify-remove", { token: "FLEETYARDS-ABCDEFGHIJ" }],
+      ]);
+    });
+
+    it("shows a failed check next to the extension, not under the steps", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({
+        status: "token_missing",
+        nextCheckAt: new Date(Date.now() + 60_000).toISOString(),
+      });
+      await flushPromises();
+
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-status"]')
+          .text(),
+      ).toContain("not in your bio");
+      expect(
+        wrapper.find('[data-test="user-rsi-verification-status"]').exists(),
+      ).toBe(false);
+    });
+
+    it("shows a manual check's result under the steps again", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+      await wrapper
+        .find('[data-test="user-rsi-verification-check"]')
+        .trigger("click");
+      await flushPromises();
+
+      expect(
+        wrapper.find('[data-test="user-rsi-verification-status"]').exists(),
+      ).toBe(true);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-status"]')
+          .exists(),
+      ).toBe(false);
+    });
+
+    it("leaves a token it did not add", async () => {
+      signedInAs("TestPilot");
+      extensionAnswers["verify-write"] = {
+        code: 200,
+        payload: { handle: "TestPilot", changed: false },
+      };
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+      wrapper.unmount();
+
+      expect(removals()).toHaveLength(0);
+    });
+
+    it("takes the token out when the modal closes mid-check", async () => {
+      signedInAs("TestPilot");
+      extensionAnswers["verify-write"] = {
+        code: 200,
+        payload: { handle: "TestPilot", changed: true },
+      };
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+      wrapper.unmount();
+
+      expect(removals()).toHaveLength(1);
+    });
+
+    it.each([
+      [413, "too long"],
+      [422, "formatting"],
+      [500, "could not update"],
+    ])(
+      "explains a %s from the extension without checking",
+      async (code, text) => {
+        signedInAs("TestPilot");
+        extensionAnswers["verify-write"] = { code };
+
+        const wrapper = await mountModal();
+        await flushPromises();
+        await verifyButton(wrapper).trigger("click");
+        await flushPromises();
+
+        expect(
+          wrapper
+            .find('[data-test="user-rsi-verification-extension-error"]')
+            .text(),
+        ).toContain(text);
+        expect(checkHandle).not.toHaveBeenCalled();
+      },
+    );
+
+    it("keeps the token while a queued check outlasts the cooldown", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      verification.value = unverified({
+        status: "pending",
+        nextCheckAt: new Date(Date.now() - 1000).toISOString(),
+      });
+      await flushPromises();
+
+      expect(removals()).toHaveLength(0);
+    });
+
+    it("takes the token out when the modal closed during the write", async () => {
+      signedInAs("TestPilot");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+
+      let answerWrite: (answer: unknown) => void = () => {};
+      extensionRequest.mockImplementationOnce(
+        () => new Promise((resolve) => (answerWrite = resolve)),
+      );
+      await verifyButton(wrapper).trigger("click");
+      wrapper.unmount();
+      answerWrite({
+        code: 200,
+        payload: { handle: "TestPilot", changed: true },
+      });
+      await flushPromises();
+
+      expect(removals()).toHaveLength(1);
+      expect(checkHandle).not.toHaveBeenCalled();
+    });
+
+    it("takes a write that never answered out on close", async () => {
+      signedInAs("TestPilot");
+      extensionAnswers["verify-write"] = new Error("no answer");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(checkHandle).not.toHaveBeenCalled();
+      expect(removals()).toHaveLength(0);
+
+      wrapper.unmount();
+
+      expect(removals()).toHaveLength(1);
+    });
+
+    it("undoes a write that landed in another RSI account", async () => {
+      signedInAs("TestPilot");
+      writes("AltAccount");
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(checkHandle).not.toHaveBeenCalled();
+      expect(removals()).toHaveLength(1);
+      expect(
+        wrapper
+          .find('[data-test="user-rsi-verification-extension-mismatch"]')
+          .text(),
+      ).toContain("AltAccount");
+    });
+
+    it("says so when the token could not be taken out", async () => {
+      signedInAs("TestPilot");
+      writes();
+      checkStartsJob();
+
+      const wrapper = await mountModal();
+      await flushPromises();
+      await verifyButton(wrapper).trigger("click");
+      await flushPromises();
+
+      extensionAnswers["verify-remove"] = { code: 500 };
+      verification.value = unverified({ status: "token_missing" });
+      await flushPromises();
+
+      expect(displayAlert).toHaveBeenCalledWith({
+        text: expect.stringContaining("Remove it there by hand"),
+      });
+    });
   });
 });
