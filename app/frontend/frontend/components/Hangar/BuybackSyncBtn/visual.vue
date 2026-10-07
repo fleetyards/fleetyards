@@ -6,11 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useVisualApiMock } from "@/frontend/composables/useVisualApiMock";
 import {
   type ExtensionStubConfig,
   signedInExtension,
@@ -26,16 +25,43 @@ type StartScreen = {
 };
 
 /*
- * The real modal, opened against a stubbed extension. The stub never answers
- * `syncBuyback`, so Start cannot reach the real endpoint: it waits, then times
- * out.
+ * The real modal, opened against a stubbed extension and a mocked API, so
+ * nothing reaches the extension, RSI or the API: Start reads one page of
+ * buy-backs, then RSI's end row, and the submission answers with a result.
  */
+const BUYBACK_PAGE = `<div class="content-wrapper pledges buy-back"><section class="available-pledges"><ul class="pledges">${[
+  ["1000001", "Standalone Ship - Cutlass Black"],
+  ["1000002", "Package - Mustang Alpha Starter Pack"],
+]
+  .map(
+    ([id, title]) =>
+      `<li><article class="pledge"><h1 title="${title}">${title}</h1><a class="holosmallbtn" href="/pledge/buyback/${id}">Buy Back</a></article></li>`,
+  )
+  .join("")}</ul></section></div>`;
+
+const END_PAGE =
+  '<div class="content-wrapper pledges buy-back"><section class="available-pledges"><ul class="pledges"><li class="no-buy-backs">No pledges available</li></ul></section></div>';
+
+useVisualApiMock([
+  {
+    method: "PUT",
+    path: /^\/hangar\/sync-rsi-buybacks$/,
+    respond: () => ({ total: 2, added: 2, removed: 0 }),
+  },
+]);
 const startScreens: StartScreen[] = [
   {
     key: "start",
     label: "Before start",
-    description: "A current extension, signed in to RSI: ready to sync.",
-    answers: signedInExtension("VisualTester"),
+    description:
+      "A current extension, signed in to RSI. Start runs a demo sync against stubbed buy-back pages.",
+    answers: {
+      ...signedInExtension("VisualTester"),
+      [FleetyardsSyncAction.SYNC_BUYBACK]: ({ page }) => ({
+        code: 200,
+        payload: page === 1 ? BUYBACK_PAGE : END_PAGE,
+      }),
+    },
   },
   {
     key: "signed-out",
@@ -75,15 +101,6 @@ const open = (screen: StartScreen) => {
 
 <template>
   <Heading :level="HeadingLevelEnum.H2">Buy-back sync modal states</Heading>
-  <Alert
-    v-if="extension.realExtension.value"
-    :variant="AlertVariantsEnum.WARNING"
-    data-test="visual-real-extension"
-  >
-    A FleetYards Sync extension is installed in this browser and answers next to
-    the stub, so the cards below show its answers. Disable it to see the stubbed
-    states.
-  </Alert>
   <div class="row">
     <div
       v-for="screen in startScreens"

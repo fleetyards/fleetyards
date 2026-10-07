@@ -6,14 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useVisualApiMock } from "@/frontend/composables/useVisualApiMock";
 import {
   type ExtensionStubConfig,
   signedInExtension,
@@ -168,12 +168,40 @@ const hangarStore = useHangarStore();
  * of these cards, and a copy of the markup here would drift from the one users
  * see.
  *
- * The extension is stubbed and answers only the probes the start screen waits
- * on. It deliberately never answers `sync`: pressing Start would then submit to
- * the real endpoint, and the cards below already cover every state that
- * follows.
+ * Nothing reaches the extension, RSI or the API: the stub serves one page of
+ * pledges (and the same page again, which reads as the end), and the mocked
+ * API takes the submission and reports it finished.
  */
 const extension = useVisualExtensionStub();
+
+const PLEDGES_PAGE = `<title>My Hangar</title><ul class="list-items">${[
+  ["1", "Ship", "Aurora MR"],
+  ["2", "Ship", "300i"],
+  ["3", "Skin", "300i - Ironclad Paint"],
+]
+  .map(
+    ([id, kind, title]) =>
+      `<li><input type="hidden" class="js-pledge-id" value="${id}"><div class="item"><div class="title">${title}</div><div class="kind">${kind}</div></div></li>`,
+  )
+  .join("")}</ul>`;
+
+const signedInWithHangar = (): ExtensionStubConfig => ({
+  ...signedInExtension("VisualTester"),
+  [FleetyardsSyncAction.SYNC]: { code: 200, payload: PLEDGES_PAGE },
+});
+
+useVisualApiMock([
+  {
+    method: "PUT",
+    path: /^\/hangar\/sync-rsi-hangar$/,
+    respond: () => ({ id: "visual-sync", status: "pending" }),
+  },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-hangar\/status$/,
+    respond: () => ({ status: "finished", result: successResult }),
+  },
+]);
 
 type StartScreen = {
   key: string;
@@ -188,9 +216,9 @@ const startScreens: StartScreen[] = [
     key: "start",
     label: "Before start",
     description:
-      "Signed in to RSI: target group, bundled snub craft and the unmatched ships option. Start does nothing here.",
+      "Signed in to RSI: target group, bundled snub craft and the unmatched ships option. Start runs a demo sync against a stubbed hangar.",
     extensionReady: true,
-    answers: signedInExtension("VisualTester"),
+    answers: signedInWithHangar(),
   },
   {
     key: "signed-out",
@@ -240,15 +268,6 @@ const openState = (state: State) => {
 
 <template>
   <Heading :level="HeadingLevelEnum.H2">Sync modal states</Heading>
-  <Alert
-    v-if="extension.realExtension.value"
-    :variant="AlertVariantsEnum.WARNING"
-    data-test="visual-real-extension"
-  >
-    A FleetYards Sync extension is installed in this browser and answers next to
-    the stub, so the cards below show its answers. Disable it to see the stubbed
-    states.
-  </Alert>
   <p>
     Each button opens the real <code>SyncResultPanel</code> wrapped in an
     <code>AppModal</code> with mocked input — same layout as production.
