@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_07_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -303,6 +303,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_130000) do
     t.integer "upgrade_to_sku_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "available", default: true, null: false
+    t.decimal "price", precision: 15, scale: 2
+    t.string "price_currency"
+    t.integer "insurance_months"
+    t.boolean "lifetime_insurance", default: false, null: false
+    t.datetime "details_synced_at"
     t.index ["user_id", "rsi_pledge_id"], name: "index_buyback_pledges_on_user_id_and_rsi_pledge_id", unique: true
   end
 

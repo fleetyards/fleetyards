@@ -5,10 +5,16 @@
 # Table name: buyback_pledges
 #
 #  id                   :uuid             not null, primary key
+#  available            :boolean          default(TRUE), not null
 #  contained            :string
+#  details_synced_at    :datetime
 #  image_url            :string
+#  insurance_months     :integer
 #  kind                 :string           not null
+#  lifetime_insurance   :boolean          default(FALSE), not null
 #  name                 :string           not null
+#  price                :decimal(15, 2)
+#  price_currency       :string
 #  reclaimed_on         :date
 #  upgraded             :boolean          default(FALSE), not null
 #  created_at           :datetime         not null
