@@ -111,6 +111,19 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("does not read a page with a kind it does not know", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge("101", `${item("Ship", "Cutter")}${item("Vehicle", "Ursa")}`),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.UNKNOWN_KINDS,
+    });
+  });
+
   it("still reads a pledge whose items are all of kinds it skips", () => {
     const page = extract(pledgesPage(pledge("101", item("Credits", "UEC"))));
 

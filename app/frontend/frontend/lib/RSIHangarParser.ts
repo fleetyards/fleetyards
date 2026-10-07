@@ -14,6 +14,18 @@ export type RSIHangarPage =
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
+const READ_KINDS = ["Ship", "Component", "Skin"];
+
+// Kinds that never become a vehicle. Any other label may be a ship RSI has
+// relabelled: skipped, it would drop out of the sync and the unmatched action
+// would act on it.
+const SKIPPED_KINDS = [
+  "Insurance",
+  "Credits",
+  "Hangar decoration",
+  "FPS Equipment",
+];
+
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
   "GreyCat Estate Geotack Planetary Beacon",
@@ -84,13 +96,22 @@ export class RSIHangarParser {
       };
     }
 
+    const known = [...READ_KINDS, ...SKIPPED_KINDS];
+
+    if (items.some((item) => !known.includes(this.itemKind(item)))) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.UNKNOWN_KINDS,
+      };
+    }
+
     return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {
-    const kind = item.getElementsByClassName("kind")[0]?.textContent;
+    const kind = this.itemKind(item);
 
-    if (!kind || !["Ship", "Component", "Skin"].includes(kind)) {
+    if (!READ_KINDS.includes(kind)) {
       return undefined;
     }
 
@@ -122,6 +143,10 @@ export class RSIHangarParser {
         undefined,
       type: kindOverride || (kind.toLowerCase() as RSIHangarItemKind),
     };
+  }
+
+  itemKind(item: Element): string {
+    return item.getElementsByClassName("kind")[0]?.textContent || "";
   }
 
   extractImage(item: Element): string | undefined {

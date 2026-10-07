@@ -35358,12 +35358,14 @@ components:
       - missing_list
       - missing_pledge_ids
       - missing_kinds
+      - unknown_kinds
       - missing_entries
       - unparsed_entries
       x-enumNames:
       - MISSING_LIST
       - MISSING_PLEDGE_IDS
       - MISSING_KINDS
+      - UNKNOWN_KINDS
       - MISSING_ENTRIES
       - UNPARSED_ENTRIES
       title: RsiPageCheckEnum

@@ -14,6 +14,7 @@ class RsiPageReport
     missing_list
     missing_pledge_ids
     missing_kinds
+    unknown_kinds
     missing_entries
     unparsed_entries
   ].freeze
