@@ -298,13 +298,10 @@ describe("HangarBuybackSyncModal", () => {
   it("reports a page it does not recognise", async () => {
     await startSync();
 
-    extensionReplies("syncBuyback", buybackPage("1"));
-    await flushPromises();
-    extensionReplies(
-      "syncBuyback",
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(
       buybackList(`<li><a href="/pledge/buyback/2">Buy Back</a></li>`),
     );
-    await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).toHaveBeenCalledWith({
@@ -318,14 +315,14 @@ describe("HangarBuybackSyncModal", () => {
   });
 
   it("reports nothing when the RSI session has run out", async () => {
-    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
     await startSync();
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
 
-    extensionReplies("syncBuyback", "<html><body></body></html>");
-    await flushPromises();
+    await answerNextPage("<html><body></body></html>");
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(rsiIdentity).toHaveBeenCalledTimes(2);
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {

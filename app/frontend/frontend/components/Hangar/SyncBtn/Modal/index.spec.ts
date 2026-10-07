@@ -22,9 +22,31 @@ const rsiIdentity = vi.fn(
   }),
 );
 
-vi.mock("@/frontend/composables/useSyncExtension", () => ({
-  useSyncExtension: () => ({ request: rsiIdentity, supports: vi.fn() }),
-}));
+// Only the identify check: the pages come through the same composable, and
+// their requests have to reach `postMessage`.
+vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import("@/frontend/composables/useSyncExtension")
+    >();
+
+  return {
+    useSyncExtension: () => {
+      const extension = actual.useSyncExtension();
+
+      return {
+        ...extension,
+        request: (action: string, ...rest: unknown[]) =>
+          action === "identify"
+            ? rsiIdentity()
+            : (extension.request as (...args: unknown[]) => unknown)(
+                action,
+                ...rest,
+              ),
+      };
+    },
+  };
+});
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -88,7 +110,11 @@ const extensionReplies = (action: string, payload?: unknown) => {
 // second sync carrying its own store's value.
 let mounted: ReturnType<typeof mount> | undefined;
 
-const mountModal = async (identity: unknown = { handle: "ACaptain" }) => {
+const mountModal = async (
+  identity: { handle?: string } = { handle: "ACaptain" },
+) => {
+  rsiIdentity.mockResolvedValueOnce({ code: 200, payload: identity });
+
   const wrapper = mount(Component, {
     global: {
       plugins: [createTestingPinia({ stubActions: false })],
@@ -108,9 +134,6 @@ const mountModal = async (identity: unknown = { handle: "ACaptain" }) => {
 
   const hangarStore = useHangarStore();
   hangarStore.extensionReady = true;
-  await flushPromises();
-
-  extensionReplies("identify", identity);
   await flushPromises();
 
   return { wrapper, hangarStore };
@@ -186,8 +209,8 @@ describe("HangarSyncModal", () => {
   // An expired RSI session answers with the sign-in page: nothing about RSI's
   // markup changed, so nobody is told it did.
   it("reports nothing when the RSI session has run out", async () => {
-    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
     const { wrapper } = await mountModal();
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
@@ -200,6 +223,7 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(rsiIdentity).toHaveBeenCalledTimes(2);
   });
 
   afterEach(() => {
