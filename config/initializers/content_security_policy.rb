@@ -64,7 +64,10 @@ Rails.application.configure do
 
     img_src = [
       :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint, legacy_cdn_endpoint,
-      Rails.configuration.rsi.endpoint, "https://img.youtube.com",
+      # RSI serves most pledge and buy-back images from its media host rather
+      # than from the site's own `/media` path.
+      Rails.configuration.rsi.endpoint, "https://media.robertsspaceindustries.com",
+      "https://img.youtube.com",
       "https://validator.swagger.io",
       s3_endpoint, storage_cdn_endpoint,
       "https://*.basemaps.cartocdn.com"
