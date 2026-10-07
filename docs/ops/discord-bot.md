@@ -48,13 +48,18 @@ Gateway sessions fight each other).
    Repeat with `--environment staging` and the default
    `bin/credentials --edit` for development. The `RAILS_MASTER_KEY`
    Kamal already injects unlocks them — no extra env-var plumbing.
-3. **Privileged Gateway Intents** — leave them all off. The portal only
-   exposes the privileged intents (Presence, Server Members, Message
-   Content). The bot needs `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both
-   non-privileged — those don't appear in the portal at all and are
-   requested from `bin/discord-bot` via
-   `intents: %i[servers server_scheduled_events]`. No portal action
-   needed for them.
+3. **Privileged Gateway Intents** — leave Presence and Message Content
+   off. RSVPs need only `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both
+   non-privileged, so they don't appear in the portal at all.
+
+   **Server Members** is optional. With it, a fleet's Discord join role
+   takes effect the moment a player gains or loses it. Without it, the
+   daily `Discord::SyncJoinRolesDispatchJob` applies role changes, so
+   they can take up to a day. To turn it on, enable it here first, then
+   set `DISCORD_SERVER_MEMBERS_INTENT: "true"` in the `discord_bot`
+   role's `env.clear` (see Deploying). Do these two steps in that
+   order. If the bot requests the intent before the portal grants it,
+   the Gateway refuses the whole connection, and RSVPs stop as well.
 4. Toggle **Public Bot** off so it can't be added to random servers.
 5. Sidebar → **Installation** → **Install Link** → **Discord Provided
    Link**. Default Install Settings:
@@ -130,6 +135,9 @@ Already wired in `config/deploy.yml`. The `discord_bot` role:
   rejects the second Gateway connection per application and the bot
   silently restarts in a tight loop.
 - `DISCORD_BOT_TOKEN` flows through `env.secret`.
+- Requests the Server Members intent only when
+  `DISCORD_SERVER_MEMBERS_INTENT=true`. It is unset by default; see
+  step 3 of the application setup before setting it.
 
 Deploy as usual:
 
@@ -196,6 +204,11 @@ The job retries 3 times via Sidekiq `retry: 3`.
 fight for the Gateway session.
 
 **RSVPs don't reach FY.** In order: bot logs (`kamal app logs --roles=discord_bot --follow`), then check that the RSVPing user has Discord linked on FY (`OmniauthConnection`), then check that they're an accepted member of the fleet. The handler skips silently for any missing prerequisite — log line tells you which.
+
+**A join role takes a day to apply.** The bot runs without the Server
+Members intent, so no `GUILD_MEMBER_UPDATE` arrives and only the daily
+sync applies role changes. Enable it as described in step 3 of the
+application setup.
 
 **Token rotated, urgent.** Update the 1Password entry, run
 `kamal env push --roles=discord_bot` to re-deploy just the env, then
