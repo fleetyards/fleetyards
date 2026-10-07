@@ -186,13 +186,18 @@ watch(
 
 const extension = useSyncExtension();
 
+// Only the latest check answers: retry can be pressed while one is out.
+let identityCheck = 0;
+
 const checkRSIIdentity = async () => {
+  const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
   const identity = await extension
     .request(FleetyardsSyncAction.IDENTIFY)
     .catch(() => undefined);
+  if (current !== identityCheck) return;
   const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
 
   loadingIdentity.value = false;

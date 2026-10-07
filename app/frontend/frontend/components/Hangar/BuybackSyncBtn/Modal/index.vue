@@ -119,6 +119,8 @@ const onExtensionMessage = (event: FleetyardsSyncEvent) => {
 
 const extension = useSyncExtension();
 
+let unmounted = false;
+
 const checkExtension = async () => {
   const health = await extension.health();
 
@@ -126,7 +128,7 @@ const checkExtension = async () => {
   extensionInfo.value =
     (health?.payload as FleetyardsSyncHealthPayload | undefined) || {};
 
-  if (extensionReady.value && extensionSupportsBuybacks.value) {
+  if (!unmounted && extensionReady.value && extensionSupportsBuybacks.value) {
     await checkRSIIdentity();
   }
 };
@@ -136,8 +138,6 @@ onMounted(() => {
 
   void checkExtension();
 });
-
-let unmounted = false;
 
 onBeforeUnmount(() => {
   unmounted = true;
@@ -174,13 +174,18 @@ const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
   }
 };
 
+// Only the latest check answers: retry can be pressed while one is out.
+let identityCheck = 0;
+
 const checkRSIIdentity = async () => {
+  const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
 
   const identity = await extension
     .request(FleetyardsSyncAction.IDENTIFY)
     .catch(() => undefined);
+  if (unmounted || current !== identityCheck) return;
   const handle = (identity?.payload as FleetyardsSyncSessionPayload)?.handle;
 
   loadingIdentity.value = false;

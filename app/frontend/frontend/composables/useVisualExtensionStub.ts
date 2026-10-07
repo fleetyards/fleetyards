@@ -46,6 +46,9 @@ export const signedOutExtension = (): ExtensionStubConfig => ({
 export const useVisualExtensionStub = () => {
   let config: ExtensionStubConfig = {};
 
+  // No-answer timers, so a card left behind cannot reject after the page.
+  const timers = new Set<ReturnType<typeof setTimeout>>();
+
   const realExtension = ref(false);
 
   const answer = (action: FleetyardsSyncAction) => {
@@ -60,11 +63,15 @@ export const useVisualExtensionStub = () => {
       return;
     }
 
+    if (event.source !== window) return;
     if (event.data?.direction !== FleetyardsSyncDirection.FROM) return;
 
-    const { action } = JSON.parse(event.data.message) as {
-      action: FleetyardsSyncAction;
-    };
+    let action: FleetyardsSyncAction;
+    try {
+      action = JSON.parse(event.data.message).action;
+    } catch {
+      return;
+    }
     const reply = answer(action);
     if (!reply) return;
 
@@ -88,7 +95,11 @@ export const useVisualExtensionStub = () => {
           if (reply) {
             resolve(reply as FleetyardsSyncMessage);
           } else {
-            setTimeout(() => reject(new Error("no answer")), timeout);
+            const timer = setTimeout(() => {
+              timers.delete(timer);
+              reject(new Error("no answer"));
+            }, timeout);
+            timers.add(timer);
           }
         }),
     );
@@ -106,6 +117,8 @@ export const useVisualExtensionStub = () => {
   onBeforeUnmount(() => {
     window.removeEventListener("message", onMessage);
     overrideSyncExtension(undefined);
+    timers.forEach(clearTimeout);
+    timers.clear();
   });
 
   return {
