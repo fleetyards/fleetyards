@@ -226,7 +226,7 @@ module Discord
       private def price(value)
         return if value.blank?
 
-        "#{number_with_delimiter(number_with_precision(value, precision: 2, strip_insignificant_zeros: true))} aUEC"
+        "#{number_with_precision(value, precision: 2, strip_insignificant_zeros: true, delimiter: I18n.t("number.format.delimiter"))} aUEC"
       end
 
       # Hours at most: a recipe takes minutes, and Duration's own parts would

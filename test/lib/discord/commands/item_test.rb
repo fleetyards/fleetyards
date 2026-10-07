@@ -27,6 +27,15 @@ module Discord
         assert_equal "1,234 aUEC", fields(payload)[I18n.t("discord.commands.item.fields.sell")]
       end
 
+      test "groups the thousands of a price the way the locale writes them" do
+        commodity = create(:commodity, name: "Quantainium")
+        create(:item_price, item: commodity, price_type: :sell, price: 1234567.5)
+
+        price = I18n.with_locale(:de) { fields(call("Quantainium"))[I18n.t("discord.commands.item.fields.buy", locale: :de)] }
+
+        assert_equal "1.234.567,5 aUEC", price
+      end
+
       test "carries no flags, since a follow-up cannot set them" do
         create(:commodity, name: "Quantainium")
 
