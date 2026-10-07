@@ -23,24 +23,25 @@ module Discord
       # Admitting everyone who already holds a newly picked role would bury
       # the officers in notifications; anyone the daily run admits is news.
       @quiet = reset
+      @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
 
       seen = apply_guild_members(join_role)
       return if seen.nil?
 
       # Someone who unlinked Discord is not seen either, but nothing says they
       # lost the role.
-      fleet.fleet_discord_role_holders
-        .where.not(user_id: seen)
-        .where(user_id: OmniauthConnection.discord.select(:user_id))
+      gone = OmniauthConnection.discord
+        .where(user_id: @held - seen)
         .includes(:user)
-        .find_each { |holder| join_role.apply(holder.user, []) }
+        .group_by(&:uid)
+      gone.each { |uid, connections| apply(join_role, uid, connections.map(&:user)) }
     end
 
     # Returns the ids of the linked users found in the guild, or nil when the
     # guild could not be read to the end -- a partial list must not read as
     # everyone else having left.
     private def apply_guild_members(join_role)
-      seen = []
+      seen = Set.new
       after = nil
 
       loop do
@@ -49,9 +50,11 @@ module Discord
 
         roles_by_uid = page.to_h { |member| [member.dig("user", "id"), Array(member["roles"])] }
 
-        linked_users(roles_by_uid.keys).each do |user, uid|
-          seen << user.id
-          join_role.apply(user, roles_by_uid[uid], quiet: @quiet)
+        linked_users(roles_by_uid.keys).each do |uid, users|
+          seen.merge(users.map(&:id))
+          holds = roles_by_uid[uid].include?(join_role.role_id)
+          changed = users.reject { |user| @held.include?(user.id) == holds }
+          apply(join_role, uid, changed) if changed.any?
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE
@@ -65,8 +68,14 @@ module Discord
       nil
     end
 
+    # The page is only a hint of who changed: by the time it is applied an
+    # update may have handled the member, so their roles are read again.
+    private def apply(join_role, uid, users)
+      JoinRole.apply_current([join_role], users, uid, api:, quiet: @quiet)
+    end
+
     private def linked_users(uids)
-      OmniauthConnection.discord.where(uid: uids).includes(:user).map { |connection| [connection.user, connection.uid] }
+      OmniauthConnection.discord.where(uid: uids).includes(:user).group_by(&:uid).transform_values { |connections| connections.map(&:user) }
     end
 
     private def api

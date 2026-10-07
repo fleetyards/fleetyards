@@ -26,28 +26,53 @@ module Discord
       @fleet.fleet_memberships.kept.find_by(user: @user)
     end
 
-    test "a player holding the role is seen as holding it" do
+    def ask_to_join(user = @user)
+      @fleet.fleet_memberships.create!(user:, fleet_role: @fleet.default_member_role).tap do |asking|
+        join_role.request_or_join(asking)
+      end
+    end
+
+    test "a player asking to join while holding the role is admitted" do
       @api.stubs(:get_guild_member).with(GUILD, "discord-uid-1").returns({"roles" => [OTHER_ROLE, JOIN_ROLE]})
 
-      assert join_role.held_by?(@user)
+      asking = ask_to_join
+
+      assert_predicate asking.reload, :accepted?
+      assert_predicate asking, :discord_role_granted?
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
-    test "a player Discord cannot find does not hold the role" do
+    test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, "Unknown Member"))
 
-      refute join_role.held_by?(@user)
+      assert_predicate ask_to_join.reload, :requested?
     end
 
-    test "a player Discord does not answer for in time does not hold the role" do
+    test "a player Discord does not answer for in time gets a request" do
       @api.stubs(:get_guild_member).raises(Faraday::TimeoutError)
 
-      refute join_role.held_by?(@user)
+      assert_predicate ask_to_join.reload, :requested?
     end
 
-    test "a player without a linked Discord account does not hold the role" do
+    test "a player without a linked Discord account gets a request" do
       @api.expects(:get_guild_member).never
 
-      refute join_role.held_by?(create(:user))
+      assert_predicate ask_to_join(create(:user)).reload, :requested?
+    end
+
+    test "a player whose role update holds the lock too long gets a request" do
+      JoinRole.stubs(:with_member_lock).returns(false)
+
+      assert_predicate ask_to_join.reload, :requested?
+    end
+
+    test "asking to join stands aside once an update has admitted the player" do
+      @api.expects(:get_guild_member).never
+      asking = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      asking.update!(aasm_state: "accepted")
+
+      assert join_role.request_or_join(asking)
+      assert_predicate asking, :accepted?
     end
 
     test "gaining the role makes the player a member with the default role" do
@@ -82,11 +107,32 @@ module Discord
       refute_predicate invitation, :discord_role_granted?
     end
 
-    test "a player mid-way through asking to join is tried again on the next update" do
-      @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+    test "gaining the role finishes an abandoned request to join" do
+      abandoned = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
 
       join_role.apply(@user, [JOIN_ROLE])
 
+      assert_predicate abandoned.reload, :accepted?
+      assert_predicate abandoned, :discord_role_granted?
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "a join that fails leaves no membership behind and is tried again on the next update" do
+      FleetMembership.any_instance.stubs(:join!).returns(false)
+
+      join_role.apply(@user, [JOIN_ROLE])
+
+      assert_nil @fleet.fleet_memberships.with_discarded.find_by(user: @user)
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "gaining the role does not overrule an officer who declined the player" do
+      declined = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      declined.update!(aasm_state: "declined")
+
+      join_role.apply(@user, [JOIN_ROLE])
+
+      assert_predicate declined.reload, :declined?
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 

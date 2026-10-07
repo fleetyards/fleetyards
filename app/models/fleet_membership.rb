@@ -442,10 +442,7 @@ class FleetMembership < ApplicationRecord
   # What a player asking to join gets: a request, unless they hold the fleet's
   # join role in its Discord server.
   def request_or_join!
-    return request! unless ::Discord::JoinRole.new(fleet).held_by?(user)
-
-    self.discord_role_granted = true
-    join!.tap { |joined| FleetDiscordRoleHolder.remember(fleet, user) if joined }
+    ::Discord::JoinRole.new(fleet).request_or_join(self)
   end
 
   def on_join
