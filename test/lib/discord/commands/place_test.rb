@@ -169,6 +169,20 @@ module Discord
         assert_no_match(/ · #{Regexp.escape(I18n.t("discord.commands.types.location"))} · /, content)
       end
 
+      # A parent name long enough to leave no room for the name: the front of
+      # the detail gives way, and the key still ends the choice.
+      test "keeps the key when the detail alone nearly fills a choice" do
+        parent = create(:location, name: "A Moon Whose Name Is So Long That It Takes Up Nearly All Of The Room There Is", kind: "moon", parent: @hurston, system: @stanton)
+        create(:location, name: "Outpost 54", kind: "outpost", parent:, system: @stanton, sc_key: "Outpost54_Reyes")
+        create(:location, name: "Outpost 54", kind: "outpost", parent:, system: @stanton, sc_key: "Outpost54_Sloane")
+
+        names = ::Discord::Commands::Place.autocomplete("name", "outpost 54").pluck(:name)
+
+        names.each { |name| assert_operator ::Discord::MessageLength.of(name), :<=, 100 }
+        assert names.any? { |name| name.start_with?("Outpost 5") && name.end_with?(" · outpost54_reyes") }
+        assert names.any? { |name| name.end_with?(" · outpost54_sloane") }
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 

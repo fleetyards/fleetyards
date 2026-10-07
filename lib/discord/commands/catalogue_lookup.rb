@@ -21,8 +21,8 @@ module Discord
         "blueprint" => "nameCont"
       }.freeze
 
-      # Discord's cap on a choice's name.
-      CHOICE_LENGTH = 100
+      # What is left of a name when the detail after it runs long.
+      MIN_NAME_LENGTH = 10
 
       PAGES = {
         "component" => "/catalogue/components",
@@ -38,15 +38,26 @@ module Discord
 
       # A command offering one catalogue leaves its type off: every choice
       # would carry it, and it spends the 100 characters the detail telling two
-      # entries apart needs. A name too long for the rest is what gets cut, as
-      # the game key at the end is all that tells two carriers apart.
+      # entries apart needs.
       def self.choices(query, within:)
         candidates(query, within:).map do |candidate|
           rest = [(type_label(candidate.prefix) unless within.one?), candidate.detail].compact
-          budget = CHOICE_LENGTH - rest.sum { |part| part.length + 3 }
-          name = (budget >= 10) ? candidate.name.truncate(budget) : candidate.name
-          {name: [name, *rest].join(" · "), value: candidate.value}
+          {name: choice_name(candidate.name, rest), value: candidate.value}
         end
+      end
+
+      # The game key at the end is all that tells two carriers of a name apart,
+      # so the name is what gets cut -- and past a stub of it, the front of the
+      # detail.
+      def self.choice_name(name, rest)
+        max = Discord::MessageLength::CHOICE_MAX
+        suffix = rest.map { |part| " · #{part}" }.join
+        room = max - MIN_NAME_LENGTH
+        suffix = "…#{Discord::MessageLength.truncate(suffix.reverse, room - 1).reverse}" unless Discord::MessageLength.fits?(suffix, room)
+
+        room = max - Discord::MessageLength.of(suffix)
+        name = "#{Discord::MessageLength.truncate(name, room - 1)}…" unless Discord::MessageLength.fits?(name, room)
+        name + suffix
       end
 
       # Names that start with the query first, then shorter ones, as the

@@ -7,6 +7,9 @@ module Discord
   module MessageLength
     MAX = 2000
 
+    # An autocomplete choice's name and value.
+    CHOICE_MAX = 100
+
     def self.of(text)
       text.to_s.encode("UTF-16LE").bytesize / 2
     end
