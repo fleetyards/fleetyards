@@ -121,6 +121,7 @@ const internalHide = async () => {
       componentProps.value = {};
 
       emit("modal-closed");
+      comlink.emit("modal-closed");
     }, 300);
   });
 };

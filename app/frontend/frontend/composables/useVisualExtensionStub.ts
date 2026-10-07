@@ -8,9 +8,36 @@ import {
 } from "@/frontend/composables/useSyncExtension";
 import { useComlink } from "@/shared/composables/useComlink";
 
-// Longer than any extension request waits, so nothing a closing demo still has
-// out can reach the real extension once the stub is gone.
-export const VISUAL_TEARDOWN_DELAY = 35_000;
+// For when the modal never reports back: closing takes a few hundred ms.
+const MODAL_CLOSE_FALLBACK = 1000;
+
+/*
+ * A visual page's modal lives above the page, so leaving the page leaves it
+ * open, and a demo it still runs would reach the real extension and API once
+ * the page's stubs were gone. Leaving closes it (forced: the sync modals are
+ * fixed) and tears down only once it is gone -- not later either: a stub still
+ * in place would answer a real sync started elsewhere with demo data.
+ */
+export const onVisualPageLeave = (teardown: () => void) => {
+  const comlink = useComlink();
+
+  onBeforeUnmount(() => {
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      unbind();
+      clearTimeout(fallback);
+      teardown();
+    };
+
+    const unbind = comlink.on("modal-closed", finish);
+    const fallback = setTimeout(finish, MODAL_CLOSE_FALLBACK);
+
+    comlink.emit("close-modal", true);
+  });
+};
 
 export type ExtensionStubAnswer = { code: number; payload?: unknown };
 
@@ -85,20 +112,12 @@ export const useVisualExtensionStub = () => {
       }
     });
 
-  const comlink = useComlink();
-
   onMounted(() => overrideSyncExtension(stub));
 
-  // The modal lives above the page, so leaving the page leaves it open: it is
-  // closed here, and the stub stays until anything it still had out is done.
-  onBeforeUnmount(() => {
-    comlink.emit("close-modal");
-
-    setTimeout(() => {
-      clearSyncExtensionOverride(stub);
-      timers.forEach(clearTimeout);
-      timers.clear();
-    }, VISUAL_TEARDOWN_DELAY);
+  onVisualPageLeave(() => {
+    clearSyncExtensionOverride(stub);
+    timers.forEach(clearTimeout);
+    timers.clear();
   });
 
   return {
