@@ -2,7 +2,9 @@
   "setup": [
     "./bin/setup"
   ],
-  "teardown": [],
+  "teardown": [
+    "./bin/teardown"
+  ],
   "run": [
     "./bin/dev"
   ]
