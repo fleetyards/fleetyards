@@ -47,6 +47,12 @@ module Discord
         assert_equal "Quantainium", call("Quantainium")[:embeds].first[:title]
       end
 
+      test "lists two terminals of one name and price once" do
+        2.times { price(:sell, 95, "TDD - Area18 - ArcCorp", terminal: create(:terminal, name: "TDD - Area18 - ArcCorp")) }
+
+        assert_equal ["• TDD · Area18 · ArcCorp · 95 aUEC"], field(call("Quantainium"), :buy).split("\n")
+      end
+
       test "links the shop's page where a shop is matched" do
         shop = Shop.create!(name: "Admin", location: create(:location, name: "Everus Harbor"))
         price(:sell, 95, "Admin - Everus Harbor - Hurston", shop: shop)

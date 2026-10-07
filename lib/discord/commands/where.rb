@@ -49,7 +49,9 @@ module Discord
       private def field(direction, prices, page)
         return nil if prices.empty?
 
-        lines = prices.map { |item_price| line(item_price) }
+        # Two terminals can share a name and a price, and a row says nothing
+        # that tells them apart.
+        lines = prices.map { |item_price| line(item_price) }.uniq
         shown = []
         length = 0
         lines.each_with_index do |line, index|
