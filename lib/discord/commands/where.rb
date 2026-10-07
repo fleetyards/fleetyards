@@ -26,8 +26,9 @@ module Discord
         prefix, found = resolve_item(query, within: CATALOGUES)
         return found if prefix.nil?
 
-        # Both directions off one query rather than one each.
-        found.item_prices.load
+        # Both directions off one query and one shop-link preload rather than
+        # one each.
+        ItemPrice.with_shop_links(found.item_prices.to_a)
         page = item_page_url(prefix, found.slug)
         fields = [
           field(:buy, found.sold_at, page),
