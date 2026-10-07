@@ -97,6 +97,13 @@ es:
         missing_query: Indica el nombre de una nave.
         more: '…y más. Prueba con un nombre más preciso.'
         not_found: 'No se ha encontrado ninguna nave para «%{query}».'
+      where:
+        fields:
+          buy: Comprar en
+          sell: Vender en
+        more: '…y %{count} más en [la página del objeto](%{url}).'
+        none: 'Ninguna tienda vende ni compra %{item} ahora mismo.'
+        title: 'Dónde conseguir %{item}'
     channel_capability:
       fleet: la flota
       officers: los oficiales

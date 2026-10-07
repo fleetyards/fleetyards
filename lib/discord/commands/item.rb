@@ -6,7 +6,6 @@ module Discord
     # someone asking for a P4-AR neither knows nor cares which catalogue we file
     # it under. ItemLookup resolves the name.
     class Item < Base
-      include ActionView::Helpers::NumberHelper
       include ItemLookup
 
       CATALOGUES = %w[component equipment commodity blueprint].freeze
@@ -93,7 +92,7 @@ module Discord
           I18n.t("discord.commands.item.fields.size") => record.size&.to_s,
           I18n.t("discord.commands.item.fields.grade") => record.grade_label,
           I18n.t("discord.commands.item.fields.class") => record.item_class_label,
-          I18n.t("discord.commands.item.fields.buy") => price(record.sell_price)
+          I18n.t("discord.commands.item.fields.buy") => uec(record.sell_price)
         }
       end
 
@@ -102,7 +101,7 @@ module Discord
           I18n.t("discord.commands.item.fields.size") => record.size&.to_s,
           I18n.t("discord.commands.item.fields.grade") => record.grade&.to_s,
           I18n.t("discord.commands.item.fields.slot") => record.slot_label,
-          I18n.t("discord.commands.item.fields.buy") => price(record.sell_price)
+          I18n.t("discord.commands.item.fields.buy") => uec(record.sell_price)
         }
       end
 
@@ -111,8 +110,8 @@ module Discord
       # they do on the site.
       private def commodity_fields(record)
         {
-          I18n.t("discord.commands.item.fields.buy") => price(record.sell_price),
-          I18n.t("discord.commands.item.fields.sell") => price(record.buy_price)
+          I18n.t("discord.commands.item.fields.buy") => uec(record.sell_price),
+          I18n.t("discord.commands.item.fields.sell") => uec(record.buy_price)
         }
       end
 
@@ -121,12 +120,6 @@ module Discord
           I18n.t("discord.commands.item.fields.craft_time") => craft_time(record.craft_time),
           I18n.t("discord.commands.item.fields.slots") => record.slot_count&.to_s
         }
-      end
-
-      private def price(value)
-        return if value.blank?
-
-        "#{number_with_precision(value, precision: 2, strip_insignificant_zeros: true, delimiter: I18n.t("number.format.delimiter"))} aUEC"
       end
 
       # Hours at most: a recipe takes minutes, and Duration's own parts would

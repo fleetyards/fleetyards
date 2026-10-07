@@ -216,6 +216,21 @@ module Discord
           ]
         },
         {
+          name: "where",
+          description: "Where to buy or sell a component, equipment or commodity",
+          handler: "Discord::Commands::Where",
+          options: [
+            {
+              name: "name",
+              description: "Item name",
+              type: STRING,
+              required: true,
+              max_length: 100,
+              autocomplete: true
+            }
+          ]
+        },
+        {
           name: "myhangar",
           description: "Show your own hangar, only to you",
           handler: "Discord::Commands::MyHangar",

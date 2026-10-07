@@ -97,6 +97,13 @@ fr:
         missing_query: "Merci d'indiquer le nom d'un vaisseau."
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
+      where:
+        fields:
+          buy: Acheter chez
+          sell: Vendre chez
+        more: '…et %{count} autres sur [la page de l’objet](%{url}).'
+        none: 'Aucune boutique ne vend ni n’achète %{item} en ce moment.'
+        title: 'Où trouver %{item}'
     channel_capability:
       fleet: la flotte
       officers: les officiers

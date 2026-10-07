@@ -128,6 +128,15 @@ module Discord
         message(content: content)
       end
 
+      # Prices are aUEC, the in-game currency the UEX snapshot quotes.
+      private def uec(value)
+        return if value.blank?
+
+        rounded = ActiveSupport::NumberHelper.number_to_rounded(value, precision: 2, strip_insignificant_zeros: true,
+          delimiter: I18n.t("number.format.delimiter"))
+        "#{rounded} aUEC"
+      end
+
       private def item_link(name, prefix, slug)
         "[#{Markdown.escape(name)}](#{item_page_url(prefix, slug)})"
       end

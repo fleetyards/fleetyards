@@ -97,6 +97,13 @@ de:
         missing_query: Bitte gib einen Schiffsnamen an.
         more: '…und weitere. Versuche einen genaueren Namen.'
         not_found: 'Kein Schiff für „%{query}“ gefunden.'
+      where:
+        fields:
+          buy: Kaufen bei
+          sell: Verkaufen bei
+        more: '…und %{count} weitere auf [der Seite des Gegenstands](%{url}).'
+        none: 'Gerade verkauft oder kauft kein Shop %{item}.'
+        title: 'Wo es %{item} gibt'
     channel_capability:
       fleet: die Flotte
       officers: die Offiziere
