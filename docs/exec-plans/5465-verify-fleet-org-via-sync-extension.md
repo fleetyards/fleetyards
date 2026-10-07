@@ -14,6 +14,7 @@ Each needs a capture from a signed-in RSI session with content rights on an org 
 
 - **Captured 2026-10-07:** the org content editor (`/en/orgs/<SID>/admin/content`) saves a field with `POST /api/orgs/saveDraft` `{"symbol": "<SID>", "<field>": "<whole text>"}` (seen with `history`), headers `x-rsi-token` and `x-requested-with: XMLHttpRequest`. One field per call, whole value. A draft does not go live by itself: `POST /api/orgs/publishDraft` `{"symbol": "<SID>"}` publishes it, and it takes no field, so it publishes **every** pending draft change of the org, including other officers' unpublished edits.
 - **Unpublished drafts** (decided in #5465: write only when nothing is pending). The extension reads the draft and the live text of every field, compares, and refuses (409) on any difference. RSI renders the draft at `/en/orgs/<SID>/admin/preview`; comparing it with the public `/orgs/<SID>` page works if both render the same way, but the raw text for the write still needs a source (see below).
+- **Raw read, found 2026-10-07:** `/en/orgs/<SID>/admin/content` renders the draft's raw text server-side in `<textarea name="introduction|history|manifesto|charter">` (markItUp editors; `introduction` has `maxlength="300"`, the others none), so the extension can read a field exactly before writing it, formatting included. The page shows no pending-draft marker (Save draft / Preview / Publish / Erase draft are always there), so the pending check compares `/admin/preview` with the public page, both with `FLEETYARDS-…` tokens removed.
 - **Org field save request.** URL and payload when RSI saves one org text field (introduction, history, manifesto or charter). Does it replace the whole field, like the bio's `UpdateField`? Which field should the token go in? The one least likely to be long and formatted is the obvious pick.
 - **Raw field read.** The request the org editor makes to load that field's current text. The public org page renders these fields as formatted HTML, so unlike the bio it cannot be read back exactly. Without a raw source the extension must not write (decision pending, see the issue).
 - **Edit rights, found so far:** without content rights, `/en/orgs/<SID>/admin/content` renders a client-side "Restricted area / Insufficient permissions" screen; the page's only data requests are `graphql` calls, and the HTTP status is 200 either way, but the server-rendered HTML already says so: its `<title>` starts with "Access denied". That is the extension's no-rights signal (403 to the site).
@@ -58,6 +59,7 @@ None expected: `FleetRsiVerification` already searches the whole org page.
 
 ## Discovery Log
 
+- **2026-10-07** Admin content page read with the officer session: raw draft text in four named textareas; no pending marker.
 - **2026-10-07** Draft preview at `/admin/preview`; no-rights admin page is a client-side restricted screen fed by GraphQL.
 - **2026-10-07** Org publish captured: `POST /api/orgs/publishDraft` with only the SID; publishes the whole draft.
 - **2026-10-07** Org save captured: `POST /api/orgs/saveDraft`, one field, whole value (see Open questions).
