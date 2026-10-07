@@ -59,6 +59,7 @@ None expected: `FleetRsiVerification` already searches the whole org page.
 
 ## Discovery Log
 
+- **2026-10-07** Built: extension org-verify actions (#165); `useExtensionVerification` + `ExtensionVerificationBlock` extracted from the handle modal and used by both modals; fleet visual page. Preview markup not yet seen with an officer session: the extension refuses (422) if it differs.
 - **2026-10-07** Admin content page read with the officer session: raw draft text in four named textareas; no pending marker.
 - **2026-10-07** Draft preview at `/admin/preview`; no-rights admin page is a client-side restricted screen fed by GraphQL.
 - **2026-10-07** Org publish captured: `POST /api/orgs/publishDraft` with only the SID; publishes the whole draft.
@@ -67,6 +68,7 @@ None expected: `FleetRsiVerification` already searches the whole org page.
 
 ## Progress
 
-- [ ] Open questions answered (captures)
-- [ ] Phase 1 — Extension
-- [ ] Phase 2 — Site
+- [x] Open questions answered (captures)
+- [x] Phase 1 — Extension (fleetyards/sync#165)
+- [x] Phase 2 — Site
+- [ ] End to end with an officer session (also confirms the preview page's markup)
