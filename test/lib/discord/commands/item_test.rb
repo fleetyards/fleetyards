@@ -1,0 +1,143 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
+module Discord
+  module Commands
+    class ItemTest < ActiveSupport::TestCase
+      def call(name)
+        ::Discord::Commands::Item.new(options: {"name" => name}).call
+      end
+
+      def fields(payload)
+        payload[:embeds].first[:fields].to_h { |field| [field[:name], field[:value]] }
+      end
+
+      test "answers a commodity with the prices the reader pays and gets" do
+        commodity = create(:commodity, name: "Quantainium", commodity_type: "metal")
+        create(:item_price, item: commodity, price_type: :sell, price: 88.5)
+        create(:item_price, item: commodity, price_type: :buy, price: 1234)
+
+        payload = call("Quantainium")
+        embed = payload[:embeds].first
+
+        assert_equal "Quantainium", embed[:title]
+        assert_includes embed[:url], "/catalogue/commodities/#{commodity.slug}/"
+        assert_equal "88.5 aUEC", fields(payload)[I18n.t("discord.commands.item.fields.buy")]
+        assert_equal "1,234 aUEC", fields(payload)[I18n.t("discord.commands.item.fields.sell")]
+      end
+
+      test "carries no flags, since a follow-up cannot set them" do
+        create(:commodity, name: "Quantainium")
+
+        assert_nil call("Quantainium")[:flags]
+      end
+
+      test "answers a component with its stored facts and its maker" do
+        manufacturer = create(:manufacturer, name: "Behring")
+        component = create(:component, name: "Mercury Drive", size: 2, grade: 1, manufacturer:)
+
+        payload = call(component.name)
+        embed = payload[:embeds].first
+
+        assert_includes embed[:url], "/catalogue/components/#{component.slug}/"
+        assert_equal "Behring", embed.dig(:footer, :text)
+        assert_equal "2", fields(payload)[I18n.t("discord.commands.item.fields.size")]
+        assert_equal "A", fields(payload)[I18n.t("discord.commands.item.fields.grade")]
+        assert_includes embed.dig(:author, :name), I18n.t("discord.commands.item.types.component")
+      end
+
+      test "answers equipment" do
+        equipment = create(:equipment, name: "P4-AR Rifle")
+
+        embed = call("P4-AR Rifle")[:embeds].first
+
+        assert_includes embed[:url], "/catalogue/equipment/#{equipment.slug}/"
+      end
+
+      # A blueprint shares the name of what it crafts, so a bare name keeps
+      # meaning the item; the suggestion carries the prefix.
+      test "answers a blueprint picked by its token, with what it makes and takes" do
+        component = create(:component, name: "Omnisky IX Cannon")
+        blueprint = create(:blueprint, name: "Omnisky IX Cannon", craftable: component, craft_time: 150)
+        commodity = create(:commodity, name: "Taranite")
+        create(:blueprint_cost_option, slot: create(:blueprint_cost_slot, build: blueprint.build), commodity:)
+
+        payload = call("blueprint:Omnisky IX Cannon")
+        embed = payload[:embeds].first
+
+        assert_includes embed[:url], "/catalogue/blueprints/#{blueprint.slug}/"
+        assert_includes embed[:description], "/catalogue/components/#{component.slug}/"
+        assert_includes embed[:description], "[Taranite]"
+        assert_equal "2m 30s", fields(payload)[I18n.t("discord.commands.item.fields.craft_time")]
+      end
+
+      test "a bare name shared with a blueprint answers the item" do
+        component = create(:component, name: "Omnisky IX Cannon")
+        create(:blueprint, name: "Omnisky IX Cannon", craftable: component)
+
+        assert_includes call("Omnisky IX Cannon")[:embeds].first[:url], "/catalogue/components/"
+      end
+
+      test "a partial name that one item matches answers it" do
+        create(:commodity, name: "Quantainium")
+
+        assert_equal "Quantainium", call("quantain")[:embeds].first[:title]
+      end
+
+      test "several partial matches are listed instead of guessed" do
+        create(:commodity, name: "Gold Ore")
+        create(:commodity, name: "Gold Bar")
+
+        payload = call("Gold")
+
+        assert_nil payload[:embeds]
+        assert_includes payload[:content], "Gold Ore"
+        assert_includes payload[:content], "Gold Bar"
+      end
+
+      test "says so when nothing matches" do
+        assert_equal I18n.t("discord.commands.item.not_found", query: "Nothing Here"), call("Nothing Here")[:content]
+      end
+
+      test "does not answer a ship, which has its own command" do
+        create(:model, name: "Carrack")
+
+        assert_nil call("ship:Carrack")[:embeds]
+      end
+
+      test "ignores what the catalogue no longer lists" do
+        create(:commodity, :without_build, name: "Retired Ore")
+
+        assert_nil call("Retired Ore")[:embeds]
+      end
+
+      test "suggests items with their type, the token as the value" do
+        component = create(:component, name: "Omnisky IX Cannon")
+        create(:blueprint, name: "Omnisky IX Cannon", craftable: component)
+
+        choices = ::Discord::Commands::Item.autocomplete("name", "omnisky")
+
+        assert_equal(
+          [
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.component")}", value: "Omnisky IX Cannon"},
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.blueprint")}", value: "blueprint:Omnisky IX Cannon"}
+          ].sort_by { |choice| choice[:value] },
+          choices.sort_by { |choice| choice[:value] }
+        )
+      end
+
+      test "suggests no ships, missions or places" do
+        create(:model, name: "Carrack")
+
+        assert_empty ::Discord::Commands::Item.autocomplete("name", "carr")
+      end
+
+      test "suggests nothing for another option" do
+        create(:commodity, name: "Quantainium")
+
+        assert_empty ::Discord::Commands::Item.autocomplete("other", "quan")
+      end
+    end
+  end
+end

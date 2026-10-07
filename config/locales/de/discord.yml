@@ -50,6 +50,27 @@ de:
         missing_query: Bitte gib einen Benutzernamen an.
         more: '…und %{count} weitere.'
         not_available: 'Kein öffentlicher Hangar für „%{username}“.'
+      item:
+        ambiguous: '%{count} Gegenstände passen zu „%{query}“:'
+        fields:
+          buy: Kaufen
+          class: Klasse
+          craft_time: Herstellungszeit
+          grade: Qualität
+          sell: Verkaufen
+          size: Größe
+          slot: Slot
+          slots: Slots
+        makes: 'Stellt %{item} her'
+        materials: 'Materialien: %{items}'
+        missing_query: Bitte gib einen Gegenstandsnamen an.
+        more: '…und weitere. Wähle einen aus den Vorschlägen.'
+        not_found: 'Kein Gegenstand gefunden für „%{query}“.'
+        types:
+          blueprint: Bauplan
+          commodity: Rohstoff
+          component: Komponente
+          equipment: Ausrüstung
       loaner:
         heading: '[%{ship}](%{url}) kommt mit %{count} Leihschiff(en):'
         missing_query: Bitte gib einen Schiffsnamen an.

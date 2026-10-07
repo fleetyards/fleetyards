@@ -189,6 +189,60 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
     assert_equal 5, response.parsed_body["type"]
   end
 
+  def autocomplete_payload(name: "item", options: [{"name" => "name", "type" => 3, "value" => "quanta", "focused" => true}])
+    command_payload(name: name, options: options).merge(type: 4)
+  end
+
+  # Discord has no deferred response for autocomplete: the choices are the
+  # response, so nothing may be handed to a job.
+  test "answers autocomplete inline with the handler's choices" do
+    commodity = create(:commodity, name: "Quantainium")
+
+    post_signed(autocomplete_payload)
+
+    assert_response :success
+    assert_equal 8, response.parsed_body["type"]
+    assert_equal [{"name" => "Quantainium · Rohstoff", "value" => commodity.name}],
+      response.parsed_body.dig("data", "choices")
+    assert_equal 0, Discord::CommandJob.jobs.size
+  end
+
+  test "answers autocomplete for a command without suggestions with no choices" do
+    post_signed(autocomplete_payload(name: "ship"))
+
+    assert_equal 8, response.parsed_body["type"]
+    assert_equal [], response.parsed_body.dig("data", "choices")
+  end
+
+  test "answers autocomplete for an unknown command with no choices" do
+    post_signed(autocomplete_payload(name: "nope"))
+
+    assert_equal [], response.parsed_body.dig("data", "choices")
+  end
+
+  # Discord rejects the whole answer over one choice too many or too long.
+  test "keeps an autocomplete answer within Discord's limits" do
+    choices = Array.new(30) { |index| {name: "#{"x" * 120} #{index}", value: "v#{index}"} } + [{name: "too long", value: "y" * 101}]
+    Discord::Commands::Item.stubs(:autocomplete).returns(choices)
+
+    post_signed(autocomplete_payload)
+
+    answered = response.parsed_body.dig("data", "choices")
+
+    assert_equal 25, answered.size
+    assert(answered.all? { |choice| choice["name"].length <= 100 && choice["value"].length <= 100 })
+  end
+
+  test "answers autocomplete with no choices when the handler raises" do
+    Discord::Commands::Item.stubs(:autocomplete).raises(StandardError, "boom")
+    Appsignal.expects(:report_error)
+
+    post_signed(autocomplete_payload)
+
+    assert_response :success
+    assert_equal [], response.parsed_body.dig("data", "choices")
+  end
+
   test "an unknown interaction type is answered without content" do
     post_signed({type: 99})
 

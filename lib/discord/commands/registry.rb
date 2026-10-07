@@ -39,6 +39,10 @@ module Discord
       # to `/fleet info` when the first subcommand arrived. Subcommand *groups*
       # (type 2, a level deeper) are not supported: nothing needs them, and the
       # controller reads exactly one level.
+      #
+      # An option with Discord's own `autocomplete: true` is answered by its
+      # handler's `.autocomplete(option, value)`, inline in the endpoint: Discord
+      # has no deferred response for suggestions.
       DEFINITIONS = [
         {
           name: "ship",
@@ -82,6 +86,20 @@ module Discord
               description: "Second ship",
               type: STRING,
               required: true
+            }
+          ]
+        },
+        {
+          name: "item",
+          description: "Look up a component, equipment, commodity or blueprint",
+          handler: "Discord::Commands::Item",
+          options: [
+            {
+              name: "name",
+              description: "Item name",
+              type: STRING,
+              required: true,
+              autocomplete: true
             }
           ]
         },

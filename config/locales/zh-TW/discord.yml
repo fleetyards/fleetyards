@@ -50,6 +50,27 @@ zh-TW:
         missing_query: 請提供使用者名稱。
         more: '…還有 %{count} 艘。'
         not_available: '找不到「%{username}」的公開機庫。'
+      item:
+        ambiguous: '有 %{count} 個物品符合「%{query}」：'
+        fields:
+          buy: 購買
+          class: 類別
+          craft_time: 製造時間
+          grade: 等級
+          sell: 出售
+          size: 尺寸
+          slot: 槽位
+          slots: 槽位數
+        makes: '製造 %{item}'
+        materials: '材料：%{items}'
+        missing_query: 請提供物品名稱。
+        more: '……還有更多。請從建議中選擇一個。'
+        not_found: '找不到「%{query}」對應的物品。'
+        types:
+          blueprint: 藍圖
+          commodity: 商品
+          component: 組件
+          equipment: 裝備
       loaner:
         heading: '[%{ship}](%{url}) 附帶 %{count} 艘替代船艦：'
         missing_query: 請提供船艦名稱。
