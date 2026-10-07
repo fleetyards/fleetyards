@@ -11,7 +11,7 @@ import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/in
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { extensionUrls } from "@/types/extension";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
@@ -373,18 +373,7 @@ const close = () => {
   <Modal :title="t('headlines.buybackSync')" :fixed="true" :loading="working">
     <div v-if="!extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-      <div class="sync-extension-platforms">
-        <a
-          v-for="link in extensionUrls"
-          :key="`extension-link-${link.platform}`"
-          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :href="link.url"
-          target="_blank"
-        >
-          <i :class="`fa-brands fa-${link.platform}`" />
-        </a>
-      </div>
+      <SyncExtensionLinks />
     </div>
     <div
       v-else-if="!extensionSupportsBuybacks"
@@ -395,18 +384,7 @@ const close = () => {
         {{ t("labels.buybackSync.extensionVersion") }}:
         {{ extensionInfo.version }}
       </p>
-      <div class="sync-extension-platforms">
-        <a
-          v-for="link in extensionUrls"
-          :key="`extension-update-link-${link.platform}`"
-          v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-          :href="link.url"
-          target="_blank"
-        >
-          <i :class="`fa-brands fa-${link.platform}`" />
-        </a>
-      </div>
+      <SyncExtensionLinks />
     </div>
     <div v-else-if="status === 'idle'">
       <SyncSessionStatus

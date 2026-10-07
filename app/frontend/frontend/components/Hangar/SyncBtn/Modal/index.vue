@@ -14,7 +14,7 @@ import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
-import { extensionUrls } from "@/types/extension";
+import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -455,18 +455,7 @@ const refreshPage = async () => {
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-        <div class="sync-extension-platforms">
-          <a
-            v-for="link in extensionUrls"
-            :key="`extension-link-${link.platform}`"
-            v-tooltip="t(`labels.syncExtension.platforms.${link.platform}`)"
-            :aria-label="t(`labels.syncExtension.platforms.${link.platform}`)"
-            :href="link.url"
-            target="_blank"
-          >
-            <i :class="`fa-brands fa-${link.platform}`" />
-          </a>
-        </div>
+        <SyncExtensionLinks />
       </div>
       <div v-else-if="!started">
         <SyncSessionStatus
