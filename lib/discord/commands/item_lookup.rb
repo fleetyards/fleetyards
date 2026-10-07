@@ -8,6 +8,8 @@ module Discord
     # is that token, so a picked one always resolves. A name several items
     # share, which no token can name, is offered per item by ItemVariants.
     module ItemLookup
+      extend ActiveSupport::Concern
+
       MAX_CANDIDATES = 5
 
       # The filter each catalogue page narrows its list by a name with.
@@ -57,6 +59,23 @@ module Discord
 
       def self.type_label(prefix)
         I18n.t("discord.commands.item.types.#{prefix}")
+      end
+
+      class_methods do
+        def autocomplete(option, value)
+          return [] unless option == "name"
+
+          ItemLookup.choices(value, within: self::CATALOGUES)
+        end
+      end
+
+      # The `name` option resolved within the command's catalogues, answering
+      # as #resolve_item does.
+      private def lookup_item
+        query = option("name").to_s.strip
+        return [nil, message(content: I18n.t("discord.commands.item.missing_query"))] if query.blank?
+
+        resolve_item(query, within: self.class::CATALOGUES)
       end
 
       # The picked variant, the token, then what the suggestions would offer

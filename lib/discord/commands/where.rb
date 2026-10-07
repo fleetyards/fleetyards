@@ -13,17 +13,8 @@ module Discord
       # an unanswered interaction stays on "thinking..." for good.
       FIELD_LIMIT = 1024
 
-      def self.autocomplete(option, value)
-        return [] unless option == "name"
-
-        ItemLookup.choices(value, within: CATALOGUES)
-      end
-
       def call
-        query = option("name").to_s.strip
-        return message(content: I18n.t("discord.commands.item.missing_query")) if query.blank?
-
-        prefix, found = resolve_item(query, within: CATALOGUES)
+        prefix, found = lookup_item
         return found if prefix.nil?
 
         # Both directions off one query and one shop-link preload rather than
