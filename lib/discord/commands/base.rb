@@ -19,7 +19,8 @@ module Discord
       EMBED_COLOR = 0x2d9cdb
 
       # Discord rejects the whole message over one embed field past this, and
-      # an unanswered interaction stays on "thinking..." for good.
+      # an unanswered interaction stays on "thinking..." for good. Counted as
+      # Discord counts, in UTF-16 units.
       FIELD_LIMIT = 1024
 
       # How much of a description an embed shows before pointing to the page.
@@ -66,8 +67,8 @@ module Discord
         length = 0
         lines.each_with_index do |line, index|
           rest = lines.size - index - 1
-          reserve = rest.positive? ? yield(rest).length + separator.length : 0
-          grown = length + (shown.empty? ? 0 : separator.length) + line.length
+          reserve = rest.positive? ? MessageLength.of(yield(rest) + separator) : 0
+          grown = length + (shown.empty? ? 0 : MessageLength.of(separator)) + MessageLength.of(line)
           break if grown + reserve > FIELD_LIMIT
 
           shown << line

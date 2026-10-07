@@ -102,6 +102,16 @@ module Discord
         assert_equal "#{::Dock.human_enum_name(:ship_size, "small")} ×2", fields(call("location:Everus Harbor"))[label(:landing_pads)]
       end
 
+      # An emoji is one character to Ruby and two UTF-16 units to Discord,
+      # which counts the latter.
+      test "keeps a shop list of emoji names within a field as Discord counts it" do
+        40.times { |index| shop("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Rocket Shop Number #{index}") }
+
+        value = fields(call("location:Everus Harbor"))[label(:shops)]
+
+        assert_operator ::Discord::MessageLength.of(value), :<=, 1024
+      end
+
       test "a place without facilities or shops answers without those fields" do
         assert_empty call("location:Everus Harbor")[:embeds].first.fetch(:fields, [])
       end
