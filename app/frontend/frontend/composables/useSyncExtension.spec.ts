@@ -89,7 +89,7 @@ describe("useSyncExtension", () => {
     stopAnswering = answerWith(() => ({
       action: "health",
       code: 200,
-      actions: ["health", "verify-write"],
+      payload: { version: "1.3.0", actions: ["health", "verify-write"] },
     }));
 
     const supported = useSyncExtension().supports(

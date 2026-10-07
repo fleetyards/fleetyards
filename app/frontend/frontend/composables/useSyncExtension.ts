@@ -1,6 +1,7 @@
 import {
   FleetyardsSyncAction,
   FleetyardsSyncDirection,
+  type FleetyardsSyncHealthPayload,
   type FleetyardsSyncMessage,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 
@@ -65,7 +66,9 @@ export const useSyncExtension = () => {
         HEALTH_TIMEOUT,
       );
 
-      return health.code === 200 && !!health.actions?.includes(action);
+      const actions = (health.payload as FleetyardsSyncHealthPayload)?.actions;
+
+      return health.code === 200 && !!actions?.includes(action);
     } catch {
       return false;
     }

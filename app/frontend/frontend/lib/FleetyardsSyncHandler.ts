@@ -32,7 +32,6 @@ export type FleetyardsSyncMessage = {
   action: FleetyardsSyncAction;
   code?: number;
   error?: string;
-  actions?: FleetyardsSyncAction[];
   payload?:
     | string
     | FleetyardsSyncSessionPayload
