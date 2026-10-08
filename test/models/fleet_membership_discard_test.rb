@@ -174,4 +174,14 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert_empty withdrawn
     assert_equal "confirmed", signup.reload.status
   end
+
+  test "a departed member's kept signup can still be corrected in its slot" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    running = create(:fleet_event, :open, fleet:, starts_at: 1.hour.ago, ends_at: 1.hour.from_now)
+    kept = signup_for(membership, running, status: "pending")
+
+    assert membership.discard
+    assert kept.update(status: "confirmed")
+  end
 end

@@ -167,11 +167,12 @@ class FleetEventSignup < ApplicationRecord
     errors.add(:fleet_membership_id, :not_a_member) if discarded_at.present?
   end
 
+  # Only taking a slot claims a seat, so an admin can still correct a kept
+  # signup of a departed member in place.
   private def claims_seat?
-    return true if new_record?
     return false if withdrawn?
 
-    will_save_change_to_status? || will_save_change_to_fleet_event_slot_id?
+    new_record? || (fleet_event_slot_id.present? && will_save_change_to_fleet_event_slot_id?)
   end
 
   private def stamp_status_timestamps
