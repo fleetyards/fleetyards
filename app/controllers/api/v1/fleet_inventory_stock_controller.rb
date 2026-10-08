@@ -27,12 +27,10 @@ module Api
 
       # Stock rules are granted per fleet role, not per inventory, so they are
       # asked of the fleet rather than of the inventory record.
-      private def authorize_stock_read!
-        authorize! with: FleetInventoryItemPolicy, to: :index?, context: {fleet: @fleet}
-      end
+      private def authorize_stock!(rule)
+        rule = :index? if rule == :show?
 
-      private def authorize_stock_write!
-        authorize! with: FleetInventoryItemPolicy, to: :update?, context: {fleet: @fleet}
+        authorize! with: FleetInventoryItemPolicy, to: rule, context: {fleet: @fleet}
       end
 
       private def validation_error_scope

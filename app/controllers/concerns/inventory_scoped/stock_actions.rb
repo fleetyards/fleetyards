@@ -8,17 +8,17 @@ module InventoryScoped
     include InventoryScoped
 
     def index
-      authorize_stock_read!
+      authorize_stock!(:show?)
 
       @stock = inventory.persisted? ? inventory.current_stock : []
     end
 
     def show
-      authorize_stock_read!
+      authorize_stock!(:show?)
     end
 
     def update
-      authorize_stock_write!
+      authorize_stock!(:update?)
 
       change = inventory.update_stock_item(@stock_item, stock_item_params)
 
@@ -35,17 +35,13 @@ module InventoryScoped
     end
 
     def destroy
-      authorize_stock_write!
+      authorize_stock!(:destroy?)
 
       inventory.destroy_stock_item(@stock_item)
     end
 
-    private def authorize_stock_read!
-      authorize! inventory, with: inventory_policy, to: :show?
-    end
-
-    private def authorize_stock_write!
-      authorize! inventory, with: inventory_policy, to: :update?
+    private def authorize_stock!(rule)
+      authorize! inventory, with: inventory_policy, to: rule
     end
 
     private def stock_item_params
