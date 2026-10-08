@@ -78,6 +78,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_discord_channels, path: "discord-channels", only: %i[index]
   resources :fleet_discord_roles, path: "discord-roles", only: %i[index]
+  resource :fleet_discord_role_mappings, path: "discord-role-mappings", only: %i[show update]
 
   resources :fleet_inventory_transfers, path: "inventory-transfers",
     controller: "fleet_inventory_transfers", only: %i[index show create] do

@@ -95,6 +95,8 @@ it:
       destroy: "Impossibile rimuovere la richiesta."
     fleet_squadron_roles:
       update: "Non è stato possibile rinominare il grado di squadrone."
+    fleet_discord_role_mappings:
+      update: "Non è stato possibile salvare l'associazione dei ruoli Discord."
     fleet_roles:
       update: "Non è stato possibile rinominare il ruolo."
     fleet_squadrons:

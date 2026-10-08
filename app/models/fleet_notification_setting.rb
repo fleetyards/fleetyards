@@ -55,9 +55,12 @@ class FleetNotificationSetting < ApplicationRecord
   validates(*DISCORD_ID_ATTRIBUTES, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT, message: :not_a_discord_id}, allow_nil: true)
 
   # @everyone has the guild's own id and every member holds it, so as the join
-  # role it would let the whole server in without a request.
+  # role it would let the whole server in without a request. Discord refuses
+  # to add or remove it, so as the member role every sync would fail.
   validate do
-    errors.add(:discord_join_role_id, :everyone_role) if discord_join_role_id.present? && discord_join_role_id == discord_guild_id
+    %i[discord_join_role_id discord_member_role_id].each do |attribute|
+      errors.add(attribute, :everyone_role) if self[attribute].present? && self[attribute] == discord_guild_id
+    end
   end
 
   DIGEST_TIME_FORMAT = /\A(?:[01]\d|2[0-3]):[0-5]\d\z/
@@ -192,6 +195,7 @@ class FleetNotificationSetting < ApplicationRecord
   private def backfill_discord_member_roles
     return if discord_guild_id.blank?
 
-    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id)
+    previous_role_id, = saved_change_to_discord_member_role_id
+    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id, nil, [previous_role_id].compact)
   end
 end

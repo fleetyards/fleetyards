@@ -6,6 +6,7 @@ import {
   FleetDiscordConnectionCodeEnum,
   type FilterOption,
   type Fleet,
+  type FleetDiscordRoleMappings,
   type FleetMember,
   type FleetNotificationSetting,
 } from "@/services/fyApi";
@@ -14,7 +15,10 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Component from "./discord.vue";
 
 let setting: FleetNotificationSetting;
+let roleMappings: FleetDiscordRoleMappings;
 const mutateAsync = vi.fn();
+const updateRoleMappings = vi.fn();
+const discordStatus = vi.fn();
 const displayAlert = vi.fn();
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
@@ -32,6 +36,13 @@ vi.mock("@/services/fyApi", async () => {
       refetch: vi.fn(),
     }),
     useUpdateFleetNotificationSetting: () => ({ mutateAsync }),
+    useFleetDiscordRoleMappings: () => ({
+      data: ref(roleMappings),
+      refetch: vi.fn(),
+    }),
+    useUpdateFleetDiscordRoleMappings: () => ({
+      mutateAsync: updateRoleMappings,
+    }),
     useFleetDiscordChannels: () => ({
       data: ref({ code: FleetDiscordConnectionCodeEnum.OK, items: [] }),
       isLoading: ref(false),
@@ -39,11 +50,14 @@ vi.mock("@/services/fyApi", async () => {
     useFleetDiscordRoles: () => ({
       data: ref({
         code: FleetDiscordConnectionCodeEnum.OK,
-        items: [{ id: "300000000000000001", name: "Member" }],
+        items: [
+          { id: "300000000000000001", name: "Member" },
+          { id: "300000000000000002", name: "Officer" },
+        ],
       }),
       isLoading: ref(false),
     }),
-    fleetNotificationDiscordStatus: vi.fn().mockResolvedValue({ ok: true }),
+    fleetNotificationDiscordStatus: () => discordStatus(),
   };
 });
 
@@ -51,6 +65,18 @@ let wrapper: VueWrapper | undefined;
 
 beforeEach(() => {
   mutateAsync.mockReset().mockResolvedValue({});
+  updateRoleMappings.mockReset().mockResolvedValue({});
+  discordStatus.mockReset().mockResolvedValue({ ok: true });
+  roleMappings = {
+    items: [
+      { fleetRoleId: "rank-officer", name: "Officer", discordRoleId: null },
+      {
+        fleetRoleId: "rank-member",
+        name: "Member",
+        discordRoleId: "300000000000000001",
+      },
+    ],
+  };
   displayAlert.mockReset();
   setting = {
     id: "setting",
@@ -81,6 +107,7 @@ const mount = async (membership = {} as FleetMember) => {
 
 type SelectProps = {
   name?: string;
+  modelValue?: unknown;
   options?: FilterOption[];
   disabled?: boolean;
 };
@@ -316,5 +343,141 @@ describe("FleetDiscordSettingsPage server change", () => {
     expect(data).not.toHaveProperty("discordJoinRoleId");
     expect(data).not.toHaveProperty("discordAnnouncementChannelId");
     expect(data).not.toHaveProperty("discordOfficersChannelId");
+  });
+});
+
+describe("FleetDiscordSettingsPage role mapping", () => {
+  const picker = (subject: VueWrapper, name: string) =>
+    subject
+      .findAllComponents(BaseSelect)
+      .find((select) => selectProps(select).name === name)!;
+
+  const pick = async (subject: VueWrapper, name: string, value: unknown) => {
+    picker(subject, name).vm.$emit("update:modelValue", value);
+    await flushPromises();
+  };
+
+  it("offers a role for the members and one per rank", async () => {
+    const subject = await mount();
+
+    expect(picker(subject, "discordMemberRoleId")).toBeDefined();
+    expect(picker(subject, "rankRole-rank-officer")).toBeDefined();
+    expect(picker(subject, "rankRole-rank-member")).toBeDefined();
+  });
+
+  it("saves the member role with the settings", async () => {
+    const subject = await mount();
+
+    await pick(subject, "discordMemberRoleId", "300000000000000002");
+
+    expect(await save(subject)).toMatchObject({
+      discordMemberRoleId: "300000000000000002",
+    });
+  });
+
+  it("sends only the ranks that changed, clearing with null", async () => {
+    const subject = await mount();
+
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+    await pick(subject, "rankRole-rank-member", null);
+    await save(subject);
+
+    expect(updateRoleMappings).toHaveBeenCalledWith({
+      fleetSlug: "maru",
+      data: {
+        mappings: [
+          { fleetRoleId: "rank-officer", discordRoleId: "300000000000000002" },
+          { fleetRoleId: "rank-member", discordRoleId: null },
+        ],
+      },
+    });
+  });
+
+  it("leaves the ranks alone when none changed", async () => {
+    const subject = await mount();
+
+    await save(subject);
+
+    expect(mutateAsync).toHaveBeenCalled();
+    expect(updateRoleMappings).not.toHaveBeenCalled();
+  });
+
+  it("holds back the roles until a new server is saved", async () => {
+    setting.discordGuildId = "100000000000000001";
+    const subject = await mount();
+
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+    await pick(subject, "discordMemberRoleId", "300000000000000002");
+    await subject
+      .find('input[name="discordGuildId"]')
+      .setValue("100000000000000002");
+    await flushPromises();
+
+    expect(selectProps(picker(subject, "rankRole-rank-officer")).disabled).toBe(
+      true,
+    );
+    expect(await save(subject)).not.toHaveProperty("discordMemberRoleId");
+    expect(updateRoleMappings).not.toHaveBeenCalled();
+  });
+
+  it("keeps the saved settings and the rank picks when the ranks are rejected", async () => {
+    const settingsSaves = mutateAsync.mock.calls.length;
+    updateRoleMappings.mockRejectedValue(new Error("rejected"));
+    const subject = await mount();
+
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+    await save(subject);
+
+    expect(mutateAsync.mock.calls.length).toBe(settingsSaves + 1);
+    expect(displayAlert).toHaveBeenCalled();
+    expect(discordStatus).toHaveBeenCalledTimes(2);
+    expect(
+      selectProps(picker(subject, "rankRole-rank-officer")).modelValue,
+    ).toBe("300000000000000002");
+  });
+
+  it("probes the bot again only once the ranks are saved", async () => {
+    let finishRanks = () => {};
+    updateRoleMappings.mockReturnValue(
+      new Promise<void>((resolve) => {
+        finishRanks = resolve;
+      }),
+    );
+    const subject = await mount();
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+
+    const saving = save(subject);
+    await flushPromises();
+    expect(discordStatus).toHaveBeenCalledTimes(1);
+
+    finishRanks();
+    await saving;
+    expect(discordStatus).toHaveBeenCalledTimes(2);
+  });
+
+  it("names the roles the bot cannot hand out", async () => {
+    discordStatus.mockResolvedValue({
+      ok: true,
+      rolesOk: false,
+      rolesCode: "role_above_bot",
+      rolesDetail: "Officer, Quartermaster",
+    });
+    const subject = await mount();
+
+    const problem = subject.find('[data-test="roles-problem"]');
+    expect(problem.text()).toContain("@Officer, @Quartermaster");
+  });
+
+  it("lists a role Discord no longer has by its id", async () => {
+    discordStatus.mockResolvedValue({
+      ok: true,
+      rolesOk: false,
+      rolesCode: "unknown_role",
+      rolesDetail: "300000000000000009",
+    });
+    const subject = await mount();
+
+    const problem = subject.find('[data-test="roles-problem"]');
+    expect(problem.text()).toContain(": 300000000000000009.");
   });
 });

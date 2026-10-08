@@ -106,6 +106,33 @@ module Discord
         assert_empty synced_membership_ids
       end
 
+      test "hands the retired roles to every sync" do
+        membership = accepted_member
+        clear_jobs
+
+        ::Discord::BackfillFleetMemberRolesJob.new.perform(@fleet.id, nil, ["300000000000000001"])
+
+        assert_equal [[membership.id, ["300000000000000001"]]], ::Discord::SyncMemberRolesJob.jobs.map { |job| job["args"] }
+      end
+
+      # They were synced while the role was no longer mapped, so nothing else
+      # would take it off them.
+      test "a retired role also reaches members who left or changed rank meanwhile, but no invitee" do
+        left = accepted_member
+        left.update!(discarded_at: Time.current)
+        moved = accepted_member
+        moved.update!(fleet_role: @fleet.fleet_roles.ranked.first)
+        stayed = accepted_member
+        accepted_member(linked: false)
+        invited = accepted_member
+        invited.update!(aasm_state: "invited")
+        clear_jobs
+
+        ::Discord::BackfillFleetMemberRolesJob.new.perform(@fleet.id, @role.id, ["300000000000000001"])
+
+        assert_equal [left.id, moved.id, stayed.id].sort, synced_membership_ids.sort
+      end
+
       # A large fleet is spread rather than fired at Discord at once.
       test "spreads the syncs over time" do
         (::Discord::BackfillFleetMemberRolesJob::PER_SECOND + 2).times { accepted_member }
@@ -133,9 +160,31 @@ module Discord
       end
 
       test "mapping a rank backfills that rank only" do
-        @role.update!(discord_role_id: "role-officer")
+        @role.update!(discord_role_id: "300000000000000001")
 
-        assert_equal [[@fleet.id, @role.id]], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"] }
+        assert_equal [[@fleet.id, @role.id, []]], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"] }
+      end
+
+      test "replacing or clearing a rank's mapping retires the previous role" do
+        @role.update!(discord_role_id: "300000000000000001")
+        clear_jobs
+
+        @role.update!(discord_role_id: "300000000000000002")
+        @role.update!(discord_role_id: nil)
+
+        assert_equal [
+          [@fleet.id, @role.id, ["300000000000000001"]],
+          [@fleet.id, @role.id, ["300000000000000002"]]
+        ], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"] }
+      end
+
+      test "clearing the member role retires it" do
+        @setting.update!(discord_member_role_id: "200000000000000001")
+        clear_jobs
+
+        @setting.update!(discord_member_role_id: nil)
+
+        assert_equal [[@fleet.id, nil, ["200000000000000001"]]], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"] }
       end
 
       test "linking a Discord account backfills that member" do

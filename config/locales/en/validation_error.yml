@@ -139,6 +139,8 @@ en:
       destroy: "Request could not be removed."
     fleet_squadron_roles:
       update: "Squadron rank could not be renamed."
+    fleet_discord_role_mappings:
+      update: "Discord role mapping could not be saved."
     fleet_roles:
       update: "Role could not be renamed."
     fleet_squadrons:

@@ -102,6 +102,8 @@ de:
       destroy: "Anfrage konnte nicht entfernt werden."
     fleet_squadron_roles:
       update: "Der Staffelrang konnte nicht umbenannt werden."
+    fleet_discord_role_mappings:
+      update: "Die Discord-Rollenzuordnung konnte nicht gespeichert werden."
     fleet_roles:
       update: "Die Rolle konnte nicht umbenannt werden."
     fleet_squadrons:

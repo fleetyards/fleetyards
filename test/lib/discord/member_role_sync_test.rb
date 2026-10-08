@@ -6,7 +6,7 @@ require "discord/member_role_sync"
 module Discord
   class MemberRoleSyncTest < ActiveSupport::TestCase
     MEMBER_ROLE = "200000000000000001"
-    RANK_ROLE = "role-officer"
+    RANK_ROLE = "300000000000000001"
     FOREIGN_ROLE = "role-they-earned-elsewhere"
 
     setup do
@@ -27,8 +27,8 @@ module Discord
       ::Discord::ApiClient.stubs(:configured?).returns(true)
     end
 
-    def sync
-      ::Discord::MemberRoleSync.new(@membership.reload, api: @api)
+    def sync(retired_role_ids: [])
+      ::Discord::MemberRoleSync.new(@membership.reload, retired_role_ids:, api: @api)
     end
 
     def member_has(*role_ids)
@@ -79,12 +79,12 @@ module Discord
 
     test "swaps the rank role when the member is promoted" do
       other = @fleet.fleet_roles.ranked.first
-      other.update!(discord_role_id: "role-admin")
+      other.update!(discord_role_id: "300000000000000002")
       @role.update!(discord_role_id: RANK_ROLE)
       @membership.update!(fleet_role: other)
 
       member_has(MEMBER_ROLE, RANK_ROLE)
-      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", "role-admin")
+      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", "300000000000000002")
       @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
       sync.run!
@@ -101,6 +101,40 @@ module Discord
 
       assert_equal [MEMBER_ROLE], result.removed
       assert_not_includes result.removed, FOREIGN_ROLE
+    end
+
+    test "takes off the role of a mapping that was cleared" do
+      member_has(MEMBER_ROLE, RANK_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
+
+      assert_equal [RANK_ROLE], sync(retired_role_ids: [RANK_ROLE]).run!.removed
+    end
+
+    test "takes off a retired role even when the fleet maps nothing any more" do
+      @setting.update!(discord_member_role_id: nil)
+      member_has(RANK_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
+
+      assert_equal [RANK_ROLE], sync(retired_role_ids: [RANK_ROLE]).run!.removed
+    end
+
+    test "keeps a retired role the member's rank still maps" do
+      @role.update!(discord_role_id: RANK_ROLE)
+      member_has(MEMBER_ROLE, RANK_ROLE)
+      @api.expects(:remove_guild_member_role).never
+
+      assert_empty sync(retired_role_ids: [RANK_ROLE]).run!.removed
+    end
+
+    test "a retired role is never added" do
+      member_has(MEMBER_ROLE)
+      @api.expects(:add_guild_member_role).never
+      @api.expects(:remove_guild_member_role).never
+
+      result = sync(retired_role_ids: [RANK_ROLE]).run!
+
+      assert_empty result.added
+      assert_empty result.removed
     end
 
     def revoke(uid = "discord-uid-old")
@@ -144,12 +178,12 @@ module Discord
 
     test "revoking keeps the roles another member on the same account is owed" do
       other_role = @fleet.fleet_roles.ranked.first
-      other_role.update!(discord_role_id: "role-admin")
+      other_role.update!(discord_role_id: "300000000000000002")
       @role.update!(discord_role_id: RANK_ROLE)
       second_member_on_the_same_account(role: other_role)
       @user.omniauth_connections.destroy_all
 
-      member_has(MEMBER_ROLE, RANK_ROLE, "role-admin")
+      member_has(MEMBER_ROLE, RANK_ROLE, "300000000000000002")
       @api.expects(:add_guild_member_role).never
       @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
