@@ -142,14 +142,17 @@ const editor = useEditor({
   contentType: "markdown",
   editable: !props.disabled,
   editorProps: {
-    attributes: {
+    // A function so setEditable, which re-reads the props, keeps
+    // aria-disabled in step with the disabled prop.
+    attributes: () => ({
       class: "base-markdown-editor__content markdown-content",
       role: "textbox",
       "aria-multiline": "true",
       "aria-labelledby": labelId,
       "aria-describedby": describedBy,
       "data-test": `input-${props.name}`,
-    },
+      ...(props.disabled ? { "aria-disabled": "true" } : {}),
+    }),
   },
   onCreate: ({ editor: instance }) => {
     loadedAs = toMarkdown(instance);

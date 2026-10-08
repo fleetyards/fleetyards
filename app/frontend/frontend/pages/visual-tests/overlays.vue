@@ -514,7 +514,7 @@ const demoStar = {
     The slot form, which is what <code>FormTabs</code> builds on: ids rather
     than routes, and a tab can be marked invalid or disabled.
   </p>
-  <TabNavView :active-key="activeAnchor">
+  <TabNavView tablist :active-key="activeAnchor">
     <template #nav>
       <TabNavViewAnchorItems
         :items="anchorItems"

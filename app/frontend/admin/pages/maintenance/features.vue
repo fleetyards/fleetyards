@@ -109,7 +109,7 @@ const daysOpen = (fullyOnSince?: string | null) => {
 
   <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
 
-  <TabNavView :active-key="activeTab">
+  <TabNavView tablist :active-key="activeTab">
     <template #nav>
       <TabNavViewAnchorItems
         :items="tabItems"
