@@ -116,4 +116,16 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
 
     assert_equal [signup], withdrawn
   end
+
+  test "a discarded membership cannot take a new seat" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    signup = build(:fleet_event_signup, fleet_event_slot: slot, fleet_membership: membership)
+    FleetMembership.where(id: membership.id).update_all(discarded_at: Time.current)
+
+    assert_not signup.save
+    assert signup.errors.added?(:fleet_membership_id, :not_a_member)
+  end
 end

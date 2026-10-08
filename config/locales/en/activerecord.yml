@@ -540,5 +540,6 @@ en:
           attributes:
             fleet_membership_id:
               already_signed_up: is already signed up to this slot
+              not_a_member: is no longer a member of this fleet
             fleet_event_slot_id:
               already_taken: is already taken by another member
