@@ -12,9 +12,7 @@ module Discord
     def perform(discord_uid, guild_id = nil)
       return unless ApiClient.configured?
 
-      users = User.joins(:omniauth_connections)
-        .where(omniauth_connections: {provider: OmniauthConnection.providers[:discord], uid: discord_uid})
-        .to_a
+      users = OmniauthConnection.discord_users(discord_uid).fetch(discord_uid, [])
       return if users.empty?
 
       unanswered = JoinRole.for_guild(guild_id || guild_ids).group_by(&:guild_id).reject do |_guild, join_roles|

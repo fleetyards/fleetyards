@@ -58,7 +58,7 @@ module Discord
 
         roles_by_uid = page.to_h { |member| [member.dig("user", "id"), Array(member["roles"])] }
 
-        linked_users(roles_by_uid.keys).each do |uid, users|
+        OmniauthConnection.discord_users(roles_by_uid.keys).each do |uid, users|
           seen.merge(users.map(&:id))
           holds = roles_by_uid[uid].include?(join_role.role_id)
           changed = users.reject { |user| @held.include?(user.id) == holds }
@@ -76,10 +76,6 @@ module Discord
     rescue ApiClient::Error, Faraday::Error => e
       Rails.logger.warn("[Discord::SyncFleetJoinRoleJob] fleet=#{join_role.fleet.id}: #{e.message}")
       nil
-    end
-
-    private def linked_users(uids)
-      OmniauthConnection.discord.where(uid: uids).includes(:user).group_by(&:uid).transform_values { |connections| connections.map(&:user) }
     end
 
     private def api

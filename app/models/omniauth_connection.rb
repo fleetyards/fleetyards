@@ -42,6 +42,11 @@ class OmniauthConnection < ApplicationRecord
   # reports a failed save back to the user.
   validates :uid, uniqueness: {scope: :provider}, if: :patreon?
 
+  # The users linked to each of these Discord accounts, by Discord user id.
+  def self.discord_users(uids)
+    discord.where(uid: uids).includes(:user).group_by(&:uid).transform_values { |connections| connections.map(&:user) }
+  end
+
   # Linking an account changes no membership, so without this a member who
   # links Discord after being accepted never receives the roles their fleets
   # already mapped.
