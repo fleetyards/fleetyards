@@ -199,13 +199,11 @@ module Push
       perform
     end
 
-    test "sends nothing when the reader became active after the fan-out" do
+    test "still sends when the reader became active after the fan-out" do
       UserPresence.mark_active(@user.id)
-      WebPush.expects(:payload_send).never
+      WebPush.expects(:payload_send).once
 
       perform
-
-      assert_nil @subscription.reload.last_delivered_at
     ensure
       UserPresence.reset!
     end

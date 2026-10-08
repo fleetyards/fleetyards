@@ -26,10 +26,10 @@ class UserPresence
   # Three beats inside the TTL.
   HEARTBEAT_INTERVAL = 30
 
-  # How long a tab the user was looking at keeps them "active". An open socket
-  # is not that: a forgotten background tab heartbeats all day. Long enough to
-  # cover glancing at another app while a sync runs, short enough that walking
-  # away hands notifications back to the phone within a couple of minutes.
+  # How long a tab the user was using keeps them "active" after its last
+  # report. An open socket is not that: a forgotten background tab heartbeats
+  # all day. It covers switching to another app while a sync runs; a tab that
+  # goes idle or closes clears it at once instead of waiting it out.
   ACTIVE_WINDOW = 120
 
   class << self
@@ -61,6 +61,12 @@ class UserPresence
     # connection scores; the key's own expiry only cleans up.
     def mark_active(user_id)
       write { redis.set(active_key(user_id), expires_at(ACTIVE_WINDOW), ex: ACTIVE_WINDOW) }
+    end
+
+    # A tab went idle or closed. Another device still in use reports itself
+    # again within its own interval.
+    def mark_inactive(user_id)
+      write { redis.del(active_key(user_id)) }
     end
 
     # False when Redis cannot answer, so an outage costs a redundant push
@@ -132,8 +138,7 @@ class UserPresence
     def reset!
       write do
         redis.del(connections_key, announced_key)
-        active_keys = redis.keys(active_key("*"))
-        redis.del(*active_keys) if active_keys.any?
+        redis.scan_each(match: active_key("*")) { |key| redis.del(key) }
       end
     end
 

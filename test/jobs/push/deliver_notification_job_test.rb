@@ -75,5 +75,16 @@ module Push
     ensure
       UserPresence.reset!
     end
+
+    test "still sends to an active reader who has the in-app channel off" do
+      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(app: false)
+      UserPresence.mark_active(@user.id)
+
+      perform
+
+      assert_equal @subscriptions.size, DeliverToSubscriptionJob.jobs.size
+    ensure
+      UserPresence.reset!
+    end
   end
 end

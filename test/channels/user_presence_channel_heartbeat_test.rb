@@ -70,4 +70,24 @@ class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
 
     assert UserPresence.active?(@user.id)
   end
+
+  test "an inactive report clears the user's window" do
+    stub_signed_in_connection
+    subscribe
+    perform :active
+
+    perform :inactive
+
+    refute UserPresence.active?(@user.id)
+  end
+
+  test "unsubscribing clears the user's window" do
+    stub_signed_in_connection
+    subscribe
+    perform :active
+
+    unsubscribe
+
+    refute UserPresence.active?(@user.id)
+  end
 end

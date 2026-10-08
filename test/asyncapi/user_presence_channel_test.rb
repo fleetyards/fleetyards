@@ -15,9 +15,9 @@ class UserPresenceChannelTest < AsyncapiTestCase
       message ::Cable::V1::Schemas::UserPresenceMessage
     end
 
-    publish "A tab of the user's is visible, which holds back push notifications on all of their devices" do
-      operationId "sendUserPresenceActive"
-      message ::Cable::V1::Schemas::UserPresenceActiveMessage
+    publish "A tab of the user's is in use, or no longer is; while one is, push notifications are held back on all of their devices" do
+      operationId "sendUserPresenceActivity"
+      message ::Cable::V1::Schemas::UserPresenceActivityMessage
     end
   end
 

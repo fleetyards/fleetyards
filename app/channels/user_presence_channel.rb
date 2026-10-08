@@ -20,16 +20,26 @@ class UserPresenceChannel < ApplicationCable::Channel
     stream_for current_user
   end
 
+  # A closed tab or a shut lid sends nothing else, and until the window ran out
+  # the notifications it would have toasted would reach nobody.
   def unsubscribed
     stop_all_streams
+
+    UserPresence.mark_inactive(current_user.id) if current_user.present?
   end
 
-  # Sent by the client while one of its tabs is visible. The server heartbeat
-  # cannot tell that apart from a tab left open in the background.
+  # Sent by the client while one of its tabs is visible and in use. The server
+  # heartbeat cannot tell that apart from a tab left open in the background.
   def active
     return if current_user.blank?
 
     UserPresence.mark_active(current_user.id)
+  end
+
+  def inactive
+    return if current_user.blank?
+
+    UserPresence.mark_inactive(current_user.id)
   end
 
   private def heartbeat

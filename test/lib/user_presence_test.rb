@@ -189,4 +189,11 @@ class UserPresenceTest < ActiveSupport::TestCase
 
     refute UserPresence.active?(@user)
   end
+
+  test "#mark_inactive ends the window at once" do
+    UserPresence.mark_active(@user)
+    UserPresence.mark_inactive(@user)
+
+    refute UserPresence.active?(@user)
+  end
 end
