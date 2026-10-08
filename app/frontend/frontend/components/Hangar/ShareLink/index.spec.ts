@@ -11,6 +11,7 @@ const createShare = vi.fn();
 const rotateShare = vi.fn();
 const destroyShare = vi.fn();
 const refetch = vi.fn();
+const loading = ref(false);
 
 const mutation = (mutateAsync: ReturnType<typeof vi.fn>) => ({
   mutateAsync,
@@ -23,7 +24,7 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
-    useMyHangarShare: () => ({ data: share, refetch, isPending: ref(false) }),
+    useMyHangarShare: () => ({ data: share, refetch, isPending: loading }),
     useCreateMyHangarShare: () => mutation(createShare),
     useRotateMyHangarShare: () => mutation(rotateShare),
     useDestroyMyHangarShare: () => mutation(destroyShare),
@@ -67,13 +68,25 @@ describe("HangarShareLink", () => {
 
     expect(
       (
-        wrapper.find('[data-test="hangar-share-url"]')
+        wrapper.find('[data-test="hangar-share-url"] input')
           .element as HTMLInputElement
       ).value,
     ).toBe(shareUrl);
     expect(wrapper.find('[data-test="hangar-share-enable"]').exists()).toBe(
       false,
     );
+  });
+
+  it("offers nothing to create while it is still loading", async () => {
+    share.value = undefined;
+    loading.value = true;
+    const wrapper = await mountWithDefaults(Component);
+
+    expect(wrapper.find('[data-test="hangar-share-enable"]').exists()).toBe(
+      false,
+    );
+
+    loading.value = false;
   });
 
   it("rotates and deletes the link after confirmation", async () => {
