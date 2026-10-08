@@ -500,12 +500,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
   end
 
   create_table "discord_member_reads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "discord_guild_id", null: false
+    t.uuid "fleet_id", null: false
     t.string "discord_user_id", null: false
     t.datetime "read_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["discord_guild_id", "discord_user_id"], name: "index_discord_member_reads_on_guild_and_user", unique: true
+    t.index ["fleet_id", "discord_user_id"], name: "index_discord_member_reads_on_fleet_id_and_discord_user_id", unique: true
   end
 
   create_table "dock_additions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2759,6 +2759,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
+  add_foreign_key "discord_member_reads", "fleets"
   add_foreign_key "dock_additions", "docks", on_delete: :cascade
   add_foreign_key "dock_additions", "models", on_delete: :cascade
   add_foreign_key "dock_capacities", "docks"

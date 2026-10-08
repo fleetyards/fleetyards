@@ -80,12 +80,15 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
-    test "asking to join leaves the guild's other fleets their sweep" do
+    test "asking to join records the read for its own fleet only" do
+      other = create(:fleet)
+      other.create_fleet_notification_setting!(discord_guild_id: GUILD, discord_join_role_id: OTHER_ROLE)
       @api.stubs(:get_guild_member).returns({"roles" => [JOIN_ROLE]})
 
       ask_to_join
 
-      refute DiscordMemberRead.exists?(discord_guild_id: GUILD, discord_user_id: "discord-uid-1")
+      assert DiscordMemberRead.exists?(fleet: @fleet, discord_user_id: "discord-uid-1")
+      refute DiscordMemberRead.exists?(fleet: other, discord_user_id: "discord-uid-1")
     end
 
     test "a quiet admission of an open request tells the player but leaves the members' views to the sweep" do
@@ -98,6 +101,15 @@ module Discord
 
       assert_predicate request.reload, :accepted?
       assert Notification.exists?(user: @user, notification_type: "fleet_request_accepted")
+    end
+
+    test "an older list does not undo what a newer one applied" do
+      join_role.apply(@user, [JOIN_ROLE])
+      JoinRole.apply_listed(join_role, [@user], "discord-uid-1", [OTHER_ROLE], read_at: 1.minute.ago)
+
+      JoinRole.apply_listed(join_role, [@user], "discord-uid-1", [JOIN_ROLE], read_at: 2.minutes.ago)
+
+      assert_nil membership
     end
 
     test "a player Discord cannot find gets a request" do

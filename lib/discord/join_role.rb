@@ -57,8 +57,10 @@ module Discord
         # read in between is newer than what this applied.
         read_at = Time.current
         role_ids = member_role_ids(api, guild_id, discord_uid)
-        join_roles.product(users).each { |join_role, user| join_role.apply(user, role_ids, quiet:) }
-        DiscordMemberRead.record(guild_id, discord_uid, at: read_at)
+        join_roles.each do |join_role|
+          users.each { |user| join_role.apply(user, role_ids, quiet:) }
+          DiscordMemberRead.record(join_role.fleet, discord_uid, at: read_at)
+        end
         true
       rescue ApiClient::Error, Faraday::Error => e
         Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{discord_uid}: #{e.message}")
@@ -67,13 +69,15 @@ module Discord
     end
 
     # Applies roles from a list of the whole guild read at `read_at`, unless
-    # the member's own roles were read and applied since: then the list is the
-    # older answer, and applying it could undo a role just gained or lost.
+    # the member was read and applied since -- alone, or by another sweep:
+    # then the list is the older answer, and applying it could undo a role
+    # just gained or lost.
     def self.apply_listed(join_role, users, discord_uid, role_ids, read_at:, quiet: false)
       with_member_lock(join_role.guild_id, discord_uid) do
-        next if DiscordMemberRead.newer_than?(join_role.guild_id, discord_uid, read_at)
+        next if DiscordMemberRead.newer_than?(join_role.fleet, discord_uid, read_at)
 
         users.each { |user| join_role.apply(user, role_ids, quiet:) }
+        DiscordMemberRead.record(join_role.fleet, discord_uid, at: read_at)
       end
     end
 
@@ -138,9 +142,10 @@ module Discord
         # An update for them may have handled it while this waited.
         next membership.accepted? unless membership.reload.kept? && membership.created?
 
-        # Not recorded as a read of the member: only this fleet's role is
-        # applied, and the guild's other fleets still need their sweep.
-        next true if Array(current_role_ids(uid)).include?(role_id) && join_through_role(membership)
+        read_at = Time.current
+        role_ids = current_role_ids(uid)
+        DiscordMemberRead.record(fleet, uid, at: read_at) unless role_ids.nil?
+        next true if Array(role_ids).include?(role_id) && join_through_role(membership)
 
         membership.request!
       end
