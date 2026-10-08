@@ -4,9 +4,10 @@ import { RsiPageStatus } from "./RsiPageStatus";
 import { RsiPageCheckEnum } from "@/services/fyApi";
 
 // The structure the parser reads off the pledges page; ids are made up.
-const pledge = (id: string, items: string) => `
+const pledge = (id: string, items: string, name = "") => `
 <li>
   <input type="hidden" class="js-pledge-id" value="${id}">
+  <input type="hidden" class="js-pledge-name" value="${name}">
   <div class="items">${items}</div>
 </li>`;
 
@@ -139,6 +140,54 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
+    });
+  });
+
+  it("reads a standalone ship pledge that holds its ship", () => {
+    const page = extract(
+      pledgesPage(
+        pledge("101", item("Ship", "Cutter"), "Standalone Ship - Cutter"),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [{ id: "101", name: "Cutter", type: "ship" }],
+    });
+  });
+
+  it("does not read a standalone ship pledge that holds no ship", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            '<div class="with-images"><div class="item"><div class="text"><div class="title">Cutter</div></div></div></div>',
+            "Standalone Ships - Cutter",
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
+    });
+  });
+
+  it("reads a hangar of upgrades only", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            '<div class="with-images"><div class="item"><div class="text"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div></div></div>',
+            "Upgrade - Clipper To S-65 Stingray",
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.PAGE,
+      pledges: [],
+      pledgeIds: ["101"],
     });
   });
 });

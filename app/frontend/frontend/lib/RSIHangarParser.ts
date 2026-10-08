@@ -58,6 +58,7 @@ export class RSIHangarParser {
 
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
+    let standaloneShipWithoutShip = false;
 
     entries.forEach((entry) => {
       const id = (
@@ -68,14 +69,18 @@ export class RSIHangarParser {
         pledgeIds.push(id);
       }
 
-      const items = entry.getElementsByClassName("item");
+      const items = Array.from(entry.getElementsByClassName("item"))
+        .map((item) => this.parseItem(id, item))
+        .filter((item) => item !== undefined);
 
-      Array.from(items).forEach((item) => {
-        const pledge = this.parseItem(id, item);
-        if (pledge) {
-          pledges.push(pledge);
-        }
-      });
+      if (
+        this.pledgeName(entry).startsWith("Standalone Ship") &&
+        !items.some((item) => item.type === "ship")
+      ) {
+        standaloneShipWithoutShip = true;
+      }
+
+      pledges.push(...items);
     });
 
     // Every pledge row, not just one: a row that no longer reads would drop
@@ -119,6 +124,15 @@ export class RSIHangarParser {
       };
     }
 
+    // Every standalone ship pledge holds its ship. One that reads none has
+    // lost both its kind and its manufacturer.
+    if (standaloneShipWithoutShip) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_KINDS,
+      };
+    }
+
     return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
@@ -157,6 +171,13 @@ export class RSIHangarParser {
         undefined,
       type: kindOverride || (kind.toLowerCase() as RSIHangarItemKind),
     };
+  }
+
+  pledgeName(entry: Element): string {
+    return (
+      (entry.getElementsByClassName("js-pledge-name")[0] as HTMLInputElement)
+        ?.value || ""
+    );
   }
 
   itemKind(item: Element): string | undefined {
