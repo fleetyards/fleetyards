@@ -489,8 +489,7 @@ class FleetEvent < ApplicationRecord
   # its key the day before the key would keep that occurrence or drop the one
   # before it.
   def until_before(date)
-    day = date.in_time_zone(Time.zone)
-    occurrence = occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
+    occurrence = occurrence_starts_at(date)
     return date - 1.day if occurrence.nil?
 
     occurrence.in_time_zone(recurrence_time_zone).to_date - 1.day
