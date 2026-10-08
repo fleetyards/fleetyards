@@ -66,36 +66,20 @@ module Push
       assert_empty DeliverToSubscriptionJob.jobs
     end
 
-    test "sends nothing while the reader is active on any device" do
-      UserPresence.mark_active(@user.id, "tab-1")
-
-      perform
+    test "sends nothing when a tab of the reader's was in use for the toast" do
+      DeliverNotificationJob.new.perform(@notification.id, true)
 
       assert_empty DeliverToSubscriptionJob.jobs
-    ensure
-      UserPresence.reset!
     end
 
-    test "still sends when the queue held the fan-out back past the window" do
-      @notification.update_columns(created_at: (UserPresence::ACTIVE_WINDOW + 1).seconds.ago)
+    test "sends to a reader who opens a tab after the toast went out" do
       UserPresence.mark_active(@user.id, "tab-1")
 
-      perform
+      DeliverNotificationJob.new.perform(@notification.id, false)
 
       assert_equal @subscriptions.size, DeliverToSubscriptionJob.jobs.size
     ensure
-      UserPresence.reset!
-    end
-
-    test "still sends to an active reader who has the in-app channel off" do
-      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(app: false)
-      UserPresence.mark_active(@user.id, "tab-1")
-
-      perform
-
-      assert_equal @subscriptions.size, DeliverToSubscriptionJob.jobs.size
-    ensure
-      UserPresence.reset!
+      UserPresence.mark_inactive(@user.id, "tab-1")
     end
   end
 end

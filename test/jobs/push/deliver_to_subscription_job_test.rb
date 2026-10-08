@@ -205,7 +205,7 @@ module Push
 
       perform
     ensure
-      UserPresence.reset!
+      UserPresence.mark_inactive(@user.id, "tab-1")
     end
   end
 end

@@ -493,8 +493,14 @@ class Notification < ApplicationRecord
   # Each channel on its own: a mailer that raises must not cost the reader the
   # push or the DM they also asked for.
   def self.deliver_channels(notification, preference)
-    deliver_channel(notification, :app) do
-      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash) if preference.app?
+    # Whether a tab of the reader's was in use when the toast went out, asked
+    # now rather than when the push job runs: a tab opened in between never
+    # got the toast.
+    seen_in_app = deliver_channel(notification, :app) do
+      next false unless preference.app?
+
+      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
+      UserPresence.active?(notification.user_id)
     end
 
     # A mail job renders in the locale it was enqueued in, so enqueueing it in
@@ -509,7 +515,7 @@ class Notification < ApplicationRecord
     end
 
     deliver_channel(notification, :push) do
-      ::Push::DeliverNotificationJob.perform_async(notification.id) if preference.push?
+      ::Push::DeliverNotificationJob.perform_async(notification.id, seen_in_app == true) if preference.push?
     end
 
     deliver_channel(notification, :discord) do
@@ -522,6 +528,7 @@ class Notification < ApplicationRecord
     yield
   rescue => e
     Rails.logger.error("Notification #{channel} delivery failed for #{notification.id}: #{e.message}")
+    nil
   end
   private_class_method :deliver_channel
 
