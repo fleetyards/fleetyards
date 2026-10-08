@@ -110,4 +110,14 @@ describe("FleetTour", () => {
       ["user-a", "fleet-1"],
     ]);
   });
+
+  // The tour ends itself -- finished, skipped, or a page left -- through its
+  // model; the app-wide host only closes if that reaches the store.
+  it("closes the store's tour when the tour ends", async () => {
+    const { tour } = await mountTour();
+
+    tour.vm.$emit("update:open", false);
+
+    expect(vi.mocked(useFleetStore()).closeTour.mock.calls).toHaveLength(1);
+  });
 });

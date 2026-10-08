@@ -168,11 +168,9 @@ export const useFleetStore = defineStore("fleet", {
     pruneTours() {
       const now = Date.now();
 
-      this.pendingTours = Object.fromEntries(
-        Object.entries(this.pendingTours).filter(
-          ([, queuedAt]) => now - queuedAt < PENDING_TOUR_TTL,
-        ),
-      );
+      Object.entries(this.pendingTours).forEach(([key, queuedAt]) => {
+        if (now - queuedAt >= PENDING_TOUR_TTL) delete this.pendingTours[key];
+      });
     },
   },
   persist: {
