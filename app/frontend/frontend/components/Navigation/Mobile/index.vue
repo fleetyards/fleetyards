@@ -109,14 +109,12 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         />
         <NavItem
           v-if="currentFleet.publicFleet || currentFleet.myFleet"
-          data-tour="fleet-ships"
           :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
           :active="shipsNavActive"
           :icon="SHIP_GLYPH"
         />
         <NavItem
           v-if="currentFleet.myFleet"
-          data-tour="fleet-members"
           :to="{
             name: 'fleet-members',
             params: { slug: currentFleet.slug },

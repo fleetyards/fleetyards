@@ -59,6 +59,11 @@ interface FleetState extends ShipListState {
   // When each `${userId}:${fleetId}` setup tour was queued: set when the
   // account creates the fleet, cleared once the tour has been shown.
   pendingTours: Record<string, number>;
+  // The fleet whose setup tour is running, or last ran. The tour is mounted by
+  // the app rather than a fleet page, because every navigation remounts the
+  // page -- and the tour walks across them.
+  tourFleet?: { id: string; slug: string };
+  tourOpen: boolean;
 }
 
 const tourKey = (userId: string, fleetId: string) => `${userId}:${fleetId}`;
@@ -95,6 +100,8 @@ export const useFleetStore = defineStore("fleet", {
     ],
     dismissedFidWarnings: [],
     pendingTours: {},
+    tourFleet: undefined,
+    tourOpen: false,
   }),
   getters: {
     isTourPending(state) {
@@ -151,6 +158,13 @@ export const useFleetStore = defineStore("fleet", {
         ),
       );
       this.pendingTours[tourKey(userId, fleetId)] = now;
+    },
+    openTour(fleet: { id: string; slug: string }) {
+      this.tourFleet = { id: fleet.id, slug: fleet.slug };
+      this.tourOpen = true;
+    },
+    closeTour() {
+      this.tourOpen = false;
     },
     clearTour(userId: string, fleetId: string) {
       delete this.pendingTours[tourKey(userId, fleetId)];

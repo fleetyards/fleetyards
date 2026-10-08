@@ -359,7 +359,7 @@ const joinRoleProblem = computed(() => {
       {{ t("labels.fleet.discord.hint") }}
     </p>
 
-    <p v-if="installUrl" class="discord-install">
+    <p v-if="installUrl" class="discord-install" data-tour="fleet-discord">
       <i class="fa-brands fa-discord" />
       <a :href="installUrl" target="_blank" rel="noopener">
         {{ t("actions.fleet.discord.installBot") }}

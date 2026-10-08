@@ -116,19 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Deine Flotte ist bereit",
-          "text": "Ein paar Schritte machen sie zum Zuhause deiner Organisation. Diese kurze Tour zeigt dir, wo sie zu finden sind — über „Tour anzeigen“ kannst du sie jederzeit erneut starten."
-        },
-        "members": {
-          "title": "Mitglieder einladen",
-          "text": "Lade Leute über ihren Fleetyards-Benutzernamen ein oder erstelle einen Einladungslink zum Teilen auf Discord oder RSI. Beitrittsanfragen landen ebenfalls hier."
-        },
-        "roles": {
-          "title": "Rollen und Staffeln",
-          "text": "Rollen legen fest, was jedes Mitglied sehen und verwalten darf; du richtest sie in den Einstellungen ein. Staffeln und Teams teilen die Mitglieder in Einheiten auf — auch sie schaltest du dort ein."
-        },
-        "ships": {
-          "title": "Schiffe und Flottenübersicht",
-          "text": "Die Schiffe deiner Mitglieder ergeben zusammen die Schiffe der Flotte. Die Flottenübersicht stellt sie maßstabsgetreu nebeneinander."
+          "text": "Diese Tour öffnet jede Seite, auf der du sie einrichtest, und zeigt auf das, worauf es dort ankommt. „Tour anzeigen“ startet sie jederzeit erneut."
         },
         "events": {
           "title": "Events und Missionen",
@@ -138,17 +126,37 @@
           "title": "Aufträge",
           "text": "Stelle Aufträge für deine Mitglieder ein und zahle sie aus, sobald sie erledigt sind."
         },
+        "members": {
+          "title": "Mitglieder einladen",
+          "text": "Lade Leute über ihren Fleetyards-Benutzernamen ein oder erstelle einen Einladungslink zum Teilen auf Discord oder RSI. Beitrittsanfragen landen ebenfalls auf dieser Seite."
+        },
+        "ships": {
+          "title": "Schiffe und Flottenübersicht",
+          "text": "Die Schiffe, die deine Mitglieder teilen, ergeben zusammen die Schiffe der Flotte. Die Flottenübersicht stellt sie maßstabsgetreu nebeneinander."
+        },
+        "membership": {
+          "title": "Deine Schiffe in der Flotte",
+          "text": "Jedes Mitglied entscheidet, welche seiner Schiffe die Flotte sieht: alle, eine Hangar-Gruppe oder keine. Hier triffst du deine eigene Wahl."
+        },
         "rsi": {
           "title": "RSI-Organisation verifizieren",
-          "text": "Verknüpfe die Flotte in den Einstellungen über ihre SID mit ihrer RSI-Organisation. Die Verifizierung beweist, dass die Organisation dir gehört."
+          "text": "Gib die SID deiner Organisation ein und verifiziere sie. Die Verifizierung beweist, dass die Organisation dir gehört, und schützt deine Flotten-ID."
+        },
+        "roles": {
+          "title": "Rollen",
+          "text": "Jede Rolle legt fest, was ihre Mitglieder sehen und verwalten dürfen. Diese Seite zeigt, was jede Rolle kann."
+        },
+        "squadrons": {
+          "title": "Staffeln und Teams",
+          "text": "Schalte Staffeln ein, um die Mitglieder in Einheiten und Teams mit eigenen Rängen aufzuteilen."
         },
         "discord": {
           "title": "Discord verbinden",
-          "text": "Ebenfalls in den Einstellungen: Verbinde deinen Discord-Server, um jedem Rang eine Discord-Rolle zu geben und Events als geplante Events zu spiegeln."
+          "text": "Installiere den Bot auf deinem Discord-Server, um jedem Rang eine Discord-Rolle zu geben und Events als geplante Events zu spiegeln."
         },
         "settings": {
-          "title": "Flotteneinstellungen",
-          "text": "Logo, Beschreibung und Links, und ob die Flottenseite und ihre Schiffe öffentlich sind. „Tour anzeigen“ startet diese Tour erneut."
+          "title": "Öffentliche Flottenseite",
+          "text": "Lege fest, ob die Flottenseite und ihre Schiffe öffentlich sind; Logo, Beschreibung und Links findest du ebenfalls hier. „Tour anzeigen“ startet diese Tour erneut."
         }
       },
       "hangarPreview": {

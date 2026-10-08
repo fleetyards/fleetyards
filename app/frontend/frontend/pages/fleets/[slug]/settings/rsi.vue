@@ -165,7 +165,7 @@ const openVerification = () => {
           v-bind="fidProps"
         />
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6" data-tour="fleet-rsi">
         <FormInputGroup>
           <FormInput
             v-model="rsiSid"

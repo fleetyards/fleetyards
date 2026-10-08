@@ -1,15 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
-import {
-  computed,
-  defineComponent,
-  h,
-  nextTick,
-  ref,
-  watchEffect,
-  type Ref,
-} from "vue";
+import { computed, defineComponent, h, ref, watchEffect, type Ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import {
   FleetMembershipStatusEnum,
@@ -70,28 +62,6 @@ vi.mock("@/services/fyApi", async () => {
       _params: unknown,
       options?: QueryOptions,
     ) => queryMock(options, publicAsked, () => publicSquadrons),
-  };
-});
-
-// Starts the way the real tour does -- once it is opened -- without the
-// overlay, which has its own spec.
-vi.mock("@/frontend/components/Fleets/Tour/index.vue", async () => {
-  const { defineComponent, h, watch } = await import("vue");
-
-  return {
-    default: defineComponent({
-      props: { open: Boolean },
-      emits: ["start", "update:open"],
-      setup(props, { emit }) {
-        watch(
-          () => props.open,
-          (open) => open && emit("start"),
-        );
-
-        return () =>
-          h("div", { "data-test": "fleet-tour", "data-open": props.open });
-      },
-    }),
   };
 });
 
@@ -327,7 +297,7 @@ describe("FleetShow setup tour", () => {
       capabilities: { readSquadrons: true, manageFleet: true },
     }) as unknown as FleetMember;
 
-  const signedIn = (pendingTours: string[] = []) => ({
+  const signedIn = (...pendingTours: string[]) => ({
     session: { currentUser: { id: "user-a" } },
     fleet: {
       pendingTours: Object.fromEntries(
@@ -336,8 +306,13 @@ describe("FleetShow setup tour", () => {
     },
   });
 
-  const tourOpen = () =>
-    wrapper?.find("[data-test='fleet-tour']").attributes("data-open");
+  const fleetWithId = () => ({ ...fleet(), id: "fleet-1" }) as Fleet;
+
+  const guideButton = () =>
+    document.querySelector<HTMLElement>("[data-test='fleet-show-guide']");
+
+  const openedFor = () =>
+    vi.mocked(useFleetStore()).openTour.mock.calls.map(([opened]) => opened.id);
 
   beforeEach(() => {
     document.body.innerHTML = '<div id="header-right"></div>';
@@ -348,61 +323,45 @@ describe("FleetShow setup tour", () => {
     vi.useRealTimers();
   });
 
-  const fleetWithId = () => ({ ...fleet(), id: "fleet-1" }) as Fleet;
-
-  it("offers the guide to a manager", async () => {
+  it("opens the tour for a manager from the header", async () => {
     await mount({ fleet: fleetWithId(), membership: manager() }, signedIn());
 
-    expect(
-      document.querySelector("[data-test='fleet-show-guide']"),
-    ).not.toBeNull();
-  });
+    guideButton()?.click();
 
-  it("offers nothing to a member who cannot manage the fleet", async () => {
-    await mount(
-      { fleet: fleetWithId(), membership: member() },
-      signedIn(["user-a:fleet-1"]),
-    );
-    vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
-    await nextTick();
-
-    expect(document.querySelector("[data-test='fleet-show-guide']")).toBeNull();
-    expect(wrapper?.find("[data-test='fleet-tour']").exists()).toBe(false);
+    expect(openedFor()).toEqual(["fleet-1"]);
   });
 
   it("starts on its own for the fleet this account just created", async () => {
     await mount(
       { fleet: fleetWithId(), membership: manager() },
-      signedIn(["user-a:fleet-1"]),
+      signedIn("user-a:fleet-1"),
     );
-    const fleetStore = useFleetStore();
 
     vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
-    await nextTick();
-    await nextTick();
 
-    expect(tourOpen()).toBe("true");
-    expect(vi.mocked(fleetStore).clearTour.mock.calls).toEqual([
-      ["user-a", "fleet-1"],
-    ]);
+    expect(openedFor()).toEqual(["fleet-1"]);
   });
 
-  it("waits for the guide button on any other fleet", async () => {
+  it("waits for the button on another account's or fleet's tour", async () => {
     await mount(
       { fleet: fleetWithId(), membership: manager() },
-      signedIn(["user-a:fleet-2", "user-b:fleet-1"]),
+      signedIn("user-b:fleet-1", "user-a:fleet-2"),
     );
 
     vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
-    await nextTick();
-    expect(tourOpen()).toBe("false");
 
-    document
-      .querySelector<HTMLElement>("[data-test='fleet-show-guide']")
-      ?.click();
-    await nextTick();
-    await nextTick();
+    expect(openedFor()).toEqual([]);
+  });
 
-    expect(tourOpen()).toBe("true");
+  it("offers nothing to a member who cannot manage the fleet", async () => {
+    await mount(
+      { fleet: fleetWithId(), membership: member() },
+      signedIn("user-a:fleet-1"),
+    );
+
+    vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
+
+    expect(guideButton()).toBeNull();
+    expect(openedFor()).toEqual([]);
   });
 });

@@ -291,7 +291,7 @@ const onDestroy = async () => {
     </div>
     <hr />
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6" data-tour="fleet-public">
         <FormToggle
           v-model="publicFleet"
           name="publicFleet"

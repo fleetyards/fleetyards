@@ -15,7 +15,6 @@ import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import FleetTour from "@/frontend/components/Fleets/Tour/index.vue";
 import { useTourAutostart } from "@/shared/composables/useTourAutostart";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -91,7 +90,7 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
-// The FID notice and the setup tour are for whoever runs the fleet: verifying
+// The FID notice and the tour button are for whoever runs the fleet: verifying
 // and setting it up are theirs to do, and the settings pages check the same.
 const canManage = computed(
   () =>
@@ -102,27 +101,17 @@ const fleetStore = useFleetStore();
 
 const sessionStore = useSessionStore();
 
-const tourOpen = ref(false);
-
-const openGuide = () => {
-  tourOpen.value = true;
-};
-
 const userId = computed(() => sessionStore.currentUser?.id);
+
+const openTour = () => fleetStore.openTour(props.fleet);
 
 useTourAutostart({
   ready: () =>
     !!userId.value &&
     canManage.value &&
     fleetStore.isTourPending(userId.value, props.fleet.id),
-  start: openGuide,
+  start: openTour,
 });
-
-// Done once it has been shown, not once it ends: leaving the page mid-tour
-// ends nothing, and should not bring it back on every later visit.
-const onTourStart = () => {
-  if (userId.value) fleetStore.clearTour(userId.value, props.fleet.id);
-};
 </script>
 
 <template>
@@ -315,22 +304,18 @@ const onTourStart = () => {
     </div>
   </div>
 
-  <template v-if="canManage">
-    <Teleport to="#header-right">
-      <Btn
-        :size="BtnSizesEnum.MD"
-        mobile-icon-only
-        data-tour="fleet-guide"
-        data-test="fleet-show-guide"
-        @click="openGuide"
-      >
-        <i class="fa-duotone fa-question" />
-        {{ t("actions.showGuide") }}
-      </Btn>
-    </Teleport>
-
-    <FleetTour v-model:open="tourOpen" @start="onTourStart" />
-  </template>
+  <Teleport v-if="canManage" to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      data-tour="fleet-guide"
+      data-test="fleet-show-guide"
+      @click="openTour"
+    >
+      <i class="fa-duotone fa-question" />
+      {{ t("actions.showGuide") }}
+    </Btn>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>

@@ -79,6 +79,7 @@ const toggleFleetchart = () => {
       :size="BtnSizesEnum.MD"
       mobile-icon-only
       data-test="fleetchart-link"
+      data-tour="fleet-fleetchart"
       @click="toggleFleetchart"
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />

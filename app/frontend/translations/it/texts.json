@@ -116,19 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "La tua flotta è pronta",
-          "text": "Pochi passaggi la trasformano nella casa della tua organizzazione. Questo breve tour ti mostra dove trovarli — «Mostra il tour» lo riapre in qualsiasi momento."
-        },
-        "members": {
-          "title": "Invita membri",
-          "text": "Invita persone tramite il loro nome utente Fleetyards, oppure crea un link di invito da condividere su Discord o RSI. Anche le richieste di adesione arrivano qui."
-        },
-        "roles": {
-          "title": "Ruoli e squadroni",
-          "text": "I ruoli decidono cosa ogni membro può vedere e gestire; si configurano nelle impostazioni. Squadroni e team dividono i membri in unità — anche questi si attivano lì."
-        },
-        "ships": {
-          "title": "Navi e fleetchart",
-          "text": "Le navi dei tuoi membri formano insieme quelle della flotta. Il fleetchart le allinea una accanto all'altra in scala."
+          "text": "Questo tour apre ogni pagina in cui si configura e indica ciò che conta in ciascuna. «Mostra il tour» lo riapre in qualsiasi momento."
         },
         "events": {
           "title": "Eventi e missioni",
@@ -138,17 +126,37 @@
           "title": "Contratti",
           "text": "Pubblica incarichi per i tuoi membri e pagali quando sono completati."
         },
+        "members": {
+          "title": "Invita membri",
+          "text": "Invita persone tramite il loro nome utente Fleetyards, oppure crea un link di invito da condividere su Discord o RSI. Anche le richieste di adesione arrivano su questa pagina."
+        },
+        "ships": {
+          "title": "Navi e fleetchart",
+          "text": "Le navi condivise dai tuoi membri formano insieme quelle della flotta. Il fleetchart le allinea una accanto all'altra in scala."
+        },
+        "membership": {
+          "title": "Le tue navi nella flotta",
+          "text": "Ogni membro decide quali delle sue navi vede la flotta: tutte, un gruppo dell'hangar o nessuna. Qui fai la tua scelta."
+        },
         "rsi": {
           "title": "Verifica la tua organizzazione RSI",
-          "text": "Nelle impostazioni, collega la flotta alla sua organizzazione RSI tramite il suo SID. La verifica dimostra che l'organizzazione è tua."
+          "text": "Inserisci il SID della tua organizzazione e verificalo. La verifica dimostra che l'organizzazione è tua e protegge l'ID della tua flotta."
+        },
+        "roles": {
+          "title": "Ruoli",
+          "text": "Ogni ruolo decide cosa i suoi membri possono vedere e gestire. Questa pagina mostra cosa può fare ogni ruolo."
+        },
+        "squadrons": {
+          "title": "Squadroni e team",
+          "text": "Attiva gli squadroni per dividere i membri in unità e team, ciascuno con i propri gradi."
         },
         "discord": {
           "title": "Collega Discord",
-          "text": "Sempre nelle impostazioni: collega il tuo server Discord per assegnare a ogni grado un ruolo Discord e rispecchiare gli eventi come eventi programmati."
+          "text": "Installa il bot sul tuo server Discord per assegnare a ogni grado un ruolo Discord e rispecchiare gli eventi come eventi programmati."
         },
         "settings": {
-          "title": "Impostazioni della flotta",
-          "text": "Logo, descrizione e link, e se la pagina della flotta e le sue navi sono pubbliche. «Mostra il tour» riapre questo tour."
+          "title": "Pagina pubblica della flotta",
+          "text": "Decidi se la pagina della flotta e le sue navi sono pubbliche; logo, descrizione e link sono anche qui. «Mostra il tour» riapre questo tour."
         }
       },
       "hangarPreview": {

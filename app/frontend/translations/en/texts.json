@@ -116,19 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Your fleet is ready",
-          "text": "A few steps turn it into a home for your organisation. This short tour shows where each one is — Show tour brings it back any time."
-        },
-        "members": {
-          "title": "Invite members",
-          "text": "Invite people by their Fleetyards username, or create an invite link to share on Discord or RSI. Requests to join land here too."
-        },
-        "roles": {
-          "title": "Roles and squadrons",
-          "text": "Roles decide what each member may see and manage; set them up in the settings. Squadrons and teams split the roster into units — switch them on there as well."
-        },
-        "ships": {
-          "title": "Ships and fleetchart",
-          "text": "The ships your members own add up to the fleet's ships. The fleetchart lines them up side by side to scale."
+          "text": "This tour opens each page that sets it up and points at the control that matters there. Show tour brings it back any time."
         },
         "events": {
           "title": "Events and missions",
@@ -138,17 +126,37 @@
           "title": "Contracts",
           "text": "Post jobs for your members and pay them out once they are done."
         },
+        "members": {
+          "title": "Invite members",
+          "text": "Invite people by their Fleetyards username, or create an invite link to share on Discord or RSI. Requests to join land on this page too."
+        },
+        "ships": {
+          "title": "Ships and fleetchart",
+          "text": "The ships your members share add up to the fleet's ships. The fleetchart lines them up side by side to scale."
+        },
+        "membership": {
+          "title": "Your ships in the fleet",
+          "text": "Every member decides which of their ships the fleet sees: all of them, one hangar group or none. This is your own choice."
+        },
         "rsi": {
           "title": "Verify your RSI organisation",
-          "text": "In the settings, link the fleet to its RSI organisation by its SID. Verifying it proves the organisation is yours."
+          "text": "Enter your organisation's SID and verify it. Verifying proves the organisation is yours and protects your fleet ID."
+        },
+        "roles": {
+          "title": "Roles",
+          "text": "Each role decides what its members may see and manage. This page lists what every role can do."
+        },
+        "squadrons": {
+          "title": "Squadrons and teams",
+          "text": "Switch squadrons on to split the roster into units and teams, each with ranks of its own."
         },
         "discord": {
           "title": "Connect Discord",
-          "text": "Also in the settings: connect your Discord server to give each rank a Discord role and mirror events as scheduled events."
+          "text": "Install the bot on your Discord server to give each rank a Discord role and mirror events as scheduled events."
         },
         "settings": {
-          "title": "Fleet settings",
-          "text": "Logo, description and links, and whether the fleet page and its ships are public. Show tour brings this tour back."
+          "title": "Public fleet page",
+          "text": "Decide whether the fleet page and its ships are public; logo, description and links are on this page too. Show tour brings this tour back."
         }
       },
       "hangarPreview": {

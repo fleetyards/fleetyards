@@ -108,7 +108,6 @@ onMounted(() => {
          added for the reader least able to guess what the parent holds. -->
     <NavItem
       v-if="showShipsNav"
-      :data-tour="tourTarget('fleet-ships')"
       :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.ships')"
       :active="shipsNavActive"
@@ -117,7 +116,6 @@ onMounted(() => {
 
     <NavItem
       v-if="membership"
-      :data-tour="tourTarget('fleet-members')"
       :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.members.index')"
       :active="String(route.name).startsWith('fleet-members')"
@@ -204,7 +202,6 @@ onMounted(() => {
     />
     <NavItem
       v-if="membership"
-      :data-tour="tourTarget('fleet-settings')"
       :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.settings.index')"
       :active="String(route.name).startsWith('fleet-settings')"
