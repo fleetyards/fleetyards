@@ -657,6 +657,15 @@
           "roleMissing": "This role no longer exists on Discord. Nobody joins through it until another one is picked.",
           "missingRole": "Unavailable role",
           "saveGuildFirst": "Save the new server first, then pick its channels and roles.",
+          "roleMapping": "Discord Roles",
+          "roleMappingHint": "Fleetyards gives members these roles in the server and takes them away when they change rank or leave the fleet. It only ever adds or removes the roles picked here.",
+          "memberRole": "Member Role",
+          "memberRoleHint": "Every member of the fleet gets this role, whatever their rank.",
+          "rolesCodes": {
+            "missing_manage_roles": "The bot may not manage roles in this server. Use the install link to re-authorise it.",
+            "unknown_role": "A role picked here no longer exists on Discord: %{names}.",
+            "role_above_bot": "The bot cannot hand out %{names}: Discord only lets it give roles below its own. Move the bot's role above them in the server settings."
+          },
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",

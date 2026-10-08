@@ -13,6 +13,8 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import DiscordChannelSelect from "@/frontend/components/Fleets/DiscordChannelSelect/index.vue";
 import DiscordRoleSelect from "@/frontend/components/Fleets/DiscordRoleSelect/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18nStore } from "@/shared/stores/i18n";
 import {
@@ -20,10 +22,14 @@ import {
   type Fleet,
   type FleetMember,
   type FleetNotificationSetting,
+  type FleetDiscordRoleMapping,
   fleetNotificationDiscordStatus,
   getFleetDiscordChannelsQueryKey,
   getFleetDiscordRolesQueryKey,
+  useFleetDiscordRoleMappings,
+  useFleetDiscordRoles,
   useFleetNotificationSetting,
+  useUpdateFleetDiscordRoleMappings,
   useUpdateFleetNotificationSetting,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -46,6 +52,13 @@ const { data: setting, refetch } = useFleetNotificationSetting(fleetSlug);
 
 const updateMutation = useUpdateFleetNotificationSetting();
 
+const { data: roleMappings, refetch: refetchRoleMappings } =
+  useFleetDiscordRoleMappings(fleetSlug);
+
+const updateRoleMappingsMutation = useUpdateFleetDiscordRoleMappings();
+
+const { data: discordRoles } = useFleetDiscordRoles(fleetSlug);
+
 const queryClient = useQueryClient();
 
 const discordGuildId = ref<string>("");
@@ -53,6 +66,8 @@ const discordChannelId = ref<string>("");
 const discordAnnouncementChannelId = ref<string | null>(null);
 const discordOfficersChannelId = ref<string | null>(null);
 const discordJoinRoleId = ref<string | null>(null);
+const discordMemberRoleId = ref<string | null>(null);
+const rankRoleIds = ref<Record<string, string | null>>({});
 
 // Letting a role in without a request is handing out an invite, so the field
 // belongs to whoever may do that, not to everyone who manages these settings.
@@ -99,6 +114,7 @@ const hydrate = (s: FleetNotificationSetting) => {
   discordAnnouncementChannelId.value = s.discordAnnouncementChannelId ?? null;
   discordOfficersChannelId.value = s.discordOfficersChannelId ?? null;
   discordJoinRoleId.value = s.discordJoinRoleId ?? null;
+  discordMemberRoleId.value = s.discordMemberRoleId ?? null;
   discordDigestWeekday.value =
     s.discordDigestWeekday === null || s.discordDigestWeekday === undefined
       ? null
@@ -119,6 +135,32 @@ watch(
   },
   { immediate: true },
 );
+
+const hydrateRankRoles = (mappings: FleetDiscordRoleMapping[]) => {
+  rankRoleIds.value = Object.fromEntries(
+    mappings.map((mapping) => [mapping.fleetRoleId, mapping.discordRoleId]),
+  );
+};
+
+watch(
+  roleMappings,
+  (mappings) => {
+    if (mappings) hydrateRankRoles(mappings.items);
+  },
+  { immediate: true },
+);
+
+const changedRankRoles = () =>
+  (roleMappings.value?.items ?? [])
+    .filter(
+      (mapping) =>
+        (rankRoleIds.value[mapping.fleetRoleId] || null) !==
+        mapping.discordRoleId,
+    )
+    .map((mapping) => ({
+      fleetRoleId: mapping.fleetRoleId,
+      discordRoleId: rankRoleIds.value[mapping.fleetRoleId] || null,
+    }));
 
 const submitting = ref(false);
 
@@ -167,6 +209,7 @@ const save = async () => {
       payload.discordAnnouncementChannelId =
         discordAnnouncementChannelId.value || null;
       payload.discordOfficersChannelId = discordOfficersChannelId.value || null;
+      payload.discordMemberRoleId = discordMemberRoleId.value || null;
       if (canSetJoinRole.value) {
         payload.discordJoinRoleId = discordJoinRoleId.value || null;
       }
@@ -178,8 +221,17 @@ const save = async () => {
       fleetSlug: props.fleet.slug,
       data: payload,
     });
+    // Saved after the settings: a new server clears every rank's role.
+    const mappings = guildUnsaved.value ? [] : changedRankRoles();
+    if (mappings.length) {
+      await updateRoleMappingsMutation.mutateAsync({
+        fleetSlug: props.fleet.slug,
+        data: { mappings },
+      });
+    }
     displaySuccess({ text: t("messages.fleets.notifications.update.success") });
     void refetch();
+    void refetchRoleMappings();
     // A different server has different channels and roles.
     void queryClient.invalidateQueries({
       queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
@@ -205,6 +257,7 @@ const save = async () => {
 
 const reset = () => {
   if (setting.value) hydrate(setting.value);
+  if (roleMappings.value) hydrateRankRoles(roleMappings.value.items);
 };
 
 type DiscordStatus = {
@@ -219,6 +272,9 @@ type DiscordStatus = {
   postingDetail?: string;
   joinRoleOk?: boolean;
   joinRoleCode?: string;
+  rolesOk?: boolean;
+  rolesCode?: string;
+  rolesDetail?: string;
 };
 
 const discordStatus = ref<DiscordStatus | null>(null);
@@ -259,6 +315,26 @@ const postingProblem = computed(() => {
   return tExists(key)
     ? t(key, { names: status.postingDetail ?? "" })
     : t(`labels.fleet.discord.statusCodes.${status.postingCode}`);
+});
+
+// The detail lists role ids; the role list names them where it still can.
+const roleNames = (ids: string) =>
+  ids
+    .split(", ")
+    .map((id) => {
+      const role = discordRoles.value?.items.find((item) => item.id === id);
+      return role ? `@${role.name}` : id;
+    })
+    .join(", ");
+
+const rolesProblem = computed(() => {
+  const status = discordStatus.value;
+  if (!status?.rolesCode || status.rolesOk) return null;
+
+  const key = `labels.fleet.discord.rolesCodes.${status.rolesCode}`;
+  return tExists(key)
+    ? t(key, { names: roleNames(status.rolesDetail ?? "") })
+    : t(`labels.fleet.discord.statusCodes.${status.rolesCode}`);
 });
 
 const joinRoleProblem = computed(() => {
@@ -330,6 +406,14 @@ const joinRoleProblem = computed(() => {
         <span>{{ postingProblem }}</span>
       </span>
       <span
+        v-if="rolesProblem"
+        class="discord-status discord-status--err"
+        data-test="roles-problem"
+      >
+        <i class="fa-light fa-triangle-exclamation" />
+        <span>{{ rolesProblem }}</span>
+      </span>
+      <span
         v-if="joinRoleProblem"
         class="discord-status discord-status--err"
         data-test="join-role-problem"
@@ -398,6 +482,40 @@ const joinRoleProblem = computed(() => {
           :label="t('labels.fleet.discord.joinRole')"
           :info="t('labels.fleet.discord.joinRoleHint')"
         />
+      </div>
+    </div>
+
+    <div data-test="role-mapping">
+      <Heading :level="HeadingLevelEnum.H2" mt>
+        {{ t("labels.fleet.discord.roleMapping") }}
+      </Heading>
+      <p class="text-muted small">
+        {{ t("labels.fleet.discord.roleMappingHint") }}
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <DiscordRoleSelect
+            v-model="discordMemberRoleId"
+            :fleet-slug="props.fleet.slug"
+            :disabled="guildUnsaved"
+            name="discordMemberRoleId"
+            :label="t('labels.fleet.discord.memberRole')"
+            :info="t('labels.fleet.discord.memberRoleHint')"
+          />
+        </div>
+        <div
+          v-for="mapping in roleMappings?.items ?? []"
+          :key="mapping.fleetRoleId"
+          class="col-12 col-md-6"
+        >
+          <DiscordRoleSelect
+            v-model="rankRoleIds[mapping.fleetRoleId]"
+            :fleet-slug="props.fleet.slug"
+            :disabled="guildUnsaved"
+            :name="`rankRole-${mapping.fleetRoleId}`"
+            :label="mapping.name"
+          />
+        </div>
       </div>
     </div>
 

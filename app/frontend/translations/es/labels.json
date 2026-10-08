@@ -657,6 +657,15 @@
           "roleMissing": "Este rol ya no existe en Discord. Nadie se une con él hasta que se elija otro.",
           "missingRole": "Rol no disponible",
           "saveGuildFirst": "Guarda primero el nuevo servidor y luego elige sus canales y roles.",
+          "roleMapping": "Roles de Discord",
+          "roleMappingHint": "Fleetyards da estos roles a los miembros en el servidor y se los quita cuando cambian de rango o dejan la flota. Solo añade o quita los roles elegidos aquí.",
+          "memberRole": "Rol de miembro",
+          "memberRoleHint": "Todos los miembros de la flota reciben este rol, sea cual sea su rango.",
+          "rolesCodes": {
+            "missing_manage_roles": "El bot no puede gestionar roles en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
+            "unknown_role": "Un rol elegido aquí ya no existe en Discord: %{names}.",
+            "role_above_bot": "El bot no puede asignar %{names}: Discord solo le deja dar roles por debajo del suyo. Sube el rol del bot por encima de ellos en los ajustes del servidor."
+          },
           "postingCodes": {
             "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
             "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",

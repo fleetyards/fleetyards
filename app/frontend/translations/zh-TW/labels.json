@@ -657,6 +657,15 @@
           "roleMissing": "此身分組在 Discord 上已不存在。在選擇其他身分組之前，任何人都無法透過它加入。",
           "missingRole": "無法使用的身分組",
           "saveGuildFirst": "請先儲存新的伺服器，再選擇它的頻道和身分組。",
+          "roleMapping": "Discord 身分組",
+          "roleMappingHint": "Fleetyards 會在伺服器中給成員這些身分組，並在成員變更軍階或離開艦隊時收回。它只會新增或移除這裡選擇的身分組。",
+          "memberRole": "成員身分組",
+          "memberRoleHint": "艦隊的每位成員都會獲得此身分組，與軍階無關。",
+          "rolesCodes": {
+            "missing_manage_roles": "機器人無權在此伺服器中管理身分組。請使用安裝連結重新授權。",
+            "unknown_role": "這裡選擇的身分組在 Discord 上已不存在：%{names}。",
+            "role_above_bot": "機器人無法分配 %{names}：Discord 只允許它分配低於自身的身分組。請在伺服器設定中將機器人的身分組移到它們之上。"
+          },
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",
