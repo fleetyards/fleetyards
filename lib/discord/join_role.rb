@@ -53,9 +53,12 @@ module Discord
       return true if guild_id.blank? || users.empty?
 
       with_member_lock(guild_id, discord_uid) do
+        # When Discord was asked, not when this finished: a list of the guild
+        # read in between is newer than what this applied.
+        read_at = Time.current
         role_ids = member_role_ids(api, guild_id, discord_uid)
         join_roles.product(users).each { |join_role, user| join_role.apply(user, role_ids, quiet:) }
-        DiscordMemberRead.record(guild_id, discord_uid)
+        DiscordMemberRead.record(guild_id, discord_uid, at: read_at)
         true
       rescue ApiClient::Error, Faraday::Error => e
         Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{discord_uid}: #{e.message}")

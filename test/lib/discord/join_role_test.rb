@@ -54,6 +54,19 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
+    test "a member's read is dated from when Discord was asked" do
+      asked_at = nil
+      @api.stubs(:get_guild_member).with do
+        asked_at = Time.current
+        travel 1.minute
+        true
+      end.returns({"roles" => [JOIN_ROLE]})
+
+      JoinRole.apply_current([join_role], [@user], "discord-uid-1", api: @api)
+
+      assert_in_delta asked_at, DiscordMemberRead.find_by!(discord_user_id: "discord-uid-1").read_at, 1.second
+    end
+
     test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 
