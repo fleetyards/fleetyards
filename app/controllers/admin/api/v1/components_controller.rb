@@ -61,7 +61,8 @@ module Admin
 
           category = Component.fact_sql(:category)
           @filters = Component.category_filters(
-            Component.with_facts(false).where.not(category => nil).distinct.order(category).pluck(category)
+            authorized_scope(Component.with_facts(false), with: ::Admin::ComponentPolicy)
+              .where.not(category => nil).distinct.order(category).pluck(category)
           )
 
           render "api/shared/filters"
