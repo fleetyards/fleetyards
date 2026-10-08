@@ -1,4 +1,5 @@
 import { useNotificationsStore } from "@/shared/stores/notifications";
+import { useSessionStore } from "@/frontend/stores/session";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -52,6 +53,7 @@ const daysSince = (iso?: string): number | null => {
 
 export const useSupportPrompt = () => {
   const notificationsStore = useNotificationsStore();
+  const sessionStore = useSessionStore();
 
   const isAutomatedBrowser = (): boolean => {
     try {
@@ -61,8 +63,11 @@ export const useSupportPrompt = () => {
     }
   };
 
+  const isSupporter = (): boolean => !!sessionStore.currentUser?.supporter;
+
   const canShow = (): boolean => {
     if (isAutomatedBrowser()) return false;
+    if (isSupporter()) return false;
     const since = daysSince(readState().lastShownAt);
     return since === null || since > COOLDOWN_DAYS;
   };
@@ -133,6 +138,8 @@ export const useSupportPrompt = () => {
     context: SupportPromptContext,
     meta?: Record<string, unknown>,
   ) => {
+    // A milestone passed while supporting would be gone if the support lapses.
+    if (isSupporter()) return false;
     const next = incrementCounter(counterName);
     if (!milestones.includes(next)) return false;
     return notify(context, { ...meta, count: next });
@@ -143,6 +150,7 @@ export const useSupportPrompt = () => {
     context: SupportPromptContext,
     meta?: Record<string, unknown>,
   ) => {
+    if (isSupporter()) return false;
     if (counterValue(flagName) > 0) return false;
     incrementCounter(flagName);
     return notify(context, meta);
