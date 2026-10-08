@@ -189,6 +189,18 @@ const weekdayOptions = computed<FilterOption[]>(() => {
   }));
 });
 
+const settingsSaved = () => {
+  void refetch();
+  // A different server has different channels and roles.
+  void queryClient.invalidateQueries({
+    queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
+  });
+  void queryClient.invalidateQueries({
+    queryKey: getFleetDiscordRolesQueryKey(props.fleet.slug),
+  });
+  void fetchStatus();
+};
+
 const save = async () => {
   submitting.value = true;
   try {
@@ -217,29 +229,23 @@ const save = async () => {
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
     }
+    // Saved after the settings: a new server clears every rank's role.
+    const mappings = guildUnsaved.value ? [] : changedRankRoles();
     await updateMutation.mutateAsync({
       fleetSlug: props.fleet.slug,
       data: payload,
     });
-    // Saved after the settings: a new server clears every rank's role.
-    const mappings = guildUnsaved.value ? [] : changedRankRoles();
+    // Refreshed before the ranks are sent, so a rejected rank still leaves the
+    // page showing the settings that were saved, and the picks to try again.
+    settingsSaved();
     if (mappings.length) {
       await updateRoleMappingsMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
         data: { mappings },
       });
     }
-    displaySuccess({ text: t("messages.fleets.notifications.update.success") });
-    void refetch();
     void refetchRoleMappings();
-    // A different server has different channels and roles.
-    void queryClient.invalidateQueries({
-      queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
-    });
-    void queryClient.invalidateQueries({
-      queryKey: getFleetDiscordRolesQueryKey(props.fleet.slug),
-    });
-    void fetchStatus();
+    displaySuccess({ text: t("messages.fleets.notifications.update.success") });
   } catch (error) {
     // The inputs have no form context to show a server error inline.
     const fieldMessages = validationErrorFrom(error).errors.flatMap(

@@ -107,6 +107,7 @@ const mount = async (membership = {} as FleetMember) => {
 
 type SelectProps = {
   name?: string;
+  modelValue?: unknown;
   options?: FilterOption[];
   disabled?: boolean;
 };
@@ -417,6 +418,22 @@ describe("FleetDiscordSettingsPage role mapping", () => {
     );
     expect(await save(subject)).not.toHaveProperty("discordMemberRoleId");
     expect(updateRoleMappings).not.toHaveBeenCalled();
+  });
+
+  it("keeps the saved settings and the rank picks when the ranks are rejected", async () => {
+    const settingsSaves = mutateAsync.mock.calls.length;
+    updateRoleMappings.mockRejectedValue(new Error("rejected"));
+    const subject = await mount();
+
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+    await save(subject);
+
+    expect(mutateAsync.mock.calls.length).toBe(settingsSaves + 1);
+    expect(displayAlert).toHaveBeenCalled();
+    expect(discordStatus).toHaveBeenCalledTimes(2);
+    expect(
+      selectProps(picker(subject, "rankRole-rank-officer")).modelValue,
+    ).toBe("300000000000000002");
   });
 
   it("names the roles the bot cannot hand out", async () => {
