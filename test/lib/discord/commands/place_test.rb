@@ -220,6 +220,17 @@ module Discord
         assert_includes content, "\\[Free aUEC\\]\\(https://evil.example\\)"
       end
 
+      test "a too-common answer says when more places match than it lists" do
+        6.times { |index| create(:location, name: "Cave", kind: "cave", parent: @hurston, system: @stanton, sc_key: "Cave_#{index}") }
+        7.times { |index| create(:location, name: "Cave #{"Long Name " * 15}#{index}", kind: "outpost", parent: @hurston, system: @stanton) }
+
+        content = call("Cave")[:content]
+
+        assert_operator ::Discord::MessageLength.of(content), :<=, 2000
+        assert content.end_with?(I18n.t("discord.commands.location.more"))
+        content.lines.drop(1).each { |line| assert_match(/\A(• \[.*\)( · .*)?|#{Regexp.escape(I18n.t("discord.commands.location.more"))})\n?\z/, line) }
+      end
+
       test "keeps a list of long names within a message" do
         6.times { |index| create(:location, name: "Zeta_#{index}_#{"long_name_" * 19}", kind: "outpost", parent: @hurston, system: @stanton) }
 

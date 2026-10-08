@@ -182,26 +182,32 @@ module Discord
           end
         end
 
-        others = others.first(MAX_CANDIDATES).map { |candidate| candidate_line(candidate, within) }
+        shown = others.first(MAX_CANDIDATES)
 
-        message(content: MessageLength.truncate([I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines, *others].join("\n")))
+        fit_message(I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)),
+          lines + shown.map { |candidate| candidate_line(candidate, within) },
+          more: I18n.t("discord.commands.#{strings}.more"), hidden: others.size - shown.size)
       end
 
-      # Long names and their links can run a list of five past what a message
-      # holds, so lines are dropped from the end until it fits.
       private def entry_candidate_list(query, candidates, strings, within)
-        lines = candidates.first(MAX_CANDIDATES).map { |candidate| candidate_line(candidate, within) }
+        shown = candidates.first(MAX_CANDIDATES)
 
+        fit_message(I18n.t("discord.commands.#{strings}.ambiguous", query: Markdown.escape(query)),
+          shown.map { |candidate| candidate_line(candidate, within) },
+          more: I18n.t("discord.commands.#{strings}.more"), hidden: candidates.size - shown.size)
+      end
+
+      # Long names and their links can run a list past what a message holds,
+      # so whole lines are dropped from the end until it fits -- never cut in
+      # the middle of a link -- and the `more` line says some were left out.
+      private def fit_message(heading, lines, more:, hidden: 0)
         content = ->(shown) do
-          [
-            I18n.t("discord.commands.#{strings}.ambiguous", query: Markdown.escape(query)),
-            *shown,
-            (I18n.t("discord.commands.#{strings}.more") if candidates.size > shown.size)
-          ].compact.join("\n")
+          [heading, *shown, (more if hidden.positive? || shown.size < lines.size)].compact.join("\n")
         end
-        lines.pop while lines.size > 1 && !MessageLength.fits?(content.call(lines))
+        shown = lines.dup
+        shown.pop while shown.size > 1 && !MessageLength.fits?(content.call(shown))
 
-        message(content: MessageLength.truncate(content.call(lines)))
+        message(content: MessageLength.truncate(content.call(shown)))
       end
 
       private def candidate_line(candidate, within)
