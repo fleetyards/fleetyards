@@ -17,7 +17,8 @@ import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
 type Props = {
   variant?: EmptyVariantsEnum;
   wishlist?: boolean;
-  // Offers the tour, which only the owner's own hangar page can run.
+  // The owner's own hangar: offers the RSI sync and the tour, which only that
+  // page can run.
   guide?: boolean;
 };
 
@@ -46,12 +47,6 @@ const hangarStore = useHangarStore();
         </template>
       </span>
     </template>
-    <template v-if="!wishlist" #actions="{ queryPresent }">
-      <HangarSyncBtn v-if="!queryPresent" />
-      <Btn v-if="guide && !queryPresent" @click="emit('openGuide')">
-        {{ t("actions.empty.hangarGuide") }}
-      </Btn>
-    </template>
     <template #info="{ queryPresent }">
       <EmptyInfo v-if="queryPresent" :query-present="queryPresent" />
       <div v-else>
@@ -68,8 +63,27 @@ const hangarStore = useHangarStore();
             <p>{{ t("empty.info.extension") }}</p>
             <SyncExtensionLinks />
           </div>
+          <!-- In the info rather than the actions slot: the boxed variant
+               only renders its actions under a filter, and these are for an
+               unfiltered, empty hangar. -->
+          <div v-if="guide" class="hangar-empty__actions">
+            <HangarSyncBtn />
+            <Btn @click="emit('openGuide')">
+              {{ t("actions.empty.hangarGuide") }}
+            </Btn>
+          </div>
         </template>
       </div>
     </template>
   </Empty>
 </template>
+
+<style lang="scss" scoped>
+.hangar-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+</style>

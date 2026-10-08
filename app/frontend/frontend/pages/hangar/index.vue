@@ -354,11 +354,19 @@ const TOUR_AUTOSTART_DELAY = 800;
 let tourTimer = 0;
 
 // Someone who already clicked or typed is busy -- maybe in a modal the tour
-// would make inert -- so the pending start is dropped, not queued behind it.
+// would make inert -- so the pending start is dropped for this visit, not
+// queued behind it or rearmed by the next refetch.
+let tourAutostartDismissed = false;
+
+const dismissTourAutostart = () => {
+  tourAutostartDismissed = true;
+  cancelTourAutostart();
+};
+
 const cancelTourAutostart = () => {
   window.clearTimeout(tourTimer);
-  document.removeEventListener("pointerdown", cancelTourAutostart, true);
-  document.removeEventListener("keydown", cancelTourAutostart, true);
+  document.removeEventListener("pointerdown", dismissTourAutostart, true);
+  document.removeEventListener("keydown", dismissTourAutostart, true);
 };
 
 watch(
@@ -372,18 +380,13 @@ watch(
   (shouldStart) => {
     cancelTourAutostart();
 
-    if (shouldStart) {
+    if (shouldStart && !tourAutostartDismissed) {
       tourTimer = window.setTimeout(() => {
         cancelTourAutostart();
-
-        // A modal the page opened by itself -- one named in the URL -- would
-        // end up inert underneath the tour.
-        if (document.querySelector(".app-modal")) return;
-
         openGuide();
       }, TOUR_AUTOSTART_DELAY);
-      document.addEventListener("pointerdown", cancelTourAutostart, true);
-      document.addEventListener("keydown", cancelTourAutostart, true);
+      document.addEventListener("pointerdown", dismissTourAutostart, true);
+      document.addEventListener("keydown", dismissTourAutostart, true);
     }
   },
   { immediate: true },
