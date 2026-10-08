@@ -68,6 +68,7 @@ vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
   return {
     useBuybackDetailsSync: () => ({
       running: computed(() => buybackDetailsRunning.value),
+      cancelling: computed(() => false),
     }),
   };
 });

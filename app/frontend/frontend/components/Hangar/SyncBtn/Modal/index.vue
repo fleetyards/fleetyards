@@ -57,8 +57,13 @@ import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsS
 const { t } = useI18n();
 
 // Both read RSI pages, and side by side they would each take the whole rate
-// limit.
-const { running: buybackDetailsRunning } = useBuybackDetailsSync();
+// limit. A cancelled pass sends nothing more, so it only waits on its last
+// answer and need not hold this sync back.
+const { running, cancelling } = useBuybackDetailsSync();
+
+const buybackDetailsRunning = computed(
+  () => running.value && !cancelling.value,
+);
 
 const { displayInfo, displaySuccess, displayWarning, displayAlert } =
   useAppNotifications();

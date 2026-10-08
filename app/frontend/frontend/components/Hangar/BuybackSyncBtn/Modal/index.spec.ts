@@ -1,5 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
+import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
@@ -502,6 +503,30 @@ describe("HangarBuybackSyncModal", () => {
       expect(
         wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
       ).toBeUndefined();
+    });
+
+    // The two would share RSI's rate limit; the next sync reads the prices.
+    it("reads no prices while a hangar sync runs", async () => {
+      mutateAsync.mockResolvedValueOnce({
+        total: 1,
+        added: 1,
+        removed: 0,
+        detailsPending: ["1"],
+      });
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
+      await flushPromises();
+
+      useHangarStore().syncRunning = true;
+
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
+
+      expect(mutateAsync).toHaveBeenCalled();
+      expect(askedFor("syncBuybackPricing")).toBe(false);
     });
 
     it("syncs only the list with an extension that cannot read prices", async () => {

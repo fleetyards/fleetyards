@@ -285,9 +285,15 @@ const submit = async () => {
   comlink.emit("buyback-sync-finished");
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
-    void runDetails(buybacks.value, result.value.detailsPending, {
-      waitForSlot: rateLimiter.take,
-    });
+    // A hangar sync started while the list was read would share RSI's rate
+    // limit with the pass; the next sync reads these prices instead.
+    if (hangarStore.syncRunning) {
+      displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
+    } else {
+      void runDetails(buybacks.value, result.value.detailsPending, {
+        waitForSlot: rateLimiter.take,
+      });
+    }
   }
 
   status.value = "finished";
