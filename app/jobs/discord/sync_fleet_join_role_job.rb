@@ -7,22 +7,24 @@ module Discord
   class SyncFleetJoinRoleJob < ::ApplicationJob
     sidekiq_options retry: 1, queue: "notifications"
 
-    # Positional on purpose: Sidekiq replays arguments positionally. `reset`
+    # Positional on purpose: Sidekiq replays arguments positionally. A role's
+    # first sweep -- `reset`, or any run until one has read the whole guild --
     # forgets who held the previous role, so the new one is applied as gained
     # by everyone holding it whose membership has not ended, and as lost by
-    # nobody -- changing the role keeps the members the old one brought in.
+    # nobody: changing the role keeps the members the old one brought in.
     def perform(fleet_id, reset = false)
       fleet = Fleet.find_by(id: fleet_id)
       return if fleet.blank?
 
-      fleet.fleet_discord_role_holders.delete_all if reset
-
+      fleet.fleet_notification_setting&.update_columns(discord_join_role_swept_at: nil) if reset
       join_role = JoinRole.new(fleet)
+      first = !join_role.swept?
+      fleet.fleet_discord_role_holders.delete_all if first
       return unless join_role.configured?
 
       # Admitting everyone who already holds a newly picked role would bury
-      # the officers in notifications; anyone the daily run admits is news.
-      @quiet = reset
+      # the officers in notifications; anyone a later run admits is news.
+      @quiet = first
       @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
       started_at = Time.current
 
@@ -38,6 +40,10 @@ module Discord
       gone.each do |uid, connections|
         JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
       end
+
+      # Only for the role it read: one picked meanwhile gets its own sweep.
+      FleetNotificationSetting.where(fleet_id: fleet.id, discord_join_role_id: join_role.role_id)
+        .update_all(discord_join_role_swept_at: Time.current)
     end
 
     # Returns the ids of the linked users found in the guild, or nil when the
@@ -60,7 +66,7 @@ module Discord
           changed = users.reject { |user| @held.include?(user.id) == holds }
           next if changed.empty?
 
-          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet, readmit: !@quiet)
+          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE

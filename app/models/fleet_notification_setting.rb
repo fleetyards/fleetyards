@@ -17,6 +17,7 @@
 #  discord_channel_id              :string
 #  discord_guild_id                :string
 #  discord_join_role_id            :string
+#  discord_join_role_swept_at      :datetime
 #  discord_member_role_id          :string
 #  discord_officers_channel_id     :string
 #  fleet_id                        :uuid             not null
@@ -87,6 +88,9 @@ class FleetNotificationSetting < ApplicationRecord
   # the new guild are its own.
   before_save :clear_guild_scoped_ids, if: :discord_guild_id_changed?
   after_save :clear_rank_role_ids, if: :saved_change_to_discord_guild_id?
+  # Until a new join role's first sweep has read the whole guild, holding it
+  # is not gaining it, so nothing brings back a member whose membership ended.
+  before_save -> { self.discord_join_role_swept_at = nil }, if: :discord_join_role_id_changed?
   after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
 
   scope :with_join_role, -> { where.not(discord_join_role_id: nil).where.not(discord_guild_id: nil) }

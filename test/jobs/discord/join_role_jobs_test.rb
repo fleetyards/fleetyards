@@ -12,6 +12,7 @@ module Discord
       @admin = create(:user)
       @fleet = create(:fleet, admins: [@admin])
       @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: GUILD, discord_join_role_id: JOIN_ROLE)
+      @setting.update_columns(discord_join_role_swept_at: Time.current)
       @api = mock("Discord::ApiClient")
       ::Discord::ApiClient.stubs(:new).returns(@api)
       ApplyJoinRolesJob.jobs.clear
@@ -59,6 +60,17 @@ module Discord
       assert_raises(ApplyJoinRolesJob::Unanswered) { ApplyJoinRolesJob.new.perform("uid-1", GUILD) }
 
       assert_predicate membership_of(user), :accepted?
+    end
+
+    test "an update before a new role's first sweep does not bring back an ended member" do
+      removed = linked_user("uid-1")
+      create(:fleet_membership, :accepted, fleet: @fleet, user: removed).discard
+      @setting.update!(discord_join_role_id: "300000000000000002")
+      @api.stubs(:get_guild_member).returns({"roles" => ["300000000000000002"]})
+
+      ApplyJoinRolesJob.new.perform("uid-1", GUILD)
+
+      assert_nil membership_of(removed)
     end
 
     test "picking a join role queues a sync that forgets who held the previous one" do
@@ -213,6 +225,23 @@ module Discord
       JoinRole.new(@fleet).apply(removed, [JOIN_ROLE])
 
       assert_predicate membership_of(removed), :accepted?
+    end
+
+    test "a first sweep that fails is not the last: the next run still brings back no ended member" do
+      removed = linked_user("uid-1")
+      create(:fleet_membership, :accepted, fleet: @fleet, user: removed).discard
+      @setting.update!(discord_join_role_id: "300000000000000002")
+      assert_nil @setting.reload.discord_join_role_swept_at
+      @api.stubs(:list_guild_members).raises(ApiClient::Error.new(503, "Unavailable"))
+      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      assert_nil @setting.reload.discord_join_role_swept_at
+
+      @api.stubs(:list_guild_members).returns([member("uid-1", "300000000000000002")])
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert_nil membership_of(removed)
+      refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
+      assert_predicate @setting.reload.discord_join_role_swept_at, :present?
     end
 
     test "a sync that cannot read the guild ends nobody's membership" do

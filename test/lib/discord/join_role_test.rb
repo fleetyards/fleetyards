@@ -13,6 +13,7 @@ module Discord
       @admin = create(:user)
       @fleet = create(:fleet, admins: [@admin])
       @fleet.create_fleet_notification_setting!(discord_guild_id: GUILD, discord_join_role_id: JOIN_ROLE)
+      @fleet.fleet_notification_setting.update_columns(discord_join_role_swept_at: Time.current)
       @user = create(:user)
       create(:omniauth_connection, user: @user, provider: "discord", uid: "discord-uid-1")
       @api = mock("Discord::ApiClient")
@@ -213,6 +214,18 @@ module Discord
       join_role.apply(@user, [JOIN_ROLE, OTHER_ROLE])
 
       assert_nil membership
+    end
+
+    test "a role not yet swept does not bring back a member who left" do
+      join_role.apply(@user, [JOIN_ROLE])
+      membership.discard
+      join_role.apply(@user, [])
+      @fleet.fleet_notification_setting.update_columns(discord_join_role_swept_at: nil)
+
+      join_role.apply(@user, [JOIN_ROLE])
+
+      assert_nil membership
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
     test "losing and regaining the role brings back a member who left" do

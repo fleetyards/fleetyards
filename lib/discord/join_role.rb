@@ -65,12 +65,12 @@ module Discord
     # Applies roles from a list of the whole guild read at `read_at`, unless
     # the member's own roles were read and applied since: then the list is the
     # older answer, and applying it could undo a role just gained or lost.
-    def self.apply_listed(join_role, users, discord_uid, role_ids, read_at:, quiet: false, readmit: true)
+    def self.apply_listed(join_role, users, discord_uid, role_ids, read_at:, quiet: false)
       with_member_lock(join_role.guild_id, discord_uid) do
         read_alone_at = Rails.cache.read(read_alone_key(join_role.guild_id, discord_uid))
         next if read_alone_at && read_alone_at > read_at.to_f
 
-        users.each { |user| join_role.apply(user, role_ids, quiet:, readmit:) }
+        users.each { |user| join_role.apply(user, role_ids, quiet:) }
       end
     end
 
@@ -121,6 +121,11 @@ module Discord
       role_id.present? && guild_id.present? && ApiClient.configured?
     end
 
+    # Whether the role's first sweep has read the whole guild.
+    def swept?
+      setting&.discord_join_role_swept_at.present?
+    end
+
     # What a player asking to join gets: a request, unless they hold the role.
     # Discord is asked, so a role granted a moment ago counts; anything it
     # cannot answer -- not in the guild, the bot removed, an outage, an update
@@ -162,10 +167,11 @@ module Discord
     # Applies the roles a player holds now. Nothing happens unless that differs
     # from what was recorded the last time. `quiet` is for admitting a whole
     # guild at once, where telling the officers about each one would bury them.
-    # Without `readmit`, a player whose membership ended -- removed, or left --
-    # is only recorded as holding the role: holding it when the role is picked
-    # is not gaining it, and only gaining it later brings them back.
-    def apply(user, role_ids, quiet: false, readmit: true)
+    # Until the role has been swept, a player whose membership ended --
+    # removed, or left -- is only recorded as holding it: holding it when the
+    # role is picked is not gaining it, and only gaining it later brings them
+    # back.
+    def apply(user, role_ids, quiet: false)
       return unless configured?
 
       if Array(role_ids).include?(role_id)
@@ -173,7 +179,7 @@ module Discord
         # so the next update tries again rather than finding nothing changed.
         FleetDiscordRoleHolder.transaction(requires_new: true) do
           next unless FleetDiscordRoleHolder.remember(fleet, user)
-          next if !readmit && left?(user)
+          next if !swept? && left?(user)
 
           raise ActiveRecord::Rollback unless admit(user, quiet:)
         end

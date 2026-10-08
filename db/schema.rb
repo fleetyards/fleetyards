@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_100300) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_100400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1058,6 +1058,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100300) do
     t.string "discord_officers_channel_id"
     t.string "discord_digest_timezone"
     t.string "discord_join_role_id"
+    t.datetime "discord_join_role_swept_at"
     t.index ["discord_digest_weekday"], name: "index_fleet_notification_settings_on_discord_digest_weekday", where: "(discord_digest_weekday IS NOT NULL)"
     t.index ["discord_guild_id"], name: "index_fleet_notification_settings_on_discord_guild_id"
     t.index ["fleet_id"], name: "index_fleet_notification_settings_on_fleet_id", unique: true
