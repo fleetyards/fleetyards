@@ -14,7 +14,7 @@ module Discord
         # A private hangar and a username that does not exist get the *same*
         # answer on purpose. Distinguishing them turns the command into a probe
         # for whether an account exists.
-        return message(content: I18n.t("discord.commands.hangar.not_available", username: username)) unless visible?(user)
+        return message(content: I18n.t("discord.commands.hangar.not_available", username: Markdown.escape(username))) unless visible?(user)
 
         counts = model_counts(user.vehicles.purchased.public)
 

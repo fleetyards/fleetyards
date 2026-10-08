@@ -111,6 +111,10 @@ module Discord
 
         assert_includes german[:content], "Kein Schiff"
       end
+
+      test "echoes a typed link as text, not as a link" do
+        assert_includes call("[Free aUEC](https://evil.example)")[:content], "\\[Free aUEC\\]\\(https://evil.example\\)"
+      end
     end
   end
 end

@@ -92,6 +92,10 @@ module Discord
 
         assert_includes content, I18n.t("discord.commands.hangar.more", count: 3)
       end
+
+      test "echoes a typed link as text, not as a link" do
+        assert_includes call("[Free aUEC](https://evil.example)")[:content], "\\[Free aUEC\\]\\(https://evil.example\\)"
+      end
     end
   end
 end
