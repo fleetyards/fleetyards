@@ -153,4 +153,21 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert membership.discard
     assert signup.reload.withdrawn?
   end
+
+  test "a rolled-back removal tells no one" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    withdrawn = []
+
+    ActiveSupport::Notifications.subscribed(->(*, payload) { withdrawn << payload[:signup] }, "fleet_event_signup.withdrawn") do
+      FleetMembership.transaction do
+        assert membership.discard
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    assert_empty withdrawn
+    assert_equal "confirmed", signup.reload.status
+  end
 end
