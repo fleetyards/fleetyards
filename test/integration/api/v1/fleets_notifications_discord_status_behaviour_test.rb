@@ -253,7 +253,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     api.stubs(:list_guild_members).returns([])
     Discord::ApiClient.stubs(:configured?).returns(true)
-    Discord::ApiClient.stubs(:members_intent?).returns(false)
+    Discord::BotStatus.stubs(:current).returns({"members_intent" => false})
     Discord::ApiClient.stubs(:new).returns(api)
 
     get @url, as: :json
@@ -267,7 +267,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     api.stubs(:list_guild_members).returns([])
     Discord::ApiClient.stubs(:configured?).returns(true)
-    Discord::ApiClient.stubs(:members_intent?).returns(true)
+    Discord::BotStatus.stubs(:current).returns({"members_intent" => true})
     Discord::ApiClient.stubs(:new).returns(api)
 
     get @url, as: :json
@@ -275,6 +275,20 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     body = JSON.parse(response.body)
     assert_equal true, body["joinRoleOk"]
     refute body.key?("joinRoleCode")
+  end
+
+  test "reports a join role whose changes wait because the bot is not connected" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    api.stubs(:list_guild_members).returns([])
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::BotStatus.stubs(:current).returns(nil)
+    Discord::ApiClient.stubs(:new).returns(api)
+
+    get @url, as: :json
+
+    assert_equal "bot_offline", JSON.parse(response.body)["joinRoleCode"]
   end
 
   test "says nothing about members to a fleet without a join role" do

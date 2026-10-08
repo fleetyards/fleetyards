@@ -13,6 +13,7 @@
 require_relative "../config/environment"
 require "discordrb"
 require "discord/scheduled_event_rsvp_handler"
+require "discord/bot_status"
 
 # Intent bit for GUILD_SCHEDULED_EVENTS — not yet defined as a symbol in
 # discordrb 3.7.2's INTENTS hash, but the integer is accepted directly.
@@ -81,6 +82,12 @@ end
     Rails.logger.error("[discord-bot] #{type} failed: #{e.class}: #{e.message}")
   end
 end
+
+# Tells the settings page whether member updates arrive, from what this
+# process actually connected with.
+bot.ready { Discord::BotStatus.record!(members_intent:) }
+bot.heartbeat { Discord::BotStatus.record!(members_intent:) }
+bot.disconnected { Discord::BotStatus.clear! }
 
 Signal.trap("INT") { bot.stop }
 Signal.trap("TERM") { bot.stop }

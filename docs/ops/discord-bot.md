@@ -56,13 +56,13 @@ Gateway sessions fight each other).
    takes effect the moment a player gains or loses it. Without it, the
    daily `Discord::SyncJoinRolesDispatchJob` applies role changes, so
    they can take up to a day. To turn it on, enable it here first, then
-   set `DISCORD_SERVER_MEMBERS_INTENT: "true"` in the destination's
-   shared `env.clear`, not only the `discord_bot` role's: the fleet
-   settings page reads it too, to say whether role changes arrive live.
-   Do these two steps in that order. If the bot requests the intent
-   before the portal grants it, the Gateway refuses the whole
-   connection, and RSVPs stop as well. The settings page warns about
-   either step missing once a fleet has picked a join role.
+   set `DISCORD_SERVER_MEMBERS_INTENT: "true"` in the `discord_bot`
+   role's `env.clear` (see Deploying). Do these two steps in that
+   order. If the bot requests the intent before the portal grants it,
+   the Gateway refuses the whole connection, and RSVPs stop as well.
+   Once a fleet has picked a join role, its settings page warns about
+   either step missing: the bot reports the intents it connected with
+   on every Gateway heartbeat (`Discord::BotStatus`).
 4. Toggle **Public Bot** off so it can't be added to random servers.
 5. Sidebar → **Installation** → **Install Link** → **Discord Provided
    Link**. Default Install Settings:
@@ -140,8 +140,7 @@ Already wired in `config/deploy.yml`. The `discord_bot` role:
 - `DISCORD_BOT_TOKEN` flows through `env.secret`.
 - Requests the Server Members intent only when
   `DISCORD_SERVER_MEMBERS_INTENT=true`. It is unset by default; see
-  step 3 of the application setup before setting it, and set it for
-  every role, since the web tier reads it as well.
+  step 3 of the application setup before setting it.
 
 Deploy as usual:
 

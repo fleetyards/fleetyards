@@ -32,9 +32,8 @@ module Discord
 
     UNKNOWN_MEMBER = 10007
 
-    # Whether bin/discord-bot asks the Gateway for member updates. Read here
-    # too, so the settings page can tell a fleet that role changes only
-    # arrive with the daily sweep.
+    # Whether bin/discord-bot asks the Gateway for member updates. The bot
+    # reports what it connected with through Discord::BotStatus.
     def self.members_intent?
       ENV["DISCORD_SERVER_MEMBERS_INTENT"] == "true"
     end

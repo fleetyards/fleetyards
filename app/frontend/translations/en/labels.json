@@ -650,7 +650,8 @@
           },
           "joinRoleCodes": {
             "members_intent_missing": "The Fleetyards bot may not list this server's members yet, so the join role only takes effect when a player uses an invite link. Contact an administrator.",
-            "live_updates_off": "Role changes reach Fleetyards once a day: the bot is not listening for them as they happen. Contact an administrator."
+            "live_updates_off": "Role changes reach Fleetyards once a day: the bot is not listening for them as they happen. Contact an administrator.",
+            "bot_offline": "The Fleetyards bot is not connected to Discord right now, so role changes wait for the daily sweep. Contact an administrator."
           },
           "statusOk": "Connected to %{name}",
           "statusCodes": {

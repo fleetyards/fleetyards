@@ -650,7 +650,8 @@
           },
           "joinRoleCodes": {
             "members_intent_missing": "Le bot Fleetyards ne peut pas encore lister les membres de ce serveur : le rôle d'adhésion ne s'applique que lorsqu'un joueur utilise un lien d'invitation. Contactez un administrateur.",
-            "live_updates_off": "Les changements de rôle n'arrivent sur Fleetyards qu'une fois par jour : le bot ne les écoute pas en direct. Contactez un administrateur."
+            "live_updates_off": "Les changements de rôle n'arrivent sur Fleetyards qu'une fois par jour : le bot ne les écoute pas en direct. Contactez un administrateur.",
+            "bot_offline": "Le bot Fleetyards n'est pas connecté à Discord pour le moment : les changements de rôle attendent la synchronisation quotidienne. Contactez un administrateur."
           },
           "statusOk": "Connecté à %{name}",
           "statusCodes": {
