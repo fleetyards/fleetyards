@@ -121,12 +121,15 @@ module Announcements
     # renders the notification through ActionController::Renderer, so an
     # unfiltered fan-out is ~57k template renders for an audience of a few
     # hundred.
+    #
+    # A tab in use counts too: reading a loaded page makes no API request, and
+    # push holds back for exactly those readers on the strength of this toast.
     private def broadcast(notifications, user_ids)
       return if user_ids.empty?
 
       active_ids = User.where(id: user_ids)
         .where(last_active_at: BROADCAST_WINDOW.ago..)
-        .pluck(:id)
+        .pluck(:id) | (user_ids & UserPresence.active_user_ids.to_a)
       return if active_ids.empty?
 
       ids = notification_ids(notifications, active_ids)

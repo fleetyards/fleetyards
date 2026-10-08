@@ -55,6 +55,17 @@ module Announcements
       Announcements::NotifyBatchJob.new.perform(@announcement.id, [here.id, gone.id])
     end
 
+    test "#perform broadcasts to a reader with a tab in use, however long since their last request" do
+      reading = create(:user, last_active_at: 1.hour.ago)
+      UserPresence.mark_active(reading.id, "tab-1")
+
+      UserNotificationsChannel.expects(:broadcast_to).with { |user, _payload| user == reading }.once
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [reading.id])
+    ensure
+      UserPresence.reset!
+    end
+
     test "#perform mails only the readers who opted in" do
       opted_in = create(:user, last_active_at: 3.days.ago)
       opted_in.notification_preferences
