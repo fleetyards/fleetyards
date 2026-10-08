@@ -67,7 +67,7 @@ module Push
     end
 
     test "sends nothing while the reader is active on any device" do
-      UserPresence.mark_active(@user.id)
+      UserPresence.mark_active(@user.id, "tab-1")
 
       perform
 
@@ -76,9 +76,20 @@ module Push
       UserPresence.reset!
     end
 
+    test "still sends when the queue held the fan-out back past the window" do
+      @notification.update_columns(created_at: (UserPresence::ACTIVE_WINDOW + 1).seconds.ago)
+      UserPresence.mark_active(@user.id, "tab-1")
+
+      perform
+
+      assert_equal @subscriptions.size, DeliverToSubscriptionJob.jobs.size
+    ensure
+      UserPresence.reset!
+    end
+
     test "still sends to an active reader who has the in-app channel off" do
       @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(app: false)
-      UserPresence.mark_active(@user.id)
+      UserPresence.mark_active(@user.id, "tab-1")
 
       perform
 

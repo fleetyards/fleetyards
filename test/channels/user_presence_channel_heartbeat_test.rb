@@ -81,7 +81,7 @@ class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
     refute UserPresence.active?(@user.id)
   end
 
-  test "unsubscribing clears the user's window" do
+  test "unsubscribing clears only this connection's window" do
     stub_signed_in_connection
     subscribe
     perform :active
@@ -89,5 +89,15 @@ class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
     unsubscribe
 
     refute UserPresence.active?(@user.id)
+  end
+
+  test "an inactive report leaves the user's other devices in use" do
+    stub_signed_in_connection
+    subscribe
+    UserPresence.mark_active(@user.id, "phone")
+
+    perform :inactive
+
+    assert UserPresence.active?(@user.id)
   end
 end

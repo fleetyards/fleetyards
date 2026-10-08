@@ -200,7 +200,7 @@ module Push
     end
 
     test "still sends when the reader became active after the fan-out" do
-      UserPresence.mark_active(@user.id)
+      UserPresence.mark_active(@user.id, "tab-1")
       WebPush.expects(:payload_send).once
 
       perform

@@ -53,26 +53,30 @@ class UserPresence
       write { redis.zadd(connections_key, expires_at(GRACE), member(user_id, token)) }
     end
 
-    # A tab of the user's is in front of them right now, on any device. Push
-    # holds back while it is: the same notification already arrives in that
-    # tab, and buzzing the phone beside it is noise.
+    # A tab of the user's is in use right now, on any device. Push holds back
+    # while one is: the same notification already arrives in that tab, and
+    # buzzing the phone beside it is noise.
     #
-    # The value is when it stops counting, read against the clock like the
-    # connection scores; the key's own expiry only cleans up.
-    def mark_active(user_id)
-      write { redis.set(active_key(user_id), expires_at(ACTIVE_WINDOW), ex: ACTIVE_WINDOW) }
+    # Per connection, like the connection set: one tab going idle or closing
+    # must not end the window of another that is still in use.
+    def mark_active(user_id, token)
+      write { redis.zadd(active_key, expires_at(ACTIVE_WINDOW), member(user_id, token)) }
     end
 
-    # A tab went idle or closed. Another device still in use reports itself
-    # again within its own interval.
-    def mark_inactive(user_id)
-      write { redis.del(active_key(user_id)) }
+    def mark_inactive(user_id, token)
+      write { redis.zrem(active_key, member(user_id, token)) }
     end
 
     # False when Redis cannot answer, so an outage costs a redundant push
     # rather than a missing one.
     def active?(user_id)
-      read(false) { redis.get(active_key(user_id)).to_i > now }
+      active_user_ids.include?(user_id.to_s)
+    end
+
+    # Every user with a tab in use, in one read, for a fan-out that would
+    # otherwise ask per reader.
+    def active_user_ids
+      read(Set.new) { live_members(active_key) }
     end
 
     def online?(user_id)
@@ -132,24 +136,26 @@ class UserPresence
     # Members whose score has passed are already invisible to every read; this
     # only keeps the set from growing without bound.
     def sweep
-      write { redis.zremrangebyscore(connections_key, "-inf", now) }
+      write do
+        redis.zremrangebyscore(connections_key, "-inf", now)
+        redis.zremrangebyscore(active_key, "-inf", now)
+      end
     end
 
     def reset!
-      write do
-        redis.del(connections_key, announced_key)
-        redis.scan_each(match: active_key("*")) { |key| redis.del(key) }
-      end
+      write { redis.del(connections_key, announced_key, active_key) }
     end
 
     # Every live user, or `nil` when Redis could not answer. Only `reconcile`
     # needs the difference; everything else wants the empty set.
     private def live_user_ids
-      read(nil) do
-        redis.zrangebyscore(connections_key, "(#{now}", "+inf")
-          .map { |entry| entry.split(":", 2).first }
-          .to_set
-      end
+      read(nil) { live_members(connections_key) }
+    end
+
+    private def live_members(key)
+      redis.zrangebyscore(key, "(#{now}", "+inf")
+        .map { |entry| entry.split(":", 2).first }
+        .to_set
     end
 
     private def announced_user_ids
@@ -202,8 +208,8 @@ class UserPresence
       "#{namespace}presence:announced"
     end
 
-    private def active_key(user_id)
-      "#{namespace}presence:active:#{user_id}"
+    private def active_key
+      "#{namespace}presence:active"
     end
 
     # Parallel test workers share one Redis and one cable database, so each one

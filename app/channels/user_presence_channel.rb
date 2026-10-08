@@ -25,7 +25,7 @@ class UserPresenceChannel < ApplicationCable::Channel
   def unsubscribed
     stop_all_streams
 
-    UserPresence.mark_inactive(current_user.id) if current_user.present?
+    UserPresence.mark_inactive(current_user.id, connection.presence_token) if current_user.present?
   end
 
   # Sent by the client while one of its tabs is visible and in use. The server
@@ -33,13 +33,13 @@ class UserPresenceChannel < ApplicationCable::Channel
   def active
     return if current_user.blank?
 
-    UserPresence.mark_active(current_user.id)
+    UserPresence.mark_active(current_user.id, connection.presence_token)
   end
 
   def inactive
     return if current_user.blank?
 
-    UserPresence.mark_inactive(current_user.id)
+    UserPresence.mark_inactive(current_user.id, connection.presence_token)
   end
 
   private def heartbeat

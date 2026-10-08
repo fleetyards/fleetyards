@@ -170,14 +170,14 @@ class UserPresenceTest < ActiveSupport::TestCase
   end
 
   test "#active? holds for the active window after a report" do
-    UserPresence.mark_active(@user)
+    UserPresence.mark_active(@user, "tab-1")
 
     assert UserPresence.active?(@user)
     refute UserPresence.active?(@other)
   end
 
   test "#active? lapses once nothing reports within the window" do
-    UserPresence.mark_active(@user)
+    UserPresence.mark_active(@user, "tab-1")
 
     travel UserPresence::ACTIVE_WINDOW + 1.second do
       refute UserPresence.active?(@user)
@@ -190,10 +190,37 @@ class UserPresenceTest < ActiveSupport::TestCase
     refute UserPresence.active?(@user)
   end
 
-  test "#mark_inactive ends the window at once" do
-    UserPresence.mark_active(@user)
-    UserPresence.mark_inactive(@user)
+  test "#mark_inactive ends that connection's window at once" do
+    UserPresence.mark_active(@user, "tab-1")
+    UserPresence.mark_inactive(@user, "tab-1")
 
     refute UserPresence.active?(@user)
+  end
+
+  test "#mark_inactive leaves another connection in use alone" do
+    UserPresence.mark_active(@user, "desktop")
+    UserPresence.mark_active(@user, "phone")
+
+    UserPresence.mark_inactive(@user, "phone")
+
+    assert UserPresence.active?(@user)
+  end
+
+  test "#active_user_ids lists every user with a tab in use" do
+    UserPresence.mark_active(@user, "tab-1")
+    UserPresence.mark_active(@other, "tab-2")
+    UserPresence.mark_inactive(@other, "tab-2")
+
+    assert_equal Set[@user], UserPresence.active_user_ids
+  end
+
+  test "#sweep drops lapsed activity" do
+    UserPresence.mark_active(@user, "tab-1")
+
+    travel UserPresence::ACTIVE_WINDOW + 1.second do
+      UserPresence.sweep
+
+      assert_empty UserPresence.active_user_ids
+    end
   end
 end
