@@ -353,6 +353,7 @@ class FleetMembership < ApplicationRecord
         next if signup.occurrence_over?
 
         signup.withdraw!
+        ActiveSupport::Notifications.instrument("fleet_event_signup.withdrawn", signup:)
       end
   end
 

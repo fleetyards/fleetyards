@@ -103,4 +103,17 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
       assert upcoming.reload.withdrawn?
     end
   end
+
+  test "a freed seat tells the event's creator, as a withdrawal does" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    withdrawn = []
+
+    ActiveSupport::Notifications.subscribed(->(*, payload) { withdrawn << payload[:signup] }, "fleet_event_signup.withdrawn") do
+      assert membership.discard
+    end
+
+    assert_equal [signup], withdrawn
+  end
 end
