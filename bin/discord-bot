@@ -87,7 +87,6 @@ end
 # process actually connected with.
 bot.ready { Discord::BotStatus.record!(members_intent:) }
 bot.heartbeat { Discord::BotStatus.record!(members_intent:) }
-bot.disconnected { Discord::BotStatus.clear! }
 
 Signal.trap("INT") { bot.stop }
 Signal.trap("TERM") { bot.stop }

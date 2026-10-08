@@ -5,7 +5,7 @@ require "test_helper"
 module Discord
   class BotStatusTest < ActiveSupport::TestCase
     setup do
-      Rails.stubs(:cache).returns(ActiveSupport::Cache::MemoryStore.new)
+      BotStatus.stubs(:store).returns(ActiveSupport::Cache::MemoryStore.new)
     end
 
     test "reports what the bot connected with" do
@@ -22,12 +22,11 @@ module Discord
       end
     end
 
-    test "reports nothing once the bot disconnected" do
-      BotStatus.record!(members_intent: true)
+    test "keeps its own store, so a null Rails.cache in development does not lose it" do
+      BotStatus.unstub(:store)
+      Rails.stubs(:cache).returns(ActiveSupport::Cache::NullStore.new)
 
-      BotStatus.clear!
-
-      assert_nil BotStatus.current
+      assert_instance_of ActiveSupport::Cache::RedisCacheStore, BotStatus.store
     end
   end
 end
