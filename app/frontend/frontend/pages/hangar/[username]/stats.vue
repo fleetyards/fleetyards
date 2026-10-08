@@ -11,6 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import PublicHangarStats from "@/frontend/components/Hangar/PublicHangarStats/index.vue";
 import { type UserPublic } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 
 type Props = {
   user: UserPublic;
@@ -22,12 +23,14 @@ const { t } = useI18n();
 
 const router = useRouter();
 
+const { share, shareQuery } = usePublicHangarShare();
+
 const username = computed(() => props.user.username);
 
 const usernamePlural = computed(() => possessiveUsername(username.value));
 
 onMounted(async () => {
-  if (!props.user.publicHangarStats) {
+  if (!props.user.publicHangarStats && !share.value) {
     await router.replace({
       name: "hangar-public",
       params: { username: username.value },
@@ -40,12 +43,16 @@ onMounted(async () => {
   <BreadCrumbs
     :crumbs="[
       {
-        to: { name: 'hangar-public', params: { username: username } },
+        to: {
+          name: 'hangar-public',
+          params: { username: username },
+          query: shareQuery,
+        },
         label: t('headlines.hangar.public', { user: usernamePlural }),
       },
     ]"
   />
   <Heading size="hero" hero>{{ t("headlines.hangar.publicStats") }}</Heading>
 
-  <PublicHangarStats :username="username" />
+  <PublicHangarStats :username="username" :share="share" />
 </template>

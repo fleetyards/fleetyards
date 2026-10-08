@@ -15,6 +15,7 @@ class Api::V1::PublicHangarsStatsShowTest < ActionDispatch::IntegrationTest
       tags "PublicHangarStats"
       produces "application/json"
 
+      parameter name: "share", in: :query, schema: {type: :string}, required: false, description: "Hangar share token"
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::HangarQuery,
         style: :deepObject,
@@ -59,5 +60,22 @@ class Api::V1::PublicHangarsStatsShowTest < ActionDispatch::IntegrationTest
     user = create(:user, public_hangar_stats: false, vehicle_count: 2)
 
     assert_api_response :get, 404, path_params: {username: user.username}
+  end
+
+  test "GET /public/hangars/:username/stats opens private stats to the share token" do
+    user = create(:user, public_hangar: false, public_hangar_stats: false, vehicle_count: 2)
+    token = user.ensure_hangar_share_token!
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {share: token}
+  end
+
+  test "GET /public/hangars/:username/stats keeps the wishlist total behind its own switch for a share token" do
+    user = create(:user, public_hangar: false, public_hangar_stats: false, public_wishlist: false)
+    create_list(:vehicle, 3, user: user, wanted: true, public: true)
+    token = user.ensure_hangar_share_token!
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {share: token} do
+      assert_nil parsed_body["wishlistTotal"]
+    end
   end
 end

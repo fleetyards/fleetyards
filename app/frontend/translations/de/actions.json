@@ -1,6 +1,11 @@
 {
   "de": {
     "actions": {
+      "hangarShare": {
+        "enable": "Freigabelink erstellen",
+        "rotate": "Link erneuern",
+        "disable": "Freigabelink löschen"
+      },
       "announcements": {
         "addPart": "Hinzufügen",
         "removePart": "Entfernen",

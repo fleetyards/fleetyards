@@ -1,6 +1,26 @@
 {
   "it": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "Link di condivisione creato.",
+          "failure": "Impossibile creare il link di condivisione."
+        },
+        "rotate": {
+          "success": "Link di condivisione rinnovato. Il vecchio link non funziona più.",
+          "failure": "Impossibile rinnovare il link di condivisione.",
+          "confirm": "Rinnovando il link, quello attuale smette di funzionare. Chi lo ha ricevuto avrà bisogno del nuovo link."
+        },
+        "disable": {
+          "success": "Link di condivisione eliminato.",
+          "failure": "Impossibile eliminare il link di condivisione.",
+          "confirm": "Eliminando il link, smetterà di funzionare per tutte le persone con cui l'hai condiviso."
+        },
+        "copy": {
+          "success": "Link di condivisione copiato negli appunti.",
+          "failure": "Impossibile copiare il link di condivisione."
+        }
+      },
       "loading": "Caricamento…",
       "copy": {
         "success": "Testo copiato!",

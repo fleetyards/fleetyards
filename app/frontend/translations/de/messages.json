@@ -1,6 +1,26 @@
 {
   "de": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "Freigabelink erstellt.",
+          "failure": "Der Freigabelink konnte nicht erstellt werden."
+        },
+        "rotate": {
+          "success": "Freigabelink erneuert. Der alte Link funktioniert nicht mehr.",
+          "failure": "Der Freigabelink konnte nicht erneuert werden.",
+          "confirm": "Wenn du den Link erneuerst, funktioniert der aktuelle nicht mehr. Alle, mit denen du ihn geteilt hast, brauchen dann den neuen Link."
+        },
+        "disable": {
+          "success": "Freigabelink gelöscht.",
+          "failure": "Der Freigabelink konnte nicht gelöscht werden.",
+          "confirm": "Wenn du den Link löschst, funktioniert er für niemanden mehr, mit dem du ihn geteilt hast."
+        },
+        "copy": {
+          "success": "Freigabelink in die Zwischenablage kopiert.",
+          "failure": "Der Freigabelink konnte nicht kopiert werden."
+        }
+      },
       "loading": "Lädt…",
       "copy": {
         "success": "Text kopiert!",

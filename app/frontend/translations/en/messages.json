@@ -1,6 +1,26 @@
 {
   "en": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "Share link created.",
+          "failure": "Could not create the share link."
+        },
+        "rotate": {
+          "success": "Share link rotated. The old link no longer works.",
+          "failure": "Could not rotate the share link.",
+          "confirm": "Rotating the link stops the current one from working. Anyone you shared it with will need the new link."
+        },
+        "disable": {
+          "success": "Share link deleted.",
+          "failure": "Could not delete the share link.",
+          "confirm": "Deleting the link stops it from working for everyone you shared it with."
+        },
+        "copy": {
+          "success": "Share link copied to clipboard.",
+          "failure": "Could not copy the share link."
+        }
+      },
       "loading": "Loading…",
       "copy": {
         "success": "Text Copied!",

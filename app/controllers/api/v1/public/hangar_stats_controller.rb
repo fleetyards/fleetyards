@@ -5,6 +5,7 @@ module Api
     module Public
       class HangarStatsController < ::Api::PublicBaseController
         include HangarFiltersConcern
+        include HangarShareTokenConcern
         include ChartHelper
 
         before_action :set_user

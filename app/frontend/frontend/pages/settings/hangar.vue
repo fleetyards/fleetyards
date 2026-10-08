@@ -14,6 +14,7 @@ import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDef
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import HangarShareLink from "@/frontend/components/Hangar/ShareLink/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -221,4 +222,6 @@ const onSubmit = handleSubmit(async (values) => {
       hide-cancel
     />
   </form>
+  <hr />
+  <HangarShareLink />
 </template>

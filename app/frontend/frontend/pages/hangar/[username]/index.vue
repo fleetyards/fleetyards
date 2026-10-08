@@ -36,6 +36,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -84,6 +85,12 @@ const usernamePlural = computed(() => possessiveUsername(username.value));
 
 const highlightedGroup = ref<string>("");
 
+const { share, shareQuery } = usePublicHangarShare();
+
+const statsVisible = computed(
+  () => props.user.publicHangarStats || !!share.value,
+);
+
 const mobile = useMobile();
 
 const fleetchartStore = useFleetchartStore();
@@ -99,6 +106,7 @@ const publicHangarQueryParams = computed(() => {
     page: page.value,
     perPage: perPage.value,
     q: getQuery(),
+    share: share.value,
   };
 });
 
@@ -115,7 +123,7 @@ const {
 } = usePublicHangarQuery(username, publicHangarQueryParams);
 
 const publicHangarStatsQueryParams = computed(() => {
-  return { q: filters.value };
+  return { q: filters.value, share: share.value };
 });
 
 const { data: hangarStats, refetch: refetchStats } = usePublicHangarStats(
@@ -123,8 +131,10 @@ const { data: hangarStats, refetch: refetchStats } = usePublicHangarStats(
   publicHangarStatsQueryParams,
 );
 
-const { data: hangarGroups, refetch: refetchGroups } =
-  usePublicHangarGroups(username);
+const { data: hangarGroups, refetch: refetchGroups } = usePublicHangarGroups(
+  username,
+  computed(() => ({ share: share.value })),
+);
 
 const fetch = async () => {
   await refetch();
@@ -277,8 +287,8 @@ useSubscription({
 
     <Btn
       :size="BtnSizesEnum.MD"
-      v-if="user.publicHangarStats"
-      :to="{ name: 'hangar-public-stats' }"
+      v-if="statsVisible"
+      :to="{ name: 'hangar-public-stats', query: shareQuery }"
     >
       <i class="fa-duotone fa-chart-bar" />
       {{ t("nav.stats") }}
@@ -287,7 +297,7 @@ useSubscription({
     <Btn
       :size="BtnSizesEnum.MD"
       v-if="user.publicWishlist"
-      :to="{ name: 'wishlist-public' }"
+      :to="{ name: 'wishlist-public', query: shareQuery }"
     >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
@@ -320,14 +330,17 @@ useSubscription({
         <FriendButton :username="username" />
 
         <Btn
-          v-if="user.publicHangarStats"
-          :to="{ name: 'hangar-public-stats' }"
+          v-if="statsVisible"
+          :to="{ name: 'hangar-public-stats', query: shareQuery }"
         >
           <i class="fa-duotone fa-chart-bar" />
           <span>{{ t("nav.stats") }}</span>
         </Btn>
 
-        <Btn v-if="user.publicWishlist" :to="{ name: 'hangar-wishlist' }">
+        <Btn
+          v-if="user.publicWishlist"
+          :to="{ name: 'wishlist-public', query: shareQuery }"
+        >
           <i class="fa-duotone fa-wand-sparkles" />
           <span>{{ t("labels.wishlist") }}</span>
         </Btn>

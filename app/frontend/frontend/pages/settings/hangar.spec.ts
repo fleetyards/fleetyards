@@ -10,6 +10,23 @@ const currentUser = ref<{ hangarDefaultSort: string | null }>({
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useUpdateProfile: () => ({ mutateAsync: vi.fn(() => Promise.resolve()) }),
+  useMyHangarShare: () => ({
+    data: ref({ enabled: false, shareUrl: null }),
+    refetch: vi.fn(),
+    isPending: ref(false),
+  }),
+  useCreateMyHangarShare: () => ({
+    mutateAsync: vi.fn(),
+    isPending: ref(false),
+  }),
+  useRotateMyHangarShare: () => ({
+    mutateAsync: vi.fn(),
+    isPending: ref(false),
+  }),
+  useDestroyMyHangarShare: () => ({
+    mutateAsync: vi.fn(),
+    isPending: ref(false),
+  }),
 }));
 
 vi.mock("@/frontend/stores/session", () => ({

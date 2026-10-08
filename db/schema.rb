@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2630,6 +2630,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
     t.datetime "rsi_organizations_checked_at"
     t.datetime "rsi_organizations_attempted_at"
     t.uuid "current_location_id"
+    t.string "hangar_share_token"
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
@@ -2638,6 +2639,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["current_location_id"], name: "index_users_on_current_location_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["hangar_share_token"], name: "index_users_on_hangar_share_token", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"
     t.index ["last_active_at"], name: "index_users_on_last_active_at"
     t.index ["normalized_email"], name: "index_users_on_normalized_email"

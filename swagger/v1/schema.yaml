@@ -12282,6 +12282,108 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/hangar/share":
+    post:
+      summary: Create hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: createMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: destroyMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: myHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/hangar/share/rotate":
+    post:
+      summary: Rotate hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: rotateMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/rsi-verification":
     get:
       summary: Show the RSI handle verification
@@ -15838,6 +15940,12 @@ paths:
       - PublicHangar
       operationId: publicHangar
       parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
@@ -15880,6 +15988,13 @@ paths:
       tags:
       - PublicHangarGroups
       operationId: publicHangarGroups
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -15887,6 +16002,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PublicHangarGroupsList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats":
@@ -15903,6 +16024,12 @@ paths:
       - PublicHangarStats
       operationId: publicHangarStats
       parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       - name: q
         in: query
         schema:
@@ -15938,6 +16065,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByClassification
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -15966,6 +16100,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByManufacturer
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -15994,6 +16135,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByProductionStatus
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16022,6 +16170,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsBySize
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16049,6 +16204,13 @@ paths:
       tags:
       - PublicUser
       operationId: publicUser
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -28894,6 +29056,21 @@ components:
       additionalProperties: false
       example: {}
       title: HangarQuery
+    HangarShare:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        shareUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+      required:
+      - enabled
+      - shareUrl
+      additionalProperties: false
+      title: HangarShare
     HangarStats:
       type: object
       properties:

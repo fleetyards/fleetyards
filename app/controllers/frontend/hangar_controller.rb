@@ -10,7 +10,9 @@ module Frontend
 
     def public
       @user = User.find_by(["normalized_username = :value", {value: params[:username].downcase}])
-      if @user.present?
+      # The preview card shows the flagship, so it is drawn only for a hangar
+      # the visitor -- or the link's share token -- may open.
+      if @user.present? && public_user_readable?(:show?)
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
         @og_type = "article"
@@ -22,7 +24,7 @@ module Frontend
 
     def wishlist
       @user = User.find_by(["normalized_username = :value", {value: params[:username].downcase}])
-      if @user.present?
+      if @user.present? && public_user_readable?(:wishlist?)
         vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_wishlist", user: username(@user.username))
         @og_type = "article"
@@ -30,6 +32,10 @@ module Frontend
       end
 
       render_frontend
+    end
+
+    private def public_user_readable?(rule)
+      ::Public::UserPolicy.new(@user, user: current_user, share_token: params[:share].presence).apply(rule)
     end
 
     private def render_frontend

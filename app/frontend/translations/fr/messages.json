@@ -1,6 +1,26 @@
 {
   "fr": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "Lien de partage créé.",
+          "failure": "Impossible de créer le lien de partage."
+        },
+        "rotate": {
+          "success": "Lien de partage renouvelé. L'ancien lien ne fonctionne plus.",
+          "failure": "Impossible de renouveler le lien de partage.",
+          "confirm": "Renouveler le lien rend l'actuel inutilisable. Les personnes avec qui vous l'avez partagé auront besoin du nouveau lien."
+        },
+        "disable": {
+          "success": "Lien de partage supprimé.",
+          "failure": "Impossible de supprimer le lien de partage.",
+          "confirm": "Supprimer le lien le rend inutilisable pour toutes les personnes avec qui vous l'avez partagé."
+        },
+        "copy": {
+          "success": "Lien de partage copié dans le presse-papiers.",
+          "failure": "Impossible de copier le lien de partage."
+        }
+      },
       "loading": "Chargement…",
       "copy": {
         "success": "Texte copié !",

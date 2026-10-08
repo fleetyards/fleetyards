@@ -26,6 +26,7 @@ import { type UserPublic } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -102,11 +103,14 @@ const toggleFleetchart = () => {
 
 const router = useRouter();
 
+const { shareQuery } = usePublicHangarShare();
+
 onMounted(async () => {
   if (!props.user.publicWishlist) {
     await router.replace({
       name: "hangar-public",
       params: { username: username.value },
+      query: shareQuery.value,
     });
   }
 });
@@ -117,7 +121,11 @@ onMounted(async () => {
     <BreadCrumbs
       :crumbs="[
         {
-          to: { name: 'hangar-public', params: { username: username } },
+          to: {
+            name: 'hangar-public',
+            params: { username: username },
+            query: shareQuery,
+          },
           label: t('headlines.hangar.public', { user: usernamePlural }),
         },
       ]"

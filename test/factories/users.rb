@@ -26,6 +26,7 @@
 #  friends_wishlist               :boolean          default(FALSE), not null
 #  guilded                        :string
 #  hangar_default_sort            :string
+#  hangar_share_token             :string
 #  hangar_updated_at              :datetime
 #  hide_owner                     :boolean          default(FALSE), not null
 #  homepage                       :string
@@ -85,6 +86,7 @@
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
+#  index_users_on_hangar_share_token     (hangar_share_token) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
 #  index_users_on_lower_email            (lower((email)::text))

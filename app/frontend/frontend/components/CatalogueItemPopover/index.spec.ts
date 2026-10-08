@@ -41,7 +41,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useCommodity: query("commodity"),
   useFleetContract: query("contract", 2),
   useFleetEvent: query("event", 3),
-  usePublicUser: query("user"),
+  usePublicUser: query("user", 2),
 }));
 
 import Component from "./index.vue";

@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class HangarGroupsController < ::Api::PublicBaseController
+        include HangarShareTokenConcern
+
         before_action :set_user
 
         def index

@@ -1,6 +1,10 @@
 {
   "en": {
     "labels": {
+      "hangarShare": {
+        "intro": "Create a secret link that shows your hangar and its stats to anyone you give it to, even while your hangar is private. Your wishlist keeps its own setting.",
+        "howTo": "Anyone with this link can see your hangar. Rotate it to lock out everyone holding the current link, or delete it to stop sharing."
+      },
       "locationInput": {
         "linked": "Linked to"
       },
