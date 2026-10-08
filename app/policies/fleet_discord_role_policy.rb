@@ -5,11 +5,6 @@
 # role to whoever manages the fleet's Discord settings.
 class FleetDiscordRolePolicy < FleetBasePolicy
   def index?
-    accepted_fleet_membership&.has_access?([
-      "fleet:manage",
-      "fleet:invites:manage",
-      "fleet:invites:create",
-      "fleet:notifications:manage"
-    ]) || false
+    accepted_fleet_membership&.has_access?([*FleetMembership::CAPABILITY_PRIVILEGES[:create_invites], "fleet:notifications:manage"]) || false
   end
 end
