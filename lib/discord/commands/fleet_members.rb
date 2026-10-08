@@ -79,9 +79,9 @@ module Discord
       # answers "what can this person do". Neither carries the other's noise.
       private def line_for(membership)
         if pending?
-          "• #{membership.user.username}#{waiting_since(membership)}"
+          "• #{Markdown.escape(membership.user.username)}#{waiting_since(membership)}"
         else
-          "• #{membership.user.username}#{role_of(membership)}"
+          "• #{Markdown.escape(membership.user.username)}#{role_of(membership)}"
         end
       end
 
@@ -89,7 +89,7 @@ module Discord
         name = membership.fleet_role&.name
         return "" if name.blank?
 
-        " — #{name}"
+        " — #{Markdown.escape(name)}"
       end
 
       private def waiting_since(membership)

@@ -52,6 +52,13 @@ module Discord
         assert_includes call[:content], "Officer"
       end
 
+      test "escapes the markdown in a username and a role name" do
+        role_named("Member").update!(name: "*Crew*")
+        accept(create(:user, username: "snake_case_name"), "*Crew*")
+
+        assert_includes call[:content], "snake\\_case\\_name — \\*Crew\\*"
+      end
+
       test "reads alphabetically, so a name can be found" do
         accept(create(:user, username: "Zulu"))
         accept(create(:user, username: "Bravo"))
