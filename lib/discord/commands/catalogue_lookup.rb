@@ -63,8 +63,7 @@ module Discord
         suffix = "…#{Discord::MessageLength.truncate(suffix.reverse, room - 1).reverse}" unless Discord::MessageLength.fits?(suffix, room)
 
         room = max - Discord::MessageLength.of(suffix)
-        name = "#{Discord::MessageLength.truncate(name, room - 1)}…" unless Discord::MessageLength.fits?(name, room)
-        name + suffix
+        Discord::MessageLength.truncate(name, room, omission: "…") + suffix
       end
 
       # Names that start with the query first, then shorter ones, as the

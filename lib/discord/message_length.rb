@@ -18,12 +18,13 @@ module Discord
       of(text) <= max
     end
 
-    def self.truncate(text, max = MAX)
+    # `omission` marks a cut, and counts toward `max`.
+    def self.truncate(text, max = MAX, omission: "")
       text = text.to_s
       return text if fits?(text, max)
 
-      used = 0
-      text.each_char.take_while { |char| (used += of(char)) <= max }.join
+      used = of(omission)
+      text.each_char.take_while { |char| (used += of(char)) <= max }.join + omission
     end
   end
 end

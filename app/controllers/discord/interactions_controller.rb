@@ -98,7 +98,7 @@ module Discord
       choices
         .select { |choice| Discord::MessageLength.fits?(choice[:value], Discord::MessageLength::CHOICE_MAX) }
         .first(MAX_CHOICES)
-        .map { |choice| {name: Discord::MessageLength.truncate(choice[:name], Discord::MessageLength::CHOICE_MAX), value: choice[:value]} }
+        .map { |choice| {name: Discord::MessageLength.truncate(choice[:name], Discord::MessageLength::CHOICE_MAX, omission: "…"), value: choice[:value]} }
     rescue => e
       Rails.logger.error("[Discord::InteractionsController] autocomplete for #{command_data["name"]} failed: #{e.class}: #{e.message}")
       Appsignal.report_error(e)

@@ -23,6 +23,11 @@ module Discord
       refute MessageLength.fits?("abcd", 3)
     end
 
+    test "marks a cut with the omission, counted within the limit" do
+      assert_equal "ab…", MessageLength.truncate("abcdef", 3, omission: "…")
+      assert_equal "abc", MessageLength.truncate("abc", 3, omission: "…")
+    end
+
     test "leaves a message that fits alone" do
       assert_equal "hello", MessageLength.truncate("hello")
     end
