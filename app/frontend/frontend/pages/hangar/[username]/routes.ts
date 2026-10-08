@@ -14,10 +14,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "fleetchart/",
     name: "hangar-public-fleetchart",
-    redirect: {
+    redirect: (to) => ({
       name: "hangar-public",
-      query: { fleetchart: "true" },
-    },
+      query: { ...to.query, fleetchart: "true" },
+    }),
   },
   {
     path: "stats/",

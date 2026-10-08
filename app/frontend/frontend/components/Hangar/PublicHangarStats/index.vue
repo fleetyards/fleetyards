@@ -28,27 +28,33 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   username: string;
+  share?: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { share: undefined });
+
+const shareParams = computed(() => ({ share: props.share }));
 
 const { t } = useI18n();
 
-const { data: quickStats } = usePublicHangarStatsQuery(props.username);
+const { data: quickStats } = usePublicHangarStatsQuery(
+  props.username,
+  shareParams,
+);
 
 const { data: modelsByClassificationOptions, ...modelsByClassificationStatus } =
-  usePublicHangarModelsByClassificationQuery(props.username);
+  usePublicHangarModelsByClassificationQuery(props.username, shareParams);
 
 const { data: modelsBySizeOptions, ...modelsBySizeStatus } =
-  usePublicHangarModelsBySizeQuery(props.username);
+  usePublicHangarModelsBySizeQuery(props.username, shareParams);
 
 const { data: modelsByManufacturerOptions, ...modelsByManufacturerStatus } =
-  usePublicHangarModelsByManufacturerQuery(props.username);
+  usePublicHangarModelsByManufacturerQuery(props.username, shareParams);
 
 const {
   data: modelsByProductionStatusOptions,
   ...modelsByProductionStatusStatus
-} = usePublicHangarModelsByProductionStatusQuery(props.username);
+} = usePublicHangarModelsByProductionStatusQuery(props.username, shareParams);
 
 const totalCount = ref(0);
 const minCrew = ref(0);

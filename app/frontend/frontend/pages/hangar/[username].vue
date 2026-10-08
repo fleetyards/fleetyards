@@ -8,12 +8,18 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { usePublicUser as usePublicUserQuery } from "@/services/fyApi";
 import { usePublicHangarMeta } from "@/frontend/composables/usePublicHangarMeta";
+import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 
 const route = useRoute();
 
 const username = computed(() => route.params.username as string);
 
-const { data: user, ...asyncStatus } = usePublicUserQuery(username);
+const { share } = usePublicHangarShare();
+
+const { data: user, ...asyncStatus } = usePublicUserQuery(
+  username,
+  computed(() => ({ share: share.value })),
+);
 
 usePublicHangarMeta(user);
 </script>

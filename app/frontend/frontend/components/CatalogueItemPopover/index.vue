@@ -133,9 +133,11 @@ const { data: fetchedEvent, isPending: eventPending } = useFleetEventQuery(
   { query: { enabled: fetchesInFleet(isEvent) } },
 );
 
-const { data: fetchedUser, isPending: userPending } = usePublicUserQuery(slug, {
-  query: { enabled: fetches(isUser) },
-});
+const { data: fetchedUser, isPending: userPending } = usePublicUserQuery(
+  slug,
+  undefined,
+  { query: { enabled: fetches(isUser) } },
+);
 
 const { data: fetchedLocation, isPending: locationPending } = useLocationQuery(
   slug,
