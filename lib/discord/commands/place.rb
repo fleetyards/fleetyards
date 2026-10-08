@@ -11,17 +11,8 @@ module Discord
       CATALOGUES = %w[location].freeze
       SIZE_ORDER = ::Dock.ship_sizes.keys.freeze
 
-      def self.autocomplete(option, value)
-        return [] unless option == "name"
-
-        CatalogueLookup.choices(value, within: CATALOGUES)
-      end
-
       def call
-        query = option("name").to_s.strip
-        return message(content: I18n.t("discord.commands.location.missing_query")) if query.blank?
-
-        prefix, found = resolve_entry(query, within: CATALOGUES, strings: "location")
+        prefix, found = lookup_entry(strings: "location")
         return found if prefix.nil?
 
         message(embeds: [embed(found)])
