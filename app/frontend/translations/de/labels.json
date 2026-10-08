@@ -466,6 +466,7 @@
       "hangarStats": "Statistiken",
       "wishlist": "Wunschliste",
       "fleetchart": "Flottenübersicht",
+      "fleetchartScale": "Schiffsgröße",
       "fleetchartApp": {
         "screenHeight": "Bildschirmhöhe",
         "viewpoint": "Blickpunkt",
@@ -2512,7 +2513,9 @@
         "nullablePrompt": "Schiff auswählen"
       },
       "table": {
-        "selected": "%{count} ausgewählt"
+        "selected": "%{count} ausgewählt",
+        "selectRow": "Zeile auswählen",
+        "selectAll": "Alle Zeilen auswählen"
       },
       "commodityPrice": {
         "item": "ShopCommodity",

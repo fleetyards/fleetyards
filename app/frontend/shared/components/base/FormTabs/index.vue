@@ -134,7 +134,7 @@ watch(
 </script>
 
 <template>
-  <TabNavView :active-key="activeId">
+  <TabNavView tablist :active-key="activeId">
     <template #nav>
       <TabNavViewAnchorItems
         :items="items"

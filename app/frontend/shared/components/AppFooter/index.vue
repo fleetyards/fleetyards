@@ -292,7 +292,7 @@ const currentYear = computed(() => new Date().getFullYear());
    in place of the token set. The sentences carry no margin; line-height alone
    sets their rhythm, so the block reads as one paragraph. */
 .app-footer__disclaimer-rsi {
-  color: var(--color-muted, #7a8288);
+  color: var(--color-text-dim, #959595);
 }
 
 /* The global p margin would set them 16px apart and undo that. */

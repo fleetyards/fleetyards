@@ -321,8 +321,11 @@ const timeConfig = computed(() => ({
   inset-inline-start: 14px;
 }
 
+/* A 16px glyph padded to the 24px minimum target size; the inset drops by the
+   padding so the glyph stays where it was. */
 .form-datetime__wrapper :deep(.dp--clear-btn) {
-  inset-inline-end: 14px;
+  inset-inline-end: 10px;
+  padding: 4px;
 }
 
 /* Shared with every other control -- see the note in FormInput. */

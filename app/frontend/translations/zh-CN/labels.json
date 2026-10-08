@@ -466,6 +466,7 @@
       "hangarStats": "统计",
       "wishlist": "愿望清单",
       "fleetchart": "舰队图表",
+      "fleetchartScale": "舰船比例",
       "fleetchartApp": {
         "screenHeight": "屏幕高度",
         "viewpoint": "视角",
@@ -2512,7 +2513,9 @@
         "nullablePrompt": "选择飞船"
       },
       "table": {
-        "selected": "%{count} 已选择"
+        "selected": "%{count} 已选择",
+        "selectRow": "选择行",
+        "selectAll": "选择所有行"
       },
       "commodityPrice": {
         "item": "ShopCommodity",

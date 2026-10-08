@@ -194,41 +194,39 @@ const groupActive = (members: string[]) =>
 </script>
 
 <template>
-  <div>
-    <NavItem
-      :to="{ name: 'home' }"
-      :label="t('nav.back')"
-      icon="fa-light fa-chevron-left"
-    />
+  <NavItem
+    :to="{ name: 'home' }"
+    :label="t('nav.back')"
+    icon="fa-light fa-chevron-left"
+  />
 
-    <NavItem
-      v-for="group in GROUPS"
-      :key="group.key"
-      :label="t(`nav.visualTests.groups.${group.key}`)"
-      :menu-key="`visual-tests-${group.key}-menu`"
-      :submenu-active="groupActive(group.members)"
-      :icon="group.icon"
-    >
-      <template #submenu>
-        <NavItem
-          v-for="item in groupItems(group.members)"
-          :key="item.route"
-          :to="{ name: item.route }"
-          :label="t(`nav.visualTests.${item.label}`)"
-          :icon="item.icon"
-        />
-      </template>
-    </NavItem>
+  <NavItem
+    v-for="group in GROUPS"
+    :key="group.key"
+    :label="t(`nav.visualTests.groups.${group.key}`)"
+    :menu-key="`visual-tests-${group.key}-menu`"
+    :submenu-active="groupActive(group.members)"
+    :icon="group.icon"
+  >
+    <template #submenu>
+      <NavItem
+        v-for="item in groupItems(group.members)"
+        :key="item.route"
+        :to="{ name: item.route }"
+        :label="t(`nav.visualTests.${item.label}`)"
+        :icon="item.icon"
+      />
+    </template>
+  </NavItem>
 
-    <NavItem
-      :to="{ name: 'visual-tests-forms' }"
-      :label="t('nav.visualTests.forms')"
-      icon="fadt fa-input-text"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-events' }"
-      :label="t('nav.visualTests.events')"
-      icon="fadt fa-calendar-day"
-    />
-  </div>
+  <NavItem
+    :to="{ name: 'visual-tests-forms' }"
+    :label="t('nav.visualTests.forms')"
+    icon="fadt fa-input-text"
+  />
+  <NavItem
+    :to="{ name: 'visual-tests-events' }"
+    :label="t('nav.visualTests.events')"
+    icon="fadt fa-calendar-day"
+  />
 </template>

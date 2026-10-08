@@ -22,6 +22,9 @@ type Props = {
   activeKey?: string;
   // Counts to show beside a tab, by route name.
   badges?: Record<string, number>;
+  // Set when the nav slot holds AnchorItems, whose role="tab" items need a
+  // tablist around them.
+  tablist?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -88,7 +91,12 @@ watch(
         :super-admin="props.superAdmin"
         :badges="props.badges"
       />
-      <ul v-else class="tabs">
+      <ul
+        v-else
+        class="tabs"
+        :role="props.tablist ? 'tablist' : undefined"
+        :aria-orientation="props.tablist ? 'vertical' : undefined"
+      >
         <slot name="nav">
           <TabNavViewItems
             v-if="props.routes"

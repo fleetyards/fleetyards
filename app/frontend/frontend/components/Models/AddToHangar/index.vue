@@ -92,6 +92,7 @@ const add = async () => {
     v-if="model.playerOwnable"
     :key="`add-to-hangar-${model.slug}`"
     v-tooltip.bottom="t('actions.addToHangar')"
+    :aria-label="label ? undefined : t('actions.addToHangar')"
     :variant="btnVariant"
     :size="btnSize"
     data-test="add-to-hangar"

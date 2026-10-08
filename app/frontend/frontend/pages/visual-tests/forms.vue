@@ -391,7 +391,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <div class="col-12 col-md-6 col-lg-3">
       <FormCheckbox name="inline-a" label="Inline A" inline />
       <FormCheckbox name="inline-b" label="Inline B" inline />
-      <FormCheckbox name="no-label" no-label inline />
+      <FormCheckbox name="no-label" label="Hidden label" no-label inline />
     </div>
     <div class="col-12 col-md-6 col-lg-3">
       <FormToggle v-model="toggleField" name="toggle-field" label="Public" />
@@ -577,6 +577,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <div class="col-12 col-md-6">
       <Slider
         v-model="sliderValue"
+        label="Opacity"
         :marks="sliderMarks"
         :tooltip-formatter="sliderTooltip"
         process
@@ -586,6 +587,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <div class="col-12 col-md-6">
       <Slider
         v-model="sliderStepped"
+        label="Power"
         :min="0"
         :max="8"
         :interval="1"
@@ -674,6 +676,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <div class="col-12 col-md-6">
       <Slider
         v-model="sliderValue"
+        label="Distance"
         :min="0"
         :max="100"
         info="Distance in millions of kilometres. Drag, or use the arrow keys once the rail has focus."

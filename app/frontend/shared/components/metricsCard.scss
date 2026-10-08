@@ -71,7 +71,7 @@
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: $gray-light;
+    color: var(--color-text-dim, #959595);
     margin: 4px 0 10px;
   }
 
@@ -88,7 +88,7 @@
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: $gray-light;
+      color: var(--color-text-dim, #959595);
     }
 
     &-value {
@@ -159,7 +159,7 @@
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: $gray-light;
+      color: var(--color-text-dim, #959595);
       flex: none;
       margin: 0;
     }
@@ -264,7 +264,7 @@
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: $gray-light;
+      color: var(--color-text-dim, #959595);
       margin-bottom: 7px;
 
       // Three tiles share a phone's width, and at this size the wide tracking
@@ -300,7 +300,7 @@
       font-weight: 600;
       font-size: 12px;
       letter-spacing: 0.08em;
-      color: $gray-light;
+      color: var(--color-text-dim, #959595);
     }
 
     &__sub {

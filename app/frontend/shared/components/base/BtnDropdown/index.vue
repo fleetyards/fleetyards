@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import debounce from "lodash.debounce";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import Menu from "@/shared/components/base/BtnDropdown/Menu/index.vue";
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
 import {
@@ -43,6 +44,8 @@ const props = withDefaults(defineProps<Props>(), {
   expandBottom: false,
   clipLabel: true,
 });
+
+const { t } = useI18n();
 
 const visible = ref(false);
 
@@ -229,6 +232,7 @@ const documentClick = (event: MouseEvent) => {
         :active="visible"
         aria-haspopup="menu"
         :aria-expanded="visible"
+        :aria-label="$slots.label ? undefined : t('actions.more')"
         @click="toggle"
       >
         <slot name="label">

@@ -68,7 +68,11 @@ const componentType = computed(() => {
   if (props.to) {
     return "router-link";
   }
-  return "a";
+  // An anchor without an href is not a link, and its label is prohibited.
+  if (props.href || props.gallery) {
+    return "a";
+  }
+  return "div";
 });
 
 const componentProps = computed(() => {
@@ -76,6 +80,8 @@ const componentProps = computed(() => {
     return {
       to: props.to,
     };
+  } else if (componentType.value === "div") {
+    return {};
   } else {
     return {
       href: props.href,

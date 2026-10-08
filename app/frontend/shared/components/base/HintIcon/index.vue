@@ -24,6 +24,7 @@ const props = defineProps<Props>();
   <i
     v-tooltip="{ content: props.text, multiline: true }"
     class="fa-light fa-info-circle hint-icon"
+    role="img"
     :aria-label="props.text"
     tabindex="0"
   />
