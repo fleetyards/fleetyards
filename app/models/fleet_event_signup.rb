@@ -75,8 +75,9 @@ class FleetEventSignup < ApplicationRecord
     status == "pending"
   end
 
-  def withdraw!
-    update!(status: "withdrawn", withdrawn_at: Time.current)
+  def withdraw!(validate: true)
+    assign_attributes(status: "withdrawn", withdrawn_at: Time.current)
+    save!(validate:)
   end
 
   # A recurring signup is keyed by day, so its date alone cannot tell whether

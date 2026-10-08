@@ -352,7 +352,8 @@ class FleetMembership < ApplicationRecord
       .find_each do |signup|
         next if signup.occurrence_over?
 
-        signup.withdraw!
+        # A legacy row failing a later validation must not block the removal.
+        signup.withdraw!(validate: false)
         ActiveSupport::Notifications.instrument("fleet_event_signup.withdrawn", signup:)
       end
   end

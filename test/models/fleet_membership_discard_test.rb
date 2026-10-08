@@ -141,4 +141,16 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert stale.errors.added?(:fleet_membership_id, :not_a_member)
     assert stale.reload.withdrawn?
   end
+
+  test "a signup failing a later validation is still freed" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+    other_slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: create(:fleet_event, fleet:)))
+    signup.update_columns(fleet_event_slot_id: other_slot.id)
+
+    assert membership.discard
+    assert signup.reload.withdrawn?
+  end
 end
