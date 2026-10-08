@@ -43,7 +43,7 @@ module Discord
 
       # A place's parent names it through its build.
       LEADS = {
-        "location" => Lead.new(label: ->(record) { record.parent&.name }, preload: {parent: [:build, :last_build]})
+        "location" => Lead.new(label: ->(record) { record.parent&.name }, preload: {parent: :build})
       }.freeze
 
       def self.lead(prefix)
