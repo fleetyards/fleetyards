@@ -10,45 +10,12 @@ zh-TW:
           pledge_store: 質押商店
           ingame: 遊戲內商店
       component:
-        component_classes:
-          RSIAvionic: 航電
-          RSIModular: 模組化
-          RSIPropulsion: 推進
-          RSIThruster: 推進器
-          RSIWeapon: 武器
         item_classes:
           civilian: 民用
           competition: 競賽
           industrial: 工業
           military: 軍用
           stealth: 隱身
-        item_types:
-          cargo_grids: 貨物網格
-          coolers: 冷卻器
-          countermeasure_launcher: 反制措施發射器
-          fixed_thrusters: 固定推進器
-          fuel_intakes: 燃料進氣口
-          fuel_tanks: 燃料箱
-          mid_range_radar: 中程雷達
-          joint_thrusters: 關節推進器
-          manned_turrets: 有人砲塔
-          manned_utility_turrets: 有人實用砲塔
-          mining_lasers: 採礦雷射
-          missile_racks: 飛彈架
-          missile_turrets: 飛彈砲塔
-          missiles: 飛彈
-          power_plants: 發電機
-          quantum_drives: 量子引擎
-          quantum_fuel_tanks: 量子燃料箱
-          remote_turrets: 遙控砲塔
-          scanners: 掃描儀
-          shield_generators: 護盾產生器
-          thrusters: 推進器
-          turrets: 砲塔
-          weapon_defensive: Weapon Defensive
-          weapons: 飛船武器
-          emps: EMPs
-          armor_medium: 中型裝甲
         tracking_signals:
           cross_section: 截面
           electromagnetic: 電磁

@@ -60,6 +60,11 @@ class Component < ApplicationRecord
   # The associations are renamed because PaperTrail's default `version` reader
   # shadows this table's `version` column -- left alone, an update writes NULL
   # over the build a component was last seen in.
+  # Ignored a release ahead of the migration that drops them, because the
+  # pre-deploy hook migrates before any new container boots. `category` replaced
+  # both; no build the game still ships carries either.
+  self.ignored_columns += %w[item_type component_class]
+
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # No `if:` guard, unlike the models versioned alongside this one: Component
@@ -67,7 +72,7 @@ class Component < ApplicationRecord
   # the author the record never carried, nothing else.
   has_paper_trail on: %i[update],
     only: %i[
-      name description size grade item_type item_class component_class component_sub_type
+      name description size grade item_class component_sub_type
       component_type type_data durability power_connection heat_connection ammunition
       inventory_consumption tracking_signal manufacturer_id hidden
     ],
@@ -474,9 +479,9 @@ class Component < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "ammunition", "category", "component_class", "component_sub_type", "component_type",
+      "ammunition", "category", "component_sub_type", "component_type",
       "created_at", "description", "durability", "grade",
-      "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
+      "heat_connection", "hidden", "id", "id_value", "item_class", "manufacturer_id", "name",
       "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore) +
@@ -494,47 +499,6 @@ class Component < ApplicationRecord
 
   def self.ransackable_scopes(auth_object = nil)
     ["current_version", "sold_at_shop"]
-  end
-
-  def self.item_types
-    %w[
-      shield_generators
-      coolers
-      power_plants
-      quantum_drives
-      weapons
-      turrets
-      manned_turrets
-      remote_turrets
-      missile_turrets
-      missiles
-      missile_racks
-      manned_utility_turrets
-      mining_lasers
-      fuel_intakes
-      fuel_tanks
-      quantum_fuel_tanks
-      scanners
-      mid_range_radar
-      thrusters
-      joint_thrusters
-      fixed_thrusters
-      weapon_defensive
-      countermeasure_launcher
-      cargo_grids
-      emps
-      armor_medium
-    ]
-  end
-
-  def self.component_classes
-    %w[
-      RSIModular
-      RSIWeapon
-      RSIAvionic
-      RSIPropulsion
-      RSIThruster
-    ]
   end
 
   # Read off the build table rather than through the rows: the builds we are on
@@ -573,16 +537,6 @@ class Component < ApplicationRecord
     end
   end
 
-  def self.item_type_filters
-    Component.item_types.map do |item|
-      Filter.new(
-        category: "item_type",
-        label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
-        value: item
-      )
-    end
-  end
-
   # Categories and sub types come straight out of the game files, so a patch can
   # introduce values we have no label for yet — fall back to the raw value
   # instead of rendering a translation-missing string into the API.
@@ -606,19 +560,6 @@ class Component < ApplicationRecord
       Filter.new(
         category: "sub_type",
         label: I18n.t("filter.component.sub_type.items.#{item.underscore}", default: item.underscore.titleize),
-        value: item
-      )
-    end
-  end
-
-  # Admin only -- the public endpoint is gone, because no component in the
-  # current build carries this column. `pluck` rather than loading all 8,740
-  # rows to read one attribute off each.
-  def self.class_filters
-    distinct.pluck(:component_class).compact.sort.map do |item|
-      Filter.new(
-        category: "class",
-        label: I18n.t("filter.component.class.items.#{item.downcase}"),
         value: item
       )
     end
@@ -697,14 +638,6 @@ class Component < ApplicationRecord
 
   def item_class_label
     Component.human_enum_name(:item_class, item_class)
-  end
-
-  def item_type_label
-    Component.human_enum_name(:item_type, item_type)
-  end
-
-  def component_class_label
-    I18n.t("filter.component.class.items.#{component_class.downcase}") if component_class.present?
   end
 
   def tracking_signal_label

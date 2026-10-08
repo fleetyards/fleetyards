@@ -50,9 +50,7 @@ fr:
         on_sale: En vente ?
     prompt:
       component:
-        component_class: Veuillez sélectionner une classe de composant
         item_class: Veuillez sélectionner une classe d'objet
-        item_type: Veuillez sélectionner un type d'objet
         manufacturer: Veuillez sélectionner un fabricant
       docks:
         dock_type: Veuillez sélectionner un type de quai

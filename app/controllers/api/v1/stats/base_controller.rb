@@ -309,11 +309,9 @@ module Api
           sorted.size.odd? ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2
         end
 
-        # Grouped on `category`, not on the `component_class` this is named for.
-        # That column is set on 333 of 8,739 components and `item_class` on 415,
-        # so either one renders as a single "Unknown" slice covering 95% of the
-        # chart. `category` is the taxonomy the catalogue actually filters on and
-        # is set on 7,335 of them.
+        # Grouped on `category`, the taxonomy the catalogue filters on, which is
+        # set on 7,335 of 8,739 components. `item_class` is set on 415, so it
+        # would render as a single "Unknown" slice covering 95% of the chart.
         def components_by_class
           components_by_class = transform_for_pie_chart(
             Component.group(:category).count

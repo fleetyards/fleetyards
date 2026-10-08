@@ -42,7 +42,6 @@
 FactoryBot.define do
   factory :component do
     name { Faker::Name.name }
-    component_class { "RSIModular" }
 
     # Needed now that the catalogue filter is an inner join to the build: without
     # a version there is no build, and a component without a build is not in the
@@ -90,14 +89,12 @@ FactoryBot.define do
     end
 
     trait :weapon do
-      item_type { "WeaponGun" }
       category { "weapon" }
       component_type { "gun" }
       size { "S3" }
     end
 
     trait :shield do
-      item_type { "Shield" }
       category { "defense" }
       component_type { "shield_generator" }
       size { "S2" }

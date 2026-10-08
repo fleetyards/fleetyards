@@ -71,13 +71,6 @@ zh-TW:
           utility: 實用設備
           weapon_mounts: 武器掛載
           weapons: 武器
-      class:
-        items:
-          rsiavionic: 航電
-          rsimodular: System
-          rsipropulsion: 推進
-          rsithruster: 推進器
-          rsiweapon: 武器
       sub_type:
         items:
           ground_vehicle_missile: 地面載具飛彈

@@ -14,7 +14,7 @@ require "test_helper"
 class FilterLocaleTest < ActiveSupport::TestCase
   LOCALES = %w[en de es fr it zh-CN zh-TW].freeze
 
-  FACET_GROUPS = %w[category class sub_type].freeze
+  FACET_GROUPS = %w[category sub_type].freeze
 
   FACET_GROUPS.each do |group|
     test "every locale labels the same component #{group} values" do

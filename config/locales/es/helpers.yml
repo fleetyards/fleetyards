@@ -50,9 +50,7 @@ es:
         on_sale: "¿En venta?"
     prompt:
       component:
-        component_class: Seleccione una clase de componente
         item_class: Seleccione una clase de objeto
-        item_type: Seleccione un tipo de objeto
         manufacturer: Seleccione un fabricante
       docks:
         dock_type: Seleccione un tipo de muelle

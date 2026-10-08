@@ -50,9 +50,7 @@ en:
         on_sale: On Sale?
     prompt:
       component:
-        component_class: Please select a Component Class
         item_class: Please select a Item Class
-        item_type: Please select a Item Type
         manufacturer: Please select a Manufacturer
       docks:
         dock_type: Please select a Dock Type
