@@ -14,6 +14,7 @@ module V1
             priceGteq: {type: :number},
             priceLteq: {type: :number},
             priceIn: {type: :array, items: {type: :string}},
+            insuranceIn: {type: :array, items: {type: :string}, description: "`lifetime` or a number of months"},
             upgradeFromModelSlugEq: {type: :string},
             upgradeToModelSlugEq: {type: :string}
           },

@@ -200,6 +200,23 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks filters by insurance" do
+    user = create(:user)
+    lifetime = buyback(user, lifetime_insurance: true)
+    ten_years = buyback(user, insurance_months: 120)
+    buyback(user, insurance_months: 6)
+    buyback(user)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"insuranceIn" => ["lifetime", "120"]}} do
+      assert_equal [lifetime.id, ten_years.id].sort, parsed_body["items"].pluck("id").sort
+    end
+
+    assert_api_response :get, 200, params: {q: {"insuranceIn" => ["120"]}} do
+      assert_equal [ten_years.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar/buybacks filters upgrades by the ship they start from and lead to" do
     user = create(:user)
     clipper = create(:model, rsi_id: 308)

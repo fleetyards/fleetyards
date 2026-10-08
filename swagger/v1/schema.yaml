@@ -19794,6 +19794,11 @@ components:
           type: array
           items:
             type: string
+        insuranceIn:
+          type: array
+          items:
+            type: string
+          description: "`lifetime` or a number of months"
         upgradeFromModelSlugEq:
           type: string
         upgradeToModelSlugEq:

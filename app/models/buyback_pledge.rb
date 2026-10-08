@@ -95,6 +95,19 @@ class BuybackPledge < ApplicationRecord
     conditions.empty? ? all : where(conditions.join(" OR "))
   }
 
+  # "lifetime" or a number of months, any of which matches. A lifetime pledge
+  # stores no months, so a number never matches one.
+  scope :insurance_in, ->(*values) {
+    values = values.flatten.map(&:to_s)
+    months = values.filter_map { |value| Integer(value, exception: false) }
+
+    conditions = []
+    conditions << arel_table[:lifetime_insurance].eq(true) if values.include?("lifetime")
+    conditions << arel_table[:insurance_months].in(months).and(arel_table[:lifetime_insurance].eq(false)) if months.any?
+
+    conditions.empty? ? all : where(conditions.reduce(:or))
+  }
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[kind name price]
   end
@@ -104,6 +117,6 @@ class BuybackPledge < ApplicationRecord
   end
 
   def self.ransackable_scopes(_auth_object = nil)
-    %i[price_in]
+    %i[price_in insurance_in]
   end
 end
