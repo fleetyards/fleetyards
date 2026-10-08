@@ -204,7 +204,9 @@ module Discord
 
           raise ActiveRecord::Rollback unless admit(user, quiet:)
         elsif FleetDiscordRoleHolder.forget(fleet, user)
-          release(user)
+          # Still recorded as held while the membership stays, so the next
+          # update tries again.
+          raise ActiveRecord::Rollback unless release(user)
         end
       end
     end
@@ -262,8 +264,10 @@ module Discord
     end
 
     # Discarded like a member leaving, so the record of who was in stays.
+    # Whether nothing the role created is left: a permanent rank refuses it.
     private def release(user)
-      fleet.fleet_memberships.kept.accepted.find_by(user:, discord_role_granted: true)&.discard
+      membership = fleet.fleet_memberships.kept.accepted.find_by(user:, discord_role_granted: true)
+      membership.nil? || membership.discard
     end
 
     private def discord_uid(user)

@@ -112,6 +112,16 @@ module Discord
       assert_nil membership
     end
 
+    test "a member the role cannot release keeps the role recorded, so the next update tries again" do
+      join_role.apply(@user, [JOIN_ROLE])
+      membership.fleet_role.update_column(:permanent, true)
+
+      join_role.apply(@user, [])
+
+      assert_predicate membership, :present?
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
     test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 
