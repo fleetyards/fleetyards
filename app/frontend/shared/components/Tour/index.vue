@@ -76,6 +76,15 @@ const passedOver = ref<string[]>([]);
 // hidden and Next / Back wait, so a second press cannot race the navigation.
 const navigating = ref(false);
 
+// Only while the router is still moving: an exit then would let the
+// navigation land after the tour is gone, on a page the reader never chose.
+// Once it has landed, Escape works again while the page loads.
+let routing = false;
+
+// Where the current step was shown, as the router left it -- after any
+// redirect. Leaving it by other means than the tour ends the tour.
+let stepPath: string | null = null;
+
 // Rendered once a start has committed, not merely once asked to open: a start
 // that refuses closes the tour without it ever flashing on screen.
 const visible = ref(false);
@@ -107,11 +116,13 @@ const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
 // Without the trailing slash: `/fleets/x` and `/fleets/x/` are one page, and
 // reading the first as elsewhere would send the tour to wait for targets
 // already on screen.
+const currentPath = () =>
+  router ? withoutTrailingSlash(router.currentRoute.value.path) : null;
+
 const isElsewhere = (step: TourStep) =>
   !!step.route &&
   !!router &&
-  withoutTrailingSlash(router.resolve(step.route).path) !==
-    withoutTrailingSlash(router.currentRoute.value.path);
+  withoutTrailingSlash(router.resolve(step.route).path) !== currentPath();
 
 const findTarget = (step?: TourStep): HTMLElement | null => {
   if (!step?.target) return null;
@@ -230,7 +241,11 @@ const waitForTarget = (step: TourStep, own: number) =>
 
 // Goes to the step's page first when it names another one. Back takes the
 // same route, so it returns to the page the previous step was shown on.
-const showStep = async (next: number, direction: 1 | -1 = 1) => {
+const showStep = async (
+  next: number,
+  direction: 1 | -1 = 1,
+  pressedBefore?: string,
+): Promise<void> => {
   const own = session;
   const step = shown.value[next];
 
@@ -243,26 +258,53 @@ const showStep = async (next: number, direction: 1 | -1 = 1) => {
   target = null;
 
   // Hiding the card during a page change drops the focus off Next or Back;
-  // the same button gets it back once the step is shown.
+  // the same button gets it back once the step is shown. A step passed over
+  // hands on what was pressed before the card went.
   const pressed =
-    document.activeElement instanceof HTMLElement &&
+    pressedBefore ??
+    (document.activeElement instanceof HTMLElement &&
     document.activeElement !== card.value &&
     card.value?.contains(document.activeElement)
       ? document.activeElement.dataset.test
-      : undefined;
+      : undefined);
+
+  stepPath = null;
 
   if (step.route && router) {
-    navigating.value = true;
-    hole.value = null;
-    cardPosition.value = null;
+    let found: HTMLElement | null;
 
-    if (isElsewhere(step)) await router.push(step.route).catch(() => {});
+    if (isElsewhere(step)) {
+      navigating.value = true;
+      hole.value = null;
+      cardPosition.value = null;
 
-    const found = own === session ? await waitForTarget(step, own) : null;
+      routing = true;
+      await router.push(step.route).catch(() => {});
+      routing = false;
 
-    if (own !== session) return;
+      if (own !== session) return;
 
-    navigating.value = false;
+      const landed = currentPath();
+
+      found = await waitForTarget(step, own);
+
+      if (own !== session) return;
+
+      navigating.value = false;
+
+      // Left again while the page loaded -- the back button -- so there is
+      // no page left for this step to explain.
+      if (currentPath() !== landed) {
+        end("skipped");
+        return;
+      }
+    } else {
+      // Already on its page: nothing is loading, so a missing target is
+      // missing -- a flag that is off -- and waiting would only blank the page.
+      found = findTarget(step);
+    }
+
+    stepPath = currentPath();
 
     if (!found && step.requiresTarget) {
       passedOver.value = [...passedOver.value, step.id];
@@ -271,7 +313,7 @@ const showStep = async (next: number, direction: 1 | -1 = 1) => {
       // one before -- and with none before, the walk turns round.
       const following = direction === 1 || next === 0 ? next : next - 1;
 
-      await showStep(following, next === 0 ? 1 : direction);
+      await showStep(following, next === 0 ? 1 : direction, pressed);
       return;
     }
   }
@@ -335,10 +377,10 @@ const back = () => {
   if (!isFirst.value) void showStep(index.value - 1, -1);
 };
 
-// Not while a step's page is loading: the navigation would still land, on a
-// page the reader never chose and with no tour left to say why.
+// Not while the router is moving: the navigation would still land, on a page
+// the reader never chose and with no tour left to say why.
 const skip = () => {
-  if (!navigating.value) end("skipped");
+  if (!routing) end("skipped");
 };
 
 // The rest of the page is taken out of the tab order and the accessibility
@@ -415,7 +457,7 @@ const onKeydown = (event: KeyboardEvent) => {
     case "Escape":
       event.preventDefault();
       event.stopPropagation();
-      if (navigating.value) break;
+      if (routing) break;
 
       if (isLast.value) {
         end("finished");
@@ -559,6 +601,8 @@ const teardown = ({ restoreFocus }: { restoreFocus: boolean }) => {
   session += 1;
   visible.value = false;
   navigating.value = false;
+  routing = false;
+  stepPath = null;
   unlisten();
   target = null;
 
@@ -634,8 +678,8 @@ watch(
     if (
       visible.value &&
       !navigating.value &&
-      current.value &&
-      isElsewhere(current.value)
+      stepPath !== null &&
+      currentPath() !== stepPath
     ) {
       end("skipped");
     }

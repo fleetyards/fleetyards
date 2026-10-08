@@ -647,7 +647,26 @@ describe("Tour across pages", () => {
     expect(wrapper.emitted("end")).toEqual([["skipped"]]);
   });
 
-  it("ignores Escape while the next page is still loading", async () => {
+  // The router has landed by then: Escape leaves the reader on the page the
+  // tour just took them to, instead of trapping them behind a hidden card.
+  it("still ends on Escape while a step's page is loading", async () => {
+    renderOn("/members", "invite", 1000);
+
+    const wrapper = await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle(100);
+    expect(card()?.style.visibility).toBe("hidden");
+
+    await press("Escape");
+    await settle(1000);
+
+    expect(wrapper.emitted("end")).toEqual([["skipped"]]);
+    expect(card()).toBeNull();
+    expect(router.currentRoute.value.path).toBe("/members");
+  });
+
+  it("ends when the reader leaves while a step's page is loading", async () => {
     renderOn("/members", "invite", 1000);
 
     const wrapper = await mountRouted();
@@ -655,12 +674,76 @@ describe("Tour across pages", () => {
     await click("tour-next");
     await settle(100);
 
-    await press("Escape");
-
-    expect(wrapper.emitted("end")).toBeUndefined();
-
+    await router.push("/start");
     await settle(1000);
+
+    expect(wrapper.emitted("end")).toEqual([["skipped"]]);
+    expect(card()).toBeNull();
+  });
+
+  it("does not wait for a required target missing from the current page", async () => {
+    const steps: TourStep[] = [
+      { id: "welcome", title: "Welcome", text: "Hello", route: "/start" },
+      { id: "settings", title: "Settings", text: "Done", route: "/start" },
+    ];
+    const wrapper = await mountRouted(steps);
+    await settle();
+
+    await wrapper.setProps({
+      steps: [
+        steps[0],
+        {
+          id: "events",
+          title: "Events",
+          text: "Plan",
+          route: "/start",
+          target: '[data-tour="events"]',
+          requiresTarget: true,
+        },
+        steps[1],
+      ],
+    });
+    await settle(0);
+    expect(card()?.dataset.step).toBe("welcome");
+
+    await click("tour-next");
+    await settle(0);
+
+    expect(card()?.dataset.step).toBe("settings");
+  });
+
+  it("stays on a page that redirected when the tour went there", async () => {
+    router.addRoute({ path: "/old-members", redirect: "/members" });
+    renderOn("/members", "invite");
+
+    const wrapper = await mountRouted([
+      ROUTED[0],
+      { ...ROUTED[1], route: "/old-members" },
+      ROUTED[3],
+    ]);
+    await settle();
+    await click("tour-next");
+    await settle();
+
+    expect(router.currentRoute.value.path).toBe("/members");
     expect(card()?.dataset.step).toBe("members");
+    expect(wrapper.emitted("end")).toBeUndefined();
+  });
+
+  it("keeps the focus on Next past a step it passes over", async () => {
+    renderOn("/settings", "never");
+
+    await mountRouted([ROUTED[0], ROUTED[2], ROUTED[3]]);
+    await settle();
+    document.querySelector<HTMLElement>("[data-test='tour-next']")?.focus();
+
+    await click("tour-next");
+    await settle(5200);
+
+    expect(card()?.dataset.step).toBe("settings");
+    expect((document.activeElement as HTMLElement | null)?.dataset.test).toBe(
+      "tour-next",
+    );
   });
 
   it("gives the focus back to Next after the page changes", async () => {
