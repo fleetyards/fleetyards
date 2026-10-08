@@ -76,6 +76,11 @@ fr:
           ground_vehicle_missile: Missile de véhicule terrestre
           pdc_turret: Tourelle PDC
           salvage_modifier_tractor_beam: Rayon tracteur de récupération
+    equipment:
+      grade:
+        label: "Grade %{value}"
+      size:
+        label: "Taille %{value}"
     image:
       model:
         title: Modèle

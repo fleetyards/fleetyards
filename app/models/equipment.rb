@@ -413,13 +413,39 @@ class Equipment < ApplicationRecord
     end
   end
 
+  # Narrowed like item types: each type runs its own scale -- weapons reach
+  # size 5, armour stops at 3 -- so an unnarrowed list offers sizes that match
+  # nothing once a type is picked. Ordered as strings, which is numeric order
+  # while every size and grade is a single digit.
+  def self.size_filters(equipment_types = nil)
+    build_facet(:size) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
+      Filter.new(
+        category: "size",
+        label: I18n.t("filter.equipment.size.label", value: item),
+        value: item
+      )
+    end
+  end
+
+  def self.grade_filters(equipment_types = nil)
+    build_facet(:grade) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
+      Filter.new(
+        category: "grade",
+        label: I18n.t("filter.equipment.grade.label", value: item),
+        value: item
+      )
+    end
+  end
+
   # A picker that only offers weapons has no use for the ninety-odd types the
   # armour and clothing rows contribute, so the caller can narrow by the game's
   # own split before the types are collected.
   def self.item_types(equipment_types = nil)
-    build_facet(:item_type) do |scope|
-      equipment_types.present? ? scope.where(equipment_type: equipment_types) : scope
-    end
+    build_facet(:item_type) { |scope| of_equipment_types(scope, equipment_types) }
+  end
+
+  private_class_method def self.of_equipment_types(scope, equipment_types)
+    equipment_types.present? ? scope.where(equipment_type: equipment_types) : scope
   end
 
   def self.item_type_filters(equipment_types = nil)

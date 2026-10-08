@@ -36,6 +36,18 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        def sizes
+          @filters = Equipment.size_filters(equipment_types)
+
+          render "api/v1/shared/filters"
+        end
+
+        def grades
+          @filters = Equipment.grade_filters(equipment_types)
+
+          render "api/v1/shared/filters"
+        end
+
         private def equipment_types
           Array(params.dig(:q, :equipment_type_in)).map(&:to_s) & Equipment::EQUIPMENT_TYPES
         end

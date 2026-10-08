@@ -76,6 +76,11 @@ zh-TW:
           ground_vehicle_missile: 地面載具飛彈
           pdc_turret: 近防砲塔
           salvage_modifier_tractor_beam: 打撈牽引光束
+    equipment:
+      grade:
+        label: "等級 %{value}"
+      size:
+        label: "尺寸 %{value}"
     image:
       model:
         title: 型號

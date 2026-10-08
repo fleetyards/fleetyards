@@ -76,6 +76,11 @@ es:
           ground_vehicle_missile: Misil de vehículo terrestre
           pdc_turret: Torreta PDC
           salvage_modifier_tractor_beam: Rayo tractor de salvamento
+    equipment:
+      grade:
+        label: "Grado %{value}"
+      size:
+        label: "Tamaño %{value}"
     image:
       model:
         title: Modelo

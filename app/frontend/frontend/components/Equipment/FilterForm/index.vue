@@ -14,7 +14,10 @@ import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/in
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
 import {
   type EquipmentQuery,
+  type FilterOption,
+  useEquipmentGradesFilters,
   useEquipmentItemTypesFilters,
+  useEquipmentSizesFilters,
   useEquipmentSlotsFilters,
   useEquipmentSubTypesFilters,
   useEquipmentTypesFilters,
@@ -48,6 +51,8 @@ const prefillFormValues = (): EquipmentQuery => ({
   subTypeIn: asList(filters.value.subTypeIn),
   weaponClassIn: asList(filters.value.weaponClassIn),
   slotIn: asList(filters.value.slotIn),
+  sizeIn: asList(filters.value.sizeIn),
+  gradeIn: asList(filters.value.gradeIn),
 });
 
 const setupForm = () => {
@@ -73,29 +78,46 @@ const { data: types } = useEquipmentTypesFilters();
 
 // Narrowed by the chosen types: unnarrowed the list is over a hundred item
 // types, most of them clothing, which buries the dozen a weapon search wants.
-const itemTypeParams = computed(() => {
+// Sizes and grades follow, because each type runs its own scale.
+const equipmentTypeParams = computed(() => {
   const chosen = form.value.equipmentTypeIn || [];
 
   return chosen.length ? { q: { equipmentTypeIn: chosen } } : {};
 });
 
-const { data: itemTypes } = useEquipmentItemTypesFilters(itemTypeParams);
+const { data: itemTypes } = useEquipmentItemTypesFilters(equipmentTypeParams);
+const { data: sizes } = useEquipmentSizesFilters(equipmentTypeParams);
+const { data: grades } = useEquipmentGradesFilters(equipmentTypeParams);
 
-// An item type the control cannot show is one the reader cannot remove, so a
-// type dropped from the selection takes its item types with it. Only once
-// options have arrived: pruning before the answer would clear a selection
-// restored from the URL. An answer that is empty still prunes -- a type with
-// no item types leaves nothing selectable.
-watch(itemTypes, (options) => {
+// A value the control cannot show is one the reader cannot remove, so a type
+// dropped from the selection takes its item types, sizes and grades with it.
+// Only once options have arrived: pruning before the answer would clear a
+// selection restored from the URL. An answer that is empty still prunes -- a
+// type with no item types leaves nothing selectable. Immediate, because an
+// answer already in the cache is never a change.
+const pruneToOptions = (
+  key: "itemTypeIn" | "sizeIn" | "gradeIn",
+  options?: FilterOption[],
+) => {
   if (!options) return;
 
   const available = new Set(options.map((option) => option.value));
-  const chosen = form.value.itemTypeIn || [];
+  const chosen = form.value[key] || [];
   const kept = chosen.filter((value) => available.has(value));
 
   if (kept.length !== chosen.length) {
-    form.value = { ...form.value, itemTypeIn: kept };
+    form.value = { ...form.value, [key]: kept };
   }
+};
+
+watch(itemTypes, (options) => pruneToOptions("itemTypeIn", options), {
+  immediate: true,
+});
+watch(sizes, (options) => pruneToOptions("sizeIn", options), {
+  immediate: true,
+});
+watch(grades, (options) => pruneToOptions("gradeIn", options), {
+  immediate: true,
 });
 
 const { data: subTypes } = useEquipmentSubTypesFilters();
@@ -150,6 +172,24 @@ const { data: slots } = useEquipmentSlotsFilters();
       name="slot"
       :options="slots ?? []"
       :label="t('labels.filters.equipment.slot')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.sizeIn"
+      name="size"
+      :options="sizes ?? []"
+      :label="t('labels.filters.equipment.size')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.gradeIn"
+      name="grade"
+      :options="grades ?? []"
+      :label="t('labels.filters.equipment.grade')"
       :no-label="true"
       multiple
     />
