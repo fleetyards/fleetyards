@@ -89,7 +89,7 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     refute_predicate import, :sync_hangar_flair?
   end
 
-  test "PUT /hangar/sync-rsi-hangar syncs paints and hangar flair when the flags are absent" do
+  test "PUT /hangar/sync-rsi-hangar leaves paints and hangar flair alone when the flags are absent" do
     user = create(:user)
     sign_in user
 
@@ -97,8 +97,8 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, body: body
 
     import = Imports::HangarSync.find_by(user_id: user.id)
-    assert_predicate import, :sync_paints?
-    assert_predicate import, :sync_hangar_flair?
+    refute_predicate import, :sync_paints?
+    refute_predicate import, :sync_hangar_flair?
   end
 
   test "PUT /hangar/sync-rsi-hangar records what to do with the ships it does not find" do

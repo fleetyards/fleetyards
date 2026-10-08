@@ -15,8 +15,8 @@ module V1
             },
             hangarGroupId: {type: :string, format: :uuid},
             addBundledVehicles: {type: :boolean, default: true},
-            syncPaints: {type: :boolean, default: true},
-            syncHangarFlair: {type: :boolean, default: true},
+            syncPaints: {type: :boolean, default: false},
+            syncHangarFlair: {type: :boolean, default: false},
             unmatchedVehiclesAction: ::V1::Schemas::Enums::HangarSyncUnmatchedActionEnum,
             unmatchedHangarGroupId: {type: :string, format: :uuid}
           }

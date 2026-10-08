@@ -36983,10 +36983,10 @@ components:
           default: true
         syncPaints:
           type: boolean
-          default: true
+          default: false
         syncHangarFlair:
           type: boolean
-          default: true
+          default: false
         unmatchedVehiclesAction:
           "$ref": "#/components/schemas/HangarSyncUnmatchedActionEnum"
         unmatchedHangarGroupId:
