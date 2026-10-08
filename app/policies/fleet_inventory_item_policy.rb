@@ -5,6 +5,8 @@ class FleetInventoryItemPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:inventories:manage", "fleet:inventories:read"])
   end
 
+  alias_rule :show?, to: :index?
+
   def create?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:inventories:manage", "fleet:inventories:update"])
   end
