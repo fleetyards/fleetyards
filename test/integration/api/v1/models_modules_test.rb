@@ -70,4 +70,28 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
       assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
     end
   end
+
+  # A price sync touches neither the module, its slots nor the component.
+  test "GET /models/:slug/modules serves a component's new price after the payload was cached" do
+    model = create(:model)
+    model_module = create(:model_module)
+    create(:module_hardpoint, model:, model_module:)
+    gun = create(:component, name: "Module Gun")
+    create(:hardpoint, parent: model_module, sc_name: "hardpoint_gun", source: :game_files, component: gun)
+    price = create(:item_price, item: gun, price_type: :sell, price: 100, location: "Admin - Area18")
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules"
+      assert_equal [100.0], sold_at_prices(response.parsed_body)
+
+      ItemPrice.where(id: price.id).update_all(price: 120, updated_at: 1.minute.from_now)
+      get "/api/v1/models/#{model.slug}/modules"
+
+      assert_equal [120.0], sold_at_prices(response.parsed_body)
+    end
+  end
+
+  private def sold_at_prices(body)
+    body["items"].sole["hardpoints"].sole.dig("component", "availability", "soldAt").map { |entry| entry["price"] }
+  end
 end

@@ -39,6 +39,16 @@ class ItemPrice < ApplicationRecord
   # tells two places of one name apart.
   SHOP_LINK = {shop: {location: :parent}}.freeze
 
+  # For a fragment that embeds the prices of items it cannot list up front --
+  # a ship's loadout nests components a few slots deep. The count catches a
+  # deleted row, as in ItemPriceConcern#item_prices_cache_key; the query cache
+  # answers every fragment of a request after the first.
+  def self.cache_key_for(item_type)
+    count, touched_at = where(item_type:).pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(updated_at)"))
+
+    [item_type, count, touched_at&.utc&.to_fs(:usec)]
+  end
+
   def self.with_shop_links(prices)
     ActiveRecord::Associations::Preloader.new(records: prices, associations: SHOP_LINK).call
     prices
