@@ -3,6 +3,7 @@ import { flushPromises } from "@vue/test-utils";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { defineRule } from "vee-validate";
+import { useFleetStore } from "@/frontend/stores/fleet";
 import Component from "./add.vue";
 
 const checkFID = vi.fn();
@@ -36,7 +37,7 @@ const waitForCheck = async () => {
   await flushPromises();
 };
 
-const mountPage = async () => {
+const mountPage = async (initialState?: Record<string, unknown>) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -51,7 +52,10 @@ const mountPage = async () => {
   });
   await router.push("/");
 
-  const wrapper = await mountWithDefaults(Component, { plugins: [router] });
+  const wrapper = await mountWithDefaults(Component, {
+    plugins: [router],
+    initialState,
+  });
 
   return { wrapper, router };
 };
@@ -112,5 +116,23 @@ describe("FleetAddPage", () => {
     await flushPromises();
 
     expect(router.currentRoute.value.name).toBe("fleet-settings-rsi");
+  });
+
+  it("queues the setup tour for the account that created the fleet", async () => {
+    mutateAsync.mockResolvedValue({ id: "fleet-1", slug: "test", rsiSid: "" });
+    checkFID.mockResolvedValue({ taken: false });
+    const { wrapper } = await mountPage({
+      session: { currentUser: { id: "user-a" } },
+    });
+    const fleetStore = useFleetStore();
+
+    await wrapper.find('input[name="fid"]').setValue("TEST");
+    await wrapper.find('input[name="name"]').setValue("Test Fleet");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(vi.mocked(fleetStore).queueTour.mock.calls).toEqual([
+      ["user-a", "fleet-1"],
+    ]);
   });
 });

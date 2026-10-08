@@ -23,6 +23,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useCreateFleet as useCreateFleetMutation } from "@/services/fyApi";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
@@ -85,6 +87,10 @@ const mutation = useCreateFleetMutation();
 
 const supportPrompt = useSupportPrompt();
 
+const fleetStore = useFleetStore();
+
+const sessionStore = useSessionStore();
+
 const submit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -100,6 +106,10 @@ const submit = handleSubmit(async (values) => {
       });
 
       supportPrompt.notifyOnce("fleetCreated", "fleetCreated");
+
+      const userId = sessionStore.currentUser?.id;
+
+      if (userId) fleetStore.queueTour(userId, fleet.id);
 
       // A fleet started under a temporary FID goes on to verify its SID.
       router

@@ -13,6 +13,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import FleetTour from "@/frontend/components/Fleets/Tour/index.vue";
+import { useTourAutostart } from "@/shared/composables/useTourAutostart";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -85,11 +91,38 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
-// Only a manager can act on it: verifying is theirs to do.
-const showFidNotice = computed(
+// The FID notice and the setup tour are for whoever runs the fleet: verifying
+// and setting it up are theirs to do, and the settings pages check the same.
+const canManage = computed(
   () =>
     isMember.value && (props.membership?.capabilities?.manageFleet ?? false),
 );
+
+const fleetStore = useFleetStore();
+
+const sessionStore = useSessionStore();
+
+const tourOpen = ref(false);
+
+const openGuide = () => {
+  tourOpen.value = true;
+};
+
+const userId = computed(() => sessionStore.currentUser?.id);
+
+useTourAutostart({
+  ready: () =>
+    !!userId.value &&
+    canManage.value &&
+    fleetStore.isTourPending(userId.value, props.fleet.id),
+  start: openGuide,
+});
+
+// Done once it has been shown, not once it ends: leaving the page mid-tour
+// ends nothing, and should not bring it back on every later visit.
+const onTourStart = () => {
+  if (userId.value) fleetStore.clearTour(userId.value, props.fleet.id);
+};
 </script>
 
 <template>
@@ -121,7 +154,7 @@ const showFidNotice = computed(
           </div>
         </div>
       </div>
-      <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
+      <FidNotice v-if="canManage" :fleet="fleet" dismissible>
         <template #actions>
           <router-link
             :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
@@ -281,6 +314,23 @@ const showFidNotice = computed(
       </div>
     </div>
   </div>
+
+  <template v-if="canManage">
+    <Teleport to="#header-right">
+      <Btn
+        :size="BtnSizesEnum.MD"
+        mobile-icon-only
+        data-tour="fleet-guide"
+        data-test="fleet-show-guide"
+        @click="openGuide"
+      >
+        <i class="fa-duotone fa-question" />
+        {{ t("actions.showGuide") }}
+      </Btn>
+    </Teleport>
+
+    <FleetTour v-model:open="tourOpen" @start="onTourStart" />
+  </template>
 </template>
 
 <style lang="scss" scoped>

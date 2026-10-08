@@ -56,7 +56,16 @@ interface FleetState extends ShipListState {
   tableViewCols: FleetTableViewColsEnum[];
   sortFields: FleetSortFieldsEnum[];
   dismissedFidWarnings: string[];
+  // When each `${userId}:${fleetId}` setup tour was queued: set when the
+  // account creates the fleet, cleared once the tour has been shown.
+  pendingTours: Record<string, number>;
 }
+
+const tourKey = (userId: string, fleetId: string) => `${userId}:${fleetId}`;
+
+// Past this, "your fleet is ready" no longer greets a fleet just made, and an
+// entry for a fleet that was deleted or never opened again goes away.
+const PENDING_TOUR_TTL = 7 * 24 * 60 * 60 * 1000;
 
 export const useFleetStore = defineStore("fleet", {
   state: (): FleetState => ({
@@ -85,7 +94,15 @@ export const useFleetStore = defineStore("fleet", {
       FleetSortFieldsEnum.PRODUCTION_STATUS,
     ],
     dismissedFidWarnings: [],
+    pendingTours: {},
   }),
+  getters: {
+    isTourPending(state) {
+      return (userId: string, fleetId: string) =>
+        Date.now() - (state.pendingTours[tourKey(userId, fleetId)] ?? 0) <
+        PENDING_TOUR_TTL;
+    },
+  },
   actions: {
     toggleDetails() {
       this.detailsVisible = !this.detailsVisible;
@@ -125,6 +142,19 @@ export const useFleetStore = defineStore("fleet", {
         this.dismissedFidWarnings.push(key);
       }
     },
+    queueTour(userId: string, fleetId: string) {
+      const now = Date.now();
+
+      this.pendingTours = Object.fromEntries(
+        Object.entries(this.pendingTours).filter(
+          ([, queuedAt]) => now - queuedAt < PENDING_TOUR_TTL,
+        ),
+      );
+      this.pendingTours[tourKey(userId, fleetId)] = now;
+    },
+    clearTour(userId: string, fleetId: string) {
+      delete this.pendingTours[tourKey(userId, fleetId)];
+    },
   },
   persist: {
     pick: [
@@ -138,6 +168,7 @@ export const useFleetStore = defineStore("fleet", {
       "tableViewCols",
       "sortFields",
       "dismissedFidWarnings",
+      "pendingTours",
     ],
   },
 });
