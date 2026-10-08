@@ -601,7 +601,10 @@ class User < ApplicationRecord
     hangar_share_token
   end
 
+  # Rotating replaces a link; it never brings back one the owner deleted.
   def rotate_hangar_share_token!
+    return unless hangar_share_enabled?
+
     update_column(:hangar_share_token, self.class.generate_hangar_share_token)
     hangar_share_token
   end

@@ -46,6 +46,17 @@ class Api::V1::MeHangarShareRotateTest < ActionDispatch::IntegrationTest
     refute_equal old_token, new_token
   end
 
+  test "POST /me/hangar/share/rotate does not bring back a deleted link" do
+    sign_in @account
+
+    assert_api_response :post, 200 do
+      assert_equal false, parsed_body["enabled"]
+      assert_nil parsed_body["shareUrl"]
+    end
+
+    assert_nil @account.reload.hangar_share_token
+  end
+
   test "POST /me/hangar/share/rotate with OAuth bearer token" do
     @account.ensure_hangar_share_token!
 
