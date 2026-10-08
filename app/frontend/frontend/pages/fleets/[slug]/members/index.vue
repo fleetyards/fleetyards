@@ -239,7 +239,12 @@ const crumbs = computed<Crumb[]>(() => {
         <i class="fa-light fa-plus" />
         {{ t("actions.fleet.createInviteUrl") }}
       </Btn>
-      <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInviteModal">
+      <Btn
+        :size="BtnSizesEnum.MD"
+        mobile-icon-only
+        data-tour="fleet-invite"
+        @click="openInviteModal"
+      >
         <i class="fa-duotone fa-user-plus" />
         {{ t("actions.fleet.inviteMember") }}
       </Btn>

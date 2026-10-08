@@ -113,6 +113,56 @@
           "text": "Import and export your hangar, buy-backs and your import history — and this tour, whenever you want it again."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Your fleet is ready",
+          "text": "This tour opens each page that sets it up and points at the control that matters there. The question mark at the top of the fleet page brings it back any time."
+        },
+        "events": {
+          "title": "Events and missions",
+          "text": "Plan operations, let members sign up for a ship and a seat, and keep everything on the fleet calendar."
+        },
+        "contracts": {
+          "title": "Contracts",
+          "text": "Post jobs for your members and pay them out once they are done."
+        },
+        "members": {
+          "title": "Invite members",
+          "text": "Invite people by their Fleetyards username, or create an invite link to share on Discord or RSI. Requests to join land on this page too."
+        },
+        "ships": {
+          "title": "Ships and fleetchart",
+          "text": "The ships your members share add up to the fleet's ships. The fleetchart lines them up side by side to scale."
+        },
+        "membership": {
+          "title": "Your ships in the fleet",
+          "text": "Every member decides which of their ships the fleet sees: all of them, one hangar group or none. This is your own choice."
+        },
+        "rsi": {
+          "title": "Verify your RSI organisation",
+          "text": "Enter your organisation's SID and verify it. Verifying proves the organisation is yours and protects your fleet ID."
+        },
+        "roles": {
+          "title": "Roles",
+          "text": "Each role decides what its members may see and manage. This page lists what every role can do."
+        },
+        "squadrons": {
+          "title": "Squadrons and teams",
+          "text": "Switch squadrons on to split the roster into units and teams, each with ranks of its own."
+        },
+        "discord": {
+          "title": "Connect Discord",
+          "text": "Install the bot on your Discord server to give each rank a Discord role and mirror events as scheduled events."
+        },
+        "settings": {
+          "title": "Public fleet page",
+          "text": "Decide whether the fleet page and its ships are public; logo, description and links are on this page too."
+        },
+        "finish": {
+          "title": "Your fleet is set up",
+          "text": "That's everything to get started. The question mark up here brings this tour back any time."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Sync from RSI",

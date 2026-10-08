@@ -15,6 +15,7 @@ import {
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
@@ -74,6 +75,13 @@ const eventsNavLabel = computed(() =>
     ? t("nav.fleets.missions.index")
     : t("nav.fleets.events.index"),
 );
+
+const mobile = useMobile();
+
+// Tour targets on desktop only. On a phone this navigation is the slide-out
+// menu, which stays laid out off-screen while closed -- a tour would spotlight
+// it there instead of the bottom bar, which carries its own targets.
+const tourTarget = (id: string) => (mobile.value ? undefined : id);
 
 const comlink = useComlink();
 
@@ -160,6 +168,7 @@ onMounted(() => {
 
     <NavItem
       v-if="showContractsNav"
+      :data-tour="tourTarget('fleet-contracts')"
       :to="{
         name: 'fleet-contracts',
         params: { slug: currentFleet.slug },
@@ -174,6 +183,7 @@ onMounted(() => {
          in there. -->
     <NavItem
       v-if="showEventsNav"
+      :data-tour="tourTarget('fleet-events')"
       :to="{
         name: eventsNavRoute,
         params: { slug: currentFleet.slug },

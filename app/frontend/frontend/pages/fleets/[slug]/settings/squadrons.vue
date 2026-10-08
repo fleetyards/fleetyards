@@ -91,7 +91,7 @@ const { data: ranks, isLoading } = useFleetSquadronRoles(fleetSlug, {
 
 <template>
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6" data-tour="fleet-squadrons-switch">
       <FormToggle
         :key="toggleKey"
         :model-value="squadronsEnabled"

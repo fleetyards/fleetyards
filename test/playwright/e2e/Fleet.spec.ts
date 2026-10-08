@@ -52,6 +52,9 @@ test.describe("Fleet", () => {
 
     await expect(page).toHaveURL(/\/fleets\/testfleet1\//);
 
+    // A new fleet opens its setup tour, which holds the rest of the page.
+    await page.getByTestId("tour-skip").click();
+
     await notification.success("Your Fleet has been created.");
 
     await page.waitForTimeout(500);
@@ -97,6 +100,9 @@ test.describe("Fleet", () => {
     await page.getByTestId("fleet-save").click();
 
     await expect(page).toHaveURL(/\/fleets\/testfleet1\//);
+
+    // A new fleet opens its setup tour, which holds the rest of the page.
+    await page.getByTestId("tour-skip").click();
 
     await notification.success("Your Fleet has been created.");
 

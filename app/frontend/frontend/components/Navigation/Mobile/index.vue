@@ -124,6 +124,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         />
         <NavItem
           v-if="showContractsNav"
+          data-tour="fleet-contracts"
           :to="{
             name: 'fleet-contracts',
             params: { slug: currentFleet.slug },
@@ -133,6 +134,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         />
         <NavItem
           v-if="showEventsNav"
+          data-tour="fleet-events"
           :to="{
             name: eventsNavRoute,
             params: { slug: currentFleet.slug },

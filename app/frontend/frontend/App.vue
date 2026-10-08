@@ -10,6 +10,7 @@ import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
+import { useFleetStore } from "@/frontend/stores/fleet";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import OffCanvas from "@/shared/components/OffCanvas/index.vue";
@@ -49,6 +50,14 @@ import {
 } from "@/frontend/composables/useModalQuery";
 
 useWebpCheck(true);
+
+// Outside the router-view, which remounts its page on every navigation: the
+// fleet's setup tour walks across those pages. Loaded once a tour is asked for.
+const FleetTour = defineAsyncComponent(
+  () => import("@/frontend/components/Fleets/Tour/index.vue"),
+);
+
+const fleetStore = useFleetStore();
 
 useMetaInfo();
 
@@ -394,6 +403,7 @@ const setLocale = (locale: string) => {
     <AppModal @modal-closed="forgetClosedModal" />
     <OffCanvas />
     <AppNotifications />
+    <FleetTour v-if="fleetStore.tourFleet" />
     <AppEnvironment :git-revision="appStore.gitRevision" />
   </div>
 </template>

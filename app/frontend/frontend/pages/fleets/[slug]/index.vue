@@ -13,6 +13,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useTourAutostart } from "@/shared/composables/useTourAutostart";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -85,11 +90,28 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
-// Only a manager can act on it: verifying is theirs to do.
-const showFidNotice = computed(
+// The FID notice and the tour button are for whoever runs the fleet: verifying
+// and setting it up are theirs to do, and the settings pages check the same.
+const canManage = computed(
   () =>
     isMember.value && (props.membership?.capabilities?.manageFleet ?? false),
 );
+
+const fleetStore = useFleetStore();
+
+const sessionStore = useSessionStore();
+
+const userId = computed(() => sessionStore.currentUser?.id);
+
+const openTour = () => fleetStore.openTour(props.fleet);
+
+useTourAutostart({
+  ready: () =>
+    !!userId.value &&
+    canManage.value &&
+    fleetStore.isTourPending(userId.value, props.fleet.id),
+  start: openTour,
+});
 </script>
 
 <template>
@@ -121,7 +143,7 @@ const showFidNotice = computed(
           </div>
         </div>
       </div>
-      <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
+      <FidNotice v-if="canManage" :fleet="fleet" dismissible>
         <template #actions>
           <router-link
             :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
@@ -281,6 +303,19 @@ const showFidNotice = computed(
       </div>
     </div>
   </div>
+
+  <Teleport v-if="canManage" to="#header-right">
+    <Btn
+      v-tooltip="t('actions.showGuide')"
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.showGuide')"
+      data-tour="fleet-guide"
+      data-test="fleet-show-guide"
+      @click="openTour"
+    >
+      <i class="fa-duotone fa-question" />
+    </Btn>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>

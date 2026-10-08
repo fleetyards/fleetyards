@@ -113,6 +113,56 @@
           "text": "Importa ed esporta il tuo hangar, buy-back e cronologia delle importazioni — e questo tour, ogni volta che ti serve."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "La tua flotta è pronta",
+          "text": "Questo tour apre ogni pagina in cui si configura e indica ciò che conta in ciascuna. Il punto interrogativo in alto nella pagina della flotta lo riapre in qualsiasi momento."
+        },
+        "events": {
+          "title": "Eventi e missioni",
+          "text": "Pianifica operazioni, lascia che i membri si iscrivano per una nave e un posto, e tieni tutto nel calendario della flotta."
+        },
+        "contracts": {
+          "title": "Contratti",
+          "text": "Pubblica incarichi per i tuoi membri e pagali quando sono completati."
+        },
+        "members": {
+          "title": "Invita membri",
+          "text": "Invita persone tramite il loro nome utente Fleetyards, oppure crea un link di invito da condividere su Discord o RSI. Anche le richieste di adesione arrivano su questa pagina."
+        },
+        "ships": {
+          "title": "Navi e fleetchart",
+          "text": "Le navi condivise dai tuoi membri formano insieme quelle della flotta. Il fleetchart le allinea una accanto all'altra in scala."
+        },
+        "membership": {
+          "title": "Le tue navi nella flotta",
+          "text": "Ogni membro decide quali delle sue navi vede la flotta: tutte, un gruppo dell'hangar o nessuna. Qui fai la tua scelta."
+        },
+        "rsi": {
+          "title": "Verifica la tua organizzazione RSI",
+          "text": "Inserisci il SID della tua organizzazione e verificalo. La verifica dimostra che l'organizzazione è tua e protegge l'ID della tua flotta."
+        },
+        "roles": {
+          "title": "Ruoli",
+          "text": "Ogni ruolo decide cosa i suoi membri possono vedere e gestire. Questa pagina mostra cosa può fare ogni ruolo."
+        },
+        "squadrons": {
+          "title": "Squadroni e team",
+          "text": "Attiva gli squadroni per dividere i membri in unità e team, ciascuno con i propri gradi."
+        },
+        "discord": {
+          "title": "Collega Discord",
+          "text": "Installa il bot sul tuo server Discord per assegnare a ogni grado un ruolo Discord e rispecchiare gli eventi come eventi programmati."
+        },
+        "settings": {
+          "title": "Pagina pubblica della flotta",
+          "text": "Decidi se la pagina della flotta e le sue navi sono pubbliche; logo, descrizione e link sono anche qui."
+        },
+        "finish": {
+          "title": "La tua flotta è configurata",
+          "text": "È tutto per iniziare. Il punto interrogativo qui in alto riapre questo tour in qualsiasi momento."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Sincronizza con RSI",

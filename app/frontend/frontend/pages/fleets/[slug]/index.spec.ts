@@ -10,6 +10,7 @@ import {
   type FleetSquadron,
   type PublicFleetSquadron,
 } from "@/services/fyApi";
+import { useFleetStore } from "@/frontend/stores/fleet";
 import Component from "./index.vue";
 
 const memberSquadrons = [
@@ -76,6 +77,11 @@ const routerWithSquadron = async () => {
         name: "fleet-squadron",
         component: Stub,
       },
+      {
+        path: "/fleets/:slug/settings/rsi",
+        name: "fleet-settings-rsi",
+        component: Stub,
+      },
     ],
   });
 
@@ -117,9 +123,13 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (props: { fleet: Fleet; membership?: FleetMember }) => {
+const mount = async (
+  props: { fleet: Fleet; membership?: FleetMember },
+  initialState?: Record<string, unknown>,
+) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
+    initialState,
     plugins: [await routerWithSquadron()],
   });
 
@@ -275,5 +285,83 @@ describe("FleetShow description", () => {
     expect(description.find("strong").text()).toBe("Crew");
     expect(description.find("img").exists()).toBe(false);
     expect(description.text()).toContain("<img src=x onerror=alert(1)>");
+  });
+});
+
+describe("FleetShow setup tour", () => {
+  const TOUR_AUTOSTART_DELAY = 800;
+
+  const manager = () =>
+    ({
+      status: FleetMembershipStatusEnum.ACCEPTED,
+      capabilities: { readSquadrons: true, manageFleet: true },
+    }) as unknown as FleetMember;
+
+  const signedIn = (...pendingTours: string[]) => ({
+    session: { currentUser: { id: "user-a" } },
+    fleet: {
+      pendingTours: Object.fromEntries(
+        pendingTours.map((key) => [key, Date.now()]),
+      ),
+    },
+  });
+
+  const fleetWithId = () => ({ ...fleet(), id: "fleet-1" }) as Fleet;
+
+  const guideButton = () =>
+    document.querySelector<HTMLElement>("[data-test='fleet-show-guide']");
+
+  const openedFor = () =>
+    vi.mocked(useFleetStore()).openTour.mock.calls.map(([opened]) => opened.id);
+
+  beforeEach(() => {
+    document.body.innerHTML = '<div id="header-right"></div>';
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("opens the tour for a manager from the header", async () => {
+    await mount({ fleet: fleetWithId(), membership: manager() }, signedIn());
+
+    guideButton()?.click();
+
+    expect(openedFor()).toEqual(["fleet-1"]);
+  });
+
+  it("starts on its own for the fleet this account just created", async () => {
+    await mount(
+      { fleet: fleetWithId(), membership: manager() },
+      signedIn("user-a:fleet-1"),
+    );
+
+    vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
+
+    expect(openedFor()).toEqual(["fleet-1"]);
+  });
+
+  it("waits for the button on another account's or fleet's tour", async () => {
+    await mount(
+      { fleet: fleetWithId(), membership: manager() },
+      signedIn("user-b:fleet-1", "user-a:fleet-2"),
+    );
+
+    vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
+
+    expect(openedFor()).toEqual([]);
+  });
+
+  it("offers nothing to a member who cannot manage the fleet", async () => {
+    await mount(
+      { fleet: fleetWithId(), membership: member() },
+      signedIn("user-a:fleet-1"),
+    );
+
+    vi.advanceTimersByTime(TOUR_AUTOSTART_DELAY);
+
+    expect(guideButton()).toBeNull();
+    expect(openedFor()).toEqual([]);
   });
 });

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useResizeObserver } from "@vueuse/core";
+import { routerKey } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -40,6 +41,19 @@ const { t } = useI18n();
 
 const { prefersReducedMotion } = useReducedMotion();
 
+// Injected rather than `useRouter()`: a tour whose steps name no route works
+// without one, and a page-bound tour's specs mount it bare.
+const router = inject(routerKey, null);
+
+// How long a step on another page waits for its target to render after the
+// navigation -- data loading in -- before it is passed over. An optional
+// target gets far less: its card is worth reading centred, and the spotlight
+// still finds the control if it renders later, since every page change
+// places the card again.
+const TARGET_WAIT = 5000;
+const OPTIONAL_TARGET_WAIT = 1000;
+const TARGET_POLL = 100;
+
 const HOLE_PADDING = 6;
 const GAP = 12;
 const MARGIN = 12;
@@ -54,11 +68,29 @@ const card = ref<HTMLElement | null>(null);
 // their text follows a locale change.
 const shownIds = ref<string[]>([]);
 
+// Steps on another page cannot be checked at start; one whose required target
+// never rendered there is dropped once the tour has looked.
+const passedOver = ref<string[]>([]);
+
+// Between leaving one page and the next step's target rendering. The card is
+// hidden and Next / Back wait, so a second press cannot race the navigation.
+const navigating = ref(false);
+
+// Only while the router is still moving: an exit then would let the
+// navigation land after the tour is gone, on a page the reader never chose.
+// Once it has landed, Escape works again while the page loads.
+let routing = false;
+
+// Where the current step was shown, as the router left it -- after any
+// redirect. Leaving it by other means than the tour ends the tour.
+let stepPath: string | null = null;
+
 // Rendered once a start has committed, not merely once asked to open: a start
 // that refuses closes the tour without it ever flashing on screen.
 const visible = ref(false);
 const shown = computed<TourStep[]>(() =>
   shownIds.value
+    .filter((id) => !passedOver.value.includes(id))
     .map((id) => props.steps.find((step) => step.id === id))
     .filter((step): step is TourStep => !!step),
 );
@@ -78,6 +110,19 @@ const isLast = computed(() => index.value === shown.value.length - 1);
 // `display: none` and detached nodes have no boxes; a control teleported away
 // on mobile or hidden by a flag is simply not found.
 const isRendered = (element: Element) => element.getClientRects().length > 0;
+
+const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
+
+// Without the trailing slash: `/fleets/x` and `/fleets/x/` are one page, and
+// reading the first as elsewhere would send the tour to wait for targets
+// already on screen.
+const currentPath = () =>
+  router ? withoutTrailingSlash(router.currentRoute.value.path) : null;
+
+const isElsewhere = (step: TourStep) =>
+  !!step.route &&
+  !!router &&
+  withoutTrailingSlash(router.resolve(step.route).path) !== currentPath();
 
 const findTarget = (step?: TourStep): HTMLElement | null => {
   if (!step?.target) return null;
@@ -108,6 +153,8 @@ const currentTarget = () => {
 };
 
 const place = () => {
+  if (navigating.value) return;
+
   const element = currentTarget();
 
   if (element) {
@@ -169,11 +216,107 @@ const focusCard = () => {
   card.value?.focus({ preventScroll: true });
 };
 
-const showStep = async (next: number) => {
+const waitForTarget = (step: TourStep, own: number) =>
+  new Promise<HTMLElement | null>((resolve) => {
+    const deadline =
+      Date.now() + (step.requiresTarget ? TARGET_WAIT : OPTIONAL_TARGET_WAIT);
+
+    const poll = () => {
+      const element = findTarget(step);
+
+      if (
+        own !== session ||
+        element ||
+        !step.target ||
+        Date.now() >= deadline
+      ) {
+        resolve(element);
+      } else {
+        window.setTimeout(poll, TARGET_POLL);
+      }
+    };
+
+    poll();
+  });
+
+// Goes to the step's page first when it names another one. Back takes the
+// same route, so it returns to the page the previous step was shown on.
+const showStep = async (
+  next: number,
+  direction: 1 | -1 = 1,
+  pressedBefore?: string,
+): Promise<void> => {
   const own = session;
+  const step = shown.value[next];
+
+  if (!step) {
+    end("finished");
+    return;
+  }
 
   index.value = next;
   target = null;
+
+  // Hiding the card during a page change drops the focus off Next or Back;
+  // the same button gets it back once the step is shown. A step passed over
+  // hands on what was pressed before the card went.
+  const pressed =
+    pressedBefore ??
+    (document.activeElement instanceof HTMLElement &&
+    document.activeElement !== card.value &&
+    card.value?.contains(document.activeElement)
+      ? document.activeElement.dataset.test
+      : undefined);
+
+  stepPath = null;
+
+  if (step.route && router) {
+    let found: HTMLElement | null;
+
+    if (isElsewhere(step)) {
+      navigating.value = true;
+      hole.value = null;
+      cardPosition.value = null;
+
+      routing = true;
+      await router.push(step.route).catch(() => {});
+      routing = false;
+
+      if (own !== session) return;
+
+      const landed = currentPath();
+
+      found = await waitForTarget(step, own);
+
+      if (own !== session) return;
+
+      navigating.value = false;
+
+      // Left again while the page loaded -- the back button -- so there is
+      // no page left for this step to explain.
+      if (currentPath() !== landed) {
+        end("skipped");
+        return;
+      }
+    } else {
+      // Already on its page: nothing is loading, so a missing target is
+      // missing -- a flag that is off -- and waiting would only blank the page.
+      found = findTarget(step);
+    }
+
+    stepPath = currentPath();
+
+    if (!found && step.requiresTarget) {
+      passedOver.value = [...passedOver.value, step.id];
+
+      // Forwards, the same index now names the following step; backwards, the
+      // one before -- and with none before, the walk turns round.
+      const following = direction === 1 || next === 0 ? next : next - 1;
+
+      await showStep(following, next === 0 ? 1 : direction, pressed);
+      return;
+    }
+  }
 
   await nextTick();
 
@@ -205,10 +348,22 @@ const showStep = async (next: number) => {
     !!card.value?.contains(document.activeElement) &&
     document.activeElement !== card.value;
 
-  if (!onButton) focusCard();
+  if (onButton) return;
+
+  const button = pressed
+    ? card.value?.querySelector<HTMLElement>(`[data-test="${pressed}"]`)
+    : null;
+
+  if (button) {
+    button.focus({ preventScroll: true });
+  } else {
+    focusCard();
+  }
 };
 
 const next = () => {
+  if (navigating.value) return;
+
   if (isLast.value) {
     end("finished");
   } else {
@@ -217,10 +372,16 @@ const next = () => {
 };
 
 const back = () => {
-  if (!isFirst.value) void showStep(index.value - 1);
+  if (navigating.value) return;
+
+  if (!isFirst.value) void showStep(index.value - 1, -1);
 };
 
-const skip = () => end("skipped");
+// Not while the router is moving: the navigation would still land, on a page
+// the reader never chose and with no tour left to say why.
+const skip = () => {
+  if (!routing) end("skipped");
+};
 
 // The rest of the page is taken out of the tab order and the accessibility
 // tree while the tour runs, so the card behaves like any modal dialog. A
@@ -296,6 +457,8 @@ const onKeydown = (event: KeyboardEvent) => {
     case "Escape":
       event.preventDefault();
       event.stopPropagation();
+      if (routing) break;
+
       if (isLast.value) {
         end("finished");
       } else {
@@ -395,9 +558,14 @@ const start = async () => {
   index.value = 0;
   hole.value = null;
   cardPosition.value = null;
+  passedOver.value = [];
+  navigating.value = false;
 
+  // A step on another page is looked for once the tour gets there.
   shownIds.value = props.steps
-    .filter((step) => !step.requiresTarget || !!findTarget(step))
+    .filter(
+      (step) => !step.requiresTarget || isElsewhere(step) || !!findTarget(step),
+    )
     .map((step) => step.id);
 
   // A modal open underneath would turn inert and unusable until the tour
@@ -432,6 +600,9 @@ const start = async () => {
 const teardown = ({ restoreFocus }: { restoreFocus: boolean }) => {
   session += 1;
   visible.value = false;
+  navigating.value = false;
+  routing = false;
+  stepPath = null;
   unlisten();
   target = null;
 
@@ -466,18 +637,26 @@ function end(reason: TourEndReason) {
 }
 
 // The steps can change under a running tour -- a flag or the locale feeds
-// them -- and a vanished step must not leave an inert page with no card.
-watch(shown, (steps) => {
-  if (!visible.value) return;
+// them -- and a vanished step must not leave an inert page with no card. On
+// the props rather than `shown`: passing over a step changes that list too,
+// and `showStep` has already moved on by then.
+watch(
+  () => props.steps,
+  () => {
+    const steps = shown.value;
 
-  if (!steps.length) {
-    end("finished");
-  } else {
-    // The same index can now name another step; re-show it either way, so the
-    // spotlight, the card and the cached target follow.
-    void showStep(Math.min(index.value, steps.length - 1));
-  }
-});
+    // A step being navigated to is re-read from the props when it is shown.
+    if (!visible.value || navigating.value) return;
+
+    if (!steps.length) {
+      end("finished");
+    } else {
+      // The same index can now name another step; re-show it either way, so
+      // the spotlight, the card and the cached target follow.
+      void showStep(Math.min(index.value, steps.length - 1));
+    }
+  },
+);
 
 watch(
   open,
@@ -489,6 +668,22 @@ watch(
     }
   },
   { immediate: true },
+);
+
+// A step's page left by other means -- the browser's back button -- ends the
+// tour rather than explaining a page that is no longer on screen.
+watch(
+  () => router?.currentRoute.value.path,
+  () => {
+    if (
+      visible.value &&
+      !navigating.value &&
+      stepPath !== null &&
+      currentPath() !== stepPath
+    ) {
+      end("skipped");
+    }
+  },
 );
 
 // Unmounted with the page it belonged to: whatever started it is leaving too.

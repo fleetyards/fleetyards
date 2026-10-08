@@ -93,8 +93,13 @@ const isImpliedByManage = (
 
 <template>
   <div v-if="roles && catalog" class="fleet-roles">
-    <Panel v-for="role in roles" :key="role.id" class="fleet-role">
-      <PanelHeading :level="HeadingLevelEnum.H3">
+    <Panel v-for="(role, roleIndex) in roles" :key="role.id" class="fleet-role">
+      <!-- The heading rather than the panel: a role's list of rights is taller
+           than the window, and a spotlight round all of it shows nothing. -->
+      <PanelHeading
+        :level="HeadingLevelEnum.H3"
+        :data-tour="roleIndex === 0 ? 'fleet-roles' : undefined"
+      >
         {{ role.name }}
         <span v-if="role.permanent" class="fleet-role-badge text-muted">
           ({{ t("labels.fleet.roles.permanent") }})

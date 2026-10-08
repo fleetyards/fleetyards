@@ -178,7 +178,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <br />
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6" data-tour="fleet-ships-filter">
         <BaseSelect
           v-model="shipsFilter"
           name="shipsFilter"

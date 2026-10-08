@@ -113,6 +113,56 @@
           "text": "Importer et exporter votre hangar, les buy-backs et votre historique d'import — et cette visite, chaque fois que vous en avez besoin."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Votre flotte est prête",
+          "text": "Cette visite ouvre chaque page où elle se configure et montre ce qui compte sur chacune. Le point d'interrogation en haut de la page de la flotte la relance à tout moment."
+        },
+        "events": {
+          "title": "Événements et missions",
+          "text": "Planifiez des opérations, laissez les membres s'inscrire sur un vaisseau et un poste, et gardez tout dans le calendrier de la flotte."
+        },
+        "contracts": {
+          "title": "Contrats",
+          "text": "Publiez des missions pour vos membres et payez-les une fois terminées."
+        },
+        "members": {
+          "title": "Inviter des membres",
+          "text": "Invitez des personnes par leur nom d'utilisateur Fleetyards, ou créez un lien d'invitation à partager sur Discord ou RSI. Les demandes d'adhésion arrivent aussi sur cette page."
+        },
+        "ships": {
+          "title": "Vaisseaux et fleetchart",
+          "text": "Les vaisseaux que partagent vos membres forment ensemble ceux de la flotte. Le fleetchart les aligne côte à côte à l'échelle."
+        },
+        "membership": {
+          "title": "Vos vaisseaux dans la flotte",
+          "text": "Chaque membre choisit quels vaisseaux la flotte voit : tous, un groupe du hangar ou aucun. Vous faites ici votre propre choix."
+        },
+        "rsi": {
+          "title": "Vérifier votre organisation RSI",
+          "text": "Saisissez le SID de votre organisation et vérifiez-le. La vérification prouve que l'organisation vous appartient et protège l'identifiant de votre flotte."
+        },
+        "roles": {
+          "title": "Rôles",
+          "text": "Chaque rôle détermine ce que ses membres peuvent voir et gérer. Cette page indique ce que chaque rôle peut faire."
+        },
+        "squadrons": {
+          "title": "Escadrons et équipes",
+          "text": "Activez les escadrons pour répartir les membres en unités et en équipes, chacune avec ses propres rangs."
+        },
+        "discord": {
+          "title": "Connecter Discord",
+          "text": "Installez le bot sur votre serveur Discord pour donner à chaque rang un rôle Discord et refléter les événements en événements programmés."
+        },
+        "settings": {
+          "title": "Page publique de la flotte",
+          "text": "Choisissez si la page de la flotte et ses vaisseaux sont publics ; logo, description et liens se trouvent aussi ici."
+        },
+        "finish": {
+          "title": "Votre flotte est configurée",
+          "text": "C'est tout pour commencer. Le point d'interrogation ici en haut relance cette visite à tout moment."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Synchroniser avec RSI",
