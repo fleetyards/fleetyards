@@ -223,9 +223,8 @@
       "hangar": {
         "index": "我的机库",
         "preview": {
-          "h1": "我的机库预览",
-          "h2": "Your personal Hangar requires an FleetYards.net Account",
-          "h3": "What Features does the Hangar include?"
+          "title": "你的机库",
+          "lead": "记录你拥有的每一艘舰船——注册 FleetYards.net 账户即可免费使用。"
         },
         "alternativeNames": "别名",
         "stats": "统计",
@@ -284,9 +283,8 @@
         },
         "stats": "统计",
         "preview": {
-          "h1": "舰队预览",
-          "h2": "To create a Fleet you need to have a FleetYards.net Account",
-          "h3": "What Features does your Fleet include?"
+          "title": "你的舰队",
+          "lead": "把你的组织聚在一起——注册 FleetYards.net 账户即可免费使用。"
         },
         "settings": {
           "fleet": "Fleet Settings",

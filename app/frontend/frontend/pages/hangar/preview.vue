@@ -5,143 +5,39 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
+import FeaturePreview from "@/frontend/components/FeaturePreview/index.vue";
+import type { FeaturePreviewItem } from "@/frontend/components/FeaturePreview/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { useRedirectBackStore } from "@/shared/stores/redirectBack";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
 const hangarStore = useHangarStore();
 
-const redirectBackStore = useRedirectBackStore();
+const FEATURES = [
+  { id: "sync", icon: "fa-duotone fa-rotate" },
+  { id: "organise", icon: "fa-duotone fa-object-group" },
+  { id: "wishlist", icon: "fa-duotone fa-wand-sparkles" },
+  { id: "fleetchart", icon: "fa-duotone fa-ruler-combined" },
+  { id: "stats", icon: "fa-duotone fa-chart-pie" },
+  { id: "share", icon: "fa-duotone fa-share-nodes" },
+];
 
-const setBackRoute = () => {
-  redirectBackStore.setBackRoute({
-    name: "hangar",
-  });
-};
-
-const handleLogin = () => {
-  hangarStore.hidePreview();
-
-  setBackRoute();
-};
+const features = computed<FeaturePreviewItem[]>(() =>
+  FEATURES.map((feature) => ({
+    ...feature,
+    title: t(`texts.hangarPreview.${feature.id}.title`),
+    text: t(`texts.hangarPreview.${feature.id}.text`),
+  })),
+);
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="sr-only">
-            {{ t("headlines.hangar.preview.h1") }}
-          </h1>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <h2 class="text-center main-headline">
-            {{ t("headlines.hangar.preview.h2") }}
-          </h2>
-        </div>
-      </div>
-
-      <hr class="large-spacer" />
-
-      <div class="row">
-        <div class="col-12">
-          <h3 class="text-center main-subheadline">
-            {{ t("headlines.hangar.preview.h3") }}
-          </h3>
-        </div>
-      </div>
-
-      <br />
-
-      <div class="row">
-        <div class="col-12 col-lg-4">
-          <Panel class="info-box" translucent inset>
-            <div class="panel-heading">
-              <h2 class="panel-title text-center">
-                {{ t("texts.hangarPreview.notified.headline") }}
-              </h2>
-            </div>
-            <div class="panel-body text-center">
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <p v-html="t('texts.hangarPreview.notified.text')" />
-            </div>
-          </Panel>
-        </div>
-        <div class="col-12 col-lg-4">
-          <Panel class="info-box" translucent inset>
-            <div class="panel-heading">
-              <h2 class="panel-title text-center">
-                {{ t("texts.hangarPreview.manage.headline") }}
-              </h2>
-            </div>
-            <div class="panel-body text-center">
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <p v-html="t('texts.hangarPreview.manage.text')" />
-            </div>
-          </Panel>
-        </div>
-        <div class="col-12 col-lg-4">
-          <Panel class="info-box" translucent inset>
-            <div class="panel-heading">
-              <h2 class="panel-title text-center">
-                {{ t("texts.hangarPreview.fleetchart.headline") }}
-              </h2>
-            </div>
-            <div class="panel-body text-center">
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <p v-html="t('texts.hangarPreview.fleetchart.text')" />
-            </div>
-          </Panel>
-        </div>
-      </div>
-
-      <hr class="large-spacer" />
-
-      <div class="row justify-center">
-        <div class="col-12 col-lg-4">
-          <Btn
-            :to="{
-              name: 'signup',
-            }"
-            data-test="signup"
-            :block="true"
-            @click="setBackRoute"
-            :size="BtnSizesEnum.LG"
-          >
-            {{ t("actions.signUp") }}
-          </Btn>
-
-          <hr />
-
-          <p class="text-center">
-            {{ t("labels.alreadyRegistered") }}
-          </p>
-
-          <Btn
-            data-test="login"
-            :block="true"
-            :to="{
-              name: 'login',
-            }"
-            @click="handleLogin"
-          >
-            {{ t("actions.login") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-  </div>
+  <FeaturePreview
+    :title="t('headlines.hangar.preview.title')"
+    :lead="t('headlines.hangar.preview.lead')"
+    :features="features"
+    :back-route="{ name: 'hangar' }"
+    @login="hangarStore.hidePreview()"
+  />
 </template>
-
-<style lang="scss" scoped>
-@import "preview";
-</style>

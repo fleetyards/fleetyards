@@ -110,31 +110,55 @@
         }
       },
       "hangarPreview": {
-        "notified": {
-          "headline": "Get notified about new Ships and Sales",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "sync": {
+          "title": "Sync from RSI",
+          "text": "Import your pledges with the browser extension or a hangarXPLOR file instead of adding ships one by one."
         },
-        "manage": {
-          "headline": "Manage your Hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "organise": {
+          "title": "Organise your ships",
+          "text": "Name your ships, set paints, loadouts and a flagship, and sort them into groups of your own."
+        },
+        "wishlist": {
+          "title": "Wishlist and sales",
+          "text": "Keep the ships you want on a wishlist and get notified when they go on sale."
         },
         "fleetchart": {
-          "headline": "Fleetchart and Public Hangar",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "Fleetchart",
+          "text": "See your ships side by side to scale and save the chart as an image."
+        },
+        "stats": {
+          "title": "Hangar stats",
+          "text": "Roles, manufacturers, sizes and what you have spent, at a glance."
+        },
+        "share": {
+          "title": "Public hangar",
+          "text": "Share your hangar with a link — you decide which ships and groups are visible."
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "Analyze",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "Members and roles",
+          "text": "Invite your org mates with a link and organise them with roles and squadrons."
         },
-        "overview": {
-          "headline": "Overview & Manage",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "Fleet ships",
+          "text": "Every member's public ships in one list you can filter and search."
         },
         "fleetchart": {
-          "headline": "Fleetchart",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "Fleetchart",
+          "text": "See the whole fleet side by side to scale and save it as an image."
+        },
+        "stats": {
+          "title": "Fleet stats",
+          "text": "Analyse your fleet by role, size and cargo capacity."
+        },
+        "events": {
+          "title": "Events and contracts",
+          "text": "Plan events on a shared calendar and post contracts for your members."
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "Connect your Discord server for event sign-ups, and let members join through a role."
         }
       },
       "impressum": {

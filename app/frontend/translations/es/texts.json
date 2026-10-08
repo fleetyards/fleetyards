@@ -110,31 +110,55 @@
         }
       },
       "hangarPreview": {
-        "notified": {
-          "headline": "Reciba notificaciones sobre nuevas naves y ventas",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "sync": {
+          "title": "Sincronizar con RSI",
+          "text": "Importa tus pledges con la extensión de navegador o un archivo de hangarXPLOR en lugar de añadir naves una a una."
         },
-        "manage": {
-          "headline": "Administre su hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "organise": {
+          "title": "Organiza tus naves",
+          "text": "Pon nombre a tus naves, define pinturas, loadouts y nave insignia, y ordénalas en grupos propios."
+        },
+        "wishlist": {
+          "title": "Lista de deseos y rebajas",
+          "text": "Guarda las naves que quieres en una lista de deseos y recibe un aviso cuando estén en rebajas."
         },
         "fleetchart": {
-          "headline": "Gráfico de flota y hangar público",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "Fleetchart",
+          "text": "Mira tus naves una junto a otra a escala y guarda el gráfico como imagen."
+        },
+        "stats": {
+          "title": "Estadísticas del hangar",
+          "text": "Roles, fabricantes, tamaños y lo que has gastado, de un vistazo."
+        },
+        "share": {
+          "title": "Hangar público",
+          "text": "Comparte tu hangar con un enlace — tú decides qué naves y grupos son visibles."
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "Analizar",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "Miembros y roles",
+          "text": "Invita a los miembros de tu org con un enlace y organízalos con roles y escuadrones."
         },
-        "overview": {
-          "headline": "Resumen y administrar",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "Naves de la flota",
+          "text": "Las naves públicas de todos los miembros en una lista que puedes filtrar y buscar."
         },
         "fleetchart": {
-          "headline": "Gráfico de flota",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "Fleetchart",
+          "text": "Mira toda la flota una nave junto a otra a escala y guárdala como imagen."
+        },
+        "stats": {
+          "title": "Estadísticas de la flota",
+          "text": "Analiza tu flota por rol, tamaño y capacidad de carga."
+        },
+        "events": {
+          "title": "Eventos y contratos",
+          "text": "Planifica eventos en un calendario compartido y publica contratos para tus miembros."
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "Conecta tu servidor de Discord para las inscripciones a eventos y deja que los miembros se unan mediante un rol."
         }
       },
       "impressum": {

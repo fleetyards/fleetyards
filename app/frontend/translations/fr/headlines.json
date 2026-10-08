@@ -223,9 +223,8 @@
       "hangar": {
         "index": "Mon Hangar",
         "preview": {
-          "h1": "Aperçu de mon Hangar",
-          "h2": "Votre Hangar personnel nécessite un compte FleetYards.net",
-          "h3": "Quelles sont les fonctionnalités du Hangar ?"
+          "title": "Votre hangar",
+          "lead": "Suivez chaque vaisseau que vous possédez — gratuitement avec un compte FleetYards.net."
         },
         "alternativeNames": "Noms alternatifs",
         "stats": "Statistiques",
@@ -284,9 +283,8 @@
         },
         "stats": "Statistiques",
         "preview": {
-          "h1": "Aperçu de la Flotte",
-          "h2": "Pour créer une Flotte, vous devez avoir un compte FleetYards.net",
-          "h3": "Quelles sont les fonctionnalités de la Flotte ?"
+          "title": "Votre flotte",
+          "lead": "Rassemblez votre org — gratuitement avec un compte FleetYards.net."
         },
         "settings": {
           "fleet": "Paramètres de la Flotte",
