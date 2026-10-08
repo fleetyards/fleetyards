@@ -1,6 +1,11 @@
 {
   "zh-TW": {
     "actions": {
+      "hangarShare": {
+        "enable": "建立分享連結",
+        "rotate": "重設連結",
+        "disable": "刪除分享連結"
+      },
       "announcements": {
         "addPart": "新增",
         "removePart": "移除",

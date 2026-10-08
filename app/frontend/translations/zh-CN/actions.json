@@ -1,6 +1,11 @@
 {
   "zh-CN": {
     "actions": {
+      "hangarShare": {
+        "enable": "创建分享链接",
+        "rotate": "重置链接",
+        "disable": "删除分享链接"
+      },
       "announcements": {
         "addPart": "添加",
         "removePart": "移除",

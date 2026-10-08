@@ -1,6 +1,26 @@
 {
   "es": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "Enlace para compartir creado.",
+          "failure": "No se pudo crear el enlace para compartir."
+        },
+        "rotate": {
+          "success": "Enlace para compartir renovado. El enlace anterior ya no funciona.",
+          "failure": "No se pudo renovar el enlace para compartir.",
+          "confirm": "Al renovar el enlace, el actual dejará de funcionar. Quienes lo tengan necesitarán el nuevo enlace."
+        },
+        "disable": {
+          "success": "Enlace para compartir eliminado.",
+          "failure": "No se pudo eliminar el enlace para compartir.",
+          "confirm": "Al eliminar el enlace, dejará de funcionar para todas las personas con las que lo compartiste."
+        },
+        "copy": {
+          "success": "Enlace para compartir copiado al portapapeles.",
+          "failure": "No se pudo copiar el enlace para compartir."
+        }
+      },
       "loading": "Cargando…",
       "copy": {
         "success": "¡Texto copiado!",

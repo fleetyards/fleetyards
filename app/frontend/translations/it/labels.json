@@ -1,6 +1,10 @@
 {
   "it": {
     "labels": {
+      "hangarShare": {
+        "intro": "Crea un link segreto che mostra il tuo hangar e le sue statistiche a chiunque tu lo dia, anche quando il tuo hangar è privato. La tua lista dei desideri mantiene la propria impostazione.",
+        "howTo": "Chiunque abbia questo link può vedere il tuo hangar. Rinnovalo per escludere chi ha il link attuale, oppure eliminalo per smettere di condividere."
+      },
       "locationInput": {
         "linked": "Collegato a"
       },

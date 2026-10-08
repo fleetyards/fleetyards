@@ -1,6 +1,10 @@
 {
   "fr": {
     "labels": {
+      "hangarShare": {
+        "intro": "Créez un lien secret qui montre votre hangar et ses statistiques à toute personne à qui vous le donnez, même lorsque votre hangar est privé. Votre liste de souhaits garde son propre réglage.",
+        "howTo": "Toute personne disposant de ce lien peut voir votre hangar. Renouvelez-le pour bloquer tous ceux qui ont le lien actuel, ou supprimez-le pour arrêter le partage."
+      },
       "locationInput": {
         "linked": "Lié à"
       },

@@ -1,6 +1,26 @@
 {
   "zh-TW": {
     "messages": {
+      "hangarShare": {
+        "enable": {
+          "success": "分享連結已建立。",
+          "failure": "無法建立分享連結。"
+        },
+        "rotate": {
+          "success": "分享連結已重設，舊連結已失效。",
+          "failure": "無法重設分享連結。",
+          "confirm": "重設後目前的連結將失效。你分享過的人需要使用新連結。"
+        },
+        "disable": {
+          "success": "分享連結已刪除。",
+          "failure": "無法刪除分享連結。",
+          "confirm": "刪除後，所有收到此連結的人都將無法再使用它。"
+        },
+        "copy": {
+          "success": "分享連結已複製到剪貼簿。",
+          "failure": "無法複製分享連結。"
+        }
+      },
       "loading": "載入中…",
       "copy": {
         "success": "文本已複製！",

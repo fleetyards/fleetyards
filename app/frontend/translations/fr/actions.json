@@ -1,6 +1,11 @@
 {
   "fr": {
     "actions": {
+      "hangarShare": {
+        "enable": "Créer un lien de partage",
+        "rotate": "Renouveler le lien",
+        "disable": "Supprimer le lien de partage"
+      },
       "announcements": {
         "addPart": "Ajouter",
         "removePart": "Retirer",
