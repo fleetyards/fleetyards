@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
+import { fleetShipsShortPath } from "@/frontend/utils/fleetShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSubscription } from "@/shared/composables/useSubscription";
@@ -82,17 +83,9 @@ const { grouped, money, detailsVisible, gridView } = storeToRefs(fleetStore);
 
 const fleetchartStore = useFleetchartStore();
 
-const chartShareUrl = useFleetchartShareUrl(
-  () => `/f/${encodeURIComponent(props.fleet.fid)}/ships`,
+const fleetchartShareUrl = useFleetchartShareUrl(() =>
+  fleetShipsShortPath(props.fleet),
 );
-
-const fleetchartShareUrl = computed(() => {
-  if (!props.fleet?.publicFleet) {
-    return undefined;
-  }
-
-  return chartShareUrl.value;
-});
 
 const fleetchartVisible = computed(() => {
   return fleetchartStore.isVisible("fleet");
@@ -375,7 +368,7 @@ useSubscription({
           <FleetchartApp
             :items="fleetVehicles?.items || []"
             namespace="fleet"
-            :share-url="fleetchartShareUrl"
+            :share-url="fleet.publicFleet ? fleetchartShareUrl : undefined"
             :share-title="fleet.name"
             :loading="loading"
             :download-name="`${fleet.slug}-fleetchart`"
