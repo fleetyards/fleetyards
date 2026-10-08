@@ -285,6 +285,21 @@ describe("RSIHangarParser.extractPage", () => {
     expect(page).toMatchObject({ pledges: [{ pledgeItemCount: 1 }] });
   });
 
+  it("counts an item RSI lists without an image when it has a kind", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<div class="with-images">${item("Skin", "Cutlass - Akuma Paint")}</div><div class="without-images"><div class="item"><div class="title">Poster</div><div class="kind">Hangar decoration</div></div></div>`,
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      pledges: [{ pledgeItemCount: 2 }, { name: "Poster", pledgeItemCount: 2 }],
+    });
+  });
+
   it("reads no melt value off a pledge of in-game credits", () => {
     const page = extract(
       pledgesPage(

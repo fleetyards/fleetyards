@@ -122,7 +122,9 @@ export class RSIHangarParser {
           this.hiddenValue(entry, "js-pledge-value"),
         ),
         pledgeItemCount: elements.filter(
-          (item) => !item.closest(".without-images"),
+          (item) =>
+            this.itemKind(item) !== undefined ||
+            !item.closest(".without-images"),
         ).length,
         pledgeCreatedOn: this.parseCreatedOn(
           entry.getElementsByClassName("date-col")[0]?.textContent,
