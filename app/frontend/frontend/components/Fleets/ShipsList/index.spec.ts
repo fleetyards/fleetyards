@@ -48,6 +48,7 @@ vi.mock("vue-router", () => ({
     params: { slug: "merc" },
     query: {},
   }),
+  useRouter: () => ({ replace: vi.fn() }),
 }));
 
 vi.mock("@tanstack/vue-query", async (importOriginal) => ({
