@@ -61,7 +61,7 @@ module ItemPriceConcern
 
     direction = best_paid_first ? -1 : 1
     sorted = rows.sort_by do |item_price|
-      [item_price.price.nil? ? 1 : 0, direction * item_price.price.to_f, *price_tie_break(item_price)]
+      [item_price.price.nil? ? 1 : 0, direction * (item_price.price || 0), *price_tie_break(item_price)]
     end
 
     ItemPrice.with_shop_links(sorted)
