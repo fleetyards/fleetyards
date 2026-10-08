@@ -23,6 +23,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
+import { fleetShipsShareUrl } from "@/frontend/utils/fleetShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSubscription } from "@/shared/composables/useSubscription";
@@ -86,9 +87,7 @@ const fleetchartShareUrl = computed(() => {
     return undefined;
   }
 
-  const host = `${window.location.protocol}//${window.location.host}`;
-
-  return `${host}/fleets/${props.fleet.slug}/fleetchart`;
+  return fleetShipsShareUrl(props.fleet, { fleetchart: true });
 });
 
 const fleetchartVisible = computed(() => {

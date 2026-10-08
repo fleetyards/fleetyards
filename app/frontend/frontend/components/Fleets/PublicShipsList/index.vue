@@ -24,6 +24,7 @@ import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { storeToRefs } from "pinia";
+import { fleetShipsShareUrl } from "@/frontend/utils/fleetShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -76,9 +77,7 @@ const fleetchartShareUrl = computed(() => {
     return undefined;
   }
 
-  const host = `${window.location.protocol}//${window.location.host}`;
-
-  return `${host}/fleets/${props.fleet.slug}/fleetchart`;
+  return fleetShipsShareUrl(props.fleet, { fleetchart: true });
 });
 
 const fleetchartVisible = computed(() => {

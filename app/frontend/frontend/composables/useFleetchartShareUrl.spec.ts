@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import {
   createMemoryHistory,
   createRouter,
@@ -13,6 +13,7 @@ const shareUrlFor = async (
   path: string,
   query: LocationQueryRaw = {},
   savedPerPage?: number,
+  shortPath?: string,
 ) => {
   const router = createRouter({
     history: createMemoryHistory(),
@@ -36,7 +37,7 @@ const shareUrlFor = async (
   let result = "";
   const app = createApp({
     setup() {
-      result = useFleetchartShareUrl().value;
+      result = useFleetchartShareUrl(shortPath).value;
 
       return () => null;
     },
@@ -95,5 +96,39 @@ describe("useFleetchartShareUrl", () => {
     const url = await shareUrlFor("/ships/");
 
     expect(url.searchParams.has("perPage")).toBe(false);
+  });
+
+  describe("with a short domain", () => {
+    afterEach(() => {
+      window.SHORT_DOMAIN = "";
+    });
+
+    it("carries the query on the short link", async () => {
+      window.SHORT_DOMAIN = "fltyrd.net";
+
+      const url = await shareUrlFor(
+        "/hangar/ghost/",
+        { manufacturerIn: ["rsi", "anvil"] },
+        undefined,
+        "/h/ghost",
+      );
+
+      expect(url.host).toBe("fltyrd.net");
+      expect(url.pathname).toBe("/h/ghost");
+      expect(url.searchParams.getAll("manufacturerIn")).toEqual([
+        "rsi",
+        "anvil",
+      ]);
+      expect(url.searchParams.get("fleetchart")).toBe("true");
+    });
+
+    it("stays on the page for a list without a short path", async () => {
+      window.SHORT_DOMAIN = "fltyrd.net";
+
+      const url = await shareUrlFor("/ships/");
+
+      expect(url.origin).toBe(window.location.origin);
+      expect(url.pathname).toBe("/ships/");
+    });
   });
 });
