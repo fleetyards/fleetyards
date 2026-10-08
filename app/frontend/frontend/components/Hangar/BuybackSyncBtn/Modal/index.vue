@@ -14,6 +14,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import {
   RsiPageReportOutcome,
@@ -32,7 +33,6 @@ import {
   type BuybackSyncResult,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
-import { differenceInMinutes } from "date-fns";
 
 type SyncStatus =
   "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
@@ -84,11 +84,11 @@ const seenIds = new Set<string>();
 
 const result = ref<BuybackSyncResult | undefined>();
 
-const syncStartedAt = ref<Date>(new Date());
-
-const fetchCount = ref(0);
-
 const maxMessagesPerMinute = 60;
+
+// The list crawl and the price pass after it share one budget, so the two
+// together stay inside it.
+let rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
 
 // An extension that never answers would otherwise leave the sync spinning.
 const REPLY_TIMEOUT = 30000;
@@ -178,8 +178,7 @@ const start = () => {
   seenIds.clear();
   result.value = undefined;
   currentPage.value = 1;
-  syncStartedAt.value = new Date();
-  fetchCount.value = 0;
+  rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
 
   displayInfo({ text: t("messages.buybackSync.started") });
 
@@ -193,14 +192,10 @@ const fetchPage = (page: number) => {
     return;
   }
 
-  const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
-
-  if (fetchCount.value >= (elapsedMinutes + 1) * maxMessagesPerMinute) {
+  if (!rateLimiter.tryTake()) {
     setTimeout(() => fetchPage(page), 500);
     return;
   }
-
-  fetchCount.value += 1;
 
   void extension
     .request(FleetyardsSyncAction.SYNC_BUYBACK, { page }, REPLY_TIMEOUT)
@@ -260,21 +255,6 @@ const handlePage = async (html: string) => {
   setTimeout(() => fetchPage(currentPage.value), 500);
 };
 
-// The detail pass runs after the list crawl and draws on the same budget of 60
-// requests a minute since the sync started, so the two together stay inside it.
-// It outlives the modal, so this must not give up once the modal is gone.
-const waitForSlot = async () => {
-  while (
-    fetchCount.value >=
-    (differenceInMinutes(new Date(), syncStartedAt.value) + 1) *
-      maxMessagesPerMinute
-  ) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
-
-  fetchCount.value += 1;
-};
-
 const {
   total: detailsTotal,
   done: detailsDone,
@@ -303,7 +283,7 @@ const submit = async () => {
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
     void runDetails(buybacks.value, result.value.detailsPending, {
-      waitForSlot,
+      waitForSlot: rateLimiter.take,
     });
   }
 
