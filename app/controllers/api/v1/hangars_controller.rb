@@ -62,7 +62,11 @@ module Api
 
           Vehicle.delete_with_dependents(authorized_scope(Vehicle.all).purchased.pluck(:id))
 
-          current_resource_owner.hangar_pledge_items.delete_all
+          # The lock a running hangar sync holds while it replaces these, so
+          # its upsert cannot land after the clear.
+          current_resource_owner.with_lock do
+            current_resource_owner.hangar_pledge_items.delete_all
+          end
         end
       end
 
