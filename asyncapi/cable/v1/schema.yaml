@@ -503,8 +503,6 @@ components:
           type: string
         size:
           type: string
-        class:
-          "$ref": "#/components/schemas/ComponentClassEnum"
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
@@ -671,20 +669,6 @@ components:
         rampDownTime:
           type: number
       additionalProperties: false
-    ComponentClassEnum:
-      type: string
-      enum:
-      - RSIModular
-      - RSIWeapon
-      - RSIAvionic
-      - RSIPropulsion
-      - RSIThruster
-      x-enumNames:
-      - RSI_MODULAR
-      - RSI_WEAPON
-      - RSI_AVIONIC
-      - RSI_PROPULSION
-      - RSI_THRUSTER
     ComponentController:
       type: object
       properties:
@@ -1776,6 +1760,9 @@ components:
       - SalvageFieldEmitter
       - SalvageFieldSupporter
       - SalvageInternalStorage
+      - SalvageModifier
+      - GroundVehicleMissileLauncher
+      - Light
       x-enumNames:
       - SEAT
       - DOOR
@@ -1850,6 +1837,9 @@ components:
       - SALVAGE_FIELD_EMITTER
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
+      - SALVAGE_MODIFIER
+      - GROUND_VEHICLE_MISSILE_LAUNCHER
+      - LIGHT
     ComponentWeapon:
       type: object
       properties:

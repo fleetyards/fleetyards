@@ -49,21 +49,21 @@ module Admin
           render json: ValidationError.new("component.destroy", errors: @component.errors), status: :bad_request
         end
 
-        # Both are declared in the schema and reached by a generated client, so
-        # they answer 401/403 like the rest of the resource rather than handing
-        # the type lists to any signed-in admin.
-        def class_filters
+        # Declared in the schema and reached by a generated client, so it
+        # answers 401/403 like the rest of the resource rather than handing the
+        # list to any signed-in admin.
+        #
+        # Read through the same facts join as the list, so every category the
+        # filter can match is offered -- including those of retired and
+        # hand-made components, which the current build does not describe.
+        def category_filters
           authorize! with: ::Admin::ComponentPolicy
 
-          @filters = Component.class_filters
-
-          render "api/shared/filters"
-        end
-
-        def item_type_filters
-          authorize! with: ::Admin::ComponentPolicy
-
-          @filters = Component.item_type_filters
+          category = Component.fact_sql(:category)
+          @filters = Component.category_filters(
+            authorized_scope(Component.with_facts(false), with: ::Admin::ComponentPolicy)
+              .where.not(category => nil).distinct.order(category).pluck(category)
+          )
 
           render "api/shared/filters"
         end
@@ -76,19 +76,17 @@ module Admin
 
         private def component_params
           @component_params ||= params.permit(
-            :name, :component_class, :component_type, :component_sub_type,
-            :size, :grade, :item_class, :item_type, :manufacturer_id,
+            :name, :category, :component_type, :component_sub_type,
+            :size, :grade, :item_class, :manufacturer_id,
             :description, :hidden, :store_image, :sc_key, :sc_ref
           )
         end
 
         private def component_query_params
           @component_query_params ||= params.permit(q: [
-            :name_cont, :name_eq, :id_eq, :item_type_eq,
-            :item_type_cont, :component_class_cont, :store_image_blank, :buy_price_gteq,
+            :name_cont, :name_eq, :id_eq, :store_image_blank, :buy_price_gteq,
             :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :s, :sorts,
-            sorts: [], name_in: [], id_in: [], item_type_in: [], component_class_in: [],
-            manufacturer_id_in: []
+            sorts: [], name_in: [], id_in: [], category_in: [], manufacturer_id_in: []
           ]).fetch(:q, {})
         end
       end

@@ -71,13 +71,6 @@ en:
           utility: Utility
           weapon_mounts: Weapon Mounts
           weapons: Weapons
-      class:
-        items:
-          rsiavionic: Avionic
-          rsimodular: System
-          rsipropulsion: Propulsion
-          rsithruster: Thruster
-          rsiweapon: Weapon
       sub_type:
         items:
           ground_vehicle_missile: Ground Vehicle Missile

@@ -79,19 +79,19 @@ const columns: BaseTableCol<Component>[] = [
     sortable: true,
   },
   {
+    name: "category",
+    label: "Category",
+    sortable: true,
+    mobile: false,
+  },
+  {
     name: "type",
     label: "Type",
-    sortable: true,
     mobile: false,
   },
   {
     name: "size",
     label: "Size",
-    mobile: false,
-  },
-  {
-    name: "class",
-    label: "Class",
     mobile: false,
   },
   {
@@ -205,14 +205,14 @@ const { t, l, toUEC } = useI18n();
             {{ record.name }}
           </router-link>
         </template>
+        <template #col-category="{ record }">
+          {{ record.category }}
+        </template>
         <template #col-type="{ record }">
           {{ record.type }}
         </template>
         <template #col-size="{ record }">
           {{ record.size }}
-        </template>
-        <template #col-class="{ record }">
-          {{ record.class }}
         </template>
         <template #col-itemClass="{ record }">
           {{ record.itemClassLabel }}

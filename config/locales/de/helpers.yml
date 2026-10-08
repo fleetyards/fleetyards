@@ -50,9 +50,7 @@ de:
         on_sale: Im Angebot?
     prompt:
       component:
-        component_class: Bitte wählen Sie eine Komponentenklasse
         item_class: Bitte wählen Sie eine Gegenstandsklasse
-        item_type: Bitte wählen Sie einen Gegenstandstyp
         manufacturer: Bitte wählen Sie einen Hersteller
       docks:
         dock_type: Bitte wählen Sie einen Dock-Typ

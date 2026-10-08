@@ -136,10 +136,8 @@
         "note": "選填的內部備註"
       },
       "component": {
-        "componentClass": "組件類別",
         "componentType": "組件類型",
         "componentSubType": "組件子類型",
-        "itemType": "物品類型",
         "size": "尺寸",
         "grade": "等級",
         "scKey": "SC Key",

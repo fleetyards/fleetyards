@@ -10,45 +10,12 @@ en:
           pledge_store: Pledge Store
           ingame: Ingame Store
       component:
-        component_classes:
-          RSIAvionic: Avionic
-          RSIModular: Modular
-          RSIPropulsion: Propulsion
-          RSIThruster: Thruster
-          RSIWeapon: Weapon
         item_classes:
           civilian: Civilian
           competition: Competition
           industrial: Industrial
           military: Military
           stealth: Stealth
-        item_types:
-          cargo_grids: Cargogrids
-          coolers: Coolers
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
-          fuel_intakes: Fuel Intakes
-          fuel_tanks: Fuel Tanks
-          mid_range_radar: Midrange Radar
-          joint_thrusters: Joint Thrusters
-          manned_turrets: Manned Turrets
-          manned_utility_turrets: Manned Utility Turrets
-          mining_lasers: Mining Lasers
-          missile_racks: Missile Racks
-          missile_turrets: Missile Turrets
-          missiles: Missiles
-          power_plants: Power Plants
-          quantum_drives: Quantum Drives
-          quantum_fuel_tanks: Quantum Fuel Tanks
-          remote_turrets: Remote Turrets
-          scanners: Scanners
-          shield_generators: Shield Generators
-          thrusters: Thrusters
-          turrets: Turrets
-          weapon_defensive: Weapon Defensive
-          weapons: Ship Weapons
-          emps: EMPs
-          armor_medium: Medium Armor
         tracking_signals:
           cross_section: Cross Section
           electromagnetic: Electromagnetic

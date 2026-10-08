@@ -50,9 +50,7 @@ zh-TW:
         on_sale: 販售中?
     prompt:
       component:
-        component_class: 請選擇組件類別
         item_class: 請選擇物品類別
-        item_type: 請選擇物品類型
         manufacturer: 請選擇製造商
       docks:
         dock_type: 請選擇停靠類型

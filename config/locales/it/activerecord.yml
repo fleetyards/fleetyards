@@ -10,45 +10,12 @@ it:
           pledge_store: Negozio Pledge
           ingame: Negozio in gioco
       component:
-        component_classes:
-          RSIAvionic: Avionica
-          RSIModular: Modulare
-          RSIPropulsion: Propulsione
-          RSIThruster: Propulsori
-          RSIWeapon: Armamenti
         item_classes:
           civilian: Civile
           competition: Competizione
           industrial: Industriale
           military: Militare
           stealth: Furtività
-        item_types:
-          cargo_grids: Griglie di carico
-          coolers: Refrigeranti
-          countermeasure_launcher: Lanciatore Contromisure
-          fixed_thrusters: Propulsori fissi
-          fuel_intakes: Bocchettoni carburante
-          fuel_tanks: Serbatoi Carburante
-          mid_range_radar: Radar a Medio Raggio
-          joint_thrusters: Propulsori articolati
-          manned_turrets: Torrette
-          manned_utility_turrets: Torrette di utilità con equipaggio
-          mining_lasers: Laser per Mining
-          missile_racks: Scomparti Missili
-          missile_turrets: Torrette Missilistiche
-          missiles: Missili
-          power_plants: Generatori di energia
-          quantum_drives: Drive Quantici
-          quantum_fuel_tanks: Serbatoi di Carburante Quantico
-          remote_turrets: Torrette Remote
-          scanners: Scanner
-          shield_generators: Generatori di Scudi
-          thrusters: Propulsori
-          turrets: Torrette
-          weapon_defensive: Armi Difensive
-          weapons: Armi nave
-          emps: EMPs
-          armor_medium: Corazza media
         tracking_signals:
           cross_section: Sezione trasversale
           electromagnetic: Elettromagnetico

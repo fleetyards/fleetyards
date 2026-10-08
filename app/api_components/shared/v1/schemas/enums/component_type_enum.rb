@@ -22,7 +22,8 @@ module Shared
             "DockingCollar", "PowerPlant", "QuantumFuelTank", "QuantumInterdictionGenerator",
             "QuantumDrive", "Relay", "Radar", "Scanner", "SalvageFillerStation", "Shield",
             "SeatDashboard", "Display", "SelfDestruct", "WeaponAttachment", "SalvageFieldEmitter",
-            "SalvageFieldSupporter", "SalvageInternalStorage"
+            "SalvageFieldSupporter", "SalvageInternalStorage", "SalvageModifier",
+            "GroundVehicleMissileLauncher", "Light"
           ].freeze
 
           schema({

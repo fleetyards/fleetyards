@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
-  name: "ComponentClassSelect",
+  name: "ComponentCategorySelect",
 };
 </script>
 
 <script lang="ts" setup>
 import {
-  componentClasses as fetchComponentClasses,
+  componentCategories as fetchComponentCategories,
   type FilterOption,
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -54,14 +54,14 @@ watch(
 );
 
 const fetch = async (_params: BaseSelectParams<FilterOption>) => {
-  return fetchComponentClasses();
+  return fetchComponentCategories();
 };
 </script>
 
 <template>
   <BaseSelect
     v-model="internalValue"
-    :label="t('labels.filters.components.componentClass')"
+    :label="t('labels.filters.components.category')"
     :query-fn="fetch"
     :name="name"
     :multiple="multiple"

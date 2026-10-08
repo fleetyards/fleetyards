@@ -71,13 +71,6 @@ it:
           utility: Oggetti di utilità
           weapon_mounts: Supporti armi
           weapons: Armi
-      class:
-        items:
-          rsiavionic: Avionica
-          rsimodular: Sistema
-          rsipropulsion: Propulsione
-          rsithruster: Motore
-          rsiweapon: Armamento
       sub_type:
         items:
           ground_vehicle_missile: Missile per veicolo terrestre

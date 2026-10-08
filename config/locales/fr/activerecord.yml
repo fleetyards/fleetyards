@@ -10,45 +10,12 @@ fr:
           pledge_store: Magasin de Pledge
           ingame: Boutique en jeu
       component:
-        component_classes:
-          RSIAvionic: Avionique
-          RSIModular: Modulaire
-          RSIPropulsion: Propulsion
-          RSIThruster: Propulseur
-          RSIWeapon: Arme
         item_classes:
           civilian: Civil
           competition: Compétition
           industrial: Industriel
           military: Militaire
           stealth: Furtivité
-        item_types:
-          cargo_grids: Grilles de cargaison
-          coolers: Refroidisseurs
-          countermeasure_launcher: Lanceur de contre-mesures
-          fixed_thrusters: Propulseurs fixes
-          fuel_intakes: Prises de carburant
-          fuel_tanks: Réservoirs de carburant
-          mid_range_radar: Radar de moyenne portée
-          joint_thrusters: Propulseurs articulés
-          manned_turrets: Tourelles habitées
-          manned_utility_turrets: Tourelles utilitaires habitées
-          mining_lasers: Lasers de minage
-          missile_racks: Racks de missiles
-          missile_turrets: Tourelles de missiles
-          missiles: Missiles
-          power_plants: Réacteurs
-          quantum_drives: Moteurs Quantum
-          quantum_fuel_tanks: Réservoirs de carburant Quantum
-          remote_turrets: Tourelles télécommandées
-          scanners: Scanners
-          shield_generators: Générateurs de boucliers
-          thrusters: Propulseurs
-          turrets: Tourelles
-          weapon_defensive: Weapon Defensive
-          weapons: Armes du vaisseau
-          emps: EMPs
-          armor_medium: Blindage moyen
         tracking_signals:
           cross_section: Section transversale
           electromagnetic: Électromagnétique

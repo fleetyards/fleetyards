@@ -51,6 +51,8 @@
 # Component -- so a load can rewrite a build without touching the row a hardpoint,
 # a model paint or an uploaded icon hangs off.
 class ComponentBuild < ApplicationRecord
+  self.ignored_columns += %w[item_type component_class]
+
   belongs_to :component
   belongs_to :manufacturer, optional: true
 
@@ -63,8 +65,8 @@ class ComponentBuild < ApplicationRecord
   # running against the schema of its own moment, not this list as it later
   # becomes.
   FACTS = %i[
-    manufacturer_id name description size grade item_type item_class
-    component_class component_type component_sub_type category type_data
+    manufacturer_id name description size grade item_class
+    component_type component_sub_type category type_data
     durability power_connection heat_connection ammunition
     inventory_consumption tracking_signal hidden
   ].freeze
@@ -161,7 +163,7 @@ class ComponentBuild < ApplicationRecord
   # structure, and folding each into the fallback subquery would widen it for no
   # gain. `description` too -- no filter reaches it.
   FILTERABLE = %i[
-    name size grade item_type item_class component_class component_type
+    name size grade item_class component_type
     component_sub_type category tracking_signal hidden
   ].freeze
 

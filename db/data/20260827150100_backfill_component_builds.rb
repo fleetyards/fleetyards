@@ -8,10 +8,13 @@
 # is no build they describe.
 class BackfillComponentBuilds < ActiveRecord::Migration[8.1]
   # Its own copy on purpose: a migration has to keep running against the schema of
-  # its own moment, not `ComponentBuild::FACTS` as that later becomes.
+  # its own moment, not `ComponentBuild::FACTS` as that later becomes. Except for
+  # `item_type` and `component_class`: Component no longer has readers for them,
+  # and once their columns are dropped they are gone before this runs too, since
+  # data migrations run after every schema migration.
   FACTS = %i[
-    manufacturer_id name description size grade item_type item_class
-    component_class component_type component_sub_type category type_data
+    manufacturer_id name description size grade item_class
+    component_type component_sub_type category type_data
     durability power_connection heat_connection ammunition
     inventory_consumption tracking_signal hidden
   ].freeze

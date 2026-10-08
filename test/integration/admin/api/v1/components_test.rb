@@ -323,6 +323,26 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /components/:id sets the component type" do
+    component = create(:component)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {componentType: "QuantumDrive"} do
+      assert_equal "QuantumDrive", parsed_body["type"]
+    end
+  end
+
+  # Plain put rather than the DSL: declaring a 400 here would replace the
+  # auto-injected SchemaValidationError response and move the schema.
+  test "PUT /components/:id rejects a component type outside the enum" do
+    component = create(:component)
+    sign_in @user
+
+    put "/admin/api/v1/components/#{component.id}", params: {componentType: "NotAType"}, as: :json
+
+    assert_response :bad_request
+  end
+
   test "PUT /components/:id attaches a store image" do
     component = create(:component)
     sign_in @user

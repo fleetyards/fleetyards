@@ -188,11 +188,11 @@ module ScData
       test "#apply_build works the same for a component" do
         component = create(:component, :without_build)
 
-        @loader.apply_build(component, {name: "Gorgon", component_class: "Shield"})
+        @loader.apply_build(component, {name: "Gorgon", component_type: "Shield"})
 
         build = component.builds.sole
         assert_equal "Gorgon", build.name
-        assert_equal "Shield", build.component_class
+        assert_equal "Shield", build.component_type
         assert_equal ::ScData::Source.environment, build.environment
         assert_equal ::ScData::Source.version, build.version
       end

@@ -1126,37 +1126,12 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/components/class_filters":
+  "/components/category_filters":
     get:
-      summary: Component classes
+      summary: Component categories
       tags:
       - Components
-      operationId: componentClasses
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FilterOptionsList"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/components/item_type_filters":
-    get:
-      summary: Component item types
-      tags:
-      - Components
-      operationId: componentItemTypes
+      operationId: componentCategories
       responses:
         '200':
           description: successful
@@ -12079,8 +12054,6 @@ components:
           type: string
         size:
           type: string
-        class:
-          "$ref": "#/components/schemas/ComponentClassEnum"
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
@@ -12260,21 +12233,6 @@ components:
           type: number
       additionalProperties: false
       title: ComponentBoostCapacitor
-    ComponentClassEnum:
-      type: string
-      enum:
-      - RSIModular
-      - RSIWeapon
-      - RSIAvionic
-      - RSIPropulsion
-      - RSIThruster
-      x-enumNames:
-      - RSI_MODULAR
-      - RSI_WEAPON
-      - RSI_AVIONIC
-      - RSI_PROPULSION
-      - RSI_THRUSTER
-      title: ComponentClassEnum
     ComponentController:
       type: object
       properties:
@@ -12460,10 +12418,10 @@ components:
       properties:
         name:
           type: string
-        componentClass:
+        category:
           type: string
         componentType:
-          type: string
+          "$ref": "#/components/schemas/ComponentTypeEnum"
         componentSubType:
           type: string
         size:
@@ -12472,8 +12430,6 @@ components:
           type: string
         itemClass:
           type: integer
-        itemType:
-          type: string
         manufacturerId:
           type: string
           format: uuid
@@ -12992,10 +12948,6 @@ components:
       properties:
         nameCont:
           type: string
-        itemTypeCont:
-          type: string
-        componentClassCont:
-          type: string
         storeImageBlank:
           type: boolean
         idIn:
@@ -13007,11 +12959,7 @@ components:
           type: array
           items:
             type: string
-        itemTypeIn:
-          type: array
-          items:
-            type: string
-        componentClassIn:
+        categoryIn:
           type: array
           items:
             type: string
@@ -13580,6 +13528,9 @@ components:
       - SalvageFieldEmitter
       - SalvageFieldSupporter
       - SalvageInternalStorage
+      - SalvageModifier
+      - GroundVehicleMissileLauncher
+      - Light
       x-enumNames:
       - SEAT
       - DOOR
@@ -13654,6 +13605,9 @@ components:
       - SALVAGE_FIELD_EMITTER
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
+      - SALVAGE_MODIFIER
+      - GROUND_VEHICLE_MISSILE_LAUNCHER
+      - LIGHT
       title: ComponentTypeEnum
     ComponentWeapon:
       type: object

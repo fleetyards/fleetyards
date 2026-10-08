@@ -174,11 +174,11 @@ class ComponentTest < ActiveSupport::TestCase
   end
 
   test "a type filter follows the build, not the column" do
-    component = create(:component, :without_build, item_type: "old_type")
-    create(:component_build, component:, item_type: "Cooler")
+    component = create(:component, :without_build, component_type: "OldType")
+    create(:component_build, component:, component_type: "Cooler")
 
-    assert_equal [component.id], Component.with_facts.ransack(item_type_eq: "Cooler").result.pluck(:id)
-    assert_empty Component.with_facts.ransack(item_type_eq: "old_type").result.pluck(:id)
+    assert_equal [component.id], Component.with_facts.ransack(component_type_eq: "Cooler").result.pluck(:id)
+    assert_empty Component.with_facts.ransack(component_type_eq: "OldType").result.pluck(:id)
   end
 
   # The ransacker has to keep its formatter, or the enum name never reaches the
@@ -201,18 +201,18 @@ class ComponentTest < ActiveSupport::TestCase
   # The reader falls back to the column for a component no load ever described, so
   # the filter has to as well on the path that shows such a component.
   test "a filter falls back to the column when there is no build at all" do
-    component = create(:component, :without_build, item_type: "hand_made")
+    component = create(:component, :without_build, component_type: "HandMade")
 
     assert_equal [component.id],
-      Component.with_facts(false).ransack(item_type_eq: "hand_made").result.pluck(:id)
+      Component.with_facts(false).ransack(component_type_eq: "HandMade").result.pluck(:id)
   end
 
   # And is left out of the catalogue, which is what makes the fallback droppable
   # on the fast path: nothing the current build does not describe is in it.
   test "the current catalogue leaves out a component with no build" do
-    create(:component, :without_build, item_type: "hand_made")
+    create(:component, :without_build, component_type: "HandMade")
 
-    assert_empty Component.with_facts.ransack(item_type_eq: "hand_made").result.pluck(:id)
+    assert_empty Component.with_facts.ransack(component_type_eq: "HandMade").result.pluck(:id)
   end
 
   test "the catalogue lists a flight blade but no other controller" do

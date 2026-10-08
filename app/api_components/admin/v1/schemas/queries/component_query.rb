@@ -11,13 +11,10 @@ module Admin
             type: :object,
             properties: {
               nameCont: {type: :string},
-              itemTypeCont: {type: :string},
-              componentClassCont: {type: :string},
               storeImageBlank: {type: :boolean},
               idIn: {type: :array, items: {type: :string, format: :uuid}},
               nameIn: {type: :array, items: {type: :string}},
-              itemTypeIn: {type: :array, items: {type: :string}},
-              componentClassIn: {type: :array, items: {type: :string}},
+              categoryIn: {type: :array, items: {type: :string}},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
 
               # Compared against the same best-of-that-direction figure the

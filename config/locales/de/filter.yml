@@ -71,13 +71,6 @@ de:
           utility: Hilfsgeräte
           weapon_mounts: Waffenhalterungen
           weapons: Waffen
-      class:
-        items:
-          rsiavionic: Avionik
-          rsimodular: System
-          rsipropulsion: Antrieb
-          rsithruster: Triebwerk
-          rsiweapon: Waffe
       sub_type:
         items:
           ground_vehicle_missile: Bodenfahrzeug-Rakete

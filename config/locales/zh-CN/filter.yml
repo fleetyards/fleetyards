@@ -71,13 +71,6 @@ zh-CN:
           utility: 实用设备
           weapon_mounts: 武器挂载
           weapons: 武器
-      class:
-        items:
-          rsiavionic: 航电
-          rsimodular: 系统
-          rsipropulsion: 推进器
-          rsithruster: 推进器
-          rsiweapon: 武器
       sub_type:
         items:
           ground_vehicle_missile: 地面载具导弹

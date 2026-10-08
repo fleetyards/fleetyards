@@ -47,7 +47,6 @@ module Shared
             grade: {type: :string},
             gradeLabel: {type: :string},
             size: {type: :string},
-            class: ::Shared::V1::Schemas::Enums::ComponentClassEnum,
             itemClass: ::Shared::V1::Schemas::Enums::ComponentItemClassEnum,
             itemClassLabel: {type: :string},
 

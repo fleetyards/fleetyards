@@ -128,8 +128,7 @@ class ModelPosition < ApplicationRecord
 
   def self.collect_manned_turret_hardpoints(model)
     model.hardpoints.in_build.includes(:component).where.not(component: nil).select do |hp|
-      hp.component&.item_type == "manned_turrets" ||
-        (hp.component&.name == "Manned Turret" && hp.component&.component_type == "TurretBase")
+      hp.component&.name == "Manned Turret" && hp.component&.component_type == "TurretBase"
     end
   end
 
