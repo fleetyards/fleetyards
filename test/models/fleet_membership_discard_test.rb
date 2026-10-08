@@ -42,4 +42,47 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert rejoined.valid?, rejoined.errors.full_messages.to_sentence
     assert rejoined.save
   end
+
+  def signup_for(membership, event, **attributes)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    create(:fleet_event_signup, fleet_event_slot: slot, fleet_membership: membership, **attributes)
+  end
+
+  test "discarding a membership frees the seats it holds in upcoming events" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+
+    assert membership.discard
+
+    assert signup.reload.withdrawn?
+    assert_equal 0, event.signups_count
+  end
+
+  test "an upcoming occurrence of a recurring event is freed, a past one is kept" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 2.weeks.ago, recurring: true,
+      recurrence_interval: "weekly", recurrence_count: 10)
+    upcoming = signup_for(membership, event, occurrence_date: 1.week.from_now.to_date)
+    past = signup_for(membership, event, occurrence_date: 1.week.ago.to_date)
+
+    assert membership.discard
+
+    assert upcoming.reload.withdrawn?
+    assert_equal "confirmed", past.reload.status
+  end
+
+  test "signups for events already over stay as the record of who flew" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    over = create(:fleet_event, :open, fleet:, starts_at: 2.days.ago, ends_at: 1.day.ago)
+    completed = create(:fleet_event, fleet:, status: "completed", starts_at: 1.hour.from_now)
+    kept = [signup_for(membership, over), signup_for(membership, completed)]
+
+    assert membership.discard
+
+    assert_equal %w[confirmed confirmed], kept.map { |signup| signup.reload.status }
+  end
 end
