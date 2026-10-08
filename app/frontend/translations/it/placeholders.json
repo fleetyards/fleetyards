@@ -136,10 +136,9 @@
         "note": "Nota interna facoltativa"
       },
       "component": {
-        "componentClass": "Classe componente",
+        "category": "Categoria",
         "componentType": "Tipo componente",
         "componentSubType": "Sottotipo componente",
-        "itemType": "Tipo di oggetto",
         "size": "Dimensione",
         "grade": "Grado",
         "scKey": "SC Key",

@@ -37,13 +37,12 @@ const { defineField, handleSubmit, meta } = useForm<ComponentInput>({
 });
 
 const [name, nameProps] = defineField("name");
-const [componentClass, componentClassProps] = defineField("componentClass");
+const [category, categoryProps] = defineField("category");
 const [componentType, componentTypeProps] = defineField("componentType");
 const [componentSubType, componentSubTypeProps] =
   defineField("componentSubType");
 const [size, sizeProps] = defineField("size");
 const [grade, gradeProps] = defineField("grade");
-const [itemType, itemTypeProps] = defineField("itemType");
 const [manufacturerId, manufacturerIdProps] = defineField("manufacturerId");
 const [description, descriptionProps] = defineField("description");
 const [hidden, hiddenProps] = defineField("hidden");
@@ -122,10 +121,10 @@ const handleCancel = async () => {
         <div class="row">
           <div class="col-12 col-md-6">
             <FormInput
-              v-model="componentClass"
-              v-bind="componentClassProps"
-              translation-key="component.componentClass"
-              name="componentClass"
+              v-model="category"
+              v-bind="categoryProps"
+              translation-key="component.category"
+              name="category"
             />
           </div>
           <div class="col-12 col-md-6">
@@ -144,14 +143,6 @@ const handleCancel = async () => {
               v-bind="componentSubTypeProps"
               translation-key="component.componentSubType"
               name="componentSubType"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormInput
-              v-model="itemType"
-              v-bind="itemTypeProps"
-              translation-key="component.itemType"
-              name="itemType"
             />
           </div>
         </div>

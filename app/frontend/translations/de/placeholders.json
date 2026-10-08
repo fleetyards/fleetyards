@@ -136,10 +136,9 @@
         "note": "Optionale interne Notiz"
       },
       "component": {
-        "componentClass": "Komponentenklasse",
+        "category": "Kategorie",
         "componentType": "Komponententyp",
         "componentSubType": "Komponenten-Untertyp",
-        "itemType": "Gegenstandstyp",
         "size": "Größe",
         "grade": "Qualität",
         "scKey": "SC Key",

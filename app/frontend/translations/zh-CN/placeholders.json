@@ -136,10 +136,9 @@
         "note": "可选的内部备注"
       },
       "component": {
-        "componentClass": "组件类别",
+        "category": "分类",
         "componentType": "组件类型",
         "componentSubType": "组件子类型",
-        "itemType": "物品类型",
         "size": "尺寸",
         "grade": "等级",
         "scKey": "SC Key",

@@ -136,10 +136,9 @@
         "note": "Optional internal note"
       },
       "component": {
-        "componentClass": "Component Class",
+        "category": "Category",
         "componentType": "Component Type",
         "componentSubType": "Component Sub Type",
-        "itemType": "Item Type",
         "size": "Size",
         "grade": "Grade",
         "scKey": "SC Key",

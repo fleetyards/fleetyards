@@ -136,10 +136,9 @@
         "note": "Nota interna opcional"
       },
       "component": {
-        "componentClass": "Clase de componente",
+        "category": "Categoría",
         "componentType": "Tipo de componente",
         "componentSubType": "Subtipo de componente",
-        "itemType": "Tipo de objeto",
         "size": "Tamaño",
         "grade": "Grado",
         "scKey": "SC Key",

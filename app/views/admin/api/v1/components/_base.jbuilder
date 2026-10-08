@@ -5,6 +5,10 @@ json.name component.name
 json.slug component.slug
 json.hidden component.hidden
 
+json.category component.category
+json.type component.component_type
+json.sub_type component.component_sub_type
+
 json.availability do
   json.bought_at do
     json.array! component.bought_at, partial: "api/v1/item_prices/base", as: :item_price
@@ -17,7 +21,6 @@ end
 json.buy_price component.buy_price&.to_f
 json.sell_price component.sell_price&.to_f
 
-json.class component.component_class
 json.grade component.grade
 json.item_class component.item_class
 json.item_class_label component.item_class_label
@@ -50,7 +53,5 @@ end
 
 json.tracking_signal component.tracking_signal
 json.tracking_signal_label component.tracking_signal_label
-json.type component.item_type
-json.type_label component.item_type_label
 
 json.partial! "api/shared/dates", record: component

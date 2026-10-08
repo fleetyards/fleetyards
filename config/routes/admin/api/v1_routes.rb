@@ -115,8 +115,7 @@ v1_admin_api_routes = lambda do
   end
 
   resources :components, only: %i[index show create update destroy] do
-    get :class_filters, on: :collection
-    get :item_type_filters, on: :collection
+    get :category_filters, on: :collection
   end
 
   resources :equipment, only: %i[index show create update destroy] do

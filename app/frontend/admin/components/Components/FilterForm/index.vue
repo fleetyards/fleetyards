@@ -13,8 +13,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
-import ComponentClassSelect from "@/admin/components/base/ComponentClassSelect/index.vue";
-import ComponentItemTypeSelect from "@/admin/components/base/ComponentItemTypeSelect/index.vue";
+import ComponentCategorySelect from "@/admin/components/base/ComponentCategorySelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ComponentQuery } from "@/services/fyAdminApi";
@@ -27,9 +26,8 @@ const { booleanOptions } = useFilterOptions();
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
-    itemTypeIn: filters.value.itemTypeIn || [],
     storeImageBlank: filters.value.storeImageBlank,
-    componentClassIn: filters.value.componentClassIn || [],
+    categoryIn: filters.value.categoryIn || [],
     manufacturerIdIn: filters.value.manufacturerIdIn || [],
     buyPriceGteq: filters.value.buyPriceGteq,
     buyPriceLteq: filters.value.buyPriceLteq,
@@ -80,12 +78,7 @@ watch(
       name="manufacturer"
     />
 
-    <ComponentClassSelect
-      v-model="form.componentClassIn"
-      name="component-class"
-    />
-
-    <ComponentItemTypeSelect v-model="form.itemTypeIn" name="item-type" />
+    <ComponentCategorySelect v-model="form.categoryIn" name="category" />
 
     <RadioList
       v-model="form.storeImageBlank"
