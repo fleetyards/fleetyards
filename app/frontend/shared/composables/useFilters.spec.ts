@@ -130,16 +130,16 @@ describe("useFilters navigation", () => {
     expect(replace.mock.calls[0][0].query.page).toBeUndefined();
   });
 
-  it("keeps a shared page size when the filters are cleared", () => {
-    query.value = { nameCont: "ti", perPage: "120" };
+  // A reset goes back to the reader's own defaults, and is the way out of a
+  // page size the API refused.
+  it("drops a shared page size when the filters are cleared", () => {
+    query.value = { nameCont: "ti", perPage: "120", tab: "log" };
 
-    const filters = useFilters();
-    void filters.resetFilter();
+    void useFilters().resetFilter();
 
     expect(replace).toHaveBeenCalledWith(
-      expect.objectContaining({ query: { perPage: "120" } }),
+      expect.objectContaining({ query: { tab: "log" } }),
     );
-    expect(filters.getQuery()).toEqual({ nameCont: "ti" });
   });
 
   it("has nothing to reset when the route holds only a page size", () => {

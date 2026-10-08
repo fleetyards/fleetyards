@@ -222,13 +222,15 @@ const { resetFilter, hasResettableQuery } = useFilters({
 
 const paginationKey = computed(() => (route.name as string) || "");
 
-// A page size is persisted outside the route, so the URL cannot carry it back
-// out. It is only dropped when it is what the API refused.
+// A saved page size is persisted outside the route, so the URL cannot carry it
+// back out. It is only dropped when it is what the API refused. One that came
+// in the URL with a shared link goes with the reset.
 const pageSizeRejected = computed(
   () =>
     errorCodeFrom(props.asyncStatus.error?.value) ===
       "pagination.max_per_page_reached" &&
-    paginationStore.findByKey(paginationKey.value) !== undefined,
+    (paginationStore.findByKey(paginationKey.value) !== undefined ||
+      !!route.query.perPage),
 );
 
 const resettable = computed(

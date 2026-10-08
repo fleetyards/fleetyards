@@ -83,13 +83,11 @@ export const useFilters = <T>({
    * carry it back. Without this, filtering a list dropped the tab it was on and
    * the page fell back to its default view.
    */
-  // A page size in the URL came with a shared link and holds until the reader
-  // picks one, so filtering keeps it too.
-  const keptKeys = [...viewStateKeys, "perPage"];
-
   const viewState = computed(() =>
     Object.fromEntries(
-      Object.entries(route.query).filter(([key]) => keptKeys.includes(key)),
+      Object.entries(route.query).filter(([key]) =>
+        viewStateKeys.includes(key),
+      ),
     ),
   );
 
@@ -119,6 +117,10 @@ export const useFilters = <T>({
           ...query,
           ...viewState.value,
           page: shouldResetPage(query) ? undefined : route.query.page,
+          // A page size in the URL came with a shared link. Filtering keeps
+          // it; a reset goes back to the reader's own, which also drops one
+          // the API refused.
+          perPage: route.query.perPage,
         },
       })
       .catch(() => {});
@@ -134,7 +136,9 @@ export const useFilters = <T>({
       .catch(() => {});
 
   const hasResettableQuery = computed(() =>
-    Object.keys(route.query).some((key) => !keptKeys.includes(key)),
+    Object.keys(route.query).some(
+      (key) => !viewStateKeys.includes(key) && key !== "perPage",
+    ),
   );
 
   const filter = debounce(debouncedFilter, 300);

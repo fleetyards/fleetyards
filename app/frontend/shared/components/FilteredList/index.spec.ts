@@ -222,6 +222,29 @@ describe("FilteredList", () => {
     expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
   });
 
+  it("clears a page size from a link the API refused", async () => {
+    await router.push({ name: "ships", query: { perPage: "999999" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400, {
+            code: "pagination.max_per_page_reached",
+          }),
+        },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({});
+  });
+
   it("keeps a saved page size when something else was refused", async () => {
     await router.push({ name: "ships", query: { s: "bogus_asc" } });
 
