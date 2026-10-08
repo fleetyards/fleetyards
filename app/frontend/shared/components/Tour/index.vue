@@ -46,8 +46,12 @@ const { prefersReducedMotion } = useReducedMotion();
 const router = inject(routerKey, null);
 
 // How long a step on another page waits for its target to render after the
-// navigation -- data loading in -- before it is passed over or centred.
+// navigation -- data loading in -- before it is passed over. An optional
+// target gets far less: its card is worth reading centred, and the spotlight
+// still finds the control if it renders later, since every page change
+// places the card again.
 const TARGET_WAIT = 5000;
+const OPTIONAL_TARGET_WAIT = 1000;
 const TARGET_POLL = 100;
 
 const HOLE_PADDING = 6;
@@ -98,10 +102,16 @@ const isLast = computed(() => index.value === shown.value.length - 1);
 // on mobile or hidden by a flag is simply not found.
 const isRendered = (element: Element) => element.getClientRects().length > 0;
 
+const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
+
+// Without the trailing slash: `/fleets/x` and `/fleets/x/` are one page, and
+// reading the first as elsewhere would send the tour to wait for targets
+// already on screen.
 const isElsewhere = (step: TourStep) =>
   !!step.route &&
   !!router &&
-  router.resolve(step.route).path !== router.currentRoute.value.path;
+  withoutTrailingSlash(router.resolve(step.route).path) !==
+    withoutTrailingSlash(router.currentRoute.value.path);
 
 const findTarget = (step?: TourStep): HTMLElement | null => {
   if (!step?.target) return null;
@@ -197,7 +207,8 @@ const focusCard = () => {
 
 const waitForTarget = (step: TourStep, own: number) =>
   new Promise<HTMLElement | null>((resolve) => {
-    const deadline = Date.now() + TARGET_WAIT;
+    const deadline =
+      Date.now() + (step.requiresTarget ? TARGET_WAIT : OPTIONAL_TARGET_WAIT);
 
     const poll = () => {
       const element = findTarget(step);
@@ -230,6 +241,15 @@ const showStep = async (next: number, direction: 1 | -1 = 1) => {
 
   index.value = next;
   target = null;
+
+  // Hiding the card during a page change drops the focus off Next or Back;
+  // the same button gets it back once the step is shown.
+  const pressed =
+    document.activeElement instanceof HTMLElement &&
+    document.activeElement !== card.value &&
+    card.value?.contains(document.activeElement)
+      ? document.activeElement.dataset.test
+      : undefined;
 
   if (step.route && router) {
     navigating.value = true;
@@ -286,7 +306,17 @@ const showStep = async (next: number, direction: 1 | -1 = 1) => {
     !!card.value?.contains(document.activeElement) &&
     document.activeElement !== card.value;
 
-  if (!onButton) focusCard();
+  if (onButton) return;
+
+  const button = pressed
+    ? card.value?.querySelector<HTMLElement>(`[data-test="${pressed}"]`)
+    : null;
+
+  if (button) {
+    button.focus({ preventScroll: true });
+  } else {
+    focusCard();
+  }
 };
 
 const next = () => {
@@ -305,7 +335,11 @@ const back = () => {
   if (!isFirst.value) void showStep(index.value - 1, -1);
 };
 
-const skip = () => end("skipped");
+// Not while a step's page is loading: the navigation would still land, on a
+// page the reader never chose and with no tour left to say why.
+const skip = () => {
+  if (!navigating.value) end("skipped");
+};
 
 // The rest of the page is taken out of the tab order and the accessibility
 // tree while the tour runs, so the card behaves like any modal dialog. A
@@ -381,6 +415,8 @@ const onKeydown = (event: KeyboardEvent) => {
     case "Escape":
       event.preventDefault();
       event.stopPropagation();
+      if (navigating.value) break;
+
       if (isLast.value) {
         end("finished");
       } else {
@@ -588,6 +624,22 @@ watch(
     }
   },
   { immediate: true },
+);
+
+// A step's page left by other means -- the browser's back button -- ends the
+// tour rather than explaining a page that is no longer on screen.
+watch(
+  () => router?.currentRoute.value.path,
+  () => {
+    if (
+      visible.value &&
+      !navigating.value &&
+      current.value &&
+      isElsewhere(current.value)
+    ) {
+      end("skipped");
+    }
+  },
 );
 
 // Unmounted with the page it belonged to: whatever started it is leaving too.

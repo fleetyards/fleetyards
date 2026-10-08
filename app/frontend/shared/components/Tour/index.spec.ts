@@ -600,4 +600,82 @@ describe("Tour across pages", () => {
     expect(router.currentRoute.value.path).toBe("/members");
     expect(card()?.dataset.step).toBe("members");
   });
+
+  it("centres an optional target's card soon instead of waiting it out", async () => {
+    await mountRouted(ROUTED.slice(0, 2));
+    await settle();
+    await click("tour-next");
+    await settle(500);
+
+    expect(router.currentRoute.value.path).toBe("/members");
+    expect(card()?.style.visibility).toBe("hidden");
+
+    await settle(600);
+
+    expect(card()?.dataset.step).toBe("members");
+    expect(card()?.style.visibility).not.toBe("hidden");
+    expect(hole()?.classList).toContain("tour__hole--empty");
+  });
+
+  it("does not wait at all for a target on the same page without its slash", async () => {
+    await router.push("/members/");
+    addTarget("invite");
+
+    await mountRouted([ROUTED[1]]);
+    await settle(0);
+
+    expect(card()?.dataset.step).toBe("members");
+    expect(hole()?.classList).not.toContain("tour__hole--empty");
+  });
+
+  it("ends when the reader leaves a step's page by other means", async () => {
+    renderOn("/members", "invite");
+    renderOn("/events", "events");
+
+    const wrapper = await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle();
+    await click("tour-next");
+    await settle();
+    expect(card()?.dataset.step).toBe("events");
+
+    await router.push("/members");
+    await settle();
+
+    expect(card()).toBeNull();
+    expect(wrapper.emitted("end")).toEqual([["skipped"]]);
+  });
+
+  it("ignores Escape while the next page is still loading", async () => {
+    renderOn("/members", "invite", 1000);
+
+    const wrapper = await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle(100);
+
+    await press("Escape");
+
+    expect(wrapper.emitted("end")).toBeUndefined();
+
+    await settle(1000);
+    expect(card()?.dataset.step).toBe("members");
+  });
+
+  it("gives the focus back to Next after the page changes", async () => {
+    renderOn("/members", "invite", 300);
+
+    await mountRouted();
+    await settle();
+    document.querySelector<HTMLElement>("[data-test='tour-next']")?.focus();
+
+    await click("tour-next");
+    await settle(500);
+
+    expect(card()?.dataset.step).toBe("members");
+    expect((document.activeElement as HTMLElement | null)?.dataset.test).toBe(
+      "tour-next",
+    );
+  });
 });
