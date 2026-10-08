@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "Version installée de l'extension",
+        "detailsProgress": "Lecture des prix de rachat",
         "pages": "Pages",
         "found": "Pledges rachetables trouvés",
         "added": "Nouveaux",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "Lecture des pages de rachat",
           "submitting": "Enregistrement",
-          "details": "Lecture des prix",
           "finished": "Terminé",
           "unsupported": "Non pris en charge",
           "failed": "Échec"

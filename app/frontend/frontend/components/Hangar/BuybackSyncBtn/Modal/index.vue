@@ -35,13 +35,7 @@ import {
 import { differenceInMinutes } from "date-fns";
 
 type SyncStatus =
-  | "idle"
-  | "fetching"
-  | "submitting"
-  | "details"
-  | "finished"
-  | "unsupported"
-  | "failed";
+  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
 
 const { t } = useI18n();
 
@@ -103,8 +97,7 @@ const working = computed(
   () =>
     loadingIdentity.value ||
     status.value === "fetching" ||
-    status.value === "submitting" ||
-    status.value === "details",
+    status.value === "submitting",
 );
 
 const extension = useSyncExtension();
@@ -129,10 +122,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   unmounted = true;
-
-  if (status.value === "details") {
-    cancelDetails();
-  }
 });
 
 // A reply landing after the sync failed or the modal closed belongs to a crawl
@@ -273,12 +262,12 @@ const handlePage = async (html: string) => {
 
 // The detail pass runs after the list crawl and draws on the same budget of 60
 // requests a minute since the sync started, so the two together stay inside it.
+// It outlives the modal, so this must not give up once the modal is gone.
 const waitForSlot = async () => {
   while (
-    !unmounted &&
     fetchCount.value >=
-      (differenceInMinutes(new Date(), syncStartedAt.value) + 1) *
-        maxMessagesPerMinute
+    (differenceInMinutes(new Date(), syncStartedAt.value) + 1) *
+      maxMessagesPerMinute
   ) {
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
@@ -287,12 +276,11 @@ const waitForSlot = async () => {
 };
 
 const {
-  status: detailsStatus,
   total: detailsTotal,
   done: detailsDone,
+  running: detailsRunning,
   run: runDetails,
-  cancel: cancelDetails,
-} = useBuybackDetailsSync({ waitForSlot });
+} = useBuybackDetailsSync();
 
 const mutation = useSyncRsiBuybacks();
 
@@ -314,19 +302,9 @@ const submit = async () => {
   comlink.emit("buyback-sync-finished");
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
-    status.value = "details";
-
-    await runDetails(buybacks.value, result.value.detailsPending);
-
-    if (unmounted) {
-      return;
-    }
-
-    comlink.emit("buyback-sync-finished");
-
-    if (detailsStatus.value === "incomplete") {
-      displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
-    }
+    void runDetails(buybacks.value, result.value.detailsPending, {
+      waitForSlot,
+    });
   }
 
   status.value = "finished";
@@ -366,6 +344,13 @@ const close = () => {
       <p v-if="extensionSupportsDetails">
         {{ t("texts.buybackSync.detailsInfo") }}
       </p>
+      <p
+        v-if="detailsRunning"
+        class="text-warning"
+        data-test="buyback-sync-details-running"
+      >
+        {{ t("texts.buybackSync.detailsRunning") }}
+      </p>
     </div>
     <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
       <p
@@ -396,13 +381,19 @@ const close = () => {
             {{ result.removed }}
           </dd>
         </template>
-        <template v-if="detailsTotal">
+        <template v-if="result?.detailsPending.length && detailsTotal">
           <dt class="col-sm-7">{{ t("labels.buybackSync.prices") }}:</dt>
           <dd class="col-sm-5 text-right" data-test="buyback-sync-prices">
             {{ detailsDone }} / {{ detailsTotal }}
           </dd>
         </template>
       </dl>
+      <p
+        v-if="status === 'finished' && detailsRunning"
+        data-test="buyback-sync-details-background"
+      >
+        {{ t("texts.buybackSync.detailsBackground") }}
+      </p>
       <p
         v-if="
           status === 'finished' &&
@@ -418,7 +409,7 @@ const close = () => {
     <template #footer>
       <Btn
         data-test="close-buyback-sync"
-        :disabled="working && !['idle', 'details'].includes(status)"
+        :disabled="working && status !== 'idle'"
         @click="close"
       >
         {{
@@ -435,7 +426,7 @@ const close = () => {
         "
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
-        :disabled="identityStatus !== 'connected'"
+        :disabled="identityStatus !== 'connected' || detailsRunning"
         @click="start"
       >
         {{

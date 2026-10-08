@@ -303,9 +303,11 @@
       "buybackSync": {
         "info": "读取你的 RSI 回购列表的每一页，并用它替换 Fleetyards 上保存的可回购承诺。你的机库不会被改动。列表较长时需要几分钟。",
         "unsupported": "你的 Fleetyards Sync 扩展还无法读取可回购的承诺。请更新扩展以同步它们。",
-        "detailsInfo": "首次同步还会读取每个承诺的价格和保险，每个承诺一个 RSI 页面，列表较长时可能需要十五分钟左右。之后的同步只读取新的承诺。",
+        "detailsInfo": "首次同步还会读取每个承诺的价格和保险，每个承诺一个 RSI 页面，列表较长时可能需要十五分钟左右。这一步在后台进行：只要标签页保持打开，你可以关闭此窗口并继续使用 Fleetyards。之后的同步只读取新的承诺。",
         "detailsUnsupported": "请更新你的 Fleetyards Sync 扩展，以便同时读取价格和保险。",
-        "detailsIncomplete": "部分价格无法从 RSI 读取。下次同步时会重试。"
+        "detailsIncomplete": "部分价格无法从 RSI 读取。下次同步时会重试。",
+        "detailsBackground": "价格和保险现在在后台读取。你可以关闭此窗口并继续使用 Fleetyards；在完成之前请保持此标签页打开。",
+        "detailsRunning": "上次同步的价格和保险仍在读取中。完成后才能开始新的同步。"
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

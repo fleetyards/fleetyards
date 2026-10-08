@@ -303,9 +303,11 @@
       "buybackSync": {
         "info": "This reads every page of your RSI buy-back list and replaces the buy-back pledges stored on Fleetyards with it. Your hangar is not touched. Long lists take a few minutes.",
         "unsupported": "Your Fleetyards Sync Extension cannot read buy-back pledges yet. Update it to sync them.",
-        "detailsInfo": "The first sync also reads the price and insurance of every pledge, one RSI page each, which can take a quarter of an hour for a long list. Later syncs only read the new ones.",
+        "detailsInfo": "The first sync also reads the price and insurance of every pledge, one RSI page each, which can take a quarter of an hour for a long list. That part runs in the background, so you can close this window and keep using Fleetyards while it does; just keep the tab open. Later syncs only read the new ones.",
         "detailsUnsupported": "Update your Fleetyards Sync Extension to read prices and insurance as well.",
-        "detailsIncomplete": "Some prices could not be read from RSI. The next sync tries them again."
+        "detailsIncomplete": "Some prices could not be read from RSI. The next sync tries them again.",
+        "detailsBackground": "Prices and insurance are now read in the background. You can close this window and keep using Fleetyards; keep this tab open until it finishes.",
+        "detailsRunning": "Prices and insurance from the last sync are still being read. A new sync can start once that has finished."
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

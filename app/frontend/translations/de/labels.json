@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "Installierte Erweiterungsversion",
+        "detailsProgress": "Rückkaufpreise werden gelesen",
         "pages": "Seiten",
         "found": "Gefundene Rückkauf-Pledges",
         "added": "Neu",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "Rückkaufseiten werden gelesen",
           "submitting": "Wird gespeichert",
-          "details": "Preise werden gelesen",
           "finished": "Abgeschlossen",
           "unsupported": "Nicht unterstützt",
           "failed": "Fehlgeschlagen"

@@ -673,7 +673,8 @@
       "buybackSync": {
         "started": "Sincronizando tus pledges de recompra...",
         "success": "Tus pledges de recompra se han sincronizado.",
-        "failure": "No se pudieron sincronizar tus pledges de recompra."
+        "failure": "No se pudieron sincronizar tus pledges de recompra.",
+        "detailsSuccess": "Los precios y seguros de tus pledges de recompra están actualizados."
       },
       "syncExtension": {
         "started": "Sincronizando tu Hangar...",

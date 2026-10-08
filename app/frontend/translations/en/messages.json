@@ -683,7 +683,8 @@
       "buybackSync": {
         "started": "Syncing your buy-back pledges...",
         "success": "Your buy-back pledges have been synced.",
-        "failure": "Your buy-back pledges could not be synced."
+        "failure": "Your buy-back pledges could not be synced.",
+        "detailsSuccess": "Prices and insurance of your buy-back pledges are up to date."
       },
       "syncExtension": {
         "started": "Syncing your Hangar...",

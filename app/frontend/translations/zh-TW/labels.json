@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "已安裝的擴充功能版本",
+        "detailsProgress": "正在讀取回購價格",
         "pages": "頁數",
         "found": "找到的可回購承諾",
         "added": "新增",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "正在讀取回購頁面",
           "submitting": "正在儲存",
-          "details": "正在讀取價格",
           "finished": "已完成",
           "unsupported": "不支援",
           "failed": "失敗"

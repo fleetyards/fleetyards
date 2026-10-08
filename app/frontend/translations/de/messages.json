@@ -673,7 +673,8 @@
       "buybackSync": {
         "started": "Deine Rückkauf-Pledges werden synchronisiert...",
         "success": "Deine Rückkauf-Pledges wurden synchronisiert.",
-        "failure": "Deine Rückkauf-Pledges konnten nicht synchronisiert werden."
+        "failure": "Deine Rückkauf-Pledges konnten nicht synchronisiert werden.",
+        "detailsSuccess": "Preise und Versicherungen deiner Rückkauf-Pledges sind aktuell."
       },
       "syncExtension": {
         "started": "Synchronisiere deinen Hangar...",

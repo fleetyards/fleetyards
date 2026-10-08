@@ -14,7 +14,9 @@ const mutateAsync = vi.fn<
   Promise.resolve({ total: 2, added: 2, removed: 0, detailsPending: [] }),
 );
 
-const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
+const submitDetails = vi.hoisted(() =>
+  vi.fn((_: unknown) => Promise.resolve({ updated: 1 })),
+);
 const reportMutateAsync = vi.fn(() => Promise.resolve());
 
 // What the extension says about the RSI session when the modal checks it
@@ -55,7 +57,7 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
-  useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+  syncRsiBuybackDetails: submitDetails,
   useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
@@ -424,20 +426,80 @@ describe("HangarBuybackSyncModal", () => {
       await flushPromises();
 
       expect(submitDetails).toHaveBeenCalledWith({
-        data: {
-          items: [
-            {
-              id: "1",
-              price: 100,
-              insuranceMonths: 6,
-              lifetimeInsurance: false,
-            },
-          ],
-        },
+        items: [
+          {
+            id: "1",
+            price: 100,
+            insuranceMonths: 6,
+            lifetimeInsurance: false,
+          },
+        ],
       });
       expect(wrapper.find("[data-test='buyback-sync-prices']").text()).toBe(
         "1 / 1",
       );
+    });
+
+    // A long list takes a quarter of an hour; the list itself is already
+    // stored, and nothing about the prices needs the modal open.
+    it("finishes the list sync while prices are still being read", async () => {
+      const wrapper = await syncList(detailExtension);
+
+      expect(wrapper.text()).toContain("labels.buybackSync.status.finished");
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-background']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='close-buyback-sync']").attributes("disabled"),
+      ).toBeUndefined();
+
+      wrapper.unmount();
+      mounted = undefined;
+
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+
+      expect(submitDetails).toHaveBeenCalledWith({
+        items: [expect.objectContaining({ id: "1", price: 100 })],
+      });
+    });
+
+    // A second pass would read the same pages again beside the first.
+    it("offers no new sync while prices are still being read", async () => {
+      await syncList(detailExtension);
+      mounted?.unmount();
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-running']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
+      ).toBeDefined();
+
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
+      ).toBeUndefined();
     });
 
     it("syncs only the list with an extension that cannot read prices", async () => {

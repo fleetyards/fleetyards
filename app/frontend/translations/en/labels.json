@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "Installed extension version",
+        "detailsProgress": "Reading buy-back prices",
         "pages": "Pages",
         "found": "Buy-back pledges found",
         "added": "New",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "Reading buy-back pages",
           "submitting": "Saving",
-          "details": "Reading prices",
           "finished": "Finished",
           "unsupported": "Not supported",
           "failed": "Failed"
