@@ -220,4 +220,44 @@ describe("useBuybackDetailsSync", () => {
     expect(watcher.status.value).toBe("finished");
     expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
   });
+
+  // Cancelled, the pass still waits for the answer in flight; whatever shows
+  // it should not.
+  it("says it is stopping from the cancel on", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension(() => new Promise<Reply>((resolve) => (answer = resolve)));
+
+    const { run, cancel, cancelling } = useBuybackDetailsSync();
+    const running = run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(1));
+
+    cancel();
+    expect(cancelling.value).toBe(true);
+
+    answer({ code: 200, id: "1", payload: detailPage(15708) });
+    await running;
+
+    expect(cancelling.value).toBe(false);
+  });
+
+  // After a sign-out, a store would go to whoever is signed in by then.
+  it("stores nothing once discarded, the answer in flight included", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension((id) =>
+      id === "1"
+        ? { code: 200, id, payload: detailPage(15708) }
+        : new Promise<Reply>((resolve) => (answer = resolve)),
+    );
+
+    const { run, discard, status } = useBuybackDetailsSync();
+    const running = run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(2));
+
+    discard();
+    answer({ code: 200, id: "2", payload: detailPage(15708) });
+    await running;
+
+    expect(submitted()).toEqual([]);
+    expect(status.value).toBe("idle");
+  });
 });

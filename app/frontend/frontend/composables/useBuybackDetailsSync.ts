@@ -41,7 +41,14 @@ const done = ref(0);
 
 const running = computed(() => status.value === "running");
 
+// Set from the cancel until the pass actually stops, which can take as long as
+// the request in flight.
+const cancelling = ref(false);
+
 let cancelled = false;
+
+// A discarded pass stores nothing more, not even what it already read.
+let discarded = false;
 
 let pending: RsiBuybackDetailInput[] = [];
 
@@ -61,6 +68,7 @@ export const useBuybackDetailsSync = () => {
 
   const submit = async (force = false) => {
     if (
+      discarded ||
       pending.length === 0 ||
       (!force && pending.length < DETAILS_PER_SUBMIT)
     ) {
@@ -172,6 +180,8 @@ export const useBuybackDetailsSync = () => {
     failures = 0;
     pending = [];
     cancelled = false;
+    cancelling.value = false;
+    discarded = false;
 
     if (pages.length === 0) {
       status.value = "finished";
@@ -204,12 +214,13 @@ export const useBuybackDetailsSync = () => {
       status.value = "finished";
     } catch (error) {
       console.error("Buy-back details sync error:", error);
-      status.value = "incomplete";
+      status.value = discarded ? "idle" : "incomplete";
     } finally {
       // Only a cancelled pass gets here still running.
       if (status.value === "running") {
         status.value = "idle";
       }
+      cancelling.value = false;
     }
   };
 
@@ -222,7 +233,14 @@ export const useBuybackDetailsSync = () => {
   // answer in flight included, is still stored.
   const cancel = () => {
     cancelled = true;
+    cancelling.value = running.value;
   };
 
-  return { status, total, done, running, run, cancel };
+  const discard = () => {
+    discarded = true;
+    pending = [];
+    cancel();
+  };
+
+  return { status, total, done, running, cancelling, run, cancel, discard };
 };

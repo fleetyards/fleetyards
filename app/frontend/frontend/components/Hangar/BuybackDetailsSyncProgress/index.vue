@@ -15,12 +15,16 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
 const { displaySuccess, displayWarning } = useAppNotifications();
 
-const { status, total, done, running, cancel } = useBuybackDetailsSync();
+const { status, total, done, running, cancelling, cancel, discard } =
+  useBuybackDetailsSync();
+
+const mobile = useMobile();
 
 const sessionStore = useSessionStore();
 
@@ -36,12 +40,12 @@ watch(status, (current, previous) => {
   }
 });
 
-// What it reads after a sign-out would be stored for an account that is no
-// longer here.
+// Anything stored after a sign-out would land on an account that is no longer
+// here, or on the next one to sign in.
 watch(
   () => sessionStore.isAuthenticated,
   (authenticated) => {
-    if (!authenticated) cancel();
+    if (!authenticated) discard();
   },
 );
 </script>
@@ -49,8 +53,9 @@ watch(
 <template>
   <transition name="fade">
     <div
-      v-if="running"
+      v-if="running && !cancelling"
       class="buyback-details-sync-progress"
+      :class="{ 'buyback-details-sync-progress--mobile': mobile }"
       data-test="buyback-details-sync-progress"
     >
       <Panel :loading="true" :outer-spacing="false">
@@ -84,6 +89,14 @@ watch(
   bottom: calc(20px + env(safe-area-inset-bottom));
   z-index: 1040;
   max-width: calc(100vw - 40px);
+}
+
+// Above the mobile navigation, which is fixed along the bottom edge.
+.buyback-details-sync-progress--mobile {
+  bottom: calc(
+    #{$navigation-mobile-height + $navigation-mobile-bottom-offset + 20px} +
+      env(safe-area-inset-bottom)
+  );
 }
 
 .buyback-details-sync-progress__body {

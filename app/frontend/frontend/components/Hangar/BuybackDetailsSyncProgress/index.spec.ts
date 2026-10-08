@@ -9,7 +9,9 @@ const pass = vi.hoisted(() => ({
   status: undefined as unknown as Ref<string>,
   total: undefined as unknown as Ref<number>,
   done: undefined as unknown as Ref<number>,
+  cancelling: undefined as unknown as Ref<boolean>,
   cancel: vi.fn(),
+  discard: vi.fn(),
 }));
 
 vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
@@ -50,7 +52,9 @@ describe("HangarBuybackDetailsSyncProgress", () => {
     pass.status = ref("idle");
     pass.total = ref(0);
     pass.done = ref(0);
+    pass.cancelling = ref(false);
     pass.cancel.mockClear();
+    pass.discard.mockClear();
     displaySuccess.mockClear();
     displayWarning.mockClear();
   });
@@ -122,13 +126,25 @@ describe("HangarBuybackDetailsSyncProgress", () => {
     expect(displayWarning).not.toHaveBeenCalled();
   });
 
-  it("cancels the pass on sign-out", async () => {
+  it("goes away as soon as the pass is cancelled", async () => {
+    pass.status.value = "running";
+
+    const wrapper = mountProgress();
+    pass.cancelling.value = true;
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='buyback-details-sync-progress']").exists(),
+    ).toBe(false);
+  });
+
+  it("drops the pass on sign-out", async () => {
     pass.status.value = "running";
     mountProgress();
 
     useSessionStore().authenticated = false;
     await flushPromises();
 
-    expect(pass.cancel).toHaveBeenCalled();
+    expect(pass.discard).toHaveBeenCalled();
   });
 });
