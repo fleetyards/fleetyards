@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -428,9 +428,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_160000) do
     t.text "description"
     t.string "size"
     t.string "grade"
-    t.string "item_type"
     t.integer "item_class"
-    t.string "component_class"
     t.string "component_type"
     t.string "component_sub_type"
     t.string "category"
@@ -447,8 +445,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_160000) do
     t.string "required_tags"
     t.jsonb "type_data"
     t.index ["component_id", "environment", "version"], name: "index_component_builds_on_component_and_build", unique: true
-    t.index ["environment", "component_class"], name: "index_component_builds_on_environment_and_component_class"
-    t.index ["environment", "item_type"], name: "index_component_builds_on_environment_and_item_type"
     t.index ["environment", "version"], name: "index_component_builds_on_environment_and_version"
     t.index ["manufacturer_id"], name: "index_component_builds_on_manufacturer_id"
   end
@@ -459,9 +455,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_160000) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.uuid "manufacturer_id"
-    t.string "component_class"
     t.string "slug"
-    t.string "item_type"
     t.text "description"
     t.string "grade"
     t.integer "item_class"

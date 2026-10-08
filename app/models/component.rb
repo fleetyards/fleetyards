@@ -8,11 +8,6 @@ class Component < ApplicationRecord
   include KeyedSlug
   include ScDataVersioned
 
-  # Ignored a release ahead of the migration that drops them, because the
-  # pre-deploy hook migrates before any new container boots. `category` replaced
-  # both; no build the game still ships carries either.
-  self.ignored_columns += %w[item_type component_class]
-
   paginates_per 50
   max_paginates_per 240
 
