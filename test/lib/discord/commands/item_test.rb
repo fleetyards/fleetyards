@@ -61,7 +61,7 @@ module Discord
         assert_equal "Behring", embed.dig(:footer, :text)
         assert_equal "2", fields(payload)[I18n.t("discord.commands.item.fields.size")]
         assert_equal "A", fields(payload)[I18n.t("discord.commands.item.fields.grade")]
-        assert_includes embed.dig(:author, :name), I18n.t("discord.commands.item.types.component")
+        assert_includes embed.dig(:author, :name), I18n.t("discord.commands.types.component")
       end
 
       test "answers equipment" do
@@ -148,8 +148,8 @@ module Discord
 
         assert_equal(
           [
-            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.component")}", value: "Omnisky IX Cannon"},
-            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.item.types.blueprint")}", value: "blueprint:Omnisky IX Cannon"}
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.types.component")}", value: "Omnisky IX Cannon"},
+            {name: "Omnisky IX Cannon · #{I18n.t("discord.commands.types.blueprint")}", value: "blueprint:Omnisky IX Cannon"}
           ].sort_by { |choice| choice[:value] },
           choices.sort_by { |choice| choice[:value] }
         )
@@ -212,7 +212,7 @@ module Discord
 
         author = call("blueprint:Serac Armor")[:embeds].first.dig(:author, :name)
 
-        assert_includes author, I18n.t("discord.commands.item.types.equipment")
+        assert_includes author, I18n.t("discord.commands.types.equipment")
       end
 
       # Two coolers called "Serac" cannot be told apart by a token; the bot
@@ -224,7 +224,7 @@ module Discord
         choices = ::Discord::Commands::Item.autocomplete("name", "serac")
 
         assert_equal ["component~#{origin.id}", "component~#{polaris.id}"].sort, choices.pluck(:value).sort
-        assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.item.types.component")} · S4 · cool_orig_s04_890j_scitem"
+        assert_includes choices.pluck(:name), "Serac · #{I18n.t("discord.commands.types.component")} · S4 · cool_orig_s04_890j_scitem"
       end
 
       test "suggests each item of a shared name for a query written with its type" do
@@ -236,40 +236,52 @@ module Discord
       end
 
       test "keeps a shared name that starts with the query over ones that only contain it" do
-        ::Discord::Commands::ItemVariants::NAMES_PER_CATALOGUE.times do |index|
+        ::Discord::Commands::CatalogueVariants::NAMES_PER_CATALOGUE.times do |index|
           create_list(:component, 2, name: "Laser #{index}")
         end
         create_list(:component, 2, name: "Ser Cooler Extended Edition")
 
-        names = ::Discord::Commands::ItemVariants.search("ser", within: %w[component]).map(&:name)
+        names = ::Discord::Commands::CatalogueVariants.search("ser", within: %w[component]).map(&:name)
 
         assert_includes names, "Ser Cooler Extended Edition"
       end
 
       test "suggests no single items of a name many items share" do
-        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:component, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
 
         assert_empty ::Discord::Commands::Item.autocomplete("name", "internal")
       end
 
       test "a typed name too many items share points at the catalogue narrowed to it" do
-        create_list(:component, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:component, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
         create(:component, name: "Internal Tank Mk2")
 
         content = call("Internal Tank")[:content]
 
         assert_includes content, I18n.t("discord.commands.item.too_common", query: "Internal Tank")
-        assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::ItemVariants::MAX_CARRIERS + 1}"
+        assert_includes content, "/catalogue/components/?nameCont=Internal+Tank) · #{::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1}"
       end
 
       test "a typed name too many items of another catalogue share still links the one item" do
-        create_list(:equipment, ::Discord::Commands::ItemVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create_list(:equipment, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
         component = create(:component, name: "Internal Tank")
 
         content = call("Internal Tank")[:content]
 
         assert_includes content, "/catalogue/equipment/?nameOrSlugCont=Internal+Tank"
         assert_includes content, "[Internal Tank](https://#{Rails.configuration.app.domain}/catalogue/components/#{component.slug}/)"
+      end
+
+      # Two components of one name would read as the same line without what
+      # tells them apart.
+      test "a too-common answer tells the few items of another catalogue apart" do
+        create_list(:equipment, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create(:component, name: "Internal Tank", size: "2", sc_key: "Tank_S2")
+        create(:component, name: "Internal Tank", size: "1", sc_key: "Tank_S1")
+
+        lines = call("Internal Tank")[:content].lines.map(&:chomp)
+
+        assert_equal ["S1 · tank\\_s1", "S2 · tank\\_s2"], lines.grep(/Component/).map { |line| line.split(" · ", 3).last }
       end
 
       test "a typed name a few items share in each of two catalogues lists them" do

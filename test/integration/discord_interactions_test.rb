@@ -231,6 +231,7 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
 
     assert_equal 25, answered.size
     assert(answered.all? { |choice| choice["name"].length <= 100 && choice["value"].length <= 100 })
+    assert answered.first["name"].end_with?("…")
   end
 
   test "answers autocomplete with no choices when the handler raises" do

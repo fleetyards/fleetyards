@@ -33,7 +33,7 @@ module Discord
           title: fleet.name,
           url: url_for_path("/fleets/#{fleet.slug}"),
           color: EMBED_COLOR,
-          description: fleet.description.to_s.truncate(300).presence,
+          description: fleet.description.to_s.truncate(DESCRIPTION_LENGTH).presence,
           fields: fields(fleet).map { |name, value| {name: name, value: value, inline: true} }
         }.compact_blank
       end

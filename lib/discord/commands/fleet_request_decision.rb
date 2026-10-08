@@ -32,7 +32,7 @@ module Discord
 
       private def decide(fleet, user, username)
         membership = membership_for(fleet, username)
-        return message(content: I18n.t("discord.commands.fleet.requests.no_request", username: username)) if membership.nil?
+        return message(content: I18n.t("discord.commands.fleet.requests.no_request", username: Markdown.escape(username))) if membership.nil?
 
         case JoinRequestDecision.new(self.class.decision, membership, officer: user).call
         when :not_pending

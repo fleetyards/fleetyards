@@ -4,15 +4,14 @@ module Discord
   module Commands
     # One command for the game-file catalogues, rather than one per catalogue:
     # someone asking for a P4-AR neither knows nor cares which catalogue we file
-    # it under. ItemLookup resolves the name.
+    # it under. CatalogueLookup resolves the name.
     class Item < Base
-      include ItemLookup
+      include CatalogueLookup
 
       CATALOGUES = %w[component equipment commodity blueprint].freeze
-      DESCRIPTION_LENGTH = 300
 
       def call
-        prefix, found = lookup_item
+        prefix, found = lookup_entry
         return found if prefix.nil?
 
         message(embeds: [embed(prefix, found)])
@@ -20,9 +19,9 @@ module Discord
 
       private def embed(prefix, record)
         {
-          author: {name: [ItemLookup.type_label(prefix), category(prefix, record)].compact_blank.join(" · ")},
+          author: {name: [CatalogueLookup.type_label(prefix), category(prefix, record)].compact_blank.join(" · ")},
           title: record.name,
-          url: item_page_url(prefix, record.slug),
+          url: entry_page_url(prefix, record.slug),
           color: EMBED_COLOR,
           description: description(prefix, record),
           fields: send(:"#{prefix}_fields", record).compact_blank.map { |name, value| {name: name, value: value, inline: true} },
@@ -45,7 +44,7 @@ module Discord
           # Off the output the embed links, which the served build names; the
           # row's column holds whichever source loaded last.
           type = record.craftable&.class&.name
-          I18n.t("discord.commands.item.types.#{type.underscore}", default: type) if type.present?
+          I18n.t("discord.commands.types.#{type.underscore}", default: type) if type.present?
         end
       end
 
@@ -61,7 +60,7 @@ module Discord
         materials = record.materials
         listed = materials.any? ? ::Catalogue::TokenResolver.listed("commodity").where(id: materials.map(&:id)).pluck(:id).to_set : Set.new
         material_links = materials.map do |commodity|
-          listed.include?(commodity.id) ? item_link(commodity.name, "commodity", commodity.slug) : Markdown.escape(commodity.name)
+          listed.include?(commodity.id) ? entry_link(commodity.name, "commodity", commodity.slug) : Markdown.escape(commodity.name)
         end
 
         [
@@ -74,7 +73,7 @@ module Discord
         prefix = ::Catalogue::TokenResolver::CATALOGUES.key(craftable.class)
         listed = prefix && ::Catalogue::TokenResolver.listed(prefix).exists?(slug: craftable.slug)
 
-        listed ? item_link(craftable.name, prefix, craftable.slug) : Markdown.escape(craftable.name)
+        listed ? entry_link(craftable.name, prefix, craftable.slug) : Markdown.escape(craftable.name)
       end
 
       private def component_fields(record)

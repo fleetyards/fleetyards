@@ -18,6 +18,14 @@ module Discord
       # Fleetyards rather than as a generic bot post.
       EMBED_COLOR = 0x2d9cdb
 
+      # Discord rejects the whole message over one embed field past this, and
+      # an unanswered interaction stays on "thinking..." for good. Counted as
+      # Discord counts, in UTF-16 units.
+      FIELD_LIMIT = 1024
+
+      # How much of a description an embed shows before pointing to the page.
+      DESCRIPTION_LENGTH = 300
+
       attr_reader :options, :guild_id, :discord_user_id
 
       def initialize(options: {}, guild_id: nil, discord_user_id: nil)
@@ -49,6 +57,31 @@ module Discord
         rounded = ActiveSupport::NumberHelper.number_to_rounded(value, precision: 2, strip_insignificant_zeros: true,
           delimiter: I18n.t("number.format.delimiter"))
         "#{rounded} aUEC"
+      end
+
+      # As many of `lines` as fit one field, and the block's line for the rest
+      # -- whose own length is reserved before a line is let in. The length is
+      # kept as the field grows rather than measured again per line.
+      private def fit_field(lines, separator: "\n")
+        shown = []
+        length = 0
+        lines.each_with_index do |line, index|
+          rest = lines.size - index - 1
+          reserve = rest.positive? ? MessageLength.of(yield(rest) + separator) : 0
+          grown = length + (shown.empty? ? 0 : MessageLength.of(separator)) + MessageLength.of(line)
+          break if grown + reserve > FIELD_LIMIT
+
+          shown << line
+          length = grown
+        end
+
+        hidden = lines.size - shown.size
+        shown << yield(hidden) if hidden.positive?
+        shown.join(separator)
+      end
+
+      private def shop_link(shop, name = shop.name)
+        "[#{Markdown.escape(name)}](#{url_for_path("/shops/#{shop.slug}/")})"
       end
 
       private def url_for_path(path)

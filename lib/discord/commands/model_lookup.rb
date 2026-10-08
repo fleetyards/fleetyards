@@ -28,7 +28,7 @@ module Discord
       private def resolve_model(query)
         candidates = find_models(query)
 
-        return [nil, message(content: I18n.t("discord.commands.ship.not_found", query: query))] if candidates.empty?
+        return [nil, message(content: I18n.t("discord.commands.ship.not_found", query: Markdown.escape(query)))] if candidates.empty?
         return [candidates.first, nil] if candidates.one?
 
         [nil, candidate_list(query, candidates)]
@@ -36,10 +36,10 @@ module Discord
 
       private def candidate_list(query, candidates)
         shown = candidates.first(MAX_CANDIDATES)
-        lines = shown.map { |model| "• [#{model.name}](#{model_page_url(model)})" }
+        lines = shown.map { |model| "• [#{Markdown.escape(model.name)}](#{model_page_url(model)})" }
 
         content = [
-          I18n.t("discord.commands.ship.ambiguous", query: query, count: shown.size),
+          I18n.t("discord.commands.ship.ambiguous", query: Markdown.escape(query), count: shown.size),
           lines.join("\n"),
           (I18n.t("discord.commands.ship.more") if candidates.size > MAX_CANDIDATES)
         ].compact.join("\n")

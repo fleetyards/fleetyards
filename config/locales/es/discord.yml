@@ -65,17 +65,45 @@ es:
         materials: 'Materiales: %{items}'
         missing_query: Indica el nombre de un objeto.
         more: '…y más. Elige una de las sugerencias.'
+        more_matches: '…y más.'
         not_found: 'No se encontró ningún objeto para «%{query}».'
         too_common: 'Hay demasiados objetos llamados «%{query}» para listarlos aquí. El catálogo los tiene todos:'
-        types:
-          blueprint: Plano
-          commodity: Mercancía
-          component: Componente
-          equipment: Equipo
       loaner:
         heading: '[%{ship}](%{url}) incluye %{count} nave(s) de préstamo:'
         missing_query: Indica el nombre de una nave.
         none: '%{ship} no tiene naves de préstamo.'
+      location:
+        ambiguous: 'Lugares que coinciden con «%{query}»:'
+        fields:
+          docking_tubes: 'Anillos de atraque'
+          free_landing_pads: 'Plataformas de aterrizaje libres'
+          hangars: 'Hangares'
+          landing_pads: 'Plataformas de aterrizaje'
+          shops: 'Tiendas'
+          vehicle_pads: 'Plataformas para vehículos terrestres'
+        kinds:
+          anomaly: 'Anomalía'
+          asteroid: 'Asteroide'
+          city: 'Ciudad'
+          clinic: 'Clínica'
+          district: 'Distrito'
+          jump_point: 'Punto de salto'
+          moon: 'Luna'
+          nav_point: 'Punto de navegación'
+          other: 'Otro'
+          outpost: 'Puesto avanzado'
+          planet: 'Planeta'
+          point_of_interest: 'Punto de interés'
+          spaceport: 'Puerto espacial'
+          star: 'Estrella'
+          station: 'Estación'
+          system: 'Sistema estelar'
+        missing_query: Indica el nombre de un lugar.
+        more: '…y más. Elige una de las sugerencias.'
+        more_matches: '…y más.'
+        more_shops: '…y %{count} más en [la página del lugar](%{url})'
+        not_found: 'No se encontró ningún lugar para «%{query}».'
+        too_common: 'Hay demasiados lugares llamados «%{query}» para listarlos aquí. La página de lugares los tiene todos:'
       my_hangar:
         empty: 'Todavía no tienes naves en [tu hangar](%{url}).'
         heading: '[Tu hangar](%{url}) — %{count} naves, %{models} tipos'
@@ -97,6 +125,11 @@ es:
         missing_query: Indica el nombre de una nave.
         more: '…y más. Prueba con un nombre más preciso.'
         not_found: 'No se ha encontrado ninguna nave para «%{query}».'
+      types:
+        blueprint: Plano
+        commodity: Mercancía
+        component: Componente
+        equipment: Equipo
       where:
         fields:
           buy: Comprar en

@@ -231,6 +231,21 @@ module Discord
           ]
         },
         {
+          name: "location",
+          description: "Look up a place: where it is, where to land and its shops",
+          handler: "Discord::Commands::Place",
+          options: [
+            {
+              name: "name",
+              description: "Place name",
+              type: STRING,
+              required: true,
+              max_length: 100,
+              autocomplete: true
+            }
+          ]
+        },
+        {
           name: "myhangar",
           description: "Show your own hangar, only to you",
           handler: "Discord::Commands::MyHangar",

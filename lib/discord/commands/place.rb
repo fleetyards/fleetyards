@@ -1,0 +1,96 @@
+# frozen_string_literal: true
+
+module Discord
+  module Commands
+    # /location: a place from the starmap -- where it sits, where a ship can set
+    # down there, and its shops. Named Place because `Location` inside this
+    # namespace would shadow the model.
+    class Place < Base
+      include CatalogueLookup
+
+      CATALOGUES = %w[location].freeze
+      SIZE_ORDER = ::Dock.ship_sizes.keys.freeze
+
+      def call
+        prefix, found = lookup_entry(strings: "location")
+        return found if prefix.nil?
+
+        message(embeds: [embed(found)])
+      end
+
+      private def embed(place)
+        page = entry_page_url("location", place.slug)
+
+        {
+          author: {name: kind_label(place.kind)}.compact_blank.presence,
+          title: place.name,
+          url: page,
+          color: EMBED_COLOR,
+          description: [breadcrumb(place), place.description.to_s.truncate(DESCRIPTION_LENGTH).presence].compact.join("\n\n").presence,
+          fields: [*facility_fields(place.facilities), shops_field(place, page)].compact,
+          thumbnail: thumbnail(place.image)
+        }.compact_blank
+      end
+
+      private def kind_label(kind)
+        I18n.t("discord.commands.location.kinds.#{kind}", default: kind.to_s.humanize) if kind.present?
+      end
+
+      # From the system down to the parent, each linked, as the page's own
+      # breadcrumb reads. The walk loads one parent per step; the builds the
+      # names are read off then load for all of them at once. Not `last_build`:
+      # preloaded, it cannot be limited to one row a place and loads them all.
+      private def breadcrumb(place)
+        ancestors = place.ancestors
+        ActiveRecord::Associations::Preloader.new(records: ancestors, associations: :build).call
+
+        ancestors.reverse.map { |ancestor| entry_link(ancestor.name, "location", ancestor.slug) }.join(" › ").presence
+      end
+
+      # A free pad is one a pilot lands on without ATC handing it out, so it
+      # gets its own line, as on the page.
+      private def facility_fields(facilities)
+        return [] if facilities.blank?
+
+        pads = Array.wrap(facilities["landing_pads"])
+        tubes = facilities["docking_tubes"].to_i
+
+        [
+          facility_field(:hangars, facilities["hangars"]),
+          facility_field(:free_landing_pads, pads.reject { |pad| pad["atc_assigned"] }),
+          facility_field(:landing_pads, pads.select { |pad| pad["atc_assigned"] }),
+          facility_field(:vehicle_pads, facilities["vehicle_pads"]),
+          ({name: I18n.t("discord.commands.location.fields.docking_tubes"), value: tubes.to_s, inline: true} if tubes.positive?)
+        ].compact
+      end
+
+      # One count per size, largest first: a station's hangars come as several
+      # entries of one size, one per door and pad box. A size the dock sizes do
+      # not know has no label to show, so it is left out.
+      private def facility_field(kind, entries)
+        counts = Array.wrap(entries).each_with_object(Hash.new(0)) do |entry, sums|
+          sums[entry["size"].to_s] += entry["count"].to_i
+        end.select { |size, count| count.positive? && SIZE_ORDER.include?(size) }
+        return nil if counts.empty?
+
+        value = counts.sort_by { |size, _| -SIZE_ORDER.index(size) }
+          .map { |size, count| "#{::Dock.human_enum_name(:ship_size, size)} ×#{count}" }
+          .join("\n")
+
+        {name: I18n.t("discord.commands.location.fields.#{kind}"), value: value, inline: true}
+      end
+
+      # The shops the place page lists: those selling something the catalogue
+      # lists, so the count past the field matches what the page shows.
+      private def shops_field(place, page)
+        shops = ::Locations::Shops.new(place).shops
+        return nil if shops.empty?
+
+        links = shops.map { |shop| shop_link(shop) }
+        value = fit_field(links, separator: ", ") { |hidden| I18n.t("discord.commands.location.more_shops", count: hidden, url: page) }
+
+        {name: I18n.t("discord.commands.location.fields.shops"), value: value}
+      end
+    end
+  end
+end

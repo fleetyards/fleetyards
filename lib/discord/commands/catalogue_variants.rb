@@ -2,14 +2,15 @@
 
 module Discord
   module Commands
-    # The items a name cannot pick out, because more than one item of a
-    # catalogue carries it -- both "Serac" coolers, both "BR-2 Shotgun"s. A
-    # markdown token leaves those unnamed; the bot offers each one instead,
-    # told apart by size and its game key, and keyed by id.
+    # The entries a name cannot pick out, because more than one entry of a
+    # catalogue carries it -- both "Serac" coolers, both "Outpost 54"s on
+    # Aberdeen. A markdown token leaves those unnamed; the bot offers each one
+    # instead, told apart by what it sits in or by size and game key, and keyed
+    # by id.
     #
     # Only names a handful of items share. Past that it is a generic ship part
     # -- 313 "Internal Tank"s -- that would crowd every other suggestion out.
-    module ItemVariants
+    module CatalogueVariants
       MAX_CARRIERS = 5
       NAMES_PER_CATALOGUE = 10
 
@@ -25,14 +26,28 @@ module Discord
         def slug = record.slug
 
         # The game key is the one thing two carriers never share -- the slug
-        # is not: the first item of a name keeps the bare one. The size leads
-        # because it is the difference a reader can make sense of.
+        # is not: the first of a name keeps the bare one. What a reader can make
+        # sense of leads (LEADS): an item's size, a place's parent -- which alone
+        # is not enough, as both Outpost 54s sit on Aberdeen.
         def detail
           key = record.sc_key.to_s.downcase.presence || slug
-          size = record.try(:size)
 
-          [("S#{size}" if size.present?), key].compact.join(" · ")
+          [CatalogueVariants.lead(prefix).label.call(record).presence, key].compact.join(" · ")
         end
+      end
+
+      # What leads a variant's detail, and what reading it needs loaded.
+      Lead = Data.define(:label, :preload)
+
+      SIZE_LEAD = Lead.new(label: ->(record) { record.try(:size).presence&.then { |size| "S#{size}" } }, preload: nil)
+
+      # A place's parent names it through its build.
+      LEADS = {
+        "location" => Lead.new(label: ->(record) { record.parent&.name }, preload: {parent: :build})
+      }.freeze
+
+      def self.lead(prefix)
+        LEADS.fetch(prefix, SIZE_LEAD)
       end
 
       # A query written with a prefix searches that type alone, as the
@@ -59,7 +74,7 @@ module Discord
             .pluck(name)
           next [] if names.empty?
 
-          scope.where("#{name} IN (?)", names).includes(:build).map { |record| Variant.new(prefix:, record:) }
+          variants(prefix, scope.where("#{name} IN (?)", names))
         end
       end
 
@@ -76,6 +91,20 @@ module Discord
       # The listed items of one catalogue that carry exactly `name`.
       def self.named(prefix, name)
         ::Catalogue::TokenResolver.listed(prefix).where("lower(#{model(prefix).fact_sql(:name)}) = ?", name.downcase)
+      end
+
+      # The listed entries of one catalogue carrying exactly `name`, each told
+      # apart by its detail and in its order, so a list of them reads the same
+      # every time.
+      def self.variants_named(prefix, name)
+        variants(prefix, named(prefix, name)).sort_by(&:detail)
+      end
+
+      # Each of `rows` as a variant, with what its name and detail read loaded.
+      def self.variants(prefix, rows)
+        rows = rows.includes(:build)
+        rows = rows.includes(lead(prefix).preload) if lead(prefix).preload
+        rows.map { |record| Variant.new(prefix:, record:) }
       end
 
       # The variant a picked suggestion's value names, if it still is listed.

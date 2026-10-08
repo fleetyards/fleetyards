@@ -6,26 +6,23 @@ module Discord
     # availability list shows it. Blueprints are not offered: no shop sells
     # one.
     class Where < Base
-      include ItemLookup
+      include CatalogueLookup
 
       CATALOGUES = %w[component equipment commodity].freeze
-      # Discord rejects the whole message over one embed field past this, and
-      # an unanswered interaction stays on "thinking..." for good.
-      FIELD_LIMIT = 1024
 
       def call
-        prefix, found = lookup_item
+        prefix, found = lookup_entry
         return found if prefix.nil?
 
         # Both directions off one query and one shop-link preload rather than
         # one each.
         ItemPrice.with_shop_links(found.item_prices.to_a)
-        page = item_page_url(prefix, found.slug)
+        page = entry_page_url(prefix, found.slug)
         fields = [
           field(:buy, found.sold_at, page),
           field(:sell, found.bought_at, page)
         ].compact
-        return message(content: I18n.t("discord.commands.where.none", item: item_link(found.name, prefix, found.slug))) if fields.empty?
+        return message(content: I18n.t("discord.commands.where.none", item: entry_link(found.name, prefix, found.slug))) if fields.empty?
 
         message(embeds: [{
           title: found.name,
@@ -36,29 +33,15 @@ module Discord
       end
 
       # As many rows as fit, in the order given, and a pointer to the item page
-      # for the rest -- whose own length is reserved before the rows are counted.
+      # for the rest.
       private def field(direction, prices, page)
         return nil if prices.empty?
 
         # Two terminals can share a name and a price, and a row says nothing
         # that tells them apart.
         lines = prices.map { |item_price| line(item_price) }.uniq
-        shown = []
-        length = 0
-        lines.each_with_index do |line, index|
-          rest = lines.size - index - 1
-          reserve = rest.positive? ? more(rest, page).length + 1 : 0
-          grown = length + (shown.empty? ? 0 : 1) + line.length
-          break if grown + reserve > FIELD_LIMIT
-
-          shown << line
-          length = grown
-        end
-
-        hidden = lines.size - shown.size
-        shown << more(hidden, page) if hidden.positive?
-
-        {name: I18n.t("discord.commands.where.fields.#{direction}"), value: shown.join("\n")}
+        value = fit_field(lines) { |hidden| more(hidden, page) }
+        {name: I18n.t("discord.commands.where.fields.#{direction}"), value: value}
       end
 
       private def more(count, page)
@@ -70,7 +53,7 @@ module Discord
       private def line(item_price)
         shop, *place = item_price.location.to_s.split(" - ")
 
-        parts = [shop_link(item_price, shop), Markdown.escape(place.join(" · ")).presence, uec(item_price.price)]
+        parts = [source_link(item_price, shop), Markdown.escape(place.join(" · ")).presence, uec(item_price.price)]
         "• #{parts.compact.join(" · ")}"
       end
 
@@ -78,11 +61,12 @@ module Discord
       # web address -- it is third-party fed, so a `javascript:` one is not --
       # and the bare name otherwise. A matched shop names itself; an empty name
       # would make the link invisible.
-      private def shop_link(item_price, name)
-        text = Markdown.escape(item_price.shop&.name.presence || name.to_s.strip)
-        return nil if text.blank?
+      private def source_link(item_price, name)
+        name = item_price.shop&.name.presence || name.to_s.strip
+        return nil if name.blank?
+        return shop_link(item_price.shop, name) if item_price.shop&.slug.present?
 
-        return "[#{text}](#{url_for_path("/shops/#{item_price.shop.slug}/")})" if item_price.shop&.slug.present?
+        text = Markdown.escape(name)
         return "[#{text}](#{link_safe(item_price.location_url)})" if item_price.location_url.to_s.match?(%r{\Ahttps?://}i)
 
         text

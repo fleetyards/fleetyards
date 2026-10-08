@@ -27,7 +27,6 @@ module Discord
     # over one choice too many or one name too long, and the member sees
     # "Loading options failed" instead of the choices that did fit.
     MAX_CHOICES = 25
-    MAX_CHOICE_LENGTH = 100
 
     def create
       return head :unauthorized unless verified?
@@ -97,9 +96,9 @@ module Discord
       end
 
       choices
-        .select { |choice| choice[:value].to_s.length <= MAX_CHOICE_LENGTH }
+        .select { |choice| Discord::MessageLength.fits?(choice[:value], Discord::MessageLength::CHOICE_MAX) }
         .first(MAX_CHOICES)
-        .map { |choice| {name: choice[:name].to_s.truncate(MAX_CHOICE_LENGTH), value: choice[:value]} }
+        .map { |choice| {name: Discord::MessageLength.truncate(choice[:name], Discord::MessageLength::CHOICE_MAX, omission: "…"), value: choice[:value]} }
     rescue => e
       Rails.logger.error("[Discord::InteractionsController] autocomplete for #{command_data["name"]} failed: #{e.class}: #{e.message}")
       Appsignal.report_error(e)

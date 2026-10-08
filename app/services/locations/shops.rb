@@ -11,16 +11,28 @@ module Locations
     end
 
     def call
-      shops = Shop.where(location: @location).with_attached_image.order(:name).to_a
-      items = ItemPrice.where(shop_id: shops.map(&:id)).includes(:item).group_by(&:shop_id)
+      selling(at_place.with_attached_image.to_a).map do |shop, things|
+        Summary.new(shop, things.size, ::Shops::Categories.for(things))
+      end
+    end
 
+    # The same shops, without what they sell.
+    def shops
+      selling(at_place.to_a).keys
+    end
+
+    private def at_place
+      Shop.where(location: @location).order(:name)
+    end
+
+    # Each shop that sells something its catalogue lists, with those things.
+    private def selling(shops)
+      items = ItemPrice.where(shop_id: shops.map(&:id)).includes(:item).group_by(&:shop_id)
       listed = ::Shops::Listing.listed(items.values.flatten.filter_map(&:item).uniq).to_set
 
-      shops.filter_map do |shop|
+      shops.each_with_object({}) do |shop, found|
         things = Array.wrap(items[shop.id]).filter_map(&:item).uniq.select { |item| listed.include?(item) }
-        next if things.empty?
-
-        Summary.new(shop, things.size, ::Shops::Categories.for(things))
+        found[shop] = things if things.any?
       end
     end
   end

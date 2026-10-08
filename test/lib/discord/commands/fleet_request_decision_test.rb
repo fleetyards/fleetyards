@@ -153,6 +153,10 @@ module Discord
       test "carries no flags, since a follow-up cannot set them" do
         assert_nil call(::Discord::Commands::FleetAccept)[:flags]
       end
+
+      test "echoes a typed link as text, not as a link" do
+        assert_includes call(::Discord::Commands::FleetAccept, username: "[Free aUEC](https://evil.example)")[:content], "\\[Free aUEC\\]\\(https://evil.example\\)"
+      end
     end
   end
 end
