@@ -9,12 +9,15 @@ import Tour from "@/shared/components/Tour/index.vue";
 import type { TourStep } from "@/shared/components/Tour/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const open = defineModel<boolean>("open", { default: false });
 
 const { t } = useI18n();
 
 const hangarStore = useHangarStore();
+
+const sessionStore = useSessionStore();
 
 const step = (
   id: string,
@@ -63,10 +66,17 @@ const steps = computed<TourStep[]>(() => [
 ]);
 
 const onEnd = () => {
-  hangarStore.markTourSeen();
+  const userId = sessionStore.currentUser?.id;
+
+  if (userId) hangarStore.markTourSeen(userId);
 };
 </script>
 
 <template>
-  <Tour v-model:open="open" :steps="steps" @end="onEnd" />
+  <Tour
+    v-model:open="open"
+    :steps="steps"
+    return-focus-fallback='[data-tour="hangar-menu"] button'
+    @end="onEnd"
+  />
 </template>

@@ -17,11 +17,14 @@ import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
 type Props = {
   variant?: EmptyVariantsEnum;
   wishlist?: boolean;
+  // Offers the tour, which only the owner's own hangar page can run.
+  guide?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   variant: EmptyVariantsEnum.DEFAULT,
   wishlist: false,
+  guide: false,
 });
 
 const { t } = useI18n();
@@ -45,7 +48,7 @@ const hangarStore = useHangarStore();
     </template>
     <template v-if="!wishlist" #actions="{ queryPresent }">
       <HangarSyncBtn v-if="!queryPresent" />
-      <Btn v-if="!queryPresent" @click="emit('openGuide')">
+      <Btn v-if="guide && !queryPresent" @click="emit('openGuide')">
         {{ t("actions.empty.hangarGuide") }}
       </Btn>
     </template>

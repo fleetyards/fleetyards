@@ -122,9 +122,11 @@ const hangarStatsQueryParams = computed(() => {
   return { q: getQuery() };
 });
 
-const { data: hangarStats, refetch: refetchStats } = useHangarStatsQuery(
-  hangarStatsQueryParams,
-);
+const {
+  data: hangarStats,
+  refetch: refetchStats,
+  isFetching: hangarStatsFetching,
+} = useHangarStatsQuery(hangarStatsQueryParams);
 
 const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
 
@@ -343,16 +345,20 @@ const openGuide = () => {
 };
 
 // Waits for the groups as well as the stats: the tour picks its steps when it
-// starts, and the groups row is one of them. The delay lets the page's enter
-// transition settle, so the first spotlight is measured where it stays.
+// starts, and the groups row is one of them. A refetch keeps the previous
+// stats, so clearing a filter that matched nothing reads as an empty hangar
+// until it lands. The delay lets the page's enter transition settle, so the
+// first spotlight is measured where it stays.
 const TOUR_AUTOSTART_DELAY = 800;
 
 let tourTimer = 0;
 
 watch(
   () =>
-    !hangarStore.tourSeen &&
+    !!currentUser?.value?.id &&
+    !hangarStore.hasSeenTour(currentUser.value.id) &&
     !!hangarGroups.value &&
+    !hangarStatsFetching.value &&
     hangarStats.value?.total === 0 &&
     !isFilterSelected.value,
   (shouldStart) => {
@@ -699,6 +705,7 @@ const openDisplayOptionsModal = () => {
         :selection-controls="false"
         @sort="onSort"
         @move="moveBy"
+        @open-guide="openGuide"
       />
 
       <FleetchartApp
@@ -741,6 +748,7 @@ const openDisplayOptionsModal = () => {
       <HangarEmpty
         v-if="!hideEmpty && emptyVisible"
         :variant="EmptyVariantsEnum.BOX"
+        guide
         @open-guide="openGuide"
       />
     </template>
