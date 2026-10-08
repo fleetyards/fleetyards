@@ -78,6 +78,16 @@ class FleetEventSignup < ApplicationRecord
     update!(status: "withdrawn", withdrawn_at: Time.current)
   end
 
+  # A recurring signup is keyed by day, so its date alone cannot tell whether
+  # today's occurrence has already ended.
+  def occurrence_over?
+    return fleet_event.past? unless fleet_event.recurring?
+    return false if occurrence_date.nil?
+
+    ends_at = fleet_event.occurrence_ends_at(occurrence_date)
+    ends_at.present? && ends_at < Time.current
+  end
+
   # Effective approval mode (slot override, falling back to the event default).
   def effective_signup_approval
     fleet_event_slot&.signup_approval.presence ||

@@ -348,7 +348,12 @@ class FleetMembership < ApplicationRecord
         "(NOT fleet_events.recurring AND COALESCE(fleet_events.ends_at, fleet_events.starts_at) >= :now)",
         today: Date.current, now: Time.current
       )
-      .find_each(&:withdraw!)
+      .includes(:fleet_event)
+      .find_each do |signup|
+        next if signup.occurrence_over?
+
+        signup.withdraw!
+      end
   end
 
   def update_fleet_vehicle(vehicle)
