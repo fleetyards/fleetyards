@@ -436,6 +436,25 @@ describe("FleetDiscordSettingsPage role mapping", () => {
     ).toBe("300000000000000002");
   });
 
+  it("probes the bot again only once the ranks are saved", async () => {
+    let finishRanks = () => {};
+    updateRoleMappings.mockReturnValue(
+      new Promise<void>((resolve) => {
+        finishRanks = resolve;
+      }),
+    );
+    const subject = await mount();
+    await pick(subject, "rankRole-rank-officer", "300000000000000002");
+
+    const saving = save(subject);
+    await flushPromises();
+    expect(discordStatus).toHaveBeenCalledTimes(1);
+
+    finishRanks();
+    await saving;
+    expect(discordStatus).toHaveBeenCalledTimes(2);
+  });
+
   it("names the roles the bot cannot hand out", async () => {
     discordStatus.mockResolvedValue({
       ok: true,

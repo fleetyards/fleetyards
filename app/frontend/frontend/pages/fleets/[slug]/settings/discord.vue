@@ -195,11 +195,11 @@ const settingsSaved = () => {
   void queryClient.invalidateQueries({
     queryKey: getFleetDiscordRolesQueryKey(props.fleet.slug),
   });
-  void fetchStatus();
 };
 
 const save = async () => {
   submitting.value = true;
+  let saved = false;
   try {
     const payload: Record<string, unknown> = {
       discordGuildId: discordGuildId.value || null,
@@ -235,6 +235,7 @@ const save = async () => {
     // Refreshed before the ranks are sent, so a rejected rank still leaves the
     // page showing the settings that were saved, and the picks to try again.
     settingsSaved();
+    saved = true;
     if (mappings.length) {
       await updateRoleMappingsMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
@@ -255,6 +256,8 @@ const save = async () => {
     });
   } finally {
     submitting.value = false;
+    // After the ranks settle, whichever way: the probe checks the saved ones.
+    if (saved) void fetchStatus();
   }
 };
 
