@@ -79,7 +79,7 @@ module Discord
 
       private def heading(fleet, count)
         I18n.t("discord.commands.fleet.members.#{pending? ? "requests_heading" : "heading"}",
-          fleet: fleet.name,
+          fleet: Markdown.escape(fleet.name),
           url: url_for_path("/fleets/#{fleet.slug}/members/"),
           count: count)
       end

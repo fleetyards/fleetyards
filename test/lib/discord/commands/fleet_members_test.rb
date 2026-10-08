@@ -52,6 +52,12 @@ module Discord
         assert_includes call[:content], "Officer"
       end
 
+      test "escapes the markdown in the fleet name" do
+        @fleet.update_column(:name, "Test_Wing_Two")
+
+        assert_includes call[:content], "[Test\\_Wing\\_Two members]"
+      end
+
       test "escapes the markdown in a username and a role name" do
         role_named("Member").update!(name: "*Crew*")
         accept(create(:user, username: "snake_case_name"), "*Crew*")
