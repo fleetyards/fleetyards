@@ -13,6 +13,10 @@ module Discord
 
       MAX_MEMBERS = 10
 
+      NICKNAME_LENGTH = 32
+
+      ROLE_LENGTH = 64
+
       PENDING = "pending"
 
       def call
@@ -57,20 +61,28 @@ module Discord
         end
       end
 
+      # Usernames run to 255 characters, so a full page of them overflows a
+      # message. Whole lines are dropped from the end until it fits, and the
+      # overflow line counts them with the rest.
       private def content_for(fleet, memberships)
-        shown = memberships.first(MAX_MEMBERS)
-        omitted = memberships.size - shown.size
+        lines = memberships.first(MAX_MEMBERS).map { |membership| line_for(membership) }
+        heading = heading(fleet, memberships.size)
+        content = ->(shown) do
+          omitted = memberships.size - shown.size
+          [
+            heading,
+            *shown,
+            (I18n.t("discord.commands.fleet.members.more", count: omitted) if omitted.positive?)
+          ].compact.join("\n")
+        end
+        lines.pop while lines.any? && !MessageLength.fits?(content.call(lines))
 
-        [
-          heading(fleet, memberships.size),
-          shown.map { |membership| line_for(membership) }.join("\n"),
-          (I18n.t("discord.commands.fleet.members.more", count: omitted) if omitted.positive?)
-        ].compact.join("\n")
+        MessageLength.truncate(content.call(lines))
       end
 
       private def heading(fleet, count)
         I18n.t("discord.commands.fleet.members.#{pending? ? "requests_heading" : "heading"}",
-          fleet: fleet.name,
+          fleet: Markdown.escape(fleet.name),
           url: url_for_path("/fleets/#{fleet.slug}/members/"),
           count: count)
       end
@@ -79,17 +91,33 @@ module Discord
       # answers "what can this person do". Neither carries the other's noise.
       private def line_for(membership)
         if pending?
-          "• #{membership.user.username}#{waiting_since(membership)}"
+          "• #{name_of(membership)}#{waiting_since(membership)}"
         else
-          "• #{membership.user.username}#{role_of(membership)}"
+          "• #{name_of(membership)}#{role_of(membership)}"
         end
+      end
+
+      # The nickname leads, as on the web roster, but the username stays beside
+      # it: it is what a member is looked up and linked by.
+      private def name_of(membership)
+        username = membership.user.username
+        nickname = membership.nickname.to_s.squish
+        return Markdown.escape(username) if nickname.blank? || nickname.casecmp?(username)
+
+        "#{inline(nickname, NICKNAME_LENGTH)} (#{Markdown.escape(username)})"
       end
 
       private def role_of(membership)
         name = membership.fleet_role&.name
         return "" if name.blank?
 
-        " — #{name}"
+        " — #{inline(name, ROLE_LENGTH)}"
+      end
+
+      # Free text on one roster line: a newline in it would start a line of its
+      # own that reads like another member.
+      private def inline(text, length)
+        Markdown.escape(MessageLength.truncate(text.squish, length, omission: "…"))
       end
 
       private def waiting_since(membership)
