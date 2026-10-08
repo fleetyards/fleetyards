@@ -2550,6 +2550,7 @@
         "price": "Prezzo",
         "insurance": "Assicurazione",
         "lifetimeInsurance": "LTI",
+        "noInsurance": "Nessuna assicurazione",
         "insuranceMonths": {
           "one": "%{count} mese",
           "other": "%{count} mesi"

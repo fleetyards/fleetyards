@@ -10019,6 +10019,33 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/buybacks/insurance-terms":
+    get:
+      summary: Hangar Buy-back Insurance Terms
+      tags:
+      - Hangar
+      operationId: hangarBuybackInsuranceTerms
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackInsuranceTerms"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/contract-destinations":
     get:
       summary: Hangar Contract Destinations
@@ -19707,6 +19734,26 @@ components:
       required:
       - updated
       title: BuybackDetailsSyncResult
+    BuybackInsuranceTerms:
+      type: object
+      properties:
+        months:
+          type: array
+          items:
+            type: integer
+          description: Month terms, longest first; lifetime pledges excluded
+        lifetime:
+          type: boolean
+          description: Whether any pledge has lifetime insurance
+        none:
+          type: boolean
+          description: Whether any pledge has no insurance
+      additionalProperties: false
+      required:
+      - months
+      - lifetime
+      - none
+      title: BuybackInsuranceTerms
     BuybackPledge:
       type: object
       properties:
@@ -19794,6 +19841,11 @@ components:
           type: array
           items:
             type: string
+        insuranceIn:
+          type: array
+          items:
+            type: string
+          description: "`lifetime`, `none` or a number of months"
         upgradeFromModelSlugEq:
           type: string
         upgradeToModelSlugEq:

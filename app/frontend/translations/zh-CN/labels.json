@@ -2550,6 +2550,7 @@
         "price": "价格",
         "insurance": "保险",
         "lifetimeInsurance": "终身保险",
+        "noInsurance": "无保险",
         "insuranceMonths": {
           "one": "%{count} 个月",
           "other": "%{count} 个月"
