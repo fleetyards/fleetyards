@@ -67,17 +67,47 @@
           "rejectHint": "Der Grund wird der Person angezeigt, die die Anwendung registriert hat — benenne also, was sich ändern muss."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
-        "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+      "hangarTour": {
+        "welcome": {
+          "title": "Willkommen in deinem Hangar",
+          "text": "Dein Hangar behält den Überblick über alle Schiffe, die du besitzt. Diese kurze Tour zeigt dir, wo alles ist — du kannst sie jederzeit über das Menü erneut starten."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Dein Hangar hat eine öffentlich sichtbare Seite, auf der alle Schiffe aufgelistet sind. Sie können auf Ihren öffentlichen Hangar zugreifen, indem Sie oben rechts auf die Schaltfläche \"Öffentliche URL\" klicken.",
-        "icon": "Achten Sie auf dieses Symbol:"
+        "add": {
+          "title": "Schiffe hinzufügen",
+          "text": "Wähle ein oder mehrere Schiffe und jeweils die Anzahl. Auf der Seite oder Karte jedes Schiffs fügt das Lesezeichen-Symbol es ebenfalls deinem Hangar oder deiner Wunschliste hinzu."
+        },
+        "sync": {
+          "title": "Mit RSI synchronisieren",
+          "text": "Schon gepledged? Mit der FleetYards-Browsererweiterung synchronisierst du deinen RSI-Hangar, statt Schiffe von Hand hinzuzufügen — und wieder, wann immer sich deine Pledges ändern."
+        },
+        "groups": {
+          "title": "Gruppen",
+          "text": "Sortiere deine Schiffe mit + und dem Stift in eigene Gruppen. Klicke auf eine Gruppe, um danach zu filtern, oder fahre darüber, um ihre Schiffe hervorzuheben."
+        },
+        "vehicle": {
+          "title": "Das Menü jedes Schiffs",
+          "text": "Hier bearbeitest du ein Schiff: benennen, Lackierung wählen, zum Flaggschiff machen, Sichtbarkeit setzen, Loadouts verwalten oder auf die Wunschliste verschieben."
+        },
+        "wishlist": {
+          "title": "Wunschliste",
+          "text": "Schiffe, die du willst, aber noch nicht besitzt, kommen auf deine Wunschliste — auf Wunsch mit Benachrichtigungen bei Sales."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "Stelle deine Schiffe maßstabsgetreu nebeneinander und speichere das Chart als Bild."
+        },
+        "stats": {
+          "title": "Statistiken",
+          "text": "Rollen, Hersteller, Größen und was du ausgegeben hast, mit CSV-Export."
+        },
+        "share": {
+          "title": "Hangar teilen",
+          "text": "Dein öffentlicher Hangar ist aktiv. Teile den Link — du entscheidest, welche Schiffe und Gruppen dort erscheinen."
+        },
+        "menu": {
+          "title": "Mehr",
+          "text": "Hangar importieren und exportieren, Buy-Backs und deine Import-Historie — und diese Tour, wann immer du sie wieder brauchst."
+        }
       },
       "hangarPreview": {
         "notified": {

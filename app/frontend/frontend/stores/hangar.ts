@@ -53,7 +53,7 @@ export enum HangarSortFieldsEnum {
 interface HangarState extends ShipListState {
   ships: string[];
   preview: boolean;
-  starterGuideVisible: boolean;
+  tourSeen: boolean;
   money: boolean;
   extensionReady: boolean;
   extensionVersion?: string;
@@ -74,7 +74,7 @@ export const useHangarStore = defineStore("hangar", {
     money: true,
     ships: [],
     preview: true,
-    starterGuideVisible: false,
+    tourSeen: false,
     gridView: true,
     extensionReady: false,
     extensionVersion: undefined,
@@ -121,23 +121,15 @@ export const useHangarStore = defineStore("hangar", {
     },
     save(payload: string[]) {
       this.ships = payload;
-
-      if (payload.length > 0 && this.starterGuideVisible) {
-        this.starterGuideVisible = false;
-      }
     },
     add(payload: string) {
       this.ships.push(payload);
-
-      if (this.starterGuideVisible) {
-        this.starterGuideVisible = false;
-      }
     },
     remove(payload: string) {
       this.ships.splice(this.ships.indexOf(payload), 1);
     },
-    enableStarterGuide() {
-      this.starterGuideVisible = true;
+    markTourSeen() {
+      this.tourSeen = true;
     },
     setTableViewCols(cols: HangarTableViewColsEnum[]) {
       this.tableViewCols = cols;
@@ -155,7 +147,7 @@ export const useHangarStore = defineStore("hangar", {
       "detailsVisible",
       "preview",
       "money",
-      "starterGuideVisible",
+      "tourSeen",
       "gridView",
       "tableViewImageCols",
       "tableViewCols",

@@ -67,17 +67,47 @@
           "rejectHint": "The reason is shown to whoever registered the application, so name what has to change."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
-        "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+      "hangarTour": {
+        "welcome": {
+          "title": "Welcome to your hangar",
+          "text": "Your hangar keeps track of every ship you own. This short tour shows where everything is — you can replay it from the menu at any time."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "Lookout for this icon:"
+        "add": {
+          "title": "Add ships",
+          "text": "Pick one or more ships and how many of each. On any ship's page or card, the bookmark icon adds it to your hangar or wishlist too."
+        },
+        "sync": {
+          "title": "Sync from RSI",
+          "text": "Already pledged? With the FleetYards browser extension installed, sync your RSI hangar instead of adding ships by hand — and again whenever your pledges change."
+        },
+        "groups": {
+          "title": "Groups",
+          "text": "Sort your ships into groups of your own with + and the pen. Click a group to filter by it, hover it to highlight its ships."
+        },
+        "vehicle": {
+          "title": "Each ship's menu",
+          "text": "Edit a ship from here: name it, pick its paint, make it your flagship, set its visibility, manage loadouts or move it to your wishlist."
+        },
+        "wishlist": {
+          "title": "Wishlist",
+          "text": "Ships you want but don't own yet go on your wishlist, with optional sale notifications."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "Line your ships up side by side to scale, and save the chart as an image."
+        },
+        "stats": {
+          "title": "Stats",
+          "text": "Roles, manufacturers, sizes and what you have spent, with a CSV export."
+        },
+        "share": {
+          "title": "Share your hangar",
+          "text": "Your public hangar is on. Share its link — you decide which ships and groups appear there."
+        },
+        "menu": {
+          "title": "More",
+          "text": "Import and export your hangar, buy-backs and your import history — and this tour, whenever you want it again."
+        }
       },
       "hangarPreview": {
         "notified": {

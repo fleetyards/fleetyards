@@ -1,15 +1,6 @@
 {
   "es": {
     "sublines": {
-      "hangarGuide": {
-        "headline": "quizás deberíamos cambiar eso ;)",
-        "add": "¿Cómo agregar una nave?",
-        "edit": "¿Cómo editar una nave?",
-        "wishlist": "¿Cómo agregar una nave a su lista de deseos?",
-        "fleetchart": "¿Gráfico de flota?",
-        "public": "¿URL pública?",
-        "groups": "¿Cómo crear y actualizar grupos?"
-      },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
         "disclaimer": "Descargo de responsabilidad",

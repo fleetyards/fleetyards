@@ -67,17 +67,47 @@
           "rejectHint": "Le motif est montré à la personne qui a enregistré l'application : indiquez donc ce qui doit changer."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
-        "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+      "hangarTour": {
+        "welcome": {
+          "title": "Bienvenue dans votre hangar",
+          "text": "Votre hangar recense tous les vaisseaux que vous possédez. Cette courte visite vous montre où tout se trouve — vous pouvez la relancer à tout moment depuis le menu."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "Recherchez cette icône :"
+        "add": {
+          "title": "Ajouter des vaisseaux",
+          "text": "Choisissez un ou plusieurs vaisseaux et leur nombre. Sur la page ou la carte de chaque vaisseau, l'icône de marque-page l'ajoute aussi à votre hangar ou à votre liste de souhaits."
+        },
+        "sync": {
+          "title": "Synchroniser avec RSI",
+          "text": "Vous avez déjà des pledges ? Avec l'extension de navigateur FleetYards, synchronisez votre hangar RSI au lieu d'ajouter les vaisseaux à la main — et recommencez dès que vos pledges changent."
+        },
+        "groups": {
+          "title": "Groupes",
+          "text": "Rangez vos vaisseaux dans vos propres groupes avec + et le crayon. Cliquez sur un groupe pour filtrer, survolez-le pour mettre ses vaisseaux en évidence."
+        },
+        "vehicle": {
+          "title": "Le menu de chaque vaisseau",
+          "text": "Modifiez un vaisseau d'ici : nommez-le, choisissez sa peinture, faites-en votre vaisseau amiral, réglez sa visibilité, gérez ses loadouts ou déplacez-le vers votre liste de souhaits."
+        },
+        "wishlist": {
+          "title": "Liste de souhaits",
+          "text": "Les vaisseaux que vous voulez sans les posséder encore vont sur votre liste de souhaits, avec des notifications de soldes en option."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "Alignez vos vaisseaux côte à côte à l'échelle et enregistrez le graphique en image."
+        },
+        "stats": {
+          "title": "Statistiques",
+          "text": "Rôles, constructeurs, tailles et dépenses, avec un export CSV."
+        },
+        "share": {
+          "title": "Partager votre hangar",
+          "text": "Votre hangar public est activé. Partagez son lien — vous décidez quels vaisseaux et groupes y apparaissent."
+        },
+        "menu": {
+          "title": "Plus",
+          "text": "Importer et exporter votre hangar, les buy-backs et votre historique d'import — et cette visite, chaque fois que vous en avez besoin."
+        }
       },
       "hangarPreview": {
         "notified": {

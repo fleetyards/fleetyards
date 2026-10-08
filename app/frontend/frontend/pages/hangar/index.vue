@@ -20,6 +20,7 @@ import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
+import HangarTour from "@/frontend/components/Hangar/Tour/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -335,13 +336,38 @@ const destroyAll = async () => {
   });
 };
 
+const tourOpen = ref(false);
+
 const openGuide = () => {
-  comlink.emit("open-modal", {
-    wide: true,
-    component: () =>
-      import("@/frontend/components/Hangar/GuideModal/index.vue"),
-  });
+  tourOpen.value = true;
 };
+
+// Waits for the groups as well as the stats: the tour picks its steps when it
+// starts, and the groups row is one of them. The delay lets the page's enter
+// transition settle, so the first spotlight is measured where it stays.
+const TOUR_AUTOSTART_DELAY = 800;
+
+let tourTimer = 0;
+
+watch(
+  () =>
+    !hangarStore.tourSeen &&
+    !!hangarGroups.value &&
+    hangarStats.value?.total === 0 &&
+    !isFilterSelected.value,
+  (shouldStart) => {
+    window.clearTimeout(tourTimer);
+
+    if (shouldStart) {
+      tourTimer = window.setTimeout(openGuide, TOUR_AUTOSTART_DELAY);
+    }
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(() => {
+  window.clearTimeout(tourTimer);
+});
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
@@ -367,6 +393,7 @@ const openDisplayOptionsModal = () => {
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"
+            data-tour="hangar-groups"
             :hangar-groups="hangarGroups"
             :hangar-group-counts="hangarGroupCounts"
             :label="t('labels.groups')"
@@ -432,7 +459,11 @@ const openDisplayOptionsModal = () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-wishlist' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-wishlist' }"
+      data-tour="hangar-wishlist"
+    >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -445,6 +476,7 @@ const openDisplayOptionsModal = () => {
     <Btn
       :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
+      data-tour="hangar-fleetchart"
       @click="toggleFleetchart"
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />
@@ -460,7 +492,11 @@ const openDisplayOptionsModal = () => {
       {{ t("labels.hangarInventories") }}
     </Btn>
 
-    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-stats' }"
+      data-tour="hangar-stats"
+    >
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
@@ -468,6 +504,7 @@ const openDisplayOptionsModal = () => {
     <ShareBtn
       :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicHangar && shareUrl"
+      data-tour="hangar-share"
       :url="shareUrl"
       :title="shareTitle"
       no-label
@@ -490,8 +527,8 @@ const openDisplayOptionsModal = () => {
       >
         <i class="fa-duotone fa-sliders" />
       </Btn>
-      <HangarSyncBtn :size="BtnSizesEnum.SM" />
-      <BtnDropdown>
+      <HangarSyncBtn :size="BtnSizesEnum.SM" data-tour="hangar-sync" />
+      <BtnDropdown data-tour="hangar-menu">
         <template v-if="mobile">
           <Btn :to="{ name: 'hangar-wishlist' }">
             <i class="fa-duotone fa-wand-sparkles" />
@@ -526,7 +563,11 @@ const openDisplayOptionsModal = () => {
           <hr />
         </template>
 
-        <Btn :aria-label="t('actions.showGuide')" @click="openGuide">
+        <Btn
+          :aria-label="t('actions.showGuide')"
+          data-test="hangar-show-guide"
+          @click="openGuide"
+        >
           <i class="fa-duotone fa-question" />
           <span>{{ t("actions.showGuide") }}</span>
         </Btn>
@@ -700,9 +741,16 @@ const openDisplayOptionsModal = () => {
       <HangarEmpty
         v-if="!hideEmpty && emptyVisible"
         :variant="EmptyVariantsEnum.BOX"
+        @open-guide="openGuide"
       />
     </template>
   </FilteredList>
 
-  <PrimaryAction :label="t('actions.addVehicle')" :action="showNewModal" />
+  <PrimaryAction
+    :label="t('actions.addVehicle')"
+    :action="showNewModal"
+    data-tour="hangar-add"
+  />
+
+  <HangarTour v-model:open="tourOpen" />
 </template>

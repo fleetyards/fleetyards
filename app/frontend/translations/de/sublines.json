@@ -1,15 +1,6 @@
 {
   "de": {
     "sublines": {
-      "hangarGuide": {
-        "headline": "vielleicht sollten wir das ändern ;)",
-        "add": "Wie füge ich ein Schiff hinzu?",
-        "edit": "Wie bearbeite ich ein Schiff?",
-        "wishlist": "Wie füge ich ein Schiff zur Wunschliste hinzu?",
-        "fleetchart": "Flottenübersicht?",
-        "public": "Öffentliche URL?",
-        "groups": "Wie erstelle und aktualisiere ich Gruppen?"
-      },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
         "disclaimer": "Haftungsausschluss",

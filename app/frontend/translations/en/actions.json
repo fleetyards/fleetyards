@@ -236,7 +236,7 @@
         "refresh": "Refresh Page"
       },
       "empty": {
-        "hangarGuide": "Need Help?",
+        "hangarGuide": "Take the tour",
         "reset": "Clear Filters"
       },
       "destroyFleet": "Destroy Fleet",

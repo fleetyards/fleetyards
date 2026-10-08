@@ -67,17 +67,47 @@
           "rejectHint": "该原因会展示给注册此应用的人，请说明需要修改什么。"
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
-        "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+      "hangarTour": {
+        "welcome": {
+          "title": "欢迎来到你的机库",
+          "text": "你的机库记录着你拥有的每一艘舰船。这个简短的导览会告诉你各项功能在哪里——你可以随时从菜单中重新开始。"
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "注意这个图标："
+        "add": {
+          "title": "添加舰船",
+          "text": "选择一艘或多艘舰船以及各自的数量。在任意舰船的页面或卡片上，书签图标也能将它添加到你的机库或愿望单。"
+        },
+        "sync": {
+          "title": "从 RSI 同步",
+          "text": "已经有 pledge 了？安装 FleetYards 浏览器扩展后，即可同步你的 RSI 机库，无需手动添加舰船——pledge 有变化时再同步一次即可。"
+        },
+        "groups": {
+          "title": "分组",
+          "text": "用 + 和铅笔按钮把舰船整理到你自己的分组中。点击分组可按其筛选，悬停可高亮其中的舰船。"
+        },
+        "vehicle": {
+          "title": "每艘舰船的菜单",
+          "text": "在这里编辑舰船：命名、选择涂装、设为旗舰、设置可见性、管理配装，或移到愿望单。"
+        },
+        "wishlist": {
+          "title": "愿望单",
+          "text": "想要但还没有的舰船放进愿望单，可选开启促销通知。"
+        },
+        "fleetchart": {
+          "title": "舰队图",
+          "text": "按比例并排展示你的舰船，并将图表保存为图片。"
+        },
+        "stats": {
+          "title": "统计",
+          "text": "角色、制造商、尺寸以及你的花费，支持 CSV 导出。"
+        },
+        "share": {
+          "title": "分享你的机库",
+          "text": "你的公开机库已开启。分享它的链接——显示哪些舰船和分组由你决定。"
+        },
+        "menu": {
+          "title": "更多",
+          "text": "导入和导出机库、回购以及导入历史——还有这个导览，随时可以再看一遍。"
+        }
       },
       "hangarPreview": {
         "notified": {

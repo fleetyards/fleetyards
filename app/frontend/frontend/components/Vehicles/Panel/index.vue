@@ -248,6 +248,7 @@ const tone = computed(() => {
         :wishlist="wishlist"
         :variant="BtnVariantsEnum.BARE"
         class="vehicle-panel--context-menu-button"
+        data-tour="vehicle-menu"
       />
 
       <AddToHangar

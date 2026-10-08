@@ -8,7 +8,6 @@ export default {
 import Empty from "@/shared/components/Empty/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
-import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { useHangarStore } from "@/frontend/stores/hangar";
@@ -27,17 +26,9 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+const emit = defineEmits<{ openGuide: [] }>();
+
 const hangarStore = useHangarStore();
-
-const comlink = useComlink();
-
-const openGuide = () => {
-  comlink.emit("open-modal", {
-    wide: true,
-    component: () =>
-      import("@/frontend/components/Hangar/GuideModal/index.vue"),
-  });
-};
 </script>
 
 <template>
@@ -54,7 +45,7 @@ const openGuide = () => {
     </template>
     <template v-if="!wishlist" #actions="{ queryPresent }">
       <HangarSyncBtn v-if="!queryPresent" />
-      <Btn v-if="!queryPresent" @click="openGuide">
+      <Btn v-if="!queryPresent" @click="emit('openGuide')">
         {{ t("actions.empty.hangarGuide") }}
       </Btn>
     </template>
