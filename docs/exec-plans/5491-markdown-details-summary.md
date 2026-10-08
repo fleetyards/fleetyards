@@ -42,4 +42,4 @@ A `<details>`/`<summary>` section, written GitHub's way, renders as a collapsibl
 
 ## Progress
 - [x] Phase 1
-- [ ] Phase 2
+- [x] Phase 2
