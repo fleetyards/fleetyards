@@ -61,6 +61,8 @@ module Api
           # rubocop:enable Rails/SkipsModelValidations
 
           Vehicle.delete_with_dependents(authorized_scope(Vehicle.all).purchased.pluck(:id))
+
+          current_resource_owner.hangar_pledge_items.delete_all
         end
       end
 

@@ -88,10 +88,15 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
 
   test "DELETE /hangar clears the hangar" do
     user = create(:user, vehicle_count: 2)
+    create(:hangar_pledge_item, user:)
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Space Globe - Terra")
+    other = create(:hangar_pledge_item)
     sign_in user
 
     assert_api_response :delete, 204 do
       assert_equal 0, user.vehicles.where(wanted: false).count
+      assert_empty user.hangar_pledge_items
+      assert HangarPledgeItem.exists?(other.id)
     end
   end
 
