@@ -3,11 +3,11 @@
 module Short
   class BaseController < ApplicationController
     def hangar
-      redirect_to frontend_public_hangar_url(username: params[:username], share: params[:share].presence), allow_other_host: true
+      redirect_to with_query(frontend_public_hangar_url(username: params[:username])), allow_other_host: true
     end
 
     def wishlist
-      redirect_to frontend_public_wishlist_url(username: params[:username]), allow_other_host: true
+      redirect_to with_query(frontend_public_wishlist_url(username: params[:username])), allow_other_host: true
     end
 
     def hangar_stats
@@ -15,7 +15,7 @@ module Short
     end
 
     def hangar_fleetchart
-      redirect_to frontend_public_hangar_fleetchart_url(username: params[:username], share: params[:share].presence), allow_other_host: true
+      redirect_to with_query(frontend_public_hangar_fleetchart_url(username: params[:username])), allow_other_host: true
     end
 
     def fleet_invite
@@ -42,14 +42,31 @@ module Short
       redirect_to frontend_compare_url(models: slugs), allow_other_host: true
     end
 
-    def fleet_event
-      fleet = Fleet.find_by("LOWER(fid) = ?", params[:fleet_fid].to_s.downcase)
-      event = fleet&.fleet_events&.find_by(slug: params[:event_slug])
-      if event
-        redirect_to frontend_fleet_event_url(fleet_slug: fleet.slug, event_slug: event.slug), allow_other_host: true
+    def fleet_ships
+      fleet = Fleet.kept.find_by(normalized_fid: params[:fleet_fid].to_s.downcase)
+      if fleet
+        redirect_to with_query(frontend_fleet_ships_url(slug: fleet.slug)), allow_other_host: true
       else
         redirect_to "/404", allow_other_host: true
       end
+    end
+
+    def fleet_event
+      fleet = Fleet.kept.find_by(normalized_fid: params[:fleet_fid].to_s.downcase)
+      event = fleet&.fleet_events&.find_by(slug: params[:event_slug])
+      if event
+        redirect_to with_query(frontend_fleet_event_url(fleet_slug: fleet.slug, event_slug: event.slug)), allow_other_host: true
+      else
+        redirect_to "/404", allow_other_host: true
+      end
+    end
+
+    # The raw string, not a rebuilt one: to_query turns a repeated filter key
+    # into `key[]`, which the frontend router reads as a different key.
+    private def with_query(url)
+      return url if request.query_string.blank?
+
+      "#{url}?#{request.query_string}"
     end
 
     private def canonical_share_slugs(share_key)

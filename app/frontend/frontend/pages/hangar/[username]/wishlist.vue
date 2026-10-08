@@ -39,8 +39,6 @@ import {
 
 const { t } = useI18n();
 
-const fleetchartShareUrl = useFleetchartShareUrl();
-
 const route = useRoute();
 
 // The chips picked in the display options, plus whichever sort the list is in
@@ -59,6 +57,10 @@ const props = defineProps<Props>();
 const username = computed(() => {
   return props.user.username;
 });
+
+const fleetchartShareUrl = useFleetchartShareUrl(
+  () => `/h/${encodeURIComponent(username.value)}/wishlist`,
+);
 
 const usernamePlural = computed(() => possessiveUsername(username.value));
 

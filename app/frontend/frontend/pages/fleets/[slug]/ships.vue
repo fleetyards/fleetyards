@@ -13,6 +13,7 @@ import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import { fleetShipsShareUrl } from "@/frontend/utils/fleetShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -33,9 +34,8 @@ const shareUrl = computed(() => {
   if (!props.fleet) {
     return "";
   }
-  const host = `${window.location.protocol}//${window.location.host}`;
 
-  return `${host}/fleets/${props.fleet.slug}/ships`;
+  return fleetShipsShareUrl(props.fleet);
 });
 
 const shareTitle = computed(() => {

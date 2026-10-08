@@ -24,6 +24,7 @@ import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/ind
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
 import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { shortUrl } from "@/frontend/utils/shortUrl";
 import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
 import YourSignupPanel from "@/frontend/components/Fleets/Events/YourSignupPanel/index.vue";
 import {
@@ -319,20 +320,27 @@ const router = useRouter();
 // The event's own address rather than the one in the bar, which can carry a
 // modal or a tab in its query. The occurrence stays: a recurring event's link
 // is to the date being looked at, not to the series.
-const shareUrl = computed(() =>
-  event.value
-    ? new URL(
-        router.resolve({
-          name: "fleet-event",
-          params: { slug: props.fleet.slug, event: event.value.slug },
-          query: occurrenceParam.value
-            ? { occurrence: occurrenceParam.value }
-            : {},
-        }).href,
-        window.location.origin,
-      ).href
-    : "",
-);
+const shareUrl = computed(() => {
+  if (!event.value) {
+    return "";
+  }
+
+  const url = new URL(
+    router.resolve({
+      name: "fleet-event",
+      params: { slug: props.fleet.slug, event: event.value.slug },
+      query: occurrenceParam.value ? { occurrence: occurrenceParam.value } : {},
+    }).href,
+    window.location.origin,
+  );
+
+  return (
+    shortUrl(
+      `/fe/${encodeURIComponent(props.fleet.fid)}/${encodeURIComponent(event.value.slug)}`,
+      url.search,
+    ) ?? url.href
+  );
+});
 
 const goToSeriesEdit = (slug: string) =>
   router.push({

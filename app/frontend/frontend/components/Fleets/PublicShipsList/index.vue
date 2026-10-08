@@ -24,6 +24,8 @@ import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { storeToRefs } from "pinia";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
+import { fleetShipsShortPath } from "@/frontend/utils/fleetShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -71,15 +73,9 @@ const openDisplayOptionsModal = () => {
 
 const fleetchartStore = useFleetchartStore();
 
-const fleetchartShareUrl = computed(() => {
-  if (!props.fleet?.publicFleet) {
-    return undefined;
-  }
-
-  const host = `${window.location.protocol}//${window.location.host}`;
-
-  return `${host}/fleets/${props.fleet.slug}/fleetchart`;
-});
+const fleetchartShareUrl = useFleetchartShareUrl(() =>
+  fleetShipsShortPath(props.fleet),
+);
 
 const fleetchartVisible = computed(() => {
   return fleetchartStore.isVisible("publicFleet");
@@ -210,7 +206,7 @@ const refetch = async () => {
         <FleetchartApp
           :items="fleetVehicles?.items || []"
           namespace="publicFleet"
-          :share-url="fleetchartShareUrl"
+          :share-url="fleet.publicFleet ? fleetchartShareUrl : undefined"
           :share-title="fleet.name"
           :loading="loading"
           :download-name="`${fleet.slug}-fleetchart`"

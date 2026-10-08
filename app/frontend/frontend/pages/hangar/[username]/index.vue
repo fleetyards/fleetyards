@@ -53,13 +53,15 @@ import {
 
 const { t } = useI18n();
 
-const fleetchartShareUrl = useFleetchartShareUrl();
-
 type Props = {
   user: UserPublic;
 };
 
 const props = defineProps<Props>();
+
+const fleetchartShareUrl = useFleetchartShareUrl(
+  () => `/h/${encodeURIComponent(props.user.username)}`,
+);
 
 const route = useRoute();
 
