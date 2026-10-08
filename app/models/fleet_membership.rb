@@ -77,6 +77,7 @@ class FleetMembership < ApplicationRecord
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadrons, through: :fleet_squadron_memberships
   has_many :fleet_squadron_requests, dependent: :destroy
+  has_many :fleet_event_signups
 
   # A squadron membership can be added after this association was loaded, so
   # make the dependent destroy callback read the current rows before deleting
@@ -168,7 +169,7 @@ class FleetMembership < ApplicationRecord
   after_commit :refresh_discord_join_request, if: :join_request_closed?
   before_destroy :check_if_can_be_destroyed
   before_discard :check_if_can_be_destroyed
-  after_discard :broadcast_destroy, :remove_fleet_vehicles, :sync_discord_roles
+  after_discard :broadcast_destroy, :remove_fleet_vehicles, :withdraw_upcoming_event_signups, :sync_discord_roles
   after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles, :sync_discord_roles
 
   # The uniqueness validation reads before the insert, so two joins arriving
@@ -332,6 +333,34 @@ class FleetMembership < ApplicationRecord
 
   def remove_fleet_vehicles
     FleetVehicle.where(fleet_id:, vehicle_id: user.vehicle_ids).destroy_all
+  end
+
+  # A discarded membership keeps its signups, so a seat it held would stay
+  # taken. Events already under way keep theirs as the record of who flew, and a
+  # restored membership does not get its seats back: they may be gone.
+  def withdraw_upcoming_event_signups
+    fleet_event_signups
+      .where.not(status: "withdrawn")
+      .joins(:fleet_event)
+      .where.not(fleet_events: {status: %w[completed cancelled]})
+      .where(
+        "(fleet_events.recurring AND (fleet_event_signups.occurrence_date IS NULL OR fleet_event_signups.occurrence_date >= :today)) OR " \
+        "(NOT fleet_events.recurring AND fleet_events.status != 'active' AND fleet_events.starts_at > :now)",
+        today: Date.current, now: Time.current
+      )
+      .includes(:fleet_event)
+      # Each withdrawal touches its event, so two removals at once must touch
+      # them in the same order or they deadlock.
+      .order(:fleet_event_id, :id)
+      .each do |signup|
+        next if signup.occurrence_started?
+
+        # A legacy row failing a later validation must not block the removal.
+        signup.withdraw!(validate: false)
+        ActiveRecord.after_all_transactions_commit do
+          ActiveSupport::Notifications.instrument("fleet_event_signup.withdrawn", signup:)
+        end
+      end
   end
 
   def update_fleet_vehicle(vehicle)

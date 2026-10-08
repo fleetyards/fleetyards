@@ -450,6 +450,13 @@ class FleetEvent < ApplicationRecord
     occurrences(from: after, take: 1).first
   end
 
+  # When the occurrence keyed by `date` starts, or nil if the series has none
+  # on that day.
+  def occurrence_starts_at(date)
+    day = date.in_time_zone(Time.zone)
+    occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
+  end
+
   # Both write the whole array, so the row lock (which also reloads it) keeps a
   # skip and a restore landing at the same time from dropping each other's date.
   def skip_occurrence!(date)
@@ -482,8 +489,7 @@ class FleetEvent < ApplicationRecord
   # its key the day before the key would keep that occurrence or drop the one
   # before it.
   def until_before(date)
-    day = date.in_time_zone(Time.zone)
-    occurrence = occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
+    occurrence = occurrence_starts_at(date)
     return date - 1.day if occurrence.nil?
 
     occurrence.in_time_zone(recurrence_time_zone).to_date - 1.day

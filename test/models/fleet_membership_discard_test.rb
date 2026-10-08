@@ -42,4 +42,196 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert rejoined.valid?, rejoined.errors.full_messages.to_sentence
     assert rejoined.save
   end
+
+  def signup_for(membership, event, **attributes)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    create(:fleet_event_signup, fleet_event_slot: slot, fleet_membership: membership, **attributes)
+  end
+
+  test "discarding a membership frees the seats it holds in upcoming events" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+
+    assert membership.discard
+
+    assert signup.reload.withdrawn?
+    assert_equal 0, event.signups_count
+  end
+
+  test "an upcoming occurrence of a recurring event is freed, a past one is kept" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 2.weeks.ago, recurring: true,
+      recurrence_interval: "weekly", recurrence_count: 10)
+    upcoming = signup_for(membership, event, occurrence_date: 1.week.from_now.to_date)
+    past = signup_for(membership, event, occurrence_date: 1.week.ago.to_date)
+
+    assert membership.discard
+
+    assert upcoming.reload.withdrawn?
+    assert_equal "confirmed", past.reload.status
+  end
+
+  test "signups for events already under way stay as the record of who flew" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    over = create(:fleet_event, :open, fleet:, starts_at: 2.days.ago, ends_at: 1.day.ago)
+    running = create(:fleet_event, :open, fleet:, starts_at: 1.hour.ago, ends_at: 1.hour.from_now)
+    completed = create(:fleet_event, fleet:, status: "completed", starts_at: 1.hour.from_now)
+    kept = [signup_for(membership, over), signup_for(membership, running), signup_for(membership, completed)]
+
+    assert membership.discard
+
+    assert_equal %w[confirmed confirmed confirmed], kept.map { |signup| signup.reload.status }
+  end
+
+  test "today's occurrence of a recurring event is kept once it has started" do
+    travel_to Time.zone.local(2026, 10, 8, 16, 0) do
+      fleet = create(:fleet, created_by: @creator.id, members: [@member])
+      membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+      ended = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 9, 0), ends_at: Time.zone.local(2026, 9, 24, 11, 0))
+      running = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 15, 0), ends_at: Time.zone.local(2026, 9, 24, 17, 0))
+      tonight = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 20, 0), ends_at: Time.zone.local(2026, 9, 24, 22, 0))
+      flown = signup_for(membership, ended, occurrence_date: Date.current)
+      flying = signup_for(membership, running, occurrence_date: Date.current)
+      upcoming = signup_for(membership, tonight, occurrence_date: Date.current)
+
+      assert membership.discard
+
+      assert_equal %w[confirmed confirmed], [flown, flying].map { |signup| signup.reload.status }
+      assert upcoming.reload.withdrawn?
+    end
+  end
+
+  test "a freed seat tells the event's creator, as a withdrawal does" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    withdrawn = []
+
+    ActiveSupport::Notifications.subscribed(->(*, payload) { withdrawn << payload[:signup] }, "fleet_event_signup.withdrawn") do
+      assert membership.discard
+    end
+
+    assert_equal [signup], withdrawn
+  end
+
+  test "a discarded membership cannot take a new seat" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    signup = build(:fleet_event_signup, fleet_event_slot: slot, fleet_membership: membership)
+    FleetMembership.where(id: membership.id).update_all(discarded_at: Time.current)
+
+    assert_not signup.save
+    assert signup.errors.added?(:fleet_membership_id, :not_a_member)
+  end
+
+  test "a signup loaded before the discard cannot be promoted after it" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    stale = create(:fleet_event_signup, fleet_event: event, fleet_event_slot: nil, fleet_membership: membership, status: "interested")
+
+    assert membership.discard
+    assert_not stale.update(fleet_event_slot: slot, status: "confirmed")
+    assert stale.errors.added?(:fleet_membership_id, :not_a_member)
+    assert stale.reload.withdrawn?
+  end
+
+  test "a signup failing a later validation is still freed" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+    other_slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: create(:fleet_event, fleet:)))
+    signup.update_columns(fleet_event_slot_id: other_slot.id)
+
+    assert membership.discard
+    assert signup.reload.withdrawn?
+  end
+
+  test "a rolled-back removal tells no one" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    withdrawn = []
+
+    ActiveSupport::Notifications.subscribed(->(*, payload) { withdrawn << payload[:signup] }, "fleet_event_signup.withdrawn") do
+      FleetMembership.transaction do
+        assert membership.discard
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    assert_empty withdrawn
+    assert_equal "confirmed", signup.reload.status
+  end
+
+  test "a departed member's kept signup can still be corrected in its slot" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    running = create(:fleet_event, :open, fleet:, starts_at: 1.hour.ago, ends_at: 1.hour.from_now)
+    kept = signup_for(membership, running, status: "pending")
+
+    assert membership.discard
+    assert kept.update(status: "confirmed")
+  end
+
+  test "an undated signup of a recurring event is freed" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+    event.update_columns(recurring: true, recurrence_interval: "weekly", recurrence_count: 10)
+
+    assert membership.discard
+    assert signup.reload.withdrawn?
+  end
+
+  test "a freed seat cannot be revived in place" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    stale = FleetEventSignup.find(signup.id)
+
+    assert membership.discard
+    assert_not signup.reload.update(status: "confirmed")
+    assert_not stale.update(status: "pending")
+    assert signup.reload.withdrawn?
+  end
+
+  test "an event started early keeps its seats" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 15.minutes.from_now)
+    signup = signup_for(membership, event)
+    event.start!
+
+    assert membership.discard
+    assert_equal "confirmed", signup.reload.status
+  end
+
+  test "a recurring event started early keeps today's seats only" do
+    travel_to Time.zone.local(2026, 10, 8, 19, 50) do
+      fleet = create(:fleet, created_by: @creator.id, members: [@member])
+      membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+      event = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 20, 0), ends_at: Time.zone.local(2026, 9, 24, 22, 0))
+      today = signup_for(membership, event, occurrence_date: Date.current)
+      next_week = signup_for(membership, event, occurrence_date: Date.current + 7)
+      event.start!
+
+      assert membership.discard
+      assert_equal "confirmed", today.reload.status
+      assert next_week.reload.withdrawn?
+    end
+  end
 end

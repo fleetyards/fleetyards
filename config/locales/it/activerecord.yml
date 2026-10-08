@@ -506,3 +506,13 @@ it:
               invalid: Token non valido
             username:
               taken: è già stato preso.
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: è già iscritto a questo posto
+              not_a_member: non è più membro di questa flotta
+            fleet_event_slot_id:
+              already_taken: è già occupato da un altro membro
+              wrong_event: non appartiene a questo evento
+            status:
+              invalid_for_slot: deve essere confermata o in attesa per un posto

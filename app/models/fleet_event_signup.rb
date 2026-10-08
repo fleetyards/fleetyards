@@ -46,6 +46,7 @@ class FleetEventSignup < ApplicationRecord
   validates :status, inclusion: {in: STATUSES}
   validate :unique_active_signup_per_member, on: :create
   validate :slot_not_already_taken, on: :create
+  validate :membership_still_kept, if: :claims_seat?
   validate :slot_belongs_to_event
   validate :slot_bound_status_allowed
 
@@ -74,8 +75,21 @@ class FleetEventSignup < ApplicationRecord
     status == "pending"
   end
 
-  def withdraw!
-    update!(status: "withdrawn", withdrawn_at: Time.current)
+  def withdraw!(validate: true)
+    assign_attributes(status: "withdrawn", withdrawn_at: Time.current)
+    save!(validate:)
+  end
+
+  # A recurring signup is keyed by day, so its date alone cannot tell whether
+  # today's occurrence has already started.
+  def occurrence_started?
+    return fleet_event.active? || fleet_event.starts_at <= Time.current unless fleet_event.recurring?
+    return false if occurrence_date.nil?
+    return occurrence_date < Date.current unless occurrence_date == Date.current
+    return true if fleet_event.active?
+
+    starts_at = fleet_event.occurrence_starts_at(occurrence_date)
+    starts_at.present? && starts_at <= Time.current
   end
 
   # Effective approval mode (slot override, falling back to the event default).
@@ -141,6 +155,27 @@ class FleetEventSignup < ApplicationRecord
     if taken.exists?
       errors.add(:fleet_event_slot_id, :already_taken)
     end
+  end
+
+  # A departing member's seats are withdrawn after the discard, so a signup
+  # still in flight, new or promoted from a copy loaded before the cleanup,
+  # would slip past it. A shared lock on the membership row orders the two:
+  # this either sees the discard or commits before the cleanup reads.
+  private def membership_still_kept
+    return if fleet_membership_id.blank?
+
+    discarded_at = FleetMembership.lock("FOR SHARE").where(id: fleet_membership_id).pick(:discarded_at)
+    errors.add(:fleet_membership_id, :not_a_member) if discarded_at.present?
+  end
+
+  # A departed member keeps only signups for events already under way, so a
+  # change there is a correction; before that, reviving one retakes a seat.
+  private def claims_seat?
+    return false if withdrawn?
+    return true if new_record?
+    return false unless will_save_change_to_status? || will_save_change_to_fleet_event_slot_id?
+
+    !occurrence_started?
   end
 
   private def stamp_status_timestamps
