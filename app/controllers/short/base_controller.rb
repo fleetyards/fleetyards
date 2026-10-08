@@ -52,7 +52,7 @@ module Short
     end
 
     def fleet_event
-      fleet = Fleet.find_by("LOWER(fid) = ?", params[:fleet_fid].to_s.downcase)
+      fleet = Fleet.kept.find_by(normalized_fid: params[:fleet_fid].to_s.downcase)
       event = fleet&.fleet_events&.find_by(slug: params[:event_slug])
       if event
         redirect_to with_query(frontend_fleet_event_url(fleet_slug: fleet.slug, event_slug: event.slug)), allow_other_host: true

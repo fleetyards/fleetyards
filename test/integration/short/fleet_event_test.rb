@@ -25,4 +25,18 @@ class Short::FleetEventTest < ActionDispatch::IntegrationTest
     assert_response :found
     assert_match(%r{/404\z}, response.location)
   end
+
+  test "resolves a reused FID to the kept fleet" do
+    creator = create(:user)
+    discarded = create(:fleet, created_by: creator.id, fid: "REUSE")
+    create(:fleet_event, fleet: discarded, slug: "new-event")
+    discarded.discard
+    fleet = create(:fleet, created_by: creator.id, fid: "REUSE")
+    event = create(:fleet_event, fleet:, slug: "new-event")
+
+    get "/fe/REUSE/#{event.slug}"
+
+    assert_response :found
+    assert_match(%r{/fleets/#{fleet.slug}/events/#{event.slug}/\z}, response.location)
+  end
 end
