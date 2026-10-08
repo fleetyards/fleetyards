@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   modelValue?: number;
@@ -26,6 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
 const innerValue = ref(1);
 
 const mobile = useMobile();
+
+const { t } = useI18n();
 
 const innerMark = computed(() => {
   return mobile.value ? 5 : props.mark;
@@ -73,6 +76,7 @@ const label = (value: number) => {
       :marks="marks"
       :dot-size="20"
       :tooltip-formatter="label"
+      :label="t('labels.fleetchartScale')"
       :process="false"
       :lazy="true"
       @change="update"

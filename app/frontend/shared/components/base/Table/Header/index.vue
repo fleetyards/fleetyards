@@ -63,6 +63,7 @@ const cssClasses = (column: BaseTableCol<T>) => {
           :disabled="props.loading || props.emptyVisible"
           name="all"
           :model-value="props.allSelected"
+          :label="t('labels.table.selectAll')"
           inline
           no-label
           :partial="props.selected.length > 0 && !props.allSelected"

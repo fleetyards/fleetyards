@@ -466,6 +466,7 @@
       "hangarStats": "Estadísticas",
       "wishlist": "Lista de deseos",
       "fleetchart": "Gráfico de flota",
+      "fleetchartScale": "Escala de naves",
       "fleetchartApp": {
         "screenHeight": "Altura de pantalla",
         "viewpoint": "Punto de vista",
@@ -2502,7 +2503,9 @@
         "nullablePrompt": "Seleccionar una nave"
       },
       "table": {
-        "selected": "%{count} seleccionados"
+        "selected": "%{count} seleccionados",
+        "selectRow": "Seleccionar fila",
+        "selectAll": "Seleccionar todas las filas"
       },
       "commodityPrice": {
         "item": "ShopCommodity",

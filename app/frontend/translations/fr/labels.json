@@ -466,6 +466,7 @@
       "hangarStats": "Statistiques",
       "wishlist": "Liste de souhait",
       "fleetchart": "Graphique de la Flotte",
+      "fleetchartScale": "Échelle des vaisseaux",
       "fleetchartApp": {
         "screenHeight": "Hauteur de l'écran",
         "viewpoint": "Point de vue",
@@ -2502,7 +2503,9 @@
         "nullablePrompt": "Sélectionner un vaisseau"
       },
       "table": {
-        "selected": "%{count} sélectionné"
+        "selected": "%{count} sélectionné",
+        "selectRow": "Sélectionner la ligne",
+        "selectAll": "Sélectionner toutes les lignes"
       },
       "commodityPrice": {
         "item": "Magasins de marchandise",

@@ -201,6 +201,7 @@ defineExpose({
       <FormCheckbox
         :model-value="allSelected"
         name="select-all"
+        :label="t('labels.table.selectAll')"
         no-label
         inline
         :partial="partialSelected"
@@ -268,6 +269,7 @@ defineExpose({
         v-if="props.selectable"
         v-model="internalSelected"
         name="item"
+        :label="t('labels.table.selectRow')"
         no-label
         inline
         :checkbox-value="item.id"

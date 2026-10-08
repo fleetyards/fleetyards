@@ -368,6 +368,7 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
             v-model="distance"
             :min="DISTANCE_MIN"
             :max="DISTANCE_MAX"
+            :label="t('labels.travelTimes.jumpDistance')"
             class="travel-times__slider"
           />
 

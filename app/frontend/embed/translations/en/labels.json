@@ -1,7 +1,8 @@
 {
   "en": {
     "labels": {
-      "notAvailable": "N/A"
+      "notAvailable": "N/A",
+      "fleetchartScale": "Ship scale"
     }
   }
 }

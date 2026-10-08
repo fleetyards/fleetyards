@@ -19,6 +19,7 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
 import {
   useListGeometry,
   useReportListGeometry,
@@ -93,6 +94,8 @@ const isLoading = computed(() => {
 const internalSelected = ref<string[]>([]);
 
 const mobile = useMobile();
+
+const { t } = useI18n();
 
 // A list frames the table with its own page size and with what a row of this
 // very table measured last time; a table standing on its own is told.
@@ -395,6 +398,7 @@ onUnmounted(() => {
                 <FormCheckbox
                   v-model="internalSelected"
                   name="item"
+                  :label="t('labels.table.selectRow')"
                   no-label
                   inline
                   :checkbox-value="primaryValue(record)"

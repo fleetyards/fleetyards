@@ -33,6 +33,10 @@ type Props = {
    * `<label>` still toggles the control when it is clicked.
    */
   info?: string;
+  /*
+   * Hides the visible label; `label` then still names the control for screen
+   * readers, which a bare checkbox in a selection column needs.
+   */
   noLabel?: boolean;
 };
 
@@ -149,6 +153,7 @@ const innerPlaceholder = computed(() => {
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
       :aria-describedby="errorMessage ? errorId : undefined"
+      :aria-label="noLabel ? label : undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :checked="checked"

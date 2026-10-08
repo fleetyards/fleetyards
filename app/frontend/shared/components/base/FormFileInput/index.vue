@@ -542,6 +542,7 @@ defineExpose({
       <Btn
         v-if="clearable && (internalSrc || inputValue || presetSrc)"
         v-tooltip="clearLabel"
+        :aria-label="clearLabel"
         @click="clear"
         class="base-image-input__clear"
         variant="bare"

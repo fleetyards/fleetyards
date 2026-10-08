@@ -466,6 +466,7 @@
       "hangarStats": "統計",
       "wishlist": "願望清單",
       "fleetchart": "艦隊圖表",
+      "fleetchartScale": "艦船比例",
       "fleetchartApp": {
         "screenHeight": "螢幕高度",
         "viewpoint": "視角",
@@ -2502,7 +2503,9 @@
         "nullablePrompt": "選擇飛船"
       },
       "table": {
-        "selected": "%{count} 已選擇"
+        "selected": "%{count} 已選擇",
+        "selectRow": "選擇列",
+        "selectAll": "選擇所有列"
       },
       "commodityPrice": {
         "item": "ShopCommodity",

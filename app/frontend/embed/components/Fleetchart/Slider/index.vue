@@ -5,11 +5,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useI18n } from "@/embed/composables/useI18n";
+
 type Props = {
   initialScale: number;
 };
 
 const props = defineProps<Props>();
+
+const { t } = useI18n();
 
 const scale = ref<number>(props.initialScale);
 
@@ -42,6 +46,7 @@ const label = (value: number) => `${value} %`;
     :dot-size="20"
     :marks="mark"
     :tooltip-formatter="label"
+    :label="t('labels.fleetchartScale')"
     :process="false"
     lazy
     @change="updateScale"

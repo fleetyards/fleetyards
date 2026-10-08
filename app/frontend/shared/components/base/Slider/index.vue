@@ -25,6 +25,7 @@ type Props = {
    * dragged at once.
    */
   info?: string;
+  label?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   process: false,
   lazy: false,
   info: undefined,
+  label: undefined,
 });
 
 const emit = defineEmits<{
@@ -194,6 +196,7 @@ onUnmounted(() => {
       class="base-slider"
       :class="{ 'base-slider--dragging': isDragging }"
       role="slider"
+      :aria-label="props.label"
       :aria-valuemin="props.min"
       :aria-valuemax="props.max"
       :aria-valuenow="currentValue"
