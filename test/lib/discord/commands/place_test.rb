@@ -123,6 +123,13 @@ module Discord
         assert_equal 2, choices.size
       end
 
+      test "ranks a place starting with a prefixed query first" do
+        create(:location, name: "Lorville", kind: "city", parent: @hurston, system: @stanton)
+        create(:location, name: "Old Lor", kind: "outpost", parent: @hurston, system: @stanton)
+
+        assert_equal "location:Lorville", ::Discord::Commands::Place.autocomplete("name", "location:lor").first[:value]
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 
