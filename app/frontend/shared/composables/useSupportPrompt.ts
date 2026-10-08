@@ -1,4 +1,5 @@
 import { useNotificationsStore } from "@/shared/stores/notifications";
+import { useSessionStore } from "@/frontend/stores/session";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -52,6 +53,7 @@ const daysSince = (iso?: string): number | null => {
 
 export const useSupportPrompt = () => {
   const notificationsStore = useNotificationsStore();
+  const sessionStore = useSessionStore();
 
   const isAutomatedBrowser = (): boolean => {
     try {
@@ -63,6 +65,7 @@ export const useSupportPrompt = () => {
 
   const canShow = (): boolean => {
     if (isAutomatedBrowser()) return false;
+    if (sessionStore.currentUser?.supporter) return false;
     const since = daysSince(readState().lastShownAt);
     return since === null || since > COOLDOWN_DAYS;
   };
