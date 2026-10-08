@@ -59,6 +59,43 @@ module Discord
         assert_includes call[:content], "snake\\_case\\_name — \\*Crew\\*"
       end
 
+      test "shows a nickname beside the username" do
+        accept(create(:user, username: "Bravo")).update!(nickname: "Ghost")
+
+        assert_includes call[:content], "• Ghost (Bravo) — Member"
+      end
+
+      test "a member without a nickname is shown by username alone" do
+        assert_includes call[:content], "• Aendrax — Officer"
+      end
+
+      test "escapes the markdown in a nickname" do
+        accept(create(:user, username: "Bravo")).update!(nickname: "**Boss**")
+
+        assert_includes call[:content], "\\*\\*Boss\\*\\* (Bravo)"
+      end
+
+      test "caps a long nickname" do
+        accept(create(:user, username: "Bravo")).update!(nickname: "N" * 255)
+
+        line = call[:content].lines.find { |l| l.include?("Bravo") }
+
+        assert_includes line, "#{"N" * (::Discord::Commands::FleetMembers::NICKNAME_LENGTH - 1)}… (Bravo)"
+      end
+
+      test "drops whole lines to stay within a message and counts them" do
+        role_named("Member").update!(name: "R" * 400)
+        total = ::Discord::Commands::FleetMembers::MAX_MEMBERS + 1
+        (total - 1).times { |i| accept(create(:user, username: "Member#{i.to_s.rjust(2, "0")}"), "R" * 400).update!(nickname: "N" * 255) }
+
+        content = call[:content]
+        shown = content.lines.count { |line| line.start_with?("• ") }
+
+        assert ::Discord::MessageLength.fits?(content)
+        assert_operator shown, :<, ::Discord::Commands::FleetMembers::MAX_MEMBERS
+        assert_includes content, I18n.t("discord.commands.fleet.members.more", count: total - shown)
+      end
+
       test "reads alphabetically, so a name can be found" do
         accept(create(:user, username: "Zulu"))
         accept(create(:user, username: "Bravo"))
