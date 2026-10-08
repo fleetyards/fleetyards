@@ -53,6 +53,20 @@ class Admin::Api::V1::ComponentCategoriesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components/category_filters offers the build's category over the column" do
+    component = create(:component, :without_build, category: "stale")
+    create(:component_build, component:, category: "fresh")
+
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      values = parsed_body.map { |filter| filter["value"] }
+
+      assert_includes values, "fresh"
+      assert_not_includes values, "stale"
+    end
+  end
+
   test "GET /components/category_filters returns 401 when not signed in" do
     assert_api_response :get, 401
   end

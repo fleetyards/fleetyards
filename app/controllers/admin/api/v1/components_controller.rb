@@ -53,13 +53,15 @@ module Admin
         # answers 401/403 like the rest of the resource rather than handing the
         # list to any signed-in admin.
         #
-        # Every row's category rather than the current build's: the admin list
-        # also shows retired and hand-made components.
+        # Read through the same facts join as the list, so every category the
+        # filter can match is offered -- including those of retired and
+        # hand-made components, which the current build does not describe.
         def category_filters
           authorize! with: ::Admin::ComponentPolicy
 
+          category = Component.fact_sql(:category)
           @filters = Component.category_filters(
-            Component.where.not(category: nil).distinct.order(:category).pluck(:category)
+            Component.with_facts(false).where.not(category => nil).distinct.order(category).pluck(category)
           )
 
           render "api/shared/filters"
