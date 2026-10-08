@@ -230,4 +230,33 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     assert_equal "channel_shared", body["postingCode"]
     assert_equal "Alpha, #{I18n.t("discord.channel_capability.officers")}", body["postingDetail"]
   end
+
+  test "reports a join role the bot cannot apply without the Server Members intent" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    api.stubs(:list_guild_members).raises(Discord::ApiClient::Error.new(403, '{"message": "Missing Access", "code": 50001}'))
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:new).returns(api)
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal true, body["ok"]
+    assert_equal false, body["joinRoleOk"]
+    assert_equal "members_intent_missing", body["joinRoleCode"]
+  end
+
+  test "says nothing about members to a fleet without a join role" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    api.expects(:list_guild_members).never
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:new).returns(api)
+
+    get @url, as: :json
+
+    refute JSON.parse(response.body).key?("joinRoleCode")
+  end
 end

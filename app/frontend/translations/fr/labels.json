@@ -648,6 +648,9 @@
             "unknown_channel": "Le salon choisi pour %{names} n'existe plus sur Discord ou n'accepte plus de publications.",
             "channel_shared": "%{names} partage un salon avec des lecteurs à qui ses événements sont cachés. Rien n'y est publié tant que chacun n'a pas son propre salon."
           },
+          "joinRoleCodes": {
+            "members_intent_missing": "Le bot Fleetyards ne peut pas encore lister les membres de ce serveur : le rôle d'adhésion ne s'applique que lorsqu'un joueur utilise un lien d'invitation. Contactez un administrateur."
+          },
           "statusOk": "Connecté à %{name}",
           "statusCodes": {
             "missing_token": "Le bot Fleetyards n'est pas configuré côté serveur. Contactez un administrateur.",

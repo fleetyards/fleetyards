@@ -648,6 +648,9 @@
             "unknown_channel": "The channel picked for %{names} no longer exists on Discord or can no longer take posts.",
             "channel_shared": "%{names} shares a channel with readers its events are kept from. Nothing is posted there until each has a channel of its own."
           },
+          "joinRoleCodes": {
+            "members_intent_missing": "The Fleetyards bot may not list this server's members yet, so the join role only takes effect when a player uses an invite link. Contact an administrator."
+          },
           "statusOk": "Connected to %{name}",
           "statusCodes": {
             "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",

@@ -26410,6 +26410,10 @@ components:
           type: string
         postingDetail:
           type: string
+        joinRoleOk:
+          type: boolean
+        joinRoleCode:
+          type: string
       title: FleetNotificationDiscordStatus
     FleetNotificationInAppEventEnum:
       type: string

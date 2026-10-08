@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload, join_role_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -69,6 +69,23 @@ module Api
         {rolesOk: result.ok?, rolesCode: result.code.to_s}.tap do |payload|
           payload[:rolesDetail] = result.detail if result.detail.present?
         end
+      end
+
+      # Only reported once a join role is picked. Listing a guild's members
+      # needs the Server Members intent granted to the bot in Discord's
+      # developer portal; without it the role is only seen when a player uses
+      # an invite link, and the sweep that admits everyone holding it can
+      # never run -- which nothing else would tell the fleet.
+      private def join_role_payload
+        return {} if @setting.discord_join_role_id.blank?
+
+        ::Discord::ApiClient.new(timeout: ::Discord::GuildListing::TIMEOUT)
+          .list_guild_members(@setting.discord_guild_id, limit: 1)
+        {joinRoleOk: true}
+      rescue ::Discord::ApiClient::Error => e
+        (e.status == 403) ? {joinRoleOk: false, joinRoleCode: "members_intent_missing"} : {}
+      rescue Faraday::Error
+        {}
       end
 
       # Only reported once somewhere to post has been picked, for the same

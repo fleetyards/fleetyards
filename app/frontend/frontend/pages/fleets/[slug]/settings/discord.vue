@@ -217,6 +217,8 @@ type DiscordStatus = {
   postingOk?: boolean;
   postingCode?: string;
   postingDetail?: string;
+  joinRoleOk?: boolean;
+  joinRoleCode?: string;
 };
 
 const discordStatus = ref<DiscordStatus | null>(null);
@@ -257,6 +259,13 @@ const postingProblem = computed(() => {
   return tExists(key)
     ? t(key, { names: status.postingDetail ?? "" })
     : t(`labels.fleet.discord.statusCodes.${status.postingCode}`);
+});
+
+const joinRoleProblem = computed(() => {
+  const status = discordStatus.value;
+  if (!status?.joinRoleCode || status.joinRoleOk) return null;
+
+  return t(`labels.fleet.discord.joinRoleCodes.${status.joinRoleCode}`);
 });
 </script>
 
@@ -319,6 +328,14 @@ const postingProblem = computed(() => {
       >
         <i class="fa-light fa-triangle-exclamation" />
         <span>{{ postingProblem }}</span>
+      </span>
+      <span
+        v-if="joinRoleProblem"
+        class="discord-status discord-status--err"
+        data-test="join-role-problem"
+      >
+        <i class="fa-light fa-triangle-exclamation" />
+        <span>{{ joinRoleProblem }}</span>
       </span>
     </div>
 
