@@ -349,7 +349,10 @@ class FleetMembership < ApplicationRecord
         today: Date.current, now: Time.current
       )
       .includes(:fleet_event)
-      .find_each do |signup|
+      # Each withdrawal touches its event, so two removals at once must touch
+      # them in the same order or they deadlock.
+      .order(:fleet_event_id, :id)
+      .each do |signup|
         next if signup.occurrence_started?
 
         # A legacy row failing a later validation must not block the removal.
