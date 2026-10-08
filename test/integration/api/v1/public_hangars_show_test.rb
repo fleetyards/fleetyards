@@ -15,6 +15,7 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
       tags "PublicHangar"
       produces "application/json"
 
+      parameter name: "share", in: :query, schema: {type: :string}, required: false, description: "Hangar share token"
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Vehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
@@ -103,5 +104,23 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {username: user.username} do
       assert_equal [charlie.id, alpha.id, bravo.id], parsed_body["items"].map { |item| item["id"] }
     end
+  end
+
+  test "GET /public/hangars/:username opens a private hangar to its share token" do
+    user = create(:user, :private_hangar)
+    create(:vehicle, :public, user: user)
+    token = user.ensure_hangar_share_token!
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {share: token} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
+  test "GET /public/hangars/:username keeps a private hangar closed to a stale share token" do
+    user = create(:user, :private_hangar)
+    token = user.ensure_hangar_share_token!
+    user.rotate_hangar_share_token!
+
+    assert_api_response :get, 404, path_params: {username: user.username}, params: {share: token}
   end
 end

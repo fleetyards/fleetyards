@@ -19,8 +19,8 @@ class Public::UserPolicyTest < ActiveSupport::TestCase
     create(:friendship, :accepted, requester: @owner, addressee: @friend)
   end
 
-  def allowed?(rule, reader)
-    Public::UserPolicy.new(@owner, user: reader).public_send(rule)
+  def allowed?(rule, reader, share_token: nil)
+    Public::UserPolicy.new(@owner, user: reader, share_token:).public_send(rule)
   end
 
   test "with everything off nobody sees anything" do
@@ -84,5 +84,27 @@ class Public::UserPolicyTest < ActiveSupport::TestCase
     assert allowed?(:show?, @friend)
     refute allowed?(:show_stats?, @friend)
     refute allowed?(:wishlist?, @friend)
+  end
+
+  test "the current share token opens the hangar and its stats, not the wishlist" do
+    token = @owner.ensure_hangar_share_token!
+
+    assert allowed?(:show?, nil, share_token: token)
+    assert allowed?(:show_stats?, nil, share_token: token)
+    refute allowed?(:wishlist?, nil, share_token: token)
+  end
+
+  test "a wrong, rotated or cleared share token opens nothing" do
+    token = @owner.ensure_hangar_share_token!
+
+    refute allowed?(:show?, nil, share_token: "#{token}x")
+
+    @owner.rotate_hangar_share_token!
+    refute allowed?(:show?, nil, share_token: token)
+
+    current = @owner.hangar_share_token
+    @owner.clear_hangar_share_token!
+    refute allowed?(:show?, nil, share_token: current)
+    refute allowed?(:show?, nil, share_token: nil)
   end
 end

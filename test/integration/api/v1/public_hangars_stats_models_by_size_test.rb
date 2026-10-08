@@ -15,6 +15,8 @@ class Api::V1::PublicHangarsStatsModelsBySizeTest < ActionDispatch::IntegrationT
       tags "PublicHangarStats"
       produces "application/json"
 
+      parameter name: "share", in: :query, schema: {type: :string}, required: false, description: "Hangar share token"
+
       response(200, "successful") do
         schema ::V1::Schemas::PieChartStatsList
       end
@@ -35,5 +37,12 @@ class Api::V1::PublicHangarsStatsModelsBySizeTest < ActionDispatch::IntegrationT
     user = create(:user, public_hangar_stats: false)
 
     assert_api_response :get, 404, path_params: {username: user.username}
+  end
+
+  test "GET /public/hangars/:username/stats/models-by-size opens private stats to the share token" do
+    user = create(:user, public_hangar: false, public_hangar_stats: false, vehicle_count: 2)
+    token = user.ensure_hangar_share_token!
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {share: token}
   end
 end

@@ -3,7 +3,7 @@
 module Short
   class BaseController < ApplicationController
     def hangar
-      redirect_to frontend_public_hangar_url(username: params[:username]), allow_other_host: true
+      redirect_to frontend_public_hangar_url(username: params[:username], share: params[:share].presence), allow_other_host: true
     end
 
     def wishlist
@@ -11,11 +11,11 @@ module Short
     end
 
     def hangar_stats
-      redirect_to frontend_public_hangar_stats_url(username: params[:username]), allow_other_host: true
+      redirect_to frontend_public_hangar_stats_url(username: params[:username], share: params[:share].presence), allow_other_host: true
     end
 
     def hangar_fleetchart
-      redirect_to frontend_public_hangar_fleetchart_url(username: params[:username]), allow_other_host: true
+      redirect_to frontend_public_hangar_fleetchart_url(username: params[:username], share: params[:share].presence), allow_other_host: true
     end
 
     def fleet_invite

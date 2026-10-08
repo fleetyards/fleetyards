@@ -15,6 +15,8 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
       tags "PublicUser"
       produces "application/json"
 
+      parameter name: "share", in: :query, schema: {type: :string}, required: false, description: "Hangar share token"
+
       response(200, "successful") do
         schema ::V1::Schemas::UserPublic
       end
@@ -79,5 +81,19 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
   test "GET /public/users/:username returns 404 for unknown username" do
     assert_api_response :get, 404, path_params: {username: "not-a-user"}
+  end
+
+  test "GET /public/users/:username returns a private hangar's owner to its share token" do
+    user = create(:user, :private_hangar)
+    token = user.ensure_hangar_share_token!
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {share: token}
+  end
+
+  test "GET /public/users/:username does not take another user's share token" do
+    user = create(:user, :private_hangar)
+    other_token = create(:user).ensure_hangar_share_token!
+
+    assert_api_response :get, 404, path_params: {username: user.username}, params: {share: other_token}
   end
 end

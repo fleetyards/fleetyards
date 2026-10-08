@@ -15940,6 +15940,12 @@ paths:
       - PublicHangar
       operationId: publicHangar
       parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
@@ -15982,6 +15988,13 @@ paths:
       tags:
       - PublicHangarGroups
       operationId: publicHangarGroups
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -15989,6 +16002,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PublicHangarGroupsList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats":
@@ -16005,6 +16024,12 @@ paths:
       - PublicHangarStats
       operationId: publicHangarStats
       parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       - name: q
         in: query
         schema:
@@ -16040,6 +16065,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByClassification
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16068,6 +16100,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByManufacturer
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16096,6 +16135,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByProductionStatus
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16124,6 +16170,13 @@ paths:
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsBySize
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful
@@ -16151,6 +16204,13 @@ paths:
       tags:
       - PublicUser
       operationId: publicUser
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
       responses:
         '200':
           description: successful

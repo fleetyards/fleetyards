@@ -15,6 +15,8 @@ class Api::V1::PublicHangarsStatsModelsByProductionStatusTest < ActionDispatch::
       tags "PublicHangarStats"
       produces "application/json"
 
+      parameter name: "share", in: :query, schema: {type: :string}, required: false, description: "Hangar share token"
+
       response(200, "successful") do
         schema ::V1::Schemas::PieChartStatsList
       end
