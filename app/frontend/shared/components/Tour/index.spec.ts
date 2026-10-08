@@ -210,6 +210,67 @@ describe("Tour", () => {
     expect(document.activeElement).toBe(trigger);
   });
 
+  it("starts a replay from the first step", async () => {
+    const wrapper = await mountTour();
+
+    await click("tour-next");
+    expect(card()?.dataset.step).toBe("add");
+    await press("Escape");
+    expect(card()).toBeNull();
+
+    await wrapper.setProps({ open: true });
+    await flush();
+
+    expect(card()?.dataset.step).toBe("welcome");
+  });
+
+  it("falls back to another element when its trigger has gone", async () => {
+    const menu = addTarget("menu");
+    const item = document.createElement("button");
+    document.body.appendChild(item);
+    targets.push(item);
+    item.focus();
+
+    let wrapper: VueWrapper | undefined = undefined;
+
+    wrapper = mount(Tour, {
+      attachTo: document.body,
+      props: {
+        steps: STEPS,
+        open: true,
+        returnFocusFallback: '[data-tour="menu"]',
+        "onUpdate:open": (value: boolean) => wrapper?.setProps({ open: value }),
+      },
+      global: { stubs: { Btn: BtnStub } },
+    });
+    wrappers.push(wrapper);
+    await flush();
+
+    // The dropdown item that started it is closed away by now.
+    item.remove();
+    await click("tour-skip");
+
+    expect(document.activeElement).toBe(menu);
+  });
+
+  it("leaves the page usable when unmounted before it has started", async () => {
+    const page = document.createElement("div");
+    document.body.appendChild(page);
+    targets.push(page);
+
+    const wrapper = mount(Tour, {
+      attachTo: document.body,
+      props: { steps: STEPS, open: true },
+      global: { stubs: { Btn: BtnStub } },
+    });
+    wrapper.unmount();
+
+    await flush();
+
+    expect(page.hasAttribute("inert")).toBe(false);
+    expect(card()).toBeNull();
+  });
+
   it("does not open when no step can be shown", async () => {
     const wrapper = await mountTour([STEPS[2]]);
 

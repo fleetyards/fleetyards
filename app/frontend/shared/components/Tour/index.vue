@@ -18,9 +18,14 @@ import type { TourEndReason, TourStep } from "./types";
 
 type Props = {
   steps: TourStep[];
+  // Where focus goes when the element that started the tour is gone or hidden
+  // by then -- an item in a dropdown menu that closed when it was picked.
+  returnFocusFallback?: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  returnFocusFallback: undefined,
+});
 
 const open = defineModel<boolean>("open", { default: false });
 
@@ -141,6 +146,8 @@ const showStep = async (next: number) => {
 
   await nextTick();
 
+  if (!open.value) return;
+
   const target = findTarget(current.value);
 
   if (target && !inViewport(target.getBoundingClientRect())) {
@@ -229,6 +236,11 @@ const onKeydown = (event: KeyboardEvent) => {
 
 let returnFocus: HTMLElement | null = null;
 
+// Bumped by every start and every teardown. A start that resumes after its
+// tour was closed or unmounted -- a navigation inside the render ticks it
+// waits for -- must not make the next page inert with nothing left to undo it.
+let session = 0;
+
 // Content loading in or a filter row opening moves the target without a
 // scroll or a resize of the window.
 const observedPage = ref<HTMLElement | null>(null);
@@ -249,6 +261,13 @@ const unlisten = () => {
 };
 
 const start = async () => {
+  session += 1;
+  const own = session;
+
+  index.value = 0;
+  hole.value = null;
+  cardPosition.value = null;
+
   shown.value = props.steps.filter(
     (step) => !step.requiresTarget || !!findTarget(step),
   );
@@ -265,18 +284,26 @@ const start = async () => {
 
   await nextTick();
 
+  if (own !== session) return;
+
   setPageInert(true);
   listen();
   await showStep(0);
 };
 
 const teardown = () => {
+  session += 1;
   unlisten();
   setPageInert(false);
 
-  if (returnFocus?.isConnected) {
-    returnFocus.focus({ preventScroll: true });
-  }
+  const fallback = props.returnFocusFallback
+    ? document.querySelector<HTMLElement>(props.returnFocusFallback)
+    : null;
+  const focusTo = [returnFocus, fallback].find(
+    (element) => element?.isConnected && isRendered(element),
+  );
+
+  focusTo?.focus({ preventScroll: true });
   returnFocus = null;
 };
 
@@ -297,9 +324,7 @@ watch(
   { immediate: true },
 );
 
-onBeforeUnmount(() => {
-  if (open.value) teardown();
-});
+onBeforeUnmount(teardown);
 
 const holeStyle = computed(() => {
   if (!hole.value) {
