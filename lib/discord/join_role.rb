@@ -46,10 +46,11 @@ module Discord
     # Reads the roles a member holds now and applies them to every join role
     # given, all in one guild. The read and the write happen under one lock per
     # member, which every path that admits or releases through the role takes,
-    # so updates handled at once end on what Discord answered last.
+    # so updates handled at once end on what Discord answered last. Returns
+    # whether Discord answered.
     def self.apply_current(join_roles, users, discord_uid, api:, quiet: false)
       guild_id = join_roles.first&.guild_id
-      return if guild_id.blank? || users.empty?
+      return true if guild_id.blank? || users.empty?
 
       with_member_lock(guild_id, discord_uid) do
         role_ids = member_role_ids(api, guild_id, discord_uid)
@@ -57,6 +58,7 @@ module Discord
 
         join_roles.product(users).each { |join_role, user| join_role.apply(user, role_ids, quiet:) }
         read_alone!(guild_id, discord_uid)
+        true
       end
     end
 

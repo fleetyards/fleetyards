@@ -51,12 +51,12 @@ module Discord
       assert_nil membership_of(user)
     end
 
-    test "a Discord outage changes nothing" do
+    test "a Discord outage changes nothing and leaves the update to a retry" do
       user = linked_user("uid-1")
       JoinRole.new(@fleet).apply(user, [JOIN_ROLE])
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(502, "Bad Gateway"))
 
-      ApplyJoinRolesJob.new.perform("uid-1", GUILD)
+      assert_raises(ApplyJoinRolesJob::Unanswered) { ApplyJoinRolesJob.new.perform("uid-1", GUILD) }
 
       assert_predicate membership_of(user), :accepted?
     end
