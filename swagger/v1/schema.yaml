@@ -10199,6 +10199,50 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/flair":
+    get:
+      summary: Hangar Flair
+      tags:
+      - Hangar
+      operationId: hangarFlair
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups":
     post:
       summary: HangarGroup create
@@ -11497,6 +11541,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/paints":
+    get:
+      summary: Hangar Paints
+      tags:
+      - Hangar
+      operationId: hangarPaints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/rsi-page-reports":
     post:
       summary: Report an RSI Page the Sync Does Not Recognise
@@ -29132,6 +29220,96 @@ components:
       - manufacturerCount
       - missingClassifications
       title: HangarMetricsPublic
+    HangarPledgeItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        rsiPledgeId:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/HangarPledgeItemKindEnum"
+        name:
+          type: string
+        quantity:
+          type: integer
+          description: How often the pledge lists the item
+        image:
+          type: string
+          format: uri
+        standalone:
+          type: boolean
+          description: Whether the item is all its pledge holds
+        meltable:
+          type: boolean
+          description: Whether RSI offers to melt the item's pledge
+        pledgeCreatedOn:
+          type: string
+          format: date
+        meltValue:
+          type: number
+          description: What melting the item returns, in USD; only for an item that
+            is its whole pledge
+        pledgeName:
+          type: string
+        pledgeValue:
+          type: number
+          description: What melting the whole pledge returns, in USD
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - rsiPledgeId
+      - kind
+      - name
+      - quantity
+      - standalone
+      - meltable
+      - createdAt
+      - updatedAt
+      title: HangarPledgeItem
+    HangarPledgeItemKindEnum:
+      type: string
+      enum:
+      - paint
+      - flair
+      x-enumNames:
+      - PAINT
+      - FLAIR
+      title: HangarPledgeItemKindEnum
+    HangarPledgeItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        meltableEq:
+          type: boolean
+        withValue:
+          type: boolean
+          description: Only items whose pledge melts for more than nothing
+      additionalProperties: false
+      example: {}
+      title: HangarPledgeItemQuery
+    HangarPledgeItems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPledgeItem"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: HangarPledgeItems
     HangarPublic:
       type: object
       properties:
@@ -29396,6 +29574,16 @@ components:
           type: array
           items:
             type: string
+        syncedPaints:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedHangarFlair:
+          type: array
+          items:
+            type: string
+            format: uuid
       additionalProperties: false
       required:
       - importedVehicles
@@ -35848,6 +36036,20 @@ components:
         image:
           type: string
           format: uri
+        pledgeName:
+          type: string
+        pledgeValue:
+          type: number
+          description: What melting the whole pledge returns, in USD
+        pledgeItemCount:
+          type: integer
+          description: How many items the pledge holds, of any kind
+        pledgeCreatedOn:
+          type: string
+          format: date
+        meltable:
+          type: boolean
+          description: Whether RSI offers to melt the pledge
       additionalProperties: false
       required:
       - id
@@ -35861,11 +36063,13 @@ components:
       - component
       - upgrade
       - skin
+      - flair
       x-enumNames:
       - SHIP
       - COMPONENT
       - UPGRADE
       - SKIN
+      - FLAIR
       title: RsiHangarItemKindEnum
     RsiPageCheckEnum:
       type: string
@@ -36775,6 +36979,12 @@ components:
           type: string
           format: uuid
         addBundledVehicles:
+          type: boolean
+          default: true
+        syncPaints:
+          type: boolean
+          default: true
+        syncHangarFlair:
           type: boolean
           default: true
         unmatchedVehiclesAction:

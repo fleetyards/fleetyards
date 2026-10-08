@@ -2838,6 +2838,16 @@ components:
           type: array
           items:
             type: string
+        syncedPaints:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedHangarFlair:
+          type: array
+          items:
+            type: string
+            format: uuid
       additionalProperties: false
       required:
       - importedVehicles
