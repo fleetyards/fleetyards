@@ -22,11 +22,24 @@ module Discord
       end
     end
 
-    test "keeps its own store, so a null Rails.cache in development does not lose it" do
+    # Through Redis itself, read back by a store of its own the way the web
+    # process would, and with a null Rails.cache as development has by default.
+    test "a report the bot writes can be read by another process" do
       BotStatus.unstub(:store)
+      BotStatus.instance_variable_set(:@store, nil)
       Rails.stubs(:cache).returns(ActiveSupport::Cache::NullStore.new)
 
-      assert_instance_of ActiveSupport::Cache::RedisCacheStore, BotStatus.store
+      BotStatus.record!(members_intent: true)
+      other_process = ActiveSupport::Cache::RedisCacheStore.new(
+        url: Rails.configuration.redis.url,
+        db: Rails.configuration.redis.cache_db,
+        namespace: "fleetyards-#{Rails.env}"
+      )
+
+      assert_equal true, other_process.read(BotStatus::KEY)["members_intent"]
+    ensure
+      BotStatus.store.delete(BotStatus::KEY)
+      BotStatus.instance_variable_set(:@store, nil)
     end
   end
 end
