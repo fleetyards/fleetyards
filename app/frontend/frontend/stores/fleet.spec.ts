@@ -47,4 +47,17 @@ describe("fleet store tours", () => {
 
     expect(Object.keys(store.pendingTours)).toEqual(["user-a:fleet-2"]);
   });
+
+  it("drops lapsed tours when one is cleared as well", () => {
+    const store = useFleetStore();
+
+    store.queueTour("user-a", "fleet-1");
+    vi.advanceTimersByTime(8 * DAY);
+    store.queueTour("user-a", "fleet-2");
+    vi.advanceTimersByTime(8 * DAY);
+
+    store.clearTour("user-a", "fleet-3");
+
+    expect(store.pendingTours).toEqual({});
+  });
 });

@@ -68,8 +68,9 @@ interface FleetState extends ShipListState {
 
 const tourKey = (userId: string, fleetId: string) => `${userId}:${fleetId}`;
 
-// Past this, "your fleet is ready" no longer greets a fleet just made, and an
-// entry for a fleet that was deleted or never opened again goes away.
+// Past this, "your fleet is ready" no longer greets a fleet just made. An entry
+// for a fleet that was deleted or never opened again is dropped the next time
+// a tour is queued or cleared.
 const PENDING_TOUR_TTL = 7 * 24 * 60 * 60 * 1000;
 
 export const useFleetStore = defineStore("fleet", {
@@ -150,14 +151,8 @@ export const useFleetStore = defineStore("fleet", {
       }
     },
     queueTour(userId: string, fleetId: string) {
-      const now = Date.now();
-
-      this.pendingTours = Object.fromEntries(
-        Object.entries(this.pendingTours).filter(
-          ([, queuedAt]) => now - queuedAt < PENDING_TOUR_TTL,
-        ),
-      );
-      this.pendingTours[tourKey(userId, fleetId)] = now;
+      this.pruneTours();
+      this.pendingTours[tourKey(userId, fleetId)] = Date.now();
     },
     openTour(fleet: { id: string; slug: string }) {
       this.tourFleet = { id: fleet.id, slug: fleet.slug };
@@ -168,6 +163,16 @@ export const useFleetStore = defineStore("fleet", {
     },
     clearTour(userId: string, fleetId: string) {
       delete this.pendingTours[tourKey(userId, fleetId)];
+      this.pruneTours();
+    },
+    pruneTours() {
+      const now = Date.now();
+
+      this.pendingTours = Object.fromEntries(
+        Object.entries(this.pendingTours).filter(
+          ([, queuedAt]) => now - queuedAt < PENDING_TOUR_TTL,
+        ),
+      );
     },
   },
   persist: {

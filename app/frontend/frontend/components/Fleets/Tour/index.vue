@@ -13,8 +13,6 @@ import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
-const route = useRoute();
-
 const fleetStore = useFleetStore();
 
 const sessionStore = useSessionStore();
@@ -27,15 +25,6 @@ const open = computed({
     if (!value) fleetStore.closeTour();
   },
 });
-
-// Its own navigation stays inside the fleet; leaving it -- the back button, a
-// link in the header -- ends the tour rather than dragging it along.
-watch(
-  () => route.params.slug,
-  (current) => {
-    if (open.value && current !== slug.value) fleetStore.closeTour();
-  },
-);
 
 // Done once it has been shown, not once it ends: leaving mid-tour ends
 // nothing, and should not bring it back on every later visit.

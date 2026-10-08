@@ -110,13 +110,4 @@ describe("FleetTour", () => {
       ["user-a", "fleet-1"],
     ]);
   });
-
-  it("ends when the reader leaves the fleet", async () => {
-    const { router } = await mountTour();
-
-    await router.push("/");
-    await flushPromises();
-
-    expect(vi.mocked(useFleetStore()).closeTour.mock.calls).toHaveLength(1);
-  });
 });
