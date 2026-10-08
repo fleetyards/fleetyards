@@ -195,4 +195,16 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert membership.discard
     assert signup.reload.withdrawn?
   end
+
+  test "a freed seat cannot be revived in place" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    signup = signup_for(membership, create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now))
+    stale = FleetEventSignup.find(signup.id)
+
+    assert membership.discard
+    assert_not signup.reload.update(status: "confirmed")
+    assert_not stale.update(status: "pending")
+    assert signup.reload.withdrawn?
+  end
 end
