@@ -116,7 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Deine Flotte ist bereit",
-          "text": "Diese Tour öffnet jede Seite, auf der du sie einrichtest, und zeigt auf das, worauf es dort ankommt. „Tour anzeigen“ startet sie jederzeit erneut."
+          "text": "Diese Tour öffnet jede Seite, auf der du sie einrichtest, und zeigt auf das, worauf es dort ankommt. Das Fragezeichen oben auf der Flottenseite startet sie jederzeit erneut."
         },
         "events": {
           "title": "Events und Missionen",
@@ -160,7 +160,7 @@
         },
         "finish": {
           "title": "Deine Flotte ist eingerichtet",
-          "text": "Das ist alles für den Start. „Tour anzeigen“ startet diese Tour jederzeit erneut."
+          "text": "Das ist alles für den Start. Das Fragezeichen hier oben startet diese Tour jederzeit erneut."
         }
       },
       "hangarPreview": {

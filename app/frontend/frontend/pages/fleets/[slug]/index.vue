@@ -306,14 +306,14 @@ useTourAutostart({
 
   <Teleport v-if="canManage" to="#header-right">
     <Btn
+      v-tooltip="t('actions.showGuide')"
       :size="BtnSizesEnum.MD"
-      mobile-icon-only
+      :aria-label="t('actions.showGuide')"
       data-tour="fleet-guide"
       data-test="fleet-show-guide"
       @click="openTour"
     >
       <i class="fa-duotone fa-question" />
-      {{ t("actions.showGuide") }}
     </Btn>
   </Teleport>
 </template>

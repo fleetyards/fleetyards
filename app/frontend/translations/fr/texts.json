@@ -116,7 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Votre flotte est prête",
-          "text": "Cette visite ouvre chaque page où elle se configure et montre ce qui compte sur chacune. « Afficher la visite » la relance à tout moment."
+          "text": "Cette visite ouvre chaque page où elle se configure et montre ce qui compte sur chacune. Le point d'interrogation en haut de la page de la flotte la relance à tout moment."
         },
         "events": {
           "title": "Événements et missions",
@@ -160,7 +160,7 @@
         },
         "finish": {
           "title": "Votre flotte est configurée",
-          "text": "C'est tout pour commencer. « Afficher la visite » relance cette visite à tout moment."
+          "text": "C'est tout pour commencer. Le point d'interrogation ici en haut relance cette visite à tout moment."
         }
       },
       "hangarPreview": {

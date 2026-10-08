@@ -116,7 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "La tua flotta è pronta",
-          "text": "Questo tour apre ogni pagina in cui si configura e indica ciò che conta in ciascuna. «Mostra il tour» lo riapre in qualsiasi momento."
+          "text": "Questo tour apre ogni pagina in cui si configura e indica ciò che conta in ciascuna. Il punto interrogativo in alto nella pagina della flotta lo riapre in qualsiasi momento."
         },
         "events": {
           "title": "Eventi e missioni",
@@ -160,7 +160,7 @@
         },
         "finish": {
           "title": "La tua flotta è configurata",
-          "text": "È tutto per iniziare. «Mostra il tour» riapre questo tour in qualsiasi momento."
+          "text": "È tutto per iniziare. Il punto interrogativo qui in alto riapre questo tour in qualsiasi momento."
         }
       },
       "hangarPreview": {

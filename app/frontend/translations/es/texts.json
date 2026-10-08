@@ -116,7 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Tu flota está lista",
-          "text": "Este recorrido abre cada página donde se configura y señala lo importante en ella. «Mostrar el recorrido» lo vuelve a abrir cuando quieras."
+          "text": "Este recorrido abre cada página donde se configura y señala lo importante en ella. El signo de interrogación en la parte superior de la página de la flota lo vuelve a abrir cuando quieras."
         },
         "events": {
           "title": "Eventos y misiones",
@@ -160,7 +160,7 @@
         },
         "finish": {
           "title": "Tu flota está configurada",
-          "text": "Eso es todo para empezar. «Mostrar el recorrido» vuelve a abrir este recorrido cuando quieras."
+          "text": "Eso es todo para empezar. El signo de interrogación de aquí arriba vuelve a abrir este recorrido cuando quieras."
         }
       },
       "hangarPreview": {

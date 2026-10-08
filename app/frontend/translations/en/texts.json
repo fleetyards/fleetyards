@@ -116,7 +116,7 @@
       "fleetTour": {
         "welcome": {
           "title": "Your fleet is ready",
-          "text": "This tour opens each page that sets it up and points at the control that matters there. Show tour brings it back any time."
+          "text": "This tour opens each page that sets it up and points at the control that matters there. The question mark at the top of the fleet page brings it back any time."
         },
         "events": {
           "title": "Events and missions",
@@ -160,7 +160,7 @@
         },
         "finish": {
           "title": "Your fleet is set up",
-          "text": "That's everything to get started. Show tour brings this tour back any time."
+          "text": "That's everything to get started. The question mark up here brings this tour back any time."
         }
       },
       "hangarPreview": {
