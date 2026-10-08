@@ -326,6 +326,51 @@ describe("Tour", () => {
     expect(card()?.textContent).toContain("Welcome!");
   });
 
+  it("does not open over a modal", async () => {
+    const modal = document.createElement("div");
+    modal.className = "app-modal";
+    document.body.appendChild(modal);
+    targets.push(modal);
+
+    const wrapper = await mountTour();
+
+    expect(card()).toBeNull();
+    expect(modal.hasAttribute("inert")).toBe(false);
+    expect(wrapper.emitted("start")).toBeUndefined();
+  });
+
+  it("announces when it is on screen", async () => {
+    const wrapper = await mountTour();
+
+    expect(wrapper.emitted("start")).toHaveLength(1);
+  });
+
+  it("makes content mounted while it runs inert too", async () => {
+    await mountTour();
+
+    const late = document.createElement("div");
+    document.body.appendChild(late);
+    targets.push(late);
+    await flush();
+
+    expect(late.hasAttribute("inert")).toBe(true);
+  });
+
+  it("leaves modified arrow keys to the browser", async () => {
+    await mountTour();
+
+    card()?.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "ArrowRight",
+        altKey: true,
+        bubbles: true,
+      }),
+    );
+    await flush();
+
+    expect(card()?.dataset.step).toBe("welcome");
+  });
+
   it("does not open when no step can be shown", async () => {
     const wrapper = await mountTour([STEPS[2]]);
 

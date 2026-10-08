@@ -16,12 +16,12 @@ import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import { placeFloating } from "@/shared/utils/floatingPlacement";
 import type { TourEndReason, TourStep } from "./types";
 
-type Props = {
+interface Props {
   steps: TourStep[];
   // Where focus goes when the element that started the tour is gone or hidden
   // by then -- an item in a dropdown menu that closed when it was picked.
   returnFocusFallback?: string;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   returnFocusFallback: undefined,
@@ -29,7 +29,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const open = defineModel<boolean>("open", { default: false });
 
-const emit = defineEmits<{ end: [reason: TourEndReason] }>();
+const emit = defineEmits<{
+  // Emitted once the tour is actually on screen, which a request to open it
+  // does not guarantee: no step may be showable, or a modal may be open.
+  start: [];
+  end: [reason: TourEndReason];
+}>();
 
 const { t } = useI18n();
 
@@ -48,6 +53,10 @@ const card = ref<HTMLElement | null>(null);
 // The ids picked at start; the steps themselves are read from the props, so
 // their text follows a locale change.
 const shownIds = ref<string[]>([]);
+
+// Rendered once a start has committed, not merely once asked to open: a start
+// that refuses closes the tour without it ever flashing on screen.
+const visible = ref(false);
 const shown = computed<TourStep[]>(() =>
   shownIds.value
     .map((id) => props.steps.find((step) => step.id === id))
@@ -80,10 +89,12 @@ const findTarget = (step?: TourStep): HTMLElement | null => {
   );
 };
 
-const inViewport = (rect: DOMRect) =>
-  rect.top >= 0 &&
+// Inside the middle of the window rather than merely inside it: a fixed header
+// covers the top, and a control under it would be spotlit but unseen.
+const comfortablyVisible = (rect: DOMRect) =>
+  rect.top >= window.innerHeight * 0.15 &&
+  rect.bottom <= window.innerHeight * 0.85 &&
   rect.left >= 0 &&
-  rect.bottom <= window.innerHeight &&
   rect.right <= window.innerWidth;
 
 // Resolved once per step rather than on every scroll frame; looked up again
@@ -170,7 +181,7 @@ const showStep = async (next: number) => {
 
   const element = currentTarget();
 
-  if (element && !inViewport(element.getBoundingClientRect())) {
+  if (element && !comfortablyVisible(element.getBoundingClientRect())) {
     element.scrollIntoView({
       block: "center",
       inline: "nearest",
@@ -212,18 +223,50 @@ let inerted: Element[] = [];
 
 const KEEP = "[data-tour-keep]";
 
+const toInert = (element: Element): Element[] => {
+  if (element === root.value || element.matches(KEEP)) return [];
+  if (element.querySelector(KEEP)) return collectInert(element);
+  return element.hasAttribute("inert") ? [] : [element];
+};
+
 const collectInert = (container: Element): Element[] =>
-  Array.from(container.children).flatMap((element) => {
-    if (element === root.value || element.matches(KEEP)) return [];
-    if (element.querySelector(KEEP)) return collectInert(element);
-    return element.hasAttribute("inert") ? [] : [element];
+  Array.from(container.children).flatMap(toInert);
+
+const makeInert = (elements: Element[]) => {
+  elements.forEach((element) => element.setAttribute("inert", ""));
+  inerted.push(...elements);
+};
+
+// A modal, a menu or a tooltip mounted while the tour runs lands next to the
+// elements inerted at the start and would be reachable behind the dialog.
+const lateMounts = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    const added = Array.from(mutation.addedNodes).filter(
+      (node): node is Element => node instanceof Element,
+    );
+    makeInert(added.flatMap(toInert));
   });
+});
+
+const keptAncestors = (): Element[] => {
+  const ancestors = new Set<Element>([document.body]);
+  document.querySelectorAll(KEEP).forEach((kept) => {
+    for (let node = kept.parentElement; node; node = node.parentElement) {
+      ancestors.add(node);
+    }
+  });
+  return Array.from(ancestors);
+};
 
 const setPageInert = (on: boolean) => {
   if (on) {
-    inerted = collectInert(document.body);
-    inerted.forEach((element) => element.setAttribute("inert", ""));
+    inerted = [];
+    makeInert(collectInert(document.body));
+    keptAncestors().forEach((container) =>
+      lateMounts.observe(container, { childList: true }),
+    );
   } else {
+    lateMounts.disconnect();
     inerted.forEach((element) => element.removeAttribute("inert"));
     inerted = [];
   }
@@ -232,9 +275,19 @@ const setPageInert = (on: boolean) => {
 const FOCUSABLE = "button:not([disabled]), a[href]";
 
 const onKeydown = (event: KeyboardEvent) => {
+  // Alt/Cmd+arrow is the browser's back and forward, and a notification left
+  // usable keeps its own keys.
+  if (event.altKey || event.metaKey || event.ctrlKey) return;
+
+  const inTour =
+    document.activeElement === document.body ||
+    !!root.value?.contains(document.activeElement);
+  if (!inTour) return;
+
   switch (event.key) {
     case "Escape":
       event.preventDefault();
+      event.stopPropagation();
       if (isLast.value) {
         end("finished");
       } else {
@@ -250,12 +303,6 @@ const onKeydown = (event: KeyboardEvent) => {
       back();
       break;
     case "Tab": {
-      // A notification left reachable keeps its own Tab order.
-      const inTour =
-        document.activeElement === document.body ||
-        !!root.value?.contains(document.activeElement);
-      if (!inTour) return;
-
       const focusable = Array.from(
         card.value?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [],
       );
@@ -327,15 +374,21 @@ const start = async () => {
     .filter((step) => !step.requiresTarget || !!findTarget(step))
     .map((step) => step.id);
 
-  if (!shown.value.length) {
+  // A modal open underneath would turn inert and unusable until the tour
+  // ends, and a dialog over a dialog is no way to explain the page anyway.
+  if (!shown.value.length || document.querySelector(".app-modal")) {
     open.value = false;
     return;
   }
 
+  // Focus on <body> is no place to return to; let the fallback take over.
   returnFocus =
-    document.activeElement instanceof HTMLElement
+    document.activeElement instanceof HTMLElement &&
+    document.activeElement !== document.body
       ? document.activeElement
       : null;
+
+  visible.value = true;
 
   await nextTick();
 
@@ -344,11 +397,13 @@ const start = async () => {
   setPageInert(true);
   active = true;
   listen();
+  emit("start");
   await showStep(0);
 };
 
 const teardown = ({ restoreFocus }: { restoreFocus: boolean }) => {
   session += 1;
+  visible.value = false;
   unlisten();
   target = null;
 
@@ -424,7 +479,7 @@ const cardStyle = computed(() =>
 <template>
   <Teleport to="body">
     <div
-      v-if="open && current"
+      v-if="visible && current"
       ref="root"
       class="tour"
       :class="{ 'tour--animated': !prefersReducedMotion }"
