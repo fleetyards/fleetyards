@@ -425,5 +425,6 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
 });
