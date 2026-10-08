@@ -191,7 +191,7 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("reads an item without a kind whose liner names nobody", () => {
+  it("does not read an item without a kind whose liner is empty", () => {
     expect(
       extract(
         pledgesPage(
@@ -202,9 +202,8 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toEqual({
-      status: RsiPageStatus.PAGE,
-      pledges: [],
-      pledgeIds: ["101"],
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
     });
   });
 

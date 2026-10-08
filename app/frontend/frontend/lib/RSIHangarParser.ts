@@ -90,7 +90,7 @@ export class RSIHangarParser {
           // merchandise, but none of those names a manufacturer. Every ship
           // does: one with a manufacturer and no kind would drop out of the
           // sync, and the unmatched action would act on it.
-          if (this.itemManufacturer(item)) {
+          if (this.hasManufacturer(item)) {
             shipWithoutKind = true;
           }
           return;
@@ -204,10 +204,10 @@ export class RSIHangarParser {
     )?.value;
   }
 
-  itemManufacturer(item: Element): string | undefined {
-    return (
-      item.getElementsByClassName("liner")[0]?.textContent?.trim() || undefined
-    );
+  // Present but empty still counts: a stop that should not have happened is
+  // reported, a ship dropped from the sync is acted on.
+  hasManufacturer(item: Element): boolean {
+    return !!item.getElementsByClassName("liner")[0];
   }
 
   itemKind(item: Element): string | undefined {
