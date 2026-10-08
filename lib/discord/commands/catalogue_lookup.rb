@@ -174,19 +174,24 @@ module Discord
         message(content: [I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines].join("\n"))
       end
 
+      # Long names and their links can run a list of five past what a message
+      # holds, so lines are dropped from the end until it fits.
       private def entry_candidate_list(query, candidates, strings, within)
         lines = candidates.first(MAX_CANDIDATES).map do |candidate|
           ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", CatalogueLookup.listed_type(candidate.prefix, within), Markdown.escape(candidate.detail.to_s).presence]
             .compact.join(" · ")
         end
 
-        content = [
-          I18n.t("discord.commands.#{strings}.ambiguous", query: Markdown.escape(query)),
-          lines.join("\n"),
-          (I18n.t("discord.commands.#{strings}.more") if candidates.size > MAX_CANDIDATES)
-        ].compact.join("\n")
+        content = ->(shown) do
+          [
+            I18n.t("discord.commands.#{strings}.ambiguous", query: Markdown.escape(query)),
+            *shown,
+            (I18n.t("discord.commands.#{strings}.more") if candidates.size > shown.size)
+          ].compact.join("\n")
+        end
+        lines.pop while lines.size > 1 && !MessageLength.fits?(content.call(lines))
 
-        message(content: content)
+        message(content: MessageLength.truncate(content.call(lines)))
       end
 
       private def entry_link(name, prefix, slug)

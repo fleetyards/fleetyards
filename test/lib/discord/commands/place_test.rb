@@ -203,6 +203,16 @@ module Discord
         ].join("\n"), content
       end
 
+      test "keeps a list of long names within a message" do
+        6.times { |index| create(:location, name: "Zeta_#{index}_#{"long_name_" * 19}", kind: "outpost", parent: @hurston, system: @stanton) }
+
+        content = call("zeta")[:content]
+
+        assert_operator ::Discord::MessageLength.of(content), :<=, 2000
+        assert content.start_with?(I18n.t("discord.commands.location.ambiguous", query: "zeta"))
+        assert content.end_with?(I18n.t("discord.commands.location.more"))
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 
