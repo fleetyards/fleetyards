@@ -15,6 +15,7 @@ import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.v
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
+import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import {
   RsiPageReportOutcome,
@@ -43,6 +44,8 @@ const { displayInfo, displaySuccess, displayWarning, displayAlert } =
   useAppNotifications();
 
 const comlink = useComlink();
+
+const hangarStore = useHangarStore();
 
 const extensionReady = ref(false);
 
@@ -331,6 +334,13 @@ const close = () => {
       >
         {{ t("texts.buybackSync.detailsRunning") }}
       </p>
+      <p
+        v-else-if="hangarStore.syncRunning"
+        class="text-warning"
+        data-test="buyback-sync-hangar-sync-running"
+      >
+        {{ t("texts.syncExtension.alreadyRunning") }}
+      </p>
     </div>
     <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
       <p
@@ -406,7 +416,11 @@ const close = () => {
         "
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
-        :disabled="identityStatus !== 'connected' || detailsRunning"
+        :disabled="
+          identityStatus !== 'connected' ||
+          detailsRunning ||
+          hangarStore.syncRunning
+        "
         @click="start"
       >
         {{

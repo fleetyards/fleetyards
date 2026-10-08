@@ -313,6 +313,7 @@
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Une synchronisation du hangar est déjà en cours. Veuillez attendre qu'elle se termine.",
+        "buybackDetailsRunning": "Les prix de rachat sont encore en cours de lecture sur RSI. La synchronisation du hangar pourra démarrer une fois celle-ci terminée.",
         "missingUnmatchedGroup": "Choisissez avant de commencer le groupe où classer les vaisseaux que la synchronisation ne trouve pas."
       },
       "setEmail": "Pour définir un mot de passe, activer l'authentification à deux facteurs ou recevoir des notifications par e-mail, vous devez ajouter une adresse e-mail à votre compte. Vous recevrez un e-mail de confirmation pour vérifier l'adresse.",

@@ -1,4 +1,5 @@
 import { mount, flushPromises } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
@@ -164,6 +165,7 @@ let mounted: ReturnType<typeof mount> | undefined;
 const mountModal = async (health?: unknown) => {
   const wrapper = mount(Component, {
     global: {
+      plugins: [createTestingPinia()],
       stubs: {
         Modal: { template: "<div><slot /><slot name='footer' /></div>" },
       },
