@@ -5,16 +5,33 @@ import {
   type LocationQueryRaw,
 } from "vue-router";
 import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { usePaginationStore } from "@/shared/stores/pagination";
 import { useFleetchartShareUrl } from "./useFleetchartShareUrl";
 
-const shareUrlFor = async (path: string, query: LocationQueryRaw = {}) => {
+const shareUrlFor = async (
+  path: string,
+  query: LocationQueryRaw = {},
+  savedPerPage?: number,
+) => {
   const router = createRouter({
     history: createMemoryHistory(),
-    routes: [{ path: "/:pathMatch(.*)*", component: { template: "<div />" } }],
+    routes: [
+      {
+        path: "/:pathMatch(.*)*",
+        name: "list",
+        component: { template: "<div />" },
+      },
+    ],
   });
 
   await router.push({ path, query });
   await router.isReady();
+
+  const pinia = createPinia();
+  if (savedPerPage) {
+    usePaginationStore(pinia).setBykey("list", savedPerPage);
+  }
 
   let result = "";
   const app = createApp({
@@ -24,6 +41,7 @@ const shareUrlFor = async (path: string, query: LocationQueryRaw = {}) => {
       return () => null;
     },
   });
+  app.use(pinia);
   app.use(router);
   app.mount(document.createElement("div"));
   app.unmount();
@@ -59,5 +77,23 @@ describe("useFleetchartShareUrl", () => {
     });
 
     expect(url.searchParams.getAll("fleetchart")).toEqual(["true"]);
+  });
+
+  it("adds the page size the sender keeps for the list", async () => {
+    const url = await shareUrlFor("/ships/", { page: "2" }, 120);
+
+    expect(url.searchParams.get("perPage")).toBe("120");
+  });
+
+  it("passes on the page size of a link the sender followed", async () => {
+    const url = await shareUrlFor("/ships/", { perPage: "60" }, 120);
+
+    expect(url.searchParams.getAll("perPage")).toEqual(["60"]);
+  });
+
+  it("adds no page size when the sender never picked one", async () => {
+    const url = await shareUrlFor("/ships/");
+
+    expect(url.searchParams.has("perPage")).toBe(false);
   });
 });
