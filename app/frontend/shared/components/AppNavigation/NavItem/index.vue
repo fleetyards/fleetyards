@@ -611,7 +611,7 @@ const toggleMenu = () => {
           class="nav-item__submenu-icon"
           :class="{ 'nav-item__submenu-icon--up': submenuDirection === 'up' }"
         >
-          <i class="fa-solid fa-chevron-right" />
+          <i class="nav-item__submenu-glyph fa-solid fa-caret-right" />
         </span>
       </slot>
     </button>

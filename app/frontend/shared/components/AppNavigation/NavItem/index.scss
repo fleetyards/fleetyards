@@ -49,8 +49,8 @@ $nav-active-glow: color-mix(
     width: 100%;
     text-decoration: none;
 
-    i:not(.fa-chevron-right),
-    svg:not(.fa-chevron-right) {
+    i:not(.nav-item__submenu-glyph),
+    svg:not(.nav-item__submenu-glyph) {
       min-width: 30px;
       font-size: 24px;
       text-align: center;
@@ -97,9 +97,8 @@ $nav-active-glow: color-mix(
         margin-right: 5px;
         color: var(--color-muted, #7a8288);
 
-        i.fa-chevron-right,
-        svg.fa-chevron-right {
-          font-size: 12px;
+        .nav-item__submenu-glyph {
+          font-size: 14px;
           transition: all $transition-base-speed ease;
         }
       }
@@ -108,7 +107,7 @@ $nav-active-glow: color-mix(
     /*
      * The section a reader is inside has to say so from its own row: with the
      * children collapsed there is nothing else on screen carrying the mark, and
-     * a rotated chevron on its own is not one.
+     * a rotated caret on its own is not one.
      */
     &--active > button {
       color: color.adjust($text-color, $lightness: 10%);
@@ -148,8 +147,8 @@ $nav-active-glow: color-mix(
         padding-left: 52px;
         font-size: 16px;
 
-        i:not(.fa-chevron-right),
-        svg:not(.fa-chevron-right) {
+        i:not(.nav-item__submenu-glyph),
+        svg:not(.nav-item__submenu-glyph) {
           min-width: 22px;
           font-size: 18px;
         }
@@ -215,14 +214,12 @@ $nav-active-glow: color-mix(
       > a,
       > button {
         .nav-item__submenu-icon {
-          i.fa-chevron-right,
-          svg.fa-chevron-right {
+          .nav-item__submenu-glyph {
             transform: rotate(90deg);
           }
 
           &--up {
-            i.fa-chevron-right,
-            svg.fa-chevron-right {
+            .nav-item__submenu-glyph {
               transform: rotate(-90deg);
             }
           }
@@ -231,7 +228,7 @@ $nav-active-glow: color-mix(
     }
 
     /*
-     * Collapsed, the chevron has no column to sit in -- the rail is 80px wide
+     * Collapsed, the caret has no column to sit in -- the rail is 80px wide
      * and the icon takes 55 of them -- so it becomes a corner mark against the
      * glyph, out of the flex flow entirely.
      */
@@ -240,13 +237,12 @@ $nav-active-glow: color-mix(
         .nav-item__submenu-icon {
           position: absolute;
           top: 50%;
-          right: 6px;
+          right: 4px;
           margin-right: 0;
           transform: translateY(-50%);
 
-          i.fa-chevron-right,
-          svg.fa-chevron-right {
-            font-size: 9px;
+          .nav-item__submenu-glyph {
+            font-size: 14px;
           }
         }
       }
@@ -363,8 +359,8 @@ $nav-active-glow: color-mix(
       padding: 8px 15px;
       font-size: 15px;
 
-      i:not(.fa-chevron-right),
-      svg:not(.fa-chevron-right) {
+      i:not(.nav-item__submenu-glyph),
+      svg:not(.nav-item__submenu-glyph) {
         min-width: 22px;
         font-size: 18px;
       }
