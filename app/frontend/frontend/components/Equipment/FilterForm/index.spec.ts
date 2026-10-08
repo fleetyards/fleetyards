@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { VueWrapper } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
@@ -61,6 +61,10 @@ const select = (wrapper: VueWrapper, name: string) =>
     .find((component) => component.props("name") === name)!;
 
 describe("EquipmentFilterForm", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("offers the sizes and grades the catalogue has", async () => {
     const { wrapper } = await mountAt();
 
@@ -76,7 +80,6 @@ describe("EquipmentFilterForm", () => {
     select(wrapper, "grade").vm.$emit("update:modelValue", ["1", "2"]);
 
     await vi.advanceTimersByTimeAsync(400);
-    vi.useRealTimers();
 
     expect(router.currentRoute.value.query.sizeIn).toEqual(["3"]);
     expect(router.currentRoute.value.query.gradeIn).toEqual(["1", "2"]);
