@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
+import type { MaybeRef } from "vue";
 import type { VueWrapper } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import type { FilterOption } from "@/services/fyApi";
@@ -16,9 +17,11 @@ const { sizes, grades } = vi.hoisted(() => ({
   ],
 }));
 
+// Armour only comes in size 1 here, so picking it narrows the sizes.
 vi.mock("@/services/fyApi", async (importOriginal) => {
-  const { ref } = await import("vue");
+  const { computed, ref, toValue } = await import("vue");
   const empty = () => ({ data: ref<FilterOption[]>([]) });
+  type Params = { q?: { equipmentTypeIn?: string[] } };
 
   return {
     ...(await importOriginal<Record<string, unknown>>()),
@@ -27,7 +30,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     useEquipmentSubTypesFilters: empty,
     useEquipmentWeaponClassesFilters: empty,
     useEquipmentSlotsFilters: empty,
-    useEquipmentSizesFilters: () => ({ data: ref<FilterOption[]>(sizes) }),
+    useEquipmentSizesFilters: (params: MaybeRef<Params>) => ({
+      data: computed<FilterOption[]>(() =>
+        toValue(params).q?.equipmentTypeIn?.includes("armor")
+          ? sizes.slice(0, 1)
+          : sizes,
+      ),
+    }),
     useEquipmentGradesFilters: () => ({ data: ref<FilterOption[]>(grades) }),
   };
 });
@@ -90,5 +99,18 @@ describe("EquipmentFilterForm", () => {
 
     expect(select(wrapper, "size").props("modelValue")).toEqual(["3"]);
     expect(select(wrapper, "grade").props("modelValue")).toEqual(["2"]);
+  });
+
+  it("narrows the sizes to the chosen type and drops a size it no longer has", async () => {
+    vi.useFakeTimers();
+    const { router, wrapper } = await mountAt({ sizeIn: ["1", "3"] });
+
+    select(wrapper, "equipmentType").vm.$emit("update:modelValue", ["armor"]);
+
+    await vi.advanceTimersByTimeAsync(400);
+
+    expect(select(wrapper, "size").props("options")).toEqual([sizes[0]]);
+    expect(select(wrapper, "size").props("modelValue")).toEqual(["1"]);
+    expect(router.currentRoute.value.query.sizeIn).toEqual(["1"]);
   });
 });

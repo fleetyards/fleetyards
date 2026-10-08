@@ -14,6 +14,7 @@ import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/in
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
 import {
   type EquipmentQuery,
+  type FilterOption,
   useEquipmentGradesFilters,
   useEquipmentItemTypesFilters,
   useEquipmentSizesFilters,
@@ -77,36 +78,44 @@ const { data: types } = useEquipmentTypesFilters();
 
 // Narrowed by the chosen types: unnarrowed the list is over a hundred item
 // types, most of them clothing, which buries the dozen a weapon search wants.
-const itemTypeParams = computed(() => {
+// Sizes and grades follow, because each type runs its own scale.
+const equipmentTypeParams = computed(() => {
   const chosen = form.value.equipmentTypeIn || [];
 
   return chosen.length ? { q: { equipmentTypeIn: chosen } } : {};
 });
 
-const { data: itemTypes } = useEquipmentItemTypesFilters(itemTypeParams);
+const { data: itemTypes } = useEquipmentItemTypesFilters(equipmentTypeParams);
+const { data: sizes } = useEquipmentSizesFilters(equipmentTypeParams);
+const { data: grades } = useEquipmentGradesFilters(equipmentTypeParams);
 
-// An item type the control cannot show is one the reader cannot remove, so a
-// type dropped from the selection takes its item types with it. Only once
-// options have arrived: pruning before the answer would clear a selection
-// restored from the URL. An answer that is empty still prunes -- a type with
-// no item types leaves nothing selectable.
-watch(itemTypes, (options) => {
+// A value the control cannot show is one the reader cannot remove, so a type
+// dropped from the selection takes its item types, sizes and grades with it.
+// Only once options have arrived: pruning before the answer would clear a
+// selection restored from the URL. An answer that is empty still prunes -- a
+// type with no item types leaves nothing selectable.
+const pruneToOptions = (
+  key: "itemTypeIn" | "sizeIn" | "gradeIn",
+  options?: FilterOption[],
+) => {
   if (!options) return;
 
   const available = new Set(options.map((option) => option.value));
-  const chosen = form.value.itemTypeIn || [];
+  const chosen = form.value[key] || [];
   const kept = chosen.filter((value) => available.has(value));
 
   if (kept.length !== chosen.length) {
-    form.value = { ...form.value, itemTypeIn: kept };
+    form.value = { ...form.value, [key]: kept };
   }
-});
+};
+
+watch(itemTypes, (options) => pruneToOptions("itemTypeIn", options));
+watch(sizes, (options) => pruneToOptions("sizeIn", options));
+watch(grades, (options) => pruneToOptions("gradeIn", options));
 
 const { data: subTypes } = useEquipmentSubTypesFilters();
 const { data: weaponClasses } = useEquipmentWeaponClassesFilters();
 const { data: slots } = useEquipmentSlotsFilters();
-const { data: sizes } = useEquipmentSizesFilters();
-const { data: grades } = useEquipmentGradesFilters();
 </script>
 
 <template>
