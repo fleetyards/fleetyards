@@ -31,13 +31,22 @@ export const usePresenceUpdates = () => {
   const visibility = useDocumentVisibility();
   const { idle } = useIdle(IDLE_AFTER);
 
+  // A report into a socket that is down only fails; the reconnect reports
+  // afresh instead.
+  const connected = ref(false);
+
   const inUse = computed(
     () =>
-      isAuthenticated.value && visibility.value === "visible" && !idle.value,
+      isAuthenticated.value &&
+      connected.value &&
+      visibility.value === "visible" &&
+      !idle.value,
   );
 
   const report = (action: "active" | "inactive") => {
-    channel.value?.perform(action).catch(() => {});
+    channel.value?.perform(action).catch((error: Error) => {
+      console.warn("Presence: report failed", action, error.message);
+    });
   };
 
   const { channel } = useSubscription({
@@ -51,9 +60,10 @@ export const usePresenceUpdates = () => {
         resetPresence();
       }
 
-      if (inUse.value) {
-        report("active");
-      }
+      connected.value = true;
+    },
+    disconnected: () => {
+      connected.value = false;
     },
   });
 
@@ -63,23 +73,20 @@ export const usePresenceUpdates = () => {
     { immediate: false },
   );
 
-  watch(
-    inUse,
-    (value) => {
-      if (value) {
-        report("active");
-        resume();
-      } else {
-        pause();
-      }
-    },
-    { immediate: true },
-  );
+  watch(inUse, (value) => {
+    if (value) {
+      report("active");
+      resume();
+    } else {
+      pause();
+    }
+  });
 
   // Hiding the tab keeps the server's window, which covers a quick look at
-  // another app. Going idle means the reader has walked away.
+  // another app. Going idle means the reader has walked away. Either way only
+  // this tab's own entry changes, so another tab in use is unaffected.
   watch(idle, (value) => {
-    if (value) {
+    if (value && connected.value) {
       report("inactive");
     }
   });

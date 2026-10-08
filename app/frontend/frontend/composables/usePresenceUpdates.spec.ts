@@ -8,6 +8,7 @@ interface Handler {
   channel: { identifier?: string };
   received?: (update: unknown) => void;
   connected?: (event: { reconnect?: boolean }) => void;
+  disconnected?: () => void;
   enabled?: { value: boolean };
 }
 
@@ -50,6 +51,12 @@ const render = () => {
   wrappers.push(wrapper);
 
   return wrapper;
+};
+
+const renderConnected = async () => {
+  render();
+  handlers[0].connected?.({ reconnect: false });
+  await nextTick();
 };
 
 beforeEach(() => {
@@ -101,35 +108,36 @@ describe("usePresenceUpdates", () => {
     expect(usePresence().isOnline(USER, false)).toBe(true);
   });
 
-  it("reports activity on connect while in use", () => {
-    render();
-
-    handlers[0].connected?.({ reconnect: false });
+  it("reports activity once connected while in use", async () => {
+    await renderConnected();
 
     expect(perform).toHaveBeenCalledWith("active");
   });
 
-  it("reports nothing from a hidden tab", () => {
-    visibility.value = "hidden";
+  it("reports nothing before the channel connects", async () => {
     render();
-
-    handlers[0].connected?.({ reconnect: false });
+    await nextTick();
 
     expect(perform).not.toHaveBeenCalled();
   });
 
-  it("reports nothing when signed out", () => {
-    useSessionStore().authenticated = false;
-    render();
+  it("reports nothing from a hidden tab", async () => {
+    visibility.value = "hidden";
+    await renderConnected();
 
-    handlers[0].connected?.({ reconnect: false });
+    expect(perform).not.toHaveBeenCalled();
+  });
+
+  it("reports nothing when signed out", async () => {
+    useSessionStore().authenticated = false;
+    await renderConnected();
 
     expect(perform).not.toHaveBeenCalled();
   });
 
   it("reports activity when the tab becomes visible", async () => {
     visibility.value = "hidden";
-    render();
+    await renderConnected();
 
     visibility.value = "visible";
     await nextTick();
@@ -137,9 +145,9 @@ describe("usePresenceUpdates", () => {
     expect(perform).toHaveBeenCalledWith("active");
   });
 
-  it("keeps reporting while the tab is in use", () => {
+  it("keeps reporting while the tab is in use", async () => {
     vi.useFakeTimers();
-    render();
+    await renderConnected();
     perform.mockClear();
 
     vi.advanceTimersByTime(30_000);
@@ -148,9 +156,22 @@ describe("usePresenceUpdates", () => {
     expect(perform).toHaveBeenCalledWith("active");
   });
 
+  it("stops reporting while disconnected", async () => {
+    vi.useFakeTimers();
+    await renderConnected();
+
+    handlers[0].disconnected?.();
+    await nextTick();
+    perform.mockClear();
+
+    vi.advanceTimersByTime(60_000);
+
+    expect(perform).not.toHaveBeenCalled();
+  });
+
   it("stops reporting once the tab is hidden, without clearing", async () => {
     vi.useFakeTimers();
-    render();
+    await renderConnected();
 
     visibility.value = "hidden";
     await nextTick();
@@ -161,25 +182,18 @@ describe("usePresenceUpdates", () => {
     expect(perform).not.toHaveBeenCalled();
   });
 
-  it("clears the server's window once the reader goes idle", async () => {
+  it("reports inactive on going idle, then stops reporting", async () => {
     vi.useFakeTimers();
-    render();
-
-    idle.value = true;
-    await nextTick();
-    perform.mockClear();
-
-    vi.advanceTimersByTime(60_000);
-
-    expect(perform).not.toHaveBeenCalled();
-  });
-
-  it("reports inactive on going idle", async () => {
-    render();
+    await renderConnected();
 
     idle.value = true;
     await nextTick();
 
     expect(perform).toHaveBeenLastCalledWith("inactive");
+
+    perform.mockClear();
+    vi.advanceTimersByTime(60_000);
+
+    expect(perform).not.toHaveBeenCalled();
   });
 });
