@@ -6,6 +6,9 @@ module Discord
   # Lists what a fleet's settings page picks from in its guild. A guild
   # Discord cannot list is a code for the page to explain, not an error.
   class GuildListing
+    # Seconds the settings page waits on Discord.
+    TIMEOUT = 5
+
     Result = Struct.new(:code, :items) do
       def ok?
         code == :ok
@@ -24,6 +27,8 @@ module Discord
       Result.new(:ok, pick(request || []))
     rescue ApiClient::Error => e
       Result.new(error_code(e.status), [])
+    rescue Faraday::Error
+      Result.new(:discord_error, [])
     end
 
     private def error_code(status)
@@ -36,7 +41,7 @@ module Discord
     end
 
     private def api
-      @api ||= ApiClient.new
+      @api ||= ApiClient.new(timeout: TIMEOUT)
     end
   end
 end
