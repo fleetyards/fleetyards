@@ -89,10 +89,28 @@ module Discord
         assert_includes line, "#{"N" * (::Discord::Commands::FleetMembers::NICKNAME_LENGTH - 1)}… (Bravo)"
       end
 
-      test "drops whole lines to stay within a message and counts them" do
+      test "a nickname cannot start a roster line of its own" do
+        accept(create(:user, username: "Bravo")).update_column(:nickname, "Ghost\n• Admin — Owner")
+
+        assert_includes call[:content], "• Ghost • Admin — Owner (Bravo) — Member"
+      end
+
+      test "a nickname that is the username is not repeated" do
+        accept(create(:user, username: "Bravo")).update!(nickname: "bravo")
+
+        assert_includes call[:content], "• Bravo — Member"
+      end
+
+      test "caps a long role name" do
         role_named("Member").update!(name: "R" * 400)
+        accept(create(:user, username: "Bravo"), "R" * 400)
+
+        assert_includes call[:content], "• Bravo — #{"R" * (::Discord::Commands::FleetMembers::ROLE_LENGTH - 1)}…"
+      end
+
+      test "drops whole lines to stay within a message and counts them" do
         total = ::Discord::Commands::FleetMembers::MAX_MEMBERS + 1
-        (total - 1).times { |i| accept(create(:user, username: "Member#{i.to_s.rjust(2, "0")}"), "R" * 400).update!(nickname: "N" * 255) }
+        (total - 1).times { |i| accept(create(:user, username: "M#{i.to_s.rjust(2, "0")}#{"x" * 250}")) }
 
         content = call[:content]
         shown = content.lines.count { |line| line.start_with?("• ") }
