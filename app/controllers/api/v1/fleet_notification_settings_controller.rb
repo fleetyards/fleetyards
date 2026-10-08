@@ -81,6 +81,8 @@ module Api
 
         ::Discord::ApiClient.new(timeout: ::Discord::GuildListing::ATTEMPT_TIMEOUT, retries: ::Discord::GuildListing::RETRIES)
           .list_guild_members(@setting.discord_guild_id, limit: 1)
+        return {joinRoleOk: false, joinRoleCode: "live_updates_off"} unless ::Discord::ApiClient.members_intent?
+
         {joinRoleOk: true}
       rescue ::Discord::ApiClient::Error => e
         (e.status == 403) ? {joinRoleOk: false, joinRoleCode: "members_intent_missing"} : {}

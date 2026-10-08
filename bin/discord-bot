@@ -35,7 +35,7 @@ Discordrb::LOGGER.mode = (ENV["DISCORD_BOT_DEBUG"] == "true") ? :debug : :normal
 # Server Members is a privileged intent: unless it is enabled for the
 # application in the Discord developer portal, the Gateway refuses the whole
 # connection, RSVPs included. Opt-in so this process never depends on it.
-members_intent = ENV["DISCORD_SERVER_MEMBERS_INTENT"] == "true"
+members_intent = Discord::ApiClient.members_intent?
 
 bot = Discordrb::Bot.new(
   token: token,

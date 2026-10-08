@@ -649,7 +649,8 @@
             "channel_shared": "%{names} comparte un canal con lectores a los que no se muestran sus eventos. No se publica nada allí hasta que cada uno tenga un canal propio."
           },
           "joinRoleCodes": {
-            "members_intent_missing": "El bot de Fleetyards aún no puede listar los miembros de este servidor, así que el rol de ingreso solo se aplica cuando un jugador usa un enlace de invitación. Contacta con un administrador."
+            "members_intent_missing": "El bot de Fleetyards aún no puede listar los miembros de este servidor, así que el rol de ingreso solo se aplica cuando un jugador usa un enlace de invitación. Contacta con un administrador.",
+            "live_updates_off": "Los cambios de rol llegan a Fleetyards una vez al día: el bot no los escucha en el momento. Contacta con un administrador."
           },
           "statusOk": "Conectado a %{name}",
           "statusCodes": {

@@ -649,7 +649,8 @@
             "channel_shared": "%{names} teilt einen Kanal mit Lesern, vor denen ihre Events verborgen sind. Dort wird nichts gepostet, bis jede einen eigenen Kanal hat."
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Der Fleetyards-Bot darf die Mitglieder dieses Servers noch nicht auflisten, daher greift die Beitrittsrolle nur, wenn ein Spieler einen Einladungslink nutzt. Wende dich an einen Administrator."
+            "members_intent_missing": "Der Fleetyards-Bot darf die Mitglieder dieses Servers noch nicht auflisten, daher greift die Beitrittsrolle nur, wenn ein Spieler einen Einladungslink nutzt. Wende dich an einen Administrator.",
+            "live_updates_off": "Rollenänderungen erreichen Fleetyards einmal am Tag: Der Bot hört nicht auf sie, während sie passieren. Wende dich an einen Administrator."
           },
           "statusOk": "Verbunden mit %{name}",
           "statusCodes": {

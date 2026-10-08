@@ -247,6 +247,36 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     assert_equal "members_intent_missing", body["joinRoleCode"]
   end
 
+  test "reports a join role whose changes only arrive with the daily sweep" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    api.stubs(:list_guild_members).returns([])
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:members_intent?).returns(false)
+    Discord::ApiClient.stubs(:new).returns(api)
+
+    get @url, as: :json
+
+    assert_equal "live_updates_off", JSON.parse(response.body)["joinRoleCode"]
+  end
+
+  test "reports a join role that is fully in effect" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_join_role_id: "300000000000000001")
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    api.stubs(:list_guild_members).returns([])
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::ApiClient.stubs(:members_intent?).returns(true)
+    Discord::ApiClient.stubs(:new).returns(api)
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal true, body["joinRoleOk"]
+    refute body.key?("joinRoleCode")
+  end
+
   test "says nothing about members to a fleet without a join role" do
     @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")

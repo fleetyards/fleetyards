@@ -649,7 +649,8 @@
             "channel_shared": "%{names} 与看不到其活动的读者共用一个频道。在各自拥有独立频道之前，不会在那里发布任何内容。"
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Fleetyards 机器人暂时无法列出此服务器的成员，因此加入身份组只在玩家使用邀请链接时生效。请联系管理员。"
+            "members_intent_missing": "Fleetyards 机器人暂时无法列出此服务器的成员，因此加入身份组只在玩家使用邀请链接时生效。请联系管理员。",
+            "live_updates_off": "身份组变更每天只同步到 Fleetyards 一次：机器人没有实时监听这些变更。请联系管理员。"
           },
           "statusOk": "已连接到 %{name}",
           "statusCodes": {

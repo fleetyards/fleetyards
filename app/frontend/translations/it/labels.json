@@ -649,7 +649,8 @@
             "channel_shared": "%{names} condivide un canale con lettori a cui i suoi eventi sono nascosti. Non viene pubblicato nulla finché ognuno non ha un canale proprio."
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Il bot di Fleetyards non può ancora elencare i membri di questo server, quindi il ruolo di adesione vale solo quando un giocatore usa un link di invito. Contatta un amministratore."
+            "members_intent_missing": "Il bot di Fleetyards non può ancora elencare i membri di questo server, quindi il ruolo di adesione vale solo quando un giocatore usa un link di invito. Contatta un amministratore.",
+            "live_updates_off": "Le modifiche ai ruoli arrivano a Fleetyards una volta al giorno: il bot non le ascolta mentre avvengono. Contatta un amministratore."
           },
           "statusOk": "Connesso a %{name}",
           "statusCodes": {

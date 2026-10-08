@@ -649,7 +649,8 @@
             "channel_shared": "%{names} 與看不到其活動的讀者共用一個頻道。在各自擁有專屬頻道之前，不會在那裡發布任何內容。"
           },
           "joinRoleCodes": {
-            "members_intent_missing": "Fleetyards 機器人暫時無法列出此伺服器的成員，因此加入身分組只在玩家使用邀請連結時生效。請聯絡管理員。"
+            "members_intent_missing": "Fleetyards 機器人暫時無法列出此伺服器的成員，因此加入身分組只在玩家使用邀請連結時生效。請聯絡管理員。",
+            "live_updates_off": "身分組變更每天只同步到 Fleetyards 一次：機器人沒有即時監聽這些變更。請聯絡管理員。"
           },
           "statusOk": "已連線至 %{name}",
           "statusCodes": {

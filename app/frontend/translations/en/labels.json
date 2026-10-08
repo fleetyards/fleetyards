@@ -649,7 +649,8 @@
             "channel_shared": "%{names} shares a channel with readers its events are kept from. Nothing is posted there until each has a channel of its own."
           },
           "joinRoleCodes": {
-            "members_intent_missing": "The Fleetyards bot may not list this server's members yet, so the join role only takes effect when a player uses an invite link. Contact an administrator."
+            "members_intent_missing": "The Fleetyards bot may not list this server's members yet, so the join role only takes effect when a player uses an invite link. Contact an administrator.",
+            "live_updates_off": "Role changes reach Fleetyards once a day: the bot is not listening for them as they happen. Contact an administrator."
           },
           "statusOk": "Connected to %{name}",
           "statusCodes": {

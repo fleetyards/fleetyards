@@ -32,6 +32,13 @@ module Discord
 
     UNKNOWN_MEMBER = 10007
 
+    # Whether bin/discord-bot asks the Gateway for member updates. Read here
+    # too, so the settings page can tell a fleet that role changes only
+    # arrive with the daily sweep.
+    def self.members_intent?
+      ENV["DISCORD_SERVER_MEMBERS_INTENT"] == "true"
+    end
+
     def self.bot_token
       Rails.application.config.app.discord[:bot_token].presence
     end
