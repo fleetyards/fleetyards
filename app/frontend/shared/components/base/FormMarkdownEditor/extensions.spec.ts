@@ -200,6 +200,26 @@ describe("markdownExtensions and angle brackets", () => {
     expect(rendered.find("b").exists()).toBe(false);
   });
 
+  it("keeps details tags as text where they open or close nothing", () => {
+    const stray =
+      "</details>\n\n<summary>Loose</summary>\n\n:::detailsContent\nx\n:::";
+
+    expect(protectHtml(stray)).toBe(
+      "&lt;/details>\n\n&lt;summary>Loose&lt;/summary>\n\n:::detailsContent\nx\n:::",
+    );
+    expect(roundTrip(stray)).toBe(
+      "&lt;/details&gt;\n\n&lt;summary&gt;Loose&lt;/summary&gt;\n\n:::detailsContent\nx\n:::",
+    );
+  });
+
+  it("reads a summary after a blank line, and drops an image from it", () => {
+    expect(
+      roundTrip(
+        "<details>\n\n<summary>![i](https://robertsspaceindustries.com/i.png) Crew</summary>\n\nBody\n</details>",
+      ),
+    ).toBe("<details>\n<summary> Crew</summary>\n\nBody\n\n</details>");
+  });
+
   it("keeps a fence open past a line that only starts like one", () => {
     expect(protectHtml("```\n```x <a>\n```\n<a>")).toBe(
       "```\n```x <a>\n```\n&lt;a>",

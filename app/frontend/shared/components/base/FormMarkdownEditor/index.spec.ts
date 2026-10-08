@@ -200,6 +200,7 @@ describe("FormMarkdownEditor", () => {
     );
     expect(toggle.attributes("aria-label")).toBe("Expand the section");
     expect(subject.emitted("update:modelValue")).toBeUndefined();
+    expect(editorOf(subject).can().undo()).toBe(false);
   });
 
   it("links the selection to an address it accepts", async () => {
