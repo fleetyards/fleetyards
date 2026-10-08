@@ -63,6 +63,8 @@ test.describe("Accessibility", () => {
       await page.goto("/visual-tests/overlays/");
       await page.getByTestId("confirm-destructive").click();
       await expect(page.getByTestId("confirm-ok")).toBeVisible();
+      // The fade starts a frame after the dialog mounts.
+      await expect(page.locator(".app-confirm")).toHaveCSS("opacity", "1");
 
       await expectNoA11yViolations(page, { include: ".app-confirm" });
     });
