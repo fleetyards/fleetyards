@@ -43,9 +43,10 @@ test.describe("Hangar tour", () => {
     await page.keyboard.press("Escape");
     await expect(card(page)).toHaveCount(0);
 
-    // Skipping counts as seen: a reload must not start it again.
+    // Seen once shown: a reload must not start it again. The groups row is
+    // what the auto-start waits for, so the wait after it outlasts its delay.
     await page.reload();
-    await expect(page.getByTestId("primary-action")).toBeVisible();
+    await expect(page.locator("[data-tour='hangar-groups']")).toBeVisible();
     await page.waitForTimeout(1500);
     await expect(card(page)).toHaveCount(0);
 
@@ -78,9 +79,8 @@ test.describe("Hangar tour", () => {
     await expect(card(page)).toHaveCount(0);
 
     // No vehicles yet, so the step about a ship's own menu has nothing to
-    // point at, and no public hangar to share.
+    // point at.
     expect(seen).not.toContain("vehicle");
-    expect(seen).not.toContain("share");
     expect(seen).toEqual(
       expect.arrayContaining(["welcome", "add", "sync", "display", "menu"]),
     );

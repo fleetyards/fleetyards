@@ -353,6 +353,14 @@ const TOUR_AUTOSTART_DELAY = 800;
 
 let tourTimer = 0;
 
+// Someone who already clicked or typed is busy -- maybe in a modal the tour
+// would make inert -- so the pending start is dropped, not queued behind it.
+const cancelTourAutostart = () => {
+  window.clearTimeout(tourTimer);
+  document.removeEventListener("pointerdown", cancelTourAutostart, true);
+  document.removeEventListener("keydown", cancelTourAutostart, true);
+};
+
 watch(
   () =>
     !!currentUser?.value?.id &&
@@ -362,18 +370,21 @@ watch(
     hangarStats.value?.total === 0 &&
     !isFilterSelected.value,
   (shouldStart) => {
-    window.clearTimeout(tourTimer);
+    cancelTourAutostart();
 
     if (shouldStart) {
-      tourTimer = window.setTimeout(openGuide, TOUR_AUTOSTART_DELAY);
+      tourTimer = window.setTimeout(() => {
+        cancelTourAutostart();
+        openGuide();
+      }, TOUR_AUTOSTART_DELAY);
+      document.addEventListener("pointerdown", cancelTourAutostart, true);
+      document.addEventListener("keydown", cancelTourAutostart, true);
     }
   },
   { immediate: true },
 );
 
-onBeforeUnmount(() => {
-  window.clearTimeout(tourTimer);
-});
+onBeforeUnmount(cancelTourAutostart);
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {

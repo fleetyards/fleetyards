@@ -69,11 +69,13 @@ const steps = computed<TourStep[]>(() => [
   }),
 ]);
 
-const onEnd = () => {
+// Seen once it has been shown, not once it ends: leaving the page mid-tour
+// ends nothing, and should not bring it back on every later visit.
+watch(open, (value) => {
   const userId = sessionStore.currentUser?.id;
 
-  if (userId) hangarStore.markTourSeen(userId);
-};
+  if (value && userId) hangarStore.markTourSeen(userId);
+});
 </script>
 
 <template>
@@ -81,6 +83,5 @@ const onEnd = () => {
     v-model:open="open"
     :steps="steps"
     return-focus-fallback='[data-tour="hangar-menu"] button'
-    @end="onEnd"
   />
 </template>
