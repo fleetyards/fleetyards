@@ -31,7 +31,7 @@ describe("HangarSyncResult", () => {
     );
   });
 
-  it("counts paints and hangar flair among the pledge items", async () => {
+  it("counts paints and hangar flair among the pledge items, as the sync stores them", async () => {
     const wrapper = await mountWithDefaults(HangarSyncResult, {
       props: {
         processSteps: [{ name: "fetchHangar", status: "success" }],
@@ -46,6 +46,11 @@ describe("HangarSyncResult", () => {
           {
             id: "3",
             name: "Space Globe - Terra",
+            type: RsiHangarItemKindEnum.FLAIR,
+          },
+          {
+            id: "3",
+            name: "Poster - Banu Merchantman",
             type: RsiHangarItemKindEnum.FLAIR,
           },
           {
@@ -68,7 +73,7 @@ describe("HangarSyncResult", () => {
         ]),
     );
 
-    expect(rows["All Pledge Items:"]).toBe("4");
+    expect(rows["All Pledge Items:"]).toBe("5");
     expect(rows["Paints:"]).toBe("1");
     expect(rows["Hangar Flair:"]).toBe("2");
   });

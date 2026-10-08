@@ -51,13 +51,18 @@ const upgrades = computed(() =>
   props.pledges.filter((pledge) => pledge.type === "upgrade"),
 );
 
-const paints = computed(() =>
-  props.pledges.filter((pledge) => pledge.type === "skin"),
-);
+// The sync keeps one row per name in a pledge, with a quantity, so a poster
+// listed twice is counted once here too and the two steps agree.
+const pledgeRows = (type: string) =>
+  new Set(
+    props.pledges
+      .filter((pledge) => pledge.type === type)
+      .map((pledge) => `${pledge.id}:${pledge.name.trim()}`),
+  );
 
-const hangarFlair = computed(() =>
-  props.pledges.filter((pledge) => pledge.type === "flair"),
-);
+const paints = computed(() => pledgeRows("skin"));
+
+const hangarFlair = computed(() => pledgeRows("flair"));
 
 const importedVehicles = computed(() => props.result?.importedVehicles || []);
 const foundVehicles = computed(() => props.result?.foundVehicles || []);
@@ -173,17 +178,17 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
             </template>
-            <template v-if="paints.length">
+            <template v-if="paints.size">
               <dt class="col-sm-7">
                 {{ t("labels.syncExtension.pledgeItems.paints") }}:
               </dt>
-              <dd class="col-sm-5 text-right">{{ paints.length }}</dd>
+              <dd class="col-sm-5 text-right">{{ paints.size }}</dd>
             </template>
-            <template v-if="hangarFlair.length">
+            <template v-if="hangarFlair.size">
               <dt class="col-sm-7">
                 {{ t("labels.syncExtension.pledgeItems.hangarFlair") }}:
               </dt>
-              <dd class="col-sm-5 text-right">{{ hangarFlair.length }}</dd>
+              <dd class="col-sm-5 text-right">{{ hangarFlair.size }}</dd>
             </template>
           </dl>
         </div>
