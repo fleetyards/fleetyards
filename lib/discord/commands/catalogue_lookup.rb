@@ -41,7 +41,11 @@ module Discord
 
       # One shape for a name the resolver offers and for one item of a shared
       # name, so both rank and list the same way.
-      Candidate = Data.define(:prefix, :name, :slug, :value, :detail)
+      Candidate = Data.define(:prefix, :name, :slug, :value, :detail) do
+        def self.from_variant(variant)
+          new(prefix: variant.prefix, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail)
+        end
+      end
 
       # A command offering one catalogue leaves its type off: every choice
       # would carry it, and it spends the 100 characters the detail telling two
@@ -72,9 +76,7 @@ module Discord
         unique = ::Catalogue::TokenResolver.new.search(query, within:).map do |match|
           Candidate.new(prefix: prefix_for(match), name: match.name, slug: match.slug, value: match.token, detail: nil)
         end
-        shared = CatalogueVariants.search(query, within:).map do |variant|
-          Candidate.new(prefix: variant.prefix, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail)
-        end
+        shared = CatalogueVariants.search(query, within:).map { |variant| Candidate.from_variant(variant) }
 
         lowered = ::Catalogue::TokenResolver.parse(query).last.downcase
         (unique + shared).sort_by do |candidate|
@@ -176,9 +178,7 @@ module Discord
             url = url_for_path("#{LIST_PAGES.fetch(prefix) { PAGES.fetch(prefix) }}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
             ["• [#{CatalogueLookup.listed_type(prefix, within) || Markdown.escape(name)}](#{url}) · #{count}"]
           else
-            CatalogueVariants.variants_named(prefix, name).map do |variant|
-              candidate_line(Candidate.new(prefix:, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail), within)
-            end
+            CatalogueVariants.variants_named(prefix, name).map { |variant| candidate_line(Candidate.from_variant(variant), within) }
           end
         end
         shown = others.first(MAX_CANDIDATES)
