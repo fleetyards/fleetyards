@@ -17,7 +17,7 @@ const { sizes, grades } = vi.hoisted(() => ({
   ],
 }));
 
-// Armour only comes in size 1 here, so picking it narrows the sizes.
+// Armour only comes in size 1 and grade 1 here, so picking it narrows both.
 vi.mock("@/services/fyApi", async (importOriginal) => {
   const { computed, ref, toValue } = await import("vue");
   const empty = () => ({ data: ref<FilterOption[]>([]) });
@@ -37,7 +37,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
           : sizes,
       ),
     }),
-    useEquipmentGradesFilters: () => ({ data: ref<FilterOption[]>(grades) }),
+    useEquipmentGradesFilters: (params: MaybeRef<Params>) => ({
+      data: computed<FilterOption[]>(() =>
+        toValue(params).q?.equipmentTypeIn?.includes("armor")
+          ? grades.slice(0, 1)
+          : grades,
+      ),
+    }),
   };
 });
 
@@ -101,9 +107,12 @@ describe("EquipmentFilterForm", () => {
     expect(select(wrapper, "grade").props("modelValue")).toEqual(["2"]);
   });
 
-  it("narrows the sizes to the chosen type and drops a size it no longer has", async () => {
+  it("narrows to the chosen type and drops a size or grade it no longer has", async () => {
     vi.useFakeTimers();
-    const { router, wrapper } = await mountAt({ sizeIn: ["1", "3"] });
+    const { router, wrapper } = await mountAt({
+      sizeIn: ["1", "3"],
+      gradeIn: ["1", "2"],
+    });
 
     select(wrapper, "equipmentType").vm.$emit("update:modelValue", ["armor"]);
 
@@ -112,5 +121,16 @@ describe("EquipmentFilterForm", () => {
     expect(select(wrapper, "size").props("options")).toEqual([sizes[0]]);
     expect(select(wrapper, "size").props("modelValue")).toEqual(["1"]);
     expect(router.currentRoute.value.query.sizeIn).toEqual(["1"]);
+    expect(select(wrapper, "grade").props("options")).toEqual([grades[0]]);
+    expect(router.currentRoute.value.query.gradeIn).toEqual(["1"]);
+  });
+
+  it("drops a size from the URL that options already at hand do not have", async () => {
+    const { wrapper } = await mountAt({
+      equipmentTypeIn: "armor",
+      sizeIn: "3",
+    });
+
+    expect(select(wrapper, "size").props("modelValue")).toEqual([]);
   });
 });

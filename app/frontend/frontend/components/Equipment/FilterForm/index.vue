@@ -93,7 +93,8 @@ const { data: grades } = useEquipmentGradesFilters(equipmentTypeParams);
 // dropped from the selection takes its item types, sizes and grades with it.
 // Only once options have arrived: pruning before the answer would clear a
 // selection restored from the URL. An answer that is empty still prunes -- a
-// type with no item types leaves nothing selectable.
+// type with no item types leaves nothing selectable. Immediate, because an
+// answer already in the cache is never a change.
 const pruneToOptions = (
   key: "itemTypeIn" | "sizeIn" | "gradeIn",
   options?: FilterOption[],
@@ -109,9 +110,15 @@ const pruneToOptions = (
   }
 };
 
-watch(itemTypes, (options) => pruneToOptions("itemTypeIn", options));
-watch(sizes, (options) => pruneToOptions("sizeIn", options));
-watch(grades, (options) => pruneToOptions("gradeIn", options));
+watch(itemTypes, (options) => pruneToOptions("itemTypeIn", options), {
+  immediate: true,
+});
+watch(sizes, (options) => pruneToOptions("sizeIn", options), {
+  immediate: true,
+});
+watch(grades, (options) => pruneToOptions("gradeIn", options), {
+  immediate: true,
+});
 
 const { data: subTypes } = useEquipmentSubTypesFilters();
 const { data: weaponClasses } = useEquipmentWeaponClassesFilters();
