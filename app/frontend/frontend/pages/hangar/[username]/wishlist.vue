@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -55,21 +56,7 @@ const username = computed(() => {
   return props.user.username;
 });
 
-const usernamePlural = computed(() => {
-  if (
-    userTitle.value.endsWith("s") ||
-    userTitle.value.endsWith("x") ||
-    userTitle.value.endsWith("z")
-  ) {
-    return userTitle.value;
-  }
-
-  return `${userTitle.value}'s`;
-});
-
-const userTitle = computed(() => {
-  return username.value[0].toUpperCase() + username.value.slice(1);
-});
+const usernamePlural = computed(() => possessiveUsername(username.value));
 
 const mobile = useMobile();
 

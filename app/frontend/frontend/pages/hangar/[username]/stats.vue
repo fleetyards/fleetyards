@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PublicHangarStats from "@/frontend/components/Hangar/PublicHangarStats/index.vue";
@@ -23,21 +24,7 @@ const router = useRouter();
 
 const username = computed(() => props.user.username);
 
-const usernamePlural = computed(() => {
-  if (
-    userTitle.value.endsWith("s") ||
-    userTitle.value.endsWith("x") ||
-    userTitle.value.endsWith("z")
-  ) {
-    return userTitle.value;
-  }
-
-  return `${userTitle.value}'s`;
-});
-
-const userTitle = computed(() => {
-  return username.value[0].toUpperCase() + username.value.slice(1);
-});
+const usernamePlural = computed(() => possessiveUsername(username.value));
 
 onMounted(async () => {
   if (!props.user.publicHangarStats) {
