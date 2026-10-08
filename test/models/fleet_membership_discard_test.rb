@@ -184,4 +184,15 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert membership.discard
     assert kept.update(status: "confirmed")
   end
+
+  test "an undated signup of a recurring event is freed" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    signup = signup_for(membership, event)
+    event.update_columns(recurring: true, recurrence_interval: "weekly", recurrence_count: 10)
+
+    assert membership.discard
+    assert signup.reload.withdrawn?
+  end
 end
