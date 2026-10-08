@@ -171,17 +171,15 @@ module Discord
       private def entry_too_common(query, carriers, strings, within, others)
         name = ::Catalogue::TokenResolver.parse(query).last
         lines = carriers.flat_map do |prefix, count|
-          type = CatalogueLookup.listed_type(prefix, within)
           if count > CatalogueVariants::MAX_CARRIERS
             url = url_for_path("#{LIST_PAGES.fetch(prefix) { PAGES.fetch(prefix) }}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
-            ["• [#{type || Markdown.escape(name)}](#{url}) · #{count}"]
+            ["• [#{CatalogueLookup.listed_type(prefix, within) || Markdown.escape(name)}](#{url}) · #{count}"]
           else
-            CatalogueVariants.named(prefix, name).map do |record|
-              ["• #{entry_link(record.name, prefix, record.slug)}", type].compact.join(" · ")
+            CatalogueVariants.variants_named(prefix, name).map do |variant|
+              candidate_line(Candidate.new(prefix:, name: variant.name, slug: variant.slug, value: variant.value, detail: variant.detail), within)
             end
           end
         end
-
         shown = others.first(MAX_CANDIDATES)
 
         fit_message(I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)),

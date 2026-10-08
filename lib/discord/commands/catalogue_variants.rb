@@ -95,6 +95,15 @@ module Discord
         ::Catalogue::TokenResolver.listed(prefix).where("lower(#{model(prefix).fact_sql(:name)}) = ?", name.downcase)
       end
 
+      # The listed entries of one catalogue carrying exactly `name`, each told
+      # apart by its detail and in its order, so a list of them reads the same
+      # every time.
+      def self.variants_named(prefix, name)
+        rows = named(prefix, name).includes(:build)
+        rows = rows.includes(lead(prefix).preload) if lead(prefix).preload
+        rows.map { |record| Variant.new(prefix:, record:) }.sort_by(&:detail)
+      end
+
       # The variant a picked suggestion's value names, if it still is listed.
       def self.find(value, within:)
         parts = VALUE.match(value.to_s.strip)

@@ -272,6 +272,18 @@ module Discord
         assert_includes content, "[Internal Tank](https://#{Rails.configuration.app.domain}/catalogue/components/#{component.slug}/)"
       end
 
+      # Two components of one name would read as the same line without what
+      # tells them apart.
+      test "a too-common answer tells the few items of another catalogue apart" do
+        create_list(:equipment, ::Discord::Commands::CatalogueVariants::MAX_CARRIERS + 1, name: "Internal Tank")
+        create(:component, name: "Internal Tank", size: "2", sc_key: "Tank_S2")
+        create(:component, name: "Internal Tank", size: "1", sc_key: "Tank_S1")
+
+        lines = call("Internal Tank")[:content].lines.map(&:chomp)
+
+        assert_equal ["S1 · tank\\_s1", "S2 · tank\\_s2"], lines.grep(/Component/).map { |line| line.split(" · ", 3).last }
+      end
+
       test "a typed name a few items share in each of two catalogues lists them" do
         create_list(:component, 3, name: "Serac")
         create_list(:equipment, 3, name: "Serac")
