@@ -139,27 +139,34 @@ const mountModal = async (
   return { wrapper, hangarStore };
 };
 
+const hangarPage = (items: string) =>
+  `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101"><input type="hidden" class="js-pledge-name" value="Package - Cutter Starter Pack">${items}</li></ul>`;
+
+// The modal waits half a second before it asks for the next page.
 const replyWithPage = async (items: string) => {
-  extensionReplies(
-    "sync",
-    `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101">${items}</li></ul>`,
-  );
-  await flushPromises();
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 
-  const sent = vi.mocked(window.postMessage).mock.calls.length;
-  await vi.waitFor(
-    () =>
-      expect(vi.mocked(window.postMessage).mock.calls.length).toBeGreaterThan(
-        sent,
-      ),
-    { timeout: 2000 },
-  );
+  try {
+    const sent = vi.mocked(window.postMessage).mock.calls.length;
 
-  extensionReplies(
-    "sync",
-    '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
-  );
-  await flushPromises();
+    extensionReplies("sync", hangarPage(items));
+    await flushPromises();
+
+    vi.advanceTimersByTime(500);
+    await flushPromises();
+
+    expect(vi.mocked(window.postMessage).mock.calls.length).toBeGreaterThan(
+      sent,
+    );
+
+    extensionReplies(
+      "sync",
+      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
+    );
+    await flushPromises();
+  } finally {
+    vi.useRealTimers();
+  }
 };
 
 // One page with a ship, then RSI's empty list: the shortest route from
@@ -403,7 +410,9 @@ describe("HangarSyncModal", () => {
 
     extensionReplies(
       "sync",
-      `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101"><div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div></li></ul>`,
+      hangarPage(
+        '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div>',
+      ),
     );
     await flushPromises();
 
