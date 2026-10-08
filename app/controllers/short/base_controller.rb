@@ -42,6 +42,15 @@ module Short
       redirect_to frontend_compare_url(models: slugs), allow_other_host: true
     end
 
+    def fleet_ships
+      fleet = Fleet.kept.find_by(normalized_fid: params[:fleet_fid].to_s.downcase)
+      if fleet
+        redirect_to frontend_fleet_ships_url(slug: fleet.slug), allow_other_host: true
+      else
+        redirect_to "/404", allow_other_host: true
+      end
+    end
+
     def fleet_event
       fleet = Fleet.find_by("LOWER(fid) = ?", params[:fleet_fid].to_s.downcase)
       event = fleet&.fleet_events&.find_by(slug: params[:event_slug])

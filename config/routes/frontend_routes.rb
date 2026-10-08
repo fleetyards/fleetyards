@@ -103,7 +103,7 @@ namespace :frontend, **frontend_options do
   get "fleets/directory", to: "base#index", as: :fleets_directory
   get "fleets/invites/:token", to: "fleets#invite", as: :fleet_invite
   get "fleets/:slug", to: "fleets#show", as: :fleet
-  get "fleets/:slug/ships", to: "fleets#show"
+  get "fleets/:slug/ships", to: "fleets#show", as: :fleet_ships
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
   # Old links, sent out in notifications before the list moved into settings.
