@@ -504,3 +504,10 @@ de:
               invalid: Token ist ungültig
             username:
               taken: ist bereits vergeben.
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: ist bereits für diesen Platz angemeldet
+              not_a_member: ist kein Mitglied dieser Flotte mehr
+            fleet_event_slot_id:
+              already_taken: ist bereits von einem anderen Mitglied belegt

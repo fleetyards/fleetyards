@@ -503,3 +503,10 @@ zh-CN:
               invalid: 无效令牌
             username:
               taken: 电子邮箱已注册。
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: 已报名此位置
+              not_a_member: 已不再是该舰队成员
+            fleet_event_slot_id:
+              already_taken: 已被其他成员占用

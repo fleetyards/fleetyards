@@ -504,3 +504,10 @@ es:
               invalid: Token es inválido
             username:
               taken: ya ha sido tomado.
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: ya está inscrito en este puesto
+              not_a_member: ya no es miembro de esta flota
+            fleet_event_slot_id:
+              already_taken: ya está ocupado por otro miembro

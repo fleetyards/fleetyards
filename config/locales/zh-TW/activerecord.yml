@@ -503,3 +503,10 @@ zh-TW:
               invalid: 權杖無效
             username:
               taken: 已被佔用。
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: 已報名此位置
+              not_a_member: 已不再是該艦隊成員
+            fleet_event_slot_id:
+              already_taken: 已被其他成員佔用
