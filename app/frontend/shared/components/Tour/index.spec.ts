@@ -1,6 +1,7 @@
 import { mount, type VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h, nextTick } from "vue";
+import { createMemoryHistory, createRouter, type Router } from "vue-router";
 import Tour from "./index.vue";
 import type { TourStep } from "./types";
 
@@ -449,5 +450,154 @@ describe("Tour", () => {
 
     expect(card()).toBeNull();
     expect(wrapper.emitted("update:open")).toEqual([[false]]);
+  });
+});
+
+describe("Tour across pages", () => {
+  const Page = defineComponent({ render: () => h("div") });
+
+  let router: Router;
+
+  const ROUTED: TourStep[] = [
+    { id: "welcome", title: "Welcome", text: "Hello", route: "/start" },
+    {
+      id: "members",
+      title: "Members",
+      text: "Invite",
+      route: "/members",
+      target: '[data-tour="invite"]',
+    },
+    {
+      id: "events",
+      title: "Events",
+      text: "Plan",
+      route: "/events",
+      target: '[data-tour="events"]',
+      requiresTarget: true,
+    },
+    { id: "settings", title: "Settings", text: "Done", route: "/settings" },
+  ];
+
+  // Rendering a target only once its page is open, the way a page's data
+  // loads in after the navigation.
+  const renderOn = (path: string, id: string, delay = 0) => {
+    router.afterEach((to) => {
+      if (to.path !== path) return;
+      window.setTimeout(() => addTarget(id), delay);
+    });
+  };
+
+  const mountRouted = async (steps: TourStep[] = ROUTED) => {
+    let wrapper: VueWrapper | undefined = undefined;
+
+    wrapper = mount(Tour, {
+      attachTo: document.body,
+      props: {
+        steps,
+        open: true,
+        "onUpdate:open": (value: boolean) => wrapper?.setProps({ open: value }),
+      },
+      global: { stubs: { Btn: BtnStub }, plugins: [router] },
+    });
+
+    wrappers.push(wrapper);
+    await flush();
+
+    return wrapper;
+  };
+
+  // The tour polls for a target on a timer; let it, and the renders after it.
+  const settle = async (ms = 200) => {
+    await vi.advanceTimersByTimeAsync(ms);
+    await flush();
+  };
+
+  beforeEach(async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] });
+    router = createRouter({
+      history: createMemoryHistory(),
+      routes: ["/start", "/members", "/events", "/settings"].map((path) => ({
+        path,
+        component: Page,
+      })),
+    });
+    await router.push("/start");
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("opens a step's page and waits for its target to render", async () => {
+    renderOn("/members", "invite", 300);
+    renderOn("/events", "events");
+
+    await mountRouted();
+    await settle();
+    expect(card()?.dataset.step).toBe("welcome");
+
+    await click("tour-next");
+    await settle(100);
+
+    expect(router.currentRoute.value.path).toBe("/members");
+    expect(card()?.style.visibility).toBe("hidden");
+
+    await settle(400);
+    expect(card()?.dataset.step).toBe("members");
+    expect(card()?.style.visibility).not.toBe("hidden");
+    expect(hole()?.classList).not.toContain("tour__hole--empty");
+  });
+
+  it("passes over a step whose required target never renders", async () => {
+    renderOn("/members", "invite");
+
+    await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle();
+    expect(card()?.dataset.step).toBe("members");
+
+    await click("tour-next");
+    await settle();
+    expect(router.currentRoute.value.path).toBe("/events");
+
+    await settle(5000);
+    expect(router.currentRoute.value.path).toBe("/settings");
+    expect(card()?.dataset.step).toBe("settings");
+    expect(card()?.textContent).toContain('"current":3,"total":3');
+  });
+
+  it("returns to the previous step's page on Back", async () => {
+    renderOn("/members", "invite");
+    renderOn("/events", "events");
+
+    await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle();
+    await click("tour-next");
+    await settle();
+    expect(card()?.dataset.step).toBe("events");
+
+    await click("tour-back");
+    await settle();
+
+    expect(router.currentRoute.value.path).toBe("/members");
+    expect(card()?.dataset.step).toBe("members");
+  });
+
+  it("ignores Next while the next page is still loading", async () => {
+    renderOn("/members", "invite", 1000);
+
+    await mountRouted();
+    await settle();
+    await click("tour-next");
+    await settle(100);
+
+    await press("ArrowRight");
+    await settle(1000);
+
+    expect(router.currentRoute.value.path).toBe("/members");
+    expect(card()?.dataset.step).toBe("members");
   });
 });
