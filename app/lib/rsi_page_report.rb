@@ -6,7 +6,8 @@
 # user's hangar.
 #
 # A report names the page and the check that failed, never the page itself: the
-# pledge pages are the user's purchase history.
+# pledge pages are the user's purchase history. Its details are what the parser
+# tripped on, in RSI's labels and markup, without item titles or custom names.
 class RsiPageReport
   PAGES = %w[hangar buyback].freeze
 
@@ -24,7 +25,7 @@ class RsiPageReport
   # one of them reopen the notification as fast as the admins can read it.
   REPORT_INTERVAL = 1.hour
 
-  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil)
+  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
     if user
       first = Rails.cache.write(
         "rsi_page_report/#{user.id}/#{page}/#{check}", true,
@@ -40,7 +41,9 @@ class RsiPageReport
         "A #{page} sync stopped on a page its parser does not recognise.",
         "- Check: `#{check}`",
         ("- Page: #{page_number}" if page_number),
-        ("- Extension: `#{extension_version}`" if extension_version.present?)
+        ("- Extension: `#{extension_version}`" if extension_version.present?),
+        ("- Details:" if details.present?),
+        *Array(details).map { |detail| "  - `#{detail}`" }
       ].compact.join("\n"),
       severity: :error,
       dedupe_key: "#{page}:#{check}"

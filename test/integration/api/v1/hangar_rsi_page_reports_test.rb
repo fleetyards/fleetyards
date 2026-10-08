@@ -59,6 +59,24 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /hangar/rsi-page-reports lists what the parser tripped on" do
+    sign_in @user
+
+    assert_api_response :post, 204,
+      body: {page: "hangar", check: "missing_kinds", details: ['item without kind, liner "", in a "Package" pledge']} do
+      assert_includes notifications.sole.body, "- Details:\n  - `item without kind, liner \"\", in a \"Package\" pledge`"
+    end
+  end
+
+  test "POST /hangar/rsi-page-reports refuses a detail that would break out of its code span" do
+    sign_in @user
+
+    assert_api_response :post, 400,
+      body: {page: "hangar", check: "missing_kinds", details: ["`[x](https://x.test)`"]}
+
+    assert_empty notifications
+  end
+
   test "POST /hangar/rsi-page-reports counts repeats of the same failure on one notification" do
     sign_in @user
 
