@@ -330,16 +330,18 @@ describe("FormMarkdownEditor", () => {
     expect(sizeToolbarShown()).toBe(false);
 
     editorOf(subject).chain().focus().setNodeSelection(0).run();
-    await nextFrames();
-    expect(sizeToolbarShown()).toBe(true);
+    // The menu plugin shows the toolbar on its own schedule, which two frames
+    // do not always cover on a loaded CI runner.
+    await vi.waitFor(() => expect(sizeToolbarShown()).toBe(true));
 
     await sizeButton("50").trigger("click");
     expect(lastEmitted(subject)).toBe(
       "![cover](https://robertsspaceindustries.com/a.jpg){width=50%}",
     );
 
-    await nextFrames();
-    expect(sizeButton("50").attributes("aria-pressed")).toBe("true");
+    await vi.waitFor(() =>
+      expect(sizeButton("50").attributes("aria-pressed")).toBe("true"),
+    );
 
     await sizeButton("full").trigger("click");
     expect(lastEmitted(subject)).toBe(
