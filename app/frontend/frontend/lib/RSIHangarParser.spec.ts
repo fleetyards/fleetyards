@@ -190,4 +190,34 @@ describe("RSIHangarParser.extractPage", () => {
       pledgeIds: ["101"],
     });
   });
+
+  it("reads an item without a kind whose liner names nobody", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            '<div class="item"><div class="text"><div class="title">Upgrade - Clipper To S-65 Stingray</div><div class="liner"> </div></div></div>',
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.PAGE,
+      pledges: [],
+      pledgeIds: ["101"],
+    });
+  });
+
+  it("does not read a page where a pledge lost its name", () => {
+    expect(
+      extract(
+        pledgesPage(
+          `<li><input type="hidden" class="js-pledge-id" value="101">${item("Ship", "Cutter")}</li>`,
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+    });
+  });
 });

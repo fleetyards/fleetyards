@@ -26,6 +26,8 @@ const SKIPPED_KINDS = [
   "FPS Equipment",
 ];
 
+const KNOWN_KINDS = [...READ_KINDS, ...SKIPPED_KINDS];
+
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
   "GreyCat Estate Geotack Planetary Beacon",
@@ -58,6 +60,9 @@ export class RSIHangarParser {
 
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
+    let missingPledgeName = false;
+    let shipWithoutKind = false;
+    let unknownKind = false;
     let standaloneShipWithoutShip = false;
 
     entries.forEach((entry) => {
@@ -69,12 +74,44 @@ export class RSIHangarParser {
         pledgeIds.push(id);
       }
 
-      const items = Array.from(entry.getElementsByClassName("item"))
-        .map((item) => this.parseItem(id, item))
-        .filter((item) => item !== undefined);
+      const name = this.pledgeName(entry);
 
+      if (name === undefined) {
+        missingPledgeName = true;
+      }
+
+      const items: RSIHangarItem[] = [];
+
+      Array.from(entry.getElementsByClassName("item")).forEach((item) => {
+        const kind = this.itemKind(item);
+
+        if (kind === undefined) {
+          // RSI gives no kind to ship upgrades, the game download or old
+          // merchandise, but none of those names a manufacturer. Every ship
+          // does: one with a manufacturer and no kind would drop out of the
+          // sync, and the unmatched action would act on it.
+          if (this.itemManufacturer(item)) {
+            shipWithoutKind = true;
+          }
+          return;
+        }
+
+        if (!KNOWN_KINDS.includes(kind)) {
+          unknownKind = true;
+          return;
+        }
+
+        const parsed = this.parseItem(id, item, kind);
+
+        if (parsed) {
+          items.push(parsed);
+        }
+      });
+
+      // Every standalone ship pledge holds its ship. One that reads none has
+      // lost both its kind and its manufacturer.
       if (
-        this.pledgeName(entry).startsWith("Standalone Ship") &&
+        name?.startsWith("Standalone Ship") &&
         !items.some((item) => item.type === "ship")
       ) {
         standaloneShipWithoutShip = true;
@@ -85,47 +122,32 @@ export class RSIHangarParser {
 
     // Every pledge row, not just one: a row that no longer reads would drop
     // its ships out of the sync, and the unmatched action would act on them.
-    if (pledgeIds.length === 0 || pledgeIds.length < entries.length) {
+    // Without its name, the standalone ship check below would pass unseen.
+    if (
+      pledgeIds.length === 0 ||
+      pledgeIds.length < entries.length ||
+      missingPledgeName
+    ) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
       };
     }
 
-    const items = Array.from(pledgeList.getElementsByClassName("item"));
-
-    // RSI gives no kind to ship upgrades, the game download or old
-    // merchandise, but none of those names a manufacturer. Every ship does:
-    // one with a manufacturer and no kind would drop out of the sync, and the
-    // unmatched action would act on it.
-    if (
-      items.some(
-        (item) =>
-          item.getElementsByClassName("liner")[0] &&
-          this.itemKind(item) === undefined,
-      )
-    ) {
+    if (shipWithoutKind) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
       };
     }
 
-    const kinds = items
-      .map((item) => this.itemKind(item))
-      .filter((kind) => kind !== undefined);
-
-    const known = [...READ_KINDS, ...SKIPPED_KINDS];
-
-    if (kinds.some((kind) => !known.includes(kind))) {
+    if (unknownKind) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
       };
     }
 
-    // Every standalone ship pledge holds its ship. One that reads none has
-    // lost both its kind and its manufacturer.
     if (standaloneShipWithoutShip) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
@@ -136,10 +158,12 @@ export class RSIHangarParser {
     return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
-  parseItem(id: string, item: Element): RSIHangarItem | undefined {
-    const kind = this.itemKind(item);
-
-    if (kind === undefined || !READ_KINDS.includes(kind)) {
+  parseItem(
+    id: string,
+    item: Element,
+    kind: string,
+  ): RSIHangarItem | undefined {
+    if (!READ_KINDS.includes(kind)) {
       return undefined;
     }
 
@@ -173,10 +197,16 @@ export class RSIHangarParser {
     };
   }
 
-  pledgeName(entry: Element): string {
+  pledgeName(entry: Element): string | undefined {
     return (
-      (entry.getElementsByClassName("js-pledge-name")[0] as HTMLInputElement)
-        ?.value || ""
+      entry.getElementsByClassName("js-pledge-name")[0] as
+        HTMLInputElement | undefined
+    )?.value;
+  }
+
+  itemManufacturer(item: Element): string | undefined {
+    return (
+      item.getElementsByClassName("liner")[0]?.textContent?.trim() || undefined
     );
   }
 
