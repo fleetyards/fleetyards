@@ -206,21 +206,19 @@ class UserPresenceTest < ActiveSupport::TestCase
     assert UserPresence.active?(@user)
   end
 
-  test "#active_user_ids lists every user with a tab in use" do
+  test "#active_among picks out the users with a tab in use" do
     UserPresence.mark_active(@user, "tab-1")
     UserPresence.mark_active(@other, "tab-2")
     UserPresence.mark_inactive(@other, "tab-2")
 
-    assert_equal Set[@user], UserPresence.active_user_ids
+    assert_equal Set[@user], UserPresence.active_among([@user, @other])
   end
 
-  test "#sweep drops lapsed activity" do
+  test "#active_among ignores lapsed activity" do
     UserPresence.mark_active(@user, "tab-1")
 
     travel UserPresence::ACTIVE_WINDOW + 1.second do
-      UserPresence.sweep
-
-      assert_empty UserPresence.active_user_ids
+      assert_empty UserPresence.active_among([@user])
     end
   end
 end
