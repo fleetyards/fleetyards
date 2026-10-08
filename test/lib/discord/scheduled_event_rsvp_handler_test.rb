@@ -161,6 +161,16 @@ module Discord
         )
         assert_equal :skipped, handler.add!.status
       end
+
+      test "skips when the user's membership ended" do
+        @membership.discard
+        handler = ::Discord::ScheduledEventRsvpHandler.new(
+          guild_id: "100000000000000001",
+          scheduled_event_id: "scheduled-1",
+          discord_user_id: "discord-uid-1"
+        )
+        assert_equal :skipped, handler.add!.status
+      end
     end
 
     class RemoveTest < ScheduledEventRsvpHandlerTest

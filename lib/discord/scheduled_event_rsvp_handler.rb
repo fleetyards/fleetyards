@@ -96,7 +96,7 @@ module Discord
         return Result.new(status: :skipped, detail: "guild #{@guild_id} doesn't match fleet binding")
       end
 
-      membership = user.fleet_memberships.find_by(fleet_id: event.fleet_id, aasm_state: "accepted")
+      membership = user.fleet_memberships.kept.find_by(fleet_id: event.fleet_id, aasm_state: "accepted")
       return Result.new(status: :skipped, detail: "user #{user.id} not an accepted member of fleet #{event.fleet_id}") unless membership
 
       yield(user, event, membership, occurrence_date)

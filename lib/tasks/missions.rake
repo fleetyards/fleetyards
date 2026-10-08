@@ -252,7 +252,7 @@ namespace :missions do
     fleet = ENV["FLEET_FID"] ? Fleet.find_by!(fid: ENV["FLEET_FID"]) : Fleet.first
     abort "No fleet found. Pass FLEET_FID=... to target a specific fleet." unless fleet
 
-    creator = fleet.fleet_memberships.where(aasm_state: "accepted").first&.user || User.first
+    creator = fleet.fleet_memberships.kept.accepted.first&.user || User.first
     abort "No user found." unless creator
 
     puts "Seeding example missions in fleet #{fleet.fid} (created by @#{creator.username})..."
