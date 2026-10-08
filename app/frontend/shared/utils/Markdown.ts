@@ -253,10 +253,10 @@ export const closesFence = (line: string, marker: string) => {
   );
 };
 
-const DETAILS_OPEN =
-  /^ {0,3}<details(?:\s+open)?>[ \t]*(?:<summary>(.*)<\/summary>[ \t]*)?$/i;
-const DETAILS_SUMMARY = /^ {0,3}<summary>(.*)<\/summary>[ \t]*$/i;
-const DETAILS_CLOSE = /^ {0,3}<\/details>[ \t]*$/i;
+export const DETAILS_OPEN =
+  /^( {0,3}<details(?:\s+open)?>[ \t]*)(?:<summary>(.*)<\/summary>[ \t]*)?$/i;
+export const DETAILS_SUMMARY = /^( {0,3})<summary>(.*)<\/summary>[ \t]*$/i;
+export const DETAILS_CLOSE = /^ {0,3}<\/details>[ \t]*$/i;
 
 export type DetailsBlock = {
   summary: string;
@@ -266,7 +266,8 @@ export type DetailsBlock = {
 };
 
 // GitHub's collapsible section: a `<details>` line, its `<summary>` on the
-// same line or the next, markdown, and a `</details>` line. Only these exact
+// same line or the first one after it with text, markdown, and a `</details>`
+// line. Only these exact
 // lines count -- any other HTML is still text -- and the tags mean nothing
 // inside fenced code. A section left open runs to the end of the text, as it
 // does in a browser. `open` is accepted and dropped: the editor keeps no open
@@ -279,15 +280,19 @@ export const readDetails = (
 
   if (!open) return undefined;
 
-  let summary = open[1];
+  let summary = open[2];
   let index = start + 1;
 
   if (summary === undefined) {
-    const next = DETAILS_SUMMARY.exec(lines[index] ?? "");
+    let next = index;
 
-    if (next) {
-      summary = next[1];
-      index += 1;
+    while (next < lines.length && !lines[next].trim()) next += 1;
+
+    const line = DETAILS_SUMMARY.exec(lines[next] ?? "");
+
+    if (line) {
+      summary = line[2];
+      index = next + 1;
     }
   }
 

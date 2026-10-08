@@ -66,6 +66,14 @@ describe("renderMarkdown details", () => {
     ).toBe("<details><summary>Crew</summary><p>Three pilots</p></details>");
   });
 
+  it("reads a summary after blank lines", () => {
+    expect(
+      renderMarkdown(
+        "<details>\n\n<summary>Crew</summary>\n\nBody\n</details>",
+      ),
+    ).toBe("<details><summary>Crew</summary><p>Body</p></details>");
+  });
+
   it("leaves the summary out when there is none", () => {
     expect(renderMarkdown("<details>\n\nBody\n\n</details>")).toBe(
       "<details><p>Body</p></details>",
