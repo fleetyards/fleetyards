@@ -44,21 +44,14 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def pledge_item(user, **attributes)
-    HangarPledgeItem.create!(
-      user:, rsi_pledge_id: SecureRandom.random_number(10**8).to_s, kind: "paint", name: "Cutlass - Akuma Paint",
-      **attributes
-    )
-  end
-
   test "GET /hangar/paints lists the caller's paints newest pledge first, as RSI does" do
     user = create(:user)
-    older = pledge_item(user, rsi_pledge_id: "9000001", pledge_created_on: Date.new(2024, 5, 1))
-    newer = pledge_item(user, rsi_pledge_id: "112870675", name: "Stingray - Marina Paint", quantity: 2,
+    older = create(:hangar_pledge_item, user:, rsi_pledge_id: "9000001", pledge_created_on: Date.new(2024, 5, 1))
+    newer = create(:hangar_pledge_item, user:, rsi_pledge_id: "112870675", name: "Stingray - Marina Paint", quantity: 2,
       pledge_created_on: Date.new(2026, 10, 8), image_url: "https://media.robertsspaceindustries.com/marina/source.jpg")
-    same_day = pledge_item(user, rsi_pledge_id: "112870680", name: "Zeus - Solar Paint", pledge_created_on: Date.new(2026, 10, 8))
-    undated = pledge_item(user, rsi_pledge_id: "99999999", name: "Aurora - Dark Green Paint")
-    pledge_item(user, kind: "flair", name: "Takuetsu Cutlass Model")
+    same_day = create(:hangar_pledge_item, user:, rsi_pledge_id: "112870680", name: "Zeus - Solar Paint", pledge_created_on: Date.new(2026, 10, 8))
+    undated = create(:hangar_pledge_item, user:, rsi_pledge_id: "99999999", name: "Aurora - Dark Green Paint")
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/paints" do
@@ -71,8 +64,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/paints filters to what RSI offers to melt" do
     user = create(:user)
-    meltable = pledge_item(user, meltable: true)
-    pledge_item(user, name: "Constellation Mk IV - Disco Paint", meltable: false)
+    meltable = create(:hangar_pledge_item, user:, meltable: true)
+    create(:hangar_pledge_item, user:, name: "Constellation Mk IV - Disco Paint", meltable: false)
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/paints", params: {q: {"meltableEq" => true}} do
@@ -83,9 +76,9 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/flair filters to items whose pledge is worth something" do
     user = create(:user)
-    valued = pledge_item(user, kind: "flair", name: "Space Globe - Terra", pledge_value: 5)
-    pledge_item(user, kind: "flair", name: "200M Commemorative Coin", pledge_value: 0)
-    pledge_item(user, kind: "flair", name: "Unpriced Trophy")
+    valued = create(:hangar_pledge_item, user:, kind: "flair", name: "Space Globe - Terra", pledge_value: 5)
+    create(:hangar_pledge_item, user:, kind: "flair", name: "200M Commemorative Coin", pledge_value: 0)
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Unpriced Trophy")
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/flair", params: {q: {"withValue" => true}} do
@@ -95,8 +88,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/paints gives a melt value only to an item that is its whole pledge" do
     user = create(:user)
-    pledge_item(user, name: "Cutlass - Akuma Paint", pledge_name: "Paints - Cutlass - Akuma Paint", pledge_value: 10, pledge_item_count: 1)
-    pledge_item(user, name: "CSV - Granite Paint", pledge_name: "Standalone Ships - CSV-SM plus Granite Paint",
+    create(:hangar_pledge_item, user:, name: "Cutlass - Akuma Paint", pledge_name: "Paints - Cutlass - Akuma Paint", pledge_value: 10, pledge_item_count: 1)
+    create(:hangar_pledge_item, user:, name: "CSV - Granite Paint", pledge_name: "Standalone Ships - CSV-SM plus Granite Paint",
       pledge_value: 40, pledge_item_count: 3)
     sign_in user
 
@@ -116,9 +109,9 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/flair lists only the caller's flair" do
     user = create(:user)
-    pledge_item(user)
-    poster = pledge_item(user, kind: "flair", name: "Poster - Banu Merchantman")
-    pledge_item(create(:user), kind: "flair", name: "Space Globe - Terra")
+    create(:hangar_pledge_item, user:)
+    poster = create(:hangar_pledge_item, user:, kind: "flair", name: "Poster - Banu Merchantman")
+    create(:hangar_pledge_item, kind: "flair", name: "Space Globe - Terra")
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/flair" do
@@ -129,8 +122,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/paints filters by name" do
     user = create(:user)
-    pledge_item(user)
-    marina = pledge_item(user, name: "Stingray - Marina Paint")
+    create(:hangar_pledge_item, user:)
+    marina = create(:hangar_pledge_item, user:, name: "Stingray - Marina Paint")
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/paints", params: {q: {"nameCont" => "marina"}} do
