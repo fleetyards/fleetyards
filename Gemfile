@@ -133,8 +133,6 @@ gem "openapi-ruby", "~> 5.0"
 gem "asyncapi_cable", "~> 0.2"
 
 group :development do
-  gem "annotaterb"
-
   gem "i18n-tasks", "~> 1.0"
   gem "listen"
 
