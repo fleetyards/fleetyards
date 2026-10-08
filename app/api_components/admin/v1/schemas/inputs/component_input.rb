@@ -12,7 +12,7 @@ module Admin
             properties: {
               name: {type: :string},
               category: {type: :string},
-              componentType: {type: :string},
+              componentType: ::Shared::V1::Schemas::Enums::ComponentTypeEnum,
               componentSubType: {type: :string},
               size: {type: :string},
               grade: {type: :string},

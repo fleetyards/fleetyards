@@ -169,3 +169,5 @@ GET /resource-access-catalog added the new `missions` enum value to the `items/p
 POST /sessions added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
 GET /components/class_filters api path removed without deprecation
 GET /components/item_type_filters api path removed without deprecation
+POST /components request property `componentType` was restricted to a list of enum values
+PUT /components/{id} request property `componentType` was restricted to a list of enum values

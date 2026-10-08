@@ -12421,7 +12421,7 @@ components:
         category:
           type: string
         componentType:
-          type: string
+          "$ref": "#/components/schemas/ComponentTypeEnum"
         componentSubType:
           type: string
         size:
