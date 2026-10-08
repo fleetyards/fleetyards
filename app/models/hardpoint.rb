@@ -62,6 +62,13 @@ class Hardpoint < ApplicationRecord
   has_many :builds, class_name: "HardpointBuild", dependent: :destroy
   has_one :build, -> { current }, class_name: "HardpointBuild", inverse_of: :hardpoint
 
+  # What rendering a slot reads: its component, from the build row or from the
+  # slot itself for a matrix slot, with that component's prices and shops.
+  RENDERED = {
+    component: {item_prices: ItemPrice::SHOP_LINK},
+    build: {component: {item_prices: ItemPrice::SHOP_LINK}}
+  }.freeze
+
   enum :source,
     {ship_matrix: 0, game_files: 1}
 

@@ -46,7 +46,7 @@ json.component nil if facts.component.blank?
 # `loadouts` array shaped like the legacy table's, with a `model_hardpoint_id`
 # nothing read.
 json.hardpoints do
-  json.array! hardpoint.hardpoints.in_build, partial: "admin/api/v1/hardpoints/base", as: :hardpoint
+  json.array! hardpoint.hardpoints.in_build.includes(Hardpoint::RENDERED), partial: "admin/api/v1/hardpoints/base", as: :hardpoint
 end
 
 json.partial! "api/shared/dates", record: hardpoint
