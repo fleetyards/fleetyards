@@ -25,7 +25,7 @@ module Discord
         user = linked_user
         return false if user.blank?
 
-        user.fleet_memberships.exists?(fleet_id: fleet.id, aasm_state: "accepted")
+        user.fleet_memberships.kept.exists?(fleet_id: fleet.id, aasm_state: "accepted")
       end
 
       private def embed(fleet)
@@ -48,7 +48,7 @@ module Discord
       end
 
       private def member_count(fleet)
-        fleet.fleet_memberships.where(aasm_state: "accepted").count
+        fleet.fleet_memberships.kept.accepted.count
       end
 
       private def upcoming_events(fleet)

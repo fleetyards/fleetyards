@@ -97,6 +97,8 @@ it:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:
       title: Sei stato accettato in %{fleet}
+    fleet_joined_by_discord_role:
+      title: "Sei entrato in %{fleet} grazie al suo ruolo Discord"
     friend_request_received:
       title: "%{username} ti ha inviato una richiesta di amicizia"
     friend_request_accepted:

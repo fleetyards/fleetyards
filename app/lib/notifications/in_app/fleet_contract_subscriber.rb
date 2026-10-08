@@ -136,7 +136,7 @@ module Notifications
       end
 
       def memberships
-        contract.fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role, :fleet_squadrons)
+        contract.fleet.fleet_memberships.kept.accepted.includes(:user, :fleet_role, :fleet_squadrons)
       end
 
       # Whoever may read this contract: the read privilege, and -- for one held

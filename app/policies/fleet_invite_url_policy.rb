@@ -4,7 +4,7 @@ class FleetInviteUrlPolicy < FleetBasePolicy
   end
 
   def create?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:invites:manage", "fleet:invites:create"])
+    accepted_fleet_membership&.has_access?(FleetMembership::CAPABILITY_PRIVILEGES[:create_invites])
   end
 
   def use?

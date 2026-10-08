@@ -256,7 +256,7 @@ class PayoutLedger < ApplicationRecord
     candidates = []
 
     if fleet.present?
-      candidates += fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role)
+      candidates += fleet.fleet_memberships.kept.accepted.includes(:user, :fleet_role)
         .select { |membership| membership.has_access?(MANAGER_PRIVILEGES) }
         .filter_map(&:user)
     end

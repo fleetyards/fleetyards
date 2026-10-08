@@ -70,6 +70,12 @@ module Discord
         assert_nil call[:embeds]
       end
 
+      test "a membership that ended does not count as membership" do
+        @membership.discard
+
+        assert_nil call[:embeds]
+      end
+
       test "counts the accepted members" do
         fields = call[:embeds].first[:fields].to_h { |field| [field[:name], field[:value]] }
 

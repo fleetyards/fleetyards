@@ -20,6 +20,22 @@ module Discord
         @body = body
         super("Discord API error #{status}: #{body}")
       end
+
+      # Discord's own error code: a 404 alone does not say whether the member
+      # or the whole guild is unknown.
+      def code
+        JSON.parse(body.to_s)["code"] if body.present?
+      rescue JSON::ParserError
+        nil
+      end
+    end
+
+    UNKNOWN_MEMBER = 10007
+
+    # Whether bin/discord-bot asks the Gateway for member updates. The bot
+    # reports what it connected with through Discord::BotStatus.
+    def self.members_intent?
+      ENV["DISCORD_SERVER_MEMBERS_INTENT"] == "true"
     end
 
     def self.bot_token
@@ -63,8 +79,15 @@ module Discord
       bot_token.present?
     end
 
-    def initialize(token: self.class.bot_token)
+    # `timeout` bounds each attempt in seconds, for a call made while someone
+    # waits on the response, and makes it a single attempt unless `retries`
+    # asks for more. Those wait a second at most: a rate limit asking for
+    # longer is not waited for. Unset, Faraday waits as long as the socket
+    # does and retries.
+    def initialize(token: self.class.bot_token, timeout: nil, retries: timeout ? 0 : 3)
       @token = token
+      @timeout = timeout
+      @retries = retries
     end
 
     def get_guild(guild_id)
@@ -115,6 +138,17 @@ module Discord
 
     def get_guild_member(guild_id, user_id)
       request(:get, "guilds/#{guild_id}/members/#{user_id}")
+    end
+
+    # Discord caps a page at 1000 and paginates by user id. Needs the Server
+    # Members intent enabled for the application.
+    MEMBER_PAGE_SIZE = 1000
+
+    def list_guild_members(guild_id, after: nil, limit: MEMBER_PAGE_SIZE)
+      query = {limit: limit}
+      query[:after] = after if after.present?
+
+      request(:get, "guilds/#{guild_id}/members?#{query.to_query}")
     end
 
     def add_guild_member_role(guild_id, user_id, role_id)
@@ -170,9 +204,13 @@ module Discord
 
     private def connection
       @connection ||= Faraday.new(url: BASE_URL) do |c|
-        c.request :retry, max: 3, interval: 0.5, backoff_factor: 2,
-          retry_statuses: [429, 502, 503, 504],
-          methods: %i[get post patch delete put]
+        if @retries.positive?
+          c.request :retry, max: @retries, interval: 0.5, backoff_factor: 2,
+            max_interval: (1 if @timeout),
+            retry_statuses: [429, 502, 503, 504],
+            methods: %i[get post patch delete put]
+        end
+        c.options.timeout = @timeout if @timeout
         c.headers["Authorization"] = "Bot #{@token}"
         c.headers["Content-Type"] = "application/json"
         c.headers["User-Agent"] = "Fleetyards (https://fleetyards.net, 1.0)"

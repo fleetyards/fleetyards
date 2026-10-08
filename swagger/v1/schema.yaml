@@ -2656,6 +2656,54 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/discord-roles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Discord Roles
+      tags:
+      - FleetNotificationSettings
+      operationId: fleetDiscordRoles
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDiscordRoles"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events":
     parameters:
     - name: fleetSlug
@@ -23835,6 +23883,32 @@ components:
       - GUILD_NOT_FOUND
       - DISCORD_ERROR
       title: FleetDiscordConnectionCodeEnum
+    FleetDiscordRole:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: FleetDiscordRole
+    FleetDiscordRoles:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/FleetDiscordConnectionCodeEnum"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDiscordRole"
+      additionalProperties: false
+      required:
+      - code
+      - items
+      title: FleetDiscordRoles
     FleetEvent:
       type: object
       properties:
@@ -26370,6 +26444,10 @@ components:
           type: string
         postingDetail:
           type: string
+        joinRoleOk:
+          type: boolean
+        joinRoleCode:
+          type: string
       title: FleetNotificationDiscordStatus
     FleetNotificationInAppEventEnum:
       type: string
@@ -26430,6 +26508,10 @@ components:
           - 'null'
         discordMemberRoleId:
           type: string
+        discordJoinRoleId:
+          type:
+          - string
+          - 'null'
         discordWebhookConfigured:
           type: boolean
       required:
@@ -26472,6 +26554,10 @@ components:
           - string
           - 'null'
         discordMemberRoleId:
+          type:
+          - string
+          - 'null'
+        discordJoinRoleId:
           type:
           - string
           - 'null'
@@ -33587,6 +33673,7 @@ components:
       - fleet_member_requested
       - fleet_member_accepted
       - fleet_request_accepted
+      - fleet_joined_by_discord_role
       - fleet_inventory_item_added
       - fleet_event_published
       - fleet_event_locked
@@ -33639,6 +33726,7 @@ components:
       - FLEET_MEMBER_REQUESTED
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
+      - FLEET_JOINED_BY_DISCORD_ROLE
       - FLEET_INVENTORY_ITEM_ADDED
       - FLEET_EVENT_PUBLISHED
       - FLEET_EVENT_LOCKED

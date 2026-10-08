@@ -463,6 +463,7 @@ en:
               not_a_member: must be an accepted member of this fleet
         fleet_notification_setting:
           not_a_discord_id: "must be the numeric ID Discord copies with \"Copy ID\", not a name"
+          everyone_role: "is @everyone, which every member of the server holds"
         fleet:
           not_an_rsi_sid: "must be the SID from your organisation's RSI page, such as TEST"
           locked_while_verified: "is verified and cannot be changed; ask support to revoke the verification first"

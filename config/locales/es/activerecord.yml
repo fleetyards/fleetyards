@@ -432,6 +432,7 @@ es:
               not_a_member: debe ser un miembro aceptado de esta flota
         fleet_notification_setting:
           not_a_discord_id: "debe ser el ID numérico que Discord copia con «Copiar ID», no un nombre"
+          everyone_role: "es @everyone, que tienen todos los miembros del servidor"
         fleet:
           not_an_rsi_sid: "debe ser el SID de la página de RSI de tu organización, por ejemplo TEST"
           locked_while_verified: "está verificado y no se puede cambiar; pide al soporte que revoque primero la verificación"

@@ -28,6 +28,11 @@ zh-TW:
         body: 要檢視艦隊的飛船和其他成員，請點擊以下連結：
         headline: 您加入 %{fleet} 的請求已被接受
         subject: "%{fleet} 接受了您的加入請求"
+      joined_by_discord_role:
+        action: "%{fleet} 首頁"
+        body: "要檢視艦隊的飛船和其他成員，請點擊以下連結："
+        headline: "您在 %{fleet} 的 Discord 伺服器上擁有加入身分組，因此現在已是該艦隊的成員。"
+        subject: "您已透過 Discord 身分組加入 %{fleet}"
       member_accepted:
         action: "%{fleet} 成員列表"
         body: 要檢視新成員資訊，請點擊以下連結：

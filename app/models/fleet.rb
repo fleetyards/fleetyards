@@ -106,6 +106,8 @@ class Fleet < ApplicationRecord
     dependent: :destroy
   has_many :fleet_invite_urls,
     dependent: :destroy
+  has_many :fleet_discord_role_holders, dependent: :delete_all
+  has_many :discord_member_reads, dependent: :delete_all
   has_many :fleet_inventories, dependent: :destroy
   # Ordered here rather than at every call site: the strip on the front page,
   # the filter segments and the roster badges all read this association, and a
@@ -521,27 +523,27 @@ class Fleet < ApplicationRecord
   end
 
   def invitation(user_id)
-    fleet_memberships.find_by(user_id:)&.invited?
+    fleet_memberships.kept.find_by(user_id:)&.invited?
   end
 
   def requested(user_id)
-    fleet_memberships.find_by(user_id:)&.requested?
+    fleet_memberships.kept.find_by(user_id:)&.requested?
   end
 
   def primary(user_id)
-    fleet_memberships.find_by(user_id:)&.primary
+    fleet_memberships.kept.find_by(user_id:)&.primary
   end
 
   def ships_filter(user_id)
-    fleet_memberships.find_by(user_id:)&.ships_filter
+    fleet_memberships.kept.find_by(user_id:)&.ships_filter
   end
 
   def hangar_group_id(user_id)
-    fleet_memberships.find_by(user_id:)&.hangar_group_id
+    fleet_memberships.kept.find_by(user_id:)&.hangar_group_id
   end
 
   def accepted_at(user_id)
-    fleet_memberships.find_by(user_id:)&.accepted_at
+    fleet_memberships.kept.find_by(user_id:)&.accepted_at
   end
 
   def model_count(model_id)

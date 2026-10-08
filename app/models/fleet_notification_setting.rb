@@ -16,6 +16,8 @@
 #  discord_announcement_channel_id :string
 #  discord_channel_id              :string
 #  discord_guild_id                :string
+#  discord_join_role_id            :string
+#  discord_join_role_swept_at      :datetime
 #  discord_member_role_id          :string
 #  discord_officers_channel_id     :string
 #  fleet_id                        :uuid             not null
@@ -41,6 +43,7 @@ class FleetNotificationSetting < ApplicationRecord
     discord_guild_id
     discord_channel_id
     discord_member_role_id
+    discord_join_role_id
     discord_announcement_channel_id
     discord_officers_channel_id
   ].freeze
@@ -50,6 +53,12 @@ class FleetNotificationSetting < ApplicationRecord
   normalizes(*DISCORD_ID_ATTRIBUTES, with: ->(value) { value.strip.presence })
 
   validates(*DISCORD_ID_ATTRIBUTES, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT, message: :not_a_discord_id}, allow_nil: true)
+
+  # @everyone has the guild's own id and every member holds it, so as the join
+  # role it would let the whole server in without a request.
+  validate do
+    errors.add(:discord_join_role_id, :everyone_role) if discord_join_role_id.present? && discord_join_role_id == discord_guild_id
+  end
 
   DIGEST_TIME_FORMAT = /\A(?:[01]\d|2[0-3]):[0-5]\d\z/
 
@@ -78,6 +87,27 @@ class FleetNotificationSetting < ApplicationRecord
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
+  # Every other id, each rank's role and each squadron's channel names a
+  # channel or role in one guild, so another guild leaves them pointing at
+  # nothing -- and switching back must not bring them back either: the join
+  # role would let everyone holding it in without the invite privilege it
+  # needs. Ids saved along with the new guild are its own.
+  before_save :clear_guild_scoped_ids, if: :discord_guild_id_changed?
+  after_save :clear_guild_scoped_records, if: :saved_change_to_discord_guild_id?
+  # Until a new join role's first sweep has read the whole guild, holding it
+  # is not gaining it, so nothing brings back a member whose membership ended.
+  # Who held the previous role says nothing about the new one, so the sweep
+  # applies the new one as gained by everyone holding it and lost by nobody:
+  # changing the role keeps the members the old one brought in.
+  before_save -> { self.discord_join_role_swept_at = nil }, if: :discord_join_role_id_changed?
+  # Nor does when someone was last read for it.
+  after_save -> {
+    FleetDiscordRoleHolder.where(fleet_id:).delete_all
+    DiscordMemberRead.where(fleet_id:).delete_all
+  }, if: :saved_change_to_discord_join_role_id?
+  after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
+
+  scope :with_join_role, -> { where.not(discord_join_role_id: nil).where.not(discord_guild_id: nil) }
 
   DEFAULT_IN_APP_EVENTS = %w[
     fleet_event.published
@@ -142,6 +172,21 @@ class FleetNotificationSetting < ApplicationRecord
 
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
+  end
+
+  private def clear_guild_scoped_ids
+    (DISCORD_ID_ATTRIBUTES - [:discord_guild_id]).each do |attribute|
+      self[attribute] = nil unless attribute_changed?(attribute)
+    end
+  end
+
+  private def clear_guild_scoped_records
+    FleetRole.where(fleet_id:).where.not(discord_role_id: nil).update_all(discord_role_id: nil, updated_at: Time.current)
+    FleetSquadron.where(fleet_id:).where.not(discord_channel_id: nil).update_all(discord_channel_id: nil, updated_at: Time.current)
+  end
+
+  private def sync_discord_join_role
+    ::Discord::SyncFleetJoinRoleJob.perform_async(fleet_id)
   end
 
   private def backfill_discord_member_roles

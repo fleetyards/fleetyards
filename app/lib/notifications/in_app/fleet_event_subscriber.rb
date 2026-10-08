@@ -218,7 +218,7 @@ module Notifications
       EVENT_MANAGE_PRIVILEGES = ["fleet:manage", "fleet:events:manage"].freeze
 
       def eligible_users(target_event)
-        memberships = target_event.fleet.fleet_memberships.where(aasm_state: "accepted")
+        memberships = target_event.fleet.fleet_memberships.kept.accepted
           .includes(:user, :fleet_role, :fleet_squadrons)
         # Officers are whoever may run the fleet's events. A role's rank is its
         # place in the fleet's order, not a name, so it cannot say this.

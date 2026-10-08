@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload, join_role_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -69,6 +69,27 @@ module Api
         {rolesOk: result.ok?, rolesCode: result.code.to_s}.tap do |payload|
           payload[:rolesDetail] = result.detail if result.detail.present?
         end
+      end
+
+      # Only reported once a join role is picked. Listing a guild's members
+      # needs the Server Members intent granted to the bot in Discord's
+      # developer portal; without it the role is only seen when a player uses
+      # an invite link, and the sweep that admits everyone holding it can
+      # never run -- which nothing else would tell the fleet.
+      private def join_role_payload
+        return {} if @setting.discord_join_role_id.blank?
+
+        ::Discord::ApiClient.new(timeout: ::Discord::GuildListing::ATTEMPT_TIMEOUT, retries: ::Discord::GuildListing::RETRIES)
+          .list_guild_members(@setting.discord_guild_id, limit: 1)
+        bot = ::Discord::BotStatus.current
+        return {joinRoleOk: false, joinRoleCode: "bot_offline"} if bot.nil?
+        return {joinRoleOk: false, joinRoleCode: "live_updates_off"} unless bot["members_intent"]
+
+        {joinRoleOk: true}
+      rescue ::Discord::ApiClient::Error => e
+        (e.status == 403) ? {joinRoleOk: false, joinRoleCode: "members_intent_missing"} : {}
+      rescue Faraday::Error
+        {}
       end
 
       # Only reported once somewhere to post has been picked, for the same
@@ -133,6 +154,7 @@ module Api
 
       def update
         authorize! @setting, with: FleetNotificationSettingPolicy
+        authorize! @setting, with: FleetNotificationSettingPolicy, to: :update_join_role? if join_role_changing?
 
         if @setting.update(setting_params)
           render :show
@@ -141,9 +163,22 @@ module Api
         end
       end
 
+      # The settings form sends every field back, so only a different role
+      # needs the invite privilege; resending the current one does not. Another
+      # server clears the role, so changing it while one is set does too.
+      private def join_role_changing?
+        role_changing = params.key?(:discord_join_role_id) &&
+          params[:discord_join_role_id].to_s.strip.presence != @setting.discord_join_role_id
+        guild_changing = params.key?(:discord_guild_id) &&
+          params[:discord_guild_id].to_s.strip.presence != @setting.discord_guild_id
+
+        role_changing || (guild_changing && @setting.discord_join_role_id.present?)
+      end
+
       private def setting_params
         permitted = params.permit(
           :discord_member_role_id,
+          :discord_join_role_id,
           :discord_guild_id,
           :discord_channel_id,
           :discord_announcement_channel_id,

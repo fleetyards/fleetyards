@@ -651,11 +651,21 @@
           "digestTimeHint": "In deiner Zeitzone (%{timezone}).",
           "channelMissing": "Dieser Kanal existiert auf Discord nicht mehr oder nimmt keine Beiträge mehr an. Bis ein anderer gewählt ist, wird nichts gepostet.",
           "missingChannel": "Nicht verfügbarer Kanal",
+          "joinRole": "Beitrittsrolle",
+          "joinRoleHint": "Spieler mit dieser Rolle auf dem Server treten der Flotte ohne Anfrage bei, mit dem Standardrang. Wird ihnen die Rolle entzogen, verlassen die Mitglieder, die über sie beigetreten sind, die Flotte wieder. Leer lassen, um jede Anfrage von Hand zu bestätigen.",
+          "roleMissing": "Diese Rolle gibt es auf Discord nicht mehr. Niemand tritt über sie bei, bis eine andere gewählt ist.",
+          "missingRole": "Nicht verfügbare Rolle",
+          "saveGuildFirst": "Speichere zuerst den neuen Server und wähle dann seine Kanäle und Rollen.",
           "postingCodes": {
             "missing_send_messages": "Der Bot darf auf diesem Server keine Nachrichten senden. Autorisiere ihn über den Installationslink neu.",
             "channel_locked": "Der Bot kann nicht im Kanal posten, der für %{names} gewählt ist. Erlaube es in den Berechtigungen des Kanals.",
             "unknown_channel": "Der für %{names} gewählte Kanal existiert auf Discord nicht mehr oder nimmt keine Beiträge mehr an.",
             "channel_shared": "%{names} teilt einen Kanal mit Lesern, vor denen ihre Events verborgen sind. Dort wird nichts gepostet, bis jede einen eigenen Kanal hat."
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "Der Fleetyards-Bot darf die Mitglieder dieses Servers noch nicht auflisten, daher greift die Beitrittsrolle nur, wenn ein Spieler einen Einladungslink nutzt. Wende dich an einen Administrator.",
+            "live_updates_off": "Rollenänderungen erreichen Fleetyards einmal am Tag: Der Bot hört nicht auf sie, während sie passieren. Wende dich an einen Administrator.",
+            "bot_offline": "Der Fleetyards-Bot ist gerade nicht mit Discord verbunden, daher warten Rollenänderungen auf den täglichen Abgleich. Wende dich an einen Administrator."
           },
           "statusOk": "Verbunden mit %{name}",
           "statusCodes": {
@@ -3214,6 +3224,7 @@
         "fleet_member_requested": "Mitgliedschaft angefragt",
         "fleet_member_accepted": "Mitgliedschaft akzeptiert",
         "fleet_request_accepted": "Beitrittsanfrage akzeptiert",
+        "fleet_joined_by_discord_role": "Über Discord-Rolle beigetreten",
         "fleet_inventory_item_added": "Flotteninventar-Eintrag hinzugefügt",
         "fleet_event_published": "Event veröffentlicht",
         "fleet_event_locked": "Event-Anmeldungen gesperrt",

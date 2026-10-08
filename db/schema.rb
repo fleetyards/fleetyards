@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -499,6 +499,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.index ["discord_event_id", "discord_user_id"], name: "index_discord_event_subscriptions_on_event_and_user", unique: true
   end
 
+  create_table "discord_member_reads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_id", null: false
+    t.string "discord_user_id", null: false
+    t.datetime "read_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "discord_user_id"], name: "index_discord_member_reads_on_fleet_id_and_discord_user_id", unique: true
+  end
+
   create_table "dock_additions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "dock_id", null: false
     t.uuid "model_id", null: false
@@ -747,6 +756,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
     t.check_constraint "num_nonnulls(destination_fleet_inventory_id, destination_inventory_id) <= 1", name: "fleet_contracts_single_destination"
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
+  end
+
+  create_table "fleet_discord_role_holders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "user_id"], name: "index_fleet_discord_role_holders_on_fleet_id_and_user_id", unique: true
+    t.index ["user_id"], name: "index_fleet_discord_role_holders_on_user_id"
   end
 
   create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1026,6 +1044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.integer "blueprints_filter", default: 0, null: false
     t.string "discord_request_channel_id"
     t.string "discord_request_message_id"
+    t.boolean "discord_role_granted", default: false, null: false
     t.index ["discarded_at"], name: "index_fleet_memberships_on_discarded_at"
     t.index ["fleet_id"], name: "index_fleet_memberships_on_fleet_id_accepted", where: "(((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))"
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
@@ -1047,6 +1066,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.datetime "discord_digest_sent_at"
     t.string "discord_officers_channel_id"
     t.string "discord_digest_timezone"
+    t.string "discord_join_role_id"
+    t.datetime "discord_join_role_swept_at"
     t.index ["discord_digest_weekday"], name: "index_fleet_notification_settings_on_discord_digest_weekday", where: "(discord_digest_weekday IS NOT NULL)"
     t.index ["discord_guild_id"], name: "index_fleet_notification_settings_on_discord_guild_id"
     t.index ["fleet_id"], name: "index_fleet_notification_settings_on_fleet_id", unique: true
@@ -2247,6 +2268,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
     t.jsonb "auth_payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["provider", "uid"], name: "index_omniauth_connections_on_provider_and_uid"
     t.index ["uid"], name: "index_omniauth_connections_on_patreon_uid", unique: true, where: "(provider = 6)"
     t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
   end
@@ -2737,6 +2759,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
+  add_foreign_key "discord_member_reads", "fleets"
   add_foreign_key "dock_additions", "docks", on_delete: :cascade
   add_foreign_key "dock_additions", "models", on_delete: :cascade
   add_foreign_key "dock_capacities", "docks"
@@ -2754,6 +2777,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_07_160000) do
   add_foreign_key "fleet_contracts", "fleets"
   add_foreign_key "fleet_contracts", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "fleet_discord_role_holders", "fleets"
+  add_foreign_key "fleet_discord_role_holders", "users"
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"

@@ -58,6 +58,7 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.FLEET_MEMBER_REQUESTED,
       NotificationTypeEnum.FLEET_MEMBER_ACCEPTED,
       NotificationTypeEnum.FLEET_REQUEST_ACCEPTED,
+      NotificationTypeEnum.FLEET_JOINED_BY_DISCORD_ROLE,
       NotificationTypeEnum.FLEET_SQUADRON_REQUEST_RECEIVED,
       NotificationTypeEnum.FLEET_SQUADRON_REQUEST_ACCEPTED,
       NotificationTypeEnum.FLEET_INVENTORY_ITEM_ADDED,

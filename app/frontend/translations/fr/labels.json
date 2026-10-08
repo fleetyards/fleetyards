@@ -651,11 +651,21 @@
           "digestTimeHint": "Dans votre fuseau horaire (%{timezone}).",
           "channelMissing": "Ce salon n'existe plus sur Discord ou n'accepte plus de publications. Rien n'est publié tant qu'un autre n'est pas choisi.",
           "missingChannel": "Salon indisponible",
+          "joinRole": "Rôle d'adhésion",
+          "joinRoleHint": "Les joueurs ayant ce rôle sur le serveur rejoignent la flotte sans demande, au rang par défaut. Retirer le rôle retire les membres qu'il a fait entrer. Laissez vide pour approuver chaque demande à la main.",
+          "roleMissing": "Ce rôle n'existe plus sur Discord. Personne ne rejoint par son biais tant qu'un autre n'est pas choisi.",
+          "missingRole": "Rôle indisponible",
+          "saveGuildFirst": "Enregistre d'abord le nouveau serveur, puis choisis ses salons et ses rôles.",
           "postingCodes": {
             "missing_send_messages": "Le bot ne peut pas envoyer de messages sur ce serveur. Utilisez le lien d'installation pour l'autoriser à nouveau.",
             "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Autorisez-le dans les permissions de ce salon.",
             "unknown_channel": "Le salon choisi pour %{names} n'existe plus sur Discord ou n'accepte plus de publications.",
             "channel_shared": "%{names} partage un salon avec des lecteurs à qui ses événements sont cachés. Rien n'y est publié tant que chacun n'a pas son propre salon."
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "Le bot Fleetyards ne peut pas encore lister les membres de ce serveur : le rôle d'adhésion ne s'applique que lorsqu'un joueur utilise un lien d'invitation. Contactez un administrateur.",
+            "live_updates_off": "Les changements de rôle n'arrivent sur Fleetyards qu'une fois par jour : le bot ne les écoute pas en direct. Contactez un administrateur.",
+            "bot_offline": "Le bot Fleetyards n'est pas connecté à Discord pour le moment : les changements de rôle attendent la synchronisation quotidienne. Contactez un administrateur."
           },
           "statusOk": "Connecté à %{name}",
           "statusCodes": {
@@ -3214,6 +3224,7 @@
         "fleet_member_requested": "Adhésion demandée",
         "fleet_member_accepted": "Adhésion acceptée",
         "fleet_request_accepted": "Demande d'adhésion acceptée",
+        "fleet_joined_by_discord_role": "Adhésion via le rôle Discord",
         "fleet_inventory_item_added": "Objet ajouté à l'inventaire de la flotte",
         "fleet_event_published": "Événement publié",
         "fleet_event_locked": "Inscriptions à l'événement verrouillées",

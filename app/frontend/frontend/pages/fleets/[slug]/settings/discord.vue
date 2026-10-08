@@ -11,6 +11,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import DiscordChannelSelect from "@/frontend/components/Fleets/DiscordChannelSelect/index.vue";
+import DiscordRoleSelect from "@/frontend/components/Fleets/DiscordRoleSelect/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18nStore } from "@/shared/stores/i18n";
@@ -21,6 +22,7 @@ import {
   type FleetNotificationSetting,
   fleetNotificationDiscordStatus,
   getFleetDiscordChannelsQueryKey,
+  getFleetDiscordRolesQueryKey,
   useFleetNotificationSetting,
   useUpdateFleetNotificationSetting,
 } from "@/services/fyApi";
@@ -50,6 +52,13 @@ const discordGuildId = ref<string>("");
 const discordChannelId = ref<string>("");
 const discordAnnouncementChannelId = ref<string | null>(null);
 const discordOfficersChannelId = ref<string | null>(null);
+const discordJoinRoleId = ref<string | null>(null);
+
+// Letting a role in without a request is handing out an invite, so the field
+// belongs to whoever may do that, not to everyone who manages these settings.
+const canSetJoinRole = computed(
+  () => props.membership?.capabilities?.createInvites ?? false,
+);
 const discordDigestWeekday = ref<string | null>(null);
 const discordDigestTime = ref<string>("");
 
@@ -76,11 +85,20 @@ const digestTimezone = computed(() => {
 });
 const discordWebhookUrl = ref<string>("");
 
+// The pickers list the saved server's channels and roles, so a server typed
+// in but not saved yet would be paired with the old one's. Left out of the
+// save, they are cleared along with the server change.
+const guildUnsaved = computed(
+  () =>
+    (discordGuildId.value || null) !== (setting.value?.discordGuildId ?? null),
+);
+
 const hydrate = (s: FleetNotificationSetting) => {
   discordGuildId.value = s.discordGuildId ?? "";
   discordChannelId.value = s.discordChannelId ?? "";
   discordAnnouncementChannelId.value = s.discordAnnouncementChannelId ?? null;
   discordOfficersChannelId.value = s.discordOfficersChannelId ?? null;
+  discordJoinRoleId.value = s.discordJoinRoleId ?? null;
   discordDigestWeekday.value =
     s.discordDigestWeekday === null || s.discordDigestWeekday === undefined
       ? null
@@ -135,8 +153,6 @@ const save = async () => {
     const payload: Record<string, unknown> = {
       discordGuildId: discordGuildId.value || null,
       discordChannelId: discordChannelId.value || null,
-      discordAnnouncementChannelId: discordAnnouncementChannelId.value || null,
-      discordOfficersChannelId: discordOfficersChannelId.value || null,
       discordDigestWeekday: discordDigestWeekday.value
         ? Number(discordDigestWeekday.value)
         : null,
@@ -147,6 +163,14 @@ const save = async () => {
         ? digestTimezone.value
         : null,
     };
+    if (!guildUnsaved.value) {
+      payload.discordAnnouncementChannelId =
+        discordAnnouncementChannelId.value || null;
+      payload.discordOfficersChannelId = discordOfficersChannelId.value || null;
+      if (canSetJoinRole.value) {
+        payload.discordJoinRoleId = discordJoinRoleId.value || null;
+      }
+    }
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
     }
@@ -156,9 +180,12 @@ const save = async () => {
     });
     displaySuccess({ text: t("messages.fleets.notifications.update.success") });
     void refetch();
-    // A different server has different channels.
+    // A different server has different channels and roles.
     void queryClient.invalidateQueries({
       queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
+    });
+    void queryClient.invalidateQueries({
+      queryKey: getFleetDiscordRolesQueryKey(props.fleet.slug),
     });
     void fetchStatus();
   } catch (error) {
@@ -190,6 +217,8 @@ type DiscordStatus = {
   postingOk?: boolean;
   postingCode?: string;
   postingDetail?: string;
+  joinRoleOk?: boolean;
+  joinRoleCode?: string;
 };
 
 const discordStatus = ref<DiscordStatus | null>(null);
@@ -230,6 +259,13 @@ const postingProblem = computed(() => {
   return tExists(key)
     ? t(key, { names: status.postingDetail ?? "" })
     : t(`labels.fleet.discord.statusCodes.${status.postingCode}`);
+});
+
+const joinRoleProblem = computed(() => {
+  const status = discordStatus.value;
+  if (!status?.joinRoleCode || status.joinRoleOk) return null;
+
+  return t(`labels.fleet.discord.joinRoleCodes.${status.joinRoleCode}`);
 });
 </script>
 
@@ -293,6 +329,14 @@ const postingProblem = computed(() => {
         <i class="fa-light fa-triangle-exclamation" />
         <span>{{ postingProblem }}</span>
       </span>
+      <span
+        v-if="joinRoleProblem"
+        class="discord-status discord-status--err"
+        data-test="join-role-problem"
+      >
+        <i class="fa-light fa-triangle-exclamation" />
+        <span>{{ joinRoleProblem }}</span>
+      </span>
     </div>
 
     <div class="row">
@@ -303,6 +347,13 @@ const postingProblem = computed(() => {
           icon="fa-brands fa-discord"
           translation-key="fleet.discord.guildId"
         />
+        <p
+          v-if="guildUnsaved"
+          class="text-muted small"
+          data-test="save-guild-first"
+        >
+          {{ t("labels.fleet.discord.saveGuildFirst") }}
+        </p>
       </div>
       <div class="col-12 col-md-6">
         <FormInput
@@ -319,6 +370,7 @@ const postingProblem = computed(() => {
         <DiscordChannelSelect
           v-model="discordAnnouncementChannelId"
           :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
           name="discordAnnouncementChannelId"
           :label="t('labels.fleet.discord.announcementChannel')"
           :info="t('labels.fleet.discord.announcementChannelHint')"
@@ -328,9 +380,23 @@ const postingProblem = computed(() => {
         <DiscordChannelSelect
           v-model="discordOfficersChannelId"
           :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
           name="discordOfficersChannelId"
           :label="t('labels.fleet.discord.officersChannel')"
           :info="t('labels.fleet.discord.officersChannelHint')"
+        />
+      </div>
+    </div>
+
+    <div v-if="canSetJoinRole" class="row">
+      <div class="col-12 col-md-6">
+        <DiscordRoleSelect
+          v-model="discordJoinRoleId"
+          :fleet-slug="props.fleet.slug"
+          :disabled="guildUnsaved"
+          name="discordJoinRoleId"
+          :label="t('labels.fleet.discord.joinRole')"
+          :info="t('labels.fleet.discord.joinRoleHint')"
         />
       </div>
     </div>

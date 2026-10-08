@@ -651,11 +651,21 @@
           "digestTimeHint": "使用你的时区（%{timezone}）。",
           "channelMissing": "该频道在 Discord 上已不存在或无法再发帖。选择其他频道之前不会发布任何内容。",
           "missingChannel": "不可用的频道",
+          "joinRole": "加入身份组",
+          "joinRoleHint": "在服务器中拥有此身份组的玩家无需申请即可加入舰队，并获得默认职级。移除该身份组后，通过它加入的成员也会被移出舰队。留空则手动审批每个申请。",
+          "roleMissing": "此身份组在 Discord 上已不存在。在选择其他身份组之前，任何人都无法通过它加入。",
+          "missingRole": "不可用的身份组",
+          "saveGuildFirst": "请先保存新的服务器，然后再选择它的频道和身份组。",
           "postingCodes": {
             "missing_send_messages": "机器人无权在此服务器发送消息。请通过安装链接重新授权。",
             "channel_locked": "机器人无法在为 %{names} 选择的频道中发帖。请在该频道的权限中允许。",
             "unknown_channel": "为 %{names} 选择的频道在 Discord 上已不存在或无法再发帖。",
             "channel_shared": "%{names} 与看不到其活动的读者共用一个频道。在各自拥有独立频道之前，不会在那里发布任何内容。"
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "Fleetyards 机器人暂时无法列出此服务器的成员，因此加入身份组只在玩家使用邀请链接时生效。请联系管理员。",
+            "live_updates_off": "身份组变更每天只同步到 Fleetyards 一次：机器人没有实时监听这些变更。请联系管理员。",
+            "bot_offline": "Fleetyards 机器人目前未连接到 Discord，因此身份组变更会等到每日同步时处理。请联系管理员。"
           },
           "statusOk": "已连接到 %{name}",
           "statusCodes": {
@@ -3214,6 +3224,7 @@
         "fleet_member_requested": "收到加入申请",
         "fleet_member_accepted": "成员申请已通过",
         "fleet_request_accepted": "加入申请已通过",
+        "fleet_joined_by_discord_role": "通过 Discord 身份组加入",
         "fleet_inventory_item_added": "舰队库存新增物品",
         "fleet_event_published": "活动已发布",
         "fleet_event_locked": "活动报名已锁定",

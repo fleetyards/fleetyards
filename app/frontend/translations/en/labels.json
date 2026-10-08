@@ -651,11 +651,21 @@
           "digestTimeHint": "In your timezone (%{timezone}).",
           "channelMissing": "This channel no longer exists on Discord or can no longer take posts. Nothing is posted until another one is picked.",
           "missingChannel": "Unavailable channel",
+          "joinRole": "Join Role",
+          "joinRoleHint": "Players holding this role in the server join the fleet without a request, at the default rank. Taking the role away removes the members it brought in. Leave empty to approve every request by hand.",
+          "roleMissing": "This role no longer exists on Discord. Nobody joins through it until another one is picked.",
+          "missingRole": "Unavailable role",
+          "saveGuildFirst": "Save the new server first, then pick its channels and roles.",
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
             "unknown_channel": "The channel picked for %{names} no longer exists on Discord or can no longer take posts.",
             "channel_shared": "%{names} shares a channel with readers its events are kept from. Nothing is posted there until each has a channel of its own."
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "The Fleetyards bot may not list this server's members yet, so the join role only takes effect when a player uses an invite link. Contact an administrator.",
+            "live_updates_off": "Role changes reach Fleetyards once a day: the bot is not listening for them as they happen. Contact an administrator.",
+            "bot_offline": "The Fleetyards bot is not connected to Discord right now, so role changes wait for the daily sweep. Contact an administrator."
           },
           "statusOk": "Connected to %{name}",
           "statusCodes": {
@@ -3228,6 +3238,7 @@
         "fleet_member_requested": "Membership requested",
         "fleet_member_accepted": "Membership accepted",
         "fleet_request_accepted": "Join request accepted",
+        "fleet_joined_by_discord_role": "Joined through Discord role",
         "fleet_inventory_item_added": "Fleet inventory item added",
         "fleet_event_published": "Event published",
         "fleet_event_locked": "Event sign-ups locked",

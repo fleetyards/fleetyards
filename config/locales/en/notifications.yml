@@ -92,6 +92,8 @@ en:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:
       title: "You've been accepted into %{fleet}"
+    fleet_joined_by_discord_role:
+      title: "You joined %{fleet} through its Discord role"
     friend_request_received:
       title: "%{username} sent you a friend request"
     friend_request_accepted:

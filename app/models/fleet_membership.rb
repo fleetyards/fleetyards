@@ -10,6 +10,7 @@
 #  blueprints_filter          :integer          default("all"), not null
 #  declined_at                :datetime
 #  discarded_at               :datetime
+#  discord_role_granted       :boolean          default(FALSE), not null
 #  hide_ships                 :boolean          default(FALSE)
 #  invited_at                 :datetime
 #  invited_by                 :uuid
@@ -44,6 +45,10 @@ class FleetMembership < ApplicationRecord
   include Discard::Model
 
   attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # Joined as one of many at once, so neither the officers nor the members'
+  # views are told about each: the sweep refreshes the views once at the end.
+  attr_accessor :quiet
 
   AVAILABLE_PRIVILEGES = [
     "fleet:memberships:read",
@@ -151,12 +156,14 @@ class FleetMembership < ApplicationRecord
   # From the user's stored org list, so a member whose list already names the
   # fleet's SID is verified the moment they join, without asking RSI.
   before_create -> { self.verified = FleetMembershipVerification.verified?(user, fleet) if user && fleet }
-  after_create :broadcast_create
+  # A rank an officer gave is their choice, so the role no longer ends it.
+  before_update -> { self.discord_role_granted = false }, if: -> { discord_role_granted? && fleet_role_id_changed? }
+  after_create :broadcast_create, unless: :quiet
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
   after_create_commit :schedule_setup_fleet_vehicles
   after_update_commit :schedule_update_fleet_vehicles
-  after_commit :broadcast_update
+  after_commit :broadcast_update, unless: :quiet
   after_commit :sync_discord_roles, on: %i[create update], if: :discord_roles_affected?
   after_commit :refresh_discord_join_request, if: :join_request_closed?
   before_destroy :check_if_can_be_destroyed
@@ -261,6 +268,12 @@ class FleetMembership < ApplicationRecord
 
     event :accept_request, after_commit: :on_accept_request do
       transitions from: :requested, to: :accepted
+    end
+
+    # Holding the fleet's join role in its Discord server: the server vetted
+    # the player already, so nobody answers a request.
+    event :join, after_commit: :on_join do
+      transitions from: :created, to: :accepted
     end
 
     event :decline do
@@ -382,11 +395,10 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_invitation
-    notify_fleet_admins
+    return if quiet
 
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
-    end
+    notify_fleet_admins
+    broadcast_to_members
   end
 
   def notify_fleet_admins
@@ -432,6 +444,20 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  # What a player asking to join gets: a request, unless they hold the fleet's
+  # join role in its Discord server.
+  def request_or_join!
+    ::Discord::JoinRole.new(fleet).request_or_join(self)
+  end
+
+  def on_join
+    notify_joined_by_discord_role
+    return if quiet
+
+    notify_fleet_admins
+    broadcast_to_members
+  end
+
   def post_discord_join_request
     return if ::Discord::EventAnnouncement.officers_targets(fleet).empty?
 
@@ -451,9 +477,23 @@ class FleetMembership < ApplicationRecord
 
   def on_accept_request
     notify_new_member
+    broadcast_to_members unless quiet
+  end
 
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
+  def broadcast_to_members
+    payload = to_jbuilder_hash
+    fleet.fleet_memberships.kept.includes(:user).find_each do |member|
+      FleetVehiclesChannel.broadcast_to(member.user, payload)
+    end
+  end
+
+  # Everything a quiet sweep's admissions left out of the members' views,
+  # once for all of them.
+  def broadcast_sweep_refresh
+    payload = to_jbuilder_hash
+    each_fleet_recipient do |user|
+      FleetMembersChannel.broadcast_to(user, payload)
+      FleetVehiclesChannel.broadcast_to(user, payload)
     end
   end
 
@@ -467,6 +507,22 @@ class FleetMembership < ApplicationRecord
         type: :fleet_request_accepted,
         title: I18n.t("notifications.fleet_request_accepted.title", fleet: fleet.name),
         link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+        record: self
+      )
+    end
+  end
+
+  # The role is the only way in that skips a request, so this player never
+  # asked: they are told why they are a member.
+  def notify_joined_by_discord_role
+    return if user.email.blank?
+
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :fleet_joined_by_discord_role,
+        title: I18n.t("notifications.fleet_joined_by_discord_role.title", fleet: fleet.name),
+        link: Rails.application.routes.url_helpers.frontend_fleet_path(slug: fleet.slug),
         record: self
       )
     end

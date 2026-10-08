@@ -97,6 +97,8 @@ zh-CN:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
       title: 您已被 %{fleet} 接受
+    fleet_joined_by_discord_role:
+      title: "您已通过 Discord 身份组加入 %{fleet}"
     friend_request_received:
       title: "%{username} 向你发送了好友请求"
     friend_request_accepted:

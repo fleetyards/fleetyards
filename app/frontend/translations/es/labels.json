@@ -651,11 +651,21 @@
           "digestTimeHint": "En tu zona horaria (%{timezone}).",
           "channelMissing": "Este canal ya no existe en Discord o ya no admite publicaciones. No se publica nada hasta elegir otro.",
           "missingChannel": "Canal no disponible",
+          "joinRole": "Rol de ingreso",
+          "joinRoleHint": "Los jugadores con este rol en el servidor se unen a la flota sin solicitud, con el rango predeterminado. Si se les quita el rol, los miembros que entraron con él salen de la flota. Déjalo vacío para aprobar cada solicitud a mano.",
+          "roleMissing": "Este rol ya no existe en Discord. Nadie se une con él hasta que se elija otro.",
+          "missingRole": "Rol no disponible",
+          "saveGuildFirst": "Guarda primero el nuevo servidor y luego elige sus canales y roles.",
           "postingCodes": {
             "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
             "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",
             "unknown_channel": "El canal elegido para %{names} ya no existe en Discord o ya no admite publicaciones.",
             "channel_shared": "%{names} comparte un canal con lectores a los que no se muestran sus eventos. No se publica nada allí hasta que cada uno tenga un canal propio."
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "El bot de Fleetyards aún no puede listar los miembros de este servidor, así que el rol de ingreso solo se aplica cuando un jugador usa un enlace de invitación. Contacta con un administrador.",
+            "live_updates_off": "Los cambios de rol llegan a Fleetyards una vez al día: el bot no los escucha en el momento. Contacta con un administrador.",
+            "bot_offline": "El bot de Fleetyards no está conectado a Discord ahora mismo, así que los cambios de rol esperan a la sincronización diaria. Contacta con un administrador."
           },
           "statusOk": "Conectado a %{name}",
           "statusCodes": {
@@ -3214,6 +3224,7 @@
         "fleet_member_requested": "Membresía solicitada",
         "fleet_member_accepted": "Membresía aceptada",
         "fleet_request_accepted": "Solicitud de ingreso aceptada",
+        "fleet_joined_by_discord_role": "Ingreso mediante rol de Discord",
         "fleet_inventory_item_added": "Objeto añadido al inventario de la flota",
         "fleet_event_published": "Evento publicado",
         "fleet_event_locked": "Inscripciones del evento bloqueadas",

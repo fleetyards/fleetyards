@@ -17,6 +17,7 @@ module V1
             discordDigestTime: {type: [:string, :null]},
             discordDigestTimezone: {type: [:string, :null]},
             discordMemberRoleId: {type: [:string, :null]},
+            discordJoinRoleId: {type: [:string, :null]},
             discordWebhookUrl: {type: [:string, :null]},
             enabledInAppEvents: {type: :array, items: {type: :string}}
           }

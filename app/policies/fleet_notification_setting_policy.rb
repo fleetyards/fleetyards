@@ -6,4 +6,12 @@ class FleetNotificationSettingPolicy < FleetBasePolicy
   end
 
   alias_rule :update?, to: :show?
+
+  # Whoever holds the join role becomes a member without anyone answering a
+  # request, so picking it is the same decision as handing out an invite link.
+  # Checked on top of `update?`: the role is picked on the Discord settings
+  # page, so a recruiter without access to that page cannot pick one.
+  def update_join_role?
+    accepted_fleet_membership&.has_access?(FleetMembership::CAPABILITY_PRIVILEGES[:create_invites]) || false
+  end
 end

@@ -21,7 +21,9 @@ module V1
             rolesDetail: {type: :string},
             postingOk: {type: :boolean},
             postingCode: {type: :string},
-            postingDetail: {type: :string}
+            postingDetail: {type: :string},
+            joinRoleOk: {type: :boolean},
+            joinRoleCode: {type: :string}
           }
         })
       end

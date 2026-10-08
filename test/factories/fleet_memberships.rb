@@ -8,6 +8,7 @@
 #  blueprints_filter          :integer          default("all"), not null
 #  declined_at                :datetime
 #  discarded_at               :datetime
+#  discord_role_granted       :boolean          default(FALSE), not null
 #  hide_ships                 :boolean          default(FALSE)
 #  invited_at                 :datetime
 #  invited_by                 :uuid

@@ -651,11 +651,21 @@
           "digestTimeHint": "使用你的時區（%{timezone}）。",
           "channelMissing": "此頻道在 Discord 上已不存在或無法再發文。選擇其他頻道之前不會發布任何內容。",
           "missingChannel": "無法使用的頻道",
+          "joinRole": "加入身分組",
+          "joinRoleHint": "在伺服器中擁有此身分組的玩家無需申請即可加入艦隊，並獲得預設職級。移除該身分組後，透過它加入的成員也會被移出艦隊。留空則手動審核每個申請。",
+          "roleMissing": "此身分組在 Discord 上已不存在。在選擇其他身分組之前，任何人都無法透過它加入。",
+          "missingRole": "無法使用的身分組",
+          "saveGuildFirst": "請先儲存新的伺服器，再選擇它的頻道和身分組。",
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",
             "unknown_channel": "為 %{names} 選擇的頻道在 Discord 上已不存在或無法再發文。",
             "channel_shared": "%{names} 與看不到其活動的讀者共用一個頻道。在各自擁有專屬頻道之前，不會在那裡發布任何內容。"
+          },
+          "joinRoleCodes": {
+            "members_intent_missing": "Fleetyards 機器人暫時無法列出此伺服器的成員，因此加入身分組只在玩家使用邀請連結時生效。請聯絡管理員。",
+            "live_updates_off": "身分組變更每天只同步到 Fleetyards 一次：機器人沒有即時監聽這些變更。請聯絡管理員。",
+            "bot_offline": "Fleetyards 機器人目前未連線到 Discord，因此身分組變更會等到每日同步時處理。請聯絡管理員。"
           },
           "statusOk": "已連線至 %{name}",
           "statusCodes": {
@@ -3214,6 +3224,7 @@
         "fleet_member_requested": "已申請加入",
         "fleet_member_accepted": "會員資格已接受",
         "fleet_request_accepted": "加入申請已通過",
+        "fleet_joined_by_discord_role": "透過 Discord 身分組加入",
         "fleet_inventory_item_added": "艦隊庫存已新增物品",
         "fleet_event_published": "活動已發布",
         "fleet_event_locked": "活動報名已鎖定",
