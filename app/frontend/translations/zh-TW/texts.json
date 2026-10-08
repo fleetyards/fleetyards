@@ -67,44 +67,102 @@
           "rejectHint": "此原因會顯示給註冊此應用程式的人，請說明需要修改什麼。"
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
+      "hangarTour": {
+        "welcome": {
+          "title": "歡迎來到你的機庫",
+          "text": "你的機庫記錄著你擁有的每一艘艦船。這個簡短的導覽會告訴你各項功能在哪裡——你可以隨時從選單中重新開始。"
+        },
+        "add": {
+          "title": "新增艦船",
+          "text": "選擇一艘或多艘艦船以及各自的數量。在任何艦船的頁面或卡片上，書籤圖示也能將它加入你的機庫或願望清單。"
+        },
+        "sync": {
+          "title": "從 RSI 同步",
+          "text": "已經有 pledge 了？安裝 FleetYards 瀏覽器擴充功能後，即可同步你的 RSI 機庫，無需手動新增艦船——pledge 有變動時再同步一次即可。"
+        },
+        "display": {
+          "title": "顯示選項",
+          "text": "在卡片和清單之間切換，設定預設排序，並選擇顯示哪些詳細資訊或欄位。在清單中可以同時選取多艘艦船一起修改。"
+        },
         "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+          "title": "群組",
+          "text": "用 + 和鉛筆按鈕把艦船整理到你自己的群組中。點擊群組可依其篩選，滑鼠移上去可醒目標示其中的艦船。"
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "注意這個圖示："
-      },
-      "hangarPreview": {
-        "notified": {
-          "headline": "取得新飛船和促銷通知",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "vehicle": {
+          "title": "每艘艦船的選單",
+          "text": "在這裡編輯艦船：命名、選擇塗裝、設為旗艦、設定可見性、管理配裝，或移到願望清單。"
         },
-        "manage": {
-          "headline": "管理您的機庫",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "wishlist": {
+          "title": "願望清單",
+          "text": "想要但還沒有的艦船放進願望清單，可選擇開啟特價通知。"
         },
         "fleetchart": {
-          "headline": "艦隊圖表和公開機庫",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "艦隊圖",
+          "text": "依比例並排展示你的艦船，並將圖表儲存為圖片。"
+        },
+        "stats": {
+          "title": "統計",
+          "text": "角色、製造商、尺寸以及你的花費，支援 CSV 匯出。"
+        },
+        "share": {
+          "title": "分享你的機庫",
+          "text": "你的公開機庫已開啟。分享它的連結——顯示哪些艦船和群組由你決定。"
+        },
+        "menu": {
+          "title": "更多",
+          "text": "匯入和匯出機庫、回購以及匯入紀錄——還有這個導覽，隨時可以再看一遍。"
+        }
+      },
+      "hangarPreview": {
+        "sync": {
+          "title": "從 RSI 同步",
+          "text": "透過瀏覽器擴充功能或 hangarXPLOR 檔案匯入你的 pledge，無需逐艘新增艦船。"
+        },
+        "organise": {
+          "title": "整理你的艦船",
+          "text": "為艦船命名，設定塗裝、配裝和旗艦，並整理到你自己的群組中。"
+        },
+        "wishlist": {
+          "title": "願望清單與特價",
+          "text": "把想要的艦船放進願望清單，特價時收到通知。"
+        },
+        "fleetchart": {
+          "title": "艦隊圖",
+          "text": "依比例並排檢視你的艦船，並將圖表儲存為圖片。"
+        },
+        "stats": {
+          "title": "機庫統計",
+          "text": "角色、製造商、尺寸以及你的花費，一目了然。"
+        },
+        "share": {
+          "title": "公開機庫",
+          "text": "透過連結分享你的機庫——哪些艦船和群組可見由你決定。"
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "分析",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "成員與角色",
+          "text": "透過連結邀請組織成員，並用角色和中隊來管理他們。"
         },
-        "overview": {
-          "headline": "概覽與管理",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "艦隊艦船",
+          "text": "所有成員的公開艦船匯集在一個可篩選、可搜尋的清單中。"
         },
         "fleetchart": {
-          "headline": "艦隊圖表",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "艦隊圖",
+          "text": "依比例並排檢視整個艦隊，並儲存為圖片。"
+        },
+        "stats": {
+          "title": "艦隊統計",
+          "text": "依角色、尺寸和貨運容量分析你的艦隊。"
+        },
+        "allies": {
+          "title": "盟友",
+          "text": "與其他艦隊結盟，隨時掌握與你並肩飛行的夥伴。"
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "在你的 Discord 伺服器發布公告和每週摘要，並讓成員透過身分組加入。"
         }
       },
       "impressum": {

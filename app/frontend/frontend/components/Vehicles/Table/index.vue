@@ -54,6 +54,7 @@ const emit = defineEmits<{
   sort: [keys: string[], moved: string];
   // One place up or down, from the grip's arrow keys.
   move: [id: string, offset: number];
+  openGuide: [];
 }>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
@@ -438,11 +439,16 @@ const resetSelected = () => {
             :editable="editable && !record.loaner"
             :wishlist="wishlist"
             hide-edit
+            data-tour="vehicle-menu"
           />
         </BtnGroup>
       </template>
       <template #empty>
-        <HangarEmpty :wishlist="wishlist" />
+        <HangarEmpty
+          :wishlist="wishlist"
+          :guide="editable && !wishlist"
+          @open-guide="emit('openGuide')"
+        />
       </template>
     </BaseTable>
   </div>

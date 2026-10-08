@@ -46,7 +46,7 @@
  * this one survived the removal - with its cosmetics and none of its geometry.
  * So the box had no height and no positioning context, and both the iframe and
  * the consent placeholder inside it collapsed to nothing: invisible on the ship
- * videos page and in the hangar guide modal.
+ * videos page.
  *
  * aspect-ratio rather than Bootstrap's padding-bottom hack, which needed the
  * height:0 the class no longer sets.

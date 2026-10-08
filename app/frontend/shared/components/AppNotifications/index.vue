@@ -20,7 +20,7 @@ const visibleMessages = computed(() => {
 </script>
 
 <template>
-  <div class="app-notifications">
+  <div class="app-notifications" data-tour-keep>
     <TransitionGroup name="app-notifications-fade">
       <AppNotificationsMessage
         v-for="message in visibleMessages"

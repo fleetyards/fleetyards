@@ -224,9 +224,8 @@
       "hangar": {
         "index": "Mein Hangar",
         "preview": {
-          "h1": "Mein Hangar Vorschau",
-          "h2": "Your personal Hangar requires an FleetYards.net Account",
-          "h3": "What Features does the Hangar include?"
+          "title": "Dein Hangar",
+          "lead": "Behalte jedes Schiff im Blick, das du besitzt — kostenlos mit einem FleetYards.net-Konto."
         },
         "alternativeNames": "Alternative Namen",
         "stats": "Statistiken",
@@ -285,9 +284,8 @@
         },
         "stats": "Statistiken",
         "preview": {
-          "h1": "Flottenvorschau",
-          "h2": "To create a Fleet you need to have a FleetYards.net Account",
-          "h3": "What Features does your Fleet include?"
+          "title": "Deine Flotte",
+          "lead": "Bring deine Org zusammen — kostenlos mit einem FleetYards.net-Konto."
         },
         "settings": {
           "fleet": "Fleet Settings",
@@ -410,8 +408,6 @@
         "tradeRoutes": "Handelsrouten"
       },
       "rsiVerification": "Verify your RSI-Account",
-      "hangarGuideEmpty": "Not much to see here?",
-      "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "supporters": "Danke an unsere Unterstützer",
       "installApp": {

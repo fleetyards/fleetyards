@@ -67,44 +67,102 @@
           "rejectHint": "Le motif est montré à la personne qui a enregistré l'application : indiquez donc ce qui doit changer."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
+      "hangarTour": {
+        "welcome": {
+          "title": "Bienvenue dans votre hangar",
+          "text": "Votre hangar recense tous les vaisseaux que vous possédez. Cette courte visite vous montre où tout se trouve — vous pouvez la relancer à tout moment depuis le menu."
+        },
+        "add": {
+          "title": "Ajouter des vaisseaux",
+          "text": "Choisissez un ou plusieurs vaisseaux et leur nombre. Sur la page ou la carte de chaque vaisseau, l'icône de marque-page l'ajoute aussi à votre hangar ou à votre liste de souhaits."
+        },
+        "sync": {
+          "title": "Synchroniser avec RSI",
+          "text": "Vous avez déjà des pledges ? Avec l'extension de navigateur FleetYards, synchronisez votre hangar RSI au lieu d'ajouter les vaisseaux à la main — et recommencez dès que vos pledges changent."
+        },
+        "display": {
+          "title": "Options d'affichage",
+          "text": "Basculez entre cartes et liste, définissez votre ordre par défaut et choisissez les détails ou colonnes affichés. Dans la liste, vous pouvez sélectionner plusieurs vaisseaux et les modifier ensemble."
+        },
         "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+          "title": "Groupes",
+          "text": "Rangez vos vaisseaux dans vos propres groupes avec + et le crayon. Cliquez sur un groupe pour filtrer, survolez-le pour mettre ses vaisseaux en évidence."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "Recherchez cette icône :"
-      },
-      "hangarPreview": {
-        "notified": {
-          "headline": "Soyez notifié des nouveaux vaisseaux et des ventes",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "vehicle": {
+          "title": "Le menu de chaque vaisseau",
+          "text": "Modifiez un vaisseau d'ici : nommez-le, choisissez sa peinture, faites-en votre vaisseau amiral, réglez sa visibilité, gérez ses loadouts ou déplacez-le vers votre liste de souhaits."
         },
-        "manage": {
-          "headline": "Gérez votre hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "wishlist": {
+          "title": "Liste de souhaits",
+          "text": "Les vaisseaux que vous voulez sans les posséder encore vont sur votre liste de souhaits, avec des notifications de soldes en option."
         },
         "fleetchart": {
-          "headline": "Diagramme de flotte et hangar public",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "Fleetchart",
+          "text": "Alignez vos vaisseaux côte à côte à l'échelle et enregistrez le graphique en image."
+        },
+        "stats": {
+          "title": "Statistiques",
+          "text": "Rôles, constructeurs, tailles et dépenses, avec un export CSV."
+        },
+        "share": {
+          "title": "Partager votre hangar",
+          "text": "Votre hangar public est activé. Partagez son lien — vous décidez quels vaisseaux et groupes y apparaissent."
+        },
+        "menu": {
+          "title": "Plus",
+          "text": "Importer et exporter votre hangar, les buy-backs et votre historique d'import — et cette visite, chaque fois que vous en avez besoin."
+        }
+      },
+      "hangarPreview": {
+        "sync": {
+          "title": "Synchroniser avec RSI",
+          "text": "Importez vos pledges avec l'extension de navigateur ou un fichier hangarXPLOR au lieu d'ajouter les vaisseaux un par un."
+        },
+        "organise": {
+          "title": "Organiser vos vaisseaux",
+          "text": "Nommez vos vaisseaux, définissez peintures, loadouts et vaisseau amiral, et rangez-les dans vos propres groupes."
+        },
+        "wishlist": {
+          "title": "Liste de souhaits et soldes",
+          "text": "Gardez les vaisseaux que vous voulez sur une liste de souhaits et soyez prévenu quand ils sont en vente."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "Voyez vos vaisseaux côte à côte à l'échelle et enregistrez le graphique en image."
+        },
+        "stats": {
+          "title": "Statistiques du hangar",
+          "text": "Rôles, constructeurs, tailles et dépenses, en un coup d'œil."
+        },
+        "share": {
+          "title": "Hangar public",
+          "text": "Partagez votre hangar avec un lien — vous décidez quels vaisseaux et groupes sont visibles."
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "Analyser",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "Membres et rôles",
+          "text": "Invitez les membres de votre org avec un lien et organisez-les en rôles et escadrons."
         },
-        "overview": {
-          "headline": "Aperçu et gestion",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "Vaisseaux de la flotte",
+          "text": "Les vaisseaux publics de tous les membres dans une liste filtrable et consultable."
         },
         "fleetchart": {
-          "headline": "Diagramme de flotte",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "Fleetchart",
+          "text": "Voyez toute la flotte côte à côte à l'échelle et enregistrez-la en image."
+        },
+        "stats": {
+          "title": "Statistiques de la flotte",
+          "text": "Analysez votre flotte par rôle, taille et capacité de fret."
+        },
+        "allies": {
+          "title": "Alliés",
+          "text": "Alliez-vous à d'autres flottes et gardez une trace de ceux avec qui vous volez."
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "Publiez des annonces et un récapitulatif hebdomadaire sur votre serveur Discord, et laissez les membres rejoindre via un rôle."
         }
       },
       "impressum": {

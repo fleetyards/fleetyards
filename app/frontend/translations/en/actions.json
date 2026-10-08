@@ -70,7 +70,13 @@
       "hideDetails": "Hide Details",
       "readMore": "Read more",
       "readLess": "Show less",
-      "showGuide": "Show Guide",
+      "showGuide": "Show tour",
+      "tour": {
+        "next": "Next",
+        "back": "Back",
+        "skip": "Skip tour",
+        "done": "Done"
+      },
       "showFleetchart": "Fleetchart",
       "hideFleetchart": "Default view",
       "fleetchartApp": {
@@ -235,7 +241,7 @@
         "refresh": "Refresh Page"
       },
       "empty": {
-        "hangarGuide": "Need Help?",
+        "hangarGuide": "Take the tour",
         "reset": "Clear Filters"
       },
       "destroyFleet": "Destroy Fleet",

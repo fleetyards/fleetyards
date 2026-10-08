@@ -53,7 +53,8 @@ export enum HangarSortFieldsEnum {
 interface HangarState extends ShipListState {
   ships: string[];
   preview: boolean;
-  starterGuideVisible: boolean;
+  // Per account, so a second person signing in on this browser still gets it.
+  tourSeenBy: string[];
   money: boolean;
   extensionReady: boolean;
   extensionVersion?: string;
@@ -74,7 +75,7 @@ export const useHangarStore = defineStore("hangar", {
     money: true,
     ships: [],
     preview: true,
-    starterGuideVisible: false,
+    tourSeenBy: [],
     gridView: true,
     extensionReady: false,
     extensionVersion: undefined,
@@ -99,8 +100,8 @@ export const useHangarStore = defineStore("hangar", {
     ],
   }),
   getters: {
-    empty(state) {
-      return state.ships.length === 0;
+    hasSeenTour(state) {
+      return (userId: string) => state.tourSeenBy.includes(userId);
     },
   },
   actions: {
@@ -121,23 +122,15 @@ export const useHangarStore = defineStore("hangar", {
     },
     save(payload: string[]) {
       this.ships = payload;
-
-      if (payload.length > 0 && this.starterGuideVisible) {
-        this.starterGuideVisible = false;
-      }
     },
     add(payload: string) {
       this.ships.push(payload);
-
-      if (this.starterGuideVisible) {
-        this.starterGuideVisible = false;
-      }
     },
     remove(payload: string) {
       this.ships.splice(this.ships.indexOf(payload), 1);
     },
-    enableStarterGuide() {
-      this.starterGuideVisible = true;
+    markTourSeen(userId: string) {
+      if (!this.hasSeenTour(userId)) this.tourSeenBy.push(userId);
     },
     setTableViewCols(cols: HangarTableViewColsEnum[]) {
       this.tableViewCols = cols;
@@ -155,7 +148,7 @@ export const useHangarStore = defineStore("hangar", {
       "detailsVisible",
       "preview",
       "money",
-      "starterGuideVisible",
+      "tourSeenBy",
       "gridView",
       "tableViewImageCols",
       "tableViewCols",

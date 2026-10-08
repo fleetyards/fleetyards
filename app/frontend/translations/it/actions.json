@@ -70,7 +70,13 @@
       "hideDetails": "Nascondi i dettagli",
       "readMore": "Leggi di più",
       "readLess": "Mostra meno",
-      "showGuide": "Mostra guida",
+      "showGuide": "Mostra il tour",
+      "tour": {
+        "next": "Avanti",
+        "back": "Indietro",
+        "skip": "Salta il tour",
+        "done": "Fatto"
+      },
       "showFleetchart": "Grafico flotta",
       "hideFleetchart": "Vista di default",
       "fleetchartApp": {
@@ -235,7 +241,7 @@
         "refresh": "Aggiorna pagina"
       },
       "empty": {
-        "hangarGuide": "Serve aiuto?",
+        "hangarGuide": "Fai il tour",
         "reset": "Cancella filtri"
       },
       "destroyFleet": "Distruggi flotta",

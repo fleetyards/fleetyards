@@ -224,9 +224,8 @@
       "hangar": {
         "index": "我的機庫",
         "preview": {
-          "h1": "我的機庫預覽",
-          "h2": "Your personal Hangar requires an FleetYards.net Account",
-          "h3": "What Features does the Hangar include?"
+          "title": "你的機庫",
+          "lead": "記錄你擁有的每一艘艦船——註冊 FleetYards.net 帳號即可免費使用。"
         },
         "alternativeNames": "別名",
         "stats": "統計",
@@ -285,9 +284,8 @@
         },
         "stats": "統計",
         "preview": {
-          "h1": "艦隊預覽",
-          "h2": "To create a Fleet you need to have a FleetYards.net Account",
-          "h3": "What Features does your Fleet include?"
+          "title": "你的艦隊",
+          "lead": "把你的組織聚在一起——註冊 FleetYards.net 帳號即可免費使用。"
         },
         "settings": {
           "fleet": "Fleet Settings",
@@ -410,8 +408,6 @@
         "tradeRoutes": "貿易路線"
       },
       "rsiVerification": "Verify your RSI-Account",
-      "hangarGuideEmpty": "Not much to see here?",
-      "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "supporters": "感謝我們的支持者",
       "installApp": {

@@ -67,44 +67,102 @@
           "rejectHint": "El motivo se muestra a quien registró la aplicación, así que indica qué debe cambiar."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
+      "hangarTour": {
+        "welcome": {
+          "title": "Bienvenido a tu hangar",
+          "text": "Tu hangar lleva la cuenta de todas las naves que tienes. Este breve recorrido te muestra dónde está todo — puedes repetirlo desde el menú cuando quieras."
+        },
+        "add": {
+          "title": "Añadir naves",
+          "text": "Elige una o varias naves y cuántas de cada una. En la página o la tarjeta de cada nave, el icono de marcador también la añade a tu hangar o a tu lista de deseos."
+        },
+        "sync": {
+          "title": "Sincronizar con RSI",
+          "text": "¿Ya tienes pledges? Con la extensión de navegador de FleetYards sincroniza tu hangar de RSI en lugar de añadir naves a mano — y otra vez cuando cambien tus pledges."
+        },
+        "display": {
+          "title": "Opciones de visualización",
+          "text": "Cambia entre tarjetas y lista, define tu orden predeterminado y elige qué detalles o columnas se muestran. En la lista puedes seleccionar varias naves y cambiarlas a la vez."
+        },
         "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+          "title": "Grupos",
+          "text": "Ordena tus naves en grupos propios con + y el lápiz. Haz clic en un grupo para filtrar por él o pasa el cursor para resaltar sus naves."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "Busque este icono:"
-      },
-      "hangarPreview": {
-        "notified": {
-          "headline": "Reciba notificaciones sobre nuevas naves y ventas",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "vehicle": {
+          "title": "El menú de cada nave",
+          "text": "Edita una nave desde aquí: ponle nombre, elige su pintura, hazla tu nave insignia, ajusta su visibilidad, gestiona sus loadouts o muévela a tu lista de deseos."
         },
-        "manage": {
-          "headline": "Administre su hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "wishlist": {
+          "title": "Lista de deseos",
+          "text": "Las naves que quieres pero aún no tienes van a tu lista de deseos, con avisos de rebajas opcionales."
         },
         "fleetchart": {
-          "headline": "Gráfico de flota y hangar público",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "Fleetchart",
+          "text": "Coloca tus naves una junto a otra a escala y guarda el gráfico como imagen."
+        },
+        "stats": {
+          "title": "Estadísticas",
+          "text": "Roles, fabricantes, tamaños y lo que has gastado, con exportación CSV."
+        },
+        "share": {
+          "title": "Comparte tu hangar",
+          "text": "Tu hangar público está activado. Comparte su enlace — tú decides qué naves y grupos aparecen."
+        },
+        "menu": {
+          "title": "Más",
+          "text": "Importa y exporta tu hangar, buy-backs y tu historial de importaciones — y este recorrido, siempre que lo necesites."
+        }
+      },
+      "hangarPreview": {
+        "sync": {
+          "title": "Sincronizar con RSI",
+          "text": "Importa tus pledges con la extensión de navegador o un archivo de hangarXPLOR en lugar de añadir naves una a una."
+        },
+        "organise": {
+          "title": "Organiza tus naves",
+          "text": "Pon nombre a tus naves, define pinturas, loadouts y nave insignia, y ordénalas en grupos propios."
+        },
+        "wishlist": {
+          "title": "Lista de deseos y rebajas",
+          "text": "Guarda las naves que quieres en una lista de deseos y recibe un aviso cuando estén en rebajas."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "Mira tus naves una junto a otra a escala y guarda el gráfico como imagen."
+        },
+        "stats": {
+          "title": "Estadísticas del hangar",
+          "text": "Roles, fabricantes, tamaños y lo que has gastado, de un vistazo."
+        },
+        "share": {
+          "title": "Hangar público",
+          "text": "Comparte tu hangar con un enlace — tú decides qué naves y grupos son visibles."
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "Analizar",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "Miembros y roles",
+          "text": "Invita a los miembros de tu org con un enlace y organízalos con roles y escuadrones."
         },
-        "overview": {
-          "headline": "Resumen y administrar",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "Naves de la flota",
+          "text": "Las naves públicas de todos los miembros en una lista que puedes filtrar y buscar."
         },
         "fleetchart": {
-          "headline": "Gráfico de flota",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "Fleetchart",
+          "text": "Mira toda la flota una nave junto a otra a escala y guárdala como imagen."
+        },
+        "stats": {
+          "title": "Estadísticas de la flota",
+          "text": "Analiza tu flota por rol, tamaño y capacidad de carga."
+        },
+        "allies": {
+          "title": "Aliados",
+          "text": "Alíate con otras flotas y lleva la cuenta de con quién vuelas."
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "Publica anuncios y un resumen semanal en tu servidor de Discord, y deja que los miembros se unan mediante un rol."
         }
       },
       "impressum": {

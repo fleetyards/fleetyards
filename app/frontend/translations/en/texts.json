@@ -67,44 +67,102 @@
           "rejectHint": "The reason is shown to whoever registered the application, so name what has to change."
         }
       },
-      "hangarGuide": {
-        "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
-        "edit": "To edit a ship just click on the pencil icon in the top right corner of the ship you want to edit.",
-        "wishlist": "To add a new ship to your wishlist visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.",
+      "hangarTour": {
+        "welcome": {
+          "title": "Welcome to your hangar",
+          "text": "Your hangar keeps track of every ship you own. This short tour shows where everything is — you can replay it from the menu at any time."
+        },
+        "add": {
+          "title": "Add ships",
+          "text": "Pick one or more ships and how many of each. On any ship's page or card, the bookmark icon adds it to your hangar or wishlist too."
+        },
+        "sync": {
+          "title": "Sync from RSI",
+          "text": "Already pledged? With the FleetYards browser extension installed, sync your RSI hangar instead of adding ships by hand — and again whenever your pledges change."
+        },
+        "display": {
+          "title": "Display options",
+          "text": "Switch between cards and a list, set your default order and pick which details or columns are shown. In the list you can select several ships at once and change them together."
+        },
         "groups": {
-          "add": "To add a group just click on the plus icon in the line prefixed by \"groups\".",
-          "edit": "To edit a group make a right click on the group you want to edit."
+          "title": "Groups",
+          "text": "Sort your ships into groups of your own with + and the pen. Click a group to filter by it, hover it to highlight its ships."
         },
-        "fleetchart": "To view a scaled fleetchart of your ships from an above view angle just click on the \"Fleetchart\" button over your ship list.<br>In the fleetchart mode you can scale the ships.<br>To save a transparent png of your fleetchart please visit the public page of your hangar.",
-        "public": "Your hangar has a public visible page where all ships are listed. You can access your public hangar by clicking on the \"Public URL\" button in the top right corner.",
-        "icon": "Lookout for this icon:"
-      },
-      "hangarPreview": {
-        "notified": {
-          "headline": "Get notified about new Ships and Sales",
-          "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
+        "vehicle": {
+          "title": "Each ship's menu",
+          "text": "Edit a ship from here: name it, pick its paint, make it your flagship, set its visibility, manage loadouts or move it to your wishlist."
         },
-        "manage": {
-          "headline": "Manage your Hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+        "wishlist": {
+          "title": "Wishlist",
+          "text": "Ships you want but don't own yet go on your wishlist, with optional sale notifications."
         },
         "fleetchart": {
-          "headline": "Fleetchart and Public Hangar",
-          "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
+          "title": "Fleetchart",
+          "text": "Line your ships up side by side to scale, and save the chart as an image."
+        },
+        "stats": {
+          "title": "Stats",
+          "text": "Roles, manufacturers, sizes and what you have spent, with a CSV export."
+        },
+        "share": {
+          "title": "Share your hangar",
+          "text": "Your public hangar is on. Share its link — you decide which ships and groups appear there."
+        },
+        "menu": {
+          "title": "More",
+          "text": "Import and export your hangar, buy-backs and your import history — and this tour, whenever you want it again."
+        }
+      },
+      "hangarPreview": {
+        "sync": {
+          "title": "Sync from RSI",
+          "text": "Import your pledges with the browser extension or a hangarXPLOR file instead of adding ships one by one."
+        },
+        "organise": {
+          "title": "Organise your ships",
+          "text": "Name your ships, set paints, loadouts and a flagship, and sort them into groups of your own."
+        },
+        "wishlist": {
+          "title": "Wishlist and sales",
+          "text": "Keep the ships you want on a wishlist and get notified when they go on sale."
+        },
+        "fleetchart": {
+          "title": "Fleetchart",
+          "text": "See your ships side by side to scale and save the chart as an image."
+        },
+        "stats": {
+          "title": "Hangar stats",
+          "text": "Roles, manufacturers, sizes and what you have spent, at a glance."
+        },
+        "share": {
+          "title": "Public hangar",
+          "text": "Share your hangar with a link — you decide which ships and groups are visible."
         }
       },
       "fleetPreview": {
-        "notified": {
-          "headline": "Analyze",
-          "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
+        "members": {
+          "title": "Members and roles",
+          "text": "Invite your org mates with a link and organise them with roles and squadrons."
         },
-        "overview": {
-          "headline": "Overview & Manage",
-          "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
+        "ships": {
+          "title": "Fleet ships",
+          "text": "Every member's public ships in one list you can filter and search."
         },
         "fleetchart": {
-          "headline": "Fleetchart",
-          "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
+          "title": "Fleetchart",
+          "text": "See the whole fleet side by side to scale and save it as an image."
+        },
+        "stats": {
+          "title": "Fleet stats",
+          "text": "Analyse your fleet by role, size and cargo capacity."
+        },
+        "allies": {
+          "title": "Allies",
+          "text": "Ally with other fleets and keep track of who you fly with."
+        },
+        "discord": {
+          "title": "Discord",
+          "text": "Post announcements and a weekly digest to your Discord server, and let members join through a role."
         }
       },
       "impressum": {

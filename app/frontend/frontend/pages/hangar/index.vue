@@ -20,6 +20,7 @@ import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
+import HangarTour from "@/frontend/components/Hangar/Tour/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -51,6 +52,7 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
 import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
+import { useTourAutostart } from "@/shared/composables/useTourAutostart";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   useHangarStats as useHangarStatsQuery,
@@ -121,11 +123,17 @@ const hangarStatsQueryParams = computed(() => {
   return { q: getQuery() };
 });
 
-const { data: hangarStats, refetch: refetchStats } = useHangarStatsQuery(
-  hangarStatsQueryParams,
-);
+const {
+  data: hangarStats,
+  refetch: refetchStats,
+  isFetching: hangarStatsFetching,
+} = useHangarStatsQuery(hangarStatsQueryParams);
 
-const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
+const {
+  data: hangarGroups,
+  refetch: refetchGroups,
+  isFetched: hangarGroupsFetched,
+} = useHangarGroupsQuery();
 
 const fetch = async () => {
   await refetch();
@@ -335,13 +343,42 @@ const destroyAll = async () => {
   });
 };
 
+const tourOpen = ref(false);
+
 const openGuide = () => {
-  comlink.emit("open-modal", {
-    wide: true,
-    component: () =>
-      import("@/frontend/components/Hangar/GuideModal/index.vue"),
-  });
+  tourOpen.value = true;
 };
+
+// Only new accounts get it pushed on them. A long-standing user whose hangar
+// just became empty -- after removing every ship ahead of a re-import -- knows
+// the page, and can still start the tour from the menu.
+const TOUR_AUTOSTART_ACCOUNT_AGE_DAYS = 30;
+
+const isNewAccount = computed(() => {
+  const createdAt = Date.parse(currentUser?.value?.createdAt ?? "");
+
+  return (
+    !Number.isNaN(createdAt) &&
+    Date.now() - createdAt < TOUR_AUTOSTART_ACCOUNT_AGE_DAYS * 86_400_000
+  );
+});
+
+// Waits for the groups request to settle as well as the stats: the tour picks
+// its steps when it starts, and the groups row is one of them -- but a failed
+// request only costs that step, not the tour. A refetch keeps the previous
+// stats, so clearing a filter that matched nothing reads as an empty hangar
+// until it lands.
+useTourAutostart({
+  ready: () =>
+    !!currentUser?.value?.id &&
+    isNewAccount.value &&
+    !hangarStore.hasSeenTour(currentUser.value.id) &&
+    hangarGroupsFetched.value &&
+    !hangarStatsFetching.value &&
+    hangarStats.value?.total === 0 &&
+    !isFilterSelected.value,
+  start: openGuide,
+});
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
@@ -367,6 +404,7 @@ const openDisplayOptionsModal = () => {
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"
+            data-tour="hangar-groups"
             :hangar-groups="hangarGroups"
             :hangar-group-counts="hangarGroupCounts"
             :label="t('labels.groups')"
@@ -432,7 +470,11 @@ const openDisplayOptionsModal = () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-wishlist' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-wishlist' }"
+      data-tour="hangar-wishlist"
+    >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -445,6 +487,7 @@ const openDisplayOptionsModal = () => {
     <Btn
       :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
+      data-tour="hangar-fleetchart"
       @click="toggleFleetchart"
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />
@@ -460,7 +503,11 @@ const openDisplayOptionsModal = () => {
       {{ t("labels.hangarInventories") }}
     </Btn>
 
-    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-stats' }"
+      data-tour="hangar-stats"
+    >
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
@@ -468,6 +515,7 @@ const openDisplayOptionsModal = () => {
     <ShareBtn
       :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicHangar && shareUrl"
+      data-tour="hangar-share"
       :url="shareUrl"
       :title="shareTitle"
       no-label
@@ -486,12 +534,13 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
+        data-tour="hangar-display"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
       </Btn>
-      <HangarSyncBtn :size="BtnSizesEnum.SM" />
-      <BtnDropdown>
+      <HangarSyncBtn :size="BtnSizesEnum.SM" data-tour="hangar-sync" />
+      <BtnDropdown data-tour="hangar-menu">
         <template v-if="mobile">
           <Btn :to="{ name: 'hangar-wishlist' }">
             <i class="fa-duotone fa-wand-sparkles" />
@@ -526,7 +575,11 @@ const openDisplayOptionsModal = () => {
           <hr />
         </template>
 
-        <Btn :aria-label="t('actions.showGuide')" @click="openGuide">
+        <Btn
+          :aria-label="t('actions.showGuide')"
+          data-test="hangar-show-guide"
+          @click="openGuide"
+        >
           <i class="fa-duotone fa-question" />
           <span>{{ t("actions.showGuide") }}</span>
         </Btn>
@@ -658,6 +711,7 @@ const openDisplayOptionsModal = () => {
         :selection-controls="false"
         @sort="onSort"
         @move="moveBy"
+        @open-guide="openGuide"
       />
 
       <FleetchartApp
@@ -700,9 +754,17 @@ const openDisplayOptionsModal = () => {
       <HangarEmpty
         v-if="!hideEmpty && emptyVisible"
         :variant="EmptyVariantsEnum.BOX"
+        guide
+        @open-guide="openGuide"
       />
     </template>
   </FilteredList>
 
-  <PrimaryAction :label="t('actions.addVehicle')" :action="showNewModal" />
+  <PrimaryAction
+    :label="t('actions.addVehicle')"
+    :action="showNewModal"
+    data-tour="hangar-add"
+  />
+
+  <HangarTour v-model:open="tourOpen" />
 </template>

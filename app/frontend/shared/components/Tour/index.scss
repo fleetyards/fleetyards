@@ -1,0 +1,86 @@
+// Takes the screen over, so it sits above the navigation, off-canvas and the
+// dropdown menus (2100), and below PhotoSwipe, Loader and the notifications.
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 2150;
+}
+
+.tour__backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+// The dimming is the hole's own shadow, so the control it frames stays lit
+// without a second copy of it painted on top.
+.tour__hole {
+  position: fixed;
+  border-radius: var(--radius-control, 8px);
+  box-shadow:
+    0 0 0 2px var(--color-primary),
+    0 0 0 200vmax rgb(0 0 0 / 0.7);
+  pointer-events: none;
+
+  &--empty {
+    box-shadow: 0 0 0 200vmax rgb(0 0 0 / 0.7);
+  }
+}
+
+.tour__card {
+  position: fixed;
+  width: min(360px, calc(100vw - 24px));
+  padding: 16px 18px 14px;
+  background: var(--color-gray-darker, #272b30);
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-control, 8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.tour--animated {
+  .tour__hole,
+  .tour__card {
+    transition:
+      top 0.25s ease,
+      left 0.25s ease,
+      width 0.25s ease,
+      height 0.25s ease;
+  }
+}
+
+.tour__counter {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tour__title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.tour__text {
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.tour__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tour__spacer {
+  flex: 1;
+}

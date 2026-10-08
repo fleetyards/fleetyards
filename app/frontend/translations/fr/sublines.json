@@ -1,15 +1,6 @@
 {
   "fr": {
     "sublines": {
-      "hangarGuide": {
-        "headline": "peut-être devrions-nous changer cela ;)",
-        "add": "Comment ajouter un vaisseau ?",
-        "edit": "Comment modifier un vaisseau ?",
-        "wishlist": "Comment ajouter un vaisseau à votre liste de souhaits ?",
-        "fleetchart": "Diagramme de flotte ?",
-        "public": "URL publique ?",
-        "groups": "Comment créer et mettre à jour des groupes ?"
-      },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
         "disclaimer": "Avis de non-responsabilité",
