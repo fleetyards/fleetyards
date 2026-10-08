@@ -24,8 +24,12 @@ module Push
 
     # Checked here rather than when the reader's switch was flipped: the flag,
     # the keys and the type's channels can all change after that.
+    #
+    # A reader with the app in front of them on any device gets nothing: the
+    # notification already shows up in that tab.
     def self.deliverable?(notification)
       Vapid.configured? &&
+        !UserPresence.active?(notification.user_id) &&
         Notification.channels_for(notification.notification_type).include?(:push) &&
         Flipper.enabled?(:push_notifications, notification.user) &&
         NotificationPreference.for(user: notification.user, type: notification.notification_type).push?

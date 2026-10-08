@@ -61,4 +61,13 @@ class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
 
     assert UserPresence.online?(@user.id)
   end
+
+  test "an active report marks the user active" do
+    stub_signed_in_connection
+    subscribe
+
+    perform :active
+
+    assert UserPresence.active?(@user.id)
+  end
 end

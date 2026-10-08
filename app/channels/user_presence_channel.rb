@@ -4,6 +4,9 @@
 # has an accepted relationship with, and refreshes the reader's own connection
 # while it is subscribed.
 #
+# The client also reports when one of its tabs is visible, which holds push
+# notifications back on every device while the user is looking at the app.
+#
 # The heartbeat is the half that makes a lost connection self-correct: the score
 # stops being refreshed, the connection ages out, and the user falls offline
 # without anybody having run a callback. ActionCable's own three-second ping is
@@ -19,6 +22,14 @@ class UserPresenceChannel < ApplicationCable::Channel
 
   def unsubscribed
     stop_all_streams
+  end
+
+  # Sent by the client while one of its tabs is visible. The server heartbeat
+  # cannot tell that apart from a tab left open in the background.
+  def active
+    return if current_user.blank?
+
+    UserPresence.mark_active(current_user.id)
   end
 
   private def heartbeat

@@ -26,6 +26,12 @@ class UserPresence
   # Three beats inside the TTL.
   HEARTBEAT_INTERVAL = 30
 
+  # How long a tab the user was looking at keeps them "active". An open socket
+  # is not that: a forgotten background tab heartbeats all day. Long enough to
+  # cover glancing at another app while a sync runs, short enough that walking
+  # away hands notifications back to the phone within a couple of minutes.
+  ACTIVE_WINDOW = 120
+
   class << self
     # A connection that has just been accepted. Returns true when this is the
     # user's first live connection *and* nothing has announced them online yet,
@@ -45,6 +51,22 @@ class UserPresence
     # the user really has gone.
     def disconnect(user_id, token)
       write { redis.zadd(connections_key, expires_at(GRACE), member(user_id, token)) }
+    end
+
+    # A tab of the user's is in front of them right now, on any device. Push
+    # holds back while it is: the same notification already arrives in that
+    # tab, and buzzing the phone beside it is noise.
+    #
+    # The value is when it stops counting, read against the clock like the
+    # connection scores; the key's own expiry only cleans up.
+    def mark_active(user_id)
+      write { redis.set(active_key(user_id), expires_at(ACTIVE_WINDOW), ex: ACTIVE_WINDOW) }
+    end
+
+    # False when Redis cannot answer, so an outage costs a redundant push
+    # rather than a missing one.
+    def active?(user_id)
+      read(false) { redis.get(active_key(user_id)).to_i > now }
     end
 
     def online?(user_id)
@@ -108,7 +130,11 @@ class UserPresence
     end
 
     def reset!
-      write { redis.del(connections_key, announced_key) }
+      write do
+        redis.del(connections_key, announced_key)
+        active_keys = redis.keys(active_key("*"))
+        redis.del(*active_keys) if active_keys.any?
+      end
     end
 
     # Every live user, or `nil` when Redis could not answer. Only `reconcile`
@@ -169,6 +195,10 @@ class UserPresence
 
     private def announced_key
       "#{namespace}presence:announced"
+    end
+
+    private def active_key(user_id)
+      "#{namespace}presence:active:#{user_id}"
     end
 
     # Parallel test workers share one Redis and one cable database, so each one

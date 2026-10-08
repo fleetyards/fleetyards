@@ -168,4 +168,25 @@ class UserPresenceTest < ActiveSupport::TestCase
       assert_empty UserPresence.online_user_ids
     end
   end
+
+  test "#active? holds for the active window after a report" do
+    UserPresence.mark_active(@user)
+
+    assert UserPresence.active?(@user)
+    refute UserPresence.active?(@other)
+  end
+
+  test "#active? lapses once nothing reports within the window" do
+    UserPresence.mark_active(@user)
+
+    travel UserPresence::ACTIVE_WINDOW + 1.second do
+      refute UserPresence.active?(@user)
+    end
+  end
+
+  test "an open connection alone is not active" do
+    UserPresence.connect(@user, "tab-1")
+
+    refute UserPresence.active?(@user)
+  end
 end

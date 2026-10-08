@@ -157,6 +157,8 @@ channels:
     messages:
       UserPresenceMessage:
         "$ref": "#/components/messages/UserPresenceMessage"
+      UserPresenceActiveMessage:
+        "$ref": "#/components/messages/UserPresenceActiveMessage"
   Wishlist:
     address: wishlist:{user_gid}
     x-actioncable-channel: WishlistChannel
@@ -325,6 +327,14 @@ operations:
     messages:
     - "$ref": "#/channels/Wishlist/messages/Vehicle"
     summary: A wanted vehicle changed
+  sendUserPresenceActive:
+    action: send
+    channel:
+      "$ref": "#/channels/UserPresence"
+    messages:
+    - "$ref": "#/channels/UserPresence/messages/UserPresenceActiveMessage"
+    summary: A tab of the user's is visible, which holds back push notifications on
+      all of their devices
 components:
   schemas:
     AnnouncementMessage:
@@ -4911,6 +4921,16 @@ components:
       - RETRO
       - VTOL
       - MAV
+    UserPresenceActiveMessage:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - active
+      additionalProperties: false
+      required:
+      - action
     UserPresenceMessage:
       type: object
       properties:
@@ -5104,6 +5124,9 @@ components:
     PayoutLedger:
       payload:
         "$ref": "#/components/schemas/PayoutLedger"
+    UserPresenceActiveMessage:
+      payload:
+        "$ref": "#/components/schemas/UserPresenceActiveMessage"
     UserPresenceMessage:
       payload:
         "$ref": "#/components/schemas/UserPresenceMessage"

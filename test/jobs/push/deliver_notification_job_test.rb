@@ -65,5 +65,15 @@ module Push
 
       assert_empty DeliverToSubscriptionJob.jobs
     end
+
+    test "sends nothing while the reader is active on any device" do
+      UserPresence.mark_active(@user.id)
+
+      perform
+
+      assert_empty DeliverToSubscriptionJob.jobs
+    ensure
+      UserPresence.reset!
+    end
   end
 end
