@@ -176,9 +176,8 @@ module Discord
       assert_empty ApplyJoinRolesJob.jobs
     end
 
-    test "a quiet admission tells the player and the members' views but not the officers" do
-      FleetVehiclesChannel.expects(:broadcast_to).with(@admin, anything).at_least_once
-      FleetVehiclesChannel.stubs(:broadcast_to).with(@user, anything)
+    test "a quiet admission tells the player, and leaves the officers and the members' views to the sweep" do
+      FleetVehiclesChannel.expects(:broadcast_to).never
 
       join_role.apply(@user, [JOIN_ROLE], quiet: true)
 

@@ -449,7 +449,9 @@ class FleetMembership < ApplicationRecord
 
   def on_join
     notify_joined_by_discord_role
-    notify_fleet_admins unless quiet
+    return if quiet
+
+    notify_fleet_admins
     broadcast_to_members
   end
 
@@ -476,8 +478,9 @@ class FleetMembership < ApplicationRecord
   end
 
   def broadcast_to_members
-    fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
+    payload = to_jbuilder_hash
+    fleet.fleet_memberships.kept.includes(:user).find_each do |member|
+      FleetVehiclesChannel.broadcast_to(member.user, payload)
     end
   end
 

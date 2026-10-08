@@ -286,6 +286,16 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: holder)
     end
 
+    test "a quiet sweep refreshes each member's view once, not once per admission" do
+      @setting.update_columns(discord_join_role_swept_at: nil)
+      linked_user("uid-1")
+      linked_user("uid-2")
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE), member("uid-2", JOIN_ROLE)])
+      FleetVehiclesChannel.expects(:broadcast_to).times(3)
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])

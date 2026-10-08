@@ -17,7 +17,8 @@ module Discord
       return unless join_role.configured?
 
       # Admitting everyone who already holds a newly picked role would bury
-      # the officers in notifications; anyone a later run admits is news.
+      # the officers in notifications, and each member's view in a refresh per
+      # admission; anyone a later run admits is news.
       @quiet = !join_role.swept?
       @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
       started_at = Time.current
@@ -34,6 +35,9 @@ module Discord
       gone.each do |uid, connections|
         JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
       end
+
+      # One refresh of every member's view for the whole quiet sweep.
+      fleet.fleet_memberships.kept.accepted.where(accepted_at: started_at..).last&.broadcast_to_members if @quiet
 
       # Only for the role it read: one picked meanwhile gets its own sweep.
       FleetNotificationSetting.where(fleet_id: fleet.id, discord_join_role_id: join_role.role_id)
