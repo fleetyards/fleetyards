@@ -429,4 +429,110 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_includes body, I18n.t("notifications.hangar_sync_finished.more_items", count: 2)
     end
   end
+
+  class PledgeItemsTest < HangarSyncTest
+    setup do
+      @input += [
+        {"id" => "00064530", "name" => "Poster - Banu Merchantman", "type" => "flair"},
+        {"id" => "00064530", "name" => "Poster - Banu Merchantman", "type" => "flair"},
+        {"id" => "00064531", "name" => "Space Globe - Terra", "type" => "flair", "image" => "https://media.test/globe.jpg",
+         "pledgeName" => "Space Globe - Terra", "pledgeValue" => 15.0, "pledgeItemCount" => 1,
+         "pledgeCreatedOn" => "2026-09-30", "meltable" => true},
+        {"id" => "00064532", "name" => "CSV - Granite Paint", "type" => "skin",
+         "pledgeName" => "Standalone Ships - CSV-SM plus Granite Paint", "pledgeValue" => 1240.5, "pledgeItemCount" => 3}
+      ]
+    end
+
+    test "stores the paints and the hangar flair" do
+      ::HangarSync.new(@input).run(@user.id)
+
+      skins = @input.select { |item| item["type"] == "skin" }
+      assert_equal skins.map { |item| [item["id"], item["name"]] }.uniq.size, @user.hangar_pledge_items.paints.count
+      assert @user.hangar_pledge_items.paints.exists?(rsi_pledge_id: "00064529", name: "Hurricane - Waylay Camo Paint")
+
+      poster = @user.hangar_pledge_items.flair.find_by!(name: "Poster - Banu Merchantman")
+      assert_equal 2, poster.quantity
+      assert_equal "https://media.test/globe.jpg", @user.hangar_pledge_items.flair.find_by!(name: "Space Globe - Terra").image_url
+    end
+
+    test "keeps the pledge's melt value, and gives an item its own only when it is the whole pledge" do
+      ::HangarSync.new(@input).run(@user.id)
+
+      globe = @user.hangar_pledge_items.flair.find_by!(name: "Space Globe - Terra")
+      assert_equal 15, globe.melt_value
+      assert globe.meltable
+      assert_equal Date.new(2026, 9, 30), globe.pledge_created_on
+
+      paint = @user.hangar_pledge_items.paints.find_by!(name: "CSV - Granite Paint")
+      assert_nil paint.melt_value
+      assert_not paint.meltable
+      assert_equal BigDecimal("1240.5"), paint.pledge_value
+      assert_equal "Standalone Ships - CSV-SM plus Granite Paint", paint.pledge_name
+    end
+
+    test "reports the paints and flair it stored, in the result and the notification" do
+      result = ::HangarSync.new(@input).run(@user.id)
+
+      assert_equal @user.hangar_pledge_items.paints.pluck(:id).sort, result[:synced_paints].sort
+      assert_equal @user.hangar_pledge_items.flair.pluck(:id).sort, result[:synced_hangar_flair].sort
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+      assert_includes body, "- Paints synced: **#{result[:synced_paints].size}**"
+      assert_includes body, "- Hangar flair synced: **2**"
+    end
+
+    test "reports no flair when the run does not sync it" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, sync_hangar_flair: false)
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert_empty result[:synced_hangar_flair]
+      assert_predicate result[:synced_paints], :any?
+    end
+
+    test "replaces what the last sync stored, and keeps when an item was first seen" do
+      ::HangarSync.new(@input).run(@user.id)
+      first_seen = @user.hangar_pledge_items.flair.find_by!(name: "Space Globe - Terra").created_at
+
+      travel_to 1.day.from_now do
+        ::HangarSync.new(@input.reject { |item| item["name"] == "Poster - Banu Merchantman" }).run(@user.id)
+      end
+
+      assert_not @user.hangar_pledge_items.exists?(name: "Poster - Banu Merchantman")
+      assert_equal first_seen, @user.hangar_pledge_items.flair.find_by!(name: "Space Globe - Terra").created_at
+    end
+
+    test "leaves the stored paints alone when the run does not sync them" do
+      ::HangarSync.new(@input).run(@user.id)
+      paint_ids = @user.hangar_pledge_items.paints.pluck(:id).sort
+
+      without_paints = @input.reject { |item| item["type"] == "skin" || item["name"] == "Space Globe - Terra" }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: without_paints, sync_paints: false)
+      ::HangarSync.new(without_paints).run_with_import(import)
+
+      assert_equal paint_ids, @user.hangar_pledge_items.paints.pluck(:id).sort
+      assert_not @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
+    end
+
+    test "leaves the stored flair alone when the run does not sync it" do
+      ::HangarSync.new(@input).run(@user.id)
+
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], sync_hangar_flair: false)
+      ::HangarSync.new([]).run_with_import(import)
+
+      assert_empty @user.hangar_pledge_items.paints
+      assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
+    end
+
+    test "a cancelled run leaves the stored paints and flair alone" do
+      ::HangarSync.new(@input).run(@user.id)
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [])
+      import.request_cancel!
+
+      sync = ::HangarSync.new([])
+      sync.instance_variable_set(:@import, import)
+      sync.send(:sync_pledge_items, @user)
+
+      assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
+    end
+  end
 end

@@ -28,6 +28,8 @@ it:
         found_components: Componenti trovati
         imported_upgrades: Upgrade aggiunti
         found_upgrades: Upgrade trovati
+        synced_paints: "Verniciature sincronizzate"
+        synced_hangar_flair: "Decorazioni per l'hangar sincronizzate"
         missing_models: Navi non trovate
         missing_components: Componenti non trovati
         missing_component_vehicles: Nessuna nave corrispondente per i componenti

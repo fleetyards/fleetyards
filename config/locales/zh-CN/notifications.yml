@@ -28,6 +28,8 @@ zh-CN:
         found_components: 已找到的组件
         imported_upgrades: 已添加的升级
         found_upgrades: 已找到的升级
+        synced_paints: 已同步涂装
+        synced_hangar_flair: 已同步机库装饰
         missing_models: 未找到的飞船
         missing_components: 未找到的组件
         missing_component_vehicles: 没有与组件匹配的飞船

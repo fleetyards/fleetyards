@@ -128,6 +128,8 @@ module Api
           user_id: current_resource_owner.id,
           hangar_group_id: target_hangar_group_id,
           add_bundled_vehicles: add_bundled_vehicles?,
+          sync_paints: enabled_unless_off?(:sync_paints),
+          sync_hangar_flair: enabled_unless_off?(:sync_hangar_flair),
           unmatched_vehicles_action: unmatched_vehicles_action,
           unmatched_hangar_group_id: unmatched_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
@@ -213,8 +215,8 @@ module Api
 
       private def sync_params
         @sync_params ||= params.permit(
-          :hangar_group_id, :add_bundled_vehicles, :unmatched_vehicles_action,
-          :unmatched_hangar_group_id, items: [:id, :name, :image, :type, :custom_name]
+          :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :unmatched_vehicles_action,
+          :unmatched_hangar_group_id, items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable]
         )
       end
 
@@ -222,7 +224,11 @@ module Api
       # craft a ship comes with, and a client that does not know about the flag
       # must keep behaving that way.
       private def add_bundled_vehicles?
-        value = sync_params[:add_bundled_vehicles]
+        enabled_unless_off?(:add_bundled_vehicles)
+      end
+
+      private def enabled_unless_off?(key)
+        value = sync_params[key]
         return true if value.nil?
 
         ActiveModel::Type::Boolean.new.cast(value) || false

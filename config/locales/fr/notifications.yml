@@ -28,6 +28,8 @@ fr:
         found_components: Composants trouvés
         imported_upgrades: Améliorations ajoutées
         found_upgrades: Améliorations trouvées
+        synced_paints: Peintures synchronisées
+        synced_hangar_flair: Décorations de hangar synchronisées
         missing_models: Vaisseaux introuvables
         missing_components: Composants introuvables
         missing_component_vehicles: Aucun vaisseau correspondant pour les composants

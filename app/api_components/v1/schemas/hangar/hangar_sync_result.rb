@@ -29,7 +29,10 @@ module V1
             importedUpgrades: {type: :array, items: {type: :string, format: :uuid}},
             foundUpgrades: {type: :array, items: {type: :string, format: :uuid}},
             missingUpgrades: {type: :array, items: {type: :string}},
-            missingUpgradeVehicles: {type: :array, items: {type: :string}}
+            missingUpgradeVehicles: {type: :array, items: {type: :string}},
+            # Left out by a run from before paints and flair were synced.
+            syncedPaints: {type: :array, items: {type: :string, format: :uuid}},
+            syncedHangarFlair: {type: :array, items: {type: :string, format: :uuid}}
           },
           additionalProperties: false,
           required: %w[
