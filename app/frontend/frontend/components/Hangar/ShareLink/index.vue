@@ -118,7 +118,6 @@ const copyShareUrl = () => {
           inline
           standalone
           class="hangar-share-link__field"
-          @click="copyShareUrl"
         />
         <ShareBtn
           v-if="mobile"
