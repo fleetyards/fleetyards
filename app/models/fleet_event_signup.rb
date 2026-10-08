@@ -84,6 +84,7 @@ class FleetEventSignup < ApplicationRecord
   def occurrence_over?
     return fleet_event.past? unless fleet_event.recurring?
     return false if occurrence_date.nil?
+    return occurrence_date < Date.current unless occurrence_date == Date.current
 
     ends_at = fleet_event.occurrence_ends_at(occurrence_date)
     ends_at.present? && ends_at < Time.current
