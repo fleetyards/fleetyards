@@ -43,6 +43,33 @@ test.describe("FormTabs", () => {
     await expect(locked).not.toHaveClass(/active/);
   });
 
+  test("the arrow keys move between tabs, Enter activates", async ({
+    page,
+  }) => {
+    // One tab stop for the strip: the active tab.
+    await expect(tab(page, "basic")).toHaveAttribute("tabindex", "0");
+    await expect(tab(page, "contact")).toHaveAttribute("tabindex", "-1");
+
+    await tab(page, "basic").focus();
+
+    await page.keyboard.press("ArrowDown");
+    await expect(tab(page, "contact")).toBeFocused();
+    await expect(tab(page, "basic")).toHaveClass(/active/);
+
+    // The disabled tab is skipped, and the ends wrap.
+    await page.keyboard.press("End");
+    await expect(tab(page, "notes")).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(tab(page, "basic")).toBeFocused();
+    await page.keyboard.press("ArrowUp");
+    await expect(tab(page, "notes")).toBeFocused();
+
+    await page.keyboard.press("Enter");
+    await expect(tab(page, "notes")).toHaveClass(/active/);
+    await expect(tab(page, "notes")).toHaveAttribute("tabindex", "0");
+    await expect(tab(page, "basic")).toHaveAttribute("tabindex", "-1");
+  });
+
   test("a hidden tab is left out of the strip, not disabled in it", async ({
     page,
   }) => {

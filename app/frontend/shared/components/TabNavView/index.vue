@@ -91,7 +91,12 @@ watch(
         :super-admin="props.superAdmin"
         :badges="props.badges"
       />
-      <ul v-else class="tabs" :role="props.tablist ? 'tablist' : undefined">
+      <ul
+        v-else
+        class="tabs"
+        :role="props.tablist ? 'tablist' : undefined"
+        :aria-orientation="props.tablist ? 'vertical' : undefined"
+      >
         <slot name="nav">
           <TabNavViewItems
             v-if="props.routes"
