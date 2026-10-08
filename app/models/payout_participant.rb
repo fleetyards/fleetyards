@@ -1,33 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: payout_participants
-#
-#  id               :uuid             not null, primary key
-#  name             :string
-#  weight           :decimal(9, 6)    default(1.0), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  added_by_id      :uuid
-#  fleet_id         :uuid
-#  payout_ledger_id :uuid             not null
-#  user_id          :uuid
-#
-# Indexes
-#
-#  index_payout_participants_on_fleet_id              (fleet_id)
-#  index_payout_participants_on_payout_ledger_id      (payout_ledger_id)
-#  index_payout_participants_unique_fleet_per_ledger  (payout_ledger_id,fleet_id) UNIQUE WHERE (fleet_id IS NOT NULL)
-#  index_payout_participants_unique_user_per_ledger   (payout_ledger_id,user_id) UNIQUE WHERE (user_id IS NOT NULL)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (added_by_id => users.id)
-#  fk_rails_...  (fleet_id => fleets.id)
-#  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
-#  fk_rails_...  (user_id => users.id)
-#
 class PayoutParticipant < ApplicationRecord
   belongs_to :payout_ledger, touch: true
   belongs_to :user, optional: true

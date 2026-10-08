@@ -1,43 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: fleet_event_occurrence_states
-#
-#  id                        :uuid             not null, primary key
-#  briefing                  :text
-#  cancelled_at              :datetime
-#  cancelled_reason          :text
-#  cover_image_preset        :string
-#  description               :text
-#  discord_synced_at         :datetime
-#  location                  :string
-#  locked_at                 :datetime
-#  meetup_location           :string
-#  occurrence_date           :date             not null
-#  scenario                  :string
-#  starting_soon_notified_at :datetime
-#  status                    :string
-#  title                     :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  discord_event_id          :string
-#  fleet_event_id            :uuid             not null
-#  location_id               :uuid
-#  meetup_location_id        :uuid
-#
-# Indexes
-#
-#  idx_fleet_event_occurrence_states_on_event_and_date        (fleet_event_id,occurrence_date) UNIQUE
-#  index_fleet_event_occurrence_states_on_location_id         (location_id)
-#  index_fleet_event_occurrence_states_on_meetup_location_id  (meetup_location_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_event_id => fleet_events.id)
-#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
-#  fk_rails_...  (meetup_location_id => locations.id) ON DELETE => nullify
-#
 FactoryBot.define do
   factory :fleet_event_occurrence_state do
     fleet_event

@@ -1,32 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: payout_transfers
-#
-#  id                  :uuid             not null, primary key
-#  amount              :decimal(15, 2)   not null
-#  confirmed_at        :datetime
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  confirmed_by_id     :uuid
-#  from_participant_id :uuid             not null
-#  payout_ledger_id    :uuid             not null
-#  to_participant_id   :uuid             not null
-#
-# Indexes
-#
-#  index_payout_transfers_on_from_participant_id  (from_participant_id)
-#  index_payout_transfers_on_payout_ledger_id     (payout_ledger_id)
-#  index_payout_transfers_on_to_participant_id    (to_participant_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (confirmed_by_id => users.id)
-#  fk_rails_...  (from_participant_id => payout_participants.id)
-#  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
-#  fk_rails_...  (to_participant_id => payout_participants.id)
-#
 class PayoutTransfer < ApplicationRecord
   belongs_to :payout_ledger, touch: true
   belongs_to :from_participant, class_name: "PayoutParticipant"

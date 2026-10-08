@@ -12,37 +12,6 @@
 # has no version, so if "has a build row" were the test for "is in this build",
 # every matrix hardpoint would read as retired from every build -- the same
 # conflation `in_game` was rejected for on the model catalogue.
-# == Schema Information
-#
-# Table name: hardpoint_builds
-#
-#  id            :uuid             not null, primary key
-#  category      :integer
-#  environment   :string           not null
-#  flags         :string
-#  group         :integer
-#  group_key     :string
-#  max_size      :integer
-#  min_size      :integer
-#  port_tags     :string
-#  required_tags :string
-#  types         :string
-#  version       :string           not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  component_id  :uuid
-#  hardpoint_id  :uuid             not null
-#
-# Indexes
-#
-#  index_hardpoint_builds_on_component_id             (component_id)
-#  index_hardpoint_builds_on_environment_and_version  (environment,version)
-#  index_hardpoint_builds_on_hardpoint_and_build      (hardpoint_id,environment,version) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (hardpoint_id => hardpoints.id) ON DELETE => cascade
-#
 class HardpointBuild < ApplicationRecord
   belongs_to :hardpoint
   belongs_to :component, optional: true

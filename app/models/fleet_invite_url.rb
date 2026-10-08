@@ -1,23 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: fleet_invite_urls
-#
-#  id            :uuid             not null, primary key
-#  expires_after :datetime
-#  limit         :integer
-#  token         :string
-#  usage_count   :integer          default(0), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  fleet_id      :uuid
-#  user_id       :uuid
-#
-# Indexes
-#
-#  index_fleet_invite_urls_on_token  (token) UNIQUE
-#
 class FleetInviteUrl < ApplicationRecord
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::DateHelper

@@ -1,45 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: vehicles
-#
-#  id                   :uuid             not null, primary key
-#  alternative_names    :string
-#  bought_via           :integer          default("pledge_store")
-#  bundled              :boolean          default(FALSE), not null
-#  flagship             :boolean          default(FALSE)
-#  hidden               :boolean          default(FALSE)
-#  loaner               :boolean          default(FALSE)
-#  name                 :string(255)
-#  name_visible         :boolean          default(FALSE)
-#  notify               :boolean          default(TRUE)
-#  public               :boolean          default(FALSE)
-#  rank                 :text
-#  rsi_pledge_synced_at :datetime
-#  sale_notify          :boolean          default(FALSE)
-#  serial               :string
-#  slug                 :string
-#  wanted               :boolean          default(FALSE)
-#  created_at           :datetime
-#  updated_at           :datetime
-#  model_id             :uuid
-#  model_paint_id       :uuid
-#  module_package_id    :uuid
-#  rsi_pledge_id        :string
-#  user_id              :uuid
-#  vehicle_id           :uuid
-#
-# Indexes
-#
-#  index_vehicles_on_hidden_and_loaner_and_wanted  (hidden,loaner,wanted)
-#  index_vehicles_on_model_id_and_id               (model_id,id)
-#  index_vehicles_on_model_paint_id_where_painted  (model_paint_id,hidden,wanted,loaner) WHERE (model_paint_id IS NOT NULL)
-#  index_vehicles_on_serial_and_user_id            (serial,user_id) UNIQUE
-#  index_vehicles_on_user_id                       (user_id)
-#  index_vehicles_on_user_id_and_rank              (user_id,rank) UNIQUE
-#  index_vehicles_on_vehicle_id_and_bundled        (vehicle_id,bundled)
-#
 require "test_helper"
 
 class VehicleTest < ActiveSupport::TestCase

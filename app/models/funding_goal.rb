@@ -1,24 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: funding_goals
-#
-#  id             :uuid             not null, primary key
-#  amount_cents   :integer          not null
-#  currency       :string           default("EUR"), not null
-#  description    :text
-#  effective_from :date             not null
-#  ended_at       :date
-#  title          :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#
-# Indexes
-#
-#  index_funding_goals_on_effective_from  (effective_from)
-#  index_funding_goals_on_ended_at        (ended_at)
-#
 class FundingGoal < ApplicationRecord
   attr_accessor :update_reason, :update_reason_description, :author_id
 

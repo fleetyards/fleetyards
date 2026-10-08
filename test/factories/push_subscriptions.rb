@@ -1,30 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: push_subscriptions
-#
-#  id                :uuid             not null, primary key
-#  auth_key          :string           not null
-#  endpoint          :string           not null
-#  failure_count     :integer          default(0), not null
-#  last_delivered_at :datetime
-#  last_failed_at    :datetime
-#  p256dh_key        :string           not null
-#  user_agent        :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  user_id           :uuid             not null
-#
-# Indexes
-#
-#  index_push_subscriptions_on_endpoint  (endpoint) UNIQUE
-#  index_push_subscriptions_on_user_id   (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
 FactoryBot.define do
   factory :push_subscription do
     user

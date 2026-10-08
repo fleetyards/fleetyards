@@ -3,27 +3,6 @@
 # A shop UEX lists at a place. The game files carry none, so a shop exists for
 # as long as UEX names it on a price: "Casaba Outlet - Everus Harbor" is the
 # Casaba Outlet at Everus Harbor, made by Uex::ShopLocationMatcher.
-# == Schema Information
-#
-# Table name: shops
-#
-#  id          :uuid             not null, primary key
-#  name        :string           not null
-#  slug        :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  location_id :uuid             not null
-#
-# Indexes
-#
-#  index_shops_on_location_id           (location_id)
-#  index_shops_on_location_id_and_name  (location_id,name) UNIQUE
-#  index_shops_on_slug                  (slug) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (location_id => locations.id) ON DELETE => cascade
-#
 class Shop < ApplicationRecord
   belongs_to :location
   has_many :item_prices, dependent: :nullify

@@ -3,39 +3,6 @@
 # What one build of the game says about a place. A ptu build introduces places
 # before live has them, which is what makes a place this side of the row
 # rather than a column on it.
-# == Schema Information
-#
-# Table name: location_builds
-#
-#  id                         :uuid             not null, primary key
-#  always_shown               :boolean          default(FALSE), not null
-#  body_type                  :string
-#  description                :text
-#  environment                :string           not null
-#  facilities                 :jsonb
-#  game_type                  :string
-#  kind                       :string
-#  name                       :string
-#  quantum_travel_destination :boolean          default(FALSE), not null
-#  resources                  :jsonb            not null
-#  shown_on_starmap           :boolean          default(FALSE), not null
-#  shown_with_parent_only     :boolean          default(FALSE), not null
-#  version                    :string           not null
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  location_id                :uuid             not null
-#
-# Indexes
-#
-#  index_location_builds_on_environment_and_name     (environment,name)
-#  index_location_builds_on_environment_and_version  (environment,version)
-#  index_location_builds_on_location_and_build       (location_id,environment,version) UNIQUE
-#  index_location_builds_on_location_id              (location_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (location_id => locations.id) ON DELETE => cascade
-#
 class LocationBuild < ApplicationRecord
   belongs_to :location
 

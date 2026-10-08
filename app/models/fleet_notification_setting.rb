@@ -1,37 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: fleet_notification_settings
-#
-#  id                              :uuid             not null, primary key
-#  discord_digest_sent_at          :datetime
-#  discord_digest_time             :string
-#  discord_digest_timezone         :string
-#  discord_digest_weekday          :integer
-#  discord_join_role_swept_at      :datetime
-#  discord_webhook_url             :text
-#  enabled_in_app_events           :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  discord_announcement_channel_id :string
-#  discord_channel_id              :string
-#  discord_guild_id                :string
-#  discord_join_role_id            :string
-#  discord_member_role_id          :string
-#  discord_officers_channel_id     :string
-#  fleet_id                        :uuid             not null
-#
-# Indexes
-#
-#  index_fleet_notification_settings_on_discord_digest_weekday  (discord_digest_weekday) WHERE (discord_digest_weekday IS NOT NULL)
-#  index_fleet_notification_settings_on_discord_guild_id        (discord_guild_id)
-#  index_fleet_notification_settings_on_fleet_id                (fleet_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 class FleetNotificationSetting < ApplicationRecord
   belongs_to :fleet, touch: true
 

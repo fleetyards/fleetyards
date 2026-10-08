@@ -1,29 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: model_positions
-#
-#  id            :uuid             not null, primary key
-#  name          :string           not null
-#  position      :integer          default(0), not null
-#  position_type :integer          not null
-#  source        :integer          default("sc_data"), not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  hardpoint_id  :uuid
-#  model_id      :uuid             not null
-#
-# Indexes
-#
-#  index_model_positions_on_model_id                   (model_id)
-#  index_model_positions_on_model_id_and_hardpoint_id  (model_id,hardpoint_id) UNIQUE WHERE (hardpoint_id IS NOT NULL)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (hardpoint_id => hardpoints.id) ON DELETE => nullify
-#  fk_rails_...  (model_id => models.id)
-#
 FactoryBot.define do
   factory :model_position do
     model

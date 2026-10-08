@@ -1,31 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: ahoy_visits
-#
-#  id               :bigint           not null, primary key
-#  accept_language  :string
-#  browser          :string
-#  device_type      :string
-#  installed        :boolean          default(FALSE)
-#  ip               :string
-#  landing_page     :text
-#  os               :string
-#  referrer         :text
-#  referring_domain :string
-#  started_at       :datetime
-#  user_agent       :text
-#  visit_token      :string
-#  visitor_token    :string
-#  user_id          :uuid
-#
-# Indexes
-#
-#  index_ahoy_visits_on_user_id                       (user_id)
-#  index_ahoy_visits_on_visit_token                   (visit_token) UNIQUE
-#  index_ahoy_visits_on_visitor_token_and_started_at  (visitor_token,started_at)
-#
 module Ahoy
   class Visit < ApplicationRecord
     self.table_name = "ahoy_visits"

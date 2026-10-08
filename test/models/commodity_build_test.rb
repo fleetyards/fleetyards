@@ -2,34 +2,6 @@
 
 require "test_helper"
 
-# == Schema Information
-#
-# Table name: commodity_builds
-#
-#  id              :uuid             not null, primary key
-#  commodity_type  :string
-#  consumable      :boolean          default(FALSE), not null
-#  container_sizes :decimal(16, 8)   default([]), not null, is an Array
-#  counted         :boolean          default(FALSE), not null
-#  description     :text
-#  environment     :string           not null
-#  name            :string
-#  piece_volume    :decimal(16, 8)
-#  version         :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  commodity_id    :uuid             not null
-#
-# Indexes
-#
-#  index_commodity_builds_on_commodity_and_build             (commodity_id,environment,version) UNIQUE
-#  index_commodity_builds_on_environment_and_commodity_type  (environment,commodity_type)
-#  index_commodity_builds_on_environment_and_version         (environment,version)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (commodity_id => commodities.id) ON DELETE => cascade
-#
 class CommodityBuildTest < ActiveSupport::TestCase
   setup do
     @environment = ScData::Source.environment

@@ -2,30 +2,6 @@
 
 require "test_helper"
 
-# == Schema Information
-#
-# Table name: docks
-#
-#  id            :uuid             not null, primary key
-#  access        :integer
-#  beam          :decimal(15, 2)
-#  dock_type     :integer
-#  group         :string
-#  height        :decimal(15, 2)
-#  length        :decimal(15, 2)
-#  max_ship_size :integer
-#  min_ship_size :integer
-#  name          :string
-#  parent_type   :string           not null
-#  ship_size     :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  parent_id     :uuid             not null
-#
-# Indexes
-#
-#  index_docks_on_parent_type_and_parent_id  (parent_type,parent_id)
-#
 class DockTest < ActiveSupport::TestCase
   test "a dock belongs to a ship" do
     model = create(:model)

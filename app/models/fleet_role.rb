@@ -1,28 +1,3 @@
-# == Schema Information
-#
-# Table name: fleet_roles
-#
-#  id                 :uuid             not null, primary key
-#  name               :string
-#  new_member_default :boolean          default(FALSE), not null
-#  permanent          :boolean
-#  rank               :text
-#  resource_access    :text
-#  slug               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  discord_role_id    :string
-#  fleet_id           :uuid             not null
-#
-# Indexes
-#
-#  index_fleet_roles_on_fleet_id_and_rank      (fleet_id,rank) UNIQUE
-#  index_fleet_roles_on_one_default_per_fleet  (fleet_id) UNIQUE WHERE new_member_default
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 require "lexorank/rankable"
 
 class FleetRole < ApplicationRecord
