@@ -79,7 +79,7 @@ module Api
       private def join_role_payload
         return {} if @setting.discord_join_role_id.blank?
 
-        ::Discord::ApiClient.new(timeout: ::Discord::GuildListing::TIMEOUT)
+        ::Discord::ApiClient.new(timeout: ::Discord::GuildListing::ATTEMPT_TIMEOUT, retries: ::Discord::GuildListing::RETRIES)
           .list_guild_members(@setting.discord_guild_id, limit: 1)
         {joinRoleOk: true}
       rescue ::Discord::ApiClient::Error => e

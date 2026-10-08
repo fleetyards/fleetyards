@@ -6,8 +6,10 @@ module Discord
   # Lists what a fleet's settings page picks from in its guild. A guild
   # Discord cannot list is a code for the page to explain, not an error.
   class GuildListing
-    # Seconds the settings page waits on Discord.
-    TIMEOUT = 5
+    # The settings page waits five seconds at most: two attempts of two
+    # seconds, and at most a second between them.
+    ATTEMPT_TIMEOUT = 2
+    RETRIES = 1
 
     Result = Struct.new(:code, :items) do
       def ok?
@@ -41,7 +43,7 @@ module Discord
     end
 
     private def api
-      @api ||= ApiClient.new(timeout: TIMEOUT, retries: 2)
+      @api ||= ApiClient.new(timeout: ATTEMPT_TIMEOUT, retries: RETRIES)
     end
   end
 end
