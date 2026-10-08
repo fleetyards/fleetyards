@@ -197,7 +197,15 @@ const showStep = async (next: number) => {
 
   if (own !== session) return;
 
-  focusCard();
+  // Next and Back stay where they are between steps, so a keyboard user who
+  // pressed one keeps it; the card's live region announces the new step.
+  // Focus that is anywhere else -- or on Back, which the first step drops --
+  // goes to the card.
+  const onButton =
+    !!card.value?.contains(document.activeElement) &&
+    document.activeElement !== card.value;
+
+  if (!onButton) focusCard();
 };
 
 const next = () => {
@@ -339,10 +347,19 @@ let session = 0;
 let active = false;
 
 // Content loading in or a filter row opening moves the target without a
-// scroll or a resize of the window.
+// scroll or a resize of the window -- and inside a fixed or scrolling
+// container without resizing the body either, so changes to the page's
+// markup reposition as well. The tour's own updates are left out, or placing
+// the card would schedule the next placement.
 const observedPage = ref<HTMLElement | null>(null);
 
 useResizeObserver(observedPage, schedulePlace);
+
+const pageChanges = new MutationObserver((mutations) => {
+  if (mutations.some((mutation) => !root.value?.contains(mutation.target))) {
+    schedulePlace();
+  }
+});
 
 // On the document rather than the card: focus can sit on <body> for a moment
 // -- after a click on the backdrop, or before the first card is placed -- and
@@ -352,6 +369,12 @@ const listen = () => {
   window.addEventListener("scroll", schedulePlace, true);
   window.addEventListener("resize", schedulePlace);
   observedPage.value = document.body;
+  pageChanges.observe(document.body, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["class", "style", "hidden"],
+  });
 };
 
 const unlisten = () => {
@@ -359,6 +382,7 @@ const unlisten = () => {
   window.removeEventListener("scroll", schedulePlace, true);
   window.removeEventListener("resize", schedulePlace);
   observedPage.value = null;
+  pageChanges.disconnect();
   window.cancelAnimationFrame(frame);
 };
 
@@ -417,6 +441,10 @@ const teardown = ({ restoreFocus }: { restoreFocus: boolean }) => {
     return;
   }
 
+  // Nothing started it -- an automatic start -- so there is nothing to return
+  // to, and the fallback would only drop focus on an arbitrary control.
+  if (!returnFocus) return;
+
   const fallback = props.returnFocusFallback
     ? document.querySelector<HTMLElement>(props.returnFocusFallback)
     : null;
@@ -432,6 +460,18 @@ function end(reason: TourEndReason) {
   open.value = false;
   emit("end", reason);
 }
+
+// The steps can change under a running tour -- a flag or the locale feeds
+// them -- and a vanished step must not leave an inert page with no card.
+watch(shown, (steps) => {
+  if (!visible.value) return;
+
+  if (!steps.length) {
+    end("finished");
+  } else if (index.value >= steps.length) {
+    void showStep(steps.length - 1);
+  }
+});
 
 watch(
   open,
@@ -512,8 +552,10 @@ const cardStyle = computed(() =>
             })
           }}
         </p>
-        <h2 :id="titleId" class="tour__title">{{ current.title }}</h2>
-        <p :id="textId" class="tour__text">{{ current.text }}</p>
+        <div aria-live="polite">
+          <h2 :id="titleId" class="tour__title">{{ current.title }}</h2>
+          <p :id="textId" class="tour__text">{{ current.text }}</p>
+        </div>
         <div class="tour__actions">
           <Btn
             v-if="!isLast"

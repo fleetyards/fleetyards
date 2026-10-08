@@ -371,6 +371,52 @@ describe("Tour", () => {
     expect(card()?.dataset.step).toBe("welcome");
   });
 
+  it("keeps focus on Next between steps", async () => {
+    await mountTour();
+
+    const nextButton = document.querySelector<HTMLElement>(
+      "[data-test='tour-next']",
+    );
+    nextButton?.focus();
+    await click("tour-next");
+
+    expect(card()?.dataset.step).toBe("add");
+    expect(document.activeElement).toBe(nextButton);
+  });
+
+  it("ends rather than vanishes when its steps go away", async () => {
+    const wrapper = await mountTour();
+
+    await wrapper.setProps({ steps: [] });
+    await flush();
+
+    expect(wrapper.emitted("end")).toEqual([["finished"]]);
+  });
+
+  it("leaves focus alone after a start nothing triggered", async () => {
+    const menu = addTarget("menu");
+    (document.activeElement as HTMLElement | null)?.blur();
+
+    let wrapper: VueWrapper | undefined = undefined;
+
+    wrapper = mount(Tour, {
+      attachTo: document.body,
+      props: {
+        steps: STEPS,
+        open: true,
+        returnFocusFallback: '[data-tour="menu"]',
+        "onUpdate:open": (value: boolean) => wrapper?.setProps({ open: value }),
+      },
+      global: { stubs: { Btn: BtnStub } },
+    });
+    wrappers.push(wrapper);
+    await flush();
+
+    await click("tour-skip");
+
+    expect(document.activeElement).not.toBe(menu);
+  });
+
   it("does not open when no step can be shown", async () => {
     const wrapper = await mountTour([STEPS[2]]);
 
