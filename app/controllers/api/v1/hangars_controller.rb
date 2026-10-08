@@ -130,8 +130,8 @@ module Api
           user_id: current_resource_owner.id,
           hangar_group_id: target_hangar_group_id,
           add_bundled_vehicles: add_bundled_vehicles?,
-          sync_paints: enabled_if_on?(:sync_paints),
-          sync_hangar_flair: enabled_if_on?(:sync_hangar_flair),
+          sync_paints: sync_pledge_items?(:sync_paints),
+          sync_hangar_flair: sync_pledge_items?(:sync_hangar_flair),
           unmatched_vehicles_action: unmatched_vehicles_action,
           unmatched_hangar_group_id: unmatched_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
@@ -226,21 +226,21 @@ module Api
       # craft a ship comes with, and a client that does not know about the flag
       # must keep behaving that way.
       private def add_bundled_vehicles?
-        enabled_unless_off?(:add_bundled_vehicles)
-      end
-
-      private def enabled_unless_off?(key)
-        value = sync_params[key]
-        return true if value.nil?
-
-        ActiveModel::Type::Boolean.new.cast(value) || false
+        sync_flag(:add_bundled_vehicles, default: true)
       end
 
       # Absent means off: a client that does not send the flag does not read
       # paints' pledge info or any flair, and syncing its list would blank the
       # one and delete the other.
-      private def enabled_if_on?(key)
-        ActiveModel::Type::Boolean.new.cast(sync_params[key]) || false
+      private def sync_pledge_items?(key)
+        sync_flag(key, default: false)
+      end
+
+      private def sync_flag(key, default:)
+        value = sync_params[key]
+        return default if value.nil?
+
+        ActiveModel::Type::Boolean.new.cast(value) || false
       end
 
       # What to do with the ships the sync does not find. Anything unrecognised
