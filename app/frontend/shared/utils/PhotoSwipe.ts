@@ -23,7 +23,7 @@ export const downloadImage = async (url: string, name: string) => {
     if (!response.ok) throw new Error(response.statusText);
 
     const objectUrl = URL.createObjectURL(await response.blob());
-    const extension = new URL(url).pathname.match(/\.\w+$/)?.[0] || "";
+    const extension = new URL(url, window.location.href).pathname.match(/\.\w+$/)?.[0] || "";
 
     const link = document.createElement("a");
     link.href = objectUrl;
