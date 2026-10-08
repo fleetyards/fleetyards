@@ -86,6 +86,7 @@ class FleetEventSignup < ApplicationRecord
     return fleet_event.active? || fleet_event.starts_at <= Time.current unless fleet_event.recurring?
     return false if occurrence_date.nil?
     return occurrence_date < Date.current unless occurrence_date == Date.current
+    return true if fleet_event.active?
 
     starts_at = fleet_event.occurrence_starts_at(occurrence_date)
     starts_at.present? && starts_at <= Time.current

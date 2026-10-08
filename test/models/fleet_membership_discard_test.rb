@@ -218,4 +218,20 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert membership.discard
     assert_equal "confirmed", signup.reload.status
   end
+
+  test "a recurring event started early keeps today's seats only" do
+    travel_to Time.zone.local(2026, 10, 8, 19, 50) do
+      fleet = create(:fleet, created_by: @creator.id, members: [@member])
+      membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+      event = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 20, 0), ends_at: Time.zone.local(2026, 9, 24, 22, 0))
+      today = signup_for(membership, event, occurrence_date: Date.current)
+      next_week = signup_for(membership, event, occurrence_date: Date.current + 7)
+      event.start!
+
+      assert membership.discard
+      assert_equal "confirmed", today.reload.status
+      assert next_week.reload.withdrawn?
+    end
+  end
 end
