@@ -26,6 +26,7 @@ Someone who just created a fleet is walked across the fleet's pages, from the ov
    - members: invite
    - ships: fleetchart
    - settings: membership (ships filter), RSI (SID and verify), roles (first role), squadrons (switch), Discord (bot install link), fleet (public toggle)
+   - finish: back on the overview, at the "Show tour" button, so finishing ends where the tour began
 2. Each target is a `data-tour` attribute on its page. `FleetNav` carries `fleet-events` / `fleet-contracts` on desktop only: on a phone it is the slide-out menu, laid out off-screen while closed, and the bottom bar carries them instead.
 3. `FleetTour` is mounted once by `App.vue`, outside the `router-view`, and reads `fleetStore.tourFleet` / `tourOpen`. It closes when the route leaves that fleet.
 

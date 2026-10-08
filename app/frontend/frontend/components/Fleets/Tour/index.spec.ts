@@ -66,7 +66,7 @@ afterEach(() => {
 });
 
 describe("FleetTour", () => {
-  it("walks the overview, members, ships and the settings pages in order", async () => {
+  it("walks from the overview through the fleet's pages and back", async () => {
     const { tour } = await mountTour();
     const steps = tour.props("steps") as TourStep[];
 
@@ -82,6 +82,7 @@ describe("FleetTour", () => {
       ["squadrons", "fleet-settings-squadrons"],
       ["discord", "fleet-settings-discord"],
       ["settings", "fleet-settings-fleet"],
+      ["finish", "fleet"],
     ]);
     steps.forEach((step) => {
       expect(step.route).toMatchObject({ params: { slug: "evle" } });

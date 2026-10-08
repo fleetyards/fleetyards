@@ -156,7 +156,11 @@
         },
         "settings": {
           "title": "Public fleet page",
-          "text": "Decide whether the fleet page and its ships are public; logo, description and links are on this page too. Show tour brings this tour back."
+          "text": "Decide whether the fleet page and its ships are public; logo, description and links are on this page too."
+        },
+        "finish": {
+          "title": "Your fleet is set up",
+          "text": "That's everything to get started. Show tour brings this tour back any time."
         }
       },
       "hangarPreview": {

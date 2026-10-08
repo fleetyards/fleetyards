@@ -70,7 +70,7 @@ test.describe("Fleet tour", () => {
 
     const seen: { step: string | null; path: string }[] = [];
 
-    for (let i = 0; i < 14; i += 1) {
+    for (let i = 0; i < 15; i += 1) {
       await expect(card(page)).not.toHaveCSS("visibility", "hidden");
 
       seen.push({
@@ -98,7 +98,9 @@ test.describe("Fleet tour", () => {
       { step: "squadrons", path: "/fleets/tourfleet/settings/squadrons/" },
       { step: "discord", path: "/fleets/tourfleet/settings/discord/" },
       { step: "settings", path: "/fleets/tourfleet/settings/fleet/" },
+      { step: "finish", path: "/fleets/tourfleet/" },
     ]);
+    await expect(page).toHaveURL(/\/fleets\/tourfleet\/$/);
   });
 
   test("goes back to the previous step's page", async ({ page }) => {

@@ -92,6 +92,8 @@ const steps = computed<TourStep[]>(() => [
   step("settings", "fleet-settings-fleet", {
     target: '[data-tour="fleet-public"]',
   }),
+  // Back on the overview, so finishing leaves the reader where they started.
+  step("finish", "fleet", { target: '[data-tour="fleet-guide"]' }),
 ]);
 </script>
 

@@ -156,7 +156,11 @@
         },
         "settings": {
           "title": "Öffentliche Flottenseite",
-          "text": "Lege fest, ob die Flottenseite und ihre Schiffe öffentlich sind; Logo, Beschreibung und Links findest du ebenfalls hier. „Tour anzeigen“ startet diese Tour erneut."
+          "text": "Lege fest, ob die Flottenseite und ihre Schiffe öffentlich sind; Logo, Beschreibung und Links findest du ebenfalls hier."
+        },
+        "finish": {
+          "title": "Deine Flotte ist eingerichtet",
+          "text": "Das ist alles für den Start. „Tour anzeigen“ startet diese Tour jederzeit erneut."
         }
       },
       "hangarPreview": {

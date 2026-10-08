@@ -156,7 +156,11 @@
         },
         "settings": {
           "title": "Page publique de la flotte",
-          "text": "Choisissez si la page de la flotte et ses vaisseaux sont publics ; logo, description et liens se trouvent aussi ici. « Afficher la visite » relance cette visite."
+          "text": "Choisissez si la page de la flotte et ses vaisseaux sont publics ; logo, description et liens se trouvent aussi ici."
+        },
+        "finish": {
+          "title": "Votre flotte est configurée",
+          "text": "C'est tout pour commencer. « Afficher la visite » relance cette visite à tout moment."
         }
       },
       "hangarPreview": {

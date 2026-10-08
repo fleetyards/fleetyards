@@ -156,7 +156,11 @@
         },
         "settings": {
           "title": "Página pública de la flota",
-          "text": "Decide si la página de la flota y sus naves son públicas; el logo, la descripción y los enlaces también están aquí. «Mostrar el recorrido» vuelve a abrir este recorrido."
+          "text": "Decide si la página de la flota y sus naves son públicas; el logo, la descripción y los enlaces también están aquí."
+        },
+        "finish": {
+          "title": "Tu flota está configurada",
+          "text": "Eso es todo para empezar. «Mostrar el recorrido» vuelve a abrir este recorrido cuando quieras."
         }
       },
       "hangarPreview": {

@@ -156,7 +156,11 @@
         },
         "settings": {
           "title": "Pagina pubblica della flotta",
-          "text": "Decidi se la pagina della flotta e le sue navi sono pubbliche; logo, descrizione e link sono anche qui. «Mostra il tour» riapre questo tour."
+          "text": "Decidi se la pagina della flotta e le sue navi sono pubbliche; logo, descrizione e link sono anche qui."
+        },
+        "finish": {
+          "title": "La tua flotta è configurata",
+          "text": "È tutto per iniziare. «Mostra il tour» riapre questo tour in qualsiasi momento."
         }
       },
       "hangarPreview": {
