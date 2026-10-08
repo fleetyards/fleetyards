@@ -3,7 +3,8 @@
 # What a catalogue item costs lives in the one polymorphic `item_prices` table,
 # whether the item is a commodity, a ship component or a piece of gear, and all
 # three are asked the same things: where it can be bought, where it can be sold,
-# and the cheapest of each.
+# and the best price of each -- the cheapest a shop sells at, the most a shop
+# pays to buy it back.
 module ItemPriceConcern
   extend ActiveSupport::Concern
 
@@ -17,11 +18,11 @@ module ItemPriceConcern
     # condition. `type` is what makes `_gteq` compare numbers rather than the
     # strings the query string carries.
     ransacker :buy_price, type: :decimal do
-      Arel.sql(cheapest_item_price_sql(:buy))
+      Arel.sql(best_item_price_sql(:buy))
     end
 
     ransacker :sell_price, type: :decimal do
-      Arel.sql(cheapest_item_price_sql(:sell))
+      Arel.sql(best_item_price_sql(:sell))
     end
   end
 
@@ -31,8 +32,10 @@ module ItemPriceConcern
     # the ordering ransack applies on top. A scalar subquery keeps one row per
     # item and yields exactly the number the payload exposes, so a filter
     # matches against the figure the list shows.
-    def cheapest_item_price_sql(price_type)
-      "(SELECT MIN(item_prices.price) FROM item_prices " \
+    def best_item_price_sql(price_type)
+      aggregate = (price_type.to_s == "buy") ? "MAX" : "MIN"
+
+      "(SELECT #{aggregate}(item_prices.price) FROM item_prices " \
         "WHERE item_prices.item_id = #{quoted_table_name}.id " \
         "AND item_prices.item_type = #{connection.quote(name)} " \
         "AND item_prices.price_type = #{ItemPrice.price_types.fetch(price_type.to_s)})"
@@ -43,21 +46,34 @@ module ItemPriceConcern
     priced(:sell).uniq { |item_price| price_location_key(item_price) }
   end
 
+  # The best-paid quote of each terminal, best paid first: a seller flies to
+  # the highest offer, and a terminal's lower quotes are ones nobody takes.
   def bought_at
-    priced(:buy).uniq { |item_price| price_location_key(item_price) }
+    priced(:buy, best_paid_first: true).uniq { |item_price| price_location_key(item_price) }
   end
 
-  # Cheapest first, off the loaded prices where a list preloaded them -- shop
-  # links and all -- and in one query otherwise. A price nobody quoted sorts
-  # last, as Postgres sorts a NULL.
-  private def priced(price_type)
+  # Cheapest first unless asked otherwise, off the loaded prices where a list
+  # preloaded them -- shop links and all -- and in one query otherwise. A price
+  # nobody quoted sorts last either way, as Postgres sorts a NULL.
+  private def priced(price_type, best_paid_first: false)
     rows = if item_prices.loaded?
       item_prices.select { |item_price| item_price.price_type == price_type.to_s }
     else
       item_prices.public_send(price_type).to_a
     end
 
-    ItemPrice.with_shop_links(rows.sort_by { |item_price| item_price.price || Float::INFINITY })
+    direction = best_paid_first ? -1 : 1
+    sorted = rows.sort_by do |item_price|
+      [item_price.price.nil? ? 1 : 0, direction * (item_price.price || 0), *price_tie_break(item_price)]
+    end
+
+    ItemPrice.with_shop_links(sorted)
+  end
+
+  # sort_by is not stable: without this, two quotes of one price swap places
+  # between calls, and which of a terminal's equal quotes survives is a toss.
+  private def price_tie_break(item_price)
+    [item_price.location.to_s, item_price.id.to_s]
   end
 
   # Two commodity terminals can share a name; the terminal tells them apart.
@@ -65,12 +81,13 @@ module ItemPriceConcern
     item_price.terminal_id || item_price.location
   end
 
+  # Shops buying the item back: the best paid is the one a seller flies to.
   def buy_price
-    cheapest_price(:buy?)
+    quoted_prices(:buy?).max
   end
 
   def sell_price
-    cheapest_price(:sell?)
+    quoted_prices(:sell?).min
   end
 
   # The UEX snapshot writes prices without touching the item it prices, so a
@@ -87,7 +104,7 @@ module ItemPriceConcern
 
   # Read off the loaded association rather than through a scope, so a list that
   # preloads `item_prices` answers both price columns without a query per row.
-  private def cheapest_price(price_type)
-    item_prices.to_a.select(&price_type).filter_map(&:price).min
+  private def quoted_prices(price_type)
+    item_prices.to_a.select(&price_type).filter_map(&:price)
   end
 end

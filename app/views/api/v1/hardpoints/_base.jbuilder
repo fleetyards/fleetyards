@@ -32,7 +32,7 @@ end
 # once the cleanup stops destroying, and a port that is no longer on the ship has
 # to stop being listed rather than be described from a build ago.
 json.hardpoints do
-  json.array! hardpoint.hardpoints.in_build, partial: "api/v1/hardpoints/base", as: :hardpoint
+  json.array! hardpoint.hardpoints.in_build.includes(Hardpoint::RENDERED), partial: "api/v1/hardpoints/base", as: :hardpoint
 end
 
 json.partial! "api/shared/dates", record: hardpoint

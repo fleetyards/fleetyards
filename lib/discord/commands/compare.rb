@@ -7,8 +7,6 @@ module Discord
     class Compare < Base
       include ModelLookup
 
-      EMBED_COLOR = 0x2d9cdb
-
       def call
         first_query = option("first").to_s.strip
         second_query = option("second").to_s.strip

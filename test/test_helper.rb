@@ -76,18 +76,25 @@ end
 # `ActionController::Base` -- every API controller here descends from it, so
 # setting the flag on `Base` alone leaves the JSON endpoints uncached and the
 # block passes whatever the cache keys say.
+#
+# `json.cache!` reads `Rails.cache`, but a collection rendered with `cached:`
+# reads ActionView's own `collection_cache`, which the railtie set to the boot
+# store -- the null store here -- so it is swapped as well.
 CACHING_CONTROLLER_BASES = [ActionController::Base, ActionController::API].freeze
 
 def with_fragment_caching
   previous_store = Rails.cache
+  previous_collection_store = ActionView::PartialRenderer.collection_cache
   previous_flags = CACHING_CONTROLLER_BASES.map(&:perform_caching)
 
   Rails.cache = ActiveSupport::Cache::MemoryStore.new
+  ActionView::PartialRenderer.collection_cache = Rails.cache
   CACHING_CONTROLLER_BASES.each { |base| base.perform_caching = true }
 
   yield
 ensure
   Rails.cache = previous_store
+  ActionView::PartialRenderer.collection_cache = previous_collection_store
   CACHING_CONTROLLER_BASES.zip(previous_flags).each { |base, flag| base.perform_caching = flag }
 end
 

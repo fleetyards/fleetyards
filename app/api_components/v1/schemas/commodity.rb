@@ -47,11 +47,11 @@ module V1
           retired: {type: :boolean},
           storeImage: ::Shared::V1::Schemas::MediaFile,
 
-          # The cheapest of each direction across every terminal in
-          # `availability`, so a row can state both without reducing the arrays
-          # itself, and the list can be ordered by either. Null where nothing
-          # trades it -- half the catalogue -- which is a different answer from
-          # zero.
+          # The best of each direction across every terminal in `availability`
+          # -- the cheapest sale, the best-paid buy-back -- so a row can state
+          # both without reducing the arrays itself, and the list can be ordered
+          # by either. Null where nothing trades it -- half the catalogue --
+          # which is a different answer from zero.
           buyPrice: {type: [:number, :null]},
           sellPrice: {type: [:number, :null]},
 

@@ -5,8 +5,6 @@ module Discord
     class Fleet < Base
       include FleetContext
 
-      EMBED_COLOR = 0x2d9cdb
-
       def call
         fleet = guild_fleet
         return message(content: I18n.t("discord.commands.fleet.not_bound")) if fleet.nil?

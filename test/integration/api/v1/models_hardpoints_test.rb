@@ -97,4 +97,28 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
       assert_equal ["kept_gun"], nested.map { |entry| entry["name"] }
     end
   end
+
+  # A turret's guns sit a slot below the hardpoint the fragment is keyed on, and
+  # a price sync touches neither the slot nor the gun.
+  test "GET /models/:slug/hardpoints serves a nested component's new price after the payload was cached" do
+    model = create(:model)
+    turret = create(:hardpoint, parent: model, sc_name: "hardpoint_turret", source: :game_files)
+    gun = create(:component, name: "Turret Gun")
+    create(:hardpoint, parent: turret, sc_name: "hardpoint_gun", source: :game_files, component: gun)
+    price = create(:item_price, item: gun, price_type: :sell, price: 100, location: "Admin - Area18")
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/hardpoints"
+      assert_equal [100.0], sold_at_prices(response.parsed_body)
+
+      ItemPrice.where(id: price.id).update_all(price: 120, updated_at: 1.minute.from_now)
+      get "/api/v1/models/#{model.slug}/hardpoints"
+
+      assert_equal [120.0], sold_at_prices(response.parsed_body)
+    end
+  end
+
+  private def sold_at_prices(body)
+    body.sole["hardpoints"].sole.dig("component", "availability", "soldAt").map { |entry| entry["price"] }
+  end
 end

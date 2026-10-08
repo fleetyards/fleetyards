@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
-json.cache! ["v3", model_module, ::ScData::Source.current, Manufacturer.artwork_version] do
+# The module's prices and its hardpoints' component prices both render here,
+# and a price sync changes them without touching the module.
+json.cache! [
+  "v3", model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), Manufacturer.artwork_version
+] do
   json.partial!("api/v1/model_modules/base", model_module:)
 end

@@ -20,7 +20,7 @@ module Admin
               componentClassIn: {type: :array, items: {type: :string}},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
 
-              # Compared against the same cheapest-of-that-direction figure the
+              # Compared against the same best-of-that-direction figure the
               # payload exposes as `buyPrice`/`sellPrice`.
               buyPriceGteq: {type: :number},
               buyPriceLteq: {type: :number},

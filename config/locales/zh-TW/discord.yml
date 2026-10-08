@@ -97,6 +97,12 @@ zh-TW:
         missing_query: 請提供船艦名稱。
         more: '…還有更多，請使用更精確的名稱。'
         not_found: '找不到符合「%{query}」的船艦。'
+      where:
+        fields:
+          buy: 購買地點
+          sell: 出售地點
+        more: '……另有 %{count} 處，見[物品頁面](%{url})。'
+        none: '目前沒有商店出售或收購 %{item}。'
     channel_capability:
       fleet: 艦隊
       officers: 軍官

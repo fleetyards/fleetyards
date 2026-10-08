@@ -150,7 +150,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
 
   # The two figures a row states, so it does not have to reduce the price arrays
   # itself -- and the columns the price sorts below order on.
-  test "GET /commodities carries the cheapest price of each direction" do
+  test "GET /commodities carries the best price of each direction" do
     create(:item_price, item: @gold, price_type: :buy, location: "Area18 TDD", price: 6_100)
     create(:item_price, item: @gold, price_type: :buy, location: "Lorville CBD", price: 5_900)
     create(:item_price, item: @gold, price_type: :sell, location: "Area18 TDD", price: 6_450)
@@ -158,7 +158,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       items = parsed_body["items"].index_by { |item| item["name"] }
 
-      assert_equal 5_900.0, items["Gold"]["buyPrice"]
+      assert_equal 6_100.0, items["Gold"]["buyPrice"]
       assert_equal 6_450.0, items["Gold"]["sellPrice"]
       assert_nil items["Waste"]["buyPrice"]
     end
