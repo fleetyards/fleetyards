@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.20.0](https://github.com/fleetyards/fleetyards/compare/v8.19.0...v8.20.0) (2026-10-08)
+
+
+### Features
+
+* **discord:** /item command with autocomplete for components, equipment, commodities and blueprints ([#5482](https://github.com/fleetyards/fleetyards/issues/5482)) ([1d0f7c6](https://github.com/fleetyards/fleetyards/commit/1d0f7c67490a29d5288c04f276494cf180d3fd8a))
+* **discord:** /location shows a place from the starmap ([#5485](https://github.com/fleetyards/fleetyards/issues/5485)) ([3e146ba](https://github.com/fleetyards/fleetyards/commit/3e146ba23ab69dc04316f3b2e6627ddcb044955f))
+* **discord:** /where lists where to buy or sell an item ([#5483](https://github.com/fleetyards/fleetyards/issues/5483)) ([9fe6902](https://github.com/fleetyards/fleetyards/commit/9fe690285d0df5e2a58cfd307a8850f097e94530))
+* **discord:** show fleet nicknames in /fleet members ([#5488](https://github.com/fleetyards/fleetyards/issues/5488)) ([07f4f52](https://github.com/fleetyards/fleetyards/commit/07f4f523d550c07feac41b739a9ff6ab42800d64))
+* **equipment:** size and grade filters for the equipment catalogue ([#5514](https://github.com/fleetyards/fleetyards/issues/5514)) ([d5067d0](https://github.com/fleetyards/fleetyards/commit/d5067d09642288afe9e590f3a5265eb289710b85))
+* **fleetchart:** share button on public hangars, wishlists and the ships index ([#5489](https://github.com/fleetyards/fleetyards/issues/5489)) ([8d6fb78](https://github.com/fleetyards/fleetyards/commit/8d6fb7855f901d1ff531472fb137addb31f25f39))
+* **fleets:** join a fleet through a role in its Discord server ([#5484](https://github.com/fleetyards/fleetyards/issues/5484)) ([11f87dc](https://github.com/fleetyards/fleetyards/commit/11f87dc6f00c3125f240c56424c332448526ce36))
+* **fleets:** map each rank to a Discord role from the fleet settings ([#5492](https://github.com/fleetyards/fleetyards/issues/5492)) ([6367b32](https://github.com/fleetyards/fleetyards/commit/6367b32805743653e8170a56569605058986aa41))
+* **fleets:** step-by-step setup tour for a new fleet ([#5501](https://github.com/fleetyards/fleetyards/issues/5501)) ([59b2362](https://github.com/fleetyards/fleetyards/commit/59b236209cba9dc802bbab222407480bcf64c574))
+* **fleets:** verify a fleet's RSI organisation through the sync extension ([#5474](https://github.com/fleetyards/fleetyards/issues/5474)) ([ff42087](https://github.com/fleetyards/fleetyards/commit/ff4208700478ccc08a0e8c11b9b4def4dc9d53f5))
+* **hangar:** buy-back links, price, insurance and availability ([#5473](https://github.com/fleetyards/fleetyards/issues/5473)) ([652fff2](https://github.com/fleetyards/fleetyards/commit/652fff284e48f150e3557fe029c85a54d7ae8560))
+* **hangar:** paints and hangar flair from the hangar sync ([#5507](https://github.com/fleetyards/fleetyards/issues/5507)) ([ef6d7c2](https://github.com/fleetyards/fleetyards/commit/ef6d7c278b5670844e1c08a67ece6f951d7a93e5))
+* **hangar:** price range and upgrade ship filters for buy-backs ([#5477](https://github.com/fleetyards/fleetyards/issues/5477)) ([d76016a](https://github.com/fleetyards/fleetyards/commit/d76016a581de9de05717336314062255e96da57f))
+* **hangar:** share link for a private hangar ([#5490](https://github.com/fleetyards/fleetyards/issues/5490)) ([ca1f26d](https://github.com/fleetyards/fleetyards/commit/ca1f26d463fbcb3e220df8be9f502b5dec41bb27))
+* **markdown:** collapsible details/summary sections ([#5494](https://github.com/fleetyards/fleetyards/issues/5494)) ([7f0760a](https://github.com/fleetyards/fleetyards/commit/7f0760a450dfec350495188239793a597ddfecea))
+* **share:** short links for fleets, fleet events and the fleetchart ([#5498](https://github.com/fleetyards/fleetyards/issues/5498)) ([e023f8d](https://github.com/fleetyards/fleetyards/commit/e023f8d2ad67edaf12d8ecaf07824e2d52873cb3))
+* **sync-extension:** RSI session status, and visual test pages for the extension states ([#5472](https://github.com/fleetyards/fleetyards/issues/5472)) ([2327f4a](https://github.com/fleetyards/fleetyards/commit/2327f4a73f6b8bbfc7b1a4577a63fbaf13555881))
+
+
+### Bug Fixes
+
+* **a11y:** axe accessibility checks and the fixes they found ([#5493](https://github.com/fleetyards/fleetyards/issues/5493)) ([0dc24ee](https://github.com/fleetyards/fleetyards/commit/0dc24ee4e2f5d0562912c5119ccdb935e250c2d0))
+* **fleets:** free a departed member's seats in upcoming events ([#5495](https://github.com/fleetyards/fleetyards/issues/5495)) ([0052af4](https://github.com/fleetyards/fleetyards/commit/0052af42d8fe4ad4255da291263597b04e8090d1))
+* **hangar-sync:** stop and report on RSI pages the sync does not recognise ([#5469](https://github.com/fleetyards/fleetyards/issues/5469)) ([b1b0b0a](https://github.com/fleetyards/fleetyards/commit/b1b0b0a6468617a8669bc7a63cca38ea06f8763d))
+* **hangar-sync:** stop reading items without a kind as a changed RSI page, and catch ships that lost theirs ([#5506](https://github.com/fleetyards/fleetyards/issues/5506)) ([b031418](https://github.com/fleetyards/fleetyards/commit/b0314189f36f40038f4e8d53564f4c81f52b79c6))
+* **hangar:** keep a buy-back's stored availability when the list has none ([#5475](https://github.com/fleetyards/fleetyards/issues/5475)) ([32fe509](https://github.com/fleetyards/fleetyards/commit/32fe5091a3e257fef0a71020fa24fddc261f66e2))
+* **nav:** use a larger caret as the submenu marker ([afe1268](https://github.com/fleetyards/fleetyards/commit/afe1268e7d48948162e5c4484a8a3b11a3211783))
+* **support:** stop prompting supporters for support ([#5515](https://github.com/fleetyards/fleetyards/issues/5515)) ([711251a](https://github.com/fleetyards/fleetyards/commit/711251ac87c354d2c4b6bf3f09f0e19a3a55a966))
+
+
+### Refactorings
+
+* **components:** stop reading the legacy item_type/component_class columns ([#5502](https://github.com/fleetyards/fleetyards/issues/5502)) ([2a2c8eb](https://github.com/fleetyards/fleetyards/commit/2a2c8ebd0c605225ebf2b59299f58d7dd339742f))
+* **fleets:** fold fleet stock into InventoryScoped::StockActions ([#5504](https://github.com/fleetyards/fleetyards/issues/5504)) ([53e2c28](https://github.com/fleetyards/fleetyards/commit/53e2c2842585c97c7f9cc609ec2e02262c6dd29b))
+
+
+### Chores
+
+* **deps-dev:** bump jsdom from 30.1.1 to 30.1.2 ([#5486](https://github.com/fleetyards/fleetyards/issues/5486)) ([1a153ad](https://github.com/fleetyards/fleetyards/commit/1a153ad0ba9674190e518f85afd8bd3954914773))
+* **deps-dev:** bump orval from 8.39.0 to 8.40.0 ([#5487](https://github.com/fleetyards/fleetyards/issues/5487)) ([ac05dae](https://github.com/fleetyards/fleetyards/commit/ac05daee0591678adbf879c980d3f96bbd2e0150))
+* remove annotaterb and the schema annotation comments ([#5516](https://github.com/fleetyards/fleetyards/issues/5516)) ([e09201c](https://github.com/fleetyards/fleetyards/commit/e09201ce841a2046cb939aeaf44fba548636b363))
+* **tooling:** drop Supacode integration from teardown and cleanup ([529ca69](https://github.com/fleetyards/fleetyards/commit/529ca69da1b85b4f582617120630a4d7a03d518a))
+
 ## [8.19.0](https://github.com/fleetyards/fleetyards/compare/v8.18.0...v8.19.0) (2026-10-07)
 
 
