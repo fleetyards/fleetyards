@@ -320,6 +320,31 @@ module Discord
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
     end
 
+    test "the sync ends a membership an update recorded after the sync began" do
+      ada = linked_user("uid-ada")
+      linked_user("uid-other")
+      full_page = Array.new(ApiClient::MEMBER_PAGE_SIZE) { |index| member("uid-unlinked-#{index}") }
+      @api.stubs(:get_guild_member).with(GUILD, "uid-ada").returns({"roles" => [JOIN_ROLE]})
+      # Ada gains the role, and an update admits her, while the first page is read.
+      @api.stubs(:list_guild_members).with { |_guild, after:| after.nil? && (ApplyJoinRolesJob.new.perform("uid-ada", GUILD) || true) }.returns(full_page)
+      @api.stubs(:list_guild_members).with(GUILD, after: "uid-unlinked-#{ApiClient::MEMBER_PAGE_SIZE - 1}").returns([member("uid-ada")])
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert_nil membership_of(ada)
+    end
+
+    test "a quiet sweep that stops partway still refreshes the members' views" do
+      @setting.update_columns(discord_join_role_swept_at: nil)
+      linked_user("uid-1")
+      full_page = Array.new(ApiClient::MEMBER_PAGE_SIZE - 1) { |index| member("uid-unlinked-#{index}") } + [member("uid-1", JOIN_ROLE)]
+      @api.stubs(:list_guild_members).with(GUILD, after: nil).returns(full_page)
+      @api.stubs(:list_guild_members).with(GUILD, after: "uid-1").raises(ApiClient::Error.new(503, "Unavailable"))
+      FleetMembersChannel.expects(:broadcast_to).at_least_once
+
+      assert_raises(ApiClient::Error) { SyncFleetJoinRoleJob.new.perform(@fleet.id) }
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])

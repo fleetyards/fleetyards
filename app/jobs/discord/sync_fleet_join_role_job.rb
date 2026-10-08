@@ -18,29 +18,31 @@ module Discord
       # the officers in notifications, and each member's view in a refresh per
       # admission; anyone a later run admits is news.
       @quiet = !join_role.swept?
-      @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
       started_at = Time.current
 
-      seen = apply_guild_members(join_role)
-      return if seen.nil?
+      begin
+        seen = apply_guild_members(join_role)
+        return if seen.nil?
 
-      # Someone who unlinked Discord is not seen either, but nothing says they
-      # lost the role.
-      gone = OmniauthConnection.discord
-        .where(user_id: @held - seen)
-        .includes(:user)
-        .group_by(&:uid)
-      gone.each do |uid, connections|
-        JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
+        # Held now, not when the sweep started: an update may have recorded
+        # someone since. Someone who unlinked Discord is not seen either, but
+        # nothing says they lost the role.
+        gone = OmniauthConnection.discord
+          .where(user_id: fleet.fleet_discord_role_holders.where.not(user_id: seen.to_a).select(:user_id))
+          .includes(:user)
+          .group_by(&:uid)
+        gone.each do |uid, connections|
+          JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
+        end
+
+        # Only for the role it read: one picked meanwhile gets its own sweep.
+        FleetNotificationSetting.where(fleet_id: fleet.id, discord_join_role_id: join_role.role_id)
+          .update_all(discord_join_role_swept_at: Time.current)
+      ensure
+        # One refresh of every member's views for the whole quiet sweep --
+        # also when it stopped partway, after admitting some.
+        fleet.fleet_memberships.kept.accepted.where(discord_role_granted: true).order(:accepted_at).last&.broadcast_sweep_refresh if @quiet
       end
-
-      # One refresh of every member's views for the whole quiet sweep, and
-      # for any attempt before it that admitted members and then failed.
-      fleet.fleet_memberships.kept.accepted.order(:accepted_at).last&.broadcast_sweep_refresh if @quiet
-
-      # Only for the role it read: one picked meanwhile gets its own sweep.
-      FleetNotificationSetting.where(fleet_id: fleet.id, discord_join_role_id: join_role.role_id)
-        .update_all(discord_join_role_swept_at: Time.current)
     end
 
     # Returns the ids of the linked users found in the guild, or nil when the
@@ -58,13 +60,12 @@ module Discord
 
         roles_by_uid = page.to_h { |member| [member.dig("user", "id"), Array(member["roles"])] }
 
+        # Every linked member, not only those whose role looks changed against
+        # a snapshot an update may have overtaken: under the member's lock,
+        # applying what is already recorded changes nothing.
         OmniauthConnection.discord_users(roles_by_uid.keys).each do |uid, users|
           seen.merge(users.map(&:id))
-          holds = roles_by_uid[uid].include?(join_role.role_id)
-          changed = users.reject { |user| @held.include?(user.id) == holds }
-          next if changed.empty?
-
-          JoinRole.apply_listed(join_role, changed, uid, roles_by_uid[uid], read_at:, quiet: @quiet)
+          JoinRole.apply_listed(join_role, users, uid, roles_by_uid[uid], read_at:, quiet: @quiet)
         end
 
         break if page.size < ApiClient::MEMBER_PAGE_SIZE
