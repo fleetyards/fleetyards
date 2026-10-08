@@ -2,6 +2,31 @@
 // that what is written looks like what is shown. Unscoped: both fill their
 // content in outside the template (v-html, ProseMirror), where a scoped rule
 // cannot reach.
+
+// The marker a collapsible section opens by, the same on the page as in the
+// editor: the browser's own differs between engines, and the editor has a
+// button where the page has a summary.
+$details-marker-width: 7px;
+$details-marker-gap: 8px;
+
+@mixin details-marker {
+  display: inline-block;
+  flex: none;
+  width: 0;
+  height: 0;
+  border-color: transparent transparent transparent var(--color-muted, #7a8288);
+  border-style: solid;
+  border-width: 5px 0 5px $details-marker-width;
+  transition: transform 0.15s ease-out;
+  content: "";
+}
+
+@mixin details-frame {
+  margin: 0 0 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: $border-radius-base;
+}
 .markdown-content {
   /*
    * Report bodies carry generated identifiers - slugs, ids, urls - with no space
@@ -68,6 +93,90 @@
   .catalogue-token:has(> :not(.catalogue-token__name))
     > .catalogue-token__name {
     display: none;
+  }
+
+  details {
+    @include details-frame;
+
+    // Inline, not flex: a summary is a line of text, and as flex items its
+    // bold and plain runs would lose the space between them.
+    > summary {
+      display: block;
+      padding-left: $details-marker-width + $details-marker-gap;
+      font-weight: bold;
+      text-indent: -($details-marker-width + $details-marker-gap);
+      list-style: none;
+      cursor: pointer;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::before {
+        @include details-marker;
+
+        margin-right: $details-marker-gap;
+        vertical-align: 1px;
+      }
+    }
+
+    // In line with the summary's text, as the editor lays it out.
+    > :not(summary) {
+      margin-left: $details-marker-width + $details-marker-gap;
+    }
+
+    &[open] > summary {
+      margin-bottom: 6px;
+
+      &::before {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  // The editor's section: a toggle button beside the summary and the body,
+  // which the editor hides itself while the section is closed.
+  [data-type="details"] {
+    @include details-frame;
+
+    display: flex;
+    gap: $details-marker-gap;
+    align-items: flex-start;
+
+    > button {
+      display: flex;
+      flex: none;
+      align-items: center;
+      height: 1.5em;
+      padding: 0;
+      background: none;
+      border: 0;
+      cursor: pointer;
+
+      &::before {
+        @include details-marker;
+      }
+    }
+
+    > div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    summary {
+      display: block;
+      font-weight: bold;
+    }
+
+    &.is-open {
+      > button::before {
+        transform: rotate(90deg);
+      }
+
+      > div > summary {
+        margin-bottom: 6px;
+      }
+    }
   }
 
   .markdown__center {
