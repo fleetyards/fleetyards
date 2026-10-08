@@ -82,8 +82,7 @@ const handleSubmit = () => {
 // commodities are mission carryables -- Probe, two Metamaterial Test samples,
 // the TH-01 Propulsor -- which are named outside the commodity namespace and
 // so resolve to no commodity at all. Offering it would be a filter that can
-// only ever come back empty, which is what the deprecated component `classes`
-// and `item-types` filters already are.
+// only ever come back empty.
 //
 // Sourced from the generated enum rather than retyped, so if a patch ever does
 // add one the option appears by removing one line rather than by remembering.

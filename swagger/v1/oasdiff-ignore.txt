@@ -1832,3 +1832,20 @@ PUT /vehicles/{id} added the new `spaceport` enum value to the `modulePackage/mo
 PUT /vehicles/{id} added the new `spaceport` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/shop/anyOf[subschema #1: ShopLink]/location/kind` response property for the response status `200`
 PUT /vehicles/{id} added the new `spaceport` enum value to the `paint/availability/boughtAt/items/shop/anyOf[subschema #1: ShopLink]/location/kind` response property for the response status `200`
 PUT /vehicles/{id} added the new `spaceport` enum value to the `paint/availability/soldAt/items/shop/anyOf[subschema #1: ShopLink]/location/kind` response property for the response status `200`
+GET /components removed the optional property `items/items/class` from the response with the `200` status
+GET /components/{slug} removed the optional property `class` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /hangar removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /models/{slug}/hardpoints removed the optional property `items/component/class` from the response with the `200` status
+GET /models/{slug}/module-packages removed the optional property `items/items/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /models/{slug}/modules removed the optional property `items/items/hardpoints/items/component/class` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+POST /vehicles removed the optional property `modulePackage/modules/items/hardpoints/items/component/class` from the response with the `201` status
+DELETE /vehicles/{id} removed the optional property `modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/modulePackage/modules/items/hardpoints/items/component/class` from the response with the `200` status

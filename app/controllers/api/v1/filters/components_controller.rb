@@ -6,18 +6,6 @@ module Api
       class ComponentsController < ::Api::PublicBaseController
         skip_verify_authorized
 
-        def classes
-          @filters = Component.class_filters
-
-          render "api/v1/shared/filters"
-        end
-
-        def item_types
-          @filters = Component.item_type_filters
-
-          render "api/v1/shared/filters"
-        end
-
         def categories
           @filters = Component.category_filters
 

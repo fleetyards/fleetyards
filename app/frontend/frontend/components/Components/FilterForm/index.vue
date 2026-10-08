@@ -140,9 +140,6 @@ watch(subTypes, (options) => {
          whose name is inside another's would quietly bring both. -->
     <ManufacturerSelect v-model="form.manufacturerSlugIn" name="manufacturer" />
 
-    <!-- The two filter endpoints that match something. `classes` and
-         `item-types` are deprecated: no component in the current build carries
-         either column, so both could only ever return nothing. -->
     <!-- `no-label` puts the label inside the control as its prompt rather than
          above it, which is what `ManufacturerSelect` beside it does and what
          the ships form looks like. A stack of three selects with two labelled

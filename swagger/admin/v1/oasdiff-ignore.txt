@@ -167,3 +167,5 @@ GET /fleets/{fleet_id}/inventories added the new `squadron_only` enum value to t
 GET /fleets/{fleet_id}/inventories/{id} added the new `squadron_only` enum value to the `visibility` response property for the response status `200`
 GET /resource-access-catalog added the new `missions` enum value to the `items/privileges/items/` response property for the response status `200`
 POST /sessions added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /components/class_filters api path removed without deprecation
+GET /components/item_type_filters api path removed without deprecation
