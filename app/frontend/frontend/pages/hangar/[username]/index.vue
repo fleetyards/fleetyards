@@ -297,7 +297,7 @@ useSubscription({
     <Btn
       :size="BtnSizesEnum.MD"
       v-if="user.publicWishlist"
-      :to="{ name: 'wishlist-public' }"
+      :to="{ name: 'wishlist-public', query: shareQuery }"
     >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
@@ -337,7 +337,10 @@ useSubscription({
           <span>{{ t("nav.stats") }}</span>
         </Btn>
 
-        <Btn v-if="user.publicWishlist" :to="{ name: 'hangar-wishlist' }">
+        <Btn
+          v-if="user.publicWishlist"
+          :to="{ name: 'wishlist-public', query: shareQuery }"
+        >
           <i class="fa-duotone fa-wand-sparkles" />
           <span>{{ t("labels.wishlist") }}</span>
         </Btn>
