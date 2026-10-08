@@ -142,13 +142,10 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        # `in_build` narrows to what this build describes; the nested levels are
-        # narrowed by the partial. The build rows are preloaded to the depth the
-        # export actually nests -- measured at three, with 638 slots at the
-        # deepest level -- since the partial reads `facts` on every child.
-        scope = model.hardpoints.in_build.includes(
-          Hardpoint::RENDERED, hardpoints: [:component, :build, {hardpoints: [:component, :build]}]
-        )
+        # `in_build` narrows to what this build describes. The nested levels are
+        # narrowed and preloaded by the partial: `in_build` on a child list is a
+        # fresh query, so a nested preload here would be loaded and discarded.
+        scope = model.hardpoints.in_build.includes(Hardpoint::RENDERED)
 
         scope = scope.where(source: params[:source]) if params[:source].present?
 
