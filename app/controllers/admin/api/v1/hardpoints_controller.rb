@@ -25,8 +25,10 @@ module Admin
           @q = authorized_scope(Hardpoint.where.not(parent_type: "Hardpoint"))
             .ransack(hardpoint_query_params)
 
+          # Child slots are re-queried through `in_build` by the partial, which
+          # preloads them itself.
           @hardpoints = @q.result
-            .includes(:component, hardpoints: :component)
+            .includes(Hardpoint::RENDERED)
             .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
