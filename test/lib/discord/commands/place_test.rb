@@ -213,6 +213,12 @@ module Discord
         assert content.end_with?(I18n.t("discord.commands.location.more"))
       end
 
+      test "echoes a typed link as text, not as a link" do
+        content = call("[Free aUEC](https://evil.example)")[:content]
+
+        assert_includes content, "\\[Free aUEC\\]\\(https://evil.example\\)"
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 
