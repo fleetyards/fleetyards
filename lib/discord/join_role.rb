@@ -215,7 +215,9 @@ module Discord
 
       case membership&.aasm_state
       when nil
-        join(fleet.fleet_memberships.new(user:, fleet_role: fleet.default_member_role), quiet:)
+        # Not through the fleet's association, which would keep every
+        # admission of a sweep in memory, and a failed one with them.
+        join(FleetMembership.new(fleet:, user:, fleet_role: fleet.default_member_role), quiet:)
       when "created"
         # Asking to join stands aside once it sees this, so the membership is
         # either abandoned or the role's to finish. The row lock covers asking
