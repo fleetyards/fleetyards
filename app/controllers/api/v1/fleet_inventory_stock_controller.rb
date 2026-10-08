@@ -18,10 +18,12 @@ module Api
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
       before_action -> { require_fleet_subscription(:logistics) }
-      before_action :set_inventory
+      before_action :inventory
       before_action :set_stock_item, only: %i[show update destroy]
 
-      private attr_reader :inventory
+      private def inventory
+        @inventory ||= visible_fleet_inventories.find_by!(slug: params[:fleet_inventory_slug])
+      end
 
       # Stock rules are granted per fleet role, not per inventory, so they are
       # asked of the fleet rather than of the inventory record.
@@ -41,10 +43,6 @@ module Api
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
         authorize! @fleet, to: :show?
-      end
-
-      private def set_inventory
-        @inventory = visible_fleet_inventories.find_by!(slug: params[:fleet_inventory_slug])
       end
 
       private def check_fleet_logistics_feature
