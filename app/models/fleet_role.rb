@@ -98,6 +98,10 @@ class FleetRole < ApplicationRecord
   before_create :setup_rank
   before_destroy :check_if_can_be_destroyed, prepend: true
 
+  # Interpolated into a Discord API path, like the ids on the fleet's settings.
+  normalizes :discord_role_id, with: ->(value) { value.strip.presence }
+  validates :discord_role_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT, message: :not_a_discord_id}, allow_nil: true
+
   # Narrowed to this rank: a single mapping cannot affect anyone else.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_role_id?
 

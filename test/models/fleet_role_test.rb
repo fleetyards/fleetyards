@@ -37,6 +37,21 @@ class FleetRoleTest < ActiveSupport::TestCase
     @officer_role = @fleet.fleet_roles.ranked.second
   end
 
+  test "a Discord role must be a Discord id" do
+    @member_role.discord_role_id = "Officers"
+
+    assert_not @member_role.valid?
+    assert @member_role.errors.of_kind?(:discord_role_id, :invalid)
+  end
+
+  test "a blank Discord role clears the mapping" do
+    @member_role.update!(discord_role_id: " 300000000000000001 ")
+    assert_equal "300000000000000001", @member_role.discord_role_id
+
+    @member_role.update!(discord_role_id: "")
+    assert_nil @member_role.discord_role_id
+  end
+
   test "ranks sort by byte, not by the database collation" do
     upper = create(:fleet_role, fleet: @fleet, name: "Upper", rank: "B")
     lower = create(:fleet_role, fleet: @fleet, name: "Lower", rank: "a")

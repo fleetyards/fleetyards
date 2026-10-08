@@ -6,7 +6,7 @@ require "discord/member_role_sync"
 module Discord
   class MemberRoleSyncTest < ActiveSupport::TestCase
     MEMBER_ROLE = "200000000000000001"
-    RANK_ROLE = "role-officer"
+    RANK_ROLE = "300000000000000001"
     FOREIGN_ROLE = "role-they-earned-elsewhere"
 
     setup do
@@ -79,12 +79,12 @@ module Discord
 
     test "swaps the rank role when the member is promoted" do
       other = @fleet.fleet_roles.ranked.first
-      other.update!(discord_role_id: "role-admin")
+      other.update!(discord_role_id: "300000000000000002")
       @role.update!(discord_role_id: RANK_ROLE)
       @membership.update!(fleet_role: other)
 
       member_has(MEMBER_ROLE, RANK_ROLE)
-      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", "role-admin")
+      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", "300000000000000002")
       @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
       sync.run!
@@ -144,12 +144,12 @@ module Discord
 
     test "revoking keeps the roles another member on the same account is owed" do
       other_role = @fleet.fleet_roles.ranked.first
-      other_role.update!(discord_role_id: "role-admin")
+      other_role.update!(discord_role_id: "300000000000000002")
       @role.update!(discord_role_id: RANK_ROLE)
       second_member_on_the_same_account(role: other_role)
       @user.omniauth_connections.destroy_all
 
-      member_has(MEMBER_ROLE, RANK_ROLE, "role-admin")
+      member_has(MEMBER_ROLE, RANK_ROLE, "300000000000000002")
       @api.expects(:add_guild_member_role).never
       @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 

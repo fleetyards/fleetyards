@@ -499,6 +499,7 @@ en:
               permanent: "cannot be a leadership rank — a new member never starts as Leader or Co-Leader"
               required: "is needed — make another rank the default instead"
         fleet_role:
+          not_a_discord_id: "must be the numeric ID Discord copies with \"Copy ID\", not a name"
           attributes:
             base:
               cannot_destroy_with_members: Cannot delete a role that is still assigned to members

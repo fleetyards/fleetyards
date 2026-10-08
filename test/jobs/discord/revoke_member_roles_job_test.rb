@@ -5,7 +5,7 @@ require "test_helper"
 module Discord
   class RevokeMemberRolesJobTest < ActiveSupport::TestCase
     MEMBER_ROLE = "200000000000000001"
-    RANK_ROLE = "role-officer"
+    RANK_ROLE = "300000000000000001"
     FOREIGN_ROLE = "role-they-earned-elsewhere"
     UID = "discord-uid-1"
 
@@ -121,15 +121,15 @@ module Discord
         @membership.update!(fleet_role: @fleet.fleet_roles.find_by(permanent: true))
         fleet_id = @fleet.id
         admin_role = @fleet.fleet_roles.find_by(permanent: true)
-        admin_role.update!(discord_role_id: "role-admin")
+        admin_role.update!(discord_role_id: "300000000000000002")
 
         assert @user.destroy
         assert_not Fleet.exists?(fleet_id)
         args = revoke_jobs.first
 
-        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, "role-admin", FOREIGN_ROLE]})
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, "300000000000000002", FOREIGN_ROLE]})
         @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE)
-        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, "role-admin")
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, "300000000000000002")
         @api.expects(:remove_guild_member_role).with("100000000000000001", UID, FOREIGN_ROLE).never
 
         ::Discord::RevokeMemberRolesJob.new.perform(*args)

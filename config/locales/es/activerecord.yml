@@ -468,6 +468,7 @@ es:
               permanent: "no puede ser un rango de mando: un miembro nuevo nunca empieza como Líder o Colíder"
               required: "es necesario: haz predeterminado otro rango en su lugar"
         fleet_role:
+          not_a_discord_id: "debe ser el ID numérico que Discord copia con «Copiar ID», no un nombre"
           attributes:
             base:
               cannot_destroy_with_members: No se puede eliminar un rol que todavía está asignado a miembros

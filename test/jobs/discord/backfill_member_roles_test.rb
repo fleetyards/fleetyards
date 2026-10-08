@@ -133,7 +133,7 @@ module Discord
       end
 
       test "mapping a rank backfills that rank only" do
-        @role.update!(discord_role_id: "role-officer")
+        @role.update!(discord_role_id: "300000000000000001")
 
         assert_equal [[@fleet.id, @role.id]], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"] }
       end
