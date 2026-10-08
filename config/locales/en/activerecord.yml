@@ -543,3 +543,6 @@ en:
               not_a_member: is no longer a member of this fleet
             fleet_event_slot_id:
               already_taken: is already taken by another member
+              wrong_event: does not belong to this event
+            status:
+              invalid_for_slot: must be confirmed or pending for a slot

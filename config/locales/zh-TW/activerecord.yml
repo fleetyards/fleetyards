@@ -510,3 +510,6 @@ zh-TW:
               not_a_member: 已不再是該艦隊成員
             fleet_event_slot_id:
               already_taken: 已被其他成員佔用
+              wrong_event: 不屬於此活動
+            status:
+              invalid_for_slot: 在位置上必須為已確認或待審核

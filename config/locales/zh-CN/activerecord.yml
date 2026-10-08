@@ -510,3 +510,6 @@ zh-CN:
               not_a_member: 已不再是该舰队成员
             fleet_event_slot_id:
               already_taken: 已被其他成员占用
+              wrong_event: 不属于此活动
+            status:
+              invalid_for_slot: 在位置上必须为已确认或待审核

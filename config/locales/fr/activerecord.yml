@@ -511,3 +511,6 @@ fr:
               not_a_member: n'est plus membre de cette flotte
             fleet_event_slot_id:
               already_taken: est déjà pris par un autre membre
+              wrong_event: n'appartient pas à cet événement
+            status:
+              invalid_for_slot: doit être confirmée ou en attente pour un poste
