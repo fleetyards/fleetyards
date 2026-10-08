@@ -23,7 +23,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
-import { fleetShipsShareUrl } from "@/frontend/utils/fleetShareUrl";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSubscription } from "@/shared/composables/useSubscription";
@@ -82,12 +82,16 @@ const { grouped, money, detailsVisible, gridView } = storeToRefs(fleetStore);
 
 const fleetchartStore = useFleetchartStore();
 
+const chartShareUrl = useFleetchartShareUrl(
+  () => `/f/${encodeURIComponent(props.fleet.fid)}/ships`,
+);
+
 const fleetchartShareUrl = computed(() => {
   if (!props.fleet?.publicFleet) {
     return undefined;
   }
 
-  return fleetShipsShareUrl(props.fleet, { fleetchart: true });
+  return chartShareUrl.value;
 });
 
 const fleetchartVisible = computed(() => {

@@ -16,26 +16,12 @@ describe("fleetShipsShareUrl", () => {
         `${window.location.protocol}//fltyrd.net/f/FY/ships`,
       );
     });
-
-    it("opens the fleetchart", () => {
-      window.SHORT_DOMAIN = "fltyrd.net";
-
-      expect(fleetShipsShareUrl(fleet, { fleetchart: true })).toBe(
-        `${window.location.protocol}//fltyrd.net/f/FY/ships?fleetchart=true`,
-      );
-    });
   });
 
   describe("without a short domain", () => {
     it("links the ships page by slug", () => {
       expect(fleetShipsShareUrl(fleet)).toBe(
         `${window.location.origin}/fleets/fleetyards/ships`,
-      );
-    });
-
-    it("links the fleetchart page", () => {
-      expect(fleetShipsShareUrl(fleet, { fleetchart: true })).toBe(
-        `${window.location.origin}/fleets/fleetyards/fleetchart`,
       );
     });
   });

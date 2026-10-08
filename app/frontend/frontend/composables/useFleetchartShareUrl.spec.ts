@@ -98,6 +98,20 @@ describe("useFleetchartShareUrl", () => {
     expect(url.searchParams.has("perPage")).toBe(false);
   });
 
+  it("keeps the filters on the page when no short domain is set", async () => {
+    const url = await shareUrlFor(
+      "/fleets/fleetyards/ships/",
+      { manufacturerIn: ["rsi"] },
+      undefined,
+      "/f/FY/ships",
+    );
+
+    expect(url.origin).toBe(window.location.origin);
+    expect(url.pathname).toBe("/fleets/fleetyards/ships/");
+    expect(url.searchParams.getAll("manufacturerIn")).toEqual(["rsi"]);
+    expect(url.searchParams.get("fleetchart")).toBe("true");
+  });
+
   describe("with a short domain", () => {
     afterEach(() => {
       window.SHORT_DOMAIN = "";
