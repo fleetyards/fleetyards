@@ -13,8 +13,10 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { useComlink } from "@/shared/composables/useComlink";
 import {
   BuybackPledgeKindEnum,
+  useHangarBuybackInsuranceTerms,
   type BuybackPledgeQuery,
 } from "@/services/fyApi";
 
@@ -48,16 +50,53 @@ watch(
 
 const { pledgePriceOptions } = useFilterOptions();
 
-// The insurance terms RSI has sold pledges with, longest first.
-const INSURANCE_MONTHS = [120, 72, 60, 48, 24, 12, 10, 6, 3, 2];
+const { data: insuranceTerms, refetch: refetchInsuranceTerms } =
+  useHangarBuybackInsuranceTerms();
 
-const insuranceOptions = computed(() => [
-  { value: "lifetime", label: t("labels.buybacks.lifetimeInsurance") },
-  ...INSURANCE_MONTHS.map((months) => ({
-    value: String(months),
-    label: t("labels.buybacks.insuranceMonths", { count: months }),
-  })),
-]);
+const comlink = useComlink();
+
+let offSyncFinished: (() => void) | undefined;
+
+onMounted(() => {
+  offSyncFinished = comlink.on("buyback-sync-finished", () =>
+    refetchInsuranceTerms(),
+  );
+});
+
+onUnmounted(() => {
+  offSyncFinished?.();
+});
+
+const insuranceLabel = (value: string) => {
+  if (value === "lifetime") {
+    return t("labels.buybacks.lifetimeInsurance");
+  }
+
+  if (value === "none") {
+    return t("labels.buybacks.noInsurance");
+  }
+
+  return t("labels.buybacks.insuranceMonths", { count: Number(value) });
+};
+
+// A term from the URL that the caller no longer has is still offered, so it
+// can be seen and cleared.
+const insuranceOptions = computed(() => {
+  const terms = insuranceTerms.value;
+
+  const values = [
+    ...(terms?.lifetime ? ["lifetime"] : []),
+    ...(terms?.months || []).map(String),
+    ...(terms?.none ? ["none"] : []),
+  ];
+
+  const selected = [form.value.insuranceIn || []].flat().map(String);
+
+  return [
+    ...values,
+    ...selected.filter((value) => !values.includes(value)),
+  ].map((value) => ({ value, label: insuranceLabel(value) }));
+});
 
 const kindOptions = computed(() =>
   Object.values(BuybackPledgeKindEnum).map((kind) => ({

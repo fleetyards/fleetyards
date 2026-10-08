@@ -9,6 +9,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   return {
     ...(await importOriginal<Record<string, unknown>>()),
     useModel: () => ({ data: ref(undefined) }),
+    useHangarBuybackInsuranceTerms: () => ({
+      data: ref({ months: [120, 6], lifetime: true, none: true }),
+      refetch: vi.fn(),
+    }),
   };
 });
 
@@ -57,7 +61,7 @@ describe("HangarBuybacksFilterForm", () => {
     ).toEqual(["-25", "25-50", "50-75"]);
   });
 
-  it("offers lifetime insurance, then the month terms longest first", async () => {
+  it("offers the caller's own insurance terms, lifetime first and none last", async () => {
     const { wrapper } = await setup();
 
     const insuranceSelect = wrapper
@@ -69,19 +73,21 @@ describe("HangarBuybacksFilterForm", () => {
       insuranceSelect
         .props("options")
         .map((option: { value: string }) => option.value),
-    ).toEqual([
-      "lifetime",
-      "120",
-      "72",
-      "60",
-      "48",
-      "24",
-      "12",
-      "10",
-      "6",
-      "3",
-      "2",
-    ]);
+    ).toEqual(["lifetime", "120", "6", "none"]);
+  });
+
+  it("keeps a term from the URL that the caller does not have", async () => {
+    const { wrapper } = await setup({ insuranceIn: "72" });
+
+    const insuranceSelect = wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((component) => component.props("name") === "insuranceIn")!;
+
+    expect(
+      insuranceSelect
+        .props("options")
+        .map((option: { value: string }) => option.value),
+    ).toEqual(["lifetime", "120", "6", "none", "72"]);
   });
 
   it("prefills the insurance from the URL", async () => {
