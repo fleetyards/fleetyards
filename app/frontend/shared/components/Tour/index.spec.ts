@@ -328,7 +328,7 @@ describe("Tour", () => {
 
   it("does not open over a modal", async () => {
     const modal = document.createElement("div");
-    modal.className = "app-modal";
+    modal.className = "app-modal in";
     document.body.appendChild(modal);
     targets.push(modal);
 
@@ -415,6 +415,33 @@ describe("Tour", () => {
     await click("tour-skip");
 
     expect(document.activeElement).not.toBe(menu);
+  });
+
+  it("opens over a modal that is still fading out", async () => {
+    const modal = document.createElement("div");
+    modal.className = "app-modal";
+    document.body.appendChild(modal);
+    targets.push(modal);
+
+    await mountTour();
+
+    expect(card()?.dataset.step).toBe("welcome");
+  });
+
+  it("follows the step that moves into place when an earlier one goes", async () => {
+    addTarget("add");
+    const wrapper = await mountTour();
+
+    await click("tour-next");
+    expect(card()?.dataset.step).toBe("add");
+
+    await wrapper.setProps({
+      steps: STEPS.filter((step) => step.id !== "welcome"),
+    });
+    await flush();
+
+    expect(card()?.dataset.step).toBe("add");
+    expect(card()?.textContent).toContain('"current":1,"total":1');
   });
 
   it("does not open when no step can be shown", async () => {

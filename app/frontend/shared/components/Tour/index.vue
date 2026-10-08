@@ -365,7 +365,9 @@ const pageChanges = new MutationObserver((mutations) => {
 // -- after a click on the backdrop, or before the first card is placed -- and
 // the keys must still drive the tour.
 const listen = () => {
-  document.addEventListener("keydown", onKeydown);
+  // Capture, so an Escape that ends the tour stops before the window-level
+  // listeners of a confirm dialog react to it as well.
+  document.addEventListener("keydown", onKeydown, true);
   window.addEventListener("scroll", schedulePlace, true);
   window.addEventListener("resize", schedulePlace);
   observedPage.value = document.body;
@@ -378,7 +380,7 @@ const listen = () => {
 };
 
 const unlisten = () => {
-  document.removeEventListener("keydown", onKeydown);
+  document.removeEventListener("keydown", onKeydown, true);
   window.removeEventListener("scroll", schedulePlace, true);
   window.removeEventListener("resize", schedulePlace);
   observedPage.value = null;
@@ -400,7 +402,9 @@ const start = async () => {
 
   // A modal open underneath would turn inert and unusable until the tour
   // ends, and a dialog over a dialog is no way to explain the page anyway.
-  if (!shown.value.length || document.querySelector(".app-modal")) {
+  // `.in` rather than the bare class: a closing modal stays in the DOM for
+  // its fade-out and would refuse a tour asked for right after it.
+  if (!shown.value.length || document.querySelector(".app-modal.in")) {
     open.value = false;
     return;
   }
@@ -468,8 +472,10 @@ watch(shown, (steps) => {
 
   if (!steps.length) {
     end("finished");
-  } else if (index.value >= steps.length) {
-    void showStep(steps.length - 1);
+  } else {
+    // The same index can now name another step; re-show it either way, so the
+    // spotlight, the card and the cached target follow.
+    void showStep(Math.min(index.value, steps.length - 1));
   }
 });
 
