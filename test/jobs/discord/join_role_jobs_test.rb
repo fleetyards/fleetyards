@@ -345,6 +345,14 @@ module Discord
       assert_raises(ApiClient::Error) { SyncFleetJoinRoleJob.new.perform(@fleet.id) }
     end
 
+    test "a fleet whose members were read can still be deleted" do
+      DiscordMemberRead.record(@fleet, "uid-1")
+
+      @fleet.destroy!
+
+      refute DiscordMemberRead.exists?(fleet_id: @fleet.id)
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
