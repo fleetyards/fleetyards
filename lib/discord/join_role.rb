@@ -138,19 +138,9 @@ module Discord
         # An update for them may have handled it while this waited.
         next membership.accepted? unless membership.reload.kept? && membership.created?
 
-        role_ids = current_role_ids(uid)
-        DiscordMemberRead.record(guild_id, uid) unless role_ids.nil?
-
-        if Array(role_ids).include?(role_id)
-          membership.discord_role_granted = true
-          if membership.join!
-            FleetDiscordRoleHolder.remember(fleet, user)
-            next true
-          end
-
-          # A join that did not save still owes the player a request.
-          membership.discord_role_granted = false
-        end
+        # Not recorded as a read of the member: only this fleet's role is
+        # applied, and the guild's other fleets still need their sweep.
+        next true if Array(current_role_ids(uid)).include?(role_id) && join_through_role(membership)
 
         membership.request!
       end
@@ -159,6 +149,23 @@ module Discord
       # Without the member lock, the row lock is what orders this against the
       # update that holds it and may be admitting this very membership.
       membership.with_lock { membership.created? ? membership.request! : membership.accepted? }
+    end
+
+    private def join_through_role(membership)
+      FleetMembership.transaction(requires_new: true) do
+        # As in apply: a role picked meanwhile is not the one that was read.
+        next false unless still_the_role?
+
+        membership.discord_role_granted = true
+        unless membership.join!
+          # A join that did not save still owes the player a request.
+          membership.discord_role_granted = false
+          next false
+        end
+
+        FleetDiscordRoleHolder.remember(fleet, membership.user)
+        true
+      end
     end
 
     private def current_role_ids(uid)

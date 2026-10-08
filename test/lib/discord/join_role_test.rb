@@ -67,6 +67,27 @@ module Discord
       assert_in_delta asked_at, DiscordMemberRead.find_by!(discord_user_id: "discord-uid-1").read_at, 1.second
     end
 
+    test "a player asking to join while the role is changed gets a request" do
+      @api.stubs(:get_guild_member).returns({"roles" => [JOIN_ROLE]})
+      stale = join_role
+      stale.role_id
+      FleetNotificationSetting.find(@fleet.fleet_notification_setting.id).update!(discord_join_role_id: OTHER_ROLE)
+      asking = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+
+      stale.request_or_join(asking)
+
+      assert_predicate asking.reload, :requested?
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "asking to join leaves the guild's other fleets their sweep" do
+      @api.stubs(:get_guild_member).returns({"roles" => [JOIN_ROLE]})
+
+      ask_to_join
+
+      refute DiscordMemberRead.exists?(discord_guild_id: GUILD, discord_user_id: "discord-uid-1")
+    end
+
     test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 
