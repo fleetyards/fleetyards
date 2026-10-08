@@ -83,7 +83,7 @@ class FleetEventSignup < ApplicationRecord
   # A recurring signup is keyed by day, so its date alone cannot tell whether
   # today's occurrence has already started.
   def occurrence_started?
-    return fleet_event.starts_at <= Time.current unless fleet_event.recurring?
+    return fleet_event.active? || fleet_event.starts_at <= Time.current unless fleet_event.recurring?
     return false if occurrence_date.nil?
     return occurrence_date < Date.current unless occurrence_date == Date.current
 

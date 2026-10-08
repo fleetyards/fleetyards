@@ -207,4 +207,15 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert_not stale.update(status: "pending")
     assert signup.reload.withdrawn?
   end
+
+  test "an event started early keeps its seats" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 15.minutes.from_now)
+    signup = signup_for(membership, event)
+    event.start!
+
+    assert membership.discard
+    assert_equal "confirmed", signup.reload.status
+  end
 end

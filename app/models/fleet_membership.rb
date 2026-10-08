@@ -345,7 +345,7 @@ class FleetMembership < ApplicationRecord
       .where.not(fleet_events: {status: %w[completed cancelled]})
       .where(
         "(fleet_events.recurring AND (fleet_event_signups.occurrence_date IS NULL OR fleet_event_signups.occurrence_date >= :today)) OR " \
-        "(NOT fleet_events.recurring AND fleet_events.starts_at > :now)",
+        "(NOT fleet_events.recurring AND fleet_events.status != 'active' AND fleet_events.starts_at > :now)",
         today: Date.current, now: Time.current
       )
       .includes(:fleet_event)
