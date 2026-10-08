@@ -1,0 +1,219 @@
+import { mount, type VueWrapper } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { defineComponent, h, nextTick } from "vue";
+import Tour from "./index.vue";
+import type { TourStep } from "./types";
+
+vi.mock("@/shared/composables/useI18n", () => ({
+  useI18n: () => ({
+    t: (key: string, params?: Record<string, unknown>) =>
+      params ? `${key} ${JSON.stringify(params)}` : key,
+  }),
+}));
+
+const BtnStub = defineComponent({
+  name: "Btn",
+  emits: ["click"],
+  setup(_, { slots, emit, attrs }) {
+    return () =>
+      h(
+        "button",
+        { ...attrs, type: "button", onClick: () => emit("click") },
+        slots.default?.(),
+      );
+  },
+});
+
+const wrappers: VueWrapper[] = [];
+const targets: HTMLElement[] = [];
+
+const addTarget = (id: string) => {
+  const element = document.createElement("button");
+  element.dataset.tour = id;
+  document.body.appendChild(element);
+  targets.push(element);
+
+  return element;
+};
+
+const STEPS: TourStep[] = [
+  { id: "welcome", title: "Welcome", text: "Hello" },
+  { id: "add", title: "Add", text: "Add ships", target: '[data-tour="add"]' },
+  {
+    id: "sync",
+    title: "Sync",
+    text: "Sync ships",
+    target: '[data-tour="sync"]',
+    requiresTarget: true,
+  },
+  {
+    id: "stats",
+    title: "Stats",
+    text: "Your stats",
+    target: '[data-tour="stats"]',
+    requiresTarget: true,
+  },
+];
+
+const mountTour = async (steps: TourStep[] = STEPS) => {
+  // The tour can close itself while it mounts, before `mount` has returned.
+  let wrapper: VueWrapper | undefined = undefined;
+
+  wrapper = mount(Tour, {
+    attachTo: document.body,
+    props: {
+      steps,
+      open: true,
+      "onUpdate:open": (value: boolean) => wrapper?.setProps({ open: value }),
+    },
+    global: { stubs: { Btn: BtnStub } },
+  });
+
+  wrappers.push(wrapper);
+
+  await flush();
+
+  return wrapper;
+};
+
+const flush = async () => {
+  for (let i = 0; i < 4; i += 1) await nextTick();
+};
+
+const card = () =>
+  document.querySelector<HTMLElement>("[data-test='tour-card']");
+const hole = () => document.querySelector<HTMLElement>(".tour__hole");
+const click = async (test: string) => {
+  document.querySelector<HTMLElement>(`[data-test='${test}']`)?.click();
+  await flush();
+};
+const press = async (key: string) => {
+  card()?.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+  await flush();
+};
+
+beforeEach(() => {
+  // jsdom lays nothing out, so every element would read as not rendered.
+  vi.spyOn(Element.prototype, "getClientRects").mockImplementation(
+    () => [new DOMRect(0, 0, 10, 10)] as unknown as DOMRectList,
+  );
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    })),
+  );
+  Element.prototype.scrollIntoView = vi.fn();
+});
+
+afterEach(() => {
+  while (wrappers.length) wrappers.pop()?.unmount();
+  while (targets.length) targets.pop()?.remove();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
+
+describe("Tour", () => {
+  it("leaves out steps whose required target is missing", async () => {
+    addTarget("add");
+    addTarget("stats");
+
+    await mountTour();
+
+    expect(card()?.dataset.step).toBe("welcome");
+    expect(card()?.textContent).toContain('"current":1,"total":3');
+
+    await click("tour-next");
+    expect(card()?.dataset.step).toBe("add");
+
+    await click("tour-next");
+    expect(card()?.dataset.step).toBe("stats");
+  });
+
+  it("centres the card over the dimmed page when a step has no target", async () => {
+    await mountTour();
+
+    expect(card()?.dataset.step).toBe("welcome");
+    expect(hole()?.classList).toContain("tour__hole--empty");
+
+    await click("tour-next");
+
+    // Optional targets fall back to the centred card rather than vanishing.
+    expect(card()?.dataset.step).toBe("add");
+    expect(hole()?.classList).toContain("tour__hole--empty");
+  });
+
+  it("frames the target of the current step", async () => {
+    addTarget("add");
+
+    await mountTour();
+    await click("tour-next");
+
+    expect(hole()?.classList).not.toContain("tour__hole--empty");
+  });
+
+  it("finishes on the last step", async () => {
+    addTarget("stats");
+
+    const wrapper = await mountTour();
+
+    await click("tour-next");
+    await click("tour-next");
+    expect(card()?.dataset.step).toBe("stats");
+    expect(document.querySelector("[data-test='tour-skip']")).toBeNull();
+    expect(document.querySelector("[data-test='tour-next']")?.textContent).toBe(
+      "actions.tour.done",
+    );
+
+    await click("tour-next");
+
+    expect(wrapper.emitted("end")).toEqual([["finished"]]);
+    expect(card()).toBeNull();
+  });
+
+  it("steps with the arrow keys and skips with Escape", async () => {
+    const wrapper = await mountTour();
+
+    await press("ArrowRight");
+    expect(card()?.dataset.step).toBe("add");
+
+    await press("ArrowLeft");
+    expect(card()?.dataset.step).toBe("welcome");
+
+    await press("ArrowLeft");
+    expect(card()?.dataset.step).toBe("welcome");
+
+    await press("Escape");
+
+    expect(wrapper.emitted("end")).toEqual([["skipped"]]);
+    expect(card()).toBeNull();
+  });
+
+  it("makes the page inert and hands focus back when it ends", async () => {
+    const page = document.createElement("div");
+    const trigger = document.createElement("button");
+    page.appendChild(trigger);
+    document.body.appendChild(page);
+    targets.push(page);
+    trigger.focus();
+
+    await mountTour();
+
+    expect(page.hasAttribute("inert")).toBe(true);
+    expect(document.activeElement).toBe(card());
+
+    await click("tour-skip");
+
+    expect(page.hasAttribute("inert")).toBe(false);
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("does not open when no step can be shown", async () => {
+    const wrapper = await mountTour([STEPS[2]]);
+
+    expect(card()).toBeNull();
+    expect(wrapper.emitted("update:open")).toEqual([[false]]);
+  });
+});

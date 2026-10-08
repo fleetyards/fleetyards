@@ -3932,6 +3932,9 @@
         "notRecruiting": "未招募",
         "roleplay": "角色扮演",
         "rsiSid": "SID %{sid}"
+      },
+      "tour": {
+        "step": "第 %{current} 步，共 %{total} 步"
       }
     }
   }

@@ -3932,6 +3932,9 @@
         "notRecruiting": "No recluta",
         "roleplay": "Rol",
         "rsiSid": "SID %{sid}"
+      },
+      "tour": {
+        "step": "Paso %{current} de %{total}"
       }
     }
   }

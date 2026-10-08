@@ -66,6 +66,12 @@
       "readMore": "阅读更多",
       "readLess": "收起",
       "showGuide": "显示指南",
+      "tour": {
+        "next": "下一步",
+        "back": "上一步",
+        "skip": "跳过导览",
+        "done": "完成"
+      },
       "showFleetchart": "舰队图表",
       "hideFleetchart": "默认视图",
       "fleetchartApp": {

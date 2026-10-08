@@ -66,6 +66,12 @@
       "readMore": "Leer más",
       "readLess": "Mostrar menos",
       "showGuide": "Mostrar guía",
+      "tour": {
+        "next": "Siguiente",
+        "back": "Atrás",
+        "skip": "Saltar el recorrido",
+        "done": "Listo"
+      },
       "showFleetchart": "Diagrama de flota",
       "hideFleetchart": "Vista predeterminada",
       "fleetchartApp": {
