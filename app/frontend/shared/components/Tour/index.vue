@@ -45,7 +45,14 @@ const textId = useId();
 const root = ref<HTMLElement | null>(null);
 const card = ref<HTMLElement | null>(null);
 
-const shown = ref<TourStep[]>([]);
+// The ids picked at start; the steps themselves are read from the props, so
+// their text follows a locale change.
+const shownIds = ref<string[]>([]);
+const shown = computed<TourStep[]>(() =>
+  shownIds.value
+    .map((id) => props.steps.find((step) => step.id === id))
+    .filter((step): step is TourStep => !!step),
+);
 const index = ref(0);
 const hole = ref<{
   top: number;
@@ -172,6 +179,13 @@ const showStep = async (next: number) => {
   }
 
   place();
+
+  // The card stays hidden until it has a position, and a hidden element
+  // cannot take focus.
+  await nextTick();
+
+  if (own !== session) return;
+
   focusCard();
 };
 
@@ -190,14 +204,24 @@ const back = () => {
 const skip = () => end("skipped");
 
 // The rest of the page is taken out of the tab order and the accessibility
-// tree while the tour runs, so the card behaves like any modal dialog.
+// tree while the tour runs, so the card behaves like any modal dialog. A
+// subtree marked `data-tour-keep` -- the notifications, which sit above the
+// tour -- stays usable, so the walk descends around it instead of inerting
+// the whole app root it lives in.
 let inerted: Element[] = [];
+
+const KEEP = "[data-tour-keep]";
+
+const collectInert = (container: Element): Element[] =>
+  Array.from(container.children).flatMap((element) => {
+    if (element === root.value || element.matches(KEEP)) return [];
+    if (element.querySelector(KEEP)) return collectInert(element);
+    return element.hasAttribute("inert") ? [] : [element];
+  });
 
 const setPageInert = (on: boolean) => {
   if (on) {
-    inerted = Array.from(document.body.children).filter(
-      (element) => element !== root.value && !element.hasAttribute("inert"),
-    );
+    inerted = collectInert(document.body);
     inerted.forEach((element) => element.setAttribute("inert", ""));
   } else {
     inerted.forEach((element) => element.removeAttribute("inert"));
@@ -211,7 +235,11 @@ const onKeydown = (event: KeyboardEvent) => {
   switch (event.key) {
     case "Escape":
       event.preventDefault();
-      skip();
+      if (isLast.value) {
+        end("finished");
+      } else {
+        skip();
+      }
       break;
     case "ArrowRight":
       event.preventDefault();
@@ -222,6 +250,12 @@ const onKeydown = (event: KeyboardEvent) => {
       back();
       break;
     case "Tab": {
+      // A notification left reachable keeps its own Tab order.
+      const inTour =
+        document.activeElement === document.body ||
+        !!root.value?.contains(document.activeElement);
+      if (!inTour) return;
+
       const focusable = Array.from(
         card.value?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [],
       );
@@ -263,13 +297,18 @@ const observedPage = ref<HTMLElement | null>(null);
 
 useResizeObserver(observedPage, schedulePlace);
 
+// On the document rather than the card: focus can sit on <body> for a moment
+// -- after a click on the backdrop, or before the first card is placed -- and
+// the keys must still drive the tour.
 const listen = () => {
+  document.addEventListener("keydown", onKeydown);
   window.addEventListener("scroll", schedulePlace, true);
   window.addEventListener("resize", schedulePlace);
   observedPage.value = document.body;
 };
 
 const unlisten = () => {
+  document.removeEventListener("keydown", onKeydown);
   window.removeEventListener("scroll", schedulePlace, true);
   window.removeEventListener("resize", schedulePlace);
   observedPage.value = null;
@@ -284,9 +323,9 @@ const start = async () => {
   hole.value = null;
   cardPosition.value = null;
 
-  shown.value = props.steps.filter(
-    (step) => !step.requiresTarget || !!findTarget(step),
-  );
+  shownIds.value = props.steps
+    .filter((step) => !step.requiresTarget || !!findTarget(step))
+    .map((step) => step.id);
 
   if (!shown.value.length) {
     open.value = false;
@@ -390,7 +429,6 @@ const cardStyle = computed(() =>
       class="tour"
       :class="{ 'tour--animated': !prefersReducedMotion }"
       data-test="tour"
-      @keydown="onKeydown"
     >
       <div class="tour__backdrop" @click="focusCard" />
       <div

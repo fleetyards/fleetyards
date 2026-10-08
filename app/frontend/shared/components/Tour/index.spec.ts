@@ -290,6 +290,42 @@ describe("Tour", () => {
     expect(elsewhere.hasAttribute("inert")).toBe(false);
   });
 
+  it("finishes rather than skips with Escape on the last step", async () => {
+    const wrapper = await mountTour();
+
+    await press("ArrowRight");
+    await press("Escape");
+
+    expect(wrapper.emitted("end")).toEqual([["finished"]]);
+  });
+
+  it("keeps a marked subtree usable inside an inert page", async () => {
+    const app = document.createElement("div");
+    const page = document.createElement("main");
+    const notifications = document.createElement("div");
+    notifications.dataset.tourKeep = "";
+    app.append(page, notifications);
+    document.body.appendChild(app);
+    targets.push(app);
+
+    await mountTour();
+
+    expect(app.hasAttribute("inert")).toBe(false);
+    expect(page.hasAttribute("inert")).toBe(true);
+    expect(notifications.hasAttribute("inert")).toBe(false);
+  });
+
+  it("reads the step text from the current props", async () => {
+    const wrapper = await mountTour();
+
+    await wrapper.setProps({
+      steps: STEPS.map((step) => ({ ...step, title: `${step.title}!` })),
+    });
+    await flush();
+
+    expect(card()?.textContent).toContain("Welcome!");
+  });
+
   it("does not open when no step can be shown", async () => {
     const wrapper = await mountTour([STEPS[2]]);
 
