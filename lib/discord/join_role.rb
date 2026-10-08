@@ -139,10 +139,16 @@ module Discord
 
         if Array(role_ids).include?(role_id)
           membership.discord_role_granted = true
-          membership.join!.tap { |joined| FleetDiscordRoleHolder.remember(fleet, user) if joined }
-        else
-          membership.request!
+          if membership.join!
+            FleetDiscordRoleHolder.remember(fleet, user)
+            next true
+          end
+
+          # A join that did not save still owes the player a request.
+          membership.discord_role_granted = false
         end
+
+        membership.request!
       end
       return result if acquired
 
@@ -174,7 +180,8 @@ module Discord
       end
     end
 
-    # Whether the player is now where the role puts them.
+    # Whether to record the role as held: it took effect, or it has nothing
+    # to do for this player.
     private def admit(user, quiet:)
       membership = fleet.fleet_memberships.kept.find_by(user:)
 
@@ -191,11 +198,10 @@ module Discord
       when "invited"
         # An officer chose them, so the role is not what keeps them in.
         membership.accept_invitation!
-      when "accepted"
-        true
       else
-        # An officer turned them down, and the role does not overrule that.
-        false
+        # Already a member, or declined: an officer turned them down, and the
+        # role does not overrule that.
+        true
       end
     end
 

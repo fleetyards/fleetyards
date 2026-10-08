@@ -42,6 +42,17 @@ module Discord
       assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
     end
 
+    test "a player holding the role whose join does not save gets a request" do
+      @api.stubs(:get_guild_member).returns({"roles" => [JOIN_ROLE]})
+      FleetMembership.any_instance.stubs(:join!).returns(false)
+
+      asking = ask_to_join
+
+      assert_predicate asking.reload, :requested?
+      refute_predicate asking, :discord_role_granted?
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
     test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, "Unknown Member"))
 
@@ -152,7 +163,16 @@ module Discord
       join_role.apply(@user, [JOIN_ROLE])
 
       assert_predicate declined.reload, :declined?
-      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: @user)
+    end
+
+    test "a declined player holding the role is recorded, so their next update queues nothing" do
+      @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role).update!(aasm_state: "declined")
+      join_role.apply(@user, [JOIN_ROLE])
+      ApplyJoinRolesJob.jobs.clear
+
+      JoinRole.member_changed(GUILD, "discord-uid-1", [JOIN_ROLE, OTHER_ROLE])
+
+      assert_empty ApplyJoinRolesJob.jobs
     end
 
     test "a quiet admission tells the player and the members' views but not the officers" do
