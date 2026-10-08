@@ -103,6 +103,25 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("reads paints and hangar flair apart", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `${item("Skin", "Cutter Paint")}${item("Hangar decoration", "Poster")}`,
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        { id: "101", name: "Cutter Paint", type: "skin" },
+        { id: "101", name: "Poster", type: "flair" },
+      ],
+    });
+  });
+
   it("reads a page with items RSI gives no kind", () => {
     const page = extract(
       pledgesPage(
@@ -217,6 +236,80 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+    });
+  });
+
+  it("reads the pledge's name, melt value and item count onto its items", () => {
+    const valued = (value: string, items: string) =>
+      pledge(
+        "101",
+        items,
+        "Standalone Ships - CSV-SM plus Granite Paint",
+      ).replace(
+        "<div",
+        `<input type="hidden" class="js-pledge-value" value="${value}"><div`,
+      );
+
+    const page = extract(
+      pledgesPage(
+        valued(
+          "$1,240.00 USD",
+          `${item("Ship", "CSV-SM")}${item("Skin", "CSV - Granite Paint")}${item("Insurance", "Lifetime Insurance")}`,
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      pledges: [
+        {},
+        {
+          name: "CSV - Granite Paint",
+          pledgeName: "Standalone Ships - CSV-SM plus Granite Paint",
+          pledgeValue: 1240,
+          pledgeItemCount: 3,
+        },
+      ],
+    });
+  });
+
+  it("reads no melt value off a pledge of in-game credits", () => {
+    const page = extract(
+      pledgesPage(
+        pledge("101", item("Skin", "Aurora - Dark Green Paint")).replace(
+          "<div",
+          '<input type="hidden" class="js-pledge-value" value="¤5,000 UEC"><div',
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({ pledges: [{ pledgeValue: undefined }] });
+  });
+
+  it("reads when the pledge was created and whether RSI offers to melt it", () => {
+    const withMeta = (id: string, meta: string) =>
+      pledge(id, item("Skin", "Cutlass - Akuma Paint")).replace(
+        "<div",
+        `${meta}<div`,
+      );
+
+    const page = extract(
+      pledgesPage(
+        withMeta(
+          "101",
+          '<div class="date-col"><label>Created:</label> October 08, 2026 </div><a class="shadow-button js-reclaim reclaim">Exchange</a>',
+        ) +
+          withMeta(
+            "102",
+            '<div class="date-col"><label>Created:</label> Oktober 08, 2026 </div>',
+          ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      pledges: [
+        { id: "101", pledgeCreatedOn: "2026-10-08", meltable: true },
+        { id: "102", pledgeCreatedOn: undefined, meltable: false },
+      ],
     });
   });
 });
