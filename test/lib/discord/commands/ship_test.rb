@@ -112,6 +112,13 @@ module Discord
         assert_includes german[:content], "Kein Schiff"
       end
 
+      test "sets a ship name in the list as link text, escaped" do
+        create(:model, name: "Hornet_F7C", slug: "hornet-f7c", manufacturer: @manufacturer)
+        create(:model, name: "Hornet_F7A", slug: "hornet-f7a", manufacturer: @manufacturer)
+
+        assert_includes call("Hornet")[:content], "[Hornet\\_F7A]("
+      end
+
       test "echoes a typed link as text, not as a link" do
         assert_includes call("[Free aUEC](https://evil.example)")[:content], "\\[Free aUEC\\]\\(https://evil.example\\)"
       end

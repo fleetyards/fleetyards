@@ -36,7 +36,7 @@ module Discord
 
       private def candidate_list(query, candidates)
         shown = candidates.first(MAX_CANDIDATES)
-        lines = shown.map { |model| "• [#{model.name}](#{model_page_url(model)})" }
+        lines = shown.map { |model| "• [#{Markdown.escape(model.name)}](#{model_page_url(model)})" }
 
         content = [
           I18n.t("discord.commands.ship.ambiguous", query: Markdown.escape(query), count: shown.size),
