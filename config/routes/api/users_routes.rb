@@ -18,6 +18,9 @@ namespace :me, defaults: {format: :json} do
   resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
     post :rotate
   end
+  resource :hangar_share, path: "hangar/share", only: %i[show create destroy] do
+    post :rotate
+  end
   resource :rsi_verification, path: "rsi-verification", only: %i[show create destroy] do
     post :check
   end

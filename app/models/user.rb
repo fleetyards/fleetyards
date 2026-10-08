@@ -28,6 +28,7 @@
 #  friends_wishlist               :boolean          default(FALSE), not null
 #  guilded                        :string
 #  hangar_default_sort            :string
+#  hangar_share_token             :string
 #  hangar_updated_at              :datetime
 #  hide_owner                     :boolean          default(FALSE), not null
 #  homepage                       :string
@@ -87,6 +88,7 @@
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
+#  index_users_on_hangar_share_token     (hangar_share_token) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
 #  index_users_on_lower_email            (lower((email)::text))
@@ -580,6 +582,49 @@ class User < ApplicationRecord
       token = SecureRandom.urlsafe_base64(32)
       break token unless exists?(calendar_feed_token: token)
     end
+  end
+
+  def hangar_share_enabled?
+    hangar_share_token.present?
+  end
+
+  def hangar_share_token_matches?(token)
+    return false if token.blank? || hangar_share_token.blank?
+
+    ActiveSupport::SecurityUtils.secure_compare(hangar_share_token, token.to_s)
+  end
+
+  def ensure_hangar_share_token!
+    return hangar_share_token if hangar_share_token.present?
+
+    update_column(:hangar_share_token, self.class.generate_hangar_share_token)
+    hangar_share_token
+  end
+
+  def rotate_hangar_share_token!
+    update_column(:hangar_share_token, self.class.generate_hangar_share_token)
+    hangar_share_token
+  end
+
+  def clear_hangar_share_token!
+    update_column(:hangar_share_token, nil)
+  end
+
+  def self.generate_hangar_share_token
+    loop do
+      token = SecureRandom.urlsafe_base64(32)
+      break token unless exists?(hangar_share_token: token)
+    end
+  end
+
+  def hangar_share_url
+    return unless hangar_share_enabled?
+
+    if Rails.configuration.app.short_domain.present?
+      return short_public_hangar_url(username:, share: hangar_share_token)
+    end
+
+    frontend_public_hangar_url(username:, share: hangar_share_token)
   end
 
   private def connection_for(provider)

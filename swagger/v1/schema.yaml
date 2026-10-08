@@ -12282,6 +12282,108 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/hangar/share":
+    post:
+      summary: Create hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: createMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: destroyMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: myHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/hangar/share/rotate":
+    post:
+      summary: Rotate hangar share link
+      tags:
+      - Me Hangar Share
+      operationId: rotateMyHangarShare
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/rsi-verification":
     get:
       summary: Show the RSI handle verification
@@ -28894,6 +28996,21 @@ components:
       additionalProperties: false
       example: {}
       title: HangarQuery
+    HangarShare:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        shareUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+      required:
+      - enabled
+      - shareUrl
+      additionalProperties: false
+      title: HangarShare
     HangarStats:
       type: object
       properties:
