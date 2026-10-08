@@ -10,6 +10,11 @@ export type RSIHangarPage =
       status: RsiPageStatus.PAGE;
       pledges: RSIHangarItem[];
       pledgeIds: string[];
+      // RSI gives no kind to a ship upgrade, a game package's download or
+      // the text-only extras under a pledge, so one page can legitimately
+      // have none. A whole hangar without one has lost the markup.
+      itemCount: number;
+      kindedItemCount: number;
     }
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
@@ -89,23 +94,24 @@ export class RSIHangarParser {
 
     const items = Array.from(pledgeList.getElementsByClassName("item"));
 
-    if (items.some((item) => !item.getElementsByClassName("kind")[0])) {
-      return {
-        status: RsiPageStatus.UNRECOGNISED,
-        check: RsiPageCheckEnum.MISSING_KINDS,
-      };
-    }
+    const kindedItems = items.filter((item) => this.hasKind(item));
 
     const known = [...READ_KINDS, ...SKIPPED_KINDS];
 
-    if (items.some((item) => !known.includes(this.itemKind(item)))) {
+    if (kindedItems.some((item) => !known.includes(this.itemKind(item)))) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
       };
     }
 
-    return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
+    return {
+      status: RsiPageStatus.PAGE,
+      pledges,
+      pledgeIds,
+      itemCount: items.length,
+      kindedItemCount: kindedItems.length,
+    };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {
@@ -143,6 +149,10 @@ export class RSIHangarParser {
         undefined,
       type: kindOverride || (kind.toLowerCase() as RSIHangarItemKind),
     };
+  }
+
+  hasKind(item: Element): boolean {
+    return !!item.getElementsByClassName("kind")[0];
   }
 
   itemKind(item: Element): string {

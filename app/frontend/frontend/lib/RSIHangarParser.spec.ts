@@ -63,22 +63,6 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("does not read a page where one item lost its kind", () => {
-    expect(
-      extract(
-        pledgesPage(
-          pledge(
-            "101",
-            `${item("Ship", "Cutter")}<div class="item"><div class="title">Paint</div></div>`,
-          ),
-        ),
-      ),
-    ).toEqual({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-    });
-  });
-
   it("does not read a page without the pledge list as the end", () => {
     expect(
       extract("<html><body><form id='sign-in'></form></body></html>"),
@@ -92,22 +76,6 @@ describe("RSIHangarParser.extractPage", () => {
     expect(extract(pledgesPage(`<li><div class="item"></div></li>`))).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
-    });
-  });
-
-  it("does not read items that no longer say what they are", () => {
-    expect(
-      extract(
-        pledgesPage(
-          pledge(
-            "101",
-            '<div class="item"><div class="title">Cutter</div></div>',
-          ),
-        ),
-      ),
-    ).toEqual({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
     });
   });
 
@@ -131,6 +99,34 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.PAGE,
       pledges: [],
       pledgeIds: ["101"],
+      itemCount: 1,
+      kindedItemCount: 1,
+    });
+  });
+
+  it("reads a page with items RSI gives no kind, and counts them", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `${item("Ship", "CSV-SM")}<div class="item"><div class="image"></div><div class="text"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div></div>`,
+        ) +
+          pledge(
+            "102",
+            `<div class="with-images">${item("Ship", "Cutter")}<div class="item"><div class="title">Star Citizen Digital Download</div></div></div><div class="without-images"><div class="item"><div class="title">Self-Land Hangar</div></div></div>`,
+          ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledgeIds: ["101", "102"],
+      pledges: [
+        { id: "101", name: "CSV-SM", type: "ship" },
+        { id: "102", name: "Cutter", type: "ship" },
+      ],
+      itemCount: 5,
+      kindedItemCount: 2,
     });
   });
 });

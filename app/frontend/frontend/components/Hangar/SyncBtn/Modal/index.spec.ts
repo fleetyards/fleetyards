@@ -355,4 +355,61 @@ describe("HangarSyncModal", () => {
       data: expect.objectContaining({ addBundledVehicles: false }),
     });
   });
+
+  const replyWithPage = async (items: string) => {
+    extensionReplies(
+      "sync",
+      `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101">${items}</li></ul>`,
+    );
+    await flushPromises();
+
+    const sent = vi.mocked(window.postMessage).mock.calls.length;
+    await vi.waitFor(
+      () =>
+        expect(vi.mocked(window.postMessage).mock.calls.length).toBeGreaterThan(
+          sent,
+        ),
+      { timeout: 2000 },
+    );
+
+    extensionReplies(
+      "sync",
+      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
+    );
+    await flushPromises();
+  };
+
+  it("submits a hangar whose ship upgrade has no kind", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+    );
+
+    expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
+      }),
+    });
+  });
+
+  it("reports a hangar in which no item has a kind, and submits nothing", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter</div></div><div class="item"><div class="title">Cutlass - Akuma Paint</div></div>',
+    );
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({ check: RsiPageCheckEnum.MISSING_KINDS }),
+    });
+  });
 });
