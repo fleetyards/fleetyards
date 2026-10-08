@@ -101,6 +101,7 @@ en:
         more: '…and more. Pick one from the suggestions.'
         more_shops: '…and %{count} more on [the place page](%{url})'
         not_found: 'No place found for "%{query}".'
+        too_common: 'Too many places are named "%{query}" to list here. The locations page has them all:'
       my_hangar:
         empty: 'You have no ships in [your hangar](%{url}) yet.'
         heading: '[Your hangar](%{url}) — %{count} ships, %{models} types'

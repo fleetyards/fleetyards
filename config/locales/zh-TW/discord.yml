@@ -101,6 +101,7 @@ zh-TW:
         more: '……還有更多。請從建議中選擇一個。'
         more_shops: '……另有 %{count} 家，見[地點頁面](%{url})'
         not_found: '找不到「%{query}」對應的地點。'
+        too_common: '名為「%{query}」的地點太多，無法在此列出。地點頁面中有全部地點：'
       my_hangar:
         empty: '[你的機庫](%{url})中還沒有飛船。'
         heading: '[你的機庫](%{url}) — %{count} 艘飛船，%{models} 種型號'

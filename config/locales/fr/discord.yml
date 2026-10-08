@@ -101,6 +101,7 @@ fr:
         more: '…et d’autres. Choisis-en un parmi les suggestions.'
         more_shops: '…et %{count} autres sur [la page du lieu](%{url})'
         not_found: 'Aucun lieu trouvé pour « %{query} ».'
+        too_common: 'Trop de lieux s’appellent « %{query} » pour les lister ici. La page des lieux les a tous :'
       my_hangar:
         empty: 'Tu n''as encore aucun vaisseau dans [ton hangar](%{url}).'
         heading: '[Ton hangar](%{url}) — %{count} vaisseaux, %{models} types'

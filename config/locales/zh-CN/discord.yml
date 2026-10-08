@@ -101,6 +101,7 @@ zh-CN:
         more: '……还有更多。请从建议中选择一个。'
         more_shops: '……另有 %{count} 家，见[地点页面](%{url})'
         not_found: '未找到“%{query}”对应的地点。'
+        too_common: '名为“%{query}”的地点太多，无法在此列出。地点页面中有全部地点：'
       my_hangar:
         empty: '[你的机库](%{url})中还没有飞船。'
         heading: '[你的机库](%{url}) — %{count} 艘飞船，%{models} 种型号'

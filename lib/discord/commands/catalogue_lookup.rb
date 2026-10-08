@@ -18,7 +18,8 @@ module Discord
         "component" => "nameCont",
         "equipment" => "nameOrSlugCont",
         "commodity" => "nameCont",
-        "blueprint" => "nameCont"
+        "blueprint" => "nameCont",
+        "location" => "nameCont"
       }.freeze
 
       # What is left of a name when the detail after it runs long.
@@ -122,7 +123,7 @@ module Discord
         carriers = CatalogueVariants.carriers(query, within:)
         # Per catalogue, as the suggestions count them, so a name they offered
         # entry by entry is listed the same way when typed out.
-        return [nil, entry_too_common(query, carriers, strings)] if carriers.values.any? { |count| count > CatalogueVariants::MAX_CARRIERS }
+        return [nil, entry_too_common(query, carriers, strings, within)] if carriers.values.any? { |count| count > CatalogueVariants::MAX_CARRIERS }
 
         candidates = CatalogueLookup.candidates(query, within:)
         return [nil, entry_not_found(query, strings)] if candidates.empty?
@@ -154,16 +155,18 @@ module Discord
       # Too many entries to list or offer, so the catalogue pages narrowed to
       # the name stand in for them. A catalogue with only a few of them still
       # lists each, so the one component among six pieces of equipment is not
-      # buried with them.
-      private def entry_too_common(query, carriers, strings)
+      # buried with them. A command offering one catalogue names the page by
+      # the name rather than by a type every line would share.
+      private def entry_too_common(query, carriers, strings, within)
         name = ::Catalogue::TokenResolver.parse(query).last
         lines = carriers.flat_map do |prefix, count|
+          type = CatalogueLookup.listed_type(prefix, within)
           if count > CatalogueVariants::MAX_CARRIERS
             url = url_for_path("#{PAGES.fetch(prefix)}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
-            ["• [#{CatalogueLookup.type_label(prefix)}](#{url}) · #{count}"]
+            ["• [#{type || Markdown.escape(name)}](#{url}) · #{count}"]
           else
             CatalogueVariants.named(prefix, name).map do |record|
-              "• #{entry_link(record.name, prefix, record.slug)} · #{CatalogueLookup.type_label(prefix)}"
+              ["• #{entry_link(record.name, prefix, record.slug)}", type].compact.join(" · ")
             end
           end
         end

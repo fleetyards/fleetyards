@@ -190,6 +190,19 @@ module Discord
         assert_includes ::Discord::Commands::Place.autocomplete("name", "hub").pluck(:name), "Hub · #{"M" * 80} · hub_reyes"
       end
 
+      # Past the handful of carriers the suggestions offer one by one, a name
+      # still names places: it is not a miss.
+      test "a name too many places share points to the locations page" do
+        6.times { |index| create(:location, name: "Cave", kind: "cave", parent: @hurston, system: @stanton, sc_key: "Cave_#{index}") }
+
+        content = call("Cave")[:content]
+
+        assert_equal [
+          I18n.t("discord.commands.location.too_common", query: "Cave"),
+          "• [Cave](https://#{Rails.configuration.app.domain}/locations/?nameCont=Cave) · 6"
+        ].join("\n"), content
+      end
+
       test "suggests no catalogue items" do
         create(:commodity, name: "Everus Ore")
 

@@ -101,6 +101,7 @@ de:
         more: '…und weitere. Wähle einen aus den Vorschlägen.'
         more_shops: '…und %{count} weitere auf [der Seite des Orts](%{url})'
         not_found: 'Kein Ort gefunden für „%{query}“.'
+        too_common: 'Zu viele Orte heißen „%{query}“, um sie hier aufzulisten. Auf der Orte-Seite stehen alle:'
       my_hangar:
         empty: 'Du hast noch keine Schiffe in [deinem Hangar](%{url}).'
         heading: '[Dein Hangar](%{url}) — %{count} Schiffe, %{models} Typen'
