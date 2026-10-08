@@ -43,10 +43,10 @@ class ItemPrice < ApplicationRecord
   # a ship's loadout nests components a few slots deep. The count catches a
   # deleted row, as in ItemPriceConcern#item_prices_cache_key; the query cache
   # answers every fragment of a request after the first.
-  def self.cache_key_for(item_type)
-    count, touched_at = where(item_type:).pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(updated_at)"))
+  def self.cache_key_for(*item_types)
+    count, touched_at = where(item_type: item_types).pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(updated_at)"))
 
-    [item_type, count, touched_at&.utc&.to_fs(:usec)]
+    [*item_types, count, touched_at&.utc&.to_fs(:usec)]
   end
 
   def self.with_shop_links(prices)

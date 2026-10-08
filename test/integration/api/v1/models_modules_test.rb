@@ -91,7 +91,28 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules serves the module's own new price after the payload was cached" do
+    model = create(:model)
+    model_module = create(:model_module)
+    create(:module_hardpoint, model:, model_module:)
+    price = create(:item_price, item: model_module, price_type: :sell, price: 100, location: "Admin - Area18")
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules"
+      assert_equal [100.0], module_sold_at_prices(response.parsed_body)
+
+      ItemPrice.where(id: price.id).update_all(price: 120, updated_at: 1.minute.from_now)
+      get "/api/v1/models/#{model.slug}/modules"
+
+      assert_equal [120.0], module_sold_at_prices(response.parsed_body)
+    end
+  end
+
   private def sold_at_prices(body)
     body["items"].sole["hardpoints"].sole.dig("component", "availability", "soldAt").map { |entry| entry["price"] }
+  end
+
+  private def module_sold_at_prices(body)
+    body["items"].sole.dig("availability", "soldAt").map { |entry| entry["price"] }
   end
 end

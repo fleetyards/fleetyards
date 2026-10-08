@@ -2,10 +2,10 @@
 
 json.items do
   json.array! @model_modules do |model_module|
-    # Component prices too: the hardpoints render them, and a price sync touches
-    # neither the module nor its slots.
+    # Prices too, the module's and its hardpoints' components': a price sync
+    # touches neither the module nor its slots.
     json.cache! [
-      "v4", model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component"), Manufacturer.artwork_version
+      "v4", model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), Manufacturer.artwork_version
     ] do
       json.partial!("api/v1/model_modules/base", model_module:)
     end
