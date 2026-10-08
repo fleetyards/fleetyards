@@ -136,7 +136,6 @@
         "note": "Nota interna facoltativa"
       },
       "component": {
-        "category": "Categoria",
         "componentType": "Tipo componente",
         "componentSubType": "Sottotipo componente",
         "size": "Dimensione",

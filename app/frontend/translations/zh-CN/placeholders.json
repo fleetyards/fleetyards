@@ -136,7 +136,6 @@
         "note": "可选的内部备注"
       },
       "component": {
-        "category": "分类",
         "componentType": "组件类型",
         "componentSubType": "组件子类型",
         "size": "尺寸",

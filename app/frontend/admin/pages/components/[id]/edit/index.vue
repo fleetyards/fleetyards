@@ -23,6 +23,7 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import ComponentTypeSelect from "@/admin/components/base/ComponentTypeSelect/index.vue";
+import ComponentCategorySelect from "@/admin/components/base/ComponentCategorySelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -148,10 +149,11 @@ const handleCancel = async () => {
         <hr />
         <div class="row">
           <div class="col-12 col-md-6">
-            <FormInput
+            <ComponentCategorySelect
               v-model="category"
               v-bind="categoryProps"
-              translation-key="component.category"
+              :multiple="false"
+              :no-label="false"
               name="category"
             />
           </div>

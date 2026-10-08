@@ -136,7 +136,6 @@
         "note": "選填的內部備註"
       },
       "component": {
-        "category": "分類",
         "componentType": "組件類型",
         "componentSubType": "組件子類型",
         "size": "尺寸",

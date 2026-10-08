@@ -136,7 +136,6 @@
         "note": "Optional internal note"
       },
       "component": {
-        "category": "Category",
         "componentType": "Component Type",
         "componentSubType": "Component Sub Type",
         "size": "Size",

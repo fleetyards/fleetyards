@@ -136,7 +136,6 @@
         "note": "Optionale interne Notiz"
       },
       "component": {
-        "category": "Kategorie",
         "componentType": "Komponententyp",
         "componentSubType": "Komponenten-Untertyp",
         "size": "Größe",
