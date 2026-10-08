@@ -7,9 +7,7 @@ module Discord
   class SyncFleetJoinRoleJob < ::ApplicationJob
     sidekiq_options retry: 1, queue: "notifications"
 
-    # The second argument is ignored: picking a role resets what the first
-    # sweep needs. It stays so jobs queued with it still run.
-    def perform(fleet_id, _reset = false)
+    def perform(fleet_id)
       fleet = Fleet.find_by(id: fleet_id)
       return if fleet.blank?
 

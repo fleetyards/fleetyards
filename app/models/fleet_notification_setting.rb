@@ -176,7 +176,7 @@ class FleetNotificationSetting < ApplicationRecord
   end
 
   private def sync_discord_join_role
-    ::Discord::SyncFleetJoinRoleJob.perform_async(fleet_id, true)
+    ::Discord::SyncFleetJoinRoleJob.perform_async(fleet_id)
   end
 
   private def backfill_discord_member_roles

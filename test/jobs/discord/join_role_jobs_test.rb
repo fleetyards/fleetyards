@@ -96,7 +96,7 @@ module Discord
     test "picking a join role queues a sync that forgets who held the previous one" do
       @setting.update!(discord_join_role_id: "300000000000000002")
 
-      assert_equal [[@fleet.id, true]], SyncFleetJoinRoleJob.jobs.pluck("args")
+      assert_equal [[@fleet.id]], SyncFleetJoinRoleJob.jobs.pluck("args")
     end
 
     test "another guild clears every id from the previous one, and switching back does not restore them" do
@@ -140,7 +140,7 @@ module Discord
         member("uid-unlinked", JOIN_ROLE)
       ])
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_predicate membership_of(holder), :accepted?
       assert_nil membership_of(bystander)
@@ -185,7 +185,7 @@ module Discord
       @setting.update_columns(discord_join_role_swept_at: nil)
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_predicate membership_of(holder), :accepted?
       refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
@@ -218,7 +218,7 @@ module Discord
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
       @api.expects(:get_guild_member).never
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_predicate membership_of(holder), :accepted?
     end
@@ -239,7 +239,7 @@ module Discord
       @setting.update!(discord_join_role_id: "300000000000000002")
       @api.stubs(:list_guild_members).returns([member("uid-1", "300000000000000002")])
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_nil membership_of(removed)
@@ -257,7 +257,7 @@ module Discord
       @setting.update!(discord_join_role_id: "300000000000000002")
       assert_nil @setting.reload.discord_join_role_swept_at
       @api.stubs(:list_guild_members).raises(ApiClient::Error.new(503, "Unavailable"))
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
       assert_nil @setting.reload.discord_join_role_swept_at
 
       @api.stubs(:list_guild_members).returns([member("uid-1", "300000000000000002")])
@@ -314,7 +314,7 @@ module Discord
       @setting.update!(discord_join_role_id: "300000000000000002")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
 
       assert_predicate membership_of(kept), :accepted?
     end
