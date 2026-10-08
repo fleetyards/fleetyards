@@ -14,7 +14,9 @@ import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/in
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
 import {
   type EquipmentQuery,
+  useEquipmentGradesFilters,
   useEquipmentItemTypesFilters,
+  useEquipmentSizesFilters,
   useEquipmentSlotsFilters,
   useEquipmentSubTypesFilters,
   useEquipmentTypesFilters,
@@ -48,6 +50,8 @@ const prefillFormValues = (): EquipmentQuery => ({
   subTypeIn: asList(filters.value.subTypeIn),
   weaponClassIn: asList(filters.value.weaponClassIn),
   slotIn: asList(filters.value.slotIn),
+  sizeIn: asList(filters.value.sizeIn),
+  gradeIn: asList(filters.value.gradeIn),
 });
 
 const setupForm = () => {
@@ -101,6 +105,8 @@ watch(itemTypes, (options) => {
 const { data: subTypes } = useEquipmentSubTypesFilters();
 const { data: weaponClasses } = useEquipmentWeaponClassesFilters();
 const { data: slots } = useEquipmentSlotsFilters();
+const { data: sizes } = useEquipmentSizesFilters();
+const { data: grades } = useEquipmentGradesFilters();
 </script>
 
 <template>
@@ -150,6 +156,24 @@ const { data: slots } = useEquipmentSlotsFilters();
       name="slot"
       :options="slots ?? []"
       :label="t('labels.filters.equipment.slot')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.sizeIn"
+      name="size"
+      :options="sizes ?? []"
+      :label="t('labels.filters.equipment.size')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.gradeIn"
+      name="grade"
+      :options="grades ?? []"
+      :label="t('labels.filters.equipment.grade')"
       :no-label="true"
       multiple
     />

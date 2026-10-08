@@ -2379,6 +2379,8 @@
           "itemType": "物品类型",
           "weaponClass": "武器类别",
           "slot": "部位",
+          "size": "尺寸",
+          "grade": "等级",
           "buyPriceGt": "买入价格 >=",
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",

@@ -2379,6 +2379,8 @@
           "itemType": "Type d'objet",
           "weaponClass": "Classe d'arme",
           "slot": "Emplacement",
+          "size": "Taille",
+          "grade": "Grade",
           "buyPriceGt": "Prix d'achat >=",
           "buyPriceLt": "Prix d'achat <=",
           "sellPriceGt": "Prix de vente >=",

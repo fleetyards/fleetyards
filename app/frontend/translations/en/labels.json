@@ -2379,6 +2379,8 @@
           "itemType": "Item Type",
           "weaponClass": "Weapon Class",
           "slot": "Slot",
+          "size": "Size",
+          "grade": "Grade",
           "buyPriceGt": "Buy Price >=",
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
