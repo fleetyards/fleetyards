@@ -196,4 +196,22 @@ describe("usePresenceUpdates", () => {
 
     expect(perform).not.toHaveBeenCalled();
   });
+
+  it("waits for a fresh connect after signing out and back in", async () => {
+    await renderConnected();
+
+    useSessionStore().authenticated = false;
+    await nextTick();
+    perform.mockClear();
+
+    useSessionStore().authenticated = true;
+    await nextTick();
+
+    expect(perform).not.toHaveBeenCalled();
+
+    handlers[0].connected?.({ reconnect: false });
+    await nextTick();
+
+    expect(perform).toHaveBeenCalledWith("active");
+  });
 });

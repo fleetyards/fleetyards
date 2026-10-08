@@ -67,6 +67,14 @@ export const usePresenceUpdates = () => {
     },
   });
 
+  // Signing out drops the subscription without a disconnect event, and the
+  // next sign-in must wait for its own connect.
+  watch(isAuthenticated, (value) => {
+    if (!value) {
+      connected.value = false;
+    }
+  });
+
   const { pause, resume } = useIntervalFn(
     () => report("active"),
     ACTIVE_INTERVAL,
