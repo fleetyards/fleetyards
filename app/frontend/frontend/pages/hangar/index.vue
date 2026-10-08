@@ -52,6 +52,7 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
 import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
+import { useTourAutostart } from "@/shared/composables/useTourAutostart";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   useHangarStats as useHangarStatsQuery,
@@ -348,14 +349,6 @@ const openGuide = () => {
   tourOpen.value = true;
 };
 
-// Waits for the groups request to settle as well as the stats: the tour picks
-// its steps when it starts, and the groups row is one of them -- but a failed
-// request only costs that step, not the tour. A refetch keeps the previous
-// stats, so clearing a filter that matched nothing reads as an empty hangar
-// until it lands. The delay lets the page's enter transition settle, so the
-// first spotlight is measured where it stays.
-const TOUR_AUTOSTART_DELAY = 800;
-
 // Only new accounts get it pushed on them. A long-standing user whose hangar
 // just became empty -- after removing every ship ahead of a re-import -- knows
 // the page, and can still start the tour from the menu.
@@ -370,26 +363,13 @@ const isNewAccount = computed(() => {
   );
 });
 
-let tourTimer = 0;
-
-// Someone who already clicked or typed is busy -- maybe in a modal the tour
-// would make inert -- so the pending start is dropped for this visit, not
-// queued behind it or rearmed by the next refetch.
-let tourAutostartDismissed = false;
-
-const dismissTourAutostart = () => {
-  tourAutostartDismissed = true;
-  cancelTourAutostart();
-};
-
-const cancelTourAutostart = () => {
-  window.clearTimeout(tourTimer);
-  document.removeEventListener("pointerdown", dismissTourAutostart, true);
-  document.removeEventListener("keydown", dismissTourAutostart, true);
-};
-
-watch(
-  () =>
+// Waits for the groups request to settle as well as the stats: the tour picks
+// its steps when it starts, and the groups row is one of them -- but a failed
+// request only costs that step, not the tour. A refetch keeps the previous
+// stats, so clearing a filter that matched nothing reads as an empty hangar
+// until it lands.
+useTourAutostart({
+  ready: () =>
     !!currentUser?.value?.id &&
     isNewAccount.value &&
     !hangarStore.hasSeenTour(currentUser.value.id) &&
@@ -397,22 +377,8 @@ watch(
     !hangarStatsFetching.value &&
     hangarStats.value?.total === 0 &&
     !isFilterSelected.value,
-  (shouldStart) => {
-    cancelTourAutostart();
-
-    if (shouldStart && !tourAutostartDismissed) {
-      tourTimer = window.setTimeout(() => {
-        cancelTourAutostart();
-        openGuide();
-      }, TOUR_AUTOSTART_DELAY);
-      document.addEventListener("pointerdown", dismissTourAutostart, true);
-      document.addEventListener("keydown", dismissTourAutostart, true);
-    }
-  },
-  { immediate: true },
-);
-
-onBeforeUnmount(cancelTourAutostart);
+  start: openGuide,
+});
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
