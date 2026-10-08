@@ -102,8 +102,12 @@ module Api
         render json: ValidationError.new("fleet_members.demote", message: I18n.t("validation_error.fleet_memberships.demote_not_permitted")), status: :bad_request
       end
 
+      # Discarded like a member leaving, with whoever removed them on the
+      # version, so the fleet keeps the record that they were in: a join role
+      # picked later must not admit them as if they never were.
       def destroy
-        return if @member.destroy
+        @member.author_id = current_resource_owner.id
+        return if @member.discard
 
         render json: ValidationError.new("fleet_members.destroy", errors: @member.errors), status: :bad_request
       end

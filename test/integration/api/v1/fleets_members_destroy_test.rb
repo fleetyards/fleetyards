@@ -50,6 +50,17 @@ class Api::V1::FleetsMembersDestroyTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 204, path_params: {fleetSlug: @fleet.slug, username: @member.username}
   end
 
+  test "DELETE /fleets/:slug/members/:username keeps who removed whom" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    sign_in @admin
+
+    delete "/api/v1/fleets/#{@fleet.slug}/members/#{@member.username}", as: :json
+
+    assert_response :no_content
+    assert_predicate membership.reload, :discarded?
+    assert_equal @admin.id, membership.versions.last.author_id
+  end
+
   test "DELETE /fleets/:slug/members/:username returns 404 for unknown member" do
     sign_in @admin
 
