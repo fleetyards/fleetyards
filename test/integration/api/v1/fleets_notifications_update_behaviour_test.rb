@@ -70,4 +70,30 @@ class Api::V1::FleetsNotificationsUpdateBehaviourTest < ActionDispatch::Integrat
     assert_response :ok
     assert_equal "345678901234567890", @fleet.reload.fleet_notification_setting.discord_join_role_id
   end
+
+  test "leaves a server change that would clear the join role to members who may hand out invites" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "123456789012345678", discord_join_role_id: "345678901234567890")
+    notifier = create(:user)
+    role = create(:fleet_role, fleet: @fleet, name: "Herald", resource_access: ["fleet:notifications:manage"])
+    create(:fleet_membership, :accepted, fleet: @fleet, user: notifier, fleet_role: role)
+    sign_in notifier
+
+    patch "/api/v1/fleets/#{@fleet.slug}/notifications", params: {discordGuildId: "223456789012345678"}, as: :json
+
+    assert_response :forbidden
+    assert_equal "345678901234567890", @fleet.reload.fleet_notification_setting.discord_join_role_id
+  end
+
+  test "lets a member without the invite privilege change a server that has no join role" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "123456789012345678")
+    notifier = create(:user)
+    role = create(:fleet_role, fleet: @fleet, name: "Herald", resource_access: ["fleet:notifications:manage"])
+    create(:fleet_membership, :accepted, fleet: @fleet, user: notifier, fleet_role: role)
+    sign_in notifier
+
+    patch "/api/v1/fleets/#{@fleet.slug}/notifications", params: {discordGuildId: "223456789012345678"}, as: :json
+
+    assert_response :ok
+    assert_equal "223456789012345678", @fleet.reload.fleet_notification_setting.discord_guild_id
+  end
 end

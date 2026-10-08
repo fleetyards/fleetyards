@@ -162,10 +162,15 @@ module Api
       end
 
       # The settings form sends every field back, so only a different role
-      # needs the invite privilege; resending the current one does not.
+      # needs the invite privilege; resending the current one does not. Another
+      # server clears the role, so changing it while one is set does too.
       private def join_role_changing?
-        params.key?(:discord_join_role_id) &&
+        role_changing = params.key?(:discord_join_role_id) &&
           params[:discord_join_role_id].to_s.strip.presence != @setting.discord_join_role_id
+        guild_changing = params.key?(:discord_guild_id) &&
+          params[:discord_guild_id].to_s.strip.presence != @setting.discord_guild_id
+
+        role_changing || (guild_changing && @setting.discord_join_role_id.present?)
       end
 
       private def setting_params
