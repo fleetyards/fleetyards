@@ -260,4 +260,42 @@ describe("useBuybackDetailsSync", () => {
     expect(submitted()).toEqual([]);
     expect(status.value).toBe("idle");
   });
+
+  // Signed out, the pricing answer fails too; that is not a pass that failed.
+  it("ends quietly when the pricing fails after a discard", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    request.mockImplementation(
+      () => new Promise<Reply>((resolve) => (answer = resolve)),
+    );
+
+    const { run, discard, status } = useBuybackDetailsSync();
+    const running = run([ship("1")], ["1"], { waitForSlot });
+    await vi.waitFor(() => expect(request).toHaveBeenCalled());
+
+    discard();
+    answer({ code: 401 });
+    await running;
+
+    expect(status.value).toBe("idle");
+  });
+
+  it("ends quietly when the last failure lands after a cancel", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension((id) =>
+      id === "3"
+        ? new Promise<Reply>((resolve) => (answer = resolve))
+        : { code: 200, id, payload: "<html></html>" },
+    );
+
+    const ids = ["1", "2", "3", "4"];
+    const { run, cancel, status } = useBuybackDetailsSync();
+    const running = run(ids.map(ship), ids, { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(3));
+
+    cancel();
+    answer({ code: 200, id: "3", payload: "<html></html>" });
+    await running;
+
+    expect(status.value).toBe("idle");
+  });
 });

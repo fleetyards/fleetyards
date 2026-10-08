@@ -41,11 +41,11 @@ const done = ref(0);
 
 const running = computed(() => status.value === "running");
 
-// Set from the cancel until the pass actually stops, which can take as long as
-// the request in flight.
-const cancelling = ref(false);
+const cancelled = ref(false);
 
-let cancelled = false;
+// From the cancel until the pass actually stops, which can take as long as the
+// request in flight.
+const cancelling = computed(() => running.value && cancelled.value);
 
 // A discarded pass stores nothing more, not even what it already read.
 let discarded = false;
@@ -156,6 +156,11 @@ export const useBuybackDetailsSync = () => {
       : undefined;
   };
 
+  // A pass stopped on purpose failed nothing, even when its last request did.
+  const endIncomplete = () => {
+    status.value = cancelled.value ? "idle" : "incomplete";
+  };
+
   const run = async (
     buybacks: RsiBuybackItemInput[],
     pendingIds: string[],
@@ -179,8 +184,7 @@ export const useBuybackDetailsSync = () => {
     done.value = 0;
     failures = 0;
     pending = [];
-    cancelled = false;
-    cancelling.value = false;
+    cancelled.value = false;
     discarded = false;
 
     if (pages.length === 0) {
@@ -190,50 +194,48 @@ export const useBuybackDetailsSync = () => {
 
     try {
       await waitForSlot();
-      if (cancelled) return;
+      if (cancelled.value) return;
 
       // Without it no page's price could be stored, so none is read.
       pricing = await readPricing();
       if (!pricing) {
-        status.value = "incomplete";
+        endIncomplete();
         return;
       }
 
       for (const id of pages) {
         await waitForSlot();
-        if (cancelled) return await submit(true);
+        if (cancelled.value) return await submit(true);
 
         if (await readDetailPage(id)) {
           return await stop();
         }
-        await submit(cancelled);
-        if (cancelled) return;
+        await submit(cancelled.value);
+        if (cancelled.value) return;
       }
 
       await submit(true);
       status.value = "finished";
     } catch (error) {
       console.error("Buy-back details sync error:", error);
-      status.value = discarded ? "idle" : "incomplete";
+      endIncomplete();
     } finally {
       // Only a cancelled pass gets here still running.
       if (status.value === "running") {
         status.value = "idle";
       }
-      cancelling.value = false;
     }
   };
 
   const stop = async () => {
     await submit(true);
-    status.value = "incomplete";
+    endIncomplete();
   };
 
   // The pass stops at the next request, and what was read up to then, the
   // answer in flight included, is still stored.
   const cancel = () => {
-    cancelled = true;
-    cancelling.value = running.value;
+    cancelled.value = true;
   };
 
   const discard = () => {
