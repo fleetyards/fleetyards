@@ -375,6 +375,11 @@ watch(
     if (shouldStart) {
       tourTimer = window.setTimeout(() => {
         cancelTourAutostart();
+
+        // A modal the page opened by itself -- one named in the URL -- would
+        // end up inert underneath the tour.
+        if (document.querySelector(".app-modal")) return;
+
         openGuide();
       }, TOUR_AUTOSTART_DELAY);
       document.addEventListener("pointerdown", cancelTourAutostart, true);

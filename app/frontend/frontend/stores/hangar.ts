@@ -103,6 +103,9 @@ export const useHangarStore = defineStore("hangar", {
     empty(state) {
       return state.ships.length === 0;
     },
+    hasSeenTour(state) {
+      return (userId: string) => state.tourSeenBy.includes(userId);
+    },
   },
   actions: {
     toggleDetails() {
@@ -128,9 +131,6 @@ export const useHangarStore = defineStore("hangar", {
     },
     remove(payload: string) {
       this.ships.splice(this.ships.indexOf(payload), 1);
-    },
-    hasSeenTour(userId: string) {
-      return this.tourSeenBy.includes(userId);
     },
     markTourSeen(userId: string) {
       if (!this.hasSeenTour(userId)) this.tourSeenBy.push(userId);
