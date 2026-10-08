@@ -1,7 +1,8 @@
 import { mount } from "@vue/test-utils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { usePresence } from "@/shared/composables/usePresence";
+import { useSessionStore } from "@/frontend/stores/session";
 
 interface Handler {
   channel: { identifier?: string };
@@ -13,6 +14,7 @@ interface Handler {
 const handlers: Handler[] = [];
 const perform = vi.fn(() => Promise.resolve());
 const visibility = ref<DocumentVisibilityState>("visible");
+const idle = ref(false);
 
 vi.mock("@/shared/composables/useSubscription", () => ({
   useSubscription: (options: Handler) => {
@@ -25,14 +27,17 @@ vi.mock("@/shared/composables/useSubscription", () => ({
 vi.mock("@vueuse/core", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@vueuse/core")>()),
   useDocumentVisibility: () => visibility,
+  useIdle: () => ({ idle }),
 }));
 
 const { usePresenceUpdates } = await import("./usePresenceUpdates");
 
 const USER = "11111111-1111-1111-1111-111111111111";
 
-const render = () =>
-  mount(
+const wrappers: ReturnType<typeof mount>[] = [];
+
+const render = () => {
+  const wrapper = mount(
     defineComponent({
       setup() {
         usePresenceUpdates();
@@ -42,12 +47,24 @@ const render = () =>
     }),
   );
 
+  wrappers.push(wrapper);
+
+  return wrapper;
+};
+
 beforeEach(() => {
   handlers.length = 0;
   perform.mockClear();
   visibility.value = "visible";
+  idle.value = false;
   setActivePinia(createPinia());
+  useSessionStore().authenticated = true;
   usePresence().resetPresence();
+});
+
+afterEach(() => {
+  wrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+  vi.useRealTimers();
 });
 
 describe("usePresenceUpdates", () => {
@@ -84,7 +101,7 @@ describe("usePresenceUpdates", () => {
     expect(usePresence().isOnline(USER, false)).toBe(true);
   });
 
-  it("reports activity on connect while visible", () => {
+  it("reports activity on connect while in use", () => {
     render();
 
     handlers[0].connected?.({ reconnect: false });
@@ -94,6 +111,15 @@ describe("usePresenceUpdates", () => {
 
   it("reports nothing from a hidden tab", () => {
     visibility.value = "hidden";
+    render();
+
+    handlers[0].connected?.({ reconnect: false });
+
+    expect(perform).not.toHaveBeenCalled();
+  });
+
+  it("reports nothing when signed out", () => {
+    useSessionStore().authenticated = false;
     render();
 
     handlers[0].connected?.({ reconnect: false });
@@ -111,14 +137,49 @@ describe("usePresenceUpdates", () => {
     expect(perform).toHaveBeenCalledWith("active");
   });
 
-  it("keeps reporting while the tab stays visible", () => {
+  it("keeps reporting while the tab is in use", () => {
     vi.useFakeTimers();
     render();
+    perform.mockClear();
 
     vi.advanceTimersByTime(30_000);
 
     expect(perform).toHaveBeenCalledTimes(1);
+    expect(perform).toHaveBeenCalledWith("active");
+  });
 
-    vi.useRealTimers();
+  it("stops reporting once the tab is hidden, without clearing", async () => {
+    vi.useFakeTimers();
+    render();
+
+    visibility.value = "hidden";
+    await nextTick();
+    perform.mockClear();
+
+    vi.advanceTimersByTime(60_000);
+
+    expect(perform).not.toHaveBeenCalled();
+  });
+
+  it("clears the server's window once the reader goes idle", async () => {
+    vi.useFakeTimers();
+    render();
+
+    idle.value = true;
+    await nextTick();
+    perform.mockClear();
+
+    vi.advanceTimersByTime(60_000);
+
+    expect(perform).not.toHaveBeenCalled();
+  });
+
+  it("reports inactive on going idle", async () => {
+    render();
+
+    idle.value = true;
+    await nextTick();
+
+    expect(perform).toHaveBeenLastCalledWith("inactive");
   });
 });
