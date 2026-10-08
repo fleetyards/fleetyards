@@ -11,14 +11,18 @@ module Locations
     end
 
     def call
-      selling(Shop.where(location: @location).with_attached_image.order(:name).to_a).map do |shop, things|
+      selling(at_place.with_attached_image.to_a).map do |shop, things|
         Summary.new(shop, things.size, ::Shops::Categories.for(things))
       end
     end
 
     # The same shops, without what they sell.
     def shops
-      selling(Shop.where(location: @location).order(:name).to_a).keys
+      selling(at_place.to_a).keys
+    end
+
+    private def at_place
+      Shop.where(location: @location).order(:name)
     end
 
     # Each shop that sells something its catalogue lists, with those things.
