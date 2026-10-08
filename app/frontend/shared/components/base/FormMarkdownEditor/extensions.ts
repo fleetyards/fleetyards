@@ -6,12 +6,21 @@ import {
 } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import {
+  Details,
+  DetailsContent,
+  DetailsSummary,
+} from "@tiptap/extension-details";
 import { Markdown } from "@tiptap/markdown";
 import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
-import { closesFence, splitCodeSpans } from "@/shared/utils/Markdown";
+import {
+  closesFence,
+  readDetails,
+  splitCodeSpans,
+} from "@/shared/utils/Markdown";
 import {
   CatalogueToken,
   CatalogueTokenResolution,
@@ -55,6 +64,94 @@ export const Center = Node.create({
           commands.toggleWrap(this.name),
     };
   },
+});
+
+// GitHub's collapsible section. The extension's own markdown is a nest of
+// `:::details` containers nothing else reads, so the section is read with the
+// renderer's own rules and written the way GitHub writes it:
+//
+//   <details>
+//   <summary>Title</summary>
+//
+//   markdown
+//
+//   </details>
+//
+// A section opens in the editor, so what is in it can be seen and edited. The
+// toggle is the editor's own view of the text, never written: the page always
+// shows a section closed.
+const MarkdownDetails = Details.extend({
+  addAttributes() {
+    return {
+      open: {
+        default: true,
+        parseHTML: () => true,
+        renderHTML: ({ open }) => (open ? { open: "" } : {}),
+      },
+    };
+  },
+
+  markdownTokenizer: {
+    name: "details",
+    level: "block",
+    start: (src: string) => src.search(/^ {0,3}<details/im),
+    tokenize: (src, _tokens, lexer) => {
+      const lines = src.split("\n");
+      const details = readDetails(lines, 0);
+
+      if (!details) return undefined;
+
+      const consumed = lines.slice(0, details.end + 1).join("\n");
+
+      return {
+        type: "details",
+        raw: src.length > consumed.length ? `${consumed}\n` : consumed,
+        summary: lexer.inlineTokens(details.summary),
+        tokens: lexer.blockTokens(details.body.join("\n")),
+      };
+    },
+  },
+
+  parseMarkdown: (token, helpers) => {
+    const body = helpers.parseChildren(token.tokens ?? []);
+
+    return helpers.createNode("details", null, [
+      helpers.createNode(
+        "detailsSummary",
+        null,
+        helpers.parseInline((token as { summary?: [] }).summary ?? []),
+      ),
+      helpers.createNode(
+        "detailsContent",
+        null,
+        body.length ? body : [helpers.createNode("paragraph")],
+      ),
+    ]);
+  },
+
+  renderMarkdown: (node, helpers) => {
+    const [summary, content] = node.content ?? [];
+
+    return [
+      "<details>",
+      `<summary>${helpers.renderChildren(summary?.content ?? [])}</summary>`,
+      "",
+      helpers.renderChildren(content?.content ?? [], "\n\n"),
+      "",
+      "</details>",
+    ].join("\n");
+  },
+});
+
+// The summary is one line of markdown: text, its marks and catalogue items, but
+// no hard break, which would end the line it is written on.
+const MarkdownDetailsSummary = DetailsSummary.extend({
+  content: "(text | catalogueToken)*",
+  markdownTokenizer: undefined,
+});
+
+const MarkdownDetailsContent = DetailsContent.extend({
+  markdownTokenizer: undefined,
 });
 
 // How wide an image shows, as a share of the text column; none is full width.
@@ -141,6 +238,17 @@ export const HEADING_LEVELS = [1, 2, 3] as const;
 // node for -- so typed text like `<RSI handle>` would vanish on the next save.
 // Outside code, `<` is handed over as the entity for itself, which the editor
 // shows and writes back as the character it is.
+const protectText = (text: string) =>
+  splitCodeSpans(text)
+    .map((part) =>
+      part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
+    )
+    .join("");
+
+const DETAILS_TAG = /^[ \t]*(?:<details(?:\s+open)?>|<\/details>)[ \t]*$/i;
+const DETAILS_SUMMARY =
+  /^([ \t]*(?:<details(?:\s+open)?>[ \t]*)?)<summary>(.*)<\/summary>[ \t]*$/i;
+
 export const protectHtml = (markdown: string) => {
   let fence: string | undefined;
 
@@ -164,14 +272,16 @@ export const protectHtml = (markdown: string) => {
         return line;
       }
 
-      return (
-        prefix +
-        splitCodeSpans(body)
-          .map((part) =>
-            part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
-          )
-          .join("")
-      );
+      // A details section's own tags stay tags; a summary's text does not.
+      if (DETAILS_TAG.test(body)) return line;
+
+      const summary = DETAILS_SUMMARY.exec(body);
+
+      if (summary) {
+        return `${prefix}${summary[1]}<summary>${protectText(summary[2])}</summary>`;
+      }
+
+      return prefix + protectText(body);
     })
     .join("\n");
 };
@@ -183,9 +293,12 @@ export const protectHtml = (markdown: string) => {
 export const markdownExtensions = ({
   searchCatalogue,
   lookupCatalogue,
+  detailsToggleLabel,
 }: {
   searchCatalogue?: CatalogueSearch;
   lookupCatalogue?: CatalogueLookup;
+  // Names the button that opens or closes a section in the editor.
+  detailsToggleLabel?: (isOpen: boolean) => string;
 } = {}): Extensions => [
   StarterKit.configure({
     heading: { levels: [...HEADING_LEVELS] },
@@ -200,6 +313,18 @@ export const markdownExtensions = ({
   }),
   SafeImage,
   Center,
+  MarkdownDetails.configure({
+    persist: true,
+    ...(detailsToggleLabel
+      ? {
+          renderToggleButton: ({ element, isOpen }) => {
+            element.setAttribute("aria-label", detailsToggleLabel(isOpen));
+          },
+        }
+      : {}),
+  }),
+  MarkdownDetailsSummary,
+  MarkdownDetailsContent,
   CatalogueToken,
   CatalogueTokenSuggestion.configure(
     searchCatalogue ? { search: searchCatalogue } : {},

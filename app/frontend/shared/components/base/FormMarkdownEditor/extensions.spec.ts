@@ -74,6 +74,30 @@ describe("markdownExtensions round trip", () => {
     expect(roundTrip(saved)).toBe(saved);
   });
 
+  it.each([
+    [
+      "a details section",
+      "<details>\n<summary>**Loadout** for [*Aurora MR*]</summary>\n\n- Repeater\n- Missiles\n\n</details>\n\nAfter",
+    ],
+    [
+      "nested details sections",
+      "<details>\n<summary>Outer</summary>\n\n<details>\n<summary>Inner</summary>\n\nDeep\n\n</details>\n\nTail\n\n</details>",
+    ],
+  ])("keeps %s", (_, markdown) => {
+    expect(roundTrip(markdown)).toBe(markdown);
+  });
+
+  it("writes a details section the way GitHub does", () => {
+    const saved = roundTrip(
+      "<details open><summary>Crew</summary>\nThree pilots\n</details>",
+    );
+
+    expect(saved).toBe(
+      "<details>\n<summary>Crew</summary>\n\nThree pilots\n\n</details>",
+    );
+    expect(roundTrip(saved)).toBe(saved);
+  });
+
   it("writes an underlined heading as a # heading of the same level", () => {
     expect(roundTrip("History\n-------\n\nText")).toBe("## History\n\nText");
   });
@@ -95,6 +119,18 @@ describe("markdownExtensions output rendered by Markdown", () => {
     const rendered = await render(roundTrip(":::center\nWelcome\n:::"));
 
     expect(rendered.find(".markdown__center p").text()).toBe("Welcome");
+  });
+
+  it("renders a saved details section closed, with its summary", async () => {
+    const rendered = await render(
+      roundTrip(
+        "<details>\n<summary>**Loadout**</summary>\n\n- Repeater\n</details>",
+      ),
+    );
+
+    expect(rendered.find("details").attributes("open")).toBeUndefined();
+    expect(rendered.find("details > summary strong").text()).toBe("Loadout");
+    expect(rendered.find("details > ul > li").text()).toBe("Repeater");
   });
 
   it("renders a saved quote, strike, code block and nested list", async () => {
@@ -144,6 +180,24 @@ describe("markdownExtensions and angle brackets", () => {
 
     const rendered = await render(roundTrip("> ```\n> <tag>\n> ```"));
     expect(rendered.find("blockquote pre code").text()).toBe("<tag>");
+  });
+
+  it("keeps a details section's tags and a summary's text", async () => {
+    expect(
+      protectHtml(
+        "<details>\n<summary>a <b>x</b></summary>\n\n<b>y</b>\n\n</details>",
+      ),
+    ).toBe(
+      "<details>\n<summary>a &lt;b>x&lt;/b></summary>\n\n&lt;b>y&lt;/b>\n\n</details>",
+    );
+
+    const rendered = await render(
+      roundTrip("<details><summary>a <b>x</b></summary>\n<b>y</b>\n</details>"),
+    );
+
+    expect(rendered.find("summary").text()).toBe("a <b>x</b>");
+    expect(rendered.find("details p").text()).toBe("<b>y</b>");
+    expect(rendered.find("b").exists()).toBe(false);
   });
 
   it("keeps a fence open past a line that only starts like one", () => {
