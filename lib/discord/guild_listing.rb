@@ -41,7 +41,7 @@ module Discord
     end
 
     private def api
-      @api ||= ApiClient.new(timeout: TIMEOUT)
+      @api ||= ApiClient.new(timeout: TIMEOUT, retries: 2)
     end
   end
 end
