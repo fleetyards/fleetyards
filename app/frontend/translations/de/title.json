@@ -47,6 +47,8 @@
         "inventory": "%{inventory}",
         "vehicleCargo": "Schiffsfracht",
         "buybacks": "Rückkauf-Pledges",
+        "paints": "Lackierungen",
+        "flair": "Hangar-Flair",
         "imports": "Importe",
         "transfers": "Transfers"
       },

@@ -291,6 +291,12 @@
         "requestingAccess": "%{clientName} 正在请求访问您的账户。",
         "scopesIntro": "此应用将能够："
       },
+      "hangarFlair": {
+        "intro": "你 RSI 机库中的机库装饰，以你上次机库同步为准。同步会通过 Fleetyards Sync 扩展读取你的 RSI 机库。"
+      },
+      "hangarPaints": {
+        "intro": "你 RSI 机库中的涂装，以你上次机库同步为准。同步会通过 Fleetyards Sync 扩展读取你的 RSI 机库。"
+      },
       "buybacks": {
         "intro": "你在 RSI 熔炼并可回购的承诺，以你上次同步为准。同步会通过 Fleetyards Sync 扩展读取你的 RSI 回购列表。"
       },

@@ -52,6 +52,7 @@
       "copy": "Copy",
       "download": "Download",
       "zoom": "Zoom",
+      "viewImage": "View %{name} full size",
       "more": "More...",
       "export": "Export",
       "exportHangarLink": "Export for hangar.link",

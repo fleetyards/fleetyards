@@ -38,6 +38,8 @@ type FrontendSimpleRoutes =
   | "hangar-stats"
   | "hangar-imports"
   | "hangar-buybacks"
+  | "hangar-paints"
+  | "hangar-flair"
   | "hangar-transfers"
   | "fleet-logistics-transfers"
   | "hangar-inventories"

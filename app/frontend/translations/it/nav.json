@@ -23,6 +23,8 @@
         "inventories": "Inventories",
         "vehicleCargo": "Carico",
         "buybacks": "Riacquisti",
+        "paints": "Verniciature",
+        "flair": "Decorazioni per l'hangar",
         "imports": "Importazioni",
         "transfers": "Trasferimenti"
       },

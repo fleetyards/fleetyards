@@ -10,6 +10,8 @@ resource :hangar, only: %i[show destroy] do
   post "rsi-page-reports", to: "hangar_rsi_page_reports#create"
   get "buybacks", to: "hangar_buybacks#index"
   get "buybacks/insurance-terms", to: "hangar_buybacks#insurance_terms"
+  get "paints", to: "hangar_pledge_items#paints"
+  get "flair", to: "hangar_pledge_items#flair"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 

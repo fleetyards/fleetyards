@@ -2534,6 +2534,19 @@
         "type": "Typ",
         "shop": "Geschäft"
       },
+      "hangarPledgeItems": {
+        "flair": "Hangar-Flair",
+        "createdOn": "Erstellt",
+        "meltable": "Einschmelzbar",
+        "withValue": "Mit Einschmelzwert",
+        "paints": "Lackierungen",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Einschmelzwert",
+        "partOf": "Teil von %{name}",
+        "pledgeValue": "Pledge-Wert",
+        "quantity": "Anzahl",
+        "search": "Nach Namen suchen"
+      },
       "buybacks": {
         "name": "Rückkauf-Pledges",
         "search": "Rückkauf-Pledges durchsuchen",

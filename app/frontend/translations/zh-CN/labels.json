@@ -2534,6 +2534,19 @@
         "type": "类型",
         "shop": "商店"
       },
+      "hangarPledgeItems": {
+        "flair": "机库装饰",
+        "createdOn": "创建于",
+        "meltable": "可熔炼",
+        "withValue": "有熔炼价值",
+        "paints": "涂装",
+        "pledge": "承诺 %{id}",
+        "meltValue": "熔炼价值",
+        "partOf": "属于 %{name}",
+        "pledgeValue": "承诺价值",
+        "quantity": "数量",
+        "search": "按名称搜索"
+      },
       "buybacks": {
         "name": "可回购承诺",
         "search": "搜索可回购承诺",

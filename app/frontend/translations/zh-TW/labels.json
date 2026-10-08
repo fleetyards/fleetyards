@@ -2534,6 +2534,19 @@
         "type": "類型",
         "shop": "商店"
       },
+      "hangarPledgeItems": {
+        "flair": "機庫裝飾",
+        "createdOn": "建立於",
+        "meltable": "可熔煉",
+        "withValue": "有熔煉價值",
+        "paints": "塗裝",
+        "pledge": "承諾 %{id}",
+        "meltValue": "熔煉價值",
+        "partOf": "屬於 %{name}",
+        "pledgeValue": "承諾價值",
+        "quantity": "數量",
+        "search": "按名稱搜尋"
+      },
       "buybacks": {
         "name": "可回購承諾",
         "search": "搜尋可回購承諾",

@@ -291,6 +291,12 @@
         "requestingAccess": "%{clientName} is requesting access to your account.",
         "scopesIntro": "This application will be able to:"
       },
+      "hangarFlair": {
+        "intro": "The hangar flair in your RSI hangar, as of your last hangar sync. Syncing reads your RSI hangar through the Fleetyards Sync Extension."
+      },
+      "hangarPaints": {
+        "intro": "The paints in your RSI hangar, as of your last hangar sync. Syncing reads your RSI hangar through the Fleetyards Sync Extension."
+      },
       "buybacks": {
         "intro": "The pledges you melted on RSI and could buy back, as of your last sync. Syncing reads your RSI buy-back list through the Fleetyards Sync Extension."
       },

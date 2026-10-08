@@ -2534,6 +2534,19 @@
         "type": "Type",
         "shop": "Shop"
       },
+      "hangarPledgeItems": {
+        "flair": "Hangar Flair",
+        "createdOn": "Created",
+        "meltable": "Meltable",
+        "withValue": "Has a melt value",
+        "paints": "Paints",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Melt value",
+        "partOf": "Part of %{name}",
+        "pledgeValue": "Pledge value",
+        "quantity": "Quantity",
+        "search": "Search by name"
+      },
       "buybacks": {
         "name": "Buy-back pledges",
         "search": "Search buy-back pledges",

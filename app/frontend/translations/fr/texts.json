@@ -291,6 +291,12 @@
         "requestingAccess": "%{clientName} demande l'accès à votre compte.",
         "scopesIntro": "Cette application pourra :"
       },
+      "hangarFlair": {
+        "intro": "Les décorations de votre hangar RSI, à la date de votre dernière synchronisation du hangar. La synchronisation lit votre hangar RSI via l'extension Fleetyards Sync."
+      },
+      "hangarPaints": {
+        "intro": "Les peintures de votre hangar RSI, à la date de votre dernière synchronisation du hangar. La synchronisation lit votre hangar RSI via l'extension Fleetyards Sync."
+      },
       "buybacks": {
         "intro": "Les pledges que vous avez fondus sur RSI et pourriez racheter, à la date de votre dernière synchronisation. La synchronisation lit votre liste de rachat RSI via l'extension Fleetyards Sync."
       },

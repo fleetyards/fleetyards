@@ -47,6 +47,8 @@
         "inventory": "%{inventory}",
         "vehicleCargo": "Vehicle Cargo",
         "buybacks": "Buy-Back Pledges",
+        "paints": "Paints",
+        "flair": "Hangar Flair",
         "imports": "Imports",
         "transfers": "Transfers"
       },

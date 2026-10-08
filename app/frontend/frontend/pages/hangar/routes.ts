@@ -139,6 +139,26 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "paints/",
+    name: "hangar-paints",
+    component: () => import("@/frontend/pages/hangar/paints.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.paints",
+      backgroundImage: "bg-5",
+    },
+  },
+  {
+    path: "flair/",
+    name: "hangar-flair",
+    component: () => import("@/frontend/pages/hangar/flair.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.flair",
+      backgroundImage: "bg-5",
+    },
+  },
+  {
     path: "stats/",
     name: "hangar-stats",
     component: () => import("@/frontend/pages/hangar/stats.vue"),

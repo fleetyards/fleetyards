@@ -47,6 +47,8 @@
         "inventory": "%{inventory}",
         "vehicleCargo": "Carga de la nave",
         "buybacks": "Pledges de recompra",
+        "paints": "Pinturas",
+        "flair": "Decoración de hangar",
         "imports": "Importaciones",
         "transfers": "Transferencias"
       },

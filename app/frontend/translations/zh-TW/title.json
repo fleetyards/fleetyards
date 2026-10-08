@@ -47,6 +47,8 @@
         "inventory": "%{inventory}",
         "vehicleCargo": "飛船貨物",
         "buybacks": "可回購承諾",
+        "paints": "塗裝",
+        "flair": "機庫裝飾",
         "imports": "匯入記錄",
         "transfers": "轉移"
       },

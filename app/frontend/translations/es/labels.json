@@ -2534,6 +2534,19 @@
         "type": "Tipo",
         "shop": "Tienda"
       },
+      "hangarPledgeItems": {
+        "flair": "Decoración de hangar",
+        "createdOn": "Creado",
+        "meltable": "Fundible",
+        "withValue": "Con valor de fundición",
+        "paints": "Pinturas",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Valor de fundición",
+        "partOf": "Parte de %{name}",
+        "pledgeValue": "Valor del pledge",
+        "quantity": "Cantidad",
+        "search": "Buscar por nombre"
+      },
       "buybacks": {
         "name": "Pledges de recompra",
         "search": "Buscar pledges de recompra",

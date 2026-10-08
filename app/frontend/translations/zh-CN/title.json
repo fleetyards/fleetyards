@@ -47,6 +47,8 @@
         "inventory": "%{inventory}",
         "vehicleCargo": "飞船货物",
         "buybacks": "可回购承诺",
+        "paints": "涂装",
+        "flair": "机库装饰",
         "imports": "导入记录",
         "transfers": "转移"
       },

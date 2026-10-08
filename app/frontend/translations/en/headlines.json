@@ -238,6 +238,8 @@
         "publicWishlist": "%{user} Wishlist",
         "resetIngame": "Reset Ingame Ships after Wipe",
         "buybacks": "Buy-Back Pledges",
+        "paints": "Paints",
+        "flair": "Hangar Flair",
         "imports": "Imports"
       },
       "buybackSync": "Sync RSI Buy-Back Pledges",

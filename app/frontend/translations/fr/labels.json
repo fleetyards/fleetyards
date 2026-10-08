@@ -2534,6 +2534,19 @@
         "type": "Type",
         "shop": "Magasin"
       },
+      "hangarPledgeItems": {
+        "flair": "Décorations de hangar",
+        "createdOn": "Créé",
+        "meltable": "Fondable",
+        "withValue": "Avec valeur de fonte",
+        "paints": "Peintures",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Valeur de fonte",
+        "partOf": "Fait partie de %{name}",
+        "pledgeValue": "Valeur du pledge",
+        "quantity": "Quantité",
+        "search": "Rechercher par nom"
+      },
       "buybacks": {
         "name": "Pledges rachetables",
         "search": "Rechercher des pledges rachetables",

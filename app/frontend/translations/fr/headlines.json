@@ -236,6 +236,8 @@
         "publicWishlist": "Liste de souhaits de %{user}",
         "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu",
         "buybacks": "Pledges rachetables",
+        "paints": "Peintures",
+        "flair": "Décorations de hangar",
         "imports": "Imports"
       },
       "buybackSync": "Synchroniser les pledges rachetables RSI",
