@@ -59,7 +59,7 @@ module Discord
         role_ids = member_role_ids(api, guild_id, discord_uid)
         join_roles.each do |join_role|
           users.each { |user| join_role.apply(user, role_ids, quiet:) }
-          DiscordMemberRead.record(join_role.fleet, discord_uid, at: read_at)
+          join_role.record_read(discord_uid, read_at)
         end
         true
       rescue ApiClient::Error, Faraday::Error => e
@@ -77,7 +77,7 @@ module Discord
         next if DiscordMemberRead.newer_than?(join_role.fleet, discord_uid, read_at)
 
         users.each { |user| join_role.apply(user, role_ids, quiet:) }
-        DiscordMemberRead.record(join_role.fleet, discord_uid, at: read_at)
+        join_role.record_read(discord_uid, read_at)
       end
     end
 
@@ -144,7 +144,7 @@ module Discord
 
         read_at = Time.current
         role_ids = current_role_ids(uid)
-        DiscordMemberRead.record(fleet, uid, at: read_at) unless role_ids.nil?
+        record_read(uid, read_at) unless role_ids.nil?
         next true if Array(role_ids).include?(role_id) && join_through_role(membership)
 
         membership.request!
@@ -178,6 +178,14 @@ module Discord
     rescue ApiClient::Error, Faraday::Error => e
       Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{uid}: #{e.message}")
       nil
+    end
+
+    # Only for the role still set: a read handed the previous one applied
+    # nothing, and must not make the new role's sweep skip the member.
+    def record_read(discord_uid, read_at)
+      FleetNotificationSetting.transaction(requires_new: true) do
+        DiscordMemberRead.record(fleet, discord_uid, at: read_at) if still_the_role?
+      end
     end
 
     # Applies the roles a player holds now. Nothing happens unless that differs

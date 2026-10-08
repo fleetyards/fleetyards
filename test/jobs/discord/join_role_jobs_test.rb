@@ -353,6 +353,24 @@ module Discord
       refute DiscordMemberRead.exists?(fleet_id: @fleet.id)
     end
 
+    test "picking another join role forgets when its members were last read" do
+      DiscordMemberRead.record(@fleet, "uid-1")
+
+      @setting.update!(discord_join_role_id: "300000000000000002")
+
+      refute DiscordMemberRead.exists?(fleet: @fleet)
+    end
+
+    test "a read handed the previous join role does not hold back the new one's sweep" do
+      stale = JoinRole.new(@fleet.reload)
+      assert_equal JOIN_ROLE, stale.role_id
+      FleetNotificationSetting.find(@setting.id).update!(discord_join_role_id: "300000000000000002")
+
+      stale.record_read("uid-1", Time.current)
+
+      refute DiscordMemberRead.exists?(fleet: @fleet)
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])

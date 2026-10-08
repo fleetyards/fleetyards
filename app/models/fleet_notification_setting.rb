@@ -100,7 +100,11 @@ class FleetNotificationSetting < ApplicationRecord
   # applies the new one as gained by everyone holding it and lost by nobody:
   # changing the role keeps the members the old one brought in.
   before_save -> { self.discord_join_role_swept_at = nil }, if: :discord_join_role_id_changed?
-  after_save -> { FleetDiscordRoleHolder.where(fleet_id:).delete_all }, if: :saved_change_to_discord_join_role_id?
+  # Nor does when someone was last read for it.
+  after_save -> {
+    FleetDiscordRoleHolder.where(fleet_id:).delete_all
+    DiscordMemberRead.where(fleet_id:).delete_all
+  }, if: :saved_change_to_discord_join_role_id?
   after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
 
   scope :with_join_role, -> { where.not(discord_join_role_id: nil).where.not(discord_guild_id: nil) }
