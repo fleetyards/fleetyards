@@ -99,12 +99,10 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.PAGE,
       pledges: [],
       pledgeIds: ["101"],
-      itemCount: 1,
-      kindedItemCount: 1,
     });
   });
 
-  it("reads a page with items RSI gives no kind, and counts them", () => {
+  it("reads a page with items RSI gives no kind", () => {
     const page = extract(
       pledgesPage(
         pledge(
@@ -113,7 +111,7 @@ describe("RSIHangarParser.extractPage", () => {
         ) +
           pledge(
             "102",
-            `<div class="with-images">${item("Ship", "Cutter")}<div class="item"><div class="title">Star Citizen Digital Download</div></div></div><div class="without-images"><div class="item"><div class="title">Self-Land Hangar</div></div></div>`,
+            `<div class="with-images">${item("Ship", "Cutter")}<div class="item"><div class="title">Star Citizen Digital Download</div></div><div class="item"><div class="image" style="background-image:url('https://media.test/b.jpg')"></div><div class="text"><div class="title">Top Hat</div></div></div></div><div class="without-images"><div class="item"><div class="title">Self-Land Hangar</div></div></div>`,
           ),
       ),
     );
@@ -125,8 +123,22 @@ describe("RSIHangarParser.extractPage", () => {
         { id: "101", name: "CSV-SM", type: "ship" },
         { id: "102", name: "Cutter", type: "ship" },
       ],
-      itemCount: 5,
-      kindedItemCount: 2,
+    });
+  });
+
+  it("does not read a page where a ship lost its kind", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            `${item("Ship", "Cutter")}<div class="item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div></div>`,
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
     });
   });
 });

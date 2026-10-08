@@ -397,15 +397,17 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("reports a hangar in which no item has a kind, and submits nothing", async () => {
+  it("reports a ship that lost its kind, and submits nothing", async () => {
     const { wrapper } = await mountModal();
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
 
-    await replyWithPage(
-      '<div class="item"><div class="title">Cutter</div></div><div class="item"><div class="title">Cutlass - Akuma Paint</div></div>',
+    extensionReplies(
+      "sync",
+      `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101"><div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div></li></ul>`,
     );
+    await flushPromises();
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).toHaveBeenCalledWith({

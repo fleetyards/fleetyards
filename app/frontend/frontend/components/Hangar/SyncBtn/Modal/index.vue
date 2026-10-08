@@ -26,7 +26,6 @@ import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
   HangarSyncUnmatchedActionEnum,
-  RsiPageCheckEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import {
@@ -257,8 +256,6 @@ const start = async () => {
   pledges.value = [];
   currentPage.value = 1;
   seenPledgeIds.clear();
-  itemCount.value = 0;
-  kindedItemCount.value = 0;
   syncStartedAt.value = new Date();
   fetchCount.value = 0;
   fetchPage(currentPage.value);
@@ -289,66 +286,48 @@ const fetchPage = (page: number) => {
 
 const reportRsiPage = useRsiPageReport();
 
-const itemCount = ref(0);
-
-const kindedItemCount = ref(0);
-
-// Nothing is submitted: what was read so far is only part of the hangar, and
-// every ship on the pages after it would count as unmatched.
-const failUnrecognised = async (check: RsiPageCheckEnum) => {
-  updateStep("fetchHangar", "failure");
-
-  const outcome = await reportRsiPage({
-    page: RsiPageKindEnum.HANGAR,
-    check,
-    pageNumber: currentPage.value,
-    extensionVersion: hangarStore.extensionVersion,
-  });
-
-  // Signed out, the identify answer has already said so.
-  if (outcome === RsiPageReportOutcome.REPORTED) {
-    displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
-  } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
-    displayAlert({ text: t("messages.syncExtension.failure") });
-  }
-};
-
-const finishFetch = async () => {
-  if (itemCount.value > 0 && kindedItemCount.value === 0) {
-    await failUnrecognised(RsiPageCheckEnum.MISSING_KINDS);
-    return;
-  }
-
-  updateStep("fetchHangar", "success");
-  await finishSync();
-};
-
 const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
   const parser = new RSIHangarParser();
   const result = parser.extractPage(htmlPage);
 
+  // Nothing is submitted: what was read so far is only part of the hangar, and
+  // every ship on the pages after it would count as unmatched.
   if (result.status === RsiPageStatus.UNRECOGNISED) {
-    await failUnrecognised(result.check);
+    updateStep("fetchHangar", "failure");
+
+    const outcome = await reportRsiPage({
+      page: RsiPageKindEnum.HANGAR,
+      check: result.check,
+      pageNumber: currentPage.value,
+      extensionVersion: hangarStore.extensionVersion,
+    });
+
+    // Signed out, the identify answer has already said so.
+    if (outcome === RsiPageReportOutcome.REPORTED) {
+      displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
+    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      displayAlert({ text: t("messages.syncExtension.failure") });
+    }
     return;
   }
 
   if (result.status === RsiPageStatus.END) {
-    await finishFetch();
+    updateStep("fetchHangar", "success");
+    await finishSync();
     return;
   }
 
   const newPledgeIds = result.pledgeIds.filter((id) => !seenPledgeIds.has(id));
 
   if (newPledgeIds.length === 0) {
-    await finishFetch();
+    updateStep("fetchHangar", "success");
+    await finishSync();
     return;
   }
 
   newPledgeIds.forEach((id) => seenPledgeIds.add(id));
-  itemCount.value += result.itemCount;
-  kindedItemCount.value += result.kindedItemCount;
 
   const newPledges = result.pledges.filter((pledge) =>
     newPledgeIds.includes(pledge.id),

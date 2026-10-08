@@ -10,11 +10,6 @@ export type RSIHangarPage =
       status: RsiPageStatus.PAGE;
       pledges: RSIHangarItem[];
       pledgeIds: string[];
-      // RSI gives no kind to a ship upgrade, a game package's download or
-      // the text-only extras under a pledge, so one page can legitimately
-      // have none. A whole hangar without one has lost the markup.
-      itemCount: number;
-      kindedItemCount: number;
     }
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
@@ -94,30 +89,43 @@ export class RSIHangarParser {
 
     const items = Array.from(pledgeList.getElementsByClassName("item"));
 
-    const kindedItems = items.filter((item) => this.hasKind(item));
+    // RSI gives no kind to ship upgrades, the game download or old
+    // merchandise, but none of those names a manufacturer. Every ship does:
+    // one with a manufacturer and no kind would drop out of the sync, and the
+    // unmatched action would act on it.
+    if (
+      items.some(
+        (item) =>
+          item.getElementsByClassName("liner")[0] &&
+          this.itemKind(item) === undefined,
+      )
+    ) {
+      return {
+        status: RsiPageStatus.UNRECOGNISED,
+        check: RsiPageCheckEnum.MISSING_KINDS,
+      };
+    }
+
+    const kinds = items
+      .map((item) => this.itemKind(item))
+      .filter((kind) => kind !== undefined);
 
     const known = [...READ_KINDS, ...SKIPPED_KINDS];
 
-    if (kindedItems.some((item) => !known.includes(this.itemKind(item)))) {
+    if (kinds.some((kind) => !known.includes(kind))) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
       };
     }
 
-    return {
-      status: RsiPageStatus.PAGE,
-      pledges,
-      pledgeIds,
-      itemCount: items.length,
-      kindedItemCount: kindedItems.length,
-    };
+    return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {
     const kind = this.itemKind(item);
 
-    if (!READ_KINDS.includes(kind)) {
+    if (kind === undefined || !READ_KINDS.includes(kind)) {
       return undefined;
     }
 
@@ -151,12 +159,10 @@ export class RSIHangarParser {
     };
   }
 
-  hasKind(item: Element): boolean {
-    return !!item.getElementsByClassName("kind")[0];
-  }
+  itemKind(item: Element): string | undefined {
+    const kind = item.getElementsByClassName("kind")[0];
 
-  itemKind(item: Element): string {
-    return item.getElementsByClassName("kind")[0]?.textContent || "";
+    return kind ? kind.textContent || "" : undefined;
   }
 
   extractImage(item: Element): string | undefined {
