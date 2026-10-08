@@ -13528,6 +13528,9 @@ components:
       - SalvageFieldEmitter
       - SalvageFieldSupporter
       - SalvageInternalStorage
+      - SalvageModifier
+      - GroundVehicleMissileLauncher
+      - Light
       x-enumNames:
       - SEAT
       - DOOR
@@ -13602,6 +13605,9 @@ components:
       - SALVAGE_FIELD_EMITTER
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
+      - SALVAGE_MODIFIER
+      - GROUND_VEHICLE_MISSILE_LAUNCHER
+      - LIGHT
       title: ComponentTypeEnum
     ComponentWeapon:
       type: object
