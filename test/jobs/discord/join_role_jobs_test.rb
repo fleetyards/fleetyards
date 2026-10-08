@@ -223,12 +223,12 @@ module Discord
       assert_predicate membership_of(holder), :accepted?
     end
 
-    test "a sync cut off by the network ends nobody's membership" do
+    test "a sync cut off by the network ends nobody's membership and is retried" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
       @api.stubs(:list_guild_members).raises(Faraday::ConnectionFailed.new("reset"))
 
-      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+      assert_raises(Faraday::ConnectionFailed) { SyncFleetJoinRoleJob.new.perform(@fleet.id) }
 
       assert_predicate membership_of(kept), :accepted?
     end
@@ -257,7 +257,7 @@ module Discord
       @setting.update!(discord_join_role_id: "300000000000000002")
       assert_nil @setting.reload.discord_join_role_swept_at
       @api.stubs(:list_guild_members).raises(ApiClient::Error.new(503, "Unavailable"))
-      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+      assert_raises(ApiClient::Error) { SyncFleetJoinRoleJob.new.perform(@fleet.id) }
       assert_nil @setting.reload.discord_join_role_swept_at
 
       @api.stubs(:list_guild_members).returns([member("uid-1", "300000000000000002")])

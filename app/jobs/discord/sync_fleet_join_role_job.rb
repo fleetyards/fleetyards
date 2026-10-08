@@ -44,7 +44,8 @@ module Discord
 
     # Returns the ids of the linked users found in the guild, or nil when the
     # guild could not be read to the end -- a partial list must not read as
-    # everyone else having left.
+    # everyone else having left. What a retry might read raises, so Sidekiq
+    # tries again instead of the next daily run.
     private def apply_guild_members(join_role)
       seen = Set.new
       after = nil
@@ -72,6 +73,8 @@ module Discord
 
       seen
     rescue ApiClient::Error, Faraday::Error => e
+      raise if JoinRole.retryable?(e)
+
       Rails.logger.warn("[Discord::SyncFleetJoinRoleJob] fleet=#{join_role.fleet.id}: #{e.message}")
       nil
     end
