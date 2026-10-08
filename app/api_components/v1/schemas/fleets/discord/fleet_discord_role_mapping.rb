@@ -12,7 +12,7 @@ module V1
             properties: {
               fleetRoleId: {type: :string, format: :uuid},
               name: {type: :string},
-              discordRoleId: {type: :string, nullable: true}
+              discordRoleId: {type: [:string, :null]}
             },
             additionalProperties: false,
             required: %w[fleetRoleId name discordRoleId]

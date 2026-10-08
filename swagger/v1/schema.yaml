@@ -24002,8 +24002,9 @@ components:
         name:
           type: string
         discordRoleId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - fleetRoleId
@@ -24017,8 +24018,9 @@ components:
           type: string
           format: uuid
         discordRoleId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: "`null` clears the mapping."
       required:
       - fleetRoleId

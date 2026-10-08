@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             fleetRoleId: {type: :string, format: :uuid},
-            discordRoleId: {type: :string, nullable: true, description: "`null` clears the mapping."}
+            discordRoleId: {type: [:string, :null], description: "`null` clears the mapping."}
           },
           required: %w[fleetRoleId discordRoleId],
           additionalProperties: false
