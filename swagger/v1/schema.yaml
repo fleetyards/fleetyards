@@ -508,34 +508,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
-  "/filters/components/classes":
-    get:
-      summary: Components Classes Filters
-      tags:
-      - ComponentsFilters
-      operationId: componentClassesFilters
-      deprecated: true
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FilterOptionsList"
-  "/filters/components/item-types":
-    get:
-      summary: Components Item Types Filters
-      tags:
-      - ComponentsFilters
-      operationId: componentItemTypesFilters
-      deprecated: true
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/components/sub-types":
     get:
       summary: Components Sub Type Filters
@@ -20380,8 +20352,6 @@ components:
           type: string
         size:
           type: string
-        class:
-          "$ref": "#/components/schemas/ComponentClassEnum"
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
         itemClassLabel:
@@ -20595,21 +20565,6 @@ components:
       items:
         "$ref": "#/components/schemas/ComponentBuildChange"
       title: ComponentBuildChangesList
-    ComponentClassEnum:
-      type: string
-      enum:
-      - RSIModular
-      - RSIWeapon
-      - RSIAvionic
-      - RSIPropulsion
-      - RSIThruster
-      x-enumNames:
-      - RSI_MODULAR
-      - RSI_WEAPON
-      - RSI_AVIONIC
-      - RSI_PROPULSION
-      - RSI_THRUSTER
-      title: ComponentClassEnum
     ComponentController:
       type: object
       properties:
@@ -21308,16 +21263,6 @@ components:
           type: array
           items:
             type: string
-        itemTypeIn:
-          type: array
-          items:
-            type: string
-          deprecated: true
-        componentClassIn:
-          type: array
-          items:
-            type: string
-          deprecated: true
         categoryIn:
           type: array
           items:
