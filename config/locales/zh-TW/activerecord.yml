@@ -468,6 +468,7 @@ zh-TW:
               permanent: "不能是領導職級——新成員不會以隊長或副隊長身分開始"
               required: "是必需的——請改為將其他職級設為預設"
         fleet_role:
+          everyone_role: "是 @everyone，伺服器的每位成員都擁有它"
           not_a_discord_id: "必須是 Discord 透過「複製 ID」複製的數字 ID，而非名稱"
           attributes:
             base:

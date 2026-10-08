@@ -468,6 +468,7 @@ it:
               permanent: "non può essere un grado di comando: un nuovo membro non inizia mai come Capo o Vice"
               required: "è necessario: imposta invece un altro grado come predefinito"
         fleet_role:
+          everyone_role: "è @everyone, che hanno tutti i membri del server"
           not_a_discord_id: "deve essere l’ID numerico che Discord copia con «Copia ID», non un nome"
           attributes:
             base:

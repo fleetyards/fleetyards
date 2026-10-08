@@ -44,6 +44,14 @@ class FleetRoleTest < ActiveSupport::TestCase
     assert @member_role.errors.of_kind?(:discord_role_id, :invalid)
   end
 
+  test "a Discord role cannot be @everyone" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
+    @member_role.discord_role_id = "100000000000000001"
+
+    assert_not @member_role.valid?
+    assert_includes @member_role.errors.details[:discord_role_id], {error: :everyone_role}
+  end
+
   test "a blank Discord role clears the mapping" do
     @member_role.update!(discord_role_id: " 300000000000000001 ")
     assert_equal "300000000000000001", @member_role.discord_role_id

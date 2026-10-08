@@ -468,6 +468,7 @@ de:
               permanent: "kann kein Führungsrang sein – neue Mitglieder beginnen nie als Leiter oder Co-Leiter"
               required: "wird benötigt – mache stattdessen einen anderen Rang zum Standard"
         fleet_role:
+          everyone_role: "ist @everyone, das jedes Mitglied des Servers hat"
           not_a_discord_id: "muss die numerische ID sein, die Discord mit „ID kopieren“ kopiert, kein Name"
           attributes:
             base:

@@ -468,6 +468,7 @@ es:
               permanent: "no puede ser un rango de mando: un miembro nuevo nunca empieza como Líder o Colíder"
               required: "es necesario: haz predeterminado otro rango en su lugar"
         fleet_role:
+          everyone_role: "es @everyone, que tienen todos los miembros del servidor"
           not_a_discord_id: "debe ser el ID numérico que Discord copia con «Copiar ID», no un nombre"
           attributes:
             base:

@@ -31,6 +31,14 @@ class FleetNotificationSettingDiscordIdsTest < ActiveSupport::TestCase
     assert_nil @setting.discord_guild_id
   end
 
+  test "rejects @everyone as the member role" do
+    @setting.update!(discord_guild_id: "123456789012345678")
+    @setting.discord_member_role_id = "123456789012345678"
+
+    assert_not @setting.valid?
+    assert_includes @setting.errors.details[:discord_member_role_id], {error: :everyone_role}
+  end
+
   test "rejects @everyone as the join role" do
     @setting.discord_guild_id = "123456789012345678"
     @setting.discord_join_role_id = "123456789012345678"

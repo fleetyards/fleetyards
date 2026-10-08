@@ -468,6 +468,7 @@ zh-CN:
               permanent: "不能是领导职级——新成员不会以队长或副队长身份开始"
               required: "是必需的——请改为将其他职级设为默认"
         fleet_role:
+          everyone_role: "是 @everyone，服务器的每个成员都拥有它"
           not_a_discord_id: "必须是 Discord 通过“复制 ID”复制的数字 ID，而不是名称"
           attributes:
             base:

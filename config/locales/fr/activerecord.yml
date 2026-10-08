@@ -468,6 +468,7 @@ fr:
               permanent: "ne peut pas être un grade de commandement : un nouveau membre ne commence jamais comme Chef ou Co-chef"
               required: "est nécessaire : définissez plutôt un autre grade par défaut"
         fleet_role:
+          everyone_role: "est @everyone, que tous les membres du serveur possèdent"
           not_a_discord_id: "doit être l’identifiant numérique que Discord copie avec « Copier l’identifiant », pas un nom"
           attributes:
             base:
