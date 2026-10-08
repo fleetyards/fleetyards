@@ -206,6 +206,9 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     ten_years = buyback(user, insurance_months: 120)
     one_month = buyback(user, insurance_months: 1)
     buyback(user, insurance_months: 6)
+    uninsured = buyback(user, details_synced_at: Time.current)
+    zero_months = buyback(user, insurance_months: 0, details_synced_at: Time.current)
+    upgrade = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray")
     buyback(user)
     sign_in user
 
@@ -220,6 +223,10 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {q: {"insuranceIn" => ["1"]}} do
       assert_equal [one_month.id], parsed_body["items"].pluck("id")
     end
+
+    assert_api_response :get, 200, params: {q: {"insuranceIn" => ["none"]}} do
+      assert_equal [uninsured.id, zero_months.id, upgrade.id].sort, parsed_body["items"].pluck("id").sort
+    end
   end
 
   test "GET /hangar/buybacks matches nothing for an insurance value it cannot read" do
@@ -228,7 +235,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     buyback(user, insurance_months: 120)
     sign_in user
 
-    ["lti", "010x", "0x10", "99999999999999999999"].each do |value|
+    ["lti", "0", "010x", "0x10", "99999999999999999999"].each do |value|
       assert_api_response :get, 200, params: {q: {"insuranceIn" => [value]}} do
         assert_empty parsed_body["items"], value
       end

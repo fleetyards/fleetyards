@@ -8,7 +8,7 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[index]
+        only: %i[index insurance_terms]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
         only: %i[sync sync_details]
@@ -22,6 +22,13 @@ module Api
           .order(reclaimed_on: :desc, name: :asc, id: :asc)
           .page(page_params)
           .per(per_page(BuybackPledge))
+      end
+
+      # The terms the caller's pledges carry, so the filter offers only those.
+      def insurance_terms
+        authorize! with: ::BuybackPledgePolicy
+
+        @insurance_terms = authorized_scope(BuybackPledge.all).insurance_terms
       end
 
       # An empty list is a valid answer -- every pledge was bought back -- but

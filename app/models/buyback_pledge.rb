@@ -95,19 +95,43 @@ class BuybackPledge < ApplicationRecord
     conditions.empty? ? all : where(conditions.join(" OR "))
   }
 
-  # "lifetime" or a number of months, any of which matches. A lifetime pledge
-  # never matches a number. Values that are neither match nothing, so a typo
-  # empties the list instead of quietly ignoring the filter.
+  INSURANCE_MONTHS = 1..9999
+
+  # Insurance is read from a pledge's detail page, so a pledge whose details
+  # were never synced has unknown insurance, not none. Upgrades have no detail
+  # page and carry no insurance.
+  INSURANCE_KNOWN_SQL = "(buyback_pledges.details_synced_at IS NOT NULL OR buyback_pledges.kind = 'upgrade')"
+
+  # "lifetime", "none" or a number of months, any of which matches. A lifetime
+  # pledge never matches a number. Values that are none of these match nothing,
+  # so a typo empties the list instead of quietly ignoring the filter.
   scope :insurance_in, ->(*values) {
     values = values.flatten.map(&:to_s)
-    months = values.grep(/\A\d{1,4}\z/).map(&:to_i)
+    months = values.grep(/\A\d{1,4}\z/).map(&:to_i).select { |value| INSURANCE_MONTHS.cover?(value) }
+    not_lifetime = arel_table[:lifetime_insurance].eq(false)
 
     conditions = []
     conditions << arel_table[:lifetime_insurance].eq(true) if values.include?("lifetime")
-    conditions << arel_table[:insurance_months].in(months).and(arel_table[:lifetime_insurance].eq(false)) if months.any?
+    if values.include?("none")
+      no_months = arel_table[:insurance_months].eq(nil).or(arel_table[:insurance_months].eq(0))
+      conditions << not_lifetime.and(no_months).and(Arel.sql(INSURANCE_KNOWN_SQL))
+    end
+    conditions << not_lifetime.and(arel_table[:insurance_months].in(months)) if months.any?
 
     conditions.empty? ? none : where(conditions.reduce(:or))
   }
+
+  # The values `insurance_in` can match within this relation.
+  def self.insurance_terms
+    rows = distinct.pluck(:lifetime_insurance, :insurance_months, Arel.sql(INSURANCE_KNOWN_SQL))
+
+    {
+      months: rows.filter_map { |lifetime, months, _known| months if !lifetime && INSURANCE_MONTHS.cover?(months) }
+        .uniq.sort.reverse,
+      lifetime: rows.any? { |lifetime, _months, _known| lifetime },
+      none: rows.any? { |lifetime, months, known| !lifetime && known && (months.nil? || months.zero?) }
+    }
+  end
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[kind name price]
