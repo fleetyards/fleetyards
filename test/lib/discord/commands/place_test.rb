@@ -203,6 +203,23 @@ module Discord
         ].join("\n"), content
       end
 
+      test "a crowded name still lists the other places that match" do
+        6.times { |index| create(:location, name: "Cave", kind: "cave", parent: @hurston, system: @stanton, sc_key: "Cave_#{index}") }
+        entrance = create(:location, name: "Cave Entrance", kind: "outpost", parent: @hurston, system: @stanton)
+
+        content = call("Cave")[:content]
+
+        assert content.start_with?(I18n.t("discord.commands.location.too_common", query: "Cave"))
+        assert_includes content, "/locations/?nameCont=Cave) · 6"
+        assert_includes content, "/locations/#{entrance.slug}/"
+      end
+
+      test "echoes a typed link as text, not as a link" do
+        content = call("[Free aUEC](https://evil.example)")[:content]
+
+        assert_includes content, "\\[Free aUEC\\]\\(https://evil.example\\)"
+      end
+
       test "keeps a list of long names within a message" do
         6.times { |index| create(:location, name: "Zeta_#{index}_#{"long_name_" * 19}", kind: "outpost", parent: @hurston, system: @stanton) }
 
@@ -211,12 +228,6 @@ module Discord
         assert_operator ::Discord::MessageLength.of(content), :<=, 2000
         assert content.start_with?(I18n.t("discord.commands.location.ambiguous", query: "zeta"))
         assert content.end_with?(I18n.t("discord.commands.location.more"))
-      end
-
-      test "echoes a typed link as text, not as a link" do
-        content = call("[Free aUEC](https://evil.example)")[:content]
-
-        assert_includes content, "\\[Free aUEC\\]\\(https://evil.example\\)"
       end
 
       test "suggests no catalogue items" do

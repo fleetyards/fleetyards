@@ -120,12 +120,17 @@ module Discord
         exact = ::Catalogue::TokenResolver.new.resolve([exact_token(query, within)], within:)
         return listed_entry(query, CatalogueLookup.prefix_for(exact.first), exact.first.slug, strings) if exact.one?
 
+        candidates = CatalogueLookup.candidates(query, within:)
         carriers = CatalogueVariants.carriers(query, within:)
         # Per catalogue, as the suggestions count them, so a name they offered
-        # entry by entry is listed the same way when typed out.
-        return [nil, entry_too_common(query, carriers, strings, within)] if carriers.values.any? { |count| count > CatalogueVariants::MAX_CARRIERS }
+        # entry by entry is listed the same way when typed out. What else
+        # matches is listed below it rather than hidden by it.
+        if carriers.values.any? { |count| count > CatalogueVariants::MAX_CARRIERS }
+          name = ::Catalogue::TokenResolver.parse(query).last
+          others = candidates.reject { |candidate| carriers.key?(candidate.prefix) && candidate.name.casecmp?(name) }
+          return [nil, entry_too_common(query, carriers, strings, within, others)]
+        end
 
-        candidates = CatalogueLookup.candidates(query, within:)
         return [nil, entry_not_found(query, strings)] if candidates.empty?
         return listed_entry(query, candidates.first.prefix, candidates.first.slug, strings) if candidates.one?
 
@@ -157,7 +162,7 @@ module Discord
       # lists each, so the one component among six pieces of equipment is not
       # buried with them. A command offering one catalogue names the page by
       # the name rather than by a type every line would share.
-      private def entry_too_common(query, carriers, strings, within)
+      private def entry_too_common(query, carriers, strings, within, others)
         name = ::Catalogue::TokenResolver.parse(query).last
         lines = carriers.flat_map do |prefix, count|
           type = CatalogueLookup.listed_type(prefix, within)
@@ -171,16 +176,15 @@ module Discord
           end
         end
 
-        message(content: [I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines].join("\n"))
+        others = others.first(MAX_CANDIDATES).map { |candidate| candidate_line(candidate, within) }
+
+        message(content: MessageLength.truncate([I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines, *others].join("\n")))
       end
 
       # Long names and their links can run a list of five past what a message
       # holds, so lines are dropped from the end until it fits.
       private def entry_candidate_list(query, candidates, strings, within)
-        lines = candidates.first(MAX_CANDIDATES).map do |candidate|
-          ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", CatalogueLookup.listed_type(candidate.prefix, within), Markdown.escape(candidate.detail.to_s).presence]
-            .compact.join(" · ")
-        end
+        lines = candidates.first(MAX_CANDIDATES).map { |candidate| candidate_line(candidate, within) }
 
         content = ->(shown) do
           [
@@ -192,6 +196,11 @@ module Discord
         lines.pop while lines.size > 1 && !MessageLength.fits?(content.call(lines))
 
         message(content: MessageLength.truncate(content.call(lines)))
+      end
+
+      private def candidate_line(candidate, within)
+        ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", CatalogueLookup.listed_type(candidate.prefix, within), Markdown.escape(candidate.detail.to_s).presence]
+          .compact.join(" · ")
       end
 
       private def entry_link(name, prefix, slug)
