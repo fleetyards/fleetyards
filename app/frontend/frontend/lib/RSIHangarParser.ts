@@ -101,10 +101,8 @@ export class RSIHangarParser {
           return;
         }
 
-        const parsed = this.parseItem(id, item, kind);
-
-        if (parsed) {
-          items.push(parsed);
+        if (READ_KINDS.includes(kind)) {
+          items.push(this.parseItem(id, item, kind));
         }
       });
 
@@ -158,15 +156,7 @@ export class RSIHangarParser {
     return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
-  parseItem(
-    id: string,
-    item: Element,
-    kind: string,
-  ): RSIHangarItem | undefined {
-    if (!READ_KINDS.includes(kind)) {
-      return undefined;
-    }
-
+  parseItem(id: string, item: Element, kind: string): RSIHangarItem {
     const name = item.getElementsByClassName("title")[0]?.textContent || "";
 
     let kindOverride: RSIHangarItemKind | undefined;
