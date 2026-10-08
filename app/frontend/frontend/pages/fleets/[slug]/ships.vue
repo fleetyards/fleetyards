@@ -33,6 +33,11 @@ const shareUrl = computed(() => {
   if (!props.fleet) {
     return "";
   }
+
+  if (window.SHORT_DOMAIN && props.fleet.fid) {
+    return `${window.location.protocol}//${window.SHORT_DOMAIN}/f/${encodeURIComponent(props.fleet.fid)}/ships`;
+  }
+
   const host = `${window.location.protocol}//${window.location.host}`;
 
   return `${host}/fleets/${props.fleet.slug}/ships`;
