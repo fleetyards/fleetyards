@@ -25,7 +25,7 @@ module Discord
       return if fleet.blank?
       return if fleet.fleet_notification_setting&.discord_guild_id.blank?
 
-      ids = membership_ids(fleet, fleet_role_id)
+      ids = membership_ids(fleet, fleet_role_id, retired_role_ids)
       return if ids.empty?
 
       Rails.logger.info("[Discord::BackfillFleetMemberRolesJob] fleet=#{fleet_id} members=#{ids.size}")
@@ -37,14 +37,19 @@ module Discord
 
     # Only accepted members who actually linked a Discord account: a sync for
     # anyone else is a job that can only decide to do nothing.
-    private def membership_ids(fleet, fleet_role_id)
+    #
+    # Unless a role was retired. A member who left or changed rank between the
+    # mapping change and this job was synced without it, by then no longer
+    # managed, so only a sync from here can still take it off them.
+    private def membership_ids(fleet, fleet_role_id, retired_role_ids)
       scope = fleet.fleet_memberships
-        .kept
-        .where(aasm_state: "accepted")
         .joins(user: :omniauth_connections)
         .where(omniauth_connections: {provider: OmniauthConnection.providers[:discord]})
 
-      scope = scope.where(fleet_role_id: fleet_role_id) if fleet_role_id.present?
+      if retired_role_ids.blank?
+        scope = scope.kept.where(aasm_state: "accepted")
+        scope = scope.where(fleet_role_id: fleet_role_id) if fleet_role_id.present?
+      end
 
       scope.distinct.pluck(:id)
     end

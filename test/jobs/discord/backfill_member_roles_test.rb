@@ -115,6 +115,22 @@ module Discord
         assert_equal [[membership.id, ["300000000000000001"]]], ::Discord::SyncMemberRolesJob.jobs.map { |job| job["args"] }
       end
 
+      # They were synced while the role was no longer mapped, so nothing else
+      # would take it off them.
+      test "a retired role also reaches members who left or changed rank meanwhile" do
+        left = accepted_member
+        left.update!(discarded_at: Time.current)
+        moved = accepted_member
+        moved.update!(fleet_role: @fleet.fleet_roles.ranked.first)
+        stayed = accepted_member
+        accepted_member(linked: false)
+        clear_jobs
+
+        ::Discord::BackfillFleetMemberRolesJob.new.perform(@fleet.id, @role.id, ["300000000000000001"])
+
+        assert_equal [left.id, moved.id, stayed.id].sort, synced_membership_ids.sort
+      end
+
       # A large fleet is spread rather than fired at Discord at once.
       test "spreads the syncs over time" do
         (::Discord::BackfillFleetMemberRolesJob::PER_SECOND + 2).times { accepted_member }
