@@ -272,6 +272,19 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("does not count a pledge's text-only extras as its items", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<div class="with-images">${item("Skin", "Cutlass - Akuma Paint")}</div><div class="without-images"><div class="item"><div class="title">Digital Wallpaper</div></div></div>`,
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({ pledges: [{ pledgeItemCount: 1 }] });
+  });
+
   it("reads no melt value off a pledge of in-game credits", () => {
     const page = extract(
       pledgesPage(

@@ -91,6 +91,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     create(:hangar_pledge_item, user:, name: "Cutlass - Akuma Paint", pledge_name: "Paints - Cutlass - Akuma Paint", pledge_value: 10, pledge_item_count: 1)
     create(:hangar_pledge_item, user:, name: "CSV - Granite Paint", pledge_name: "Standalone Ships - CSV-SM plus Granite Paint",
       pledge_value: 40, pledge_item_count: 3)
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Poster - Banu Merchantman", pledge_value: 6, pledge_item_count: 2, quantity: 2)
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/paints" do
@@ -104,6 +105,13 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
       assert_nil bundled["meltValue"]
       assert_in_delta 40.0, bundled["pledgeValue"]
       assert_equal "Standalone Ships - CSV-SM plus Granite Paint", bundled["pledgeName"]
+    end
+
+    assert_api_response :get, 200, api_path: "/hangar/flair" do
+      poster = parsed_body["items"].sole
+
+      assert poster["standalone"]
+      assert_in_delta 6.0, poster["meltValue"]
     end
   end
 

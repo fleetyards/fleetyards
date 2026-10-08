@@ -59,9 +59,10 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   # Melting returns what the whole pledge is worth, so an item has a melt value
-  # of its own only when it is all the pledge holds.
+  # of its own only when it is all the pledge holds. RSI lists a poster held
+  # twice as two items, which the sync stores as one row.
   def standalone?
-    pledge_item_count == 1
+    pledge_item_count.present? && pledge_item_count == quantity
   end
 
   def melt_value
