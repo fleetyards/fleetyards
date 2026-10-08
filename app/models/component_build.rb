@@ -51,9 +51,9 @@
 # Component -- so a load can rewrite a build without touching the row a hardpoint,
 # a model paint or an uploaded icon hangs off.
 class ComponentBuild < ApplicationRecord
-  belongs_to :component
   self.ignored_columns += %w[item_type component_class]
 
+  belongs_to :component
   belongs_to :manufacturer, optional: true
 
   # Everything a build says, as opposed to what identifies the component. Taken

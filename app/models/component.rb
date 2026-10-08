@@ -49,6 +49,11 @@ class Component < ApplicationRecord
   include KeyedSlug
   include ScDataVersioned
 
+  # Ignored a release ahead of the migration that drops them, because the
+  # pre-deploy hook migrates before any new container boots. `category` replaced
+  # both; no build the game still ships carries either.
+  self.ignored_columns += %w[item_type component_class]
+
   paginates_per 50
   max_paginates_per 240
 
@@ -60,11 +65,6 @@ class Component < ApplicationRecord
   # The associations are renamed because PaperTrail's default `version` reader
   # shadows this table's `version` column -- left alone, an update writes NULL
   # over the build a component was last seen in.
-  # Ignored a release ahead of the migration that drops them, because the
-  # pre-deploy hook migrates before any new container boots. `category` replaced
-  # both; no build the game still ships carries either.
-  self.ignored_columns += %w[item_type component_class]
-
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # No `if:` guard, unlike the models versioned alongside this one: Component
