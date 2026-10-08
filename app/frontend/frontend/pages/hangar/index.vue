@@ -128,7 +128,11 @@ const {
   isFetching: hangarStatsFetching,
 } = useHangarStatsQuery(hangarStatsQueryParams);
 
-const { data: hangarGroups, refetch: refetchGroups } = useHangarGroupsQuery();
+const {
+  data: hangarGroups,
+  refetch: refetchGroups,
+  isFetched: hangarGroupsFetched,
+} = useHangarGroupsQuery();
 
 const fetch = async () => {
   await refetch();
@@ -344,12 +348,27 @@ const openGuide = () => {
   tourOpen.value = true;
 };
 
-// Waits for the groups as well as the stats: the tour picks its steps when it
-// starts, and the groups row is one of them. A refetch keeps the previous
+// Waits for the groups request to settle as well as the stats: the tour picks
+// its steps when it starts, and the groups row is one of them -- but a failed
+// request only costs that step, not the tour. A refetch keeps the previous
 // stats, so clearing a filter that matched nothing reads as an empty hangar
 // until it lands. The delay lets the page's enter transition settle, so the
 // first spotlight is measured where it stays.
 const TOUR_AUTOSTART_DELAY = 800;
+
+// Only new accounts get it pushed on them. A long-standing user whose hangar
+// just became empty -- after removing every ship ahead of a re-import -- knows
+// the page, and can still start the tour from the menu.
+const TOUR_AUTOSTART_ACCOUNT_AGE_DAYS = 30;
+
+const isNewAccount = computed(() => {
+  const createdAt = Date.parse(currentUser?.value?.createdAt ?? "");
+
+  return (
+    !Number.isNaN(createdAt) &&
+    Date.now() - createdAt < TOUR_AUTOSTART_ACCOUNT_AGE_DAYS * 86_400_000
+  );
+});
 
 let tourTimer = 0;
 
@@ -372,8 +391,9 @@ const cancelTourAutostart = () => {
 watch(
   () =>
     !!currentUser?.value?.id &&
+    isNewAccount.value &&
     !hangarStore.hasSeenTour(currentUser.value.id) &&
-    !!hangarGroups.value &&
+    hangarGroupsFetched.value &&
     !hangarStatsFetching.value &&
     hangarStats.value?.total === 0 &&
     !isFilterSelected.value,

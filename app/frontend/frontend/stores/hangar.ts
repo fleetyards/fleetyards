@@ -100,9 +100,6 @@ export const useHangarStore = defineStore("hangar", {
     ],
   }),
   getters: {
-    empty(state) {
-      return state.ships.length === 0;
-    },
     hasSeenTour(state) {
       return (userId: string) => state.tourSeenBy.includes(userId);
     },

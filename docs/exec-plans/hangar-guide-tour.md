@@ -19,7 +19,7 @@ Replace the stale hangar guide modal with a tour that spotlights the real contro
 ### Phase 2 — Hangar tour
 1. `Hangar/Tour` defines the steps: welcome, add, sync, display options (cards vs list), groups, a ship’s menu, wishlist, fleetchart, stats, share, the "…" menu. Targets are `data-tour` attributes on the hangar page, `VehiclePanel` and `PrimaryAction`.
 2. `hangarStore.tourSeenBy` (persisted, per account) replaces `starterGuideVisible`, which was set on account confirmation and never read.
-3. Auto-starts once when the hangar is empty, unfiltered, the stats are not refetching and the groups have loaded; a click or key press first cancels it. It is marked seen as soon as it opens. "Show Guide" and the empty state's button (only on the owner's hangar, grid or table) replay it.
+3. Auto-starts once for accounts under 30 days old when the hangar is empty, unfiltered, the stats are not refetching and the groups request has settled; a click or key press first cancels it. It is marked seen as soon as it opens. "Show Guide" and the empty state's button (only on the owner's hangar, grid or table) replay it.
 4. `Hangar/GuideModal`, its YouTube embeds and the `hangarGuide` keys are gone.
 
 ### Phase 3 — Preview pages

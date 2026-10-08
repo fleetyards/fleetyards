@@ -14,13 +14,13 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
 
-type Props = {
+interface Props {
   variant?: EmptyVariantsEnum;
   wishlist?: boolean;
   // The owner's own hangar: offers the RSI sync and the tour, which only that
   // page can run.
   guide?: boolean;
-};
+}
 
 withDefaults(defineProps<Props>(), {
   variant: EmptyVariantsEnum.DEFAULT,
