@@ -60,6 +60,20 @@ module Discord
         assert_includes field(call("Quantainium"), :buy), "[Admin](https://#{Rails.configuration.app.domain}/shops/#{shop.slug}/)"
       end
 
+      test "labels a matched shop with its own name" do
+        shop = Shop.create!(name: "Admin", location: create(:location, name: "Everus Harbor"))
+        price(:sell, 95, " - Everus Harbor - Hurston", shop: shop)
+
+        assert_equal "• [Admin](https://#{Rails.configuration.app.domain}/shops/#{shop.slug}/) · Everus Harbor · Hurston · 95 aUEC",
+          field(call("Quantainium"), :buy)
+      end
+
+      test "leaves out a shop the location does not name" do
+        price(:sell, 95, " - Everus Harbor - Hurston")
+
+        assert_equal "• Everus Harbor · Hurston · 95 aUEC", field(call("Quantainium"), :buy)
+      end
+
       test "does not link a location url that is not a web address" do
         item_price = price(:sell, 95, "Admin - Everus Harbor - Hurston")
         item_price.update_column(:location_url, "javascript:alert(1)")

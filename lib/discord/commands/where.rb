@@ -70,15 +70,18 @@ module Discord
       private def line(item_price)
         shop, *place = item_price.location.to_s.split(" - ")
 
-        ["• #{shop_link(item_price, shop)}", Markdown.escape(place.join(" · ")).presence, uec(item_price.price)]
-          .compact.join(" · ")
+        parts = [shop_link(item_price, shop), Markdown.escape(place.join(" · ")).presence, uec(item_price.price)]
+        "• #{parts.compact.join(" · ")}"
       end
 
       # The shop's page where one is matched, the source's link where it is a
       # web address -- it is third-party fed, so a `javascript:` one is not --
-      # and the bare name otherwise.
+      # and the bare name otherwise. A matched shop names itself; an empty name
+      # would make the link invisible.
       private def shop_link(item_price, name)
-        text = Markdown.escape(name)
+        text = Markdown.escape(item_price.shop&.name.presence || name.to_s.strip)
+        return nil if text.blank?
+
         return "[#{text}](#{url_for_path("/shops/#{item_price.shop.slug}/")})" if item_price.shop&.slug.present?
         return "[#{text}](#{link_safe(item_price.location_url)})" if item_price.location_url.to_s.match?(%r{\Ahttps?://}i)
 
