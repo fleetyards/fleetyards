@@ -41,4 +41,18 @@ class Short::PublicHangarTest < ActionDispatch::IntegrationTest
     assert_response :found
     assert_match(%r{/hangar/data/stats/\?share=abc123\z}, response.location)
   end
+
+  test "carries a hangar's filters and the open fleetchart" do
+    get "/h/data?manufacturerIn=rsi&manufacturerIn=anvil&fleetchart=true"
+
+    assert_response :found
+    assert_match(%r{/hangar/data/\?manufacturerIn=rsi&manufacturerIn=anvil&fleetchart=true\z}, response.location)
+  end
+
+  test "carries a wishlist's query" do
+    get "/h/data/wishlist?page=2&fleetchart=true"
+
+    assert_response :found
+    assert_match(%r{/hangar/data/wishlist/\?page=2&fleetchart=true\z}, response.location)
+  end
 end

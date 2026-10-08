@@ -32,4 +32,13 @@ class Short::FleetShipsTest < ActionDispatch::IntegrationTest
     assert_response :found
     assert_match(%r{/404\z}, response.location)
   end
+
+  test "carries the query, so a link can open the fleetchart" do
+    fleet = create(:fleet, fid: "CHART1")
+
+    get "/f/CHART1/ships?fleetchart=true"
+
+    assert_response :found
+    assert_match(%r{/fleets/#{fleet.slug}/ships/\?fleetchart=true\z}, response.location)
+  end
 end
