@@ -74,32 +74,36 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert_equal "confirmed", past.reload.status
   end
 
-  test "signups for events already over stay as the record of who flew" do
+  test "signups for events already under way stay as the record of who flew" do
     fleet = create(:fleet, created_by: @creator.id, members: [@member])
     membership = fleet.fleet_memberships.find_by(user_id: @member.id)
     over = create(:fleet_event, :open, fleet:, starts_at: 2.days.ago, ends_at: 1.day.ago)
+    running = create(:fleet_event, :open, fleet:, starts_at: 1.hour.ago, ends_at: 1.hour.from_now)
     completed = create(:fleet_event, fleet:, status: "completed", starts_at: 1.hour.from_now)
-    kept = [signup_for(membership, over), signup_for(membership, completed)]
+    kept = [signup_for(membership, over), signup_for(membership, running), signup_for(membership, completed)]
 
     assert membership.discard
 
-    assert_equal %w[confirmed confirmed], kept.map { |signup| signup.reload.status }
+    assert_equal %w[confirmed confirmed confirmed], kept.map { |signup| signup.reload.status }
   end
 
-  test "today's occurrence of a recurring event is kept once it has ended" do
+  test "today's occurrence of a recurring event is kept once it has started" do
     travel_to Time.zone.local(2026, 10, 8, 16, 0) do
       fleet = create(:fleet, created_by: @creator.id, members: [@member])
       membership = fleet.fleet_memberships.find_by(user_id: @member.id)
       ended = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
         recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 9, 0), ends_at: Time.zone.local(2026, 9, 24, 11, 0))
+      running = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 15, 0), ends_at: Time.zone.local(2026, 9, 24, 17, 0))
       tonight = create(:fleet_event, :open, fleet:, recurring: true, recurrence_interval: "weekly",
         recurrence_count: 10, starts_at: Time.zone.local(2026, 9, 24, 20, 0), ends_at: Time.zone.local(2026, 9, 24, 22, 0))
       flown = signup_for(membership, ended, occurrence_date: Date.current)
+      flying = signup_for(membership, running, occurrence_date: Date.current)
       upcoming = signup_for(membership, tonight, occurrence_date: Date.current)
 
       assert membership.discard
 
-      assert_equal "confirmed", flown.reload.status
+      assert_equal %w[confirmed confirmed], [flown, flying].map { |signup| signup.reload.status }
       assert upcoming.reload.withdrawn?
     end
   end

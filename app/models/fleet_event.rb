@@ -450,14 +450,11 @@ class FleetEvent < ApplicationRecord
     occurrences(from: after, take: 1).first
   end
 
-  # When the occurrence keyed by `date` ends, or nil if the series has none on
-  # that day. Without `ends_at` it ends as it starts, as `past?` reads it.
-  def occurrence_ends_at(date)
+  # When the occurrence keyed by `date` starts, or nil if the series has none
+  # on that day.
+  def occurrence_starts_at(date)
     day = date.in_time_zone(Time.zone)
-    start = occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
-    return if start.nil?
-
-    start + (ends_at.present? ? ends_at - starts_at : 0)
+    occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
   end
 
   # Both write the whole array, so the row lock (which also reloads it) keeps a

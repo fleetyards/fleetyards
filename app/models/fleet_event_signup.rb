@@ -81,14 +81,14 @@ class FleetEventSignup < ApplicationRecord
   end
 
   # A recurring signup is keyed by day, so its date alone cannot tell whether
-  # today's occurrence has already ended.
-  def occurrence_over?
-    return fleet_event.past? unless fleet_event.recurring?
+  # today's occurrence has already started.
+  def occurrence_started?
+    return fleet_event.starts_at <= Time.current unless fleet_event.recurring?
     return false if occurrence_date.nil?
     return occurrence_date < Date.current unless occurrence_date == Date.current
 
-    ends_at = fleet_event.occurrence_ends_at(occurrence_date)
-    ends_at.present? && ends_at < Time.current
+    starts_at = fleet_event.occurrence_starts_at(occurrence_date)
+    starts_at.present? && starts_at <= Time.current
   end
 
   # Effective approval mode (slot override, falling back to the event default).

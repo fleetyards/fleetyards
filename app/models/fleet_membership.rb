@@ -336,7 +336,7 @@ class FleetMembership < ApplicationRecord
   end
 
   # A discarded membership keeps its signups, so a seat it held would stay
-  # taken. Events already over keep theirs as the record of who flew, and a
+  # taken. Events already under way keep theirs as the record of who flew, and a
   # restored membership does not get its seats back: they may be gone.
   def withdraw_upcoming_event_signups
     fleet_event_signups
@@ -345,12 +345,12 @@ class FleetMembership < ApplicationRecord
       .where.not(fleet_events: {status: %w[completed cancelled]})
       .where(
         "(fleet_events.recurring AND fleet_event_signups.occurrence_date >= :today) OR " \
-        "(NOT fleet_events.recurring AND COALESCE(fleet_events.ends_at, fleet_events.starts_at) >= :now)",
+        "(NOT fleet_events.recurring AND fleet_events.starts_at > :now)",
         today: Date.current, now: Time.current
       )
       .includes(:fleet_event)
       .find_each do |signup|
-        next if signup.occurrence_over?
+        next if signup.occurrence_started?
 
         # A legacy row failing a later validation must not block the removal.
         signup.withdraw!(validate: false)
