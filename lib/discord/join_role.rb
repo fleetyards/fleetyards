@@ -224,9 +224,11 @@ module Discord
         # to join that gave up waiting for the member lock.
         membership.with_lock { membership.created? && join(membership, quiet:) }
       when "requested"
+        membership.quiet = quiet
         membership.answer_request(accept: true) == :done && membership.update!(discord_role_granted: true)
       when "invited"
         # An officer chose them, so the role is not what keeps them in.
+        membership.quiet = quiet
         membership.accept_invitation!
       else
         # Already a member, or declined: an officer turned them down, and the

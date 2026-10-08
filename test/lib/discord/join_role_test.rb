@@ -88,6 +88,18 @@ module Discord
       refute DiscordMemberRead.exists?(discord_guild_id: GUILD, discord_user_id: "discord-uid-1")
     end
 
+    test "a quiet admission of an open request tells the player but leaves the members' views to the sweep" do
+      request = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.default_member_role)
+      request.request!
+      FleetVehiclesChannel.expects(:broadcast_to).never
+      FleetMembersChannel.expects(:broadcast_to).never
+
+      join_role.apply(@user, [JOIN_ROLE], quiet: true)
+
+      assert_predicate request.reload, :accepted?
+      assert Notification.exists?(user: @user, notification_type: "fleet_request_accepted")
+    end
+
     test "a player Discord cannot find gets a request" do
       @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 

@@ -395,6 +395,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_accept_invitation
+    return if quiet
+
     notify_fleet_admins
     broadcast_to_members
   end
@@ -475,7 +477,7 @@ class FleetMembership < ApplicationRecord
 
   def on_accept_request
     notify_new_member
-    broadcast_to_members
+    broadcast_to_members unless quiet
   end
 
   def broadcast_to_members
