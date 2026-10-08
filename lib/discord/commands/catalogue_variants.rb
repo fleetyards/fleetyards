@@ -74,9 +74,7 @@ module Discord
             .pluck(name)
           next [] if names.empty?
 
-          rows = scope.where("#{name} IN (?)", names).includes(:build)
-          rows = rows.includes(lead(prefix).preload) if lead(prefix).preload
-          rows.map { |record| Variant.new(prefix:, record:) }
+          variants(prefix, scope.where("#{name} IN (?)", names))
         end
       end
 
@@ -99,9 +97,14 @@ module Discord
       # apart by its detail and in its order, so a list of them reads the same
       # every time.
       def self.variants_named(prefix, name)
-        rows = named(prefix, name).includes(:build)
+        variants(prefix, named(prefix, name)).sort_by(&:detail)
+      end
+
+      # Each of `rows` as a variant, with what its name and detail read loaded.
+      def self.variants(prefix, rows)
+        rows = rows.includes(:build)
         rows = rows.includes(lead(prefix).preload) if lead(prefix).preload
-        rows.map { |record| Variant.new(prefix:, record:) }.sort_by(&:detail)
+        rows.map { |record| Variant.new(prefix:, record:) }
       end
 
       # The variant a picked suggestion's value names, if it still is listed.
