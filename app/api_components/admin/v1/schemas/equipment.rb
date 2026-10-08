@@ -10,7 +10,7 @@ module Admin
           properties: {
             hidden: {type: :boolean},
 
-            # The cheapest of `availability`, flattened out so the list can show
+            # The best of `availability`, flattened out so the list can show
             # and filter by a price without reading down the terminal arrays.
             buyPrice: {type: [:number, :null]},
             sellPrice: {type: [:number, :null]},

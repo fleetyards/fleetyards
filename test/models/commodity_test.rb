@@ -101,13 +101,14 @@ class CommodityTest < ActiveSupport::TestCase
 
   # ItemPriceConcern, exercised here because a commodity is priced at every
   # terminal that trades it and so has the most rows of the three catalogues.
-  test "reports the cheapest price of each direction" do
+  test "reports the cheapest sale and the best-paid buy-back" do
     commodity = create(:commodity)
     create(:item_price, item: commodity, price_type: :buy, price: 30)
     create(:item_price, item: commodity, price_type: :buy, price: 12)
     create(:item_price, item: commodity, price_type: :sell, price: 44)
+    create(:item_price, item: commodity, price_type: :sell, price: 50)
 
-    assert_equal 12, commodity.buy_price
+    assert_equal 30, commodity.buy_price
     assert_equal 44, commodity.sell_price
   end
 
@@ -119,14 +120,15 @@ class CommodityTest < ActiveSupport::TestCase
     assert_equal 44, commodity.sell_price
   end
 
-  test "filters on the same cheapest price it reports" do
-    cheap = create(:commodity, name: "Scrap")
-    create(:item_price, item: cheap, price_type: :buy, price: 5)
-    create(:item_price, item: cheap, price_type: :buy, price: 90)
-    dear = create(:commodity, name: "Quantanium")
-    create(:item_price, item: dear, price_type: :buy, price: 88)
+  test "filters on the same best-paid buy-back it reports" do
+    scrap = create(:commodity, name: "Scrap")
+    create(:item_price, item: scrap, price_type: :buy, price: 5)
+    create(:item_price, item: scrap, price_type: :buy, price: 40)
+    quantanium = create(:commodity, name: "Quantanium")
+    create(:item_price, item: quantanium, price_type: :buy, price: 20)
+    create(:item_price, item: quantanium, price_type: :buy, price: 88)
 
-    # Scrap is held out by its cheapest row, not admitted by its dearest.
+    # Quantanium is admitted by its best-paid row, not held out by its lowest.
     assert_equal ["Quantanium"], Commodity.ransack(buy_price_gteq: "50").result.map(&:name)
     assert_equal ["Scrap"], Commodity.ransack(buy_price_lteq: "50").result.map(&:name)
   end

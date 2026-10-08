@@ -18,7 +18,7 @@ module Admin
               nameIn: {type: :array, items: {type: :string}},
               commodityTypeIn: {type: :array, items: {type: :string}},
 
-              # Compared against the same cheapest-of-that-direction figure the
+              # Compared against the same best-of-that-direction figure the
               # payload exposes as `buyPrice`/`sellPrice`.
               buyPriceGteq: {type: :number},
               buyPriceLteq: {type: :number},

@@ -40,13 +40,13 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
   # The whole point of the endpoint: the detail page opens on the terminals and
   # the two figures, and reducing the arrays client-side is what the scalars
   # exist to avoid.
-  test "GET /commodities/{slug} carries the terminals and the cheapest of each direction" do
+  test "GET /commodities/{slug} carries the terminals and the best of each direction" do
     create(:item_price, item: @gold, price_type: :buy, location: "Area18 TDD", price: 6_100)
     create(:item_price, item: @gold, price_type: :buy, location: "Lorville CBD", price: 5_900)
     create(:item_price, item: @gold, price_type: :sell, location: "Area18 TDD", price: 6_450)
 
     assert_api_response :get, 200, params: {slug: @gold.slug} do
-      assert_equal 5_900.0, parsed_body["buyPrice"]
+      assert_equal 6_100.0, parsed_body["buyPrice"]
       assert_equal 6_450.0, parsed_body["sellPrice"]
       assert_equal ["Area18 TDD", "Lorville CBD"],
         parsed_body["availability"]["boughtAt"].map { |price| price["location"] }

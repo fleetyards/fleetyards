@@ -16,7 +16,7 @@ module V1
             slugIn: {type: :array, items: {type: :string}},
             commodityTypeIn: {type: :array, items: {type: :string}},
 
-            # The cheapest price in each direction, across every terminal. A
+            # The best price in each direction, across every terminal. A
             # range rather than a sort alone, so "sells for over 20,000 aUEC"
             # is a question the API answers instead of something a client pages
             # through and sifts itself.

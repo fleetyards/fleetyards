@@ -231,7 +231,7 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /equipment carries the cheapest price of each direction" do
+  test "GET /equipment carries the best price of each direction" do
     equipment = create(:equipment, name: "P4-AR")
     create(:item_price, item: equipment, price_type: :buy, price: 1250)
     create(:item_price, item: equipment, price_type: :buy, price: 1400)
@@ -240,7 +240,7 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/equipment" do
       item = parsed_body["items"].first
 
-      assert_in_delta 1250, item["buyPrice"]
+      assert_in_delta 1400, item["buyPrice"]
       assert_nil item["sellPrice"]
     end
   end

@@ -3,7 +3,8 @@
 # What a catalogue item costs lives in the one polymorphic `item_prices` table,
 # whether the item is a commodity, a ship component or a piece of gear, and all
 # three are asked the same things: where it can be bought, where it can be sold,
-# and the cheapest of each.
+# and the best price of each -- the cheapest a shop sells at, the most a shop
+# pays to buy it back.
 module ItemPriceConcern
   extend ActiveSupport::Concern
 
@@ -17,11 +18,11 @@ module ItemPriceConcern
     # condition. `type` is what makes `_gteq` compare numbers rather than the
     # strings the query string carries.
     ransacker :buy_price, type: :decimal do
-      Arel.sql(cheapest_item_price_sql(:buy))
+      Arel.sql(best_item_price_sql(:buy))
     end
 
     ransacker :sell_price, type: :decimal do
-      Arel.sql(cheapest_item_price_sql(:sell))
+      Arel.sql(best_item_price_sql(:sell))
     end
   end
 
@@ -31,8 +32,10 @@ module ItemPriceConcern
     # the ordering ransack applies on top. A scalar subquery keeps one row per
     # item and yields exactly the number the payload exposes, so a filter
     # matches against the figure the list shows.
-    def cheapest_item_price_sql(price_type)
-      "(SELECT MIN(item_prices.price) FROM item_prices " \
+    def best_item_price_sql(price_type)
+      aggregate = (price_type.to_s == "buy") ? "MAX" : "MIN"
+
+      "(SELECT #{aggregate}(item_prices.price) FROM item_prices " \
         "WHERE item_prices.item_id = #{quoted_table_name}.id " \
         "AND item_prices.item_type = #{connection.quote(name)} " \
         "AND item_prices.price_type = #{ItemPrice.price_types.fetch(price_type.to_s)})"
@@ -78,18 +81,13 @@ module ItemPriceConcern
     item_price.terminal_id || item_price.location
   end
 
+  # Shops buying the item back: the best paid is the one a seller flies to.
   def buy_price
-    quoted_prices(:buy?).min
+    quoted_prices(:buy?).max
   end
 
   def sell_price
     quoted_prices(:sell?).min
-  end
-
-  # What the best-paid shop buys it back at -- the figure a seller wants, where
-  # `buy_price` is the cheapest buy-back the catalogue filters on.
-  def best_buy_price
-    quoted_prices(:buy?).max
   end
 
   # The UEX snapshot writes prices without touching the item it prices, so a
