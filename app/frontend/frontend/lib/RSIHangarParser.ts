@@ -14,19 +14,19 @@ export type RSIHangarPage =
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
-const READ_KINDS = ["Ship", "Component", "Skin"];
+const READ_KINDS = new Map<string, RSIHangarItemKind>([
+  ["Ship", "ship"],
+  ["Component", "component"],
+  ["Skin", "skin"],
+  ["Hangar decoration", "flair"],
+]);
 
 // Kinds that never become a vehicle. Any other label may be a ship RSI has
 // relabelled: skipped, it would drop out of the sync and the unmatched action
 // would act on it.
-const SKIPPED_KINDS = [
-  "Insurance",
-  "Credits",
-  "Hangar decoration",
-  "FPS Equipment",
-];
+const SKIPPED_KINDS = ["Insurance", "Credits", "FPS Equipment"];
 
-const KNOWN_KINDS = [...READ_KINDS, ...SKIPPED_KINDS];
+const KNOWN_KINDS = [...READ_KINDS.keys(), ...SKIPPED_KINDS];
 
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
@@ -34,6 +34,38 @@ const COMPONENT_FOR_MODELS = [
 ];
 
 const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
+
+// "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
+// melt value at all.
+const PLEDGE_VALUE = /^\$([\d,]+\.\d{2}) USD$/;
+
+// "Created: October 08, 2026". A date in any other form is left out; the
+// pledge id still orders the hangar without it.
+const PLEDGE_CREATED_ON = /([A-Z][a-z]+) (\d{1,2}), (\d{4})/;
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+type RSIPledgeInfo = Pick<
+  RSIHangarItem,
+  | "pledgeName"
+  | "pledgeValue"
+  | "pledgeItemCount"
+  | "pledgeCreatedOn"
+  | "meltable"
+>;
 
 export class RSIHangarParser {
   parser = new DOMParser();
@@ -82,7 +114,26 @@ export class RSIHangarParser {
 
       const items: RSIHangarItem[] = [];
 
-      Array.from(entry.getElementsByClassName("item")).forEach((item) => {
+      const elements = Array.from(entry.getElementsByClassName("item"));
+
+      const pledgeInfo: RSIPledgeInfo = {
+        pledgeName: name || undefined,
+        pledgeValue: this.parsePledgeValue(
+          this.hiddenValue(entry, "js-pledge-value"),
+        ),
+        pledgeItemCount: elements.filter(
+          (item) =>
+            this.itemKind(item) !== undefined ||
+            !item.closest(".without-images"),
+        ).length,
+        pledgeCreatedOn: this.parseCreatedOn(
+          entry.getElementsByClassName("date-col")[0]?.textContent,
+        ),
+        // RSI's "Exchange" button, the one that melts the pledge.
+        meltable: !!entry.getElementsByClassName("js-reclaim")[0],
+      };
+
+      elements.forEach((item) => {
         const kind = this.itemKind(item);
 
         if (kind === undefined) {
@@ -101,8 +152,8 @@ export class RSIHangarParser {
           return;
         }
 
-        if (READ_KINDS.includes(kind)) {
-          items.push(this.parseItem(id, item, kind));
+        if (READ_KINDS.has(kind)) {
+          items.push(this.parseItem(id, item, kind, pledgeInfo));
         }
       });
 
@@ -156,7 +207,12 @@ export class RSIHangarParser {
     return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
   }
 
-  parseItem(id: string, item: Element, kind: string): RSIHangarItem {
+  parseItem(
+    id: string,
+    item: Element,
+    kind: string,
+    pledgeInfo: RSIPledgeInfo = {},
+  ): RSIHangarItem {
     const name = item.getElementsByClassName("title")[0]?.textContent || "";
 
     let kindOverride: RSIHangarItemKind | undefined;
@@ -183,8 +239,33 @@ export class RSIHangarParser {
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
-      type: kindOverride || (kind.toLowerCase() as RSIHangarItemKind),
+      type: kindOverride || (READ_KINDS.get(kind) as RSIHangarItemKind),
+      ...pledgeInfo,
     };
+  }
+
+  hiddenValue(entry: Element, className: string): string | undefined {
+    return (
+      (entry.getElementsByClassName(className)[0] as HTMLInputElement)?.value ||
+      undefined
+    );
+  }
+
+  parsePledgeValue(value: string | undefined): number | undefined {
+    const match = value?.trim().match(PLEDGE_VALUE);
+
+    return match ? Number(match[1].replaceAll(",", "")) : undefined;
+  }
+
+  parseCreatedOn(text: string | undefined | null): string | undefined {
+    const match = text?.match(PLEDGE_CREATED_ON);
+    const month = match ? MONTHS.indexOf(match[1]) + 1 : 0;
+
+    if (!match || month === 0) {
+      return undefined;
+    }
+
+    return `${match[3]}-${String(month).padStart(2, "0")}-${match[2].padStart(2, "0")}`;
   }
 
   pledgeName(entry: Element): string | undefined {

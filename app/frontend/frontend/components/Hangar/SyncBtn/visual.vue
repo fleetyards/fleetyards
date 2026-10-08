@@ -38,6 +38,8 @@ const samplePledges = [
   { id: "2", type: "ship", name: "300i" },
   { id: "3", type: "component", name: "Power Plant" },
   { id: "4", type: "upgrade", name: "Aurora MR > 300i" },
+  { id: "5", type: "skin", name: "Aurora - Dark Green Paint" },
+  { id: "6", type: "flair", name: "Takuetsu Freelancer Model" },
 ] as unknown as RsiHangarItemInput[];
 
 const successResult = {

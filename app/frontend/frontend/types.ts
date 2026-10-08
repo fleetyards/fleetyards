@@ -10,7 +10,8 @@ export interface ShipListState {
   filterVisible: boolean;
 }
 
-export type RSIHangarItemKind = "ship" | "component" | "skin" | "upgrade";
+export type RSIHangarItemKind =
+  "ship" | "component" | "skin" | "upgrade" | "flair";
 
 export type RSIHangarItem = {
   id: string;
@@ -18,4 +19,10 @@ export type RSIHangarItem = {
   image?: string;
   customName?: string;
   type: RSIHangarItemKind;
+  pledgeName?: string;
+  // In USD, what melting the whole pledge would return.
+  pledgeValue?: number;
+  pledgeItemCount?: number;
+  pledgeCreatedOn?: string;
+  meltable?: boolean;
 };

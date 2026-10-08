@@ -236,6 +236,8 @@
         "publicWishlist": "%{user} 的願望清單",
         "resetIngame": "資料重置後重設遊戲內飛船",
         "buybacks": "可回購承諾",
+        "paints": "塗裝",
+        "flair": "機庫裝飾",
         "imports": "匯入記錄"
       },
       "buybackSync": "同步 RSI 可回購承諾",

@@ -16,6 +16,8 @@
 #  input                     :jsonb
 #  output                    :jsonb
 #  started_at                :datetime
+#  sync_hangar_flair         :boolean          default(TRUE), not null
+#  sync_paints               :boolean          default(TRUE), not null
 #  type                      :string
 #  unmatched_vehicles_action :string           default("wishlist"), not null
 #  version                   :string

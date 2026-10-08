@@ -28,6 +28,8 @@ zh-TW:
         found_components: 已找到的元件
         imported_upgrades: 已新增的升級
         found_upgrades: 已找到的升級
+        synced_paints: 已同步塗裝
+        synced_hangar_flair: 已同步機庫裝飾
         missing_models: 未找到的飛船
         missing_components: 未找到的元件
         missing_component_vehicles: 沒有與元件相符的飛船

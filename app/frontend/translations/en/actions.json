@@ -52,6 +52,7 @@
       "copy": "Copy",
       "download": "Download",
       "zoom": "Zoom",
+      "viewImage": "View %{name} full size",
       "more": "More...",
       "export": "Export",
       "exportHangarLink": "Export for hangar.link",
@@ -236,6 +237,7 @@
       "syncExtension": {
         "cancel": "Cancel",
         "start": "Start Sync",
+        "openSettings": "Open settings",
         "retry": "Retry Sync",
         "close": "Close",
         "refresh": "Refresh Page"

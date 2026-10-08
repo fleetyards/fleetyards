@@ -3,7 +3,7 @@ class HangarSync < HangarImporter
 
   attr_accessor :data, :ships, :components, :upgrades
 
-  ITEM_TYPES = %w[ship component upgrade skin].freeze
+  ITEM_TYPES = %w[ship component upgrade skin flair].freeze
 
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
@@ -23,6 +23,8 @@ class HangarSync < HangarImporter
     found_components
     imported_upgrades
     found_upgrades
+    synced_paints
+    synced_hangar_flair
   ].freeze
 
   WARNING_KEYS = %i[
@@ -71,6 +73,8 @@ class HangarSync < HangarImporter
       end
     end
 
+    pledge_items = sync_pledge_items(import.user)
+
     imported_components, found_components, missing_components, missing_component_vehicles = components
     imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = upgrades
 
@@ -86,7 +90,9 @@ class HangarSync < HangarImporter
       imported_upgrades:,
       found_upgrades:,
       missing_upgrades:,
-      missing_upgrade_vehicles:
+      missing_upgrade_vehicles:,
+      synced_paints: pledge_items.fetch("paint", []),
+      synced_hangar_flair: pledge_items.fetch("flair", [])
     }
 
     import.update!(output:)
@@ -633,6 +639,18 @@ class HangarSync < HangarImporter
     # rather than rejected -- the read above is what keeps a re-sync from
     # stacking rows.
     TaskForce.insert_all(rows) if rows.any?
+  end
+
+  # The paints and flair are replaced as a whole, so a run stopped part way
+  # leaves the stored ones alone rather than replacing them with a partial list.
+  private def sync_pledge_items(user)
+    return {} if @cancelled || @import&.cancel_requested?
+
+    kinds = []
+    kinds << "paint" if @import.nil? || @import.sync_paints?
+    kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
+
+    ::HangarPledgeItems::Sync.new(user, @data, kinds:).run
   end
 
   private def stop_requested?(index)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_110000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1398,6 +1398,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_110000) do
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
   end
 
+  create_table "hangar_pledge_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "rsi_pledge_id", null: false
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "image_url"
+    t.string "pledge_name"
+    t.decimal "pledge_value", precision: 15, scale: 2
+    t.integer "pledge_item_count"
+    t.date "pledge_created_on"
+    t.boolean "meltable", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
+  end
+
   create_table "hardpoint_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hardpoint_id", null: false
     t.string "environment", null: false
@@ -1478,6 +1495,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_110000) do
     t.boolean "add_bundled_vehicles", default: true, null: false
     t.string "unmatched_vehicles_action", default: "wishlist", null: false
     t.uuid "unmatched_hangar_group_id"
+    t.boolean "sync_paints", default: true, null: false
+    t.boolean "sync_hangar_flair", default: true, null: false
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"
@@ -2837,6 +2856,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_110000) do
   add_foreign_key "game_mission_locations", "game_missions", on_delete: :cascade
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
+  add_foreign_key "hangar_pledge_items", "users", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"

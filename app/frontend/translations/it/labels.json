@@ -2534,6 +2534,19 @@
         "type": "Tipo",
         "shop": "Negozio"
       },
+      "hangarPledgeItems": {
+        "flair": "Decorazioni per l'hangar",
+        "createdOn": "Creato",
+        "meltable": "Fondibile",
+        "withValue": "Con valore di fusione",
+        "paints": "Verniciature",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Valore di fusione",
+        "partOf": "Parte di %{name}",
+        "pledgeValue": "Valore del pledge",
+        "quantity": "Quantità",
+        "search": "Cerca per nome"
+      },
       "buybacks": {
         "name": "Pledge riacquistabili",
         "search": "Cerca pledge riacquistabili",
@@ -2598,6 +2611,11 @@
         "targetGroup": "Gruppo per le navi trovate",
         "addBundledVehicles": "Aggiungi gli snub craft inclusi",
         "addBundledVehiclesHint": "Aggiunge lo snub craft incluso con una nave. Quelli già nel tuo hangar restano.",
+        "syncPaints": "Sincronizza verniciature",
+        "syncPaintsHint": "Sostituisce le tue verniciature con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
+        "syncHangarFlair": "Sincronizza decorazioni per l'hangar",
+        "syncHangarFlairHint": "Sostituisce le tue decorazioni con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
+        "settings": "Impostazioni",
         "unmatchedVehiclesAction": "Navi non presenti nel tuo hangar RSI",
         "unmatchedVehiclesActionHint": "Cosa fare con le navi che hai qui ma che la sincronizzazione non trova nella tua lista di pledge RSI.",
         "unmatchedHangarGroup": "Gruppo in cui archiviarle",
@@ -2625,7 +2643,9 @@
           "all": "Tutti gli oggetti Pledge",
           "ships": "Navi",
           "components": "Moduli",
-          "upgrades": "Upgrade"
+          "upgrades": "Upgrade",
+          "paints": "Verniciature",
+          "hangarFlair": "Decorazioni per l'hangar"
         },
         "importedItems": {
           "importedVehicles": "Navi aggiunte",
@@ -2641,6 +2661,8 @@
           "missingComponentVehicles": "Nessuna nave corrispondente trovata per i componenti",
           "importedUpgrades": "Upgrade aggiunti",
           "foundUpgrades": "Upgrade trovati",
+          "syncedPaints": "Verniciature sincronizzate",
+          "syncedHangarFlair": "Decorazioni per l'hangar sincronizzate",
           "missingUpgrades": "Upgrade non trovati",
           "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade"
         }

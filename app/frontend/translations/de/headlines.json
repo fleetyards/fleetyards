@@ -236,6 +236,8 @@
         "publicWishlist": "%{user} Wunschliste",
         "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen",
         "buybacks": "Rückkauf-Pledges",
+        "paints": "Lackierungen",
+        "flair": "Hangar-Flair",
         "imports": "Importe"
       },
       "buybackSync": "RSI-Rückkauf-Pledges synchronisieren",

@@ -13,6 +13,7 @@ import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import FilterForm from "@/frontend/components/Hangar/BuybacksFilterForm/index.vue";
 import BuybacksList from "@/frontend/components/Hangar/BuybacksList/index.vue";
 import BuybackSyncBtn from "@/frontend/components/Hangar/BuybackSyncBtn/index.vue";
+import PledgeItemsSwitch from "@/frontend/components/Hangar/PledgeItemsSwitch/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -80,6 +81,10 @@ onUnmounted(() => {
   >
     <template #filter>
       <FilterForm />
+    </template>
+
+    <template #actions-left>
+      <PledgeItemsSwitch />
     </template>
 
     <template #actions-right>

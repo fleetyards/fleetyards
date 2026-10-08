@@ -77,6 +77,30 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_predicate Imports::HangarSync.find_by(user_id: user.id), :add_bundled_vehicles?
   end
 
+  test "PUT /hangar/sync-rsi-hangar records whether to sync paints and hangar flair" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], syncPaints: false, syncHangarFlair: false}
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.find_by(user_id: user.id)
+    refute_predicate import, :sync_paints?
+    refute_predicate import, :sync_hangar_flair?
+  end
+
+  test "PUT /hangar/sync-rsi-hangar leaves paints and hangar flair alone when the flags are absent" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}]}
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.find_by(user_id: user.id)
+    refute_predicate import, :sync_paints?
+    refute_predicate import, :sync_hangar_flair?
+  end
+
   test "PUT /hangar/sync-rsi-hangar records what to do with the ships it does not find" do
     user = create(:user)
     sign_in user

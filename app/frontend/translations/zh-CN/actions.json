@@ -52,6 +52,7 @@
       "copy": "复制",
       "download": "下载",
       "zoom": "缩放",
+      "viewImage": "查看 %{name} 原图",
       "more": "更多...",
       "export": "导出",
       "exportHangarLink": "导出到 hangar.link",
@@ -236,6 +237,7 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
+        "openSettings": "打开设置",
         "retry": "重试同步",
         "close": "关闭",
         "refresh": "刷新页面"

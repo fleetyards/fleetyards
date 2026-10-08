@@ -291,6 +291,12 @@
         "requestingAccess": "%{clientName} sta richiedendo l'accesso al tuo account.",
         "scopesIntro": "Questa applicazione potrà:"
       },
+      "hangarFlair": {
+        "intro": "Le decorazioni nel tuo hangar RSI, alla tua ultima sincronizzazione dell'hangar. La sincronizzazione legge il tuo hangar RSI tramite l'estensione Fleetyards Sync."
+      },
+      "hangarPaints": {
+        "intro": "Le verniciature nel tuo hangar RSI, alla tua ultima sincronizzazione dell'hangar. La sincronizzazione legge il tuo hangar RSI tramite l'estensione Fleetyards Sync."
+      },
       "buybacks": {
         "intro": "I pledge che hai fuso su RSI e potresti riacquistare, alla tua ultima sincronizzazione. La sincronizzazione legge la tua lista di riacquisto RSI tramite l'estensione Fleetyards Sync."
       },
@@ -304,7 +310,8 @@
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
-        "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento."
+        "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento.",
+        "missingUnmatchedGroup": "Prima di iniziare, scegli il gruppo in cui archiviare le navi che la sincronizzazione non trova."
       },
       "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",
       "oauthApplications": {

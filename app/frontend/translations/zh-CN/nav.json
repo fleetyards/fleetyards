@@ -23,6 +23,8 @@
         "inventories": "Inventories",
         "vehicleCargo": "货物",
         "buybacks": "回购",
+        "paints": "涂装",
+        "flair": "机库装饰",
         "imports": "导入记录",
         "transfers": "转移"
       },

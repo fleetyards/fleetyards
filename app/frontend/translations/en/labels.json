@@ -2534,6 +2534,19 @@
         "type": "Type",
         "shop": "Shop"
       },
+      "hangarPledgeItems": {
+        "flair": "Hangar Flair",
+        "createdOn": "Created",
+        "meltable": "Meltable",
+        "withValue": "Has a melt value",
+        "paints": "Paints",
+        "pledge": "Pledge %{id}",
+        "meltValue": "Melt value",
+        "partOf": "Part of %{name}",
+        "pledgeValue": "Pledge value",
+        "quantity": "Quantity",
+        "search": "Search by name"
+      },
       "buybacks": {
         "name": "Buy-back pledges",
         "search": "Search buy-back pledges",
@@ -2598,6 +2611,11 @@
         "targetGroup": "Group for the ships it finds",
         "addBundledVehicles": "Add bundled snub crafts",
         "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way.",
+        "syncPaints": "Sync paints",
+        "syncPaintsHint": "Replaces your paints with the ones in your RSI hangar. Off leaves the stored paints as they are.",
+        "syncHangarFlair": "Sync hangar flair",
+        "syncHangarFlairHint": "Replaces your hangar flair with the ones in your RSI hangar. Off leaves the stored flair as it is.",
+        "settings": "Settings",
         "unmatchedVehiclesAction": "Ships not in your RSI hangar",
         "unmatchedVehiclesActionHint": "What to do with ships you have here that the sync cannot find in your RSI pledge list.",
         "unmatchedHangarGroup": "Group to file them into",
@@ -2625,7 +2643,9 @@
           "all": "All Pledge Items",
           "ships": "Ships",
           "components": "Modules",
-          "upgrades": "Upgrades"
+          "upgrades": "Upgrades",
+          "paints": "Paints",
+          "hangarFlair": "Hangar Flair"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -2641,6 +2661,8 @@
           "missingComponentVehicles": "No matching Ship found for Components",
           "importedUpgrades": "Added Upgrades",
           "foundUpgrades": "Found Upgrades",
+          "syncedPaints": "Paints synced",
+          "syncedHangarFlair": "Hangar flair synced",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         }

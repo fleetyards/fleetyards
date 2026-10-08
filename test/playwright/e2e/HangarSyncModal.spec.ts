@@ -10,6 +10,9 @@ import { test, expect } from "../support/commands";
  * decision -- and the unmatched action is the wishlist move every sync did
  * before the choice existed. Both are kept, so somebody who wants something
  * else does not have to say so before every sync.
+ *
+ * They live behind the cog in the modal's corner, so the start screen itself
+ * stays about the RSI session and the run.
  */
 
 type Page = import("@playwright/test").Page;
@@ -37,6 +40,7 @@ const openStartScreen = async (page: Page) => {
   await expect(page.locator(".visual-tests")).toBeVisible();
 
   await page.getByTestId("open-sync-modal-start").click();
+  await page.getByTestId("toggle-sync-settings").click();
   await expect(control(page)).toBeVisible();
 };
 
@@ -47,6 +51,13 @@ test.describe("Hangar sync modal", () => {
     await openStartScreen(page);
 
     await expect(input(page)).toBeChecked();
+  });
+
+  test("syncs paints and hangar flair by default", async ({ page }) => {
+    await openStartScreen(page);
+
+    await expect(page.getByTestId("toggle-syncPaints")).toBeChecked();
+    await expect(page.getByTestId("toggle-syncHangarFlair")).toBeChecked();
   });
 
   test("keeps the bundled choice for the next sync", async ({ page }) => {

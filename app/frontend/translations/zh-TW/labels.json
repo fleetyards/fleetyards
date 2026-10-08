@@ -2534,6 +2534,19 @@
         "type": "類型",
         "shop": "商店"
       },
+      "hangarPledgeItems": {
+        "flair": "機庫裝飾",
+        "createdOn": "建立於",
+        "meltable": "可熔煉",
+        "withValue": "有熔煉價值",
+        "paints": "塗裝",
+        "pledge": "承諾 %{id}",
+        "meltValue": "熔煉價值",
+        "partOf": "屬於 %{name}",
+        "pledgeValue": "承諾價值",
+        "quantity": "數量",
+        "search": "按名稱搜尋"
+      },
       "buybacks": {
         "name": "可回購承諾",
         "search": "搜尋可回購承諾",
@@ -2598,6 +2611,11 @@
         "targetGroup": "找到的飛船歸入的分組",
         "addBundledVehicles": "新增附帶的小型飛船",
         "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。",
+        "syncPaints": "同步塗裝",
+        "syncPaintsHint": "以你 RSI 機庫中的塗裝取代已儲存的塗裝。關閉時保留已儲存的塗裝不變。",
+        "syncHangarFlair": "同步機庫裝飾",
+        "syncHangarFlairHint": "以你 RSI 機庫中的機庫裝飾取代已儲存的裝飾。關閉時保留已儲存的裝飾不變。",
+        "settings": "設定",
         "unmatchedVehiclesAction": "不在 RSI 機庫中的飛船",
         "unmatchedVehiclesActionHint": "如何處理這裡有、但同步在你的 RSI 認購清單中找不到的飛船。",
         "unmatchedHangarGroup": "歸入的分組",
@@ -2625,7 +2643,9 @@
           "all": "所有質押物品",
           "ships": "飛船",
           "components": "模組",
-          "upgrades": "升級"
+          "upgrades": "升級",
+          "paints": "塗裝",
+          "hangarFlair": "機庫裝飾"
         },
         "importedItems": {
           "importedVehicles": "已新增飛船",
@@ -2641,6 +2661,8 @@
           "missingComponentVehicles": "未找到匹配的飛船用於組件",
           "importedUpgrades": "已新增升級",
           "foundUpgrades": "找到的升級",
+          "syncedPaints": "已同步塗裝",
+          "syncedHangarFlair": "已同步機庫裝飾",
           "missingUpgrades": "未找到升級",
           "missingUpgradeVehicles": "未找到匹配的飛船用於升級"
         }
