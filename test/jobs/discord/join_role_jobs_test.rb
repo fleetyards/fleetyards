@@ -180,6 +180,7 @@ module Discord
 
     test "the sync for a newly picked role does not tell the officers about each player it admits" do
       holder = linked_user("uid-1")
+      @setting.update_columns(discord_join_role_swept_at: nil)
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
@@ -233,7 +234,8 @@ module Discord
     test "a newly picked role does not bring back a player whose membership ended" do
       removed = linked_user("uid-1")
       create(:fleet_membership, :accepted, fleet: @fleet, user: removed).discard
-      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+      @setting.update!(discord_join_role_id: "300000000000000002")
+      @api.stubs(:list_guild_members).returns([member("uid-1", "300000000000000002")])
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id, true)
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
@@ -241,8 +243,8 @@ module Discord
       assert_nil membership_of(removed)
       assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: removed)
 
-      JoinRole.new(@fleet).apply(removed, [])
-      JoinRole.new(@fleet).apply(removed, [JOIN_ROLE])
+      JoinRole.new(@fleet.reload).apply(removed, [])
+      JoinRole.new(@fleet).apply(removed, ["300000000000000002"])
 
       assert_predicate membership_of(removed), :accepted?
     end
@@ -262,6 +264,26 @@ module Discord
       assert_nil membership_of(removed)
       refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
       assert_predicate @setting.reload.discord_join_role_swept_at, :present?
+    end
+
+    test "a first sweep that keeps failing keeps the holders it found elsewhere" do
+      holder = linked_user("uid-1")
+      @setting.update!(discord_join_role_id: "300000000000000002")
+      JoinRole.new(@fleet.reload).apply(holder, ["300000000000000002"])
+      @api.stubs(:list_guild_members).raises(ApiClient::Error.new(403, "Missing Access"))
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+
+      assert FleetDiscordRoleHolder.exists?(fleet: @fleet, user: holder)
+    end
+
+    test "picking another join role forgets who held the previous one" do
+      holder = linked_user("uid-1")
+      JoinRole.new(@fleet).apply(holder, [JOIN_ROLE])
+
+      @setting.update!(discord_join_role_id: "300000000000000002")
+
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: holder)
     end
 
     test "a sync that cannot read the guild ends nobody's membership" do

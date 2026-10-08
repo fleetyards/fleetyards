@@ -7,24 +7,18 @@ module Discord
   class SyncFleetJoinRoleJob < ::ApplicationJob
     sidekiq_options retry: 1, queue: "notifications"
 
-    # Positional on purpose: Sidekiq replays arguments positionally. A role's
-    # first sweep -- `reset`, or any run until one has read the whole guild --
-    # forgets who held the previous role, so the new one is applied as gained
-    # by everyone holding it whose membership has not ended, and as lost by
-    # nobody: changing the role keeps the members the old one brought in.
-    def perform(fleet_id, reset = false)
+    # The second argument is ignored: picking a role resets what the first
+    # sweep needs. It stays so jobs queued with it still run.
+    def perform(fleet_id, _reset = false)
       fleet = Fleet.find_by(id: fleet_id)
       return if fleet.blank?
 
-      fleet.fleet_notification_setting&.update_columns(discord_join_role_swept_at: nil) if reset
       join_role = JoinRole.new(fleet)
-      first = !join_role.swept?
-      fleet.fleet_discord_role_holders.delete_all if first
       return unless join_role.configured?
 
       # Admitting everyone who already holds a newly picked role would bury
       # the officers in notifications; anyone a later run admits is news.
-      @quiet = first
+      @quiet = !join_role.swept?
       @held = fleet.fleet_discord_role_holders.pluck(:user_id).to_set
       started_at = Time.current
 
