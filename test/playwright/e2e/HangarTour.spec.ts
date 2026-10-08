@@ -82,7 +82,7 @@ test.describe("Hangar tour", () => {
     expect(seen).not.toContain("vehicle");
     expect(seen).not.toContain("share");
     expect(seen).toEqual(
-      expect.arrayContaining(["welcome", "add", "sync", "menu"]),
+      expect.arrayContaining(["welcome", "add", "sync", "display", "menu"]),
     );
   });
 });

@@ -529,6 +529,7 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
+        data-tour="hangar-display"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />

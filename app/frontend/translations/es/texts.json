@@ -80,6 +80,10 @@
           "title": "Sincronizar con RSI",
           "text": "¿Ya tienes pledges? Con la extensión de navegador de FleetYards sincroniza tu hangar de RSI en lugar de añadir naves a mano — y otra vez cuando cambien tus pledges."
         },
+        "display": {
+          "title": "Opciones de visualización",
+          "text": "Cambia entre tarjetas y lista, define tu orden predeterminado y elige qué detalles o columnas se muestran. En la lista puedes seleccionar varias naves y cambiarlas a la vez."
+        },
         "groups": {
           "title": "Grupos",
           "text": "Ordena tus naves en grupos propios con + y el lápiz. Haz clic en un grupo para filtrar por él o pasa el cursor para resaltar sus naves."

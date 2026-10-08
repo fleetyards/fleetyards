@@ -80,6 +80,10 @@
           "title": "Mit RSI synchronisieren",
           "text": "Schon gepledged? Mit der FleetYards-Browsererweiterung synchronisierst du deinen RSI-Hangar, statt Schiffe von Hand hinzuzufügen — und wieder, wann immer sich deine Pledges ändern."
         },
+        "display": {
+          "title": "Anzeigeoptionen",
+          "text": "Wechsle zwischen Karten und Liste, lege deine Standardsortierung fest und wähle, welche Details oder Spalten angezeigt werden. In der Liste kannst du mehrere Schiffe auswählen und gemeinsam ändern."
+        },
         "groups": {
           "title": "Gruppen",
           "text": "Sortiere deine Schiffe mit + und dem Stift in eigene Gruppen. Klicke auf eine Gruppe, um danach zu filtern, oder fahre darüber, um ihre Schiffe hervorzuheben."

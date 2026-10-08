@@ -33,6 +33,10 @@ const steps = computed<TourStep[]>(() => [
   step("welcome"),
   step("add", { target: '[data-tour="hangar-add"]', placement: "top" }),
   step("sync", { target: '[data-tour="hangar-sync"]', requiresTarget: true }),
+  step("display", {
+    target: '[data-tour="hangar-display"]',
+    requiresTarget: true,
+  }),
   step("groups", {
     target: '[data-tour="hangar-groups"]',
     requiresTarget: true,

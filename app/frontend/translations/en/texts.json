@@ -80,6 +80,10 @@
           "title": "Sync from RSI",
           "text": "Already pledged? With the FleetYards browser extension installed, sync your RSI hangar instead of adding ships by hand — and again whenever your pledges change."
         },
+        "display": {
+          "title": "Display options",
+          "text": "Switch between cards and a list, set your default order and pick which details or columns are shown. In the list you can select several ships at once and change them together."
+        },
         "groups": {
           "title": "Groups",
           "text": "Sort your ships into groups of your own with + and the pen. Click a group to filter by it, hover it to highlight its ships."
