@@ -128,4 +128,17 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert_not signup.save
     assert signup.errors.added?(:fleet_membership_id, :not_a_member)
   end
+
+  test "a signup loaded before the discard cannot be promoted after it" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    membership = fleet.fleet_memberships.find_by(user_id: @member.id)
+    event = create(:fleet_event, :open, fleet:, starts_at: 1.day.from_now)
+    slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: event))
+    stale = create(:fleet_event_signup, fleet_event: event, fleet_event_slot: nil, fleet_membership: membership, status: "interested")
+
+    assert membership.discard
+    assert_not stale.update(fleet_event_slot: slot, status: "confirmed")
+    assert stale.errors.added?(:fleet_membership_id, :not_a_member)
+    assert stale.reload.withdrawn?
+  end
 end

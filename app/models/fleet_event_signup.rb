@@ -46,7 +46,7 @@ class FleetEventSignup < ApplicationRecord
   validates :status, inclusion: {in: STATUSES}
   validate :unique_active_signup_per_member, on: :create
   validate :slot_not_already_taken, on: :create
-  validate :membership_still_kept, on: :create
+  validate :membership_still_kept, if: :claims_seat?
   validate :slot_belongs_to_event
   validate :slot_bound_status_allowed
 
@@ -155,14 +155,21 @@ class FleetEventSignup < ApplicationRecord
   end
 
   # A departing member's seats are withdrawn after the discard, so a signup
-  # still in flight would slip past that cleanup. Locking the membership row
-  # orders the two: this either sees the discard or commits before the
-  # cleanup reads.
+  # still in flight, new or promoted from a copy loaded before the cleanup,
+  # would slip past it. Locking the membership row orders the two: this
+  # either sees the discard or commits before the cleanup reads.
   private def membership_still_kept
     return if fleet_membership_id.blank?
 
     discarded_at = FleetMembership.lock.where(id: fleet_membership_id).pick(:discarded_at)
     errors.add(:fleet_membership_id, :not_a_member) if discarded_at.present?
+  end
+
+  private def claims_seat?
+    return true if new_record?
+    return false if withdrawn?
+
+    will_save_change_to_status? || will_save_change_to_fleet_event_slot_id?
   end
 
   private def stamp_status_timestamps
