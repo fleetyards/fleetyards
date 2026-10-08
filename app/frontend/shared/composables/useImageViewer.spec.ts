@@ -38,18 +38,23 @@ describe("useImageViewer", () => {
     vi.restoreAllMocks();
   });
 
-  it("saves the image under the item's name", async () => {
+  it("saves the image under the item's name, and frees it only after the click", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => new Response(new Blob(["image"]), { status: 200 })),
     );
     URL.createObjectURL = vi.fn(() => "blob:paint");
-    URL.revokeObjectURL = vi.fn();
+    const revoke = vi.fn();
+    URL.revokeObjectURL = revoke;
+    let revokedRightAfterClick: boolean | undefined;
     const click = vi
       .spyOn(HTMLAnchorElement.prototype, "click")
       .mockImplementation(function (this: HTMLAnchorElement) {
         expect(this.download).toBe("Cutlass - Akuma Paint.jpg");
         expect(this.href).toBe("blob:paint");
+        queueMicrotask(() => {
+          revokedRightAfterClick = revoke.mock.calls.length > 0;
+        });
       });
 
     const { openImage } = useImageViewer();
@@ -57,6 +62,8 @@ describe("useImageViewer", () => {
 
     registered[0].onClick();
     await vi.waitFor(() => expect(click).toHaveBeenCalled());
+    await vi.waitFor(() => expect(revoke).toHaveBeenCalledWith("blob:paint"));
+    expect(revokedRightAfterClick).toBe(false);
   });
 
   it("opens the image in a tab of its own when its host refuses the fetch", async () => {

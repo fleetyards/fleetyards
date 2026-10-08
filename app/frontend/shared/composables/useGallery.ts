@@ -2,6 +2,10 @@ import PhotoSwipeLightbox from "photoswipe/lightbox";
 import copyText from "@/shared/utils/CopyText";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  photoSwipeTitles,
+  registerDownloadButton,
+} from "@/shared/utils/PhotoSwipe";
 
 export const useGallery = (
   id: string = "#pswp-galley",
@@ -41,64 +45,25 @@ export const useGallery = (
     );
   };
 
-  const download = (url: string, name: string) => {
-    const tmpLink = document.createElement("a");
-    tmpLink.href = url;
-    tmpLink.download = name;
-
-    document.body.appendChild(tmpLink);
-
-    tmpLink.click();
-
-    document.body.removeChild(tmpLink);
-  };
-
   const initGallery = () => {
     lightbox.value = new PhotoSwipeLightbox({
       gallery: id,
       children,
       bgOpacity: 1,
       counter: false,
-      /*
-       * pswp's own chrome ships hardcoded English for its titles, which are
-       * both the tooltip and the accessible name of every button it draws.
-       */
-      closeTitle: t("actions.close"),
-      zoomTitle: t("actions.zoom"),
-      arrowPrevTitle: t("actions.previous"),
-      arrowNextTitle: t("actions.next"),
-      errorMsg: t("errors.imageNotLoaded"),
+      ...photoSwipeTitles(t),
       pswpModule: () => import("photoswipe"),
     });
 
     lightbox.value.on("uiRegister", () => {
       const pswp = lightbox.value?.pswp;
-      /*
-       * These two sit at 8 and 9, after pswp's own preloader at 7. The copy
-       * button used to be a 7 as well, which left it and the preloader to
-       * settle their position in the bar by registration order.
-       */
-      pswp?.ui?.registerElement({
-        name: "download-button",
-        order: 9,
-        isButton: true,
-        tagName: "button",
-        title: t("actions.download"),
-        html: '<i class="fa fa-download"></i>',
-
-        onClick: (_event, _el, pswp) => {
-          const url = pswp.currSlide?.data.src;
-
-          if (!url) {
-            return;
-          }
-
-          download(
-            url,
-            pswp.currSlide?.data.title || pswp.currSlide?.data.alt || "image",
-          );
-        },
-      });
+      if (pswp) {
+        registerDownloadButton(
+          pswp,
+          t,
+          (slide) => slide.title || slide.alt || "image",
+        );
+      }
 
       pswp?.ui?.registerElement({
         name: "copy-button",
