@@ -76,6 +76,11 @@ en:
           ground_vehicle_missile: Ground Vehicle Missile
           pdc_turret: PDC Turret
           salvage_modifier_tractor_beam: Salvage Tractor Beam
+    equipment:
+      grade:
+        label: "Grade %{value}"
+      size:
+        label: "Size %{value}"
     image:
       model:
         title: Model

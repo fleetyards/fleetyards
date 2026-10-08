@@ -413,6 +413,28 @@ class Equipment < ApplicationRecord
     end
   end
 
+  # Ordered as strings, which is numeric order while every size and grade is
+  # a single digit.
+  def self.size_filters
+    build_facet(:size).map do |item|
+      Filter.new(
+        category: "size",
+        label: I18n.t("filter.equipment.size.label", value: item),
+        value: item
+      )
+    end
+  end
+
+  def self.grade_filters
+    build_facet(:grade).map do |item|
+      Filter.new(
+        category: "grade",
+        label: I18n.t("filter.equipment.grade.label", value: item),
+        value: item
+      )
+    end
+  end
+
   # A picker that only offers weapons has no use for the ninety-odd types the
   # armour and clothing rows contribute, so the caller can narrow by the game's
   # own split before the types are collected.

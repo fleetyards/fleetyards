@@ -76,6 +76,11 @@ de:
           ground_vehicle_missile: Bodenfahrzeug-Rakete
           pdc_turret: PDC-Geschützturm
           salvage_modifier_tractor_beam: Bergungs-Traktorstrahl
+    equipment:
+      grade:
+        label: "Stufe %{value}"
+      size:
+        label: "Größe %{value}"
     image:
       model:
         title: Modell

@@ -7,5 +7,7 @@ namespace :filters do
     get "sub-types", to: "equipment#sub_types", on: :collection
     get "weapon-classes", to: "equipment#weapon_classes", on: :collection
     get :slots, on: :collection
+    get :sizes, on: :collection
+    get :grades, on: :collection
   end
 end

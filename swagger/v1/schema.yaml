@@ -529,6 +529,19 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/grades":
+    get:
+      summary: Equipment Grade Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentGradesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/equipment/item-types":
     get:
       summary: Equipment Item Type Filters
@@ -552,6 +565,19 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/sizes":
+    get:
+      summary: Equipment Size Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentSizesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/equipment/slots":
     get:
       summary: Equipment Slot Filters

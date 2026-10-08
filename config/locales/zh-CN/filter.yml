@@ -76,6 +76,11 @@ zh-CN:
           ground_vehicle_missile: 地面载具导弹
           pdc_turret: 近防炮塔
           salvage_modifier_tractor_beam: 打捞牵引光束
+    equipment:
+      grade:
+        label: "等级 %{value}"
+      size:
+        label: "尺寸 %{value}"
     image:
       model:
         title: 型号
