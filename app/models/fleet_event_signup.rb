@@ -158,12 +158,12 @@ class FleetEventSignup < ApplicationRecord
 
   # A departing member's seats are withdrawn after the discard, so a signup
   # still in flight, new or promoted from a copy loaded before the cleanup,
-  # would slip past it. Locking the membership row orders the two: this
-  # either sees the discard or commits before the cleanup reads.
+  # would slip past it. A shared lock on the membership row orders the two:
+  # this either sees the discard or commits before the cleanup reads.
   private def membership_still_kept
     return if fleet_membership_id.blank?
 
-    discarded_at = FleetMembership.lock.where(id: fleet_membership_id).pick(:discarded_at)
+    discarded_at = FleetMembership.lock("FOR SHARE").where(id: fleet_membership_id).pick(:discarded_at)
     errors.add(:fleet_membership_id, :not_a_member) if discarded_at.present?
   end
 
