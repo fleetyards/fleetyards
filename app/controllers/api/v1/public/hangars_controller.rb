@@ -5,6 +5,7 @@ module Api
     module Public
       class HangarsController < ::Api::PublicBaseController
         include HangarFiltersConcern
+        include HangarShareTokenConcern
 
         skip_verify_authorized only: %i[embed]
 
