@@ -6,12 +6,26 @@ import {
 } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
+import {
+  Details,
+  DetailsContent,
+  DetailsSummary,
+} from "@tiptap/extension-details";
 import { Markdown } from "@tiptap/markdown";
 import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
-import { closesFence, splitCodeSpans } from "@/shared/utils/Markdown";
+import { Plugin, type Transaction } from "@tiptap/pm/state";
+import { ReplaceAroundStep } from "@tiptap/pm/transform";
+import {
+  DETAILS_CLOSE,
+  DETAILS_OPEN,
+  DETAILS_SUMMARY,
+  closesFence,
+  readDetails,
+  splitCodeSpans,
+} from "@/shared/utils/Markdown";
 import {
   CatalogueToken,
   CatalogueTokenResolution,
@@ -55,6 +69,136 @@ export const Center = Node.create({
           commands.toggleWrap(this.name),
     };
   },
+});
+
+const SUMMARY_NODES = ["text", "catalogueToken"];
+
+// GitHub's collapsible section. The extension's own markdown is a nest of
+// `:::details` containers nothing else reads, so the section is read with the
+// renderer's own rules and written the way GitHub writes it:
+//
+//   <details>
+//   <summary>Title</summary>
+//
+//   markdown
+//
+//   </details>
+//
+// A section opens in the editor, so what is in it can be seen and edited. The
+// toggle is the editor's own view of the text, never written: the page always
+// shows a section closed. It is not an edit either, so undo passes over it.
+const isToggle = (tr: Transaction) => {
+  const [step] = tr.steps;
+
+  if (tr.steps.length !== 1 || !(step instanceof ReplaceAroundStep)) {
+    return false;
+  }
+
+  const before = tr.before.nodeAt(step.from);
+  const after = tr.doc.nodeAt(step.from);
+
+  return (
+    before?.type.name === "details" &&
+    after?.type.name === "details" &&
+    before.content.eq(after.content)
+  );
+};
+
+const MarkdownDetails = Details.extend({
+  addProseMirrorPlugins() {
+    return [
+      ...(this.parent?.() ?? []),
+      new Plugin({
+        filterTransaction: (tr) => {
+          if (isToggle(tr)) tr.setMeta("addToHistory", false);
+          return true;
+        },
+      }),
+    ];
+  },
+
+  addAttributes() {
+    return {
+      open: {
+        default: true,
+        parseHTML: () => true,
+        renderHTML: ({ open }) => (open ? { open: "" } : {}),
+      },
+    };
+  },
+
+  markdownTokenizer: {
+    name: "details",
+    level: "block",
+    start: (src: string) => src.search(/^ {0,3}<details/im),
+    tokenize: (src, _tokens, lexer) => {
+      const lines = src.split("\n");
+      const details = readDetails(lines, 0);
+
+      if (!details) return undefined;
+
+      const consumed = lines.slice(0, details.end + 1).join("\n");
+
+      return {
+        type: "details",
+        raw: src.length > consumed.length ? `${consumed}\n` : consumed,
+        summary: lexer.inlineTokens(details.summary),
+        tokens: lexer.blockTokens(details.body.join("\n")),
+      };
+    },
+  },
+
+  parseMarkdown: (token, helpers) => {
+    const body = helpers.parseChildren(token.tokens ?? []);
+
+    // An image or a line break has no place on the summary's one line.
+    const summary = helpers
+      .parseInline((token as { summary?: [] }).summary ?? [])
+      .filter((node) => SUMMARY_NODES.includes(node.type ?? ""));
+
+    return helpers.createNode("details", null, [
+      helpers.createNode("detailsSummary", null, summary),
+      helpers.createNode(
+        "detailsContent",
+        null,
+        body.length ? body : [helpers.createNode("paragraph")],
+      ),
+    ]);
+  },
+
+  renderMarkdown: (node, helpers) => {
+    const [summary, content] = node.content ?? [];
+
+    return [
+      "<details>",
+      `<summary>${helpers.renderChildren(summary?.content ?? [])}</summary>`,
+      "",
+      helpers.renderChildren(content?.content ?? [], "\n\n"),
+      "",
+      "</details>",
+    ].join("\n");
+  },
+});
+
+// The parts are written by the section itself. Their own `:::` containers are
+// replaced rather than left out: an extension left without one takes its
+// parent's.
+const noMarkdown = (name: string) => ({
+  name,
+  level: "block" as const,
+  start: () => -1,
+  tokenize: () => undefined,
+});
+
+// The summary is one line of markdown: text, its marks and catalogue items, but
+// no hard break, which would end the line it is written on.
+const MarkdownDetailsSummary = DetailsSummary.extend({
+  content: `(${SUMMARY_NODES.join(" | ")})*`,
+  markdownTokenizer: noMarkdown("detailsSummary"),
+});
+
+const MarkdownDetailsContent = DetailsContent.extend({
+  markdownTokenizer: noMarkdown("detailsContent"),
 });
 
 // How wide an image shows, as a share of the text column; none is full width.
@@ -141,8 +285,18 @@ export const HEADING_LEVELS = [1, 2, 3] as const;
 // node for -- so typed text like `<RSI handle>` would vanish on the next save.
 // Outside code, `<` is handed over as the entity for itself, which the editor
 // shows and writes back as the character it is.
+const protectText = (text: string) =>
+  splitCodeSpans(text)
+    .map((part) =>
+      part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
+    )
+    .join("");
+
 export const protectHtml = (markdown: string) => {
   let fence: string | undefined;
+  let sectionPrefix = "";
+  let depth = 0;
+  let awaitingSummary = false;
 
   return markdown
     .split("\n")
@@ -164,14 +318,44 @@ export const protectHtml = (markdown: string) => {
         return line;
       }
 
-      return (
-        prefix +
-        splitCodeSpans(body)
-          .map((part) =>
-            part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
-          )
-          .join("")
-      );
+      // A details section's own tags stay tags; a summary's text does not.
+      // A section's own tags stay tags, and only where the renderer reads
+      // them as one -- a stray `</details>` is text. A summary's text is
+      // still text. A quote is a document of its own, so sections are
+      // counted per quote level.
+      if (prefix !== sectionPrefix) {
+        sectionPrefix = prefix;
+        depth = 0;
+        awaitingSummary = false;
+      }
+
+      const open = DETAILS_OPEN.exec(body);
+
+      if (open) {
+        depth += 1;
+        awaitingSummary = open[2] === undefined;
+
+        return open[2] === undefined
+          ? line
+          : `${prefix}${open[1]}<summary>${protectText(open[2])}</summary>`;
+      }
+
+      if (awaitingSummary && body.trim()) {
+        awaitingSummary = false;
+
+        const summary = DETAILS_SUMMARY.exec(body);
+
+        if (summary) {
+          return `${prefix}${summary[1]}<summary>${protectText(summary[2])}</summary>`;
+        }
+      }
+
+      if (depth > 0 && DETAILS_CLOSE.test(body)) {
+        depth -= 1;
+        return line;
+      }
+
+      return prefix + protectText(body);
     })
     .join("\n");
 };
@@ -183,9 +367,12 @@ export const protectHtml = (markdown: string) => {
 export const markdownExtensions = ({
   searchCatalogue,
   lookupCatalogue,
+  detailsToggleLabel,
 }: {
   searchCatalogue?: CatalogueSearch;
   lookupCatalogue?: CatalogueLookup;
+  // Names the button that opens or closes a section in the editor.
+  detailsToggleLabel?: (isOpen: boolean) => string;
 } = {}): Extensions => [
   StarterKit.configure({
     heading: { levels: [...HEADING_LEVELS] },
@@ -200,6 +387,18 @@ export const markdownExtensions = ({
   }),
   SafeImage,
   Center,
+  MarkdownDetails.configure({
+    persist: true,
+    ...(detailsToggleLabel
+      ? {
+          renderToggleButton: ({ element, isOpen }) => {
+            element.setAttribute("aria-label", detailsToggleLabel(isOpen));
+          },
+        }
+      : {}),
+  }),
+  MarkdownDetailsSummary,
+  MarkdownDetailsContent,
   CatalogueToken,
   CatalogueTokenSuggestion.configure(
     searchCatalogue ? { search: searchCatalogue } : {},

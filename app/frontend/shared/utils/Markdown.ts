@@ -11,9 +11,10 @@ import {
 // bulleted and numbered lists (nested by indentation), block quotes, fenced
 // code, horizontal rules, paragraphs, bold, italic, strikethrough, inline
 // code, links, images (sized with `{width=50%}`), catalogue tokens
-// (`[*Name*]`) and a `:::center` ... `:::` block, the container syntax
-// Tiptap's markdown extension reads and writes (without a space after the
-// colons). Anything else is passed through as text. Everything is
+// (`[*Name*]`), a `:::center` ... `:::` block, the container syntax Tiptap's
+// markdown extension reads and writes (without a space after the colons), and
+// GitHub's `<details>` collapsible section. Anything else is passed through as
+// text. Everything is
 // HTML-escaped before a single tag is added, so the result is safe to hand to
 // v-html -- which is why user-written text goes through here too.
 
@@ -252,6 +253,79 @@ export const closesFence = (line: string, marker: string) => {
   );
 };
 
+export const DETAILS_OPEN =
+  /^( {0,3}<details(?:\s+open)?>[ \t]*)(?:<summary>(.*)<\/summary>[ \t]*)?$/i;
+export const DETAILS_SUMMARY = /^( {0,3})<summary>(.*)<\/summary>[ \t]*$/i;
+export const DETAILS_CLOSE = /^ {0,3}<\/details>[ \t]*$/i;
+
+export type DetailsBlock = {
+  summary: string;
+  body: string[];
+  // The index of the last line the section takes up.
+  end: number;
+};
+
+// GitHub's collapsible section: a `<details>` line, its `<summary>` on the
+// same line or the first one after it with text, markdown, and a `</details>`
+// line. Only these exact
+// lines count -- any other HTML is still text -- and the tags mean nothing
+// inside fenced code. A section left open runs to the end of the text, as it
+// does in a browser. `open` is accepted and dropped: the editor keeps no open
+// state, so a section the page showed open would close on the next save.
+export const readDetails = (
+  lines: string[],
+  start: number,
+): DetailsBlock | undefined => {
+  const open = DETAILS_OPEN.exec(lines[start]);
+
+  if (!open) return undefined;
+
+  let summary = open[2];
+  let index = start + 1;
+
+  if (summary === undefined) {
+    let next = index;
+
+    while (next < lines.length && !lines[next].trim()) next += 1;
+
+    const line = DETAILS_SUMMARY.exec(lines[next] ?? "");
+
+    if (line) {
+      summary = line[2];
+      index = next + 1;
+    }
+  }
+
+  const body: string[] = [];
+  let depth = 1;
+  let fence: string | undefined;
+
+  for (; index < lines.length; index += 1) {
+    const line = lines[index];
+
+    if (fence) {
+      if (closesFence(line, fence)) fence = undefined;
+    } else {
+      fence = FENCE_OPEN.exec(line)?.[1];
+
+      if (!fence && DETAILS_OPEN.test(line)) depth += 1;
+
+      if (!fence && DETAILS_CLOSE.test(line)) {
+        depth -= 1;
+        if (depth === 0) break;
+      }
+    }
+
+    body.push(line);
+  }
+
+  return {
+    summary: (summary ?? "").trim(),
+    body,
+    end: Math.min(index, lines.length - 1),
+  };
+};
+
 const LIST_ITEM = /^([ \t]*)([-*+]|\d{1,9}[.)])([ \t]+|$)(.*)$/;
 
 type List = { type: "ul" | "ol"; start: number; items: string[] };
@@ -326,6 +400,22 @@ export const renderMarkdown = (source: string): string => {
       }
 
       blocks.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+      continue;
+    }
+
+    const details = readDetails(lines, index);
+
+    if (details) {
+      flush();
+
+      // Without a summary the browser names the section itself.
+      const summary = details.summary
+        ? `<summary>${renderInline(details.summary)}</summary>`
+        : "";
+      blocks.push(
+        `<details>${summary}${renderMarkdown(details.body.join("\n"))}</details>`,
+      );
+      index = details.end;
       continue;
     }
 
@@ -442,7 +532,7 @@ export const renderMarkdown = (source: string): string => {
 export const markdownToPlainText = (source: string) => {
   const template = document.createElement("template");
   template.innerHTML = renderMarkdown(source).replace(
-    /<br>|<\/(p|li|h\d|div|pre|blockquote)>/g,
+    /<br>|<\/(p|li|h\d|div|pre|blockquote|summary)>/g,
     "$& ",
   );
 
