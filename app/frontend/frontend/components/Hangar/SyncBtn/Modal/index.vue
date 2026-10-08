@@ -241,6 +241,7 @@ const showSupportHint = computed(
   () =>
     finished.value &&
     !finishedWithErrors.value &&
+    pledges.value.length > 0 &&
     !supportHintDismissed.value &&
     supportPrompt.canShow(),
 );
@@ -406,6 +407,14 @@ useSubscription({
 });
 
 const finishSync = async () => {
+  // A hangar of upgrades, game packages or merchandise only: the API refuses
+  // an empty list, which would read as the sync failing.
+  if (pledges.value.length === 0) {
+    updateStep("submitData", "success");
+    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
+    return;
+  }
+
   updateStep("submitData", "processing");
   hangarStore.syncRunning = true;
 
