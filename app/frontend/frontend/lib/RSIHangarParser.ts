@@ -12,7 +12,11 @@ export type RSIHangarPage =
       pledgeIds: string[];
     }
   | { status: RsiPageStatus.END }
-  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
+  | {
+      status: RsiPageStatus.UNRECOGNISED;
+      check: RsiPageCheckEnum;
+      details: string[];
+    };
 
 const READ_KINDS = new Map<string, RSIHangarItemKind>([
   ["Ship", "ship"],
@@ -83,6 +87,7 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_LIST,
+        details: [`page title "${htmlDoc.title}"`],
       };
     }
 
@@ -93,9 +98,9 @@ export class RSIHangarParser {
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
     let missingPledgeName = false;
-    let shipWithoutKind = false;
-    let unknownKind = false;
-    let standaloneShipWithoutShip = false;
+    const shipsWithoutKind = new Set<string>();
+    const unknownKinds = new Set<string>();
+    const standaloneShipsWithoutShip = new Set<string>();
 
     entries.forEach((entry) => {
       const id = (
@@ -142,13 +147,15 @@ export class RSIHangarParser {
           // does: one with a manufacturer and no kind would drop out of the
           // sync, and the unmatched action would act on it.
           if (this.hasManufacturer(item)) {
-            shipWithoutKind = true;
+            shipsWithoutKind.add(
+              `item without kind, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}, markup ${this.markupClasses(item)}`,
+            );
           }
           return;
         }
 
         if (!KNOWN_KINDS.includes(kind)) {
-          unknownKind = true;
+          unknownKinds.add(`unknown kind "${kind}"`);
           return;
         }
 
@@ -163,7 +170,11 @@ export class RSIHangarParser {
         name?.startsWith("Standalone Ship") &&
         !items.some((item) => item.type === "ship")
       ) {
-        standaloneShipWithoutShip = true;
+        const kinds = elements.map((item) => this.itemKind(item) ?? "none");
+
+        standaloneShipsWithoutShip.add(
+          `no ship in ${this.pledgeCategory(name)}, kinds ${kinds.join(", ") || "none"}`,
+        );
       }
 
       pledges.push(...items);
@@ -180,27 +191,33 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+        details: [
+          `pledges ${entries.length}, ids ${pledgeIds.length}, ${missingPledgeName ? "a name missing" : "no name missing"}`,
+        ],
       };
     }
 
-    if (shipWithoutKind) {
+    if (shipsWithoutKind.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [...shipsWithoutKind],
       };
     }
 
-    if (unknownKind) {
+    if (unknownKinds.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
+        details: [...unknownKinds],
       };
     }
 
-    if (standaloneShipWithoutShip) {
+    if (standaloneShipsWithoutShip.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [...standaloneShipsWithoutShip],
       };
     }
 
@@ -279,6 +296,36 @@ export class RSIHangarParser {
   // reported, a ship dropped from the sync is acted on.
   hasManufacturer(item: Element): boolean {
     return !!item.getElementsByClassName("liner")[0];
+  }
+
+  // What an admin report may say about an item or pledge it could not read. A
+  // report goes out of the user's purchase history, so it carries RSI's own
+  // labels and markup but never an item's title or the name the user gave it.
+  linerText(item: Element): string {
+    const liner = item.getElementsByClassName("liner")[0]?.cloneNode(true) as
+      Element | undefined;
+
+    liner
+      ?.querySelectorAll(".custom-name-text")
+      .forEach((customName) => customName.remove());
+
+    return liner?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+  }
+
+  pledgeCategory(name: string | undefined): string {
+    const [category, title] = (name ?? "").split(" - ");
+
+    return title === undefined
+      ? "a pledge without a category"
+      : `a "${category.trim()}" pledge`;
+  }
+
+  markupClasses(item: Element): string {
+    const classes = [item, ...Array.from(item.querySelectorAll("[class]"))]
+      .flatMap((element) => Array.from(element.classList))
+      .filter((className) => !className.startsWith("js-"));
+
+    return [...new Set(classes)].join(" ") || "none";
   }
 
   itemKind(item: Element): string | undefined {

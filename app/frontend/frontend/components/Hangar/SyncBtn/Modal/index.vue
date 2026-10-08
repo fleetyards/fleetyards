@@ -309,6 +309,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
       check: result.check,
       pageNumber: currentPage.value,
       extensionVersion: hangarStore.extensionVersion,
+      details: result.details,
     });
 
     // Signed out, the identify answer has already said so.

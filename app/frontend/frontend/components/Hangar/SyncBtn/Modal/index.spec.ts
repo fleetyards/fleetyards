@@ -213,6 +213,7 @@ describe("HangarSyncModal", () => {
         check: RsiPageCheckEnum.MISSING_LIST,
         pageNumber: 1,
         extensionVersion: undefined,
+        details: ['page title ""'],
       },
     });
   });

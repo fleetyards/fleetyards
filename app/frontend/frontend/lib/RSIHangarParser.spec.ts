@@ -48,6 +48,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_LIST,
+      details: ['page title "Sign In"'],
     });
   });
 
@@ -61,6 +62,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+      details: ["pledges 2, ids 1, a name missing"],
     });
   });
 
@@ -70,6 +72,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_LIST,
+      details: ['page title ""'],
     });
   });
 
@@ -77,6 +80,7 @@ describe("RSIHangarParser.extractPage", () => {
     expect(extract(pledgesPage(`<li><div class="item"></div></li>`))).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+      details: ["pledges 1, ids 0, a name missing"],
     });
   });
 
@@ -90,6 +94,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.UNKNOWN_KINDS,
+      details: ['unknown kind "Vehicle"'],
     });
   });
 
@@ -159,6 +164,29 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, liner "Drake Interplanetary (DRAK)", in a pledge without a category, markup item text title liner',
+      ],
+    });
+  });
+
+  it("reports an item it could not read without its title or custom name", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          '<div class="item js-item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary <span class="custom-name-text">Sir Cutsalot</span></div></div></div>',
+          "Package - Cutlass Black Starter",
+        ),
+      ),
+    );
+
+    expect(page).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, liner "Drake Interplanetary", in a "Package" pledge, markup item text title liner custom-name-text',
+      ],
     });
   });
 
@@ -189,6 +217,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
+      details: ['no ship in a "Standalone Ships" pledge, kinds none'],
     });
   });
 
@@ -223,6 +252,9 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, liner "", in a pledge without a category, markup item text title liner',
+      ],
     });
   });
 
@@ -236,6 +268,7 @@ describe("RSIHangarParser.extractPage", () => {
     ).toEqual({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+      details: ["pledges 1, ids 1, a name missing"],
     });
   });
 
