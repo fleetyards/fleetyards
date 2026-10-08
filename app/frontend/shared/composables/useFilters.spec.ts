@@ -35,6 +35,12 @@ describe("useFilters#getQuery", () => {
 
     expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
   });
+
+  it("drops the flag that opens the fleetchart", () => {
+    query.value = { nameCont: "titanium", fleetchart: "true" };
+
+    expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
+  });
 });
 
 /*
