@@ -228,11 +228,12 @@ class Commodity < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
 
-  # `buyPrice` and `sellPrice` are the cheapest of each direction across every
-  # terminal, which `ItemPriceConcern` already exposes as a scalar subquery --
-  # one row per commodity, so ordering needs no `distinct` to undo a join.
+  # `buyPrice` and `sellPrice` are the best of each direction across every
+  # terminal -- the best-paid buy-back, the cheapest sale -- which
+  # `ItemPriceConcern` already exposes as a scalar subquery, one row per
+  # commodity, so ordering needs no `distinct` to undo a join.
   #
-  # Half the catalogue is priced nowhere, and `MIN()` over no rows is NULL, so
+  # Half the catalogue is priced nowhere, and `MAX()`/`MIN()` over no rows is NULL, so
   # those sort last ascending and first descending. Sorting is not filtering:
   # an unpriced commodity stays in the list either way, at the end of it.
   ALLOWED_SORTING_PARAMS = [
