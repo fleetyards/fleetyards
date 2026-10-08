@@ -42,6 +42,9 @@ type Props = {
   placeholder?: string;
   clearable?: boolean;
   disabled?: boolean;
+  // Not editable, but unlike `disabled` still focusable and selectable, so a
+  // value shown for copying can be copied by hand.
+  readonly?: boolean;
   inline?: boolean;
   prefix?: string;
   suffix?: string;
@@ -75,6 +78,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   clearable: false,
   disabled: false,
+  readonly: false,
   inline: false,
   prefix: undefined,
   suffix: undefined,
@@ -354,6 +358,7 @@ defineExpose({
         :autocomplete="autocomplete"
         :inputmode="inputmode"
         :disabled="disabled"
+        :readonly="readonly"
         :name="name"
         :min="min"
         :max="max"

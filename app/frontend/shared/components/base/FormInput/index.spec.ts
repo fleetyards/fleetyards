@@ -29,6 +29,18 @@ describe("FormInput", () => {
     expect(placeholder(wrapper)).toBe("Username");
   });
 
+  it("keeps a readonly value selectable rather than disabling it", async () => {
+    const wrapper = await mountInput({
+      name: "shareUrl",
+      modelValue: "https://example.test",
+      readonly: true,
+    });
+    const input = wrapper.find("input");
+
+    expect(input.attributes("readonly")).toBeDefined();
+    expect(input.attributes("disabled")).toBeUndefined();
+  });
+
   it("prefers an explicitly passed placeholder", async () => {
     const wrapper = await mountInput({
       name: "username",
