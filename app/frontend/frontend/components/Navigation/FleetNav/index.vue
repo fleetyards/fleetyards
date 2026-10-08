@@ -83,121 +83,119 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <NavItem
+    :to="{ name: 'home' }"
+    :label="t('nav.back')"
+    icon="fa-light fa-chevron-left"
+  />
+  <template v-if="currentFleet">
     <NavItem
-      :to="{ name: 'home' }"
-      :label="t('nav.back')"
-      icon="fa-light fa-chevron-left"
+      :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
+      :label="currentFleet.name"
+      :image="currentFleet.logo?.smallUrl || undefined"
+      :active="route.name === 'fleet'"
     />
-    <template v-if="currentFleet">
-      <NavItem
-        :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
-        :label="currentFleet.name"
-        :image="currentFleet.logo?.smallUrl || undefined"
-        :active="route.name === 'fleet'"
-      />
-      <!-- Top-level, and staying there: this is the one tab somebody outside
-           the fleet can reach, and a public surface behind a parent is a click
-           added for the reader least able to guess what the parent holds. -->
-      <NavItem
-        v-if="showShipsNav"
-        :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.ships')"
-        :active="shipsNavActive"
-        :icon="SHIP_GLYPH"
-      />
+    <!-- Top-level, and staying there: this is the one tab somebody outside
+         the fleet can reach, and a public surface behind a parent is a click
+         added for the reader least able to guess what the parent holds. -->
+    <NavItem
+      v-if="showShipsNav"
+      :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
+      :label="t('nav.fleets.ships')"
+      :active="shipsNavActive"
+      :icon="SHIP_GLYPH"
+    />
 
-      <NavItem
-        v-if="membership"
-        :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.members.index')"
-        :active="String(route.name).startsWith('fleet-members')"
-        icon="fa-duotone fa-users"
-      />
+    <NavItem
+      v-if="membership"
+      :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
+      :label="t('nav.fleets.members.index')"
+      :active="String(route.name).startsWith('fleet-members')"
+      icon="fa-duotone fa-users"
+    />
 
-      <!-- Next to Members rather than in a group of its own: a squadron is
-           the roster sub-divided, and somebody looking for one looks where
-           the people are. -->
-      <NavItem
-        v-if="showSquadronsNav"
-        :to="{ name: 'fleet-squadrons', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.squadrons.index')"
-        :active="squadronsNavActive"
-        icon="fa-duotone fa-shield-halved"
-      />
+    <!-- Next to Members rather than in a group of its own: a squadron is
+         the roster sub-divided, and somebody looking for one looks where
+         the people are. -->
+    <NavItem
+      v-if="showSquadronsNav"
+      :to="{ name: 'fleet-squadrons', params: { slug: currentFleet.slug } }"
+      :label="t('nav.fleets.squadrons.index')"
+      :active="squadronsNavActive"
+      icon="fa-duotone fa-shield-halved"
+    />
 
-      <!-- What the fleet holds between its members: the recipes they can make
-           and the stock they have put in. -->
-      <NavItem
-        v-if="showAssetsNav"
-        :label="t('nav.fleets.assets')"
-        menu-key="fleet-assets-menu"
-        :submenu-active="assetsNavActive"
-        icon="fa-duotone fa-layer-group"
-      >
-        <template #submenu>
-          <NavItem
-            v-if="showBlueprintsNav"
-            :to="{
-              name: 'fleet-blueprints',
-              params: { slug: currentFleet.slug },
-            }"
-            :label="t('nav.fleets.blueprints')"
-            :active="blueprintsNavActive"
-            icon="fa-duotone fa-notes"
-          />
-          <NavItem
-            v-if="showLogisticsNav"
-            :to="{
-              name: 'fleet-logistics',
-              params: { slug: currentFleet.slug },
-            }"
-            :label="t('nav.fleets.logistics.index')"
-            :active="logisticsNavActive"
-            icon="fa-duotone fa-boxes-stacked"
-          />
-        </template>
-      </NavItem>
+    <!-- What the fleet holds between its members: the recipes they can make
+         and the stock they have put in. -->
+    <NavItem
+      v-if="showAssetsNav"
+      :label="t('nav.fleets.assets')"
+      menu-key="fleet-assets-menu"
+      :submenu-active="assetsNavActive"
+      icon="fa-duotone fa-layer-group"
+    >
+      <template #submenu>
+        <NavItem
+          v-if="showBlueprintsNav"
+          :to="{
+            name: 'fleet-blueprints',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.blueprints')"
+          :active="blueprintsNavActive"
+          icon="fa-duotone fa-notes"
+        />
+        <NavItem
+          v-if="showLogisticsNav"
+          :to="{
+            name: 'fleet-logistics',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.logistics.index')"
+          :active="logisticsNavActive"
+          icon="fa-duotone fa-boxes-stacked"
+        />
+      </template>
+    </NavItem>
 
-      <NavItem
-        v-if="showContractsNav"
-        :to="{
-          name: 'fleet-contracts',
-          params: { slug: currentFleet.slug },
-        }"
-        :label="t('nav.fleets.contracts.index')"
-        :active="contractsNavActive"
-        icon="fa-duotone fa-clipboard-list"
-      />
+    <NavItem
+      v-if="showContractsNav"
+      :to="{
+        name: 'fleet-contracts',
+        params: { slug: currentFleet.slug },
+      }"
+      :label="t('nav.fleets.contracts.index')"
+      :active="contractsNavActive"
+      icon="fa-duotone fa-clipboard-list"
+    />
 
-      <!-- Tours has no row of its own: it is reached from the events page, the
-           way missions already are, and this tab stays lit while a reader is
-           in there. -->
-      <NavItem
-        v-if="showEventsNav"
-        :to="{
-          name: eventsNavRoute,
-          params: { slug: currentFleet.slug },
-        }"
-        :label="eventsNavLabel"
-        :active="eventsNavActive"
-        icon="fa-duotone fa-calendar-day"
-      />
+    <!-- Tours has no row of its own: it is reached from the events page, the
+         way missions already are, and this tab stays lit while a reader is
+         in there. -->
+    <NavItem
+      v-if="showEventsNav"
+      :to="{
+        name: eventsNavRoute,
+        params: { slug: currentFleet.slug },
+      }"
+      :label="eventsNavLabel"
+      :active="eventsNavActive"
+      icon="fa-duotone fa-calendar-day"
+    />
 
-      <NavItem
-        v-if="currentFleet.publicFleetStats || membership"
-        :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.stats')"
-        :active="route.name === 'fleet-stats'"
-        icon="fa-duotone fa-chart-bar"
-      />
-      <NavItem
-        v-if="membership"
-        :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.settings.index')"
-        :active="String(route.name).startsWith('fleet-settings')"
-        icon="fa-duotone fa-cogs"
-      />
-    </template>
-  </div>
+    <NavItem
+      v-if="currentFleet.publicFleetStats || membership"
+      :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
+      :label="t('nav.fleets.stats')"
+      :active="route.name === 'fleet-stats'"
+      icon="fa-duotone fa-chart-bar"
+    />
+    <NavItem
+      v-if="membership"
+      :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
+      :label="t('nav.fleets.settings.index')"
+      :active="String(route.name).startsWith('fleet-settings')"
+      icon="fa-duotone fa-cogs"
+    />
+  </template>
 </template>

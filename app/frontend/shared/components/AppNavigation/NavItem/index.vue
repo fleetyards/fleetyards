@@ -674,7 +674,6 @@ const toggleMenu = () => {
     custom
   >
     <li
-      role="link"
       :class="{
         'nav-item--active': active || routeActive,
         'nav-item--slim': slim,

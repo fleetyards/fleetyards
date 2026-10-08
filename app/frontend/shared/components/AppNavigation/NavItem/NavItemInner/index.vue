@@ -74,6 +74,7 @@ const badgeLabel = computed(() => {
     <span v-if="!slim" class="nav-item-text">
       {{ label }}
     </span>
+    <span v-else class="sr-only">{{ label }}</span>
     <span v-if="badgeLabel && !slim" class="nav-item-badge">
       {{ badgeLabel }}
     </span>
