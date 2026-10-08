@@ -139,19 +139,40 @@ const mountModal = async (
   return { wrapper, hangarStore };
 };
 
-// RSI's empty list ends the fetch loop, which is the shortest route from
-// "start" to the request this spec is about.
-const submitEmptyHangar = async (
-  wrapper: Awaited<ReturnType<typeof mountModal>>["wrapper"],
-) => {
-  await wrapper.find("[data-test='start-sync']").trigger("click");
+const replyWithPage = async (items: string) => {
+  extensionReplies(
+    "sync",
+    `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101">${items}</li></ul>`,
+  );
   await flushPromises();
+
+  const sent = vi.mocked(window.postMessage).mock.calls.length;
+  await vi.waitFor(
+    () =>
+      expect(vi.mocked(window.postMessage).mock.calls.length).toBeGreaterThan(
+        sent,
+      ),
+    { timeout: 2000 },
+  );
 
   extensionReplies(
     "sync",
     '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
   );
   await flushPromises();
+};
+
+// One page with a ship, then RSI's empty list: the shortest route from
+// "start" to the request this spec is about.
+const submitHangar = async (
+  wrapper: Awaited<ReturnType<typeof mountModal>>["wrapper"],
+) => {
+  await wrapper.find("[data-test='start-sync']").trigger("click");
+  await flushPromises();
+
+  await replyWithPage(
+    '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+  );
 };
 
 describe("HangarSyncModal", () => {
@@ -252,7 +273,7 @@ describe("HangarSyncModal", () => {
 
     expect(hangarStore.syncAddBundledVehicles).toBe(true);
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ addBundledVehicles: true }),
@@ -266,7 +287,7 @@ describe("HangarSyncModal", () => {
       HangarSyncUnmatchedActionEnum.WISHLIST,
     );
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({
@@ -283,7 +304,7 @@ describe("HangarSyncModal", () => {
       HangarSyncUnmatchedActionEnum.DELETE;
     await flushPromises();
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({
@@ -302,7 +323,7 @@ describe("HangarSyncModal", () => {
       HangarSyncUnmatchedActionEnum.KEEP;
     await flushPromises();
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ unmatchedHangarGroupId: undefined }),
@@ -327,7 +348,7 @@ describe("HangarSyncModal", () => {
       wrapper.find("[data-test='start-sync']").attributes("disabled"),
     ).toBeUndefined();
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({
@@ -349,35 +370,12 @@ describe("HangarSyncModal", () => {
     // the choice the user made on this one.
     expect(hangarStore.syncAddBundledVehicles).toBe(false);
 
-    await submitEmptyHangar(wrapper);
+    await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ addBundledVehicles: false }),
     });
   });
-
-  const replyWithPage = async (items: string) => {
-    extensionReplies(
-      "sync",
-      `<title>My Hangar</title><ul class="list-items"><li><input type="hidden" class="js-pledge-id" value="101">${items}</li></ul>`,
-    );
-    await flushPromises();
-
-    const sent = vi.mocked(window.postMessage).mock.calls.length;
-    await vi.waitFor(
-      () =>
-        expect(vi.mocked(window.postMessage).mock.calls.length).toBeGreaterThan(
-          sent,
-        ),
-      { timeout: 2000 },
-    );
-
-    extensionReplies(
-      "sync",
-      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
-    );
-    await flushPromises();
-  };
 
   it("submits a hangar whose ship upgrade has no kind", async () => {
     const { wrapper } = await mountModal();
@@ -413,5 +411,19 @@ describe("HangarSyncModal", () => {
     expect(reportMutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ check: RsiPageCheckEnum.MISSING_KINDS }),
     });
+  });
+
+  it("submits nothing when the hangar holds nothing to sync", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+    );
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(reportMutateAsync).not.toHaveBeenCalled();
   });
 });
