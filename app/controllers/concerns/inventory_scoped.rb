@@ -3,8 +3,8 @@
 # Contract for controllers that act on a single inventory. The including
 # controller says *which* inventory it is; the action bodies live in
 # InventoryScoped::ItemActions and InventoryScoped::StockActions and are
-# identical whether the holder reached the inventory through their hangar or
-# through one of their ships.
+# identical whether the holder reached the inventory through their hangar,
+# through one of their ships or through a fleet.
 module InventoryScoped
   extend ActiveSupport::Concern
 
