@@ -19,7 +19,7 @@ const FEATURES = [
   { id: "ships", icon: "fa-duotone fa-list-ul" },
   { id: "fleetchart", icon: "fa-duotone fa-ruler-combined" },
   { id: "stats", icon: "fa-duotone fa-chart-pie" },
-  { id: "events", icon: "fa-duotone fa-calendar-star" },
+  { id: "allies", icon: "fa-duotone fa-handshake" },
   { id: "discord", icon: "fa-brands fa-discord" },
 ];
 

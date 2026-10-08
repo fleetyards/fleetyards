@@ -152,13 +152,13 @@
           "title": "Flottenstatistiken",
           "text": "Analysiere deine Flotte nach Rolle, Größe und Frachtkapazität."
         },
-        "events": {
-          "title": "Events und Aufträge",
-          "text": "Plane Events in einem gemeinsamen Kalender und veröffentliche Aufträge für deine Mitglieder."
+        "allies": {
+          "title": "Verbündete",
+          "text": "Verbünde dich mit anderen Flotten und behalte im Blick, mit wem du fliegst."
         },
         "discord": {
           "title": "Discord",
-          "text": "Verbinde deinen Discord-Server für Event-Anmeldungen und lass Mitglieder über eine Rolle beitreten."
+          "text": "Poste Ankündigungen und eine wöchentliche Zusammenfassung auf deinem Discord-Server und lass Mitglieder über eine Rolle beitreten."
         }
       },
       "impressum": {

@@ -152,13 +152,13 @@
           "title": "Fleet stats",
           "text": "Analyse your fleet by role, size and cargo capacity."
         },
-        "events": {
-          "title": "Events and contracts",
-          "text": "Plan events on a shared calendar and post contracts for your members."
+        "allies": {
+          "title": "Allies",
+          "text": "Ally with other fleets and keep track of who you fly with."
         },
         "discord": {
           "title": "Discord",
-          "text": "Connect your Discord server for event sign-ups, and let members join through a role."
+          "text": "Post announcements and a weekly digest to your Discord server, and let members join through a role."
         }
       },
       "impressum": {

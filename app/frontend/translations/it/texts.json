@@ -152,13 +152,13 @@
           "title": "Statistiche della flotta",
           "text": "Analizza la tua flotta per ruolo, dimensione e capacità di carico."
         },
-        "events": {
-          "title": "Eventi e contratti",
-          "text": "Pianifica eventi in un calendario condiviso e pubblica contratti per i tuoi membri."
+        "allies": {
+          "title": "Alleati",
+          "text": "Alleati con altre flotte e tieni traccia di chi vola con te."
         },
         "discord": {
           "title": "Discord",
-          "text": "Collega il tuo server Discord per le iscrizioni agli eventi e lascia che i membri entrino tramite un ruolo."
+          "text": "Pubblica annunci e un riepilogo settimanale sul tuo server Discord e lascia che i membri entrino tramite un ruolo."
         }
       },
       "impressum": {
