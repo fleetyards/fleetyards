@@ -33,7 +33,23 @@ describe("useSupportPrompt", () => {
     expect(useNotificationsStore().messages).toHaveLength(0);
   });
 
-  it("prompts a signed-out visitor", () => {
-    expect(useSupportPrompt().canShow()).toBe(true);
+  it("keeps a supporter's milestones and one-time prompts for later", () => {
+    signInAs({ supporter: true });
+    const supportPrompt = useSupportPrompt();
+
+    expect(
+      supportPrompt.notifyIfMilestone("logins", [1], "loginMilestone"),
+    ).toBe(false);
+    expect(supportPrompt.notifyOnce("fleetCreated", "fleetCreated")).toBe(
+      false,
+    );
+    expect(localStorage.getItem("fy.support-prompt")).toBeNull();
+  });
+
+  it("prompts a signed-out visitor at a milestone", () => {
+    expect(
+      useSupportPrompt().notifyIfMilestone("visits", [1], "visitMilestone"),
+    ).toBe(true);
+    expect(useNotificationsStore().messages).toHaveLength(1);
   });
 });
