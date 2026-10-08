@@ -18,19 +18,20 @@ module Api
       before_action :set_fleet
 
       def show
-        authorize! with: FleetDiscordRoleMappingPolicy, context: {fleet: @fleet}
+        authorize! notification_setting, with: FleetNotificationSettingPolicy
 
         @fleet_roles = @fleet.fleet_roles.ranked
       end
 
       # Ranks the request does not name keep their mapping. Each changed rank
-      # re-syncs its own members once the transaction commits.
+      # re-syncs its own members once the transaction commits, so a rank named
+      # twice is applied once, with its last value.
       def update
-        authorize! with: FleetDiscordRoleMappingPolicy, context: {fleet: @fleet}
+        authorize! notification_setting, with: FleetNotificationSettingPolicy, to: :update?
 
         invalid = nil
         FleetRole.transaction do
-          mapping_params.each do |mapping|
+          mapping_params.index_by { |mapping| mapping[:fleet_role_id] }.each_value do |mapping|
             fleet_role = @fleet.fleet_roles.find(mapping[:fleet_role_id])
             next if fleet_role.update(discord_role_id: mapping[:discord_role_id])
 
@@ -45,6 +46,12 @@ module Api
           @fleet_roles = @fleet.fleet_roles.ranked
           render :show
         end
+      end
+
+      # Which role each rank hands out is part of the fleet's Discord setup, so
+      # it belongs to whoever manages that, not to whoever may rename ranks.
+      private def notification_setting
+        @fleet.fleet_notification_setting || FleetNotificationSetting.new(fleet: @fleet)
       end
 
       private def mapping_params

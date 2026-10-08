@@ -183,6 +183,17 @@ class Api::V1::FleetsDiscordRoleMappingsTest < ActionDispatch::IntegrationTest
     assert_nil @officer_role.reload.discord_role_id
   end
 
+  test "PUT applies a rank named twice once, with its last value" do
+    sign_in @admin
+
+    body = {mappings: [mapping(@member_role, "300000000000000002"), mapping(@member_role, "300000000000000003")]}
+
+    assert_api_response(:put, 200, path_params: path_params, body:)
+
+    assert_equal "300000000000000003", @member_role.reload.discord_role_id
+    assert_equal 1, ::Discord::BackfillFleetMemberRolesJob.jobs.size
+  end
+
   test "PUT returns 404 for another fleet's rank" do
     other = create(:fleet).fleet_roles.find_by!(slug: "member")
     sign_in @admin
