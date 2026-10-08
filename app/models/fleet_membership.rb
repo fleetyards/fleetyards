@@ -155,6 +155,8 @@ class FleetMembership < ApplicationRecord
   # From the user's stored org list, so a member whose list already names the
   # fleet's SID is verified the moment they join, without asking RSI.
   before_create -> { self.verified = FleetMembershipVerification.verified?(user, fleet) if user && fleet }
+  # A rank an officer gave is their choice, so the role no longer ends it.
+  before_update -> { self.discord_role_granted = false }, if: -> { discord_role_granted? && fleet_role_id_changed? }
   after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary

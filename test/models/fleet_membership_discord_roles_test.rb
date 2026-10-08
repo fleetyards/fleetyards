@@ -28,6 +28,15 @@ class FleetMembershipDiscordRolesTest < ActiveSupport::TestCase
     assert_equal [membership.id], ::Discord::SyncMemberRolesJob.jobs.map { |job| job["args"].first }
   end
 
+  test "a rank an officer gives takes the membership out of the join role's hands" do
+    membership = create_membership
+    membership.update!(aasm_state: "accepted", discord_role_granted: true)
+
+    membership.update!(fleet_role: @fleet.fleet_roles.ranked.first)
+
+    refute_predicate membership.reload, :discord_role_granted?
+  end
+
   test "a rank change syncs the roles" do
     membership = create_membership
     membership.update!(aasm_state: "accepted")
