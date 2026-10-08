@@ -40,14 +40,18 @@ module Discord
     #
     # Unless a role was retired. A member who left or changed rank between the
     # mapping change and this job was synced without it, by then no longer
-    # managed, so only a sync from here can still take it off them.
+    # managed, so only a sync from here can still take it off them. Leaving
+    # discards a membership without moving it out of accepted, so this still
+    # skips invitees and applicants: the fleet never gave them the role, and if
+    # they hold it, someone in Discord did.
     private def membership_ids(fleet, fleet_role_id, retired_role_ids)
       scope = fleet.fleet_memberships
+        .where(aasm_state: "accepted")
         .joins(user: :omniauth_connections)
         .where(omniauth_connections: {provider: OmniauthConnection.providers[:discord]})
 
       if retired_role_ids.blank?
-        scope = scope.kept.where(aasm_state: "accepted")
+        scope = scope.kept
         scope = scope.where(fleet_role_id: fleet_role_id) if fleet_role_id.present?
       end
 

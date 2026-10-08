@@ -117,13 +117,15 @@ module Discord
 
       # They were synced while the role was no longer mapped, so nothing else
       # would take it off them.
-      test "a retired role also reaches members who left or changed rank meanwhile" do
+      test "a retired role also reaches members who left or changed rank meanwhile, but no invitee" do
         left = accepted_member
         left.update!(discarded_at: Time.current)
         moved = accepted_member
         moved.update!(fleet_role: @fleet.fleet_roles.ranked.first)
         stayed = accepted_member
         accepted_member(linked: false)
+        invited = accepted_member
+        invited.update!(aasm_state: "invited")
         clear_jobs
 
         ::Discord::BackfillFleetMemberRolesJob.new.perform(@fleet.id, @role.id, ["300000000000000001"])
