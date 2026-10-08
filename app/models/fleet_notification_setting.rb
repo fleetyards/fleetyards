@@ -54,6 +54,12 @@ class FleetNotificationSetting < ApplicationRecord
 
   validates(*DISCORD_ID_ATTRIBUTES, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT, message: :not_a_discord_id}, allow_nil: true)
 
+  # @everyone has the guild's own id and every member holds it, so as the join
+  # role it would let the whole server in without a request.
+  validate do
+    errors.add(:discord_join_role_id, :everyone_role) if discord_join_role_id.present? && discord_join_role_id == discord_guild_id
+  end
+
   DIGEST_TIME_FORMAT = /\A(?:[01]\d|2[0-3]):[0-5]\d\z/
 
   # Ruby's own numbering, Sunday first, so a weekday compares with `wday`
