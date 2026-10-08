@@ -21,6 +21,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type UserPublic } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
@@ -32,6 +33,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const fleetchartShareUrl = useFleetchartShareUrl();
 
 const route = useRoute();
 
@@ -239,6 +242,10 @@ onMounted(async () => {
         namespace="wishlist"
         :loading="loading"
         download-name="my-wishlist-fleetchart"
+        :share-url="fleetchartShareUrl"
+        :share-title="
+          t('headlines.hangar.publicWishlist', { user: usernamePlural })
+        "
       >
         <template #filter>
           <FilterForm hide-quicksearch />

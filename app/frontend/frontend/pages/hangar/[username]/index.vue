@@ -21,6 +21,7 @@ import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   HangarGroup,
@@ -50,6 +51,8 @@ import {
 
 const { t } = useI18n();
 
+const fleetchartShareUrl = useFleetchartShareUrl();
+
 type Props = {
   user: UserPublic;
 };
@@ -74,6 +77,22 @@ const defaultSort = computed(() => props.user.hangarDefaultSort ?? undefined);
 
 const username = computed(() => {
   return props.user.username;
+});
+
+const userTitle = computed(() => {
+  return username.value[0].toUpperCase() + username.value.slice(1);
+});
+
+const usernamePlural = computed(() => {
+  if (
+    userTitle.value.endsWith("s") ||
+    userTitle.value.endsWith("x") ||
+    userTitle.value.endsWith("z")
+  ) {
+    return userTitle.value;
+  }
+
+  return `${userTitle.value}'s`;
 });
 
 const highlightedGroup = ref<string>("");
@@ -361,6 +380,8 @@ useSubscription({
         namespace="hangar"
         :loading="loading"
         download-name="my-hangar-fleetchart"
+        :share-url="fleetchartShareUrl"
+        :share-title="t('headlines.hangar.public', { user: usernamePlural })"
       >
         <template #filter>
           <FilterForm hide-quicksearch />
