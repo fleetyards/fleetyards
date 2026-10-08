@@ -57,7 +57,7 @@ describe("HangarBuybacksFilterForm", () => {
     ).toEqual(["-25", "25-50", "50-75"]);
   });
 
-  it("offers lifetime insurance before the month terms", async () => {
+  it("offers lifetime insurance, then the month terms longest first", async () => {
     const { wrapper } = await setup();
 
     const insuranceSelect = wrapper
@@ -68,9 +68,20 @@ describe("HangarBuybacksFilterForm", () => {
     expect(
       insuranceSelect
         .props("options")
-        .map((option: { value: string }) => option.value)
-        .slice(0, 2),
-    ).toEqual(["lifetime", "120"]);
+        .map((option: { value: string }) => option.value),
+    ).toEqual([
+      "lifetime",
+      "120",
+      "72",
+      "60",
+      "48",
+      "24",
+      "12",
+      "10",
+      "6",
+      "3",
+      "2",
+    ]);
   });
 
   it("prefills the insurance from the URL", async () => {

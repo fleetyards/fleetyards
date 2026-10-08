@@ -202,8 +202,9 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/buybacks filters by insurance" do
     user = create(:user)
-    lifetime = buyback(user, lifetime_insurance: true)
+    lifetime = buyback(user, lifetime_insurance: true, insurance_months: 120)
     ten_years = buyback(user, insurance_months: 120)
+    one_month = buyback(user, insurance_months: 1)
     buyback(user, insurance_months: 6)
     buyback(user)
     sign_in user
@@ -214,6 +215,23 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {"insuranceIn" => ["120"]}} do
       assert_equal [ten_years.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"insuranceIn" => ["1"]}} do
+      assert_equal [one_month.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks matches nothing for an insurance value it cannot read" do
+    user = create(:user)
+    buyback(user, insurance_months: 8)
+    buyback(user, insurance_months: 120)
+    sign_in user
+
+    ["lti", "010x", "0x10", "99999999999999999999"].each do |value|
+      assert_api_response :get, 200, params: {q: {"insuranceIn" => [value]}} do
+        assert_empty parsed_body["items"], value
+      end
     end
   end
 
