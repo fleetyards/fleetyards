@@ -24,6 +24,7 @@ const prefillFormValues = (): BuybackPledgeQuery => ({
   nameCont: filters.value.nameCont,
   kindEq: filters.value.kindEq,
   priceIn: filters.value.priceIn || [],
+  insuranceIn: filters.value.insuranceIn || [],
   priceGteq: filters.value.priceGteq,
   priceLteq: filters.value.priceLteq,
   upgradeFromModelSlugEq: filters.value.upgradeFromModelSlugEq,
@@ -46,6 +47,17 @@ watch(
 );
 
 const { pledgePriceOptions } = useFilterOptions();
+
+// The insurance terms RSI has sold pledges with, longest first.
+const INSURANCE_MONTHS = [120, 72, 60, 48, 24, 12, 10, 6, 3, 2];
+
+const insuranceOptions = computed(() => [
+  { value: "lifetime", label: t("labels.buybacks.lifetimeInsurance") },
+  ...INSURANCE_MONTHS.map((months) => ({
+    value: String(months),
+    label: t("labels.buybacks.insuranceMonths", { count: months }),
+  })),
+]);
 
 const kindOptions = computed(() =>
   Object.values(BuybackPledgeKindEnum).map((kind) => ({
@@ -82,6 +94,18 @@ const kindOptions = computed(() =>
       name="priceIn"
       :options="pledgePriceOptions"
       :label="t('labels.buybacks.priceRange')"
+      :multiple="true"
+      :no-label="true"
+      unsorted
+    />
+
+    <BaseSelect
+      v-model="form.insuranceIn"
+      name="insuranceIn"
+      :options="insuranceOptions"
+      :label="t('labels.buybacks.insurance')"
+      :searchable="false"
+      :paginated="false"
       :multiple="true"
       :no-label="true"
       unsorted

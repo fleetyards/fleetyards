@@ -57,6 +57,32 @@ describe("HangarBuybacksFilterForm", () => {
     ).toEqual(["-25", "25-50", "50-75"]);
   });
 
+  it("offers lifetime insurance before the month terms", async () => {
+    const { wrapper } = await setup();
+
+    const insuranceSelect = wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((component) => component.props("name") === "insuranceIn")!;
+
+    expect(insuranceSelect.props("unsorted")).toBe(true);
+    expect(
+      insuranceSelect
+        .props("options")
+        .map((option: { value: string }) => option.value)
+        .slice(0, 2),
+    ).toEqual(["lifetime", "120"]);
+  });
+
+  it("prefills the insurance from the URL", async () => {
+    const { wrapper } = await setup({ insuranceIn: ["lifetime", "120"] });
+
+    const insuranceSelect = wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((component) => component.props("name") === "insuranceIn")!;
+
+    expect(insuranceSelect.props("modelValue")).toEqual(["lifetime", "120"]);
+  });
+
   it("prefills the upgrade ships from the URL", async () => {
     const { wrapper } = await setup({
       upgradeFromModelSlugEq: "clipper",
