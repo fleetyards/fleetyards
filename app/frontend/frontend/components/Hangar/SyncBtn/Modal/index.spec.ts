@@ -119,7 +119,10 @@ const mountModal = async (
     global: {
       plugins: [createTestingPinia({ stubActions: false })],
       stubs: {
-        Modal: { template: "<div><slot /><slot name='footer' /></div>" },
+        Modal: {
+          template:
+            "<div><slot name='header-actions' /><slot /><slot name='footer' /></div>",
+        },
         HangarGroupsSelect: true,
         // Mounts a `useQuery` of its own, which needs a QueryClient this spec
         // has no reason to stand up: every assertion below drives the store.
@@ -348,6 +351,13 @@ describe("HangarSyncModal", () => {
       wrapper.find("[data-test='start-sync']").attributes("disabled"),
     ).toBeDefined();
 
+    // The group is chosen in the settings, which the start screen points to.
+    expect(
+      wrapper.find("[data-test='sync-missing-unmatched-group']").exists(),
+    ).toBe(true);
+    await wrapper.find("[data-test='open-sync-settings']").trigger("click");
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
+
     hangarStore.syncUnmatchedHangarGroupId = "group-1";
     await flushPromises();
 
@@ -368,6 +378,8 @@ describe("HangarSyncModal", () => {
   it("passes the opt-out on to the sync", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
+    await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
+
     await wrapper
       .find("[data-test='toggle-syncAddBundledVehicles']")
       .setValue(false);
@@ -381,6 +393,35 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ addBundledVehicles: false }),
+    });
+  });
+
+  it("switches to the settings and back with the cog", async () => {
+    const { wrapper } = await mountModal();
+
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+
+    await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='toggle-syncPaints']").exists()).toBe(true);
+
+    await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+  });
+
+  it("passes the paint and flair choices on to the sync", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncPaints = false;
+    await flushPromises();
+
+    await submitHangar(wrapper);
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        syncPaints: false,
+        syncHangarFlair: true,
+      }),
     });
   });
 

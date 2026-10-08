@@ -237,6 +237,7 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
+        "openSettings": "開啟設定",
         "retry": "重試同步",
         "close": "關閉",
         "refresh": "重新整理頁面"

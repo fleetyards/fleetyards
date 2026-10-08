@@ -2611,6 +2611,11 @@
         "targetGroup": "Gruppe für die gefundenen Schiffe",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",
         "addBundledVehiclesHint": "Fügt den Snub Craft hinzu, der zu einem Schiff gehört. Bereits vorhandene bleiben in jedem Fall erhalten.",
+        "syncPaints": "Lackierungen synchronisieren",
+        "syncPaintsHint": "Ersetzt deine Lackierungen durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Lackierungen unverändert.",
+        "syncHangarFlair": "Hangar-Flair synchronisieren",
+        "syncHangarFlairHint": "Ersetzt dein Hangar-Flair durch das aus deinem RSI-Hangar. Aus lässt das gespeicherte Flair unverändert.",
+        "settings": "Einstellungen",
         "unmatchedVehiclesAction": "Schiffe, die nicht im RSI-Hangar sind",
         "unmatchedVehiclesActionHint": "Was mit Schiffen passiert, die hier stehen, die der Sync aber nicht in deiner RSI-Pledge-Liste findet.",
         "unmatchedHangarGroup": "Gruppe, in die sie einsortiert werden",
@@ -2638,7 +2643,9 @@
           "all": "Alle Pledge-Gegenstände",
           "ships": "Schiffe",
           "components": "Module",
-          "upgrades": "Upgrades"
+          "upgrades": "Upgrades",
+          "paints": "Lackierungen",
+          "hangarFlair": "Hangar-Flair"
         },
         "importedItems": {
           "importedVehicles": "Hinzugefügte Schiffe",
@@ -2654,6 +2661,8 @@
           "missingComponentVehicles": "Kein passendes Schiff für Komponenten gefunden",
           "importedUpgrades": "Hinzugefügte Upgrades",
           "foundUpgrades": "Gefundene Upgrades",
+          "syncedPaints": "Synchronisierte Lackierungen",
+          "syncedHangarFlair": "Synchronisiertes Hangar-Flair",
           "missingUpgrades": "Upgrades nicht gefunden",
           "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"
         }

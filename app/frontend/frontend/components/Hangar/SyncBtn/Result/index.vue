@@ -35,7 +35,7 @@ const { t } = useI18n();
 
 const items = computed(() =>
   props.pledges.filter((pledge) =>
-    ["ship", "component", "upgrade"].includes(pledge.type),
+    ["ship", "component", "upgrade", "skin", "flair"].includes(pledge.type),
   ),
 );
 
@@ -49,6 +49,14 @@ const components = computed(() =>
 
 const upgrades = computed(() =>
   props.pledges.filter((pledge) => pledge.type === "upgrade"),
+);
+
+const paints = computed(() =>
+  props.pledges.filter((pledge) => pledge.type === "skin"),
+);
+
+const hangarFlair = computed(() =>
+  props.pledges.filter((pledge) => pledge.type === "flair"),
 );
 
 const importedVehicles = computed(() => props.result?.importedVehicles || []);
@@ -70,6 +78,8 @@ const missingComponentVehicles = computed(
 );
 const importedUpgrades = computed(() => props.result?.importedUpgrades || []);
 const foundUpgrades = computed(() => props.result?.foundUpgrades || []);
+const syncedPaints = computed(() => props.result?.syncedPaints || []);
+const syncedHangarFlair = computed(() => props.result?.syncedHangarFlair || []);
 const missingUpgrades = computed(() => props.result?.missingUpgrades || []);
 const missingUpgradeVehicles = computed(
   () => props.result?.missingUpgradeVehicles || [],
@@ -163,6 +173,18 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
             </template>
+            <template v-if="paints.length">
+              <dt class="col-sm-7">
+                {{ t("labels.syncExtension.pledgeItems.paints") }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ paints.length }}</dd>
+            </template>
+            <template v-if="hangarFlair.length">
+              <dt class="col-sm-7">
+                {{ t("labels.syncExtension.pledgeItems.hangarFlair") }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ hangarFlair.length }}</dd>
+            </template>
           </dl>
         </div>
         <div v-if="step.name === 'submitData'" class="process-steps-item-info">
@@ -248,6 +270,20 @@ const hasWarnings = computed(
                 {{ t("labels.syncExtension.importedItems.foundUpgrades") }}:
               </dt>
               <dd class="col-sm-4 text-right">{{ foundUpgrades.length }}</dd>
+            </template>
+            <template v-if="syncedPaints.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.syncedPaints") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">{{ syncedPaints.length }}</dd>
+            </template>
+            <template v-if="syncedHangarFlair.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.syncedHangarFlair") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ syncedHangarFlair.length }}
+              </dd>
             </template>
           </dl>
         </div>

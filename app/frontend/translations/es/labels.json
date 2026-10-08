@@ -2611,6 +2611,11 @@
         "targetGroup": "Grupo para las naves que encuentre",
         "addBundledVehicles": "Añadir snub crafts incluidas",
         "addBundledVehiclesHint": "Añade la snub craft que viene con una nave. Las que ya están en tu hangar se conservan.",
+        "syncPaints": "Sincronizar pinturas",
+        "syncPaintsHint": "Sustituye tus pinturas por las de tu hangar de RSI. Desactivado deja las pinturas guardadas como están.",
+        "syncHangarFlair": "Sincronizar decoración de hangar",
+        "syncHangarFlairHint": "Sustituye tu decoración de hangar por la de tu hangar de RSI. Desactivado deja la decoración guardada como está.",
+        "settings": "Ajustes",
         "unmatchedVehiclesAction": "Naves que no están en tu hangar RSI",
         "unmatchedVehiclesActionHint": "Qué hacer con las naves que tienes aquí y que la sincronización no encuentra en tu lista de pledges de RSI.",
         "unmatchedHangarGroup": "Grupo en el que archivarlas",
@@ -2638,7 +2643,9 @@
           "all": "Todos los objetos de Pledge",
           "ships": "Naves",
           "components": "Módulos",
-          "upgrades": "Mejoras"
+          "upgrades": "Mejoras",
+          "paints": "Pinturas",
+          "hangarFlair": "Decoración de hangar"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",
@@ -2654,6 +2661,8 @@
           "missingComponentVehicles": "No se encontró nave coincidente para componentes",
           "importedUpgrades": "Mejoras agregadas",
           "foundUpgrades": "Mejoras encontradas",
+          "syncedPaints": "Pinturas sincronizadas",
+          "syncedHangarFlair": "Decoración de hangar sincronizada",
           "missingUpgrades": "Mejoras no encontradas",
           "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras"
         }

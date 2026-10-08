@@ -45,7 +45,17 @@ const close = () => {
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">
             <i class="fa-light fa-times" />
           </a>
-          <h2 class="modal-title">
+          <div
+            v-if="$slots['header-actions']"
+            class="modal-header-actions"
+            :class="{ 'modal-header-actions--beside-close': !fixed }"
+          >
+            <slot name="header-actions" />
+          </div>
+          <h2
+            class="modal-title"
+            :class="{ 'modal-title--with-actions': $slots['header-actions'] }"
+          >
             <slot name="title">
               {{ title }}
             </slot>

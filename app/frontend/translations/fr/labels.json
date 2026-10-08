@@ -2611,6 +2611,11 @@
         "targetGroup": "Groupe pour les vaisseaux trouvés",
         "addBundledVehicles": "Ajouter les snub crafts inclus",
         "addBundledVehiclesHint": "Ajoute le snub craft fourni avec un vaisseau. Ceux déjà dans votre hangar sont conservés.",
+        "syncPaints": "Synchroniser les peintures",
+        "syncPaintsHint": "Remplace vos peintures par celles de votre hangar RSI. Désactivé, les peintures enregistrées restent telles quelles.",
+        "syncHangarFlair": "Synchroniser les décorations de hangar",
+        "syncHangarFlairHint": "Remplace vos décorations de hangar par celles de votre hangar RSI. Désactivé, les décorations enregistrées restent telles quelles.",
+        "settings": "Paramètres",
         "unmatchedVehiclesAction": "Vaisseaux absents de votre hangar RSI",
         "unmatchedVehiclesActionHint": "Ce qu'il advient des vaisseaux présents ici que la synchronisation ne trouve pas dans votre liste de pledges RSI.",
         "unmatchedHangarGroup": "Groupe dans lequel les classer",
@@ -2638,7 +2643,9 @@
           "all": "Tous les articles de promesse",
           "ships": "Vaisseaux",
           "components": "Modules",
-          "upgrades": "Améliorations"
+          "upgrades": "Améliorations",
+          "paints": "Peintures",
+          "hangarFlair": "Décorations de hangar"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",
@@ -2654,6 +2661,8 @@
           "missingComponentVehicles": "Aucun vaisseau correspondant trouvé pour les composants",
           "importedUpgrades": "Améliorations ajoutées",
           "foundUpgrades": "Améliorations trouvées",
+          "syncedPaints": "Peintures synchronisées",
+          "syncedHangarFlair": "Décorations de hangar synchronisées",
           "missingUpgrades": "Améliorations non trouvées",
           "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations"
         }
