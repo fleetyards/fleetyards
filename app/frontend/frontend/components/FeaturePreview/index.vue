@@ -16,13 +16,13 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import type { FeaturePreviewItem } from "./types";
 
-type Props = {
+interface Props {
   title: string;
   lead: string;
   features: FeaturePreviewItem[];
   // Where the visitor lands once signed up or logged in.
   backRoute: RouteLocationRaw;
-};
+}
 
 const props = defineProps<Props>();
 
