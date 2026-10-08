@@ -21,7 +21,7 @@ module Discord
     end
 
     private def guild_ids
-      FleetNotificationSetting.where.not(discord_join_role_id: nil).where.not(discord_guild_id: nil).distinct.pluck(:discord_guild_id)
+      FleetNotificationSetting.with_join_role.distinct.pluck(:discord_guild_id)
     end
 
     private def api

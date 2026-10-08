@@ -17,11 +17,8 @@ module Discord
     TIMEOUT = 3
 
     def self.for_guild(guild_id)
-      FleetNotificationSetting
-        .where(discord_guild_id: guild_id)
-        .where.not(discord_join_role_id: nil)
-        .includes(:fleet)
-        .map { |setting| new(setting.fleet) }
+      FleetNotificationSetting.with_join_role.where(discord_guild_id: guild_id).includes(:fleet)
+        .map { |setting| new(setting.fleet, setting:) }
     end
 
     # Called for every member update in every guild the bot is in, so only a
@@ -31,7 +28,7 @@ module Discord
     def self.member_changed(guild_id, discord_uid, role_ids)
       return if guild_id.blank? || discord_uid.blank?
 
-      join_roles = FleetNotificationSetting.where(discord_guild_id: guild_id).where.not(discord_join_role_id: nil).pluck(:fleet_id, :discord_join_role_id)
+      join_roles = FleetNotificationSetting.with_join_role.where(discord_guild_id: guild_id).pluck(:fleet_id, :discord_join_role_id)
       return if join_roles.empty?
 
       user_ids = OmniauthConnection.discord.where(uid: discord_uid).pluck(:user_id)
@@ -104,9 +101,10 @@ module Discord
 
     attr_reader :fleet
 
-    def initialize(fleet, api: nil)
+    def initialize(fleet, api: nil, setting: nil)
       @fleet = fleet
       @api = api
+      @setting = setting
     end
 
     def role_id
@@ -230,7 +228,7 @@ module Discord
     end
 
     private def setting
-      fleet.fleet_notification_setting
+      @setting ||= fleet.fleet_notification_setting
     end
 
     private def api

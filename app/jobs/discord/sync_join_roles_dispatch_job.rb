@@ -7,9 +7,7 @@ module Discord
     def perform
       return unless ApiClient.configured?
 
-      FleetNotificationSetting
-        .where.not(discord_join_role_id: nil)
-        .where.not(discord_guild_id: nil)
+      FleetNotificationSetting.with_join_role
         .pluck(:fleet_id)
         .each_with_index { |fleet_id, index| SyncFleetJoinRoleJob.perform_in(index.minutes, fleet_id) }
     end

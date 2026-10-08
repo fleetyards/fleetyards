@@ -89,6 +89,8 @@ class FleetNotificationSetting < ApplicationRecord
   after_save :clear_rank_role_ids, if: :saved_change_to_discord_guild_id?
   after_commit :sync_discord_join_role, if: :saved_change_to_discord_join_role_id?
 
+  scope :with_join_role, -> { where.not(discord_join_role_id: nil).where.not(discord_guild_id: nil) }
+
   DEFAULT_IN_APP_EVENTS = %w[
     fleet_event.published
     fleet_event.locked
