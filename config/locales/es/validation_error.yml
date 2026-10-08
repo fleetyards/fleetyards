@@ -98,6 +98,8 @@ es:
       destroy: "No se pudo eliminar la solicitud."
     fleet_squadron_roles:
       update: "No se pudo cambiar el nombre del rango de escuadrón."
+    fleet_discord_role_mappings:
+      update: "No se pudo guardar la asignación de roles de Discord."
     fleet_roles:
       update: "No se pudo cambiar el nombre del rol."
     fleet_squadrons:

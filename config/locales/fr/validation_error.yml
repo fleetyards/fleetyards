@@ -95,6 +95,8 @@ fr:
       destroy: "La demande n'a pas pu être supprimée."
     fleet_squadron_roles:
       update: "Le grade d'escadron n'a pas pu être renommé."
+    fleet_discord_role_mappings:
+      update: "L'association des rôles Discord n'a pas pu être enregistrée."
     fleet_roles:
       update: "Le rôle n'a pas pu être renommé."
     fleet_squadrons:

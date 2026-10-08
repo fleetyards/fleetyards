@@ -2656,6 +2656,104 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/discord-role-mappings":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Discord Role Mappings
+      tags:
+      - FleetNotificationSettings
+      operationId: fleetDiscordRoleMappings
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDiscordRoleMappings"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - needs fleet:notifications:manage
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Discord Role Mappings
+      tags:
+      - FleetNotificationSettings
+      operationId: updateFleetDiscordRoleMappings
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetDiscordRoleMappingsUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDiscordRoleMappings"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - needs fleet:notifications:manage
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/discord-roles":
     parameters:
     - name: fleetSlug
@@ -23895,6 +23993,61 @@ components:
       - id
       - name
       title: FleetDiscordRole
+    FleetDiscordRoleMapping:
+      type: object
+      properties:
+        fleetRoleId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        discordRoleId:
+          type: string
+          nullable: true
+      additionalProperties: false
+      required:
+      - fleetRoleId
+      - name
+      - discordRoleId
+      title: FleetDiscordRoleMapping
+    FleetDiscordRoleMappingInput:
+      type: object
+      properties:
+        fleetRoleId:
+          type: string
+          format: uuid
+        discordRoleId:
+          type: string
+          nullable: true
+          description: "`null` clears the mapping."
+      required:
+      - fleetRoleId
+      - discordRoleId
+      additionalProperties: false
+      title: FleetDiscordRoleMappingInput
+    FleetDiscordRoleMappings:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDiscordRoleMapping"
+      additionalProperties: false
+      required:
+      - items
+      title: FleetDiscordRoleMappings
+    FleetDiscordRoleMappingsUpdateInput:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDiscordRoleMappingInput"
+      required:
+      - mappings
+      additionalProperties: false
+      description: Ranks not listed keep their mapping.
+      title: FleetDiscordRoleMappingsUpdateInput
     FleetDiscordRoles:
       type: object
       properties:

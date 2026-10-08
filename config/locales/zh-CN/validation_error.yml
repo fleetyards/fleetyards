@@ -94,6 +94,8 @@ zh-CN:
       destroy: "无法移除该申请。"
     fleet_squadron_roles:
       update: "无法重命名中队职级。"
+    fleet_discord_role_mappings:
+      update: "无法保存 Discord 角色映射。"
     fleet_roles:
       update: "无法重命名角色。"
     fleet_squadrons:

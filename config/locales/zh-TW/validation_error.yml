@@ -94,6 +94,8 @@ zh-TW:
       destroy: "無法移除該申請。"
     fleet_squadron_roles:
       update: "無法重新命名中隊職級。"
+    fleet_discord_role_mappings:
+      update: "無法儲存 Discord 角色對應。"
     fleet_roles:
       update: "無法重新命名角色。"
     fleet_squadrons:
