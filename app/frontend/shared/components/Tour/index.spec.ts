@@ -271,6 +271,25 @@ describe("Tour", () => {
     expect(card()).toBeNull();
   });
 
+  it("does not move focus when unmounted, open or not", async () => {
+    const elsewhere = addTarget("elsewhere");
+
+    const closed = mount(Tour, {
+      attachTo: document.body,
+      props: { steps: STEPS, open: false, returnFocusFallback: "button" },
+      global: { stubs: { Btn: BtnStub } },
+    });
+    elsewhere.focus();
+    closed.unmount();
+    expect(document.activeElement).toBe(elsewhere);
+
+    const opened = await mountTour();
+    wrappers.pop();
+    opened.unmount();
+    expect(document.activeElement).not.toBe(elsewhere);
+    expect(elsewhere.hasAttribute("inert")).toBe(false);
+  });
+
   it("does not open when no step can be shown", async () => {
     const wrapper = await mountTour([STEPS[2]]);
 

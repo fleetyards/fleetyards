@@ -79,11 +79,21 @@ const inViewport = (rect: DOMRect) =>
   rect.bottom <= window.innerHeight &&
   rect.right <= window.innerWidth;
 
-const place = () => {
-  const target = findTarget(current.value);
+// Resolved once per step rather than on every scroll frame; looked up again
+// only when the page re-rendered it.
+let target: HTMLElement | null = null;
 
-  if (target) {
-    const rect = target.getBoundingClientRect();
+const currentTarget = () => {
+  if (!target?.isConnected) target = findTarget(current.value);
+
+  return target;
+};
+
+const place = () => {
+  const element = currentTarget();
+
+  if (element) {
+    const rect = element.getBoundingClientRect();
     hole.value = {
       top: rect.top - HOLE_PADDING,
       left: rect.left - HOLE_PADDING,
@@ -142,16 +152,19 @@ const focusCard = () => {
 };
 
 const showStep = async (next: number) => {
+  const own = session;
+
   index.value = next;
+  target = null;
 
   await nextTick();
 
-  if (!open.value) return;
+  if (own !== session) return;
 
-  const target = findTarget(current.value);
+  const element = currentTarget();
 
-  if (target && !inViewport(target.getBoundingClientRect())) {
-    target.scrollIntoView({
+  if (element && !inViewport(element.getBoundingClientRect())) {
+    element.scrollIntoView({
       block: "center",
       inline: "nearest",
       behavior: prefersReducedMotion.value ? "auto" : "smooth",
@@ -241,6 +254,9 @@ let returnFocus: HTMLElement | null = null;
 // waits for -- must not make the next page inert with nothing left to undo it.
 let session = 0;
 
+// Whether the page is inert and focus has to be handed back.
+let active = false;
+
 // Content loading in or a filter row opening moves the target without a
 // scroll or a resize of the window.
 const observedPage = ref<HTMLElement | null>(null);
@@ -287,14 +303,25 @@ const start = async () => {
   if (own !== session) return;
 
   setPageInert(true);
+  active = true;
   listen();
   await showStep(0);
 };
 
-const teardown = () => {
+const teardown = ({ restoreFocus }: { restoreFocus: boolean }) => {
   session += 1;
   unlisten();
+  target = null;
+
+  if (!active) return;
+
+  active = false;
   setPageInert(false);
+
+  if (!restoreFocus) {
+    returnFocus = null;
+    return;
+  }
 
   const fallback = props.returnFocusFallback
     ? document.querySelector<HTMLElement>(props.returnFocusFallback)
@@ -318,13 +345,14 @@ watch(
     if (value) {
       void start();
     } else if (previous) {
-      teardown();
+      teardown({ restoreFocus: true });
     }
   },
   { immediate: true },
 );
 
-onBeforeUnmount(teardown);
+// Unmounted with the page it belonged to: whatever started it is leaving too.
+onBeforeUnmount(() => teardown({ restoreFocus: false }));
 
 const holeStyle = computed(() => {
   if (!hole.value) {
