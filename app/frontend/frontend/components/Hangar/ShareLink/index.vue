@@ -113,7 +113,7 @@ const copyShareUrl = () => {
           id="hangar-share-url"
           :model-value="shareUrl"
           name="hangarShareUrl"
-          disabled
+          readonly
           no-label
           inline
           standalone
