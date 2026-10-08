@@ -65,6 +65,7 @@ en:
         materials: 'Materials: %{items}'
         missing_query: Please provide an item name.
         more: '…and more. Pick one from the suggestions.'
+        more_matches: '…and more.'
         not_found: 'No item found for "%{query}".'
         too_common: 'Too many items are named "%{query}" to list here. The catalogue has them all:'
       loaner:
@@ -99,6 +100,7 @@ en:
           system: 'Star system'
         missing_query: Please provide a place name.
         more: '…and more. Pick one from the suggestions.'
+        more_matches: '…and more.'
         more_shops: '…and %{count} more on [the place page](%{url})'
         not_found: 'No place found for "%{query}".'
         too_common: 'Too many places are named "%{query}" to list here. The locations page has them all:'

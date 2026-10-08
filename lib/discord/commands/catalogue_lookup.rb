@@ -166,7 +166,9 @@ module Discord
       # the name stand in for them. A catalogue with only a few of them still
       # lists each, so the one component among six pieces of equipment is not
       # buried with them. A command offering one catalogue names the page by
-      # the name rather than by a type every line would share.
+      # the name rather than by a type every line would share. What is left
+      # out need not be among the suggestions, so the closing line does not
+      # point to them.
       private def entry_too_common(query, carriers, strings, within, others)
         name = ::Catalogue::TokenResolver.parse(query).last
         lines = carriers.flat_map do |prefix, count|
@@ -183,7 +185,7 @@ module Discord
 
         fit_message(I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)),
           lines + shown.map { |candidate| candidate_line(candidate, within) },
-          more: I18n.t("discord.commands.#{strings}.more"), hidden: others.size - shown.size)
+          more: I18n.t("discord.commands.#{strings}.more_matches"), hidden: others.size - shown.size)
       end
 
       private def entry_candidate_list(query, candidates, strings, within)

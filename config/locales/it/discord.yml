@@ -65,6 +65,7 @@ it:
         materials: 'Materiali: %{items}'
         missing_query: Indica il nome di un oggetto.
         more: '…e altri. Scegline uno dai suggerimenti.'
+        more_matches: '…e altri.'
         not_found: 'Nessun oggetto trovato per «%{query}».'
         too_common: 'Troppi oggetti si chiamano «%{query}» per elencarli qui. Il catalogo li ha tutti:'
       loaner:
@@ -99,6 +100,7 @@ it:
           system: 'Sistema stellare'
         missing_query: Indica il nome di un luogo.
         more: '…e altri. Scegline uno dai suggerimenti.'
+        more_matches: '…e altri.'
         more_shops: '…e altri %{count} sulla [pagina del luogo](%{url})'
         not_found: 'Nessun luogo trovato per «%{query}».'
         too_common: 'Troppi luoghi si chiamano «%{query}» per elencarli qui. La pagina dei luoghi li ha tutti:'

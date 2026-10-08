@@ -227,8 +227,8 @@ module Discord
         content = call("Cave")[:content]
 
         assert_operator ::Discord::MessageLength.of(content), :<=, 2000
-        assert content.end_with?(I18n.t("discord.commands.location.more"))
-        content.lines.drop(1).each { |line| assert_match(/\A(• \[.*\)( · .*)?|#{Regexp.escape(I18n.t("discord.commands.location.more"))})\n?\z/, line) }
+        assert content.end_with?(I18n.t("discord.commands.location.more_matches"))
+        content.lines.drop(1).each { |line| assert_match(/\A(• \[.*\)( · .*)?|#{Regexp.escape(I18n.t("discord.commands.location.more_matches"))})\n?\z/, line) }
       end
 
       test "keeps a list of long names within a message" do

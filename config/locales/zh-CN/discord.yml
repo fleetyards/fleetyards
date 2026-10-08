@@ -65,6 +65,7 @@ zh-CN:
         materials: '材料：%{items}'
         missing_query: 请提供物品名称。
         more: '……还有更多。请从建议中选择一个。'
+        more_matches: '……还有更多。'
         not_found: '未找到“%{query}”对应的物品。'
         too_common: '名为“%{query}”的物品太多，无法在此列出。目录中有全部物品：'
       loaner:
@@ -99,6 +100,7 @@ zh-CN:
           system: '星系'
         missing_query: 请提供地点名称。
         more: '……还有更多。请从建议中选择一个。'
+        more_matches: '……还有更多。'
         more_shops: '……另有 %{count} 家，见[地点页面](%{url})'
         not_found: '未找到“%{query}”对应的地点。'
         too_common: '名为“%{query}”的地点太多，无法在此列出。地点页面中有全部地点：'
