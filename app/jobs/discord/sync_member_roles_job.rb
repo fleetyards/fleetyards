@@ -7,11 +7,11 @@ module Discord
   class SyncMemberRolesJob < ::ApplicationJob
     sidekiq_options retry: 2, queue: "notifications"
 
-    def perform(membership_id)
+    def perform(membership_id, retired_role_ids = [])
       membership = FleetMembership.find_by(id: membership_id)
       return if membership.blank?
 
-      sync = MemberRoleSync.new(membership)
+      sync = MemberRoleSync.new(membership, retired_role_ids:)
       return unless sync.runnable?
 
       result = sync.run!

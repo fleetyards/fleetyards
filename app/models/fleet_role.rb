@@ -258,6 +258,7 @@ class FleetRole < ApplicationRecord
   end
 
   private def backfill_discord_member_roles
-    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id, id)
+    previous_role_id, = saved_change_to_discord_role_id
+    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id, id, [previous_role_id].compact)
   end
 end

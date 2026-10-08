@@ -22,10 +22,15 @@ module Discord
 
     # Pass `fleet:` and `discord_uid:` instead of a membership for an account
     # that is no longer linked, whose user can no longer name it.
-    def initialize(membership = nil, fleet: nil, discord_uid: nil, api: nil)
+    #
+    # `retired_role_ids` are roles the fleet mapped until a moment ago. Once a
+    # mapping is cleared or replaced its role is no longer in the fleet's
+    # configuration, so without them nothing would know it is ours to remove.
+    def initialize(membership = nil, fleet: nil, discord_uid: nil, retired_role_ids: [], api: nil)
       @membership = membership
       @fleet = fleet || membership&.fleet
       @discord_uid = discord_uid.presence
+      @retired_role_ids = Array(retired_role_ids)
       @api = api
     end
 
@@ -71,7 +76,7 @@ module Discord
     # member should have it.
     def managed_role_ids
       @managed_role_ids ||= (
-        [setting&.discord_member_role_id] + fleet.fleet_roles.pluck(:discord_role_id)
+        [setting&.discord_member_role_id] + fleet.fleet_roles.pluck(:discord_role_id) + @retired_role_ids
       ).compact_blank.uniq
     end
 

@@ -16,8 +16,9 @@ module Discord
 
     # Positional on purpose: Sidekiq replays arguments positionally. A role id
     # narrows the backfill to the members holding that rank, which is all a
-    # single rank mapping can affect.
-    def perform(fleet_id, fleet_role_id = nil)
+    # single rank mapping can affect. Retired role ids are what the mapping
+    # pointed at before the change, so each sync can take them off again.
+    def perform(fleet_id, fleet_role_id = nil, retired_role_ids = [])
       return unless ApiClient.configured?
 
       fleet = Fleet.find_by(id: fleet_id)
@@ -30,7 +31,7 @@ module Discord
       Rails.logger.info("[Discord::BackfillFleetMemberRolesJob] fleet=#{fleet_id} members=#{ids.size}")
 
       ids.each_with_index do |membership_id, index|
-        SyncMemberRolesJob.perform_in((index / PER_SECOND.to_f).seconds, membership_id)
+        SyncMemberRolesJob.perform_in((index / PER_SECOND.to_f).seconds, membership_id, retired_role_ids)
       end
     end
 

@@ -192,6 +192,7 @@ class FleetNotificationSetting < ApplicationRecord
   private def backfill_discord_member_roles
     return if discord_guild_id.blank?
 
-    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id)
+    previous_role_id, = saved_change_to_discord_member_role_id
+    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id, nil, [previous_role_id].compact)
   end
 end
