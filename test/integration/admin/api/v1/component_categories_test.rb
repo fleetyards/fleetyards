@@ -43,6 +43,16 @@ class Admin::Api::V1::ComponentCategoriesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components/category_filters includes components outside the current build" do
+    create(:component, category: "prototype", version: "0.0.1-live.1")
+
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_includes parsed_body.map { |filter| filter["value"] }, "prototype"
+    end
+  end
+
   test "GET /components/category_filters returns 401 when not signed in" do
     assert_api_response :get, 401
   end

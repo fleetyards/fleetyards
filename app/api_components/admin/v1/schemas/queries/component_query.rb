@@ -14,7 +14,6 @@ module Admin
               storeImageBlank: {type: :boolean},
               idIn: {type: :array, items: {type: :string, format: :uuid}},
               nameIn: {type: :array, items: {type: :string}},
-              categoryEq: {type: :string},
               categoryIn: {type: :array, items: {type: :string}},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
 

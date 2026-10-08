@@ -52,10 +52,15 @@ module Admin
         # Declared in the schema and reached by a generated client, so it
         # answers 401/403 like the rest of the resource rather than handing the
         # list to any signed-in admin.
+        #
+        # Every row's category rather than the current build's: the admin list
+        # also shows retired and hand-made components.
         def category_filters
           authorize! with: ::Admin::ComponentPolicy
 
-          @filters = Component.category_filters
+          @filters = Component.category_filters(
+            Component.where.not(category: nil).distinct.order(:category).pluck(:category)
+          )
 
           render "api/shared/filters"
         end
@@ -76,7 +81,7 @@ module Admin
 
         private def component_query_params
           @component_query_params ||= params.permit(q: [
-            :name_cont, :name_eq, :id_eq, :category_eq, :store_image_blank, :buy_price_gteq,
+            :name_cont, :name_eq, :id_eq, :store_image_blank, :buy_price_gteq,
             :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :s, :sorts,
             sorts: [], name_in: [], id_in: [], category_in: [], manufacturer_id_in: []
           ]).fetch(:q, {})

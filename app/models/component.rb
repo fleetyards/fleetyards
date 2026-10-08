@@ -542,8 +542,8 @@ class Component < ApplicationRecord
   # instead of rendering a translation-missing string into the API.
   # `catalogue_items` first: the catalogue carries only the flight blades of the
   # controller category, while the stats chart counts every controller.
-  def self.category_filters
-    Component.categories.map do |item|
+  def self.category_filters(categories = Component.categories)
+    categories.map do |item|
       Filter.new(
         category: "category",
         label: I18n.t(
