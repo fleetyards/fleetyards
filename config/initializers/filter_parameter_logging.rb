@@ -7,3 +7,5 @@ Rails.application.config.filter_parameters += %i[
   email password username rsi_handle token otp_attempt two_factor_code passw secret _key crypt
   salt certificate otp ssn
 ]
+# Matched whole: a partial "share" would also hide every shared/share_* param.
+Rails.application.config.filter_parameters += [/\Ashare\z/]
