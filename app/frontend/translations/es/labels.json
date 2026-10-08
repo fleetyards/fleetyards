@@ -3204,6 +3204,7 @@
         "fleet_member_requested": "Membresía solicitada",
         "fleet_member_accepted": "Membresía aceptada",
         "fleet_request_accepted": "Solicitud de ingreso aceptada",
+        "fleet_joined_by_discord_role": "Ingreso mediante rol de Discord",
         "fleet_inventory_item_added": "Objeto añadido al inventario de la flota",
         "fleet_event_published": "Evento publicado",
         "fleet_event_locked": "Inscripciones del evento bloqueadas",

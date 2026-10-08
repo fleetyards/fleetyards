@@ -13,6 +13,10 @@ class FleetMembershipMailerPreview < ActionMailer::Preview
     FleetMembershipMailer.fleet_accepted("foo@bar.de", username, fleet)
   end
 
+  def joined_by_discord_role
+    FleetMembershipMailer.joined_by_discord_role("foo@bar.de", username, fleet)
+  end
+
   def member_accepted
     FleetMembershipMailer.member_accepted(["foo@bar.de", "bar@foo.de"], username, fleet)
   end

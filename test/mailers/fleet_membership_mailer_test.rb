@@ -66,4 +66,12 @@ class FleetMembershipMailerTest < ActionMailer::TestCase
     mail = FleetMembershipMailer.fleet_accepted("user@example.com", "testuser", @fleet)
     assert mail.body.encoded.present?
   end
+
+  test "#joined_by_discord_role names the role rather than a request" do
+    mail = FleetMembershipMailer.joined_by_discord_role("user@example.com", "testuser", @fleet)
+
+    assert_equal I18n.t(:"mailer.fleet_membership.joined_by_discord_role.subject", fleet: @fleet.name), mail.subject
+    assert_equal ["user@example.com"], mail.to
+    assert_includes mail.body.decoded, CGI.escapeHTML(I18n.t(:"mailer.fleet_membership.joined_by_discord_role.headline", fleet: @fleet.name))
+  end
 end

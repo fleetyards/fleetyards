@@ -81,7 +81,7 @@ module Discord
       assert_predicate membership, :accepted?
       assert_predicate membership, :discord_role_granted?
       assert_equal @fleet.default_member_role, membership.fleet_role
-      assert Notification.exists?(user: @user, notification_type: "fleet_request_accepted")
+      assert Notification.exists?(user: @user, notification_type: "fleet_joined_by_discord_role")
       assert Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 
@@ -162,7 +162,7 @@ module Discord
       join_role.apply(@user, [JOIN_ROLE], quiet: true)
 
       assert_predicate membership, :accepted?
-      assert Notification.exists?(user: @user, notification_type: "fleet_request_accepted")
+      assert Notification.exists?(user: @user, notification_type: "fleet_joined_by_discord_role")
       refute Notification.exists?(user: @admin, notification_type: "fleet_member_accepted")
     end
 

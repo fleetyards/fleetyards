@@ -3204,6 +3204,7 @@
         "fleet_member_requested": "已申請加入",
         "fleet_member_accepted": "會員資格已接受",
         "fleet_request_accepted": "加入申請已通過",
+        "fleet_joined_by_discord_role": "透過 Discord 身分組加入",
         "fleet_inventory_item_added": "艦隊庫存已新增物品",
         "fleet_event_published": "活動已發布",
         "fleet_event_locked": "活動報名已鎖定",

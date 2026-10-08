@@ -448,7 +448,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def on_join
-    notify_new_member
+    notify_joined_by_discord_role
     notify_fleet_admins unless quiet
     broadcast_to_members
   end
@@ -491,6 +491,22 @@ class FleetMembership < ApplicationRecord
         type: :fleet_request_accepted,
         title: I18n.t("notifications.fleet_request_accepted.title", fleet: fleet.name),
         link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+        record: self
+      )
+    end
+  end
+
+  # The role is the only way in that skips a request, so this player never
+  # asked: they are told why they are a member.
+  def notify_joined_by_discord_role
+    return if user.email.blank?
+
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :fleet_joined_by_discord_role,
+        title: I18n.t("notifications.fleet_joined_by_discord_role.title", fleet: fleet.name),
+        link: Rails.application.routes.url_helpers.frontend_fleet_path(slug: fleet.slug),
         record: self
       )
     end

@@ -35,6 +35,7 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_member_requested: "reviewRequest",
   fleet_member_accepted: "openMembers",
   fleet_request_accepted: "openFleet",
+  fleet_joined_by_discord_role: "openFleet",
   fleet_inventory_item_added: "openInventory",
   fleet_event_published: "openEvent",
   fleet_event_locked: "openEvent",

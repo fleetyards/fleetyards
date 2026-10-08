@@ -3204,6 +3204,7 @@
         "fleet_member_requested": "收到加入申请",
         "fleet_member_accepted": "成员申请已通过",
         "fleet_request_accepted": "加入申请已通过",
+        "fleet_joined_by_discord_role": "通过 Discord 身份组加入",
         "fleet_inventory_item_added": "舰队库存新增物品",
         "fleet_event_published": "活动已发布",
         "fleet_event_locked": "活动报名已锁定",

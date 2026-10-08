@@ -29,6 +29,11 @@ es:
           enlace:'
         headline: Su solicitud de membresía para unirse a %{fleet} ha sido aceptada
         subject: "%{fleet} aceptó su solicitud de membresía"
+      joined_by_discord_role:
+        action: "Página principal de %{fleet}"
+        body: "Para ver las naves y otros miembros de la flota, haga clic en el siguiente enlace:"
+        headline: "Tiene el rol de ingreso de %{fleet} en su servidor de Discord, por lo que ahora es miembro de la flota."
+        subject: "Se ha unido a %{fleet} gracias a su rol de Discord"
       member_accepted:
         action: Lista de miembros de %{fleet}
         body: 'Para ver la información del nuevo miembro, haga clic en el siguiente

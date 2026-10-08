@@ -50,6 +50,7 @@ class Notification < ApplicationRecord
     fleet_member_requested: "fleet_member_requested",
     fleet_member_accepted: "fleet_member_accepted",
     fleet_request_accepted: "fleet_request_accepted",
+    fleet_joined_by_discord_role: "fleet_joined_by_discord_role",
     fleet_inventory_item_added: "fleet_inventory_item_added",
     fleet_event_published: "fleet_event_published",
     fleet_event_locked: "fleet_event_locked",
@@ -161,6 +162,15 @@ class Notification < ApplicationRecord
       mailer: ->(notification) {
         membership = notification.record
         FleetMembershipMailer.fleet_accepted(notification.user.email, notification.user.username, membership.fleet).deliver_later
+      },
+      preference_defaults: {app: true, mail: true, push: false}
+    },
+    fleet_joined_by_discord_role: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) {
+        membership = notification.record
+        FleetMembershipMailer.joined_by_discord_role(notification.user.email, notification.user.username, membership.fleet).deliver_later
       },
       preference_defaults: {app: true, mail: true, push: false}
     },

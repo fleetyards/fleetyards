@@ -103,6 +103,11 @@ en:
         body: 'To view the fleets Ships and other Members please click on the following link:'
         headline: Your Membership Request to Join %{fleet} has been accepted
         subject: "%{fleet} accepted your Membership Request"
+      joined_by_discord_role:
+        action: "%{fleet} Homepage"
+        body: "To view the fleets Ships and other Members please click on the following link:"
+        headline: "You hold %{fleet}'s join role on its Discord server, so you are now a member of the fleet."
+        subject: "You joined %{fleet} through its Discord role"
       member_accepted:
         action: "%{fleet} Memberlist"
         body: 'To look at the new members information please click on the following link:'

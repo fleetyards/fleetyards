@@ -40,4 +40,14 @@ class FleetMembershipMailer < ApplicationMailer
       subject: I18n.t(:"mailer.fleet_membership.fleet_accepted.subject", fleet: fleet.name)
     )
   end
+
+  def joined_by_discord_role(to, username, fleet)
+    @username = username
+    @fleet = fleet
+
+    mail(
+      to:,
+      subject: I18n.t(:"mailer.fleet_membership.joined_by_discord_role.subject", fleet: fleet.name)
+    )
+  end
 end

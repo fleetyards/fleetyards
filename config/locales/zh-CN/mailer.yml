@@ -28,6 +28,11 @@ zh-CN:
         body: 要查看舰队的飞船和其他成员，请点击以下链接：
         headline: 您加入 %{fleet} 的请求已被接受
         subject: "%{fleet} 接受了您的加入请求"
+      joined_by_discord_role:
+        action: "%{fleet} 主页"
+        body: "要查看舰队的飞船和其他成员，请点击以下链接："
+        headline: "您在 %{fleet} 的 Discord 服务器上拥有加入身份组，因此现在已是该舰队的成员。"
+        subject: "您已通过 Discord 身份组加入 %{fleet}"
       member_accepted:
         action: "%{fleet} 成员列表"
         body: 要查看新成员信息，请点击以下链接：

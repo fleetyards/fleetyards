@@ -33635,6 +33635,7 @@ components:
       - fleet_member_requested
       - fleet_member_accepted
       - fleet_request_accepted
+      - fleet_joined_by_discord_role
       - fleet_inventory_item_added
       - fleet_event_published
       - fleet_event_locked
@@ -33687,6 +33688,7 @@ components:
       - FLEET_MEMBER_REQUESTED
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
+      - FLEET_JOINED_BY_DISCORD_ROLE
       - FLEET_INVENTORY_ITEM_ADDED
       - FLEET_EVENT_PUBLISHED
       - FLEET_EVENT_LOCKED

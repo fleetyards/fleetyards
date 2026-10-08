@@ -33,6 +33,11 @@ de:
           Sie bitte auf den folgenden Link:'
         headline: Ihre Beitrittsanfrage für %{fleet} wurde akzeptiert
         subject: "%{fleet} hat Ihre Beitrittsanfrage akzeptiert"
+      joined_by_discord_role:
+        action: "%{fleet} Homepage"
+        body: "Um die Schiffe und anderen Mitglieder der Flotte anzusehen, klicken Sie bitte auf den folgenden Link:"
+        headline: "Sie haben die Beitrittsrolle von %{fleet} auf deren Discord-Server und sind deshalb jetzt Mitglied der Flotte."
+        subject: "Sie sind %{fleet} über die Discord-Rolle beigetreten"
       member_accepted:
         action: "%{fleet} Mitgliederliste"
         body: 'Um die Informationen des neuen Mitglieds einzusehen, klicken Sie bitte

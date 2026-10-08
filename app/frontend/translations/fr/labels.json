@@ -3204,6 +3204,7 @@
         "fleet_member_requested": "Adhésion demandée",
         "fleet_member_accepted": "Adhésion acceptée",
         "fleet_request_accepted": "Demande d'adhésion acceptée",
+        "fleet_joined_by_discord_role": "Adhésion via le rôle Discord",
         "fleet_inventory_item_added": "Objet ajouté à l'inventaire de la flotte",
         "fleet_event_published": "Événement publié",
         "fleet_event_locked": "Inscriptions à l'événement verrouillées",
