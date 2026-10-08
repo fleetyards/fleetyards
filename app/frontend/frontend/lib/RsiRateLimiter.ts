@@ -1,20 +1,18 @@
-import { differenceInMinutes } from "date-fns";
+const WINDOW = 60_000;
 
-// A budget of `perMinute` requests to RSI for every minute since it was made,
-// so a slow start is made up later. A pass that outlives the modal holds only
-// this, not the modal that made it.
+// At most `perMinute` requests to RSI in any sixty seconds. Budget a crawl
+// left unused does not carry over into a burst for the pass after it. A pass
+// that outlives the modal holds only this, not the modal that made it.
 export const createRsiRateLimiter = (perMinute: number) => {
-  const startedAt = new Date();
-
-  let count = 0;
-
-  const available = () =>
-    count < (differenceInMinutes(new Date(), startedAt) + 1) * perMinute;
+  let sentAt: number[] = [];
 
   const tryTake = () => {
-    if (!available()) return false;
+    const now = Date.now();
+    sentAt = sentAt.filter((time) => now - time < WINDOW);
 
-    count += 1;
+    if (sentAt.length >= perMinute) return false;
+
+    sentAt.push(now);
 
     return true;
   };

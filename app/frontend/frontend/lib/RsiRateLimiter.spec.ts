@@ -31,4 +31,16 @@ describe("createRsiRateLimiter", () => {
     await vi.advanceTimersByTimeAsync(1_500);
     expect(taken).toBe(true);
   });
+
+  // A list crawl that used little of its budget must not hand the price pass
+  // a burst above the limit.
+  it("carries no unused budget over", async () => {
+    const limiter = createRsiRateLimiter(2);
+
+    await vi.advanceTimersByTimeAsync(180_000);
+
+    expect(limiter.tryTake()).toBe(true);
+    expect(limiter.tryTake()).toBe(true);
+    expect(limiter.tryTake()).toBe(false);
+  });
 });
