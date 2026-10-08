@@ -47,18 +47,19 @@ module Discord
     # given, all in one guild. The read and the write happen under one lock per
     # member, which every path that admits or releases through the role takes,
     # so updates handled at once end on what Discord answered last. Returns
-    # whether Discord answered.
+    # false only when asking again later might get an answer.
     def self.apply_current(join_roles, users, discord_uid, api:, quiet: false)
       guild_id = join_roles.first&.guild_id
       return true if guild_id.blank? || users.empty?
 
       with_member_lock(guild_id, discord_uid) do
         role_ids = member_role_ids(api, guild_id, discord_uid)
-        next if role_ids.nil?
-
         join_roles.product(users).each { |join_role, user| join_role.apply(user, role_ids, quiet:) }
         read_alone!(guild_id, discord_uid)
         true
+      rescue ApiClient::Error, Faraday::Error => e
+        Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{discord_uid}: #{e.message}")
+        !retryable?(e)
       end
     end
 
@@ -90,15 +91,20 @@ module Discord
     end
 
     # Someone who is not in the guild holds none of its roles. Anything else
-    # Discord cannot answer -- an error or no response -- is no answer at all,
-    # and returns nil; the daily sync catches up.
+    # Discord cannot answer raises -- an unknown or unreachable guild most of
+    # all, which says nothing about the member's roles.
     def self.member_role_ids(api, guild_id, discord_uid)
       Array(api.get_guild_member(guild_id, discord_uid)&.dig("roles"))
-    rescue ApiClient::Error, Faraday::Error => e
-      return [] if e.is_a?(ApiClient::Error) && e.status == 404
+    rescue ApiClient::Error => e
+      raise unless e.status == 404 && e.code == ApiClient::UNKNOWN_MEMBER
 
-      Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{discord_uid}: #{e.message}")
-      nil
+      []
+    end
+
+    # Worth asking again later: the network, a rate limit or Discord's own
+    # trouble. A guild the bot cannot see, or one that is gone, stays so.
+    def self.retryable?(error)
+      error.is_a?(Faraday::Error) || error.status == 429 || error.status >= 500
     end
 
     attr_reader :fleet
@@ -141,7 +147,7 @@ module Discord
         # An update for them may have handled it while this waited.
         next membership.accepted? unless membership.reload.kept? && membership.created?
 
-        role_ids = self.class.member_role_ids(api, guild_id, uid)
+        role_ids = current_role_ids(uid)
         self.class.read_alone!(guild_id, uid) unless role_ids.nil?
 
         if Array(role_ids).include?(role_id)
@@ -162,6 +168,13 @@ module Discord
       # Without the member lock, the row lock is what orders this against the
       # update that holds it and may be admitting this very membership.
       membership.with_lock { membership.created? ? membership.request! : membership.accepted? }
+    end
+
+    private def current_role_ids(uid)
+      self.class.member_role_ids(api, guild_id, uid)
+    rescue ApiClient::Error, Faraday::Error => e
+      Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{uid}: #{e.message}")
+      nil
     end
 
     # Applies the roles a player holds now. Nothing happens unless that differs

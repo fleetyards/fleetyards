@@ -20,7 +20,17 @@ module Discord
         @body = body
         super("Discord API error #{status}: #{body}")
       end
+
+      # Discord's own error code: a 404 alone does not say whether the member
+      # or the whole guild is unknown.
+      def code
+        JSON.parse(body.to_s)["code"] if body.present?
+      rescue JSON::ParserError
+        nil
+      end
     end
+
+    UNKNOWN_MEMBER = 10007
 
     def self.bot_token
       Rails.application.config.app.discord[:bot_token].presence

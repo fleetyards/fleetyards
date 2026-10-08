@@ -45,11 +45,31 @@ module Discord
     test "leaving the guild ends a membership the role created" do
       user = linked_user("uid-1")
       JoinRole.new(@fleet).apply(user, [JOIN_ROLE])
-      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, "Unknown Member"))
+      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 
       ApplyJoinRolesJob.new.perform("uid-1", GUILD)
 
       assert_nil membership_of(user)
+    end
+
+    test "a guild Discord no longer knows ends nobody's membership" do
+      user = linked_user("uid-1")
+      JoinRole.new(@fleet).apply(user, [JOIN_ROLE])
+      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Guild", "code": 10004}'))
+
+      ApplyJoinRolesJob.new.perform("uid-1", GUILD)
+
+      assert_predicate membership_of(user), :accepted?
+    end
+
+    test "a guild the bot cannot see is not retried" do
+      user = linked_user("uid-1")
+      JoinRole.new(@fleet).apply(user, [JOIN_ROLE])
+      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(403, '{"message": "Missing Access", "code": 50001}'))
+
+      ApplyJoinRolesJob.new.perform("uid-1", GUILD)
+
+      assert_predicate membership_of(user), :accepted?
     end
 
     test "a Discord outage changes nothing and leaves the update to a retry" do

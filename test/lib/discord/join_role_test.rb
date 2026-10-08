@@ -55,7 +55,7 @@ module Discord
     end
 
     test "a player Discord cannot find gets a request" do
-      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, "Unknown Member"))
+      @api.stubs(:get_guild_member).raises(ApiClient::Error.new(404, '{"message": "Unknown Member", "code": 10007}'))
 
       assert_predicate ask_to_join.reload, :requested?
     end
