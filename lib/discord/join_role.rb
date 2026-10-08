@@ -175,18 +175,27 @@ module Discord
     def apply(user, role_ids, quiet: false)
       return unless configured?
 
-      if Array(role_ids).include?(role_id)
-        # Not recorded as held unless it took effect -- failing or raising --
-        # so the next update tries again rather than finding nothing changed.
-        FleetDiscordRoleHolder.transaction(requires_new: true) do
+      FleetDiscordRoleHolder.transaction(requires_new: true) do
+        # Read with the fleet's setting locked, so a role changed meanwhile
+        # waits for this to finish, or this sees it changed and leaves the
+        # role it was handed alone.
+        next unless still_the_role?
+
+        if Array(role_ids).include?(role_id)
+          # Not recorded as held unless it took effect -- failing or raising --
+          # so the next update tries again rather than finding nothing changed.
           next unless FleetDiscordRoleHolder.remember(fleet, user)
           next if !swept? && left?(user)
 
           raise ActiveRecord::Rollback unless admit(user, quiet:)
+        elsif FleetDiscordRoleHolder.forget(fleet, user)
+          release(user)
         end
-      elsif FleetDiscordRoleHolder.forget(fleet, user)
-        release(user)
       end
+    end
+
+    private def still_the_role?
+      FleetNotificationSetting.where(fleet_id: fleet.id, discord_guild_id: guild_id, discord_join_role_id: role_id).lock("FOR SHARE").exists?
     end
 
     # Whether to record the role as held: it took effect, or it has nothing

@@ -298,6 +298,18 @@ module Discord
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
     end
 
+    test "an update handed the previous join role leaves the new one alone" do
+      holder = linked_user("uid-1")
+      stale = JoinRole.new(@fleet.reload)
+      assert_equal JOIN_ROLE, stale.role_id
+      FleetNotificationSetting.find(@setting.id).update!(discord_join_role_id: "300000000000000002")
+
+      stale.apply(holder, [JOIN_ROLE])
+
+      assert_nil membership_of(holder)
+      refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: holder)
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
