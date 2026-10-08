@@ -294,6 +294,7 @@ module Discord
       linked_user("uid-2")
       @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE), member("uid-2", JOIN_ROLE)])
       FleetVehiclesChannel.expects(:broadcast_to).times(3)
+      FleetMembersChannel.expects(:broadcast_to).times(3)
 
       SyncFleetJoinRoleJob.new.perform(@fleet.id)
     end

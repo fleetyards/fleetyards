@@ -46,7 +46,8 @@ class FleetMembership < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
-  # Joined as one of many at once, so the officers are not told about each.
+  # Joined as one of many at once, so neither the officers nor the members'
+  # views are told about each: the sweep refreshes the views once at the end.
   attr_accessor :quiet
 
   AVAILABLE_PRIVILEGES = [
@@ -157,12 +158,12 @@ class FleetMembership < ApplicationRecord
   before_create -> { self.verified = FleetMembershipVerification.verified?(user, fleet) if user && fleet }
   # A rank an officer gave is their choice, so the role no longer ends it.
   before_update -> { self.discord_role_granted = false }, if: -> { discord_role_granted? && fleet_role_id_changed? }
-  after_create :broadcast_create
+  after_create :broadcast_create, unless: :quiet
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
   after_create_commit :schedule_setup_fleet_vehicles
   after_update_commit :schedule_update_fleet_vehicles
-  after_commit :broadcast_update
+  after_commit :broadcast_update, unless: :quiet
   after_commit :sync_discord_roles, on: %i[create update], if: :discord_roles_affected?
   after_commit :refresh_discord_join_request, if: :join_request_closed?
   before_destroy :check_if_can_be_destroyed
@@ -481,6 +482,16 @@ class FleetMembership < ApplicationRecord
     payload = to_jbuilder_hash
     fleet.fleet_memberships.kept.includes(:user).find_each do |member|
       FleetVehiclesChannel.broadcast_to(member.user, payload)
+    end
+  end
+
+  # Everything a quiet sweep's admissions left out of the members' views,
+  # once for all of them.
+  def broadcast_sweep_refresh
+    payload = to_jbuilder_hash
+    each_fleet_recipient do |user|
+      FleetMembersChannel.broadcast_to(user, payload)
+      FleetVehiclesChannel.broadcast_to(user, payload)
     end
   end
 

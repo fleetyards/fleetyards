@@ -178,6 +178,7 @@ module Discord
 
     test "a quiet admission tells the player, and leaves the officers and the members' views to the sweep" do
       FleetVehiclesChannel.expects(:broadcast_to).never
+      FleetMembersChannel.expects(:broadcast_to).never
 
       join_role.apply(@user, [JOIN_ROLE], quiet: true)
 
