@@ -27,7 +27,6 @@ import {
   getFleetDiscordChannelsQueryKey,
   getFleetDiscordRolesQueryKey,
   useFleetDiscordRoleMappings,
-  useFleetDiscordRoles,
   useFleetNotificationSetting,
   useUpdateFleetDiscordRoleMappings,
   useUpdateFleetNotificationSetting,
@@ -56,8 +55,6 @@ const { data: roleMappings, refetch: refetchRoleMappings } =
   useFleetDiscordRoleMappings(fleetSlug);
 
 const updateRoleMappingsMutation = useUpdateFleetDiscordRoleMappings();
-
-const { data: discordRoles } = useFleetDiscordRoles(fleetSlug);
 
 const queryClient = useQueryClient();
 
@@ -323,15 +320,17 @@ const postingProblem = computed(() => {
     : t(`labels.fleet.discord.statusCodes.${status.postingCode}`);
 });
 
-// The detail lists role ids; the role list names them where it still can.
-const roleNames = (ids: string) =>
-  ids
+// A role above the bot comes by name; an unknown role only by its id, since
+// Discord no longer has a name for it.
+const rolesDetail = (status: DiscordStatus) => {
+  const detail = status.rolesDetail ?? "";
+  if (status.rolesCode !== "role_above_bot") return detail;
+
+  return detail
     .split(", ")
-    .map((id) => {
-      const role = discordRoles.value?.items.find((item) => item.id === id);
-      return role ? `@${role.name}` : id;
-    })
+    .map((name) => `@${name}`)
     .join(", ");
+};
 
 const rolesProblem = computed(() => {
   const status = discordStatus.value;
@@ -339,7 +338,7 @@ const rolesProblem = computed(() => {
 
   const key = `labels.fleet.discord.rolesCodes.${status.rolesCode}`;
   return tExists(key)
-    ? t(key, { names: roleNames(status.rolesDetail ?? "") })
+    ? t(key, { names: rolesDetail(status) })
     : t(`labels.fleet.discord.statusCodes.${status.rolesCode}`);
 });
 

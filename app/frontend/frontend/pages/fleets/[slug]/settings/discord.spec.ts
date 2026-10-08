@@ -441,11 +441,24 @@ describe("FleetDiscordSettingsPage role mapping", () => {
       ok: true,
       rolesOk: false,
       rolesCode: "role_above_bot",
-      rolesDetail: "300000000000000002, 300000000000000009",
+      rolesDetail: "Officer, Quartermaster",
     });
     const subject = await mount();
 
     const problem = subject.find('[data-test="roles-problem"]');
-    expect(problem.text()).toContain("@Officer, 300000000000000009");
+    expect(problem.text()).toContain("@Officer, @Quartermaster");
+  });
+
+  it("lists a role Discord no longer has by its id", async () => {
+    discordStatus.mockResolvedValue({
+      ok: true,
+      rolesOk: false,
+      rolesCode: "unknown_role",
+      rolesDetail: "300000000000000009",
+    });
+    const subject = await mount();
+
+    const problem = subject.find('[data-test="roles-problem"]');
+    expect(problem.text()).toContain(": 300000000000000009.");
   });
 });
