@@ -18,7 +18,7 @@ export const useFilters = <T>({
   // route query into `q`, and the query schemas are `additionalProperties:
   // false` -- so a key like this reaches the API as an unknown filter and comes
   // back a 400, which reads as a server error.
-  const viewStateKeys = ["tab", "view", "direction", ...viewKeys];
+  const viewStateKeys = ["tab", "view", "direction", "fleetchart", ...viewKeys];
 
   const excludeKeys = [
     ...defaultIgnoreKeys,
@@ -117,6 +117,10 @@ export const useFilters = <T>({
           ...query,
           ...viewState.value,
           page: shouldResetPage(query) ? undefined : route.query.page,
+          // A page size in the URL came with a shared link. Filtering keeps
+          // it; a reset goes back to the reader's own, which also drops one
+          // the API refused.
+          perPage: route.query.perPage,
         },
       })
       .catch(() => {});
@@ -132,7 +136,9 @@ export const useFilters = <T>({
       .catch(() => {});
 
   const hasResettableQuery = computed(() =>
-    Object.keys(route.query).some((key) => !viewStateKeys.includes(key)),
+    Object.keys(route.query).some(
+      (key) => !viewStateKeys.includes(key) && key !== "perPage",
+    ),
   );
 
   const filter = debounce(debouncedFilter, 300);

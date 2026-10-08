@@ -35,6 +35,12 @@ describe("useFilters#getQuery", () => {
 
     expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
   });
+
+  it("drops the flag that opens the fleetchart", () => {
+    query.value = { nameCont: "titanium", fleetchart: "true" };
+
+    expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
+  });
 });
 
 /*
@@ -83,7 +89,7 @@ describe("useFilters navigation", () => {
   it("keeps it when the filters are cleared", () => {
     query.value = { view: "invites", direction: "outgoing", nameCont: "ti" };
 
-    useFilters().resetFilter();
+    void useFilters().resetFilter();
 
     expect(replace).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -95,7 +101,7 @@ describe("useFilters navigation", () => {
   it("keeps a list's own view keys when the filters are cleared", () => {
     query.value = { t: "archive", s: "bogus asc", tab: "log" };
 
-    useFilters({ viewKeys: ["t"] }).resetFilter();
+    void useFilters({ viewKeys: ["t"] }).resetFilter();
 
     expect(replace).toHaveBeenCalledWith(
       expect.objectContaining({ query: { t: "archive", tab: "log" } }),
@@ -109,5 +115,36 @@ describe("useFilters navigation", () => {
       false,
     );
     expect(useFilters().hasResettableQuery.value).toBe(true);
+  });
+
+  it("keeps a shared page size through a changed filter", async () => {
+    query.value = { nameCont: "ti", page: "2", perPage: "120" };
+
+    useFilters().filter({ nameCont: "tit" } as never);
+    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+
+    expect(replace.mock.calls[0][0].query).toMatchObject({
+      nameCont: "tit",
+      perPage: "120",
+    });
+    expect(replace.mock.calls[0][0].query.page).toBeUndefined();
+  });
+
+  // A reset goes back to the reader's own defaults, and is the way out of a
+  // page size the API refused.
+  it("drops a shared page size when the filters are cleared", () => {
+    query.value = { nameCont: "ti", perPage: "120", tab: "log" };
+
+    void useFilters().resetFilter();
+
+    expect(replace).toHaveBeenCalledWith(
+      expect.objectContaining({ query: { tab: "log" } }),
+    );
+  });
+
+  it("has nothing to reset when the route holds only a page size", () => {
+    query.value = { perPage: "120" };
+
+    expect(useFilters().hasResettableQuery.value).toBe(false);
   });
 });

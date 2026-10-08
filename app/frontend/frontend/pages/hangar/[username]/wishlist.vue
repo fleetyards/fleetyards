@@ -5,12 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
-import { useSortParam } from "@/shared/composables/useSortParam";
-import { type VehicleSortEnum } from "@/services/fyApi";
 import { useWishlistSortFields } from "@/frontend/composables/useWishlistSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -21,6 +20,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type UserPublic } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
@@ -29,9 +29,16 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
+import { usePagination } from "@/shared/composables/usePagination";
+import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import {
+  usePublicWishlist as usePublicWishlistQuery,
+  getPublicWishlistQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const fleetchartShareUrl = useFleetchartShareUrl();
 
 const route = useRoute();
 
@@ -52,21 +59,7 @@ const username = computed(() => {
   return props.user.username;
 });
 
-const usernamePlural = computed(() => {
-  if (
-    userTitle.value.endsWith("s") ||
-    userTitle.value.endsWith("x") ||
-    userTitle.value.endsWith("z")
-  ) {
-    return userTitle.value;
-  }
-
-  return `${userTitle.value}'s`;
-});
-
-const userTitle = computed(() => {
-  return username.value[0].toUpperCase() + username.value.slice(1);
-});
+const usernamePlural = computed(() => possessiveUsername(username.value));
 
 const mobile = useMobile();
 
@@ -74,14 +67,23 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
-// `HangarQuery` declares the sort; this call simply sent nothing, so the chip
-// changed its arrow and the cards kept their order.
-const sortParam = useSortParam<VehicleSortEnum>();
+const { getQuery } = useHangarFilters(async () => {
+  await refetch();
+});
 
-const wishlistQuery = usePublicWishlistQuery(
-  username,
-  computed(() => ({ q: sortParam.value })),
-);
+const wishlistQueryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+  q: getQuery(),
+}));
+
+const wishlistQueryKey = computed(() => {
+  return getPublicWishlistQueryKey(username.value, wishlistQueryParams.value);
+});
+
+const { perPage, page, updatePerPage } = usePagination(wishlistQueryKey);
+
+const wishlistQuery = usePublicWishlistQuery(username, wishlistQueryParams);
 const wishlist = wishlistQuery.data;
 const refetch = wishlistQuery.refetch;
 const asyncStatus = {
@@ -239,6 +241,10 @@ onMounted(async () => {
         namespace="wishlist"
         :loading="loading"
         download-name="my-wishlist-fleetchart"
+        :share-url="fleetchartShareUrl"
+        :share-title="
+          t('headlines.hangar.publicWishlist', { user: usernamePlural })
+        "
       >
         <template #filter>
           <FilterForm hide-quicksearch />
@@ -246,9 +252,9 @@ onMounted(async () => {
         <template #pagination>
           <Paginator
             :query-result-ref="wishlist"
-            :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
+            :per-page="perPage"
             :size="BtnSizesEnum.SM"
-            :update-per-page="() => refetch()"
+            :update-per-page="updatePerPage"
           />
         </template>
       </FleetchartApp>
@@ -257,16 +263,16 @@ onMounted(async () => {
     <template #pagination-top>
       <Paginator
         :query-result-ref="wishlist"
-        :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
-        :update-per-page="() => refetch()"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
     <template #pagination-bottom>
       <Paginator
         :query-result-ref="wishlist"
-        :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
-        :update-per-page="() => refetch()"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

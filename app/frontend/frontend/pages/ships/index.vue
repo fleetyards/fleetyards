@@ -18,6 +18,7 @@ import { useModelSortFields } from "@/frontend/composables/useModelSortFields";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import { useFleetchartShareUrl } from "@/frontend/composables/useFleetchartShareUrl";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -39,6 +40,8 @@ useHangarItems();
 useWishlistItems();
 
 const { t } = useI18n();
+
+const fleetchartShareUrl = useFleetchartShareUrl();
 
 const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();
@@ -189,6 +192,8 @@ const openDisplayOptionsModal = () => {
         namespace="models"
         :loading="loading"
         download-name="ships-fleetchart"
+        :share-url="fleetchartShareUrl"
+        :share-title="t('headlines.ships.index')"
       >
         <template #pagination>
           <Paginator

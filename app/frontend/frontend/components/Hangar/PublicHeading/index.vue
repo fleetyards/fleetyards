@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -19,21 +20,7 @@ type Props = {
 
 const { t } = useI18n();
 
-const userTitle = computed(() => {
-  return props.user.username[0].toUpperCase() + props.user.username.slice(1);
-});
-
-const usernamePlural = computed(() => {
-  if (
-    userTitle.value.endsWith("s") ||
-    userTitle.value.endsWith("x") ||
-    userTitle.value.endsWith("z")
-  ) {
-    return userTitle.value;
-  }
-
-  return `${userTitle.value}'s`;
-});
+const usernamePlural = computed(() => possessiveUsername(props.user.username));
 
 const props = withDefaults(defineProps<Props>(), {
   headlineKey: "headlines.hangar.public",
