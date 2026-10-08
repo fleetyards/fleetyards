@@ -18,6 +18,8 @@ module Api
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
       before_action -> { require_fleet_subscription(:logistics) }
+      # Resolved before any rule runs, so an unknown or hidden inventory answers
+      # 404 rather than a 403 that would confirm it exists.
       before_action :inventory
       before_action :set_stock_item, only: %i[show update destroy]
 

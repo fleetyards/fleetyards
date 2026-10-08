@@ -19,6 +19,9 @@ module InventoryScoped
     inventory
   end
 
+  # ItemActions always consults this. StockActions only does through its default
+  # `authorize_stock!`, so a stock controller that overrides that need not
+  # define it.
   private def inventory_policy
     raise NotImplementedError, "#{self.class.name} must define #inventory_policy"
   end
