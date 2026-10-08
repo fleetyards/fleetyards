@@ -3,22 +3,12 @@
 module Api
   module V1
     class FleetDiscordRolesController < ::Api::BaseController
-      before_action :authenticate_user!, only: []
-      before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
-        unless: :user_signed_in?,
-        only: %i[index]
-
-      before_action :set_fleet
+      include FleetDiscordListing
 
       def index
         authorize! with: FleetDiscordRolePolicy, context: {fleet: @fleet}
 
-        @result = ::Discord::GuildRoles.new(@fleet.fleet_notification_setting&.discord_guild_id).fetch
-      end
-
-      private def set_fleet
-        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
-        authorize! @fleet, to: :show?
+        @result = ::Discord::GuildRoles.new(guild_id).fetch
       end
     end
   end
