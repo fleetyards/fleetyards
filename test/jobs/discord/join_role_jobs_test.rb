@@ -104,6 +104,7 @@ module Discord
         discord_announcement_channel_id: "200000000000000002", discord_officers_channel_id: "200000000000000003")
       rank = @fleet.default_member_role
       rank.update!(discord_role_id: "300000000000000004")
+      squadron = create(:fleet_squadron, fleet: @fleet, discord_channel_id: "200000000000000004")
 
       @setting.update!(discord_guild_id: "100000000000000002")
       @setting.update!(discord_guild_id: GUILD)
@@ -115,6 +116,7 @@ module Discord
       assert_nil @setting.discord_announcement_channel_id
       assert_nil @setting.discord_officers_channel_id
       assert_nil rank.reload.discord_role_id
+      assert_nil squadron.reload.discord_channel_id
     end
 
     test "a guild change keeps the ids saved along with it" do

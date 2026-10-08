@@ -81,13 +81,13 @@ class FleetNotificationSetting < ApplicationRecord
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
-  # Every other id, and each rank's role, names a channel or role in one
-  # guild, so another guild leaves them pointing at nothing -- and switching
-  # back must not bring them back either: the join role would let everyone
-  # holding it in without the invite privilege it needs. Ids saved along with
-  # the new guild are its own.
+  # Every other id, each rank's role and each squadron's channel names a
+  # channel or role in one guild, so another guild leaves them pointing at
+  # nothing -- and switching back must not bring them back either: the join
+  # role would let everyone holding it in without the invite privilege it
+  # needs. Ids saved along with the new guild are its own.
   before_save :clear_guild_scoped_ids, if: :discord_guild_id_changed?
-  after_save :clear_rank_role_ids, if: :saved_change_to_discord_guild_id?
+  after_save :clear_guild_scoped_records, if: :saved_change_to_discord_guild_id?
   # Until a new join role's first sweep has read the whole guild, holding it
   # is not gaining it, so nothing brings back a member whose membership ended.
   # Who held the previous role says nothing about the new one, so the sweep
@@ -170,8 +170,9 @@ class FleetNotificationSetting < ApplicationRecord
     end
   end
 
-  private def clear_rank_role_ids
-    fleet.fleet_roles.where.not(discord_role_id: nil).update_all(discord_role_id: nil, updated_at: Time.current)
+  private def clear_guild_scoped_records
+    FleetRole.where(fleet_id:).where.not(discord_role_id: nil).update_all(discord_role_id: nil, updated_at: Time.current)
+    FleetSquadron.where(fleet_id:).where.not(discord_channel_id: nil).update_all(discord_channel_id: nil, updated_at: Time.current)
   end
 
   private def sync_discord_join_role
