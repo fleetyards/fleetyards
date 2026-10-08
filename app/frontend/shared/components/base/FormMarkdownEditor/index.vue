@@ -137,6 +137,12 @@ const editor = useEditor({
   extensions: markdownExtensions({
     searchCatalogue: props.searchCatalogue,
     lookupCatalogue: props.lookupCatalogue,
+    detailsToggleLabel: (isOpen) =>
+      t(
+        isOpen
+          ? "markdownEditor.detailsCollapse"
+          : "markdownEditor.detailsExpand",
+      ),
   }),
   content: protectHtml(props.modelValue ?? ""),
   contentType: "markdown",
@@ -267,6 +273,15 @@ const actions: ToolbarAction[] = [
     icon: "fa-regular fa-align-center",
     isActive: () => !!editor.value?.isActive("center"),
     run: () => chain().toggleCenter().run(),
+  },
+  {
+    key: "details",
+    icon: "fa-regular fa-square-chevron-down",
+    isActive: () => !!editor.value?.isActive("details"),
+    run: () =>
+      editor.value?.isActive("details")
+        ? chain().unsetDetails().run()
+        : chain().setDetails().run(),
   },
 ];
 

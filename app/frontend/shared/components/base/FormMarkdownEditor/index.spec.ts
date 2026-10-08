@@ -153,6 +153,55 @@ describe("FormMarkdownEditor", () => {
     expect(lastEmitted(subject)).toBe(":::center\n\nWelcome\n\n:::");
   });
 
+  it("wraps the text in a details section, and unwraps it again", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "Three pilots",
+    });
+    editorOf(subject).commands.selectAll();
+
+    await button(subject, "details").trigger("click");
+
+    expect(lastEmitted(subject)).toBe(
+      "<details>\n<summary></summary>\n\nThree pilots\n\n</details>",
+    );
+
+    editorOf(subject).commands.insertContent("Crew");
+
+    expect(lastEmitted(subject)).toBe(
+      "<details>\n<summary>Crew</summary>\n\nThree pilots\n\n</details>",
+    );
+    await nextFrames();
+    expect(button(subject, "details").attributes("aria-pressed")).toBe("true");
+
+    await button(subject, "details").trigger("click");
+
+    expect(lastEmitted(subject)).toBe("Crew\n\nThree pilots");
+  });
+
+  it("opens and closes a section without changing the text", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue:
+        "<details>\n<summary>Crew</summary>\n\nThree pilots\n\n</details>",
+    });
+    await nextFrames();
+    const toggle = subject.find('[data-type="details"] > button');
+
+    expect(subject.find('[data-type="details"]').classes()).toContain(
+      "is-open",
+    );
+    expect(toggle.attributes("aria-label")).toBe("Collapse the section");
+
+    await toggle.trigger("click");
+
+    expect(subject.find('[data-type="details"]').classes()).not.toContain(
+      "is-open",
+    );
+    expect(toggle.attributes("aria-label")).toBe("Expand the section");
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
   it("links the selection to an address it accepts", async () => {
     const subject = await mountEditor({
       name: "description",
