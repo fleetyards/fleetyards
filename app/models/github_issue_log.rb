@@ -1,22 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: github_issue_logs
-#
-#  id             :uuid             not null, primary key
-#  content_digest :string           not null
-#  issue_number   :integer
-#  report_key     :string           not null
-#  task_type      :string           not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#
-# Indexes
-#
-#  index_github_issue_logs_on_report_key  (report_key)
-#  index_github_issue_logs_on_task_type   (task_type)
-#
 class GithubIssueLog < ApplicationRecord
   validates :task_type, presence: true
   validates :report_key, presence: true

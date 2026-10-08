@@ -4,25 +4,6 @@
 # fleet's join role -- alone, or as part of a list of the whole guild. Every
 # path applies under the member's lock and skips a read older than this, so
 # two sweeps, or a sweep and an update, end on what Discord answered last.
-# == Schema Information
-#
-# Table name: discord_member_reads
-#
-#  id              :uuid             not null, primary key
-#  read_at         :datetime         not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  discord_user_id :string           not null
-#  fleet_id        :uuid             not null
-#
-# Indexes
-#
-#  index_discord_member_reads_on_fleet_id_and_discord_user_id  (fleet_id,discord_user_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 class DiscordMemberRead < ApplicationRecord
   belongs_to :fleet
 

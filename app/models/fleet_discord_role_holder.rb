@@ -4,26 +4,6 @@
 # looked at. Membership follows changes to the role, not the role itself: a
 # Discord member update arrives for any change, so without this a holder who
 # left the fleet would be added back the next time they changed their nickname.
-# == Schema Information
-#
-# Table name: fleet_discord_role_holders
-#
-#  id         :uuid             not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  fleet_id   :uuid             not null
-#  user_id    :uuid             not null
-#
-# Indexes
-#
-#  index_fleet_discord_role_holders_on_fleet_id_and_user_id  (fleet_id,user_id) UNIQUE
-#  index_fleet_discord_role_holders_on_user_id               (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#  fk_rails_...  (user_id => users.id)
-#
 class FleetDiscordRoleHolder < ApplicationRecord
   belongs_to :fleet
   belongs_to :user

@@ -2,33 +2,6 @@
 
 require "test_helper"
 
-# == Schema Information
-#
-# Table name: fleet_squadrons
-#
-#  id                 :uuid             not null, primary key
-#  color              :string
-#  description        :text
-#  name               :string           not null
-#  rank               :text             not null
-#  short_description  :text
-#  slug               :string           not null
-#  team               :boolean          default(FALSE), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  discord_channel_id :string
-#  fleet_id           :uuid             not null
-#
-# Indexes
-#
-#  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
-#  index_fleet_squadrons_on_fleet_id_and_rank        (fleet_id,rank) UNIQUE
-#  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 class FleetSquadronTest < ActiveSupport::TestCase
   setup do
     @fleet = create(:fleet)

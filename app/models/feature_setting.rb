@@ -1,20 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: feature_settings
-#
-#  id                 :uuid             not null, primary key
-#  feature_name       :string           not null
-#  self_service_fleet :boolean          default(FALSE), not null
-#  self_service_user  :boolean          default(FALSE), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#
-# Indexes
-#
-#  index_feature_settings_on_feature_name  (feature_name) UNIQUE
-#
 class FeatureSetting < ApplicationRecord
   # One flag of these per surface a self-service toggle can live on, rather than
   # a boolean and an exclusive scope. The two are independent: a fleet feature

@@ -7,48 +7,6 @@
 # its own record -- "Salvager Needed (Med. Supply of RMC)" is four contracts, one
 # per system -- and collapsing them would need an identity the game does not
 # give, while losing the system and the standing band that tell the four apart.
-# == Schema Information
-#
-# Table name: game_missions
-#
-#  id                          :uuid             not null, primary key
-#  alignment                   :string
-#  blueprint_pool_refs         :text             default([]), not null, is an Array
-#  debug_name                  :string
-#  description                 :text
-#  difficulty_game_knowledge   :integer
-#  difficulty_mechanical_skill :integer
-#  difficulty_mental_load      :integer
-#  difficulty_profile          :string
-#  difficulty_risk_of_loss     :integer
-#  generator_key               :string
-#  kind                        :string
-#  location_kind               :string
-#  max_standing                :string
-#  min_standing                :string
-#  name                        :string
-#  needs_landing               :boolean          default(FALSE), not null
-#  org_key                     :string
-#  org_lawful                  :boolean
-#  org_name                    :string
-#  org_ref                     :string
-#  released                    :boolean          default(TRUE), not null
-#  reward_kinds                :text             default([]), not null, is an Array
-#  sc_key                      :string           not null
-#  sc_ref                      :string           not null
-#  slug                        :string           not null
-#  version                     :string
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#
-# Indexes
-#
-#  index_game_missions_on_org_name  (org_name)
-#  index_game_missions_on_sc_key    (sc_key) UNIQUE
-#  index_game_missions_on_sc_ref    (sc_ref) UNIQUE
-#  index_game_missions_on_slug      (slug) UNIQUE
-#  index_game_missions_on_version   (version)
-#
 class GameMission < ApplicationRecord
   include SlugConcern
   include ScDataVersioned

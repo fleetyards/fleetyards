@@ -1,29 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: manufacturers
-#
-#  id              :uuid             not null, primary key
-#  code            :string
-#  code_mapping    :string
-#  description     :text
-#  icon_overridden :boolean          default(FALSE), not null
-#  icon_path       :string
-#  known_for       :string(255)
-#  logo_overridden :boolean          default(FALSE), not null
-#  long_name       :string
-#  name            :string(255)
-#  sc_ref          :string
-#  slug            :string(255)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  rsi_id          :integer
-#
-# Indexes
-#
-#  index_manufacturers_on_slug  (slug) UNIQUE
-#
 class Manufacturer < ApplicationRecord
   attr_accessor :update_reason, :update_reason_description, :author_id
 

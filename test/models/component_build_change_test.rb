@@ -2,32 +2,6 @@
 
 require "test_helper"
 
-# == Schema Information
-#
-# Table name: component_build_changes
-#
-#  id           :uuid             not null, primary key
-#  environment  :string           not null
-#  field        :string           not null
-#  from_version :string           not null
-#  new_value    :text
-#  old_value    :text
-#  recorded_at  :datetime         not null
-#  to_version   :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  component_id :uuid             not null
-#
-# Indexes
-#
-#  index_component_build_changes_on_build                (environment,to_version)
-#  index_component_build_changes_on_component_and_field  (component_id,environment,to_version,field) UNIQUE
-#  index_component_build_changes_on_recorded_at          (recorded_at)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (component_id => components.id) ON DELETE => cascade
-#
 class ComponentBuildChangeTest < ActiveSupport::TestCase
   setup do
     @component = create(:component, :without_build)

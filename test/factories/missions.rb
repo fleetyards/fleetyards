@@ -1,36 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: missions
-#
-#  id                 :uuid             not null, primary key
-#  archived_at        :datetime
-#  category           :integer          default("other"), not null
-#  cover_image_preset :string
-#  description        :text
-#  scenario           :string
-#  slug               :string           not null
-#  status             :string           default("draft"), not null
-#  title              :string           not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  created_by_id      :uuid             not null
-#  fleet_id           :uuid             not null
-#
-# Indexes
-#
-#  index_missions_on_fleet_id_and_archived_at  (fleet_id,archived_at)
-#  index_missions_on_fleet_id_and_category     (fleet_id,category)
-#  index_missions_on_fleet_id_and_scenario     (fleet_id,scenario)
-#  index_missions_on_fleet_id_and_slug         (fleet_id,slug) UNIQUE
-#  index_missions_on_fleet_id_and_status       (fleet_id,status)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (created_by_id => users.id)
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 FactoryBot.define do
   factory :mission do
     fleet

@@ -1,25 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: model_modules
-#
-#  id                :uuid             not null, primary key
-#  active            :boolean          default(TRUE)
-#  cargo             :decimal(15, 2)
-#  cargo_holds       :string
-#  description       :text
-#  hidden            :boolean          default(TRUE)
-#  name              :string
-#  pledge_price      :decimal(15, 2)
-#  price             :decimal(15, 2)
-#  production_status :string
-#  sc_key            :string
-#  slug              :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  manufacturer_id   :uuid
-#
 class ModelModule < ApplicationRecord
   include ActiveStorageVariants
   include DerivedCargoHolds

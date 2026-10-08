@@ -1,27 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: cargo_hold_container_capacities
-#
-#  id                 :uuid             not null, primary key
-#  best_orientation   :string
-#  container_size_scu :integer          not null
-#  max_quantity       :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  cargo_hold_id      :uuid             not null
-#
-# Indexes
-#
-#  index_cargo_hold_capacities_on_hold_and_size                 (cargo_hold_id,container_size_scu) UNIQUE
-#  index_cargo_hold_container_capacities_on_container_size_scu  (container_size_scu)
-#  index_cargo_hold_container_capacities_on_max_quantity        (max_quantity)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (cargo_hold_id => cargo_holds.id)
-#
 class CargoHoldContainerCapacity < ApplicationRecord
   belongs_to :cargo_hold
 

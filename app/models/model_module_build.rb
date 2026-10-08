@@ -9,28 +9,6 @@
 # build describes a module at all -- so a module only the PTU build ships is
 # offered under live as well, with an empty loadout, because its slots carry
 # `HardpointBuild` rows for ptu and not for live.
-# == Schema Information
-#
-# Table name: model_module_builds
-#
-#  id              :uuid             not null, primary key
-#  cargo_holds     :string
-#  description     :text
-#  environment     :string           not null
-#  version         :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  model_module_id :uuid             not null
-#
-# Indexes
-#
-#  index_model_module_builds_on_environment_and_version  (environment,version)
-#  index_model_module_builds_on_module_and_build         (model_module_id,environment,version) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (model_module_id => model_modules.id) ON DELETE => cascade
-#
 class ModelModuleBuild < ApplicationRecord
   belongs_to :model_module
 

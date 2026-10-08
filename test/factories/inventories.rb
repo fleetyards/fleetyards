@@ -1,35 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: inventories
-#
-#  id           :uuid             not null, primary key
-#  description  :text
-#  holder_type  :string           not null
-#  image_preset :string
-#  location     :string
-#  name         :string           not null
-#  slug         :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  holder_id    :uuid             not null
-#  location_id  :uuid
-#  vehicle_id   :uuid
-#
-# Indexes
-#
-#  index_inventories_on_holder_and_lower_name               (holder_type, holder_id, lower((name)::text)) UNIQUE WHERE (vehicle_id IS NULL)
-#  index_inventories_on_holder_type_and_holder_id           (holder_type,holder_id)
-#  index_inventories_on_holder_type_and_holder_id_and_slug  (holder_type,holder_id,slug) UNIQUE WHERE (vehicle_id IS NULL)
-#  index_inventories_on_location_id                         (location_id)
-#  index_inventories_on_vehicle_id                          (vehicle_id) UNIQUE WHERE (vehicle_id IS NOT NULL)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
-#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => nullify
-#
 FactoryBot.define do
   factory :inventory do
     association :holder, factory: :user

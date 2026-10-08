@@ -5,39 +5,6 @@
 # See the migration for why these exist at all. The short version: the RSI ship
 # matrix is the only thing that creates a `Model`, so anything in the game and
 # not on the matrix is invisible, and until now nothing said so.
-# == Schema Information
-#
-# Table name: sc_data_unlisted_models
-#
-#  id                     :uuid             not null, primary key
-#  claimed_sc_key         :boolean          default(FALSE), not null
-#  comparison             :string
-#  decided_at             :datetime
-#  decision               :string
-#  first_seen_environment :string           not null
-#  first_seen_version     :string           not null
-#  identifier             :string           not null
-#  last_seen_environment  :string           not null
-#  last_seen_version      :string           not null
-#  manufacturer_code      :string
-#  name                   :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  base_model_id          :uuid
-#  model_id               :uuid
-#
-# Indexes
-#
-#  index_sc_data_unlisted_models_on_base_model_id  (base_model_id)
-#  index_sc_data_unlisted_models_on_decision       (decision)
-#  index_sc_data_unlisted_models_on_identifier     (identifier) UNIQUE
-#  index_sc_data_unlisted_models_on_model_id       (model_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (base_model_id => models.id) ON DELETE => nullify
-#  fk_rails_...  (model_id => models.id) ON DELETE => nullify
-#
 class ScDataUnlistedModel < ApplicationRecord
   # The ship it appears to be a variant of, where the identifier extends one we
   # already carry.

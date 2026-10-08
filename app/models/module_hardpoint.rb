@@ -1,20 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: module_hardpoints
-#
-#  id              :uuid             not null, primary key
-#  slot            :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  model_id        :uuid
-#  model_module_id :uuid
-#
-# Indexes
-#
-#  index_module_hardpoints_on_model_id_and_slot  (model_id,slot)
-#
 class ModuleHardpoint < ApplicationRecord
   belongs_to :model, touch: true, counter_cache: true
   # Linking, unlinking or editing a slot changes what the module embeds, and

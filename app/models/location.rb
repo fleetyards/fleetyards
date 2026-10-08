@@ -3,53 +3,6 @@
 # A place in the game: a star system, a star, a planet or moon, a station, a
 # city, an outpost, an asteroid base. Loaded from the starmap -- see
 # `ScData::Parser::StarmapParser` for how the export's records become places.
-# == Schema Information
-#
-# Table name: locations
-#
-#  id                         :uuid             not null, primary key
-#  always_shown               :boolean          default(FALSE), not null
-#  appearance_seed            :jsonb            not null
-#  body_type                  :string
-#  color                      :string
-#  description                :text
-#  facilities                 :jsonb
-#  game_type                  :string
-#  kind                       :string
-#  mission_template_refs      :text             default([]), not null, is an Array
-#  name                       :string
-#  quantum_travel_destination :boolean          default(FALSE), not null
-#  resources                  :jsonb            not null
-#  sc_key                     :string           not null
-#  sc_refs                    :text             default([]), not null, is an Array
-#  shown_on_starmap           :boolean          default(FALSE), not null
-#  shown_with_parent_only     :boolean          default(FALSE), not null
-#  slug                       :string           not null
-#  version                    :string
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  map_parent_id              :uuid
-#  parent_id                  :uuid
-#  system_id                  :uuid
-#
-# Indexes
-#
-#  index_locations_on_map_parent_id          (map_parent_id)
-#  index_locations_on_mission_template_refs  (mission_template_refs) USING gin
-#  index_locations_on_name                   (name)
-#  index_locations_on_parent_id              (parent_id)
-#  index_locations_on_sc_key                 (sc_key) UNIQUE
-#  index_locations_on_sc_refs                (sc_refs) USING gin
-#  index_locations_on_slug                   (slug) UNIQUE
-#  index_locations_on_system_id              (system_id)
-#  index_locations_on_version                (version)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (map_parent_id => locations.id) ON DELETE => nullify
-#  fk_rails_...  (parent_id => locations.id) ON DELETE => nullify
-#  fk_rails_...  (system_id => locations.id) ON DELETE => nullify
-#
 class Location < ApplicationRecord
   include SlugConcern
   include ScDataVersioned

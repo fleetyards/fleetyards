@@ -5,32 +5,6 @@
 #
 # Append-only, and never pruned: `feature_name` is a plain string rather than a
 # reference precisely so a flag's history survives the sync that removes it.
-# == Schema Information
-#
-# Table name: feature_flag_changes
-#
-#  id            :uuid             not null, primary key
-#  feature_name  :string           not null
-#  gate_name     :string
-#  operation     :string           not null
-#  source        :string           not null
-#  state_after   :string           not null
-#  thing         :string
-#  created_at    :datetime         not null
-#  admin_user_id :uuid
-#  user_id       :uuid
-#
-# Indexes
-#
-#  index_feature_flag_changes_on_admin_user_id                (admin_user_id)
-#  index_feature_flag_changes_on_feature_name_and_created_at  (feature_name,created_at DESC)
-#  index_feature_flag_changes_on_user_id                      (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (admin_user_id => admin_users.id) ON DELETE => nullify
-#  fk_rails_...  (user_id => users.id) ON DELETE => nullify
-#
 class FeatureFlagChange < ApplicationRecord
   # The operations that change something. Flipper publishes `enabled?` and
   # `exist?` on the same event -- see FeatureFlags::AuditSubscriber, which is

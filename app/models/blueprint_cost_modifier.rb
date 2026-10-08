@@ -7,34 +7,6 @@
 # stat piecewise -- 0.95 to 1.0 across quality 0-499, then 1.0 to 1.05 across
 # 500-1000 -- so the range a page shows spans the segments rather than reading
 # one of them.
-# == Schema Information
-#
-# Table name: blueprint_cost_modifiers
-#
-#  id                     :uuid             not null, primary key
-#  end_quality            :integer
-#  modifier_at_end        :decimal(12, 4)
-#  modifier_at_start      :decimal(12, 4)
-#  name                   :string
-#  position               :integer          not null
-#  property_key           :string
-#  property_ref           :string
-#  ramp                   :string           not null
-#  start_quality          :integer
-#  unit_format            :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  blueprint_cost_slot_id :uuid             not null
-#
-# Indexes
-#
-#  index_blueprint_cost_modifiers_on_slot               (blueprint_cost_slot_id)
-#  index_blueprint_cost_modifiers_on_slot_and_position  (blueprint_cost_slot_id,position) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (blueprint_cost_slot_id => blueprint_cost_slots.id) ON DELETE => cascade
-#
 class BlueprintCostModifier < ApplicationRecord
   belongs_to :slot,
     class_name: "BlueprintCostSlot", inverse_of: :modifiers,

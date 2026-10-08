@@ -2,28 +2,6 @@
 
 require "test_helper"
 
-# == Schema Information
-#
-# Table name: fleet_squadron_roles
-#
-#  id           :uuid             not null, primary key
-#  default_rank :boolean          default(FALSE), not null
-#  key          :string           not null
-#  name         :string           not null
-#  position     :integer          not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  fleet_id     :uuid             not null
-#
-# Indexes
-#
-#  index_fleet_squadron_roles_on_fleet_id_and_key       (fleet_id,key) UNIQUE
-#  index_fleet_squadron_roles_on_one_default_per_fleet  (fleet_id) UNIQUE WHERE default_rank
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_id => fleets.id)
-#
 class FleetSquadronRoleTest < ActiveSupport::TestCase
   test "seeds the four ranks in order when a fleet is created" do
     fleet = create(:fleet)

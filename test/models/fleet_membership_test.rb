@@ -1,45 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: fleet_memberships
-#
-#  id                         :uuid             not null, primary key
-#  aasm_state                 :string
-#  accepted_at                :datetime
-#  blueprints_filter          :integer          default("all"), not null
-#  declined_at                :datetime
-#  discarded_at               :datetime
-#  discord_role_granted       :boolean          default(FALSE), not null
-#  hide_ships                 :boolean          default(FALSE)
-#  invited_at                 :datetime
-#  invited_by                 :uuid
-#  nickname                   :string
-#  primary                    :boolean          default(FALSE)
-#  requested_at               :datetime
-#  ships_filter               :integer          default("all")
-#  used_invite_token          :string
-#  verified                   :boolean          default(FALSE), not null
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  discord_request_channel_id :string
-#  discord_request_message_id :string
-#  fleet_id                   :uuid
-#  fleet_role_id              :uuid
-#  hangar_group_id            :uuid
-#  user_id                    :uuid
-#
-# Indexes
-#
-#  index_fleet_memberships_on_discarded_at          (discarded_at)
-#  index_fleet_memberships_on_fleet_id_accepted     (fleet_id) WHERE (((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))
-#  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
-#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE WHERE (discarded_at IS NULL)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (fleet_role_id => fleet_roles.id)
-#
 require "test_helper"
 
 class FleetMembershipTest < ActiveSupport::TestCase

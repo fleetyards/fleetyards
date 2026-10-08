@@ -1,25 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: images
-#
-#  id           :uuid             not null, primary key
-#  background   :boolean          default(TRUE)
-#  caption      :string
-#  enabled      :boolean          default(FALSE), not null
-#  gallery_name :string
-#  gallery_slug :string
-#  gallery_type :string(255)
-#  global       :boolean          default(TRUE)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  gallery_id   :uuid
-#
-# Indexes
-#
-#  index_images_on_gallery_id  (gallery_id)
-#
 class Image < ApplicationRecord
   include ActiveStorageVariants
 
