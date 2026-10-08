@@ -535,6 +535,14 @@ paths:
       tags:
       - EquipmentFilters
       operationId: equipmentGradesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -542,6 +550,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/equipment/item-types":
     get:
       summary: Equipment Item Type Filters
@@ -552,7 +562,7 @@ paths:
       - name: q
         in: query
         schema:
-          "$ref": "#/components/schemas/EquipmentItemTypeFilterQuery"
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
         style: deepObject
         explode: true
         required: false
@@ -571,6 +581,14 @@ paths:
       tags:
       - EquipmentFilters
       operationId: equipmentSizesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -578,6 +596,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/equipment/slots":
     get:
       summary: Equipment Slot Filters
@@ -22422,7 +22442,7 @@ components:
       - createdAt
       - updatedAt
       title: Equipment
-    EquipmentItemTypeFilterQuery:
+    EquipmentFacetFilterQuery:
       type: object
       properties:
         equipmentTypeIn:
@@ -22431,7 +22451,7 @@ components:
             type: string
       additionalProperties: false
       example: {}
-      title: EquipmentItemTypeFilterQuery
+      title: EquipmentFacetFilterQuery
     EquipmentQuery:
       type: object
       properties:

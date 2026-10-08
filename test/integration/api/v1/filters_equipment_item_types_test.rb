@@ -14,7 +14,7 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: ::V1::Schemas::Queries::EquipmentItemTypeFilterQuery,
+        schema: ::V1::Schemas::Queries::EquipmentFacetFilterQuery,
         style: :deepObject,
         explode: true,
         required: false

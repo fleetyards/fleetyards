@@ -37,13 +37,13 @@ module Api
         end
 
         def sizes
-          @filters = Equipment.size_filters
+          @filters = Equipment.size_filters(equipment_types)
 
           render "api/v1/shared/filters"
         end
 
         def grades
-          @filters = Equipment.grade_filters
+          @filters = Equipment.grade_filters(equipment_types)
 
           render "api/v1/shared/filters"
         end

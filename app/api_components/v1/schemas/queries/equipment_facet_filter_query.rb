@@ -3,7 +3,7 @@
 module V1
   module Schemas
     module Queries
-      class EquipmentItemTypeFilterQuery
+      class EquipmentFacetFilterQuery
         include OpenapiRuby::Components::Base
 
         schema({
