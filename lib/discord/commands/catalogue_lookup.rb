@@ -41,7 +41,7 @@ module Discord
       # entries apart needs.
       def self.choices(query, within:)
         candidates(query, within:).map do |candidate|
-          rest = [(type_label(candidate.prefix) unless within.one?), candidate.detail].compact
+          rest = [listed_type(candidate.prefix, within), candidate.detail].compact
           {name: choice_name(candidate.name, rest), value: candidate.value}
         end
       end
@@ -82,6 +82,12 @@ module Discord
 
       def self.type_label(prefix)
         I18n.t("discord.commands.types.#{prefix}")
+      end
+
+      # The type beside an entry, which a command offering one catalogue
+      # leaves off.
+      def self.listed_type(prefix, within)
+        type_label(prefix) unless within.one?
       end
 
       class_methods do
@@ -165,12 +171,9 @@ module Discord
         message(content: [I18n.t("discord.commands.#{strings}.too_common", query: Markdown.escape(query)), *lines].join("\n"))
       end
 
-      # The type is left off where the command offers one catalogue, as in
-      # its suggestions.
       private def entry_candidate_list(query, candidates, strings, within)
         lines = candidates.first(MAX_CANDIDATES).map do |candidate|
-          type = CatalogueLookup.type_label(candidate.prefix) unless within.one?
-          ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", type, Markdown.escape(candidate.detail.to_s).presence]
+          ["• #{entry_link(candidate.name, candidate.prefix, candidate.slug)}", CatalogueLookup.listed_type(candidate.prefix, within), Markdown.escape(candidate.detail.to_s).presence]
             .compact.join(" · ")
         end
 
