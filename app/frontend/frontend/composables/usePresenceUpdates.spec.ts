@@ -11,13 +11,20 @@ interface Handler {
 }
 
 const handlers: Handler[] = [];
+const perform = vi.fn(() => Promise.resolve());
+const visibility = ref<DocumentVisibilityState>("visible");
 
 vi.mock("@/shared/composables/useSubscription", () => ({
   useSubscription: (options: Handler) => {
     handlers.push(options);
 
-    return {};
+    return { channel: { value: { perform } } };
   },
+}));
+
+vi.mock("@vueuse/core", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@vueuse/core")>()),
+  useDocumentVisibility: () => visibility,
 }));
 
 const { usePresenceUpdates } = await import("./usePresenceUpdates");
@@ -37,6 +44,8 @@ const render = () =>
 
 beforeEach(() => {
   handlers.length = 0;
+  perform.mockClear();
+  visibility.value = "visible";
   setActivePinia(createPinia());
   usePresence().resetPresence();
 });
@@ -73,5 +82,43 @@ describe("usePresenceUpdates", () => {
     handlers[0].connected?.({ reconnect: false });
 
     expect(usePresence().isOnline(USER, false)).toBe(true);
+  });
+
+  it("reports activity on connect while visible", () => {
+    render();
+
+    handlers[0].connected?.({ reconnect: false });
+
+    expect(perform).toHaveBeenCalledWith("active");
+  });
+
+  it("reports nothing from a hidden tab", () => {
+    visibility.value = "hidden";
+    render();
+
+    handlers[0].connected?.({ reconnect: false });
+
+    expect(perform).not.toHaveBeenCalled();
+  });
+
+  it("reports activity when the tab becomes visible", async () => {
+    visibility.value = "hidden";
+    render();
+
+    visibility.value = "visible";
+    await nextTick();
+
+    expect(perform).toHaveBeenCalledWith("active");
+  });
+
+  it("keeps reporting while the tab stays visible", () => {
+    vi.useFakeTimers();
+    render();
+
+    vi.advanceTimersByTime(30_000);
+
+    expect(perform).toHaveBeenCalledTimes(1);
+
+    vi.useRealTimers();
   });
 });
