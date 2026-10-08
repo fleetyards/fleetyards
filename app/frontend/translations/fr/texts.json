@@ -113,6 +113,44 @@
           "text": "Importer et exporter votre hangar, les buy-backs et votre historique d'import — et cette visite, chaque fois que vous en avez besoin."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Votre flotte est prête",
+          "text": "Quelques étapes en font le foyer de votre organisation. Cette courte visite vous montre où se trouve chacune — « Afficher la visite » la relance à tout moment."
+        },
+        "members": {
+          "title": "Inviter des membres",
+          "text": "Invitez des personnes par leur nom d'utilisateur Fleetyards, ou créez un lien d'invitation à partager sur Discord ou RSI. Les demandes d'adhésion arrivent aussi ici."
+        },
+        "roles": {
+          "title": "Rôles et escadrons",
+          "text": "Les rôles déterminent ce que chaque membre peut voir et gérer ; ils se configurent dans les paramètres. Les escadrons et équipes répartissent les membres en unités — ils s'activent aussi là."
+        },
+        "ships": {
+          "title": "Vaisseaux et fleetchart",
+          "text": "Les vaisseaux de vos membres forment ensemble ceux de la flotte. Le fleetchart les aligne côte à côte à l'échelle."
+        },
+        "events": {
+          "title": "Événements et missions",
+          "text": "Planifiez des opérations, laissez les membres s'inscrire sur un vaisseau et un poste, et gardez tout dans le calendrier de la flotte."
+        },
+        "contracts": {
+          "title": "Contrats",
+          "text": "Publiez des missions pour vos membres et payez-les une fois terminées."
+        },
+        "rsi": {
+          "title": "Vérifier votre organisation RSI",
+          "text": "Dans les paramètres, reliez la flotte à son organisation RSI par son SID. La vérification prouve que l'organisation vous appartient."
+        },
+        "discord": {
+          "title": "Connecter Discord",
+          "text": "Également dans les paramètres : connectez votre serveur Discord pour donner à chaque rang un rôle Discord et refléter les événements en événements programmés."
+        },
+        "settings": {
+          "title": "Paramètres de la flotte",
+          "text": "Logo, description et liens, et si la page de la flotte et ses vaisseaux sont publics. « Afficher la visite » relance cette visite."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Synchroniser avec RSI",

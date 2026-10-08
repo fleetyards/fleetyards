@@ -15,6 +15,7 @@ import {
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
@@ -75,6 +76,13 @@ const eventsNavLabel = computed(() =>
     : t("nav.fleets.events.index"),
 );
 
+const mobile = useMobile();
+
+// Tour targets on desktop only. On a phone this navigation is the slide-out
+// menu, which stays laid out off-screen while closed -- a tour would spotlight
+// it there instead of the bottom bar, which carries its own targets.
+const tourTarget = (id: string) => (mobile.value ? undefined : id);
+
 const comlink = useComlink();
 
 onMounted(() => {
@@ -100,6 +108,7 @@ onMounted(() => {
          added for the reader least able to guess what the parent holds. -->
     <NavItem
       v-if="showShipsNav"
+      :data-tour="tourTarget('fleet-ships')"
       :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.ships')"
       :active="shipsNavActive"
@@ -108,6 +117,7 @@ onMounted(() => {
 
     <NavItem
       v-if="membership"
+      :data-tour="tourTarget('fleet-members')"
       :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.members.index')"
       :active="String(route.name).startsWith('fleet-members')"
@@ -160,6 +170,7 @@ onMounted(() => {
 
     <NavItem
       v-if="showContractsNav"
+      :data-tour="tourTarget('fleet-contracts')"
       :to="{
         name: 'fleet-contracts',
         params: { slug: currentFleet.slug },
@@ -174,6 +185,7 @@ onMounted(() => {
          in there. -->
     <NavItem
       v-if="showEventsNav"
+      :data-tour="tourTarget('fleet-events')"
       :to="{
         name: eventsNavRoute,
         params: { slug: currentFleet.slug },
@@ -192,6 +204,7 @@ onMounted(() => {
     />
     <NavItem
       v-if="membership"
+      :data-tour="tourTarget('fleet-settings')"
       :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.settings.index')"
       :active="String(route.name).startsWith('fleet-settings')"

@@ -113,6 +113,44 @@
           "text": "Hangar importieren und exportieren, Buy-Backs und deine Import-Historie — und diese Tour, wann immer du sie wieder brauchst."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Deine Flotte ist bereit",
+          "text": "Ein paar Schritte machen sie zum Zuhause deiner Organisation. Diese kurze Tour zeigt dir, wo sie zu finden sind — über „Tour anzeigen“ kannst du sie jederzeit erneut starten."
+        },
+        "members": {
+          "title": "Mitglieder einladen",
+          "text": "Lade Leute über ihren Fleetyards-Benutzernamen ein oder erstelle einen Einladungslink zum Teilen auf Discord oder RSI. Beitrittsanfragen landen ebenfalls hier."
+        },
+        "roles": {
+          "title": "Rollen und Staffeln",
+          "text": "Rollen legen fest, was jedes Mitglied sehen und verwalten darf; du richtest sie in den Einstellungen ein. Staffeln und Teams teilen die Mitglieder in Einheiten auf — auch sie schaltest du dort ein."
+        },
+        "ships": {
+          "title": "Schiffe und Flottenübersicht",
+          "text": "Die Schiffe deiner Mitglieder ergeben zusammen die Schiffe der Flotte. Die Flottenübersicht stellt sie maßstabsgetreu nebeneinander."
+        },
+        "events": {
+          "title": "Events und Missionen",
+          "text": "Plane Operationen, lass Mitglieder sich für ein Schiff und einen Platz eintragen und behalte alles im Flottenkalender."
+        },
+        "contracts": {
+          "title": "Aufträge",
+          "text": "Stelle Aufträge für deine Mitglieder ein und zahle sie aus, sobald sie erledigt sind."
+        },
+        "rsi": {
+          "title": "RSI-Organisation verifizieren",
+          "text": "Verknüpfe die Flotte in den Einstellungen über ihre SID mit ihrer RSI-Organisation. Die Verifizierung beweist, dass die Organisation dir gehört."
+        },
+        "discord": {
+          "title": "Discord verbinden",
+          "text": "Ebenfalls in den Einstellungen: Verbinde deinen Discord-Server, um jedem Rang eine Discord-Rolle zu geben und Events als geplante Events zu spiegeln."
+        },
+        "settings": {
+          "title": "Flotteneinstellungen",
+          "text": "Logo, Beschreibung und Links, und ob die Flottenseite und ihre Schiffe öffentlich sind. „Tour anzeigen“ startet diese Tour erneut."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Mit RSI synchronisieren",

@@ -113,6 +113,44 @@
           "text": "Importa y exporta tu hangar, buy-backs y tu historial de importaciones — y este recorrido, siempre que lo necesites."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Tu flota está lista",
+          "text": "Unos pocos pasos la convierten en el hogar de tu organización. Este breve recorrido te muestra dónde está cada uno; «Mostrar el recorrido» lo vuelve a abrir cuando quieras."
+        },
+        "members": {
+          "title": "Invitar miembros",
+          "text": "Invita a personas por su nombre de usuario de Fleetyards o crea un enlace de invitación para compartirlo en Discord o RSI. Las solicitudes para unirse también llegan aquí."
+        },
+        "roles": {
+          "title": "Roles y escuadrones",
+          "text": "Los roles deciden qué puede ver y gestionar cada miembro; se configuran en los ajustes. Los escuadrones y equipos dividen a los miembros en unidades; también se activan allí."
+        },
+        "ships": {
+          "title": "Naves y fleetchart",
+          "text": "Las naves de tus miembros forman juntas las naves de la flota. El fleetchart las coloca una junto a otra a escala."
+        },
+        "events": {
+          "title": "Eventos y misiones",
+          "text": "Planifica operaciones, deja que los miembros se apunten a una nave y un puesto, y tenlo todo en el calendario de la flota."
+        },
+        "contracts": {
+          "title": "Contratos",
+          "text": "Publica trabajos para tus miembros y págales cuando estén terminados."
+        },
+        "rsi": {
+          "title": "Verifica tu organización de RSI",
+          "text": "En los ajustes, vincula la flota a su organización de RSI mediante su SID. La verificación demuestra que la organización es tuya."
+        },
+        "discord": {
+          "title": "Conectar Discord",
+          "text": "También en los ajustes: conecta tu servidor de Discord para dar a cada rango un rol de Discord y reflejar los eventos como eventos programados."
+        },
+        "settings": {
+          "title": "Ajustes de la flota",
+          "text": "Logo, descripción y enlaces, y si la página de la flota y sus naves son públicas. «Mostrar el recorrido» vuelve a abrir este recorrido."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Sincronizar con RSI",

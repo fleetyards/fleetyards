@@ -113,6 +113,44 @@
           "text": "Import and export your hangar, buy-backs and your import history — and this tour, whenever you want it again."
         }
       },
+      "fleetTour": {
+        "welcome": {
+          "title": "Your fleet is ready",
+          "text": "A few steps turn it into a home for your organisation. This short tour shows where each one is — Show tour brings it back any time."
+        },
+        "members": {
+          "title": "Invite members",
+          "text": "Invite people by their Fleetyards username, or create an invite link to share on Discord or RSI. Requests to join land here too."
+        },
+        "roles": {
+          "title": "Roles and squadrons",
+          "text": "Roles decide what each member may see and manage; set them up in the settings. Squadrons and teams split the roster into units — switch them on there as well."
+        },
+        "ships": {
+          "title": "Ships and fleetchart",
+          "text": "The ships your members own add up to the fleet's ships. The fleetchart lines them up side by side to scale."
+        },
+        "events": {
+          "title": "Events and missions",
+          "text": "Plan operations, let members sign up for a ship and a seat, and keep everything on the fleet calendar."
+        },
+        "contracts": {
+          "title": "Contracts",
+          "text": "Post jobs for your members and pay them out once they are done."
+        },
+        "rsi": {
+          "title": "Verify your RSI organisation",
+          "text": "In the settings, link the fleet to its RSI organisation by its SID. Verifying it proves the organisation is yours."
+        },
+        "discord": {
+          "title": "Connect Discord",
+          "text": "Also in the settings: connect your Discord server to give each rank a Discord role and mirror events as scheduled events."
+        },
+        "settings": {
+          "title": "Fleet settings",
+          "text": "Logo, description and links, and whether the fleet page and its ships are public. Show tour brings this tour back."
+        }
+      },
       "hangarPreview": {
         "sync": {
           "title": "Sync from RSI",
