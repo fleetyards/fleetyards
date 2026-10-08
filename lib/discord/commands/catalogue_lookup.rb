@@ -33,6 +33,12 @@ module Discord
         "location" => "/locations"
       }.freeze
 
+      # A catalogue whose filtered list lives apart from its entry pages: the
+      # locations index is the starmap, the places list is beside it.
+      LIST_PAGES = {
+        "location" => "/locations/places"
+      }.freeze
+
       # One shape for a name the resolver offers and for one item of a shared
       # name, so both rank and list the same way.
       Candidate = Data.define(:prefix, :name, :slug, :value, :detail)
@@ -167,7 +173,7 @@ module Discord
         lines = carriers.flat_map do |prefix, count|
           type = CatalogueLookup.listed_type(prefix, within)
           if count > CatalogueVariants::MAX_CARRIERS
-            url = url_for_path("#{PAGES.fetch(prefix)}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
+            url = url_for_path("#{LIST_PAGES.fetch(prefix) { PAGES.fetch(prefix) }}/?#{{NAME_FILTERS.fetch(prefix) => name}.to_query}")
             ["• [#{type || Markdown.escape(name)}](#{url}) · #{count}"]
           else
             CatalogueVariants.named(prefix, name).map do |record|

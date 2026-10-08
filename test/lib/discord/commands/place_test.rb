@@ -199,7 +199,7 @@ module Discord
 
         assert_equal [
           I18n.t("discord.commands.location.too_common", query: "Cave"),
-          "• [Cave](https://#{Rails.configuration.app.domain}/locations/?nameCont=Cave) · 6"
+          "• [Cave](https://#{Rails.configuration.app.domain}/locations/places/?nameCont=Cave) · 6"
         ].join("\n"), content
       end
 
@@ -210,7 +210,7 @@ module Discord
         content = call("Cave")[:content]
 
         assert content.start_with?(I18n.t("discord.commands.location.too_common", query: "Cave"))
-        assert_includes content, "/locations/?nameCont=Cave) · 6"
+        assert_includes content, "/locations/places/?nameCont=Cave) · 6"
         assert_includes content, "/locations/#{entrance.slug}/"
       end
 
