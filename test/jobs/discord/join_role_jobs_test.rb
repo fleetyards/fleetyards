@@ -202,7 +202,6 @@ module Discord
     end
 
     test "the sync leaves alone a member whose own roles were read after its list" do
-      Rails.stubs(:cache).returns(ActiveSupport::Cache::MemoryStore.new)
       lost = linked_user("uid-1")
       @api.stubs(:get_guild_member).with(GUILD, "uid-1").returns({"roles" => []})
       # The role is lost, and the update for it handled, while the list is read.

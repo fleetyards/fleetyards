@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_100400) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_100500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -497,6 +497,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_100400) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["discord_event_id", "discord_user_id"], name: "index_discord_event_subscriptions_on_event_and_user", unique: true
+  end
+
+  create_table "discord_member_reads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "discord_guild_id", null: false
+    t.string "discord_user_id", null: false
+    t.datetime "read_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discord_guild_id", "discord_user_id"], name: "index_discord_member_reads_on_guild_and_user", unique: true
   end
 
   create_table "dock_additions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

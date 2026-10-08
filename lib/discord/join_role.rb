@@ -55,7 +55,7 @@ module Discord
       with_member_lock(guild_id, discord_uid) do
         role_ids = member_role_ids(api, guild_id, discord_uid)
         join_roles.product(users).each { |join_role, user| join_role.apply(user, role_ids, quiet:) }
-        read_alone!(guild_id, discord_uid)
+        DiscordMemberRead.record(guild_id, discord_uid)
         true
       rescue ApiClient::Error, Faraday::Error => e
         Rails.logger.warn("[Discord::JoinRole] guild=#{guild_id} user=#{discord_uid}: #{e.message}")
@@ -68,22 +68,10 @@ module Discord
     # older answer, and applying it could undo a role just gained or lost.
     def self.apply_listed(join_role, users, discord_uid, role_ids, read_at:, quiet: false)
       with_member_lock(join_role.guild_id, discord_uid) do
-        read_alone_at = Rails.cache.read(read_alone_key(join_role.guild_id, discord_uid))
-        next if read_alone_at && read_alone_at > read_at.to_f
+        next if DiscordMemberRead.newer_than?(join_role.guild_id, discord_uid, read_at)
 
         users.each { |user| join_role.apply(user, role_ids, quiet:) }
       end
-    end
-
-    # Notes that a member's own roles were read and applied. A list of the
-    # guild is applied within the day, so a read older than that can no
-    # longer be newer than one.
-    def self.read_alone!(guild_id, discord_uid)
-      Rails.cache.write(read_alone_key(guild_id, discord_uid), Time.current.to_f, expires_in: 1.day)
-    end
-
-    private_class_method def self.read_alone_key(guild_id, discord_uid)
-      "discord-join-roles:read:#{guild_id}:#{discord_uid}"
     end
 
     def self.with_member_lock(guild_id, discord_uid, timeout_seconds: nil, &)
@@ -148,7 +136,7 @@ module Discord
         next membership.accepted? unless membership.reload.kept? && membership.created?
 
         role_ids = current_role_ids(uid)
-        self.class.read_alone!(guild_id, uid) unless role_ids.nil?
+        DiscordMemberRead.record(guild_id, uid) unless role_ids.nil?
 
         if Array(role_ids).include?(role_id)
           membership.discord_role_granted = true
