@@ -31,9 +31,8 @@ bin/teardown <path> --dry-run     # any other worktree, reporting only
 ```
 
 It refuses to run against the main checkout, and skips a database suffix, Redis band or
-port that a live worktree still claims. Configured in Supacode's repository settings as
-the **delete script** (`./bin/teardown`), it runs on its own whenever a worktree is
-deleted, and none of this accumulates in the first place.
+port that a live worktree still claims. Run it before removing a worktree and none of
+this accumulates in the first place.
 
 ---
 
@@ -104,7 +103,7 @@ ruby .claude/skills/cleanup/audit.rb --apply --only=databases,redis
 
 `--apply` acts on the `DROP` rows of the selected categories only. `ASK` and `keep` rows
 are never touched, whatever the user said — to act on an `ASK` row, run the specific
-command for it by hand (`git branch -D <name>`, `supacode worktree delete …`).
+command for it by hand (`git branch -D <name>`, `git worktree remove <path>`).
 
 ### 4. Re-run the audit
 
@@ -123,11 +122,7 @@ back when there are uncommitted files, or the pull request is still open. A clea
 worktree level with `origin/main` is deliberately an `ASK`: a workspace prepared for work
 that has not started looks exactly like one whose work is finished.
 
-Removal goes through `supacode worktree delete` for the worktrees Supacode manages, so
-its sidebar state goes with them; the rest go through `git worktree remove`, unlocking
-first if needed. Supacode locks every worktree it creates, and it also reconciles in the
-background — a worktree in `git worktree list` but absent from `supacode worktree list`
-may vanish on its own between two runs.
+Removal goes through `git worktree remove`, unlocking first if needed.
 
 ### Leftover directories
 

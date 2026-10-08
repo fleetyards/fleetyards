@@ -40,8 +40,6 @@ def capture(*cmd)
   ok ? out : ""
 end
 
-def tool?(name) = !capture("command", "-v", name).empty? || File.exist?("/usr/bin/#{name}")
-
 # `--path-format=absolute` matters: from the main checkout the plain form
 # answers a relative `.git`, which resolves against the caller's directory
 # rather than the repository's.
@@ -124,24 +122,7 @@ end
 # worktrees that exist, and everything outside that set is what gets swept.
 def sanitize_worktree_name(name) = name.gsub(/[^a-zA-Z0-9]/, "_")[0, 20]
 
-# Supacode identifies a worktree by the percent-encoded form of its path, which
-# is what `worktree list` prints and what `worktree delete` expects back. Keep
-# that identifier verbatim rather than re-deriving it: a decoded path handed to
-# --worktree builds a deeplink with raw slashes in it, which Supacode rejects.
-def supacode_worktrees
-  return {} unless tool?("supacode")
-
-  capture("supacode", "worktree", "list").lines.each_with_object({}) do |line, ids|
-    id = line.strip
-    decoded = URI.decode_www_form_component(id)
-    next if decoded.empty?
-
-    ids[decoded.chomp("/")] = id
-  end
-end
-
 def worktrees
-  supacode = supacode_worktrees
   entries = []
   current = nil
 
@@ -161,8 +142,6 @@ def worktrees
   entries.each do |entry|
     path = entry[:path]
     entry[:main] = File.identical?(path, MAIN_ROOT)
-    entry[:supacode_id] = supacode[path.chomp("/")]
-    entry[:supacode] = !entry[:supacode_id].nil?
     entry[:dirty] = capture("git", "-C", path, "status", "--porcelain").lines.size
     entry[:suffix] =
       if entry[:main]
@@ -356,7 +335,6 @@ def text_report(report)
         entry[:branch] || "detached #{entry[:head]&.slice(0, 9)}",
         entry[:dirty].zero? ? "clean" : "#{entry[:dirty]} uncommitted file(s)",
         entry[:setup] ? "slot #{entry[:slot]}" : "never set up",
-        entry[:supacode] ? "supacode" : "git only",
         human_bytes(entry[:size])
       ]
       "#{marker(entry[:verdict])}  #{File.basename(entry[:path]).ljust(32)} #{details.join(" · ")}\n        #{entry[:reason]}"
@@ -428,11 +406,6 @@ end
 def apply_worktrees(rows)
   rows.each do |entry|
     path = entry[:path]
-    if entry[:supacode]
-      _out, err, ok = sh("supacode", "worktree", "delete", "--worktree", entry[:supacode_id], "--background")
-      puts(ok ? "  removed #{path} (supacode)" : "  FAILED #{path}: #{err.strip}")
-      next
-    end
     sh("git", "-C", MAIN_ROOT, "worktree", "unlock", path) if entry[:locked]
     _out, err, ok = sh("git", "-C", MAIN_ROOT, "worktree", "remove", path)
     puts(ok ? "  removed #{path}" : "  FAILED #{path}: #{err.strip}")

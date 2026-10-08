@@ -5,11 +5,10 @@
 # symlinks into the main checkout's shared downloads — so the checkout can be
 # removed without leaving them behind.
 #
-# Configure it as Supacode's delete script (repository settings -> Scripts) to
-# have it run whenever a worktree is deleted, or invoke it by hand with the path
-# of any worktree. It never removes the checkout itself: whoever runs it does
-# that, which is also why it always exits 0 once it has recognised its target —
-# a Postgres that happens to be down must not block a deletion.
+# Invoke it by hand with the path of any worktree, or from inside one. It never
+# removes the checkout itself: whoever runs it does that, which is also why it
+# always exits 0 once it has recognised its target — a Postgres that happens to
+# be down must not block a deletion.
 
 require "open3"
 require "optparse"
@@ -67,25 +66,11 @@ def sanitize_worktree_name(name) = name.gsub(/[^a-zA-Z0-9]/, "_")[0, 20]
 
 SCRIPT_ROOT = File.expand_path("..", __dir__)
 
-# A worktree's `.git` is a file pointing at the shared git directory; the main
-# checkout's is a directory.
-def worktree_checkout?(path) = File.file?(File.join(path, ".git"))
-
 # The script's own location decides, so a `cd` elsewhere cannot redirect the
-# teardown at the wrong checkout. Supacode's own view of which worktree it is
-# acting on only stands in when the script is reached through the main checkout,
-# where its location says nothing about which worktree is going away.
+# teardown at the wrong checkout.
 def resolve_target
   explicit = ARGV.first
-  return File.expand_path(explicit) if explicit
-  return SCRIPT_ROOT if worktree_checkout?(SCRIPT_ROOT)
-
-  supacode = ENV["SUPACODE_WORKTREE_PATH"].to_s
-  # Older Supacode versions export only the id, which is the percent-encoded path.
-  supacode = URI.decode_www_form_component(ENV["SUPACODE_WORKTREE_ID"].to_s) if supacode.empty?
-  return supacode if !supacode.empty? && Dir.exist?(supacode)
-
-  SCRIPT_ROOT
+  explicit ? File.expand_path(explicit) : SCRIPT_ROOT
 end
 
 requested = resolve_target
@@ -354,8 +339,7 @@ drop_databases if enabled?("databases")
 flush_redis if enabled?("redis")
 unlink_shared_paths if enabled?("links")
 
-# Always succeeds once it has decided the target is a worktree: this runs as a
-# delete hook, and a Postgres that happens to be down must not block a removal.
+# Always succeeds once it has decided the target is a worktree: a Postgres that happens to be down must not block a removal.
 # What it could not release is printed above, and `.claude/skills/cleanup`
 # sweeps the leftovers.
 puts "  Teardown complete. The checkout itself is left in place."
