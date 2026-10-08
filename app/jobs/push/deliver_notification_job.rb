@@ -9,7 +9,12 @@ module Push
   class DeliverNotificationJob < ::ApplicationJob
     sidekiq_options retry: 2, queue: "notifications"
 
-    def perform(notification_id)
+    # `seen_in_app` is whether a tab of the reader's was in use when the toast
+    # went out. Then the push would only buzz the phone beside them. Decided
+    # by whoever broadcast it, since only they know when that was.
+    def perform(notification_id, seen_in_app = false)
+      return if seen_in_app
+
       notification = Notification.find_by(id: notification_id)
       return if notification.blank?
       return unless self.class.deliverable?(notification)

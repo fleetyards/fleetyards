@@ -100,9 +100,9 @@ module Announcements
       # Each channel on its own. The rows are already written, so a retry
       # inserts nothing and delivers nothing: a channel that raised here takes
       # every channel after it down for good.
-      deliver_channel(:app) { broadcast(notifications, app_user_ids) }
+      seen_in_app = deliver_channel(:app) { broadcast(notifications, app_user_ids) } || Set.new
       deliver_channel(:mail) { mail(notifications, mail_user_ids) }
-      deliver_channel(:push) { push(notifications, push_user_ids) }
+      deliver_channel(:push) { push(notifications, push_user_ids, seen_in_app) }
       deliver_channel(:discord) { direct_message(notifications, discord_user_ids) }
     end
 
@@ -110,6 +110,7 @@ module Announcements
       yield
     rescue => e
       Rails.logger.error("Announcement #{channel} delivery failed: #{e.message}")
+      nil
     end
 
     # Only readers who were using the site in the last few minutes. A broadcast
@@ -121,21 +122,30 @@ module Announcements
     # renders the notification through ActionController::Renderer, so an
     # unfiltered fan-out is ~57k template renders for an audience of a few
     # hundred.
+    #
+    # A tab in use counts too: reading a loaded page makes no API request, and
+    # push holds back for exactly those readers on the strength of this toast.
+    # Returns them, for the push to skip.
     private def broadcast(notifications, user_ids)
-      return if user_ids.empty?
+      return Set.new if user_ids.empty?
 
+      in_use = UserPresence.active_among(user_ids)
       active_ids = User.where(id: user_ids)
         .where(last_active_at: BROADCAST_WINDOW.ago..)
         .pluck(:id)
-      return if active_ids.empty?
+        .map(&:to_s) | in_use.to_a
+      return Set.new if active_ids.empty?
 
       ids = notification_ids(notifications, active_ids)
 
       Notification.where(id: ids).includes(:user).find_each do |notification|
         UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
       rescue => e
+        in_use.delete(notification.user_id.to_s)
         Rails.logger.error("Announcement broadcast failed for #{notification.id}: #{e.message}")
       end
+
+      in_use
     end
 
     private def mail(notifications, user_ids)
@@ -149,11 +159,14 @@ module Announcements
       end
     end
 
-    private def push(notifications, user_ids)
+    private def push(notifications, user_ids, seen_in_app)
       return if user_ids.empty?
 
-      ids = notification_ids(notifications, user_ids)
-      ::Push::DeliverNotificationJob.perform_bulk(ids.zip) if ids.any?
+      wanted = user_ids.to_set
+      args = notifications.rows.filter_map do |id, user_id|
+        [id, seen_in_app.include?(user_id.to_s)] if wanted.include?(user_id)
+      end
+      ::Push::DeliverNotificationJob.perform_bulk(args) if args.any?
     end
 
     private def direct_message(notifications, user_ids)

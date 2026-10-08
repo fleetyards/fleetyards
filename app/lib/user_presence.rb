@@ -26,6 +26,12 @@ class UserPresence
   # Three beats inside the TTL.
   HEARTBEAT_INTERVAL = 30
 
+  # How long a tab the user was using keeps them "active" after its last
+  # report. An open socket is not that: a forgotten background tab heartbeats
+  # all day. It covers switching to another app while a sync runs; a tab that
+  # goes idle or closes clears it at once instead of waiting it out.
+  ACTIVE_WINDOW = 120
+
   class << self
     # A connection that has just been accepted. Returns true when this is the
     # user's first live connection *and* nothing has announced them online yet,
@@ -45,6 +51,51 @@ class UserPresence
     # the user really has gone.
     def disconnect(user_id, token)
       write { redis.zadd(connections_key, expires_at(GRACE), member(user_id, token)) }
+    end
+
+    # A tab of the user's is in use right now, on any device. Push holds back
+    # while one is: the same notification already arrives in that tab, and
+    # buzzing the phone beside it is noise.
+    #
+    # One sorted set per user, of connections scored by when they stop
+    # counting: one tab going idle or closing must not end the window of
+    # another still in use, and the question is asked per reader during a
+    # fan-out, so it must not read anybody else's. The key's own expiry
+    # cleans up after the last connection; the scores are what count.
+    def mark_active(user_id, token)
+      key = active_key(user_id)
+
+      write do
+        redis.multi do |tx|
+          tx.zremrangebyscore(key, "-inf", now)
+          tx.zadd(key, expires_at(ACTIVE_WINDOW), token)
+          tx.expire(key, ACTIVE_WINDOW)
+        end
+      end
+    end
+
+    def mark_inactive(user_id, token)
+      write { redis.zrem(active_key(user_id), token) }
+    end
+
+    # False when Redis cannot answer, so an outage costs a redundant push
+    # rather than a missing one.
+    def active?(user_id)
+      read(false) { redis.zcount(active_key(user_id), "(#{now}", "+inf").positive? }
+    end
+
+    # Which of these users have a tab in use, in one round trip.
+    def active_among(user_ids)
+      ids = Array(user_ids).map(&:to_s)
+      return Set.new if ids.empty?
+
+      read(Set.new) do
+        counts = redis.pipelined do |pipe|
+          ids.each { |id| pipe.zcount(active_key(id), "(#{now}", "+inf") }
+        end
+
+        ids.zip(counts).filter_map { |id, count| id if count.positive? }.to_set
+      end
     end
 
     def online?(user_id)
@@ -169,6 +220,10 @@ class UserPresence
 
     private def announced_key
       "#{namespace}presence:announced"
+    end
+
+    private def active_key(user_id)
+      "#{namespace}presence:active:#{user_id}"
     end
 
     # Parallel test workers share one Redis and one cable database, so each one

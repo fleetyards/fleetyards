@@ -65,5 +65,21 @@ module Push
 
       assert_empty DeliverToSubscriptionJob.jobs
     end
+
+    test "sends nothing when a tab of the reader's was in use for the toast" do
+      DeliverNotificationJob.new.perform(@notification.id, true)
+
+      assert_empty DeliverToSubscriptionJob.jobs
+    end
+
+    test "sends to a reader who opens a tab after the toast went out" do
+      UserPresence.mark_active(@user.id, "tab-1")
+
+      DeliverNotificationJob.new.perform(@notification.id, false)
+
+      assert_equal @subscriptions.size, DeliverToSubscriptionJob.jobs.size
+    ensure
+      UserPresence.mark_inactive(@user.id, "tab-1")
+    end
   end
 end

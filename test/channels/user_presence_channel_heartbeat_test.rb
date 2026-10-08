@@ -61,4 +61,43 @@ class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
 
     assert UserPresence.online?(@user.id)
   end
+
+  test "an active report marks the user active" do
+    stub_signed_in_connection
+    subscribe
+
+    perform :active
+
+    assert UserPresence.active?(@user.id)
+  end
+
+  test "an inactive report clears the user's window" do
+    stub_signed_in_connection
+    subscribe
+    perform :active
+
+    perform :inactive
+
+    refute UserPresence.active?(@user.id)
+  end
+
+  test "unsubscribing clears only this connection's window" do
+    stub_signed_in_connection
+    subscribe
+    perform :active
+
+    unsubscribe
+
+    refute UserPresence.active?(@user.id)
+  end
+
+  test "an inactive report leaves the user's other devices in use" do
+    stub_signed_in_connection
+    subscribe
+    UserPresence.mark_active(@user.id, "phone")
+
+    perform :inactive
+
+    assert UserPresence.active?(@user.id)
+  end
 end

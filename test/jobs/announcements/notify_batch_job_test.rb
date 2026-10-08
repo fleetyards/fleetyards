@@ -55,6 +55,17 @@ module Announcements
       Announcements::NotifyBatchJob.new.perform(@announcement.id, [here.id, gone.id])
     end
 
+    test "#perform broadcasts to a reader with a tab in use, however long since their last request" do
+      reading = create(:user, last_active_at: 1.hour.ago)
+      UserPresence.mark_active(reading.id, "tab-1")
+
+      UserNotificationsChannel.expects(:broadcast_to).with { |user, _payload| user == reading }.once
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [reading.id])
+    ensure
+      UserPresence.mark_inactive(reading.id, "tab-1")
+    end
+
     test "#perform mails only the readers who opted in" do
       opted_in = create(:user, last_active_at: 3.days.ago)
       opted_in.notification_preferences
@@ -80,7 +91,23 @@ module Announcements
       2.times { Announcements::NotifyBatchJob.new.perform(@announcement.id, [opted_in.id, opted_out.id]) }
 
       notification = Notification.find_by!(user: opted_in, notification_type: "announcement")
-      assert_equal [[notification.id]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+      assert_equal [[notification.id, false]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+    end
+
+    test "#perform marks the push seen for a reader with a tab in use" do
+      reading = create(:user, last_active_at: 1.hour.ago)
+      reading.notification_preferences
+        .find_or_create_by!(notification_type: "announcement")
+        .update!(push: true)
+      UserPresence.mark_active(reading.id, "tab-1")
+      ::Push::DeliverNotificationJob.jobs.clear
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [reading.id])
+
+      notification = Notification.find_by!(user: reading, notification_type: "announcement")
+      assert_equal [[notification.id, true]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+    ensure
+      UserPresence.mark_inactive(reading.id, "tab-1")
     end
 
     test "#perform still pushes when the mail channel raises" do

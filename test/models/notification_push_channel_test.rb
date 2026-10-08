@@ -23,7 +23,42 @@ class NotificationPushChannelTest < ActiveSupport::TestCase
 
     notification = notify!
 
-    assert_equal [[notification.id]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+    assert_equal [[notification.id, false]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+  end
+
+  test "marks the push seen when a tab of the reader's was in use for the toast" do
+    prefer_push!(true)
+    UserPresence.mark_active(@user.id, "tab-1")
+
+    notification = notify!
+
+    assert_equal [[notification.id, true]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+  ensure
+    UserPresence.mark_inactive(@user.id, "tab-1")
+  end
+
+  test "does not mark the push seen when the reader has the in-app channel off" do
+    prefer_push!(true)
+    @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(app: false)
+    UserPresence.mark_active(@user.id, "tab-1")
+
+    notification = notify!
+
+    assert_equal [[notification.id, false]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+  ensure
+    UserPresence.mark_inactive(@user.id, "tab-1")
+  end
+
+  test "does not mark the push seen when the toast failed" do
+    prefer_push!(true)
+    UserPresence.mark_active(@user.id, "tab-1")
+    UserNotificationsChannel.stubs(:broadcast_to).raises("cable is down")
+
+    notification = notify!
+
+    assert_equal [[notification.id, false]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+  ensure
+    UserPresence.mark_inactive(@user.id, "tab-1")
   end
 
   test "a mailer that raises does not cost the reader the push" do
