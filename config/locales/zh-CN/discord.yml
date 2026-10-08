@@ -50,6 +50,28 @@ zh-CN:
         missing_query: 请提供用户名。
         more: '…还有 %{count} 艘。'
         not_available: '未找到“%{username}”的公开机库。'
+      item:
+        ambiguous: '匹配“%{query}”的物品：'
+        fields:
+          buy: 购买
+          class: 类别
+          craft_time: 制造时间
+          grade: 等级
+          sell: 出售
+          size: 尺寸
+          slot: 槽位
+          slots: 槽位数
+        makes: '制造 %{item}'
+        materials: '材料：%{items}'
+        missing_query: 请提供物品名称。
+        more: '……还有更多。请从建议中选择一个。'
+        not_found: '未找到“%{query}”对应的物品。'
+        too_common: '名为“%{query}”的物品太多，无法在此列出。目录中有全部物品：'
+        types:
+          blueprint: 蓝图
+          commodity: 商品
+          component: 组件
+          equipment: 装备
       loaner:
         heading: '[%{ship}](%{url}) 附带 %{count} 艘替代飞船：'
         missing_query: 请提供飞船名称。

@@ -70,6 +70,17 @@ module Discord
         end
       end
 
+      # Autocomplete is answered inline by the handler; an option that asks for
+      # it without one leaves the picker on "Loading options failed".
+      test "every option asking for autocomplete belongs to a handler that answers it" do
+        self.class.invocable.each do |name, subcommand|
+          definition = Registry.resolve(name, subcommand)
+          next unless Array(definition[:options]).any? { |option| option[:autocomplete] }
+
+          assert_respond_to Registry.handler_for(name, subcommand), :autocomplete, "/#{[name, subcommand].compact.join(" ")}"
+        end
+      end
+
       test "an unregistered name resolves to no handler" do
         assert_nil Registry.handler_for("definitely-not-a-command")
       end

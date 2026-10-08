@@ -15,11 +15,19 @@ module Discord
     PING = 1
     APPLICATION_COMMAND = 2
     MESSAGE_COMPONENT = 3
+    APPLICATION_COMMAND_AUTOCOMPLETE = 4
 
     # Interaction response types.
     PONG = 1
     DEFERRED_MESSAGE = 5
     DEFERRED_UPDATE_MESSAGE = 6
+    AUTOCOMPLETE_RESULT = 8
+
+    # Discord's limits on an autocomplete answer: it rejects the whole response
+    # over one choice too many or one name too long, and the member sees
+    # "Loading options failed" instead of the choices that did fit.
+    MAX_CHOICES = 25
+    MAX_CHOICE_LENGTH = 100
 
     def create
       return head :unauthorized unless verified?
@@ -28,6 +36,7 @@ module Discord
       when PING then render json: {type: PONG}
       when APPLICATION_COMMAND then acknowledge_command
       when MESSAGE_COMPONENT then acknowledge_component
+      when APPLICATION_COMMAND_AUTOCOMPLETE then answer_autocomplete
       else head :no_content
       end
     end
@@ -68,6 +77,34 @@ module Discord
       Discord::ComponentJob.perform_async(component_context)
 
       render json: {type: DEFERRED_UPDATE_MESSAGE}
+    end
+
+    # The one interaction answered inline: Discord has no deferred response for
+    # autocomplete, so the choices have to be in this response, inside the same
+    # 3 seconds. A failure answers with no choices -- the member keeps typing,
+    # and a 500 would only turn into Discord's own error in the picker.
+    private def answer_autocomplete
+      render json: {type: AUTOCOMPLETE_RESULT, data: {choices: autocomplete_choices}}
+    end
+
+    private def autocomplete_choices
+      handler = Discord::Commands::Registry.handler_for(command_data["name"], invoked_subcommand&.dig("name"))
+      focused = Array((invoked_subcommand || command_data)["options"]).find { |option| option["focused"] }
+      return [] unless focused && handler.respond_to?(:autocomplete)
+
+      choices = I18n.with_locale(Discord::Locale.resolve(payload["locale"] || payload["guild_locale"])) do
+        handler.autocomplete(focused["name"], focused["value"].to_s)
+      end
+
+      choices
+        .select { |choice| choice[:value].to_s.length <= MAX_CHOICE_LENGTH }
+        .first(MAX_CHOICES)
+        .map { |choice| {name: choice[:name].to_s.truncate(MAX_CHOICE_LENGTH), value: choice[:value]} }
+    rescue => e
+      Rails.logger.error("[Discord::InteractionsController] autocomplete for #{command_data["name"]} failed: #{e.class}: #{e.message}")
+      Appsignal.report_error(e)
+
+      []
     end
 
     private def ephemeral_command?

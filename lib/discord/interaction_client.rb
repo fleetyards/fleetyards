@@ -19,6 +19,11 @@ module Discord
 
     Error = Class.new(StandardError)
 
+    # Answers echo what members typed -- a "no ship found for ..." repeats the
+    # query -- so an `@everyone` typed into an option would ping the whole guild
+    # through the bot. Mentions still render; they just notify no one.
+    NO_PINGS = {parse: []}.freeze
+
     def self.expired?(requested_at)
       return false if requested_at.blank?
 
@@ -33,7 +38,7 @@ module Discord
     def edit_original(payload)
       response = connection.patch(
         "webhooks/#{@application_id}/#{@token}/messages/@original",
-        payload.to_json
+        payload.reverse_merge(allowed_mentions: NO_PINGS).to_json
       )
 
       return true if response.status.between?(200, 299)
@@ -48,7 +53,7 @@ module Discord
     def create_followup(payload)
       response = connection.post(
         "webhooks/#{@application_id}/#{@token}",
-        payload.merge(flags: Commands::Base::EPHEMERAL).to_json
+        payload.reverse_merge(allowed_mentions: NO_PINGS).merge(flags: Commands::Base::EPHEMERAL).to_json
       )
 
       return true if response.status.between?(200, 299)

@@ -50,6 +50,28 @@ en:
         missing_query: Please provide a username.
         more: '…and %{count} more.'
         not_available: 'No public hangar for "%{username}".'
+      item:
+        ambiguous: 'Items matching "%{query}":'
+        fields:
+          buy: Buy
+          class: Class
+          craft_time: Craft time
+          grade: Grade
+          sell: Sell
+          size: Size
+          slot: Slot
+          slots: Slots
+        makes: 'Makes %{item}'
+        materials: 'Materials: %{items}'
+        missing_query: Please provide an item name.
+        more: '…and more. Pick one from the suggestions.'
+        not_found: 'No item found for "%{query}".'
+        too_common: 'Too many items are named "%{query}" to list here. The catalogue has them all:'
+        types:
+          blueprint: Blueprint
+          commodity: Commodity
+          component: Component
+          equipment: Equipment
       loaner:
         heading: '[%{ship}](%{url}) comes with %{count} loaner(s):'
         missing_query: Please provide a ship name.

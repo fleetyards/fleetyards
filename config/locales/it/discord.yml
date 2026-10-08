@@ -50,6 +50,28 @@ it:
         missing_query: Indica un nome utente.
         more: '…e altre %{count}.'
         not_available: 'Nessun hangar pubblico per «%{username}».'
+      item:
+        ambiguous: 'Oggetti che corrispondono a «%{query}»:'
+        fields:
+          buy: Acquisto
+          class: Classe
+          craft_time: Tempo di produzione
+          grade: Grado
+          sell: Vendita
+          size: Taglia
+          slot: Slot
+          slots: Slot
+        makes: 'Produce %{item}'
+        materials: 'Materiali: %{items}'
+        missing_query: Indica il nome di un oggetto.
+        more: '…e altri. Scegline uno dai suggerimenti.'
+        not_found: 'Nessun oggetto trovato per «%{query}».'
+        too_common: 'Troppi oggetti si chiamano «%{query}» per elencarli qui. Il catalogo li ha tutti:'
+        types:
+          blueprint: Progetto
+          commodity: Merce
+          component: Componente
+          equipment: Equipaggiamento
       loaner:
         heading: '[%{ship}](%{url}) include %{count} nave(i) in prestito:'
         missing_query: Indica il nome di una nave.

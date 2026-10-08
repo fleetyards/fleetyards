@@ -28,7 +28,7 @@ module Discord
           color: EMBED_COLOR,
           description: model.description.to_s.truncate(400).presence,
           fields: fields(model).map { |name, value| {name: name, value: value, inline: true} },
-          thumbnail: thumbnail(model),
+          thumbnail: thumbnail(model.store_image),
           footer: {text: model.manufacturer&.name}.compact_blank.presence
         }.compact_blank
       end
@@ -53,28 +53,6 @@ module Discord
 
       private def dimensions(model)
         [model.length_label, model.beam_label, model.height_label].compact_blank.join(" × ").presence
-      end
-
-      # rails_representation_url only builds a redirect URL -- it does not
-      # process the variant here, so a cold image costs the job nothing.
-      private def thumbnail(model)
-        image = model.store_image
-        return nil unless image.attached?
-
-        url =
-          if image.representable?
-            url_helpers.rails_representation_url(
-              image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium])
-            )
-          else
-            url_helpers.rails_blob_url(image)
-          end
-
-        {url: url}
-      end
-
-      private def url_helpers
-        Rails.application.routes.url_helpers
       end
     end
   end
