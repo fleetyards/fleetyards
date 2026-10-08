@@ -34,8 +34,9 @@ module Discord
         JoinRole.apply_listed(join_role, connections.map(&:user), uid, [], read_at: started_at, quiet: @quiet)
       end
 
-      # One refresh of every member's views for the whole quiet sweep.
-      fleet.fleet_memberships.kept.accepted.where(accepted_at: started_at..).last&.broadcast_sweep_refresh if @quiet
+      # One refresh of every member's views for the whole quiet sweep, and
+      # for any attempt before it that admitted members and then failed.
+      fleet.fleet_memberships.kept.accepted.order(:accepted_at).last&.broadcast_sweep_refresh if @quiet
 
       # Only for the role it read: one picked meanwhile gets its own sweep.
       FleetNotificationSetting.where(fleet_id: fleet.id, discord_join_role_id: join_role.role_id)

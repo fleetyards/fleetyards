@@ -310,6 +310,16 @@ module Discord
       refute FleetDiscordRoleHolder.exists?(fleet: @fleet, user: holder)
     end
 
+    test "a quiet sweep refreshes the members' views even when this attempt admits nobody" do
+      holder = linked_user("uid-1")
+      JoinRole.new(@fleet).apply(holder, [JOIN_ROLE], quiet: true)
+      @setting.update_columns(discord_join_role_swept_at: nil)
+      @api.stubs(:list_guild_members).returns([member("uid-1", JOIN_ROLE)])
+      FleetMembersChannel.expects(:broadcast_to).at_least_once
+
+      SyncFleetJoinRoleJob.new.perform(@fleet.id)
+    end
+
     test "a sync that cannot read the guild ends nobody's membership" do
       kept = linked_user("uid-1")
       JoinRole.new(@fleet).apply(kept, [JOIN_ROLE])
