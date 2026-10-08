@@ -242,6 +242,13 @@ defineExpose({ clear });
     padding: 0;
   }
 
+  // The glyph is 16px; padding brings the hit area to the 24px minimum target
+  // size, and the negative margin keeps the glyph where it was.
+  :deep(.dp--clear-btn) {
+    padding: 4px;
+    margin-inline-end: -4px;
+  }
+
   label {
     display: block;
     margin-bottom: var(--field-label-gap, 5px);
