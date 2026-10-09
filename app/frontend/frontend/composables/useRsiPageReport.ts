@@ -21,13 +21,18 @@ const MAX_DETAILS = 10;
 const MAX_DETAIL_LENGTH = 200;
 
 // The admin notification renders each detail as inline code, so one may not
-// hold a backtick or break the line.
-const reportDetail = (detail: string) =>
-  detail
-    .replace(/[`\r\n]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, MAX_DETAIL_LENGTH);
+// hold a backtick or break the line. Cut by code point: the server counts them,
+// and a surrogate pair split in half would fail its check and lose the report.
+export const reportDetail = (detail: string) =>
+  Array.from(
+    detail
+      .replace(/[`\r\n]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
+  )
+    .slice(0, MAX_DETAIL_LENGTH)
+    .join("")
+    .trim();
 
 // Tells the admins a sync met an RSI page its parser no longer recognises,
 // once the extension confirms the RSI session is still there. The report itself
