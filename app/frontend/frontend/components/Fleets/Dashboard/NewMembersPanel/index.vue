@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -25,6 +26,7 @@ const { t } = useI18n();
 const { data, isLoading } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.MEMBERS, limit: 6 },
+  { query: liveQuery },
 );
 
 const entries = computed(() => data.value?.items ?? []);

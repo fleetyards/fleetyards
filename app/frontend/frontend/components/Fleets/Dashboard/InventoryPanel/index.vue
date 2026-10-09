@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -32,6 +33,7 @@ const SHOWN = 6;
 const { data, isLoading } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.INVENTORY, limit: 30 },
+  { query: liveQuery },
 );
 
 const scope = ref<"mine" | "fleet">("mine");

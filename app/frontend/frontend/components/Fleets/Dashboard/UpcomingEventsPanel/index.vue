@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { addDays, startOfDay } from "date-fns";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -45,6 +46,7 @@ const range = computed(() => {
 const { data, isLoading } = useFleetCalendar(
   computed(() => props.fleet.slug),
   range,
+  { query: liveQuery },
 );
 
 const HIDDEN: FleetEvent["status"][] = [

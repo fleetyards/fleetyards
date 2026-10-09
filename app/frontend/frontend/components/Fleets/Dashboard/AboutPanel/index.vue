@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import SquadronStrip from "@/frontend/components/Fleets/SquadronStrip/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
@@ -36,7 +37,7 @@ const showSquadrons = computed(
 const { data: squadrons } = useFleetSquadrons(
   computed(() => props.fleet.slug),
   { perPage: "all" },
-  { query: { enabled: showSquadrons } },
+  { query: { ...liveQuery, enabled: showSquadrons } },
 );
 
 const allSquadrons = computed(() =>

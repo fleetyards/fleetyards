@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import { useFleetCalendar, type Fleet } from "@/services/fyApi";
 
@@ -26,7 +27,7 @@ const { data } = useFleetCalendar(
         }
       : {},
   ),
-  { query: { enabled: computed(() => !!visibleRange.value) } },
+  { query: { ...liveQuery, enabled: computed(() => !!visibleRange.value) } },
 );
 
 const events = computed(() => data.value?.items ?? []);

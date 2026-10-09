@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -28,23 +29,31 @@ const SHOWN = 4;
 const fleetSlug = computed(() => props.fleet.slug);
 
 // The reader's own work first, then what is there to be picked up.
-const { data: mine, isLoading: mineLoading } = useFleetContracts(fleetSlug, {
-  mine: true,
-  inHand: true,
-  perPage: SHOWN,
-  q: {
-    stateIn: [
-      FleetContractStateEnum.OPEN,
-      FleetContractStateEnum.IN_PROGRESS,
-      FleetContractStateEnum.FULFILLED,
-    ],
+const { data: mine, isLoading: mineLoading } = useFleetContracts(
+  fleetSlug,
+  {
+    mine: true,
+    inHand: true,
+    perPage: SHOWN,
+    q: {
+      stateIn: [
+        FleetContractStateEnum.OPEN,
+        FleetContractStateEnum.IN_PROGRESS,
+        FleetContractStateEnum.FULFILLED,
+      ],
+    },
   },
-});
+  { query: liveQuery },
+);
 
-const { data: open, isLoading: openLoading } = useFleetContracts(fleetSlug, {
-  perPage: SHOWN,
-  q: { stateIn: [FleetContractStateEnum.OPEN] },
-});
+const { data: open, isLoading: openLoading } = useFleetContracts(
+  fleetSlug,
+  {
+    perPage: SHOWN,
+    q: { stateIn: [FleetContractStateEnum.OPEN] },
+  },
+  { query: liveQuery },
+);
 
 const mineItems = computed(() => mine.value?.items ?? []);
 

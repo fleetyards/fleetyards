@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useQueryClient } from "@tanstack/vue-query";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
@@ -53,7 +54,12 @@ const {
 } = useFleetMembers(
   fleetSlug,
   { perPage: String(SHOWN), q: { stateIn: ["requested"] } },
-  { query: { enabled: computed(() => props.canAnswerJoinRequests) } },
+  {
+    query: {
+      ...liveQuery,
+      enabled: computed(() => props.canAnswerJoinRequests),
+    },
+  },
 );
 
 const { data: transfers, isLoading: transfersLoading } =
@@ -63,7 +69,12 @@ const { data: transfers, isLoading: transfersLoading } =
       direction: FleetInventoryTransfersDirection.incoming,
       q: { stateEq: InventoryTransferStateEnum.PENDING },
     },
-    { query: { enabled: computed(() => props.canAnswerTransfers) } },
+    {
+      query: {
+        ...liveQuery,
+        enabled: computed(() => props.canAnswerTransfers),
+      },
+    },
   );
 
 const requestItems = computed(() =>
