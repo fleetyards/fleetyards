@@ -403,7 +403,15 @@ const { data: syncStatusData } = useSyncRsiHangarStatus({
   },
 });
 
+// The cable message and the status poll can both report the same run.
 const completeSync = (syncResult: HangarSyncResult) => {
+  const submitStep = processSteps.value.find(
+    (step) => step.name === "submitData",
+  );
+  if (submitStep?.status === "success") {
+    return;
+  }
+
   result.value = syncResult;
   hangarStore.syncRunning = false;
 

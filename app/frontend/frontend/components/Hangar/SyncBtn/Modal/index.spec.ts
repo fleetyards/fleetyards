@@ -580,9 +580,11 @@ describe("HangarSyncModal", () => {
     });
 
     receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
+    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
     await flushPromises();
 
-    expect(displayInfo).toHaveBeenCalledWith({
+    expect(displayInfo).toHaveBeenCalledTimes(2);
+    expect(displayInfo).toHaveBeenLastCalledWith({
       text: "messages.syncExtension.nothingToSync",
     });
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
