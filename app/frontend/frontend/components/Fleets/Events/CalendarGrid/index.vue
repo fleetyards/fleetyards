@@ -160,9 +160,9 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  // The compact week has a whole column per day and one row of them, room
-  // enough for the cover; a month's cells and the phone list are not.
-  const isCard = info.view.type === "dayGridWeek";
+  // The compact week has room for the cover, as a column per day or, on a
+  // phone, a row per day; a month's cells do not.
+  const isCard = ["dayGridWeek", "listWeek"].includes(info.view.type);
   const isMonth = !info.view.type.startsWith("timeGrid") && !isCard;
 
   const chip = document.createElement("div");
@@ -616,6 +616,43 @@ onUnmounted(() => {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     white-space: normal;
+  }
+
+  // The phone list: each day a small heading over its cards, inset from the
+  // panel's edge the way the dashboard's other lists are.
+  :deep(.ec-list .ec-day) {
+    padding: 0 14px 12px;
+    border: 0;
+  }
+
+  :deep(.ec-list .ec-day-head) {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 12px 0 8px;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-dim, #959595);
+    font-size: 12px;
+  }
+
+  :deep(.ec-list .ec-event) {
+    margin: 0;
+    padding: 0;
+    border-radius: var(--radius-control, 8px);
+    background: transparent;
+  }
+
+  :deep(.ec-list .ec-event + .ec-event) {
+    margin-top: 8px;
+  }
+
+  :deep(.ec-list .ec-event-tag) {
+    display: none;
+  }
+
+  :deep(.ec-list .fy-event-chip--card) {
+    border-radius: var(--radius-control, 8px);
   }
 
   :deep(.fy-event-chip--with-cover) {
