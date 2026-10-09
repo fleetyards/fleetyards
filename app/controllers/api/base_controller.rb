@@ -143,21 +143,12 @@ module Api
       headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
     end
 
-    # With `expire_after` set, every request that touches the session answers
-    # with a session cookie, including one that ends without a user -- a timed
-    # out session signs itself out and answers with what is left. A request
-    # still in flight when the user signs in can arrive after the sign-in and
-    # replace the new session cookie with that one, so the next request is a 401
-    # and the user is back on the login page.
-    #
-    # So nothing is written until a user is known to be signed in: one found in
-    # the session is checked for here, and a sign-in during the request lifts
-    # the skip through the warden hook in `config/initializers/api_session_write.rb`.
-    # Both happen before the action, because a failed authentication answers
-    # through warden's failure app and a `rescue_from` skips after callbacks.
-    #
-    # The session is loaded first because the Redis store answers a session
-    # loaded while `:skip` is set with an empty one, without reading it.
+    # With `expire_after`, every request that loads the session answers with
+    # its cookie, so one still in flight when the user signs in could replace
+    # the new session with an empty or timed out one. Nothing is written until a
+    # user is signed in (see config/initializers/api_session_write.rb), decided
+    # before the action because the failure app and `rescue_from` skip after
+    # callbacks. Loaded first: the Redis store reads nothing while skipping.
     private def leave_session_unwritten
       session.to_hash
       request.session_options[:skip] = true
