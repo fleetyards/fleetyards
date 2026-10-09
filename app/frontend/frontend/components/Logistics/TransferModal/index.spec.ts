@@ -230,7 +230,8 @@ describe("TransferModal", () => {
       wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
     ).toBeDefined();
 
-    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    // Past the disabled button: Enter in a field submits the form all the same.
+    await wrapper!.find("#transfer-form").trigger("submit");
     await flushPromises();
 
     expect(onSend).not.toHaveBeenCalled();
