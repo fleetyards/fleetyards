@@ -23674,8 +23674,6 @@ components:
       required:
       - id
       - body
-      - expiresAt
-      - author
       - createdAt
       - updatedAt
       title: FleetAnnouncement
@@ -26190,8 +26188,6 @@ components:
             "$ref": "#/components/schemas/FleetHealthRole"
       required:
       - inactiveMembers
-      - unverifiedMembers
-      - emptyRoles
       title: FleetHealth
     FleetHealthMember:
       type: object
@@ -26213,9 +26209,6 @@ components:
           - type: 'null'
       required:
       - username
-      - nickname
-      - lastActiveAt
-      - avatar
       title: FleetHealthMember
     FleetHealthMembers:
       type: object
@@ -27705,9 +27698,7 @@ components:
           - type: 'null'
       required:
       - username
-      - nickname
       - friend
-      - avatar
       title: FleetOnlineMember
     FleetOnlineMembersList:
       type: object
