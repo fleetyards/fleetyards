@@ -89,7 +89,7 @@ const empty = computed(
 
 <style lang="scss" scoped>
 .about-panel__description {
-  max-height: 320px;
+  max-height: 480px;
   overflow-y: auto;
 }
 

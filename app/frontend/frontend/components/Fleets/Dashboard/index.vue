@@ -79,6 +79,14 @@ const empty = reactive({ events: false, contracts: false });
         "
         class="fleet-dashboard__activity"
       />
+      <!-- The fleet's own words read best at the width they were written
+           for, and they keep a quiet fleet's main column from standing empty
+           beside a long side one. -->
+      <AboutPanel
+        :fleet="fleet"
+        :membership="membership"
+        class="fleet-dashboard__about"
+      />
     </div>
     <aside class="fleet-dashboard__side">
       <ActionQueuePanel
@@ -103,11 +111,6 @@ const empty = reactive({ events: false, contracts: false });
         v-if="showNewMembers"
         :fleet="fleet"
         class="fleet-dashboard__members"
-      />
-      <AboutPanel
-        :fleet="fleet"
-        :membership="membership"
-        class="fleet-dashboard__about"
       />
     </aside>
   </div>
