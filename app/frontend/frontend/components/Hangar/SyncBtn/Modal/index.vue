@@ -273,7 +273,9 @@ const retryable = computed(() => {
     (step) => step.name === "submitData",
   )?.status;
 
-  return submitDataStatus === "backendFailure" && pledges.value.length > 0;
+  return (
+    submitDataStatus === "backendFailure" && syncablePledges.value.length > 0
+  );
 });
 
 const supportPrompt = useSupportPrompt();
@@ -282,7 +284,7 @@ const showSupportHint = computed(
   () =>
     finished.value &&
     !finishedWithErrors.value &&
-    pledges.value.length > 0 &&
+    syncablePledges.value.length > 0 &&
     !supportHintDismissed.value &&
     supportPrompt.canShow(),
 );

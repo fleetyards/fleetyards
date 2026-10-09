@@ -8,6 +8,7 @@ import {
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
+import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
 
@@ -81,9 +82,13 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
+const displayInfo = vi.fn();
+
+const supportPromptCanShow = vi.fn(() => false);
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
-    displayInfo: vi.fn(),
+    displayInfo,
     displaySuccess: vi.fn(),
     displayWarning: vi.fn(),
     displayAlert: vi.fn(),
@@ -91,7 +96,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 vi.mock("@/shared/composables/useSupportPrompt", () => ({
-  useSupportPrompt: () => ({ canShow: () => false }),
+  useSupportPrompt: () => ({ canShow: supportPromptCanShow }),
 }));
 
 vi.mock("vue-router", () => ({
@@ -201,6 +206,8 @@ const submitHangar = async (
 describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+    displayInfo.mockClear();
+    supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
   });
@@ -540,6 +547,7 @@ describe("HangarSyncModal", () => {
   });
 
   it("submits nothing when only paints and flair are left and both are off", async () => {
+    supportPromptCanShow.mockReturnValue(true);
     const { wrapper, hangarStore } = await mountModal();
 
     hangarStore.syncPaints = false;
@@ -554,6 +562,9 @@ describe("HangarSyncModal", () => {
     );
 
     expect(mutateAsync).not.toHaveBeenCalled();
+    expect(
+      wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
+    ).toBe(false);
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
 });
