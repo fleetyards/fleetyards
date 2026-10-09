@@ -17,8 +17,10 @@ export const createRsiRateLimiter = (perMinute: number) => {
     return true;
   };
 
-  const take = async () => {
-    while (!tryTake()) {
+  // Gives up without a slot once `signal` aborts, so a cancel need not wait
+  // for the next one.
+  const take = async (signal?: AbortSignal) => {
+    while (!signal?.aborted && !tryTake()) {
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   };

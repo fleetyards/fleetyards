@@ -19,7 +19,8 @@ export type BuybackDetailsSyncStatus =
 type RunOptions = {
   // Resolves once another request to RSI may go out; shared with the list crawl
   // so both together stay inside one rate limit.
-  waitForSlot: () => Promise<void>;
+  // Returns early once `signal` aborts.
+  waitForSlot: (signal: AbortSignal) => Promise<void>;
 };
 
 // Stored as they arrive, so a pass that stops halfway keeps what it read and
@@ -46,6 +47,8 @@ const cancelled = ref(false);
 // From the cancel until the pass actually stops, which can take as long as the
 // request in flight.
 const cancelling = computed(() => running.value && cancelled.value);
+
+let abort = new AbortController();
 
 // A discarded pass stores nothing more, not even what it already read.
 let discarded = false;
@@ -186,6 +189,7 @@ export const useBuybackDetailsSync = () => {
     pending = [];
     cancelled.value = false;
     discarded = false;
+    abort = new AbortController();
 
     if (pages.length === 0) {
       status.value = "finished";
@@ -193,7 +197,7 @@ export const useBuybackDetailsSync = () => {
     }
 
     try {
-      await waitForSlot();
+      await waitForSlot(abort.signal);
       if (cancelled.value) return;
 
       // Without it no page's price could be stored, so none is read.
@@ -204,7 +208,7 @@ export const useBuybackDetailsSync = () => {
       }
 
       for (const id of pages) {
-        await waitForSlot();
+        await waitForSlot(abort.signal);
         if (cancelled.value) return await submit(true);
 
         if (await readDetailPage(id)) {
@@ -236,6 +240,7 @@ export const useBuybackDetailsSync = () => {
   // answer in flight included, is still stored.
   const cancel = () => {
     cancelled.value = true;
+    abort.abort();
   };
 
   const discard = () => {

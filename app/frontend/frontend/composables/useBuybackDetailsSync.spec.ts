@@ -298,4 +298,26 @@ describe("useBuybackDetailsSync", () => {
 
     expect(status.value).toBe("idle");
   });
+
+  it("stops while waiting for a slot as soon as it is cancelled", async () => {
+    extension((id) => ({ code: 200, id, payload: detailPage(15708) }));
+
+    let slotWaits = 0;
+    const blockedSlot = (signal: AbortSignal) =>
+      ++slotWaits === 1
+        ? Promise.resolve()
+        : new Promise<void>((resolve) =>
+            signal.addEventListener("abort", () => resolve()),
+          );
+
+    const { run, cancel, status } = useBuybackDetailsSync();
+    const running = run([ship("1")], ["1"], { waitForSlot: blockedSlot });
+    await vi.waitFor(() => expect(slotWaits).toBe(2));
+
+    cancel();
+    await running;
+
+    expect(pageRequests()).toHaveLength(0);
+    expect(status.value).toBe("idle");
+  });
 });

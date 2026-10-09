@@ -32,6 +32,21 @@ describe("createRsiRateLimiter", () => {
     expect(taken).toBe(true);
   });
 
+  it("stops waiting once aborted", async () => {
+    const limiter = createRsiRateLimiter(1);
+    limiter.tryTake();
+
+    const abort = new AbortController();
+    let returned = false;
+    void limiter.take(abort.signal).then(() => (returned = true));
+
+    abort.abort();
+    await vi.advanceTimersByTimeAsync(500);
+
+    expect(returned).toBe(true);
+    expect(limiter.tryTake()).toBe(false);
+  });
+
   // A list crawl that used little of its budget must not hand the price pass
   // a burst above the limit.
   it("carries no unused budget over", async () => {
