@@ -215,6 +215,18 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "a remembered browser of a deactivated account gets no session cookie" do
+    user = create(:user, password: "enterprise")
+    browser = sign_in_remembered(user)
+    user.update_columns(confirmed_at: nil, confirmation_sent_at: 1.week.ago)
+    browser.cookies.delete(SESSION_COOKIE)
+
+    browser.get "/api/v1/users/me"
+
+    assert_equal 401, browser.response.status
+    assert_nil session_cookie(browser)
+  end
+
   test "a remembered sign in is kept when the request that made it fails" do
     browser = sign_in_remembered(create(:user, password: "enterprise"))
     browser.cookies.delete(SESSION_COOKIE)
@@ -251,6 +263,10 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
   # that never asked for the user still holds it when the user has timed out.
   private def hold_session_cookie(browser)
     browser.cookies.merge("#{SESSION_COOKIE}=#{browser.cookies[SESSION_COOKIE]}; domain=example.com; path=/", browser_uri)
+  end
+
+  private def session_cookie(browser)
+    Array(browser.response.headers["Set-Cookie"]).find { |cookie| cookie.start_with?("#{SESSION_COOKIE}=") }
   end
 
   private def unknown_session
