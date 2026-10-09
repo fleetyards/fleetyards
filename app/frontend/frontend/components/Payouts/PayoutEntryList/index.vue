@@ -297,9 +297,19 @@ const onEdit = (entry: PayoutEntry) => {
     row-gap: 6px;
   }
 
-  .payout-entries__amount,
+  .payout-entries__detail {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .payout-entries__amount {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
   .payout-entries__review-actions {
     grid-column: 2;
+    grid-row: 3;
   }
 
   .payout-entries__edit {
@@ -308,6 +318,8 @@ const onEdit = (entry: PayoutEntry) => {
   }
 
   .payout-entries__icon {
+    grid-column: 1;
+    grid-row: 1;
     padding-top: 4px;
   }
 
