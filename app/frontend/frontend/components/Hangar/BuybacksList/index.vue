@@ -89,11 +89,11 @@ const removingId = ref<string>();
 const destroyMutation = useDestroyHangarBuyback();
 
 const remove = (buyback: BuybackPledge) => {
-  removingId.value = buyback.id;
-
   displayConfirm({
     text: t("messages.confirm.buyback.destroy"),
     onConfirm: async () => {
+      removingId.value = buyback.id;
+
       await destroyMutation
         .mutateAsync({ id: buyback.id })
         .then(() =>
@@ -105,9 +105,6 @@ const remove = (buyback: BuybackPledge) => {
         .finally(() => {
           removingId.value = undefined;
         });
-    },
-    onClose: () => {
-      removingId.value = undefined;
     },
   });
 };

@@ -9,6 +9,7 @@ import Component from "./index.vue";
 const destroyBuyback = vi.fn();
 const invalidateQueries = vi.fn();
 const displayAlert = vi.fn();
+const displayConfirm = vi.fn();
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -34,7 +35,7 @@ vi.mock("@tanstack/vue-query", async () => {
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayAlert,
-    displayConfirm: ({ onConfirm }: { onConfirm: () => void }) => onConfirm(),
+    displayConfirm,
   }),
 }));
 
@@ -84,6 +85,11 @@ describe("Hangar/BuybacksList", () => {
     destroyBuyback.mockReset().mockResolvedValue(undefined);
     invalidateQueries.mockReset();
     displayAlert.mockReset();
+    displayConfirm
+      .mockReset()
+      .mockImplementation(({ onConfirm }: { onConfirm: () => void }) =>
+        onConfirm(),
+      );
   });
 
   // A pledge bought back on RSI leaves its list; removing the one row saves
@@ -101,6 +107,20 @@ describe("Hangar/BuybacksList", () => {
       queryKey: ["hangar", "buybacks"],
     });
     expect(displayAlert).not.toHaveBeenCalled();
+  });
+
+  it("waits for the confirmation before it shows the removal running", async () => {
+    displayConfirm.mockImplementation(() => undefined);
+    const wrapper = await mount([buyback()]);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(displayConfirm).toHaveBeenCalled();
+    expect(destroyBuyback).not.toHaveBeenCalled();
+    expect(
+      wrapper.find('[data-test="buyback-remove"]').attributes("aria-busy"),
+    ).toBeUndefined();
   });
 
   it("says so when the pledge could not be removed", async () => {
