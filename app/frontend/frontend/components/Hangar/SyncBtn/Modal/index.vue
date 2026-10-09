@@ -30,6 +30,7 @@ import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
   HangarSyncUnmatchedActionEnum,
+  RsiHangarItemKindEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import {
@@ -135,6 +136,15 @@ const skippedItemsNote = computed(() => {
   }
   return undefined;
 });
+
+const syncablePledges = computed(() =>
+  pledges.value.filter(
+    (pledge) =>
+      (hangarStore.syncPaints || pledge.type !== RsiHangarItemKindEnum.SKIN) &&
+      (hangarStore.syncHangarFlair ||
+        pledge.type !== RsiHangarItemKindEnum.FLAIR),
+  ),
+);
 
 const seenPledgeIds = new Set<string>();
 
@@ -439,9 +449,10 @@ useSubscription({
 });
 
 const finishSync = async () => {
-  // A hangar of upgrades, game packages or merchandise only: the API refuses
-  // an empty list, which would read as the sync failing.
-  if (pledges.value.length === 0) {
+  // A hangar of upgrades, game packages or merchandise only, or of paints and
+  // flair the user turned off: the API refuses an empty list, which would read
+  // as the sync failing, and a list of skipped kinds changes nothing.
+  if (syncablePledges.value.length === 0) {
     updateStep("submitData", "success");
     displayInfo({ text: t("messages.syncExtension.nothingToSync") });
     return;

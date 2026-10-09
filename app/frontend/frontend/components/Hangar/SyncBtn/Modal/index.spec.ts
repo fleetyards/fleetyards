@@ -540,4 +540,22 @@ describe("HangarSyncModal", () => {
     expect(reportMutateAsync).not.toHaveBeenCalled();
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
+
+  it("submits nothing when only paints and flair are left and both are off", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncPaints = false;
+    hangarStore.syncHangarFlair = false;
+    await flushPromises();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter Paint</div><div class="kind">Skin</div></div><div class="item"><div class="title">Poster</div><div class="kind">Hangar decoration</div></div>',
+    );
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
+  });
 });
