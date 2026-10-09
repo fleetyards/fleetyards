@@ -3,6 +3,7 @@
 json.total_count @total_count
 json.items do
   json.array! @members do |membership|
+    json.user_id membership.user_id
     json.username membership.user.username
     json.nickname membership.nickname
     json.friend @friend_ids.include?(membership.user_id)
