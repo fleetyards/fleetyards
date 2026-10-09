@@ -221,6 +221,25 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("does not report the title of a pledge without RSI's category", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          '<div class="item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary</div></div></div>',
+          "Cutlass Black - Warbond Edition",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      details: [
+        'item without kind, liner "Drake Interplanetary", in a pledge with an unlisted category, markup item text title liner',
+      ],
+    });
+    expect(JSON.stringify(page)).not.toContain("Cutlass");
+  });
+
   it("reads a hangar of upgrades only", () => {
     expect(
       extract(

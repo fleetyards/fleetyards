@@ -39,6 +39,20 @@ const COMPONENT_FOR_MODELS = [
 
 const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
 
+const PLEDGE_CATEGORIES = [
+  "Package",
+  "Packages",
+  "Standalone Ship",
+  "Standalone Ships",
+  "Upgrade",
+  "Upgrades",
+  "Add-Ons",
+  "Paints",
+  "Gear",
+  "Combo",
+  "Subscribers Exclusive",
+];
+
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
 // melt value at all.
 const PLEDGE_VALUE = /^\$([\d,]+\.\d{2}) USD$/;
@@ -312,12 +326,16 @@ export class RSIHangarParser {
     return liner?.textContent?.replace(/\s+/g, " ").trim() ?? "";
   }
 
+  // Only RSI's own labels: a pledge without one can still hold " - " in its
+  // title, and the text before it would be the item's name.
   pledgeCategory(name: string | undefined): string {
     const [category, title] = (name ?? "").split(" - ");
 
-    return title === undefined
-      ? "a pledge without a category"
-      : `a "${category.trim()}" pledge`;
+    if (title === undefined) return "a pledge without a category";
+
+    return PLEDGE_CATEGORIES.includes(category.trim())
+      ? `a "${category.trim()}" pledge`
+      : "a pledge with an unlisted category";
   }
 
   markupClasses(item: Element): string {
