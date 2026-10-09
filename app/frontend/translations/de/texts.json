@@ -301,9 +301,9 @@
         "intro": "Die Pledges, die du bei RSI eingeschmolzen hast und zurückkaufen könntest, Stand deiner letzten Synchronisierung. Die Synchronisierung liest deine RSI-Rückkaufliste über die Fleetyards-Sync-Erweiterung."
       },
       "buybackSync": {
-        "info": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die auf Fleetyards gespeicherten Rückkauf-Pledges. Dein Hangar bleibt unverändert. Lange Listen dauern einige Minuten.",
+        "info": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die auf Fleetyards gespeicherten Rückkauf-Pledges. Dein Hangar bleibt unverändert. Lange Listen dauern einige Minuten. Die Synchronisierung läuft im Hintergrund: Du kannst dieses Fenster schließen und Fleetyards weiter nutzen, solange der Tab offen bleibt.",
         "unsupported": "Deine Fleetyards-Sync-Erweiterung kann Rückkauf-Pledges noch nicht lesen. Aktualisiere sie, um sie zu synchronisieren.",
-        "detailsInfo": "Die erste Synchronisierung liest außerdem Preis und Versicherung jedes Pledges, je eine RSI-Seite. Bei einer langen Liste kann das eine Viertelstunde dauern. Das läuft im Hintergrund: Du kannst dieses Fenster schließen und Fleetyards weiter nutzen, solange der Tab offen bleibt. Spätere Synchronisierungen lesen nur die neuen.",
+        "detailsInfo": "Die erste Synchronisierung liest außerdem Preis und Versicherung jedes Pledges, je eine RSI-Seite. Bei einer langen Liste kann das eine Viertelstunde dauern. Spätere Synchronisierungen lesen nur die neuen.",
         "detailsUnsupported": "Aktualisiere deine Fleetyards-Sync-Erweiterung, um auch Preise und Versicherungen zu lesen.",
         "detailsIncomplete": "Einige Preise konnten nicht von RSI gelesen werden. Die nächste Synchronisierung versucht es erneut.",
         "detailsBackground": "Preise und Versicherungen werden jetzt im Hintergrund gelesen. Du kannst dieses Fenster schließen und Fleetyards weiter nutzen; lass den Tab offen, bis es fertig ist.",

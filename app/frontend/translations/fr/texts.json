@@ -301,9 +301,9 @@
         "intro": "Les pledges que vous avez fondus sur RSI et pourriez racheter, à la date de votre dernière synchronisation. La synchronisation lit votre liste de rachat RSI via l'extension Fleetyards Sync."
       },
       "buybackSync": {
-        "info": "Lit chaque page de votre liste de rachat RSI et remplace par celle-ci les pledges rachetables enregistrés sur Fleetyards. Votre hangar n'est pas modifié. Les longues listes prennent quelques minutes.",
+        "info": "Lit chaque page de votre liste de rachat RSI et remplace par celle-ci les pledges rachetables enregistrés sur Fleetyards. Votre hangar n'est pas modifié. Les longues listes prennent quelques minutes. La synchronisation se fait en arrière-plan : vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards tant que l'onglet reste ouvert.",
         "unsupported": "Votre extension Fleetyards Sync ne sait pas encore lire les pledges rachetables. Mettez-la à jour pour les synchroniser.",
-        "detailsInfo": "La première synchronisation lit aussi le prix et l'assurance de chaque pledge, une page RSI par pledge, ce qui peut prendre un quart d'heure pour une longue liste. Cela se fait en arrière-plan : vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards tant que l'onglet reste ouvert. Les suivantes ne lisent que les nouveaux.",
+        "detailsInfo": "La première synchronisation lit aussi le prix et l'assurance de chaque pledge, une page RSI par pledge, ce qui peut prendre un quart d'heure pour une longue liste. Les suivantes ne lisent que les nouveaux.",
         "detailsUnsupported": "Mettez à jour votre extension Fleetyards Sync pour lire aussi les prix et les assurances.",
         "detailsIncomplete": "Certains prix n'ont pas pu être lus sur RSI. La prochaine synchronisation réessaiera.",
         "detailsBackground": "Les prix et assurances sont maintenant lus en arrière-plan. Vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards ; gardez cet onglet ouvert jusqu'à la fin.",

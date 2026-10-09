@@ -3,10 +3,12 @@ import { createTestingPinia } from "@pinia/testing";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { useBuybackSync } from "@/frontend/composables/useBuybackSync";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 
 const mutateAsync = vi.fn<
-  () => Promise<{
+  (_input: unknown) => Promise<{
     total: number;
     added: number;
     removed: number;
@@ -58,7 +60,7 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useSyncRsiBuybacks: () => ({ mutateAsync }),
+  syncRsiBuybacks: (data: unknown) => mutateAsync({ data }),
   syncRsiBuybackDetails: submitDetails,
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
 }));
@@ -199,6 +201,7 @@ const startSync = async () => {
 
 describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
+    rsiRateLimiter.reset();
     mutateAsync.mockClear();
     submitDetails.mockClear();
     reportMutateAsync.mockClear();
@@ -208,9 +211,12 @@ describe("HangarBuybackSyncModal", () => {
     pagesAnswered = 0;
   });
 
+  // The run outlives the modal, so one left over would greet the next test
+  // instead of the start screen.
   afterEach(() => {
     mounted?.unmount();
     mounted = undefined;
+    useBuybackSync().reset(true);
   });
 
   it("shows which RSI account the extension is signed in to", async () => {
@@ -280,49 +286,103 @@ describe("HangarBuybackSyncModal", () => {
     expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
   });
 
-  it("asks before closing while the list is read", async () => {
+  it("keeps reading the list once the modal is closed", async () => {
     const wrapper = await startSync();
 
-    const exposed = wrapper.vm as unknown as {
-      dirty: boolean;
-      dirtyText: string;
-    };
-
-    expect(exposed.dirty).toBe(true);
-    expect(exposed.dirtyText).toBe("messages.buybackSync.closeWhileRunning");
+    await wrapper
+      .find("[data-test='background-buyback-sync']")
+      .trigger("click");
+    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
+    wrapper.unmount();
+    mounted = undefined;
 
     await answerNextPage(buybackPage("1"));
     await answerNextPage(emptyBuybackPage);
 
-    expect(exposed.dirty).toBe(false);
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: { items: [expect.objectContaining({ id: "1" })] },
+    });
+    expect(useBuybackSync().status.value).toBe("finished");
   });
 
-  // A submitted list is stored; the toast and the price pass need no modal.
-  it("closes without asking once the list is submitted", async () => {
+  it("opens on a run that is still going", async () => {
+    const first = await startSync();
+    first.unmount();
+
+    const wrapper = await mountModal(currentExtension);
+
+    expect(wrapper.find("[data-test='buyback-sync-progress']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='background-buyback-sync']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='start-buyback-sync']").exists()).toBe(
+      false,
+    );
+  });
+
+  it("shows the result of a run that ended in the background", async () => {
+    const first = await startSync();
+    first.unmount();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    const wrapper = await mountModal(currentExtension);
+
+    expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    wrapper.unmount();
+    mounted = undefined;
+
+    // Shown once: the next open is a fresh start screen.
+    const again = await mountModal(currentExtension);
+    expect(again.find("[data-test='buyback-sync-added']").exists()).toBe(false);
+  });
+
+  // A submitted list is stored whatever the modal does; only the read can be
+  // cancelled.
+  it("offers only the background once the list is submitted", async () => {
     mutateAsync.mockImplementationOnce(() => new Promise(() => {}));
     const wrapper = await startSync();
-
-    const exposed = wrapper.vm as unknown as { dirty: boolean };
 
     await answerNextPage(buybackPage("1"));
     await answerNextPage(emptyBuybackPage);
 
     expect(wrapper.text()).toContain("labels.buybackSync.status.submitting");
-    expect(exposed.dirty).toBe(false);
-    expect(wrapper.find("[data-test='close-buyback-sync']").text()).toBe(
-      "actions.syncExtension.close",
+    expect(wrapper.find("[data-test='close-buyback-sync']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find("[data-test='background-buyback-sync']").exists()).toBe(
+      true,
     );
   });
 
-  // Forced, the close would skip the question the X asks mid-fetch.
-  it("closes from Cancel the way the X does", async () => {
+  it("stops reading the list when cancelled", async () => {
     const wrapper = await startSync();
 
-    const close = wrapper.find("[data-test='close-buyback-sync']");
-    expect(close.attributes("disabled")).toBeUndefined();
-
-    await close.trigger("click");
+    await wrapper.find("[data-test='close-buyback-sync']").trigger("click");
     expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
+    expect(useBuybackSync().status.value).toBe("idle");
+
+    extensionReplies("syncBuyback", emptyBuybackPage);
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  // Both syncs take their requests from one budget, so neither has to wait for
+  // the other to finish.
+  it("starts while a hangar sync is running", async () => {
+    const wrapper = await mountModal(currentExtension);
+    useHangarStore().syncRunning = true;
+
+    extensionReplies("identify", { handle: "ACaptain" });
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
+    ).toBeUndefined();
   });
 
   // The same guard the hangar sync has: a page repeating ids already read
@@ -436,6 +496,20 @@ describe("HangarBuybackSyncModal", () => {
 
     const detailPage = `<strong class="final-price" data-value="10472" data-currency="EUR"></strong>
 <div class="package-listing item"><ul><li>6 Month Insurance</li></ul></div>`;
+
+    // The pass outlives the test that started it, and a pass still running
+    // holds the next test's sync back.
+    const finishPass = async () => {
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+    };
 
     const syncList = async (health: unknown) => {
       mutateAsync.mockResolvedValueOnce({
@@ -553,28 +627,15 @@ describe("HangarBuybackSyncModal", () => {
       ).toBeUndefined();
     });
 
-    // The two would share RSI's rate limit; the next sync reads the prices.
-    it("reads no prices while a hangar sync runs", async () => {
-      mutateAsync.mockResolvedValueOnce({
-        total: 1,
-        added: 1,
-        removed: 0,
-        detailsPending: ["1"],
-      });
-
-      const wrapper = await mountModal(detailExtension);
-      extensionReplies("identify", { handle: "ACaptain" });
-      await flushPromises();
-      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
-      await flushPromises();
-
+    it("reads prices while a hangar sync runs", async () => {
       useHangarStore().syncRunning = true;
 
-      await answerNextPage(buybackPage("1"));
-      await answerNextPage(emptyBuybackPage);
+      await syncList(detailExtension);
 
       expect(mutateAsync).toHaveBeenCalled();
-      expect(askedFor("syncBuybackPricing")).toBe(false);
+      expect(askedFor("syncBuybackPricing")).toBe(true);
+
+      await finishPass();
     });
 
     it("shows no counts from an earlier pass for a sync that read no prices", async () => {
@@ -597,9 +658,7 @@ describe("HangarBuybackSyncModal", () => {
       );
     });
 
-    // A modal reopened straight away would start its own sync with a fresh
-    // rate limiter, unaware of this pass.
-    it("leaves the prices to the next sync once the modal closed mid-submit", async () => {
+    it("reads the prices of a list saved after the modal closed", async () => {
       let answerSubmit: (value: {
         total: number;
         added: number;
@@ -628,7 +687,9 @@ describe("HangarBuybackSyncModal", () => {
       answerSubmit({ total: 1, added: 1, removed: 0, detailsPending: ["1"] });
       await flushPromises();
 
-      expect(askedFor("syncBuybackPricing")).toBe(false);
+      expect(askedFor("syncBuybackPricing")).toBe(true);
+
+      await finishPass();
     });
 
     it("syncs only the list with an extension that cannot read prices", async () => {

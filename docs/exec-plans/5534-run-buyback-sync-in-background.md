@@ -64,12 +64,13 @@ None.
 
 ## Discovery Log
 
+- **2026-10-10** The buy-back strings `info` and `detailsInfo` said only the price part runs in the background; the background note moved to `info` in all 7 locales. `BuybackDetailsSyncProgress` is renamed `BuybackSyncProgress`, since it now shows the list stages too.
 - **2026-10-10** Shared rate limit chosen over a queue; recorded in the issue body.
 - **2026-10-10** Initial research and plan creation. The buy-back modal already passes `rateLimiter.take` to the price pass and checks `hangarSyncRunning` at submit time to avoid sharing the budget; one shared limiter makes both of those unnecessary.
 
 ## Progress
-- [ ] Phase 1 — One RSI rate limiter
-- [ ] Phase 2 — `useBuybackSync` composable
-- [ ] Phase 3 — Modal
-- [ ] Phase 4 — Progress card
-- [ ] Phase 5 — Translations and specs
+- [x] Phase 1 — One RSI rate limiter
+- [x] Phase 2 — `useBuybackSync` composable
+- [x] Phase 3 — Modal
+- [x] Phase 4 — Progress card
+- [x] Phase 5 — Translations and specs

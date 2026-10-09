@@ -60,6 +60,9 @@ interface HangarState extends ShipListState {
   extensionVersion?: string;
   // The sync modal shows the run, so the progress card stays out of its way.
   syncModalOpen: boolean;
+  // The buy-back modal shows its run, so the progress card stays out of its
+  // way.
+  buybackSyncModalOpen: boolean;
   syncRunning: boolean;
   syncAddBundledVehicles: boolean;
   syncPaints: boolean;
@@ -83,6 +86,7 @@ export const useHangarStore = defineStore("hangar", {
     extensionReady: false,
     extensionVersion: undefined,
     syncModalOpen: false,
+    buybackSyncModalOpen: false,
     syncRunning: false,
     syncAddBundledVehicles: true,
     syncPaints: true,

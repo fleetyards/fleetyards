@@ -680,7 +680,6 @@
         "failed": "%{type} 导入失败: %{info}"
       },
       "buybackSync": {
-        "closeWhileRunning": "你的可回购承诺仍在同步中，关闭此窗口将中止同步。",
         "started": "正在同步你的可回购承诺...",
         "success": "你的可回购承诺已同步。",
         "failure": "无法同步你的可回购承诺。",
