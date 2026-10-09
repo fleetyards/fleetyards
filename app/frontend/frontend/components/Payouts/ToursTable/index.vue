@@ -47,7 +47,13 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
   ];
 
   if (props.withFleet) {
-    cols.push({ name: "fleet", label: t("labels.fleet.index") });
+    // A fourth column pushed the status past the edge of a phone, so there the
+    // fleet rides under the title instead.
+    cols.push({
+      name: "fleet",
+      label: t("labels.fleet.index"),
+      mobile: false,
+    });
   }
 
   cols.push(
@@ -70,6 +76,17 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     row-clickable
     @row-click="(tour: Tour) => emit('row-click', tour)"
   >
+    <template #col-title="{ record, mobile }">
+      <span class="tours-table__title">
+        {{ record.title }}
+        <span
+          v-if="withFleet && mobile && record.fleet"
+          class="tours-table__fleet"
+        >
+          {{ record.fleet.name }}
+        </span>
+      </span>
+    </template>
     <template #col-fleet="{ record }">
       <span v-if="record.fleet">{{ record.fleet.name }}</span>
     </template>
@@ -92,3 +109,18 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     </template>
   </BaseTable>
 </template>
+
+<style lang="scss" scoped>
+.tours-table__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tours-table__fleet {
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
+}
+</style>

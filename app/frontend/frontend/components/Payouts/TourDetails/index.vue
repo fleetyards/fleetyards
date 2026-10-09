@@ -397,6 +397,13 @@ const shareUrl = computed(() => {
 .tour-meta__currency {
   margin-left: auto;
   min-width: 200px;
+
+  // Wrapped onto a line of its own anyway, where pushed right it read as
+  // floating.
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
 }
 
 .tour-meta__date {

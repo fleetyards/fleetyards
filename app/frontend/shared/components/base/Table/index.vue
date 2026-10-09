@@ -228,7 +228,7 @@ type Slots = {
   loader?: (props: { loading: boolean }) => void;
   "selected-actions"?: (props: { selected: string[] }) => void;
   actions?: (props: { record: T }) => void;
-  [key: `col-${string}`]: (props: { record: T }) => void;
+  [key: `col-${string}`]: (props: { record: T; mobile: boolean }) => void;
 };
 
 const slots = defineSlots<Slots>();
@@ -417,7 +417,11 @@ onUnmounted(() => {
                   'min-width': column.minWidth,
                 }"
               >
-                <slot :record="record" :name="`col-${column.name}`">
+                <slot
+                  :record="record"
+                  :mobile="mobile"
+                  :name="`col-${column.name}`"
+                >
                   {{ record[fieldByColumn(column)] }}
                 </slot>
               </TableCol>
