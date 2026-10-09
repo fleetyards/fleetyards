@@ -16,7 +16,7 @@ const report = vi.fn((_: unknown) => Promise.resolve());
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useReportRsiPage: () => ({ mutateAsync: report }),
+  reportRsiPage: (data: unknown) => report({ data }),
 }));
 
 const signedIn = { code: 200, payload: { handle: "citizen" } };

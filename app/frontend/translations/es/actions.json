@@ -239,6 +239,7 @@
         "start": "Iniciar sincronización",
         "changeInSettings": "Cambiar en los ajustes",
         "retry": "Reintentar sincronización",
+        "runInBackground": "Continuar en segundo plano",
         "close": "Cerrar",
         "refresh": "Actualizar página"
       },

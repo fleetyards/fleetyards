@@ -19,7 +19,7 @@ const mutateAsync = vi.fn<
 const submitDetails = vi.hoisted(() =>
   vi.fn((_: unknown) => Promise.resolve({ updated: 1 })),
 );
-const reportMutateAsync = vi.fn(() => Promise.resolve());
+const reportMutateAsync = vi.fn((_input: unknown) => Promise.resolve());
 
 // What the extension says about the RSI session when the modal checks it
 // before reporting a page.
@@ -60,7 +60,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
   syncRsiBuybackDetails: submitDetails,
-  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
+  reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
 }));
 
 const comlinkEmit = vi.fn();
