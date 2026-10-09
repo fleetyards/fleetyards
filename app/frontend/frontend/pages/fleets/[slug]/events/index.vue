@@ -23,6 +23,7 @@ import {
   type Fleet,
   type FleetMember,
   type FleetEvent,
+  type Mission,
   useFleetEvents,
   useFleetCalendar,
   useFleetCalendarSubscription,
@@ -139,11 +140,32 @@ const { create: createEventDraft, pending: creating } = useEventDraft();
  * later: an event has to exist before its teams, ships and slots can hang off
  * it, and those are the editor's whole job. Clicking a day on the calendar
  * starts it there rather than now.
+ *
+ * The mission template is asked for first, because the API copies a mission's
+ * teams only while it writes the event -- the editor cannot apply one later.
+ * Whoever cannot read the fleet's missions has none to pick from.
  */
 const goToCreate = (date: Date) => {
   if (!canCreate.value) return;
 
-  void createEventDraft(props.fleet.slug, { startsAt: date });
+  if (!canManageMissions.value) {
+    void createEventDraft(props.fleet.slug, { startsAt: date });
+    return;
+  }
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
+    props: {
+      fleet: props.fleet,
+      onPick: (mission: Mission | null) => {
+        void createEventDraft(props.fleet.slug, {
+          startsAt: date,
+          missionSlug: mission?.slug,
+        });
+      },
+    },
+  });
 };
 
 const calendarParams = computed(() => ({
@@ -470,7 +492,8 @@ const openDisplayOptionsModal = () => {
                  box is what a fleet with no events at all sees. -->
             <Btn
               v-if="canCreate && tab === 'upcoming'"
-              :to="{ name: 'fleet-event-new', params: { slug: fleet.slug } }"
+              :loading="creating"
+              @click="goToCreate(new Date())"
             >
               <i class="fa-light fa-plus" />
               <span>{{ t("actions.fleets.events.create") }}</span>
