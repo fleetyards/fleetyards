@@ -575,6 +575,16 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal @pledge_item_ids, @user.hangar_pledge_items.pluck(:id).sort
     end
 
+    test "paints it cannot store do not make it a sync" do
+      unusable = [{"id" => "", "name" => "Cutter Paint", "type" => "skin"}]
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: unusable, sync_paints: true)
+
+      result = ::HangarSync.new(unusable).run_with_import(import)
+
+      assert_equal "nothing_to_sync", result[:outcome]
+      assert_equal @pledge_item_ids, @user.hangar_pledge_items.pluck(:id).sort
+    end
+
     test "paints the run does sync make it a sync" do
       paints = @input.select { |item| item["type"] == "skin" }
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: paints, sync_paints: true)

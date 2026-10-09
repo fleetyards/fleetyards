@@ -127,7 +127,7 @@ class HangarSync < HangarImporter
   private def sync_outcome
     return "synced" if @ships.any? || @components.any? || @upgrades.any?
 
-    pledge_kinds = @data.filter_map { |item| ::HangarPledgeItems::Sync::KINDS_BY_ITEM_TYPE[item[:type]] }
+    pledge_kinds = @data.filter_map { |item| ::HangarPledgeItems::Sync.kind_for(item) }
     return "nothing_to_sync" if pledge_kinds.empty?
 
     pledge_kinds.intersect?(pledge_item_kinds) ? "synced" : "only_skipped_items"

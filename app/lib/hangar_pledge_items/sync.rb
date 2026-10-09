@@ -9,14 +9,18 @@ module HangarPledgeItems
 
     attr_reader :user, :items, :kinds
 
+    # The kind an item would be stored as, or nil for one it cannot store.
+    def self.kind_for(item)
+      kind = KINDS_BY_ITEM_TYPE[item[:type].to_s]
+      kind if item[:id].present? && item[:name].present?
+    end
+
     # `kinds` the user chose not to sync are left exactly as stored, not
     # emptied: switching paints off is no statement that they are gone.
     def initialize(user, items, kinds: HangarPledgeItem::KINDS)
       @user = user
       @kinds = kinds
-      @items = items.select do |item|
-        kinds.include?(KINDS_BY_ITEM_TYPE[item[:type].to_s]) && item[:id].present? && item[:name].present?
-      end
+      @items = items.select { |item| kinds.include?(self.class.kind_for(item)) }
     end
 
     # The ids stored for each kind it synced.
