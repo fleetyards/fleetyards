@@ -97,6 +97,32 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/hangar/buybacks/{id}" do
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, required: true
+
+    delete("Remove a Hangar Buy-back Pledge") do
+      operationId "destroyHangarBuyback"
+      tags "Hangar"
+      produces "application/json"
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:write"]},
+        {OpenId: ["hangar", "hangar:write"]}
+      ]
+
+      response(204, "successful")
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   def buyback(user, **attributes)
     BuybackPledge.create!(
       user:, rsi_pledge_id: SecureRandom.random_number(10**8).to_s, kind: "ship", name: "Standalone Ship - Cutlass Black",
@@ -586,5 +612,33 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
   test "PUT /hangar/sync-rsi-buyback-details requires a session or token" do
     assert_api_response :put, 401, api_path: "/hangar/sync-rsi-buyback-details", body: {items: []}
+  end
+
+  test "DELETE /hangar/buybacks/{id} removes only that pledge" do
+    user = create(:user)
+    bought_back = buyback(user)
+    kept = buyback(user)
+    sign_in user
+
+    assert_api_response :delete, 204, api_path: "/hangar/buybacks/{id}", path_params: {id: bought_back.id}
+
+    assert_equal [kept.id], user.buyback_pledges.pluck(:id)
+  end
+
+  test "DELETE /hangar/buybacks/{id} does not reach another user's pledge" do
+    other = buyback(create(:user))
+    sign_in create(:user)
+
+    assert_api_response :delete, 404, api_path: "/hangar/buybacks/{id}", path_params: {id: other.id}
+
+    assert BuybackPledge.exists?(other.id)
+  end
+
+  test "DELETE /hangar/buybacks/{id} requires a login" do
+    pledge = buyback(create(:user))
+
+    assert_api_response :delete, 401, api_path: "/hangar/buybacks/{id}", path_params: {id: pledge.id}
+
+    assert BuybackPledge.exists?(pledge.id)
   end
 end

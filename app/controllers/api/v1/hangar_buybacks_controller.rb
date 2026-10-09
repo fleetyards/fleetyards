@@ -11,7 +11,7 @@ module Api
         only: %i[index insurance_terms]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        only: %i[sync sync_details]
+        only: %i[sync sync_details destroy]
 
       def index
         authorize! with: ::BuybackPledgePolicy
@@ -67,6 +67,16 @@ module Api
         end
 
         render json: ::BuybackPledges::StoreDetails.new(current_resource_owner, sync_details_params.fetch(:items, [])).run
+      end
+
+      # Buying a pledge back on RSI takes it off the buy-back list, so the
+      # caller can drop that one row instead of re-syncing the whole list.
+      def destroy
+        authorize! with: ::BuybackPledgePolicy
+
+        authorized_scope(BuybackPledge.all).find(params[:id]).destroy!
+
+        head :no_content
       end
 
       private def buyback_query_params

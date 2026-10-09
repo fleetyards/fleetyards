@@ -10,6 +10,7 @@ resource :hangar, only: %i[show destroy] do
   post "rsi-page-reports", to: "hangar_rsi_page_reports#create"
   get "buybacks", to: "hangar_buybacks#index"
   get "buybacks/insurance-terms", to: "hangar_buybacks#insurance_terms"
+  delete "buybacks/:id", to: "hangar_buybacks#destroy"
   get "paints", to: "hangar_pledge_items#paints"
   get "flair", to: "hangar_pledge_items#flair"
 
