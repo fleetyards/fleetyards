@@ -543,6 +543,9 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenCalledWith({
+      text: "messages.syncExtension.nothingToSync",
+    });
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
 
@@ -562,6 +565,9 @@ describe("HangarSyncModal", () => {
     );
 
     expect(mutateAsync).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenCalledWith({
+      text: "messages.syncExtension.onlySkippedItems",
+    });
     expect(
       wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
     ).toBe(false);

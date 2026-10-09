@@ -456,7 +456,13 @@ const finishSync = async () => {
   // as the sync failing, and a list of skipped kinds changes nothing.
   if (syncablePledges.value.length === 0) {
     updateStep("submitData", "success");
-    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
+    displayInfo({
+      text: t(
+        pledges.value.length === 0
+          ? "messages.syncExtension.nothingToSync"
+          : "messages.syncExtension.onlySkippedItems",
+      ),
+    });
     return;
   }
 
