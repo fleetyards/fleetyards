@@ -164,6 +164,21 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     assert_equal 401, browser.response.status
   end
 
+  test "DELETE /sessions ends a timed out session" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+    hold_session_cookie(browser)
+
+    travel(Devise.timeout_in + 1.minute) do
+      browser.delete "/api/v1/sessions"
+      assert_equal 200, browser.response.status
+    end
+
+    browser.get "/api/v1/users/me"
+    assert_equal 401, browser.response.status
+  end
+
   test "DELETE /sessions returns 401 when not signed in" do
     assert_api_response :delete, 401
   end
