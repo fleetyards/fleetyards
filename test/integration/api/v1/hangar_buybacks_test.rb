@@ -149,15 +149,16 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/buybacks breaks a name or price tie by the latest reclaim" do
+  test "GET /hangar/buybacks breaks a name or price tie by the latest reclaim, undated last" do
     user = create(:user)
+    undated = buyback(user, price: 90)
     older = buyback(user, price: 90, reclaimed_on: Date.new(2023, 11, 26))
     newer = buyback(user, price: 90, reclaimed_on: Date.new(2026, 9, 21))
     sign_in user
 
     ["name asc", "price asc"].each do |sort|
       assert_api_response :get, 200, params: {q: {"s" => sort}} do
-        assert_equal [newer.id, older.id], parsed_body["items"].pluck("id")
+        assert_equal [newer.id, older.id, undated.id], parsed_body["items"].pluck("id")
       end
     end
   end
