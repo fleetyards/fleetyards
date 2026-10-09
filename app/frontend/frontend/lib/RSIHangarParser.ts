@@ -78,7 +78,7 @@ const PAGE_TITLES = [
   "404",
 ];
 
-const SITE_SUFFIX = /\s*[-|]\s*Roberts Space Industries$/i;
+const SITE_SUFFIX = /\s*[-|]\s*Roberts Space Industries\b.*$/i;
 
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
 // melt value at all.

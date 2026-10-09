@@ -60,6 +60,14 @@ describe("RSIHangarParser.extractPage", () => {
     ).toMatchObject({ details: ['page title "Maintenance"'] });
   });
 
+  it("names a known page title followed by more of RSI's site name", () => {
+    expect(
+      extract(
+        "<title>Sign In | Roberts Space Industries | Follow the development of Star Citizen</title><div></div>",
+      ),
+    ).toMatchObject({ details: ['page title "Sign In"'] });
+  });
+
   it("reads a known kind with whitespace around it", () => {
     expect(
       extract(pledgesPage(pledge("101", item("\n  Ship\n  ", "Cutter")))),
