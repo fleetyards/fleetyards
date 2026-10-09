@@ -64,6 +64,22 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     assert_equal FleetRolePolicy::UPDATE_PRIVILEGES, FleetMembership::CAPABILITY_PRIVILEGES[:update_roles]
   end
 
+  test "reading contracts follows FleetContractPolicy" do
+    assert membership_with(["fleet:contracts:read"]).capabilities[:read_contracts]
+    refute membership_with(["fleet:missions:read"]).capabilities[:read_contracts]
+    assert_equal FleetContractPolicy::READ, FleetMembership::CAPABILITY_PRIVILEGES[:read_contracts]
+  end
+
+  test "reading events follows FleetEventPolicy" do
+    [["fleet:events:read"], ["fleet:events:manage"], ["fleet:missions:read"], []].each do |access|
+      membership = membership_with(access)
+      membership.update!(aasm_state: :accepted)
+      allowed = FleetEventPolicy.new(user: membership.user, fleet: @fleet).apply(:index?)
+
+      assert_equal allowed, membership.capabilities[:read_events], "for #{access.inspect}"
+    end
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort

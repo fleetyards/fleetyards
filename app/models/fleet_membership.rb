@@ -190,6 +190,8 @@ class FleetMembership < ApplicationRecord
     manage_allies: ["fleet:manage", "fleet:allies:manage"],
     read_vehicles: ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"],
     read_blueprints: ["fleet:manage", "fleet:blueprints:read"],
+    read_events: ["fleet:manage", "fleet:events:manage", "fleet:events:read"],
+    read_contracts: ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
     update_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:update"],
     manage_fleet: ["fleet:manage"],
