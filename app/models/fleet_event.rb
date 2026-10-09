@@ -228,8 +228,7 @@ class FleetEvent < ApplicationRecord
       )
       # The date is the one the organiser sees: a start late in their evening
       # is already the next day in UTC.
-      zone = ActiveSupport::TimeZone[event.timezone.to_s] || Time.zone
-      event.title = default_title(mission, event.starts_at&.in_time_zone(zone)) if event.title.blank?
+      event.title = default_title(mission, event.starts_at&.in_time_zone(event.recurrence_time_zone)) if event.title.blank?
       event.save!
 
       mission.mission_teams.includes(mission_ships: [:model, :mission_ship_models], mission_slots: :model_position).order(:position).each do |team|
@@ -447,7 +446,7 @@ class FleetEvent < ApplicationRecord
 
   # `timezone` is only checked for presence, so a name ActiveSupport does not
   # know falls back to UTC rather than raising on every read of the series.
-  private def recurrence_time_zone
+  def recurrence_time_zone
     ActiveSupport::TimeZone[timezone.to_s] ? timezone : "UTC"
   end
 
