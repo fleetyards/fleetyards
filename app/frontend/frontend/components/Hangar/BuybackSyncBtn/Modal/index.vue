@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -411,7 +410,6 @@ const close = () => {
     </div>
     <template #footer>
       <Btn
-        :variant="BtnVariantsEnum.BARE"
         data-test="close-buyback-sync"
         :disabled="working && status !== 'idle'"
         @click="close"
