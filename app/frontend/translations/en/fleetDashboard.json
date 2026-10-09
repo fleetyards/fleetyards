@@ -1,0 +1,66 @@
+{
+  "en": {
+    "fleetDashboard": {
+      "showAll": "Show all",
+      "empty": "Nothing here yet.",
+      "unnamed": "Untitled",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Latest updates",
+        "empty": "Nothing has happened in this fleet lately.",
+        "showMore": "Show older updates",
+        "you": "You",
+        "kinds": {
+          "member_joined": "Joined the fleet",
+          "event_published": "Event published",
+          "event_cancelled": "Event cancelled",
+          "contract_published": "Contract posted",
+          "contract_claimed": "Contract claimed",
+          "contract_fulfilled": "Contract fulfilled",
+          "inventory_transfer_completed": "Transfer completed",
+          "inventory_item_deposited": "Deposited",
+          "inventory_item_withdrawn": "Withdrawn"
+        }
+      },
+      "events": {
+        "title": "Upcoming events",
+        "empty": "No events in the next two weeks.",
+        "signUp": "Sign up"
+      },
+      "actionQueue": {
+        "title": "Needs your attention",
+        "empty": "Nothing is waiting for you.",
+        "joinRequests": {
+          "one": "%{count} request to join",
+          "other": "%{count} requests to join"
+        },
+        "pendingTransfers": {
+          "one": "%{count} incoming transfer to answer",
+          "other": "%{count} incoming transfers to answer"
+        }
+      },
+      "contracts": {
+        "title": "Contracts",
+        "empty": "No open contracts right now.",
+        "mine": "Your work",
+        "open": "Open for pickup"
+      },
+      "inventory": {
+        "title": "Inventory",
+        "empty": "No inventory movements lately.",
+        "emptyMine": "Nothing of yours moved lately.",
+        "mine": "Mine",
+        "fleet": "Fleet"
+      },
+      "newMembers": {
+        "title": "New members"
+      },
+      "about": {
+        "title": "About the fleet"
+      }
+    }
+  }
+}

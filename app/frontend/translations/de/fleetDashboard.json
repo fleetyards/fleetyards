@@ -1,0 +1,66 @@
+{
+  "de": {
+    "fleetDashboard": {
+      "showAll": "Alle anzeigen",
+      "empty": "Hier gibt es noch nichts.",
+      "unnamed": "Ohne Titel",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Neuigkeiten",
+        "empty": "In dieser Flotte ist in letzter Zeit nichts passiert.",
+        "showMore": "Ältere Neuigkeiten anzeigen",
+        "you": "Du",
+        "kinds": {
+          "member_joined": "Der Flotte beigetreten",
+          "event_published": "Event veröffentlicht",
+          "event_cancelled": "Event abgesagt",
+          "contract_published": "Auftrag ausgeschrieben",
+          "contract_claimed": "Auftrag übernommen",
+          "contract_fulfilled": "Auftrag erfüllt",
+          "inventory_transfer_completed": "Transfer abgeschlossen",
+          "inventory_item_deposited": "Eingelagert",
+          "inventory_item_withdrawn": "Entnommen"
+        }
+      },
+      "events": {
+        "title": "Anstehende Events",
+        "empty": "Keine Events in den nächsten zwei Wochen.",
+        "signUp": "Anmelden"
+      },
+      "actionQueue": {
+        "title": "Wartet auf dich",
+        "empty": "Gerade wartet nichts auf dich.",
+        "joinRequests": {
+          "one": "%{count} Beitrittsanfrage",
+          "other": "%{count} Beitrittsanfragen"
+        },
+        "pendingTransfers": {
+          "one": "%{count} eingehender Transfer offen",
+          "other": "%{count} eingehende Transfers offen"
+        }
+      },
+      "contracts": {
+        "title": "Aufträge",
+        "empty": "Gerade gibt es keine offenen Aufträge.",
+        "mine": "Deine Aufträge",
+        "open": "Offen zur Übernahme"
+      },
+      "inventory": {
+        "title": "Inventar",
+        "empty": "In letzter Zeit keine Inventarbewegungen.",
+        "emptyMine": "Von deinen Sachen wurde zuletzt nichts bewegt.",
+        "mine": "Meine",
+        "fleet": "Flotte"
+      },
+      "newMembers": {
+        "title": "Neue Mitglieder"
+      },
+      "about": {
+        "title": "Über die Flotte"
+      }
+    }
+  }
+}

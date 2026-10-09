@@ -98,3 +98,32 @@
     }
   }
 }
+
+// The header of a page that is about something else: the fleet's name on the
+// left, its links trailing on the same line.
+.heading--compact {
+  justify-content: flex-start;
+  gap: 16px;
+
+  .avatar {
+    margin-right: 0;
+  }
+
+  .heading-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+}
+
+.links--inline {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  > a {
+    font-size: 1.6rem;
+  }
+}

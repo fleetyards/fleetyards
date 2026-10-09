@@ -1,0 +1,66 @@
+{
+  "fr": {
+    "fleetDashboard": {
+      "showAll": "Tout afficher",
+      "empty": "Rien pour l'instant.",
+      "unnamed": "Sans titre",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Dernières nouvelles",
+        "empty": "Rien ne s'est passé dans cette flotte récemment.",
+        "showMore": "Afficher les nouvelles plus anciennes",
+        "you": "Vous",
+        "kinds": {
+          "member_joined": "A rejoint la flotte",
+          "event_published": "Événement publié",
+          "event_cancelled": "Événement annulé",
+          "contract_published": "Contrat publié",
+          "contract_claimed": "Contrat pris en charge",
+          "contract_fulfilled": "Contrat rempli",
+          "inventory_transfer_completed": "Transfert terminé",
+          "inventory_item_deposited": "Déposé",
+          "inventory_item_withdrawn": "Retiré"
+        }
+      },
+      "events": {
+        "title": "Événements à venir",
+        "empty": "Aucun événement dans les deux prochaines semaines.",
+        "signUp": "S'inscrire"
+      },
+      "actionQueue": {
+        "title": "Demande votre attention",
+        "empty": "Rien ne vous attend.",
+        "joinRequests": {
+          "one": "%{count} demande d'adhésion",
+          "other": "%{count} demandes d'adhésion"
+        },
+        "pendingTransfers": {
+          "one": "%{count} transfert entrant à traiter",
+          "other": "%{count} transferts entrants à traiter"
+        }
+      },
+      "contracts": {
+        "title": "Contrats",
+        "empty": "Aucun contrat ouvert pour le moment.",
+        "mine": "Votre travail",
+        "open": "Disponibles"
+      },
+      "inventory": {
+        "title": "Inventaire",
+        "empty": "Aucun mouvement d'inventaire récemment.",
+        "emptyMine": "Rien de ce qui vous concerne n'a bougé récemment.",
+        "mine": "Les miens",
+        "fleet": "Flotte"
+      },
+      "newMembers": {
+        "title": "Nouveaux membres"
+      },
+      "about": {
+        "title": "À propos de la flotte"
+      }
+    }
+  }
+}

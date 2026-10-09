@@ -1,0 +1,101 @@
+import { type MaybeRefOrGetter } from "vue";
+import {
+  FeatureFlagName,
+  FleetMembershipStatusEnum,
+  FleetRoleResourceAccessEnum,
+  type Fleet,
+  type FleetMember,
+} from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFleetSubscription } from "@/frontend/composables/useFleetSubscription";
+
+/**
+ * Which of the dashboard's panels this reader gets. Each one asks what the API
+ * behind it asks -- the role, the feature's rollout and, for the premium
+ * modules, the fleet's subscription -- so a panel is either shown and answered,
+ * or not shown at all, and never one that renders a 403.
+ */
+export const useFleetDashboardAccess = (
+  fleet: MaybeRefOrGetter<Fleet>,
+  membership: MaybeRefOrGetter<FleetMember | undefined>,
+) => {
+  const { isFleetFeatureEnabled } = useFeatures();
+
+  const { subscriptionRequired } = useFleetSubscription(fleet);
+
+  const isMember = computed(
+    () => toValue(membership)?.status === FleetMembershipStatusEnum.ACCEPTED,
+  );
+
+  const capabilities = computed(() =>
+    isMember.value ? toValue(membership)?.capabilities : undefined,
+  );
+
+  const hasResourceAccess = (...allowed: FleetRoleResourceAccessEnum[]) =>
+    isMember.value &&
+    (toValue(membership)?.fleetRole?.resourceAccess ?? []).some((resource) =>
+      allowed.includes(resource),
+    );
+
+  const premiumAvailable = (feature: FeatureFlagName) =>
+    isFleetFeatureEnabled(toValue(fleet), feature) &&
+    !subscriptionRequired.value;
+
+  const showEvents = computed(
+    () =>
+      premiumAvailable(FeatureFlagName.FLEET_MISSION_BUILDER) &&
+      hasResourceAccess(
+        FleetRoleResourceAccessEnum.FLEET_MANAGE,
+        FleetRoleResourceAccessEnum.FLEET_EVENTS_MANAGE,
+        FleetRoleResourceAccessEnum.FLEET_EVENTS_READ,
+      ),
+  );
+
+  const showContracts = computed(
+    () =>
+      premiumAvailable(FeatureFlagName.FLEET_CONTRACTS) &&
+      hasResourceAccess(
+        FleetRoleResourceAccessEnum.FLEET_MANAGE,
+        FleetRoleResourceAccessEnum.FLEET_CONTRACTS_MANAGE,
+        FleetRoleResourceAccessEnum.FLEET_CONTRACTS_READ,
+      ),
+  );
+
+  const showInventory = computed(
+    () =>
+      premiumAvailable(FeatureFlagName.FLEET_LOGISTICS) &&
+      !!capabilities.value?.readInventories,
+  );
+
+  const showNewMembers = computed(() => !!capabilities.value?.readMembers);
+
+  // The two queues an officer answers for the fleet as a whole: who asked to
+  // join, and what was sent to the fleet. Each needs the right to answer it,
+  // not only to read it.
+  const canAnswerJoinRequests = computed(
+    () => !!capabilities.value?.updateMembers,
+  );
+
+  const canAnswerTransfers = computed(
+    () => showInventory.value && !!capabilities.value?.updateInventories,
+  );
+
+  const canManageFleet = computed(() => !!capabilities.value?.manageFleet);
+
+  const showActionQueue = computed(
+    () => canAnswerJoinRequests.value || canAnswerTransfers.value,
+  );
+
+  return {
+    isMember,
+    showActivity: isMember,
+    showEvents,
+    showContracts,
+    showInventory,
+    showNewMembers,
+    showActionQueue,
+    canAnswerJoinRequests,
+    canAnswerTransfers,
+    canManageFleet,
+  };
+};

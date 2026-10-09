@@ -1,0 +1,66 @@
+{
+  "it": {
+    "fleetDashboard": {
+      "showAll": "Mostra tutto",
+      "empty": "Ancora niente qui.",
+      "unnamed": "Senza titolo",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Ultimi aggiornamenti",
+        "empty": "Di recente non è successo nulla in questa flotta.",
+        "showMore": "Mostra aggiornamenti precedenti",
+        "you": "Tu",
+        "kinds": {
+          "member_joined": "Si è unito alla flotta",
+          "event_published": "Evento pubblicato",
+          "event_cancelled": "Evento annullato",
+          "contract_published": "Contratto pubblicato",
+          "contract_claimed": "Contratto preso in carico",
+          "contract_fulfilled": "Contratto completato",
+          "inventory_transfer_completed": "Trasferimento completato",
+          "inventory_item_deposited": "Depositato",
+          "inventory_item_withdrawn": "Prelevato"
+        }
+      },
+      "events": {
+        "title": "Prossimi eventi",
+        "empty": "Nessun evento nelle prossime due settimane.",
+        "signUp": "Iscriviti"
+      },
+      "actionQueue": {
+        "title": "Richiede la tua attenzione",
+        "empty": "Non c'è nulla in attesa per te.",
+        "joinRequests": {
+          "one": "%{count} richiesta di adesione",
+          "other": "%{count} richieste di adesione"
+        },
+        "pendingTransfers": {
+          "one": "%{count} trasferimento in entrata da gestire",
+          "other": "%{count} trasferimenti in entrata da gestire"
+        }
+      },
+      "contracts": {
+        "title": "Contratti",
+        "empty": "Al momento non ci sono contratti aperti.",
+        "mine": "Il tuo lavoro",
+        "open": "Disponibili"
+      },
+      "inventory": {
+        "title": "Inventario",
+        "empty": "Nessun movimento di inventario di recente.",
+        "emptyMine": "Di recente non si è mosso nulla di tuo.",
+        "mine": "Miei",
+        "fleet": "Flotta"
+      },
+      "newMembers": {
+        "title": "Nuovi membri"
+      },
+      "about": {
+        "title": "Informazioni sulla flotta"
+      }
+    }
+  }
+}
