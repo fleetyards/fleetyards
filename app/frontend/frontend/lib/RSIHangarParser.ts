@@ -60,6 +60,26 @@ const interleave = (...lists: string[][]) =>
     lists.map((list) => list[index]).filter((detail) => detail !== undefined),
   );
 
+// Pages a sync can land on instead of the pledge list, without RSI's site
+// suffix. Any other title may be an account page naming the user.
+const PAGE_TITLES = [
+  "",
+  "my hangar",
+  "buy back pledges",
+  "roberts space industries",
+  "sign in",
+  "login",
+  "just a moment...",
+  "attention required! | cloudflare",
+  "maintenance",
+  "page not found",
+  "access denied",
+  "error",
+  "404",
+];
+
+const SITE_SUFFIX = /\s*[-|]\s*Roberts Space Industries$/i;
+
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
 // melt value at all.
 const PLEDGE_VALUE = /^\$([\d,]+\.\d{2}) USD$/;
@@ -108,7 +128,7 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_LIST,
-        details: [`page title "${htmlDoc.title}"`],
+        details: [this.pageTitle(htmlDoc)],
       };
     }
 
@@ -342,6 +362,14 @@ export class RSIHangarParser {
       .forEach((customName) => customName.remove());
 
     return liner?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+  }
+
+  pageTitle(htmlDoc: Document): string {
+    const title = htmlDoc.title.replace(SITE_SUFFIX, "").trim();
+
+    return PAGE_TITLES.includes(title.toLowerCase())
+      ? `page title "${title}"`
+      : "an unlisted page title";
   }
 
   // Only RSI's own labels: a pledge without one can still hold " - " in its

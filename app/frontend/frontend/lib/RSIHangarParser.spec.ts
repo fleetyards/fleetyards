@@ -52,6 +52,23 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("names a page title it knows without RSI's site suffix", () => {
+    expect(
+      extract(
+        "<title>Maintenance | Roberts Space Industries</title><div></div>",
+      ),
+    ).toMatchObject({ details: ['page title "Maintenance"'] });
+  });
+
+  it("does not report a page title it does not know", () => {
+    const page = extract(
+      "<title>citizen123 - Roberts Space Industries</title><div></div>",
+    );
+
+    expect(page).toMatchObject({ details: ["an unlisted page title"] });
+    expect(JSON.stringify(page)).not.toContain("citizen123");
+  });
+
   it("does not read a page where one pledge lost its id", () => {
     expect(
       extract(
