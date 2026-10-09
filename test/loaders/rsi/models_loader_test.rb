@@ -255,6 +255,17 @@ module Rsi
       assert_predicate model.description, :present?
     end
 
+    test "#adopts a game-file model prefixed with the manufacturer code" do
+      manufacturer = create(:manufacturer, name: "Roberts Space Industries", code: "RSI", rsi_id: nil)
+      model = create(:model, name: "RSI Aurora MkI ES", rsi_id: nil, manufacturer:)
+
+      assert_no_difference -> { Model.count } do
+        @loader.one(1)
+      end
+
+      assert_equal 1, model.reload.rsi_id
+    end
+
     test "#does not adopt a game-file model of another manufacturer" do
       other = create(:manufacturer, name: "Drake Interplanetary", code: "DRAK", rsi_id: nil)
       create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
