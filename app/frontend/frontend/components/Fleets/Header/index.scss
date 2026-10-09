@@ -48,7 +48,7 @@
   justify-content: center;
   gap: 10px;
 
-  > a {
+  :deep(> a) {
     font-size: 3rem;
   }
 }
@@ -93,7 +93,7 @@
   .links {
     flex-wrap: wrap;
 
-    > a {
+    :deep(> a) {
       font-size: 2rem;
     }
   }
@@ -123,7 +123,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 
-  > a {
+  :deep(> a) {
     font-size: 1.6rem;
   }
 }

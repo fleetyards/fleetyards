@@ -8,7 +8,7 @@ export default {
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
-import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import FleetLinks from "@/frontend/components/Fleets/Header/Links.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { Fleet } from "@/services/fyApi";
 
@@ -22,53 +22,12 @@ type Props = {
   compact?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   canManage: false,
   compact: false,
 });
 
 const { t } = useI18n();
-
-const links = computed(() =>
-  [
-    {
-      key: "homepage",
-      icon: "fa-light fa-globe globe-rotate",
-      href: props.fleet.homepage && `//${props.fleet.homepage}`,
-      label: t("labels.homepage"),
-    },
-    {
-      key: "guilded",
-      icon: "fa-brands fa-guilded",
-      href: props.fleet.guilded && `//${props.fleet.guilded}`,
-      label: t("labels.guilded"),
-    },
-    {
-      key: "discord",
-      icon: "fa-brands fa-discord",
-      href: props.fleet.discord && `//${props.fleet.discord}`,
-      label: t("labels.discord"),
-    },
-    {
-      key: "ts",
-      icon: "fa-brands fa-teamspeak",
-      href: props.fleet.ts,
-      label: t("labels.fleet.ts"),
-    },
-    {
-      key: "youtube",
-      icon: "fa-brands fa-youtube",
-      href: props.fleet.youtube && `//${props.fleet.youtube}`,
-      label: t("labels.youtube"),
-    },
-    {
-      key: "twitch",
-      icon: "fa-brands fa-twitch",
-      href: props.fleet.twitch && `//${props.fleet.twitch}`,
-      label: t("labels.twitch"),
-    },
-  ].filter((link) => !!link.href),
-);
 </script>
 
 <template>
@@ -101,25 +60,7 @@ const links = computed(() =>
             </p>
           </div>
         </div>
-        <div v-if="compact" class="links links--inline">
-          <RsiProfileLink
-            v-if="fleet.rsiSid"
-            :sid="fleet.rsiSid"
-            :verified="fleet.rsiVerified"
-            icon-only
-          />
-          <a
-            v-for="link in links"
-            :key="link.key"
-            v-tooltip="link.label"
-            :aria-label="link.label"
-            :href="link.href ?? undefined"
-            target="_blank"
-            rel="noopener"
-          >
-            <i :class="link.icon" />
-          </a>
-        </div>
+        <FleetLinks v-if="compact" :fleet="fleet" class="links links--inline" />
       </div>
       <FidNotice v-if="canManage" :fleet="fleet" dismissible>
         <template #actions>
@@ -134,36 +75,7 @@ const links = computed(() =>
     </div>
   </div>
   <div v-if="!compact" class="row">
-    <div class="col-12 links">
-      <a
-        v-if="links[0]?.key === 'homepage'"
-        v-tooltip="links[0].label"
-        :aria-label="links[0].label"
-        :href="links[0].href ?? undefined"
-        target="_blank"
-        rel="noopener"
-      >
-        <i :class="links[0].icon" />
-      </a>
-      <RsiProfileLink
-        v-if="fleet.rsiSid"
-        :sid="fleet.rsiSid"
-        :verified="fleet.rsiVerified"
-        icon-only
-        large
-      />
-      <a
-        v-for="link in links.filter(({ key }) => key !== 'homepage')"
-        :key="link.key"
-        v-tooltip="link.label"
-        :aria-label="link.label"
-        :href="link.href ?? undefined"
-        target="_blank"
-        rel="noopener"
-      >
-        <i :class="link.icon" />
-      </a>
-    </div>
+    <FleetLinks :fleet="fleet" class="col-12 links" large />
   </div>
 </template>
 
