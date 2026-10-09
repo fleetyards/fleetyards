@@ -62,10 +62,22 @@ export const usePresence = () => {
     return known ? (known.lastActiveAt ?? fallback) : fallback;
   };
 
+  // Everybody the cable has last said is online, for a surface that has to
+  // notice somebody it does not list yet rather than only update who it does.
+  const knownOnlineIds = computed(
+    () =>
+      new Set(
+        [...presence.entries()]
+          .filter(([, state]) => state.online)
+          .map(([userId]) => userId),
+      ),
+  );
+
   return {
     applyPresence,
     resetPresence,
     isOnline,
     lastActiveAt,
+    knownOnlineIds,
   };
 };
