@@ -10,12 +10,13 @@ module V1
           schema({
             type: :object,
             properties: {
+              userId: {type: :string, format: :uuid},
               username: {type: :string},
               nickname: {type: [:string, :null]},
               friend: {type: :boolean},
               avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
             },
-            required: %w[username friend]
+            required: %w[userId username friend]
           })
         end
       end

@@ -27587,6 +27587,9 @@ components:
     FleetOnlineMember:
       type: object
       properties:
+        userId:
+          type: string
+          format: uuid
         username:
           type: string
         nickname:
@@ -27600,6 +27603,7 @@ components:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
       required:
+      - userId
       - username
       - friend
       title: FleetOnlineMember
