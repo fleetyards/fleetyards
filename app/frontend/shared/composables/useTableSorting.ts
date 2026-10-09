@@ -32,6 +32,18 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
 
   const sortableDirection = () => {
     const active = currentDirection.value;
+    const [fallbackCol, fallbackDirection = "asc"] = (
+      toValue(fallback) || ""
+    ).split(" ");
+
+    // The default's own field toggles, landing back on the default instead of
+    // naming it: a descending default would otherwise go nowhere on its first
+    // press, its next step being the reset it already shows.
+    if (fallbackCol === String(field)) {
+      const next = active === "asc" ? "desc" : "asc";
+
+      return next === fallbackDirection ? undefined : next;
+    }
 
     if (active === "asc") {
       return "desc";
@@ -49,6 +61,7 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
         query: {
           ...route.query,
           s: undefined,
+          page: undefined,
         },
         hash: id ? `#${id}` : undefined,
       }) as RouteLocationRaw,
@@ -65,6 +78,7 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
       query: {
         ...route.query,
         s: `${String(field)} ${direction}`,
+        page: undefined,
       },
       hash: id ? `#${id}` : undefined,
     } as RouteLocationRaw;
