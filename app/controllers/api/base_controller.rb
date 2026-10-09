@@ -21,8 +21,11 @@ module Api
 
     skip_before_action :track_ahoy_visit
 
+    prepend_before_action :leave_session_unwritten
+
     before_action :authenticate_user!, except: %i[root version provider]
     before_action :set_paper_trail_whodunnit, except: %i[root version provider]
+    before_action :write_session_when_signed_in, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
@@ -138,6 +141,25 @@ module Api
       headers["X-RateLimit-Limit"] = match_data[:limit].to_s
       headers["X-RateLimit-Remaining"] = (match_data[:limit] - match_data[:count]).to_s
       headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
+    end
+
+    # With `expire_after`, every request that loads the session answers with
+    # its cookie, so one still in flight when the user signs in could replace
+    # the new session with an empty or timed out one. Nothing is written until a
+    # user is signed in (see config/initializers/api_session_write.rb), decided
+    # before the action because the failure app and `rescue_from` skip after
+    # callbacks. Loaded first: the Redis store reads nothing while skipping.
+    private def leave_session_unwritten
+      session.to_hash
+      request.session_options[:skip] = true
+    end
+
+    private def write_session_when_signed_in
+      write_session if warden.authenticated?(:user)
+    end
+
+    private def write_session
+      request.session_options[:skip] = false
     end
 
     private def set_last_active_at

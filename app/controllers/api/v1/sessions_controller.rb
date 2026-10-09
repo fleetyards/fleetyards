@@ -7,6 +7,16 @@ module Api
 
       skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
+      # A sign-in replaces whoever the session held, so nothing may fetch them
+      # first: a timed out user would answer with a 401, and a remember cookie
+      # would sign the previous account back in and make `sign_in` a no-op.
+      prepend_before_action(only: :create) { warden.logout(:user) }
+      skip_before_action :set_paper_trail_whodunnit, :write_session_when_signed_in, :set_last_active_at, only: :create
+
+      # As Devise's own sessions controller does: a sign-out ends a timed out
+      # session too, rather than answering 401 and leaving it in place.
+      prepend_before_action(only: :destroy) { request.env["devise.skip_timeout"] = true }
+
       before_action :authenticate_user!, except: [:create, :confirm_access]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
       before_action :set_user, only: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
@@ -56,6 +66,7 @@ module Api
 
       def destroy
         sign_out(:user)
+        write_session
 
         render json: {code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out")}
       end
