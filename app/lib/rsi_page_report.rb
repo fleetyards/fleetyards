@@ -36,6 +36,10 @@ class RsiPageReport
 
   EXTENSION_VERSION = /\A[0-9A-Za-z.+-]{1,32}\z/
 
+  LATEST_PAGE_LINE = /\A- Latest page: (\d+)\z/
+
+  LATEST_EXTENSION_LINE = /\A- Latest extension: `([^`]+)`\z/
+
   def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
     if user
       first = Rails.cache.write(
@@ -61,16 +65,21 @@ class RsiPageReport
       type: :rsi_markup_changed,
       title: "RSI #{page} page not recognised (#{check})",
       body: ->(earlier_body) {
-        earlier_lines = earlier_body.to_s.lines.map(&:chomp).select do |line|
+        earlier = earlier_body.to_s.lines.map(&:chomp)
+        earlier_lines = earlier.select do |line|
           (detail = line[DETAIL_LINE, 1]) && !details.include?(detail)
         end
         detail_lines = (earlier_lines + new_lines).last(MAX_DETAILS)
+        # A report without them keeps what an earlier one recorded, which the
+        # earlier details still cite.
+        latest_page = page_number || earlier.filter_map { |line| line[LATEST_PAGE_LINE, 1] }.first
+        latest_extension = extension_version || earlier.filter_map { |line| line[LATEST_EXTENSION_LINE, 1] }.first
 
         [
           "A #{page} sync stopped on a page its parser does not recognise.",
           "- Check: `#{check}`",
-          ("- Latest page: #{page_number}" if page_number),
-          ("- Latest extension: `#{extension_version}`" if extension_version),
+          ("- Latest page: #{latest_page}" if latest_page),
+          ("- Latest extension: `#{latest_extension}`" if latest_extension),
           ("- Details:" if detail_lines.any?),
           *detail_lines
         ].compact.join("\n")

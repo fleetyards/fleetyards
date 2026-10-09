@@ -136,6 +136,19 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_includes body, "- Latest page: 1"
   end
 
+  test "POST /hangar/rsi-page-reports keeps the latest page and extension of a report that sent them" do
+    sign_in @user
+
+    post "/api/v1/hangar/rsi-page-reports",
+      params: {page: "hangar", check: "missing_kinds", pageNumber: 3, extensionVersion: "1.3.0", details: ["markup a"]},
+      as: :json
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details: ["markup b"]}, as: :json
+
+    body = notifications.sole.body
+    assert_includes body, "- Latest page: 3\n- Latest extension: `1.3.0`"
+    assert_includes body, "  - `markup b`"
+  end
+
   test "POST /hangar/rsi-page-reports counts a user once per page and check" do
     previous_store = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new
