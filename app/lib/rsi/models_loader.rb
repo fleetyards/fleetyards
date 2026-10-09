@@ -73,6 +73,10 @@ module Rsi
         )
       end
 
+      # An unlinked model's timestamp is when it was created, not a matrix
+      # revision, so it must not make the matrix data look already applied.
+      model.last_updated_at = nil if model.rsi_id.blank?
+
       updates = {
         rsi_id: data["id"],
         rsi_chassis_id: data["chassis_id"],

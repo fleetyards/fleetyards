@@ -242,6 +242,19 @@ module Rsi
       assert_equal 15, model.reload.rsi_id
     end
 
+    test "#adopts a game-file model created after the matrix entry last changed" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "F7CM Super Hornet Mk I", rsi_id: nil, manufacturer:,
+        last_updated_at: Time.zone.parse("2026-07-01"), description: nil)
+
+      @loader.one(15)
+      model.reload
+
+      assert_equal 15, model.rsi_id
+      assert_equal "F7C-M Super Hornet Mk I", model.name
+      assert_predicate model.description, :present?
+    end
+
     test "#does not adopt a game-file model of another manufacturer" do
       other = create(:manufacturer, name: "Drake Interplanetary", code: "DRAK", rsi_id: nil)
       create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
