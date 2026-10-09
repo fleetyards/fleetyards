@@ -88,10 +88,22 @@ const checkExtension = async () => {
   extensionInfo.value =
     (health?.payload as FleetyardsSyncHealthPayload | undefined) || {};
 
-  if (!unmounted && extensionReady.value && extensionSupportsBuybacks.value) {
+  if (canStart()) {
     await checkRSIIdentity();
   }
 };
+
+// Only once Start could be pressed: a check mid-run would spend an RSI request
+// and warn about a session the run already has.
+const canStart = () =>
+  !unmounted &&
+  !running.value &&
+  extensionReady.value &&
+  extensionSupportsBuybacks.value;
+
+watch(running, () => {
+  if (canStart()) void checkRSIIdentity();
+});
 
 onMounted(() => {
   hangarStore.buybackSyncModalOpen = true;
@@ -151,12 +163,13 @@ const cancelRun = () => {
 
 <template>
   <Modal :title="t('headlines.buybackSync')" :loading="working">
-    <div v-if="!extensionReady">
+    <!-- A run already going is shown at once, not after the extension check. -->
+    <div v-if="status === 'idle' && !extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
       <SyncExtensionLinks />
     </div>
     <div
-      v-else-if="!extensionSupportsBuybacks"
+      v-else-if="status === 'idle' && !extensionSupportsBuybacks"
       data-test="buyback-sync-outdated"
     >
       <p class="text-warning">{{ t("texts.buybackSync.unsupported") }}</p>

@@ -72,6 +72,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
 
 const displayInfo = vi.fn();
 
+const displayWarning = vi.fn();
+
 const displayAlert = vi.fn();
 
 const displaySuccess = vi.fn();
@@ -82,7 +84,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayInfo,
     displaySuccess,
-    displayWarning: vi.fn(),
+    displayWarning,
     displayAlert,
   }),
 }));
@@ -224,6 +226,7 @@ describe("HangarSyncModal", () => {
     rsiRateLimiter.reset();
     mutateAsync.mockClear();
     displayInfo.mockClear();
+    displayWarning.mockClear();
     displayAlert.mockClear();
     displaySuccess.mockClear();
     comlinkEmit.mockClear();
@@ -280,6 +283,29 @@ describe("HangarSyncModal", () => {
 
   // An expired RSI session answers with the sign-in page: nothing about RSI's
   // markup changed, so nobody is told it did.
+  // The modal is usually closed by then, so nothing else would say it.
+  it("warns when the RSI session runs out mid-read", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    wrapper.unmount();
+    mounted = undefined;
+    displayWarning.mockClear();
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(useHangarSync().finishedWithErrors.value).toBe(true);
+    expect(displayWarning).toHaveBeenCalledWith({
+      text: "messages.syncExtension.notLoggedIn",
+    });
+  });
+
   it("reports nothing when the RSI session has run out", async () => {
     const { wrapper } = await mountModal();
     rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });

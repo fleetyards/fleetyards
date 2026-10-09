@@ -87,7 +87,8 @@ export const useBuybackSync = () => {
 
   const comlink = useComlink();
 
-  const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
+  const { displayInfo, displaySuccess, displayWarning, displayAlert } =
+    useAppNotifications();
 
   const extension = useSyncExtension();
 
@@ -136,9 +137,9 @@ export const useBuybackSync = () => {
 
     // Not a buy-back page this parser understands: the list read so far is
     // incomplete, and submitting it would delete every buy-back after it.
+    // Still reading until the report has answered, so a modal closed
+    // meanwhile cannot clear the run before it says how it ended.
     if (page.status === RsiPageStatus.UNRECOGNISED) {
-      status.value = "failed";
-
       const outcome = await reportRsiPage({
         page: RsiPageKindEnum.BUYBACK,
         check: page.check,
@@ -148,10 +149,12 @@ export const useBuybackSync = () => {
 
       if (id !== runId) return;
 
-      // Signed out, the identify answer has already said so.
       if (outcome === RsiPageReportOutcome.REPORTED) {
         fail(t("messages.syncExtension.pageNotRecognised"));
-      } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      } else if (outcome === RsiPageReportOutcome.SIGNED_OUT) {
+        status.value = "failed";
+        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+      } else {
         fail();
       }
       return;
@@ -205,13 +208,16 @@ export const useBuybackSync = () => {
       });
     } else if (message && isUnknownAction(message)) {
       status.value = "unsupported";
+      displayWarning({ text: t("texts.buybackSync.unsupported") });
     } else {
       fail();
     }
   };
 
   const start = (syncOptions: BuybackSyncOptions) => {
-    if (running.value) return;
+    // A second price pass beside the first would read every page twice, and
+    // the list run would report the first pass's counts as its own.
+    if (running.value || details.running.value) return;
 
     clear();
     abort = new AbortController();

@@ -75,11 +75,13 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
+const displayWarning = vi.hoisted(() => vi.fn());
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayInfo: vi.fn(),
     displaySuccess: vi.fn(),
-    displayWarning: vi.fn(),
+    displayWarning,
     displayAlert: vi.fn(),
   }),
 }));
@@ -207,6 +209,7 @@ describe("HangarBuybackSyncModal", () => {
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
     comlinkEmit.mockClear();
+    displayWarning.mockClear();
     vi.mocked(window.postMessage).mockClear();
     pagesAnswered = 0;
   });
@@ -427,6 +430,53 @@ describe("HangarBuybackSyncModal", () => {
     });
   });
 
+  // The modal is usually closed by then, so nothing else would say it.
+  it("warns when the RSI session runs out mid-read", async () => {
+    const wrapper = await startSync();
+    wrapper.unmount();
+    mounted = undefined;
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+
+    await answerNextPage("<html><body></body></html>");
+
+    expect(useBuybackSync().status.value).toBe("failed");
+    expect(displayWarning).toHaveBeenCalledWith({
+      text: "messages.syncExtension.notLoggedIn",
+    });
+  });
+
+  it("shows a running read before the extension has answered", async () => {
+    const first = await startSync();
+    first.unmount();
+
+    const wrapper = mount(Component, {
+      global: {
+        plugins: [createTestingPinia()],
+        stubs: {
+          Modal: { template: "<div><slot /><slot name='footer' /></div>" },
+        },
+        directives: { Tooltip: {} },
+      },
+    });
+    mounted = wrapper;
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='buyback-sync-progress']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.text()).not.toContain("texts.syncExtension.gettingStarted");
+  });
+
+  it("asks RSI for no session check while a read is going", async () => {
+    const first = await startSync();
+    first.unmount();
+    rsiIdentity.mockClear();
+
+    await mountModal(currentExtension);
+
+    expect(rsiIdentity).not.toHaveBeenCalled();
+  });
+
   it("reports nothing when the RSI session has run out", async () => {
     await startSync();
     rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
@@ -435,7 +485,9 @@ describe("HangarBuybackSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
-    expect(rsiIdentity).toHaveBeenCalledTimes(2);
+    // On open, before the report, and once the run has ended so Start knows
+    // the session is gone.
+    expect(rsiIdentity).toHaveBeenCalledTimes(3);
   });
 
   it("submits nothing when a page's entries cannot be read", async () => {
@@ -482,6 +534,9 @@ describe("HangarBuybackSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(wrapper.text()).toContain("texts.buybackSync.unsupported");
+    expect(displayWarning).toHaveBeenCalledWith({
+      text: "texts.buybackSync.unsupported",
+    });
   });
 
   describe("prices and insurance", () => {
@@ -597,6 +652,20 @@ describe("HangarBuybackSyncModal", () => {
     });
 
     // A second pass would read the same pages again beside the first.
+    // The modal disables Start; the run refuses on its own as well.
+    it("starts no new list read while prices are still being read", async () => {
+      await syncList(detailExtension);
+      vi.mocked(window.postMessage).mockClear();
+
+      useBuybackSync().start({ readDetails: true });
+      await flushPromises();
+
+      expect(useBuybackSync().status.value).toBe("finished");
+      expect(askedFor("syncBuyback")).toBe(false);
+
+      await finishPass();
+    });
+
     it("offers no new sync while prices are still being read", async () => {
       await syncList(detailExtension);
       mounted?.unmount();
