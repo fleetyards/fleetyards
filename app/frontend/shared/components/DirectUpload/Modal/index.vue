@@ -24,7 +24,7 @@ const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
     <DirectUploadUploader ref="uploader" multiple />
 
     <template #footer>
-      <DirectUploadActions v-if="uploader" :uploader="uploader" />
+      <DirectUploadActions v-if="uploader" :uploader="uploader" footer />
     </template>
   </Modal>
 </template>

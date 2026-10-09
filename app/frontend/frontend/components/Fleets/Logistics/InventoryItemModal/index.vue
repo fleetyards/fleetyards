@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -491,7 +491,12 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="create-inventory-item-form"
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+      >
         {{
           isDeposit
             ? t("actions.logistics.deposit")

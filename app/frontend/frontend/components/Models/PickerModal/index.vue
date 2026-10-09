@@ -36,6 +36,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import debounce from "lodash.debounce";
@@ -517,6 +518,7 @@ const save = () => {
           {{ t("modelPicker.labels.selected", { count: selectedTotal }) }}
         </span>
         <Btn
+          :size="BtnSizesEnum.LG"
           v-if="selection.length"
           :variant="BtnVariantsEnum.BARE"
           @click="clearSelection"
@@ -524,11 +526,12 @@ const save = () => {
           {{ t("modelPicker.actions.clearSelection") }}
         </Btn>
         <Btn
+          :type="BtnTypesEnum.SUBMIT"
+          form="model-picker"
           :loading="submitting"
           :disabled="!selection.length"
           :size="BtnSizesEnum.LG"
           data-test="model-picker-submit"
-          @click="save"
         >
           {{ submitLabel }}
         </Btn>

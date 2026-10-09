@@ -12,7 +12,10 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnVariantsEnum,
+  BtnSizesEnum,
+} from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -215,7 +218,12 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <Btn :loading="linking" :disabled="!selectedIds.size" @click="onConfirm">
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :loading="linking"
+        :disabled="!selectedIds.size"
+        @click="onConfirm"
+      >
         {{ t("actions.add") }}
       </Btn>
     </template>

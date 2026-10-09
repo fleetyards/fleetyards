@@ -7,16 +7,24 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   uploader: InstanceType<typeof DirectUploadUploader>;
   inline?: boolean;
+  // Rendered in a modal footer, which sizes its buttons large and gives the
+  // dismiss button the bare variant.
+  footer?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   inline: false,
+  footer: false,
 });
 
 const { t } = useI18n();
@@ -43,6 +51,7 @@ const cssClasses = computed(() => {
     <Btn
       v-if="uploader.status === 'pending' || uploader.status === 'uploading'"
       :disabled="uploader.status === 'uploading'"
+      :size="footer ? BtnSizesEnum.LG : undefined"
       @click="upload"
       >{{ t("directUpload.actions.upload") }}</Btn
     >
@@ -53,6 +62,8 @@ const cssClasses = computed(() => {
         uploader.status !== 'pending' &&
         uploader.status !== 'uploading'
       "
+      :size="footer ? BtnSizesEnum.LG : undefined"
+      :variant="footer ? BtnVariantsEnum.BARE : undefined"
       @click="close"
       >{{ t("directUpload.actions.close") }}</Btn
     >

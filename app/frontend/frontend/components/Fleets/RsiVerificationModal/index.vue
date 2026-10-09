@@ -315,10 +315,15 @@ const copyToken = () => {
     </section>
 
     <template #footer>
-      <Btn :variant="BtnVariantsEnum.BARE" @click="close">
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :variant="BtnVariantsEnum.BARE"
+        @click="close"
+      >
         {{ t("actions.close") }}
       </Btn>
       <Btn
+        :size="BtnSizesEnum.LG"
         v-if="verification?.sid && verification.token && !verification.verified"
         :loading="checkMutation.isPending.value || pending"
         :disabled="coolingDown && !pending"

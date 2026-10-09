@@ -8,7 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import {
   AlertSizesEnum,
@@ -181,7 +181,12 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="payout-participant-form"
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+      >
         {{ t("actions.save") }}
       </Btn>
     </template>

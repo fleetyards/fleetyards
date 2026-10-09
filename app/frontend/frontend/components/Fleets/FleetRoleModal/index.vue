@@ -11,7 +11,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -102,7 +102,12 @@ const onSubmit = handleSubmit(async (values) => {
       />
     </form>
     <template #footer>
-      <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="fleet-role-form"
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+      >
         {{ t("actions.save") }}
       </Btn>
     </template>

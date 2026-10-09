@@ -11,6 +11,7 @@ import {
   BtnSizesEnum,
   BtnTonesEnum,
   BtnVariantsEnum,
+  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -556,11 +557,12 @@ const onSubmit = async () => {
 
     <template #footer>
       <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="transfer-form"
         :loading="submitting"
         :disabled="invalid"
         :size="BtnSizesEnum.LG"
         data-test="transfer-submit"
-        @click="onSubmit"
       >
         {{
           needsAnswer

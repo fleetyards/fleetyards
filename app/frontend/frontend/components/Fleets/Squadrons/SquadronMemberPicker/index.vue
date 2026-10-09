@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
@@ -315,6 +316,7 @@ const onSubmit = async () => {
           }}
         </span>
         <Btn
+          :size="BtnSizesEnum.LG"
           v-if="selection.length"
           :variant="BtnVariantsEnum.BARE"
           @click="clearSelection"
@@ -322,11 +324,12 @@ const onSubmit = async () => {
           {{ t("actions.reset") }}
         </Btn>
         <Btn
+          :type="BtnTypesEnum.SUBMIT"
+          form="fleet-squadron-members-form"
           :loading="submitting"
           :disabled="!selection.length"
           :size="BtnSizesEnum.LG"
           data-test="squadron-add-members"
-          @click="onSubmit"
         >
           {{
             t("actions.fleet.squadrons.addMembers", { count: selection.length })

@@ -11,6 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { type Vehicle, type VehicleUpdateInput } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -152,10 +153,11 @@ const useName = (newName: string) => {
 
     <template #footer>
       <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        :form="`vehicle-${vehicle.id}`"
         :loading="submitting"
         data-test="vehicle-save"
-        @click="onSubmit"
-        size="lg"
+        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>
