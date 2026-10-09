@@ -84,8 +84,10 @@ vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
   };
 });
 
+const comlinkEmit = vi.fn();
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -94,6 +96,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
 
 const displayInfo = vi.fn();
 
+const displayAlert = vi.fn();
+
 const supportPromptCanShow = vi.fn(() => false);
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
@@ -101,7 +105,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
     displayInfo,
     displaySuccess: vi.fn(),
     displayWarning: vi.fn(),
-    displayAlert: vi.fn(),
+    displayAlert,
   }),
 }));
 
@@ -240,6 +244,8 @@ describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
     displayInfo.mockClear();
+    displayAlert.mockClear();
+    comlinkEmit.mockClear();
     supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
@@ -532,23 +538,54 @@ describe("HangarSyncModal", () => {
       dirty: boolean;
       dirtyText: string;
     };
-    const cancelDisabled = () =>
-      wrapper.find("[data-test='cancel-sync']").attributes("disabled") !==
-      undefined;
-
     expect(exposed.dirty).toBe(false);
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
     expect(exposed.dirty).toBe(true);
     expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
-    expect(cancelDisabled()).toBe(true);
 
     await replyWithPage(
       '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
     );
     expect(exposed.dirty).toBe(false);
-    expect(cancelDisabled()).toBe(false);
+  });
+
+  // Forced, the close would skip the question the X asks mid-fetch.
+  it("closes from Cancel the way the X does", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    const cancel = wrapper.find("[data-test='cancel-sync']");
+    expect(cancel.attributes("disabled")).toBeUndefined();
+
+    await cancel.trigger("click");
+    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
+  });
+
+  it("alerts when a submit fails after the modal closed", async () => {
+    let rejectSubmit: (error: Error) => void = () => {};
+    mutateAsync.mockImplementationOnce(
+      () =>
+        new Promise((_, reject) => {
+          rejectSubmit = reject;
+        }),
+    );
+
+    const { wrapper } = await mountModal();
+    await submitHangar(wrapper);
+
+    wrapper.unmount();
+    mounted = undefined;
+
+    rejectSubmit(new Error("offline"));
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "messages.syncExtension.failure",
+    });
   });
 
   it("lets a run the server failed be closed without asking", async () => {
@@ -568,9 +605,6 @@ describe("HangarSyncModal", () => {
       "actions.syncExtension.retry",
     );
     expect(exposed.dirty).toBe(false);
-    expect(
-      wrapper.find("[data-test='cancel-sync']").attributes("disabled"),
-    ).toBeUndefined();
   });
 
   it("asks RSI for no further page once the modal is closed", async () => {

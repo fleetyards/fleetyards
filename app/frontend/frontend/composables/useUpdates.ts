@@ -6,6 +6,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
 import { useMovedFleetRedirect } from "@/frontend/composables/useMovedFleetRedirect";
 import { useSubscription } from "@/shared/composables/useSubscription";
+import { useComlink } from "@/shared/composables/useComlink";
 import { usePresenceUpdates } from "@/frontend/composables/usePresenceUpdates";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -87,6 +88,8 @@ export const useUpdates = () => {
   };
 
   const { t } = useI18n();
+
+  const comlink = useComlink();
 
   const { displayMessage, displayInfo, displaySuccess, displayAlert } =
     useAppNotifications();
@@ -207,11 +210,13 @@ export const useUpdates = () => {
       hangarStore.syncRunning = false;
     }
 
+    // The open modal answers its own run, refresh included.
     if (hangarStore.syncModalOpen) {
       return;
     }
 
     if (finished) {
+      comlink.emit("hangar-sync-finished");
       displaySuccess({ text: t("messages.syncExtension.success") });
     } else if (failed) {
       displayAlert({ text: t("messages.syncExtension.failure") });

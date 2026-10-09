@@ -124,16 +124,14 @@ const missingUnmatchedGroup = computed(
 
 // Both toggles live behind the cog and are remembered, so a user who turned
 // one off once would otherwise start every later sync without seeing it.
-const skippedItems = computed(() =>
-  (
-    [
-      [hangarStore.syncPaints, "paints"],
-      [hangarStore.syncHangarFlair, "hangarFlair"],
-    ] as const
-  )
-    .filter(([enabled]) => !enabled)
-    .map(([, key]) => t(`labels.syncExtension.pledgeItems.${key}`)),
-);
+const skippedItems = computed(() => [
+  ...(hangarStore.syncPaints
+    ? []
+    : [t("labels.syncExtension.pledgeItems.paints")]),
+  ...(hangarStore.syncHangarFlair
+    ? []
+    : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
+]);
 
 const seenPledgeIds = new Set<string>();
 
@@ -258,7 +256,8 @@ const finishedWithErrors = computed(() =>
 );
 
 // Only reading RSI pages ends with the modal: once submitted, the job runs on
-// the server and useUpdates reports its result.
+// the server and useUpdates reports its result. A submit that fails after the
+// modal closed alerts from its own catch.
 const fetching = computed(() => {
   const fetchStatus = processSteps.value.find(
     (step) => step.name === "fetchHangar",
@@ -302,8 +301,9 @@ const showSupportHint = computed(
 
 const comlink = useComlink();
 
+// Not forced, so a close mid-fetch asks first, as the X does.
 const cancel = async () => {
-  comlink.emit("close-modal", true);
+  comlink.emit("close-modal");
 };
 
 const start = async () => {
@@ -506,6 +506,10 @@ const finishSync = async () => {
       hangarStore.syncRunning = false;
       updateStep("submitData", "backendFailure");
       console.error(error);
+
+      if (unmounted) {
+        displayAlert({ text: t("messages.syncExtension.failure") });
+      }
     });
 };
 
@@ -690,7 +694,6 @@ const refreshPage = async () => {
           :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
           data-test="cancel-sync"
-          :disabled="fetching"
           @click="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
