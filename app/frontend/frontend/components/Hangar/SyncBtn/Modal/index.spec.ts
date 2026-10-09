@@ -14,7 +14,7 @@ import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.
 
 const mutateAsync = vi.fn(() => Promise.resolve());
 
-const reportMutateAsync = vi.fn(() => Promise.resolve());
+const reportMutateAsync = vi.fn((_input: unknown) => Promise.resolve());
 
 // What the extension says about the RSI session when the modal checks it
 // before reporting a page.
@@ -54,7 +54,7 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiHangar: () => ({ mutateAsync }),
-  useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
+  reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
   useSyncRsiHangarStatus: () => ({ data: ref(undefined) }),
 }));
 

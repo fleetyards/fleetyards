@@ -1,7 +1,7 @@
 import {
   type RsiPageCheckEnum,
   type RsiPageKindEnum,
-  useReportRsiPage,
+  reportRsiPage,
 } from "@/services/fyApi";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
@@ -36,9 +36,9 @@ export const reportDetail = (detail: string) =>
 
 // Tells the admins a sync met an RSI page its parser no longer recognises,
 // once the extension confirms the RSI session is still there. The report itself
-// is fired and forgotten: the sync has already stopped.
+// is fired and forgotten: the sync has already stopped. No query hook: the
+// hangar sync reports from a run that outlives the component that started it.
 export const useRsiPageReport = () => {
-  const mutation = useReportRsiPage();
   const extension = useSyncExtension();
 
   return async (report: {
@@ -66,11 +66,10 @@ export const useRsiPageReport = () => {
       .filter(Boolean)
       .slice(0, MAX_DETAILS);
 
-    mutation
-      .mutateAsync({
-        data: { ...report, details: details?.length ? details : undefined },
-      })
-      .catch(() => undefined);
+    reportRsiPage({
+      ...report,
+      details: details?.length ? details : undefined,
+    }).catch(() => undefined);
 
     return RsiPageReportOutcome.REPORTED;
   };
