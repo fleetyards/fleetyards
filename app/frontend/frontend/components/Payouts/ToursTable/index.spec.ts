@@ -33,6 +33,7 @@ const mount = async (
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
+    initialState: { mobile: { mobile } },
   });
   wrappers.push(wrapper);
   return wrapper;
