@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "Diese Tour archivieren? Sie verschwindet aus der Liste, die Abrechnung bleibt erhalten.",
         "entryCreated": "Eintrag erfasst",
         "entryUpdated": "Eintrag aktualisiert",
+        "destroyEntryConfirm": "Diesen Eintrag löschen? Das kann nicht rückgängig gemacht werden.",
         "entryDestroyed": "Eintrag entfernt",
         "participantAdded": "Teilnehmer hinzugefügt",
         "participantRemoved": "Teilnehmer entfernt",

@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "Archiver cette expédition ? Elle quitte la liste mais conserve son registre.",
         "entryCreated": "Écriture enregistrée",
         "entryUpdated": "Écriture mise à jour",
+        "destroyEntryConfirm": "Supprimer cette écriture ? Cette action est irréversible.",
         "entryDestroyed": "Écriture supprimée",
         "participantAdded": "Participant ajouté",
         "participantRemoved": "Participant retiré",

@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "Archiviare questa spedizione? Esce dall'elenco ma il registro resta.",
         "entryCreated": "Movimento registrato",
         "entryUpdated": "Movimento aggiornato",
+        "destroyEntryConfirm": "Eliminare questo movimento? L'operazione non può essere annullata.",
         "entryDestroyed": "Movimento rimosso",
         "participantAdded": "Partecipante aggiunto",
         "participantRemoved": "Partecipante rimosso",

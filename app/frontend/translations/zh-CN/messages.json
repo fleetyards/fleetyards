@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "归档此行程？它将从列表中移除，但账目会保留。",
         "entryCreated": "已记录",
         "entryUpdated": "已更新",
+        "destroyEntryConfirm": "删除此条目？此操作无法撤销。",
         "entryDestroyed": "已删除",
         "participantAdded": "已添加参与者",
         "participantRemoved": "已移除参与者",

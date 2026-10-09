@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "¿Archivar esta expedición? Sale de la lista, pero conserva su registro.",
         "entryCreated": "Movimiento registrado",
         "entryUpdated": "Movimiento actualizado",
+        "destroyEntryConfirm": "¿Eliminar este movimiento? No se puede deshacer.",
         "entryDestroyed": "Movimiento eliminado",
         "participantAdded": "Participante añadido",
         "participantRemoved": "Participante eliminado",

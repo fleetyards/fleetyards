@@ -1106,6 +1106,7 @@
         "archiveTourConfirm": "封存此行程？它將從清單中移除，但帳目會保留。",
         "entryCreated": "已紀錄",
         "entryUpdated": "已更新",
+        "destroyEntryConfirm": "刪除此條目？此操作無法復原。",
         "entryDestroyed": "已刪除",
         "participantAdded": "已新增參與者",
         "participantRemoved": "已移除參與者",

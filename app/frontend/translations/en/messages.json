@@ -1116,6 +1116,7 @@
         "archiveTourConfirm": "Archive this tour? It leaves the list but keeps its ledger.",
         "entryCreated": "Entry recorded",
         "entryUpdated": "Entry updated",
+        "destroyEntryConfirm": "Delete this entry? This cannot be undone.",
         "entryDestroyed": "Entry removed",
         "participantAdded": "Participant added",
         "participantRemoved": "Participant removed",
