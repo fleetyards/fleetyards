@@ -33,10 +33,15 @@ type Props = {
   fleet: Fleet;
   events: FleetEvent[];
   view?: CalendarViewKind;
+  // A single row of this week, for a page that shows the calendar beside other
+  // things: the reader's place in the URL, the view switch and creating an
+  // event by clicking a day all belong to the events page itself.
+  compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   view: "month",
+  compact: false,
 });
 const emit = defineEmits<{
   "update:range": [{ start: Date; end: Date }];
@@ -52,14 +57,19 @@ const { resolve: resolveCover } = useMissionCover();
 const calendarEl = ref<HTMLElement | null>(null);
 let ec: EventCalendarInstance | null = null;
 
-type CalendarLibView = "dayGridMonth" | "timeGridWeek";
+type CalendarLibView = "dayGridMonth" | "timeGridWeek" | "dayGridWeek";
 
-const toLibView = (v: CalendarViewKind): CalendarLibView =>
-  v === "week" ? "timeGridWeek" : "dayGridMonth";
+const toLibView = (v: CalendarViewKind): CalendarLibView => {
+  if (props.compact) return "dayGridWeek";
+
+  return v === "week" ? "timeGridWeek" : "dayGridMonth";
+};
 
 const route = useRoute();
 
 const initialDate = (() => {
+  if (props.compact) return new Date();
+
   const q = route.query.date;
   if (typeof q === "string") {
     const parsed = parseISO(q);
@@ -139,7 +149,7 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  const isMonth = info.view.type === "dayGridMonth";
+  const isMonth = info.view.type.startsWith("dayGrid");
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
@@ -190,7 +200,7 @@ const updateTitle = () => {
   if (!date) return;
   const d = date instanceof Date ? date : new Date(date);
   const locale = i18nStore.locale;
-  if (props.view === "week") {
+  if (props.view === "week" || props.compact) {
     const formatted = new Intl.DateTimeFormat(locale, {
       month: "short",
       day: "numeric",
@@ -210,6 +220,8 @@ const updateTitle = () => {
 // One-way: calendar drives the `date` query param. We never watch it back
 // onto the calendar (would create a feedback loop with datesSet).
 const syncDateToUrl = () => {
+  if (props.compact) return;
+
   const date = ec?.getOption("date") as Date | string | undefined;
   if (!date) return;
   const d = date instanceof Date ? date : new Date(date);
@@ -247,8 +259,8 @@ onMounted(() => {
     height: "auto",
     dayMaxEvents: true,
     nowIndicator: true,
-    selectable: true,
-    selectMirror: true,
+    selectable: !props.compact,
+    selectMirror: !props.compact,
     slotDuration: "01:00:00",
     slotHeight: 56,
     slotMinTime: "08:00:00",
@@ -273,9 +285,11 @@ onMounted(() => {
       }
     },
     dateClick: (info: { date: Date }) => {
+      if (props.compact) return;
       emit("create-event", info.date);
     },
     select: (info: { start: Date }) => {
+      if (props.compact) return;
       emit("create-event", info.start);
     },
     datesSet: (info: { start: Date; end: Date }) => {
@@ -350,7 +364,7 @@ onUnmounted(() => {
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
-        <BtnGroup segmented data-test="calendar-view-switch">
+        <BtnGroup v-if="!compact" segmented data-test="calendar-view-switch">
           <Btn :active="props.view === 'month'" @click="setView('month')">
             {{ t("labels.fleets.events.calendar.month") }}
           </Btn>
