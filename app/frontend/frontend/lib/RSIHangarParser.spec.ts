@@ -258,7 +258,7 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("takes both cases in turn and names each trimmed kind once", () => {
+  it("takes every case in turn and names each trimmed kind once", () => {
     const withoutKind = (liner: string) =>
       `<div class="item"><div class="text"><div class="title">Cutter</div><div class="liner">${liner}</div></div></div>`;
 
@@ -282,7 +282,29 @@ describe("RSIHangarParser.extractPage", () => {
       details: [
         'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
         'no ship in a "Standalone Ships" pledge, kinds none, Insurance, empty',
+        'unknown kind "Insurance\n  "',
         'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
+        'unknown kind ""',
+      ],
+    });
+  });
+
+  it("reports an unknown kind alongside an item without a kind", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            `<div class="item"><div class="text"><div class="title">Cutter</div><div class="liner">Drake Interplanetary</div></div></div>${item("Vehicle", "Cutter")}`,
+            "Package - Cutter Starter",
+          ),
+        ),
+      ),
+    ).toMatchObject({
+      check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Package" pledge',
+        'unknown kind "Vehicle"',
       ],
     });
   });

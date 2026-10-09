@@ -53,10 +53,11 @@ const PLEDGE_CATEGORIES = [
   "Subscribers Exclusive",
 ];
 
-const interleave = (first: string[], second: string[]) =>
-  Array.from({ length: Math.max(first.length, second.length) }).flatMap(
-    (_, index) =>
-      [first[index], second[index]].filter((detail) => detail !== undefined),
+const interleave = (...lists: string[][]) =>
+  Array.from({
+    length: Math.max(...lists.map((list) => list.length)),
+  }).flatMap((_, index) =>
+    lists.map((list) => list[index]).filter((detail) => detail !== undefined),
   );
 
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
@@ -227,10 +228,11 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
-        // Taken in turn, so neither case is cut off by the report's cap.
+        // Taken in turn, so no case is cut off by the report's cap.
         details: interleave(
           [...shipsWithoutKind],
           [...standaloneShipsWithoutShip],
+          [...unknownKinds],
         ),
       };
     }
