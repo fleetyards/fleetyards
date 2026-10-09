@@ -116,7 +116,8 @@ module Api
       def sync_rsi_hangar
         authorize! to: :update?, with: ::HangarPolicy
 
-        if params[:items].blank?
+        # An empty list is a sync too: the run decides that it has nothing to do.
+        unless params[:items].is_a?(Array)
           render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request
           return
         end

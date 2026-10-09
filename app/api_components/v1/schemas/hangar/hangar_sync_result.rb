@@ -32,7 +32,9 @@ module V1
             missingUpgradeVehicles: {type: :array, items: {type: :string}},
             # Left out by a run from before paints and flair were synced.
             syncedPaints: {type: :array, items: {type: :string, format: :uuid}},
-            syncedHangarFlair: {type: :array, items: {type: :string, format: :uuid}}
+            syncedHangarFlair: {type: :array, items: {type: :string, format: :uuid}},
+            # Left out by a run from before the sync decided it had nothing to do.
+            outcome: {"$ref": "#/components/schemas/HangarSyncOutcomeEnum"}
           },
           additionalProperties: false,
           required: %w[

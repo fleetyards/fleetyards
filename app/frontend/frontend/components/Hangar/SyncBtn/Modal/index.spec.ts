@@ -2,7 +2,9 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChannel";
 import {
+  HangarSyncOutcomeEnum,
   HangarSyncUnmatchedActionEnum,
   RsiPageCheckEnum,
   RsiPageKindEnum,
@@ -56,9 +58,17 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useSyncRsiHangarStatus: () => ({ data: ref(undefined) }),
 }));
 
+// The cable handler the modal registers, so a spec can answer a submitted sync.
+const subscription: { received?: (message: HangarSyncData) => void } = {};
+
 vi.mock("@/shared/composables/useSubscription", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useSubscription: () => ({}),
+  useSubscription: (options: {
+    received: (message: HangarSyncData) => void;
+  }) => {
+    subscription.received = options.received;
+    return {};
+  },
 }));
 
 const buybackDetailsRunning = vi.hoisted(() => ({ value: false }));
@@ -202,6 +212,29 @@ const submitHangar = async (
     '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
   );
 };
+
+const receiveSyncResult = (outcome: HangarSyncOutcomeEnum) =>
+  subscription.received?.({
+    status: "finished",
+    result: {
+      importedVehicles: [],
+      foundVehicles: [],
+      movedVehiclesToWanted: [],
+      deletedVehicles: [],
+      groupedVehicles: [],
+      unchangedVehicles: [],
+      missingModels: [],
+      importedComponents: [],
+      foundComponents: [],
+      missingComponents: [],
+      missingComponentVehicles: [],
+      importedUpgrades: [],
+      foundUpgrades: [],
+      missingUpgrades: [],
+      missingUpgradeVehicles: [],
+      outcome,
+    },
+  } as HangarSyncData);
 
 describe("HangarSyncModal", () => {
   beforeEach(() => {
@@ -531,7 +564,7 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("submits nothing when the hangar holds nothing to sync", async () => {
+  it("submits a hangar with nothing to sync and says what the run found", async () => {
     const { wrapper } = await mountModal();
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
@@ -541,15 +574,23 @@ describe("HangarSyncModal", () => {
       '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
     );
 
-    expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
-    expect(displayInfo).toHaveBeenCalledWith({
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({ items: [] }),
+    });
+
+    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
+    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
+    await flushPromises();
+
+    expect(displayInfo).toHaveBeenCalledTimes(2);
+    expect(displayInfo).toHaveBeenLastCalledWith({
       text: "messages.syncExtension.nothingToSync",
     });
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
 
-  it("submits nothing when only paints and flair are left and both are off", async () => {
+  it("submits paints and flair that are turned off, and says the run skipped them", async () => {
     supportPromptCanShow.mockReturnValue(true);
     const { wrapper, hangarStore } = await mountModal();
 
@@ -564,7 +605,18 @@ describe("HangarSyncModal", () => {
       '<div class="item"><div class="title">Cutter Paint</div><div class="kind">Skin</div></div><div class="item"><div class="title">Poster</div><div class="kind">Hangar decoration</div></div>',
     );
 
-    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        items: [
+          expect.objectContaining({ type: "skin" }),
+          expect.objectContaining({ type: "flair" }),
+        ],
+      }),
+    });
+
+    receiveSyncResult(HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS);
+    await flushPromises();
+
     expect(displayInfo).toHaveBeenCalledWith({
       text: "messages.syncExtension.onlySkippedItems",
     });
@@ -572,5 +624,18 @@ describe("HangarSyncModal", () => {
       wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
     ).toBe(false);
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
+  });
+
+  it("asks for support after a run that synced", async () => {
+    supportPromptCanShow.mockReturnValue(true);
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+
+    expect(
+      wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
+    ).toBe(true);
   });
 });

@@ -5,6 +5,8 @@ class HangarSync < HangarImporter
 
   ITEM_TYPES = %w[ship component upgrade skin flair].freeze
 
+  OUTCOMES = %w[synced nothing_to_sync only_skipped_items].freeze
+
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
     "slug = :slug",
@@ -62,38 +64,9 @@ class HangarSync < HangarImporter
     @import = import
     import.start!
 
-    user_id = import.user_id
-
-    # A sync rewrites `name` and `wanted` on rows a user also edits by hand, so
-    # nothing in here is a change the user made. Held out here rather than at
-    # each `update!` so a write added later is silent by default.
-    vehicles, components, upgrades = PaperTrail.request(enabled: false) do
-      Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
-        [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
-      end
-    end
-
-    pledge_items = sync_pledge_items(import.user)
-
-    imported_components, found_components, missing_components, missing_component_vehicles = components
-    imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = upgrades
-
-    # A hash rather than a tuple: the vehicle half of a run reports seven lists,
-    # four of which are the outcome the user picked for the ships it could not
-    # find, and positional unpacking stopped being readable somewhere before that.
-    output = {
-      **vehicles,
-      imported_components:,
-      found_components:,
-      missing_components:,
-      missing_component_vehicles:,
-      imported_upgrades:,
-      found_upgrades:,
-      missing_upgrades:,
-      missing_upgrade_vehicles:,
-      synced_paints: pledge_items.fetch("paint", []),
-      synced_hangar_flair: pledge_items.fetch("flair", [])
-    }
+    outcome = sync_outcome
+    output = (outcome == "synced") ? sync_everything(import) : (SUMMARY_KEYS + WARNING_KEYS).index_with { [] }
+    output[:outcome] = outcome
 
     import.update!(output:)
 
@@ -111,6 +84,8 @@ class HangarSync < HangarImporter
 
     camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
     HangarSyncChannel.broadcast_to(import.user, {status: "finished", result: camel_case_output})
+    return output unless outcome == "synced"
+
     I18n.with_locale(import.user.notification_locale) do
       Notification.notify!(
         user: import.user,
@@ -144,6 +119,53 @@ class HangarSync < HangarImporter
     end
 
     raise e
+  end
+
+  # Decided before anything is touched: an empty paint or flair list would
+  # otherwise replace the stored ones with nothing, and a run without a ship
+  # lists every purchased one as unchanged.
+  private def sync_outcome
+    return "synced" if @ships.any? || @components.any? || @upgrades.any?
+
+    pledge_kinds = @data.filter_map { |item| ::HangarPledgeItems::Sync.kind_for(item) }
+    return "nothing_to_sync" if pledge_kinds.empty?
+
+    pledge_kinds.intersect?(pledge_item_kinds) ? "synced" : "only_skipped_items"
+  end
+
+  private def sync_everything(import)
+    user_id = import.user_id
+
+    # A sync rewrites `name` and `wanted` on rows a user also edits by hand, so
+    # nothing in here is a change the user made. Held out here rather than at
+    # each `update!` so a write added later is silent by default.
+    vehicles, components, upgrades = PaperTrail.request(enabled: false) do
+      Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
+        [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+      end
+    end
+
+    pledge_items = sync_pledge_items(import.user)
+
+    imported_components, found_components, missing_components, missing_component_vehicles = components
+    imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = upgrades
+
+    # A hash rather than a tuple: the vehicle half of a run reports seven lists,
+    # four of which are the outcome the user picked for the ships it could not
+    # find, and positional unpacking stopped being readable somewhere before that.
+    {
+      **vehicles,
+      imported_components:,
+      found_components:,
+      missing_components:,
+      missing_component_vehicles:,
+      imported_upgrades:,
+      found_upgrades:,
+      missing_upgrades:,
+      missing_upgrade_vehicles:,
+      synced_paints: pledge_items.fetch("paint", []),
+      synced_hangar_flair: pledge_items.fetch("flair", [])
+    }
   end
 
   # The sync modal is gone as soon as the user closes it, so the notification is
@@ -646,11 +668,14 @@ class HangarSync < HangarImporter
   private def sync_pledge_items(user)
     return {} if @cancelled || @import&.cancel_requested?
 
+    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds).run
+  end
+
+  private def pledge_item_kinds
     kinds = []
     kinds << "paint" if @import.nil? || @import.sync_paints?
     kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
-
-    ::HangarPledgeItems::Sync.new(user, @data, kinds:).run
+    kinds
   end
 
   private def stop_requested?(index)
