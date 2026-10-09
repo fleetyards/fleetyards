@@ -2354,6 +2354,16 @@ components:
           type: boolean
         readBlueprints:
           type: boolean
+        readEvents:
+          type: boolean
+        createEvents:
+          type: boolean
+        readMissions:
+          type: boolean
+        readContracts:
+          type: boolean
+        createContracts:
+          type: boolean
         readRoles:
           type: boolean
         updateRoles:
@@ -2390,6 +2400,11 @@ components:
       - manageAllies
       - readVehicles
       - readBlueprints
+      - readEvents
+      - createEvents
+      - readMissions
+      - readContracts
+      - createContracts
       - readRoles
       - updateRoles
       - manageFleet
