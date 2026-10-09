@@ -78,12 +78,15 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     askedFor = undefined;
   });
 
-  it("asks the calendar for the next two weeks", async () => {
+  // From yesterday: the calendar answers by start time, and an op that began
+  // last night may still be running.
+  it("asks the calendar from yesterday to two weeks out", async () => {
     await mount();
 
     const from = new Date(askedFor?.from ?? "");
     const to = new Date(askedFor?.to ?? "");
-    expect(Math.round((+to - +from) / 86_400_000)).toBe(14);
+    expect(Math.round((+to - +from) / 86_400_000)).toBe(15);
+    expect(from.getTime()).toBeLessThan(Date.now() - 86_400_000 / 2);
   });
 
   it("leaves out what nobody is going to", async () => {

@@ -122,6 +122,26 @@ describe("FleetDashboardWeekStrip", () => {
     expect(titles(subject)).toEqual(["Saturday op"]);
   });
 
+  // An op that runs past midnight is on the second day too, and one that began
+  // the Sunday before still counts for Monday.
+  it("marks every day an event runs into", async () => {
+    items = [
+      event({
+        id: "a",
+        title: "Night op",
+        startsAt: new Date(2026, 9, 4, 22, 0).toISOString(),
+        endsAt: new Date(2026, 9, 5, 2, 0).toISOString(),
+      }),
+    ];
+
+    const subject = await mount();
+    const days = subject.findAll("[data-test='fleet-dashboard-week-day']");
+
+    expect(days[0].find(".week-strip__dot--on").exists()).toBe(true);
+    expect(days[1].find(".week-strip__dot--on").exists()).toBe(false);
+    expect(new Date(params?.value.from ?? "").getDate()).toBe(4);
+  });
+
   it("says so when the day picked has nothing on", async () => {
     const subject = await mount();
 
@@ -133,6 +153,7 @@ describe("FleetDashboardWeekStrip", () => {
 
     await subject.find("[aria-label='Next']").trigger("click");
 
-    expect(new Date(params?.value.from ?? "").getDate()).toBe(12);
+    // The Sunday before the week of the 12th, for what runs over midnight.
+    expect(new Date(params?.value.from ?? "").getDate()).toBe(11);
   });
 });

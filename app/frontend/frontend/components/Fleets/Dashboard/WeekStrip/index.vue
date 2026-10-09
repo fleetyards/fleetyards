@@ -5,17 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  addDays,
-  isSameDay,
-  isToday,
-  parseISO,
-  startOfDay,
-  startOfWeek,
-} from "date-fns";
+import { addDays, isSameDay, parseISO, startOfWeek } from "date-fns";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -44,11 +38,24 @@ const i18nStore = useI18nStore();
  * underneath. Seven grid columns at this width leave each day a sliver, and a
  * list of only the busy days reads as if the week had one day in it.
  */
-const thisWeek = () => startOfWeek(new Date(), { weekStartsOn: 1 });
+const todayDate = useToday();
+
+const thisWeek = () => startOfWeek(todayDate.value, { weekStartsOn: 1 });
 
 const weekStart = ref(thisWeek());
 
-const selected = ref(startOfDay(new Date()));
+const selected = ref(todayDate.value);
+
+// Somebody who paged to another week is reading it; only a strip still on the
+// current week follows the clock into the next day.
+const browsing = ref(false);
+
+watch(todayDate, (now, before) => {
+  if (browsing.value) return;
+
+  weekStart.value = thisWeek();
+  if (isSameDay(selected.value, before)) selected.value = now;
+});
 
 const days = computed(() =>
   Array.from({ length: 7 }, (_, index) => addDays(weekStart.value, index)),
@@ -56,8 +63,10 @@ const days = computed(() =>
 
 const { data } = useFleetCalendar(
   computed(() => props.fleet.slug),
+  // From the day before: the calendar answers by start time, and an op that
+  // began on Sunday night is still part of Monday.
   computed(() => ({
-    from: weekStart.value.toISOString(),
+    from: addDays(weekStart.value, -1).toISOString(),
     to: addDays(weekStart.value, 7).toISOString(),
   })),
   { query: liveQuery },
@@ -72,8 +81,26 @@ const events = computed(() =>
   (data.value?.items ?? []).filter((event) => !HIDDEN.includes(event.status)),
 );
 
-const eventsOn = (day: Date) =>
-  events.value.filter((event) => isSameDay(parseISO(event.startsAt), day));
+// An hour when the event carries no end, as the calendar grid assumes too.
+const DEFAULT_DURATION_MS = 60 * 60 * 1000;
+
+// Every day an event touches, not only the one it starts on: an op that runs
+// past midnight is on the second day too.
+const eventsOn = (day: Date) => {
+  const dayStart = day.getTime();
+  const dayEnd = addDays(day, 1).getTime();
+
+  return events.value.filter((event) => {
+    const start = parseISO(event.startsAt).getTime();
+    const end = event.endsAt
+      ? parseISO(event.endsAt).getTime()
+      : start + DEFAULT_DURATION_MS;
+
+    return start < dayEnd && end > dayStart;
+  });
+};
+
+const isToday = (day: Date) => isSameDay(day, todayDate.value);
 
 const selectedEvents = computed(() => eventsOn(selected.value));
 
@@ -84,11 +111,20 @@ const showWeek = (start: Date) => {
   selected.value = days.value.find((day) => isToday(day)) ?? start;
 };
 
-const previous = () => showWeek(addDays(weekStart.value, -7));
+const previous = () => {
+  browsing.value = true;
+  showWeek(addDays(weekStart.value, -7));
+};
 
-const next = () => showWeek(addDays(weekStart.value, 7));
+const next = () => {
+  browsing.value = true;
+  showWeek(addDays(weekStart.value, 7));
+};
 
-const today = () => showWeek(thisWeek());
+const today = () => {
+  browsing.value = false;
+  showWeek(thisWeek());
+};
 
 const title = computed(() =>
   t("labels.fleets.events.calendar.weekTitle", {

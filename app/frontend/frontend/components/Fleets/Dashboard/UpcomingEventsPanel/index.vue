@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
-import { addDays, startOfDay } from "date-fns";
+import { addDays } from "date-fns";
+import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -28,18 +29,17 @@ const { t } = useI18n();
 const WINDOW_DAYS = 14;
 const SHOWN = 6;
 
+const today = useToday();
+
 // The calendar rather than the event list: it expands a recurring series into
 // its dates, where the list would show a weekly op once, on the day it began.
-// From the start of today, so an op that is underway is still here, and so the
-// query key holds still between renders.
-const range = computed(() => {
-  const from = startOfDay(new Date());
-
-  return {
-    from: from.toISOString(),
-    to: addDays(from, WINDOW_DAYS).toISOString(),
-  };
-});
+// From the start of yesterday, because the calendar answers by start time and
+// an op that began last night may still be running; what has ended is dropped
+// below. Whole days, so the query key holds still between renders.
+const range = computed(() => ({
+  from: addDays(today.value, -1).toISOString(),
+  to: addDays(today.value, WINDOW_DAYS).toISOString(),
+}));
 
 const { data, isLoading } = useFleetCalendar(
   computed(() => props.fleet.slug),
