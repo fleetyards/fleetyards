@@ -9,6 +9,7 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   useHangarGroups as useHangarGroupsQuery,
   type Vehicle,
@@ -88,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
     v-if="vehicle?.model"
     :title="t('headlines.editGroups', { vehicle: vehicle.model.name })"
   >
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+    <form :id="`vehicle-groups-${vehicle.id}`" @submit.prevent="onSubmit">
       <div v-if="hangarGroups && hangarGroups.length" class="row">
         <div
           v-for="group in hangarGroups"
@@ -105,16 +106,14 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          data-test="vehicle-save"
-          @click="onSubmit"
-          size="lg"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        :form="`vehicle-groups-${vehicle.id}`"
+        :loading="submitting"
+        data-test="vehicle-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

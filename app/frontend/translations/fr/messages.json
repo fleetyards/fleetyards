@@ -163,6 +163,7 @@
             "failure": "Impossible de déplacer tous les vaisseaux achetés en jeu vers votre liste de souhaits."
           },
           "removeAll": {
+            "confirm": "Supprimer de votre hangar tous les vaisseaux achetés en jeu ? Cette action est irréversible.",
             "success": "Tous les vaisseaux achetés en jeu ont été supprimés de votre Hangar.",
             "failure": "Impossible de supprimer tous les vaisseaux achetés en jeu de votre Hangar."
           }
@@ -1108,6 +1109,7 @@
         "archiveTourConfirm": "Archiver cette expédition ? Elle quitte la liste mais conserve son registre.",
         "entryCreated": "Écriture enregistrée",
         "entryUpdated": "Écriture mise à jour",
+        "destroyEntryConfirm": "Supprimer cette écriture ? Cette action est irréversible.",
         "entryDestroyed": "Écriture supprimée",
         "participantAdded": "Participant ajouté",
         "participantRemoved": "Participant retiré",

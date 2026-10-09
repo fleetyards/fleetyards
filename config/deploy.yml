@@ -73,7 +73,7 @@ env:
     - REDIS_URL
 accessories:
   db:
-    image: postgres:16
+    image: public.ecr.aws/docker/library/postgres:16
     # Everything below the two `pg_stat_statements` flags is off its default,
     # and the defaults are the ones PostgreSQL ships for a machine nothing here
     # resembles. Strength of the case differs per line and is noted with it.
@@ -127,7 +127,7 @@ accessories:
       memory: 4g
 
   redis:
-    image: redis:8.2.9
+    image: public.ecr.aws/docker/library/redis:8.2.9
     port: "6379:6379"
     # `maxmemory-policy` applies to the whole instance, not per database, so the
     # policy the cache needs is also the policy Sidekiq's queues get. `volatile-lru`

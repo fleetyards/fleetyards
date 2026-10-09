@@ -38,7 +38,7 @@ module V1
             recurrenceEvery: {type: :integer, minimum: 1, maximum: ::FleetEvent::MAX_RECURRENCE_EVERY},
             recurrenceWeekdays: {type: :array, items: {type: :integer, minimum: 0, maximum: 6}}
           },
-          required: %w[title startsAt timezone visibility],
+          required: %w[startsAt timezone visibility],
           additionalProperties: false
         })
       end

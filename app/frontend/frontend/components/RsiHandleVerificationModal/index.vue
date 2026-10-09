@@ -323,31 +323,29 @@ const copyToken = () => {
     </section>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn :variant="BtnVariantsEnum.GHOST" @click="close">
-          {{ t("actions.close") }}
-        </Btn>
-        <Btn
-          v-if="
-            verification?.handle && verification.token && !verification.verified
-          "
-          :loading="checkMutation.isPending.value || pending"
-          :disabled="coolingDown && !pending"
-          data-test="user-rsi-verification-check"
-          @click="checkManually"
-        >
-          <template v-if="coolingDown && !pending">
-            {{
-              t("actions.user.rsiVerification.checkIn", {
-                seconds: secondsUntilNextCheck,
-              })
-            }}
-          </template>
-          <template v-else>
-            {{ t("actions.user.rsiVerification.check") }}
-          </template>
-        </Btn>
-      </div>
+      <Btn :variant="BtnVariantsEnum.BARE" @click="close">
+        {{ t("actions.close") }}
+      </Btn>
+      <Btn
+        v-if="
+          verification?.handle && verification.token && !verification.verified
+        "
+        :loading="checkMutation.isPending.value || pending"
+        :disabled="coolingDown && !pending"
+        data-test="user-rsi-verification-check"
+        @click="checkManually"
+      >
+        <template v-if="coolingDown && !pending">
+          {{
+            t("actions.user.rsiVerification.checkIn", {
+              seconds: secondsUntilNextCheck,
+            })
+          }}
+        </template>
+        <template v-else>
+          {{ t("actions.user.rsiVerification.check") }}
+        </template>
+      </Btn>
     </template>
   </Modal>
 </template>

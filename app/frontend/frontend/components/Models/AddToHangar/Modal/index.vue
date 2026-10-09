@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import type { Model } from "@/services/fyApi";
@@ -32,7 +31,7 @@ const wishlistStore = useWishlistStore();
 const comlink = useComlink();
 
 const { useCreateMutation } = useVehicleMutations();
-const { mutateAsync } = useCreateMutation();
+const { mutateAsync, isPending } = useCreateMutation();
 
 const supportPrompt = useSupportPrompt();
 
@@ -104,14 +103,107 @@ const addToHangar = async () => {
   <Modal
     v-if="model"
     :title="t('headlines.addToHangar', { model: model.name })"
+    :loading="isPending"
   >
-    <div class="page-actions page-actions-block">
-      <Btn data-test="add-to-hangar-as-normal" @click="addToHangar">
-        {{ t("actions.addToHangar") }}
-      </Btn>
-      <Btn data-test="add-to-hangar-as-wanted" @click="addToWishlist">
-        {{ t("actions.addToWishlist") }}
-      </Btn>
+    <div class="add-to-hangar-choices">
+      <button
+        type="button"
+        class="add-to-hangar-choice"
+        :disabled="isPending"
+        data-test="add-to-hangar-as-normal"
+        @click="addToHangar"
+      >
+        <i class="fa-light fa-warehouse add-to-hangar-choice__icon" />
+        <span class="add-to-hangar-choice__text">
+          <span class="add-to-hangar-choice__title">
+            {{ t("actions.addToHangar") }}
+          </span>
+          <span class="add-to-hangar-choice__hint">
+            {{ t("texts.addToHangar.hangarHint") }}
+          </span>
+        </span>
+      </button>
+      <button
+        type="button"
+        class="add-to-hangar-choice"
+        :disabled="isPending"
+        data-test="add-to-hangar-as-wanted"
+        @click="addToWishlist"
+      >
+        <i class="fa-light fa-star add-to-hangar-choice__icon" />
+        <span class="add-to-hangar-choice__text">
+          <span class="add-to-hangar-choice__title">
+            {{ t("actions.addToWishlist") }}
+          </span>
+          <span class="add-to-hangar-choice__hint">
+            {{ t("texts.addToHangar.wishlistHint") }}
+          </span>
+        </span>
+      </button>
     </div>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.add-to-hangar-choices {
+  display: grid;
+  gap: 8px;
+}
+
+.add-to-hangar-choice {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: var(--radius-surface-slim);
+  background: var(--color-control);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--color-control-hover);
+  }
+
+  &:active {
+    background: var(--color-control-press);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+    background: var(--color-control);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.add-to-hangar-choice__icon {
+  width: 1.5em;
+  font-size: 1.4rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.add-to-hangar-choice__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.add-to-hangar-choice__title {
+  font-weight: 600;
+  color: var(--color-lifted);
+}
+
+.add-to-hangar-choice__hint {
+  font-size: 0.875rem;
+  color: var(--color-text-dim);
+}
+</style>

@@ -100,13 +100,15 @@ export const useEventDraft = () => {
       const event = await mutation.mutateAsync({
         fleetSlug,
         data: {
-          title: t("labels.fleets.events.untitled"),
           startsAt: startsAtIso,
           timezone: browserTimezone(),
           visibility: FleetEventVisibilityEnum.MEMBERS,
           // The API copies the mission's teams onto the event when this is
-          // given, which is the whole point of spawning one from a mission.
-          ...(missionSlug ? { missionSlug } : {}),
+          // given, which is the whole point of spawning one from a mission --
+          // and names it after the mission, unless a title is sent here.
+          ...(missionSlug
+            ? { missionSlug }
+            : { title: t("labels.fleets.events.untitled") }),
         },
       });
 

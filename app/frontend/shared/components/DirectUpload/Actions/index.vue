@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
 import DirectUploadUploader from "@/shared/components/DirectUpload/Uploader/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -18,6 +20,9 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   inline: false,
 });
+
+// A modal footer gives its dismiss button the bare variant.
+const inFooter = inject(BTN_CONTAINER, null)?.container === "footer";
 
 const { t } = useI18n();
 
@@ -53,6 +58,7 @@ const cssClasses = computed(() => {
         uploader.status !== 'pending' &&
         uploader.status !== 'uploading'
       "
+      :variant="inFooter ? BtnVariantsEnum.BARE : undefined"
       @click="close"
       >{{ t("directUpload.actions.close") }}</Btn
     >

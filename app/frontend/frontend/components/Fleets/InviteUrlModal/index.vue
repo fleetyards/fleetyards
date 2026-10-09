@@ -249,7 +249,10 @@ const copy = (inviteUrl: FleetInviteUrl) => {
         :label="t('labels.filters.fleets.inviteUrls.limit')"
         name="limit"
       />
-      <Btn @click="create">
+    </template>
+
+    <template v-if="form" #footer>
+      <Btn :loading="createMutation.isPending.value" @click="create">
         {{ t("actions.fleet.inviteUrls.create") }}
       </Btn>
     </template>

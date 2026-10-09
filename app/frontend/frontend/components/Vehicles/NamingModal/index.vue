@@ -11,6 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { type Vehicle, type VehicleUpdateInput } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -110,7 +111,7 @@ const useName = (newName: string) => {
     v-if="vehicle"
     :title="t('headlines.nameMyVehicle', { vehicle: vehicle?.model?.name })"
   >
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+    <form :id="`vehicle-naming-${vehicle.id}`" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="form-group">
@@ -151,16 +152,14 @@ const useName = (newName: string) => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          data-test="vehicle-save"
-          @click="onSubmit"
-          size="lg"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        :form="`vehicle-naming-${vehicle.id}`"
+        :loading="submitting"
+        data-test="vehicle-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>
