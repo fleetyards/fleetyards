@@ -19984,9 +19984,32 @@ components:
           type: string
         upgradeToModelSlugEq:
           type: string
+        s:
+          "$ref": "#/components/schemas/BuybackPledgeSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BuybackPledgeSortingEnum"
       additionalProperties: false
       example: {}
       title: BuybackPledgeQuery
+    BuybackPledgeSortingEnum:
+      type: string
+      enum:
+      - reclaimedOn asc
+      - reclaimedOn desc
+      - name asc
+      - name desc
+      - price asc
+      - price desc
+      x-enumNames:
+      - RECLAIMED_ON_ASC
+      - RECLAIMED_ON_DESC
+      - NAME_ASC
+      - NAME_DESC
+      - PRICE_ASC
+      - PRICE_DESC
+      title: BuybackPledgeSortingEnum
     BuybackPledges:
       type: object
       properties:

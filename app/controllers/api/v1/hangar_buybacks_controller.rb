@@ -16,10 +16,18 @@ module Api
       def index
         authorize! with: ::BuybackPledgePolicy
 
+        normalize_sort_params(buyback_query_params)
+        sorts = sorting_params(BuybackPledge, buyback_query_params.delete("sorts"))
+
         @q = authorized_scope(BuybackPledge.all).ransack(buyback_query_params)
+        # Many pledges share a reclaim date, a price or a name, so without the
+        # id last the planner picks their order and paging repeats some and
+        # skips others.
+        sorts = [*sorts, "name asc"] if sorts.none? { |sort| sort.start_with?("name ") }
+        @q.sorts = [*sorts, "id asc"]
+
         @buyback_pledges = @q.result
           .includes(:upgrade_from_model, :upgrade_to_model)
-          .order(reclaimed_on: :desc, name: :asc, id: :asc)
           .page(page_params)
           .per(per_page(BuybackPledge))
       end
@@ -61,7 +69,8 @@ module Api
       private def buyback_query_params
         @buyback_query_params ||= params.permit(q: [
           :kind_eq, :name_cont, :price_gteq, :price_lteq,
-          :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq, price_in: [], insurance_in: []
+          :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq, :s, :sorts,
+          price_in: [], insurance_in: [], s: [], sorts: []
         ]).fetch(:q, {})
       end
 

@@ -16,7 +16,9 @@ module V1
             priceIn: {type: :array, items: {type: :string}},
             insuranceIn: {type: :array, items: {type: :string}, description: "`lifetime`, `none` or a number of months"},
             upgradeFromModelSlugEq: {type: :string},
-            upgradeToModelSlugEq: {type: :string}
+            upgradeToModelSlugEq: {type: :string},
+            s: ::V1::Schemas::Enums::BuybackPledgeSortingEnum,
+            sorts: {type: :array, items: ::V1::Schemas::Enums::BuybackPledgeSortingEnum}
           },
           additionalProperties: false,
           example: {}
