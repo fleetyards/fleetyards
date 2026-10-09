@@ -132,7 +132,10 @@ const onSubmit = handleSubmit(async (values) => {
 
     done(t("fleetDashboard.announcements.messages.saved"));
   } catch (error) {
-    const { message, formErrors } = validationErrorFrom(error);
+    // The server names the end it was sent; the form asks for it as a span.
+    const { message, formErrors } = validationErrorFrom(error, {
+      expiresAt: "expiry",
+    });
 
     setErrors(formErrors);
     displayAlert({

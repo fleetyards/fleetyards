@@ -178,6 +178,24 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {body: "One too many"}
   end
 
+  test "PUT announcement refuses to bring an expired one back onto a full board" do
+    expired = create(:fleet_announcement, fleet: @fleet)
+    expired.update_columns(expires_at: 1.minute.ago)
+    FleetAnnouncement::ACTIVE_LIMIT.times { create(:fleet_announcement, fleet: @fleet) }
+
+    sign_in @officer
+    assert_api_response :put, 400, path_params: {fleetSlug: @fleet.slug, id: expired.id},
+      body: {body: "Back again", expiresAt: 1.day.from_now.iso8601}
+  end
+
+  test "PUT announcement edits a standing one on a full board" do
+    FleetAnnouncement::ACTIVE_LIMIT.times { create(:fleet_announcement, fleet: @fleet) }
+
+    sign_in @officer
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, id: @fleet.fleet_announcements.first.id},
+      body: {body: "Reworded", expiresAt: 2.days.from_now.iso8601}
+  end
+
   test "POST announcements makes room once one has expired" do
     FleetAnnouncement::ACTIVE_LIMIT.times { create(:fleet_announcement, fleet: @fleet) }
     @fleet.fleet_announcements.first.update_columns(expires_at: 1.minute.ago)

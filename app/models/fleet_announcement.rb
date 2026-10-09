@@ -28,7 +28,7 @@ class FleetAnnouncement < ApplicationRecord
 
   validates :body, presence: true, length: {maximum: BODY_LIMIT}
   validate :expires_in_the_future, if: -> { expires_at.present? }
-  validate :within_active_limit, on: :create
+  validate :within_active_limit, if: :becoming_active?
 
   scope :active, -> { where(expires_at: nil).or(where(expires_at: Time.current..)) }
 
@@ -39,9 +39,19 @@ class FleetAnnouncement < ApplicationRecord
     errors.add(:expires_at, :already_passed) if expires_at <= Time.current
   end
 
+  # A new one, or an expired one given a new end: either takes a place on the
+  # board, so either has to find one free.
+  private def becoming_active?
+    return true if new_record?
+    return false unless will_save_change_to_expires_at?
+
+    was = expires_at_in_database
+    was.present? && was <= Time.current
+  end
+
   private def within_active_limit
     return if fleet.blank?
-    return if fleet.fleet_announcements.active.count < ACTIVE_LIMIT
+    return if fleet.fleet_announcements.active.where.not(id: id).count < ACTIVE_LIMIT
 
     errors.add(:base, :announcement_limit_reached, count: ACTIVE_LIMIT)
   end
