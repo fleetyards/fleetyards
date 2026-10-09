@@ -92,6 +92,16 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     end
   end
 
+  test "reading missions follows MissionPolicy" do
+    [["fleet:missions:read"], ["fleet:missions:manage"], ["fleet:events:read"], []].each do |access|
+      membership = membership_with(access)
+      membership.update!(aasm_state: :accepted)
+      allowed = MissionPolicy.new(user: membership.user, fleet: @fleet).apply(:index?)
+
+      assert_equal allowed, membership.capabilities[:read_missions], "for #{access.inspect}"
+    end
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort

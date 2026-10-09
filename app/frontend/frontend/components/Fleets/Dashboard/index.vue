@@ -38,6 +38,7 @@ const {
   canAnswerTransfers,
   canCreateEvents,
   canCreateContracts,
+  canReadMissions,
 } = useFleetDashboardAccess(
   () => props.fleet,
   () => props.membership,
@@ -64,6 +65,7 @@ const excludedFromFeed = computed(() => [
         :contracts="showContracts && empty.contracts"
         :can-create-events="canCreateEvents"
         :can-create-contracts="canCreateContracts"
+        :can-read-missions="canReadMissions"
         class="fleet-dashboard__get-started"
       />
       <UpcomingEventsPanel

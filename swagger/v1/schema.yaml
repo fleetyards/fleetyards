@@ -27038,6 +27038,8 @@ components:
           type: boolean
         createEvents:
           type: boolean
+        readMissions:
+          type: boolean
         readContracts:
           type: boolean
         createContracts:
@@ -27080,6 +27082,7 @@ components:
       - readBlueprints
       - readEvents
       - createEvents
+      - readMissions
       - readContracts
       - createContracts
       - readRoles

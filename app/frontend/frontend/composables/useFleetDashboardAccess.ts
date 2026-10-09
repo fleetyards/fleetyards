@@ -74,6 +74,8 @@ export const useFleetDashboardAccess = (
     () => showContracts.value && !!capabilities.value?.createContracts,
   );
 
+  const canReadMissions = computed(() => !!capabilities.value?.readMissions);
+
   const showActionQueue = computed(
     () => canAnswerJoinRequests.value || canAnswerTransfers.value,
   );
@@ -88,5 +90,6 @@ export const useFleetDashboardAccess = (
     canAnswerTransfers,
     canCreateEvents,
     canCreateContracts,
+    canReadMissions,
   };
 };

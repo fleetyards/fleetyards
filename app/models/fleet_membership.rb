@@ -192,6 +192,7 @@ class FleetMembership < ApplicationRecord
     read_blueprints: ["fleet:manage", "fleet:blueprints:read"],
     read_events: ["fleet:manage", "fleet:events:manage", "fleet:events:read"],
     create_events: ["fleet:manage", "fleet:events:manage", "fleet:events:create"],
+    read_missions: ["fleet:manage", "fleet:missions:manage", "fleet:missions:read"],
     read_contracts: ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"],
     create_contracts: ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:create"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],

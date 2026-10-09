@@ -6,6 +6,11 @@ import type { Fleet } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const createDraft = vi.fn();
+const emit = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit, on: () => () => undefined }),
+}));
 
 vi.mock("@/frontend/composables/useDraftCreate", () => ({
   useEventDraft: () => ({ create: createDraft, pending: ref(false) }),
@@ -65,6 +70,36 @@ describe("FleetDashboardGetStartedPanel", () => {
       .trigger("click");
 
     expect(createDraft).toHaveBeenCalledWith("maru");
+  });
+
+  // The API copies a mission's teams only while it writes the event, so a
+  // reader of missions picks one first, as on the events page.
+  it("asks a reader of missions for a template before writing", async () => {
+    createDraft.mockClear();
+    const { wrapper } = await mount({
+      events: true,
+      canCreateEvents: true,
+      canReadMissions: true,
+    });
+
+    await wrapper
+      .find("[data-test='fleet-dashboard-plan-event']")
+      .trigger("click");
+
+    expect(createDraft).not.toHaveBeenCalled();
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({
+        props: expect.objectContaining({ fleet: { slug: "maru" } }),
+      }),
+    );
+
+    const [, payload] = emit.mock.calls.at(-1)!;
+    payload.props.onPick({ slug: "salvage-op" });
+
+    expect(createDraft).toHaveBeenCalledWith("maru", {
+      missionSlug: "salvage-op",
+    });
   });
 
   it("takes somebody who may post one to a new contract", async () => {

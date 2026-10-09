@@ -10,7 +10,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useEventDraft } from "@/frontend/composables/useDraftCreate";
-import type { Fleet } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import type { Fleet, Mission } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -20,6 +21,8 @@ type Props = {
   contracts?: boolean;
   canCreateEvents?: boolean;
   canCreateContracts?: boolean;
+  // Whoever can read the fleet's missions is asked for one to start from.
+  canReadMissions?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   contracts: false,
   canCreateEvents: false,
   canCreateContracts: false,
+  canReadMissions: false,
 });
 
 const { t } = useI18n();
@@ -35,7 +39,29 @@ const router = useRouter();
 
 const { create: createEventDraft, pending: creatingEvent } = useEventDraft();
 
-const planEvent = () => void createEventDraft(props.fleet.slug);
+const comlink = useComlink();
+
+// The same start the events page makes: a mission template first, because the
+// API copies a mission's teams only while it writes the event.
+const planEvent = () => {
+  if (creatingEvent.value) return;
+
+  if (!props.canReadMissions) {
+    void createEventDraft(props.fleet.slug);
+    return;
+  }
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
+    props: {
+      fleet: props.fleet,
+      onPick: (mission: Mission | null) => {
+        void createEventDraft(props.fleet.slug, { missionSlug: mission?.slug });
+      },
+    },
+  });
+};
 
 const postContract = () =>
   void router.push({
