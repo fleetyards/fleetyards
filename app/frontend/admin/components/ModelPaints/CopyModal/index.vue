@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import {
   type ModelPaint,
@@ -116,16 +116,14 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          :disabled="!canSubmit"
-          @click="submit"
-          :size="BtnSizesEnum.LG"
-        >
-          {{ t("actions.copy") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="model-paint-copy"
+        :loading="submitting"
+        :disabled="!canSubmit"
+      >
+        {{ t("actions.copy") }}
+      </Btn>
     </template>
   </Modal>
 </template>

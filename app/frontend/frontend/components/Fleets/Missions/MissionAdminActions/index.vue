@@ -168,7 +168,7 @@ const handleDestroy = () => {
         <span>{{ t("actions.fleets.missions.publish") }}</span>
       </Btn>
       <Btn
-        v-if="canCreateEvents && !archived"
+        v-if="canCreateEvents && !archived && !draft"
         :size="BtnSizesEnum.SM"
         @click="goToSpawnEvent"
       >

@@ -11,6 +11,7 @@ import {
   BtnSizesEnum,
   BtnTonesEnum,
   BtnVariantsEnum,
+  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -555,21 +556,19 @@ const onSubmit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :disabled="invalid"
-          :size="BtnSizesEnum.LG"
-          data-test="transfer-submit"
-          @click="onSubmit"
-        >
-          {{
-            needsAnswer
-              ? t("actions.logistics.sendTransfer")
-              : t("actions.logistics.moveStock")
-          }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="transfer-form"
+        :loading="submitting"
+        :disabled="invalid"
+        data-test="transfer-submit"
+      >
+        {{
+          needsAnswer
+            ? t("actions.logistics.sendTransfer")
+            : t("actions.logistics.moveStock")
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>

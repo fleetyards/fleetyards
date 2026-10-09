@@ -9,7 +9,7 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -183,16 +183,14 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          data-test="inventory-save"
-          @click="onSubmit"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="hangar-inventory-form"
+        :loading="submitting"
+        data-test="inventory-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -58,20 +59,37 @@ const removeAll = async () => {
       });
     });
 };
+
+// Both act on the same vehicles, so neither may start while the other runs.
+const busy = computed(
+  () =>
+    moveToWishlistMutation.isPending.value ||
+    destroyAllIngameMutation.isPending.value,
+);
 </script>
 
 <template>
   <Modal :title="t('headlines.hangar.resetIngame')">
-    <div class="page-actions page-actions-block">
+    <p>{{ t("texts.resetIngame.info") }}</p>
+    <template #footer>
       <Btn
+        :loading="moveToWishlistMutation.isPending.value"
+        :disabled="busy"
         data-test="reset-ingame-modal-reset-to-wishlist"
         @click="moveToWishlist"
       >
         {{ t("actions.hangar.resetIngame.moveToWishlist") }}
       </Btn>
-      <Btn data-test="reset-ingame-modal-reset" @click="removeAll">
+      <Btn
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.vehicle.resetIngame.removeAll.confirm')"
+        :loading="destroyAllIngameMutation.isPending.value"
+        :disabled="busy"
+        data-test="reset-ingame-modal-reset"
+        @click="removeAll"
+      >
         {{ t("actions.hangar.resetIngame.removeAll") }}
       </Btn>
-    </div>
+    </template>
   </Modal>
 </template>

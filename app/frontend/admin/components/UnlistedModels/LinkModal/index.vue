@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import {
   type ScDataUnlistedModel,
@@ -88,16 +88,14 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          :disabled="!modelId || submitting"
-          :size="BtnSizesEnum.LG"
-          @click="submit"
-        >
-          {{ t("actions.unlistedModel.link") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="unlisted-model-link"
+        :loading="submitting"
+        :disabled="!modelId || submitting"
+      >
+        {{ t("actions.unlistedModel.link") }}
+      </Btn>
     </template>
   </Modal>
 </template>

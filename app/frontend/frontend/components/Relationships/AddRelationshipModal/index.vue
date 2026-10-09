@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -64,17 +64,15 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :disabled="invalid"
-          :size="BtnSizesEnum.LG"
-          data-test="relationship-submit"
-          @click="submit"
-        >
-          {{ submitLabel }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="add-relationship-form"
+        :loading="submitting"
+        :disabled="invalid"
+        data-test="relationship-submit"
+      >
+        {{ submitLabel }}
+      </Btn>
     </template>
   </Modal>
 </template>

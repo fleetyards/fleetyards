@@ -315,22 +315,18 @@ const copyToken = () => {
     </section>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn :variant="BtnVariantsEnum.GHOST" @click="close">
-          {{ t("actions.close") }}
-        </Btn>
-        <Btn
-          v-if="
-            verification?.sid && verification.token && !verification.verified
-          "
-          :loading="checkMutation.isPending.value || pending"
-          :disabled="coolingDown && !pending"
-          data-test="fleet-rsi-verification-check"
-          @click="checkManually"
-        >
-          {{ t("actions.fleet.rsiVerification.check") }}
-        </Btn>
-      </div>
+      <Btn :variant="BtnVariantsEnum.BARE" @click="close">
+        {{ t("actions.close") }}
+      </Btn>
+      <Btn
+        v-if="verification?.sid && verification.token && !verification.verified"
+        :loading="checkMutation.isPending.value || pending"
+        :disabled="coolingDown && !pending"
+        data-test="fleet-rsi-verification-check"
+        @click="checkManually"
+      >
+        {{ t("actions.fleet.rsiVerification.check") }}
+      </Btn>
     </template>
   </Modal>
 </template>

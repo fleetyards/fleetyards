@@ -7,23 +7,32 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { axiosClient } from "@/services/axiosClient";
-import type { InventoryTarget } from "@/frontend/types/logistics";
+import type {
+  FleetInventoryTarget,
+  InventoryTarget,
+} from "@/frontend/types/logistics";
 
 type Props = {
-  target: InventoryTarget;
+  target: InventoryTarget | FleetInventoryTarget;
 };
 
 const props = defineProps<Props>();
 
-const importUrl = computed(() =>
-  props.target.kind === "hangar"
-    ? `/hangar/inventories/${props.target.slug}/items/import`
-    : `/vehicles/${props.target.vehicleId}/inventory/items/import`,
-);
+const importUrl = computed(() => {
+  switch (props.target.kind) {
+    case "hangar":
+      return `/hangar/inventories/${props.target.slug}/items/import`;
+    case "vehicle":
+      return `/vehicles/${props.target.vehicleId}/inventory/items/import`;
+    case "fleet":
+      return `/fleets/${props.target.fleetSlug}/inventories/${props.target.slug}/items/import`;
+  }
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -80,7 +89,11 @@ const importCsv = async () => {
           count: results.value.imported,
         }),
       });
-      comlink.emit("inventory-item-created");
+      comlink.emit(
+        props.target.kind === "fleet"
+          ? "fleet-inventory-item-created"
+          : "inventory-item-created",
+      );
     }
 
     if (results.value.errors.length === 0) {
@@ -101,13 +114,6 @@ const importCsv = async () => {
     <p class="text-muted">
       {{ t("labels.logistics.csvImportHelp") }}
     </p>
-
-    <Btn @click="downloadTemplate">
-      <i class="fa-duotone fa-download" />
-      {{ t("actions.logistics.downloadTemplate") }}
-    </Btn>
-
-    <hr />
 
     <div class="mb-3">
       <input
@@ -135,12 +141,28 @@ const importCsv = async () => {
       </div>
     </template>
 
-    <Btn
-      :disabled="!selectedFile || importing"
-      :loading="importing"
-      @click="importCsv"
-    >
-      {{ t("actions.logistics.importCsv") }}
-    </Btn>
+    <template #footer>
+      <Btn
+        :variant="BtnVariantsEnum.BARE"
+        class="csv-import-template"
+        @click="downloadTemplate"
+      >
+        <i class="fa-duotone fa-download" />
+        {{ t("actions.logistics.downloadTemplate") }}
+      </Btn>
+      <Btn
+        :disabled="!selectedFile || importing"
+        :loading="importing"
+        @click="importCsv"
+      >
+        {{ t("actions.logistics.importCsv") }}
+      </Btn>
+    </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.csv-import-template {
+  margin-right: auto;
+}
+</style>

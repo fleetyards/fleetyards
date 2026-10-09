@@ -163,6 +163,7 @@
             "failure": "無法將所有遊戲內購買的飛船移至您的願望清單。"
           },
           "removeAll": {
+            "confirm": "要從機庫移除所有在遊戲內購買的飛船嗎？此操作無法復原。",
             "success": "已從您的機庫移除所有遊戲內購買的飛船。",
             "failure": "無法從您的機庫移除所有遊戲內購買的飛船。"
           }
@@ -1106,6 +1107,7 @@
         "archiveTourConfirm": "封存此行程？它將從清單中移除，但帳目會保留。",
         "entryCreated": "已紀錄",
         "entryUpdated": "已更新",
+        "destroyEntryConfirm": "刪除此條目？此操作無法復原。",
         "entryDestroyed": "已刪除",
         "participantAdded": "已新增參與者",
         "participantRemoved": "已移除參與者",

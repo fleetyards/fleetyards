@@ -173,6 +173,7 @@
             "failure": "Could not move all Ingame bought Ships to your Wishlist."
           },
           "removeAll": {
+            "confirm": "Remove every ship you bought in-game from your hangar? This cannot be undone.",
             "success": "Removed all Ingame bought Ships from your Hangar.",
             "failure": "Could not remove all Ingame bought Ships from your Hangar."
           }
@@ -1116,6 +1117,7 @@
         "archiveTourConfirm": "Archive this tour? It leaves the list but keeps its ledger.",
         "entryCreated": "Entry recorded",
         "entryUpdated": "Entry updated",
+        "destroyEntryConfirm": "Delete this entry? This cannot be undone.",
         "entryDestroyed": "Entry removed",
         "participantAdded": "Participant added",
         "participantRemoved": "Participant removed",

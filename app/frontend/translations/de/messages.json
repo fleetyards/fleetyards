@@ -163,6 +163,7 @@
             "failure": "Nicht alle Ingame gekauften Schiffe konnten zu deiner Wunschliste verschoben werden."
           },
           "removeAll": {
+            "confirm": "Alle ingame gekauften Schiffe aus deinem Hangar entfernen? Das kann nicht rückgängig gemacht werden.",
             "success": "Alle Ingame gekauften Schiffe wurden aus deinem Hangar entfernt.",
             "failure": "Nicht alle Ingame gekauften Schiffe konnten aus deinem Hangar entfernt werden."
           }
@@ -1106,6 +1107,7 @@
         "archiveTourConfirm": "Diese Tour archivieren? Sie verschwindet aus der Liste, die Abrechnung bleibt erhalten.",
         "entryCreated": "Eintrag erfasst",
         "entryUpdated": "Eintrag aktualisiert",
+        "destroyEntryConfirm": "Diesen Eintrag löschen? Das kann nicht rückgängig gemacht werden.",
         "entryDestroyed": "Eintrag entfernt",
         "participantAdded": "Teilnehmer hinzugefügt",
         "participantRemoved": "Teilnehmer entfernt",
