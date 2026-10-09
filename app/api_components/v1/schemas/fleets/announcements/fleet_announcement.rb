@@ -17,7 +17,7 @@ module V1
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
-            required: %w[id body expiresAt author createdAt updatedAt]
+            required: %w[id body createdAt updatedAt]
           })
         end
       end

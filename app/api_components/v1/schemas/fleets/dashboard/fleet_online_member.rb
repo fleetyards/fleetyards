@@ -15,7 +15,7 @@ module V1
               friend: {type: :boolean},
               avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
             },
-            required: %w[username nickname friend avatar]
+            required: %w[username friend]
           })
         end
       end

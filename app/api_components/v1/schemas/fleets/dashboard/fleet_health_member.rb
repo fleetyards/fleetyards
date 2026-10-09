@@ -15,7 +15,7 @@ module V1
               lastActiveAt: {type: [:string, :null], format: "date-time"},
               avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
             },
-            required: %w[username nickname lastActiveAt avatar]
+            required: %w[username]
           })
         end
       end

@@ -20,7 +20,7 @@ module V1
                 items: ::V1::Schemas::Fleets::Dashboard::FleetHealthRole
               }
             },
-            required: %w[inactiveMembers unverifiedMembers emptyRoles]
+            required: %w[inactiveMembers]
           })
         end
       end
