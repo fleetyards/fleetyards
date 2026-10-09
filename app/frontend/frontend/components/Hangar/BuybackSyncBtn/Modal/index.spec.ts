@@ -445,6 +445,47 @@ describe("HangarBuybackSyncModal", () => {
     });
   });
 
+  it("warns once when the session runs out with the modal open", async () => {
+    await startSync();
+    displayWarning.mockClear();
+    rsiIdentity.mockResolvedValue({ code: 400, payload: {} });
+
+    try {
+      await answerNextPage("<html><body></body></html>");
+
+      expect(displayWarning).toHaveBeenCalledTimes(1);
+    } finally {
+      rsiIdentity.mockResolvedValue({
+        code: 200,
+        payload: { handle: "ACaptain" },
+      });
+    }
+  });
+
+  // Its retry needs an extension that reads buy-backs.
+  it("offers the update links for a failed run once the extension is outdated", async () => {
+    const first = await startSync();
+    first.unmount();
+    await answerNextPage("", { code: 403 });
+    expect(useBuybackSync().status.value).toBe("failed");
+
+    const wrapper = await mountModal();
+
+    expect(wrapper.find("[data-test='buyback-sync-outdated']").exists()).toBe(
+      true,
+    );
+  });
+
+  it("spends no session check on a run that finished", async () => {
+    await startSync();
+    rsiIdentity.mockClear();
+
+    await answerNextPage(emptyBuybackPage);
+
+    expect(useBuybackSync().status.value).toBe("finished");
+    expect(rsiIdentity).not.toHaveBeenCalled();
+  });
+
   it("shows a running read before the extension has answered", async () => {
     const first = await startSync();
     first.unmount();

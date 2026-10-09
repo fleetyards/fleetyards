@@ -96,9 +96,14 @@ export const useBuybackSync = () => {
 
   const details = useBuybackDetailsSync();
 
-  const fail = (text = t("messages.buybackSync.failure")) => {
+  // A run the user can put right themselves, such as by signing in again,
+  // warns rather than alerts.
+  const fail = (
+    text = t("messages.buybackSync.failure"),
+    { warn = false } = {},
+  ) => {
     status.value = "failed";
-    displayAlert({ text });
+    (warn ? displayWarning : displayAlert)({ text });
   };
 
   // Only ever after the last page: the endpoint replaces the whole list, so a
@@ -152,8 +157,7 @@ export const useBuybackSync = () => {
       if (outcome === RsiPageReportOutcome.REPORTED) {
         fail(t("messages.syncExtension.pageNotRecognised"));
       } else if (outcome === RsiPageReportOutcome.SIGNED_OUT) {
-        status.value = "failed";
-        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+        fail(t("messages.syncExtension.notLoggedIn"), { warn: true });
       } else {
         fail();
       }

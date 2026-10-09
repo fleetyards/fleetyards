@@ -75,6 +75,13 @@ const {
   running: detailsRunning,
 } = useBuybackDetailsSync();
 
+// A run going or one that ended with a result is shown whatever the extension
+// says now; a failed one needs the extension for its retry, so it shows the
+// install or update links when that is missing.
+const showsRun = computed(() =>
+  ["fetching", "submitting", "finished", "unsupported"].includes(status.value),
+);
+
 const working = computed(() => loadingIdentity.value || running.value);
 
 const extension = useSyncExtension();
@@ -101,8 +108,13 @@ const canStart = () =>
   extensionReady.value &&
   extensionSupportsBuybacks.value;
 
-watch(running, () => {
-  if (canStart()) void checkRSIIdentity();
+// A read that failed may have failed on the session; the run has already said
+// so, so the check only updates what Start relies on. A finished or cancelled
+// run offers no Start, and needs no RSI request for one.
+watch(status, (current) => {
+  if (current === "failed" && canStart()) {
+    void checkRSIIdentity({ quiet: true });
+  }
 });
 
 onMounted(() => {
@@ -121,7 +133,7 @@ onBeforeUnmount(() => {
 // Only the latest check answers: retry can be pressed while one is out.
 let identityCheck = 0;
 
-const checkRSIIdentity = async () => {
+const checkRSIIdentity = async ({ quiet = false } = {}) => {
   const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
@@ -135,7 +147,9 @@ const checkRSIIdentity = async () => {
   loadingIdentity.value = false;
 
   if (identity?.code !== 200 || !handle) {
-    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    if (!quiet) {
+      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    }
     identityStatus.value = "notFound";
     rsiHandle.value = undefined;
   } else {
@@ -164,12 +178,12 @@ const cancelRun = () => {
 <template>
   <Modal :title="t('headlines.buybackSync')" :loading="working">
     <!-- A run already going is shown at once, not after the extension check. -->
-    <div v-if="status === 'idle' && !extensionReady">
+    <div v-if="!showsRun && !extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
       <SyncExtensionLinks />
     </div>
     <div
-      v-else-if="status === 'idle' && !extensionSupportsBuybacks"
+      v-else-if="!showsRun && !extensionSupportsBuybacks"
       data-test="buyback-sync-outdated"
     >
       <p class="text-warning">{{ t("texts.buybackSync.unsupported") }}</p>

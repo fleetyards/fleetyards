@@ -106,11 +106,12 @@ const skippedItems = computed(() => [
     : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
 ]);
 
+// Only once Start could be pressed: a check mid-run would spend an RSI request
+// and warn about a session the run already has.
 onMounted(() => {
   hangarStore.syncModalOpen = true;
 
-  // Also for a run still going: once it fails, Start needs a known session.
-  if (hangarStore.extensionReady) {
+  if (hangarStore.extensionReady && !running.value) {
     void checkRSIIdentity();
   }
 });
@@ -128,18 +129,26 @@ onBeforeUnmount(() => {
 watch(
   () => hangarStore.extensionReady,
   () => {
-    if (hangarStore.extensionReady) {
+    if (hangarStore.extensionReady && !running.value) {
       void checkRSIIdentity();
     }
   },
 );
+
+// A read that failed may have failed on the session; the run has already said
+// so, so the check only updates what Start relies on.
+watch(finishedWithErrors, (failed) => {
+  if (failed && hangarStore.extensionReady) {
+    void checkRSIIdentity({ quiet: true });
+  }
+});
 
 const extension = useSyncExtension();
 
 // Only the latest check answers: retry can be pressed while one is out.
 let identityCheck = 0;
 
-const checkRSIIdentity = async () => {
+const checkRSIIdentity = async ({ quiet = false } = {}) => {
   const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
@@ -155,7 +164,9 @@ const checkRSIIdentity = async () => {
 
   if (identity?.code !== 200 || !handle) {
     console.info("FY Extension: No RSI Session found");
-    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    if (!quiet) {
+      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    }
     identityStatus.value = "notFound";
     rsiHandle.value = undefined;
   } else {
