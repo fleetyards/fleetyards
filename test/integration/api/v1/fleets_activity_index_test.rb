@@ -17,6 +17,8 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
 
       parameter name: :category, in: :query, required: false,
         schema: {"$ref": "#/components/schemas/FleetActivityCategoryEnum"}
+      parameter name: :exclude, in: :query, required: false,
+        schema: {"$ref": "#/components/schemas/FleetActivityCategoryEnum"}
       parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50}
 
       security [
@@ -174,6 +176,18 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {category: "events"} do
       assert_equal [["event_published", "Newer"], ["event_published", "Older"]], kinds_and_titles
+    end
+  end
+
+  # The dashboard shows who joined in a panel of its own, so its feed leaves
+  # them out rather than telling each one twice.
+  test "GET /fleets/:slug/activity leaves out an excluded category" do
+    create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Mining op",
+      starts_at: 3.days.from_now, published_at: 1.day.ago)
+
+    sign_in @member
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {exclude: "members"} do
+      assert_equal ["events"], parsed_body["items"].map { |entry| entry["category"] }.uniq
     end
   end
 

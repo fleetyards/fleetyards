@@ -27,6 +27,7 @@ module Api
 
         @entries = feed.entries(
           category: params[:category].presence,
+          exclude: params[:exclude].presence,
           limit: params[:limit].presence || Fleets::ActivityFeed::DEFAULT_LIMIT
         )
       end

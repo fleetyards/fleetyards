@@ -42,7 +42,7 @@ module Fleets
       @inventories = inventories
     end
 
-    def entries(category: nil, limit: DEFAULT_LIMIT)
+    def entries(category: nil, exclude: nil, limit: DEFAULT_LIMIT)
       @limit = limit.to_i.clamp(1, MAX_LIMIT)
 
       sources = {
@@ -52,6 +52,7 @@ module Fleets
         "inventory" => -> { inventory_entries }
       }
       sources = sources.slice(category) if category.present?
+      sources = sources.except(exclude) if exclude.present?
 
       sources.values.flat_map(&:call)
         .sort_by { |entry| [-entry.occurred_at.to_f, entry.id] }
