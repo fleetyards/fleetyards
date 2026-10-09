@@ -1628,14 +1628,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetAnnouncement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     delete:
       summary: Delete Fleet Announcement
       tags:
@@ -1652,14 +1656,18 @@ paths:
       responses:
         '204':
           description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/blueprints":
     parameters:
     - name: fleetSlug

@@ -87,6 +87,10 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Announcements::FleetAnnouncement
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -105,6 +109,10 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
 
       response(204, "successful")
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -121,7 +129,8 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
   test "GET announcements shows a member what is still standing, newest first" do
     create(:fleet_announcement, fleet: @fleet, author: @officer, body: "Old news", created_at: 2.days.ago)
     create(:fleet_announcement, fleet: @fleet, author: @officer, body: "Ops moved to Friday", created_at: 1.hour.ago)
-    create(:fleet_announcement, fleet: @fleet, author: @officer, body: "Expired", expires_at: 1.hour.ago)
+    create(:fleet_announcement, fleet: @fleet, author: @officer, body: "Expired")
+      .update_columns(expires_at: 1.hour.ago)
 
     sign_in @member
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
@@ -158,6 +167,29 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     sign_in @officer
 
     assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {body: ""}
+  end
+
+  test "POST announcements refuses an end that has already passed" do
+    sign_in @officer
+
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug},
+      body: {body: "Too late", expiresAt: 1.hour.ago.iso8601}
+  end
+
+  test "PUT announcement keeps an end it already had without asking again" do
+    announcement = create(:fleet_announcement, fleet: @fleet, author: @admin, expires_at: 1.day.from_now)
+
+    sign_in @officer
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, id: announcement.id},
+      body: {body: "Reworded"}
+  end
+
+  test "PUT announcement refuses an empty body" do
+    announcement = create(:fleet_announcement, fleet: @fleet, author: @admin)
+
+    sign_in @officer
+    assert_api_response :put, 400, path_params: {fleetSlug: @fleet.slug, id: announcement.id},
+      body: {body: ""}
   end
 
   test "PUT announcement lets an officer edit it" do
