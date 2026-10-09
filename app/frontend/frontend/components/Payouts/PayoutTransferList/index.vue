@@ -90,9 +90,11 @@ const onToggle = async (transfer: PayoutTransfer) => {
         <span class="payout-transfers__name">
           {{ transfer.from.displayName }}
         </span>
-        <i class="fa-light fa-arrow-right payout-transfers__arrow" />
-        <span class="payout-transfers__name">
-          {{ transfer.to.displayName }}
+        <span class="payout-transfers__to">
+          <i class="fa-light fa-arrow-right payout-transfers__arrow" />
+          <span class="payout-transfers__name">
+            {{ transfer.to.displayName }}
+          </span>
         </span>
       </div>
 
@@ -159,6 +161,15 @@ const onToggle = async (transfer: PayoutTransfer) => {
   align-items: center;
   gap: 8px;
   flex: 1 1 auto;
+  min-width: 0;
+}
+
+// The arrow wraps with the name it points at, so a wrapped row still reads
+// from -> to rather than leaving the arrow alone on a line.
+.payout-transfers__to {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
