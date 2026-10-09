@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# Devise's activatable hook signs an inactive user straight back out; required
-# here so it runs before this one rather than whenever User is first loaded.
+# Devise's hooks that sign a user straight back out, required here so they run
+# before this one rather than whenever User is first loaded.
 require "devise/hooks/activatable"
+require "devise/hooks/timeoutable"
 
 # `Api::BaseController` leaves the session unwritten until a user is signed in.
 # A user fetched from the session is left to the controller, because Devise's
