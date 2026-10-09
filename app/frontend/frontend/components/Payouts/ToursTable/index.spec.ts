@@ -3,6 +3,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { Tour } from "@/services/fyApi";
 
+const viewport = vi.hoisted(() => ({ mobile: false }));
+
+vi.mock("@/shared/stores/mobile", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/shared/stores/mobile")>()),
+  isMobileWidth: () => viewport.mobile,
+}));
+
 const tour = (overrides: Partial<Tour> = {}): Tour =>
   ({
     id: "tour-1",
@@ -22,14 +29,7 @@ const mount = async (
   },
   { mobile = false }: { mobile?: boolean } = {},
 ) => {
-  vi.stubGlobal("matchMedia", (query: string) => ({
-    matches: mobile && query === "(max-width: 992px)",
-    media: query,
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    addListener: () => {},
-    removeListener: () => {},
-  }));
+  viewport.mobile = mobile;
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
@@ -39,7 +39,6 @@ const mount = async (
 };
 
 afterEach(() => {
-  vi.unstubAllGlobals();
   while (wrappers.length) {
     wrappers.pop()?.unmount();
   }
