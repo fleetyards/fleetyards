@@ -65,7 +65,6 @@ describe("ToursTable", () => {
     expect(with_.text()).toContain("Blue Sun");
   });
 
-  // A fourth column pushed the status off the edge of a phone.
   it("puts the fleet under the title on a phone", async () => {
     const fleetTour = tour({
       fleet: { id: "fleet-1", name: "Blue Sun", slug: "blue-sun" },
