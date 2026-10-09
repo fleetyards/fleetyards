@@ -14,7 +14,7 @@ module V1
               username: {type: :string},
               avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]}
             },
-            required: %w[id username avatar]
+            required: %w[id username]
           })
         end
       end

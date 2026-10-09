@@ -23204,9 +23204,7 @@ components:
       - category
       - occurredAt
       - involvesViewer
-      - actor
       - subject
-      - inventory
       title: FleetActivity
     FleetActivityActor:
       type: object
@@ -23223,7 +23221,6 @@ components:
       required:
       - id
       - username
-      - avatar
       title: FleetActivityActor
     FleetActivityCategoryEnum:
       type: string
@@ -23328,8 +23325,6 @@ components:
       required:
       - type
       - id
-      - slug
-      - title
       title: FleetActivitySubject
     FleetActivitySubjectTypeEnum:
       type: string

@@ -18,7 +18,7 @@ module V1
               slug: {type: [:string, :null]},
               title: {type: [:string, :null]}
             },
-            required: %w[type id slug title]
+            required: %w[type id]
           })
         end
       end

@@ -19,7 +19,7 @@ module V1
               subject: ::V1::Schemas::Fleets::Activity::FleetActivitySubject,
               inventory: {anyOf: [::V1::Schemas::Fleets::Activity::FleetActivityInventory, {type: :null}]}
             },
-            required: %w[id kind category occurredAt involvesViewer actor subject inventory]
+            required: %w[id kind category occurredAt involvesViewer subject]
           })
         end
       end
