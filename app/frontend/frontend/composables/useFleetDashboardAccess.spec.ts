@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { FeatureFlagName } from "@/services/fyApi/models/FeatureFlagName";
-import { FleetRoleResourceAccessEnum } from "@/services/fyApi/models/FleetRoleResourceAccessEnum";
 import { FleetMembershipStatusEnum } from "@/services/fyApi/models/FleetMembershipStatusEnum";
 import type { Fleet, FleetMember } from "@/services/fyApi";
 
@@ -11,16 +10,12 @@ vi.mock("@/services/fyApi", async () => {
   const flags = await vi.importActual(
     "@/services/fyApi/models/FeatureFlagName.ts",
   );
-  const access = await vi.importActual(
-    "@/services/fyApi/models/FleetRoleResourceAccessEnum.ts",
-  );
   const status = await vi.importActual(
     "@/services/fyApi/models/FleetMembershipStatusEnum.ts",
   );
 
   return {
     ...flags,
-    ...access,
     ...status,
     useFeatures: () => ({ data: viewerFeatures }),
     getFeaturesQueryOptions: () => ({}),
@@ -43,34 +38,20 @@ const fleetWith = (features: string[] = ALL_FEATURES, subscribed = true) =>
   ({ features, subscribed }) as unknown as Fleet;
 
 const member = (
-  resourceAccess: string[],
   capabilities: string[] = [],
   status: string = FleetMembershipStatusEnum.ACCEPTED,
 ) =>
   ({
     status,
-    fleetRole: { resourceAccess },
     capabilities: Object.fromEntries(capabilities.map((key) => [key, true])),
   }) as unknown as FleetMember;
 
-// What the member preset carries: reading the fleet's modules, answering none.
-const plainMember = () =>
-  member(
-    [
-      FleetRoleResourceAccessEnum.FLEET_EVENTS_READ,
-      FleetRoleResourceAccessEnum.FLEET_CONTRACTS_READ,
-    ],
-    ["readMembers", "readInventories"],
-  );
+const READS = ["readEvents", "readContracts", "readMembers", "readInventories"];
 
-const officer = () =>
-  member(
-    [
-      FleetRoleResourceAccessEnum.FLEET_EVENTS_MANAGE,
-      FleetRoleResourceAccessEnum.FLEET_CONTRACTS_MANAGE,
-    ],
-    ["readMembers", "updateMembers", "readInventories", "updateInventories"],
-  );
+// What the member preset carries: reading the fleet's modules, answering none.
+const plainMember = () => member(READS);
+
+const officer = () => member([...READS, "updateMembers", "updateInventories"]);
 
 describe("useFleetDashboardAccess", () => {
   beforeEach(() => {
@@ -95,11 +76,18 @@ describe("useFleetDashboardAccess", () => {
     expect(access.canAnswerTransfers.value).toBe(true);
   });
 
-  it("keeps a module the role cannot read off the dashboard", () => {
+  it("lists no join requests to a role that may answer but not read them", () => {
     const access = useFleetDashboardAccess(
       fleetWith(),
-      member([FleetRoleResourceAccessEnum.FLEET_EVENTS_READ]),
+      member(["updateMembers"]),
     );
+
+    expect(access.canAnswerJoinRequests.value).toBe(false);
+    expect(access.showActionQueue.value).toBe(false);
+  });
+
+  it("keeps a module the role cannot read off the dashboard", () => {
+    const access = useFleetDashboardAccess(fleetWith(), member(["readEvents"]));
 
     expect(access.showEvents.value).toBe(true);
     expect(access.showContracts.value).toBe(false);
@@ -138,8 +126,7 @@ describe("useFleetDashboardAccess", () => {
     const access = useFleetDashboardAccess(
       fleetWith(),
       member(
-        [FleetRoleResourceAccessEnum.FLEET_MANAGE],
-        ["readMembers", "updateMembers", "readInventories"],
+        [...READS, "updateMembers", "updateInventories"],
         FleetMembershipStatusEnum.REQUESTED,
       ),
     );

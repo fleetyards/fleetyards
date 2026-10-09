@@ -2,7 +2,6 @@ import { type MaybeRefOrGetter } from "vue";
 import {
   FeatureFlagName,
   FleetMembershipStatusEnum,
-  FleetRoleResourceAccessEnum,
   type Fleet,
   type FleetMember,
 } from "@/services/fyApi";
@@ -31,12 +30,6 @@ export const useFleetDashboardAccess = (
     isMember.value ? toValue(membership)?.capabilities : undefined,
   );
 
-  const hasResourceAccess = (...allowed: FleetRoleResourceAccessEnum[]) =>
-    isMember.value &&
-    (toValue(membership)?.fleetRole?.resourceAccess ?? []).some((resource) =>
-      allowed.includes(resource),
-    );
-
   const premiumAvailable = (feature: FeatureFlagName) =>
     isFleetFeatureEnabled(toValue(fleet), feature) &&
     !subscriptionRequired.value;
@@ -44,21 +37,13 @@ export const useFleetDashboardAccess = (
   const showEvents = computed(
     () =>
       premiumAvailable(FeatureFlagName.FLEET_MISSION_BUILDER) &&
-      hasResourceAccess(
-        FleetRoleResourceAccessEnum.FLEET_MANAGE,
-        FleetRoleResourceAccessEnum.FLEET_EVENTS_MANAGE,
-        FleetRoleResourceAccessEnum.FLEET_EVENTS_READ,
-      ),
+      !!capabilities.value?.readEvents,
   );
 
   const showContracts = computed(
     () =>
       premiumAvailable(FeatureFlagName.FLEET_CONTRACTS) &&
-      hasResourceAccess(
-        FleetRoleResourceAccessEnum.FLEET_MANAGE,
-        FleetRoleResourceAccessEnum.FLEET_CONTRACTS_MANAGE,
-        FleetRoleResourceAccessEnum.FLEET_CONTRACTS_READ,
-      ),
+      !!capabilities.value?.readContracts,
   );
 
   const showInventory = computed(
@@ -70,10 +55,11 @@ export const useFleetDashboardAccess = (
   const showNewMembers = computed(() => !!capabilities.value?.readMembers);
 
   // The two queues an officer answers for the fleet as a whole: who asked to
-  // join, and what was sent to the fleet. Each needs the right to answer it,
-  // not only to read it.
+  // join, and what was sent to the fleet. Each needs the right to list it and
+  // the right to answer it.
   const canAnswerJoinRequests = computed(
-    () => !!capabilities.value?.updateMembers,
+    () =>
+      !!capabilities.value?.readMembers && !!capabilities.value?.updateMembers,
   );
 
   const canAnswerTransfers = computed(

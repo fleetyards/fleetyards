@@ -48,11 +48,17 @@ const entries = computed(() =>
 );
 
 // Nothing of the reader's own lately is not worth a panel that says so; the
-// fleet's movements are the better opening.
+// fleet's movements are the better opening. Decided once, on the first answer,
+// so a refetch never takes back a choice the reader made.
+let scopeChosen = false;
+
 watch(
   () => data.value,
   (value) => {
-    if (value && !mine.value.length) scope.value = "fleet";
+    if (!value || scopeChosen) return;
+
+    scopeChosen = true;
+    if (!mine.value.length) scope.value = "fleet";
   },
   { immediate: true },
 );

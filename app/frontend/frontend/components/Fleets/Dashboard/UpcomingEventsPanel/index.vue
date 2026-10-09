@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { addDays, startOfHour } from "date-fns";
+import { addDays, startOfDay } from "date-fns";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -31,9 +31,10 @@ const SHOWN = 6;
 
 // The calendar rather than the event list: it expands a recurring series into
 // its dates, where the list would show a weekly op once, on the day it began.
-// Rounded to the hour so the query key holds still between renders.
+// From the start of today, so an op that is underway is still here, and so the
+// query key holds still between renders.
 const range = computed(() => {
-  const from = startOfHour(new Date());
+  const from = startOfDay(new Date());
 
   return {
     from: from.toISOString(),
@@ -52,11 +53,21 @@ const HIDDEN: FleetEvent["status"][] = [
   FleetEventStatusEnum.COMPLETED,
 ];
 
-const entries = computed(() =>
-  (data.value?.items ?? [])
-    .filter((event) => !HIDDEN.includes(event.status))
-    .slice(0, SHOWN),
-);
+// An hour when the event carries no end, as the calendar grid assumes too.
+const DEFAULT_DURATION_MS = 60 * 60 * 1000;
+
+const endsAt = (event: FleetEvent) =>
+  event.endsAt
+    ? new Date(event.endsAt).getTime()
+    : new Date(event.startsAt).getTime() + DEFAULT_DURATION_MS;
+
+const entries = computed(() => {
+  const now = Date.now();
+
+  return (data.value?.items ?? [])
+    .filter((event) => !HIDDEN.includes(event.status) && endsAt(event) >= now)
+    .slice(0, SHOWN);
+});
 
 const linkFor = (event: FleetEvent) => ({
   name: "fleet-event",

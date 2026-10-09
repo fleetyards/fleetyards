@@ -55,7 +55,7 @@ const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
   slug: "mining-op",
   title: "Mining op",
   status: "open",
-  startsAt: "2026-05-14T20:00:00Z",
+  startsAt: new Date(Date.now() + 86_400_000).toISOString(),
   signupsOpen: true,
   viewerSignup: null,
   ...overrides,
@@ -120,6 +120,31 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
   });
 
   // A recurring date is a page of the series, opened at that occurrence.
+  // An op that began this morning and runs until tonight is still the one the
+  // reader is in; one that already ended is not upcoming.
+  it("keeps what is underway and drops what has ended", async () => {
+    const hoursAgo = (hours: number) =>
+      new Date(Date.now() - hours * 3_600_000).toISOString();
+
+    items = [
+      event({
+        id: "a",
+        title: "Underway",
+        status: "active",
+        startsAt: hoursAgo(2),
+        endsAt: new Date(Date.now() + 3_600_000).toISOString(),
+      }),
+      event({
+        id: "b",
+        title: "Over",
+        startsAt: hoursAgo(3),
+        endsAt: hoursAgo(1),
+      }),
+    ];
+
+    expect(titles(await mount())).toEqual(["Underway"]);
+  });
+
   it("links an occurrence to its series", async () => {
     items = [
       event({
