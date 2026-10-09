@@ -175,7 +175,7 @@ const teams = computed<FleetEventTeam[]>(
             >
               <Btn
                 :size="BtnSizesEnum.SM"
-                variant="bare"
+                :variant="BtnVariantsEnum.BARE"
                 :disabled="
                   slot.id === currentSlotId ||
                   !!slotTakenBy(slot) ||
@@ -225,7 +225,7 @@ const teams = computed<FleetEventTeam[]>(
     </div>
 
     <template #footer>
-      <Btn variant="bare" @click="comlink.emit('close-modal')">
+      <Btn :variant="BtnVariantsEnum.BARE" @click="comlink.emit('close-modal')">
         {{ t("actions.cancel") }}
       </Btn>
     </template>

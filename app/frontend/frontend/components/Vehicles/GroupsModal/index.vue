@@ -89,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
     v-if="vehicle?.model"
     :title="t('headlines.editGroups', { vehicle: vehicle.model.name })"
   >
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+    <form :id="`vehicle-groups-${vehicle.id}`" @submit.prevent="onSubmit">
       <div v-if="hangarGroups && hangarGroups.length" class="row">
         <div
           v-for="group in hangarGroups"
@@ -108,7 +108,7 @@ const onSubmit = handleSubmit(async (values) => {
     <template #footer>
       <Btn
         :type="BtnTypesEnum.SUBMIT"
-        :form="`vehicle-${vehicle.id}`"
+        :form="`vehicle-groups-${vehicle.id}`"
         :loading="submitting"
         data-test="vehicle-save"
       >

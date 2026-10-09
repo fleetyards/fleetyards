@@ -111,7 +111,7 @@ const useName = (newName: string) => {
     v-if="vehicle"
     :title="t('headlines.nameMyVehicle', { vehicle: vehicle?.model?.name })"
   >
-    <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
+    <form :id="`vehicle-naming-${vehicle.id}`" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="form-group">
@@ -154,7 +154,7 @@ const useName = (newName: string) => {
     <template #footer>
       <Btn
         :type="BtnTypesEnum.SUBMIT"
-        :form="`vehicle-${vehicle.id}`"
+        :form="`vehicle-naming-${vehicle.id}`"
         :loading="submitting"
         data-test="vehicle-save"
       >
