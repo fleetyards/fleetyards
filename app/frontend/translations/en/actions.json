@@ -237,7 +237,7 @@
       "syncExtension": {
         "cancel": "Cancel",
         "start": "Start Sync",
-        "openSettings": "Open settings",
+        "changeInSettings": "Change this in Settings",
         "retry": "Retry Sync",
         "close": "Close",
         "refresh": "Refresh Page"

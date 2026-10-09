@@ -124,18 +124,14 @@ const missingUnmatchedGroup = computed(
 
 // Both toggles live behind the cog and are remembered, so a user who turned
 // one off once would otherwise start every later sync without seeing it.
-const skippedItemsNote = computed(() => {
-  if (!hangarStore.syncPaints && !hangarStore.syncHangarFlair) {
-    return t("texts.syncExtension.skipsPaintsAndHangarFlair");
-  }
-  if (!hangarStore.syncPaints) {
-    return t("texts.syncExtension.skipsPaints");
-  }
-  if (!hangarStore.syncHangarFlair) {
-    return t("texts.syncExtension.skipsHangarFlair");
-  }
-  return undefined;
-});
+const skippedItems = computed(() => [
+  ...(hangarStore.syncPaints
+    ? []
+    : [t("labels.syncExtension.pledgeItems.paints")]),
+  ...(hangarStore.syncHangarFlair
+    ? []
+    : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
+]);
 
 const seenPledgeIds = new Set<string>();
 
@@ -258,6 +254,13 @@ const finished = computed(() =>
 const finishedWithErrors = computed(() =>
   processSteps.value.some((step) => step.status === "failure"),
 );
+
+defineExpose({
+  dirty: computed(
+    () => started.value && !finished.value && !finishedWithErrors.value,
+  ),
+  dirtyText: t("messages.syncExtension.closeWhileRunning"),
+});
 
 const retryable = computed(() => {
   const submitDataStatus = processSteps.value.find(
@@ -505,21 +508,7 @@ const refreshPage = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.syncExtension')" :fixed="true" :loading="working">
-    <template v-if="hangarStore.extensionReady && !started" #header-actions>
-      <Btn
-        v-tooltip="t('labels.syncExtension.settings')"
-        :variant="BtnVariantsEnum.GHOST"
-        :size="BtnSizesEnum.SM"
-        :active="settingsOpen"
-        :aria-label="t('labels.syncExtension.settings')"
-        :aria-pressed="settingsOpen"
-        data-test="toggle-sync-settings"
-        @click="settingsOpen = !settingsOpen"
-      >
-        <i class="fa-light fa-gear" />
-      </Btn>
-    </template>
+  <Modal :title="t('headlines.syncExtension')" :loading="working">
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
@@ -530,6 +519,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncAddBundledVehicles"
             name="syncAddBundledVehicles"
+            autosaved
             :label="t('labels.syncExtension.addBundledVehicles')"
             :info="t('labels.syncExtension.addBundledVehiclesHint')"
             no-placeholder
@@ -537,6 +527,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncPaints"
             name="syncPaints"
+            autosaved
             :label="t('labels.syncExtension.syncPaints')"
             :info="t('labels.syncExtension.syncPaintsHint')"
             no-placeholder
@@ -544,6 +535,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncHangarFlair"
             name="syncHangarFlair"
+            autosaved
             :label="t('labels.syncExtension.syncHangarFlair')"
             :info="t('labels.syncExtension.syncHangarFlairHint')"
             no-placeholder
@@ -551,6 +543,7 @@ const refreshPage = async () => {
           <BaseSelect
             v-model="hangarStore.syncUnmatchedVehiclesAction"
             name="syncUnmatchedVehiclesAction"
+            autosaved
             :options="unmatchedActionOptions"
             :label="t('labels.syncExtension.unmatchedVehiclesAction')"
             :info="t('labels.syncExtension.unmatchedVehiclesActionHint')"
@@ -563,6 +556,7 @@ const refreshPage = async () => {
             v-if="filesUnmatchedIntoGroup"
             v-model="hangarStore.syncUnmatchedHangarGroupId"
             name="syncUnmatchedHangarGroupId"
+            autosaved
             :multiple="false"
             :no-label="false"
             :label="t('labels.syncExtension.unmatchedHangarGroup')"
@@ -587,29 +581,34 @@ const refreshPage = async () => {
             :info="t('labels.imports.targetGroupHint')"
           />
           <div
-            v-if="missingUnmatchedGroup || skippedItemsNote"
+            v-if="missingUnmatchedGroup || skippedItems.length"
             class="sync-settings-notes"
           >
-            <p
-              v-if="missingUnmatchedGroup"
-              class="text-warning"
-              data-test="sync-missing-unmatched-group"
-            >
-              {{ t("texts.syncExtension.missingUnmatchedGroup") }}
-            </p>
-            <p
-              v-if="skippedItemsNote"
-              class="text-muted"
-              data-test="sync-skipped-items"
-            >
-              {{ skippedItemsNote }}
-            </p>
+            <div class="sync-settings-notes-text">
+              <p
+                v-if="missingUnmatchedGroup"
+                class="text-warning"
+                data-test="sync-missing-unmatched-group"
+              >
+                {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+              </p>
+              <div
+                v-if="skippedItems.length"
+                class="text-muted"
+                data-test="sync-skipped-items"
+              >
+                <p>{{ t("texts.syncExtension.notSyncing") }}</p>
+                <ul>
+                  <li v-for="item in skippedItems" :key="item">{{ item }}</li>
+                </ul>
+              </div>
+            </div>
             <Btn
               :size="BtnSizesEnum.SM"
               data-test="open-sync-settings"
               @click="settingsOpen = true"
             >
-              {{ t("actions.syncExtension.openSettings") }}
+              {{ t("actions.syncExtension.changeInSettings") }}
             </Btn>
           </div>
           <p v-if="hangarStore.syncRunning" class="text-warning">
@@ -643,7 +642,26 @@ const refreshPage = async () => {
       <Btn v-if="finished" data-test="close-sync" @click="cancel">
         {{ t("actions.syncExtension.close") }}
       </Btn>
+      <Btn
+        v-else-if="settingsOpen && !started"
+        class="sync-footer-start"
+        data-test="close-sync-settings"
+        @click="settingsOpen = false"
+      >
+        <i class="fa-light fa-chevron-left" />
+        {{ t("actions.back") }}
+      </Btn>
       <template v-else>
+        <Btn
+          v-if="hangarStore.extensionReady && !started"
+          :variant="BtnVariantsEnum.GHOST"
+          class="sync-footer-start"
+          data-test="toggle-sync-settings"
+          @click="settingsOpen = true"
+        >
+          <i class="fa-light fa-gear" />
+          {{ t("labels.syncExtension.settings") }}
+        </Btn>
         <Btn
           data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"

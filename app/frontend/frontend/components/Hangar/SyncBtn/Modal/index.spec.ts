@@ -432,6 +432,7 @@ describe("HangarSyncModal", () => {
 
     hangarStore.syncUnmatchedHangarGroupId = "group-1";
     await flushPromises();
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
 
     expect(
       wrapper.find("[data-test='start-sync']").attributes("disabled"),
@@ -454,23 +455,27 @@ describe("HangarSyncModal", () => {
       false,
     );
 
+    const skippedItems = () =>
+      wrapper
+        .findAll("[data-test='sync-skipped-items'] li")
+        .map((item) => item.text());
+
     hangarStore.syncPaints = false;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsPaints",
-    );
+    expect(skippedItems()).toEqual(["labels.syncExtension.pledgeItems.paints"]);
 
     hangarStore.syncHangarFlair = false;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsPaintsAndHangarFlair",
-    );
+    expect(skippedItems()).toEqual([
+      "labels.syncExtension.pledgeItems.paints",
+      "labels.syncExtension.pledgeItems.hangarFlair",
+    ]);
 
     hangarStore.syncPaints = true;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsHangarFlair",
-    );
+    expect(skippedItems()).toEqual([
+      "labels.syncExtension.pledgeItems.hangarFlair",
+    ]);
 
     await wrapper.find("[data-test='open-sync-settings']").trigger("click");
     expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
@@ -490,6 +495,7 @@ describe("HangarSyncModal", () => {
     // the choice the user made on this one.
     expect(hangarStore.syncAddBundledVehicles).toBe(false);
 
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
     await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
@@ -497,17 +503,49 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("switches to the settings and back with the cog", async () => {
+  it("opens the settings with the cog and leaves them from the footer", async () => {
     const { wrapper } = await mountModal();
 
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+    const has = (testId: string) =>
+      wrapper.find(`[data-test='${testId}']`).exists();
+
+    expect(has("sync-settings")).toBe(false);
 
     await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='toggle-syncPaints']").exists()).toBe(true);
+    expect(has("sync-settings")).toBe(true);
+    expect(has("toggle-syncPaints")).toBe(true);
+    expect(has("toggle-sync-settings")).toBe(false);
+    expect(has("start-sync")).toBe(false);
 
-    await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
+    expect(has("sync-settings")).toBe(false);
+    expect(has("toggle-sync-settings")).toBe(true);
+    expect(has("start-sync")).toBe(true);
+  });
+
+  it("asks before closing while the sync runs", async () => {
+    const { wrapper } = await mountModal();
+
+    const exposed = wrapper.vm as unknown as {
+      dirty: boolean;
+      dirtyText: string;
+    };
+
+    expect(exposed.dirty).toBe(false);
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    expect(exposed.dirty).toBe(true);
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+    );
+    expect(exposed.dirty).toBe(true);
+
+    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
+    await flushPromises();
+    expect(exposed.dirty).toBe(false);
+    expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
   });
 
   it("passes the paint and flair choices on to the sync", async () => {

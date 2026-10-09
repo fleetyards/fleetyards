@@ -3,9 +3,28 @@
 }
 
 .sync-settings-notes {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 1rem;
 
-  p {
+  p,
+  ul {
     margin-bottom: 0.5rem;
   }
+
+  ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+}
+
+.sync-settings-notes-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sync-footer-start {
+  margin-right: auto;
 }
