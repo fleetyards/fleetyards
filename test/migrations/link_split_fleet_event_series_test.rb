@@ -21,7 +21,7 @@ class LinkSplitFleetEventSeriesTest < ActiveSupport::TestCase
   test "links a series split before the link was recorded" do
     series = weekly("Weekly Op")
     successor = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
-    successor.update_columns(split_from_id: nil) # rubocop:disable Rails/SkipsModelValidations
+    successor.update_columns(split_from_id: nil)
 
     backfill
 
@@ -54,7 +54,7 @@ class LinkSplitFleetEventSeriesTest < ActiveSupport::TestCase
     successor = FleetEvents::SeriesSplit.new(series, "2026-06-05").call
 
     assert_equal Date.parse("2026-06-03"), series.reload.recurrence_until
-    successor.update_columns(split_from_id: nil) # rubocop:disable Rails/SkipsModelValidations
+    successor.update_columns(split_from_id: nil)
 
     backfill
 

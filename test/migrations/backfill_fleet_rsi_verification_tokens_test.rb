@@ -6,7 +6,7 @@ require Rails.root.join("db/data/20260929090000_backfill_fleet_rsi_verification_
 class BackfillFleetRsiVerificationTokensTest < ActiveSupport::TestCase
   test "every fleet without a token gets its own" do
     fleets = create_list(:fleet, 2, created_by: create(:user).id)
-    Fleet.where(id: fleets.map(&:id)).update_all(rsi_verification_token: nil) # rubocop:disable Rails/SkipsModelValidations
+    Fleet.where(id: fleets.map(&:id)).update_all(rsi_verification_token: nil)
 
     BackfillFleetRsiVerificationTokens.new.up
 

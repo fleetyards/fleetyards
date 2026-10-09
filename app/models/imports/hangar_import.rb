@@ -62,14 +62,20 @@ module Imports
         attachable = change.attachable
         case attachable
         when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile
-          JSON.parse(attachable.read.tap { attachable.rewind })
+          parse_import(attachable.read.tap { attachable.rewind })
         when String
           blob = ActiveStorage::Blob.find_signed!(attachable)
-          JSON.parse(blob.download)
+          parse_import(blob.download)
         end
       elsif import.attached?
-        JSON.parse(import.download)
+        parse_import(import.download)
       end
+    end
+
+    # Exports from third-party tools can repeat a key; json 3 rejects that by
+    # default, where json 2 kept the last value.
+    def parse_import(json)
+      JSON.parse(json, allow_duplicate_key: true)
     end
   end
 end

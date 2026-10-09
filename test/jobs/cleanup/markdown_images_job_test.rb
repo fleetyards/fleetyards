@@ -18,7 +18,7 @@ module Cleanup
 
     test "#perform keeps an image a description embeds" do
       image = old_image
-      @fleet.update_columns(description: "Our banner\n\n![cover](https://api.fleetyards.test/v1/markdown-images/#{image.id}/){width=50%}") # rubocop:disable Rails/SkipsModelValidations
+      @fleet.update_columns(description: "Our banner\n\n![cover](https://api.fleetyards.test/v1/markdown-images/#{image.id}/){width=50%}")
 
       ::Cleanup::MarkdownImagesJob.new.perform
 
@@ -28,7 +28,7 @@ module Cleanup
     test "#perform keeps an image embedded in another kind of text" do
       image = old_image
       event = create(:fleet_event, fleet: @fleet)
-      event.update_columns(briefing: "![map](/v1/markdown-images/#{image.id})") # rubocop:disable Rails/SkipsModelValidations
+      event.update_columns(briefing: "![map](/v1/markdown-images/#{image.id})")
 
       ::Cleanup::MarkdownImagesJob.new.perform
 
@@ -49,7 +49,7 @@ module Cleanup
 
     test "#perform keeps an image named by an uppercase id" do
       image = old_image
-      @fleet.update_columns(description: "![cover](/v1/markdown-images/#{image.id.upcase})") # rubocop:disable Rails/SkipsModelValidations
+      @fleet.update_columns(description: "![cover](/v1/markdown-images/#{image.id.upcase})")
 
       ::Cleanup::MarkdownImagesJob.new.perform
 
@@ -131,7 +131,7 @@ module Cleanup
 
     private def old_image
       create(:markdown_image).tap do |image|
-        image.update_columns(created_at: (MarkdownImage::UNREFERENCED_GRACE + 1.day).ago) # rubocop:disable Rails/SkipsModelValidations
+        image.update_columns(created_at: (MarkdownImage::UNREFERENCED_GRACE + 1.day).ago)
       end
     end
   end

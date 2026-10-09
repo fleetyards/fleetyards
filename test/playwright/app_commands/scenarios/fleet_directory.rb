@@ -10,7 +10,7 @@ directory_fleet = lambda do |name:, fid:, sid:, **profile|
   creator = FactoryBot.create(:user)
   fleet = FactoryBot.create(:fleet, name:, fid:, rsi_sid: sid, created_by: creator.id,
     members: [FactoryBot.create(:user)])
-  fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified, **profile) # rubocop:disable Rails/SkipsModelValidations
+  fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified, **profile)
 end
 
 directory_fleet.call(name: "Night Pirates", fid: "NIGHT", sid: "PIRATES",

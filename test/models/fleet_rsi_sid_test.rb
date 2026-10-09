@@ -25,14 +25,14 @@ class FleetRsiSidTest < ActiveSupport::TestCase
 
   test "a row stored before the check does not block an unrelated edit" do
     fleet = create(:fleet, created_by: create(:user).id)
-    fleet.update_column(:rsi_sid, "@handle") # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_column(:rsi_sid, "@handle")
 
     assert fleet.reload.update(name: "Renamed Fleet")
   end
 
   def verified_fleet(sid: "TEST")
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: sid)
-    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified)
     fleet
   end
 
@@ -57,7 +57,7 @@ class FleetRsiSidTest < ActiveSupport::TestCase
 
   test "a new SID starts without the old one's cooldown" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
-    fleet.update_columns(rsi_verification_checked_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verification_checked_at: Time.current)
 
     fleet.update!(rsi_sid: "OTHER")
 
@@ -99,7 +99,7 @@ class FleetRsiSidTest < ActiveSupport::TestCase
 
   test "a token can be issued to a fleet that no longer passes validation" do
     fleet = create(:fleet, created_by: create(:user).id)
-    fleet.update_column(:name, "x") # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_column(:name, "x")
 
     fleet.reload.generate_rsi_verification_token!
 
@@ -127,11 +127,11 @@ class FleetRsiSidTest < ActiveSupport::TestCase
   test "a member's Citizen ID flag counts only once the fleet is verified" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
     membership = fleet.fleet_memberships.first
-    membership.update_columns(verified: true) # rubocop:disable Rails/SkipsModelValidations
+    membership.update_columns(verified: true)
 
     assert_not membership.reload.rsi_verified?
 
-    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST") # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST")
 
     assert membership.reload.rsi_verified?
   end
@@ -154,7 +154,7 @@ class FleetRsiSidTest < ActiveSupport::TestCase
   test "a new SID clears the members' Citizen ID flags" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
     membership = fleet.fleet_memberships.first
-    membership.update_columns(verified: true) # rubocop:disable Rails/SkipsModelValidations
+    membership.update_columns(verified: true)
 
     fleet.update!(rsi_sid: "OTHER")
 

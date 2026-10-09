@@ -19,7 +19,7 @@ class ConvertFleetDescriptionsToMarkdown < ActiveRecord::Migration[8.1]
     Fleet.where("description ~* ?", TAG.source).find_each do |fleet|
       next unless fleet.description.match?(TAG)
 
-      fleet.update_columns(description: to_markdown(fleet.description), updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      fleet.update_columns(description: to_markdown(fleet.description), updated_at: Time.current)
     end
   end
 

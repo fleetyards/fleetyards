@@ -66,7 +66,7 @@ class Admin::Api::V1::FleetFidClaimsUpdateTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /fleet-fid-claims/:id to now refuses a claimant that is no longer verified" do
-    @claim.claimant.update_columns(rsi_verified_at: nil, rsi_verified_sid: nil) # rubocop:disable Rails/SkipsModelValidations
+    @claim.claimant.update_columns(rsi_verified_at: nil, rsi_verified_sid: nil)
     sign_in @user
 
     assert_api_response :patch, 400, path_params: {id: @claim.id}, body: {endsAt: Time.current.iso8601}

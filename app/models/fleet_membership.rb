@@ -361,11 +361,9 @@ class FleetMembership < ApplicationRecord
     return if discarded?
     return unless primary?
 
-    # rubocop:disable Rails/SkipsModelValidations
     FleetMembership.kept.where(user_id:, primary: true)
       .where.not(id:)
       .update_all(primary: false)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def notify_invited_user

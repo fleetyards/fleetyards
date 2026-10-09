@@ -53,9 +53,7 @@ module Fleetyards
     config.lograge.ignore_actions = ["Api::BaseController#version"]
 
     config.action_view.field_error_proc = proc { |html_tag, _instance|
-      # rubocop:disable Rails/OutputSafety
       html_tag.to_s.html_safe
-      # rubocop:enable Rails/OutputSafety
     }
 
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::HashWithIndifferentAccess]

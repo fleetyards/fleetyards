@@ -11,7 +11,7 @@ class MailFleetRsiVerificationLostTest < ActiveSupport::TestCase
   # The state signup left behind while the type was app-only.
   def signup_default
     NotificationPreference.find_by!(user: @user, notification_type: :fleet_rsi_verification_lost).tap do |preference|
-      preference.update_columns(mail: false, created_at: preference.created_at, updated_at: preference.created_at) # rubocop:disable Rails/SkipsModelValidations
+      preference.update_columns(mail: false, created_at: preference.created_at, updated_at: preference.created_at)
     end
   end
 
@@ -46,7 +46,7 @@ class MailFleetRsiVerificationLostTest < ActiveSupport::TestCase
   test "other types are left alone" do
     signup_default
     other = NotificationPreference.find_by!(user: @user, notification_type: :fleet_invite)
-    other.update_columns(mail: false, updated_at: other.created_at) # rubocop:disable Rails/SkipsModelValidations
+    other.update_columns(mail: false, updated_at: other.created_at)
 
     MailFleetRsiVerificationLost.new.up
 

@@ -6,9 +6,7 @@ class BackfillFleetRsiVerificationTokens < ActiveRecord::Migration[8.1]
   def up
     Fleet.unscoped.where(rsi_verification_token: nil).in_batches(of: 1000) do |batch|
       batch.pluck(:id).each do |id|
-        # rubocop:disable Rails/SkipsModelValidations
         Fleet.unscoped.where(id:).update_all(rsi_verification_token: Fleet.new_rsi_verification_token)
-        # rubocop:enable Rails/SkipsModelValidations
       end
     end
   end

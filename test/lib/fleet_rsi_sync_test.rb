@@ -9,7 +9,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
 
   setup do
     @fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
-    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST", rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST", rsi_verification_status: :verified)
   end
 
   def stub_page(status: 200)
@@ -50,7 +50,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
   end
 
   test "a source that cannot be read leaves its columns as they were" do
-    @fleet.update_columns(language: "de", recruiting: false, primary_activity: "piracy", rsi_member_count: 12) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(language: "de", recruiting: false, primary_activity: "piracy", rsi_member_count: 12)
     stub_page
     stub_search(status: 500)
 
@@ -64,7 +64,7 @@ class FleetRsiSyncTest < ActiveSupport::TestCase
   end
 
   test "neither source answering fails and keeps every column" do
-    @fleet.update_columns(primary_activity: "piracy") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(primary_activity: "piracy")
     stub_page(status: 500)
     stub_search(status: 500)
 

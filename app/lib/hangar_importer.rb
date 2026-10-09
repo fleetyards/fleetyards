@@ -26,8 +26,6 @@ class HangarImporter
     @import = import
   end
 
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/CyclomaticComplexity
   def run
     # Cancelled while it was still queued -- there is nothing to start, and
     # `start` has no transition out of `cancelled`.
@@ -117,9 +115,7 @@ class HangarImporter
       end
     end
 
-    # rubocop:disable Rails/SkipsModelValidations
     Vehicle.where(user_id: @import.user_id).update_all(notify: true)
-    # rubocop:enable Rails/SkipsModelValidations
 
     # The loop's own flag, or a cancellation that landed after its last
     # checkpoint. Asking once means `output` and the transition below cannot
@@ -151,8 +147,6 @@ class HangarImporter
 
     raise e
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/MethodLength
 
   # The group the user aimed this run at overrides whatever the file says: they
   # picked it while starting the import, and the per-item names are the
@@ -169,7 +163,6 @@ class HangarImporter
     @import.cancel_requested?
   end
 
-  # rubocop:disable Metrics/MethodLength
   private def legacy_mapping
     {
       "Ursa Rover" => "Ursa",
@@ -186,17 +179,13 @@ class HangarImporter
       "F8C Lightning Executive-Edition" => "F8C Lightning Executive Edition"
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/MethodLength
   private def legacy_module_mapping
     {
       "Retaliator Bomber" => ["Front Torpedo Bay", "Rear Torpedo Bay"]
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/MethodLength
   private def starship_42_mapping
     {
       "x1" => "X1",
@@ -241,9 +230,7 @@ class HangarImporter
       "ursa rover fortuna" => "Ursa Fortuna"
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/MethodLength
   private def hangar_xplor_mapping
     {
       "X1 Base" => "X1",
@@ -310,7 +297,6 @@ class HangarImporter
       "Gladius Dunlevy" => "Dunlevy"
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   private def normalize(name)
     transform_to_slug(strip_name(name))

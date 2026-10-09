@@ -355,15 +355,15 @@ class Fleet < ApplicationRecord
     rsi_member_count if rsi_verified?
   end
 
-  # Written past validation: neither column is something a form edits, and a
-  # fleet saved before a later format check must still be able to get a token.
-  # rubocop:disable Rails/SkipsModelValidations
   # Not a secret: it is meant to be pasted on a public page, and all it can
   # ever prove is that this fleet's managers reached that page.
   def self.new_rsi_verification_token
     "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}"
   end
 
+  # Written past validation: no column here is something a form edits, and a
+  # fleet saved before a later format check must still be able to get a token
+  # or drop a verification.
   def generate_rsi_verification_token!
     update_columns(
       rsi_verification_token: self.class.new_rsi_verification_token,
@@ -372,8 +372,10 @@ class Fleet < ApplicationRecord
     )
   end
 
-  # The token is replaced too: left in place, the same token still on the org
-  # page would verify the fleet again on its next check.
+  # Written past validation for the same reason as
+  # generate_rsi_verification_token!. The token is replaced too: left in
+  # place, the same token still on the org page would verify the fleet again
+  # on its next check.
   def revoke_rsi_verification!
     update_columns(
       rsi_verified_at: nil,
@@ -385,7 +387,6 @@ class Fleet < ApplicationRecord
 
     FleetFidClaim.cancel_for_lost_verification!(self)
   end
-  # rubocop:enable Rails/SkipsModelValidations
 
   def self.valid_fid?(value)
     FID_FORMAT.match?(value.to_s)

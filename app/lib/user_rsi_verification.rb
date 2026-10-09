@@ -21,7 +21,7 @@ class UserRsiVerification
       next unless user.rsi_verification_pending?
       next unless generation_of(user.rsi_verification_checked_at) == generation
 
-      user.update_columns(rsi_verification_status: :failed, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      user.update_columns(rsi_verification_status: :failed, updated_at: Time.current)
     end
   end
 
@@ -86,6 +86,6 @@ class UserRsiVerification
   end
 
   private def write(**columns)
-    user.update_columns(**columns, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    user.update_columns(**columns, updated_at: Time.current)
   end
 end

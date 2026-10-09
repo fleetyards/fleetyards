@@ -146,7 +146,7 @@ class FleetFidClaimTest < ActiveSupport::TestCase
     newcomer_manager = create(:user)
     newcomer = create(:fleet, fid: "other", created_by: newcomer_manager.id)
     # Past the reservation, the way a restore or a lost race would leave it.
-    newcomer.update_columns(fid: "test", normalized_fid: "test", slug: "test") # rubocop:disable Rails/SkipsModelValidations
+    newcomer.update_columns(fid: "test", normalized_fid: "test", slug: "test")
     claim.update!(ends_at: 1.minute.ago)
 
     assert_difference -> { notifications_for(newcomer_manager, :fleet_fid_claim_opened).count }, 1 do
@@ -210,7 +210,7 @@ class FleetFidClaimTest < ActiveSupport::TestCase
     claim = open_claim
     claim.update!(ends_at: 1.minute.ago)
     # Past the callbacks, the way a lost race would leave it.
-    @claimant.update_columns(rsi_verified_at: nil, rsi_verified_sid: nil) # rubocop:disable Rails/SkipsModelValidations
+    @claimant.update_columns(rsi_verified_at: nil, rsi_verified_sid: nil)
 
     assert_equal :cancelled, claim.complete!
 

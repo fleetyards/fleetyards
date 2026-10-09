@@ -21,7 +21,7 @@ class FleetEvent < ApplicationRecord
 
   # A part removed from the middle of a split series hands its successors to
   # the part before it, so what is left still reads as one series.
-  before_destroy -> { split_successors.update_all(split_from_id:) } # rubocop:disable Rails/SkipsModelValidations
+  before_destroy -> { split_successors.update_all(split_from_id:) }
 
   has_many :fleet_event_teams, dependent: :destroy
   has_many :fleet_event_ships, through: :fleet_event_teams

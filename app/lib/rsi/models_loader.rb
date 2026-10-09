@@ -61,7 +61,6 @@ module Rsi
       model.save!
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_model(data)
       model = Model.find_by(rsi_id: data["id"])
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
@@ -169,9 +168,7 @@ module Rsi
       #   puts "Data: #{data.inspect}"
       #   raise e
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
 
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_paint(data, model_id)
       paint = ModelPaint.find_or_create_by!(rsi_id: data["id"])
 
@@ -200,9 +197,7 @@ module Rsi
 
       paint
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
 
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def load_store_image(model, media_data)
       return unless fetch_images?
 
@@ -221,7 +216,6 @@ module Rsi
       model.store_images_updated_at = media_data["time_modified"] if model.rsi_store_image.attached?
       model.save
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def find_model_for_paint(data)
       mapping = paint_mapping.find { |item| item[:rsi_id] == data["id"].to_i }
@@ -255,7 +249,6 @@ module Rsi
       paint_mapping.any? { |item| item[:rsi_id] == data["id"].to_i }
     end
 
-    # rubocop:disable Metrics/MethodLength
     private def paint_mapping
       [
         {
@@ -318,9 +311,7 @@ module Rsi
         }
       ]
     end
-    # rubocop:enable Metrics/MethodLength
 
-    # rubocop:disable Metrics/MethodLength
     private def blocklist
       [{
         rsi_id: 205,
@@ -339,7 +330,6 @@ module Rsi
         }]
       }]
     end
-    # rubocop:enable Metrics/MethodLength
 
     private def blocked(rsi_id)
       blocklist.find { |item| item[:rsi_id] == rsi_id.to_i }
@@ -367,8 +357,6 @@ module Rsi
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def cleanup_blocked
       blocklist.each do |item|
         model = Model.find_by(rsi_id: item[:rsi_id])
@@ -398,7 +386,5 @@ module Rsi
         model.destroy
       end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/MethodLength
   end
 end

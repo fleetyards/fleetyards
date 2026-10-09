@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install dependencies
-        run: apt-get update && apt-get install -y --no-install-recommends libyaml-dev libvips-dev
+        run: apt-get update && apt-get install -y --no-install-recommends build-essential libyaml-dev libvips-dev
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

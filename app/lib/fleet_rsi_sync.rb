@@ -19,7 +19,7 @@ class FleetRsiSync
     return :skipped unless fleet.rsi_verified?
 
     sid = fleet.rsi_sid
-    fleet.update_columns(rsi_sync_attempted_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_sync_attempted_at: Time.current)
 
     page = Rsi::OrgPage.fetch(sid)
     search = Rsi::OrgSearch.fetch(sid)
@@ -57,9 +57,7 @@ class FleetRsiSync
       now = Time.current
       changed = columns.any? { |column, value| fleet[column] != value }
 
-      # rubocop:disable Rails/SkipsModelValidations
       fleet.update_columns(**columns, rsi_synced_at: now, **(changed ? {updated_at: now} : {}))
-      # rubocop:enable Rails/SkipsModelValidations
 
       :synced
     end

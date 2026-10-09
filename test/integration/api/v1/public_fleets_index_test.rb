@@ -47,10 +47,8 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
   def listed_fleet(sid, members:, **attributes)
     fleet = create(:fleet, rsi_sid: sid, created_by: create(:user).id, members: create_list(:user, members - 1),
       **attributes.slice(:name, :alignment, :default_timezone))
-    # rubocop:disable Rails/SkipsModelValidations
     fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified,
       **attributes.except(:name, :alignment, :default_timezone))
-    # rubocop:enable Rails/SkipsModelValidations
     fleet
   end
 

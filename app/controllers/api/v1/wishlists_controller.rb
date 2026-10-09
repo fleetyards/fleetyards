@@ -52,9 +52,7 @@ module Api
         authorize! with: ::HangarPolicy
 
         Vehicle.transaction do
-          # rubocop:disable Rails/SkipsModelValidations
           authorized_scope(Vehicle.all).wanted.update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
 
           vehicle_ids = authorized_scope(Vehicle.all).wanted.pluck(:id)
 

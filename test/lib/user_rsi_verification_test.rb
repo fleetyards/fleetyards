@@ -82,7 +82,7 @@ class UserRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "an answer about a handle the user has since changed is dropped" do
-    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6))
     check = UserRsiVerification.new(@user.reload)
     stub_citizen_page(bio: @user.rsi_verification_token)
 
@@ -95,9 +95,9 @@ class UserRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "an answer from an older check is dropped" do
-    @user.update_columns(rsi_verification_checked_at: 2.minutes.ago.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_checked_at: 2.minutes.ago.floor(6))
     check = UserRsiVerification.new(@user.reload)
-    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6))
     stub_citizen_page
 
     assert_nil check.run
@@ -105,7 +105,7 @@ class UserRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "an answer after the rotation of the token is dropped" do
-    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6))
     check = UserRsiVerification.new(@user.reload)
     stub_citizen_page(bio: @user.rsi_verification_token)
 
@@ -116,7 +116,7 @@ class UserRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "an answer from a check started before a revoke is dropped" do
-    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6))
     check = UserRsiVerification.new(@user.reload)
     stub_citizen_page(bio: @user.rsi_verification_token)
 

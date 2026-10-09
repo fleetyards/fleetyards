@@ -6,7 +6,7 @@ class FleetDirectoryTest < ActiveSupport::TestCase
   # The creator is the first accepted member.
   def listed_fleet(sid: "TEST", members: 2, **attributes)
     fleet = create(:fleet, rsi_sid: sid, created_by: create(:user).id, members: create_list(:user, members - 1), **attributes)
-    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_verification_status: :verified)
     fleet
   end
 
@@ -47,7 +47,7 @@ class FleetDirectoryTest < ActiveSupport::TestCase
 
   test "a fleet whose verified SID is not its current SID is not listed" do
     fleet = listed_fleet
-    fleet.update_column(:rsi_verified_sid, "OTHER") # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_column(:rsi_verified_sid, "OTHER")
 
     assert_not_includes Fleet.directory, fleet
   end

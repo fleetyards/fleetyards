@@ -25,7 +25,7 @@ class FleetRsiVerification
       next unless fleet.rsi_verification_pending?
       next unless generation_of(fleet.rsi_verification_checked_at) == generation
 
-      fleet.update_columns(rsi_verification_status: :failed, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      fleet.update_columns(rsi_verification_status: :failed, updated_at: Time.current)
     end
   end
 
@@ -122,11 +122,9 @@ class FleetRsiVerification
     now = Time.current
     previous = Fleet.kept.where(rsi_verified_sid: sid).where.not(id: fleet.id).lock.to_a
 
-    # rubocop:disable Rails/SkipsModelValidations
     previous.each do |other|
       other.update_columns(rsi_verified_at: nil, rsi_verified_sid: nil, rsi_verification_status: nil, updated_at: now)
     end
-    # rubocop:enable Rails/SkipsModelValidations
 
     write(rsi_verified_at: now, rsi_verified_sid: sid, rsi_verification_status: :verified)
 
@@ -134,7 +132,7 @@ class FleetRsiVerification
   end
 
   private def write(**columns)
-    fleet.update_columns(**columns, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(**columns, updated_at: Time.current)
   end
 
   # The SID has already moved by now, so one manager who cannot be told must

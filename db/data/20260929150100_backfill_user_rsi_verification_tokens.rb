@@ -6,9 +6,7 @@ class BackfillUserRsiVerificationTokens < ActiveRecord::Migration[8.1]
   def up
     User.where(rsi_verification_token: nil).in_batches(of: 1000) do |batch|
       batch.pluck(:id).each do |id|
-        # rubocop:disable Rails/SkipsModelValidations
         User.where(id:).update_all(rsi_verification_token: User.new_rsi_verification_token)
-        # rubocop:enable Rails/SkipsModelValidations
       end
     end
   end

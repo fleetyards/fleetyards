@@ -64,14 +64,12 @@ class AdminUser < ApplicationRecord
   end
 
   def reset_otp
-    # rubocop:disable Rails/SkipsModelValidations
     update_column(:otp_required_for_login, false)
     update_column(:encrypted_otp_secret, nil)
     update_column(:encrypted_otp_secret_iv, nil)
     update_column(:encrypted_otp_secret_salt, nil)
     update_column(:otp_backup_codes, nil)
     update_column(:otp_secret, nil)
-    # rubocop:enable Rails/SkipsModelValidations
     update(otp_secret: AdminUser.generate_otp_secret)
   end
 

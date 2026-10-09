@@ -36,7 +36,7 @@ class Admin::Api::V1::FleetsRevokeRsiVerificationTest < ActionDispatch::Integrat
   setup do
     @user = create(:admin_user, resource_access: [:fleets])
     @fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
-    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST", rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST", rsi_verification_status: :verified)
   end
 
   test "DELETE /fleets/:id/rsi-verification unverifies the fleet" do

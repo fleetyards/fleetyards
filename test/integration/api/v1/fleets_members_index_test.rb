@@ -115,13 +115,13 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
         # Every write below lands on the same second the key already carries.
         stamp = Time.current.change(usec: 0)
         memberships = FleetMembership.where(fleet: @fleet)
-        memberships.update_all(updated_at: stamp) # rubocop:disable Rails/SkipsModelValidations
+        memberships.update_all(updated_at: stamp)
 
         assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
 
         @member.reload.verify_rsi_handle("maru_pilot", via: :rsi_profile)
         @member.save!(validate: false, touch: false)
-        memberships.update_all(updated_at: stamp) # rubocop:disable Rails/SkipsModelValidations
+        memberships.update_all(updated_at: stamp)
 
         assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
           member = parsed_body["items"].find { |item| item["username"] == @member.username }
@@ -133,10 +133,10 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/members says when a verified membership was last checked" do
-    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU")
     checked_at = 3.hours.ago.change(usec: 0)
     verify_handle(@member)
-    @member.update_columns(rsi_handle_verified_at: 1.day.ago) # rubocop:disable Rails/SkipsModelValidations
+    @member.update_columns(rsi_handle_verified_at: 1.day.ago)
     @member.store_rsi_organizations(%w[MARU], read_at: checked_at)
     sign_in @admin
 
@@ -148,7 +148,7 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/members names the org of a member verified in a verified fleet" do
-    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU")
     @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)
     sign_in @admin
 

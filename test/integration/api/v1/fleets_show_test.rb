@@ -59,8 +59,8 @@ class Api::V1::FleetsShowTest < ActionDispatch::IntegrationTest
 
   test "GET /fleets/:slug sends the RSI org's member count only while the org is verified" do
     verified = create(:fleet, :rsi_verified, rsi_sid: "COUNTED", admins: [@admin])
-    verified.update_columns(rsi_member_count: 340) # rubocop:disable Rails/SkipsModelValidations
-    @fleet.update_columns(rsi_member_count: 12) # rubocop:disable Rails/SkipsModelValidations
+    verified.update_columns(rsi_member_count: 340)
+    @fleet.update_columns(rsi_member_count: 12)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {slug: verified.slug} do
