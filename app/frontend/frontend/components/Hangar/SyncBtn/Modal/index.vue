@@ -29,8 +29,8 @@ import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/s
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
+  HangarSyncOutcomeEnum,
   HangarSyncUnmatchedActionEnum,
-  RsiHangarItemKindEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import {
@@ -136,15 +136,6 @@ const skippedItemsNote = computed(() => {
   }
   return undefined;
 });
-
-const syncablePledges = computed(() =>
-  pledges.value.filter(
-    (pledge) =>
-      (hangarStore.syncPaints || pledge.type !== RsiHangarItemKindEnum.SKIN) &&
-      (hangarStore.syncHangarFlair ||
-        pledge.type !== RsiHangarItemKindEnum.FLAIR),
-  ),
-);
 
 const seenPledgeIds = new Set<string>();
 
@@ -273,10 +264,15 @@ const retryable = computed(() => {
     (step) => step.name === "submitData",
   )?.status;
 
-  return (
-    submitDataStatus === "backendFailure" && syncablePledges.value.length > 0
-  );
+  return submitDataStatus === "backendFailure";
 });
+
+// Runs from before the sync reported an outcome always synced.
+const syncedSomething = computed(
+  () =>
+    !result.value?.outcome ||
+    result.value.outcome === HangarSyncOutcomeEnum.SYNCED,
+);
 
 const supportPrompt = useSupportPrompt();
 const supportHintDismissed = ref(false);
@@ -284,7 +280,7 @@ const showSupportHint = computed(
   () =>
     finished.value &&
     !finishedWithErrors.value &&
-    syncablePledges.value.length > 0 &&
+    syncedSomething.value &&
     !supportHintDismissed.value &&
     supportPrompt.canShow(),
 );
@@ -407,18 +403,28 @@ const { data: syncStatusData } = useSyncRsiHangarStatus({
   },
 });
 
+const completeSync = (syncResult: HangarSyncResult) => {
+  result.value = syncResult;
+  hangarStore.syncRunning = false;
+
+  if (syncResult.outcome === HangarSyncOutcomeEnum.NOTHING_TO_SYNC) {
+    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
+  } else if (syncResult.outcome === HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS) {
+    displayInfo({ text: t("messages.syncExtension.onlySkippedItems") });
+  } else {
+    displaySuccess({ text: t("messages.syncExtension.success") });
+  }
+  updateStep("submitData", "success");
+  comlink.emit("hangar-sync-finished");
+};
+
 watch(syncStatusData, (statusData) => {
   if (!statusData || !pollingEnabled.value) {
     return;
   }
 
   if (statusData.status === "finished" && statusData.result) {
-    result.value = statusData.result as HangarSyncResult;
-    hangarStore.syncRunning = false;
-
-    displaySuccess({ text: t("messages.syncExtension.success") });
-    updateStep("submitData", "success");
-    comlink.emit("hangar-sync-finished");
+    completeSync(statusData.result as HangarSyncResult);
   } else if (statusData.status === "failed") {
     hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
@@ -427,12 +433,7 @@ watch(syncStatusData, (statusData) => {
 
 const onSyncResult = (message: HangarSyncData) => {
   if (message.status === "finished") {
-    result.value = message.result;
-    hangarStore.syncRunning = false;
-
-    displaySuccess({ text: t("messages.syncExtension.success") });
-    updateStep("submitData", "success");
-    comlink.emit("hangar-sync-finished");
+    completeSync(message.result);
   } else if (message.status === "failed") {
     hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
@@ -451,21 +452,6 @@ useSubscription({
 });
 
 const finishSync = async () => {
-  // A hangar of upgrades, game packages or merchandise only, or of paints and
-  // flair the user turned off: the API refuses an empty list, which would read
-  // as the sync failing, and a list of skipped kinds changes nothing.
-  if (syncablePledges.value.length === 0) {
-    updateStep("submitData", "success");
-    displayInfo({
-      text: t(
-        pledges.value.length === 0
-          ? "messages.syncExtension.nothingToSync"
-          : "messages.syncExtension.onlySkippedItems",
-      ),
-    });
-    return;
-  }
-
   updateStep("submitData", "processing");
   hangarStore.syncRunning = true;
 
