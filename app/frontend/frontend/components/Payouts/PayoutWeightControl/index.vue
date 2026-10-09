@@ -200,6 +200,19 @@ const onCustom = () => {
   box-shadow: inset 0 -2px 0 -1px var(--color-gold, #d4af37);
 }
 
+// The chips are sized to sit in a row of text, which leaves them under the
+// 32px a finger needs.
+@media (pointer: coarse) {
+  .payout-weight__preset {
+    min-width: $tap-target-min;
+    min-height: $tap-target-min;
+  }
+
+  .payout-weight__field {
+    height: $tap-target-min;
+  }
+}
+
 .payout-weight__field {
   width: 74px;
   height: 29px;
