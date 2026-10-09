@@ -315,7 +315,7 @@ const copyToken = () => {
     </section>
 
     <template #footer>
-      <Btn :variant="BtnVariantsEnum.GHOST" @click="close">
+      <Btn :variant="BtnVariantsEnum.BARE" @click="close">
         {{ t("actions.close") }}
       </Btn>
       <Btn

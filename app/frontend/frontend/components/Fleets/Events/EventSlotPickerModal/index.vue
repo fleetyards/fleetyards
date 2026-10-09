@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
   type FleetEventExtended,
@@ -102,7 +105,7 @@ const teams = computed<FleetEventTeam[]>(
           >
             <Btn
               :size="BtnSizesEnum.SM"
-              variant="bare"
+              :variant="BtnVariantsEnum.BARE"
               :disabled="
                 slot.id === currentSlotId ||
                 !!slotTakenBy(slot) ||

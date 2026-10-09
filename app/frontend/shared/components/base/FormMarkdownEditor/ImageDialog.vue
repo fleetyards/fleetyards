@@ -163,7 +163,7 @@ const insert = async () => {
       </p>
       <template #footer>
         <Btn
-          :variant="BtnVariantsEnum.GHOST"
+          :variant="BtnVariantsEnum.BARE"
           data-test="markdown-editor-image-cancel"
           @click="close"
         >

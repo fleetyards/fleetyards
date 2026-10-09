@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type Fleet,
@@ -201,7 +204,7 @@ const revoke = (admin: FleetEventAdmin) => {
     <template #footer>
       <Btn
         :size="BtnSizesEnum.LG"
-        variant="bare"
+        :variant="BtnVariantsEnum.BARE"
         @click="comlink.emit('close-modal')"
       >
         {{ t("actions.close") }}
