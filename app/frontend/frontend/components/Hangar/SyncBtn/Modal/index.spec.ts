@@ -565,6 +565,40 @@ describe("HangarSyncModal", () => {
     expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
   });
 
+  it("offers Close instead of Cancel once the hangar is submitted", async () => {
+    const { wrapper } = await mountModal();
+    const cancel = () => wrapper.find("[data-test='cancel-sync']").text();
+
+    expect(cancel()).toBe("actions.syncExtension.cancel");
+
+    await submitHangar(wrapper);
+
+    expect(cancel()).toBe("actions.syncExtension.close");
+  });
+
+  it("reports the run it submitted itself", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    await submitHangar(wrapper);
+    expect(hangarStore.syncReportedByModal).toBe(true);
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+    expect(hangarStore.syncReportedByModal).toBe(false);
+  });
+
+  // Reopened while an earlier run is still on the server: that result belongs
+  // to the cable listener, which this modal would otherwise silence.
+  it("leaves a run it did not submit to the cable listener", async () => {
+    const { hangarStore } = await mountModal();
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+
+    expect(hangarStore.syncReportedByModal).toBe(false);
+    expect(comlinkEmit).not.toHaveBeenCalledWith("hangar-sync-finished");
+  });
+
   it("alerts when a submit fails after the modal closed", async () => {
     let rejectSubmit: (error: Error) => void = () => {};
     mutateAsync.mockImplementationOnce(

@@ -25,7 +25,10 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
-import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
+import {
+  isSyncStepRunning,
+  syncOutcomeMessage,
+} from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
@@ -151,7 +154,6 @@ const processSteps = ref<SyncProcessStep[]>([
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
-  hangarStore.syncModalOpen = true;
 
   if (hangarStore.extensionReady) {
     void checkRSIIdentity();
@@ -162,7 +164,7 @@ let unmounted = false;
 
 onBeforeUnmount(() => {
   unmounted = true;
-  hangarStore.syncModalOpen = false;
+  hangarStore.syncReportedByModal = false;
 
   if (pollingDelayTimer) {
     clearTimeout(pollingDelayTimer);
@@ -241,6 +243,16 @@ const updateStep = (step: string, status: SyncProcessStep["status"]) => {
     processSteps.value[index].status = status;
   }
 };
+
+const submitStatus = computed(
+  () => processSteps.value.find((step) => step.name === "submitData")?.status,
+);
+
+// A modal opened while an earlier run is still on the server did not submit
+// it: that result is the cable listener's to report.
+watch(submitStatus, (status) => {
+  hangarStore.syncReportedByModal = status === "processing";
+});
 
 // Checking the RSI identity or running a step: the modal's bottom cap says so.
 const working = computed(
@@ -432,13 +444,8 @@ const completeSync = (syncResult: HangarSyncResult) => {
   result.value = syncResult;
   hangarStore.syncRunning = false;
 
-  if (syncResult.outcome === HangarSyncOutcomeEnum.NOTHING_TO_SYNC) {
-    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
-  } else if (syncResult.outcome === HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS) {
-    displayInfo({ text: t("messages.syncExtension.onlySkippedItems") });
-  } else {
-    displaySuccess({ text: t("messages.syncExtension.success") });
-  }
+  const { synced, key } = syncOutcomeMessage(syncResult.outcome);
+  (synced ? displaySuccess : displayInfo)({ text: t(key) });
   updateStep("submitData", "success");
   comlink.emit("hangar-sync-finished");
 };
@@ -457,6 +464,8 @@ watch(syncStatusData, (statusData) => {
 });
 
 const onSyncResult = (message: HangarSyncData) => {
+  if (submitStatus.value !== "processing") return;
+
   if (message.status === "finished") {
     completeSync(message.result);
   } else if (message.status === "failed") {
@@ -696,7 +705,11 @@ const refreshPage = async () => {
           data-test="cancel-sync"
           @click="cancel"
         >
-          {{ t("actions.syncExtension.cancel") }}
+          {{
+            !started || fetching
+              ? t("actions.syncExtension.cancel")
+              : t("actions.syncExtension.close")
+          }}
         </Btn>
         <Btn
           v-if="retryable"

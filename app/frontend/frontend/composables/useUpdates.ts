@@ -7,6 +7,7 @@ import { useNotificationInvalidation } from "@/frontend/composables/useNotificat
 import { useMovedFleetRedirect } from "@/frontend/composables/useMovedFleetRedirect";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { useComlink } from "@/shared/composables/useComlink";
+import { syncOutcomeMessage } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { usePresenceUpdates } from "@/frontend/composables/usePresenceUpdates";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -210,14 +211,15 @@ export const useUpdates = () => {
       hangarStore.syncRunning = false;
     }
 
-    // The open modal answers its own run, refresh included.
-    if (hangarStore.syncModalOpen) {
+    if (hangarStore.syncReportedByModal) {
       return;
     }
 
     if (finished) {
       comlink.emit("hangar-sync-finished");
-      displaySuccess({ text: t("messages.syncExtension.success") });
+
+      const { synced, key } = syncOutcomeMessage(message.result.outcome);
+      (synced ? displaySuccess : displayInfo)({ text: t(key) });
     } else if (failed) {
       displayAlert({ text: t("messages.syncExtension.failure") });
     }
