@@ -4722,6 +4722,47 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/health":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Health
+      tags:
+      - Fleets
+      operationId: fleetHealth
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetHealth"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/inventories":
     parameters:
     - name: fleetSlug
@@ -7457,6 +7498,47 @@ paths:
                 "$ref": "#/components/schemas/FleetNotificationDiscordStatus"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/online-members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Online Members
+      tags:
+      - Fleets
+      operationId: fleetOnlineMembers
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetOnlineMembersList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -26091,6 +26173,75 @@ components:
       - availability
       - fid
       title: FleetFidClaimStatus
+    FleetHealth:
+      type: object
+      properties:
+        inactiveMembers:
+          "$ref": "#/components/schemas/FleetHealthMembers"
+        unverifiedMembers:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetHealthMembers"
+          - type: 'null'
+        emptyRoles:
+          type:
+          - array
+          - 'null'
+          items:
+            "$ref": "#/components/schemas/FleetHealthRole"
+      required:
+      - inactiveMembers
+      - unverifiedMembers
+      - emptyRoles
+      title: FleetHealth
+    FleetHealthMember:
+      type: object
+      properties:
+        username:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        avatar:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+      required:
+      - username
+      - nickname
+      - lastActiveAt
+      - avatar
+      title: FleetHealthMember
+    FleetHealthMembers:
+      type: object
+      properties:
+        count:
+          type: integer
+        sample:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetHealthMember"
+      required:
+      - count
+      - sample
+      title: FleetHealthMembers
+    FleetHealthRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - id
+      - name
+      title: FleetHealthRole
     FleetInventoriesList:
       type: object
       properties:
@@ -27537,6 +27688,40 @@ components:
           items:
             type: string
       title: FleetNotificationSettingUpdateInput
+    FleetOnlineMember:
+      type: object
+      properties:
+        username:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+        friend:
+          type: boolean
+        avatar:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+      required:
+      - username
+      - nickname
+      - friend
+      - avatar
+      title: FleetOnlineMember
+    FleetOnlineMembersList:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetOnlineMember"
+      required:
+      - totalCount
+      - items
+      title: FleetOnlineMembersList
     FleetPublicVehicles:
       type: object
       properties:
