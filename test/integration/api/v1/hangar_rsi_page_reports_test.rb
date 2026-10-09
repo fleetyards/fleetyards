@@ -86,6 +86,30 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_equal 2, notifications.sole.occurrences
   end
 
+  test "POST /hangar/rsi-page-reports keeps the details of earlier repeats" do
+    sign_in @user
+
+    [["markup a", "markup b"], ["markup b", "markup c"]].each do |details|
+      post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details:}, as: :json
+    end
+
+    assert_includes notifications.sole.body, "- Details:\n  - `markup a`\n  - `markup b`\n  - `markup c`"
+  end
+
+  test "POST /hangar/rsi-page-reports keeps only the newest details of many repeats" do
+    sign_in @user
+
+    4.times do |run|
+      details = Array.new(10) { |index| "markup #{run}-#{index}" }
+      post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details:}, as: :json
+    end
+
+    body = notifications.sole.body
+    assert_equal RsiPageReport::MAX_DETAILS, body.scan(/^  - `/).size
+    assert_not_includes body, "markup 0-"
+    assert_includes body, "markup 3-9"
+  end
+
   test "POST /hangar/rsi-page-reports counts a user once per page and check" do
     previous_store = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new

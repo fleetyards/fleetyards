@@ -25,6 +25,12 @@ class RsiPageReport
   # one of them reopen the notification as fast as the admins can read it.
   REPORT_INTERVAL = 1.hour
 
+  # Repeats of one check add their details to the unread notification, since
+  # each user may trip on different markup. The newest ones are kept.
+  MAX_DETAILS = 30
+
+  DETAIL_LINE = /\A  - `(.+)`\z/
+
   def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
     if user
       first = Rails.cache.write(
@@ -37,14 +43,19 @@ class RsiPageReport
     AdminNotification.notify!(
       type: :rsi_markup_changed,
       title: "RSI #{page} page not recognised (#{check})",
-      body: [
-        "A #{page} sync stopped on a page its parser does not recognise.",
-        "- Check: `#{check}`",
-        ("- Page: #{page_number}" if page_number),
-        ("- Extension: `#{extension_version}`" if extension_version.present?),
-        ("- Details:" if details.present?),
-        *Array(details).map { |detail| "  - `#{detail}`" }
-      ].compact.join("\n"),
+      body: ->(earlier_body) {
+        earlier = earlier_body.to_s.lines.filter_map { |line| line.chomp[DETAIL_LINE, 1] }
+        all_details = (earlier + Array(details)).reverse.uniq.reverse.last(MAX_DETAILS)
+
+        [
+          "A #{page} sync stopped on a page its parser does not recognise.",
+          "- Check: `#{check}`",
+          ("- Page: #{page_number}" if page_number),
+          ("- Extension: `#{extension_version}`" if extension_version.present?),
+          ("- Details:" if all_details.any?),
+          *all_details.map { |detail| "  - `#{detail}`" }
+        ].compact.join("\n")
+      },
       severity: :error,
       dedupe_key: "#{page}:#{check}"
     )
