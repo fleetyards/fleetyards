@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnVariantsEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -216,11 +213,8 @@ const onSubmit = async () => {
 
 <template>
   <Modal :title="t('headlines.fleets.squadrons.addMembers')">
-    <form
-      id="fleet-squadron-members-form"
-      class="member-picker"
-      @submit.prevent="onSubmit"
-    >
+    <!-- Enter belongs to the search; only the button adds the members. -->
+    <form class="member-picker" @submit.prevent>
       <div class="member-picker__header">
         <FormInput
           v-model="search"
@@ -322,11 +316,10 @@ const onSubmit = async () => {
           {{ t("actions.reset") }}
         </Btn>
         <Btn
-          :type="BtnTypesEnum.SUBMIT"
-          form="fleet-squadron-members-form"
           :loading="submitting"
           :disabled="!selection.length"
           data-test="squadron-add-members"
+          @click="onSubmit"
         >
           {{
             t("actions.fleet.squadrons.addMembers", { count: selection.length })
