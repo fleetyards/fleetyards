@@ -84,6 +84,18 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/:slug/events with a missionSlug writes nothing for a member who may not create" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin)
+    create(:mission_team, mission: mission)
+    sign_in @member
+
+    assert_no_difference -> { FleetEvent.count } do
+      assert_no_difference -> { FleetEventTeam.count } do
+        assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug}, body: valid_body.merge(missionSlug: mission.slug)
+      end
+    end
+  end
+
   # What the form sends for an event that does not repeat: the model requires the
   # interval to be absent unless the event recurs, so null is the only value it
   # can carry, and the schema has to accept it.

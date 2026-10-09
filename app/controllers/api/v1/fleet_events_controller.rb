@@ -73,13 +73,15 @@ module Api
       end
 
       def create
+        # Before anything is written: from_mission! commits the event and its
+        # copied teams in one go, so a refusal after it would leave them behind.
+        authorize! with: FleetEventPolicy, context: {fleet: @fleet}
+
         @fleet_event = if @mission
           FleetEvent.from_mission!(@mission, event_params.merge(created_by: current_resource_owner))
         else
           @fleet.fleet_events.new(event_params.merge(created_by: current_resource_owner))
         end
-
-        authorize! @fleet_event
 
         if @mission || @fleet_event.save
           render :show, status: :created
