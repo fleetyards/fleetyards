@@ -96,8 +96,6 @@ const filesUnmatchedIntoGroup = computed(
     HangarSyncUnmatchedActionEnum.GROUP,
 );
 
-// `group` with no group is not that action: the endpoint falls back to leaving
-// the ships alone, which is not what the modal would be showing the user.
 const settingsOpen = ref(false);
 
 // `group` with no group is not that action: the endpoint falls back to leaving
@@ -121,7 +119,8 @@ const skippedItems = computed(() => [
 onMounted(() => {
   hangarStore.syncModalOpen = true;
 
-  if (hangarStore.extensionReady && !started.value) {
+  // Also for a run still going: once it fails, Start needs a known session.
+  if (hangarStore.extensionReady) {
     void checkRSIIdentity();
   }
 });

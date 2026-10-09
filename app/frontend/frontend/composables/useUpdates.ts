@@ -211,7 +211,7 @@ export const useUpdates = () => {
     const finished = message.status === "finished";
     const failed = message.status === "failed";
 
-    if (finished || failed) {
+    if (finished || failed || message.status === "cancelled") {
       hangarStore.syncRunning = false;
     }
 
@@ -237,18 +237,24 @@ export const useUpdates = () => {
 
   // The cable message can be missed across a reconnect, so a run waiting on
   // its result also asks for it.
-  const { data: syncStatus } = useSyncRsiHangarStatus({
-    query: {
-      enabled: isAuthenticated,
-      refetchInterval: computed(() =>
-        hangarSync.polling.value ? 5000 : false,
-      ),
-    },
-  });
+  const { data: syncStatus, dataUpdatedAt: syncStatusUpdatedAt } =
+    useSyncRsiHangarStatus({
+      query: {
+        enabled: isAuthenticated,
+        refetchInterval: computed(() =>
+          hangarSync.polling.value ? 5000 : false,
+        ),
+      },
+    });
 
+  // On every answer, not only a changed one: a re-sync of an unchanged hangar
+  // answers exactly what the previous run did, and structural sharing keeps
+  // the same data for it.
   watch(
-    () => syncStatus.value,
-    (status) => {
+    syncStatusUpdatedAt,
+    () => {
+      const status = syncStatus.value;
+
       if (status) {
         hangarStore.syncRunning = status.active;
         hangarSync.receiveStatus(status);

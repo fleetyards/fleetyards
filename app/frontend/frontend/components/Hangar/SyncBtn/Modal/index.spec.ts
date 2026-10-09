@@ -894,4 +894,49 @@ describe("HangarSyncModal", () => {
     expect(useHangarSync().polling.value).toBe(false);
     expect(displaySuccess).toHaveBeenCalledTimes(1);
   });
+
+  it("tells a sync from another tab once the late answer is overdue", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    const now = Date.now();
+    const clock = vi.spyOn(Date, "now").mockReturnValue(now);
+
+    try {
+      useHangarSync().receiveStatus({
+        active: false,
+        status: "finished",
+        result: { outcome: HangarSyncOutcomeEnum.SYNCED },
+      } as HangarSyncStatus);
+
+      clock.mockReturnValue(now + 61_000);
+
+      expect(
+        useHangarSync().receive({ status: "finished" } as HangarSyncData),
+      ).toBe(false);
+    } finally {
+      clock.mockRestore();
+    }
+  });
+
+  it("can start again after a run it reopened on fails", async () => {
+    const first = await mountModal();
+
+    await first.wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    first.wrapper.unmount();
+
+    const { wrapper } = await mountModal();
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='start-sync']").attributes("disabled"),
+    ).toBeUndefined();
+  });
 });

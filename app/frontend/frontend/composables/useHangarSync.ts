@@ -98,8 +98,11 @@ let rateLimiter = createRsiRateLimiter(MAX_MESSAGES_PER_MINUTE);
 let abort = new AbortController();
 
 // The cable message for a run the poll already ended arrives late, and must
-// not be told as a sync from another tab.
-let answeredByPoll = false;
+// not be told as a sync from another tab. Only for a while: across the
+// reconnect the poll exists for, that message may never come.
+const LATE_ANSWER_WINDOW = 60_000;
+
+let answeredByPollAt: number | undefined;
 
 // Every start, cancel and reset moves this on, so an answer still out for an
 // earlier run never touches the next one.
@@ -125,7 +128,7 @@ const clear = () => {
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
-  answeredByPoll = false;
+  answeredByPollAt = undefined;
   seenPledgeIds = new Set();
 };
 
@@ -301,8 +304,11 @@ export const useHangarSync = () => {
   const receive = (message: HangarSyncData) => {
     if (awaitingResult.value) return settle(message);
 
-    if (answeredByPoll) {
-      answeredByPoll = false;
+    if (
+      answeredByPollAt !== undefined &&
+      Date.now() - answeredByPollAt < LATE_ANSWER_WINDOW
+    ) {
+      answeredByPollAt = undefined;
       return true;
     }
 
@@ -313,7 +319,9 @@ export const useHangarSync = () => {
   const receiveStatus = (status: HangarSyncStatus) => {
     if (!polling.value) return;
 
-    answeredByPoll = settle(status);
+    if (settle(status)) {
+      answeredByPollAt = Date.now();
+    }
   };
 
   const complete = (syncResult?: HangarSyncResult) => {
