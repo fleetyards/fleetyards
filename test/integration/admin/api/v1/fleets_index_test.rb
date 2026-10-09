@@ -70,8 +70,8 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets sorts by the RSI org's member count and sends it" do
-    create(:fleet, :rsi_verified, name: "Large", rsi_sid: "LARGE").update_columns(rsi_member_count: 900) # rubocop:disable Rails/SkipsModelValidations
-    create(:fleet, :rsi_verified, name: "Small", rsi_sid: "SMALL").update_columns(rsi_member_count: 30) # rubocop:disable Rails/SkipsModelValidations
+    create(:fleet, :rsi_verified, name: "Large", rsi_sid: "LARGE").update_columns(rsi_member_count: 900)
+    create(:fleet, :rsi_verified, name: "Small", rsi_sid: "SMALL").update_columns(rsi_member_count: 30)
     create(:fleet, name: "Uncounted")
     sign_in @user
 
@@ -84,7 +84,7 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
   test "GET /fleets filters by RSI verification either way" do
     create(:fleet, :rsi_verified, name: "Verified", rsi_sid: "VERIFIED")
     create(:fleet, name: "Unclaimed")
-    create(:fleet, :rsi_verified, name: "Moved", rsi_sid: "MOVED").update_columns(rsi_sid: "ELSEWHERE") # rubocop:disable Rails/SkipsModelValidations
+    create(:fleet, :rsi_verified, name: "Moved", rsi_sid: "MOVED").update_columns(rsi_sid: "ELSEWHERE")
     sign_in @user
 
     assert_api_response :get, 200, params: {q: {"rsiVerifiedEq" => true}} do

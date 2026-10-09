@@ -15,7 +15,7 @@ class FleetRsiRefreshJobTest < ActiveSupport::TestCase
 
   def verified_fleet(sid, attempted_at: nil)
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: sid)
-    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_sync_attempted_at: attempted_at) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: sid, rsi_sync_attempted_at: attempted_at)
     fleet
   end
 

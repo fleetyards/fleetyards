@@ -17,7 +17,7 @@ class UserRsiOrganizations
     read_at = Time.current
     page = Rsi::CitizenOrganizationsPage.fetch(handle)
     # A block is not an answer about this user, so they stay due.
-    @user.update_columns(rsi_organizations_attempted_at: read_at) unless page.status == :blocked # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_organizations_attempted_at: read_at) unless page.status == :blocked
     return page.status unless page.status == :ok
 
     @user.store_rsi_organizations(page.sids, read_at:, handle:) ? :ok : :stale

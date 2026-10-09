@@ -12,9 +12,7 @@ class NormaliseFleetRsiSids < ActiveRecord::Migration[8.1]
       sid = nil unless Rsi::Sid.valid?(sid)
       next if sid == raw
 
-      # rubocop:disable Rails/SkipsModelValidations
       Fleet.unscoped.where(id:).update_all(rsi_sid: sid, updated_at: Time.current)
-      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 

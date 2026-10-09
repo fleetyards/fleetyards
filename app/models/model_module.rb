@@ -138,8 +138,6 @@ class ModelModule < ApplicationRecord
   end
 
   private def touch_models
-    # rubocop:disable Rails/SkipsModelValidations
     models.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end

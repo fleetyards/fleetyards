@@ -56,9 +56,7 @@ module Api
         authorize! with: ::HangarPolicy
 
         Vehicle.transaction do
-          # rubocop:disable Rails/SkipsModelValidations
           authorized_scope(Vehicle.all).purchased.update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
 
           Vehicle.delete_with_dependents(authorized_scope(Vehicle.all).purchased.pluck(:id))
 

@@ -62,7 +62,6 @@ module RsiHandleVerificationConcern
 
   # Written past validation: a user saved before a later check must still be
   # able to get a token or drop a verification.
-  # rubocop:disable Rails/SkipsModelValidations
   def generate_rsi_verification_token!
     update_columns(
       rsi_verification_token: self.class.new_rsi_verification_token,
@@ -89,7 +88,6 @@ module RsiHandleVerificationConcern
       forget_rsi_organizations
     end
   end
-  # rubocop:enable Rails/SkipsModelValidations
 
   # updated_at keeps whole seconds, so a check answering within the second of
   # the request that started it would leave a cached payload unverified.
@@ -111,7 +109,7 @@ module RsiHandleVerificationConcern
       next false if rsi_handle_verified_at.present? && rsi_handle_verified_at > read_at
       next false if rsi_organizations_checked_at.present? && rsi_organizations_checked_at > read_at
 
-      update_columns(rsi_organization_sids: sids, rsi_organizations_checked_at: read_at, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      update_columns(rsi_organization_sids: sids, rsi_organizations_checked_at: read_at, updated_at: Time.current)
       true
     end
 
@@ -130,7 +128,7 @@ module RsiHandleVerificationConcern
   end
 
   private def forget_rsi_organizations
-    update_columns(rsi_organization_sids: [], rsi_organizations_checked_at: nil) # rubocop:disable Rails/SkipsModelValidations
+    update_columns(rsi_organization_sids: [], rsi_organizations_checked_at: nil)
     FleetMembershipVerification.sync_user(self)
   end
 
@@ -155,7 +153,6 @@ module RsiHandleVerificationConcern
 
     return if holders.empty?
 
-    # rubocop:disable Rails/SkipsModelValidations
     self.class.where(id: holders).update_all(
       rsi_handle_verified: false,
       rsi_handle_verified_via: nil,
@@ -165,7 +162,6 @@ module RsiHandleVerificationConcern
       rsi_organizations_checked_at: nil,
       updated_at: Time.current
     )
-    # rubocop:enable Rails/SkipsModelValidations
 
     self.class.where(id: holders).find_each { |holder| FleetMembershipVerification.sync_user(holder) }
 

@@ -117,9 +117,7 @@ class HangarImporter
       end
     end
 
-    # rubocop:disable Rails/SkipsModelValidations
     Vehicle.where(user_id: @import.user_id).update_all(notify: true)
-    # rubocop:enable Rails/SkipsModelValidations
 
     # The loop's own flag, or a cancellation that landed after its last
     # checkpoint. Asking once means `output` and the transition below cannot

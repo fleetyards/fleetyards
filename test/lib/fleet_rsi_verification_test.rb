@@ -124,7 +124,7 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
 
   test "a check still out when an admin confirms the fleet cannot answer over it" do
     stub_org_page
-    @fleet.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: 1.second.ago.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: 1.second.ago.floor(6))
     check = FleetRsiVerification.new(Fleet.find(@fleet.id))
 
     FleetRsiVerification.new(@fleet).confirm!
@@ -145,7 +145,7 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
   test "an answer about a SID the fleet has since changed is dropped" do
     body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
     stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
-      Fleet.where(id: @fleet.id).update_all(rsi_sid: "OTHER") # rubocop:disable Rails/SkipsModelValidations
+      Fleet.where(id: @fleet.id).update_all(rsi_sid: "OTHER")
       {status: 200, body:}
     end
 
@@ -154,7 +154,7 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "a check overtaken by a new token does not stay pending" do
-    @fleet.update_columns(rsi_verification_status: :pending) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verification_status: :pending)
     body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
     stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
       @fleet.class.find(@fleet.id).generate_rsi_verification_token!
@@ -167,7 +167,7 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
 
   test "a manager who cannot be told does not undo the takeover" do
     holder = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
-    holder.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST") # rubocop:disable Rails/SkipsModelValidations
+    holder.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST")
     stub_org_page(manifesto: @fleet.rsi_verification_token)
 
     Notification.singleton_class.alias_method(:original_notify!, :notify!)
@@ -185,9 +185,9 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
   end
 
   test "an older check does not overwrite a newer one" do
-    @fleet.update_columns(rsi_verification_checked_at: 2.minutes.ago.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verification_checked_at: 2.minutes.ago.floor(6))
     older = FleetRsiVerification.new(@fleet.reload)
-    @fleet.update_columns(rsi_verification_checked_at: Time.current.floor(6), rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verification_checked_at: Time.current.floor(6), rsi_verification_status: :verified)
     stub_org_page
 
     assert_nil older.run

@@ -11,7 +11,7 @@ class UserRsiHandleVerificationTest < ActiveSupport::TestCase
     user = create(:user)
     user.verify_rsi_handle("TestPilot", via: :rsi_profile)
     user.save!
-    user.update_columns(rsi_verification_checked_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    user.update_columns(rsi_verification_checked_at: Time.current)
 
     user.update!(rsi_handle: "OtherPilot")
 
@@ -89,7 +89,7 @@ class UserRsiHandleVerificationTest < ActiveSupport::TestCase
 
   test "an older read does not replace a newer list" do
     user = with_org_list
-    user.update_columns(rsi_handle_verified_at: 1.day.ago) # rubocop:disable Rails/SkipsModelValidations
+    user.update_columns(rsi_handle_verified_at: 1.day.ago)
     membership = membership_of(user)
 
     assert_not user.store_rsi_organizations([], read_at: 1.hour.ago)

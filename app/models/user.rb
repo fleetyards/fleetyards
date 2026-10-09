@@ -1071,9 +1071,7 @@ class User < ApplicationRecord
   end
 
   private def touch_fleet_memberships
-    # rubocop:disable Rails/SkipsModelValidations
     fleet_memberships.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   # Through the same job a connection change goes through, so co-members and
@@ -1105,14 +1103,12 @@ class User < ApplicationRecord
   end
 
   def reset_otp
-    # rubocop:disable Rails/SkipsModelValidations
     update_column(:otp_required_for_login, false)
     update_column(:encrypted_otp_secret, nil)
     update_column(:encrypted_otp_secret_iv, nil)
     update_column(:encrypted_otp_secret_salt, nil)
     update_column(:otp_backup_codes, nil)
     update_column(:otp_secret, nil)
-    # rubocop:enable Rails/SkipsModelValidations
     update(otp_secret: User.generate_otp_secret)
   end
 

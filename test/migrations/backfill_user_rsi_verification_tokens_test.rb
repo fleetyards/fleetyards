@@ -6,7 +6,7 @@ require Rails.root.join("db/data/20260929150100_backfill_user_rsi_verification_t
 class BackfillUserRsiVerificationTokensTest < ActiveSupport::TestCase
   test "every user without a token gets their own" do
     users = create_list(:user, 2)
-    User.where(id: users.map(&:id)).update_all(rsi_verification_token: nil) # rubocop:disable Rails/SkipsModelValidations
+    User.where(id: users.map(&:id)).update_all(rsi_verification_token: nil)
 
     BackfillUserRsiVerificationTokens.new.up
 

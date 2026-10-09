@@ -20,9 +20,7 @@ module Announcements
 
       ::Discord::AnnouncementPreview.new(announcement:).run
 
-      # rubocop:disable Rails/SkipsModelValidations
       announcement.update_column(:last_tested_at, Time.current)
-      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 end

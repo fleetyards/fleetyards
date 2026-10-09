@@ -166,10 +166,8 @@ class Announcement < ApplicationRecord
   end
 
   private def detach_notifications
-    # rubocop:disable Rails/SkipsModelValidations
     Notification.where(record_type: "Announcement", record_id: id)
       .update_all(record_type: nil, record_id: nil, updated_at: Time.current)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   # A repeatable field leaves empty rows behind when an author removes one from

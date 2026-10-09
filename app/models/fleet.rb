@@ -357,7 +357,6 @@ class Fleet < ApplicationRecord
 
   # Written past validation: neither column is something a form edits, and a
   # fleet saved before a later format check must still be able to get a token.
-  # rubocop:disable Rails/SkipsModelValidations
   # Not a secret: it is meant to be pasted on a public page, and all it can
   # ever prove is that this fleet's managers reached that page.
   def self.new_rsi_verification_token
@@ -385,7 +384,6 @@ class Fleet < ApplicationRecord
 
     FleetFidClaim.cancel_for_lost_verification!(self)
   end
-  # rubocop:enable Rails/SkipsModelValidations
 
   def self.valid_fid?(value)
     FID_FORMAT.match?(value.to_s)

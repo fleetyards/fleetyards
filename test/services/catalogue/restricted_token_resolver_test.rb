@@ -306,7 +306,7 @@ module Catalogue
     test "names no part of a split series when two start together" do
       series = weekly("Weekly Op")
       successor = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
-      series.update_columns(starts_at: successor.starts_at) # rubocop:disable Rails/SkipsModelValidations
+      series.update_columns(starts_at: successor.starts_at)
 
       assert_empty resolved(@member, "event:MARU/Weekly Op")
       assert_empty searched(@member, "event:weekly op")

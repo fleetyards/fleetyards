@@ -40,13 +40,11 @@ module Api
           # To the microsecond the column keeps, so the job's copy of it still
           # names this check once read back.
           Time.current.floor(6).tap do |now|
-            # rubocop:disable Rails/SkipsModelValidations
             @fleet.update_columns(
               rsi_verification_status: :pending,
               rsi_verification_checked_at: now,
               updated_at: Time.current
             )
-            # rubocop:enable Rails/SkipsModelValidations
           end
         end
 

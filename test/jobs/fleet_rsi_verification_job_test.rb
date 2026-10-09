@@ -7,7 +7,7 @@ class FleetRsiVerificationJobTest < ActiveSupport::TestCase
   test "a check that raises is recorded as failed rather than left pending" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
     fleet.generate_rsi_verification_token!
-    fleet.update_columns(rsi_verification_status: :pending) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verification_status: :pending)
     stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_raise(StandardError.new("boom"))
 
     FleetRsiVerificationJob.new.perform(fleet.id)
@@ -24,7 +24,7 @@ class FleetRsiVerificationJobTest < ActiveSupport::TestCase
 
   test "a failure after the check answered keeps its answer" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
-    fleet.update_columns(rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    fleet.update_columns(rsi_verification_status: :verified)
 
     job = FleetRsiVerificationJob.new
     FleetRsiVerification.alias_method(:original_run, :run)

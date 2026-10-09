@@ -25,7 +25,7 @@ module MarkdownHelper
   def render_markdown(text)
     return "" if text.blank?
 
-    markdown_renderer.render(text).html_safe # rubocop:disable Rails/OutputSafety
+    markdown_renderer.render(text).html_safe
   end
 
   private def markdown_renderer

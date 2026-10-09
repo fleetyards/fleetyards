@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Rails/ApplicationController
 class ErrorsController < ActionController::Base
   layout "application"
 
@@ -69,4 +68,3 @@ class ErrorsController < ActionController::Base
     end
   end
 end
-# rubocop:enable Rails/ApplicationController

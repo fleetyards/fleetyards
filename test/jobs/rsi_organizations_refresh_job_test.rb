@@ -6,7 +6,7 @@ require "webmock/minitest"
 class RsiOrganizationsRefreshJobTest < ActiveSupport::TestCase
   setup do
     @fleet = create(:fleet, rsi_sid: "MAIN")
-    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "MAIN") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "MAIN")
     @previous_cache = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new
   end
@@ -42,7 +42,7 @@ class RsiOrganizationsRefreshJobTest < ActiveSupport::TestCase
   test "a run reads a 24th of them, the longest unchecked first" do
     members = Array.new(25) { |index| verified_member("Pilot#{index}") }
     members.each_with_index do |member, index|
-      member.update_columns(rsi_organizations_attempted_at: (index + 21).hours.ago) # rubocop:disable Rails/SkipsModelValidations
+      member.update_columns(rsi_organizations_attempted_at: (index + 21).hours.ago)
     end
     stub_pages
 
@@ -54,7 +54,7 @@ class RsiOrganizationsRefreshJobTest < ActiveSupport::TestCase
 
   test "a block pauses the refresh for the rest of the day" do
     2.times { |index| verified_member("Pilot#{index}") }
-    48.times { |index| verified_member("Later#{index}").update_columns(rsi_organizations_attempted_at: Time.current) } # rubocop:disable Rails/SkipsModelValidations
+    48.times { |index| verified_member("Later#{index}").update_columns(rsi_organizations_attempted_at: Time.current) }
     stub_pages(status: 403)
 
     RsiOrganizationsRefreshJob.new.perform

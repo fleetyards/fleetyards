@@ -107,9 +107,7 @@ module Api
         Vehicle.transaction do
           scope = authorized_scope(Vehicle.all).where(id: params[:ids])
 
-          # rubocop:disable Rails/SkipsModelValidations
           scope.update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
 
           vehicle_ids = scope.pluck(:id)
 
@@ -121,9 +119,7 @@ module Api
         authorize!
 
         Vehicle.transaction do
-          # rubocop:disable Rails/SkipsModelValidations
           authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame).update_all(notify: false)
-          # rubocop:enable Rails/SkipsModelValidations
 
           vehicle_ids = current_resource_owner.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
 

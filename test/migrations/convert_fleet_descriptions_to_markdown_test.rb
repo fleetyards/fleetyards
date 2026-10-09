@@ -90,6 +90,6 @@ class ConvertFleetDescriptionsToMarkdownTest < ActiveSupport::TestCase
   private
 
   def write_description(description)
-    @fleet.update_columns(description:) # rubocop:disable Rails/SkipsModelValidations
+    @fleet.update_columns(description:)
   end
 end

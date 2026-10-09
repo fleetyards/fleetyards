@@ -52,7 +52,7 @@ class Api::V1::MeRsiVerificationCheckTest < ActionDispatch::IntegrationTest
 
   test "POST /me/rsi-verification/check inside the cooldown does not reach RSI again" do
     sign_in @user
-    @user.update_columns(rsi_verification_checked_at: Time.current, rsi_verification_status: :token_missing) # rubocop:disable Rails/SkipsModelValidations
+    @user.update_columns(rsi_verification_checked_at: Time.current, rsi_verification_status: :token_missing)
 
     assert_api_response :post, 200
 

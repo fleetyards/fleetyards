@@ -17,10 +17,8 @@ class ClaimLinkedScKeys < ActiveRecord::Migration[8.1]
       model = Model.find_by(id: entry.model_id)
       next if model.blank? || model.sc_key.present?
 
-      # rubocop:disable Rails/SkipsModelValidations
       Model.where(id: model.id).update_all(sc_key: entry.identifier, updated_at: Time.current)
       ScDataUnlistedModel.where(id: entry.id).update_all(claimed_sc_key: true)
-      # rubocop:enable Rails/SkipsModelValidations
       claimed << model.id
     end
 

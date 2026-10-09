@@ -620,9 +620,7 @@ class Vehicle < ApplicationRecord
       neighbour_rank = Vehicle.where(id: neighbour.id).pick(:rank)
       index = Vehicle.ranked.where(user_id:).where.not(id:).where(rank: ...neighbour_rank).count
 
-      # rubocop:disable Rails/SkipsModelValidations
       update_columns(rank: move_to(after ? index + 1 : index))
-      # rubocop:enable Rails/SkipsModelValidations
     end
 
     # Straight to the channels rather than through `broadcast_update`, which
@@ -699,9 +697,7 @@ class Vehicle < ApplicationRecord
 
     ids.each do |id|
       last = lexorank_ranking.value_between(last, nil)
-      # rubocop:disable Rails/SkipsModelValidations
       where(id:).update_all(rank: last)
-      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 
