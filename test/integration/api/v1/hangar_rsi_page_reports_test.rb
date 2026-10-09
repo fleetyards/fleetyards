@@ -110,6 +110,18 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_includes body, "markup 3-9"
   end
 
+  test "POST /hangar/rsi-page-reports keeps a detail spanning several lines inside its code span" do
+    sign_in @user
+
+    post "/api/v1/hangar/rsi-page-reports",
+      params: {page: "hangar", check: "missing_kinds", extensionVersion: "1.0\n[y](https://y.test)", details: ["ok\n`[x](https://x.test)`"]},
+      as: :json
+
+    body = notifications.sole.body
+    assert_includes body, "  - `ok [x](https://x.test)`"
+    assert_not_includes body, "y.test"
+  end
+
   test "POST /hangar/rsi-page-reports counts a user once per page and check" do
     previous_store = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new

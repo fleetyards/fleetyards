@@ -29,7 +29,11 @@ class RsiPageReport
   # each user may trip on different markup. The newest ones are kept.
   MAX_DETAILS = 30
 
+  MAX_DETAIL_LENGTH = 200
+
   DETAIL_LINE = /\A  - `(.+)`\z/
+
+  EXTENSION_VERSION = /\A[0-9A-Za-z.+-]{1,32}\z/
 
   def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
     if user
@@ -39,6 +43,11 @@ class RsiPageReport
       )
       return unless first
     end
+
+    # The input schema's patterns anchor per line, so a value spanning several
+    # lines can pass them. Both end up in markdown the admins read.
+    extension_version = extension_version.to_s[EXTENSION_VERSION]
+    details = Array(details).filter_map { |detail| clean_detail(detail) }
 
     AdminNotification.notify!(
       type: :rsi_markup_changed,
@@ -51,7 +60,7 @@ class RsiPageReport
           "A #{page} sync stopped on a page its parser does not recognise.",
           "- Check: `#{check}`",
           ("- Page: #{page_number}" if page_number),
-          ("- Extension: `#{extension_version}`" if extension_version.present?),
+          ("- Extension: `#{extension_version}`" if extension_version),
           ("- Details:" if all_details.any?),
           *all_details.map { |detail| "  - `#{detail}`" }
         ].compact.join("\n")
@@ -60,4 +69,10 @@ class RsiPageReport
       dedupe_key: "#{page}:#{check}"
     )
   end
+
+  # The admin notification renders a detail as inline code.
+  def self.clean_detail(detail)
+    detail.to_s.tr("`", " ").squish.first(MAX_DETAIL_LENGTH).strip.presence
+  end
+  private_class_method :clean_detail
 end
