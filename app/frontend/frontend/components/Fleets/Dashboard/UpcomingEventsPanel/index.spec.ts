@@ -156,7 +156,7 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
 
     const subject = await mount();
 
-    expect(subject.find(".upcoming-events__title").attributes("href")).toBe(
+    expect(subject.find("a.upcoming-events__entry").attributes("href")).toBe(
       "#/fleets/maru/events/weekly?occurrence=2026-05-21",
     );
   });

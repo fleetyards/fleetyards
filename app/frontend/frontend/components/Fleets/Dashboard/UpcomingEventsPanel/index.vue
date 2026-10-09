@@ -11,6 +11,7 @@ import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPane
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import {
   FleetEventSignupStatusEnum,
   FleetEventStatusEnum,
@@ -90,6 +91,16 @@ const isEmpty = computed(() => !!data.value && !entries.value.length);
 
 watch(isEmpty, (value) => emit("empty", value), { immediate: true });
 
+const { resolve: resolveCover } = useMissionCover();
+
+// Darkest under the date and title, so a bright cover never washes them out.
+const SCRIM =
+  "linear-gradient(90deg, rgb(0 0 0 / 0.8) 0%, rgb(0 0 0 / 0.45) 55%, rgb(0 0 0 / 0.35) 100%)";
+
+const coverFor = (event: FleetEvent) => ({
+  backgroundImage: `${SCRIM}, url(${resolveCover(event)})`,
+});
+
 const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
   [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,
   [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
@@ -110,46 +121,53 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
       <li
         v-for="event in entries"
         :key="`${event.id}-${event.occurrenceDate ?? ''}`"
-        class="upcoming-events__entry"
         data-test="fleet-dashboard-event"
       >
-        <div class="upcoming-events__date" aria-hidden="true">
-          <span class="upcoming-events__weekday">
-            {{ l(event.startsAt, "fleetDashboard.formats.weekday") }}
-          </span>
-          <span class="upcoming-events__day">
-            {{ l(event.startsAt, "fleetDashboard.formats.day") }}
-          </span>
-        </div>
-        <div class="upcoming-events__text">
-          <router-link :to="linkFor(event)" class="upcoming-events__title">
-            {{ event.title }}
-          </router-link>
-          <span class="upcoming-events__meta">
-            <time :datetime="event.startsAt">
-              {{ l(event.startsAt, "datetime.formats.short") }}
-            </time>
-            <template v-if="event.location"> · {{ event.location }}</template>
-          </span>
-        </div>
-        <Pill
-          v-if="event.viewerSignup"
-          :variant="SIGNUP_VARIANTS[event.viewerSignup.status]"
-          data-test="fleet-dashboard-event-signup"
-        >
-          {{
-            t(
-              `labels.fleets.events.signupStatuses.${event.viewerSignup.status}`,
-            )
-          }}
-        </Pill>
+        <!-- The whole card is the link, so the sign-up hint inside it is a
+             label rather than a second link nested in the first. -->
         <router-link
-          v-else-if="event.signupsOpen"
           :to="linkFor(event)"
-          class="upcoming-events__signup"
-          data-test="fleet-dashboard-event-signup-cta"
+          class="upcoming-events__entry"
+          :style="coverFor(event)"
         >
-          {{ t("fleetDashboard.events.signUp") }}
+          <div class="upcoming-events__date" aria-hidden="true">
+            <span class="upcoming-events__weekday">
+              {{ l(event.startsAt, "fleetDashboard.formats.weekday") }}
+            </span>
+            <span class="upcoming-events__day">
+              {{ l(event.startsAt, "fleetDashboard.formats.day") }}
+            </span>
+          </div>
+          <div class="upcoming-events__text">
+            <span class="upcoming-events__title">{{ event.title }}</span>
+            <span class="upcoming-events__meta">
+              <time :datetime="event.startsAt">
+                {{ l(event.startsAt, "datetime.formats.short") }}
+              </time>
+              <template v-if="event.location">
+                · {{ event.location }}
+              </template>
+            </span>
+          </div>
+          <Pill
+            v-if="event.viewerSignup"
+            :variant="SIGNUP_VARIANTS[event.viewerSignup.status]"
+            data-test="fleet-dashboard-event-signup"
+          >
+            {{
+              t(
+                `labels.fleets.events.signupStatuses.${event.viewerSignup.status}`,
+              )
+            }}
+          </Pill>
+          <span
+            v-else-if="event.signupsOpen"
+            class="upcoming-events__signup"
+            data-test="fleet-dashboard-event-signup-cta"
+          >
+            {{ t("fleetDashboard.events.signUp") }}
+            <i class="fa-light fa-chevron-right" aria-hidden="true" />
+          </span>
         </router-link>
       </li>
     </ul>
@@ -160,7 +178,7 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
 .upcoming-events {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -171,6 +189,22 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
   align-items: center;
   gap: 14px;
   min-width: 0;
+  min-height: 64px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-control, 8px);
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.9);
+  transition: filter 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    filter: brightness(1.2);
+    color: #fff;
+  }
 }
 
 .upcoming-events__date {
@@ -179,21 +213,21 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
   flex-direction: column;
   align-items: center;
   padding: 4px 0;
-  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  background-color: rgb(0 0 0 / 0.55);
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: var(--radius-control, 8px);
   line-height: 1.1;
 }
 
 .upcoming-events__weekday {
-  color: var(--color-text-dim, #959595);
+  color: rgb(255 255 255 / 0.75);
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .upcoming-events__day {
-  color: var(--color-lifted, #eee);
+  color: #fff;
   font-size: 18px;
   font-weight: 600;
 }
@@ -208,7 +242,6 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
 
 .upcoming-events__title {
   overflow: hidden;
-  color: var(--color-lifted, #eee);
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -216,7 +249,7 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
 
 .upcoming-events__meta {
   overflow: hidden;
-  color: var(--color-text-dim, #959595);
+  color: rgb(255 255 255 / 0.85);
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -225,5 +258,12 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
 .upcoming-events__signup {
   flex: 0 0 auto;
   font-size: 13px;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .upcoming-events__entry {
+    transition-duration: 1ms;
+  }
 }
 </style>
