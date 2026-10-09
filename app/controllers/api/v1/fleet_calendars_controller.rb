@@ -44,6 +44,7 @@ module Api
         end
 
         @calendar_entries = entries.sort_by { |(event, occurrence)| occurrence || event.starts_at }
+        @viewer_signups = viewer_signups_for(@calendar_entries.map(&:first).uniq)
       end
 
       # Past horizon: 90 days. Calendar clients don't need the full history
@@ -101,6 +102,17 @@ module Api
           calendar_name: "#{@fleet.name} — Events",
           organizer_name: @fleet.name).to_ics
         render plain: ics, content_type: "text/calendar; charset=utf-8"
+      end
+
+      # Keyed the way a signup names its occurrence: the event, and the day for
+      # a recurring one. A withdrawn signup is no longer the reader's plan.
+      private def viewer_signups_for(events)
+        return {} if current_fleet_membership.blank? || events.empty?
+
+        FleetEventSignup
+          .where(fleet_membership: current_fleet_membership, fleet_event_id: events.map(&:id))
+          .where.not(status: "withdrawn")
+          .index_by { |signup| [signup.fleet_event_id, signup.occurrence_date] }
       end
 
       private def parse_date(value)

@@ -24492,6 +24492,10 @@ components:
           "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         viewerEventRole:
           "$ref": "#/components/schemas/FleetEventViewerRoleEnum"
+        viewerSignup:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetEventViewerSignup"
+          - type: 'null'
         archived:
           type: boolean
         archivedAt:
@@ -25501,6 +25505,21 @@ components:
       - ADMIN
       - MODERATOR
       title: FleetEventViewerRoleEnum
+    FleetEventViewerSignup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
+        occurrenceDate:
+          type: string
+          format: date
+      required:
+      - id
+      - status
+      title: FleetEventViewerSignup
     FleetEventVisibilityEnum:
       type: string
       enum:

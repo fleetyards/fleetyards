@@ -13,6 +13,17 @@ json.items do
       occurrence_date: occurrence_time&.to_date,
       parent_event_slug: occurrence_time ? event.slug : nil
 
+    viewer_signup = @viewer_signups[[event.id, occurrence_time&.to_date]]
+    if viewer_signup
+      json.viewer_signup do
+        json.id viewer_signup.id
+        json.status viewer_signup.status
+        json.occurrence_date viewer_signup.occurrence_date
+      end
+    else
+      json.viewer_signup nil
+    end
+
     if occurrence_time
       # Render the virtual occurrence at the occurrence's start time so
       # calendar clients place it on the right day.
