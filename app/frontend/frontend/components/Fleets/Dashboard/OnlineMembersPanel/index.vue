@@ -5,10 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useDebounceFn } from "@vueuse/core";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePresence } from "@/shared/composables/usePresence";
 import { useFleetOnlineMembers, type Fleet } from "@/services/fyApi";
 
 type Props = {
@@ -19,27 +21,56 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// Presence moves by the minute, and nobody reloads a dashboard to see it.
-const REFRESH_MS = 60_000;
+/*
+ * Asked for once, then kept live by the presence pushes every co-member
+ * already receives. Somebody going offline drops out at once. Somebody coming
+ * online who is not listed yet means one more ask: the push carries an id, not
+ * a member, and only the server knows whether they belong to this fleet. Each
+ * id is asked about once, so a friend outside the fleet does not ask forever.
+ */
+const ASK_AGAIN_AFTER_MS = 2_000;
 
-const { data } = useFleetOnlineMembers(
+const { data, refetch } = useFleetOnlineMembers(
   computed(() => props.fleet.slug),
-  {
-    query: { ...liveQuery, refetchInterval: REFRESH_MS },
-  },
+  { query: liveQuery },
 );
 
-const members = computed(() => data.value?.items ?? []);
+const { isOnline, knownOnlineIds } = usePresence();
 
-const more = computed(
-  () => (data.value?.totalCount ?? 0) - members.value.length,
+const listed = computed(() => data.value?.items ?? []);
+
+const members = computed(() =>
+  listed.value.filter((member) => isOnline(member.userId, true)),
 );
+
+const total = computed(
+  () =>
+    (data.value?.totalCount ?? 0) -
+    (listed.value.length - members.value.length),
+);
+
+const more = computed(() => total.value - members.value.length);
+
+const askedAbout = new Set<string>();
+
+const askAgain = useDebounceFn(() => void refetch(), ASK_AGAIN_AFTER_MS);
+
+watch(knownOnlineIds, (ids) => {
+  const listedIds = new Set(listed.value.map(({ userId }) => userId));
+  const unseen = [...ids].filter(
+    (id) => !listedIds.has(id) && !askedAbout.has(id),
+  );
+  if (!unseen.length) return;
+
+  unseen.forEach((id) => askedAbout.add(id));
+  void askAgain();
+});
 </script>
 
 <template>
   <DashboardPanel
     v-if="members.length"
-    :title="t('fleetDashboard.online.title', { count: data?.totalCount ?? 0 })"
+    :title="t('fleetDashboard.online.title', { count: total })"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-online"
   >
