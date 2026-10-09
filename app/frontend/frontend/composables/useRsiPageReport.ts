@@ -17,6 +17,23 @@ export enum RsiPageReportOutcome {
   NO_ANSWER = "noAnswer",
 }
 
+const MAX_DETAILS = 10;
+const MAX_DETAIL_LENGTH = 200;
+
+// The admin notification renders each detail as inline code, so one may not
+// hold a backtick or break the line. Cut by code point: the server counts them,
+// and a surrogate pair split in half would fail its check and lose the report.
+export const reportDetail = (detail: string) =>
+  Array.from(
+    detail
+      .replace(/[`\r\n]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
+  )
+    .slice(0, MAX_DETAIL_LENGTH)
+    .join("")
+    .trim();
+
 // Tells the admins a sync met an RSI page its parser no longer recognises,
 // once the extension confirms the RSI session is still there. The report itself
 // is fired and forgotten: the sync has already stopped.
@@ -29,6 +46,7 @@ export const useRsiPageReport = () => {
     check: RsiPageCheckEnum;
     pageNumber?: number;
     extensionVersion?: string;
+    details?: string[];
   }) => {
     const identity = await extension
       .request(FleetyardsSyncAction.IDENTIFY)
@@ -43,7 +61,16 @@ export const useRsiPageReport = () => {
       return RsiPageReportOutcome.SIGNED_OUT;
     }
 
-    mutation.mutateAsync({ data: report }).catch(() => undefined);
+    const details = report.details
+      ?.map(reportDetail)
+      .filter(Boolean)
+      .slice(0, MAX_DETAILS);
+
+    mutation
+      .mutateAsync({
+        data: { ...report, details: details?.length ? details : undefined },
+      })
+      .catch(() => undefined);
 
     return RsiPageReportOutcome.REPORTED;
   };

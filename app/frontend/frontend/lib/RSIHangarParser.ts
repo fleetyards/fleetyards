@@ -12,7 +12,11 @@ export type RSIHangarPage =
       pledgeIds: string[];
     }
   | { status: RsiPageStatus.END }
-  | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
+  | {
+      status: RsiPageStatus.UNRECOGNISED;
+      check: RsiPageCheckEnum;
+      details: string[];
+    };
 
 const READ_KINDS = new Map<string, RSIHangarItemKind>([
   ["Ship", "ship"],
@@ -34,6 +38,47 @@ const COMPONENT_FOR_MODELS = [
 ];
 
 const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
+
+const PLEDGE_CATEGORIES = [
+  "Package",
+  "Packages",
+  "Standalone Ship",
+  "Standalone Ships",
+  "Upgrade",
+  "Upgrades",
+  "Add-Ons",
+  "Paints",
+  "Gear",
+  "Combo",
+  "Subscribers Exclusive",
+];
+
+const interleave = (...lists: string[][]) =>
+  Array.from({
+    length: Math.max(...lists.map((list) => list.length)),
+  }).flatMap((_, index) =>
+    lists.map((list) => list[index]).filter((detail) => detail !== undefined),
+  );
+
+// Pages a sync can land on instead of the pledge list, without RSI's site
+// suffix. Any other title may be an account page naming the user.
+const PAGE_TITLES = [
+  "",
+  "my hangar",
+  "buy back pledges",
+  "roberts space industries",
+  "sign in",
+  "login",
+  "just a moment...",
+  "attention required! | cloudflare",
+  "maintenance",
+  "page not found",
+  "access denied",
+  "error",
+  "404",
+];
+
+const SITE_SUFFIX = /\s*[-|]\s*Roberts Space Industries\b.*$/i;
 
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
 // melt value at all.
@@ -83,6 +128,7 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_LIST,
+        details: [this.pageTitle(htmlDoc)],
       };
     }
 
@@ -93,9 +139,9 @@ export class RSIHangarParser {
     const pledges: RSIHangarItem[] = [];
     const pledgeIds: string[] = [];
     let missingPledgeName = false;
-    let shipWithoutKind = false;
-    let unknownKind = false;
-    let standaloneShipWithoutShip = false;
+    const shipsWithoutKind = new Set<string>();
+    const unknownKinds = new Set<string>();
+    const standaloneShipsWithoutShip = new Set<string>();
 
     entries.forEach((entry) => {
       const id = (
@@ -142,13 +188,15 @@ export class RSIHangarParser {
           // does: one with a manufacturer and no kind would drop out of the
           // sync, and the unmatched action would act on it.
           if (this.hasManufacturer(item)) {
-            shipWithoutKind = true;
+            shipsWithoutKind.add(
+              `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
+            );
           }
           return;
         }
 
         if (!KNOWN_KINDS.includes(kind)) {
-          unknownKind = true;
+          unknownKinds.add(`unknown kind "${kind}"`);
           return;
         }
 
@@ -163,7 +211,17 @@ export class RSIHangarParser {
         name?.startsWith("Standalone Ship") &&
         !items.some((item) => item.type === "ship")
       ) {
-        standaloneShipWithoutShip = true;
+        const kinds = new Set(
+          elements.map((item) => {
+            const kind = this.itemKind(item);
+
+            return kind === undefined ? "none" : kind || "empty";
+          }),
+        );
+
+        standaloneShipsWithoutShip.add(
+          `no ship in ${this.pledgeCategory(name)}, kinds ${[...kinds].join(", ") || "none"}`,
+        );
       }
 
       pledges.push(...items);
@@ -180,27 +238,38 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
+        details: [
+          `pledges ${entries.length}, ids ${pledgeIds.length}, ${missingPledgeName ? "a name missing" : "no name missing"}`,
+        ],
       };
     }
 
-    if (shipWithoutKind) {
+    if (shipsWithoutKind.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
+        // Taken in turn, so no case is cut off by the report's cap.
+        details: interleave(
+          [...shipsWithoutKind],
+          [...standaloneShipsWithoutShip],
+          [...unknownKinds],
+        ),
       };
     }
 
-    if (unknownKind) {
+    if (unknownKinds.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
+        details: [...unknownKinds],
       };
     }
 
-    if (standaloneShipWithoutShip) {
+    if (standaloneShipsWithoutShip.size) {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [...standaloneShipsWithoutShip],
       };
     }
 
@@ -281,10 +350,52 @@ export class RSIHangarParser {
     return !!item.getElementsByClassName("liner")[0];
   }
 
+  // What an admin report may say about an item or pledge it could not read. A
+  // report goes out of the user's purchase history, so it carries RSI's own
+  // labels and markup but never an item's title or the name the user gave it.
+  linerText(item: Element): string {
+    const liner = item.getElementsByClassName("liner")[0]?.cloneNode(true) as
+      Element | undefined;
+
+    liner
+      ?.querySelectorAll(".custom-name-text")
+      .forEach((customName) => customName.remove());
+
+    return liner?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+  }
+
+  pageTitle(htmlDoc: Document): string {
+    const title = htmlDoc.title.replace(SITE_SUFFIX, "").trim();
+
+    return PAGE_TITLES.includes(title.toLowerCase())
+      ? `page title "${title}"`
+      : "an unlisted page title";
+  }
+
+  // Only RSI's own labels: a pledge without one can still hold " - " in its
+  // title, and the text before it would be the item's name.
+  pledgeCategory(name: string | undefined): string {
+    const [category, title] = (name ?? "").split(" - ");
+
+    if (title === undefined) return "a pledge without a category";
+
+    return PLEDGE_CATEGORIES.includes(category.trim())
+      ? `a "${category.trim()}" pledge`
+      : "a pledge with an unlisted category";
+  }
+
+  markupClasses(item: Element): string {
+    const classes = [item, ...Array.from(item.querySelectorAll("[class]"))]
+      .flatMap((element) => Array.from(element.classList))
+      .filter((className) => !className.startsWith("js-"));
+
+    return [...new Set(classes)].join(" ") || "none";
+  }
+
   itemKind(item: Element): string | undefined {
     const kind = item.getElementsByClassName("kind")[0];
 
-    return kind ? kind.textContent || "" : undefined;
+    return kind ? (kind.textContent ?? "").trim() : undefined;
   }
 
   extractImage(item: Element): string | undefined {

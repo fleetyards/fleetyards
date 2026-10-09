@@ -202,6 +202,8 @@ class AdminNotification < ApplicationRecord
 
   # A dedupe_key folds repeat reports of the same content into the row that is
   # still unread, so a weekly job that keeps finding nothing does not stack up.
+  # A repeat replaces the body, unless the body is a callable: that one is
+  # handed the unread row's body (nil for a new row) and builds on it.
   def self.notify!(type:, title:, body: nil, severity: :info, link: nil, icon: nil, record: nil, dedupe_key: nil)
     recipients_for(type).map do |admin_user|
       notification = upsert_for(
@@ -227,17 +229,21 @@ class AdminNotification < ApplicationRecord
 
       if existing
         # Reloaded under the lock: two reports counting from the same read
-        # would record one.
-        existing.with_lock do
+        # would record one. A row read or archived since the lookup has been
+        # dealt with, so the report starts a new one instead.
+        folded = existing.with_lock do
+          next false if existing.read_at || existing.archived_at
+
           existing.update!(
-            title:, body:, severity:, link:, icon:, record:,
+            title:, severity:, link:, icon:, record:,
+            body: resolve_body(body, existing.body),
             occurrences: existing.occurrences + 1,
             last_occurred_at: Time.current,
             expires_at: Time.current + retention_for(type)
           )
         end
 
-        return existing
+        return existing if folded
       end
 
       # A concurrent report can insert the same dedupe key between the lookup
@@ -246,7 +252,8 @@ class AdminNotification < ApplicationRecord
       # transaction usable after the failed insert.
       transaction(requires_new: true) do
         create!(
-          admin_user:, notification_type: type, title:, body:, severity:,
+          admin_user:, notification_type: type, title:,
+          body: resolve_body(body, nil), severity:,
           link:, icon:, record:, dedupe_key:
         )
       end
@@ -258,6 +265,11 @@ class AdminNotification < ApplicationRecord
     end
   end
   private_class_method :upsert_for
+
+  def self.resolve_body(body, earlier_body)
+    body.respond_to?(:call) ? body.call(earlier_body) : body
+  end
+  private_class_method :resolve_body
 
   def self.broadcast(notification)
     AdminNotificationsChannel.broadcast_to(notification.admin_user, notification.to_jbuilder_hash)

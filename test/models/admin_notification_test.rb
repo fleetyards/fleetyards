@@ -57,6 +57,21 @@ class AdminNotificationTest < ActiveSupport::TestCase
     assert_equal 3, AdminNotification.first.occurrences
   end
 
+  test "hands a callable body the unread row's body to build on" do
+    create(:admin_user, resource_access: [:models])
+
+    2.times do |run|
+      AdminNotification.notify!(
+        type: :paints_import,
+        title: "Paints Import Results",
+        body: ->(earlier) { [earlier, "run #{run}"].compact.join("\n") },
+        dedupe_key: "same"
+      )
+    end
+
+    assert_equal "run 0\nrun 1", AdminNotification.sole.body
+  end
+
   test "starts a new row once the deduped one has been read" do
     create(:admin_user, resource_access: [:models])
 
@@ -78,6 +93,29 @@ class AdminNotificationTest < ActiveSupport::TestCase
 
     assert_equal 1, AdminNotification.count
     assert_equal 2, existing.reload.occurrences
+  end
+
+  {read: :read_at, archived: :archived_at}.each do |state, column|
+    test "starts a new row when the deduped one is #{state} between the lookup and the lock" do
+      admin_user = create(:admin_user, resource_access: [:models])
+      existing = create(:admin_notification, admin_user:, dedupe_key: "same", body: "earlier")
+
+      # The lookup still sees the row in the inbox; the admin deals with it
+      # before the lock.
+      AdminNotification.stubs(:unread).returns(AdminNotification.where(id: existing.id))
+      AdminNotification.where(id: existing.id).update_all(column => Time.current)
+
+      AdminNotification.notify!(
+        type: :paints_import,
+        title: "Paints Import Results",
+        body: ->(earlier) { [earlier, "later"].compact.join("\n") },
+        dedupe_key: "same"
+      )
+
+      assert_equal 2, AdminNotification.count
+      assert_equal ["earlier", 1], [existing.reload.body, existing.occurrences]
+      assert_equal "later", AdminNotification.where.not(id: existing.id).sole.body
+    end
   end
 
   test "lists only the types the admin currently has access to" do

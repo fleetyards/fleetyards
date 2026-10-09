@@ -6,7 +6,8 @@
 # user's hangar.
 #
 # A report names the page and the check that failed, never the page itself: the
-# pledge pages are the user's purchase history.
+# pledge pages are the user's purchase history. Its details are what the parser
+# tripped on, in RSI's labels and markup, without item titles or custom names.
 class RsiPageReport
   PAGES = %w[hangar buyback].freeze
 
@@ -24,7 +25,22 @@ class RsiPageReport
   # one of them reopen the notification as fast as the admins can read it.
   REPORT_INTERVAL = 1.hour
 
-  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil)
+  # Repeats of one check add their details to the unread notification, since
+  # each user may trip on different markup. The newest ones are kept, each with
+  # the page and extension version it came from.
+  MAX_DETAILS = 30
+
+  MAX_DETAIL_LENGTH = 200
+
+  DETAIL_LINE = /\A  - `([^`]+)`/
+
+  EXTENSION_VERSION = /\A[0-9A-Za-z.+-]{1,32}\z/
+
+  LATEST_PAGE_LINE = /\A- Latest page: (\d+)\z/
+
+  LATEST_EXTENSION_LINE = /\A- Latest extension: `([^`]+)`\z/
+
+  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
     if user
       first = Rails.cache.write(
         "rsi_page_report/#{user.id}/#{page}/#{check}", true,
@@ -33,17 +49,49 @@ class RsiPageReport
       return unless first
     end
 
+    # The input schema's patterns anchor per line, so a value spanning several
+    # lines can pass them. Both end up in markdown the admins read.
+    extension_version = extension_version.to_s[EXTENSION_VERSION]
+    details = Array(details).filter_map { |detail| clean_detail(detail) }.uniq
+    context = [
+      ("page #{page_number}" if page_number),
+      ("extension `#{extension_version}`" if extension_version)
+    ].compact
+    new_lines = details.map do |detail|
+      "  - `#{detail}`#{" (#{context.join(", ")})" if context.any?}"
+    end
+
     AdminNotification.notify!(
       type: :rsi_markup_changed,
       title: "RSI #{page} page not recognised (#{check})",
-      body: [
-        "A #{page} sync stopped on a page its parser does not recognise.",
-        "- Check: `#{check}`",
-        ("- Page: #{page_number}" if page_number),
-        ("- Extension: `#{extension_version}`" if extension_version.present?)
-      ].compact.join("\n"),
+      body: ->(earlier_body) {
+        earlier = earlier_body.to_s.lines.map(&:chomp)
+        earlier_lines = earlier.select do |line|
+          (detail = line[DETAIL_LINE, 1]) && !details.include?(detail)
+        end
+        detail_lines = (earlier_lines + new_lines).last(MAX_DETAILS)
+        # A report without them keeps what an earlier one recorded, which the
+        # earlier details still cite.
+        latest_page = page_number || earlier.filter_map { |line| line[LATEST_PAGE_LINE, 1] }.first
+        latest_extension = extension_version || earlier.filter_map { |line| line[LATEST_EXTENSION_LINE, 1] }.first
+
+        [
+          "A #{page} sync stopped on a page its parser does not recognise.",
+          "- Check: `#{check}`",
+          ("- Latest page: #{latest_page}" if latest_page),
+          ("- Latest extension: `#{latest_extension}`" if latest_extension),
+          ("- Details:" if detail_lines.any?),
+          *detail_lines
+        ].compact.join("\n")
+      },
       severity: :error,
       dedupe_key: "#{page}:#{check}"
     )
   end
+
+  # The admin notification renders a detail as inline code.
+  def self.clean_detail(detail)
+    detail.to_s.tr("`", " ").squish.first(MAX_DETAIL_LENGTH).strip.presence
+  end
+  private_class_method :clean_detail
 end
