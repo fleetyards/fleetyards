@@ -10,7 +10,6 @@ import {
   destroyCalendar,
   DayGrid,
   TimeGrid,
-  List,
   Interaction,
   type EventCalendarInstance,
 } from "@event-calendar/core";
@@ -26,7 +25,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
-import { useMobile } from "@/shared/composables/useMobile";
 import { format, parseISO } from "date-fns";
 
 type CalendarViewKind = "month" | "week";
@@ -59,15 +57,10 @@ const { resolve: resolveCover } = useMissionCover();
 const calendarEl = ref<HTMLElement | null>(null);
 let ec: EventCalendarInstance | null = null;
 
-type CalendarLibView =
-  "dayGridMonth" | "timeGridWeek" | "dayGridWeek" | "listWeek";
+type CalendarLibView = "dayGridMonth" | "timeGridWeek" | "dayGridWeek";
 
-const mobile = useMobile();
-
-// Seven columns on a phone leave each day a sliver that fits neither a title
-// nor a time, so there the compact week reads as a list of its days instead.
 const toLibView = (v: CalendarViewKind): CalendarLibView => {
-  if (props.compact) return mobile.value ? "listWeek" : "dayGridWeek";
+  if (props.compact) return "dayGridWeek";
 
   return v === "week" ? "timeGridWeek" : "dayGridMonth";
 };
@@ -160,9 +153,9 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  // The compact week has room for the cover, as a column per day or, on a
-  // phone, a row per day; a month's cells do not.
-  const isCard = ["dayGridWeek", "listWeek"].includes(info.view.type);
+  // The compact week has a whole column per day and one row of them, room
+  // enough for the cover; a month's cells are not.
+  const isCard = info.view.type === "dayGridWeek";
   const isMonth = !info.view.type.startsWith("timeGrid") && !isCard;
 
   const chip = document.createElement("div");
@@ -264,70 +257,59 @@ const setView = (view: CalendarViewKind) => {
 onMounted(() => {
   if (!calendarEl.value) return;
 
-  ec = createCalendar(
-    calendarEl.value,
-    [DayGrid, TimeGrid, List, Interaction],
-    {
-      view: toLibView(props.view),
-      date: initialDate,
-      events: calendarEvents.value,
-      locale: i18nStore.locale,
-      firstDay: 1,
-      headerToolbar: false,
-      height: "auto",
-      dayMaxEvents: true,
-      noEventsContent: t("labels.fleets.events.calendar.noEvents"),
-      nowIndicator: true,
-      selectable: !props.compact,
-      selectMirror: !props.compact,
-      slotDuration: "01:00:00",
-      slotHeight: 56,
-      slotMinTime: "08:00:00",
-      slotMaxTime: "24:00:00",
-      eventClick: (info: {
-        event: { extendedProps?: { fleetEvent?: FleetEvent } };
-      }) => {
-        const event = info.event.extendedProps?.fleetEvent;
-        if (event?.slug) {
-          const occurrence = (event as { occurrenceDate?: string | null })
-            .occurrenceDate;
-          const parentSlug = (event as { parentEventSlug?: string | null })
-            .parentEventSlug;
-          void router.push({
-            name: "fleet-event",
-            params: {
-              slug: props.fleet.slug,
-              event: parentSlug || event.slug,
-            },
-            query: occurrence ? { occurrence } : undefined,
-          });
-        }
-      },
-      dateClick: (info: { date: Date }) => {
-        if (props.compact) return;
-        emit("create-event", info.date);
-      },
-      select: (info: { start: Date }) => {
-        if (props.compact) return;
-        emit("create-event", info.start);
-      },
-      datesSet: (info: { start: Date; end: Date }) => {
-        emit("update:range", { start: info.start, end: info.end });
-        rangeStart = info.start;
-        updateTitle();
-        syncDateToUrl();
-      },
-      eventContent: renderEventChip,
+  ec = createCalendar(calendarEl.value, [DayGrid, TimeGrid, Interaction], {
+    view: toLibView(props.view),
+    date: initialDate,
+    events: calendarEvents.value,
+    locale: i18nStore.locale,
+    firstDay: 1,
+    headerToolbar: false,
+    height: "auto",
+    dayMaxEvents: true,
+    nowIndicator: true,
+    selectable: !props.compact,
+    selectMirror: !props.compact,
+    slotDuration: "01:00:00",
+    slotHeight: 56,
+    slotMinTime: "08:00:00",
+    slotMaxTime: "24:00:00",
+    eventClick: (info: {
+      event: { extendedProps?: { fleetEvent?: FleetEvent } };
+    }) => {
+      const event = info.event.extendedProps?.fleetEvent;
+      if (event?.slug) {
+        const occurrence = (event as { occurrenceDate?: string | null })
+          .occurrenceDate;
+        const parentSlug = (event as { parentEventSlug?: string | null })
+          .parentEventSlug;
+        void router.push({
+          name: "fleet-event",
+          params: {
+            slug: props.fleet.slug,
+            event: parentSlug || event.slug,
+          },
+          query: occurrence ? { occurrence } : undefined,
+        });
+      }
     },
-  );
+    dateClick: (info: { date: Date }) => {
+      if (props.compact) return;
+      emit("create-event", info.date);
+    },
+    select: (info: { start: Date }) => {
+      if (props.compact) return;
+      emit("create-event", info.start);
+    },
+    datesSet: (info: { start: Date; end: Date }) => {
+      emit("update:range", { start: info.start, end: info.end });
+      rangeStart = info.start;
+      updateTitle();
+      syncDateToUrl();
+    },
+    eventContent: renderEventChip,
+  });
 
   updateTitle();
-});
-
-watch(mobile, () => {
-  if (!props.compact) return;
-
-  ec?.setOption("view", toLibView(props.view));
 });
 
 watch(
@@ -616,43 +598,6 @@ onUnmounted(() => {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     white-space: normal;
-  }
-
-  // The phone list: each day a small heading over its cards, inset from the
-  // panel's edge the way the dashboard's other lists are.
-  :deep(.ec-list .ec-day) {
-    padding: 0 14px 12px;
-    border: 0;
-  }
-
-  :deep(.ec-list .ec-day-head) {
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding: 12px 0 8px;
-    border: 0;
-    background: transparent;
-    color: var(--color-text-dim, #959595);
-    font-size: 12px;
-  }
-
-  :deep(.ec-list .ec-event) {
-    margin: 0;
-    padding: 0;
-    border-radius: var(--radius-control, 8px);
-    background: transparent;
-  }
-
-  :deep(.ec-list .ec-event + .ec-event) {
-    margin-top: 8px;
-  }
-
-  :deep(.ec-list .ec-event-tag) {
-    display: none;
-  }
-
-  :deep(.ec-list .fy-event-chip--card) {
-    border-radius: var(--radius-control, 8px);
   }
 
   :deep(.fy-event-chip--with-cover) {

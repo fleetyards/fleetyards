@@ -73,6 +73,9 @@
           "action": "发布合同",
           "link": "合同"
         }
+      },
+      "week": {
+        "emptyDay": "%{day} 没有安排。"
       }
     }
   }

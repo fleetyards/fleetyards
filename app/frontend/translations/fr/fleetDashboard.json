@@ -73,6 +73,9 @@
           "action": "Publier un contrat",
           "link": "Contrats"
         }
+      },
+      "week": {
+        "emptyDay": "Rien de prévu le %{day}."
       }
     }
   }

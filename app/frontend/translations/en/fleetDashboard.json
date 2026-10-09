@@ -73,6 +73,9 @@
           "action": "Post a contract",
           "link": "Contracts"
         }
+      },
+      "week": {
+        "emptyDay": "Nothing on %{day}."
       }
     }
   }

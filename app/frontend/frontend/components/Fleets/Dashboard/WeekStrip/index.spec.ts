@@ -1,0 +1,138 @@
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { computed, defineComponent, h, ref, type Ref } from "vue";
+import { createRouter, createWebHashHistory } from "vue-router";
+import type { Fleet, FleetEvent } from "@/services/fyApi";
+import Component from "./index.vue";
+
+let items: Partial<FleetEvent>[] = [];
+let params: Ref<{ from: string; to: string }> | undefined;
+
+vi.mock("@/services/fyApi", async () => {
+  const actual =
+    await vi.importActual<Record<string, unknown>>("@/services/fyApi");
+
+  return {
+    ...actual,
+    useFleetCalendar: (
+      _slug: unknown,
+      range: Ref<{ from: string; to: string }>,
+    ) => {
+      params = range;
+
+      return { data: computed(() => ({ items })), isLoading: ref(false) };
+    },
+  };
+});
+
+const Stub = defineComponent({ render: () => h("div") });
+
+const router = async () => {
+  const instance = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      { path: "/", name: "home", component: Stub },
+      {
+        path: "/fleets/:slug/events/:event",
+        name: "fleet-event",
+        component: Stub,
+      },
+    ],
+  });
+
+  await instance.push("/");
+  await instance.isReady();
+
+  return instance;
+};
+
+// A Wednesday, so the week runs Monday the 5th to Sunday the 11th.
+const NOW = new Date(2026, 9, 7, 12, 0);
+
+const at = (day: number, hours = 20) =>
+  new Date(2026, 9, day, hours, 0).toISOString();
+
+const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
+  id: "e",
+  slug: "cargo-run",
+  title: "Cargo Run",
+  status: "open",
+  signupsOpen: true,
+  viewerSignup: null,
+  ...overrides,
+});
+
+const mount = async () =>
+  mountWithDefaults<typeof Component>(Component, {
+    props: { fleet: { slug: "maru" } as Fleet },
+    plugins: [await router()],
+  });
+
+const titles = (subject: Awaited<ReturnType<typeof mount>>) =>
+  subject
+    .findAll("[data-test='fleet-dashboard-week-event'] .event-card__title")
+    .map((title) => title.text());
+
+describe("FleetDashboardWeekStrip", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(NOW);
+    items = [];
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("draws every day of the week, busy or not", async () => {
+    items = [event({ startsAt: at(10) })];
+
+    const subject = await mount();
+    const days = subject.findAll("[data-test='fleet-dashboard-week-day']");
+
+    expect(days.map((day) => day.find(".week-strip__number").text())).toEqual([
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+    ]);
+    expect(
+      days.map((day) => day.find(".week-strip__dot--on").exists()),
+    ).toEqual([false, false, false, false, false, true, false]);
+  });
+
+  it("opens on today and lists the day picked", async () => {
+    items = [
+      event({ id: "a", title: "Today's op", startsAt: at(7) }),
+      event({ id: "b", title: "Saturday op", startsAt: at(10) }),
+      event({ id: "c", title: "Drafted", status: "draft", startsAt: at(10) }),
+    ];
+
+    const subject = await mount();
+
+    expect(titles(subject)).toEqual(["Today's op"]);
+
+    await subject
+      .findAll("[data-test='fleet-dashboard-week-day']")[5]
+      .trigger("click");
+
+    expect(titles(subject)).toEqual(["Saturday op"]);
+  });
+
+  it("says so when the day picked has nothing on", async () => {
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").exists()).toBe(true);
+  });
+
+  it("asks for the next week when moved on", async () => {
+    const subject = await mount();
+
+    await subject.find("[aria-label='Next']").trigger("click");
+
+    expect(new Date(params?.value.from ?? "").getDate()).toBe(12);
+  });
+});

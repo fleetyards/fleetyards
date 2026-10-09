@@ -73,6 +73,9 @@
           "action": "Publicar un contrato",
           "link": "Contratos"
         }
+      },
+      "week": {
+        "emptyDay": "Nada previsto el %{day}."
       }
     }
   }

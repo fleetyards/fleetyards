@@ -73,6 +73,9 @@
           "action": "Auftrag ausschreiben",
           "link": "Aufträge"
         }
+      },
+      "week": {
+        "emptyDay": "Am %{day} steht nichts an."
       }
     }
   }

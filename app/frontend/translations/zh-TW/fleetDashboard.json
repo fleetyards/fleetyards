@@ -73,6 +73,9 @@
           "action": "發布合約",
           "link": "合約"
         }
+      },
+      "week": {
+        "emptyDay": "%{day} 沒有安排。"
       }
     }
   }

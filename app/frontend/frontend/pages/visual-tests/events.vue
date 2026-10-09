@@ -424,8 +424,8 @@ const CURRENT_USER = "user-ThalosVex";
   <CalendarGrid :fleet="fleet" :events="calendarEvents" view="week" />
 
   <p>
-    The compact week the fleet dashboard embeds: one row of days, and a list of
-    them on a phone.
+    The compact week the fleet dashboard embeds on a desk: one row of days, with
+    each event as a cover card.
   </p>
   <CalendarGrid
     :fleet="fleet"

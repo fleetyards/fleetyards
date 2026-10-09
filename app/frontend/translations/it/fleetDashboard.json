@@ -73,6 +73,9 @@
           "action": "Pubblica un contratto",
           "link": "Contratti"
         }
+      },
+      "week": {
+        "emptyDay": "Niente in programma il %{day}."
       }
     }
   }
