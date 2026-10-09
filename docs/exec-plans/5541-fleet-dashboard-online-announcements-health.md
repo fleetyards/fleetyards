@@ -1,9 +1,9 @@
-# Fleet dashboard: online members, announcements, fleet health
+# Fleet dashboard: online members and announcements
 
 Working plan for #5541. Decisions live in the issue body. Deleted before the PR merges. Stacked on `feat/5535-fleet-operations-dashboard`.
 
 ## Goal
-Three more panels on the members' dashboard: who is online (friends first), announcements that officers pin, and a health summary for officers.
+Two more panels on the members' dashboard: who is online (friends first), and announcements that officers pin.
 
 ## What changed
 
@@ -12,15 +12,13 @@ Three more panels on the members' dashboard: who is online (friends first), anno
 2. Privilege group `announcements` (`fleet:announcements:manage`), included in the admin and officer presets, plus a `manage_announcements` capability. A data migration grants it to existing roles that hold `fleet:memberships:manage`, the same rule payouts used.
 3. Policy, controller (index/create/update/destroy), routes, jbuilder views, schema components and integration tests.
 
-### Phase 2 — Online and health endpoints
+### Phase 2 — Online endpoint
 1. `GET /fleets/:slug/online-members`: reads `UserPresence`, respects `show_online_status`, lists friends first, and is gated like the member list.
-2. `GET /fleets/:slug/health`: inactive members (30 days or more), unverified members (only when the fleet has an RSI SID) and empty roles. Gated on updating members; empty roles additionally need `readRoles`.
 
 ### Phase 3 — Frontend
 1. `OnlineMembersPanel`, refreshed every minute.
 2. `AnnouncementsPanel` above the main column, plus a modal to post and edit announcements. Expiry is chosen as a duration, so no datetime picker is involved. The post button sits in `#header-right` for managers.
-3. `FleetHealthPanel` in the side column, linking to the members and roles pages.
-4. Labels for the new privilege group in all 7 locales, and dashboard strings in `fleetDashboard.json`.
+3. Labels for the new privilege group in all 7 locales, and dashboard strings in `fleetDashboard.json`.
 
 ## Key files
 
@@ -37,9 +35,11 @@ Three more panels on the members' dashboard: who is online (friends first), anno
 
 ## Discovery Log
 
+- **2026-10-09** The member health check moved to its own page (#5543). The endpoint and panel built here were removed.
+
 - **2026-10-09** Presence respects `show_online_status`. `last_active_at` is written at most every 15 minutes by `Api::BaseController#set_last_active_at`. Role presets only apply to new fleets, so a new privilege group needs a backfill.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
