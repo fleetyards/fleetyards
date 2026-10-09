@@ -309,6 +309,13 @@
         "detailsBackground": "Prezzi e assicurazioni vengono ora letti in background. Puoi chiudere questa finestra e continuare a usare Fleetyards; tieni aperta questa scheda finché non ha finito.",
         "detailsRunning": "Prezzi e assicurazioni dell'ultima sincronizzazione sono ancora in lettura. Potrai avviare una nuova sincronizzazione quando sarà terminata."
       },
+      "addToHangar": {
+        "hangarHint": "Possiedi questa nave.",
+        "wishlistHint": "Vuoi ottenere questa nave più avanti."
+      },
+      "resetIngame": {
+        "info": "Un wipe ti toglie le navi acquistate in-game. Spostale nella tua lista dei desideri per riacquistarle in seguito, oppure rimuovile dal tuo hangar. Le navi che non hai acquistato in-game restano invariate."
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",

@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type Fleet,
@@ -153,7 +156,11 @@ const revoke = (admin: FleetEventAdmin) => {
           <span class="event-admins__role">
             {{ t(`labels.fleets.events.eventRoles.${entry.role}`) }}
           </span>
-          <Btn :size="BtnSizesEnum.SM" variant="bare" @click="revoke(entry)">
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            @click="revoke(entry)"
+          >
             <i class="fa-light fa-xmark" />
             {{ t("actions.fleets.events.revokeRole") }}
           </Btn>
@@ -199,15 +206,9 @@ const revoke = (admin: FleetEventAdmin) => {
     </section>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :size="BtnSizesEnum.LG"
-          variant="bare"
-          @click="comlink.emit('close-modal')"
-        >
-          {{ t("actions.close") }}
-        </Btn>
-      </div>
+      <Btn :variant="BtnVariantsEnum.BARE" @click="comlink.emit('close-modal')">
+        {{ t("actions.close") }}
+      </Btn>
     </template>
   </Modal>
 </template>

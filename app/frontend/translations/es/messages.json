@@ -163,6 +163,7 @@
             "failure": "No se pudieron mover todas las Naves compradas en el juego a tu Lista de Deseos."
           },
           "removeAll": {
+            "confirm": "¿Eliminar de tu hangar todas las naves compradas en el juego? Esta acción no se puede deshacer.",
             "success": "Eliminadas todas las Naves compradas en el juego de tu Hangar.",
             "failure": "No se pudieron eliminar todas las Naves compradas en el juego de tu Hangar."
           }
@@ -1106,6 +1107,7 @@
         "archiveTourConfirm": "¿Archivar esta expedición? Sale de la lista, pero conserva su registro.",
         "entryCreated": "Movimiento registrado",
         "entryUpdated": "Movimiento actualizado",
+        "destroyEntryConfirm": "¿Eliminar este movimiento? No se puede deshacer.",
         "entryDestroyed": "Movimiento eliminado",
         "participantAdded": "Participante añadido",
         "participantRemoved": "Participante eliminado",

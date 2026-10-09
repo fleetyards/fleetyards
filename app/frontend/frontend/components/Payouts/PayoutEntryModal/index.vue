@@ -10,7 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
@@ -269,21 +269,23 @@ const onDestroy = async () => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          v-if="entry"
-          :tone="BtnTonesEnum.DANGER"
-          :size="BtnSizesEnum.LG"
-          :loading="deleting"
-          :aria-label="t('actions.delete')"
-          @click="onDestroy"
-        >
-          <i class="fa-light fa-trash" />
-        </Btn>
-        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        v-if="entry"
+        :confirm="t('messages.payouts.destroyEntryConfirm')"
+        :tone="BtnTonesEnum.DANGER"
+        :loading="deleting"
+        :aria-label="t('actions.delete')"
+        @click="onDestroy"
+      >
+        <i class="fa-light fa-trash" />
+      </Btn>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="payout-entry-form"
+        :loading="submitting"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

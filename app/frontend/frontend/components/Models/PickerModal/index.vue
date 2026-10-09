@@ -372,7 +372,8 @@ const save = () => {
 
 <template>
   <Modal :title="title">
-    <form id="model-picker" class="model-picker" @submit.prevent="save">
+    <!-- Enter belongs to the search and the quantity fields; only the button saves. -->
+    <form class="model-picker" @submit.prevent>
       <div class="model-picker__header">
         <div class="model-picker__toolbar">
           <FormInput
@@ -526,7 +527,6 @@ const save = () => {
         <Btn
           :loading="submitting"
           :disabled="!selection.length"
-          :size="BtnSizesEnum.LG"
           data-test="model-picker-submit"
           @click="save"
         >

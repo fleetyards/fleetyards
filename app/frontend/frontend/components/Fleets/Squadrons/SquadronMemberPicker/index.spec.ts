@@ -131,6 +131,16 @@ describe("FleetSquadronMemberPicker", () => {
     );
   });
 
+  it("does not add the picks when the form is submitted with Enter", async () => {
+    const subject = await mount(false);
+
+    await card(subject, "free").trigger("click");
+    await subject.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(addMember).not.toHaveBeenCalled();
+  });
+
   it("keeps only the members that failed selected after a partial add", async () => {
     addMember.mockImplementation(({ data }: { data: { username: string } }) =>
       data.username === "free"
@@ -141,7 +151,7 @@ describe("FleetSquadronMemberPicker", () => {
 
     await card(subject, "free").trigger("click");
     await card(subject, "on-the-rota").trigger("click");
-    await subject.find("form#fleet-squadron-members-form").trigger("submit");
+    await subject.find('[data-test="squadron-add-members"]').trigger("click");
     await flushPromises();
 
     expect(card(subject, "free").classes()).not.toContain(
