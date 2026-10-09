@@ -67,6 +67,42 @@ describe("LocationInput", () => {
     vi.useRealTimers();
   });
 
+  it("closes the list on Enter without submitting the form it sits in", async () => {
+    vi.useFakeTimers();
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "location", modelValue: "", locationId: null },
+      plugins: [await router()],
+    });
+
+    await wrapper.find("input").setValue("Area1");
+    await vi.advanceTimersByTimeAsync(300);
+    await flushPromises();
+
+    const enter = new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    });
+    wrapper.find("input").element.dispatchEvent(enter);
+    await flushPromises();
+
+    expect(enter.defaultPrevented).toBe(true);
+    expect(wrapper.find(".location-input__suggestions").exists()).toBe(false);
+    expect(wrapper.emitted("update:locationId")).toBeUndefined();
+
+    const again = new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    });
+    wrapper.find("input").element.dispatchEvent(again);
+
+    expect(again.defaultPrevented).toBe(false);
+
+    vi.useRealTimers();
+  });
+
   it("ignores an older search that answers after a newer one", async () => {
     vi.useFakeTimers();
 

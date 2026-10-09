@@ -134,9 +134,17 @@ const onKeydown = (event: KeyboardEvent) => {
     event.preventDefault();
     active.value =
       (active.value - 1 + suggestions.value.length) % suggestions.value.length;
-  } else if (event.key === "Enter" && active.value >= 0) {
+  } else if (event.key === "Enter") {
+    // Inside a form, an Enter the list does not take would submit the form
+    // with the text half typed. Without a highlighted place it closes the list
+    // and keeps the text, so a second Enter submits.
     event.preventDefault();
-    pick(suggestions.value[active.value]);
+
+    if (active.value >= 0) {
+      pick(suggestions.value[active.value]);
+    } else {
+      open.value = false;
+    }
   } else if (event.key === "Escape") {
     open.value = false;
   }
