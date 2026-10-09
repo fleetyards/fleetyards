@@ -1460,6 +1460,11 @@ paths:
         required: false
         schema:
           "$ref": "#/components/schemas/FleetActivityCategoryEnum"
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/FleetActivityCategoryEnum"
       - name: limit
         in: query
         required: false
@@ -27028,7 +27033,11 @@ components:
           type: boolean
         readEvents:
           type: boolean
+        createEvents:
+          type: boolean
         readContracts:
+          type: boolean
+        createContracts:
           type: boolean
         readRoles:
           type: boolean
@@ -27067,7 +27076,9 @@ components:
       - readVehicles
       - readBlueprints
       - readEvents
+      - createEvents
       - readContracts
+      - createContracts
       - readRoles
       - updateRoles
       - manageFleet

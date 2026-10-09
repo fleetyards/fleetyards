@@ -80,6 +80,18 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     end
   end
 
+  test "creating events and contracts follows their policies' create?" do
+    [["fleet:events:create"], ["fleet:contracts:create"], ["fleet:events:read", "fleet:contracts:read"], []].each do |access|
+      membership = membership_with(access)
+      membership.update!(aasm_state: :accepted)
+
+      assert_equal FleetEventPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
+        membership.capabilities[:create_events], "events for #{access.inspect}"
+      assert_equal FleetContractPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
+        membership.capabilities[:create_contracts], "contracts for #{access.inspect}"
+    end
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort
