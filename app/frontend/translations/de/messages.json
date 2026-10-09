@@ -1,6 +1,11 @@
 {
   "de": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "Der Rückkauf-Pledge konnte nicht entfernt werden."
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "Freigabelink erstellt.",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "Bist du sicher, dass du dieses Schiff aus deinem Hangar entfernen möchtest?"
+        },
+        "buyback": {
+          "destroy": "Diesen Pledge aus deiner Rückkaufliste entfernen? Nutze das, nachdem du ihn auf RSI zurückgekauft hast. Der nächste Sync bringt ihn zurück, falls er dort noch gelistet ist."
         },
         "hangarGroup": {
           "destroy": "Bist du sicher, dass du diese Gruppe aus deinem Hangar entfernen möchtest?"

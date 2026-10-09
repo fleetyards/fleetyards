@@ -1,6 +1,11 @@
 {
   "zh-TW": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "無法移除該回購承諾。"
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "分享連結已建立。",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "您確定要從機庫移除此飛船嗎？"
+        },
+        "buyback": {
+          "destroy": "要從回購列表移除此承諾嗎？請在 RSI 上回購後使用。若它仍在 RSI 列表中，下次同步會將其恢復。"
         },
         "hangarGroup": {
           "destroy": "您確定要從機庫移除此群組嗎？"

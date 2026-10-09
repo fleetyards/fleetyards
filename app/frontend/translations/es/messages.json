@@ -1,6 +1,11 @@
 {
   "es": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "No se pudo quitar el pledge de recompra."
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "Enlace para compartir creado.",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "¿Estás seguro de que quieres eliminar esta Nave de tu Hangar?"
+        },
+        "buyback": {
+          "destroy": "¿Quitar este pledge de tu lista de recompra? Úsalo después de recomprarlo en RSI. La próxima sincronización lo recupera si sigue en la lista allí."
         },
         "hangarGroup": {
           "destroy": "¿Estás seguro de que quieres eliminar este Grupo de tu Hangar?"

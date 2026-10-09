@@ -16,20 +16,31 @@ import {
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
-import { BuybackPledgeKindEnum, type BuybackPledge } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
+import {
+  BuybackPledgeKindEnum,
+  getHangarBuybacksQueryKey,
+  useDestroyHangarBuyback,
+  type BuybackPledge,
+} from "@/services/fyApi";
 
 type Props = {
   buybacks: BuybackPledge[];
   emptyVisible?: boolean;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t, l } = useI18n();
 
 const { formatCents } = useCurrencyFormat();
 
 const route = useRoute();
+
+const router = useRouter();
 
 const filterLink = (key: string, value: string) => ({
   name: route.name as string,
@@ -73,6 +84,49 @@ const tags = (buyback: BuybackPledge): RowListItemTag[] => [
         },
       ]),
 ];
+
+const queryClient = useQueryClient();
+
+const { displayAlert, displayConfirm } = useAppNotifications();
+
+const removingId = ref<string>();
+
+const destroyMutation = useDestroyHangarBuyback();
+
+const remove = (buyback: BuybackPledge) => {
+  displayConfirm({
+    text: t("messages.confirm.buyback.destroy"),
+    confirmText: t("actions.remove"),
+    onConfirm: async () => {
+      removingId.value = buyback.id;
+
+      try {
+        await destroyMutation.mutateAsync({ id: buyback.id });
+      } catch (error) {
+        // Already gone - a sync or another tab removed it - so the row is
+        // stale rather than the removal failed.
+        if (errorTypeFrom(error) !== ErrorTypesEnum.NOT_FOUND) {
+          displayAlert({ text: t("messages.buyback.destroy.failure") });
+          return;
+        }
+      } finally {
+        removingId.value = undefined;
+      }
+
+      const page = Number(route.query.page) || 1;
+
+      if (props.buybacks.length === 1 && page > 1) {
+        await router.replace({
+          query: { ...route.query, page: page > 2 ? page - 1 : undefined },
+        });
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: getHangarBuybacksQueryKey(),
+      });
+    },
+  });
+};
 
 const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
   const result: RowListItemBadge[] = [];
@@ -138,8 +192,9 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
           {{ record.contained }}
         </template>
 
-        <template v-if="record.available" #actions>
+        <template #actions>
           <Btn
+            v-if="record.available"
             :href="rsiUrl(record)"
             :variant="BtnVariantsEnum.GHOST"
             :aria-label="t('labels.buybacks.openOnRsi')"
@@ -148,6 +203,17 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
           >
             <i class="fa-light fa-arrow-up-right-from-square" />
             <span>{{ t("labels.buybacks.openOnRsi") }}</span>
+          </Btn>
+          <Btn
+            :variant="BtnVariantsEnum.GHOST"
+            :aria-label="t('labels.buybacks.remove')"
+            :loading="removingId === record.id"
+            mobile-icon-only
+            data-test="buyback-remove"
+            @click="remove(record)"
+          >
+            <i class="fa-light fa-trash" />
+            <span>{{ t("labels.buybacks.remove") }}</span>
           </Btn>
         </template>
       </RowListItem>

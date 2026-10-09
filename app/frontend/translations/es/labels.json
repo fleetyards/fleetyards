@@ -2571,6 +2571,7 @@
           "other": "%{count} meses"
         },
         "openOnRsi": "Recomprar en RSI",
+        "remove": "Quitar",
         "priceRange": "Rango de precios",
         "priceMin": "Precio mín. (USD)",
         "priceMax": "Precio máx. (USD)",

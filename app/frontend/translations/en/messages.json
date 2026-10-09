@@ -1,6 +1,11 @@
 {
   "en": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "Could not remove the buy-back pledge."
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "Share link created.",
@@ -484,6 +489,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "Are you sure you want to remove this Ship from you Hangar?"
+        },
+        "buyback": {
+          "destroy": "Remove this pledge from your buy-back list? Use this after buying it back on RSI. The next sync brings it back if it is still listed there."
         },
         "hangarGroup": {
           "destroy": "Are you sure you want to remove this Group from you Hangar?"

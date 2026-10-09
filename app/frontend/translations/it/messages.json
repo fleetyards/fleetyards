@@ -1,6 +1,11 @@
 {
   "it": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "Impossibile rimuovere il pledge di riacquisto."
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "Link di condivisione creato.",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "Sei sicuro di voler rimuovere questa Nave dall'Hangar?"
+        },
+        "buyback": {
+          "destroy": "Rimuovere questo pledge dalla tua lista di riacquisto? Usalo dopo averlo riacquistato su RSI. La prossima sincronizzazione lo ripristina se è ancora presente lì."
         },
         "hangarGroup": {
           "destroy": "Sei sicuro di voler rimuovere questo Gruppo dall'Hangar?"
