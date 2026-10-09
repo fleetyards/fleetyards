@@ -10,8 +10,6 @@ module Api
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?
 
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       def show
         authorize! with: ::HangarPolicy
 
@@ -70,8 +68,6 @@ module Api
           metrics: hangar_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades, wishlist_vehicles)
         )
       end
-      # rubocop:enable Metrics/PerceivedComplexity
-      # rubocop:enable Metrics/CyclomaticComplexity
 
       def models_by_size
         authorize! to: :show?, with: ::HangarPolicy
@@ -132,9 +128,6 @@ module Api
 
       private
 
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       def hangar_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades, wishlist_models)
         lengths = models.filter_map { |m| m.length if m.length&.positive? }
         unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
@@ -160,9 +153,6 @@ module Api
           wishlist_total_credits: wishlist_models.map(&:price).sum(&:to_i)
         }
       end
-      # rubocop:enable Metrics/PerceivedComplexity
-      # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
     end
   end
 end

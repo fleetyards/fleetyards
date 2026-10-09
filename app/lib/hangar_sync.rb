@@ -675,7 +675,6 @@ class HangarSync < HangarImporter
     }
   end
 
-  # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
     name = name.tr("–", "-")
 
@@ -741,7 +740,6 @@ class HangarSync < HangarImporter
 
     mapping[name.strip]
   end
-  # rubocop:enable Metrics/MethodLength
 
   private def rsi_hangar_upgrade_mapping(name)
     mapping = {

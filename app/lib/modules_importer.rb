@@ -231,7 +231,6 @@ class ModulesImporter
     sc_key_mapping[name.downcase]
   end
 
-  # rubocop:disable Metrics/MethodLength
   private def sc_key_mapping
     {
       "front torpedo bay" => "AEGS_Retaliator_Module_Front_Bomber",
@@ -246,5 +245,4 @@ class ModulesImporter
       "combat module" => "RSI_Aurora_Mk2_Module_Missile"
     }
   end
-  # rubocop:enable Metrics/MethodLength
 end

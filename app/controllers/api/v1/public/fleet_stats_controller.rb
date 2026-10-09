@@ -46,8 +46,6 @@ module Api
           )
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def vehicles
           scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
@@ -83,8 +81,6 @@ module Api
             metrics: fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
           )
         end
-        # rubocop:enable Metrics/PerceivedComplexity
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         def vehicles_by_model
           vehicles_by_model = transform_for_bar_chart(
@@ -144,9 +140,6 @@ module Api
 
         private
 
-        # rubocop:disable Metrics/MethodLength
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
           lengths = models.filter_map { |m| m.length if m.length&.positive? }
           unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
@@ -172,9 +165,6 @@ module Api
             wishlist_total_credits: 0
           }
         end
-        # rubocop:enable Metrics/PerceivedComplexity
-        # rubocop:enable Metrics/CyclomaticComplexity
-        # rubocop:enable Metrics/MethodLength
 
         # What the five charts count -- see the note on the fleet's own stats
         # controller.
