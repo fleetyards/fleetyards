@@ -25,5 +25,15 @@ export const createRsiRateLimiter = (perMinute: number) => {
     }
   };
 
-  return { tryTake, take };
+  // For specs, which would otherwise spend one budget across a whole file.
+  const reset = () => {
+    sentAt = [];
+  };
+
+  return { tryTake, take, reset };
 };
+
+// Every sync that reads RSI takes its requests from this one budget, so the
+// hangar sync, the buy-back list and the price pass can run side by side and
+// still stay inside the limit together.
+export const rsiRateLimiter = createRsiRateLimiter(60);

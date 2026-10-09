@@ -11,6 +11,7 @@ import {
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
@@ -58,19 +59,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   syncRsiHangar: (data: unknown) => mutateAsync({ data }),
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
 }));
-
-const buybackDetailsRunning = vi.hoisted(() => ({ value: false }));
-
-vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
-  const { computed } = await import("vue");
-
-  return {
-    useBuybackDetailsSync: () => ({
-      running: computed(() => buybackDetailsRunning.value),
-      cancelling: computed(() => false),
-    }),
-  };
-});
 
 const comlinkEmit = vi.fn();
 
@@ -233,6 +221,7 @@ const receiveSyncResult = (outcome: HangarSyncOutcomeEnum) =>
 
 describe("HangarSyncModal", () => {
   beforeEach(() => {
+    rsiRateLimiter.reset();
     mutateAsync.mockClear();
     displayInfo.mockClear();
     displayAlert.mockClear();
@@ -393,24 +382,6 @@ describe("HangarSyncModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ unmatchedHangarGroupId: undefined }),
     });
-  });
-
-  // The two would each read RSI pages at the full rate limit.
-  it("waits for buy-back prices to be read before it starts", async () => {
-    buybackDetailsRunning.value = true;
-
-    try {
-      const { wrapper } = await mountModal();
-
-      expect(
-        wrapper.find("[data-test='sync-buyback-details-running']").exists(),
-      ).toBe(true);
-      expect(
-        wrapper.find("[data-test='start-sync']").attributes("disabled"),
-      ).toBeDefined();
-    } finally {
-      buybackDetailsRunning.value = false;
-    }
   });
 
   it("asks for a group before it will sync into one", async () => {

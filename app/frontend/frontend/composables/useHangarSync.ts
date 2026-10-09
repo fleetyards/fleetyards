@@ -1,6 +1,6 @@
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
-import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
@@ -28,8 +28,6 @@ import {
 export type HangarSyncOptions = Omit<SyncRsiHangarInput, "items"> & {
   extensionVersion?: string;
 };
-
-const MAX_MESSAGES_PER_MINUTE = 60;
 
 // Half a second between pages, on top of the rate limit.
 const PAGE_DELAY = 500;
@@ -92,8 +90,6 @@ let input: Omit<SyncRsiHangarInput, "items"> = {};
 let extensionVersion: string | undefined;
 
 let seenPledgeIds = new Set<string>();
-
-let rateLimiter = createRsiRateLimiter(MAX_MESSAGES_PER_MINUTE);
 
 let abort = new AbortController();
 
@@ -233,7 +229,7 @@ export const useHangarSync = () => {
   };
 
   const fetchPage = async (id: number) => {
-    await rateLimiter.take(abort.signal);
+    await rsiRateLimiter.take(abort.signal);
     if (id !== runId) return;
 
     const message = await extension
@@ -265,7 +261,6 @@ export const useHangarSync = () => {
 
     clear();
     abort = new AbortController();
-    rateLimiter = createRsiRateLimiter(MAX_MESSAGES_PER_MINUTE);
     input = syncInput;
     extensionVersion = version;
     started.value = true;

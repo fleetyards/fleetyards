@@ -5,6 +5,7 @@ import {
   type RSIStorePricing,
 } from "@/frontend/lib/RSIStorePricing";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   BuybackPledgeKindEnum,
@@ -17,10 +18,9 @@ export type BuybackDetailsSyncStatus =
   "idle" | "running" | "finished" | "incomplete";
 
 type RunOptions = {
-  // Resolves once another request to RSI may go out; shared with the list crawl
-  // so both together stay inside one rate limit.
-  // Returns early once `signal` aborts.
-  waitForSlot: (signal: AbortSignal) => Promise<void>;
+  // Resolves once another request to RSI may go out, or early once `signal`
+  // aborts. The app-wide budget unless a spec hands in its own.
+  waitForSlot?: (signal: AbortSignal) => Promise<void>;
 };
 
 // Stored as they arrive, so a pass that stops halfway keeps what it read and
@@ -169,7 +169,7 @@ export const useBuybackDetailsSync = () => {
   const run = async (
     buybacks: RsiBuybackItemInput[],
     pendingIds: string[],
-    { waitForSlot }: RunOptions,
+    { waitForSlot = rsiRateLimiter.take }: RunOptions = {},
   ) => {
     // A second pass beside the first would read every page twice and halve
     // the rate limit each has.

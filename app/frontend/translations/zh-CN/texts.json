@@ -320,7 +320,6 @@
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "机库同步已在进行中。请等待完成。",
-        "buybackDetailsRunning": "仍在从 RSI 读取回购价格。完成后才能开始机库同步。",
         "missingUnmatchedGroup": "开始前，请选择用于归档同步找不到的飞船的分组。",
         "notSyncing": "不同步："
       },
