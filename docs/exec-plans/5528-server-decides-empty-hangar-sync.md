@@ -23,10 +23,10 @@ The sync run, not the modal, decides that a sync has nothing to do, and the moda
 
 ## Intent Verification
 
-- [ ] An empty `items` list returns 200 and finishes as `nothing_to_sync`.
-- [ ] Only turned-off paints and flair finish as `only_skipped_items` with nothing touched, under every unmatched-vehicles action.
-- [ ] The stored paints and flair survive an empty run even with both toggles on.
-- [ ] The modal has no kind filter and shows the server's outcome; no support prompt after a no-op.
+- [x] An empty `items` list returns 200 and finishes as `nothing_to_sync`.
+- [x] Only turned-off paints and flair finish as `only_skipped_items` with nothing touched, under every unmatched-vehicles action.
+- [x] The stored paints and flair survive an empty run even with both toggles on.
+- [x] The modal has no kind filter and shows the server's outcome; no support prompt after a no-op.
 
 ## Key files
 
@@ -47,5 +47,6 @@ The sync run, not the modal, decides that a sync has nothing to do, and the moda
 - **2026-10-09** Initial research. The server already treats a ship-less list safely for vehicles, but an empty list with a toggle on deletes every stored paint/flair (`HangarPledgeItems::Sync` deletes everything not in the list), and an empty run lists every purchased ship as unchanged and notifies.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
+- **2026-10-09** Implemented. The outcome enum is not tagged for cable; the AsyncAPI writer follows the `$ref` from `HangarSyncResult`. One existing lib test relied on an empty list wiping stored paints; it now uses a ship-only list.
