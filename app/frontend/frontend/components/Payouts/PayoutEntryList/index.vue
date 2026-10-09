@@ -312,6 +312,14 @@ const onEdit = (entry: PayoutEntry) => {
   .payout-entries__review-actions {
     grid-column: 2;
     grid-row: 3;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  // Btn shrinks to an ellipsis by default; at 320px that cut both labels to
+  // "Appro" and "Decli".
+  .payout-entries__review-actions > * {
+    flex-shrink: 0;
   }
 
   .payout-entries__edit {
