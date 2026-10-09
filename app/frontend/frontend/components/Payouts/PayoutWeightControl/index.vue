@@ -221,6 +221,7 @@ const onCustom = () => {
     opacity: 0.5;
   }
 }
+
 // The chips are sized to sit in a row of text, which leaves them under the
 // 32px a finger needs. Nested under the wrapper so it outranks Btn's own
 // size rules whichever stylesheet loads last.
