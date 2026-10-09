@@ -121,6 +121,21 @@ const missingUnmatchedGroup = computed(
     filesUnmatchedIntoGroup.value && !hangarStore.syncUnmatchedHangarGroupId,
 );
 
+// Both toggles live behind the cog and are remembered, so a user who turned
+// one off once would otherwise start every later sync without seeing it.
+const skippedItemsNote = computed(() => {
+  if (!hangarStore.syncPaints && !hangarStore.syncHangarFlair) {
+    return t("texts.syncExtension.skipsPaintsAndHangarFlair");
+  }
+  if (!hangarStore.syncPaints) {
+    return t("texts.syncExtension.skipsPaints");
+  }
+  if (!hangarStore.syncHangarFlair) {
+    return t("texts.syncExtension.skipsHangarFlair");
+  }
+  return undefined;
+});
+
 const seenPledgeIds = new Set<string>();
 
 const result = ref<HangarSyncResult | undefined>();
@@ -569,6 +584,20 @@ const refreshPage = async () => {
             <Btn
               :size="BtnSizesEnum.SM"
               data-test="open-sync-settings"
+              @click="settingsOpen = true"
+            >
+              {{ t("actions.syncExtension.openSettings") }}
+            </Btn>
+          </div>
+          <div
+            v-if="skippedItemsNote"
+            class="sync-settings-note"
+            data-test="sync-skipped-items"
+          >
+            <p class="text-muted">{{ skippedItemsNote }}</p>
+            <Btn
+              :size="BtnSizesEnum.SM"
+              data-test="open-sync-settings-skipped"
               @click="settingsOpen = true"
             >
               {{ t("actions.syncExtension.openSettings") }}

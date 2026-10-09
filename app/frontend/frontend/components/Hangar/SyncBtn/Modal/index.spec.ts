@@ -407,6 +407,37 @@ describe("HangarSyncModal", () => {
     });
   });
 
+  it("says on the start screen when paints or hangar flair are left out", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    expect(wrapper.find("[data-test='sync-skipped-items']").exists()).toBe(
+      false,
+    );
+
+    hangarStore.syncPaints = false;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsPaints",
+    );
+
+    hangarStore.syncHangarFlair = false;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsPaintsAndHangarFlair",
+    );
+
+    hangarStore.syncPaints = true;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsHangarFlair",
+    );
+
+    await wrapper
+      .find("[data-test='open-sync-settings-skipped']")
+      .trigger("click");
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
+  });
+
   it("passes the opt-out on to the sync", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
