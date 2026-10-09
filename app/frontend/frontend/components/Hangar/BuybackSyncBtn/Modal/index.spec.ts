@@ -309,6 +309,9 @@ describe("HangarBuybackSyncModal", () => {
 
     expect(wrapper.text()).toContain("labels.buybackSync.status.submitting");
     expect(exposed.dirty).toBe(false);
+    expect(wrapper.find("[data-test='close-buyback-sync']").text()).toBe(
+      "actions.syncExtension.close",
+    );
   });
 
   // Forced, the close would skip the question the X asks mid-fetch.
@@ -592,6 +595,40 @@ describe("HangarBuybackSyncModal", () => {
       expect(wrapper.find("[data-test='buyback-sync-prices']").exists()).toBe(
         false,
       );
+    });
+
+    // A modal reopened straight away would start its own sync with a fresh
+    // rate limiter, unaware of this pass.
+    it("leaves the prices to the next sync once the modal closed mid-submit", async () => {
+      let answerSubmit: (value: {
+        total: number;
+        added: number;
+        removed: number;
+        detailsPending: string[];
+      }) => void = () => {};
+      mutateAsync.mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            answerSubmit = resolve;
+          }),
+      );
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
+      await flushPromises();
+
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
+
+      wrapper.unmount();
+      mounted = undefined;
+
+      answerSubmit({ total: 1, added: 1, removed: 0, detailsPending: ["1"] });
+      await flushPromises();
+
+      expect(askedFor("syncBuybackPricing")).toBe(false);
     });
 
     it("syncs only the list with an extension that cannot read prices", async () => {

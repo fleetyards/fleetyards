@@ -295,8 +295,9 @@ const submit = async () => {
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
     // A hangar sync started while the list was read would share RSI's rate
-    // limit with the pass; the next sync reads these prices instead.
-    if (hangarStore.syncRunning) {
+    // limit with the pass, and so would a sync from a reopened modal, whose
+    // limiter knows nothing of this one; the next sync reads these prices.
+    if (hangarStore.syncRunning || unmounted) {
       displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
     } else {
       detailsStarted.value = true;
@@ -315,8 +316,8 @@ const close = () => {
   comlink.emit("close-modal");
 };
 
-// Only reading the list ends with the modal: a submitted list is stored, and
-// its toast and price pass run without the modal open.
+// Only reading the list ends with the modal: a submitted list is stored and
+// its toast shows without the modal open.
 defineExpose({
   dirty: computed(() => status.value === "fetching"),
   dirtyText: t("messages.buybackSync.closeWhileRunning"),
@@ -428,9 +429,9 @@ defineExpose({
         @click="close"
       >
         {{
-          status === "finished"
-            ? t("actions.syncExtension.close")
-            : t("actions.syncExtension.cancel")
+          status === "idle" || status === "fetching"
+            ? t("actions.syncExtension.cancel")
+            : t("actions.syncExtension.close")
         }}
       </Btn>
       <Btn
