@@ -125,8 +125,14 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     expect(refetch).not.toHaveBeenCalled();
   });
 
+  // The wait is spread per dashboard, up to ten seconds.
+  const settle = async () => {
+    await nextTick();
+    vi.advanceTimersByTime(10_000);
+  };
+
   // A push names an id, not a member: only the server knows whether they are
-  // in this fleet, and it is asked once per newcomer.
+  // in this fleet, and it is asked once while they stay online.
   it("asks again once for somebody it does not list yet", async () => {
     online = {
       totalCount: 1,
@@ -136,15 +142,70 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     await mount();
 
     applyPresence({ userId: "new", online: true });
-    await nextTick();
-    vi.advanceTimersByTime(2_000);
+    await settle();
+    applyPresence({ userId: "z", online: true });
+    await settle();
 
     expect(refetch).toHaveBeenCalledTimes(1);
+  });
 
-    applyPresence({ userId: "new", online: false });
+  // Gone before the answer came back, they would otherwise never be asked
+  // about again.
+  it("asks again for somebody who went offline and came back", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    await mount();
+
     applyPresence({ userId: "new", online: true });
+    await settle();
+    applyPresence({ userId: "new", online: false });
+    await settle();
+    applyPresence({ userId: "new", online: true });
+    await settle();
+
+    expect(refetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("asks nothing before the first answer is in", async () => {
+    online = undefined;
+
+    await mount();
+
+    applyPresence({ userId: "new", online: true });
+    await settle();
+
+    expect(refetch).not.toHaveBeenCalled();
+  });
+
+  // The page holds the first rows only.
+  it("asks again once everybody it lists has gone but more are online", async () => {
+    online = {
+      totalCount: 5,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    await mount();
+
+    applyPresence({ userId: "z", online: false });
+    await settle();
+
+    expect(refetch).toHaveBeenCalledTimes(1);
+  });
+
+  // Nothing is replayed after a dropped socket.
+  it("asks afresh after the cable reconnects", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    await mount();
+
+    resetPresence();
     await nextTick();
-    vi.advanceTimersByTime(2_000);
 
     expect(refetch).toHaveBeenCalledTimes(1);
   });

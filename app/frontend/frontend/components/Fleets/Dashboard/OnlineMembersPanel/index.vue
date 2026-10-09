@@ -25,17 +25,21 @@ const { t } = useI18n();
  * Asked for once, then kept live by the presence pushes every co-member
  * already receives. Somebody going offline drops out at once. Somebody coming
  * online who is not listed yet means one more ask: the push carries an id, not
- * a member, and only the server knows whether they belong to this fleet. Each
- * id is asked about once, so a friend outside the fleet does not ask forever.
+ * a member, and only the server knows whether they belong to this fleet.
+ *
+ * Each id is asked about once while it stays online, so a friend outside the
+ * fleet does not ask on every push; going offline clears that, so the next
+ * login asks again. The wait is spread over a few seconds per dashboard,
+ * because every open dashboard of the fleet hears the same login at once.
  */
-const ASK_AGAIN_AFTER_MS = 2_000;
+const ASK_AGAIN_AFTER_MS = 2_000 + Math.round(Math.random() * 8_000);
 
 const { data, refetch } = useFleetOnlineMembers(
   computed(() => props.fleet.slug),
   { query: liveQuery },
 );
 
-const { isOnline, knownOnlineIds } = usePresence();
+const { isOnline, knownOnlineIds, resets } = usePresence();
 
 const listed = computed(() => data.value?.items ?? []);
 
@@ -56,6 +60,14 @@ const askedAbout = new Set<string>();
 const askAgain = useDebounceFn(() => void refetch(), ASK_AGAIN_AFTER_MS);
 
 watch(knownOnlineIds, (ids) => {
+  // Before the first answer there is nothing to compare against, and the ask
+  // already in flight will bring whoever is online.
+  if (!data.value) return;
+
+  [...askedAbout]
+    .filter((id) => !ids.has(id))
+    .forEach((id) => askedAbout.delete(id));
+
   const listedIds = new Set(listed.value.map(({ userId }) => userId));
   const unseen = [...ids].filter(
     (id) => !listedIds.has(id) && !askedAbout.has(id),
@@ -64,6 +76,22 @@ watch(knownOnlineIds, (ids) => {
 
   unseen.forEach((id) => askedAbout.add(id));
   void askAgain();
+});
+
+// The page holds the first rows only; once all of them have gone, whoever is
+// still online past them has to be asked for.
+watch(
+  () => members.value.length,
+  (count) => {
+    if (count === 0 && total.value > 0) void askAgain();
+  },
+);
+
+// Nothing sent while the socket was down is replayed, so after a reconnect the
+// list is only as good as a fresh answer.
+watch(resets, () => {
+  askedAbout.clear();
+  void refetch();
 });
 </script>
 
@@ -77,7 +105,7 @@ watch(knownOnlineIds, (ids) => {
     <ul class="online-members">
       <li
         v-for="member in members"
-        :key="member.username"
+        :key="member.userId"
         class="online-members__member"
         :data-test="`fleet-dashboard-online-${member.username}`"
       >
