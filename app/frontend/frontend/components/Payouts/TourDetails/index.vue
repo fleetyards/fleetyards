@@ -400,7 +400,7 @@ const shareUrl = computed(() => {
 
   // Wrapped onto a line of its own anyway, where pushed right it read as
   // floating.
-  @media (max-width: 575px) {
+  @media (max-width: 576px) {
     flex-basis: 100%;
     margin-left: 0;
   }
