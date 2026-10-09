@@ -20,6 +20,7 @@ module Api
         sorts = sorting_params(BuybackPledge, buyback_query_params.delete("sorts"))
 
         @q = authorized_scope(BuybackPledge.all).ransack(buyback_query_params)
+        sorts = [*sorts, "reclaimed_on desc"] if sorts.none? { |sort| sort.start_with?("reclaimed_on ") }
         sorts = [*sorts, "name asc"] if sorts.none? { |sort| sort.start_with?("name ") }
         @q.sorts = sorts
 
