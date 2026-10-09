@@ -529,6 +529,26 @@ describe("HangarBuybackSyncModal", () => {
       expect(askedFor("syncBuybackPricing")).toBe(false);
     });
 
+    it("shows no counts from an earlier pass for a sync that read no prices", async () => {
+      await syncList(detailExtension);
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+      mounted?.unmount();
+
+      const wrapper = await syncList(currentExtension);
+
+      expect(wrapper.find("[data-test='buyback-sync-prices']").exists()).toBe(
+        false,
+      );
+    });
+
     it("syncs only the list with an extension that cannot read prices", async () => {
       const wrapper = await syncList(currentExtension);
 

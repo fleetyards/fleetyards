@@ -87,6 +87,10 @@ const seenIds = new Set<string>();
 
 const result = ref<BuybackSyncResult | undefined>();
 
+// The pass state outlives this sync; its counts only describe a pass started
+// by it.
+const detailsStarted = ref(false);
+
 const maxMessagesPerMinute = 60;
 
 // The list crawl and the price pass after it share one budget, so the two
@@ -180,6 +184,7 @@ const start = () => {
   buybacks.value = [];
   seenIds.clear();
   result.value = undefined;
+  detailsStarted.value = false;
   currentPage.value = 1;
   rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
 
@@ -290,6 +295,7 @@ const submit = async () => {
     if (hangarStore.syncRunning) {
       displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
     } else {
+      detailsStarted.value = true;
       void runDetails(buybacks.value, result.value.detailsPending, {
         waitForSlot: rateLimiter.take,
       });
@@ -377,7 +383,7 @@ const close = () => {
             {{ result.removed }}
           </dd>
         </template>
-        <template v-if="result?.detailsPending.length && detailsTotal">
+        <template v-if="detailsStarted && detailsTotal">
           <dt class="col-sm-7">{{ t("labels.buybackSync.prices") }}:</dt>
           <dd class="col-sm-5 text-right" data-test="buyback-sync-prices">
             {{ detailsDone }} / {{ detailsTotal }}
