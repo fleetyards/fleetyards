@@ -673,7 +673,8 @@
       "buybackSync": {
         "started": "正在同步你的可回购承诺...",
         "success": "你的可回购承诺已同步。",
-        "failure": "无法同步你的可回购承诺。"
+        "failure": "无法同步你的可回购承诺。",
+        "detailsSuccess": "你的可回购承诺的价格和保险已是最新。"
       },
       "syncExtension": {
         "started": "正在同步您的机库...",

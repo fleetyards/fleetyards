@@ -303,14 +303,17 @@
       "buybackSync": {
         "info": "讀取你的 RSI 回購清單的每一頁，並用它取代 Fleetyards 上儲存的可回購承諾。你的機庫不會被變更。清單較長時需要幾分鐘。",
         "unsupported": "你的 Fleetyards Sync 擴充功能還無法讀取可回購的承諾。請更新擴充功能以同步它們。",
-        "detailsInfo": "首次同步還會讀取每個承諾的價格和保險，每個承諾一個 RSI 頁面，清單較長時可能需要十五分鐘左右。之後的同步只會讀取新的承諾。",
+        "detailsInfo": "首次同步還會讀取每個承諾的價格和保險，每個承諾一個 RSI 頁面，清單較長時可能需要十五分鐘左右。這一步在背景進行：只要分頁保持開啟，你可以關閉此視窗並繼續使用 Fleetyards。之後的同步只會讀取新的承諾。",
         "detailsUnsupported": "請更新你的 Fleetyards Sync 擴充功能，以便同時讀取價格和保險。",
-        "detailsIncomplete": "部分價格無法從 RSI 讀取。下次同步時會再試一次。"
+        "detailsIncomplete": "部分價格無法從 RSI 讀取。下次同步時會再試一次。",
+        "detailsBackground": "價格和保險現在在背景讀取。你可以關閉此視窗並繼續使用 Fleetyards；在完成之前請保持此分頁開啟。",
+        "detailsRunning": "上次同步的價格和保險仍在讀取中。完成後才能開始新的同步。"
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "機庫同步已在進行中。請等待完成。",
+        "buybackDetailsRunning": "仍在從 RSI 讀取回購價格。完成後才能開始機庫同步。",
         "missingUnmatchedGroup": "開始前，請選擇用於歸檔同步找不到的飛船的群組。"
       },
       "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。",

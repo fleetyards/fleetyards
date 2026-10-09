@@ -60,6 +60,19 @@ vi.mock("@/shared/composables/useSubscription", async (importOriginal) => ({
   useSubscription: () => ({}),
 }));
 
+const buybackDetailsRunning = vi.hoisted(() => ({ value: false }));
+
+vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
+  const { computed } = await import("vue");
+
+  return {
+    useBuybackDetailsSync: () => ({
+      running: computed(() => buybackDetailsRunning.value),
+      cancelling: computed(() => false),
+    }),
+  };
+});
+
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
 }));
@@ -338,6 +351,24 @@ describe("HangarSyncModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ unmatchedHangarGroupId: undefined }),
     });
+  });
+
+  // The two would each read RSI pages at the full rate limit.
+  it("waits for buy-back prices to be read before it starts", async () => {
+    buybackDetailsRunning.value = true;
+
+    try {
+      const { wrapper } = await mountModal();
+
+      expect(
+        wrapper.find("[data-test='sync-buyback-details-running']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='start-sync']").attributes("disabled"),
+      ).toBeDefined();
+    } finally {
+      buybackDetailsRunning.value = false;
+    }
   });
 
   it("asks for a group before it will sync into one", async () => {

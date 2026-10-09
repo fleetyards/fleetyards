@@ -303,14 +303,17 @@
       "buybackSync": {
         "info": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die auf Fleetyards gespeicherten Rückkauf-Pledges. Dein Hangar bleibt unverändert. Lange Listen dauern einige Minuten.",
         "unsupported": "Deine Fleetyards-Sync-Erweiterung kann Rückkauf-Pledges noch nicht lesen. Aktualisiere sie, um sie zu synchronisieren.",
-        "detailsInfo": "Die erste Synchronisierung liest außerdem Preis und Versicherung jedes Pledges, je eine RSI-Seite. Bei einer langen Liste kann das eine Viertelstunde dauern. Spätere Synchronisierungen lesen nur die neuen.",
+        "detailsInfo": "Die erste Synchronisierung liest außerdem Preis und Versicherung jedes Pledges, je eine RSI-Seite. Bei einer langen Liste kann das eine Viertelstunde dauern. Das läuft im Hintergrund: Du kannst dieses Fenster schließen und Fleetyards weiter nutzen, solange der Tab offen bleibt. Spätere Synchronisierungen lesen nur die neuen.",
         "detailsUnsupported": "Aktualisiere deine Fleetyards-Sync-Erweiterung, um auch Preise und Versicherungen zu lesen.",
-        "detailsIncomplete": "Einige Preise konnten nicht von RSI gelesen werden. Die nächste Synchronisierung versucht es erneut."
+        "detailsIncomplete": "Einige Preise konnten nicht von RSI gelesen werden. Die nächste Synchronisierung versucht es erneut.",
+        "detailsBackground": "Preise und Versicherungen werden jetzt im Hintergrund gelesen. Du kannst dieses Fenster schließen und Fleetyards weiter nutzen; lass den Tab offen, bis es fertig ist.",
+        "detailsRunning": "Preise und Versicherungen der letzten Synchronisierung werden noch gelesen. Eine neue Synchronisierung kann starten, sobald das abgeschlossen ist."
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Eine Hangar-Synchronisierung läuft bereits. Bitte warten Sie, bis sie abgeschlossen ist.",
+        "buybackDetailsRunning": "Rückkaufpreise werden noch von RSI gelesen. Die Hangar-Synchronisierung kann starten, sobald das abgeschlossen ist.",
         "missingUnmatchedGroup": "Wähle vor dem Start die Gruppe, in die Schiffe einsortiert werden, die die Synchronisierung nicht findet."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",

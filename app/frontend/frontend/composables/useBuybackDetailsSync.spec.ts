@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { type RsiBuybackItemInput } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackDetailsSync } from "./useBuybackDetailsSync";
 
 const request = vi.fn();
@@ -8,11 +9,13 @@ vi.mock("@/frontend/composables/useSyncExtension", () => ({
   useSyncExtension: () => ({ request }),
 }));
 
-const submitDetails = vi.fn((_: unknown) => Promise.resolve({ updated: 0 }));
+const submitDetails = vi.hoisted(() =>
+  vi.fn((_: unknown) => Promise.resolve({ updated: 0 })),
+);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+  syncRsiBuybackDetails: submitDetails,
 }));
 
 const waitForSlot = () => Promise.resolve();
@@ -75,7 +78,7 @@ const detailPage = (cents: number, currency = "EUR") =>
 
 const submitted = () =>
   submitDetails.mock.calls.flatMap(
-    ([variables]) => (variables as { data: { items: unknown[] } }).data.items,
+    ([input]) => (input as { items: unknown[] }).items,
   );
 
 describe("useBuybackDetailsSync", () => {
@@ -87,8 +90,8 @@ describe("useBuybackDetailsSync", () => {
   it("stores RSI's USD price for a page priced in the account's currency", async () => {
     extension((id) => ({ code: 200, id, payload: detailPage(15708) }));
 
-    const { run, status } = useBuybackDetailsSync({ waitForSlot });
-    await run([ship("1"), ship("2")], ["2"]);
+    const { run, status } = useBuybackDetailsSync();
+    await run([ship("1"), ship("2")], ["2"], { waitForSlot });
 
     expect(pageRequests()).toEqual([
       ["syncBuybackDetail", { id: "2" }, undefined, expect.any(Function)],
@@ -101,8 +104,8 @@ describe("useBuybackDetailsSync", () => {
 
   // An upgrade has no buy-back page; its price comes from our ship prices.
   it("reads nothing for an upgrade", async () => {
-    const { run, total } = useBuybackDetailsSync({ waitForSlot });
-    await run([upgrade("1")], ["1"]);
+    const { run, total } = useBuybackDetailsSync();
+    await run([upgrade("1")], ["1"], { waitForSlot });
 
     expect(request).not.toHaveBeenCalled();
     expect(submitted()).toEqual([]);
@@ -115,8 +118,8 @@ describe("useBuybackDetailsSync", () => {
       code: 502,
     });
 
-    const { run, status } = useBuybackDetailsSync({ waitForSlot });
-    await run([ship("1")], ["1"]);
+    const { run, status } = useBuybackDetailsSync();
+    await run([ship("1")], ["1"], { waitForSlot });
 
     expect(pageRequests()).toEqual([]);
     expect(submitted()).toEqual([]);
@@ -130,8 +133,8 @@ describe("useBuybackDetailsSync", () => {
         : { code: 200, id, payload: detailPage(15708) },
     );
 
-    const { run } = useBuybackDetailsSync({ waitForSlot });
-    await run([ship("1"), ship("2")], ["1", "2"]);
+    const { run } = useBuybackDetailsSync();
+    await run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
 
     expect(submitted()).toEqual([
       expect.objectContaining({ id: "2", price: 150 }),
@@ -149,8 +152,8 @@ describe("useBuybackDetailsSync", () => {
 
     const ids = ["1", "2", "3", "4", "5", "6"];
 
-    const { run, status, done } = useBuybackDetailsSync({ waitForSlot });
-    await run(ids.map(ship), ids);
+    const { run, status, done } = useBuybackDetailsSync();
+    await run(ids.map(ship), ids, { waitForSlot });
 
     expect(pageRequests()).toHaveLength(4);
     expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
@@ -162,8 +165,8 @@ describe("useBuybackDetailsSync", () => {
   it("does not take a page for one pledge as another's", async () => {
     extension(() => ({ code: 200, id: "9", payload: detailPage(15708) }));
 
-    const { run } = useBuybackDetailsSync({ waitForSlot });
-    await run([ship("1")], ["1"]);
+    const { run } = useBuybackDetailsSync();
+    await run([ship("1")], ["1"], { waitForSlot });
 
     expect(submitted()).toEqual([]);
   });
@@ -171,8 +174,8 @@ describe("useBuybackDetailsSync", () => {
   it("stores a pledge RSI has no page for any more without details", async () => {
     extension((id) => ({ code: 404, id, payload: "" }));
 
-    const { run, status } = useBuybackDetailsSync({ waitForSlot });
-    await run([ship("1")], ["1"]);
+    const { run, status } = useBuybackDetailsSync();
+    await run([ship("1")], ["1"], { waitForSlot });
 
     expect(submitted()).toEqual([{ id: "1" }]);
     expect(status.value).toBe("finished");
@@ -182,8 +185,8 @@ describe("useBuybackDetailsSync", () => {
     let answer: (reply: Reply) => void = () => {};
     extension(() => new Promise<Reply>((resolve) => (answer = resolve)));
 
-    const { run, cancel } = useBuybackDetailsSync({ waitForSlot });
-    const running = run([ship("1"), ship("2")], ["1", "2"]);
+    const { run, cancel, status } = useBuybackDetailsSync();
+    const running = run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
     await vi.waitFor(() => expect(pageRequests()).toHaveLength(1));
 
     cancel();
@@ -192,5 +195,145 @@ describe("useBuybackDetailsSync", () => {
 
     expect(pageRequests()).toHaveLength(1);
     expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
+    expect(status.value).toBe("idle");
+  });
+
+  // The modal that started the pass may be gone; whatever shows its progress
+  // next reads the same pass.
+  it("shares one pass between every caller", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension(() => new Promise<Reply>((resolve) => (answer = resolve)));
+
+    const starter = useBuybackDetailsSync();
+    const running = starter.run([ship("1")], ["1"], { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(1));
+
+    const watcher = useBuybackDetailsSync();
+    expect(watcher.running.value).toBe(true);
+    expect(watcher.total.value).toBe(1);
+
+    await watcher.run([ship("2")], ["2"], { waitForSlot });
+    expect(pageRequests()).toHaveLength(1);
+
+    answer({ code: 200, id: "1", payload: detailPage(15708) });
+    await running;
+
+    expect(watcher.status.value).toBe("finished");
+    expect(submitted()).toEqual([expect.objectContaining({ id: "1" })]);
+  });
+
+  // Cancelled, the pass still waits for the answer in flight; whatever shows
+  // it should not.
+  it("says it is stopping from the cancel on", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension(() => new Promise<Reply>((resolve) => (answer = resolve)));
+
+    const { run, cancel, cancelling } = useBuybackDetailsSync();
+    const running = run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(1));
+
+    cancel();
+    expect(cancelling.value).toBe(true);
+
+    answer({ code: 200, id: "1", payload: detailPage(15708) });
+    await running;
+
+    expect(cancelling.value).toBe(false);
+  });
+
+  // After a sign-out, a store would go to whoever is signed in by then.
+  it("stores nothing once discarded, the answer in flight included", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension((id) =>
+      id === "1"
+        ? { code: 200, id, payload: detailPage(15708) }
+        : new Promise<Reply>((resolve) => (answer = resolve)),
+    );
+
+    const { run, discard, status } = useBuybackDetailsSync();
+    const running = run([ship("1"), ship("2")], ["1", "2"], { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(2));
+
+    discard();
+    answer({ code: 200, id: "2", payload: detailPage(15708) });
+    await running;
+
+    expect(submitted()).toEqual([]);
+    expect(status.value).toBe("idle");
+  });
+
+  // Signed out, the pricing answer fails too; that is not a pass that failed.
+  it("ends quietly when the pricing fails after a discard", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    request.mockImplementation(
+      () => new Promise<Reply>((resolve) => (answer = resolve)),
+    );
+
+    const { run, discard, status } = useBuybackDetailsSync();
+    const running = run([ship("1")], ["1"], { waitForSlot });
+    await vi.waitFor(() => expect(request).toHaveBeenCalled());
+
+    discard();
+    answer({ code: 401 });
+    await running;
+
+    expect(status.value).toBe("idle");
+  });
+
+  it("ends quietly when the last failure lands after a cancel", async () => {
+    let answer: (reply: Reply) => void = () => {};
+    extension((id) =>
+      id === "3"
+        ? new Promise<Reply>((resolve) => (answer = resolve))
+        : { code: 200, id, payload: "<html></html>" },
+    );
+
+    const ids = ["1", "2", "3", "4"];
+    const { run, cancel, status } = useBuybackDetailsSync();
+    const running = run(ids.map(ship), ids, { waitForSlot });
+    await vi.waitFor(() => expect(pageRequests()).toHaveLength(3));
+
+    cancel();
+    answer({ code: 200, id: "3", payload: "<html></html>" });
+    await running;
+
+    expect(status.value).toBe("idle");
+  });
+
+  it("stops while waiting for a slot as soon as it is cancelled", async () => {
+    extension((id) => ({ code: 200, id, payload: detailPage(15708) }));
+
+    let slotWaits = 0;
+    const blockedSlot = (signal: AbortSignal) =>
+      ++slotWaits === 1
+        ? Promise.resolve()
+        : new Promise<void>((resolve) =>
+            signal.addEventListener("abort", () => resolve()),
+          );
+
+    const { run, cancel, status } = useBuybackDetailsSync();
+    const running = run([ship("1")], ["1"], { waitForSlot: blockedSlot });
+    await vi.waitFor(() => expect(slotWaits).toBe(2));
+
+    cancel();
+    await running;
+
+    expect(pageRequests()).toHaveLength(0);
+    expect(status.value).toBe("idle");
+  });
+
+  it("tells the lists once, after the last batch is stored", async () => {
+    extension((id) => ({ code: 200, id, payload: detailPage(15708) }));
+
+    const finished = vi.fn();
+    const off = useComlink().on("buyback-sync-finished", finished);
+
+    const ids = Array.from({ length: 30 }, (_, index) => String(index + 1));
+    const { run } = useBuybackDetailsSync();
+    await run(ids.map(ship), ids, { waitForSlot });
+    off();
+
+    expect(submitDetails).toHaveBeenCalledTimes(2);
+    expect(finished).toHaveBeenCalledTimes(1);
   });
 });

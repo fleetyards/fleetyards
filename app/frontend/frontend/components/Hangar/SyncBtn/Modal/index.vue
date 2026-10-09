@@ -52,8 +52,18 @@ import {
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
+import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 
 const { t } = useI18n();
+
+// Both read RSI pages, and side by side they would each take the whole rate
+// limit. A cancelled pass sends nothing more, so it only waits on its last
+// answer and need not hold this sync back.
+const { running, cancelling } = useBuybackDetailsSync();
+
+const buybackDetailsRunning = computed(
+  () => running.value && !cancelling.value,
+);
 
 const { displayInfo, displaySuccess, displayWarning, displayAlert } =
   useAppNotifications();
@@ -566,6 +576,13 @@ const refreshPage = async () => {
           <p v-if="hangarStore.syncRunning" class="text-warning">
             {{ t("texts.syncExtension.alreadyRunning") }}
           </p>
+          <p
+            v-else-if="buybackDetailsRunning"
+            class="text-warning"
+            data-test="sync-buyback-details-running"
+          >
+            {{ t("texts.syncExtension.buybackDetailsRunning") }}
+          </p>
         </div>
       </div>
       <div v-else>
@@ -603,6 +620,7 @@ const refreshPage = async () => {
           :disabled="
             identityStatus !== 'connected' ||
             hangarStore.syncRunning ||
+            buybackDetailsRunning ||
             missingUnmatchedGroup
           "
           @click="start"

@@ -14,6 +14,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
+import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import {
   RsiPageReportOutcome,
@@ -32,16 +34,9 @@ import {
   type BuybackSyncResult,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
-import { differenceInMinutes } from "date-fns";
 
 type SyncStatus =
-  | "idle"
-  | "fetching"
-  | "submitting"
-  | "details"
-  | "finished"
-  | "unsupported"
-  | "failed";
+  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
 
 const { t } = useI18n();
 
@@ -49,6 +44,8 @@ const { displayInfo, displaySuccess, displayWarning, displayAlert } =
   useAppNotifications();
 
 const comlink = useComlink();
+
+const hangarStore = useHangarStore();
 
 const extensionReady = ref(false);
 
@@ -90,11 +87,15 @@ const seenIds = new Set<string>();
 
 const result = ref<BuybackSyncResult | undefined>();
 
-const syncStartedAt = ref<Date>(new Date());
-
-const fetchCount = ref(0);
+// The pass state outlives this sync; its counts only describe a pass started
+// by it.
+const detailsStarted = ref(false);
 
 const maxMessagesPerMinute = 60;
+
+// The list crawl and the price pass after it share one budget, so the two
+// together stay inside it.
+let rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
 
 // An extension that never answers would otherwise leave the sync spinning.
 const REPLY_TIMEOUT = 30000;
@@ -103,8 +104,7 @@ const working = computed(
   () =>
     loadingIdentity.value ||
     status.value === "fetching" ||
-    status.value === "submitting" ||
-    status.value === "details",
+    status.value === "submitting",
 );
 
 const extension = useSyncExtension();
@@ -129,10 +129,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   unmounted = true;
-
-  if (status.value === "details") {
-    cancelDetails();
-  }
 });
 
 // A reply landing after the sync failed or the modal closed belongs to a crawl
@@ -188,9 +184,9 @@ const start = () => {
   buybacks.value = [];
   seenIds.clear();
   result.value = undefined;
+  detailsStarted.value = false;
   currentPage.value = 1;
-  syncStartedAt.value = new Date();
-  fetchCount.value = 0;
+  rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
 
   displayInfo({ text: t("messages.buybackSync.started") });
 
@@ -204,14 +200,10 @@ const fetchPage = (page: number) => {
     return;
   }
 
-  const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
-
-  if (fetchCount.value >= (elapsedMinutes + 1) * maxMessagesPerMinute) {
+  if (!rateLimiter.tryTake()) {
     setTimeout(() => fetchPage(page), 500);
     return;
   }
-
-  fetchCount.value += 1;
 
   void extension
     .request(FleetyardsSyncAction.SYNC_BUYBACK, { page }, REPLY_TIMEOUT)
@@ -271,28 +263,12 @@ const handlePage = async (html: string) => {
   setTimeout(() => fetchPage(currentPage.value), 500);
 };
 
-// The detail pass runs after the list crawl and draws on the same budget of 60
-// requests a minute since the sync started, so the two together stay inside it.
-const waitForSlot = async () => {
-  while (
-    !unmounted &&
-    fetchCount.value >=
-      (differenceInMinutes(new Date(), syncStartedAt.value) + 1) *
-        maxMessagesPerMinute
-  ) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
-
-  fetchCount.value += 1;
-};
-
 const {
-  status: detailsStatus,
   total: detailsTotal,
   done: detailsDone,
+  running: detailsRunning,
   run: runDetails,
-  cancel: cancelDetails,
-} = useBuybackDetailsSync({ waitForSlot });
+} = useBuybackDetailsSync();
 
 const mutation = useSyncRsiBuybacks();
 
@@ -314,18 +290,15 @@ const submit = async () => {
   comlink.emit("buyback-sync-finished");
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
-    status.value = "details";
-
-    await runDetails(buybacks.value, result.value.detailsPending);
-
-    if (unmounted) {
-      return;
-    }
-
-    comlink.emit("buyback-sync-finished");
-
-    if (detailsStatus.value === "incomplete") {
+    // A hangar sync started while the list was read would share RSI's rate
+    // limit with the pass; the next sync reads these prices instead.
+    if (hangarStore.syncRunning) {
       displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
+    } else {
+      detailsStarted.value = true;
+      void runDetails(buybacks.value, result.value.detailsPending, {
+        waitForSlot: rateLimiter.take,
+      });
     }
   }
 
@@ -366,6 +339,20 @@ const close = () => {
       <p v-if="extensionSupportsDetails">
         {{ t("texts.buybackSync.detailsInfo") }}
       </p>
+      <p
+        v-if="detailsRunning"
+        class="text-warning"
+        data-test="buyback-sync-details-running"
+      >
+        {{ t("texts.buybackSync.detailsRunning") }}
+      </p>
+      <p
+        v-else-if="hangarStore.syncRunning"
+        class="text-warning"
+        data-test="buyback-sync-hangar-sync-running"
+      >
+        {{ t("texts.syncExtension.alreadyRunning") }}
+      </p>
     </div>
     <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
       <p
@@ -396,13 +383,19 @@ const close = () => {
             {{ result.removed }}
           </dd>
         </template>
-        <template v-if="detailsTotal">
+        <template v-if="detailsStarted && detailsTotal">
           <dt class="col-sm-7">{{ t("labels.buybackSync.prices") }}:</dt>
           <dd class="col-sm-5 text-right" data-test="buyback-sync-prices">
             {{ detailsDone }} / {{ detailsTotal }}
           </dd>
         </template>
       </dl>
+      <p
+        v-if="status === 'finished' && detailsRunning"
+        data-test="buyback-sync-details-background"
+      >
+        {{ t("texts.buybackSync.detailsBackground") }}
+      </p>
       <p
         v-if="
           status === 'finished' &&
@@ -418,7 +411,7 @@ const close = () => {
     <template #footer>
       <Btn
         data-test="close-buyback-sync"
-        :disabled="working && !['idle', 'details'].includes(status)"
+        :disabled="working && status !== 'idle'"
         @click="close"
       >
         {{
@@ -435,7 +428,11 @@ const close = () => {
         "
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
-        :disabled="identityStatus !== 'connected'"
+        :disabled="
+          identityStatus !== 'connected' ||
+          detailsRunning ||
+          hangarStore.syncRunning
+        "
         @click="start"
       >
         {{

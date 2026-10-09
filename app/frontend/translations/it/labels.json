@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "Versione installata dell'estensione",
+        "detailsProgress": "Lettura dei prezzi di riacquisto",
         "pages": "Pagine",
         "found": "Pledge riacquistabili trovati",
         "added": "Nuovi",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "Lettura delle pagine di riacquisto",
           "submitting": "Salvataggio",
-          "details": "Lettura dei prezzi",
           "finished": "Completato",
           "unsupported": "Non supportato",
           "failed": "Non riuscito"

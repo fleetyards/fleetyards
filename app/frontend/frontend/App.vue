@@ -10,6 +10,7 @@ import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
+import HangarBuybackDetailsSyncProgress from "@/frontend/components/Hangar/BuybackDetailsSyncProgress/index.vue";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
@@ -404,6 +405,7 @@ const setLocale = (locale: string) => {
     <OffCanvas />
     <AppNotifications />
     <FleetTour v-if="fleetStore.tourFleet" />
+    <HangarBuybackDetailsSyncProgress />
     <AppEnvironment :git-revision="appStore.gitRevision" />
   </div>
 </template>

@@ -5,9 +5,10 @@ import {
   type RSIStorePricing,
 } from "@/frontend/lib/RSIStorePricing";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useComlink } from "@/shared/composables/useComlink";
 import {
   BuybackPledgeKindEnum,
-  useSyncRsiBuybackDetails,
+  syncRsiBuybackDetails,
   type RsiBuybackDetailInput,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
@@ -15,10 +16,11 @@ import {
 export type BuybackDetailsSyncStatus =
   "idle" | "running" | "finished" | "incomplete";
 
-type Options = {
+type RunOptions = {
   // Resolves once another request to RSI may go out; shared with the list crawl
   // so both together stay inside one rate limit.
-  waitForSlot: () => Promise<void>;
+  // Returns early once `signal` aborts.
+  waitForSlot: (signal: AbortSignal) => Promise<void>;
 };
 
 // Stored as they arrive, so a pass that stops halfway keeps what it read and
@@ -29,32 +31,49 @@ const DETAILS_PER_SUBMIT = 25;
 // ending, not one pledge that is gone: the rest would fail the same way.
 const MAX_CONSECUTIVE_FAILURES = 3;
 
+// A pass of a thousand pledges takes a quarter of an hour at the rate limit,
+// so it belongs to the page, not to the modal that started it: the state is
+// shared, and closing the modal or changing the route leaves the pass running.
+const status = ref<BuybackDetailsSyncStatus>("idle");
+
+const total = ref(0);
+
+const done = ref(0);
+
+const running = computed(() => status.value === "running");
+
+const cancelled = ref(false);
+
+// From the cancel until the pass actually stops, which can take as long as the
+// request in flight.
+const cancelling = computed(() => running.value && cancelled.value);
+
+let abort = new AbortController();
+
+// A discarded pass stores nothing more, not even what it already read.
+let discarded = false;
+
+let stored = false;
+
+let pending: RsiBuybackDetailInput[] = [];
+
+let failures = 0;
+
+let pricing: RSIStorePricing | undefined;
+
 // Reads price and insurance from the RSI buy-back page of each pledge the list
 // sync named as having none yet. Upgrades are priced from our own ship prices
 // and have no such page. A page prices in the account's currency with tax, so
 // the account's store pricing is read first to turn that back into RSI's USD
 // figure, the one every other price here is in.
-export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
+export const useBuybackDetailsSync = () => {
   const { request } = useSyncExtension();
 
-  const mutation = useSyncRsiBuybackDetails();
-
-  const status = ref<BuybackDetailsSyncStatus>("idle");
-
-  const total = ref(0);
-
-  const done = ref(0);
-
-  let cancelled = false;
-
-  let pending: RsiBuybackDetailInput[] = [];
-
-  let failures = 0;
-
-  let pricing: RSIStorePricing | undefined;
+  const comlink = useComlink();
 
   const submit = async (force = false) => {
     if (
+      discarded ||
       pending.length === 0 ||
       (!force && pending.length < DETAILS_PER_SUBMIT)
     ) {
@@ -65,11 +84,13 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     pending = [];
 
     try {
-      await mutation.mutateAsync({ data: { items } });
+      await syncRsiBuybackDetails({ items });
     } catch (error) {
       pending = [...items, ...pending];
       throw error;
     }
+
+    stored = true;
   };
 
   const recordFailure = () => {
@@ -140,7 +161,20 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
       : undefined;
   };
 
-  const run = async (buybacks: RsiBuybackItemInput[], pendingIds: string[]) => {
+  // A pass stopped on purpose failed nothing, even when its last request did.
+  const endIncomplete = () => {
+    status.value = cancelled.value ? "idle" : "incomplete";
+  };
+
+  const run = async (
+    buybacks: RsiBuybackItemInput[],
+    pendingIds: string[],
+    { waitForSlot }: RunOptions,
+  ) => {
+    // A second pass beside the first would read every page twice and halve
+    // the rate limit each has.
+    if (running.value) return;
+
     const wanted = new Set(pendingIds);
     const pages = buybacks
       .filter(
@@ -154,7 +188,11 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     total.value = pages.length;
     done.value = 0;
     failures = 0;
-    cancelled = false;
+    pending = [];
+    cancelled.value = false;
+    discarded = false;
+    stored = false;
+    abort = new AbortController();
 
     if (pages.length === 0) {
       status.value = "finished";
@@ -162,45 +200,63 @@ export const useBuybackDetailsSync = ({ waitForSlot }: Options) => {
     }
 
     try {
-      await waitForSlot();
-      if (cancelled) return;
+      await waitForSlot(abort.signal);
+      if (cancelled.value) return;
 
       // Without it no page's price could be stored, so none is read.
       pricing = await readPricing();
       if (!pricing) {
-        status.value = "incomplete";
+        endIncomplete();
         return;
       }
 
       for (const id of pages) {
-        await waitForSlot();
-        if (cancelled) return await submit(true);
+        await waitForSlot(abort.signal);
+        if (cancelled.value) return await submit(true);
 
         if (await readDetailPage(id)) {
           return await stop();
         }
-        await submit(cancelled);
-        if (cancelled) return;
+        await submit(cancelled.value);
+        if (cancelled.value) return;
       }
 
       await submit(true);
       status.value = "finished";
     } catch (error) {
       console.error("Buy-back details sync error:", error);
-      status.value = "incomplete";
+      endIncomplete();
+    } finally {
+      // Only a cancelled pass gets here still running.
+      if (status.value === "running") {
+        status.value = "idle";
+      }
+
+      // Once at the end: lists refetching every batch would jump under the
+      // reader for the whole pass.
+      if (stored && !discarded) {
+        comlink.emit("buyback-sync-finished");
+      }
     }
   };
 
   const stop = async () => {
     await submit(true);
-    status.value = "incomplete";
+    endIncomplete();
   };
 
   // The pass stops at the next request, and what was read up to then, the
   // answer in flight included, is still stored.
   const cancel = () => {
-    cancelled = true;
+    cancelled.value = true;
+    abort.abort();
   };
 
-  return { status, total, done, run, cancel };
+  const discard = () => {
+    discarded = true;
+    pending = [];
+    cancel();
+  };
+
+  return { status, total, done, running, cancelling, run, cancel, discard };
 };

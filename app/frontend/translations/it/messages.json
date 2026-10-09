@@ -673,7 +673,8 @@
       "buybackSync": {
         "started": "Sincronizzazione dei tuoi pledge riacquistabili...",
         "success": "I tuoi pledge riacquistabili sono stati sincronizzati.",
-        "failure": "Non è stato possibile sincronizzare i tuoi pledge riacquistabili."
+        "failure": "Non è stato possibile sincronizzare i tuoi pledge riacquistabili.",
+        "detailsSuccess": "Prezzi e assicurazioni dei tuoi pledge riacquistabili sono aggiornati."
       },
       "syncExtension": {
         "started": "Sincronizzazione del tuo Hangar in corso...",

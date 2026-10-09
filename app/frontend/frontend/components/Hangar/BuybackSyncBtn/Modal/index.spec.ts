@@ -1,4 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
+import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
@@ -14,7 +16,9 @@ const mutateAsync = vi.fn<
   Promise.resolve({ total: 2, added: 2, removed: 0, detailsPending: [] }),
 );
 
-const submitDetails = vi.fn(() => Promise.resolve({ updated: 1 }));
+const submitDetails = vi.hoisted(() =>
+  vi.fn((_: unknown) => Promise.resolve({ updated: 1 })),
+);
 const reportMutateAsync = vi.fn(() => Promise.resolve());
 
 // What the extension says about the RSI session when the modal checks it
@@ -55,7 +59,7 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useSyncRsiBuybacks: () => ({ mutateAsync }),
-  useSyncRsiBuybackDetails: () => ({ mutateAsync: submitDetails }),
+  syncRsiBuybackDetails: submitDetails,
   useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
@@ -162,6 +166,7 @@ let mounted: ReturnType<typeof mount> | undefined;
 const mountModal = async (health?: unknown) => {
   const wrapper = mount(Component, {
     global: {
+      plugins: [createTestingPinia()],
       stubs: {
         Modal: { template: "<div><slot /><slot name='footer' /></div>" },
       },
@@ -424,19 +429,123 @@ describe("HangarBuybackSyncModal", () => {
       await flushPromises();
 
       expect(submitDetails).toHaveBeenCalledWith({
-        data: {
-          items: [
-            {
-              id: "1",
-              price: 100,
-              insuranceMonths: 6,
-              lifetimeInsurance: false,
-            },
-          ],
-        },
+        items: [
+          {
+            id: "1",
+            price: 100,
+            insuranceMonths: 6,
+            lifetimeInsurance: false,
+          },
+        ],
       });
       expect(wrapper.find("[data-test='buyback-sync-prices']").text()).toBe(
         "1 / 1",
+      );
+    });
+
+    // A long list takes a quarter of an hour; the list itself is already
+    // stored, and nothing about the prices needs the modal open.
+    it("finishes the list sync while prices are still being read", async () => {
+      const wrapper = await syncList(detailExtension);
+
+      expect(wrapper.text()).toContain("labels.buybackSync.status.finished");
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-background']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='close-buyback-sync']").attributes("disabled"),
+      ).toBeUndefined();
+
+      wrapper.unmount();
+      mounted = undefined;
+
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+
+      expect(submitDetails).toHaveBeenCalledWith({
+        items: [expect.objectContaining({ id: "1", price: 100 })],
+      });
+    });
+
+    // A second pass would read the same pages again beside the first.
+    it("offers no new sync while prices are still being read", async () => {
+      await syncList(detailExtension);
+      mounted?.unmount();
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-running']").exists(),
+      ).toBe(true);
+      expect(
+        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
+      ).toBeDefined();
+
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
+      ).toBeUndefined();
+    });
+
+    // The two would share RSI's rate limit; the next sync reads the prices.
+    it("reads no prices while a hangar sync runs", async () => {
+      mutateAsync.mockResolvedValueOnce({
+        total: 1,
+        added: 1,
+        removed: 0,
+        detailsPending: ["1"],
+      });
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
+      await flushPromises();
+
+      useHangarStore().syncRunning = true;
+
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
+
+      expect(mutateAsync).toHaveBeenCalled();
+      expect(askedFor("syncBuybackPricing")).toBe(false);
+    });
+
+    it("shows no counts from an earlier pass for a sync that read no prices", async () => {
+      await syncList(detailExtension);
+      extensionReplies("syncBuybackPricing", {
+        currencyCode: "EUR",
+        exchangeRate: 8800,
+        taxRate: 1900,
+        isTaxInclusive: true,
+      });
+      await flushPromises();
+      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
+      await flushPromises();
+      mounted?.unmount();
+
+      const wrapper = await syncList(currentExtension);
+
+      expect(wrapper.find("[data-test='buyback-sync-prices']").exists()).toBe(
+        false,
       );
     });
 

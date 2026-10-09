@@ -2579,6 +2579,7 @@
       },
       "buybackSync": {
         "extensionVersion": "Versión instalada de la extensión",
+        "detailsProgress": "Leyendo precios de recompra",
         "pages": "Páginas",
         "found": "Pledges de recompra encontrados",
         "added": "Nuevos",
@@ -2587,7 +2588,6 @@
         "status": {
           "fetching": "Leyendo páginas de recompra",
           "submitting": "Guardando",
-          "details": "Leyendo precios",
           "finished": "Finalizado",
           "unsupported": "No compatible",
           "failed": "Fallido"
