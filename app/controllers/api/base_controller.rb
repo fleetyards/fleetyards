@@ -21,6 +21,9 @@ module Api
 
     skip_before_action :track_ahoy_visit
 
+    prepend_before_action :leave_anonymous_session_unwritten
+    after_action :write_session_once_signed_in
+
     before_action :authenticate_user!, except: %i[root version provider]
     before_action :set_paper_trail_whodunnit, except: %i[root version provider]
     before_action :set_locale
@@ -138,6 +141,24 @@ module Api
       headers["X-RateLimit-Limit"] = match_data[:limit].to_s
       headers["X-RateLimit-Remaining"] = (match_data[:limit] - match_data[:count]).to_s
       headers["X-RateLimit-Reset"] = (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
+    end
+
+    # With `expire_after` set, every request that touches the session answers
+    # with a session cookie, and one carrying no user answers with an empty
+    # session. A request still in flight when the user signs in can arrive after
+    # the sign-in and replace the new session cookie with that empty one, so the
+    # next request is a 401 and the user is back on the login page.
+    #
+    # Skipped up front rather than in an after_action because a failed
+    # `authenticate_user!` renders through warden's failure app, where no
+    # after_action runs. A request that starts signed in still writes, which is
+    # what lets a sign-out reach the session.
+    private def leave_anonymous_session_unwritten
+      request.session_options[:skip] = true unless warden.authenticated?(:user)
+    end
+
+    private def write_session_once_signed_in
+      request.session_options[:skip] = false if warden.authenticated?(:user)
     end
 
     private def set_last_active_at

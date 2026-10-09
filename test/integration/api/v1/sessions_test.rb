@@ -63,6 +63,17 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 200
   end
 
+  test "DELETE /sessions ends the session for the next request" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+
+    browser.delete "/api/v1/sessions"
+    browser.get "/api/v1/users/me"
+
+    assert_equal 401, browser.response.status
+  end
+
   test "DELETE /sessions returns 401 when not signed in" do
     assert_api_response :delete, 401
   end
@@ -136,6 +147,43 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     assert_difference -> { user.reload.sign_in_count }, 1 do
       sign_in_json(browser, user, remember: true)
     end
+  end
+
+  # A request sent before signing in can answer after it, and the browser keeps
+  # whichever session cookie arrives last.
+  test "a request still in flight from before signing in leaves the new session alone" do
+    assert_signed_in_after_late_answer_from "/api/v1/users/me"
+  end
+
+  test "a public request still in flight from before signing in leaves the new session alone" do
+    assert_signed_in_after_late_answer_from "/api/v1/manufacturers"
+  end
+
+  SESSION_COOKIE = Rails.configuration.cookie_prefix
+
+  private def assert_signed_in_after_late_answer_from(path)
+    user = create(:user, password: "enterprise")
+    expired_session = "#{SESSION_COOKIE}=#{SecureRandom.hex(16)}; domain=example.com; path=/"
+
+    browser = open_session
+    browser.cookies.merge(expired_session, browser_uri)
+    in_flight = open_session
+    in_flight.cookies.merge(expired_session, browser_uri)
+
+    sign_in_json(browser, user, remember: false)
+
+    in_flight.get path
+    Array(in_flight.response.headers["Set-Cookie"]).each do |cookie|
+      browser.cookies.merge(cookie, browser_uri)
+    end
+
+    browser.get "/api/v1/users/me"
+
+    assert_equal 200, browser.response.status
+  end
+
+  private def browser_uri
+    URI("http://www.example.com/")
   end
 
   private def sign_in_remembered(user)
