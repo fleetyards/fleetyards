@@ -36,8 +36,6 @@ const { mutateAsync, isPending } = useCreateMutation();
 const supportPrompt = useSupportPrompt();
 
 const addToWishlist = async () => {
-  if (isPending.value) return;
-
   await mutateAsync({
     data: {
       modelId: props.model.id,
@@ -67,8 +65,6 @@ const addToWishlist = async () => {
 };
 
 const addToHangar = async () => {
-  if (isPending.value) return;
-
   await mutateAsync({
     data: {
       modelId: props.model.id,
