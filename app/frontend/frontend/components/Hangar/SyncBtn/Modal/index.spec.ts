@@ -432,9 +432,7 @@ describe("HangarSyncModal", () => {
       "texts.syncExtension.skipsHangarFlair",
     );
 
-    await wrapper
-      .find("[data-test='open-sync-settings-skipped']")
-      .trigger("click");
+    await wrapper.find("[data-test='open-sync-settings']").trigger("click");
     expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
   });
 

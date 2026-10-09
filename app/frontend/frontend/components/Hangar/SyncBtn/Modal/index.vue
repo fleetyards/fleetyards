@@ -585,30 +585,26 @@ const refreshPage = async () => {
             :info="t('labels.imports.targetGroupHint')"
           />
           <div
-            v-if="missingUnmatchedGroup"
-            class="sync-missing-group"
-            data-test="sync-missing-unmatched-group"
+            v-if="missingUnmatchedGroup || skippedItemsNote"
+            class="sync-settings-notes"
           >
-            <p class="text-warning">
+            <p
+              v-if="missingUnmatchedGroup"
+              class="text-warning"
+              data-test="sync-missing-unmatched-group"
+            >
               {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+            </p>
+            <p
+              v-if="skippedItemsNote"
+              class="text-muted"
+              data-test="sync-skipped-items"
+            >
+              {{ skippedItemsNote }}
             </p>
             <Btn
               :size="BtnSizesEnum.SM"
               data-test="open-sync-settings"
-              @click="settingsOpen = true"
-            >
-              {{ t("actions.syncExtension.openSettings") }}
-            </Btn>
-          </div>
-          <div
-            v-if="skippedItemsNote"
-            class="sync-settings-note"
-            data-test="sync-skipped-items"
-          >
-            <p class="text-muted">{{ skippedItemsNote }}</p>
-            <Btn
-              :size="BtnSizesEnum.SM"
-              data-test="open-sync-settings-skipped"
               @click="settingsOpen = true"
             >
               {{ t("actions.syncExtension.openSettings") }}
