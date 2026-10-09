@@ -94,7 +94,6 @@ const open = (screen: StartScreen) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Hangar/BuybackSyncBtn/Modal/index.vue"),
-    fixed: true,
   });
 };
 </script>

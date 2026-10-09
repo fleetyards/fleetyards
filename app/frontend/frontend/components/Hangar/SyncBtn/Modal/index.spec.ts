@@ -523,29 +523,97 @@ describe("HangarSyncModal", () => {
     expect(has("start-sync")).toBe(true);
   });
 
-  it("asks before closing while the sync runs", async () => {
+  // Once submitted, the job runs on the server whether the modal is open or
+  // not, so only reading the RSI pages is lost by closing.
+  it("asks before closing only while it reads the hangar", async () => {
     const { wrapper } = await mountModal();
 
     const exposed = wrapper.vm as unknown as {
       dirty: boolean;
       dirtyText: string;
     };
+    const cancelDisabled = () =>
+      wrapper.find("[data-test='cancel-sync']").attributes("disabled") !==
+      undefined;
 
     expect(exposed.dirty).toBe(false);
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
     expect(exposed.dirty).toBe(true);
+    expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
+    expect(cancelDisabled()).toBe(true);
 
     await replyWithPage(
       '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
     );
-    expect(exposed.dirty).toBe(true);
-
-    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
-    await flushPromises();
     expect(exposed.dirty).toBe(false);
-    expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
+    expect(cancelDisabled()).toBe(false);
+  });
+
+  it("lets a run the server failed be closed without asking", async () => {
+    const { wrapper } = await mountModal();
+
+    const exposed = wrapper.vm as unknown as { dirty: boolean };
+
+    await submitHangar(wrapper);
+
+    subscription.received?.({
+      status: "failed",
+      error: "boom",
+    } as HangarSyncData);
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='start-sync']").text()).toBe(
+      "actions.syncExtension.retry",
+    );
+    expect(exposed.dirty).toBe(false);
+    expect(
+      wrapper.find("[data-test='cancel-sync']").attributes("disabled"),
+    ).toBeUndefined();
+  });
+
+  it("asks RSI for no further page once the modal is closed", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+
+    try {
+      extensionReplies(
+        "sync",
+        hangarPage(
+          '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+        ),
+      );
+      await flushPromises();
+
+      wrapper.unmount();
+      mounted = undefined;
+      const sent = vi.mocked(window.postMessage).mock.calls.length;
+
+      vi.advanceTimersByTime(500);
+      await flushPromises();
+
+      expect(vi.mocked(window.postMessage).mock.calls.length).toBe(sent);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("offers Refresh, not Back, when the extension goes away in the settings", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
+    hangarStore.extensionReady = false;
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='close-sync-settings']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find("[data-test='recheck-sync']").exists()).toBe(true);
   });
 
   it("passes the paint and flair choices on to the sync", async () => {

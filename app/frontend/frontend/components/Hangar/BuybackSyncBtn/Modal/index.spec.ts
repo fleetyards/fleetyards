@@ -277,6 +277,23 @@ describe("HangarBuybackSyncModal", () => {
     expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
   });
 
+  it("asks before closing while the list is read", async () => {
+    const wrapper = await startSync();
+
+    const exposed = wrapper.vm as unknown as {
+      dirty: boolean;
+      dirtyText: string;
+    };
+
+    expect(exposed.dirty).toBe(true);
+    expect(exposed.dirtyText).toBe("messages.buybackSync.closeWhileRunning");
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(exposed.dirty).toBe(false);
+  });
+
   // The same guard the hangar sync has: a page repeating ids already read
   // would otherwise keep the loop asking forever.
   it("stops at a page with nothing new on it", async () => {

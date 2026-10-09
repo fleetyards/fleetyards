@@ -679,6 +679,7 @@
         "failed": "Importazione %{type} fallita: %{info}"
       },
       "buybackSync": {
+        "closeWhileRunning": "I tuoi pledge riacquistabili sono ancora in sincronizzazione, e la sincronizzazione si interrompe se chiudi questa finestra.",
         "started": "Sincronizzazione dei tuoi pledge riacquistabili...",
         "success": "I tuoi pledge riacquistabili sono stati sincronizzati.",
         "failure": "Non è stato possibile sincronizzare i tuoi pledge riacquistabili.",

@@ -977,7 +977,6 @@ const savedIndicator = ref<InstanceType<typeof SavedIndicator>>();
 
 const select = async (optionValue: FilterOptionValue) => {
   clearSearch();
-  savedIndicator.value?.show();
 
   if (selected(optionValue)) {
     if (props.multiple) {
@@ -985,8 +984,10 @@ const select = async (optionValue: FilterOptionValue) => {
         "update:modelValue",
         selectedValues.value.filter((item) => item !== optionValue),
       );
+      savedIndicator.value?.show();
     } else if (props.nullable) {
       emits("update:modelValue", null);
+      savedIndicator.value?.show();
     }
   } else if (props.multiple) {
     const values: FilterOptionValue[] = [...selectedValues.value];
@@ -994,10 +995,12 @@ const select = async (optionValue: FilterOptionValue) => {
     values.push(optionValue);
 
     emits("update:modelValue", values);
+    savedIndicator.value?.show();
 
     await focusSearch();
   } else {
     emits("update:modelValue", optionValue);
+    savedIndicator.value?.show();
 
     await toggle();
   }

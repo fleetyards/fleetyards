@@ -7,6 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -309,10 +313,17 @@ const submit = async () => {
 const close = () => {
   comlink.emit("close-modal", true);
 };
+
+defineExpose({
+  dirty: computed(
+    () => status.value === "fetching" || status.value === "submitting",
+  ),
+  dirtyText: t("messages.buybackSync.closeWhileRunning"),
+});
 </script>
 
 <template>
-  <Modal :title="t('headlines.buybackSync')" :fixed="true" :loading="working">
+  <Modal :title="t('headlines.buybackSync')" :loading="working">
     <div v-if="!extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
       <SyncExtensionLinks />
@@ -410,6 +421,8 @@ const close = () => {
     </div>
     <template #footer>
       <Btn
+        :variant="BtnVariantsEnum.BARE"
+        :size="BtnSizesEnum.LG"
         data-test="close-buyback-sync"
         :disabled="working && status !== 'idle'"
         @click="close"
@@ -426,6 +439,7 @@ const close = () => {
           extensionSupportsBuybacks &&
           ['idle', 'failed'].includes(status)
         "
+        :size="BtnSizesEnum.LG"
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
         :disabled="

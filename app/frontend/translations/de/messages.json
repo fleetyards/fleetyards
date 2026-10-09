@@ -679,6 +679,7 @@
         "failed": "%{type} Import fehlgeschlagen: %{info}"
       },
       "buybackSync": {
+        "closeWhileRunning": "Deine Rückkauf-Pledges werden noch synchronisiert. Wenn du dieses Fenster schließt, bricht die Synchronisierung ab.",
         "started": "Deine Rückkauf-Pledges werden synchronisiert...",
         "success": "Deine Rückkauf-Pledges wurden synchronisiert.",
         "failure": "Deine Rückkauf-Pledges konnten nicht synchronisiert werden.",

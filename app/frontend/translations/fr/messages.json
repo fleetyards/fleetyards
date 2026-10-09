@@ -679,6 +679,7 @@
         "failed": "Import de %{type} échoué : %{info}"
       },
       "buybackSync": {
+        "closeWhileRunning": "Vos pledges rachetables sont encore en cours de synchronisation, et la synchronisation s'arrête si vous fermez cette fenêtre.",
         "started": "Synchronisation de vos pledges rachetables...",
         "success": "Vos pledges rachetables ont été synchronisés.",
         "failure": "Vos pledges rachetables n'ont pas pu être synchronisés.",
