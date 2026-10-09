@@ -21,6 +21,7 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
       # reference inside an array query parameter, and refuses every value.
       parameter name: :exclude, in: :query, required: false, style: :form, explode: true,
         schema: {type: :array, items: {type: :string, enum: ::Fleets::ActivityFeed::CATEGORIES}}
+      parameter name: :perCategory, in: :query, required: false, schema: {type: :boolean}
       parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50}
 
       security [
@@ -192,6 +193,24 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
     sign_in @member
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {exclude: ["members", "inventory"]} do
       assert_equal ["events"], parsed_body["items"].map { |entry| entry["category"] }.uniq
+    end
+  end
+
+  # Split into panels on the client, the feed would otherwise lose a quiet
+  # category to a busy one: the newest page could be events alone.
+  test "GET /fleets/:slug/activity limits each category on its own when asked" do
+    3.times do |index|
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Op #{index}",
+        starts_at: 3.days.from_now, published_at: index.minutes.ago)
+    end
+
+    sign_in @member
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {limit: 1} do
+      assert_equal ["events"], parsed_body["items"].map { |entry| entry["category"] }
+    end
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {limit: 1, perCategory: true} do
+      assert_equal %w[events members], parsed_body["items"].map { |entry| entry["category"] }
     end
   end
 

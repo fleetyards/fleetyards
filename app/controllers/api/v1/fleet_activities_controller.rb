@@ -28,6 +28,7 @@ module Api
         @entries = feed.entries(
           category: params[:category].presence,
           exclude: Array(params[:exclude]),
+          per_category: ActiveModel::Type::Boolean.new.cast(params[:per_category]) || false,
           limit: params[:limit].presence || Fleets::ActivityFeed::DEFAULT_LIMIT
         )
       end

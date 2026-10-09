@@ -42,7 +42,10 @@ module Fleets
       @inventories = inventories
     end
 
-    def entries(category: nil, exclude: nil, limit: DEFAULT_LIMIT)
+    # `per_category` cuts each category to the limit rather than the merged
+    # list, for a reader that splits the feed into panels: one busy category
+    # would otherwise push the others off the page.
+    def entries(category: nil, exclude: nil, limit: DEFAULT_LIMIT, per_category: false)
       @limit = limit.to_i.clamp(1, MAX_LIMIT)
 
       sources = {
@@ -54,9 +57,13 @@ module Fleets
       sources = sources.slice(category) if category.present?
       sources = sources.except(*Array(exclude))
 
-      sources.values.flat_map(&:call)
-        .sort_by { |entry| [-entry.occurred_at.to_f, entry.id] }
-        .first(@limit)
+      newest_first = ->(entries) { entries.sort_by { |entry| [-entry.occurred_at.to_f, entry.id] } }
+
+      if per_category
+        newest_first.call(sources.values.flat_map { |source| newest_first.call(source.call).first(@limit) })
+      else
+        newest_first.call(sources.values.flat_map(&:call)).first(@limit)
+      end
     end
 
     private def member_entries
