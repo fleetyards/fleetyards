@@ -40,15 +40,24 @@ const { t, timeDistance, l } = useI18n();
 
 const comlink = useComlink();
 
-// Three at most: what officers want read now, not an archive of what was.
+// Three at first: what officers want read now. The rest are a click away
+// rather than gone, so every one that stands can still be read and taken down.
 const SHOWN = 3;
+
+const showAll = ref(false);
 
 const { data } = useFleetAnnouncements(
   computed(() => props.fleet.slug),
   { query: liveQuery },
 );
 
-const announcements = computed(() => (data.value?.items ?? []).slice(0, SHOWN));
+const all = computed(() => data.value?.items ?? []);
+
+const announcements = computed(() =>
+  showAll.value ? all.value : all.value.slice(0, SHOWN),
+);
+
+const hidden = computed(() => all.value.length - announcements.value.length);
 
 const edit = (announcement: FleetAnnouncement) =>
   comlink.emit("open-modal", {
@@ -114,10 +123,24 @@ const edit = (announcement: FleetAnnouncement) =>
         </div>
       </PanelBody>
     </Panel>
+    <Btn
+      v-if="hidden > 0"
+      :size="BtnSizesEnum.SM"
+      :variant="BtnVariantsEnum.BARE"
+      class="announcements__more"
+      data-test="fleet-dashboard-announcements-more"
+      @click="showAll = true"
+    >
+      {{ t("fleetDashboard.announcements.more", { count: hidden }) }}
+    </Btn>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.announcements__more {
+  margin-bottom: 16px;
+}
+
 .announcement {
   display: flex;
   align-items: flex-start;

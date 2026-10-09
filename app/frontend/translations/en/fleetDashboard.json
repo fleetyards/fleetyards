@@ -106,6 +106,10 @@
           "saveFailed": "The announcement could not be saved.",
           "removed": "Announcement removed.",
           "removeFailed": "The announcement could not be removed."
+        },
+        "more": {
+          "one": "Show %{count} more announcement",
+          "other": "Show %{count} more announcements"
         }
       }
     }
