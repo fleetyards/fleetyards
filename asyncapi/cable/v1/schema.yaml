@@ -2364,6 +2364,8 @@ components:
           type: boolean
         createContracts:
           type: boolean
+        manageAnnouncements:
+          type: boolean
         readRoles:
           type: boolean
         updateRoles:
@@ -2405,6 +2407,7 @@ components:
       - readMissions
       - readContracts
       - createContracts
+      - manageAnnouncements
       - readRoles
       - updateRoles
       - manageFleet
@@ -2535,6 +2538,7 @@ components:
       - fleet:payouts:delete
       - fleet:payouts:manage
       - fleet:notifications:manage
+      - fleet:announcements:manage
       x-enumNames:
       - FLEET_UPDATE
       - FLEET_UPDATE_IMAGES
@@ -2598,6 +2602,7 @@ components:
       - FLEET_PAYOUTS_DELETE
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
+      - FLEET_ANNOUNCEMENTS_MANAGE
     FleetSquadronRef:
       type: object
       properties:

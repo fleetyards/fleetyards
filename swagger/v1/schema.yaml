@@ -1510,6 +1510,156 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/announcements":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Announcements
+      tags:
+      - Fleets
+      operationId: fleetAnnouncements
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAnnouncementsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Fleet Announcement
+      tags:
+      - Fleets
+      operationId: createFleetAnnouncement
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetAnnouncementInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAnnouncement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/announcements/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Fleet Announcement
+      tags:
+      - Fleets
+      operationId: updateFleetAnnouncement
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetAnnouncementInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAnnouncement"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Delete Fleet Announcement
+      tags:
+      - Fleets
+      operationId: destroyFleetAnnouncement
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/blueprints":
     parameters:
     - name: fleetSlug
@@ -23416,6 +23566,60 @@ components:
       - meta
       - items
       title: FleetAlliancesList
+    FleetAnnouncement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        author:
+          anyOf:
+          - "$ref": "#/components/schemas/UserRefWithAvatar"
+          - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - body
+      - expiresAt
+      - author
+      - createdAt
+      - updatedAt
+      title: FleetAnnouncement
+    FleetAnnouncementInput:
+      type: object
+      properties:
+        body:
+          type: string
+          maxLength: 2000
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      title: FleetAnnouncementInput
+    FleetAnnouncementsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetAnnouncement"
+      required:
+      - items
+      title: FleetAnnouncementsList
     FleetBlueprint:
       type: object
       properties:
@@ -27044,6 +27248,8 @@ components:
           type: boolean
         createContracts:
           type: boolean
+        manageAnnouncements:
+          type: boolean
         readRoles:
           type: boolean
         updateRoles:
@@ -27085,6 +27291,7 @@ components:
       - readMissions
       - readContracts
       - createContracts
+      - manageAnnouncements
       - readRoles
       - updateRoles
       - manageFleet
@@ -27506,6 +27713,7 @@ components:
       - fleet:payouts:delete
       - fleet:payouts:manage
       - fleet:notifications:manage
+      - fleet:announcements:manage
       x-enumNames:
       - FLEET_UPDATE
       - FLEET_UPDATE_IMAGES
@@ -27569,6 +27777,7 @@ components:
       - FLEET_PAYOUTS_DELETE
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
+      - FLEET_ANNOUNCEMENTS_MANAGE
       title: FleetRoleResourceAccessEnum
     FleetRoleUpdateInput:
       type: object

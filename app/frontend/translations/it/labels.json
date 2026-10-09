@@ -805,7 +805,8 @@
             "allies": "Alleati",
             "contracts": "Contratti",
             "payouts": "Pagamenti",
-            "notifications": "Notifiche"
+            "notifications": "Notifiche",
+            "announcements": "Annunci"
           },
           "privileges": {
             "fleet:update": "Aggiorna flotta",
@@ -869,7 +870,8 @@
             "fleet:payouts:update": "Aggiorna pagamenti",
             "fleet:payouts:delete": "Elimina pagamenti",
             "fleet:payouts:manage": "Gestisci pagamenti",
-            "fleet:notifications:manage": "Gestisci impostazioni notifiche"
+            "fleet:notifications:manage": "Gestisci impostazioni notifiche",
+            "fleet:announcements:manage": "Gestisci annunci"
           },
           "name": "Nome",
           "rank": "Rango"

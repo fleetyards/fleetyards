@@ -62,6 +62,10 @@ zh-TW:
     buyback_pledges:
       sync: 無法同步可回購的承諾。
       sync_details: 無法儲存回購詳情。
+    fleet_announcements:
+      create: "無法發布公告。"
+      update: "無法更新公告。"
+      destroy: "無法刪除公告。"
     fleet_contracts:
       create: 無法建立合約。
       update: 無法更新合約。

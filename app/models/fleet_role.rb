@@ -36,7 +36,8 @@ class FleetRole < ApplicationRecord
     "missions" => Mission::AVAILABLE_PRIVILEGES,
     "events" => FleetEvent::AVAILABLE_PRIVILEGES,
     "payouts" => PayoutLedger::AVAILABLE_PRIVILEGES,
-    "notifications" => FleetNotificationSetting::AVAILABLE_PRIVILEGES
+    "notifications" => FleetNotificationSetting::AVAILABLE_PRIVILEGES,
+    "announcements" => FleetAnnouncement::AVAILABLE_PRIVILEGES
   }.freeze
 
   # Reached through FleetMembership: the fleet's `role` filter by slug, the
@@ -106,7 +107,8 @@ class FleetRole < ApplicationRecord
         FleetContract::DEFAULT_PRIVILEGES[:admin],
         Mission::DEFAULT_PRIVILEGES[:admin],
         FleetEvent::DEFAULT_PRIVILEGES[:admin],
-        PayoutLedger::DEFAULT_PRIVILEGES[:admin]
+        PayoutLedger::DEFAULT_PRIVILEGES[:admin],
+        FleetAnnouncement::DEFAULT_PRIVILEGES[:admin]
       ].flatten.uniq,
       officer: [
         Fleet::DEFAULT_PRIVILEGES[:officer],
@@ -121,7 +123,8 @@ class FleetRole < ApplicationRecord
         FleetContract::DEFAULT_PRIVILEGES[:officer],
         Mission::DEFAULT_PRIVILEGES[:officer],
         FleetEvent::DEFAULT_PRIVILEGES[:officer],
-        PayoutLedger::DEFAULT_PRIVILEGES[:officer]
+        PayoutLedger::DEFAULT_PRIVILEGES[:officer],
+        FleetAnnouncement::DEFAULT_PRIVILEGES[:officer]
       ].flatten.uniq,
       member: [
         Fleet::DEFAULT_PRIVILEGES[:member],
@@ -136,7 +139,8 @@ class FleetRole < ApplicationRecord
         FleetContract::DEFAULT_PRIVILEGES[:member],
         Mission::DEFAULT_PRIVILEGES[:member],
         FleetEvent::DEFAULT_PRIVILEGES[:member],
-        PayoutLedger::DEFAULT_PRIVILEGES[:member]
+        PayoutLedger::DEFAULT_PRIVILEGES[:member],
+        FleetAnnouncement::DEFAULT_PRIVILEGES[:member]
       ].flatten.uniq
     }
   end

@@ -63,6 +63,10 @@ it:
     buyback_pledges:
       sync: Non è stato possibile sincronizzare i pledge riacquistabili.
       sync_details: Non è stato possibile salvare i dettagli dei pledge riacquistabili.
+    fleet_announcements:
+      create: "Impossibile pubblicare l'annuncio."
+      update: "Impossibile aggiornare l'annuncio."
+      destroy: "Impossibile rimuovere l'annuncio."
     fleet_contracts:
       create: Impossibile creare il contratto.
       update: Impossibile aggiornare il contratto.

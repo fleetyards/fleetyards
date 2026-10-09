@@ -66,6 +66,10 @@ es:
     buyback_pledges:
       sync: No se pudieron sincronizar los pledges de recompra.
       sync_details: No se pudieron guardar los detalles de recompra.
+    fleet_announcements:
+      create: "No se pudo publicar el anuncio."
+      update: "No se pudo actualizar el anuncio."
+      destroy: "No se pudo eliminar el anuncio."
     fleet_contracts:
       create: No se pudo crear el contrato.
       update: No se pudo actualizar el contrato.

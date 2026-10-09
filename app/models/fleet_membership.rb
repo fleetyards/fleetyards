@@ -195,6 +195,7 @@ class FleetMembership < ApplicationRecord
     read_missions: ["fleet:manage", "fleet:missions:manage", "fleet:missions:read"],
     read_contracts: ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"],
     create_contracts: ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:create"],
+    manage_announcements: ["fleet:manage", "fleet:announcements:manage"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
     update_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:update"],
     manage_fleet: ["fleet:manage"],
