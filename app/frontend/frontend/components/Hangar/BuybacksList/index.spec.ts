@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { flushPromises } from "@vue/test-utils";
 import { AxiosError, type AxiosResponse } from "axios";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, type Router } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type BuybackPledge } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -40,7 +40,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
   }),
 }));
 
-const routerOnBuybacks = async () => {
+const routerOnBuybacks = async (query: Record<string, string> = {}) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -52,7 +52,10 @@ const routerOnBuybacks = async () => {
     ],
   });
 
-  await router.push({ name: "hangar-buybacks", query: { nameCont: "cut" } });
+  await router.push({
+    name: "hangar-buybacks",
+    query: { nameCont: "cut", ...query },
+  });
   await router.isReady();
 
   return router;
@@ -74,10 +77,14 @@ const buyback = (attrs: Partial<BuybackPledge> = {}) =>
     ...attrs,
   }) as BuybackPledge;
 
-const mount = async (buybacks: BuybackPledge[], emptyVisible = false) =>
+const mount = async (
+  buybacks: BuybackPledge[],
+  emptyVisible = false,
+  router?: Router,
+) =>
   mountWithDefaults(Component, {
     props: { buybacks, emptyVisible },
-    plugins: [await routerOnBuybacks()],
+    plugins: [router ?? (await routerOnBuybacks())],
   });
 
 describe("Hangar/BuybacksList", () => {
@@ -135,6 +142,33 @@ describe("Hangar/BuybacksList", () => {
 
     expect(invalidateQueries).not.toHaveBeenCalled();
     expect(displayAlert).toHaveBeenCalled();
+  });
+
+  it("steps back a page when the last pledge on it is removed", async () => {
+    const router = await routerOnBuybacks({ page: "3" });
+    const wrapper = await mount([buyback()], false, router);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({
+      nameCont: "cut",
+      page: "2",
+    });
+  });
+
+  it("stays on the page while other pledges remain on it", async () => {
+    const router = await routerOnBuybacks({ page: "2" });
+    const wrapper = await mount(
+      [buyback(), buyback({ id: "other" })],
+      false,
+      router,
+    );
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.page).toBe("2");
   });
 
   it("drops a pledge that is already gone instead of failing", async () => {

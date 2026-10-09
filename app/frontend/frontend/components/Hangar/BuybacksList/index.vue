@@ -32,13 +32,15 @@ type Props = {
   emptyVisible?: boolean;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t, l } = useI18n();
 
 const { formatCents } = useCurrencyFormat();
 
 const route = useRoute();
+
+const router = useRouter();
 
 const filterLink = (key: string, value: string) => ({
   name: route.name as string,
@@ -109,6 +111,14 @@ const remove = (buyback: BuybackPledge) => {
         }
       } finally {
         removingId.value = undefined;
+      }
+
+      const page = Number(route.query.page) || 1;
+
+      if (props.buybacks.length === 1 && page > 1) {
+        await router.replace({
+          query: { ...route.query, page: page > 2 ? page - 1 : undefined },
+        });
       }
 
       await queryClient.invalidateQueries({
