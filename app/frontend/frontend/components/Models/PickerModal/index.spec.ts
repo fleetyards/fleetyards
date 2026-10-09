@@ -56,6 +56,19 @@ describe("Models/PickerModal", () => {
     );
   });
 
+  it("does not submit the picks when the form is submitted with Enter", async () => {
+    const wrapper = await mount();
+
+    await wrapper.find(".model-card__toggle").trigger("click");
+    await wrapper.find("form").trigger("submit");
+
+    expect(wrapper.emitted("submit")).toBeUndefined();
+
+    await wrapper.find('[data-test="model-picker-submit"]').trigger("click");
+
+    expect(wrapper.emitted("submit")?.[0]).toEqual([[{ option, quantity: 1 }]]);
+  });
+
   it("submits the clicked ship straight away in single mode", async () => {
     const wrapper = await mount({ single: true });
 

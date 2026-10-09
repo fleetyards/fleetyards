@@ -36,7 +36,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
-  BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import debounce from "lodash.debounce";
@@ -373,7 +372,8 @@ const save = () => {
 
 <template>
   <Modal :title="title">
-    <form id="model-picker" class="model-picker" @submit.prevent="save">
+    <!-- Enter belongs to the search and the quantity fields; only the button saves. -->
+    <form class="model-picker" @submit.prevent>
       <div class="model-picker__header">
         <div class="model-picker__toolbar">
           <FormInput
@@ -525,11 +525,10 @@ const save = () => {
           {{ t("modelPicker.actions.clearSelection") }}
         </Btn>
         <Btn
-          :type="BtnTypesEnum.SUBMIT"
-          form="model-picker"
           :loading="submitting"
           :disabled="!selection.length"
           data-test="model-picker-submit"
+          @click="save"
         >
           {{ submitLabel }}
         </Btn>
