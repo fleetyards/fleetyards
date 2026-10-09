@@ -147,6 +147,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   end
 
   get "calendar", to: "fleet_calendars#show"
+  get "activity", to: "fleet_activities#index"
   get "events.ics", to: "fleet_calendars#ics", as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
 
   resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
