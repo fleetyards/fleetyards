@@ -2646,7 +2646,8 @@
           "upgrades": "Améliorations",
           "paints": "Peintures",
           "hangarFlair": "Décorations de hangar",
-          "notSynced": "non synchronisé"
+          "paintsNotSynced": "Peintures (non synchronisées)",
+          "hangarFlairNotSynced": "Décorations de hangar (non synchronisées)"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",

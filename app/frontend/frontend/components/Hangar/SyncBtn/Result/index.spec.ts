@@ -112,12 +112,9 @@ describe("HangarSyncResult", () => {
       paintsOff.find("[data-test='hangar-flair-not-synced']").exists(),
     ).toBe(false);
 
-    expect(
-      paintsOff
-        .find("[data-test='paints-not-synced']")
-        .element.parentElement?.textContent?.replace(/\s+/g, " ")
-        .trim(),
-    ).toBe("Paints (not synced):");
+    expect(paintsOff.find("[data-test='paints-not-synced']").text()).toBe(
+      "Paints (not synced):",
+    );
 
     const flairOff = await mountWith(true, false);
     expect(flairOff.find("[data-test='paints-not-synced']").exists()).toBe(

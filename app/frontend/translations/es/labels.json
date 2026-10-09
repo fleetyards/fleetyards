@@ -2646,7 +2646,8 @@
           "upgrades": "Mejoras",
           "paints": "Pinturas",
           "hangarFlair": "Decoración de hangar",
-          "notSynced": "no se sincroniza"
+          "paintsNotSynced": "Pinturas (no se sincronizan)",
+          "hangarFlairNotSynced": "Decoración de hangar (no se sincroniza)"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",

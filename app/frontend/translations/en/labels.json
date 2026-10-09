@@ -2646,7 +2646,8 @@
           "upgrades": "Upgrades",
           "paints": "Paints",
           "hangarFlair": "Hangar Flair",
-          "notSynced": "not synced"
+          "paintsNotSynced": "Paints (not synced)",
+          "hangarFlairNotSynced": "Hangar Flair (not synced)"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",

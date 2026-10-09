@@ -183,28 +183,34 @@ const hasWarnings = computed(
               <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
             </template>
             <template v-if="paints.size">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.paints")
-                }}<span
-                  v-if="!syncPaints"
-                  class="text-muted"
-                  data-test="paints-not-synced"
-                >
-                  ({{ t("labels.syncExtension.pledgeItems.notSynced") }})</span
-                >:
+              <dt
+                class="col-sm-7"
+                :data-test="syncPaints ? undefined : 'paints-not-synced'"
+              >
+                {{
+                  t(
+                    syncPaints
+                      ? "labels.syncExtension.pledgeItems.paints"
+                      : "labels.syncExtension.pledgeItems.paintsNotSynced",
+                  )
+                }}:
               </dt>
               <dd class="col-sm-5 text-right">{{ paints.size }}</dd>
             </template>
             <template v-if="hangarFlair.size">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.hangarFlair")
-                }}<span
-                  v-if="!syncHangarFlair"
-                  class="text-muted"
-                  data-test="hangar-flair-not-synced"
-                >
-                  ({{ t("labels.syncExtension.pledgeItems.notSynced") }})</span
-                >:
+              <dt
+                class="col-sm-7"
+                :data-test="
+                  syncHangarFlair ? undefined : 'hangar-flair-not-synced'
+                "
+              >
+                {{
+                  t(
+                    syncHangarFlair
+                      ? "labels.syncExtension.pledgeItems.hangarFlair"
+                      : "labels.syncExtension.pledgeItems.hangarFlairNotSynced",
+                  )
+                }}:
               </dt>
               <dd class="col-sm-5 text-right">{{ hangarFlair.size }}</dd>
             </template>
