@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import copyText from "@/frontend/utils/CopyText";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -249,7 +249,10 @@ const copy = (inviteUrl: FleetInviteUrl) => {
         :label="t('labels.filters.fleets.inviteUrls.limit')"
         name="limit"
       />
-      <Btn @click="create">
+    </template>
+
+    <template v-if="form" #footer>
+      <Btn :size="BtnSizesEnum.LG" @click="create">
         {{ t("actions.fleet.inviteUrls.create") }}
       </Btn>
     </template>

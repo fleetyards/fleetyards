@@ -7,6 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -97,13 +101,6 @@ const importCsv = async () => {
       {{ t("labels.logistics.csvImportHelp") }}
     </p>
 
-    <Btn @click="downloadTemplate">
-      <i class="fa-duotone fa-download" />
-      {{ t("actions.logistics.downloadTemplate") }}
-    </Btn>
-
-    <hr />
-
     <div class="mb-3">
       <input
         type="file"
@@ -130,12 +127,30 @@ const importCsv = async () => {
       </div>
     </template>
 
-    <Btn
-      :disabled="!selectedFile || importing"
-      :loading="importing"
-      @click="importCsv"
-    >
-      {{ t("actions.logistics.importCsv") }}
-    </Btn>
+    <template #footer>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :variant="BtnVariantsEnum.BARE"
+        class="csv-import-template"
+        @click="downloadTemplate"
+      >
+        <i class="fa-duotone fa-download" />
+        {{ t("actions.logistics.downloadTemplate") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :disabled="!selectedFile || importing"
+        :loading="importing"
+        @click="importCsv"
+      >
+        {{ t("actions.logistics.importCsv") }}
+      </Btn>
+    </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.csv-import-template {
+  margin-right: auto;
+}
+</style>
