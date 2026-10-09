@@ -42,8 +42,7 @@ module Fleets
       @inventories = inventories
     end
 
-    def entries(category: nil, before: nil, limit: DEFAULT_LIMIT)
-      @before = before
+    def entries(category: nil, limit: DEFAULT_LIMIT)
       @limit = limit.to_i.clamp(1, MAX_LIMIT)
 
       sources = {
@@ -72,9 +71,12 @@ module Fleets
       return [] if @events.nil?
 
       published = latest(@events.where.not(published_at: nil).includes(created_by: AVATAR), :published_at)
-        .map { |event| entry("event_published", event, event.published_at, actor: event.created_by) }
+        .map do |event|
+          entry("event_published", event, event.published_at,
+            actor: event.created_by, involves_viewer: event.created_by_id == @user.id)
+        end
       cancelled = latest(@events.where(status: "cancelled").where.not(cancelled_at: nil), :cancelled_at)
-        .map { |event| entry("event_cancelled", event, event.cancelled_at) }
+        .map { |event| entry("event_cancelled", event, event.cancelled_at, involves_viewer: event.created_by_id == @user.id) }
 
       published + cancelled
     end
@@ -87,7 +89,11 @@ module Fleets
 
       %w[published claimed fulfilled].flat_map do |step|
         column = :"#{step}_at"
-        latest(@contracts.where.not(column => nil).includes(created_by: AVATAR), column).map do |contract|
+        # Only the posting is told as somebody's doing, so only it needs them.
+        relation = @contracts.where.not(column => nil)
+        relation = relation.includes(created_by: AVATAR) if step == "published"
+
+        latest(relation, column).map do |contract|
           entry("contract_#{step}", contract, contract.public_send(column),
             actor: (step == "published") ? contract.created_by : nil,
             involves_viewer: contract.created_by_id == @user.id || worked.include?(contract.id))
@@ -129,9 +135,7 @@ module Fleets
     # Each source is cut to the page before the merge, so no query reads more of
     # a fleet's history than the page could show.
     private def latest(relation, column)
-      table = relation.arel_table
-      relation = relation.where(table[column].lt(@before)) if @before.present?
-      relation.reorder(table[column].desc).limit(@limit)
+      relation.reorder(relation.arel_table[column].desc).limit(@limit)
     end
 
     private def entry(kind, record, occurred_at, actor: nil, involves_viewer: false, inventory: nil)

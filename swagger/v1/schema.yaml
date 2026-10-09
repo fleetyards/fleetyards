@@ -1460,12 +1460,6 @@ paths:
         required: false
         schema:
           "$ref": "#/components/schemas/FleetActivityCategoryEnum"
-      - name: before
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date-time
       - name: limit
         in: query
         required: false

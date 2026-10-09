@@ -27,7 +27,6 @@ module Api
 
         @entries = feed.entries(
           category: params[:category].presence,
-          before: parse_time(params[:before]),
           limit: params[:limit].presence || Fleets::ActivityFeed::DEFAULT_LIMIT
         )
       end
@@ -71,14 +70,6 @@ module Api
 
       private def premium_available?(feature)
         feature_enabled?(feature, @fleet) && !fleet_subscription_missing?(@fleet)
-      end
-
-      private def parse_time(value)
-        return if value.blank?
-
-        Time.zone.parse(value.to_s)
-      rescue ArgumentError
-        nil
       end
 
       private def set_fleet

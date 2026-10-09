@@ -17,7 +17,6 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
 
       parameter name: :category, in: :query, required: false,
         schema: {"$ref": "#/components/schemas/FleetActivityCategoryEnum"}
-      parameter name: :before, in: :query, required: false, schema: {type: :string, format: "date-time"}
       parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50}
 
       security [
@@ -75,6 +74,7 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
       assert_equal ["inventory_item_deposited", "Laranite"], kinds[0]
       assert_equal ["contract_published", "Haul quantanium"], kinds[1]
       assert_equal ["event_published", "Mining op"], kinds[2]
+      refute parsed_body["items"][2]["involvesViewer"]
       assert_includes kinds.map(&:first), "member_joined"
 
       item = parsed_body["items"].first
@@ -108,6 +108,16 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
       assert_includes titles, "Squadron only"
       assert_includes titles, "Officer stash"
       refute_includes titles, "Still a draft"
+    end
+  end
+
+  test "GET /fleets/:slug/activity marks an event the reader published as theirs" do
+    create(:fleet_event, :open, fleet: @fleet, created_by: @member, title: "My op",
+      starts_at: 3.days.from_now, published_at: 1.day.ago)
+
+    sign_in @member
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {category: "events"} do
+      assert parsed_body["items"].first["involvesViewer"]
     end
   end
 
@@ -151,7 +161,7 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
     Flipper.disable("fleet_subscriptions")
   end
 
-  test "GET /fleets/:slug/activity narrows to one category and pages by time" do
+  test "GET /fleets/:slug/activity narrows to one category and a page size" do
     create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Older",
       starts_at: 3.days.from_now, published_at: 2.days.ago)
     create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Newer",
@@ -162,9 +172,8 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
       assert_equal [["event_published", "Newer"]], kinds_and_titles
     end
 
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
-      params: {category: "events", before: 1.day.ago.iso8601} do
-      assert_equal [["event_published", "Older"]], kinds_and_titles
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {category: "events"} do
+      assert_equal [["event_published", "Newer"], ["event_published", "Older"]], kinds_and_titles
     end
   end
 
