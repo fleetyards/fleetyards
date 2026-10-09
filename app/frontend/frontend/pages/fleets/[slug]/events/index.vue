@@ -146,7 +146,8 @@ const { create: createEventDraft, pending: creating } = useEventDraft();
  * Whoever cannot read the fleet's missions has none to pick from.
  */
 const goToCreate = (date: Date) => {
-  if (!canCreate.value) return;
+  // A pick made while the last draft is still being written would be dropped.
+  if (!canCreate.value || creating.value) return;
 
   if (!canManageMissions.value) {
     void createEventDraft(props.fleet.slug, { startsAt: date });
