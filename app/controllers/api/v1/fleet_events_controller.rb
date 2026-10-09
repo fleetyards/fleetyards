@@ -392,7 +392,9 @@ module Api
       private def set_mission
         return if params[:mission_slug].blank?
 
-        @mission = @fleet.missions.find_by!(slug: params[:mission_slug])
+        # A draft has not been offered to the fleet yet and an archived one has
+        # been withdrawn, so neither is a template.
+        @mission = @fleet.missions.active.published.find_by!(slug: params[:mission_slug])
       end
 
       private def compute_viewer_event_role(event)

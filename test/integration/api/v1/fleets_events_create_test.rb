@@ -96,6 +96,20 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/:slug/events refuses a draft or archived mission as a template" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    archived = create(:mission, :archived, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    [draft, archived].each do |mission|
+      assert_no_difference -> { FleetEvent.count } do
+        post "/api/v1/fleets/#{@fleet.slug}/events", params: valid_body.merge(missionSlug: mission.slug), as: :json
+      end
+
+      assert_response :not_found
+    end
+  end
+
   # What the form sends for an event that does not repeat: the model requires the
   # interval to be absent unless the event recurs, so null is the only value it
   # can carry, and the schema has to accept it.
