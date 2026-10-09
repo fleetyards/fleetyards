@@ -199,6 +199,7 @@ const onEdit = (entry: PayoutEntry) => {
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
         :aria-label="t('headlines.payouts.editEntry')"
+        class="payout-entries__edit"
         @click="onEdit(entry)"
       >
         <i class="fa-light fa-pen" />
@@ -287,22 +288,23 @@ const onEdit = (entry: PayoutEntry) => {
 
 // On a phone the amount and the review buttons beside the description left
 // it a few letters wide, so each takes a line of its own under it.
-@media (max-width: 575px) {
+@media (max-width: 576px) {
   .payout-entries__row {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: start;
     column-gap: 12px;
     row-gap: 6px;
+  }
 
-    > :not(.payout-entries__detail, .payout-entries__icon) {
-      grid-column: 2;
-    }
+  .payout-entries__amount,
+  .payout-entries__review-actions {
+    grid-column: 2;
+  }
 
-    > .btn {
-      grid-column: 3;
-      grid-row: 1;
-    }
+  .payout-entries__edit {
+    grid-column: 3;
+    grid-row: 1;
   }
 
   .payout-entries__icon {
