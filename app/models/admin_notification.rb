@@ -229,8 +229,11 @@ class AdminNotification < ApplicationRecord
 
       if existing
         # Reloaded under the lock: two reports counting from the same read
-        # would record one.
-        existing.with_lock do
+        # would record one. A row read or archived since the lookup has been
+        # dealt with, so the report starts a new one instead.
+        folded = existing.with_lock do
+          next false if existing.read_at || existing.archived_at
+
           existing.update!(
             title:, severity:, link:, icon:, record:,
             body: resolve_body(body, existing.body),
@@ -240,7 +243,7 @@ class AdminNotification < ApplicationRecord
           )
         end
 
-        return existing
+        return existing if folded
       end
 
       # A concurrent report can insert the same dedupe key between the lookup
