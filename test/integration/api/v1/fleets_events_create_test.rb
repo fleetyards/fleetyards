@@ -96,6 +96,13 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/:slug/events answers a member who may not create the same for a draft mission" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @member
+
+    assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug}, body: valid_body.merge(missionSlug: draft.slug)
+  end
+
   test "POST /fleets/:slug/events refuses a draft or archived mission as a template" do
     draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
     archived = create(:mission, :archived, fleet: @fleet, created_by: @admin)
