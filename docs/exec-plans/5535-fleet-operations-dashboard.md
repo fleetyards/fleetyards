@@ -74,8 +74,14 @@ An accepted member opening `/fleets/:slug/` sees an operations dashboard: what c
 
 - **2026-10-09** Initial research and plan creation. The `upcoming=true` events filter drops recurring series that started in the past, so the calendar endpoint is the source for upcoming events. Event lists carry no viewer signup, which Phase 1 fixes.
 
+- **2026-10-09** Service objects live in `app/services`; the feed is `Fleets::ActivityFeed`.
+- **2026-10-09** Inventory items carry `entry_type` (deposit/withdrawal), so they appear as two kinds. Items that arrived with a transfer are left out, because the transfer entry already covers them.
+- **2026-10-09** Squadron join requests are per squadron (one request each), so they are not in the action queue.
+- **2026-10-09** Checked live on the dev dump. MERCCORP has no mission builder, and the events panels stay hidden there (its calendar answers 403). MARU shows all panels. At 390px the panels stack in urgency order with no horizontal scroll.
+- **2026-10-09** In a fleet without events or contracts, "Latest updates" is mostly join entries, which repeat the New members panel.
+
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4 (Playwright left to CI)
