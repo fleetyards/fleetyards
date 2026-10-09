@@ -117,7 +117,9 @@ describe("Hangar/BuybacksList", () => {
     await wrapper.find('[data-test="buyback-remove"]').trigger("click");
     await flushPromises();
 
-    expect(displayConfirm).toHaveBeenCalled();
+    expect(displayConfirm).toHaveBeenCalledWith(
+      expect.objectContaining({ confirmText: "Remove" }),
+    );
     expect(destroyBuyback).not.toHaveBeenCalled();
     expect(
       wrapper.find('[data-test="buyback-remove"]').attributes("aria-busy"),

@@ -94,6 +94,7 @@ const destroyMutation = useDestroyHangarBuyback();
 const remove = (buyback: BuybackPledge) => {
   displayConfirm({
     text: t("messages.confirm.buyback.destroy"),
+    confirmText: t("actions.remove"),
     onConfirm: async () => {
       removingId.value = buyback.id;
 
