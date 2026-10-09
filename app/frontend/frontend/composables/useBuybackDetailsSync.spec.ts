@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { type RsiBuybackItemInput } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackDetailsSync } from "./useBuybackDetailsSync";
 
 const request = vi.fn();
@@ -319,5 +320,20 @@ describe("useBuybackDetailsSync", () => {
 
     expect(pageRequests()).toHaveLength(0);
     expect(status.value).toBe("idle");
+  });
+
+  it("tells the lists once, after the last batch is stored", async () => {
+    extension((id) => ({ code: 200, id, payload: detailPage(15708) }));
+
+    const finished = vi.fn();
+    const off = useComlink().on("buyback-sync-finished", finished);
+
+    const ids = Array.from({ length: 30 }, (_, index) => String(index + 1));
+    const { run } = useBuybackDetailsSync();
+    await run(ids.map(ship), ids, { waitForSlot });
+    off();
+
+    expect(submitDetails).toHaveBeenCalledTimes(2);
+    expect(finished).toHaveBeenCalledTimes(1);
   });
 });

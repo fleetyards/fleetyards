@@ -53,6 +53,8 @@ let abort = new AbortController();
 // A discarded pass stores nothing more, not even what it already read.
 let discarded = false;
 
+let stored = false;
+
 let pending: RsiBuybackDetailInput[] = [];
 
 let failures = 0;
@@ -88,7 +90,7 @@ export const useBuybackDetailsSync = () => {
       throw error;
     }
 
-    comlink.emit("buyback-sync-finished");
+    stored = true;
   };
 
   const recordFailure = () => {
@@ -189,6 +191,7 @@ export const useBuybackDetailsSync = () => {
     pending = [];
     cancelled.value = false;
     discarded = false;
+    stored = false;
     abort = new AbortController();
 
     if (pages.length === 0) {
@@ -227,6 +230,12 @@ export const useBuybackDetailsSync = () => {
       // Only a cancelled pass gets here still running.
       if (status.value === "running") {
         status.value = "idle";
+      }
+
+      // Once at the end: lists refetching every batch would jump under the
+      // reader for the whole pass.
+      if (stored && !discarded) {
+        comlink.emit("buyback-sync-finished");
       }
     }
   };
