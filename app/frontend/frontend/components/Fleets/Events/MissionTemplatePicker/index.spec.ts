@@ -107,4 +107,17 @@ describe("MissionTemplatePicker", () => {
     );
     expect(wrapper.text()).not.toContain("No missions yet.");
   });
+
+  it("keeps a list it already has when a refetch fails", async () => {
+    missions.value = { items: [mission({ slug: "bluebird" })] };
+    isError.value = true;
+    const wrapper = await mountPicker();
+
+    expect(wrapper.find('[data-test="mission-template-error"]').exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper.find('[data-test="mission-template-bluebird"]').exists(),
+    ).toBe(true);
+  });
 });

@@ -64,7 +64,7 @@ const pick = (mission: Mission | null) => {
     </p>
 
     <p
-      v-else-if="isError"
+      v-else-if="isError && !missions"
       class="template-picker__note"
       data-test="mission-template-error"
     >
