@@ -248,12 +248,16 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
             :icon="avatarIconFor(participant)"
             size="small"
           />
-          {{ participant.displayName }}
-          <span v-if="participant.guest" class="payout-participants__tag">
-            {{ t("labels.payouts.guest") }}
-          </span>
-          <span v-if="participant.fleet" class="payout-participants__tag">
-            {{ t("labels.payouts.payer") }}
+          <span class="payout-participants__label">
+            <span class="payout-participants__text">
+              {{ participant.displayName }}
+            </span>
+            <span v-if="participant.guest" class="payout-participants__tag">
+              {{ t("labels.payouts.guest") }}
+            </span>
+            <span v-if="participant.fleet" class="payout-participants__tag">
+              {{ t("labels.payouts.payer") }}
+            </span>
           </span>
         </span>
 
@@ -307,9 +311,13 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
             :avatar="joinRequest.user.avatar?.smallUrl ?? undefined"
             size="small"
           />
-          {{ joinRequest.user.username }}
-          <span class="payout-participants__tag">
-            {{ t("labels.payouts.joinRequestPending") }}
+          <span class="payout-participants__label">
+            <span class="payout-participants__text">
+              {{ joinRequest.user.username }}
+            </span>
+            <span class="payout-participants__tag">
+              {{ t("labels.payouts.joinRequestPending") }}
+            </span>
           </span>
         </span>
 
@@ -375,9 +383,29 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 
 .payout-participants__name {
   display: inline-flex;
+  flex: 1 1 auto;
   align-items: center;
   gap: 8px;
   min-width: 0;
+}
+
+// On a phone a tag beside the name squeezed it a letter per line; here it
+// drops under the name instead.
+.payout-participants__label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.payout-participants__text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.payout-participants__head > :not(.payout-participants__name) {
+  flex-shrink: 0;
 }
 
 .payout-participants__tag {
