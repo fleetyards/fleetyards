@@ -184,10 +184,12 @@ export class RSIHangarParser {
         name?.startsWith("Standalone Ship") &&
         !items.some((item) => item.type === "ship")
       ) {
-        const kinds = elements.map((item) => this.itemKind(item) ?? "none");
+        const kinds = new Set(
+          elements.map((item) => this.itemKind(item) ?? "none"),
+        );
 
         standaloneShipsWithoutShip.add(
-          `no ship in ${this.pledgeCategory(name)}, kinds ${kinds.join(", ") || "none"}`,
+          `no ship in ${this.pledgeCategory(name)}, kinds ${[...kinds].join(", ") || "none"}`,
         );
       }
 
@@ -215,7 +217,7 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
-        details: [...shipsWithoutKind],
+        details: [...shipsWithoutKind, ...standaloneShipsWithoutShip],
       };
     }
 

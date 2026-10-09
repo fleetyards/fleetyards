@@ -221,6 +221,43 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("names each kind of a standalone pledge without a ship once", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            `${item("Insurance", "Lifetime Insurance")}${item("Insurance", "120 Month Insurance")}`,
+            "Standalone Ships - Cutter",
+          ),
+        ),
+      ),
+    ).toMatchObject({
+      details: ['no ship in a "Standalone Ships" pledge, kinds Insurance'],
+    });
+  });
+
+  it("reports both an item without a kind and a standalone pledge without a ship", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            '<div class="item"><div class="text"><div class="title">Cutter</div><div class="liner">Drake Interplanetary</div></div></div>',
+            "Standalone Ships - Cutter",
+          ),
+        ),
+      ),
+    ).toEqual({
+      status: RsiPageStatus.UNRECOGNISED,
+      check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, liner "Drake Interplanetary", in a "Standalone Ships" pledge, markup item text title liner',
+        'no ship in a "Standalone Ships" pledge, kinds none',
+      ],
+    });
+  });
+
   it("does not report the title of a pledge without RSI's category", () => {
     const page = extract(
       pledgesPage(
