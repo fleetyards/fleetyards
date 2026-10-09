@@ -165,7 +165,7 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, liner "Drake Interplanetary (DRAK)", in a pledge without a category, markup item text title liner',
+        'item without kind, markup item text title liner, liner "Drake Interplanetary (DRAK)", in a pledge without a category',
       ],
     });
   });
@@ -185,7 +185,7 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, liner "Drake Interplanetary", in a "Package" pledge, markup item text title liner custom-name-text',
+        'item without kind, markup item text title liner custom-name-text, liner "Drake Interplanetary", in a "Package" pledge',
       ],
     });
   });
@@ -252,8 +252,37 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, liner "Drake Interplanetary", in a "Standalone Ships" pledge, markup item text title liner',
+        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
         'no ship in a "Standalone Ships" pledge, kinds none',
+      ],
+    });
+  });
+
+  it("takes both cases in turn and names each trimmed kind once", () => {
+    const withoutKind = (liner: string) =>
+      `<div class="item"><div class="text"><div class="title">Cutter</div><div class="liner">${liner}</div></div></div>`;
+
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            `${withoutKind("Drake Interplanetary")}${item("Insurance", "Lifetime Insurance")}${item("Insurance\n  ", "120 Month Insurance")}${item("", "Poster")}`,
+            "Standalone Ships - Cutter",
+          ) +
+            pledge(
+              "102",
+              withoutKind("Anvil Aerospace"),
+              "Package - Carrack Expedition",
+            ),
+        ),
+      ),
+    ).toMatchObject({
+      check: RsiPageCheckEnum.MISSING_KINDS,
+      details: [
+        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
+        'no ship in a "Standalone Ships" pledge, kinds none, Insurance, empty',
+        'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
       ],
     });
   });
@@ -271,7 +300,7 @@ describe("RSIHangarParser.extractPage", () => {
 
     expect(page).toMatchObject({
       details: [
-        'item without kind, liner "Drake Interplanetary", in a pledge with an unlisted category, markup item text title liner',
+        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a pledge with an unlisted category',
       ],
     });
     expect(JSON.stringify(page)).not.toContain("Cutlass");
@@ -309,7 +338,7 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, liner "", in a pledge without a category, markup item text title liner',
+        'item without kind, markup item text title liner, liner "", in a pledge without a category',
       ],
     });
   });

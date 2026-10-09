@@ -53,6 +53,12 @@ const PLEDGE_CATEGORIES = [
   "Subscribers Exclusive",
 ];
 
+const interleave = (first: string[], second: string[]) =>
+  Array.from({ length: Math.max(first.length, second.length) }).flatMap(
+    (_, index) =>
+      [first[index], second[index]].filter((detail) => detail !== undefined),
+  );
+
 // "$1,234.00 USD". A pledge of in-game credits reads "¤5,000 UEC", which is no
 // melt value at all.
 const PLEDGE_VALUE = /^\$([\d,]+\.\d{2}) USD$/;
@@ -162,7 +168,7 @@ export class RSIHangarParser {
           // sync, and the unmatched action would act on it.
           if (this.hasManufacturer(item)) {
             shipsWithoutKind.add(
-              `item without kind, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}, markup ${this.markupClasses(item)}`,
+              `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
             );
           }
           return;
@@ -185,7 +191,11 @@ export class RSIHangarParser {
         !items.some((item) => item.type === "ship")
       ) {
         const kinds = new Set(
-          elements.map((item) => this.itemKind(item) ?? "none"),
+          elements.map((item) => {
+            const kind = this.itemKind(item);
+
+            return kind === undefined ? "none" : kind.trim() || "empty";
+          }),
         );
 
         standaloneShipsWithoutShip.add(
@@ -217,7 +227,11 @@ export class RSIHangarParser {
       return {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
-        details: [...shipsWithoutKind, ...standaloneShipsWithoutShip],
+        // Taken in turn, so neither case is cut off by the report's cap.
+        details: interleave(
+          [...shipsWithoutKind],
+          [...standaloneShipsWithoutShip],
+        ),
       };
     }
 
