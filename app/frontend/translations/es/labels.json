@@ -2645,7 +2645,8 @@
           "components": "Módulos",
           "upgrades": "Mejoras",
           "paints": "Pinturas",
-          "hangarFlair": "Decoración de hangar"
+          "hangarFlair": "Decoración de hangar",
+          "notSynced": "no se sincroniza"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",

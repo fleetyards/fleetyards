@@ -595,6 +595,8 @@ const refreshPage = async () => {
           :finished="finished"
           :finished-with-errors="finishedWithErrors"
           :show-support-hint="showSupportHint"
+          :sync-paints="hangarStore.syncPaints"
+          :sync-hangar-flair="hangarStore.syncHangarFlair"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>

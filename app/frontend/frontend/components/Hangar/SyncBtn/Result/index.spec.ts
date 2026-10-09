@@ -77,4 +77,54 @@ describe("HangarSyncResult", () => {
     expect(rows["Paints:"]).toBe("1");
     expect(rows["Hangar Flair:"]).toBe("2");
   });
+
+  it("marks paints and hangar flair the sync leaves out as not synced", async () => {
+    const pledges = [
+      {
+        id: "1",
+        name: "Cutlass - Akuma Paint",
+        type: RsiHangarItemKindEnum.SKIN,
+      },
+      {
+        id: "2",
+        name: "Space Globe - Terra",
+        type: RsiHangarItemKindEnum.FLAIR,
+      },
+    ];
+    const mountWith = (syncPaints: boolean, syncHangarFlair: boolean) =>
+      mountWithDefaults(HangarSyncResult, {
+        props: {
+          processSteps: [{ name: "fetchHangar", status: "success" }],
+          currentPage: 2,
+          pledges,
+          finished: false,
+          finishedWithErrors: false,
+          syncPaints,
+          syncHangarFlair,
+        },
+      });
+
+    const paintsOff = await mountWith(false, true);
+    expect(paintsOff.find("[data-test='paints-not-synced']").exists()).toBe(
+      true,
+    );
+    expect(
+      paintsOff.find("[data-test='hangar-flair-not-synced']").exists(),
+    ).toBe(false);
+
+    expect(
+      paintsOff
+        .find("[data-test='paints-not-synced']")
+        .element.parentElement?.textContent?.replace(/\s+/g, " ")
+        .trim(),
+    ).toBe("Paints (not synced):");
+
+    const flairOff = await mountWith(true, false);
+    expect(flairOff.find("[data-test='paints-not-synced']").exists()).toBe(
+      false,
+    );
+    expect(
+      flairOff.find("[data-test='hangar-flair-not-synced']").exists(),
+    ).toBe(true);
+  });
 });

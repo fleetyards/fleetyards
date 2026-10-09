@@ -2645,7 +2645,8 @@
           "components": "Modules",
           "upgrades": "Améliorations",
           "paints": "Peintures",
-          "hangarFlair": "Décorations de hangar"
+          "hangarFlair": "Décorations de hangar",
+          "notSynced": "non synchronisé"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",

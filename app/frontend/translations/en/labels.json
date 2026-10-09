@@ -2645,7 +2645,8 @@
           "components": "Modules",
           "upgrades": "Upgrades",
           "paints": "Paints",
-          "hangarFlair": "Hangar Flair"
+          "hangarFlair": "Hangar Flair",
+          "notSynced": "not synced"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",

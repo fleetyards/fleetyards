@@ -2645,7 +2645,8 @@
           "components": "模組",
           "upgrades": "升級",
           "paints": "塗裝",
-          "hangarFlair": "機庫裝飾"
+          "hangarFlair": "機庫裝飾",
+          "notSynced": "不同步"
         },
         "importedItems": {
           "importedVehicles": "已新增飛船",

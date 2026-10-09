@@ -20,11 +20,15 @@ type Props = {
   finished: boolean;
   finishedWithErrors: boolean;
   showSupportHint?: boolean;
+  syncPaints?: boolean;
+  syncHangarFlair?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   result: undefined,
   showSupportHint: false,
+  syncPaints: true,
+  syncHangarFlair: true,
 });
 
 defineEmits<{
@@ -180,13 +184,27 @@ const hasWarnings = computed(
             </template>
             <template v-if="paints.size">
               <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.paints") }}:
+                {{ t("labels.syncExtension.pledgeItems.paints")
+                }}<span
+                  v-if="!syncPaints"
+                  class="text-muted"
+                  data-test="paints-not-synced"
+                >
+                  ({{ t("labels.syncExtension.pledgeItems.notSynced") }})</span
+                >:
               </dt>
               <dd class="col-sm-5 text-right">{{ paints.size }}</dd>
             </template>
             <template v-if="hangarFlair.size">
               <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.hangarFlair") }}:
+                {{ t("labels.syncExtension.pledgeItems.hangarFlair")
+                }}<span
+                  v-if="!syncHangarFlair"
+                  class="text-muted"
+                  data-test="hangar-flair-not-synced"
+                >
+                  ({{ t("labels.syncExtension.pledgeItems.notSynced") }})</span
+                >:
               </dt>
               <dd class="col-sm-5 text-right">{{ hangarFlair.size }}</dd>
             </template>
