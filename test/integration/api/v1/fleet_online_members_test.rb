@@ -77,6 +77,17 @@ class Api::V1::FleetOnlineMembersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # More people online across the site than the fleet has members: the
+  # intersection is taken from the fleet's side, and outsiders never appear.
+  test "GET online-members leaves out everybody online who is not in the fleet" do
+    8.times { |index| UserPresence.connect(create(:user).id, "outsider-#{index}") }
+
+    sign_in @reader
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal %w[zulu alpha], parsed_body["items"].map { |row| row["username"] }
+    end
+  end
+
   test "GET online-members is refused to a role that cannot read members" do
     member = create(:user)
     role = create(:fleet_role, fleet: @fleet, name: "Recruit", resource_access: [])
