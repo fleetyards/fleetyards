@@ -213,7 +213,7 @@ const submitHangar = async (
   );
 };
 
-const finishSync = (outcome: HangarSyncOutcomeEnum) =>
+const receiveSyncResult = (outcome: HangarSyncOutcomeEnum) =>
   subscription.received?.({
     status: "finished",
     result: {
@@ -579,7 +579,7 @@ describe("HangarSyncModal", () => {
       data: expect.objectContaining({ items: [] }),
     });
 
-    finishSync(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
+    receiveSyncResult(HangarSyncOutcomeEnum.NOTHING_TO_SYNC);
     await flushPromises();
 
     expect(displayInfo).toHaveBeenCalledWith({
@@ -612,7 +612,7 @@ describe("HangarSyncModal", () => {
       }),
     });
 
-    finishSync(HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS);
+    receiveSyncResult(HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS);
     await flushPromises();
 
     expect(displayInfo).toHaveBeenCalledWith({
@@ -629,7 +629,7 @@ describe("HangarSyncModal", () => {
     const { wrapper } = await mountModal();
 
     await submitHangar(wrapper);
-    finishSync(HangarSyncOutcomeEnum.SYNCED);
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
     await flushPromises();
 
     expect(
