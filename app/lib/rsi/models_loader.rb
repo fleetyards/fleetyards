@@ -64,6 +64,7 @@ module Rsi
     private def create_or_update_model(data)
       model = Model.find_by(rsi_id: data["id"])
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
+      model = unlisted_model_for(data) if model.blank?
       if model.blank?
         model = Model.create!(
           rsi_id: data["id"],
@@ -71,6 +72,10 @@ module Rsi
           manufacturer: manufacturers_loader.one(data["manufacturer"])
         )
       end
+
+      # An unlinked model's timestamp is when it was created, not a matrix
+      # revision, so it must not make the matrix data look already applied.
+      model.last_updated_at = nil if model.rsi_id.blank?
 
       updates = {
         rsi_id: data["id"],
@@ -167,6 +172,38 @@ module Rsi
       #   puts "Error: #{e.message}"
       #   puts "Data: #{data.inspect}"
       #   raise e
+    end
+
+    # Game-file models carry the export's spelling ("MOLE" for "Mole", a dropped
+    # hyphen, a manufacturer prefix), which an exact name lookup misses. Only an
+    # unambiguous match is adopted: merging the wrong ship is worse than a
+    # duplicate an admin can see.
+    private def unlisted_model_for(data)
+      return if data["manufacturer"].blank?
+
+      manufacturer = manufacturers_loader.one(data["manufacturer"])
+      prefixes = manufacturer_prefixes(manufacturer)
+      target = comparable_name(data["name"], prefixes)
+      return if target.blank?
+
+      candidates = Model.where(rsi_id: nil, manufacturer:).select do |candidate|
+        comparable_name(candidate.name, prefixes) == target
+      end
+
+      candidates.first if candidates.one?
+    end
+
+    private def manufacturer_prefixes(manufacturer)
+      [manufacturer.long_name, manufacturer.name, manufacturer.name.to_s.split.first, manufacturer.code]
+        .compact_blank.uniq.sort_by { |prefix| -prefix.length }
+    end
+
+    private def comparable_name(name, prefixes)
+      stripped = prefixes.lazy
+        .map { |prefix| name.to_s.sub(/\A#{Regexp.escape(prefix)}\s+/i, "") }
+        .find { |candidate| candidate != name.to_s } || name.to_s
+
+      stripped.downcase.gsub(/[^a-z0-9]/, "")
     end
 
     private def create_or_update_paint(data, model_id)

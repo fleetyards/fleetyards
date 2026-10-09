@@ -216,5 +216,79 @@ module Rsi
       assert_equal 6, manufacturer.rsi_id
       assert_predicate manufacturer.known_for, :present?
     end
+
+    test "#adopts a game-file model the matrix spells differently" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "F7CM Super HORNET Mk I", rsi_id: nil, manufacturer:, sc_key: "anvl_hornet_f7cm")
+
+      assert_no_difference -> { Model.count } do
+        @loader.one(15)
+      end
+
+      model.reload
+
+      assert_equal 15, model.rsi_id
+      assert_equal "F7C-M Super Hornet Mk I", model.name
+    end
+
+    test "#adopts a game-file model that still carries the manufacturer prefix" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "Anvil F7C-M Super Hornet Mk I", rsi_id: nil, manufacturer:)
+
+      assert_no_difference -> { Model.count } do
+        @loader.one(15)
+      end
+
+      assert_equal 15, model.reload.rsi_id
+    end
+
+    test "#adopts a game-file model created after the matrix entry last changed" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "F7CM Super Hornet Mk I", rsi_id: nil, manufacturer:,
+        last_updated_at: Time.zone.parse("2026-07-01"), description: nil)
+
+      @loader.one(15)
+      model.reload
+
+      assert_equal 15, model.rsi_id
+      assert_equal "F7C-M Super Hornet Mk I", model.name
+      assert_predicate model.description, :present?
+    end
+
+    test "#adopts a game-file model prefixed with the manufacturer code" do
+      manufacturer = create(:manufacturer, name: "Roberts Space Industries", code: "RSI", rsi_id: nil)
+      model = create(:model, name: "RSI Aurora MkI ES", rsi_id: nil, manufacturer:)
+
+      assert_no_difference -> { Model.count } do
+        @loader.one(1)
+      end
+
+      assert_equal 1, model.reload.rsi_id
+    end
+
+    test "#does not adopt a game-file model of another manufacturer" do
+      other = create(:manufacturer, name: "Drake Interplanetary", code: "DRAK", rsi_id: nil)
+      create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      model = create(:model, name: "F7CM Super Hornet Mk I", rsi_id: nil, manufacturer: other)
+
+      assert_difference -> { Model.count }, 1 do
+        @loader.one(15)
+      end
+
+      assert_nil model.reload.rsi_id
+    end
+
+    test "#does not adopt when two game-file models match" do
+      manufacturer = create(:manufacturer, name: "Anvil Aerospace", code: "ANVL", rsi_id: nil)
+      first = create(:model, name: "F7CM Super Hornet Mk I", rsi_id: nil, manufacturer:)
+      second = create(:model, name: "F7C M Super Hornet Mk I", rsi_id: nil, manufacturer:)
+
+      assert_difference -> { Model.count }, 1 do
+        @loader.one(15)
+      end
+
+      assert_nil first.reload.rsi_id
+      assert_nil second.reload.rsi_id
+    end
   end
 end
