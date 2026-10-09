@@ -97,6 +97,23 @@ describe("useFleetNavAccess", () => {
     expect(useFleetNavAccess(fleetWith()).showContractsNav.value).toBe(false);
   });
 
+  // The flag is enabled per fleet as well as per viewer, the way the API asks
+  // `Flipper.enabled?(flag, user, fleet)`; a fleet that has logistics must not
+  // lose the tab because its member's own account does not.
+  it("shows logistics when the fleet has the flag and the viewer does not", () => {
+    membership.value = memberAbleTo("readInventories");
+
+    const fleet = fleetWith(FeatureFlagName.FLEET_LOGISTICS);
+
+    expect(useFleetNavAccess(fleet).showLogisticsNav.value).toBe(true);
+  });
+
+  it("hides logistics while neither the fleet nor the viewer has the flag", () => {
+    membership.value = memberAbleTo("readInventories");
+
+    expect(useFleetNavAccess(fleetWith()).showLogisticsNav.value).toBe(false);
+  });
+
   it("shows contracts to a member who can read them", () => {
     membership.value = memberWith(
       FleetRoleResourceAccessEnum.FLEET_CONTRACTS_READ,
