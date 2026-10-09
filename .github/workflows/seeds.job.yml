@@ -15,7 +15,7 @@ jobs:
       REDIS_URL: redis://localhost:6379
     services:
       postgres:
-        image: postgres:16
+        image: public.ecr.aws/docker/library/postgres:16
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
@@ -28,7 +28,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       redis:
-        image: redis:8.2.9-alpine
+        image: public.ecr.aws/docker/library/redis:8.2.9-alpine
         ports:
           - 6379:6379
         options: >-
