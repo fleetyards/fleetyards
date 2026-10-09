@@ -314,7 +314,10 @@
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Eine Hangar-Synchronisierung läuft bereits. Bitte warten Sie, bis sie abgeschlossen ist.",
         "buybackDetailsRunning": "Rückkaufpreise werden noch von RSI gelesen. Die Hangar-Synchronisierung kann starten, sobald das abgeschlossen ist.",
-        "missingUnmatchedGroup": "Wähle vor dem Start die Gruppe, in die Schiffe einsortiert werden, die die Synchronisierung nicht findet."
+        "missingUnmatchedGroup": "Wähle vor dem Start die Gruppe, in die Schiffe einsortiert werden, die die Synchronisierung nicht findet.",
+        "skipsPaints": "Diese Synchronisierung lässt deine gespeicherten Lackierungen unverändert.",
+        "skipsHangarFlair": "Diese Synchronisierung lässt dein gespeichertes Hangar-Flair unverändert.",
+        "skipsPaintsAndHangarFlair": "Diese Synchronisierung lässt deine gespeicherten Lackierungen und dein Hangar-Flair unverändert."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
       "oauthApplications": {

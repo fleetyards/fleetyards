@@ -30,6 +30,7 @@ import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
   HangarSyncUnmatchedActionEnum,
+  RsiHangarItemKindEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import {
@@ -119,6 +120,30 @@ const settingsOpen = ref(false);
 const missingUnmatchedGroup = computed(
   () =>
     filesUnmatchedIntoGroup.value && !hangarStore.syncUnmatchedHangarGroupId,
+);
+
+// Both toggles live behind the cog and are remembered, so a user who turned
+// one off once would otherwise start every later sync without seeing it.
+const skippedItemsNote = computed(() => {
+  if (!hangarStore.syncPaints && !hangarStore.syncHangarFlair) {
+    return t("texts.syncExtension.skipsPaintsAndHangarFlair");
+  }
+  if (!hangarStore.syncPaints) {
+    return t("texts.syncExtension.skipsPaints");
+  }
+  if (!hangarStore.syncHangarFlair) {
+    return t("texts.syncExtension.skipsHangarFlair");
+  }
+  return undefined;
+});
+
+const syncablePledges = computed(() =>
+  pledges.value.filter(
+    (pledge) =>
+      (hangarStore.syncPaints || pledge.type !== RsiHangarItemKindEnum.SKIN) &&
+      (hangarStore.syncHangarFlair ||
+        pledge.type !== RsiHangarItemKindEnum.FLAIR),
+  ),
 );
 
 const seenPledgeIds = new Set<string>();
@@ -248,7 +273,9 @@ const retryable = computed(() => {
     (step) => step.name === "submitData",
   )?.status;
 
-  return submitDataStatus === "backendFailure" && pledges.value.length > 0;
+  return (
+    submitDataStatus === "backendFailure" && syncablePledges.value.length > 0
+  );
 });
 
 const supportPrompt = useSupportPrompt();
@@ -257,7 +284,7 @@ const showSupportHint = computed(
   () =>
     finished.value &&
     !finishedWithErrors.value &&
-    pledges.value.length > 0 &&
+    syncablePledges.value.length > 0 &&
     !supportHintDismissed.value &&
     supportPrompt.canShow(),
 );
@@ -424,11 +451,18 @@ useSubscription({
 });
 
 const finishSync = async () => {
-  // A hangar of upgrades, game packages or merchandise only: the API refuses
-  // an empty list, which would read as the sync failing.
-  if (pledges.value.length === 0) {
+  // A hangar of upgrades, game packages or merchandise only, or of paints and
+  // flair the user turned off: the API refuses an empty list, which would read
+  // as the sync failing, and a list of skipped kinds changes nothing.
+  if (syncablePledges.value.length === 0) {
     updateStep("submitData", "success");
-    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
+    displayInfo({
+      text: t(
+        pledges.value.length === 0
+          ? "messages.syncExtension.nothingToSync"
+          : "messages.syncExtension.onlySkippedItems",
+      ),
+    });
     return;
   }
 
@@ -559,12 +593,22 @@ const refreshPage = async () => {
             :info="t('labels.imports.targetGroupHint')"
           />
           <div
-            v-if="missingUnmatchedGroup"
-            class="sync-missing-group"
-            data-test="sync-missing-unmatched-group"
+            v-if="missingUnmatchedGroup || skippedItemsNote"
+            class="sync-settings-notes"
           >
-            <p class="text-warning">
+            <p
+              v-if="missingUnmatchedGroup"
+              class="text-warning"
+              data-test="sync-missing-unmatched-group"
+            >
               {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+            </p>
+            <p
+              v-if="skippedItemsNote"
+              class="text-muted"
+              data-test="sync-skipped-items"
+            >
+              {{ skippedItemsNote }}
             </p>
             <Btn
               :size="BtnSizesEnum.SM"
@@ -595,6 +639,8 @@ const refreshPage = async () => {
           :finished="finished"
           :finished-with-errors="finishedWithErrors"
           :show-support-hint="showSupportHint"
+          :sync-paints="hangarStore.syncPaints"
+          :sync-hangar-flair="hangarStore.syncHangarFlair"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>

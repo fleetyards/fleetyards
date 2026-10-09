@@ -8,6 +8,7 @@ import {
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
+import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
 
@@ -81,9 +82,13 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
+const displayInfo = vi.fn();
+
+const supportPromptCanShow = vi.fn(() => false);
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
-    displayInfo: vi.fn(),
+    displayInfo,
     displaySuccess: vi.fn(),
     displayWarning: vi.fn(),
     displayAlert: vi.fn(),
@@ -91,7 +96,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 vi.mock("@/shared/composables/useSupportPrompt", () => ({
-  useSupportPrompt: () => ({ canShow: () => false }),
+  useSupportPrompt: () => ({ canShow: supportPromptCanShow }),
 }));
 
 vi.mock("vue-router", () => ({
@@ -201,6 +206,8 @@ const submitHangar = async (
 describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+    displayInfo.mockClear();
+    supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
   });
@@ -407,6 +414,35 @@ describe("HangarSyncModal", () => {
     });
   });
 
+  it("says on the start screen when paints or hangar flair are left out", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    expect(wrapper.find("[data-test='sync-skipped-items']").exists()).toBe(
+      false,
+    );
+
+    hangarStore.syncPaints = false;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsPaints",
+    );
+
+    hangarStore.syncHangarFlair = false;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsPaintsAndHangarFlair",
+    );
+
+    hangarStore.syncPaints = true;
+    await flushPromises();
+    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
+      "texts.syncExtension.skipsHangarFlair",
+    );
+
+    await wrapper.find("[data-test='open-sync-settings']").trigger("click");
+    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
+  });
+
   it("passes the opt-out on to the sync", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
@@ -507,6 +543,34 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenCalledWith({
+      text: "messages.syncExtension.nothingToSync",
+    });
+    expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
+  });
+
+  it("submits nothing when only paints and flair are left and both are off", async () => {
+    supportPromptCanShow.mockReturnValue(true);
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncPaints = false;
+    hangarStore.syncHangarFlair = false;
+    await flushPromises();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter Paint</div><div class="kind">Skin</div></div><div class="item"><div class="title">Poster</div><div class="kind">Hangar decoration</div></div>',
+    );
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenCalledWith({
+      text: "messages.syncExtension.onlySkippedItems",
+    });
+    expect(
+      wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
+    ).toBe(false);
     expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
   });
 });

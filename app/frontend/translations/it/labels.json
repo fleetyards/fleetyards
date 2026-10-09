@@ -2646,7 +2646,9 @@
           "components": "Moduli",
           "upgrades": "Upgrade",
           "paints": "Verniciature",
-          "hangarFlair": "Decorazioni per l'hangar"
+          "hangarFlair": "Decorazioni per l'hangar",
+          "paintsNotSynced": "Verniciature (non sincronizzate)",
+          "hangarFlairNotSynced": "Decorazioni per l'hangar (non sincronizzate)"
         },
         "importedItems": {
           "importedVehicles": "Navi aggiunte",

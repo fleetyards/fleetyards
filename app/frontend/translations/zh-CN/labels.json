@@ -2646,7 +2646,9 @@
           "components": "模块",
           "upgrades": "升级",
           "paints": "涂装",
-          "hangarFlair": "机库装饰"
+          "hangarFlair": "机库装饰",
+          "paintsNotSynced": "涂装（不会同步）",
+          "hangarFlairNotSynced": "机库装饰（不会同步）"
         },
         "importedItems": {
           "importedVehicles": "已添加飞船",
