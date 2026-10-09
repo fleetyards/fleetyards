@@ -13,8 +13,13 @@ import ContractsPanel from "@/frontend/components/Fleets/Dashboard/ContractsPane
 import InventoryPanel from "@/frontend/components/Fleets/Dashboard/InventoryPanel/index.vue";
 import NewMembersPanel from "@/frontend/components/Fleets/Dashboard/NewMembersPanel/index.vue";
 import AboutPanel from "@/frontend/components/Fleets/Dashboard/AboutPanel/index.vue";
+import GetStartedPanel from "@/frontend/components/Fleets/Dashboard/GetStartedPanel/index.vue";
 import { useFleetDashboardAccess } from "@/frontend/composables/useFleetDashboardAccess";
-import type { Fleet, FleetMember } from "@/services/fyApi";
+import {
+  FleetActivityCategoryEnum,
+  type Fleet,
+  type FleetMember,
+} from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -31,26 +36,49 @@ const {
   showActionQueue,
   canAnswerJoinRequests,
   canAnswerTransfers,
+  canCreateEvents,
+  canCreateContracts,
 } = useFleetDashboardAccess(
   () => props.fleet,
   () => props.membership,
 );
+
+// Modules the reader may see that have nothing on right now. They are folded
+// into one prompt to start something, rather than a box each saying so.
+const empty = reactive({ events: false, contracts: false });
 </script>
 
 <template>
   <div class="fleet-dashboard" data-test="fleet-dashboard">
     <div class="fleet-dashboard__main">
+      <GetStartedPanel
+        :fleet="fleet"
+        :events="showEvents && empty.events"
+        :contracts="showContracts && empty.contracts"
+        :can-create-events="canCreateEvents"
+        :can-create-contracts="canCreateContracts"
+        class="fleet-dashboard__get-started"
+      />
       <UpcomingEventsPanel
         v-if="showEvents"
         :fleet="fleet"
         class="fleet-dashboard__events"
+        @empty="empty.events = $event"
       />
+      <!-- A week with nothing in it is the same news the empty list already
+           gave, so the grid comes with the list. -->
       <WeekCalendarPanel
-        v-if="showEvents"
+        v-if="showEvents && !empty.events"
         :fleet="fleet"
         class="fleet-dashboard__calendar"
       />
-      <ActivityPanel :fleet="fleet" class="fleet-dashboard__activity" />
+      <ActivityPanel
+        :fleet="fleet"
+        :exclude="
+          showNewMembers ? FleetActivityCategoryEnum.MEMBERS : undefined
+        "
+        class="fleet-dashboard__activity"
+      />
     </div>
     <aside class="fleet-dashboard__side">
       <ActionQueuePanel
@@ -64,6 +92,7 @@ const {
         v-if="showContracts"
         :fleet="fleet"
         class="fleet-dashboard__contracts"
+        @empty="empty.contracts = $event"
       />
       <InventoryPanel
         v-if="showInventory"
@@ -104,6 +133,7 @@ const {
   order: 1;
 }
 
+.fleet-dashboard__get-started,
 .fleet-dashboard__events {
   order: 2;
 }

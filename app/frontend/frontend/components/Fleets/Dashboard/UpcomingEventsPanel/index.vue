@@ -80,6 +80,14 @@ const linkFor = (event: FleetEvent) => ({
     : undefined,
 });
 
+// Said to the dashboard once the answer is in, so an empty module can be
+// offered as something to start instead of a box saying there is nothing.
+const emit = defineEmits<{ empty: [boolean] }>();
+
+const isEmpty = computed(() => !!data.value && !entries.value.length);
+
+watch(isEmpty, (value) => emit("empty", value), { immediate: true });
+
 const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
   [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,
   [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
@@ -90,10 +98,9 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
 
 <template>
   <DashboardPanel
+    v-if="entries.length"
     :title="t('fleetDashboard.events.title')"
     :loading="isLoading"
-    :empty="!entries.length"
-    :empty-text="t('fleetDashboard.events.empty')"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"
   >

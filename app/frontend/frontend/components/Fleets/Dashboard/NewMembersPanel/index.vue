@@ -32,9 +32,9 @@ const entries = computed(() => data.value?.items ?? []);
 
 <template>
   <DashboardPanel
+    v-if="entries.length"
     :title="t('fleetDashboard.newMembers.title')"
     :loading="isLoading"
-    :empty="!entries.length"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-new-members"
   >

@@ -66,6 +66,7 @@ watch(
 
 <template>
   <DashboardPanel
+    v-if="data?.items.length"
     :title="t('fleetDashboard.inventory.title')"
     :loading="isLoading"
     :empty="!entries.length"

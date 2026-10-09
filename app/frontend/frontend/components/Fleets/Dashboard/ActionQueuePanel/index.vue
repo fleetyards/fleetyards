@@ -129,11 +129,11 @@ const answer = async (member: FleetMember, accept: boolean) => {
 </script>
 
 <template>
+  <!-- Nothing waiting is not news, so the panel is there only when something is. -->
   <DashboardPanel
+    v-if="!empty"
     :title="t('fleetDashboard.actionQueue.title')"
     :loading="loading"
-    :empty="empty"
-    :empty-text="t('fleetDashboard.actionQueue.empty')"
     data-test="fleet-dashboard-action-queue"
   >
     <section v-if="requestItems.length" class="action-queue__group">

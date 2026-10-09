@@ -10,7 +10,6 @@
       },
       "activity": {
         "title": "Latest updates",
-        "empty": "Nothing has happened in this fleet lately.",
         "showMore": "Show older updates",
         "you": "You",
         "kinds": {
@@ -27,12 +26,10 @@
       },
       "events": {
         "title": "Upcoming events",
-        "empty": "No events in the next two weeks.",
         "signUp": "Sign up"
       },
       "actionQueue": {
         "title": "Needs your attention",
-        "empty": "Nothing is waiting for you.",
         "joinRequests": {
           "one": "%{count} request to join",
           "other": "%{count} requests to join"
@@ -44,7 +41,6 @@
       },
       "contracts": {
         "title": "Contracts",
-        "empty": "No open contracts right now.",
         "mine": "Your work",
         "open": "Open for pickup"
       },
@@ -60,6 +56,23 @@
       },
       "about": {
         "title": "About the fleet"
+      },
+      "getStarted": {
+        "title": "Get things moving",
+        "events": {
+          "title": "Nothing planned for the next two weeks",
+          "hintCreate": "Put an op on the calendar and members can sign up right away.",
+          "hint": "Check the events page for what is coming later.",
+          "action": "Plan an event",
+          "link": "Events"
+        },
+        "contracts": {
+          "title": "No open contracts",
+          "hintCreate": "Post a job and members can pick it up.",
+          "hint": "Browse past work on the contracts board.",
+          "action": "Post a contract",
+          "link": "Contracts"
+        }
       }
     }
   }

@@ -10,7 +10,6 @@
       },
       "activity": {
         "title": "最新动态",
-        "empty": "该舰队最近没有动态。",
         "showMore": "查看更早的动态",
         "you": "你",
         "kinds": {
@@ -27,12 +26,10 @@
       },
       "events": {
         "title": "即将到来的活动",
-        "empty": "未来两周没有活动。",
         "signUp": "报名"
       },
       "actionQueue": {
         "title": "待你处理",
-        "empty": "目前没有待你处理的事项。",
         "joinRequests": {
           "one": "%{count} 个入队申请",
           "other": "%{count} 个入队申请"
@@ -44,7 +41,6 @@
       },
       "contracts": {
         "title": "合同",
-        "empty": "目前没有开放的合同。",
         "mine": "你的工作",
         "open": "可接取"
       },
@@ -60,6 +56,23 @@
       },
       "about": {
         "title": "关于舰队"
+      },
+      "getStarted": {
+        "title": "动起来",
+        "events": {
+          "title": "未来两周没有安排",
+          "hintCreate": "在日历上安排一次行动，成员即可立即报名。",
+          "hint": "查看活动页面了解之后的安排。",
+          "action": "安排活动",
+          "link": "活动"
+        },
+        "contracts": {
+          "title": "没有开放的合同",
+          "hintCreate": "发布一项工作，成员即可接取。",
+          "hint": "在合同面板查看以往的工作。",
+          "action": "发布合同",
+          "link": "合同"
+        }
       }
     }
   }

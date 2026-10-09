@@ -404,13 +404,16 @@ describe("FleetShow dashboard", () => {
   });
 
   // The member fixture reads squadrons and nothing else, so every panel that
-  // needs a module or a capability stays away rather than asking and failing.
+  // needs a module or a capability stays away rather than asking and failing,
+  // and the feed, which has nothing to tell, is not drawn as an empty box.
   it("shows a member only the panels their role can read", async () => {
-    const subject = await mount({ fleet: fleet(), membership: member() });
+    const subject = await mount({
+      fleet: { ...fleet(), description: "We haul." } as Fleet,
+      membership: member(),
+    });
 
     expect(tests(subject, "fleet-dashboard-").sort()).toEqual([
       "fleet-dashboard-about",
-      "fleet-dashboard-activity",
     ]);
   });
 });

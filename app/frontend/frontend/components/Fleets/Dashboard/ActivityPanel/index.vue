@@ -10,13 +10,21 @@ import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/in
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useFleetActivity, type Fleet } from "@/services/fyApi";
+import {
+  useFleetActivity,
+  type Fleet,
+  type FleetActivityCategoryEnum,
+} from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  // A category told elsewhere on the page, such as who joined.
+  exclude?: FleetActivityCategoryEnum;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  exclude: undefined,
+});
 
 const { t } = useI18n();
 
@@ -29,7 +37,7 @@ const limit = ref(PAGE);
 
 const { data, isLoading } = useFleetActivity(
   computed(() => props.fleet.slug),
-  computed(() => ({ limit: limit.value })),
+  computed(() => ({ limit: limit.value, exclude: props.exclude })),
   { query: { placeholderData: (previous) => previous } },
 );
 
@@ -46,10 +54,9 @@ const showMore = () => {
 
 <template>
   <DashboardPanel
+    v-if="entries.length"
     :title="t('fleetDashboard.activity.title')"
     :loading="isLoading"
-    :empty="!entries.length"
-    :empty-text="t('fleetDashboard.activity.empty')"
     data-test="fleet-dashboard-activity"
   >
     <ActivityList :fleet="fleet" :entries="entries" />

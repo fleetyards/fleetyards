@@ -10,7 +10,6 @@
       },
       "activity": {
         "title": "最新動態",
-        "empty": "該艦隊最近沒有動態。",
         "showMore": "查看更早的動態",
         "you": "你",
         "kinds": {
@@ -27,12 +26,10 @@
       },
       "events": {
         "title": "即將到來的活動",
-        "empty": "未來兩週沒有活動。",
         "signUp": "報名"
       },
       "actionQueue": {
         "title": "待你處理",
-        "empty": "目前沒有待你處理的事項。",
         "joinRequests": {
           "one": "%{count} 個入隊申請",
           "other": "%{count} 個入隊申請"
@@ -44,7 +41,6 @@
       },
       "contracts": {
         "title": "合約",
-        "empty": "目前沒有開放的合約。",
         "mine": "你的工作",
         "open": "可接取"
       },
@@ -60,6 +56,23 @@
       },
       "about": {
         "title": "關於艦隊"
+      },
+      "getStarted": {
+        "title": "動起來",
+        "events": {
+          "title": "未來兩週沒有安排",
+          "hintCreate": "在日曆上安排一次行動，成員即可立即報名。",
+          "hint": "查看活動頁面了解之後的安排。",
+          "action": "安排活動",
+          "link": "活動"
+        },
+        "contracts": {
+          "title": "沒有開放的合約",
+          "hintCreate": "發布一項工作，成員即可接取。",
+          "hint": "在合約面板查看以往的工作。",
+          "action": "發布合約",
+          "link": "合約"
+        }
       }
     }
   }

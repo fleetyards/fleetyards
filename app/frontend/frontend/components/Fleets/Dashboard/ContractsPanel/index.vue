@@ -54,6 +54,20 @@ const openItems = computed(() =>
   (open.value?.items ?? []).filter(({ id }) => !mineIds.value.has(id)),
 );
 
+// Said to the dashboard once both answers are in, so an empty board can be
+// offered as something to start instead of a box saying there is nothing.
+const emit = defineEmits<{ empty: [boolean] }>();
+
+const isEmpty = computed(
+  () =>
+    !!mine.value &&
+    !!open.value &&
+    !mineItems.value.length &&
+    !openItems.value.length,
+);
+
+watch(isEmpty, (value) => emit("empty", value), { immediate: true });
+
 const linkFor = (contract: FleetContract) => ({
   name: "fleet-contract",
   params: { slug: props.fleet.slug, contract: contract.slug },
@@ -77,10 +91,9 @@ const groups = computed(() =>
 
 <template>
   <DashboardPanel
+    v-if="groups.length"
     :title="t('fleetDashboard.contracts.title')"
     :loading="mineLoading || openLoading"
-    :empty="!groups.length"
-    :empty-text="t('fleetDashboard.contracts.empty')"
     :more="{ name: 'fleet-contracts', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-contracts"
   >

@@ -10,7 +10,6 @@
       },
       "activity": {
         "title": "Neuigkeiten",
-        "empty": "In dieser Flotte ist in letzter Zeit nichts passiert.",
         "showMore": "Ältere Neuigkeiten anzeigen",
         "you": "Du",
         "kinds": {
@@ -27,12 +26,10 @@
       },
       "events": {
         "title": "Anstehende Events",
-        "empty": "Keine Events in den nächsten zwei Wochen.",
         "signUp": "Anmelden"
       },
       "actionQueue": {
         "title": "Wartet auf dich",
-        "empty": "Gerade wartet nichts auf dich.",
         "joinRequests": {
           "one": "%{count} Beitrittsanfrage",
           "other": "%{count} Beitrittsanfragen"
@@ -44,7 +41,6 @@
       },
       "contracts": {
         "title": "Aufträge",
-        "empty": "Gerade gibt es keine offenen Aufträge.",
         "mine": "Deine Aufträge",
         "open": "Offen zur Übernahme"
       },
@@ -60,6 +56,23 @@
       },
       "about": {
         "title": "Über die Flotte"
+      },
+      "getStarted": {
+        "title": "Leg los",
+        "events": {
+          "title": "Für die nächsten zwei Wochen ist nichts geplant",
+          "hintCreate": "Trag eine Operation ein, und Mitglieder können sich sofort anmelden.",
+          "hint": "Auf der Event-Seite siehst du, was später ansteht.",
+          "action": "Event planen",
+          "link": "Events"
+        },
+        "contracts": {
+          "title": "Keine offenen Aufträge",
+          "hintCreate": "Schreib einen Auftrag aus, den Mitglieder übernehmen können.",
+          "hint": "Frühere Aufträge findest du auf dem Auftragsbrett.",
+          "action": "Auftrag ausschreiben",
+          "link": "Aufträge"
+        }
       }
     }
   }

@@ -10,7 +10,6 @@
       },
       "activity": {
         "title": "Ultimi aggiornamenti",
-        "empty": "Di recente non è successo nulla in questa flotta.",
         "showMore": "Mostra aggiornamenti precedenti",
         "you": "Tu",
         "kinds": {
@@ -27,12 +26,10 @@
       },
       "events": {
         "title": "Prossimi eventi",
-        "empty": "Nessun evento nelle prossime due settimane.",
         "signUp": "Iscriviti"
       },
       "actionQueue": {
         "title": "Richiede la tua attenzione",
-        "empty": "Non c'è nulla in attesa per te.",
         "joinRequests": {
           "one": "%{count} richiesta di adesione",
           "other": "%{count} richieste di adesione"
@@ -44,7 +41,6 @@
       },
       "contracts": {
         "title": "Contratti",
-        "empty": "Al momento non ci sono contratti aperti.",
         "mine": "Il tuo lavoro",
         "open": "Disponibili"
       },
@@ -60,6 +56,23 @@
       },
       "about": {
         "title": "Informazioni sulla flotta"
+      },
+      "getStarted": {
+        "title": "Datti da fare",
+        "events": {
+          "title": "Niente in programma nelle prossime due settimane",
+          "hintCreate": "Metti un'operazione in calendario e i membri potranno iscriversi subito.",
+          "hint": "Controlla la pagina degli eventi per quelli più avanti.",
+          "action": "Pianifica un evento",
+          "link": "Eventi"
+        },
+        "contracts": {
+          "title": "Nessun contratto aperto",
+          "hintCreate": "Pubblica un lavoro che i membri possono prendere in carico.",
+          "hint": "Sfoglia i lavori passati nella bacheca dei contratti.",
+          "action": "Pubblica un contratto",
+          "link": "Contratti"
+        }
       }
     }
   }
