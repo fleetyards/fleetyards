@@ -51,6 +51,19 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 200, body: {login: user.username, password: "enterprise"}
   end
 
+  test "POST /sessions signs in a browser still holding a timed out session" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+
+    travel(Devise.timeout_in + 1.minute) do
+      sign_in_json(browser, user, remember: false)
+
+      browser.get "/api/v1/users/me"
+      assert_equal 200, browser.response.status
+    end
+  end
+
   test "POST /sessions returns 400 for missing body" do
     assert_api_response :post, 400, body: nil
   end

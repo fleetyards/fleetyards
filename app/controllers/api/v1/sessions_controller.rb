@@ -7,6 +7,11 @@ module Api
 
       skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
+      # As Devise's own sessions controller does: a browser still holding a timed
+      # out session would otherwise be signed out and answered with a 401 before
+      # the sign-in it is asking for ever runs.
+      prepend_before_action(only: [:create, :destroy]) { request.env["devise.skip_timeout"] = true }
+
       before_action :authenticate_user!, except: [:create, :confirm_access]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
       before_action :set_user, only: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
