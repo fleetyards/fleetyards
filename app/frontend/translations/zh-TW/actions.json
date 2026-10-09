@@ -230,8 +230,8 @@
         "editGroupsSelected": "Add/Remove from Groups",
         "resetIngame": {
           "openModal": "資料重置後重設遊戲內飛船",
-          "moveToWishlist": "Move to Wishlist",
-          "removeAll": "Remove all"
+          "moveToWishlist": "移至願望清單",
+          "removeAll": "全部移除"
         }
       },
       "syncExtension": {

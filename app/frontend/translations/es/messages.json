@@ -163,6 +163,7 @@
             "failure": "No se pudieron mover todas las Naves compradas en el juego a tu Lista de Deseos."
           },
           "removeAll": {
+            "confirm": "¿Eliminar de tu hangar todas las naves compradas en el juego? Esta acción no se puede deshacer.",
             "success": "Eliminadas todas las Naves compradas en el juego de tu Hangar.",
             "failure": "No se pudieron eliminar todas las Naves compradas en el juego de tu Hangar."
           }

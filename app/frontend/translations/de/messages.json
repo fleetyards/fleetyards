@@ -163,6 +163,7 @@
             "failure": "Nicht alle Ingame gekauften Schiffe konnten zu deiner Wunschliste verschoben werden."
           },
           "removeAll": {
+            "confirm": "Alle ingame gekauften Schiffe aus deinem Hangar entfernen? Das kann nicht rückgängig gemacht werden.",
             "success": "Alle Ingame gekauften Schiffe wurden aus deinem Hangar entfernt.",
             "failure": "Nicht alle Ingame gekauften Schiffe konnten aus deinem Hangar entfernt werden."
           }

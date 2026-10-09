@@ -173,6 +173,7 @@
             "failure": "Could not move all Ingame bought Ships to your Wishlist."
           },
           "removeAll": {
+            "confirm": "Remove every ship you bought in-game from your hangar? This cannot be undone.",
             "success": "Removed all Ingame bought Ships from your Hangar.",
             "failure": "Could not remove all Ingame bought Ships from your Hangar."
           }

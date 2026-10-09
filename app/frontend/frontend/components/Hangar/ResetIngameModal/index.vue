@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -62,16 +63,24 @@ const removeAll = async () => {
 
 <template>
   <Modal :title="t('headlines.hangar.resetIngame')">
-    <div class="page-actions page-actions-block">
+    <p>{{ t("texts.resetIngame.info") }}</p>
+    <template #footer>
       <Btn
+        :size="BtnSizesEnum.LG"
         data-test="reset-ingame-modal-reset-to-wishlist"
         @click="moveToWishlist"
       >
         {{ t("actions.hangar.resetIngame.moveToWishlist") }}
       </Btn>
-      <Btn data-test="reset-ingame-modal-reset" @click="removeAll">
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.vehicle.resetIngame.removeAll.confirm')"
+        data-test="reset-ingame-modal-reset"
+        @click="removeAll"
+      >
         {{ t("actions.hangar.resetIngame.removeAll") }}
       </Btn>
-    </div>
+    </template>
   </Modal>
 </template>

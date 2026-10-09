@@ -309,6 +309,9 @@
         "detailsBackground": "Prices and insurance are now read in the background. You can close this window and keep using Fleetyards; keep this tab open until it finishes.",
         "detailsRunning": "Prices and insurance from the last sync are still being read. A new sync can start once that has finished."
       },
+      "resetIngame": {
+        "info": "A wipe takes away the ships you bought in-game. Move them to your wishlist to buy them again later, or remove them from your hangar. Ships you did not buy in-game stay as they are."
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",

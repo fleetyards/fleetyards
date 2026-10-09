@@ -163,6 +163,7 @@
             "failure": "Impossibile spostare tutte le navi acquistate in-game nella tua Lista dei Desideri."
           },
           "removeAll": {
+            "confirm": "Rimuovere dal tuo hangar tutte le navi acquistate in-game? L'operazione non può essere annullata.",
             "success": "Tutte le navi acquistate in-game sono state rimosse dal tuo Hangar.",
             "failure": "Impossibile rimuovere tutte le navi acquistate in-game dal tuo Hangar."
           }

@@ -309,6 +309,9 @@
         "detailsBackground": "价格和保险现在在后台读取。你可以关闭此窗口并继续使用 Fleetyards；在完成之前请保持此标签页打开。",
         "detailsRunning": "上次同步的价格和保险仍在读取中。完成后才能开始新的同步。"
       },
+      "resetIngame": {
+        "info": "数据重置会清除你在游戏内购买的飞船。你可以将它们移至愿望清单以便日后再次购买，或将它们从机库中移除。不是在游戏内购买的飞船不受影响。"
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
