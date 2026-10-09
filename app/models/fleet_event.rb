@@ -216,10 +216,9 @@ class FleetEvent < ApplicationRecord
   # Spawns a new event from a mission template, snapshotting the team/ship/slot tree.
   def self.from_mission!(mission, attrs = {})
     transaction do
-      event = mission.fleet.fleet_events.create!(
+      event = mission.fleet.fleet_events.new(
         attrs.reverse_merge(
           mission_id: mission.id,
-          title: default_title(mission, attrs[:starts_at]),
           description: mission.description,
           briefing: nil,
           category: mission.category,
@@ -227,6 +226,11 @@ class FleetEvent < ApplicationRecord
           cover_image_preset: mission.cover_image_preset
         )
       )
+      # The date is the one the organiser sees: a start late in their evening
+      # is already the next day in UTC.
+      zone = ActiveSupport::TimeZone[event.timezone.to_s] || Time.zone
+      event.title = default_title(mission, event.starts_at&.in_time_zone(zone)) if event.title.blank?
+      event.save!
 
       mission.mission_teams.includes(mission_ships: [:model, :mission_ship_models], mission_slots: :model_position).order(:position).each do |team|
         event_team = event.fleet_event_teams.create!(
@@ -292,7 +296,7 @@ class FleetEvent < ApplicationRecord
   end
 
   def self.default_title(mission, starts_at)
-    date_str = (starts_at.is_a?(Time) || starts_at.is_a?(DateTime)) ? starts_at.strftime("%b %-d, %Y") : "TBD"
+    date_str = starts_at ? starts_at.strftime("%b %-d, %Y") : "TBD"
     "#{mission.title} — #{date_str}"
   end
 
