@@ -38,6 +38,7 @@ const {
   data: missions,
   isLoading,
   isError,
+  refetch,
 } = useFleetMissions(fleetSlug, ref({}));
 
 // A draft has not been offered to the fleet yet, so nothing is spawned from it.
@@ -63,13 +64,22 @@ const pick = (mission: Mission | null) => {
       {{ t("messages.loading") }}
     </p>
 
-    <p
+    <div
       v-else-if="isError && !missions"
-      class="template-picker__note"
+      class="template-picker__error"
       data-test="mission-template-error"
     >
-      {{ t("labels.fleets.events.pickTemplateLoadFailed") }}
-    </p>
+      <span class="template-picker__note">
+        {{ t("labels.fleets.events.pickTemplateLoadFailed") }}
+      </span>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        data-test="mission-template-retry"
+        @click="refetch()"
+      >
+        {{ t("actions.retry") }}
+      </Btn>
+    </div>
 
     <p v-else-if="!missionList.length" class="template-picker__note">
       {{ t("labels.fleets.missions.noMissions") }}
@@ -148,6 +158,12 @@ const pick = (mission: Mission | null) => {
 <style lang="scss" scoped>
 .template-picker__note {
   color: var(--color-text-dim);
+}
+.template-picker__error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 .template-list {
   display: grid;

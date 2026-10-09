@@ -11,6 +11,7 @@ import Component from "./index.vue";
 
 const missions = ref<{ items: Mission[] } | undefined>();
 const isError = ref(false);
+const refetch = vi.fn();
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -22,6 +23,7 @@ vi.mock("@/services/fyApi", async () => {
       data: missions,
       isLoading: ref(false),
       isError,
+      refetch,
     }),
   };
 });
@@ -54,6 +56,7 @@ afterEach(() => {
   mounted.splice(0).forEach((wrapper) => wrapper.unmount());
   missions.value = undefined;
   isError.value = false;
+  refetch.mockClear();
 });
 
 describe("MissionTemplatePicker", () => {
@@ -119,5 +122,14 @@ describe("MissionTemplatePicker", () => {
     expect(
       wrapper.find('[data-test="mission-template-bluebird"]').exists(),
     ).toBe(true);
+  });
+
+  it("loads the missions again from the error", async () => {
+    isError.value = true;
+    const wrapper = await mountPicker();
+
+    await wrapper.find('[data-test="mission-template-retry"]').trigger("click");
+
+    expect(refetch).toHaveBeenCalled();
   });
 });
