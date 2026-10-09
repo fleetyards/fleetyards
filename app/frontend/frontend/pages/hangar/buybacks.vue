@@ -10,11 +10,13 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import FilterForm from "@/frontend/components/Hangar/BuybacksFilterForm/index.vue";
 import BuybacksList from "@/frontend/components/Hangar/BuybacksList/index.vue";
 import BuybackSyncBtn from "@/frontend/components/Hangar/BuybackSyncBtn/index.vue";
 import PledgeItemsSwitch from "@/frontend/components/Hangar/PledgeItemsSwitch/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -22,6 +24,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import {
   useHangarBuybacks,
   getHangarBuybacksQueryKey,
+  type BuybackPledge,
   type BuybackPledgeQuery,
 } from "@/services/fyApi";
 
@@ -50,6 +53,16 @@ const {
   refetch,
   ...asyncStatus
 } = useHangarBuybacks(queryParams);
+
+const sortFields = computed<BaseTableCol<BuybackPledge>[]>(() => [
+  {
+    name: "reclaimedOn",
+    label: t("labels.buybacks.reclaimedOn"),
+    sortable: true,
+  },
+  { name: "name", label: t("labels.name"), sortable: true },
+  { name: "price", label: t("labels.buybacks.price"), sortable: true },
+]);
 
 const comlink = useComlink();
 
@@ -97,6 +110,10 @@ onUnmounted(() => {
         :per-page="perPage"
         @update-per-page="updatePerPage"
       />
+    </template>
+
+    <template #sort>
+      <ListToolbar :columns="sortFields" default-sort="reclaimedOn desc" />
     </template>
 
     <template #skeleton="{ count }">

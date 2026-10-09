@@ -5,10 +5,16 @@ import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
 
 type ChipWrapper = {
-  find: (selector: string) => { element: HTMLElement };
+  find: (selector: string) => {
+    element: HTMLElement;
+    trigger: (event: string) => Promise<void>;
+  };
 };
 
-const mountChip = async (query: Record<string, string> = {}) => {
+const mountChip = async (
+  query: Record<string, string> = {},
+  fallback = "name asc",
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [{ path: "/", name: "list", component: { render: () => null } }],
@@ -19,7 +25,7 @@ const mountChip = async (query: Record<string, string> = {}) => {
   const wrapper = (await mountWithDefaults(
     Component as never,
     {
-      props: { label: "Name", field: "name", fallback: "name asc" },
+      props: { label: "Name", field: "name", fallback },
       plugins: [router],
     } as never,
   )) as unknown as ChipWrapper;
@@ -33,7 +39,14 @@ const mountChip = async (query: Record<string, string> = {}) => {
     return event;
   };
 
-  return { router, rightClick };
+  const click = async () => {
+    await wrapper.find(".base-list-toolbar-chip").trigger("click");
+    await flushPromises();
+
+    return router.currentRoute.value.query;
+  };
+
+  return { router, rightClick, click };
 };
 
 describe("BaseListToolbarChip", () => {
@@ -62,5 +75,40 @@ describe("BaseListToolbarChip", () => {
 
     expect(event.defaultPrevented).toBe(false);
     expect(router.currentRoute.value.query).toEqual({});
+  });
+
+  it("toggles a descending default between both directions", async () => {
+    const { click } = await mountChip({}, "name desc");
+
+    expect(await click()).toEqual({ s: "name asc" });
+    expect(await click()).toEqual({});
+  });
+
+  it("toggles an ascending default between both directions", async () => {
+    const { click } = await mountChip({}, "name asc");
+
+    expect(await click()).toEqual({ s: "name desc" });
+    expect(await click()).toEqual({});
+  });
+
+  it("cycles another field through none, ascending and descending", async () => {
+    const { click } = await mountChip({}, "price asc");
+
+    expect(await click()).toEqual({ s: "name asc" });
+    expect(await click()).toEqual({ s: "name desc" });
+    expect(await click()).toEqual({});
+  });
+
+  it("goes back to the first page when the sort changes", async () => {
+    const { click } = await mountChip({ page: "4", q: "x" });
+
+    expect(await click()).toEqual({ s: "name desc", q: "x" });
+  });
+
+  it("goes to a descending default first from another field's sort", async () => {
+    const { click } = await mountChip({ s: "price asc" }, "name desc");
+
+    expect(await click()).toEqual({});
+    expect(await click()).toEqual({ s: "name asc" });
   });
 });

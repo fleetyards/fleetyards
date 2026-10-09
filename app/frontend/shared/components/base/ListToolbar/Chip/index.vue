@@ -17,7 +17,8 @@ const props = withDefaults(defineProps<Props>(), { fallback: undefined });
 
 // The same composable the column headings use, so the two controls cannot
 // disagree: both read and write `route.query.s`, and pressing either cycles
-// none, ascending, descending in the same order.
+// none, ascending, descending in the same order -- the default's own field
+// toggles between its two directions.
 const { currentDirection, sortableLink, resetLink } = useTableSorting({
   field: props.field,
   fallback: () => props.fallback,

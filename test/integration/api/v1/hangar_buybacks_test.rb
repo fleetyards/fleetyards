@@ -118,6 +118,95 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks sorts by price, upgrades priced from their ships and unknown prices last" do
+    user = create(:user)
+    create(:model, rsi_id: 308, pledge_price: 150)
+    create(:model, rsi_id: 322, pledge_price: 175)
+    upgrade = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 322, upgrade_to_sku_id: 19461)
+    expensive = buyback(user, name: "Standalone Ship - Hammerhead", price: 725)
+    unpriced = buyback(user, name: "Standalone Ship - Aurora MR")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"s" => "price asc"}} do
+      assert_equal [upgrade.id, expensive.id, unpriced.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"s" => "price desc"}} do
+      assert_equal [expensive.id, upgrade.id, unpriced.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks sorts by name, then by reclaim date for the same name" do
+    user = create(:user)
+    cutlass_older = buyback(user, reclaimed_on: Date.new(2023, 11, 26))
+    cutlass_newer = buyback(user, reclaimed_on: Date.new(2026, 9, 21))
+    aurora = buyback(user, name: "Standalone Ship - Aurora MR", reclaimed_on: Date.new(2024, 1, 1))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["name desc", "reclaimedOn asc"]}} do
+      assert_equal [cutlass_older.id, cutlass_newer.id, aurora.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks breaks a name or price tie by the latest reclaim, undated last" do
+    user = create(:user)
+    undated = buyback(user, price: 90)
+    older = buyback(user, price: 90, reclaimed_on: Date.new(2023, 11, 26))
+    newer = buyback(user, price: 90, reclaimed_on: Date.new(2026, 9, 21))
+    sign_in user
+
+    ["name asc", "price asc"].each do |sort|
+      assert_api_response :get, 200, params: {q: {"s" => sort}} do
+        assert_equal [newer.id, older.id, undated.id], parsed_body["items"].pluck("id")
+      end
+    end
+  end
+
+  test "GET /hangar/buybacks sorts by reclaim date, oldest first" do
+    user = create(:user)
+    newer = buyback(user, reclaimed_on: Date.new(2026, 9, 21))
+    older = buyback(user, reclaimed_on: Date.new(2023, 11, 26))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"s" => "reclaimedOn asc"}} do
+      assert_equal [older.id, newer.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks lists pledges without a reclaim date last" do
+    user = create(:user)
+    undated = buyback(user)
+    dated = buyback(user, reclaimed_on: Date.new(2023, 11, 26))
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [dated.id, undated.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks pages through identical pledges without repeating one" do
+    user = create(:user)
+    pledges = Array.new(3) { buyback(user, reclaimed_on: Date.new(2023, 11, 26)) }
+    sign_in user
+
+    ids = (1..3).flat_map do |page|
+      get "/api/v1/hangar/buybacks", params: {page:, perPage: 1}
+
+      parsed_body["items"].pluck("id")
+    end
+
+    assert_equal pledges.map(&:id).sort, ids
+  end
+
+  test "GET /hangar/buybacks refuses a sort it does not offer" do
+    sign_in create(:user)
+
+    get "/api/v1/hangar/buybacks", params: {q: {"s" => "rsiPledgeId asc"}}
+
+    assert_response :bad_request
+  end
+
   test "GET /hangar/buybacks prices an upgrade from both ships' store prices" do
     user = create(:user)
     create(:model, rsi_id: 308, pledge_price: 150)

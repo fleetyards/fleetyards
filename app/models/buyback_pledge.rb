@@ -8,6 +8,11 @@ class BuybackPledge < ApplicationRecord
 
   KINDS = %w[package ship upgrade paint addon other].freeze
 
+  DEFAULT_SORTING_PARAMS = ["reclaimed_on desc"].freeze
+  ALLOWED_SORTING_PARAMS = [
+    "reclaimedOn asc", "reclaimedOn desc", "name asc", "name desc", "price asc", "price desc"
+  ].freeze
+
   belongs_to :user
   belongs_to :upgrade_from_model, class_name: "Model", primary_key: :rsi_id,
     foreign_key: :upgrade_from_ship_id, optional: true, inverse_of: false
@@ -102,7 +107,7 @@ class BuybackPledge < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[kind name price]
+    %w[kind name price reclaimed_on]
   end
 
   def self.ransackable_associations(_auth_object = nil)
