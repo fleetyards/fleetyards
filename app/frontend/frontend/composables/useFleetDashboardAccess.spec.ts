@@ -122,6 +122,19 @@ describe("useFleetDashboardAccess", () => {
     expect(access.showNewMembers.value).toBe(true);
   });
 
+  it("lets only a role that may manage them post announcements", () => {
+    expect(
+      useFleetDashboardAccess(fleetWith(), officer()).canManageAnnouncements
+        .value,
+    ).toBe(false);
+    expect(
+      useFleetDashboardAccess(
+        fleetWith(),
+        member([...READS, "manageAnnouncements"]),
+      ).canManageAnnouncements.value,
+    ).toBe(true);
+  });
+
   it("shows nothing to somebody whose membership is not accepted", () => {
     const access = useFleetDashboardAccess(
       fleetWith(),
