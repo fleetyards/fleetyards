@@ -175,7 +175,7 @@ const onEdit = (entry: PayoutEntry) => {
         v-html="formatAmount(Number(entry.amount ?? 0))"
       />
 
-      <template v-if="reviewing(entry)">
+      <div v-if="reviewing(entry)" class="payout-entries__review-actions">
         <Btn
           :size="BtnSizesEnum.SM"
           :loading="approvingId === entry.id"
@@ -192,7 +192,7 @@ const onEdit = (entry: PayoutEntry) => {
         >
           {{ t("actions.payouts.declineExpense") }}
         </Btn>
-      </template>
+      </div>
 
       <Btn
         v-if="editableEntry(entry)"
@@ -247,6 +247,7 @@ const onEdit = (entry: PayoutEntry) => {
 .payout-entries__meta {
   font-size: 11px;
   color: var(--color-text-dim, #959595);
+  overflow-wrap: anywhere;
 }
 
 .payout-entries__review {
@@ -261,6 +262,16 @@ const onEdit = (entry: PayoutEntry) => {
   color: var(--color-danger, #f44336);
 }
 
+.payout-entries__amount {
+  white-space: nowrap;
+}
+
+.payout-entries__review-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .payout-entries__amount--uncounted {
   opacity: 0.5;
   text-decoration: line-through;
@@ -272,5 +283,35 @@ const onEdit = (entry: PayoutEntry) => {
 
 .payout-entries__amount--expense {
   color: var(--color-danger, #f44336);
+}
+
+// On a phone the amount and the review buttons beside the description left
+// it a few letters wide, so each takes a line of its own under it.
+@media (max-width: 575px) {
+  .payout-entries__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 12px;
+    row-gap: 6px;
+
+    > :not(.payout-entries__detail, .payout-entries__icon) {
+      grid-column: 2;
+    }
+
+    > .btn {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+
+  .payout-entries__icon {
+    padding-top: 4px;
+  }
+
+  .payout-entries__description {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }
 </style>
