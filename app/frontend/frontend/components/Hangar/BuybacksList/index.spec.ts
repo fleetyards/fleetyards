@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { flushPromises } from "@vue/test-utils";
+import { AxiosError, type AxiosResponse } from "axios";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type BuybackPledge } from "@/services/fyApi";
@@ -132,6 +133,21 @@ describe("Hangar/BuybacksList", () => {
 
     expect(invalidateQueries).not.toHaveBeenCalled();
     expect(displayAlert).toHaveBeenCalled();
+  });
+
+  it("drops a pledge that is already gone instead of failing", async () => {
+    destroyBuyback.mockRejectedValue(
+      new AxiosError("Not Found", "ERR_BAD_REQUEST", undefined, undefined, {
+        status: 404,
+      } as AxiosResponse),
+    );
+    const wrapper = await mount([buyback()]);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).not.toHaveBeenCalled();
+    expect(invalidateQueries).toHaveBeenCalled();
   });
 
   // The pledge is gone by then; a refresh that fails is not a failed removal.

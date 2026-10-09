@@ -18,6 +18,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
   BuybackPledgeKindEnum,
   getHangarBuybacksQueryKey,
@@ -97,9 +99,13 @@ const remove = (buyback: BuybackPledge) => {
 
       try {
         await destroyMutation.mutateAsync({ id: buyback.id });
-      } catch {
-        displayAlert({ text: t("messages.buyback.destroy.failure") });
-        return;
+      } catch (error) {
+        // Already gone - a sync or another tab removed it - so the row is
+        // stale rather than the removal failed.
+        if (errorTypeFrom(error) !== ErrorTypesEnum.NOT_FOUND) {
+          displayAlert({ text: t("messages.buyback.destroy.failure") });
+          return;
+        }
       } finally {
         removingId.value = undefined;
       }
