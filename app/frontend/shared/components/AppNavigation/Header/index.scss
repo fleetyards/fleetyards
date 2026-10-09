@@ -2,7 +2,6 @@
   position: relative;
   left: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 20px 15px;
   gap: 20px;
@@ -24,6 +23,7 @@
   &__right {
     display: flex;
     justify-content: flex-end;
+    margin-left: auto;
     gap: 10px;
 
     :deep(.base-input) {
