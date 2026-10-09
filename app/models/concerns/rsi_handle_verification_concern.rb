@@ -61,7 +61,7 @@ module RsiHandleVerificationConcern
   end
 
   # Written past validation: a user saved before a later check must still be
-  # able to get a token.
+  # able to get a token or drop a verification.
   def generate_rsi_verification_token!
     update_columns(
       rsi_verification_token: self.class.new_rsi_verification_token,
@@ -70,13 +70,13 @@ module RsiHandleVerificationConcern
     )
   end
 
-  # Written past validation, so a user saved before a later check can still
-  # drop a verification. The token stays: only the account holder can start a
-  # check of their own handle, and a token in their bio proves nothing for
-  # anybody else. The last check goes instead, so one still out when the
-  # revoke lands no longer names the latest check and cannot undo it. Under
-  # the same lock a read of the org list takes, so one still out cannot write
-  # the list back afterwards.
+  # Written past validation for the same reason as
+  # generate_rsi_verification_token!. The token stays: only the account holder
+  # can start a check of their own handle, and a token in their bio proves
+  # nothing for anybody else. The last check goes instead, so one still out
+  # when the revoke lands no longer names the latest check and cannot undo it.
+  # Under the same lock a read of the org list takes, so one still out cannot
+  # write the list back afterwards.
   def revoke_rsi_handle_verification!
     with_lock do
       update_columns(
