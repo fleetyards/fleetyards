@@ -2,7 +2,7 @@
 
 # Stage 1: Base image with system dependencies
 ARG RUBY_VERSION=4.0.2
-FROM ruby:${RUBY_VERSION}-slim AS base
+FROM public.ecr.aws/docker/library/ruby:${RUBY_VERSION}-slim AS base
 
 WORKDIR /rails
 

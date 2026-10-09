@@ -64,6 +64,59 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/:slug/events with a missionSlug copies the mission and takes its title" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin, title: "Bluebird")
+    create(:mission_team, mission: mission, title: "Escort")
+    sign_in @admin
+
+    body = valid_body.except(:title).merge(
+      missionSlug: mission.slug,
+      startsAt: "2026-10-09T22:30:00Z",
+      timezone: "Europe/Berlin"
+    )
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: body do
+      assert_equal "Bluebird — Oct 10, 2026", parsed_body["title"]
+
+      event = FleetEvent.find(parsed_body["id"])
+      assert_equal mission.id, event.mission_id
+      assert_equal ["Escort"], event.fleet_event_teams.map(&:title)
+    end
+  end
+
+  test "POST /fleets/:slug/events with a missionSlug writes nothing for a member who may not create" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin)
+    create(:mission_team, mission: mission)
+    sign_in @member
+
+    assert_no_difference -> { FleetEvent.count } do
+      assert_no_difference -> { FleetEventTeam.count } do
+        assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug}, body: valid_body.merge(missionSlug: mission.slug)
+      end
+    end
+  end
+
+  test "POST /fleets/:slug/events answers a member who may not create the same for a draft mission" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @member
+
+    assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug}, body: valid_body.merge(missionSlug: draft.slug)
+  end
+
+  test "POST /fleets/:slug/events refuses a draft or archived mission as a template" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    archived = create(:mission, :archived, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    [draft, archived].each do |mission|
+      assert_no_difference -> { FleetEvent.count } do
+        post "/api/v1/fleets/#{@fleet.slug}/events", params: valid_body.merge(missionSlug: mission.slug), as: :json
+      end
+
+      assert_response :not_found
+    end
+  end
+
   # What the form sends for an event that does not repeat: the model requires the
   # interval to be absent unless the event recurs, so null is the only value it
   # can carry, and the schema has to accept it.
