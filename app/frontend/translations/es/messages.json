@@ -690,9 +690,9 @@
         "started": "Sincronizando tu Hangar...",
         "success": "Tu Hangar ha sido sincronizado.",
         "failure": "Tu Hangar no pudo ser sincronizado.",
+        "cancelled": "La sincronización del hangar se ha cancelado.",
         "pageNotRecognised": "La página de RSI tiene un aspecto distinto al que FleetYards espera, así que la sincronización se detuvo sin cambiar nada.",
         "nothingToSync": "FleetYards no encontró naves, pinturas ni componentes en tu hangar de RSI, así que no se cambió nada.",
-        "closeWhileRunning": "La sincronización del hangar sigue en curso y se detiene si cierras esta ventana.",
         "onlySkippedItems": "Tu hangar de RSI solo contiene pinturas o decoración de hangar, que esta sincronización está configurada para omitir, así que no se cambió nada.",
         "notLoggedIn": "Necesitas estar conectado en <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> para sincronizar tu Hangar."
       },

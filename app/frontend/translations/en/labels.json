@@ -2597,6 +2597,7 @@
       },
       "syncExtension": {
         "warnings": "Warnings",
+        "backgroundProgress": "Syncing your hangar",
         "status": {
           "started": "Import Started...",
           "finished": "Import Finished",

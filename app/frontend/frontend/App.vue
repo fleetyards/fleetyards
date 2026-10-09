@@ -11,6 +11,7 @@ import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/in
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import HangarBuybackDetailsSyncProgress from "@/frontend/components/Hangar/BuybackDetailsSyncProgress/index.vue";
+import HangarSyncProgress from "@/frontend/components/Hangar/SyncProgress/index.vue";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
@@ -406,6 +407,7 @@ const setLocale = (locale: string) => {
     <AppNotifications />
     <FleetTour v-if="fleetStore.tourFleet" />
     <HangarBuybackDetailsSyncProgress />
+    <HangarSyncProgress />
     <AppEnvironment :git-revision="appStore.gitRevision" />
   </div>
 </template>

@@ -4,15 +4,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChannel";
 import {
+  type HangarSyncStatus,
   HangarSyncOutcomeEnum,
   HangarSyncUnmatchedActionEnum,
   RsiPageCheckEnum,
   RsiPageKindEnum,
 } from "@/services/fyApi";
+import { useHangarSync } from "@/frontend/composables/useHangarSync";
 import Component from "./index.vue";
 import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
-const mutateAsync = vi.fn(() => Promise.resolve());
+const mutateAsync = vi.fn((_input: unknown) => Promise.resolve());
 
 const reportMutateAsync = vi.fn((_input: unknown) => Promise.resolve());
 
@@ -53,22 +55,8 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useSyncRsiHangar: () => ({ mutateAsync }),
+  syncRsiHangar: (data: unknown) => mutateAsync({ data }),
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
-  useSyncRsiHangarStatus: () => ({ data: ref(undefined) }),
-}));
-
-// The cable handler the modal registers, so a spec can answer a submitted sync.
-const subscription: { received?: (message: HangarSyncData) => void } = {};
-
-vi.mock("@/shared/composables/useSubscription", async (importOriginal) => ({
-  ...(await importOriginal<Record<string, unknown>>()),
-  useSubscription: (options: {
-    received: (message: HangarSyncData) => void;
-  }) => {
-    subscription.received = options.received;
-    return {};
-  },
 }));
 
 const buybackDetailsRunning = vi.hoisted(() => ({ value: false }));
@@ -98,12 +86,14 @@ const displayInfo = vi.fn();
 
 const displayAlert = vi.fn();
 
+const displaySuccess = vi.fn();
+
 const supportPromptCanShow = vi.fn(() => false);
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayInfo,
-    displaySuccess: vi.fn(),
+    displaySuccess,
     displayWarning: vi.fn(),
     displayAlert,
   }),
@@ -217,8 +207,9 @@ const submitHangar = async (
   );
 };
 
+// What the app-wide cable subscription hands on to the run.
 const receiveSyncResult = (outcome: HangarSyncOutcomeEnum) =>
-  subscription.received?.({
+  useHangarSync().receive({
     status: "finished",
     result: {
       importedVehicles: [],
@@ -245,6 +236,7 @@ describe("HangarSyncModal", () => {
     mutateAsync.mockClear();
     displayInfo.mockClear();
     displayAlert.mockClear();
+    displaySuccess.mockClear();
     comlinkEmit.mockClear();
     supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
@@ -317,9 +309,12 @@ describe("HangarSyncModal", () => {
     expect(rsiIdentity).toHaveBeenCalledTimes(2);
   });
 
+  // The run outlives the modal, so one left over would greet the next test
+  // instead of the start screen.
   afterEach(() => {
     mounted?.unmount();
     mounted = undefined;
+    useHangarSync().reset(true);
   });
 
   it("shows which RSI account the extension is signed in to", async () => {
@@ -529,73 +524,29 @@ describe("HangarSyncModal", () => {
     expect(has("start-sync")).toBe(true);
   });
 
-  // Once submitted, the job runs on the server whether the modal is open or
-  // not, so only reading the RSI pages is lost by closing.
-  it("asks before closing only while it reads the hangar", async () => {
+  it("offers to continue in the background once the hangar is submitted", async () => {
     const { wrapper } = await mountModal();
 
-    const exposed = wrapper.vm as unknown as {
-      dirty: boolean;
-      dirtyText: string;
-    };
-    expect(exposed.dirty).toBe(false);
-
-    await wrapper.find("[data-test='start-sync']").trigger("click");
-    await flushPromises();
-    expect(exposed.dirty).toBe(true);
-    expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
-
-    await replyWithPage(
-      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+    expect(wrapper.find("[data-test='cancel-sync']").text()).toBe(
+      "actions.syncExtension.cancel",
     );
-    expect(exposed.dirty).toBe(false);
-  });
-
-  // Forced, the close would skip the question the X asks mid-fetch.
-  it("closes from Cancel the way the X does", async () => {
-    const { wrapper } = await mountModal();
-
-    await wrapper.find("[data-test='start-sync']").trigger("click");
-    await flushPromises();
-
-    const cancel = wrapper.find("[data-test='cancel-sync']");
-    expect(cancel.attributes("disabled")).toBeUndefined();
-
-    await cancel.trigger("click");
-    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
-  });
-
-  it("offers Close instead of Cancel once the hangar is submitted", async () => {
-    const { wrapper } = await mountModal();
-    const cancel = () => wrapper.find("[data-test='cancel-sync']").text();
-
-    expect(cancel()).toBe("actions.syncExtension.cancel");
 
     await submitHangar(wrapper);
 
-    expect(cancel()).toBe("actions.syncExtension.close");
-  });
-
-  it("reports the run it submitted itself", async () => {
-    const { wrapper, hangarStore } = await mountModal();
-
-    await submitHangar(wrapper);
-    expect(hangarStore.syncReportedByModal).toBe(true);
-
-    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
-    await flushPromises();
-    expect(hangarStore.syncReportedByModal).toBe(false);
+    expect(wrapper.find("[data-test='cancel-sync']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='start-sync']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='recheck-sync']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='background-sync']").exists()).toBe(true);
   });
 
   // Reopened while an earlier run is still on the server: that result belongs
-  // to the cable listener, which this modal would otherwise silence.
+  // to the cable listener.
   it("leaves a run it did not submit to the cable listener", async () => {
-    const { hangarStore } = await mountModal();
+    await mountModal();
 
-    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    expect(receiveSyncResult(HangarSyncOutcomeEnum.SYNCED)).toBe(false);
     await flushPromises();
 
-    expect(hangarStore.syncReportedByModal).toBe(false);
     expect(comlinkEmit).not.toHaveBeenCalledWith("hangar-sync-finished");
   });
 
@@ -622,14 +573,12 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("lets a run the server failed be closed without asking", async () => {
+  it("offers a retry for a run the server failed", async () => {
     const { wrapper } = await mountModal();
-
-    const exposed = wrapper.vm as unknown as { dirty: boolean };
 
     await submitHangar(wrapper);
 
-    subscription.received?.({
+    useHangarSync().receive({
       status: "failed",
       error: "boom",
     } as HangarSyncData);
@@ -638,37 +587,9 @@ describe("HangarSyncModal", () => {
     expect(wrapper.find("[data-test='start-sync']").text()).toBe(
       "actions.syncExtension.retry",
     );
-    expect(exposed.dirty).toBe(false);
-  });
-
-  it("asks RSI for no further page once the modal is closed", async () => {
-    const { wrapper } = await mountModal();
-
-    await wrapper.find("[data-test='start-sync']").trigger("click");
-    await flushPromises();
-
-    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
-
-    try {
-      extensionReplies(
-        "sync",
-        hangarPage(
-          '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
-        ),
-      );
-      await flushPromises();
-
-      wrapper.unmount();
-      mounted = undefined;
-      const sent = vi.mocked(window.postMessage).mock.calls.length;
-
-      vi.advanceTimersByTime(500);
-      await flushPromises();
-
-      expect(vi.mocked(window.postMessage).mock.calls.length).toBe(sent);
-    } finally {
-      vi.useRealTimers();
-    }
+    expect(wrapper.find("[data-test='cancel-sync']").text()).toBe(
+      "actions.syncExtension.close",
+    );
   });
 
   it("offers Refresh, not Back, when the extension goes away in the settings", async () => {
@@ -811,5 +732,166 @@ describe("HangarSyncModal", () => {
     expect(
       wrapper.findComponent(HangarSyncResult).props("showSupportHint"),
     ).toBe(true);
+  });
+
+  it("keeps reading the hangar once the modal is closed", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await wrapper.find("[data-test='background-sync']").trigger("click");
+    wrapper.unmount();
+    mounted = undefined;
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+    );
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
+      }),
+    });
+    // Only for a report on a page it does not recognise; the endpoint has no
+    // such field.
+    expect(mutateAsync.mock.calls[0][0]).not.toHaveProperty(
+      "data.extensionVersion",
+    );
+    expect(useHangarSync().awaitingResult.value).toBe(true);
+
+    const reopened = await mountModal();
+    expect(reopened.wrapper.find("[data-test='recheck-sync']").exists()).toBe(
+      false,
+    );
+    expect(reopened.wrapper.find("[data-test='start-sync']").exists()).toBe(
+      false,
+    );
+    reopened.wrapper.unmount();
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+
+    expect(useHangarSync().running.value).toBe(false);
+  });
+
+  it("opens on a run that is still going", async () => {
+    const first = await mountModal();
+
+    await first.wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    first.wrapper.unmount();
+
+    const { wrapper } = await mountModal();
+
+    expect(wrapper.findComponent(HangarSyncResult).exists()).toBe(true);
+    expect(wrapper.find("[data-test='background-sync']").exists()).toBe(true);
+  });
+
+  it("opens on the start screen once the run is over", async () => {
+    const first = await mountModal();
+
+    await submitHangar(first.wrapper);
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+    first.wrapper.unmount();
+
+    const { wrapper } = await mountModal();
+
+    expect(wrapper.findComponent(HangarSyncResult).exists()).toBe(false);
+    expect(
+      wrapper.find("[data-test='start-sync']").attributes("disabled"),
+    ).toBeUndefined();
+  });
+
+  it("stops reading RSI when cancelled from the modal", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await wrapper.find("[data-test='cancel-sync']").trigger("click");
+    expect(useHangarSync().started.value).toBe(false);
+
+    extensionReplies(
+      "sync",
+      '<title>My Hangar</title><div class="list-items"><div class="empty-list"></div></div>',
+    );
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("shows the result of a run that ended in the background", async () => {
+    const first = await mountModal();
+
+    await submitHangar(first.wrapper);
+    first.wrapper.unmount();
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+
+    const { wrapper } = await mountModal();
+
+    expect(wrapper.findComponent(HangarSyncResult).props("result")).toEqual(
+      expect.objectContaining({ outcome: HangarSyncOutcomeEnum.SYNCED }),
+    );
+    expect(wrapper.find("[data-test='close-sync']").exists()).toBe(true);
+  });
+
+  it("says so when the backend fails a run in the background", async () => {
+    const first = await mountModal();
+
+    await submitHangar(first.wrapper);
+    first.wrapper.unmount();
+
+    useHangarSync().receive({ status: "failed" } as HangarSyncData);
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "messages.syncExtension.failure",
+    });
+
+    // And can still be retried.
+    const { wrapper } = await mountModal();
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    expect(mutateAsync).toHaveBeenCalledTimes(2);
+  });
+
+  // The poll is the fallback for a cable message delayed across a reconnect;
+  // when it still arrives, it is the same run and is not told twice.
+  it("tells a run once when the poll answers before the cable", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    useHangarSync().receiveStatus({
+      active: false,
+      status: "finished",
+      result: { outcome: HangarSyncOutcomeEnum.NOTHING_TO_SYNC },
+    } as HangarSyncStatus);
+    expect(
+      useHangarSync().receive({ status: "finished" } as HangarSyncData),
+    ).toBe(true);
+
+    expect(displaySuccess).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenLastCalledWith({
+      text: "messages.syncExtension.nothingToSync",
+    });
+  });
+
+  it("ends a run the backend reports finished without a result", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    useHangarSync().receiveStatus({
+      active: false,
+      status: "finished",
+    } as HangarSyncStatus);
+
+    expect(useHangarSync().running.value).toBe(false);
+    expect(useHangarSync().polling.value).toBe(false);
+    expect(displaySuccess).toHaveBeenCalledTimes(1);
   });
 });

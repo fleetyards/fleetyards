@@ -239,6 +239,7 @@
         "start": "Start Sync",
         "changeInSettings": "在设置中更改",
         "retry": "重试同步",
+        "runInBackground": "在后台继续",
         "close": "关闭",
         "refresh": "刷新页面"
       },

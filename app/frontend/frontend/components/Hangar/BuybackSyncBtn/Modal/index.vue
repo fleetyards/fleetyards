@@ -20,6 +20,7 @@ import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { useHangarSync } from "@/frontend/composables/useHangarSync";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import {
   RsiPageReportOutcome,
@@ -50,6 +51,14 @@ const { displayInfo, displaySuccess, displayWarning, displayAlert } =
 const comlink = useComlink();
 
 const hangarStore = useHangarStore();
+
+// A hangar sync still reading RSI in the background counts as much as one the
+// backend is running.
+const { running: hangarSyncReading } = useHangarSync();
+
+const hangarSyncRunning = computed(
+  () => hangarStore.syncRunning || hangarSyncReading.value,
+);
 
 const extensionReady = ref(false);
 
@@ -297,7 +306,7 @@ const submit = async () => {
     // A hangar sync started while the list was read would share RSI's rate
     // limit with the pass, and so would a sync from a reopened modal, whose
     // limiter knows nothing of this one; the next sync reads these prices.
-    if (hangarStore.syncRunning || unmounted) {
+    if (hangarSyncRunning.value || unmounted) {
       displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
     } else {
       detailsStarted.value = true;
@@ -360,7 +369,7 @@ defineExpose({
         {{ t("texts.buybackSync.detailsRunning") }}
       </p>
       <p
-        v-else-if="hangarStore.syncRunning"
+        v-else-if="hangarSyncRunning"
         class="text-warning"
         data-test="buyback-sync-hangar-sync-running"
       >
@@ -444,9 +453,7 @@ defineExpose({
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
         :disabled="
-          identityStatus !== 'connected' ||
-          detailsRunning ||
-          hangarStore.syncRunning
+          identityStatus !== 'connected' || detailsRunning || hangarSyncRunning
         "
         @click="start"
       >

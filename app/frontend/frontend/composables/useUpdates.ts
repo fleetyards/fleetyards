@@ -32,6 +32,7 @@ import { type Model } from "@/services/fyCable/models/Model";
 import { type Notification } from "@/services/fyCable/models/Notification";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
 import { useSyncRsiHangarStatus } from "@/services/fyApi";
+import { useHangarSync } from "@/frontend/composables/useHangarSync";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
   success: MessageTypesEnum.SUCCESS,
@@ -203,6 +204,9 @@ export const useUpdates = () => {
     enabled: isAuthenticated,
   });
 
+  // A run this tab started reports on itself, wherever the user is by now.
+  const hangarSync = useHangarSync();
+
   const handleHangarSyncUpdate = (message: HangarSyncData) => {
     const finished = message.status === "finished";
     const failed = message.status === "failed";
@@ -211,7 +215,7 @@ export const useUpdates = () => {
       hangarStore.syncRunning = false;
     }
 
-    if (hangarStore.syncReportedByModal) {
+    if (hangarSync.receive(message)) {
       return;
     }
 
@@ -231,9 +235,14 @@ export const useUpdates = () => {
     enabled: isAuthenticated,
   });
 
+  // The cable message can be missed across a reconnect, so a run waiting on
+  // its result also asks for it.
   const { data: syncStatus } = useSyncRsiHangarStatus({
     query: {
       enabled: isAuthenticated,
+      refetchInterval: computed(() =>
+        hangarSync.polling.value ? 5000 : false,
+      ),
     },
   });
 
@@ -242,10 +251,17 @@ export const useUpdates = () => {
     (status) => {
       if (status) {
         hangarStore.syncRunning = status.active;
+        hangarSync.receiveStatus(status);
       }
     },
     { immediate: true },
   );
+
+  // Anything still submitted or shown after a sign-out would land on an
+  // account that is no longer here.
+  watch(isAuthenticated, (authenticated) => {
+    if (!authenticated) hangarSync.reset(true);
+  });
 
   useSubscription({
     channel: NotificationsChannel,

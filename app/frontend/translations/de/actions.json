@@ -239,6 +239,7 @@
         "start": "Synchronisation starten",
         "changeInSettings": "In den Einstellungen ändern",
         "retry": "Synchronisierung wiederholen",
+        "runInBackground": "Im Hintergrund fortsetzen",
         "close": "Schließen",
         "refresh": "Seite aktualisieren"
       },
