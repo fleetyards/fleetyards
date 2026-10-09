@@ -233,7 +233,7 @@ class AdminNotification < ApplicationRecord
         existing.with_lock do
           existing.update!(
             title:, severity:, link:, icon:, record:,
-            body: body.respond_to?(:call) ? body.call(existing.body) : body,
+            body: resolve_body(body, existing.body),
             occurrences: existing.occurrences + 1,
             last_occurred_at: Time.current,
             expires_at: Time.current + retention_for(type)
@@ -250,7 +250,7 @@ class AdminNotification < ApplicationRecord
       transaction(requires_new: true) do
         create!(
           admin_user:, notification_type: type, title:,
-          body: body.respond_to?(:call) ? body.call(nil) : body, severity:,
+          body: resolve_body(body, nil), severity:,
           link:, icon:, record:, dedupe_key:
         )
       end
@@ -262,6 +262,11 @@ class AdminNotification < ApplicationRecord
     end
   end
   private_class_method :upsert_for
+
+  def self.resolve_body(body, earlier_body)
+    body.respond_to?(:call) ? body.call(earlier_body) : body
+  end
+  private_class_method :resolve_body
 
   def self.broadcast(notification)
     AdminNotificationsChannel.broadcast_to(notification.admin_user, notification.to_jbuilder_hash)
