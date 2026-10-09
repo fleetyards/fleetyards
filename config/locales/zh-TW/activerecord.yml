@@ -300,6 +300,8 @@ zh-TW:
         file_in_use: "已在其他地方使用，請重新上傳圖片"
         file_too_large: "不能大於 %{count} MB"
         markdown_image_limit_reached: "你在過去 24 小時內已上傳 %{count} 張圖片。請稍後再試。"
+        announcement_limit_reached: "你的艦隊已有 %{count} 則公告。請先刪除一則再發布新的。"
+        already_passed: "已經過去"
         blank: 不能為空
         record_invalid: 無效資料
       models:

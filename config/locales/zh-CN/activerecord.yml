@@ -300,6 +300,8 @@ zh-CN:
         file_in_use: "已在其他地方使用，请重新上传图片"
         file_too_large: "不能大于 %{count} MB"
         markdown_image_limit_reached: "你在过去 24 小时内已上传 %{count} 张图片。请稍后再试。"
+        announcement_limit_reached: "你的舰队已有 %{count} 条公告。请先删除一条再发布新的。"
+        already_passed: "已经过去"
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
