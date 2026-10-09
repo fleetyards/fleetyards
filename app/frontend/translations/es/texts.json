@@ -309,6 +309,10 @@
         "detailsBackground": "Los precios y seguros se leen ahora en segundo plano. Puedes cerrar esta ventana y seguir usando Fleetyards; mantén esta pestaña abierta hasta que termine.",
         "detailsRunning": "Todavía se están leyendo los precios y seguros de la última sincronización. Podrás iniciar una nueva cuando termine."
       },
+      "addToHangar": {
+        "hangarHint": "Tienes esta nave.",
+        "wishlistHint": "Quieres conseguir esta nave más adelante."
+      },
       "resetIngame": {
         "info": "Un wipe te quita las naves que compraste en el juego. Muévelas a tu lista de deseos para volver a comprarlas más tarde o elimínalas de tu hangar. Las naves que no compraste en el juego no cambian."
       },

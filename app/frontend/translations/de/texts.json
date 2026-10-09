@@ -309,6 +309,10 @@
         "detailsBackground": "Preise und Versicherungen werden jetzt im Hintergrund gelesen. Du kannst dieses Fenster schließen und Fleetyards weiter nutzen; lass den Tab offen, bis es fertig ist.",
         "detailsRunning": "Preise und Versicherungen der letzten Synchronisierung werden noch gelesen. Eine neue Synchronisierung kann starten, sobald das abgeschlossen ist."
       },
+      "addToHangar": {
+        "hangarHint": "Du besitzt dieses Schiff.",
+        "wishlistHint": "Du möchtest dieses Schiff später haben."
+      },
       "resetIngame": {
         "info": "Ein Wipe nimmt dir die Schiffe, die du ingame gekauft hast. Verschiebe sie auf deine Wunschliste, um sie später erneut zu kaufen, oder entferne sie aus deinem Hangar. Schiffe, die du nicht ingame gekauft hast, bleiben unverändert."
       },

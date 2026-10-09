@@ -309,6 +309,10 @@
         "detailsBackground": "Prices and insurance are now read in the background. You can close this window and keep using Fleetyards; keep this tab open until it finishes.",
         "detailsRunning": "Prices and insurance from the last sync are still being read. A new sync can start once that has finished."
       },
+      "addToHangar": {
+        "hangarHint": "You own this ship.",
+        "wishlistHint": "You want to get this ship later."
+      },
       "resetIngame": {
         "info": "A wipe takes away the ships you bought in-game. Move them to your wishlist to buy them again later, or remove them from your hangar. Ships you did not buy in-game stay as they are."
       },

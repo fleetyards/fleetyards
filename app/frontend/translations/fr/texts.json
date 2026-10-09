@@ -309,6 +309,10 @@
         "detailsBackground": "Les prix et assurances sont maintenant lus en arrière-plan. Vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards ; gardez cet onglet ouvert jusqu'à la fin.",
         "detailsRunning": "Les prix et assurances de la dernière synchronisation sont encore en cours de lecture. Une nouvelle synchronisation pourra démarrer une fois celle-ci terminée."
       },
+      "addToHangar": {
+        "hangarHint": "Vous possédez ce vaisseau.",
+        "wishlistHint": "Vous voulez obtenir ce vaisseau plus tard."
+      },
       "resetIngame": {
         "info": "Un wipe supprime les vaisseaux que vous avez achetés en jeu. Déplacez-les dans votre liste de souhaits pour les racheter plus tard, ou supprimez-les de votre hangar. Les vaisseaux que vous n'avez pas achetés en jeu restent inchangés."
       },
