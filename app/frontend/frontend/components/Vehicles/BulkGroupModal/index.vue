@@ -8,7 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   type HangarGroup,
   useHangarGroups as useHangarGroupsQuery,
@@ -105,16 +105,14 @@ const save = async () => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          data-test="vehicle-save"
-          @click="save"
-          :size="BtnSizesEnum.LG"
-        >
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="vehicle-bulk"
+        :loading="submitting"
+        data-test="vehicle-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

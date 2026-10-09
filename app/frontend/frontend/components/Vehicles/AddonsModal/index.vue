@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useForm } from "vee-validate";
@@ -167,11 +168,13 @@ const onSubmit = handleSubmit(async (values) => {
       </AsyncData>
     </form>
     <template v-if="editable" #footer>
-      <div class="modal-actions">
-        <Btn :loading="mutation.isPending.value" @click="onSubmit">
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        :form="`vehicle-addons-${vehicle.id}`"
+        :loading="mutation.isPending.value"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

@@ -24942,7 +24942,6 @@ components:
             minimum: 0
             maximum: 6
       required:
-      - title
       - startsAt
       - timezone
       - visibility

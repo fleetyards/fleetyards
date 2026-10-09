@@ -9,7 +9,7 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -148,11 +148,13 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="event-occurrence-override-form"
+        :loading="submitting"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

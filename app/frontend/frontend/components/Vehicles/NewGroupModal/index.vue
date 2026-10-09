@@ -8,6 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { VSwatches } from "vue3-swatches";
@@ -102,11 +103,13 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="modal-actions">
-        <Btn :loading="submitting" @click="onSubmit" size="lg">
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="hangar-group-new"
+        :loading="submitting"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

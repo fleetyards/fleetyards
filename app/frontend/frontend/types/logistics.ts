@@ -87,6 +87,12 @@ export type InventoryPanelRecord = {
 export type InventoryTarget =
   { kind: "hangar"; slug: string } | { kind: "vehicle"; vehicleId: string };
 
+export type FleetInventoryTarget = {
+  kind: "fleet";
+  fleetSlug: string;
+  slug: string;
+};
+
 export type InventoryLedgerRecord = {
   id: string;
   stockSlug?: string;

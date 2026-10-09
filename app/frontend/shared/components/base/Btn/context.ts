@@ -14,8 +14,10 @@ import type {
  * - `group` — segmented control. The container draws the border, radius and
  *   end-caps, so members drop their own chrome entirely.
  * - `menu`  — dropdown list. Members go full-width and left-aligned.
+ * - `footer` — a modal's action row. Members take its size, and a component
+ *   that renders a dismiss button there may read it to make that one bare.
  */
-export type BtnContainer = "group" | "menu";
+export type BtnContainer = "group" | "menu" | "footer";
 
 export type BtnContainerContext = {
   container: BtnContainer;

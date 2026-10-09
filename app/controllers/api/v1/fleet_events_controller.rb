@@ -23,6 +23,10 @@ module Api
       before_action :check_fleet_mission_builder_feature
       before_action -> { require_fleet_subscription(:events) }
       before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence unskip_occurrence end_series split_series update_occurrence]
+      # Ahead of set_mission, whose 404 for a draft would otherwise tell a member
+      # who may not create events which missions are published, and ahead of
+      # from_mission!, which commits the event and its copied teams in one go.
+      before_action -> { authorize! with: FleetEventPolicy, context: {fleet: @fleet}, to: :create? }, only: %i[create]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -78,8 +82,6 @@ module Api
         else
           @fleet.fleet_events.new(event_params.merge(created_by: current_resource_owner))
         end
-
-        authorize! @fleet_event
 
         if @mission || @fleet_event.save
           render :show, status: :created
@@ -390,7 +392,9 @@ module Api
       private def set_mission
         return if params[:mission_slug].blank?
 
-        @mission = @fleet.missions.find_by!(slug: params[:mission_slug])
+        # A draft has not been offered to the fleet yet and an archived one has
+        # been withdrawn, so neither is a template.
+        @mission = @fleet.missions.active.published.find_by!(slug: params[:mission_slug])
       end
 
       private def compute_viewer_event_role(event)
