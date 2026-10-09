@@ -170,7 +170,7 @@ const onToggle = async (transfer: PayoutTransfer) => {
 
 // Both names are who pays whom; cut down to "orga…" on a phone, neither
 // said it.
-@media (max-width: 576px) {
+@media (max-width: map-get($grid-breakpoints, sm)) {
   .payout-transfers__parties {
     flex-wrap: wrap;
     gap: 4px 8px;

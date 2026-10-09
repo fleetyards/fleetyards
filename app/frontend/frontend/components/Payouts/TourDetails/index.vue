@@ -400,7 +400,7 @@ const shareUrl = computed(() => {
 
   // Wrapped onto a line of its own anyway, where pushed right it read as
   // floating.
-  @media (max-width: 576px) {
+  @media (max-width: map-get($grid-breakpoints, sm)) {
     flex-basis: 100%;
     margin-left: 0;
   }

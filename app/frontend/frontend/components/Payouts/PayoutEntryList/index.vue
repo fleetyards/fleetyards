@@ -288,7 +288,7 @@ const onEdit = (entry: PayoutEntry) => {
 
 // On a phone the amount and the review buttons beside the description left
 // it a few letters wide, so each takes a line of its own under it.
-@media (max-width: 576px) {
+@media (max-width: map-get($grid-breakpoints, sm)) {
   .payout-entries__row {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
