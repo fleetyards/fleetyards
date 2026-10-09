@@ -423,6 +423,18 @@ const CURRENT_USER = "user-ThalosVex";
   <p>The same events in the week view.</p>
   <CalendarGrid :fleet="fleet" :events="calendarEvents" view="week" />
 
+  <p>
+    The compact week the fleet dashboard embeds: one row of days, and a list of
+    them on a phone.
+  </p>
+  <CalendarGrid
+    :fleet="fleet"
+    :events="calendarEvents"
+    view="week"
+    compact
+    data-test="calendar-compact"
+  />
+
   <Heading :level="HeadingLevelEnum.H2">Team card</Heading>
   <p>
     A titled sub-surface, so a slim panel with a divider under its head rather

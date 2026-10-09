@@ -3493,7 +3493,8 @@
           "calendar": {
             "month": "Monat",
             "week": "Woche",
-            "weekTitle": "Woche vom %{date}"
+            "weekTitle": "Woche vom %{date}",
+            "noEvents": "Keine Events in dieser Woche"
           },
           "repeats": "Wiederholung"
         },

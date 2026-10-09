@@ -3507,7 +3507,8 @@
           "calendar": {
             "month": "Month",
             "week": "Week",
-            "weekTitle": "Week of %{date}"
+            "weekTitle": "Week of %{date}",
+            "noEvents": "No events this week"
           },
           "repeats": "Repeats"
         },

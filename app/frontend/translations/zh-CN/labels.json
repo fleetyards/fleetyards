@@ -3493,7 +3493,8 @@
           "calendar": {
             "month": "月",
             "week": "周",
-            "weekTitle": "%{date} 所在周"
+            "weekTitle": "%{date} 所在周",
+            "noEvents": "本周没有活动"
           },
           "repeats": "重复"
         },

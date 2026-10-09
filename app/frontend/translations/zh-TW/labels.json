@@ -3493,7 +3493,8 @@
           "calendar": {
             "month": "月",
             "week": "週",
-            "weekTitle": "%{date} 當週"
+            "weekTitle": "%{date} 當週",
+            "noEvents": "本週沒有活動"
           },
           "repeats": "重複"
         },

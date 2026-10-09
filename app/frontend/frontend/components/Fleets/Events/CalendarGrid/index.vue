@@ -10,6 +10,7 @@ import {
   destroyCalendar,
   DayGrid,
   TimeGrid,
+  List,
   Interaction,
   type EventCalendarInstance,
 } from "@event-calendar/core";
@@ -25,6 +26,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
+import { useMobile } from "@/shared/composables/useMobile";
 import { format, parseISO } from "date-fns";
 
 type CalendarViewKind = "month" | "week";
@@ -57,10 +59,15 @@ const { resolve: resolveCover } = useMissionCover();
 const calendarEl = ref<HTMLElement | null>(null);
 let ec: EventCalendarInstance | null = null;
 
-type CalendarLibView = "dayGridMonth" | "timeGridWeek" | "dayGridWeek";
+type CalendarLibView =
+  "dayGridMonth" | "timeGridWeek" | "dayGridWeek" | "listWeek";
 
+const mobile = useMobile();
+
+// Seven columns on a phone leave each day a sliver that fits neither a title
+// nor a time, so there the compact week reads as a list of its days instead.
 const toLibView = (v: CalendarViewKind): CalendarLibView => {
-  if (props.compact) return "dayGridWeek";
+  if (props.compact) return mobile.value ? "listWeek" : "dayGridWeek";
 
   return v === "week" ? "timeGridWeek" : "dayGridMonth";
 };
@@ -79,6 +86,10 @@ const initialDate = (() => {
 })();
 
 const titleLabel = ref("");
+
+// The first day the view shows. A week is named by its Monday, where the
+// calendar's own date is whatever day it was opened on.
+let rangeStart: Date | null = null;
 
 type CategoryStyle = { icon: string; color: string };
 
@@ -149,7 +160,7 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  const isMonth = info.view.type.startsWith("dayGrid");
+  const isMonth = !info.view.type.startsWith("timeGrid");
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
@@ -205,7 +216,7 @@ const updateTitle = () => {
       month: "short",
       day: "numeric",
       year: "numeric",
-    }).format(d);
+    }).format(rangeStart ?? d);
     titleLabel.value = t("labels.fleets.events.calendar.weekTitle", {
       date: formatted,
     });
@@ -249,58 +260,70 @@ const setView = (view: CalendarViewKind) => {
 onMounted(() => {
   if (!calendarEl.value) return;
 
-  ec = createCalendar(calendarEl.value, [DayGrid, TimeGrid, Interaction], {
-    view: toLibView(props.view),
-    date: initialDate,
-    events: calendarEvents.value,
-    locale: i18nStore.locale,
-    firstDay: 1,
-    headerToolbar: false,
-    height: "auto",
-    dayMaxEvents: true,
-    nowIndicator: true,
-    selectable: !props.compact,
-    selectMirror: !props.compact,
-    slotDuration: "01:00:00",
-    slotHeight: 56,
-    slotMinTime: "08:00:00",
-    slotMaxTime: "24:00:00",
-    eventClick: (info: {
-      event: { extendedProps?: { fleetEvent?: FleetEvent } };
-    }) => {
-      const event = info.event.extendedProps?.fleetEvent;
-      if (event?.slug) {
-        const occurrence = (event as { occurrenceDate?: string | null })
-          .occurrenceDate;
-        const parentSlug = (event as { parentEventSlug?: string | null })
-          .parentEventSlug;
-        void router.push({
-          name: "fleet-event",
-          params: {
-            slug: props.fleet.slug,
-            event: parentSlug || event.slug,
-          },
-          query: occurrence ? { occurrence } : undefined,
-        });
-      }
+  ec = createCalendar(
+    calendarEl.value,
+    [DayGrid, TimeGrid, List, Interaction],
+    {
+      view: toLibView(props.view),
+      date: initialDate,
+      events: calendarEvents.value,
+      locale: i18nStore.locale,
+      firstDay: 1,
+      headerToolbar: false,
+      height: "auto",
+      dayMaxEvents: true,
+      noEventsContent: t("labels.fleets.events.calendar.noEvents"),
+      nowIndicator: true,
+      selectable: !props.compact,
+      selectMirror: !props.compact,
+      slotDuration: "01:00:00",
+      slotHeight: 56,
+      slotMinTime: "08:00:00",
+      slotMaxTime: "24:00:00",
+      eventClick: (info: {
+        event: { extendedProps?: { fleetEvent?: FleetEvent } };
+      }) => {
+        const event = info.event.extendedProps?.fleetEvent;
+        if (event?.slug) {
+          const occurrence = (event as { occurrenceDate?: string | null })
+            .occurrenceDate;
+          const parentSlug = (event as { parentEventSlug?: string | null })
+            .parentEventSlug;
+          void router.push({
+            name: "fleet-event",
+            params: {
+              slug: props.fleet.slug,
+              event: parentSlug || event.slug,
+            },
+            query: occurrence ? { occurrence } : undefined,
+          });
+        }
+      },
+      dateClick: (info: { date: Date }) => {
+        if (props.compact) return;
+        emit("create-event", info.date);
+      },
+      select: (info: { start: Date }) => {
+        if (props.compact) return;
+        emit("create-event", info.start);
+      },
+      datesSet: (info: { start: Date; end: Date }) => {
+        emit("update:range", { start: info.start, end: info.end });
+        rangeStart = info.start;
+        updateTitle();
+        syncDateToUrl();
+      },
+      eventContent: renderEventChip,
     },
-    dateClick: (info: { date: Date }) => {
-      if (props.compact) return;
-      emit("create-event", info.date);
-    },
-    select: (info: { start: Date }) => {
-      if (props.compact) return;
-      emit("create-event", info.start);
-    },
-    datesSet: (info: { start: Date; end: Date }) => {
-      emit("update:range", { start: info.start, end: info.end });
-      updateTitle();
-      syncDateToUrl();
-    },
-    eventContent: renderEventChip,
-  });
+  );
 
   updateTitle();
+});
+
+watch(mobile, () => {
+  if (!props.compact) return;
+
+  ec?.setOption("view", toLibView(props.view));
 });
 
 watch(
