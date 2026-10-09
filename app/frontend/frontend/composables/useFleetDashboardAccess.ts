@@ -74,15 +74,11 @@ export const useFleetDashboardAccess = (
     () => showContracts.value && !!capabilities.value?.createContracts,
   );
 
-  const canManageFleet = computed(() => !!capabilities.value?.manageFleet);
-
   const showActionQueue = computed(
     () => canAnswerJoinRequests.value || canAnswerTransfers.value,
   );
 
   return {
-    isMember,
-    showActivity: isMember,
     showEvents,
     showContracts,
     showInventory,
@@ -92,6 +88,5 @@ export const useFleetDashboardAccess = (
     canAnswerTransfers,
     canCreateEvents,
     canCreateContracts,
-    canManageFleet,
   };
 };

@@ -131,7 +131,6 @@ describe("useFleetDashboardAccess", () => {
       ),
     );
 
-    expect(access.isMember.value).toBe(false);
     expect(access.showEvents.value).toBe(false);
     expect(access.showNewMembers.value).toBe(false);
     expect(access.showActionQueue.value).toBe(false);
