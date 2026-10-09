@@ -7,7 +7,11 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
   type Mission,
@@ -51,19 +55,23 @@ const pick = (mission: Mission | null) => {
 
 <template>
   <Modal :title="t('headlines.fleets.events.pickTemplate')">
-    <p class="text-muted">{{ t("labels.fleets.events.pickTemplateHint") }}</p>
+    <p class="template-picker__note">
+      {{ t("labels.fleets.events.pickTemplateHint") }}
+    </p>
 
-    <p v-if="isLoading" class="text-muted">{{ t("messages.loading") }}</p>
+    <p v-if="isLoading" class="template-picker__note">
+      {{ t("messages.loading") }}
+    </p>
 
     <p
       v-else-if="isError"
-      class="text-muted"
+      class="template-picker__note"
       data-test="mission-template-error"
     >
       {{ t("labels.fleets.events.pickTemplateLoadFailed") }}
     </p>
 
-    <p v-else-if="!missionList.length" class="text-muted">
+    <p v-else-if="!missionList.length" class="template-picker__note">
       {{ t("labels.fleets.missions.noMissions") }}
     </p>
 
@@ -77,7 +85,7 @@ const pick = (mission: Mission | null) => {
         <i class="fa-light fa-ban template-card__icon" />
         <div class="template-card__body">
           <strong>{{ t("labels.fleets.events.noTemplate") }}</strong>
-          <span class="text-muted small">
+          <span class="template-card__hint">
             {{ t("labels.fleets.events.noTemplateHint") }}
           </span>
         </div>
@@ -98,23 +106,20 @@ const pick = (mission: Mission | null) => {
         <div class="template-card__body">
           <strong class="template-card__title">{{ mission.title }}</strong>
           <div class="template-card__meta">
-            <span class="template-card__badge">
+            <Pill uppercase>
               {{ t(`labels.fleets.missions.categories.${mission.category}`) }}
-            </span>
-            <span
-              v-if="(mission as { scenario?: string | null }).scenario"
-              class="text-muted small"
-            >
-              {{ (mission as { scenario?: string | null }).scenario }}
+            </Pill>
+            <span v-if="mission.scenario" class="template-card__hint">
+              {{ mission.scenario }}
             </span>
           </div>
           <p
             v-if="mission.description"
-            class="template-card__desc text-muted small"
+            class="template-card__desc template-card__hint"
           >
             {{ mission.description }}
           </p>
-          <div class="template-card__stats text-muted small">
+          <div class="template-card__stats template-card__hint">
             <span>
               <strong>{{ mission.teamCount }}</strong>
               {{ t("labels.fleets.missions.teams") }}
@@ -129,20 +134,21 @@ const pick = (mission: Mission | null) => {
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :size="BtnSizesEnum.LG"
-          variant="bare"
-          @click="comlink.emit('close-modal')"
-        >
-          {{ t("actions.cancel") }}
-        </Btn>
-      </div>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :variant="BtnVariantsEnum.BARE"
+        @click="comlink.emit('close-modal')"
+      >
+        {{ t("actions.cancel") }}
+      </Btn>
     </template>
   </Modal>
 </template>
 
 <style lang="scss" scoped>
+.template-picker__note {
+  color: var(--color-text-dim);
+}
 .template-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -155,9 +161,10 @@ const pick = (mission: Mission | null) => {
   gap: 6px;
   text-align: left;
   padding: 0;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-control-bare, 6px);
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-faint);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -165,7 +172,7 @@ const pick = (mission: Mission | null) => {
     transform 0.1s;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: var(--color-edge-strong);
     transform: translateY(-1px);
   }
 }
@@ -178,7 +185,7 @@ const pick = (mission: Mission | null) => {
 }
 .template-card__icon {
   font-size: 1.6rem;
-  color: var(--color-muted, #7a8288);
+  color: var(--color-muted);
 }
 .template-card__cover {
   width: 100%;
@@ -206,14 +213,9 @@ const pick = (mission: Mission | null) => {
   gap: 6px;
   flex-wrap: wrap;
 }
-.template-card__badge {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  border-radius: var(--radius-control-bare, 6px);
-  background: rgba(74, 170, 170, 0.18);
-  color: var(--color-primary, #428bca);
+.template-card__hint {
+  font-size: 12px;
+  color: var(--color-text-dim);
 }
 .template-card__desc {
   margin: 0;
@@ -227,10 +229,7 @@ const pick = (mission: Mission | null) => {
   gap: 14px;
 
   strong {
-    color: var(--color-text, #c8c8c8);
+    color: var(--color-text);
   }
-}
-.small {
-  font-size: 12px;
 }
 </style>
