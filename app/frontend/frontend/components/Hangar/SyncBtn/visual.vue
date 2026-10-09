@@ -247,7 +247,6 @@ const openStartScreen = (screen: StartScreen) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Hangar/SyncBtn/Modal/index.vue"),
-    fixed: true,
   });
 };
 

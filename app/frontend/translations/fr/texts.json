@@ -322,9 +322,7 @@
         "alreadyRunning": "Une synchronisation du hangar est déjà en cours. Veuillez attendre qu'elle se termine.",
         "buybackDetailsRunning": "Les prix de rachat sont encore en cours de lecture sur RSI. La synchronisation du hangar pourra démarrer une fois celle-ci terminée.",
         "missingUnmatchedGroup": "Choisissez avant de commencer le groupe où classer les vaisseaux que la synchronisation ne trouve pas.",
-        "skipsPaints": "Cette synchronisation laisse vos peintures enregistrées telles quelles.",
-        "skipsHangarFlair": "Cette synchronisation laisse vos décorations de hangar enregistrées telles quelles.",
-        "skipsPaintsAndHangarFlair": "Cette synchronisation laisse vos peintures et décorations de hangar enregistrées telles quelles."
+        "notSyncing": "Hors synchronisation :"
       },
       "setEmail": "Pour définir un mot de passe, activer l'authentification à deux facteurs ou recevoir des notifications par e-mail, vous devez ajouter une adresse e-mail à votre compte. Vous recevrez un e-mail de confirmation pour vérifier l'adresse.",
       "oauthApplications": {

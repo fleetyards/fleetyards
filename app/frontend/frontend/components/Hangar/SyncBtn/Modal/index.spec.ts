@@ -84,8 +84,10 @@ vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
   };
 });
 
+const comlinkEmit = vi.fn();
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -94,6 +96,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
 
 const displayInfo = vi.fn();
 
+const displayAlert = vi.fn();
+
 const supportPromptCanShow = vi.fn(() => false);
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
@@ -101,7 +105,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
     displayInfo,
     displaySuccess: vi.fn(),
     displayWarning: vi.fn(),
-    displayAlert: vi.fn(),
+    displayAlert,
   }),
 }));
 
@@ -240,6 +244,8 @@ describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
     displayInfo.mockClear();
+    displayAlert.mockClear();
+    comlinkEmit.mockClear();
     supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
@@ -432,6 +438,7 @@ describe("HangarSyncModal", () => {
 
     hangarStore.syncUnmatchedHangarGroupId = "group-1";
     await flushPromises();
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
 
     expect(
       wrapper.find("[data-test='start-sync']").attributes("disabled"),
@@ -454,23 +461,27 @@ describe("HangarSyncModal", () => {
       false,
     );
 
+    const skippedItems = () =>
+      wrapper
+        .findAll("[data-test='sync-skipped-items'] li")
+        .map((item) => item.text());
+
     hangarStore.syncPaints = false;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsPaints",
-    );
+    expect(skippedItems()).toEqual(["labels.syncExtension.pledgeItems.paints"]);
 
     hangarStore.syncHangarFlair = false;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsPaintsAndHangarFlair",
-    );
+    expect(skippedItems()).toEqual([
+      "labels.syncExtension.pledgeItems.paints",
+      "labels.syncExtension.pledgeItems.hangarFlair",
+    ]);
 
     hangarStore.syncPaints = true;
     await flushPromises();
-    expect(wrapper.find("[data-test='sync-skipped-items']").text()).toContain(
-      "texts.syncExtension.skipsHangarFlair",
-    );
+    expect(skippedItems()).toEqual([
+      "labels.syncExtension.pledgeItems.hangarFlair",
+    ]);
 
     await wrapper.find("[data-test='open-sync-settings']").trigger("click");
     expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
@@ -490,6 +501,7 @@ describe("HangarSyncModal", () => {
     // the choice the user made on this one.
     expect(hangarStore.syncAddBundledVehicles).toBe(false);
 
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
     await submitHangar(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
@@ -497,17 +509,179 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("switches to the settings and back with the cog", async () => {
+  it("opens the settings with the cog and leaves them from the footer", async () => {
     const { wrapper } = await mountModal();
 
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+    const has = (testId: string) =>
+      wrapper.find(`[data-test='${testId}']`).exists();
+
+    expect(has("sync-settings")).toBe(false);
 
     await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
-    expect(wrapper.find("[data-test='toggle-syncPaints']").exists()).toBe(true);
+    expect(has("sync-settings")).toBe(true);
+    expect(has("toggle-syncPaints")).toBe(true);
+    expect(has("toggle-sync-settings")).toBe(false);
+    expect(has("start-sync")).toBe(false);
+
+    await wrapper.find("[data-test='close-sync-settings']").trigger("click");
+    expect(has("sync-settings")).toBe(false);
+    expect(has("toggle-sync-settings")).toBe(true);
+    expect(has("start-sync")).toBe(true);
+  });
+
+  // Once submitted, the job runs on the server whether the modal is open or
+  // not, so only reading the RSI pages is lost by closing.
+  it("asks before closing only while it reads the hangar", async () => {
+    const { wrapper } = await mountModal();
+
+    const exposed = wrapper.vm as unknown as {
+      dirty: boolean;
+      dirtyText: string;
+    };
+    expect(exposed.dirty).toBe(false);
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    expect(exposed.dirty).toBe(true);
+    expect(exposed.dirtyText).toBe("messages.syncExtension.closeWhileRunning");
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+    );
+    expect(exposed.dirty).toBe(false);
+  });
+
+  // Forced, the close would skip the question the X asks mid-fetch.
+  it("closes from Cancel the way the X does", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    const cancel = wrapper.find("[data-test='cancel-sync']");
+    expect(cancel.attributes("disabled")).toBeUndefined();
+
+    await cancel.trigger("click");
+    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
+  });
+
+  it("offers Close instead of Cancel once the hangar is submitted", async () => {
+    const { wrapper } = await mountModal();
+    const cancel = () => wrapper.find("[data-test='cancel-sync']").text();
+
+    expect(cancel()).toBe("actions.syncExtension.cancel");
+
+    await submitHangar(wrapper);
+
+    expect(cancel()).toBe("actions.syncExtension.close");
+  });
+
+  it("reports the run it submitted itself", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    await submitHangar(wrapper);
+    expect(hangarStore.syncReportedByModal).toBe(true);
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+    expect(hangarStore.syncReportedByModal).toBe(false);
+  });
+
+  // Reopened while an earlier run is still on the server: that result belongs
+  // to the cable listener, which this modal would otherwise silence.
+  it("leaves a run it did not submit to the cable listener", async () => {
+    const { hangarStore } = await mountModal();
+
+    receiveSyncResult(HangarSyncOutcomeEnum.SYNCED);
+    await flushPromises();
+
+    expect(hangarStore.syncReportedByModal).toBe(false);
+    expect(comlinkEmit).not.toHaveBeenCalledWith("hangar-sync-finished");
+  });
+
+  it("alerts when a submit fails after the modal closed", async () => {
+    let rejectSubmit: (error: Error) => void = () => {};
+    mutateAsync.mockImplementationOnce(
+      () =>
+        new Promise((_, reject) => {
+          rejectSubmit = reject;
+        }),
+    );
+
+    const { wrapper } = await mountModal();
+    await submitHangar(wrapper);
+
+    wrapper.unmount();
+    mounted = undefined;
+
+    rejectSubmit(new Error("offline"));
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "messages.syncExtension.failure",
+    });
+  });
+
+  it("lets a run the server failed be closed without asking", async () => {
+    const { wrapper } = await mountModal();
+
+    const exposed = wrapper.vm as unknown as { dirty: boolean };
+
+    await submitHangar(wrapper);
+
+    subscription.received?.({
+      status: "failed",
+      error: "boom",
+    } as HangarSyncData);
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='start-sync']").text()).toBe(
+      "actions.syncExtension.retry",
+    );
+    expect(exposed.dirty).toBe(false);
+  });
+
+  it("asks RSI for no further page once the modal is closed", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+
+    try {
+      extensionReplies(
+        "sync",
+        hangarPage(
+          '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+        ),
+      );
+      await flushPromises();
+
+      wrapper.unmount();
+      mounted = undefined;
+      const sent = vi.mocked(window.postMessage).mock.calls.length;
+
+      vi.advanceTimersByTime(500);
+      await flushPromises();
+
+      expect(vi.mocked(window.postMessage).mock.calls.length).toBe(sent);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("offers Refresh, not Back, when the extension goes away in the settings", async () => {
+    const { wrapper, hangarStore } = await mountModal();
 
     await wrapper.find("[data-test='toggle-sync-settings']").trigger("click");
-    expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(false);
+    hangarStore.extensionReady = false;
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='close-sync-settings']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find("[data-test='recheck-sync']").exists()).toBe(true);
   });
 
   it("passes the paint and flair choices on to the sync", async () => {

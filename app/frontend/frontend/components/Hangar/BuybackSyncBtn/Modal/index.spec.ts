@@ -63,8 +63,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
+const comlinkEmit = vi.fn();
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -201,6 +203,7 @@ describe("HangarBuybackSyncModal", () => {
     submitDetails.mockClear();
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
+    comlinkEmit.mockClear();
     vi.mocked(window.postMessage).mockClear();
     pagesAnswered = 0;
   });
@@ -275,6 +278,51 @@ describe("HangarBuybackSyncModal", () => {
       },
     });
     expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+  });
+
+  it("asks before closing while the list is read", async () => {
+    const wrapper = await startSync();
+
+    const exposed = wrapper.vm as unknown as {
+      dirty: boolean;
+      dirtyText: string;
+    };
+
+    expect(exposed.dirty).toBe(true);
+    expect(exposed.dirtyText).toBe("messages.buybackSync.closeWhileRunning");
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(exposed.dirty).toBe(false);
+  });
+
+  // A submitted list is stored; the toast and the price pass need no modal.
+  it("closes without asking once the list is submitted", async () => {
+    mutateAsync.mockImplementationOnce(() => new Promise(() => {}));
+    const wrapper = await startSync();
+
+    const exposed = wrapper.vm as unknown as { dirty: boolean };
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(wrapper.text()).toContain("labels.buybackSync.status.submitting");
+    expect(exposed.dirty).toBe(false);
+    expect(wrapper.find("[data-test='close-buyback-sync']").text()).toBe(
+      "actions.syncExtension.close",
+    );
+  });
+
+  // Forced, the close would skip the question the X asks mid-fetch.
+  it("closes from Cancel the way the X does", async () => {
+    const wrapper = await startSync();
+
+    const close = wrapper.find("[data-test='close-buyback-sync']");
+    expect(close.attributes("disabled")).toBeUndefined();
+
+    await close.trigger("click");
+    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
   });
 
   // The same guard the hangar sync has: a page repeating ids already read
@@ -547,6 +595,40 @@ describe("HangarBuybackSyncModal", () => {
       expect(wrapper.find("[data-test='buyback-sync-prices']").exists()).toBe(
         false,
       );
+    });
+
+    // A modal reopened straight away would start its own sync with a fresh
+    // rate limiter, unaware of this pass.
+    it("leaves the prices to the next sync once the modal closed mid-submit", async () => {
+      let answerSubmit: (value: {
+        total: number;
+        added: number;
+        removed: number;
+        detailsPending: string[];
+      }) => void = () => {};
+      mutateAsync.mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            answerSubmit = resolve;
+          }),
+      );
+
+      const wrapper = await mountModal(detailExtension);
+      extensionReplies("identify", { handle: "ACaptain" });
+      await flushPromises();
+      await wrapper.find("[data-test='start-buyback-sync']").trigger("click");
+      await flushPromises();
+
+      await answerNextPage(buybackPage("1"));
+      await answerNextPage(emptyBuybackPage);
+
+      wrapper.unmount();
+      mounted = undefined;
+
+      answerSubmit({ total: 1, added: 1, removed: 0, detailsPending: ["1"] });
+      await flushPromises();
+
+      expect(askedFor("syncBuybackPricing")).toBe(false);
     });
 
     it("syncs only the list with an extension that cannot read prices", async () => {

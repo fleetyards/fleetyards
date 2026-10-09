@@ -193,6 +193,43 @@ describe("BaseSelect", () => {
     });
   });
 
+  describe("an autosaved select", () => {
+    const pick = async (wrapper: Wrapper, index: number) => {
+      await wrapper.find("[data-test='base-select-title']").trigger("click");
+      await wrapper
+        .findAll('[id^="ships-options-"] .base-select-item')
+        [index].trigger("click");
+    };
+
+    it("confirms picking another option", async () => {
+      const wrapper = await mount({
+        modelValue: "a",
+        autosaved: true,
+        label: "Ship",
+        noLabel: false,
+      });
+
+      await pick(wrapper, 1);
+
+      expect(wrapper.find(".saved-indicator__label").exists()).toBe(true);
+    });
+
+    it("confirms nothing when the pick changes nothing", async () => {
+      const wrapper = await mount({
+        modelValue: "a",
+        autosaved: true,
+        nullable: false,
+        label: "Ship",
+        noLabel: false,
+      });
+
+      await pick(wrapper, 0);
+
+      expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+      expect(wrapper.find(".saved-indicator__label").exists()).toBe(false);
+    });
+  });
+
   describe("the imperative API four call sites depend on", () => {
     it("exposes reset, clear and clearSearch", async () => {
       const wrapper = await mount();

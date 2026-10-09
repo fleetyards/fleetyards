@@ -237,7 +237,7 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
-        "openSettings": "打开设置",
+        "changeInSettings": "在设置中更改",
         "retry": "重试同步",
         "close": "关闭",
         "refresh": "刷新页面"

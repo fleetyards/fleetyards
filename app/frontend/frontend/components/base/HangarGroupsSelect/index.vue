@@ -25,6 +25,7 @@ type Props = {
   // modal asks the same question about two different sets of ships and has to
   // say which is which.
   label?: string;
+  autosaved?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: true,
   info: undefined,
   label: undefined,
+  autosaved: false,
 });
 
 const { t } = useI18n();
@@ -83,5 +85,6 @@ const formatter = (groups: HangarGroup[]) => {
     :multiple="multiple"
     :no-label="noLabel"
     :info="info"
+    :autosaved="autosaved"
   />
 </template>

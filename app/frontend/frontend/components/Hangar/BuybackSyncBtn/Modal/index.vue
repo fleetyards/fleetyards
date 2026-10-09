@@ -7,6 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -291,8 +295,9 @@ const submit = async () => {
 
   if (result.value.detailsPending.length && extensionSupportsDetails.value) {
     // A hangar sync started while the list was read would share RSI's rate
-    // limit with the pass; the next sync reads these prices instead.
-    if (hangarStore.syncRunning) {
+    // limit with the pass, and so would a sync from a reopened modal, whose
+    // limiter knows nothing of this one; the next sync reads these prices.
+    if (hangarStore.syncRunning || unmounted) {
       displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
     } else {
       detailsStarted.value = true;
@@ -306,13 +311,21 @@ const submit = async () => {
   displaySuccess({ text: t("messages.buybackSync.success") });
 };
 
+// Not forced, so a close mid-fetch asks first, as the X does.
 const close = () => {
-  comlink.emit("close-modal", true);
+  comlink.emit("close-modal");
 };
+
+// Only reading the list ends with the modal: a submitted list is stored and
+// its toast shows without the modal open.
+defineExpose({
+  dirty: computed(() => status.value === "fetching"),
+  dirtyText: t("messages.buybackSync.closeWhileRunning"),
+});
 </script>
 
 <template>
-  <Modal :title="t('headlines.buybackSync')" :fixed="true" :loading="working">
+  <Modal :title="t('headlines.buybackSync')" :loading="working">
     <div v-if="!extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
       <SyncExtensionLinks />
@@ -410,14 +423,15 @@ const close = () => {
     </div>
     <template #footer>
       <Btn
+        :variant="BtnVariantsEnum.BARE"
+        :size="BtnSizesEnum.LG"
         data-test="close-buyback-sync"
-        :disabled="working && status !== 'idle'"
         @click="close"
       >
         {{
-          status === "finished"
-            ? t("actions.syncExtension.close")
-            : t("actions.syncExtension.cancel")
+          status === "idle" || status === "fetching"
+            ? t("actions.syncExtension.cancel")
+            : t("actions.syncExtension.close")
         }}
       </Btn>
       <Btn
@@ -426,6 +440,7 @@ const close = () => {
           extensionSupportsBuybacks &&
           ['idle', 'failed'].includes(status)
         "
+        :size="BtnSizesEnum.LG"
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
         :disabled="

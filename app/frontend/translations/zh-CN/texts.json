@@ -322,9 +322,7 @@
         "alreadyRunning": "机库同步已在进行中。请等待完成。",
         "buybackDetailsRunning": "仍在从 RSI 读取回购价格。完成后才能开始机库同步。",
         "missingUnmatchedGroup": "开始前，请选择用于归档同步找不到的飞船的分组。",
-        "skipsPaints": "本次同步不会更改已保存的涂装。",
-        "skipsHangarFlair": "本次同步不会更改已保存的机库装饰。",
-        "skipsPaintsAndHangarFlair": "本次同步不会更改已保存的涂装和机库装饰。"
+        "notSyncing": "不同步："
       },
       "setEmail": "要设置密码、启用双重认证或接收邮件通知，您需要为账户添加电子邮件地址。您将收到一封确认邮件来验证该地址。",
       "oauthApplications": {

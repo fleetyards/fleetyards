@@ -680,6 +680,7 @@
         "failed": "Import de %{type} échoué : %{info}"
       },
       "buybackSync": {
+        "closeWhileRunning": "Vos pledges rachetables sont encore en cours de synchronisation, et la synchronisation s'arrête si vous fermez cette fenêtre.",
         "started": "Synchronisation de vos pledges rachetables...",
         "success": "Vos pledges rachetables ont été synchronisés.",
         "failure": "Vos pledges rachetables n'ont pas pu être synchronisés.",
@@ -691,6 +692,7 @@
         "failure": "Votre Hangar n'a pas pu être synchronisé.",
         "pageNotRecognised": "La page de RSI ne ressemble pas à ce qu’attend FleetYards, la synchronisation s’est donc arrêtée sans rien modifier.",
         "nothingToSync": "FleetYards n’a trouvé aucun vaisseau, peinture ou composant dans votre hangar RSI, rien n’a donc été modifié.",
+        "closeWhileRunning": "La synchronisation du hangar est toujours en cours et s'arrête si vous fermez cette fenêtre.",
         "onlySkippedItems": "Votre hangar RSI ne contient que des peintures ou des décorations de hangar, que cette synchronisation est réglée pour ignorer, rien n’a donc été modifié.",
         "notLoggedIn": "Vous devez être connecté sur <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> pour synchroniser votre Hangar."
       },

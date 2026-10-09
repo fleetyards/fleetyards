@@ -6,6 +6,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
 import { useMovedFleetRedirect } from "@/frontend/composables/useMovedFleetRedirect";
 import { useSubscription } from "@/shared/composables/useSubscription";
+import { useComlink } from "@/shared/composables/useComlink";
+import { syncOutcomeMessage } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { usePresenceUpdates } from "@/frontend/composables/usePresenceUpdates";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -87,6 +89,8 @@ export const useUpdates = () => {
   };
 
   const { t } = useI18n();
+
+  const comlink = useComlink();
 
   const { displayMessage, displayInfo, displaySuccess, displayAlert } =
     useAppNotifications();
@@ -207,12 +211,15 @@ export const useUpdates = () => {
       hangarStore.syncRunning = false;
     }
 
-    if (hangarStore.syncModalOpen) {
+    if (hangarStore.syncReportedByModal) {
       return;
     }
 
     if (finished) {
-      displaySuccess({ text: t("messages.syncExtension.success") });
+      comlink.emit("hangar-sync-finished");
+
+      const { synced, key } = syncOutcomeMessage(message.result.outcome);
+      (synced ? displaySuccess : displayInfo)({ text: t(key) });
     } else if (failed) {
       displayAlert({ text: t("messages.syncExtension.failure") });
     }

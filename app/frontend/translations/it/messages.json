@@ -680,6 +680,7 @@
         "failed": "Importazione %{type} fallita: %{info}"
       },
       "buybackSync": {
+        "closeWhileRunning": "I tuoi pledge riacquistabili sono ancora in sincronizzazione, e la sincronizzazione si interrompe se chiudi questa finestra.",
         "started": "Sincronizzazione dei tuoi pledge riacquistabili...",
         "success": "I tuoi pledge riacquistabili sono stati sincronizzati.",
         "failure": "Non è stato possibile sincronizzare i tuoi pledge riacquistabili.",
@@ -691,6 +692,7 @@
         "failure": "Il tuo Hangar non può essere sincronizzato.",
         "pageNotRecognised": "La pagina di RSI è diversa da quella che FleetYards si aspetta, quindi la sincronizzazione si è fermata senza modificare nulla.",
         "nothingToSync": "FleetYards non ha trovato navi, vernici o componenti nel tuo hangar RSI, quindi non è stato modificato nulla.",
+        "closeWhileRunning": "La sincronizzazione dell'hangar è ancora in corso e si interrompe se chiudi questa finestra.",
         "onlySkippedItems": "Il tuo hangar RSI contiene solo verniciature o decorazioni per l'hangar, che questa sincronizzazione è impostata per tralasciare, quindi non è stato modificato nulla.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },

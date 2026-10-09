@@ -149,6 +149,10 @@
   border-color: var(--color-danger, #dc3545);
 }
 
+.form-toggle-saved {
+  align-self: center;
+}
+
 .form-toggle-hint {
   /* On the label's line, and before the error message the wrapper reserves
      below it -- the row wraps, so the icon has to come with the label. */

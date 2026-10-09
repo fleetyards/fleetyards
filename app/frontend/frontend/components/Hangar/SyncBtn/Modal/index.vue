@@ -25,7 +25,10 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
-import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
+import {
+  isSyncStepRunning,
+  syncOutcomeMessage,
+} from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
@@ -113,10 +116,10 @@ const filesUnmatchedIntoGroup = computed(
     HangarSyncUnmatchedActionEnum.GROUP,
 );
 
-// `group` with no group is not that action: the endpoint falls back to leaving
-// the ships alone, which is not what the modal would be showing the user.
 const settingsOpen = ref(false);
 
+// `group` with no group is not that action: the endpoint falls back to leaving
+// the ships alone, which is not what the modal would be showing the user.
 const missingUnmatchedGroup = computed(
   () =>
     filesUnmatchedIntoGroup.value && !hangarStore.syncUnmatchedHangarGroupId,
@@ -124,18 +127,14 @@ const missingUnmatchedGroup = computed(
 
 // Both toggles live behind the cog and are remembered, so a user who turned
 // one off once would otherwise start every later sync without seeing it.
-const skippedItemsNote = computed(() => {
-  if (!hangarStore.syncPaints && !hangarStore.syncHangarFlair) {
-    return t("texts.syncExtension.skipsPaintsAndHangarFlair");
-  }
-  if (!hangarStore.syncPaints) {
-    return t("texts.syncExtension.skipsPaints");
-  }
-  if (!hangarStore.syncHangarFlair) {
-    return t("texts.syncExtension.skipsHangarFlair");
-  }
-  return undefined;
-});
+const skippedItems = computed(() => [
+  ...(hangarStore.syncPaints
+    ? []
+    : [t("labels.syncExtension.pledgeItems.paints")]),
+  ...(hangarStore.syncHangarFlair
+    ? []
+    : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
+]);
 
 const seenPledgeIds = new Set<string>();
 
@@ -155,7 +154,6 @@ const processSteps = ref<SyncProcessStep[]>([
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
-  hangarStore.syncModalOpen = true;
 
   if (hangarStore.extensionReady) {
     void checkRSIIdentity();
@@ -166,7 +164,7 @@ let unmounted = false;
 
 onBeforeUnmount(() => {
   unmounted = true;
-  hangarStore.syncModalOpen = false;
+  hangarStore.syncReportedByModal = false;
 
   if (pollingDelayTimer) {
     clearTimeout(pollingDelayTimer);
@@ -246,6 +244,16 @@ const updateStep = (step: string, status: SyncProcessStep["status"]) => {
   }
 };
 
+const submitStatus = computed(
+  () => processSteps.value.find((step) => step.name === "submitData")?.status,
+);
+
+// A modal opened while an earlier run is still on the server did not submit
+// it: that result is the cable listener's to report.
+watch(submitStatus, (status) => {
+  hangarStore.syncReportedByModal = status === "processing";
+});
+
 // Checking the RSI identity or running a step: the modal's bottom cap says so.
 const working = computed(
   () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
@@ -258,6 +266,24 @@ const finished = computed(() =>
 const finishedWithErrors = computed(() =>
   processSteps.value.some((step) => step.status === "failure"),
 );
+
+// Only reading RSI pages ends with the modal: once submitted, the job runs on
+// the server and useUpdates reports its result. A submit that fails after the
+// modal closed alerts from its own catch.
+const fetching = computed(() => {
+  const fetchStatus = processSteps.value.find(
+    (step) => step.name === "fetchHangar",
+  )?.status;
+
+  return (
+    started.value && fetchStatus !== "success" && fetchStatus !== "failure"
+  );
+});
+
+defineExpose({
+  dirty: fetching,
+  dirtyText: t("messages.syncExtension.closeWhileRunning"),
+});
 
 const retryable = computed(() => {
   const submitDataStatus = processSteps.value.find(
@@ -287,8 +313,9 @@ const showSupportHint = computed(
 
 const comlink = useComlink();
 
+// Not forced, so a close mid-fetch asks first, as the X does.
 const cancel = async () => {
-  comlink.emit("close-modal", true);
+  comlink.emit("close-modal");
 };
 
 const start = async () => {
@@ -304,6 +331,8 @@ const start = async () => {
 };
 
 const fetchPage = (page: number) => {
+  if (unmounted) return;
+
   const elapsedMinutes = differenceInMinutes(new Date(), syncStartedAt.value);
 
   const allowedMessages = (elapsedMinutes + 1) * maxMessagesPerMinute;
@@ -415,13 +444,8 @@ const completeSync = (syncResult: HangarSyncResult) => {
   result.value = syncResult;
   hangarStore.syncRunning = false;
 
-  if (syncResult.outcome === HangarSyncOutcomeEnum.NOTHING_TO_SYNC) {
-    displayInfo({ text: t("messages.syncExtension.nothingToSync") });
-  } else if (syncResult.outcome === HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS) {
-    displayInfo({ text: t("messages.syncExtension.onlySkippedItems") });
-  } else {
-    displaySuccess({ text: t("messages.syncExtension.success") });
-  }
+  const { synced, key } = syncOutcomeMessage(syncResult.outcome);
+  (synced ? displaySuccess : displayInfo)({ text: t(key) });
   updateStep("submitData", "success");
   comlink.emit("hangar-sync-finished");
 };
@@ -440,6 +464,8 @@ watch(syncStatusData, (statusData) => {
 });
 
 const onSyncResult = (message: HangarSyncData) => {
+  if (submitStatus.value !== "processing") return;
+
   if (message.status === "finished") {
     completeSync(message.result);
   } else if (message.status === "failed") {
@@ -489,6 +515,10 @@ const finishSync = async () => {
       hangarStore.syncRunning = false;
       updateStep("submitData", "backendFailure");
       console.error(error);
+
+      if (unmounted) {
+        displayAlert({ text: t("messages.syncExtension.failure") });
+      }
     });
 };
 
@@ -505,21 +535,7 @@ const refreshPage = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.syncExtension')" :fixed="true" :loading="working">
-    <template v-if="hangarStore.extensionReady && !started" #header-actions>
-      <Btn
-        v-tooltip="t('labels.syncExtension.settings')"
-        :variant="BtnVariantsEnum.GHOST"
-        :size="BtnSizesEnum.SM"
-        :active="settingsOpen"
-        :aria-label="t('labels.syncExtension.settings')"
-        :aria-pressed="settingsOpen"
-        data-test="toggle-sync-settings"
-        @click="settingsOpen = !settingsOpen"
-      >
-        <i class="fa-light fa-gear" />
-      </Btn>
-    </template>
+  <Modal :title="t('headlines.syncExtension')" :loading="working">
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
@@ -530,6 +546,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncAddBundledVehicles"
             name="syncAddBundledVehicles"
+            autosaved
             :label="t('labels.syncExtension.addBundledVehicles')"
             :info="t('labels.syncExtension.addBundledVehiclesHint')"
             no-placeholder
@@ -537,6 +554,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncPaints"
             name="syncPaints"
+            autosaved
             :label="t('labels.syncExtension.syncPaints')"
             :info="t('labels.syncExtension.syncPaintsHint')"
             no-placeholder
@@ -544,6 +562,7 @@ const refreshPage = async () => {
           <FormToggle
             v-model="hangarStore.syncHangarFlair"
             name="syncHangarFlair"
+            autosaved
             :label="t('labels.syncExtension.syncHangarFlair')"
             :info="t('labels.syncExtension.syncHangarFlairHint')"
             no-placeholder
@@ -551,11 +570,13 @@ const refreshPage = async () => {
           <BaseSelect
             v-model="hangarStore.syncUnmatchedVehiclesAction"
             name="syncUnmatchedVehiclesAction"
+            autosaved
             :options="unmatchedActionOptions"
             :label="t('labels.syncExtension.unmatchedVehiclesAction')"
             :info="t('labels.syncExtension.unmatchedVehiclesActionHint')"
             :searchable="false"
             :paginated="false"
+            :nullable="false"
             :no-label="false"
             unsorted
           />
@@ -563,6 +584,7 @@ const refreshPage = async () => {
             v-if="filesUnmatchedIntoGroup"
             v-model="hangarStore.syncUnmatchedHangarGroupId"
             name="syncUnmatchedHangarGroupId"
+            autosaved
             :multiple="false"
             :no-label="false"
             :label="t('labels.syncExtension.unmatchedHangarGroup')"
@@ -587,29 +609,34 @@ const refreshPage = async () => {
             :info="t('labels.imports.targetGroupHint')"
           />
           <div
-            v-if="missingUnmatchedGroup || skippedItemsNote"
+            v-if="missingUnmatchedGroup || skippedItems.length"
             class="sync-settings-notes"
           >
-            <p
-              v-if="missingUnmatchedGroup"
-              class="text-warning"
-              data-test="sync-missing-unmatched-group"
-            >
-              {{ t("texts.syncExtension.missingUnmatchedGroup") }}
-            </p>
-            <p
-              v-if="skippedItemsNote"
-              class="text-muted"
-              data-test="sync-skipped-items"
-            >
-              {{ skippedItemsNote }}
-            </p>
+            <div class="sync-settings-notes-text">
+              <p
+                v-if="missingUnmatchedGroup"
+                class="text-warning"
+                data-test="sync-missing-unmatched-group"
+              >
+                {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+              </p>
+              <div
+                v-if="skippedItems.length"
+                class="text-muted"
+                data-test="sync-skipped-items"
+              >
+                <p>{{ t("texts.syncExtension.notSyncing") }}</p>
+                <ul>
+                  <li v-for="item in skippedItems" :key="item">{{ item }}</li>
+                </ul>
+              </div>
+            </div>
             <Btn
               :size="BtnSizesEnum.SM"
               data-test="open-sync-settings"
               @click="settingsOpen = true"
             >
-              {{ t("actions.syncExtension.openSettings") }}
+              {{ t("actions.syncExtension.changeInSettings") }}
             </Btn>
           </div>
           <p v-if="hangarStore.syncRunning" class="text-warning">
@@ -640,22 +667,61 @@ const refreshPage = async () => {
       </div>
     </transition>
     <template #footer>
-      <Btn v-if="finished" data-test="close-sync" @click="cancel">
+      <Btn
+        v-if="finished"
+        :size="BtnSizesEnum.LG"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="close-sync"
+        @click="cancel"
+      >
         {{ t("actions.syncExtension.close") }}
+      </Btn>
+      <Btn
+        v-else-if="settingsOpen && hangarStore.extensionReady && !started"
+        :size="BtnSizesEnum.LG"
+        :variant="BtnVariantsEnum.BARE"
+        class="sync-footer-start"
+        data-test="close-sync-settings"
+        @click="settingsOpen = false"
+      >
+        <i class="fa-light fa-chevron-left" />
+        {{ t("actions.back") }}
       </Btn>
       <template v-else>
         <Btn
+          v-if="hangarStore.extensionReady && !started"
+          :size="BtnSizesEnum.LG"
+          :variant="BtnVariantsEnum.BARE"
+          class="sync-footer-start"
+          data-test="toggle-sync-settings"
+          @click="settingsOpen = true"
+        >
+          <i class="fa-light fa-gear" />
+          {{ t("labels.syncExtension.settings") }}
+        </Btn>
+        <Btn
+          :size="BtnSizesEnum.LG"
+          :variant="BtnVariantsEnum.BARE"
           data-test="cancel-sync"
-          :disabled="started && !finishedWithErrors"
           @click="cancel"
         >
-          {{ t("actions.syncExtension.cancel") }}
+          {{
+            !started || fetching
+              ? t("actions.syncExtension.cancel")
+              : t("actions.syncExtension.close")
+          }}
         </Btn>
-        <Btn v-if="retryable" data-test="start-sync" @click.native="finishSync">
+        <Btn
+          v-if="retryable"
+          :size="BtnSizesEnum.LG"
+          data-test="start-sync"
+          @click="finishSync"
+        >
           {{ t("actions.syncExtension.retry") }}
         </Btn>
         <Btn
           v-else-if="hangarStore.extensionReady"
+          :size="BtnSizesEnum.LG"
           data-test="start-sync"
           :loading="started || loadingIdentity"
           :disabled="
@@ -668,7 +734,12 @@ const refreshPage = async () => {
         >
           {{ t("actions.syncExtension.start") }}
         </Btn>
-        <Btn v-else data-test="recheck-sync" @click="refreshPage">
+        <Btn
+          v-else
+          :size="BtnSizesEnum.LG"
+          data-test="recheck-sync"
+          @click="refreshPage"
+        >
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>

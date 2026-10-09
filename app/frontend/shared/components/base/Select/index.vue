@@ -9,6 +9,7 @@ import Collapsed from "@/shared/components/Collapsed.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
+import SavedIndicator from "@/shared/components/base/SavedIndicator/index.vue";
 import debounce from "lodash.debounce";
 import { v4 as uuidv4 } from "uuid";
 import { BaseSelectSizesEnum, BaseSelectVariantsEnum } from "./types";
@@ -76,6 +77,11 @@ type Props = {
   inline?: boolean;
   size?: `${BaseSelectSizesEnum}`;
   variant?: `${BaseSelectVariantsEnum}`;
+  /*
+   * For a value that is stored the moment it changes, with no save button to
+   * press: each change briefly confirms itself beside the label.
+   */
+  autosaved?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -95,6 +101,7 @@ const props = withDefaults(defineProps<Props>(), {
   nullable: true,
   paginated: false,
   info: undefined,
+  autosaved: false,
   noLabel: false,
   unsorted: false,
   bigIcon: false,
@@ -966,6 +973,8 @@ const selected = (option: FilterOptionValue) => {
 
 const emits = defineEmits(["update:modelValue"]);
 
+const savedIndicator = ref<InstanceType<typeof SavedIndicator>>();
+
 const select = async (optionValue: FilterOptionValue) => {
   clearSearch();
 
@@ -975,8 +984,10 @@ const select = async (optionValue: FilterOptionValue) => {
         "update:modelValue",
         selectedValues.value.filter((item) => item !== optionValue),
       );
+      savedIndicator.value?.show();
     } else if (props.nullable) {
       emits("update:modelValue", null);
+      savedIndicator.value?.show();
     }
   } else if (props.multiple) {
     const values: FilterOptionValue[] = [...selectedValues.value];
@@ -984,10 +995,12 @@ const select = async (optionValue: FilterOptionValue) => {
     values.push(optionValue);
 
     emits("update:modelValue", values);
+    savedIndicator.value?.show();
 
     await focusSearch();
   } else {
     emits("update:modelValue", optionValue);
+    savedIndicator.value?.show();
 
     await toggle();
   }
@@ -1065,6 +1078,7 @@ defineExpose({
           `<label>` hands its click to the control the label points at.
         -->
         <HintIcon v-if="info" :text="info" />
+        <SavedIndicator v-if="autosaved" ref="savedIndicator" />
       </div>
     </transition>
     <button

@@ -47,4 +47,16 @@ describe("FormToggle", () => {
 
     expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([true]);
   });
+
+  it("confirms a change when the value is autosaved", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "alliesFleet", modelValue: false, autosaved: true },
+    });
+
+    expect(wrapper.find(".saved-indicator__label").exists()).toBe(false);
+
+    await wrapper.find("input").setValue(true);
+
+    expect(wrapper.find(".saved-indicator__label").exists()).toBe(true);
+  });
 });

@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useField } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
+import SavedIndicator from "@/shared/components/base/SavedIndicator/index.vue";
 
 type Props = {
   name: string;
@@ -40,6 +41,11 @@ type Props = {
    * `<label>` still toggles the control when it is clicked.
    */
   info?: string;
+  /*
+   * For a value that is stored the moment it changes, with no save button to
+   * press: each change briefly confirms itself beside the label.
+   */
+  autosaved?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   noLabel: false,
   info: undefined,
+  autosaved: false,
 });
 
 const { t, tExists } = useI18n();
@@ -79,6 +86,8 @@ onMounted(() => {
 
 const emit = defineEmits(["update:modelValue"]);
 
+const savedIndicator = ref<InstanceType<typeof SavedIndicator>>();
+
 const update = () => {
   emit("update:modelValue", value.value);
 };
@@ -89,6 +98,7 @@ const update = () => {
 const onChange = (event: Event) => {
   value.value = (event.target as HTMLInputElement).checked;
   update();
+  savedIndicator.value?.show();
 };
 
 const innerLabel = computed(() => {
@@ -152,6 +162,11 @@ const innerPlaceholder = computed(() => {
       </span>
     </label>
     <HintIcon v-if="info" :text="info" class="form-toggle-hint" />
+    <SavedIndicator
+      v-if="autosaved"
+      ref="savedIndicator"
+      class="form-toggle-saved"
+    />
     <!-- See the note in FormCheckbox: below the control, and always present. -->
 
     <!--

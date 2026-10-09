@@ -16,6 +16,9 @@ import { type AppModalOptions } from "./types";
 
 interface ModalComponent extends HTMLElement {
   dirty?: boolean;
+  // Replaces the unsaved-changes wording for content whose close loses
+  // something other than typed input.
+  dirtyText?: string;
 }
 
 const modal = ref<HTMLElement | undefined>();
@@ -99,7 +102,8 @@ const close = async (force = false) => {
   // is not lost, so there is nothing to confirm.
   if (!force && modalComponent.value?.dirty) {
     displayConfirm({
-      text: t("appModal.messages.confirm.dirty"),
+      text:
+        modalComponent.value.dirtyText ?? t("appModal.messages.confirm.dirty"),
       onConfirm: async () => {
         await internalHide();
       },

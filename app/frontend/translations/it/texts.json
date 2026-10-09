@@ -322,9 +322,7 @@
         "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento.",
         "buybackDetailsRunning": "I prezzi di riacquisto sono ancora in lettura da RSI. La sincronizzazione dell'hangar potrà partire quando sarà terminata.",
         "missingUnmatchedGroup": "Prima di iniziare, scegli il gruppo in cui archiviare le navi che la sincronizzazione non trova.",
-        "skipsPaints": "Questa sincronizzazione lascia invariate le verniciature salvate.",
-        "skipsHangarFlair": "Questa sincronizzazione lascia invariate le decorazioni per l'hangar salvate.",
-        "skipsPaintsAndHangarFlair": "Questa sincronizzazione lascia invariate le verniciature e le decorazioni per l'hangar salvate."
+        "notSyncing": "Fuori dalla sincronizzazione:"
       },
       "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",
       "oauthApplications": {

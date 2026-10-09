@@ -58,7 +58,8 @@ interface HangarState extends ShipListState {
   money: boolean;
   extensionReady: boolean;
   extensionVersion?: string;
-  syncModalOpen: boolean;
+  // The open modal submitted the running sync and reports its result itself.
+  syncReportedByModal: boolean;
   syncRunning: boolean;
   syncAddBundledVehicles: boolean;
   syncPaints: boolean;
@@ -81,7 +82,7 @@ export const useHangarStore = defineStore("hangar", {
     gridView: true,
     extensionReady: false,
     extensionVersion: undefined,
-    syncModalOpen: false,
+    syncReportedByModal: false,
     syncRunning: false,
     syncAddBundledVehicles: true,
     syncPaints: true,

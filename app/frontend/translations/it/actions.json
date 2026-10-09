@@ -237,7 +237,7 @@
       "syncExtension": {
         "cancel": "Annulla",
         "start": "Avvia sincronizzazione",
-        "openSettings": "Apri impostazioni",
+        "changeInSettings": "Modifica nelle impostazioni",
         "retry": "Riprova sincronizzazione",
         "close": "Chiudi",
         "refresh": "Aggiorna pagina"

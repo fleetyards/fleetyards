@@ -322,9 +322,7 @@
         "alreadyRunning": "A Hangar Sync is already in progress. Please wait for it to finish.",
         "buybackDetailsRunning": "Buy-back prices are still being read from RSI. The hangar sync can start once that has finished.",
         "missingUnmatchedGroup": "Choose the group to file ships the sync cannot find into before you start.",
-        "skipsPaints": "This sync leaves your stored paints as they are.",
-        "skipsHangarFlair": "This sync leaves your stored hangar flair as it is.",
-        "skipsPaintsAndHangarFlair": "This sync leaves your stored paints and hangar flair as they are."
+        "notSyncing": "Not syncing:"
       },
       "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address.",
       "oauthApplications": {
