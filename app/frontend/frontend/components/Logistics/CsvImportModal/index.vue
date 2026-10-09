@@ -12,14 +12,26 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { axiosClient } from "@/services/axiosClient";
+import type {
+  FleetInventoryTarget,
+  InventoryTarget,
+} from "@/frontend/types/logistics";
 
 type Props = {
-  url: string;
-  createdEvent?: "inventory-item-created" | "fleet-inventory-item-created";
+  target: InventoryTarget | FleetInventoryTarget;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  createdEvent: "inventory-item-created",
+const props = defineProps<Props>();
+
+const importUrl = computed(() => {
+  switch (props.target.kind) {
+    case "hangar":
+      return `/hangar/inventories/${props.target.slug}/items/import`;
+    case "vehicle":
+      return `/vehicles/${props.target.vehicleId}/inventory/items/import`;
+    case "fleet":
+      return `/fleets/${props.target.fleetSlug}/inventories/${props.target.slug}/items/import`;
+  }
 });
 
 const { t } = useI18n();
@@ -61,7 +73,7 @@ const importCsv = async () => {
 
   try {
     const response = (await axiosClient({
-      url: props.url,
+      url: importUrl.value,
       method: "POST",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +89,11 @@ const importCsv = async () => {
           count: results.value.imported,
         }),
       });
-      comlink.emit(props.createdEvent);
+      comlink.emit(
+        props.target.kind === "fleet"
+          ? "fleet-inventory-item-created"
+          : "inventory-item-created",
+      );
     }
 
     if (results.value.errors.length === 0) {

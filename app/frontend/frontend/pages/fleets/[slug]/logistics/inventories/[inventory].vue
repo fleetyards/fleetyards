@@ -198,8 +198,11 @@ const openCsvImportModal = () => {
     component: () =>
       import("@/frontend/components/Logistics/CsvImportModal/index.vue"),
     props: {
-      url: `/fleets/${props.fleet.slug}/inventories/${inventory.value.slug}/items/import`,
-      createdEvent: "fleet-inventory-item-created",
+      target: {
+        kind: "fleet",
+        fleetSlug: props.fleet.slug,
+        slug: inventory.value.slug,
+      },
     },
   });
 };
