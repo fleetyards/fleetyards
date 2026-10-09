@@ -291,7 +291,9 @@ const onEdit = (entry: PayoutEntry) => {
 @media (max-width: map-get($grid-breakpoints, sm)) {
   .payout-entries__row {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
+    // Only a row with an edit button gets the third column and its gap.
+    grid-auto-columns: auto;
     align-items: start;
     column-gap: 12px;
     row-gap: 6px;
