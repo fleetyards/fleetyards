@@ -12,15 +12,21 @@ type Props = {
 export const useTableSorting = ({ field, fallback, id }: Props) => {
   const route = useRoute();
 
+  const parsedFallback = computed(() => {
+    const [column, direction] = (toValue(fallback) || "").split(" ");
+
+    return {
+      column,
+      direction: (direction as "asc" | "desc" | undefined) || "asc",
+    };
+  });
+
   const currentDirection = computed((): "asc" | "desc" | undefined => {
     const sorts = (route.query.s as string) || "";
     const [sortCol, sortDirection] = sorts.split(" ");
-    const fallbackSort = toValue(fallback);
 
-    const [fallbackCol, fallbackDirection] = (fallbackSort || "").split(" ");
-
-    if (!sorts && fallbackCol === String(field)) {
-      return (fallbackDirection as "asc" | "desc") || "asc";
+    if (!sorts && parsedFallback.value.column === String(field)) {
+      return parsedFallback.value.direction;
     }
 
     if (sortCol === field) {
@@ -32,17 +38,19 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
 
   const sortableDirection = () => {
     const active = currentDirection.value;
-    const [fallbackCol, fallbackDirection = "asc"] = (
-      toValue(fallback) || ""
-    ).split(" ");
 
-    // The default's own field toggles, landing back on the default instead of
-    // naming it: a descending default would otherwise go nowhere on its first
-    // press, its next step being the reset it already shows.
-    if (fallbackCol === String(field)) {
+    // The default's own field goes to the default first, then toggles,
+    // landing back on the default instead of naming it: a descending default
+    // would otherwise go nowhere on its first press, its next step being the
+    // reset it already shows.
+    if (parsedFallback.value.column === String(field)) {
+      if (!active) {
+        return undefined;
+      }
+
       const next = active === "asc" ? "desc" : "asc";
 
-      return next === fallbackDirection ? undefined : next;
+      return next === parsedFallback.value.direction ? undefined : next;
     }
 
     if (active === "asc") {

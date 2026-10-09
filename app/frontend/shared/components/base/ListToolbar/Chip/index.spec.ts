@@ -104,4 +104,11 @@ describe("BaseListToolbarChip", () => {
 
     expect(await click()).toEqual({ s: "name desc", q: "x" });
   });
+
+  it("goes to a descending default first from another field's sort", async () => {
+    const { click } = await mountChip({ s: "price asc" }, "name desc");
+
+    expect(await click()).toEqual({});
+    expect(await click()).toEqual({ s: "name asc" });
+  });
 });
