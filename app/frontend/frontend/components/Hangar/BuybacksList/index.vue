@@ -95,19 +95,18 @@ const remove = (buyback: BuybackPledge) => {
     onConfirm: async () => {
       removingId.value = buyback.id;
 
-      await destroyMutation
-        .mutateAsync({ id: buyback.id })
-        .then(() =>
-          queryClient.invalidateQueries({
-            queryKey: getHangarBuybacksQueryKey(),
-          }),
-        )
-        .catch(() => {
-          displayAlert({ text: t("messages.buyback.destroy.failure") });
-        })
-        .finally(() => {
-          removingId.value = undefined;
-        });
+      try {
+        await destroyMutation.mutateAsync({ id: buyback.id });
+      } catch {
+        displayAlert({ text: t("messages.buyback.destroy.failure") });
+        return;
+      } finally {
+        removingId.value = undefined;
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: getHangarBuybacksQueryKey(),
+      });
     },
   });
 };

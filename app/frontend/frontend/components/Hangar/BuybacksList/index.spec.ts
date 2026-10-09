@@ -134,6 +134,18 @@ describe("Hangar/BuybacksList", () => {
     expect(displayAlert).toHaveBeenCalled();
   });
 
+  // The pledge is gone by then; a refresh that fails is not a failed removal.
+  it("does not report a failed refresh as a failed removal", async () => {
+    invalidateQueries.mockRejectedValue(new Error("offline"));
+    const wrapper = await mount([buyback()]);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(destroyBuyback).toHaveBeenCalled();
+    expect(displayAlert).not.toHaveBeenCalled();
+  });
+
   it("offers removal for a pledge RSI no longer offers", async () => {
     const wrapper = await mount([buyback({ available: false })]);
 
