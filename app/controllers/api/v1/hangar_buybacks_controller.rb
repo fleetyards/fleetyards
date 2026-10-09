@@ -20,13 +20,15 @@ module Api
         sorts = sorting_params(BuybackPledge, buyback_query_params.delete("sorts"))
 
         @q = authorized_scope(BuybackPledge.all).ransack(buyback_query_params)
-        # Many pledges share a reclaim date, a price or a name, so without the
-        # id last the planner picks their order and paging repeats some and
-        # skips others.
         sorts = [*sorts, "name asc"] if sorts.none? { |sort| sort.start_with?("name ") }
-        @q.sorts = [*sorts, "id asc"]
+        @q.sorts = sorts
 
+        # Many pledges share a reclaim date, a price and a name, so without the
+        # id last the planner picks their order and paging repeats some and
+        # skips others. Ordered outside ransack, which drops a sort on an
+        # attribute it may not search.
         @buyback_pledges = @q.result
+          .order(:id)
           .includes(:upgrade_from_model, :upgrade_to_model)
           .page(page_params)
           .per(per_page(BuybackPledge))

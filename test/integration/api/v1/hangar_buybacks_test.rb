@@ -160,6 +160,31 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks lists pledges without a reclaim date last" do
+    user = create(:user)
+    undated = buyback(user)
+    dated = buyback(user, reclaimed_on: Date.new(2023, 11, 26))
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [dated.id, undated.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /hangar/buybacks pages through identical pledges without repeating one" do
+    user = create(:user)
+    pledges = Array.new(3) { buyback(user, reclaimed_on: Date.new(2023, 11, 26)) }
+    sign_in user
+
+    ids = (1..3).flat_map do |page|
+      get "/api/v1/hangar/buybacks", params: {page:, perPage: 1}
+
+      parsed_body["items"].pluck("id")
+    end
+
+    assert_equal pledges.map(&:id).sort, ids
+  end
+
   test "GET /hangar/buybacks refuses a sort it does not offer" do
     sign_in create(:user)
 
