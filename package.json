@@ -37,7 +37,7 @@
     "@anycable/web": "^1.1.1",
     "@appsignal/javascript": "^1.6.1",
     "@appsignal/vue": "^1.1.7",
-    "@event-calendar/core": "^5.15.0",
+    "@event-calendar/core": "^5.16.0",
     "@floating-ui/dom": "^1.8.0",
     "@google/model-viewer": "^4.3.1",
     "@number-flow/vue": "^0.5.2",
