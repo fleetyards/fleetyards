@@ -60,6 +60,15 @@ describe("RSIHangarParser.extractPage", () => {
     ).toMatchObject({ details: ['page title "Maintenance"'] });
   });
 
+  it("reads a known kind with whitespace around it", () => {
+    expect(
+      extract(pledgesPage(pledge("101", item("\n  Ship\n  ", "Cutter")))),
+    ).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [{ id: "101", name: "Cutter", type: "ship" }],
+    });
+  });
+
   it("does not report a page title it does not know", () => {
     const page = extract(
       "<title>citizen123 - Roberts Space Industries</title><div></div>",
@@ -275,7 +284,7 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("takes every case in turn and names each trimmed kind once", () => {
+  it("takes every case in turn and names each kind once", () => {
     const withoutKind = (liner: string) =>
       `<div class="item"><div class="text"><div class="title">Cutter</div><div class="liner">${liner}</div></div></div>`;
 
@@ -299,9 +308,8 @@ describe("RSIHangarParser.extractPage", () => {
       details: [
         'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
         'no ship in a "Standalone Ships" pledge, kinds none, Insurance, empty',
-        'unknown kind "Insurance\n  "',
-        'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
         'unknown kind ""',
+        'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
       ],
     });
   });

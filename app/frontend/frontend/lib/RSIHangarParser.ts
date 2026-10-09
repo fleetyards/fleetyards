@@ -215,7 +215,7 @@ export class RSIHangarParser {
           elements.map((item) => {
             const kind = this.itemKind(item);
 
-            return kind === undefined ? "none" : kind.trim() || "empty";
+            return kind === undefined ? "none" : kind || "empty";
           }),
         );
 
@@ -395,7 +395,7 @@ export class RSIHangarParser {
   itemKind(item: Element): string | undefined {
     const kind = item.getElementsByClassName("kind")[0];
 
-    return kind ? kind.textContent || "" : undefined;
+    return kind ? (kind.textContent ?? "").trim() : undefined;
   }
 
   extractImage(item: Element): string | undefined {
