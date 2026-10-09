@@ -107,21 +107,6 @@
           "removed": "公告已刪除。",
           "removeFailed": "無法刪除公告。"
         }
-      },
-      "health": {
-        "title": "艦隊狀況",
-        "inactive": {
-          "one": "%{count} 名成員超過 30 天未活躍",
-          "other": "%{count} 名成員超過 30 天未活躍"
-        },
-        "unverified": {
-          "one": "%{count} 名成員未在 RSI 組織中驗證",
-          "other": "%{count} 名成員未在 RSI 組織中驗證"
-        },
-        "emptyRoles": {
-          "one": "%{count} 個角色無人擔任",
-          "other": "%{count} 個角色無人擔任"
-        }
       }
     }
   }

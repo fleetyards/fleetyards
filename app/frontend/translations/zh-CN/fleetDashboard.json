@@ -107,21 +107,6 @@
           "removed": "公告已删除。",
           "removeFailed": "无法删除公告。"
         }
-      },
-      "health": {
-        "title": "舰队状况",
-        "inactive": {
-          "one": "%{count} 名成员超过 30 天未活跃",
-          "other": "%{count} 名成员超过 30 天未活跃"
-        },
-        "unverified": {
-          "one": "%{count} 名成员未在 RSI 组织中验证",
-          "other": "%{count} 名成员未在 RSI 组织中验证"
-        },
-        "emptyRoles": {
-          "one": "%{count} 个角色无人担任",
-          "other": "%{count} 个角色无人担任"
-        }
       }
     }
   }

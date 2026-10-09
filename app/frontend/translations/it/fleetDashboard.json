@@ -107,21 +107,6 @@
           "removed": "Annuncio rimosso.",
           "removeFailed": "Impossibile rimuovere l'annuncio."
         }
-      },
-      "health": {
-        "title": "Stato della flotta",
-        "inactive": {
-          "one": "%{count} membro inattivo da oltre 30 giorni",
-          "other": "%{count} membri inattivi da oltre 30 giorni"
-        },
-        "unverified": {
-          "one": "%{count} membro non verificato nell'org RSI",
-          "other": "%{count} membri non verificati nell'org RSI"
-        },
-        "emptyRoles": {
-          "one": "%{count} ruolo senza nessuno",
-          "other": "%{count} ruoli senza nessuno"
-        }
       }
     }
   }

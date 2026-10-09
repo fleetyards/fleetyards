@@ -107,21 +107,6 @@
           "removed": "Announcement removed.",
           "removeFailed": "The announcement could not be removed."
         }
-      },
-      "health": {
-        "title": "Fleet health",
-        "inactive": {
-          "one": "%{count} member inactive for 30+ days",
-          "other": "%{count} members inactive for 30+ days"
-        },
-        "unverified": {
-          "one": "%{count} member not verified with the RSI org",
-          "other": "%{count} members not verified with the RSI org"
-        },
-        "emptyRoles": {
-          "one": "%{count} role nobody holds",
-          "other": "%{count} roles nobody holds"
-        }
       }
     }
   }
