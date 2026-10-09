@@ -160,7 +160,10 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  const isMonth = !info.view.type.startsWith("timeGrid");
+  // The compact week has a whole column per day and one row of them, room
+  // enough for the cover; a month's cells and the phone list are not.
+  const isCard = info.view.type === "dayGridWeek";
+  const isMonth = !info.view.type.startsWith("timeGrid") && !isCard;
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
@@ -189,6 +192,7 @@ const renderEventChip = (info: {
       chip.style.backgroundImage = `url(${cover})`;
       chip.classList.add("fy-event-chip--with-cover");
     }
+    if (isCard) chip.classList.add("fy-event-chip--card");
   }
 
   if (info.timeText) {
@@ -588,6 +592,30 @@ onUnmounted(() => {
     min-height: 1.5rem;
     background-color: rgb(66 139 202 / 0.85);
     color: #fff;
+  }
+
+  // Compact week: the same card as the week view's, sized by its content
+  // rather than by a time slot, with room for a title on two lines.
+  :deep(.fy-event-chip--card) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 2px;
+    min-height: 64px;
+    padding: 6px 8px;
+    background-color: rgb(66 139 202 / 0.85);
+    color: #fff;
+  }
+
+  :deep(.fy-event-chip--card .fy-event-chip__time) {
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  :deep(.fy-event-chip--card .fy-event-chip__title) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
   }
 
   :deep(.fy-event-chip--with-cover) {
