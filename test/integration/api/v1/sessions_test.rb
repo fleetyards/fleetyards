@@ -95,6 +95,52 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /sessions with a wrong password leaves a signed in session alone" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+
+    browser.post "/api/v1/sessions",
+      params: {login: user.username, password: "wrong-password"}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+    assert_equal 400, browser.response.status
+
+    browser.get "/api/v1/users/me"
+    assert_equal 200, browser.response.status
+  end
+
+  test "POST /sessions signs in another account over a remembered one" do
+    remembered = create(:user, password: "enterprise")
+    other = create(:user, password: "enterprise")
+    browser = sign_in_remembered(remembered)
+    browser.cookies.delete(SESSION_COOKIE)
+
+    sign_in_json(browser, other, remember: false)
+    browser.cookies.delete(REMEMBER_COOKIE)
+    browser.get "/api/v1/users/me"
+
+    assert_equal other.id, JSON.parse(browser.response.body)["id"]
+    assert_nil remembered.reload.last_active_at
+  end
+
+  test "POST /sessions signs in with a second factor after asking for it" do
+    user = create(:user, password: "enterprise", otp_secret: User.generate_otp_secret, otp_required_for_login: true)
+    browser = open_session
+
+    browser.post "/api/v1/sessions",
+      params: {login: user.username, password: "enterprise"}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+    assert_equal "session.create.two_factor_required", JSON.parse(browser.response.body)["code"]
+
+    browser.post "/api/v1/sessions",
+      params: {login: user.username, password: "enterprise", twoFactorCode: user.current_otp}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+    assert_equal 200, browser.response.status
+
+    browser.get "/api/v1/users/me"
+    assert_equal 200, browser.response.status
+  end
+
   test "POST /sessions returns 400 for missing body" do
     assert_api_response :post, 400, body: nil
   end

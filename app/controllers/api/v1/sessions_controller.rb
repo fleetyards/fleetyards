@@ -7,10 +7,11 @@ module Api
 
       skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
-      # A sign-in replaces whoever the session held. Dropped before anything
-      # fetches them, or a timed out user answers the sign-in with a 401, and
-      # the same user signing back in is a no-op without a remember cookie.
+      # A sign-in replaces whoever the session held, so nothing may fetch them
+      # first: a timed out user would answer with a 401, and a remember cookie
+      # would sign the previous account back in and make `sign_in` a no-op.
       prepend_before_action(only: :create) { warden.logout(:user) }
+      skip_before_action :set_paper_trail_whodunnit, :write_session_when_signed_in, :set_last_active_at, only: :create
 
       before_action :authenticate_user!, except: [:create, :confirm_access]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
