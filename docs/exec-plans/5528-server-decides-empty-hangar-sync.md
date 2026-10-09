@@ -24,7 +24,7 @@ The sync run, not the modal, decides that a sync has nothing to do, and the moda
 ## Intent Verification
 
 - [x] An empty `items` list returns 200 and finishes as `nothing_to_sync`.
-- [x] Only turned-off paints and flair finish as `only_skipped_items` with nothing touched, under every unmatched-vehicles action.
+- [x] Only turned-off paints and flair finish as `only_skipped_items` with nothing touched; the vehicle step is skipped, so the unmatched-vehicles action never runs.
 - [x] The stored paints and flair survive an empty run even with both toggles on.
 - [x] The modal has no kind filter and shows the server's outcome; no support prompt after a no-op.
 
@@ -40,13 +40,14 @@ The sync run, not the modal, decides that a sync has nothing to do, and the moda
 | `test/integration/api/v1/hangar_sync_rsi_test.rb` | Endpoint tests + openapi path |
 
 ## Not in scope (deferred)
-- None yet.
+- **No-op runs leave a finished import** — it is listed on the imports page and counted by the admin weekly report as a hangar sync. Becomes its own issue before the PR merges, or is dropped.
 
 ## Discovery Log
 
 - **2026-10-09** Initial research. The server already treats a ship-less list safely for vehicles, but an empty list with a toggle on deletes every stored paint/flair (`HangarPledgeItems::Sync` deletes everything not in the list), and an empty run lists every purchased ship as unchanged and notifies.
+- **2026-10-09** Implemented. The outcome enum is not tagged for cable; the AsyncAPI writer follows the `$ref` from `HangarSyncResult`. One existing lib test relied on an empty list wiping stored paints; it now uses a ship-only list.
+- **2026-10-09** Review. `sync_outcome` now uses the same storable-item check as `HangarPledgeItems::Sync` (`kind_for`), so paint rows without an id or name no longer make a run a sync. Per-kind replacement (a flair-only list empties stored paints) is kept: the list is the whole truth for each synced kind.
 
 ## Progress
 - [x] Phase 1
 - [x] Phase 2
-- **2026-10-09** Implemented. The outcome enum is not tagged for cable; the AsyncAPI writer follows the `$ref` from `HangarSyncResult`. One existing lib test relied on an empty list wiping stored paints; it now uses a ship-only list.
