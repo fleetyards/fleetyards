@@ -54,8 +54,16 @@ const BODY_LIMIT = 2000;
 // what an officer means, and a span needs no time zone to be right.
 const KEEP = "keep";
 
+// Only while that end is still ahead: keeping one that has passed would save
+// an announcement nobody sees.
+const canKeep = computed(
+  () =>
+    !!props.announcement?.expiresAt &&
+    new Date(props.announcement.expiresAt).getTime() > Date.now(),
+);
+
 const expiryOptions = computed<FilterOption[]>(() => [
-  ...(props.announcement?.expiresAt
+  ...(canKeep.value
     ? [{ label: t("fleetDashboard.announcements.expiry.keep"), value: KEEP }]
     : []),
   { label: t("fleetDashboard.announcements.expiry.never"), value: "0" },
@@ -70,7 +78,7 @@ type FormValues = { body: string; expiry: string };
 const { defineField, handleSubmit, setErrors } = useForm<FormValues>({
   initialValues: {
     body: props.announcement?.body ?? "",
-    expiry: props.announcement?.expiresAt ? KEEP : "0",
+    expiry: canKeep.value ? KEEP : "0",
   },
 });
 
