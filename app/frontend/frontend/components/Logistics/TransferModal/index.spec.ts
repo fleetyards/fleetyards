@@ -66,7 +66,9 @@ const build = async (
   memberFleets: { value: string; label: string }[] = [],
   actingForFleet = false,
 ) => {
+  // Attached, so the footer button reaches its form through the form attribute.
   wrapper = mount(TransferModal, {
+    attachTo: document.body,
     props: {
       source: { id: "src", name: "Caterpillar" },
       positions,
@@ -121,7 +123,7 @@ describe("TransferModal", () => {
   it("starts every chosen line at its full quantity", async () => {
     const { onSend } = await build([position()]);
 
-    await wrapper!.find("#transfer-form").trigger("submit");
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
@@ -143,7 +145,7 @@ describe("TransferModal", () => {
 
     expect(wrapper!.findAll('[data-test^="transfer-line-"]')).toHaveLength(1);
 
-    await wrapper!.find("#transfer-form").trigger("submit");
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
@@ -203,7 +205,7 @@ describe("TransferModal", () => {
         .exists(),
     ).toBe(false);
 
-    await wrapper!.find("#transfer-form").trigger("submit");
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
@@ -228,7 +230,7 @@ describe("TransferModal", () => {
       wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
     ).toBeDefined();
 
-    await wrapper!.find("#transfer-form").trigger("submit");
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
 
     expect(onSend).not.toHaveBeenCalled();
@@ -375,7 +377,7 @@ describe("TransferModal towards a contract", () => {
     expect(picker).toBeDefined();
 
     await picker?.vm.$emit("update:modelValue", "contract-1");
-    await wrapper.find("#transfer-form").trigger("submit");
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
@@ -388,7 +390,7 @@ describe("TransferModal towards a contract", () => {
 
     const { wrapper, onSend } = await build([position()], [pendingTarget]);
 
-    await wrapper.find("#transfer-form").trigger("submit");
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
@@ -427,7 +429,7 @@ describe("TransferModal towards a contract", () => {
       false,
     );
 
-    await wrapper.find("#transfer-form").trigger("submit");
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
     await flushPromises();
 
     expect(onSend).toHaveBeenCalledWith(
