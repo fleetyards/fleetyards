@@ -179,6 +179,14 @@ const onToggle = async (transfer: PayoutTransfer) => {
   white-space: nowrap;
 }
 
+.payout-transfers__arrow {
+  color: var(--color-muted, #7a8288);
+}
+
+.payout-transfers__amount {
+  font-size: 16px;
+}
+
 // Both names are who pays whom; cut down to "orga…" on a phone, neither
 // said it.
 @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -191,13 +199,5 @@ const onToggle = async (transfer: PayoutTransfer) => {
     white-space: normal;
     overflow-wrap: anywhere;
   }
-}
-
-.payout-transfers__arrow {
-  color: var(--color-muted, #7a8288);
-}
-
-.payout-transfers__amount {
-  font-size: 16px;
 }
 </style>
