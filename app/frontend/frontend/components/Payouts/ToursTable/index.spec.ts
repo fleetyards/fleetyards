@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { Tour } from "@/services/fyApi";
 
@@ -14,11 +14,16 @@ const tour = (overrides: Partial<Tour> = {}): Tour =>
 
 const wrappers: Array<{ unmount: () => void }> = [];
 
-const mount = async (props: {
-  tours: Tour[];
-  loading?: boolean;
-  withFleet?: boolean;
-}) => {
+const mount = async (
+  props: {
+    tours: Tour[];
+    loading?: boolean;
+    withFleet?: boolean;
+  },
+  { mobile = false }: { mobile?: boolean } = {},
+) => {
+  vi.stubGlobal("matchMedia", () => ({ matches: mobile }));
+
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
   });
@@ -27,6 +32,7 @@ const mount = async (props: {
 };
 
 afterEach(() => {
+  vi.unstubAllGlobals();
   while (wrappers.length) {
     wrappers.pop()?.unmount();
   }
@@ -51,6 +57,23 @@ describe("ToursTable", () => {
 
     const with_ = await mount({ tours: [fleetTour], withFleet: true });
     expect(with_.text()).toContain("Blue Sun");
+  });
+
+  // A fourth column pushed the status off the edge of a phone.
+  it("puts the fleet under the title on a phone", async () => {
+    const fleetTour = tour({
+      fleet: { id: "fleet-1", name: "Blue Sun", slug: "blue-sun" },
+    });
+
+    const desktop = await mount({ tours: [fleetTour], withFleet: true });
+    expect(desktop.find(".tours-table__fleet").exists()).toBe(false);
+
+    const phone = await mount(
+      { tours: [fleetTour], withFleet: true },
+      { mobile: true },
+    );
+    expect(phone.find(".tours-table__fleet").text()).toBe("Blue Sun");
+    expect(phone.text().match(/Blue Sun/g)).toHaveLength(1);
   });
 
   it("hands the clicked tour to its parent", async () => {

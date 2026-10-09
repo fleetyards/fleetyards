@@ -9,6 +9,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import type { Tour } from "@/services/fyApi";
 
 type Props = {
@@ -31,6 +32,8 @@ const emit = defineEmits<{
 
 const { t, l } = useI18n();
 
+const mobile = useMobile();
+
 // Neither page puts this table inside a FilteredList, so there is no list
 // geometry to take a row count from and BaseTable reserves none - which left
 // both pages spinning over an empty frame. See BaseTable's `skeletonRows`.
@@ -47,7 +50,13 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
   ];
 
   if (props.withFleet) {
-    cols.push({ name: "fleet", label: t("labels.fleet.index") });
+    // A fourth column pushed the status past the edge of a phone, so there the
+    // fleet rides under the title instead.
+    cols.push({
+      name: "fleet",
+      label: t("labels.fleet.index"),
+      mobile: false,
+    });
   }
 
   cols.push(
@@ -70,6 +79,17 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     row-clickable
     @row-click="(tour: Tour) => emit('row-click', tour)"
   >
+    <template #col-title="{ record }">
+      <span class="tours-table__title">
+        {{ record.title }}
+        <span
+          v-if="withFleet && mobile && record.fleet"
+          class="tours-table__fleet"
+        >
+          {{ record.fleet.name }}
+        </span>
+      </span>
+    </template>
     <template #col-fleet="{ record }">
       <span v-if="record.fleet">{{ record.fleet.name }}</span>
     </template>
@@ -92,3 +112,18 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     </template>
   </BaseTable>
 </template>
+
+<style lang="scss" scoped>
+.tours-table__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tours-table__fleet {
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
+}
+</style>
