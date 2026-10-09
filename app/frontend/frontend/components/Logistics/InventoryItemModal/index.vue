@@ -482,20 +482,18 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          data-test="inventory-item-save"
-          @click="onSubmit"
-        >
-          {{
-            isDeposit
-              ? t("actions.logistics.deposit")
-              : t("actions.logistics.withdraw")
-          }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+        data-test="inventory-item-save"
+        @click="onSubmit"
+      >
+        {{
+          isDeposit
+            ? t("actions.logistics.deposit")
+            : t("actions.logistics.withdraw")
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>

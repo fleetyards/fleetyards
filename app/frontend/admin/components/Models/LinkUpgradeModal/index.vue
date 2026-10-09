@@ -210,15 +210,9 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="linking"
-          :disabled="!selectedIds.size"
-          @click="onConfirm"
-        >
-          {{ t("actions.add") }}
-        </Btn>
-      </div>
+      <Btn :loading="linking" :disabled="!selectedIds.size" @click="onConfirm">
+        {{ t("actions.add") }}
+      </Btn>
     </template>
   </Modal>
 </template>

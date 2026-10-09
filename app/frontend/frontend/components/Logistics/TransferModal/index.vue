@@ -555,21 +555,19 @@ const onSubmit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :disabled="invalid"
-          :size="BtnSizesEnum.LG"
-          data-test="transfer-submit"
-          @click="onSubmit"
-        >
-          {{
-            needsAnswer
-              ? t("actions.logistics.sendTransfer")
-              : t("actions.logistics.moveStock")
-          }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :disabled="invalid"
+        :size="BtnSizesEnum.LG"
+        data-test="transfer-submit"
+        @click="onSubmit"
+      >
+        {{
+          needsAnswer
+            ? t("actions.logistics.sendTransfer")
+            : t("actions.logistics.moveStock")
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>

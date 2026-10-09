@@ -160,20 +160,18 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :confirm="t('messages.confirm.hangarGroup.destroy')"
-          :tone="BtnTonesEnum.DANGER"
-          :size="BtnSizesEnum.LG"
-          :aria-label="t('actions.delete')"
-          @click="onDestroy"
-        >
-          <i class="fa-light fa-trash" />
-        </Btn>
-        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
-          {{ t("actions.save") }}
-        </Btn>
-      </div>
+      <Btn
+        :confirm="t('messages.confirm.hangarGroup.destroy')"
+        :tone="BtnTonesEnum.DANGER"
+        :size="BtnSizesEnum.LG"
+        :aria-label="t('actions.delete')"
+        @click="onDestroy"
+      >
+        <i class="fa-light fa-trash" />
+      </Btn>
+      <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>

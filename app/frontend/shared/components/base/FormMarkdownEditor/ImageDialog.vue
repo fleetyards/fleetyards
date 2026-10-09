@@ -162,23 +162,21 @@ const insert = async () => {
         {{ failure }}
       </p>
       <template #footer>
-        <div class="markdown-image-dialog__actions">
-          <Btn
-            :variant="BtnVariantsEnum.GHOST"
-            data-test="markdown-editor-image-cancel"
-            @click="close"
-          >
-            {{ t("markdownEditor.cancel") }}
-          </Btn>
-          <Btn
-            :disabled="!signedId || uploading"
-            :loading="inserting"
-            data-test="markdown-editor-image-apply"
-            @click="insert"
-          >
-            {{ t("markdownEditor.imageApply") }}
-          </Btn>
-        </div>
+        <Btn
+          :variant="BtnVariantsEnum.GHOST"
+          data-test="markdown-editor-image-cancel"
+          @click="close"
+        >
+          {{ t("markdownEditor.cancel") }}
+        </Btn>
+        <Btn
+          :disabled="!signedId || uploading"
+          :loading="inserting"
+          data-test="markdown-editor-image-apply"
+          @click="insert"
+        >
+          {{ t("markdownEditor.imageApply") }}
+        </Btn>
       </template>
     </ModalInner>
   </dialog>
@@ -288,11 +286,5 @@ const insert = async () => {
   margin: 8px 0 0;
   font-size: 0.875rem;
   color: var(--color-danger, #dc3545);
-}
-
-.markdown-image-dialog__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
 }
 </style>

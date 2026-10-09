@@ -94,17 +94,15 @@ const run = async (option: ImportLoaderOption) => {
     </ul>
 
     <template v-if="loadAll" #footer>
-      <div class="modal-actions">
-        <Btn
-          :size="BtnSizesEnum.LG"
-          :loading="groupRunning"
-          :disabled="groupRunning"
-          data-test="import-loader-start-all"
-          @click="run(loadAll)"
-        >
-          {{ t("actions.admin.imports.loadAll") }}
-        </Btn>
-      </div>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        :loading="groupRunning"
+        :disabled="groupRunning"
+        data-test="import-loader-start-all"
+        @click="run(loadAll)"
+      >
+        {{ t("actions.admin.imports.loadAll") }}
+      </Btn>
     </template>
   </Modal>
 </template>

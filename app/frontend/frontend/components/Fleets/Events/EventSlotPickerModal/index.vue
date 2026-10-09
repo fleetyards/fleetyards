@@ -222,15 +222,13 @@ const teams = computed<FleetEventTeam[]>(
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :size="BtnSizesEnum.LG"
-          variant="bare"
-          @click="comlink.emit('close-modal')"
-        >
-          {{ t("actions.cancel") }}
-        </Btn>
-      </div>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        variant="bare"
+        @click="comlink.emit('close-modal')"
+      >
+        {{ t("actions.cancel") }}
+      </Btn>
     </template>
   </Modal>
 </template>

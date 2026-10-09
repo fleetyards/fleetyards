@@ -64,17 +64,15 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :disabled="invalid"
-          :size="BtnSizesEnum.LG"
-          data-test="relationship-submit"
-          @click="submit"
-        >
-          {{ submitLabel }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :disabled="invalid"
+        :size="BtnSizesEnum.LG"
+        data-test="relationship-submit"
+        @click="submit"
+      >
+        {{ submitLabel }}
+      </Btn>
     </template>
   </Modal>
 </template>

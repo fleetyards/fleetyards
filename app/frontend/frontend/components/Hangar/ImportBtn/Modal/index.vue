@@ -114,16 +114,14 @@ const onUploadDone = async (files: FileUpload[]) => {
     />
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          data-test="hangar-import-select-file"
-          @click="selectFile"
-        >
-          {{ t("actions.selectFile") }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+        data-test="hangar-import-select-file"
+        @click="selectFile"
+      >
+        {{ t("actions.selectFile") }}
+      </Btn>
     </template>
   </Modal>
 </template>

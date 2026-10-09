@@ -74,16 +74,14 @@ const onSubmit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          data-test="accept-submit"
-          @click="onSubmit"
-        >
-          {{ t("actions.logistics.acceptTransfer") }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+        data-test="accept-submit"
+        @click="onSubmit"
+      >
+        {{ t("actions.logistics.acceptTransfer") }}
+      </Btn>
     </template>
   </Modal>
 </template>

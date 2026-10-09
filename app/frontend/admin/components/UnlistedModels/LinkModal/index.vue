@@ -88,16 +88,14 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          :disabled="!modelId || submitting"
-          :size="BtnSizesEnum.LG"
-          @click="submit"
-        >
-          {{ t("actions.unlistedModel.link") }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :disabled="!modelId || submitting"
+        :size="BtnSizesEnum.LG"
+        @click="submit"
+      >
+        {{ t("actions.unlistedModel.link") }}
+      </Btn>
     </template>
   </Modal>
 </template>

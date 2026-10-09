@@ -199,15 +199,13 @@ const revoke = (admin: FleetEventAdmin) => {
     </section>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :size="BtnSizesEnum.LG"
-          variant="bare"
-          @click="comlink.emit('close-modal')"
-        >
-          {{ t("actions.close") }}
-        </Btn>
-      </div>
+      <Btn
+        :size="BtnSizesEnum.LG"
+        variant="bare"
+        @click="comlink.emit('close-modal')"
+      >
+        {{ t("actions.close") }}
+      </Btn>
     </template>
   </Modal>
 </template>

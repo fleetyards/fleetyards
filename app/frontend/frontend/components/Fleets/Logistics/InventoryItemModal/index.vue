@@ -491,15 +491,13 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
-          {{
-            isDeposit
-              ? t("actions.logistics.deposit")
-              : t("actions.logistics.withdraw")
-          }}
-        </Btn>
-      </div>
+      <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
+        {{
+          isDeposit
+            ? t("actions.logistics.deposit")
+            : t("actions.logistics.withdraw")
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>

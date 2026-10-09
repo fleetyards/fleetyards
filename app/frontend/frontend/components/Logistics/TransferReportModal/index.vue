@@ -88,18 +88,16 @@ const onSubmit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :disabled="invalid"
-          :tone="BtnTonesEnum.DANGER"
-          :size="BtnSizesEnum.LG"
-          data-test="report-submit"
-          @click="onSubmit"
-        >
-          {{ t("actions.logistics.reportTransfer") }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :disabled="invalid"
+        :tone="BtnTonesEnum.DANGER"
+        :size="BtnSizesEnum.LG"
+        data-test="report-submit"
+        @click="onSubmit"
+      >
+        {{ t("actions.logistics.reportTransfer") }}
+      </Btn>
     </template>
   </Modal>
 </template>

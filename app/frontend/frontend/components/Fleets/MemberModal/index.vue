@@ -92,11 +92,9 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="modal-actions">
-        <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
-          {{ t("actions.fleet.members.invite") }}
-        </Btn>
-      </div>
+      <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
+        {{ t("actions.fleet.members.invite") }}
+      </Btn>
     </template>
   </Modal>
 </template>

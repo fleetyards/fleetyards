@@ -90,17 +90,15 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <div class="modal-actions">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          :tone="BtnTonesEnum.DANGER"
-          data-test="payout-entry-decline-submit"
-          @click="onSubmit"
-        >
-          {{ t("actions.payouts.declineExpense") }}
-        </Btn>
-      </div>
+      <Btn
+        :loading="submitting"
+        :size="BtnSizesEnum.LG"
+        :tone="BtnTonesEnum.DANGER"
+        data-test="payout-entry-decline-submit"
+        @click="onSubmit"
+      >
+        {{ t("actions.payouts.declineExpense") }}
+      </Btn>
     </template>
   </Modal>
 </template>
