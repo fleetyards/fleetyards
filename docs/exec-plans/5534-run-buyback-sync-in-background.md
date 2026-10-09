@@ -2,7 +2,7 @@
 
 Working plan for #5534. Decisions live in the issue body. Deleted before the PR merges.
 
-Stacked on `feat/hangar-sync-background` (#5532): it reuses `useHangarSync`, `FloatingProgress` and the plain `useRsiPageReport`. The PR targets that branch until #5532 merges.
+Stacked on `feat/hangar-sync-background` (#5532): it reuses `useHangarSync`, the progress card and the plain `useRsiPageReport`. The PR targets that branch until #5532 merges.
 
 ## Goal
 

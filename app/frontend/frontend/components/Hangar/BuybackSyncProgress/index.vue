@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FloatingProgress from "@/frontend/components/Hangar/FloatingProgress/index.vue";
+import SyncProgressCard from "@/frontend/components/Hangar/SyncProgressCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -84,7 +84,7 @@ const cancel = () => {
 
 <template>
   <transition name="fade">
-    <FloatingProgress
+    <SyncProgressCard
       v-if="stage && !hangarStore.buybackSyncModalOpen"
       data-test="buyback-sync-progress-card"
     >
@@ -124,7 +124,7 @@ const cancel = () => {
       >
         {{ t("actions.syncExtension.cancel") }}
       </Btn>
-    </FloatingProgress>
+    </SyncProgressCard>
   </transition>
 </template>
 

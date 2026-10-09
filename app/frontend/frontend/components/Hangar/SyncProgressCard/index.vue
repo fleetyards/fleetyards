@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HangarFloatingProgress",
+  name: "HangarSyncProgressCard",
 };
 </script>
 
@@ -10,14 +10,14 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 
 <template>
   <Panel :loading="true" :outer-spacing="false">
-    <div class="floating-progress__body">
+    <div class="sync-progress-card__body">
       <slot />
     </div>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
-.floating-progress__body {
+.sync-progress-card__body {
   display: flex;
   align-items: center;
   gap: 15px;
