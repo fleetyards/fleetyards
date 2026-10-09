@@ -22,7 +22,14 @@ const mount = async (
   },
   { mobile = false }: { mobile?: boolean } = {},
 ) => {
-  vi.stubGlobal("matchMedia", () => ({ matches: mobile }));
+  vi.stubGlobal("matchMedia", (query: string) => ({
+    matches: mobile && query === "(max-width: 992px)",
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+  }));
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
