@@ -59,6 +59,13 @@ const removeAll = async () => {
       });
     });
 };
+
+// Both act on the same vehicles, so neither may start while the other runs.
+const busy = computed(
+  () =>
+    moveToWishlistMutation.isPending.value ||
+    destroyAllIngameMutation.isPending.value,
+);
 </script>
 
 <template>
@@ -66,6 +73,8 @@ const removeAll = async () => {
     <p>{{ t("texts.resetIngame.info") }}</p>
     <template #footer>
       <Btn
+        :loading="moveToWishlistMutation.isPending.value"
+        :disabled="busy"
         data-test="reset-ingame-modal-reset-to-wishlist"
         @click="moveToWishlist"
       >
@@ -74,6 +83,8 @@ const removeAll = async () => {
       <Btn
         :tone="BtnTonesEnum.DANGER"
         :confirm="t('messages.vehicle.resetIngame.removeAll.confirm')"
+        :loading="destroyAllIngameMutation.isPending.value"
+        :disabled="busy"
         data-test="reset-ingame-modal-reset"
         @click="removeAll"
       >

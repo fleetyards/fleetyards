@@ -31,11 +31,13 @@ const wishlistStore = useWishlistStore();
 const comlink = useComlink();
 
 const { useCreateMutation } = useVehicleMutations();
-const { mutateAsync } = useCreateMutation();
+const { mutateAsync, isPending } = useCreateMutation();
 
 const supportPrompt = useSupportPrompt();
 
 const addToWishlist = async () => {
+  if (isPending.value) return;
+
   await mutateAsync({
     data: {
       modelId: props.model.id,
@@ -65,6 +67,8 @@ const addToWishlist = async () => {
 };
 
 const addToHangar = async () => {
+  if (isPending.value) return;
+
   await mutateAsync({
     data: {
       modelId: props.model.id,
@@ -103,11 +107,13 @@ const addToHangar = async () => {
   <Modal
     v-if="model"
     :title="t('headlines.addToHangar', { model: model.name })"
+    :loading="isPending"
   >
     <div class="add-to-hangar-choices">
       <button
         type="button"
         class="add-to-hangar-choice"
+        :disabled="isPending"
         data-test="add-to-hangar-as-normal"
         @click="addToHangar"
       >
@@ -124,6 +130,7 @@ const addToHangar = async () => {
       <button
         type="button"
         class="add-to-hangar-choice"
+        :disabled="isPending"
         data-test="add-to-hangar-as-wanted"
         @click="addToWishlist"
       >
@@ -167,6 +174,12 @@ const addToHangar = async () => {
 
   &:active {
     background: var(--color-control-press);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+    background: var(--color-control);
   }
 
   &:focus-visible {

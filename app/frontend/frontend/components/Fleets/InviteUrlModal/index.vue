@@ -252,7 +252,7 @@ const copy = (inviteUrl: FleetInviteUrl) => {
     </template>
 
     <template v-if="form" #footer>
-      <Btn @click="create">
+      <Btn :loading="createMutation.isPending.value" @click="create">
         {{ t("actions.fleet.inviteUrls.create") }}
       </Btn>
     </template>
