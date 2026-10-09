@@ -64,6 +64,7 @@ module Rsi
     private def create_or_update_model(data)
       model = Model.find_by(rsi_id: data["id"])
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
+      model = unlisted_model_for(data) if model.blank?
       if model.blank?
         model = Model.create!(
           rsi_id: data["id"],
@@ -167,6 +168,48 @@ module Rsi
       #   puts "Error: #{e.message}"
       #   puts "Data: #{data.inspect}"
       #   raise e
+    end
+
+    # A ship created from the game files before the matrix listed it carries the
+    # export's spelling, which rarely matches the matrix exactly -- "MOLE" for
+    # "Mole", a hyphen one side drops, or a manufacturer prefix `strip_name`
+    # does not know. An exact name lookup misses those and creates the ship a
+    # second time, so this compares names with case, punctuation and the
+    # manufacturer prefix taken out, within the same manufacturer.
+    #
+    # Only an unambiguous match is adopted: two candidates means the names are
+    # too close to tell apart, and merging the wrong ship is worse than a
+    # duplicate an admin can see.
+    private def unlisted_model_for(data)
+      manufacturer = matrix_manufacturer(data["manufacturer"])
+      return if manufacturer.blank?
+
+      target = comparable_name(data["name"], manufacturer)
+      return if target.blank?
+
+      candidates = Model.where(rsi_id: nil, manufacturer:).select do |candidate|
+        comparable_name(candidate.name, manufacturer) == target
+      end
+
+      candidates.first if candidates.one?
+    end
+
+    private def matrix_manufacturer(manufacturer_data)
+      return if manufacturer_data.blank?
+
+      Manufacturer.find_by(rsi_id: manufacturer_data["id"]) ||
+        Manufacturer.find_by(code: manufacturer_data["code"])
+    end
+
+    private def comparable_name(name, manufacturer)
+      prefixes = [manufacturer.long_name, manufacturer.name, manufacturer.name.to_s.split.first]
+        .compact_blank.uniq.sort_by { |prefix| -prefix.length }
+
+      stripped = prefixes.lazy
+        .map { |prefix| name.to_s.sub(/\A#{Regexp.escape(prefix)}\s+/i, "") }
+        .find { |candidate| candidate != name.to_s } || name.to_s
+
+      stripped.downcase.gsub(/[^a-z0-9]/, "")
     end
 
     private def create_or_update_paint(data, model_id)
