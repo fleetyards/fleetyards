@@ -9,8 +9,6 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { storeToRefs } from "pinia";
-import { useMobileStore } from "@/shared/stores/mobile";
 import type { Tour } from "@/services/fyApi";
 
 type Props = {
@@ -32,10 +30,6 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
-
-// BaseTable keeps the store in step with the viewport and drops the fleet
-// column off it; this only has to read the same answer.
-const { mobile } = storeToRefs(useMobileStore());
 
 // Neither page puts this table inside a FilteredList, so there is no list
 // geometry to take a row count from and BaseTable reserves none - which left
@@ -82,7 +76,7 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     row-clickable
     @row-click="(tour: Tour) => emit('row-click', tour)"
   >
-    <template #col-title="{ record }">
+    <template #col-title="{ record, mobile }">
       <span class="tours-table__title">
         {{ record.title }}
         <span
