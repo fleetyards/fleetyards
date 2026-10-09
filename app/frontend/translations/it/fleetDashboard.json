@@ -76,6 +76,52 @@
       },
       "week": {
         "emptyDay": "Niente in programma il %{day}."
+      },
+      "online": {
+        "title": "Online ora (%{count})",
+        "friend": "Amico",
+        "more": {
+          "one": "e altri %{count}",
+          "other": "e altri %{count}"
+        }
+      },
+      "announcements": {
+        "post": "Pubblica un annuncio",
+        "postAction": "Pubblica",
+        "edit": "Modifica annuncio",
+        "body": "Annuncio",
+        "until": "fino al %{date}",
+        "confirmRemove": "Rimuovere questo annuncio per tutti?",
+        "expiry": {
+          "label": "Mostralo",
+          "keep": "Mantieni la scadenza attuale",
+          "never": "Finché non viene rimosso",
+          "day": "Per un giorno",
+          "days3": "Per tre giorni",
+          "week": "Per una settimana",
+          "weeks2": "Per due settimane"
+        },
+        "messages": {
+          "saved": "Annuncio salvato.",
+          "saveFailed": "Impossibile salvare l'annuncio.",
+          "removed": "Annuncio rimosso.",
+          "removeFailed": "Impossibile rimuovere l'annuncio."
+        }
+      },
+      "health": {
+        "title": "Stato della flotta",
+        "inactive": {
+          "one": "%{count} membro inattivo da oltre 30 giorni",
+          "other": "%{count} membri inattivi da oltre 30 giorni"
+        },
+        "unverified": {
+          "one": "%{count} membro non verificato nell'org RSI",
+          "other": "%{count} membri non verificati nell'org RSI"
+        },
+        "emptyRoles": {
+          "one": "%{count} ruolo senza nessuno",
+          "other": "%{count} ruoli senza nessuno"
+        }
       }
     }
   }

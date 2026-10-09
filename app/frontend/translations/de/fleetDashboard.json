@@ -76,6 +76,52 @@
       },
       "week": {
         "emptyDay": "Am %{day} steht nichts an."
+      },
+      "online": {
+        "title": "Gerade online (%{count})",
+        "friend": "Freund",
+        "more": {
+          "one": "und %{count} weiterer",
+          "other": "und %{count} weitere"
+        }
+      },
+      "announcements": {
+        "post": "Ankündigung veröffentlichen",
+        "postAction": "Veröffentlichen",
+        "edit": "Ankündigung bearbeiten",
+        "body": "Ankündigung",
+        "until": "bis %{date}",
+        "confirmRemove": "Diese Ankündigung für alle entfernen?",
+        "expiry": {
+          "label": "Anzeigen",
+          "keep": "Bisheriges Ende beibehalten",
+          "never": "Bis sie entfernt wird",
+          "day": "Einen Tag",
+          "days3": "Drei Tage",
+          "week": "Eine Woche",
+          "weeks2": "Zwei Wochen"
+        },
+        "messages": {
+          "saved": "Ankündigung gespeichert.",
+          "saveFailed": "Die Ankündigung konnte nicht gespeichert werden.",
+          "removed": "Ankündigung entfernt.",
+          "removeFailed": "Die Ankündigung konnte nicht entfernt werden."
+        }
+      },
+      "health": {
+        "title": "Zustand der Flotte",
+        "inactive": {
+          "one": "%{count} Mitglied seit 30+ Tagen inaktiv",
+          "other": "%{count} Mitglieder seit 30+ Tagen inaktiv"
+        },
+        "unverified": {
+          "one": "%{count} Mitglied nicht in der RSI-Org bestätigt",
+          "other": "%{count} Mitglieder nicht in der RSI-Org bestätigt"
+        },
+        "emptyRoles": {
+          "one": "%{count} Rolle ohne Mitglieder",
+          "other": "%{count} Rollen ohne Mitglieder"
+        }
       }
     }
   }
