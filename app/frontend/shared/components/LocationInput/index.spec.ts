@@ -103,6 +103,28 @@ describe("LocationInput", () => {
     vi.useRealTimers();
   });
 
+  it("catches Enter before the first search answers", async () => {
+    vi.useFakeTimers();
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "location", modelValue: "", locationId: null },
+      plugins: [await router()],
+    });
+
+    await wrapper.find("input").setValue("Area1");
+
+    const enter = new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    });
+    wrapper.find("input").element.dispatchEvent(enter);
+
+    expect(enter.defaultPrevented).toBe(true);
+
+    vi.useRealTimers();
+  });
+
   it("ignores an older search that answers after a newer one", async () => {
     vi.useFakeTimers();
 

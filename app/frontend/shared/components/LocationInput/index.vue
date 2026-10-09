@@ -125,7 +125,10 @@ const pick = (location: Location) => {
 };
 
 const onKeydown = (event: KeyboardEvent) => {
-  if (!open.value || !suggestions.value.length) return;
+  if (!open.value) return;
+
+  // Enter is caught even before the first search answers.
+  if (event.key !== "Enter" && !suggestions.value.length) return;
 
   if (event.key === "ArrowDown") {
     event.preventDefault();
