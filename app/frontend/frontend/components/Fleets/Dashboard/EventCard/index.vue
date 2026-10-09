@@ -9,6 +9,7 @@ import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
+import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
 import {
   FleetEventSignupStatusEnum,
   type Fleet,
@@ -37,13 +38,7 @@ const link = computed(() => ({
     : undefined,
 }));
 
-// Darkest under the date and title, so a bright cover never washes them out.
-const SCRIM =
-  "linear-gradient(90deg, rgb(0 0 0 / 0.8) 0%, rgb(0 0 0 / 0.45) 55%, rgb(0 0 0 / 0.35) 100%)";
-
-const cover = computed(() => ({
-  backgroundImage: `${SCRIM}, url(${resolveCover(props.event)})`,
-}));
+const cover = computed(() => coverStyle(resolveCover(props.event)));
 
 const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
   [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,

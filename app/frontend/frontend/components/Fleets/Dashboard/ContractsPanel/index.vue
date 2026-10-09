@@ -9,6 +9,7 @@ import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetContractStateEnum,
@@ -27,14 +28,9 @@ const { t, toUEC } = useI18n();
 
 const { resolve: resolveCover } = useContractCover();
 
-// Darkest under the text, so a bright cover never washes out the title.
-const SCRIM =
-  "linear-gradient(90deg, rgb(0 0 0 / 0.8) 0%, rgb(0 0 0 / 0.45) 55%, rgb(0 0 0 / 0.35) 100%)";
-
 // The cover the board shows for it, so a job reads as the same job here.
-const coverFor = (contract: FleetContract) => ({
-  backgroundImage: `${SCRIM}, url(${resolveCover(contract, props.fleet)})`,
-});
+const coverFor = (contract: FleetContract) =>
+  coverStyle(resolveCover(contract, props.fleet));
 
 const SHOWN = 4;
 
@@ -58,10 +54,12 @@ const { data: mine, isLoading: mineLoading } = useFleetContracts(
   { query: liveQuery },
 );
 
+// Twice the page: the reader's own work is taken out of this list, and at most
+// SHOWN of it is, so what remains still fills the group.
 const { data: open, isLoading: openLoading } = useFleetContracts(
   fleetSlug,
   {
-    perPage: SHOWN,
+    perPage: SHOWN * 2,
     q: { stateIn: [FleetContractStateEnum.OPEN] },
   },
   { query: liveQuery },
@@ -72,7 +70,9 @@ const mineItems = computed(() => mine.value?.items ?? []);
 const mineIds = computed(() => new Set(mineItems.value.map(({ id }) => id)));
 
 const openItems = computed(() =>
-  (open.value?.items ?? []).filter(({ id }) => !mineIds.value.has(id)),
+  (open.value?.items ?? [])
+    .filter(({ id }) => !mineIds.value.has(id))
+    .slice(0, SHOWN),
 );
 
 // Said to the dashboard once both answers are in, so an empty board can be
