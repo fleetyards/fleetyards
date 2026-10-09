@@ -54,7 +54,7 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
       assert_equal "error", notification.severity
       assert_includes notification.title, "hangar"
       assert_includes notification.body, "missing_list"
-      assert_includes notification.body, "Page: 3"
+      assert_includes notification.body, "Latest page: 3"
       assert_includes notification.body, "1.3.0"
     end
   end
@@ -120,6 +120,20 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     body = notifications.sole.body
     assert_includes body, "  - `ok [x](https://x.test)`"
     assert_not_includes body, "y.test"
+  end
+
+  test "POST /hangar/rsi-page-reports names the page and extension of each detail" do
+    sign_in @user
+
+    [[3, "1.2.0", "markup a"], [1, "1.3.0", "markup b"]].each do |page_number, extension_version, detail|
+      post "/api/v1/hangar/rsi-page-reports",
+        params: {page: "hangar", check: "missing_kinds", pageNumber: page_number, extensionVersion: extension_version, details: [detail]},
+        as: :json
+    end
+
+    body = notifications.sole.body
+    assert_includes body, "  - `markup a` (page 3, extension `1.2.0`)\n  - `markup b` (page 1, extension `1.3.0`)"
+    assert_includes body, "- Latest page: 1"
   end
 
   test "POST /hangar/rsi-page-reports counts a user once per page and check" do

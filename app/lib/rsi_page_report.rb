@@ -26,12 +26,13 @@ class RsiPageReport
   REPORT_INTERVAL = 1.hour
 
   # Repeats of one check add their details to the unread notification, since
-  # each user may trip on different markup. The newest ones are kept.
+  # each user may trip on different markup. The newest ones are kept, each with
+  # the page and extension version it came from.
   MAX_DETAILS = 30
 
   MAX_DETAIL_LENGTH = 200
 
-  DETAIL_LINE = /\A  - `(.+)`\z/
+  DETAIL_LINE = /\A  - `([^`]+)`/
 
   EXTENSION_VERSION = /\A[0-9A-Za-z.+-]{1,32}\z/
 
@@ -47,22 +48,31 @@ class RsiPageReport
     # The input schema's patterns anchor per line, so a value spanning several
     # lines can pass them. Both end up in markdown the admins read.
     extension_version = extension_version.to_s[EXTENSION_VERSION]
-    details = Array(details).filter_map { |detail| clean_detail(detail) }
+    details = Array(details).filter_map { |detail| clean_detail(detail) }.uniq
+    context = [
+      ("page #{page_number}" if page_number),
+      ("extension `#{extension_version}`" if extension_version)
+    ].compact
+    new_lines = details.map do |detail|
+      "  - `#{detail}`#{" (#{context.join(", ")})" if context.any?}"
+    end
 
     AdminNotification.notify!(
       type: :rsi_markup_changed,
       title: "RSI #{page} page not recognised (#{check})",
       body: ->(earlier_body) {
-        earlier = earlier_body.to_s.lines.filter_map { |line| line.chomp[DETAIL_LINE, 1] }
-        all_details = (earlier + Array(details)).reverse.uniq.reverse.last(MAX_DETAILS)
+        earlier_lines = earlier_body.to_s.lines.map(&:chomp).select do |line|
+          (detail = line[DETAIL_LINE, 1]) && !details.include?(detail)
+        end
+        detail_lines = (earlier_lines + new_lines).last(MAX_DETAILS)
 
         [
           "A #{page} sync stopped on a page its parser does not recognise.",
           "- Check: `#{check}`",
-          ("- Page: #{page_number}" if page_number),
-          ("- Extension: `#{extension_version}`" if extension_version),
-          ("- Details:" if all_details.any?),
-          *all_details.map { |detail| "  - `#{detail}`" }
+          ("- Latest page: #{page_number}" if page_number),
+          ("- Latest extension: `#{extension_version}`" if extension_version),
+          ("- Details:" if detail_lines.any?),
+          *detail_lines
         ].compact.join("\n")
       },
       severity: :error,
