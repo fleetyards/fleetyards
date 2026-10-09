@@ -57,6 +57,21 @@ class AdminNotificationTest < ActiveSupport::TestCase
     assert_equal 3, AdminNotification.first.occurrences
   end
 
+  test "hands a callable body the unread row's body to build on" do
+    create(:admin_user, resource_access: [:models])
+
+    2.times do |run|
+      AdminNotification.notify!(
+        type: :paints_import,
+        title: "Paints Import Results",
+        body: ->(earlier) { [earlier, "run #{run}"].compact.join("\n") },
+        dedupe_key: "same"
+      )
+    end
+
+    assert_equal "run 0\nrun 1", AdminNotification.sole.body
+  end
+
   test "starts a new row once the deduped one has been read" do
     create(:admin_user, resource_access: [:models])
 

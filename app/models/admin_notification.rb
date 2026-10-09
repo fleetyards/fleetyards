@@ -202,6 +202,8 @@ class AdminNotification < ApplicationRecord
 
   # A dedupe_key folds repeat reports of the same content into the row that is
   # still unread, so a weekly job that keeps finding nothing does not stack up.
+  # A repeat replaces the body, unless the body is a callable: that one is
+  # handed the unread row's body (nil for a new row) and builds on it.
   def self.notify!(type:, title:, body: nil, severity: :info, link: nil, icon: nil, record: nil, dedupe_key: nil)
     recipients_for(type).map do |admin_user|
       notification = upsert_for(
@@ -230,7 +232,8 @@ class AdminNotification < ApplicationRecord
         # would record one.
         existing.with_lock do
           existing.update!(
-            title:, body:, severity:, link:, icon:, record:,
+            title:, severity:, link:, icon:, record:,
+            body: body.respond_to?(:call) ? body.call(existing.body) : body,
             occurrences: existing.occurrences + 1,
             last_occurred_at: Time.current,
             expires_at: Time.current + retention_for(type)
@@ -246,7 +249,8 @@ class AdminNotification < ApplicationRecord
       # transaction usable after the failed insert.
       transaction(requires_new: true) do
         create!(
-          admin_user:, notification_type: type, title:, body:, severity:,
+          admin_user:, notification_type: type, title:,
+          body: body.respond_to?(:call) ? body.call(nil) : body, severity:,
           link:, icon:, record:, dedupe_key:
         )
       end
