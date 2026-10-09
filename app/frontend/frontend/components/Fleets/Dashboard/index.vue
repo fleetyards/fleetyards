@@ -65,10 +65,10 @@ const empty = reactive({ events: false, contracts: false });
         class="fleet-dashboard__events"
         @empty="empty.events = $event"
       />
-      <!-- A week with nothing in it is the same news the empty list already
-           gave, so the grid comes with the list. -->
+      <!-- Always there for a reader of events: an empty week is still the
+           week, and where they go to look ahead. -->
       <WeekCalendarPanel
-        v-if="showEvents && !empty.events"
+        v-if="showEvents"
         :fleet="fleet"
         class="fleet-dashboard__calendar"
       />
