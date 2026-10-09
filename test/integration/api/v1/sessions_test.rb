@@ -55,12 +55,43 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     user = create(:user, password: "enterprise")
     browser = open_session
     sign_in_json(browser, user, remember: false)
+    hold_session_cookie(browser)
 
     travel(Devise.timeout_in + 1.minute) do
       sign_in_json(browser, user, remember: false)
 
       browser.get "/api/v1/users/me"
       assert_equal 200, browser.response.status
+    end
+  end
+
+  test "POST /sessions with a wrong password leaves a timed out session timed out" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+    hold_session_cookie(browser)
+
+    travel(Devise.timeout_in + 1.minute) do
+      browser.post "/api/v1/sessions",
+        params: {login: user.username, password: "wrong-password"}.to_json,
+        headers: {"CONTENT_TYPE" => "application/json"}
+      assert_equal 400, browser.response.status
+
+      browser.get "/api/v1/users/me"
+      assert_equal 401, browser.response.status
+    end
+  end
+
+  test "POST /sessions remembers a browser signing back in after a time out" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+    sign_in_json(browser, user, remember: false)
+    hold_session_cookie(browser)
+
+    travel(Devise.timeout_in + 1.minute) do
+      sign_in_json(browser, user, remember: true)
+
+      assert_predicate remember_cookie(browser), :present?
     end
   end
 
@@ -213,6 +244,13 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     browser.get "/api/v1/users/me"
 
     assert_equal 200, browser.response.status
+  end
+
+  # The cookie expires with the session's `expire_after`, which the test jar
+  # honours across `travel`. A browser whose cookie was refreshed by a request
+  # that never asked for the user still holds it when the user has timed out.
+  private def hold_session_cookie(browser)
+    browser.cookies.merge("#{SESSION_COOKIE}=#{browser.cookies[SESSION_COOKIE]}; domain=example.com; path=/", browser_uri)
   end
 
   private def unknown_session
