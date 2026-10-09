@@ -69,7 +69,7 @@ const mount = async () =>
 
 const titles = (subject: Awaited<ReturnType<typeof mount>>) =>
   subject
-    .findAll("[data-test='fleet-dashboard-event'] .upcoming-events__title")
+    .findAll("[data-test='fleet-dashboard-event'] .event-card__title")
     .map((link) => link.text());
 
 describe("FleetDashboardUpcomingEventsPanel", () => {
@@ -156,7 +156,7 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
 
     const subject = await mount();
 
-    expect(subject.find("a.upcoming-events__entry").attributes("href")).toBe(
+    expect(subject.find("a.event-card").attributes("href")).toBe(
       "#/fleets/maru/events/weekly?occurrence=2026-05-21",
     );
   });
