@@ -139,6 +139,16 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET announcements stops at the newest twenty" do
+    21.times { |index| create(:fleet_announcement, fleet: @fleet, body: "No. #{index}", created_at: index.minutes.ago) }
+
+    sign_in @member
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 20, parsed_body["items"].size
+      refute_includes parsed_body["items"].map { |item| item["body"] }, "No. 20"
+    end
+  end
+
   test "GET announcements is refused to somebody outside the fleet" do
     sign_in create(:user)
 
