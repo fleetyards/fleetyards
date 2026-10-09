@@ -168,7 +168,7 @@ const openCsvImportModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Logistics/CsvImportModal/index.vue"),
-    props: { target: target.value },
+    props: { url: `/vehicles/${vehicleId.value}/inventory/items/import` },
   });
 };
 

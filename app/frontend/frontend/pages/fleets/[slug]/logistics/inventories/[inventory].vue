@@ -196,10 +196,10 @@ const openCsvImportModal = () => {
 
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Fleets/Logistics/CsvImportModal/index.vue"),
+      import("@/frontend/components/Logistics/CsvImportModal/index.vue"),
     props: {
-      fleet: props.fleet,
-      inventory: inventory.value,
+      url: `/fleets/${props.fleet.slug}/inventories/${inventory.value.slug}/items/import`,
+      createdEvent: "fleet-inventory-item-created",
     },
   });
 };

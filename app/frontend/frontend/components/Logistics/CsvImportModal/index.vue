@@ -12,19 +12,15 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { axiosClient } from "@/services/axiosClient";
-import type { InventoryTarget } from "@/frontend/types/logistics";
 
 type Props = {
-  target: InventoryTarget;
+  url: string;
+  createdEvent?: "inventory-item-created" | "fleet-inventory-item-created";
 };
 
-const props = defineProps<Props>();
-
-const importUrl = computed(() =>
-  props.target.kind === "hangar"
-    ? `/hangar/inventories/${props.target.slug}/items/import`
-    : `/vehicles/${props.target.vehicleId}/inventory/items/import`,
-);
+const props = withDefaults(defineProps<Props>(), {
+  createdEvent: "inventory-item-created",
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -65,7 +61,7 @@ const importCsv = async () => {
 
   try {
     const response = (await axiosClient({
-      url: importUrl.value,
+      url: props.url,
       method: "POST",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
@@ -81,7 +77,7 @@ const importCsv = async () => {
           count: results.value.imported,
         }),
       });
-      comlink.emit("inventory-item-created");
+      comlink.emit(props.createdEvent);
     }
 
     if (results.value.errors.length === 0) {
