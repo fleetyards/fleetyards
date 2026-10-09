@@ -61,6 +61,7 @@ module Api
 
       def destroy
         sign_out(:user)
+        write_session
 
         render json: {code: "sessions.destroy", message: I18n.t("devise.sessions.signed_out")}
       end

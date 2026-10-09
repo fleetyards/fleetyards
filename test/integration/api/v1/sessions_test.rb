@@ -92,6 +92,7 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
   end
 
   # ==> remember me
+  SESSION_COOKIE = Rails.configuration.cookie_prefix
   REMEMBER_COOKIE = "#{Rails.configuration.cookie_prefix}_USER_STORED_#{Rails.env.upcase}"
 
   test "a remembered browser stays signed in once its session is gone" do
@@ -165,23 +166,42 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
   # A request sent before signing in can answer after it, and the browser keeps
   # whichever session cookie arrives last.
   test "a request still in flight from before signing in leaves the new session alone" do
-    assert_signed_in_after_late_answer_from "/api/v1/users/me"
+    assert_signed_in_after_late_answer_from "/api/v1/users/me", previous_session: unknown_session
   end
 
   test "a public request still in flight from before signing in leaves the new session alone" do
-    assert_signed_in_after_late_answer_from "/api/v1/manufacturers"
+    assert_signed_in_after_late_answer_from "/api/v1/manufacturers", previous_session: unknown_session
   end
 
-  SESSION_COOKIE = Rails.configuration.cookie_prefix
-
-  private def assert_signed_in_after_late_answer_from(path)
+  test "a request still in flight from a timed out session leaves the new session alone" do
     user = create(:user, password: "enterprise")
-    expired_session = "#{SESSION_COOKIE}=#{SecureRandom.hex(16)}; domain=example.com; path=/"
+    previous = open_session
+    sign_in_json(previous, user, remember: false)
+    previous_session = "#{SESSION_COOKIE}=#{previous.cookies[SESSION_COOKIE]}; domain=example.com; path=/"
 
+    travel(Devise.timeout_in + 1.minute) do
+      assert_signed_in_after_late_answer_from "/api/v1/users/me", previous_session:, user:
+    end
+  end
+
+  test "a remembered sign in is kept when the request that made it fails" do
+    browser = sign_in_remembered(create(:user, password: "enterprise"))
+    browser.cookies.delete(SESSION_COOKIE)
+
+    browser.delete "/api/v1/vehicles/#{SecureRandom.uuid}"
+    assert_equal 404, browser.response.status
+
+    browser.cookies.delete(REMEMBER_COOKIE)
+    browser.get "/api/v1/users/me"
+
+    assert_equal 200, browser.response.status
+  end
+
+  private def assert_signed_in_after_late_answer_from(path, previous_session:, user: create(:user, password: "enterprise"))
     browser = open_session
-    browser.cookies.merge(expired_session, browser_uri)
+    browser.cookies.merge(previous_session, browser_uri)
     in_flight = open_session
-    in_flight.cookies.merge(expired_session, browser_uri)
+    in_flight.cookies.merge(previous_session, browser_uri)
 
     sign_in_json(browser, user, remember: false)
 
@@ -193,6 +213,10 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     browser.get "/api/v1/users/me"
 
     assert_equal 200, browser.response.status
+  end
+
+  private def unknown_session
+    "#{SESSION_COOKIE}=#{SecureRandom.hex(16)}; domain=example.com; path=/"
   end
 
   private def browser_uri

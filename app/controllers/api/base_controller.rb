@@ -21,11 +21,11 @@ module Api
 
     skip_before_action :track_ahoy_visit
 
-    prepend_before_action :leave_anonymous_session_unwritten
-    after_action :write_session_once_signed_in
+    prepend_before_action :leave_session_unwritten
 
     before_action :authenticate_user!, except: %i[root version provider]
     before_action :set_paper_trail_whodunnit, except: %i[root version provider]
+    before_action :write_session_when_signed_in, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
@@ -144,21 +144,31 @@ module Api
     end
 
     # With `expire_after` set, every request that touches the session answers
-    # with a session cookie, and one carrying no user answers with an empty
-    # session. A request still in flight when the user signs in can arrive after
-    # the sign-in and replace the new session cookie with that empty one, so the
-    # next request is a 401 and the user is back on the login page.
+    # with a session cookie, including one that ends without a user -- a timed
+    # out session signs itself out and answers with what is left. A request
+    # still in flight when the user signs in can arrive after the sign-in and
+    # replace the new session cookie with that one, so the next request is a 401
+    # and the user is back on the login page.
     #
-    # Skipped up front rather than in an after_action because a failed
-    # `authenticate_user!` renders through warden's failure app, where no
-    # after_action runs. A request that starts signed in still writes, which is
-    # what lets a sign-out reach the session.
-    private def leave_anonymous_session_unwritten
-      request.session_options[:skip] = true unless warden.authenticated?(:user)
+    # So nothing is written until a user is known to be signed in: one found in
+    # the session is checked for here, and a sign-in during the request lifts
+    # the skip through the warden hook in `config/initializers/api_session_write.rb`.
+    # Both happen before the action, because a failed authentication answers
+    # through warden's failure app and a `rescue_from` skips after callbacks.
+    #
+    # The session is loaded first because the Redis store answers a session
+    # loaded while `:skip` is set with an empty one, without reading it.
+    private def leave_session_unwritten
+      session.to_hash
+      request.session_options[:skip] = true
     end
 
-    private def write_session_once_signed_in
-      request.session_options[:skip] = false if warden.authenticated?(:user)
+    private def write_session_when_signed_in
+      write_session if warden.authenticated?(:user)
+    end
+
+    private def write_session
+      request.session_options[:skip] = false
     end
 
     private def set_last_active_at
