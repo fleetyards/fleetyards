@@ -2776,6 +2776,16 @@ components:
       - finished
       x-enumNames:
       - FINISHED
+    HangarSyncOutcomeEnum:
+      type: string
+      enum:
+      - synced
+      - nothing_to_sync
+      - only_skipped_items
+      x-enumNames:
+      - SYNCED
+      - NOTHING_TO_SYNC
+      - ONLY_SKIPPED_ITEMS
     HangarSyncResult:
       type: object
       properties:
@@ -2858,6 +2868,8 @@ components:
           items:
             type: string
             format: uuid
+        outcome:
+          "$ref": "#/components/schemas/HangarSyncOutcomeEnum"
       additionalProperties: false
       required:
       - importedVehicles

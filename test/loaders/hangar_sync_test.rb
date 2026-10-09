@@ -516,8 +516,9 @@ class HangarSyncTest < ActiveSupport::TestCase
     test "leaves the stored flair alone when the run does not sync it" do
       ::HangarSync.new(@input).run(@user.id)
 
-      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], sync_hangar_flair: false)
-      ::HangarSync.new([]).run_with_import(import)
+      ships = @input.select { |item| item["type"] == "ship" }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: ships, sync_hangar_flair: false)
+      ::HangarSync.new(ships).run_with_import(import)
 
       assert_empty @user.hangar_pledge_items.paints
       assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
@@ -533,6 +534,55 @@ class HangarSyncTest < ActiveSupport::TestCase
       sync.send(:sync_pledge_items, @user)
 
       assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
+    end
+  end
+
+  class NothingToSyncTest < HangarSyncTest
+    setup do
+      @input += [{"id" => "00064531", "name" => "Space Globe - Terra", "type" => "flair"}]
+      ::HangarSync.new(@input).run(@user.id)
+      @jav_ship = create(:vehicle, user: @user, model: Model.find_by!(slug: "aegs-javelin"), wanted: false)
+      @pledge_item_ids = @user.hangar_pledge_items.pluck(:id).sort
+    end
+
+    test "an empty run touches nothing, even with paints and flair on" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], unmatched_vehicles_action: "delete",
+        sync_paints: true, sync_hangar_flair: true)
+
+      result = assert_no_difference -> { Notification.where(user: @user).count } do
+        ::HangarSync.new([]).run_with_import(import)
+      end
+
+      assert_equal "nothing_to_sync", result[:outcome]
+      assert result.except(:outcome).values.all?(&:empty?)
+      assert_predicate import.reload, :finished?
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_equal @pledge_item_ids, @user.hangar_pledge_items.pluck(:id).sort
+    end
+
+    test "paints and flair the run does not sync are skipped, not synced" do
+      pledge_items = @input.select { |item| %w[skin flair].include?(item["type"]) }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: pledge_items,
+        unmatched_vehicles_action: "delete", sync_paints: false, sync_hangar_flair: false)
+
+      result = assert_no_difference -> { Notification.where(user: @user).count } do
+        ::HangarSync.new(pledge_items).run_with_import(import)
+      end
+
+      assert_equal "only_skipped_items", result[:outcome]
+      assert result.except(:outcome).values.all?(&:empty?)
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_equal @pledge_item_ids, @user.hangar_pledge_items.pluck(:id).sort
+    end
+
+    test "paints the run does sync make it a sync" do
+      paints = @input.select { |item| item["type"] == "skin" }
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: paints, sync_paints: true)
+
+      result = ::HangarSync.new(paints).run_with_import(import)
+
+      assert_equal "synced", result[:outcome]
+      assert_predicate result[:synced_paints], :any?
     end
   end
 end
