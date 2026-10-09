@@ -23,6 +23,13 @@ class FleetAnnouncement < ApplicationRecord
   belongs_to :author, class_name: "User", optional: true
 
   validates :body, presence: true, length: {maximum: BODY_LIMIT}
+  validate :expires_in_the_future, if: -> { expires_at.present? && will_save_change_to_expires_at? }
 
   scope :active, -> { where(expires_at: nil).or(where(expires_at: Time.current..)) }
+
+  # One that has already ended would be saved and never shown, and nobody could
+  # reach it to take it down.
+  private def expires_in_the_future
+    errors.add(:expires_at, :invalid) if expires_at <= Time.current
+  end
 end
