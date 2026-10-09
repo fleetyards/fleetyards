@@ -107,21 +107,6 @@
           "removed": "Annonce supprimée.",
           "removeFailed": "L'annonce n'a pas pu être supprimée."
         }
-      },
-      "health": {
-        "title": "Santé de la flotte",
-        "inactive": {
-          "one": "%{count} membre inactif depuis plus de 30 jours",
-          "other": "%{count} membres inactifs depuis plus de 30 jours"
-        },
-        "unverified": {
-          "one": "%{count} membre non vérifié auprès de l'org RSI",
-          "other": "%{count} membres non vérifiés auprès de l'org RSI"
-        },
-        "emptyRoles": {
-          "one": "%{count} rôle sans titulaire",
-          "other": "%{count} rôles sans titulaire"
-        }
       }
     }
   }

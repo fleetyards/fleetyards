@@ -107,21 +107,6 @@
           "removed": "Ankündigung entfernt.",
           "removeFailed": "Die Ankündigung konnte nicht entfernt werden."
         }
-      },
-      "health": {
-        "title": "Zustand der Flotte",
-        "inactive": {
-          "one": "%{count} Mitglied seit 30+ Tagen inaktiv",
-          "other": "%{count} Mitglieder seit 30+ Tagen inaktiv"
-        },
-        "unverified": {
-          "one": "%{count} Mitglied nicht in der RSI-Org bestätigt",
-          "other": "%{count} Mitglieder nicht in der RSI-Org bestätigt"
-        },
-        "emptyRoles": {
-          "one": "%{count} Rolle ohne Mitglieder",
-          "other": "%{count} Rollen ohne Mitglieder"
-        }
       }
     }
   }

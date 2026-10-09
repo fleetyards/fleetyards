@@ -16,7 +16,6 @@ import AboutPanel from "@/frontend/components/Fleets/Dashboard/AboutPanel/index.
 import GetStartedPanel from "@/frontend/components/Fleets/Dashboard/GetStartedPanel/index.vue";
 import AnnouncementsPanel from "@/frontend/components/Fleets/Dashboard/AnnouncementsPanel/index.vue";
 import OnlineMembersPanel from "@/frontend/components/Fleets/Dashboard/OnlineMembersPanel/index.vue";
-import HealthPanel from "@/frontend/components/Fleets/Dashboard/HealthPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -47,7 +46,6 @@ const {
   canCreateContracts,
   canReadMissions,
   showOnline,
-  showHealth,
   canManageAnnouncements,
 } = useFleetDashboardAccess(
   () => props.fleet,
@@ -134,11 +132,6 @@ const postAnnouncement = () =>
         :fleet="fleet"
         class="fleet-dashboard__online"
       />
-      <HealthPanel
-        v-if="showHealth"
-        :fleet="fleet"
-        class="fleet-dashboard__health"
-      />
       <ContractsPanel
         v-if="showContracts"
         :fleet="fleet"
@@ -191,8 +184,7 @@ const postAnnouncement = () =>
   margin-top: 16px;
 }
 
-.fleet-dashboard__queue,
-.fleet-dashboard__health {
+.fleet-dashboard__queue {
   order: 1;
 }
 

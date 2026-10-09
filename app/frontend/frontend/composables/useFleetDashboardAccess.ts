@@ -79,9 +79,6 @@ export const useFleetDashboardAccess = (
   // Who is around is read off the roster, so it asks what the roster asks.
   const showOnline = showNewMembers;
 
-  // The loose ends are for whoever can act on members, like the join queue.
-  const showHealth = canAnswerJoinRequests;
-
   const canManageAnnouncements = computed(
     () => !!capabilities.value?.manageAnnouncements,
   );
@@ -102,7 +99,6 @@ export const useFleetDashboardAccess = (
     canCreateContracts,
     canReadMissions,
     showOnline,
-    showHealth,
     canManageAnnouncements,
   };
 };

@@ -107,21 +107,6 @@
           "removed": "Anuncio eliminado.",
           "removeFailed": "No se pudo eliminar el anuncio."
         }
-      },
-      "health": {
-        "title": "Estado de la flota",
-        "inactive": {
-          "one": "%{count} miembro inactivo desde hace más de 30 días",
-          "other": "%{count} miembros inactivos desde hace más de 30 días"
-        },
-        "unverified": {
-          "one": "%{count} miembro sin verificar en la org de RSI",
-          "other": "%{count} miembros sin verificar en la org de RSI"
-        },
-        "emptyRoles": {
-          "one": "%{count} rol sin nadie asignado",
-          "other": "%{count} roles sin nadie asignado"
-        }
       }
     }
   }
