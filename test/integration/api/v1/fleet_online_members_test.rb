@@ -65,6 +65,18 @@ class Api::V1::FleetOnlineMembersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET online-members sorts by the name the panel shows" do
+    @fleet.fleet_memberships.find_by(user: @other).update!(nickname: "Zed")
+    newcomer = create(:user, username: "mike")
+    create(:fleet_membership, :accepted, fleet: @fleet, user: newcomer)
+    UserPresence.connect(newcomer.id, "tab-mike")
+
+    sign_in @reader
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal %w[zulu mike alpha], parsed_body["items"].map { |row| row["username"] }
+    end
+  end
+
   test "GET online-members is refused to a role that cannot read members" do
     member = create(:user)
     role = create(:fleet_role, fleet: @fleet, name: "Recruit", resource_access: [])

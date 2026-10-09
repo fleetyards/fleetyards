@@ -18,10 +18,15 @@ module Api
       def index
         authorize! with: FleetMembershipPolicy, context: {fleet: @fleet}
 
-        online = @fleet.fleet_memberships.kept.accepted
+        # The fleet's side of the intersection, so the query is as large as the
+        # fleet rather than as large as everybody online on the site.
+        members = @fleet.fleet_memberships.kept.accepted
+        online_ids = members.pluck(:user_id).to_set & online_user_ids
+        online_ids.delete(current_resource_owner.id)
+
+        online = members
           .joins(:user)
-          .where(user_id: online_user_ids.to_a, users: {show_online_status: true})
-          .where.not(user_id: current_resource_owner.id)
+          .where(user_id: online_ids.to_a, users: {show_online_status: true})
           .includes(user: {avatar_attachment: :blob})
           .to_a
 
@@ -29,8 +34,13 @@ module Api
         @friend_ids = current_resource_owner.friends.where(id: online.map(&:user_id)).pluck(:id).to_set
         @total_count = online.size
         @members = online
-          .sort_by { |membership| [@friend_ids.include?(membership.user_id) ? 0 : 1, membership.user.username.downcase] }
+          .sort_by { |membership| [@friend_ids.include?(membership.user_id) ? 0 : 1, shown_name(membership).downcase] }
           .first(LIMIT)
+      end
+
+      # Sorted by the name the panel shows, or the order reads as random.
+      private def shown_name(membership)
+        membership.nickname.presence || membership.user.username
       end
 
       private def set_fleet
