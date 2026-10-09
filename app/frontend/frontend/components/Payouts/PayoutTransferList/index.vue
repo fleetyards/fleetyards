@@ -168,6 +168,20 @@ const onToggle = async (transfer: PayoutTransfer) => {
   white-space: nowrap;
 }
 
+// Both names are who pays whom; cut down to "orga…" on a phone, neither
+// said it.
+@media (max-width: 575px) {
+  .payout-transfers__parties {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+  }
+
+  .payout-transfers__name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
 .payout-transfers__arrow {
   color: var(--color-muted, #7a8288);
 }
