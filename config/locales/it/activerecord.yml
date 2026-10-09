@@ -300,6 +300,8 @@ it:
         file_in_use: "è già usata altrove; carica di nuovo l'immagine"
         file_too_large: "non deve superare %{count} MB"
         markdown_image_limit_reached: "Hai caricato %{count} immagini nelle ultime 24 ore. Riprova più tardi."
+        announcement_limit_reached: "La tua flotta ha già %{count} annunci attivi. Rimuovine uno prima di pubblicarne un altro."
+        already_passed: "è già passata"
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:

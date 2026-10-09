@@ -139,16 +139,6 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET announcements stops at the newest twenty" do
-    21.times { |index| create(:fleet_announcement, fleet: @fleet, body: "No. #{index}", created_at: index.minutes.ago) }
-
-    sign_in @member
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal 20, parsed_body["items"].size
-      refute_includes parsed_body["items"].map { |item| item["body"] }, "No. 20"
-    end
-  end
-
   test "GET announcements is refused to somebody outside the fleet" do
     sign_in create(:user)
 
@@ -179,6 +169,23 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {body: ""}
   end
 
+  # Every one that stands has to fit on the dashboard, so the board fills up
+  # rather than letting the oldest slip out of reach.
+  test "POST announcements refuses one more once the board is full" do
+    FleetAnnouncement::ACTIVE_LIMIT.times { create(:fleet_announcement, fleet: @fleet) }
+
+    sign_in @officer
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {body: "One too many"}
+  end
+
+  test "POST announcements makes room once one has expired" do
+    FleetAnnouncement::ACTIVE_LIMIT.times { create(:fleet_announcement, fleet: @fleet) }
+    @fleet.fleet_announcements.first.update_columns(expires_at: 1.minute.ago)
+
+    sign_in @officer
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {body: "Room again"}
+  end
+
   test "POST announcements refuses an end that has already passed" do
     sign_in @officer
 
@@ -192,6 +199,17 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     sign_in @officer
     assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, id: announcement.id},
       body: {body: "Reworded"}
+  end
+
+  # Kept while it was being edited and ran out meanwhile: saving it would
+  # report success for an announcement nobody can see any more.
+  test "PUT announcement refuses to keep an end that has passed" do
+    announcement = create(:fleet_announcement, fleet: @fleet, author: @admin)
+    announcement.update_columns(expires_at: 1.minute.ago)
+
+    sign_in @officer
+    assert_api_response :put, 400, path_params: {fleetSlug: @fleet.slug, id: announcement.id},
+      body: {body: "Too late"}
   end
 
   test "PUT announcement refuses an empty body" do

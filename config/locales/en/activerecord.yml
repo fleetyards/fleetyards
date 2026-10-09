@@ -303,6 +303,8 @@ en:
         file_in_use: "is already used elsewhere; upload the image again"
         file_too_large: "must not be larger than %{count} MB"
         markdown_image_limit_reached: "You have uploaded %{count} images in the last 24 hours. Please try again later."
+        announcement_limit_reached: "Your fleet already has %{count} announcements up. Remove one before posting another."
+        already_passed: "has already passed"
       models:
         fleet_subscription:
           attributes:

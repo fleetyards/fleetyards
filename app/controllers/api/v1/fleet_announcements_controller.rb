@@ -14,10 +14,6 @@ module Api
       before_action :set_fleet
       before_action :set_fleet_announcement, only: %i[update destroy]
 
-      # Enough for the dashboard and its "show more"; past this a fleet is using
-      # announcements as a log, and the oldest standing ones are not news.
-      LIMIT = 20
-
       # Only what is still standing: an expired announcement has said its piece.
       def index
         authorize! with: FleetAnnouncementPolicy, context: {fleet: @fleet}
@@ -25,7 +21,6 @@ module Api
         @fleet_announcements = @fleet.fleet_announcements.active
           .includes(author: {avatar_attachment: :blob})
           .order(created_at: :desc)
-          .limit(LIMIT)
       end
 
       def create
