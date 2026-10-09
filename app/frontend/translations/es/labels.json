@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "Opcionalmente, parte de una misión — sus datos, equipos, naves y slots se copian al evento, que queda vinculado a ella.",
           "noTemplate": "Sin plantilla",
           "noTemplateHint": "Crea el evento desde cero.",
+          "pickTemplateLoadFailed": "No se pudieron cargar las misiones de la flota.",
           "changeTemplate": "Cambiar plantilla",
           "clearTemplate": "Quitar plantilla",
           "myVehicle": "Mi vehículo",

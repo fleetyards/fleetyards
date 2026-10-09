@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "Optional mit einer Mission starten — ihre Angaben, Teams, Schiffe und Slots werden in das Event übernommen, das mit ihr verknüpft bleibt.",
           "noTemplate": "Keine Vorlage",
           "noTemplateHint": "Das Event von Grund auf erstellen.",
+          "pickTemplateLoadFailed": "Die Missionen der Flotte konnten nicht geladen werden.",
           "changeTemplate": "Vorlage wechseln",
           "clearTemplate": "Vorlage entfernen",
           "myVehicle": "Mein Fahrzeug",

@@ -3472,6 +3472,7 @@
           "pickTemplateHint": "Optionally start from a mission — its details, teams, ships and slots are copied onto the event, which stays linked to it.",
           "noTemplate": "No template",
           "noTemplateHint": "Build the event from scratch.",
+          "pickTemplateLoadFailed": "The fleet's missions could not be loaded.",
           "changeTemplate": "Change template",
           "clearTemplate": "Clear template",
           "myVehicle": "My vehicle",

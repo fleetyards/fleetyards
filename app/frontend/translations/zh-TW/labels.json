@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "可以選擇以任務為起點 — 其資訊、隊伍、飛船與席位會複製到活動中，活動也會連結回該任務。",
           "noTemplate": "不使用範本",
           "noTemplateHint": "從空白開始建立活動。",
+          "pickTemplateLoadFailed": "無法載入艦隊的任務。",
           "changeTemplate": "更換範本",
           "clearTemplate": "清除範本",
           "myVehicle": "我的載具",

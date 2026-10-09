@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "Vous pouvez partir d'une mission — ses informations, équipes, vaisseaux et postes sont copiés dans l'événement, qui y reste rattaché.",
           "noTemplate": "Aucun modèle",
           "noTemplateHint": "Créer l'événement de zéro.",
+          "pickTemplateLoadFailed": "Impossible de charger les missions de la flotte.",
           "changeTemplate": "Changer de modèle",
           "clearTemplate": "Retirer le modèle",
           "myVehicle": "Mon véhicule",

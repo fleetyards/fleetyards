@@ -30,7 +30,11 @@ const comlink = useComlink();
 const { resolve } = useMissionCover();
 
 const fleetSlug = computed(() => props.fleet.slug);
-const { data: missions, isLoading } = useFleetMissions(fleetSlug, ref({}));
+const {
+  data: missions,
+  isLoading,
+  isError,
+} = useFleetMissions(fleetSlug, ref({}));
 
 // A draft has not been offered to the fleet yet, so nothing is spawned from it.
 const missionList = computed<Mission[]>(() =>
@@ -50,6 +54,14 @@ const pick = (mission: Mission | null) => {
     <p class="text-muted">{{ t("labels.fleets.events.pickTemplateHint") }}</p>
 
     <p v-if="isLoading" class="text-muted">{{ t("messages.loading") }}</p>
+
+    <p
+      v-else-if="isError"
+      class="text-muted"
+      data-test="mission-template-error"
+    >
+      {{ t("labels.fleets.events.pickTemplateLoadFailed") }}
+    </p>
 
     <p v-else-if="!missionList.length" class="text-muted">
       {{ t("labels.fleets.missions.noMissions") }}

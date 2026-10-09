@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "可选择以任务为起点 — 其信息、小队、飞船和席位会复制到活动中，活动也会关联回该任务。",
           "noTemplate": "不使用模板",
           "noTemplateHint": "从零开始创建活动。",
+          "pickTemplateLoadFailed": "无法加载舰队的任务。",
           "changeTemplate": "更换模板",
           "clearTemplate": "清除模板",
           "myVehicle": "我的载具",

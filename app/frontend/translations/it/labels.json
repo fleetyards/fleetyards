@@ -3458,6 +3458,7 @@
           "pickTemplateHint": "Puoi partire da una missione — dettagli, team, navi e slot vengono copiati nell'evento, che resta collegato ad essa.",
           "noTemplate": "Nessun modello",
           "noTemplateHint": "Crea l'evento da zero.",
+          "pickTemplateLoadFailed": "Impossibile caricare le missioni della flotta.",
           "changeTemplate": "Cambia modello",
           "clearTemplate": "Rimuovi il modello",
           "myVehicle": "Il mio veicolo",
