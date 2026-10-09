@@ -16,7 +16,13 @@ import {
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
-import { BuybackPledgeKindEnum, type BuybackPledge } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
+import {
+  BuybackPledgeKindEnum,
+  useDestroyHangarBuyback,
+  type BuybackPledge,
+} from "@/services/fyApi";
 
 type Props = {
   buybacks: BuybackPledge[];
@@ -73,6 +79,38 @@ const tags = (buyback: BuybackPledge): RowListItemTag[] => [
         },
       ]),
 ];
+
+const queryClient = useQueryClient();
+
+const { displayAlert, displayConfirm } = useAppNotifications();
+
+const removingId = ref<string>();
+
+const destroyMutation = useDestroyHangarBuyback();
+
+const remove = (buyback: BuybackPledge) => {
+  removingId.value = buyback.id;
+
+  displayConfirm({
+    text: t("messages.confirm.buyback.destroy"),
+    onConfirm: async () => {
+      await destroyMutation
+        .mutateAsync({ id: buyback.id })
+        .then(() =>
+          queryClient.invalidateQueries({ queryKey: ["hangar", "buybacks"] }),
+        )
+        .catch(() => {
+          displayAlert({ text: t("messages.buyback.destroy.failure") });
+        })
+        .finally(() => {
+          removingId.value = undefined;
+        });
+    },
+    onClose: () => {
+      removingId.value = undefined;
+    },
+  });
+};
 
 const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
   const result: RowListItemBadge[] = [];
@@ -138,8 +176,9 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
           {{ record.contained }}
         </template>
 
-        <template v-if="record.available" #actions>
+        <template #actions>
           <Btn
+            v-if="record.available"
             :href="rsiUrl(record)"
             :variant="BtnVariantsEnum.GHOST"
             :aria-label="t('labels.buybacks.openOnRsi')"
@@ -148,6 +187,17 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
           >
             <i class="fa-light fa-arrow-up-right-from-square" />
             <span>{{ t("labels.buybacks.openOnRsi") }}</span>
+          </Btn>
+          <Btn
+            :variant="BtnVariantsEnum.GHOST"
+            :aria-label="t('labels.buybacks.remove')"
+            :loading="removingId === record.id"
+            mobile-icon-only
+            data-test="buyback-remove"
+            @click="remove(record)"
+          >
+            <i class="fa-light fa-trash" />
+            <span>{{ t("labels.buybacks.remove") }}</span>
           </Btn>
         </template>
       </RowListItem>

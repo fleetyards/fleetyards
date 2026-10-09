@@ -2571,6 +2571,7 @@
           "other": "%{count} mois"
         },
         "openOnRsi": "Racheter sur RSI",
+        "remove": "Retirer",
         "priceRange": "Fourchette de prix",
         "priceMin": "Prix min. (USD)",
         "priceMax": "Prix max. (USD)",

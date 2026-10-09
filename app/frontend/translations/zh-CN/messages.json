@@ -1,6 +1,11 @@
 {
   "zh-CN": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "无法移除该回购承诺。"
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "分享链接已创建。",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "您确定要从机库中移除这艘飞船吗？"
+        },
+        "buyback": {
+          "destroy": "要从回购列表中移除此承诺吗？请在 RSI 上回购后使用。如果它仍在 RSI 列表中，下次同步会将其恢复。"
         },
         "hangarGroup": {
           "destroy": "您确定要从机库中移除这个群组吗？"

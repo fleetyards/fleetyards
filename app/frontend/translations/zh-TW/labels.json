@@ -2571,6 +2571,7 @@
           "other": "%{count} 個月"
         },
         "openOnRsi": "在 RSI 回購",
+        "remove": "移除",
         "priceRange": "價格範圍",
         "priceMin": "最低價格（USD）",
         "priceMax": "最高價格（USD）",

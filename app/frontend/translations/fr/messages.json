@@ -1,6 +1,11 @@
 {
   "fr": {
     "messages": {
+      "buyback": {
+        "destroy": {
+          "failure": "Impossible de retirer le pledge de rachat."
+        }
+      },
       "hangarShare": {
         "enable": {
           "success": "Lien de partage créé.",
@@ -474,6 +479,9 @@
       "confirm": {
         "vehicle": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce vaisseau de votre Hangar ?"
+        },
+        "buyback": {
+          "destroy": "Retirer ce pledge de votre liste de rachat ? À utiliser après l'avoir racheté sur RSI. La prochaine synchronisation le rétablit s'il y figure encore."
         },
         "hangarGroup": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce groupe de votre Hangar ?"

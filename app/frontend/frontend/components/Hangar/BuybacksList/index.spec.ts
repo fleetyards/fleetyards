@@ -1,8 +1,42 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
+import { flushPromises } from "@vue/test-utils";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type BuybackPledge } from "@/services/fyApi";
 import Component from "./index.vue";
+
+const destroyBuyback = vi.fn();
+const invalidateQueries = vi.fn();
+const displayAlert = vi.fn();
+
+vi.mock("@/services/fyApi", async () => {
+  const actual =
+    await vi.importActual<Record<string, unknown>>("@/services/fyApi");
+
+  return {
+    ...actual,
+    useDestroyHangarBuyback: () => ({
+      mutateAsync: destroyBuyback,
+      isPending: ref(false),
+    }),
+  };
+});
+
+vi.mock("@tanstack/vue-query", async () => {
+  const actual = await vi.importActual<Record<string, unknown>>(
+    "@tanstack/vue-query",
+  );
+
+  return { ...actual, useQueryClient: () => ({ invalidateQueries }) };
+});
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displayAlert,
+    displayConfirm: ({ onConfirm }: { onConfirm: () => void }) => onConfirm(),
+  }),
+}));
 
 const routerOnBuybacks = async () => {
   const router = createRouter({
@@ -47,6 +81,44 @@ const mount = async (buybacks: BuybackPledge[], emptyVisible = false) =>
 describe("Hangar/BuybacksList", () => {
   beforeEach(() => {
     window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
+    destroyBuyback.mockReset().mockResolvedValue(undefined);
+    invalidateQueries.mockReset();
+    displayAlert.mockReset();
+  });
+
+  // A pledge bought back on RSI leaves its list; removing the one row saves
+  // re-syncing all of them.
+  it("removes a single pledge and reloads the list", async () => {
+    const wrapper = await mount([buyback()]);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(destroyBuyback).toHaveBeenCalledWith({
+      id: "0f2c0f2c-0f2c-0f2c-0f2c-0f2c0f2c0f2c",
+    });
+    expect(invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["hangar", "buybacks"],
+    });
+    expect(displayAlert).not.toHaveBeenCalled();
+  });
+
+  it("says so when the pledge could not be removed", async () => {
+    destroyBuyback.mockRejectedValue(new Error("nope"));
+    const wrapper = await mount([buyback()]);
+
+    await wrapper.find('[data-test="buyback-remove"]').trigger("click");
+    await flushPromises();
+
+    expect(invalidateQueries).not.toHaveBeenCalled();
+    expect(displayAlert).toHaveBeenCalled();
+  });
+
+  it("offers removal for a pledge RSI no longer offers", async () => {
+    const wrapper = await mount([buyback({ available: false })]);
+
+    expect(wrapper.find('[data-test="buyback-rsi-link"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="buyback-remove"]').exists()).toBe(true);
   });
 
   it("shows the pledge with what it contains", async () => {
