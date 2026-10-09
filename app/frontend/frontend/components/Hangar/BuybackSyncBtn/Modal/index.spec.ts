@@ -63,8 +63,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useReportRsiPage: () => ({ mutateAsync: reportMutateAsync }),
 }));
 
+const comlinkEmit = vi.fn();
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({ emit: comlinkEmit, on: vi.fn(), off: vi.fn() }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -201,6 +203,7 @@ describe("HangarBuybackSyncModal", () => {
     submitDetails.mockClear();
     reportMutateAsync.mockClear();
     rsiIdentity.mockClear();
+    comlinkEmit.mockClear();
     vi.mocked(window.postMessage).mockClear();
     pagesAnswered = 0;
   });
@@ -292,6 +295,31 @@ describe("HangarBuybackSyncModal", () => {
     await answerNextPage(emptyBuybackPage);
 
     expect(exposed.dirty).toBe(false);
+  });
+
+  // A submitted list is stored; the toast and the price pass need no modal.
+  it("closes without asking once the list is submitted", async () => {
+    mutateAsync.mockImplementationOnce(() => new Promise(() => {}));
+    const wrapper = await startSync();
+
+    const exposed = wrapper.vm as unknown as { dirty: boolean };
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(wrapper.text()).toContain("labels.buybackSync.status.submitting");
+    expect(exposed.dirty).toBe(false);
+  });
+
+  // Forced, the close would skip the question the X asks mid-fetch.
+  it("closes from Cancel the way the X does", async () => {
+    const wrapper = await startSync();
+
+    const close = wrapper.find("[data-test='close-buyback-sync']");
+    expect(close.attributes("disabled")).toBeUndefined();
+
+    await close.trigger("click");
+    expect(comlinkEmit).toHaveBeenCalledWith("close-modal");
   });
 
   // The same guard the hangar sync has: a page repeating ids already read

@@ -310,14 +310,15 @@ const submit = async () => {
   displaySuccess({ text: t("messages.buybackSync.success") });
 };
 
+// Not forced, so a close mid-fetch asks first, as the X does.
 const close = () => {
-  comlink.emit("close-modal", true);
+  comlink.emit("close-modal");
 };
 
+// Only reading the list ends with the modal: a submitted list is stored, and
+// its toast and price pass run without the modal open.
 defineExpose({
-  dirty: computed(
-    () => status.value === "fetching" || status.value === "submitting",
-  ),
+  dirty: computed(() => status.value === "fetching"),
   dirtyText: t("messages.buybackSync.closeWhileRunning"),
 });
 </script>
@@ -424,7 +425,6 @@ defineExpose({
         :variant="BtnVariantsEnum.BARE"
         :size="BtnSizesEnum.LG"
         data-test="close-buyback-sync"
-        :disabled="working && status !== 'idle'"
         @click="close"
       >
         {{
