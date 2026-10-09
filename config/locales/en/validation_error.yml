@@ -107,6 +107,10 @@ en:
     buyback_pledges:
       sync: Buy-back pledges could not be synchronised.
       sync_details: Buy-back details could not be stored.
+    fleet_announcements:
+      create: "Announcement could not be posted."
+      update: "Announcement could not be updated."
+      destroy: "Announcement could not be removed."
     fleet_contracts:
       create: Contract could not be created.
       update: Contract could not be updated.

@@ -806,7 +806,8 @@
             "allies": "Verbündete",
             "contracts": "Aufträge",
             "payouts": "Auszahlungen",
-            "notifications": "Benachrichtigungen"
+            "notifications": "Benachrichtigungen",
+            "announcements": "Ankündigungen"
           },
           "privileges": {
             "fleet:update": "Flotte bearbeiten",
@@ -870,7 +871,8 @@
             "fleet:payouts:update": "Auszahlungen aktualisieren",
             "fleet:payouts:delete": "Auszahlungen löschen",
             "fleet:payouts:manage": "Auszahlungen verwalten",
-            "fleet:notifications:manage": "Benachrichtigungseinstellungen verwalten"
+            "fleet:notifications:manage": "Benachrichtigungseinstellungen verwalten",
+            "fleet:announcements:manage": "Ankündigungen verwalten"
           },
           "name": "Name",
           "rank": "Rang"

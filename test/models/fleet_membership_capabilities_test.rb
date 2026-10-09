@@ -102,6 +102,12 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     end
   end
 
+  test "managing announcements follows FleetAnnouncementPolicy" do
+    assert membership_with(["fleet:announcements:manage"]).capabilities[:manage_announcements]
+    refute membership_with(["fleet:memberships:manage"]).capabilities[:manage_announcements]
+    assert_equal FleetAnnouncement::MANAGE_PRIVILEGES, FleetMembership::CAPABILITY_PRIVILEGES[:manage_announcements]
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort

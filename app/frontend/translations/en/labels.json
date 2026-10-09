@@ -806,7 +806,8 @@
             "allies": "Allies",
             "contracts": "Contracts",
             "payouts": "Payouts",
-            "notifications": "Notifications"
+            "notifications": "Notifications",
+            "announcements": "Announcements"
           },
           "privileges": {
             "fleet:update": "Update Fleet",
@@ -870,7 +871,8 @@
             "fleet:payouts:update": "Update Payouts",
             "fleet:payouts:delete": "Delete Payouts",
             "fleet:payouts:manage": "Manage Payouts",
-            "fleet:notifications:manage": "Manage Notification Settings"
+            "fleet:notifications:manage": "Manage Notification Settings",
+            "fleet:announcements:manage": "Manage Announcements"
           },
           "name": "Name",
           "rank": "Rank"

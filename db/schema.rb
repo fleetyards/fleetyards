@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -672,6 +672,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_170000) do
     t.index ["addressee_id"], name: "index_fleet_alliances_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"
     t.index ["requester_id"], name: "index_fleet_alliances_on_requester_id"
     t.check_constraint "requester_id <> addressee_id", name: "fleet_alliances_not_to_self"
+  end
+
+  create_table "fleet_announcements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_id", null: false
+    t.uuid "author_id"
+    t.text "body", null: false
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_fleet_announcements_on_author_id"
+    t.index ["fleet_id", "created_at"], name: "index_fleet_announcements_on_fleet_id_and_created_at"
   end
 
   create_table "fleet_contract_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2783,6 +2794,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_170000) do
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
+  add_foreign_key "fleet_announcements", "fleets"
+  add_foreign_key "fleet_announcements", "users", column: "author_id", on_delete: :nullify
   add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade
   add_foreign_key "fleet_contract_assignments", "users", column: "approved_by_id", on_delete: :nullify
   add_foreign_key "fleet_contract_assignments", "users", on_delete: :cascade

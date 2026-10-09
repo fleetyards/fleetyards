@@ -63,6 +63,10 @@ fr:
     buyback_pledges:
       sync: Les pledges rachetables n'ont pas pu être synchronisés.
       sync_details: "Les détails des pledges rachetables n'ont pas pu être enregistrés."
+    fleet_announcements:
+      create: "L'annonce n'a pas pu être publiée."
+      update: "L'annonce n'a pas pu être mise à jour."
+      destroy: "L'annonce n'a pas pu être supprimée."
     fleet_contracts:
       create: Le contrat n'a pas pu être créé.
       update: Le contrat n'a pas pu être mis à jour.
