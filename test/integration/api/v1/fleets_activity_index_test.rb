@@ -17,8 +17,10 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
 
       parameter name: :category, in: :query, required: false,
         schema: {"$ref": "#/components/schemas/FleetActivityCategoryEnum"}
-      parameter name: :exclude, in: :query, required: false,
-        schema: {"$ref": "#/components/schemas/FleetActivityCategoryEnum"}
+      # Inline rather than a $ref: the request validator cannot resolve a
+      # reference inside an array query parameter, and refuses every value.
+      parameter name: :exclude, in: :query, required: false, style: :form, explode: true,
+        schema: {type: :array, items: {type: :string, enum: ::Fleets::ActivityFeed::CATEGORIES}}
       parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50}
 
       security [
@@ -181,12 +183,14 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
 
   # The dashboard shows who joined in a panel of its own, so its feed leaves
   # them out rather than telling each one twice.
-  test "GET /fleets/:slug/activity leaves out an excluded category" do
+  test "GET /fleets/:slug/activity leaves out excluded categories" do
+    inventory = create(:fleet_inventory, fleet: @fleet)
+    create(:fleet_inventory_item, fleet_inventory: inventory)
     create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Mining op",
       starts_at: 3.days.from_now, published_at: 1.day.ago)
 
     sign_in @member
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {exclude: "members"} do
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {exclude: ["members", "inventory"]} do
       assert_equal ["events"], parsed_body["items"].map { |entry| entry["category"] }.uniq
     end
   end

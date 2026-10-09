@@ -52,7 +52,7 @@ module Fleets
         "inventory" => -> { inventory_entries }
       }
       sources = sources.slice(category) if category.present?
-      sources = sources.except(exclude) if exclude.present?
+      sources = sources.except(*Array(exclude))
 
       sources.values.flat_map(&:call)
         .sort_by { |entry| [-entry.occurred_at.to_f, entry.id] }

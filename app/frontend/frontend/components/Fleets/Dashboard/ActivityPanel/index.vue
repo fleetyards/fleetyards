@@ -19,12 +19,12 @@ import {
 
 type Props = {
   fleet: Fleet;
-  // A category told elsewhere on the page, such as who joined.
-  exclude?: FleetActivityCategoryEnum;
+  // Categories told elsewhere on the page, such as who joined.
+  exclude?: FleetActivityCategoryEnum[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  exclude: undefined,
+  exclude: () => [],
 });
 
 const { t } = useI18n();

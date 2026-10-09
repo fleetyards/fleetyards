@@ -46,6 +46,13 @@ const {
 // Modules the reader may see that have nothing on right now. They are folded
 // into one prompt to start something, rather than a box each saying so.
 const empty = reactive({ events: false, contracts: false });
+
+// What a panel of its own already tells is left out of the feed, so nothing on
+// the page is said twice.
+const excludedFromFeed = computed(() => [
+  ...(showNewMembers.value ? [FleetActivityCategoryEnum.MEMBERS] : []),
+  ...(showInventory.value ? [FleetActivityCategoryEnum.INVENTORY] : []),
+]);
 </script>
 
 <template>
@@ -74,9 +81,7 @@ const empty = reactive({ events: false, contracts: false });
       />
       <ActivityPanel
         :fleet="fleet"
-        :exclude="
-          showNewMembers ? FleetActivityCategoryEnum.MEMBERS : undefined
-        "
+        :exclude="excludedFromFeed"
         class="fleet-dashboard__activity"
       />
       <!-- The fleet's own words read best at the width they were written

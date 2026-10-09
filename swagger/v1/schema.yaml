@@ -1463,8 +1463,17 @@ paths:
       - name: exclude
         in: query
         required: false
+        style: form
+        explode: true
         schema:
-          "$ref": "#/components/schemas/FleetActivityCategoryEnum"
+          type: array
+          items:
+            type: string
+            enum:
+            - members
+            - events
+            - contracts
+            - inventory
       - name: limit
         in: query
         required: false
