@@ -20,6 +20,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   BuybackPledgeKindEnum,
+  getHangarBuybacksQueryKey,
   useDestroyHangarBuyback,
   type BuybackPledge,
 } from "@/services/fyApi";
@@ -97,7 +98,9 @@ const remove = (buyback: BuybackPledge) => {
       await destroyMutation
         .mutateAsync({ id: buyback.id })
         .then(() =>
-          queryClient.invalidateQueries({ queryKey: ["hangar", "buybacks"] }),
+          queryClient.invalidateQueries({
+            queryKey: getHangarBuybacksQueryKey(),
+          }),
         )
         .catch(() => {
           displayAlert({ text: t("messages.buyback.destroy.failure") });
