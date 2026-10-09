@@ -8,11 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   type OauthApplication,
   type OauthApplicationQuery,
@@ -129,7 +125,6 @@ const submit = async () => {
         :loading="submitting"
         :disabled="!canSubmit"
         :tone="BtnTonesEnum.DANGER"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.oauthApplications.reject") }}
       </Btn>

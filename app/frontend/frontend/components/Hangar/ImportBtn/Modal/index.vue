@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
@@ -116,7 +115,6 @@ const onUploadDone = async (files: FileUpload[]) => {
     <template #footer>
       <Btn
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
         data-test="hangar-import-select-file"
         @click="selectFile"
       >

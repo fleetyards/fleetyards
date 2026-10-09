@@ -8,7 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -122,12 +122,7 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <Btn
-        :type="BtnTypesEnum.SUBMIT"
-        form="team-form"
-        :loading="submitting"
-        :size="BtnSizesEnum.LG"
-      >
+      <Btn :type="BtnTypesEnum.SUBMIT" form="team-form" :loading="submitting">
         {{ t("actions.save") }}
       </Btn>
     </template>

@@ -8,11 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
@@ -98,7 +94,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         form="payout-entry-decline-form"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
         :tone="BtnTonesEnum.DANGER"
         data-test="payout-entry-decline-submit"
       >

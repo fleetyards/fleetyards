@@ -10,7 +10,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -138,7 +138,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         form="squadron-member-edit-form"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

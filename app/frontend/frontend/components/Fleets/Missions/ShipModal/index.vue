@@ -9,7 +9,7 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import BaseSelect, {
@@ -434,12 +434,7 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <Btn
-        :type="BtnTypesEnum.SUBMIT"
-        form="ship-form"
-        :loading="submitting"
-        :size="BtnSizesEnum.LG"
-      >
+      <Btn :type="BtnTypesEnum.SUBMIT" form="ship-form" :loading="submitting">
         {{ t("actions.save") }}
       </Btn>
     </template>

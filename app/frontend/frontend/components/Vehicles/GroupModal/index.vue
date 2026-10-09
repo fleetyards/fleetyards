@@ -5,11 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -167,7 +163,6 @@ const onSubmit = handleSubmit(async (values) => {
       <Btn
         :confirm="t('messages.confirm.hangarGroup.destroy')"
         :tone="BtnTonesEnum.DANGER"
-        :size="BtnSizesEnum.LG"
         :aria-label="t('actions.delete')"
         @click="onDestroy"
       >
@@ -177,7 +172,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         :form="`hangar-group-${hangarGroup.id}`"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

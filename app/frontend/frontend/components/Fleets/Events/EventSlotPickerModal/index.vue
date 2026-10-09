@@ -225,11 +225,7 @@ const teams = computed<FleetEventTeam[]>(
     </div>
 
     <template #footer>
-      <Btn
-        :size="BtnSizesEnum.LG"
-        variant="bare"
-        @click="comlink.emit('close-modal')"
-      >
+      <Btn variant="bare" @click="comlink.emit('close-modal')">
         {{ t("actions.cancel") }}
       </Btn>
     </template>

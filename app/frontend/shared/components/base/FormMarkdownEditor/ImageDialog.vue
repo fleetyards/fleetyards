@@ -11,10 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import DirectUploadUploader, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/Uploader/index.vue";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { createMarkdownImage } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -166,7 +163,6 @@ const insert = async () => {
       </p>
       <template #footer>
         <Btn
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
           data-test="markdown-editor-image-cancel"
           @click="close"
@@ -174,7 +170,6 @@ const insert = async () => {
           {{ t("markdownEditor.cancel") }}
         </Btn>
         <Btn
-          :size="BtnSizesEnum.LG"
           :disabled="!signedId || uploading"
           :loading="inserting"
           data-test="markdown-editor-image-apply"

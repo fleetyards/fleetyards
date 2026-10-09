@@ -10,11 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
@@ -277,7 +273,6 @@ const onDestroy = async () => {
         v-if="entry"
         :confirm="t('messages.payouts.destroyEntryConfirm')"
         :tone="BtnTonesEnum.DANGER"
-        :size="BtnSizesEnum.LG"
         :loading="deleting"
         :aria-label="t('actions.delete')"
         @click="onDestroy"
@@ -288,7 +283,6 @@ const onDestroy = async () => {
         :type="BtnTypesEnum.SUBMIT"
         form="payout-entry-form"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

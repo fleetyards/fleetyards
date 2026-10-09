@@ -13,7 +13,7 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   type FleetMember,
   type FleetMemberUpdateInput,
@@ -106,7 +106,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         :form="`fleet-member-nickname-${member.id}`"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

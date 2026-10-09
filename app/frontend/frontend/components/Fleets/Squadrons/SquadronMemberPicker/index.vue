@@ -8,7 +8,6 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
-  BtnSizesEnum,
   BtnVariantsEnum,
   BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
@@ -316,7 +315,6 @@ const onSubmit = async () => {
           }}
         </span>
         <Btn
-          :size="BtnSizesEnum.LG"
           v-if="selection.length"
           :variant="BtnVariantsEnum.BARE"
           @click="clearSelection"
@@ -328,7 +326,6 @@ const onSubmit = async () => {
           form="fleet-squadron-members-form"
           :loading="submitting"
           :disabled="!selection.length"
-          :size="BtnSizesEnum.LG"
           data-test="squadron-add-members"
         >
           {{

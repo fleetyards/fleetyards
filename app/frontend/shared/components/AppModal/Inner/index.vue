@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
+import AppModalFooter from "@/shared/components/AppModal/Footer/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 
 export type ModalProps = {
@@ -66,9 +67,9 @@ const close = () => {
         </div>
       </div>
     </Panel>
-    <div v-if="$slots['footer']" class="modal-footer">
+    <AppModalFooter v-if="$slots['footer']">
       <slot name="footer" />
-    </div>
+    </AppModalFooter>
   </div>
 </template>
 

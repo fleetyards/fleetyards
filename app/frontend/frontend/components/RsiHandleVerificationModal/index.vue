@@ -323,15 +323,10 @@ const copyToken = () => {
     </section>
 
     <template #footer>
-      <Btn
-        :size="BtnSizesEnum.LG"
-        :variant="BtnVariantsEnum.BARE"
-        @click="close"
-      >
+      <Btn :variant="BtnVariantsEnum.BARE" @click="close">
         {{ t("actions.close") }}
       </Btn>
       <Btn
-        :size="BtnSizesEnum.LG"
         v-if="
           verification?.handle && verification.token && !verification.verified
         "

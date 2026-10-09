@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -78,7 +78,6 @@ const onSubmit = async () => {
         :type="BtnTypesEnum.SUBMIT"
         form="accept-transfer-form"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
         data-test="accept-submit"
       >
         {{ t("actions.logistics.acceptTransfer") }}

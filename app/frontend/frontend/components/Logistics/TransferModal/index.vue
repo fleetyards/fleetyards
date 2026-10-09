@@ -561,7 +561,6 @@ const onSubmit = async () => {
         form="transfer-form"
         :loading="submitting"
         :disabled="invalid"
-        :size="BtnSizesEnum.LG"
         data-test="transfer-submit"
       >
         {{

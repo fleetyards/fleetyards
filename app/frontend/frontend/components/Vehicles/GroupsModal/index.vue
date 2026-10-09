@@ -9,7 +9,7 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   useHangarGroups as useHangarGroupsQuery,
   type Vehicle,
@@ -111,7 +111,6 @@ const onSubmit = handleSubmit(async (values) => {
         :form="`vehicle-${vehicle.id}`"
         :loading="submitting"
         data-test="vehicle-save"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

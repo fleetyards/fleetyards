@@ -7,11 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -98,7 +94,6 @@ const onSubmit = async () => {
         :loading="submitting"
         :disabled="invalid"
         :tone="BtnTonesEnum.DANGER"
-        :size="BtnSizesEnum.LG"
         data-test="report-submit"
       >
         {{ t("actions.logistics.reportTransfer") }}

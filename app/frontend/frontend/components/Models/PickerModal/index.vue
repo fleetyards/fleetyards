@@ -518,7 +518,6 @@ const save = () => {
           {{ t("modelPicker.labels.selected", { count: selectedTotal }) }}
         </span>
         <Btn
-          :size="BtnSizesEnum.LG"
           v-if="selection.length"
           :variant="BtnVariantsEnum.BARE"
           @click="clearSelection"
@@ -530,7 +529,6 @@ const save = () => {
           form="model-picker"
           :loading="submitting"
           :disabled="!selection.length"
-          :size="BtnSizesEnum.LG"
           data-test="model-picker-submit"
         >
           {{ submitLabel }}

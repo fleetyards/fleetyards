@@ -9,7 +9,7 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -187,7 +187,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         form="hangar-inventory-form"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
         data-test="inventory-save"
       >
         {{ t("actions.save") }}

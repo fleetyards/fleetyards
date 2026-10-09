@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -134,7 +131,6 @@ const importCsv = async () => {
 
     <template #footer>
       <Btn
-        :size="BtnSizesEnum.LG"
         :variant="BtnVariantsEnum.BARE"
         class="csv-import-template"
         @click="downloadTemplate"
@@ -143,7 +139,6 @@ const importCsv = async () => {
         {{ t("actions.logistics.downloadTemplate") }}
       </Btn>
       <Btn
-        :size="BtnSizesEnum.LG"
         :disabled="!selectedFile || importing"
         :loading="importing"
         @click="importCsv"

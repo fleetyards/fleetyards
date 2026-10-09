@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useForm } from "vee-validate";
@@ -171,7 +171,6 @@ const onSubmit = handleSubmit(async (values) => {
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-addons-${vehicle.id}`"
-        :size="BtnSizesEnum.LG"
         :loading="mutation.isPending.value"
       >
         {{ t("actions.save") }}

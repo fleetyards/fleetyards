@@ -95,7 +95,6 @@ const run = async (option: ImportLoaderOption) => {
 
     <template v-if="loadAll" #footer>
       <Btn
-        :size="BtnSizesEnum.LG"
         :loading="groupRunning"
         :disabled="groupRunning"
         data-test="import-loader-start-all"

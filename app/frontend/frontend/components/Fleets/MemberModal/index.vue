@@ -15,7 +15,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { type Fleet, type FleetMemberCreateInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
@@ -96,7 +96,6 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         :form="`fleet-member-${fleet.id}`"
         :loading="submitting"
-        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.fleet.members.invite") }}
       </Btn>
