@@ -76,6 +76,52 @@
       },
       "week": {
         "emptyDay": "Rien de prévu le %{day}."
+      },
+      "online": {
+        "title": "En ligne (%{count})",
+        "friend": "Ami",
+        "more": {
+          "one": "et %{count} autre",
+          "other": "et %{count} autres"
+        }
+      },
+      "announcements": {
+        "post": "Publier une annonce",
+        "postAction": "Publier",
+        "edit": "Modifier l'annonce",
+        "body": "Annonce",
+        "until": "jusqu'au %{date}",
+        "confirmRemove": "Supprimer cette annonce pour tout le monde ?",
+        "expiry": {
+          "label": "L'afficher",
+          "keep": "Garder la fin actuelle",
+          "never": "Jusqu'à sa suppression",
+          "day": "Un jour",
+          "days3": "Trois jours",
+          "week": "Une semaine",
+          "weeks2": "Deux semaines"
+        },
+        "messages": {
+          "saved": "Annonce enregistrée.",
+          "saveFailed": "L'annonce n'a pas pu être enregistrée.",
+          "removed": "Annonce supprimée.",
+          "removeFailed": "L'annonce n'a pas pu être supprimée."
+        }
+      },
+      "health": {
+        "title": "Santé de la flotte",
+        "inactive": {
+          "one": "%{count} membre inactif depuis plus de 30 jours",
+          "other": "%{count} membres inactifs depuis plus de 30 jours"
+        },
+        "unverified": {
+          "one": "%{count} membre non vérifié auprès de l'org RSI",
+          "other": "%{count} membres non vérifiés auprès de l'org RSI"
+        },
+        "emptyRoles": {
+          "one": "%{count} rôle sans titulaire",
+          "other": "%{count} rôles sans titulaire"
+        }
       }
     }
   }

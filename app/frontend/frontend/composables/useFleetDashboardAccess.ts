@@ -76,6 +76,16 @@ export const useFleetDashboardAccess = (
 
   const canReadMissions = computed(() => !!capabilities.value?.readMissions);
 
+  // Who is around is read off the roster, so it asks what the roster asks.
+  const showOnline = showNewMembers;
+
+  // The loose ends are for whoever can act on members, like the join queue.
+  const showHealth = canAnswerJoinRequests;
+
+  const canManageAnnouncements = computed(
+    () => !!capabilities.value?.manageAnnouncements,
+  );
+
   const showActionQueue = computed(
     () => canAnswerJoinRequests.value || canAnswerTransfers.value,
   );
@@ -91,5 +101,8 @@ export const useFleetDashboardAccess = (
     canCreateEvents,
     canCreateContracts,
     canReadMissions,
+    showOnline,
+    showHealth,
+    canManageAnnouncements,
   };
 };
