@@ -21,6 +21,10 @@ interface PresenceState {
  */
 const presence = reactive(new Map<string, PresenceState>());
 
+// Bumped when the map is dropped after a reconnect, so a surface holding its
+// own list knows it may have missed transitions and asks afresh.
+const resets = ref(0);
+
 export const usePresence = () => {
   const applyPresence = (update: PresenceUpdate) => {
     presence.set(update.userId, {
@@ -36,6 +40,7 @@ export const usePresence = () => {
    */
   const resetPresence = () => {
     presence.clear();
+    resets.value += 1;
   };
 
   /*
@@ -79,5 +84,6 @@ export const usePresence = () => {
     isOnline,
     lastActiveAt,
     knownOnlineIds,
+    resets: readonly(resets),
   };
 };
