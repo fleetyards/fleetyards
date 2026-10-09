@@ -175,6 +175,15 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_nil Imports::HangarSync.find_by(user_id: user.id).hangar_group_id
   end
 
+  test "PUT /hangar/sync-rsi-hangar submits an empty list" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {items: []}
+
+    assert_equal [], Imports::HangarSync.find_by(user_id: user.id).input
+  end
+
   test "PUT /hangar/sync-rsi-hangar returns 400 for missing body" do
     user = create(:user)
     sign_in user
