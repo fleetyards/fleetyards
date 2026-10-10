@@ -36,31 +36,23 @@ module Notifications
     end
 
     private def notify(users, fleet, announcement, messages)
-      preferences = BulkDelivery.preferences_for(NOTIFICATION_TYPE, users.map(&:id))
-      now = Time.zone.now
-      expires_at = now + Notification.retention_for(NOTIFICATION_TYPE)
+      locales = users.to_h { |user| [user.id, user.notification_locale] }
 
-      rows = users.map do |user|
+      BulkDelivery.notify(
+        type: NOTIFICATION_TYPE,
+        user_ids: locales.keys,
+        unique_by: RECIPIENT_INDEX,
+        mailer: Notification.mailer_for(NOTIFICATION_TYPE),
+        label: "Fleet announcement"
+      ) do |user_id|
         {
-          user_id: user.id,
-          notification_type: NOTIFICATION_TYPE.to_s,
           link: "/fleets/#{fleet.slug}/",
           icon: "fa-duotone fa-bullhorn",
           record_type: "FleetAnnouncement",
           record_id: announcement.id,
-          read_at: preferences[user.id][:app] ? nil : now,
-          expires_at:,
-          created_at: now,
-          updated_at: now,
-          **messages[user.notification_locale]
+          **messages[locales[user_id]]
         }
       end
-
-      notifications = Notification.insert_all(rows, unique_by: RECIPIENT_INDEX, returning: %w[id user_id])
-
-      BulkDelivery.new(notifications, preferences,
-        mailer: Notification.mailer_for(NOTIFICATION_TYPE),
-        label: "Fleet announcement").deliver
     end
 
     # In the reader's own language: the title and body are stored, and one fleet

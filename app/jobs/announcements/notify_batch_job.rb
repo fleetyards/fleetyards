@@ -3,8 +3,8 @@
 module Announcements
   # Writes one batch of readers their notification.
   #
-  # Not Notification.notify! per reader: that is a preference SELECT, an INSERT
-  # and a broadcast each, which at 57k readers is ~115k round trips.
+  # In bulk rather than Notification.notify! per reader, which at 57k readers
+  # is ~115k round trips.
   class NotifyBatchJob < Announcements::BaseJob
     # The partial unique index that makes a retry a no-op.
     RECIPIENT_INDEX = :index_notifications_on_announcement_recipient
@@ -14,41 +14,26 @@ module Announcements
       return if announcement.blank?
       return if user_ids.blank?
 
-      preferences = Notifications::BulkDelivery.preferences_for(Announcement::NOTIFICATION_TYPE, user_ids)
-      now = Time.zone.now
-      expires_at = now + Notification.retention_for(Announcement::NOTIFICATION_TYPE)
-
-      rows = user_ids.map do |user_id|
-        preference = preferences[user_id]
-
+      # `unique_by` makes the insert ON CONFLICT DO NOTHING against the
+      # announcement recipient index, so a retry after a partial failure
+      # re-inserts nothing and, just as importantly, re-delivers nothing.
+      Notifications::BulkDelivery.notify(
+        type: Announcement::NOTIFICATION_TYPE,
+        user_ids:,
+        unique_by: RECIPIENT_INDEX,
+        mailer: ->(notification) { AnnouncementMailer.published(notification).deliver_later },
+        label: "Announcement"
+      ) do
         {
-          user_id:,
-          notification_type: Announcement::NOTIFICATION_TYPE.to_s,
           title: announcement.title,
           body: announcement.body,
           link: announcement.link,
           icon: announcement.icon,
           record_type: "Announcement",
-          record_id: announcement.id,
-          # A reader who turned the app channel off still gets the row -- the
-          # inbox is where an announcement lives -- but it arrives already
-          # read, so it does not put a badge on a bell they asked to be quiet.
-          read_at: preference[:app] ? nil : now,
-          expires_at:,
-          created_at: now,
-          updated_at: now
+          record_id: announcement.id
         }
       end
 
-      # `unique_by` makes this ON CONFLICT DO NOTHING against the announcement
-      # recipient index, and `returning` then names only the rows this run
-      # actually wrote. A retry after a partial failure therefore re-inserts
-      # nothing and, just as importantly, re-delivers nothing.
-      notifications = Notification.insert_all(rows, unique_by: RECIPIENT_INDEX, returning: %w[id user_id])
-
-      Notifications::BulkDelivery.new(notifications, preferences,
-        mailer: ->(notification) { AnnouncementMailer.published(notification).deliver_later },
-        label: "Announcement").deliver
       settle(announcement)
     end
 
