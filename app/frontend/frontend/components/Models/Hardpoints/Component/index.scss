@@ -3,23 +3,22 @@
   min-width: 0;
   // Backstop for a name with no space to break at (`ColdSnap`, `Cargogrid`) in
   // a cell too narrow for it: break the word rather than let the row's
-  // `overflow: hidden` clip it mid-letter.
-  overflow-wrap: break-word;
+  // `overflow: hidden` clip it mid-letter. `anywhere`, not `break-word`: the
+  // name is a flex item, and only `anywhere` lowers its min-content width so
+  // it can shrink below the word.
+  overflow-wrap: anywhere;
   margin-right: 5px;
   gap: 0 5px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
 
-  :deep(span) {
+  // The grade and manufacturer lines. The component's name sits beside them
+  // inside a popover trigger, which is a span too, and has to wrap and keep
+  // its own colour.
+  :deep(> span:not(.popover__trigger)) {
     color: $gray-light;
     font-size: 90%;
     white-space: nowrap;
-  }
-
-  // The component's name is slotted inside a popover trigger, which is a span
-  // too, so the rule above kept a long name on one line and the row clipped it.
-  :deep(.popover__trigger) {
-    white-space: normal;
   }
 }
