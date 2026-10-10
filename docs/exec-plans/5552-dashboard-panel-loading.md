@@ -40,7 +40,7 @@ Every dashboard panel shows its own loading state, on the first answer and on re
 - **2026-10-10** The member list's default sort is `created_at desc`, so the new members link needs `acceptedAt desc` to open on who joined last.
 
 - **2026-10-10** Hiding empty panels made the page jump when an answer came back empty, and the first-load shells contradicted it. Panels now always stand with an empty state.
-- **2026-10-10** The query client keeps the previous answer across a key change for every query (`plugins/QueryClient.ts`), and TanStack reports a failed refetch as an error while keeping its data. A panel calls itself failed only on `isError && !data`, and the week views treat a placeholder as unanswered.
+- **2026-10-10** The query client keeps the previous answer across a key change for every query (`plugins/QueryClient.ts`), and TanStack reports a failed refetch as an error while keeping its data. A panel calls itself failed only on `isLoadingError` (`isError && !data`). The placeholder only stands while a new key is pending, never beside an error, so the week strip holds back its empty-day text on it and nothing else needs to.
 
 ## Progress
 - [x] Phase 1
