@@ -72,7 +72,7 @@ watch(
     v-if="isLoading || data?.items.length"
     :title="t('fleetDashboard.inventory.title')"
     :loading="isFetching"
-    :empty="!entries.length"
+    :empty="!isLoading && !entries.length"
     :empty-text="
       scope === 'mine'
         ? t('fleetDashboard.inventory.emptyMine')
@@ -81,7 +81,9 @@ watch(
     :more="{ name: 'fleet-logistics', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-inventory"
   >
-    <template #actions>
+    <!-- The scope is chosen on the first answer, so the switch waits for it
+         rather than jumping from one side to the other. -->
+    <template v-if="!isLoading" #actions>
       <BtnGroup segmented>
         <Btn
           :size="BtnSizesEnum.SM"

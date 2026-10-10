@@ -16,7 +16,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 type Props = {
   title: string;
   loading?: boolean;
-  // Said instead of the body once the panel has loaded and has nothing to show.
+  // Said instead of the body when the panel has nothing to show. Left to the
+  // caller to say only once its first answer is in: a refetch shows the panel
+  // loading, and should not blank what it already says.
   empty?: boolean;
   emptyText?: string;
   more?: RouteLocationRaw;
@@ -47,7 +49,7 @@ const { t } = useI18n();
       </template>
     </PanelHeading>
     <PanelBody>
-      <p v-if="empty && !loading" class="dashboard-panel__empty">
+      <p v-if="empty" class="dashboard-panel__empty">
         {{ emptyText ?? t("fleetDashboard.empty") }}
       </p>
       <slot v-else />
