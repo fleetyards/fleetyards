@@ -72,13 +72,18 @@ module Notifications
     end
 
     test "tells nobody twice when it runs again" do
-      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+      @member.notification_preferences
+        .find_or_create_by!(notification_type: "fleet_announcement_posted")
+        .update!(push: true)
       ::Push::DeliverNotificationJob.jobs.clear
+
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+      assert_equal 1, ::Push::DeliverNotificationJob.jobs.size
 
       FleetAnnouncementPostedJob.new.perform(@announcement.id)
 
       assert_equal 2, notified.count
-      assert_empty ::Push::DeliverNotificationJob.jobs
+      assert_equal 1, ::Push::DeliverNotificationJob.jobs.size
     end
 
     test "mails, pushes and messages only the members who asked for it" do
