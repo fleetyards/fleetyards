@@ -12,7 +12,7 @@ module Api
 
         def show
           scope = @user.vehicles
-            .includes(:model)
+            .includes(model: %i[build last_build])
             .purchased
             .public
             .where(loaner: false)

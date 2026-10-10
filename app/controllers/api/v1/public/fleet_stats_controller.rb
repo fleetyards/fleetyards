@@ -47,7 +47,7 @@ module Api
         end
 
         def vehicles
-          scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+          scope = vehicle_scope.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: %i[build last_build])
 
           scope = scope.where(loaner: loaner_included?)
           scope = narrow_to_squadrons(scope)
