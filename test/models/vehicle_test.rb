@@ -542,4 +542,40 @@ class VehicleRankTest < ActiveSupport::TestCase
 
     assert_equal [upper, lower], @user.vehicles.ranked.to_a
   end
+
+  test "a move between ranks that diverge early lands between them" do
+    taken = create(:vehicle, user: @user, rank: "7F")
+    before = create(:vehicle, user: @user, rank: "7S")
+    after = create(:vehicle, user: @user, rank: "89tg")
+    moved = create(:vehicle, user: @user, rank: "a")
+
+    moved.move_next_to!(before, after: true)
+
+    assert_equal [taken, before, moved, after], @user.vehicles.ranked.to_a
+  end
+end
+
+class LexorankValueBetweenTest < ActiveSupport::TestCase
+  test "every rank lands strictly between its neighbours" do
+    ranking = Vehicle.lexorank_ranking
+    alphabet = ("0".."9").to_a + ("A".."Z").to_a + ("a".."y").to_a + %w[< X]
+    random = Random.new(4211)
+
+    2000.times do
+      before, after = Array.new(2) { Array.new(random.rand(1..5)) { alphabet.sample(random:) }.join }.sort
+      next if before == after
+
+      rank = ranking.value_between(before, after)
+
+      assert_operator rank, :>, before, "between #{before.inspect} and #{after.inspect}"
+      assert_operator rank, :<, after, "between #{before.inspect} and #{after.inspect}"
+    end
+  end
+
+  test "an open end is bounded by the other neighbour alone" do
+    ranking = Vehicle.lexorank_ranking
+
+    assert_operator ranking.value_between("yyyy", nil), :>, "yyyy"
+    assert_operator ranking.value_between(nil, "02"), :<, "02"
+  end
 end
