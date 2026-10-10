@@ -4,7 +4,6 @@ import { computed, defineComponent, h, nextTick, ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetOnlineMembersList } from "@/services/fyApi";
 import { usePresence } from "@/shared/composables/usePresence";
-import { focusManager } from "@tanstack/vue-query";
 import Component from "./index.vue";
 
 let online: FleetOnlineMembersList | undefined;
@@ -30,7 +29,7 @@ vi.mock("@/services/fyApi", async () => {
         refetch,
         isLoading: computed(() => !online),
         isFetching,
-        isError: ref(false),
+        isLoadingError: ref(false),
       };
     },
   };
@@ -77,7 +76,6 @@ describe("FleetDashboardOnlineMembersPanel", () => {
   afterEach(() => {
     wrapper?.unmount();
     wrapper = undefined;
-    focusManager.setFocused(undefined);
     vi.useRealTimers();
   });
 
@@ -250,42 +248,76 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     expect(refetch).toHaveBeenCalledTimes(1);
   });
 
-  it("shows the bar for a refocus, which the reader asked for", async () => {
+  // A refocus or the first answer: whatever the panel did not start quietly.
+  it("shows the bar for a fetch it did not start", async () => {
     online = {
       totalCount: 1,
       items: [{ userId: "z", username: "zulu", friend: false }],
     };
-    refetch.mockImplementation(() => {
-      isFetching.value = true;
-      return new Promise(() => undefined);
-    });
 
     const subject = await mount();
 
-    focusManager.setFocused(false);
-    focusManager.setFocused(true);
+    isFetching.value = true;
     await nextTick();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
     expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 
-  // Neither a list nor nobody: the rest are still being asked for.
+  // A fetch already out may predate the push, so the ask waits for it rather
+  // than cancelling it.
+  it("asks after a fetch already out instead of cancelling it", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    await mount();
+
+    isFetching.value = true;
+    applyPresence({ userId: "new", online: true });
+    await settle();
+
+    expect(refetch).not.toHaveBeenCalled();
+
+    isFetching.value = false;
+    await nextTick();
+
+    expect(refetch).toHaveBeenCalledTimes(1);
+  });
+
+  // Neither a list nor nobody while the rest are asked for; a count after.
   it("waits, loading, once everybody it lists has gone but more are online", async () => {
     online = {
       totalCount: 5,
       items: [{ userId: "z", username: "zulu", friend: false }],
     };
+    let answer = () => undefined as void;
+    refetch.mockImplementation(() => {
+      isFetching.value = true;
+      return new Promise<void>((resolve) => {
+        answer = resolve;
+      });
+    });
 
     const subject = await mount();
 
     applyPresence({ userId: "z", online: false });
+    await settle();
     await nextTick();
 
+    expect(refetch).toHaveBeenCalledTimes(1);
     expect(subject.find(".panel--loading").exists()).toBe(true);
     expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
       false,
     );
     expect(subject.find(".online-members__more").exists()).toBe(false);
+
+    isFetching.value = false;
+    answer();
+    await nextTick();
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(false);
+    expect(subject.find(".online-members__more").text()).toContain("4");
   });
 });

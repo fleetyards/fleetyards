@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import { useDebounceFn } from "@vueuse/core";
-import { focusManager } from "@tanstack/vue-query";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
@@ -36,34 +35,44 @@ const { t } = useI18n();
  */
 const ASK_AGAIN_AFTER_MS = 2_000 + Math.round(Math.random() * 8_000);
 
-// The refocus ask is made here rather than by the query, so the panel knows
-// which fetch the reader asked for.
-const { data, refetch, isLoading, isFetching, isError } = useFleetOnlineMembers(
-  computed(() => props.fleet.slug),
-  { query: { ...liveQuery, refetchOnWindowFocus: false } },
-);
+const { data, refetch, isLoading, isFetching, isLoadingError } =
+  useFleetOnlineMembers(
+    computed(() => props.fleet.slug),
+    { query: liveQuery },
+  );
 
 /*
  * The asks presence pushes and reconnects set off keep the list in step behind
  * the reader's back; with the bar on each of them it would flicker on every
- * login in the fleet. Only the first answer and a refocus show it. The refocus
- * holds the bar until no fetch is out at all, so a push that restarts the
- * fetch under it does not take the bar away.
+ * login in the fleet. They are made quietly, and never cancel a fetch already
+ * out: one that is waits, and the ask follows once it is in, since that answer
+ * may predate the push. A refocus that lands on a quiet fetch shares it, and
+ * with it the quiet.
  */
-const refocusing = ref(false);
+const quietly = ref(false);
+
+let askWhenSettled = false;
+
+const refetchQuietly = async () => {
+  if (isFetching.value) {
+    askWhenSettled = true;
+    return;
+  }
+
+  quietly.value = true;
+  try {
+    await refetch();
+  } finally {
+    quietly.value = false;
+  }
+};
 
 watch(isFetching, (now) => {
-  if (!now) refocusing.value = false;
+  if (now || !askWhenSettled) return;
+
+  askWhenSettled = false;
+  void refetchQuietly();
 });
-
-onScopeDispose(
-  focusManager.subscribe((focused) => {
-    if (!focused || !data.value) return;
-
-    refocusing.value = true;
-    void refetch();
-  }),
-);
 
 const { isOnline, knownOnlineIds, resets } = usePresence();
 
@@ -88,15 +97,20 @@ const title = computed(() =>
 
 const more = computed(() => (total.value ?? 0) - members.value.length);
 
-// Everybody the page listed has gone, and those online past it are still
-// being asked for: neither a list nor nobody yet.
+// Everybody the page listed has gone, and those online past it are being
+// asked for. The bar shows for that ask, quiet or not: the panel has nothing
+// else to show meanwhile.
 const waitingForMore = computed(
   () => !members.value.length && (total.value ?? 0) > 0,
 );
 
+const fetching = computed(
+  () => isFetching.value && (!quietly.value || waitingForMore.value),
+);
+
 const askedAbout = new Set<string>();
 
-const askAgain = useDebounceFn(() => void refetch(), ASK_AGAIN_AFTER_MS);
+const askAgain = useDebounceFn(() => void refetchQuietly(), ASK_AGAIN_AFTER_MS);
 
 watch(knownOnlineIds, (ids) => {
   // Before the first answer there is nothing to compare against, and the ask
@@ -130,21 +144,21 @@ watch(
 // list is only as good as a fresh answer.
 watch(resets, () => {
   askedAbout.clear();
-  void refetch();
+  void refetchQuietly();
 });
 </script>
 
 <template>
   <DashboardPanel
     :title="title"
-    :pending="isLoading || waitingForMore"
-    :fetching="refocusing"
-    :failed="isError && !data"
-    :empty="!members.length"
+    :pending="isLoading"
+    :fetching="fetching"
+    :failed="isLoadingError"
+    :empty="!total"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-online"
   >
-    <ul class="online-members">
+    <ul v-if="members.length" class="online-members">
       <li
         v-for="member in members"
         :key="member.userId"
@@ -164,7 +178,12 @@ watch(resets, () => {
         />
       </li>
     </ul>
-    <p v-if="more > 0" class="online-members__more">
+    <!-- Held back while the ask for those past the page is out, then said
+         whatever it brought: a failed or stale answer still leaves a count. -->
+    <p
+      v-if="more > 0 && !(waitingForMore && isFetching)"
+      class="online-members__more"
+    >
       {{ t("fleetDashboard.online.more", { count: more }) }}
     </p>
     <template #empty>
