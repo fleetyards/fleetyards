@@ -301,9 +301,9 @@
         "intro": "I pledge che hai fuso su RSI e potresti riacquistare, alla tua ultima sincronizzazione. La sincronizzazione legge la tua lista di riacquisto RSI tramite l'estensione Fleetyards Sync."
       },
       "buybackSync": {
-        "info": "Legge ogni pagina della tua lista di riacquisto RSI e sostituisce con essa i pledge riacquistabili salvati su Fleetyards. Il tuo hangar non viene modificato. Le liste lunghe richiedono qualche minuto.",
+        "info": "Legge ogni pagina della tua lista di riacquisto RSI e sostituisce con essa i pledge riacquistabili salvati su Fleetyards. Il tuo hangar non viene modificato. Le liste lunghe richiedono qualche minuto. La sincronizzazione avviene in background: puoi chiudere questa finestra e continuare a usare Fleetyards finché la scheda resta aperta.",
         "unsupported": "La tua estensione Fleetyards Sync non può ancora leggere i pledge riacquistabili. Aggiornala per sincronizzarli.",
-        "detailsInfo": "La prima sincronizzazione legge anche il prezzo e l'assicurazione di ogni pledge, una pagina RSI ciascuno, e con una lista lunga può richiedere un quarto d'ora. Avviene in background: puoi chiudere questa finestra e continuare a usare Fleetyards finché la scheda resta aperta. Le successive leggono solo quelli nuovi.",
+        "detailsInfo": "La prima sincronizzazione legge anche il prezzo e l'assicurazione di ogni pledge, una pagina RSI ciascuno, e con una lista lunga può richiedere un quarto d'ora. Le successive leggono solo quelli nuovi.",
         "detailsUnsupported": "Aggiorna la tua estensione Fleetyards Sync per leggere anche prezzi e assicurazioni.",
         "detailsIncomplete": "Alcuni prezzi non sono stati letti da RSI. La prossima sincronizzazione riproverà.",
         "detailsBackground": "Prezzi e assicurazioni vengono ora letti in background. Puoi chiudere questa finestra e continuare a usare Fleetyards; tieni aperta questa scheda finché non ha finito.",
@@ -320,7 +320,6 @@
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento.",
-        "buybackDetailsRunning": "I prezzi di riacquisto sono ancora in lettura da RSI. La sincronizzazione dell'hangar potrà partire quando sarà terminata.",
         "missingUnmatchedGroup": "Prima di iniziare, scegli il gruppo in cui archiviare le navi che la sincronizzazione non trova.",
         "notSyncing": "Fuori dalla sincronizzazione:"
       },

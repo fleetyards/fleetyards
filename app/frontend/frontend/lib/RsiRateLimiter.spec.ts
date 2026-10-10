@@ -58,4 +58,13 @@ describe("createRsiRateLimiter", () => {
     expect(limiter.tryTake()).toBe(true);
     expect(limiter.tryTake()).toBe(false);
   });
+
+  it("hands out a spent budget again after a reset", () => {
+    const limiter = createRsiRateLimiter(1);
+    limiter.tryTake();
+
+    limiter.reset();
+
+    expect(limiter.tryTake()).toBe(true);
+  });
 });

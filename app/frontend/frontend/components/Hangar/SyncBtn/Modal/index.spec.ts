@@ -11,6 +11,7 @@ import {
   RsiPageKindEnum,
 } from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
@@ -59,19 +60,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
 }));
 
-const buybackDetailsRunning = vi.hoisted(() => ({ value: false }));
-
-vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
-  const { computed } = await import("vue");
-
-  return {
-    useBuybackDetailsSync: () => ({
-      running: computed(() => buybackDetailsRunning.value),
-      cancelling: computed(() => false),
-    }),
-  };
-});
-
 const comlinkEmit = vi.fn();
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -84,6 +72,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
 
 const displayInfo = vi.fn();
 
+const displayWarning = vi.fn();
+
 const displayAlert = vi.fn();
 
 const displaySuccess = vi.fn();
@@ -94,7 +84,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayInfo,
     displaySuccess,
-    displayWarning: vi.fn(),
+    displayWarning,
     displayAlert,
   }),
 }));
@@ -233,14 +223,20 @@ const receiveSyncResult = (outcome: HangarSyncOutcomeEnum) =>
 
 describe("HangarSyncModal", () => {
   beforeEach(() => {
+    rsiRateLimiter.reset();
     mutateAsync.mockClear();
     displayInfo.mockClear();
+    displayWarning.mockClear();
     displayAlert.mockClear();
     displaySuccess.mockClear();
     comlinkEmit.mockClear();
     supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
-    rsiIdentity.mockClear();
+    // A queued answer a test never used would answer the next test's check.
+    rsiIdentity.mockReset().mockResolvedValue({
+      code: 200,
+      payload: { handle: "ACaptain" },
+    });
   });
 
   // An error or login page in the middle of the run, read as the end, would
@@ -289,8 +285,71 @@ describe("HangarSyncModal", () => {
     expect(mutateAsync).not.toHaveBeenCalled();
   });
 
+  // The modal is usually closed by then, so nothing else would say it.
+  it("warns when the RSI session runs out mid-read", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    wrapper.unmount();
+    mounted = undefined;
+    displayWarning.mockClear();
+    rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
+
+    extensionReplies(
+      "sync",
+      "<html><body><form id='sign-in'></form></body></html>",
+    );
+    await flushPromises();
+
+    expect(useHangarSync().finishedWithErrors.value).toBe(true);
+    expect(displayWarning).toHaveBeenCalledWith({
+      text: "messages.syncExtension.notLoggedIn",
+    });
+  });
+
   // An expired RSI session answers with the sign-in page: nothing about RSI's
   // markup changed, so nobody is told it did.
+  it("warns once and disables Start when the session runs out", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    displayWarning.mockClear();
+    rsiIdentity.mockResolvedValue({ code: 400, payload: {} });
+
+    try {
+      extensionReplies(
+        "sync",
+        "<html><body><form id='sign-in'></form></body></html>",
+      );
+      await flushPromises();
+
+      expect(displayWarning).toHaveBeenCalledTimes(1);
+      expect(
+        wrapper.find("[data-test='start-sync']").attributes("disabled"),
+      ).toBeDefined();
+    } finally {
+      rsiIdentity.mockResolvedValue({
+        code: 200,
+        payload: { handle: "ACaptain" },
+      });
+    }
+  });
+
+  it("asks RSI for no session check while a read is going", async () => {
+    const first = await mountModal();
+
+    await first.wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+    first.wrapper.unmount();
+    rsiIdentity.mockClear();
+
+    await mountModal();
+
+    expect(rsiIdentity).not.toHaveBeenCalled();
+  });
+
   it("reports nothing when the RSI session has run out", async () => {
     const { wrapper } = await mountModal();
     rsiIdentity.mockResolvedValueOnce({ code: 400, payload: {} });
@@ -306,7 +365,9 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).not.toHaveBeenCalled();
     expect(reportMutateAsync).not.toHaveBeenCalled();
-    expect(rsiIdentity).toHaveBeenCalledTimes(2);
+    // On open, before the report, and once the read has failed so Start knows
+    // the session is gone.
+    expect(rsiIdentity).toHaveBeenCalledTimes(3);
   });
 
   // The run outlives the modal, so one left over would greet the next test
@@ -393,24 +454,6 @@ describe("HangarSyncModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ unmatchedHangarGroupId: undefined }),
     });
-  });
-
-  // The two would each read RSI pages at the full rate limit.
-  it("waits for buy-back prices to be read before it starts", async () => {
-    buybackDetailsRunning.value = true;
-
-    try {
-      const { wrapper } = await mountModal();
-
-      expect(
-        wrapper.find("[data-test='sync-buyback-details-running']").exists(),
-      ).toBe(true);
-      expect(
-        wrapper.find("[data-test='start-sync']").attributes("disabled"),
-      ).toBeDefined();
-    } finally {
-      buybackDetailsRunning.value = false;
-    }
   });
 
   it("asks for a group before it will sync into one", async () => {

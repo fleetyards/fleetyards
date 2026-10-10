@@ -33,19 +33,9 @@ import {
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
-import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
 
 const { t } = useI18n();
-
-// Both read RSI pages, and side by side they would each take the whole rate
-// limit. A cancelled pass sends nothing more, so it only waits on its last
-// answer and need not hold this sync back.
-const buybackDetails = useBuybackDetailsSync();
-
-const buybackDetailsRunning = computed(
-  () => buybackDetails.running.value && !buybackDetails.cancelling.value,
-);
 
 const { displayWarning } = useAppNotifications();
 
@@ -116,11 +106,12 @@ const skippedItems = computed(() => [
     : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
 ]);
 
+// Only once Start could be pressed: a check mid-run would spend an RSI request
+// and warn about a session the run already has.
 onMounted(() => {
   hangarStore.syncModalOpen = true;
 
-  // Also for a run still going: once it fails, Start needs a known session.
-  if (hangarStore.extensionReady) {
+  if (hangarStore.extensionReady && !running.value) {
     void checkRSIIdentity();
   }
 });
@@ -138,18 +129,26 @@ onBeforeUnmount(() => {
 watch(
   () => hangarStore.extensionReady,
   () => {
-    if (hangarStore.extensionReady) {
+    if (hangarStore.extensionReady && !running.value) {
       void checkRSIIdentity();
     }
   },
 );
+
+// A read that failed may have failed on the session; the run has already said
+// so, so the check only updates what Start relies on.
+watch(finishedWithErrors, (failed) => {
+  if (failed && hangarStore.extensionReady) {
+    void checkRSIIdentity({ quiet: true });
+  }
+});
 
 const extension = useSyncExtension();
 
 // Only the latest check answers: retry can be pressed while one is out.
 let identityCheck = 0;
 
-const checkRSIIdentity = async () => {
+const checkRSIIdentity = async ({ quiet = false } = {}) => {
   const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
@@ -165,7 +164,9 @@ const checkRSIIdentity = async () => {
 
   if (identity?.code !== 200 || !handle) {
     console.info("FY Extension: No RSI Session found");
-    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    if (!quiet) {
+      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    }
     identityStatus.value = "notFound";
     rsiHandle.value = undefined;
   } else {
@@ -342,13 +343,6 @@ const refreshPage = async () => {
           <p v-if="hangarStore.syncRunning" class="text-warning">
             {{ t("texts.syncExtension.alreadyRunning") }}
           </p>
-          <p
-            v-else-if="buybackDetailsRunning"
-            class="text-warning"
-            data-test="sync-buyback-details-running"
-          >
-            {{ t("texts.syncExtension.buybackDetailsRunning") }}
-          </p>
         </div>
       </div>
       <div v-else>
@@ -436,7 +430,6 @@ const refreshPage = async () => {
           :disabled="
             identityStatus !== 'connected' ||
             hangarStore.syncRunning ||
-            buybackDetailsRunning ||
             missingUnmatchedGroup
           "
           @click="start"

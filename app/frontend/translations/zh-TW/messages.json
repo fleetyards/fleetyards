@@ -680,7 +680,6 @@
         "failed": "%{type} 匯入失敗: %{info}"
       },
       "buybackSync": {
-        "closeWhileRunning": "你的可回購承諾仍在同步中，關閉此視窗將中止同步。",
         "started": "正在同步你的可回購承諾...",
         "success": "你的可回購承諾已同步。",
         "failure": "無法同步你的可回購承諾。",

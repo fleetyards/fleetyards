@@ -1,6 +1,6 @@
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
-import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
+import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
@@ -28,8 +28,6 @@ import {
 export type HangarSyncOptions = Omit<SyncRsiHangarInput, "items"> & {
   extensionVersion?: string;
 };
-
-const MAX_MESSAGES_PER_MINUTE = 60;
 
 // Half a second between pages, on top of the rate limit.
 const PAGE_DELAY = 500;
@@ -93,8 +91,6 @@ let extensionVersion: string | undefined;
 
 let seenPledgeIds = new Set<string>();
 
-let rateLimiter = createRsiRateLimiter(MAX_MESSAGES_PER_MINUTE);
-
 let abort = new AbortController();
 
 // The cable message for a run the poll already ended arrives late, and must
@@ -137,7 +133,8 @@ export const useHangarSync = () => {
 
   const comlink = useComlink();
 
-  const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
+  const { displayInfo, displaySuccess, displayWarning, displayAlert } =
+    useAppNotifications();
 
   const extension = useSyncExtension();
 
@@ -181,10 +178,10 @@ export const useHangarSync = () => {
     const page = new RSIHangarParser().extractPage(htmlPage);
 
     // Nothing is submitted: what was read so far is only part of the hangar,
-    // and every ship on the pages after it would count as unmatched.
+    // and every ship on the pages after it would count as unmatched. Still
+    // reading until the report has answered, so a modal closed meanwhile
+    // cannot clear the run before it says how it ended.
     if (page.status === RsiPageStatus.UNRECOGNISED) {
-      updateStep("fetchHangar", "failure");
-
       const outcome = await reportRsiPage({
         page: RsiPageKindEnum.HANGAR,
         check: page.check,
@@ -195,10 +192,13 @@ export const useHangarSync = () => {
 
       if (id !== runId) return;
 
-      // Signed out, the identify answer has already said so.
+      updateStep("fetchHangar", "failure");
+
       if (outcome === RsiPageReportOutcome.REPORTED) {
         displayAlert({ text: t("messages.syncExtension.pageNotRecognised") });
-      } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
+      } else if (outcome === RsiPageReportOutcome.SIGNED_OUT) {
+        displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+      } else {
         displayAlert({ text: t("messages.syncExtension.failure") });
       }
       return;
@@ -233,7 +233,7 @@ export const useHangarSync = () => {
   };
 
   const fetchPage = async (id: number) => {
-    await rateLimiter.take(abort.signal);
+    await rsiRateLimiter.take(abort.signal);
     if (id !== runId) return;
 
     const message = await extension
@@ -265,7 +265,6 @@ export const useHangarSync = () => {
 
     clear();
     abort = new AbortController();
-    rateLimiter = createRsiRateLimiter(MAX_MESSAGES_PER_MINUTE);
     input = syncInput;
     extensionVersion = version;
     started.value = true;

@@ -16,49 +16,23 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
-import { extractBuybackPage } from "@/frontend/lib/RSIBuybackParser";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
-import { createRsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
+import { useBuybackSync } from "@/frontend/composables/useBuybackSync";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { useHangarSync } from "@/frontend/composables/useHangarSync";
-import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
-import {
-  RsiPageReportOutcome,
-  useRsiPageReport,
-} from "@/frontend/composables/useRsiPageReport";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   FleetyardsSyncAction,
   type FleetyardsSyncHealthPayload,
-  type FleetyardsSyncMessage,
   type FleetyardsSyncSessionPayload,
 } from "@/frontend/lib/FleetyardsSyncHandler";
-import {
-  RsiPageKindEnum,
-  useSyncRsiBuybacks,
-  type BuybackSyncResult,
-  type RsiBuybackItemInput,
-} from "@/services/fyApi";
-
-type SyncStatus =
-  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
 
 const { t } = useI18n();
 
-const { displayInfo, displaySuccess, displayWarning, displayAlert } =
-  useAppNotifications();
+const { displayWarning } = useAppNotifications();
 
 const comlink = useComlink();
 
 const hangarStore = useHangarStore();
-
-// A hangar sync still reading RSI in the background counts as much as one the
-// backend is running.
-const { running: hangarSyncReading } = useHangarSync();
-
-const hangarSyncRunning = computed(
-  () => hangarStore.syncRunning || hangarSyncReading.value,
-);
 
 const extensionReady = ref(false);
 
@@ -90,35 +64,25 @@ const rsiHandle = ref<string>();
 
 const loadingIdentity = ref(false);
 
-const status = ref<SyncStatus>("idle");
+const buybackSync = useBuybackSync();
 
-const currentPage = ref(1);
+const { status, currentPage, buybacks, result, detailsStarted, running } =
+  buybackSync;
 
-const buybacks = ref<RsiBuybackItemInput[]>([]);
+const {
+  total: detailsTotal,
+  done: detailsDone,
+  running: detailsRunning,
+} = useBuybackDetailsSync();
 
-const seenIds = new Set<string>();
-
-const result = ref<BuybackSyncResult | undefined>();
-
-// The pass state outlives this sync; its counts only describe a pass started
-// by it.
-const detailsStarted = ref(false);
-
-const maxMessagesPerMinute = 60;
-
-// The list crawl and the price pass after it share one budget, so the two
-// together stay inside it.
-let rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
-
-// An extension that never answers would otherwise leave the sync spinning.
-const REPLY_TIMEOUT = 30000;
-
-const working = computed(
-  () =>
-    loadingIdentity.value ||
-    status.value === "fetching" ||
-    status.value === "submitting",
+// A run going or one that ended with a result is shown whatever the extension
+// says now; a failed one needs the extension for its retry, so it shows the
+// install or update links when that is missing.
+const showsRun = computed(() =>
+  ["fetching", "submitting", "finished", "unsupported"].includes(status.value),
 );
+
+const working = computed(() => loadingIdentity.value || running.value);
 
 const extension = useSyncExtension();
 
@@ -131,40 +95,45 @@ const checkExtension = async () => {
   extensionInfo.value =
     (health?.payload as FleetyardsSyncHealthPayload | undefined) || {};
 
-  if (!unmounted && extensionReady.value && extensionSupportsBuybacks.value) {
+  if (canStart()) {
     await checkRSIIdentity();
   }
 };
 
+// Only once Start could be pressed: a check mid-run would spend an RSI request
+// and warn about a session the run already has.
+const canStart = () =>
+  !unmounted &&
+  !running.value &&
+  extensionReady.value &&
+  extensionSupportsBuybacks.value;
+
+// A read that failed may have failed on the session; the run has already said
+// so, so the check only updates what Start relies on. A finished or cancelled
+// run offers no Start, and needs no RSI request for one.
+watch(status, (current) => {
+  if (current === "failed" && canStart()) {
+    void checkRSIIdentity({ quiet: true });
+  }
+});
+
 onMounted(() => {
+  hangarStore.buybackSyncModalOpen = true;
   void checkExtension();
 });
 
+// A run still going is what the modal opens on next time, and so is one that
+// ended in the background, until its result has been shown here once.
 onBeforeUnmount(() => {
   unmounted = true;
+  hangarStore.buybackSyncModalOpen = false;
+  buybackSync.reset();
 });
-
-// A reply landing after the sync failed or the modal closed belongs to a crawl
-// that is over. No reply at all is a timeout.
-const onSyncReply = async (message?: FleetyardsSyncMessage) => {
-  if (unmounted || status.value !== "fetching") return;
-
-  if (message?.code === 200) {
-    await handlePage(message.payload as string).catch((error) => {
-      console.error("Buy-back sync error:", error);
-      fail();
-    });
-  } else if (message && isUnknownAction(message)) {
-    status.value = "unsupported";
-  } else {
-    fail();
-  }
-};
 
 // Only the latest check answers: retry can be pressed while one is out.
 let identityCheck = 0;
 
-const checkRSIIdentity = async () => {
+const checkRSIIdentity = async ({ quiet = false } = {}) => {
   const current = ++identityCheck;
   identityStatus.value = "pending";
   loadingIdentity.value = true;
@@ -178,7 +147,9 @@ const checkRSIIdentity = async () => {
   loadingIdentity.value = false;
 
   if (identity?.code !== 200 || !handle) {
-    displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    if (!quiet) {
+      displayWarning({ text: t("messages.syncExtension.notLoggedIn") });
+    }
     identityStatus.value = "notFound";
     rsiHandle.value = undefined;
   } else {
@@ -187,160 +158,32 @@ const checkRSIIdentity = async () => {
   }
 };
 
-// An extension released before buy-backs answers the action it does not know
-// with this.
-const isUnknownAction = (message: FleetyardsSyncMessage) =>
-  message.code === 500 && message.error === "Unknown Action";
-
 const start = () => {
-  status.value = "fetching";
-  buybacks.value = [];
-  seenIds.clear();
-  result.value = undefined;
-  detailsStarted.value = false;
-  currentPage.value = 1;
-  rateLimiter = createRsiRateLimiter(maxMessagesPerMinute);
-
-  displayInfo({ text: t("messages.buybackSync.started") });
-
-  fetchPage(currentPage.value);
+  buybackSync.start({
+    readDetails: extensionSupportsDetails.value,
+    extensionVersion: extensionInfo.value.version,
+  });
 };
 
-// Every later page and every throttled retry arrives through a timer, which
-// can fire after the sync failed or the modal closed.
-const fetchPage = (page: number) => {
-  if (unmounted || status.value !== "fetching") {
-    return;
-  }
-
-  if (!rateLimiter.tryTake()) {
-    setTimeout(() => fetchPage(page), 500);
-    return;
-  }
-
-  void extension
-    .request(FleetyardsSyncAction.SYNC_BUYBACK, { page }, REPLY_TIMEOUT)
-    .catch(() => undefined)
-    .then(onSyncReply);
-};
-
-const fail = (text = t("messages.buybackSync.failure")) => {
-  status.value = "failed";
-  displayAlert({ text });
-};
-
-const reportRsiPage = useRsiPageReport();
-
-const handlePage = async (html: string) => {
-  const result = extractBuybackPage(html);
-
-  // Not a buy-back page this parser understands: the list read so far is
-  // incomplete, and submitting it would delete every buy-back after it.
-  if (result.status === RsiPageStatus.UNRECOGNISED) {
-    status.value = "failed";
-
-    const outcome = await reportRsiPage({
-      page: RsiPageKindEnum.BUYBACK,
-      check: result.check,
-      pageNumber: currentPage.value,
-      extensionVersion: extensionInfo.value.version,
-    });
-
-    // Signed out, the identify answer has already said so.
-    if (outcome === RsiPageReportOutcome.REPORTED) {
-      fail(t("messages.syncExtension.pageNotRecognised"));
-    } else if (outcome === RsiPageReportOutcome.NO_ANSWER) {
-      fail();
-    }
-    return;
-  }
-
-  if (result.status === RsiPageStatus.END) {
-    await submit();
-    return;
-  }
-
-  const newBuybacks = result.pledges.filter(
-    (pledge) => !seenIds.has(pledge.id),
-  );
-
-  if (newBuybacks.length === 0) {
-    await submit();
-    return;
-  }
-
-  newBuybacks.forEach((pledge) => seenIds.add(pledge.id));
-  buybacks.value = [...buybacks.value, ...newBuybacks];
-
-  currentPage.value += 1;
-  setTimeout(() => fetchPage(currentPage.value), 500);
-};
-
-const {
-  total: detailsTotal,
-  done: detailsDone,
-  running: detailsRunning,
-  run: runDetails,
-} = useBuybackDetailsSync();
-
-const mutation = useSyncRsiBuybacks();
-
-// Only ever after the last page: the endpoint replaces the whole list, so a
-// partial one would drop every buy-back on the pages that were never read.
-const submit = async () => {
-  status.value = "submitting";
-
-  try {
-    result.value = await mutation.mutateAsync({
-      data: { items: buybacks.value },
-    });
-  } catch (error) {
-    console.error(error);
-    fail();
-    return;
-  }
-
-  comlink.emit("buyback-sync-finished");
-
-  if (result.value.detailsPending.length && extensionSupportsDetails.value) {
-    // A hangar sync started while the list was read would share RSI's rate
-    // limit with the pass, and so would a sync from a reopened modal, whose
-    // limiter knows nothing of this one; the next sync reads these prices.
-    if (hangarSyncRunning.value || unmounted) {
-      displayWarning({ text: t("texts.buybackSync.detailsIncomplete") });
-    } else {
-      detailsStarted.value = true;
-      void runDetails(buybacks.value, result.value.detailsPending, {
-        waitForSlot: rateLimiter.take,
-      });
-    }
-  }
-
-  status.value = "finished";
-  displaySuccess({ text: t("messages.buybackSync.success") });
-};
-
-// Not forced, so a close mid-fetch asks first, as the X does.
 const close = () => {
   comlink.emit("close-modal");
 };
 
-// Only reading the list ends with the modal: a submitted list is stored and
-// its toast shows without the modal open.
-defineExpose({
-  dirty: computed(() => status.value === "fetching"),
-  dirtyText: t("messages.buybackSync.closeWhileRunning"),
-});
+const cancelRun = () => {
+  buybackSync.cancel();
+  close();
+};
 </script>
 
 <template>
   <Modal :title="t('headlines.buybackSync')" :loading="working">
-    <div v-if="!extensionReady">
+    <!-- A run already going is shown at once, not after the extension check. -->
+    <div v-if="!showsRun && !extensionReady">
       <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
       <SyncExtensionLinks />
     </div>
     <div
-      v-else-if="!extensionSupportsBuybacks"
+      v-else-if="!showsRun && !extensionSupportsBuybacks"
       data-test="buyback-sync-outdated"
     >
       <p class="text-warning">{{ t("texts.buybackSync.unsupported") }}</p>
@@ -367,13 +210,6 @@ defineExpose({
         data-test="buyback-sync-details-running"
       >
         {{ t("texts.buybackSync.detailsRunning") }}
-      </p>
-      <p
-        v-else-if="hangarSyncRunning"
-        class="text-warning"
-        data-test="buyback-sync-hangar-sync-running"
-      >
-        {{ t("texts.syncExtension.alreadyRunning") }}
       </p>
     </div>
     <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
@@ -432,10 +268,11 @@ defineExpose({
     </div>
     <template #footer>
       <Btn
+        v-if="!running || status === 'fetching'"
         :variant="BtnVariantsEnum.BARE"
         :size="BtnSizesEnum.LG"
         data-test="close-buyback-sync"
-        @click="close"
+        @click="cancelRun"
       >
         {{
           status === "idle" || status === "fetching"
@@ -444,7 +281,15 @@ defineExpose({
         }}
       </Btn>
       <Btn
-        v-if="
+        v-if="running"
+        :size="BtnSizesEnum.LG"
+        data-test="background-buyback-sync"
+        @click="close"
+      >
+        {{ t("actions.syncExtension.runInBackground") }}
+      </Btn>
+      <Btn
+        v-else-if="
           extensionReady &&
           extensionSupportsBuybacks &&
           ['idle', 'failed'].includes(status)
@@ -452,9 +297,7 @@ defineExpose({
         :size="BtnSizesEnum.LG"
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
-        :disabled="
-          identityStatus !== 'connected' || detailsRunning || hangarSyncRunning
-        "
+        :disabled="identityStatus !== 'connected' || detailsRunning"
         @click="start"
       >
         {{
