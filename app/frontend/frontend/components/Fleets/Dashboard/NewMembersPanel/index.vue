@@ -11,6 +11,7 @@ import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/in
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetActivityCategoryEnum,
+  FleetMembershipSortEnum,
   useFleetActivity,
   type Fleet,
 } from "@/services/fyApi";
@@ -37,7 +38,11 @@ const entries = computed(() => data.value?.items ?? []);
     v-if="entries.length"
     :title="t('fleetDashboard.newMembers.title')"
     :loading="isLoading"
-    :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
+    :more="{
+      name: 'fleet-members-index',
+      params: { slug: fleet.slug },
+      query: { s: FleetMembershipSortEnum.ACCEPTED_AT_DESC },
+    }"
     data-test="fleet-dashboard-new-members"
   >
     <ActivityList
