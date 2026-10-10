@@ -4,6 +4,7 @@ require "openapi_helper"
 
 class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
   include OpenapiRuby::Adapters::Minitest::DSL
+  include ActionCable::TestHelper
 
   openapi_schema :"admin/v1/schema"
 
@@ -437,6 +438,34 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     assert_nil archived.reload.read_at
   end
 
+  test "PUT /notifications/:id/read takes its toast down in every open tab" do
+    notification = create(:admin_notification, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_broadcast_on(AdminNotificationsChannel.broadcasting_for(@admin_user), {settledIds: [notification.id]}) do
+      assert_api_response :put, 200, api_path: "/notifications/{id}/read", path_params: {id: notification.id}
+    end
+  end
+
+  test "PUT /notifications/:id/unread settles nothing" do
+    notification = create(:admin_notification, :read, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_no_broadcasts(AdminNotificationsChannel.broadcasting_for(@admin_user)) do
+      assert_api_response :put, 200, api_path: "/notifications/{id}/unread", path_params: {id: notification.id}
+    end
+  end
+
+  test "PUT /notifications/read-all settles only what it read" do
+    unread = create(:admin_notification, admin_user: @admin_user)
+    create(:admin_notification, :archived, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_broadcast_on(AdminNotificationsChannel.broadcasting_for(@admin_user), {settledIds: [unread.id]}) do
+      assert_api_response :put, 204, api_path: "/notifications/read-all"
+    end
+  end
+
   test "PUT /notifications/read-all returns 401 when not signed in" do
     assert_api_response :put, 401
   end
@@ -472,6 +501,16 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
 
     assert_equal 0, AdminNotification.where(admin_user: @admin_user).count
     assert_equal 1, AdminNotification.where(admin_user: @other_admin).count
+  end
+
+  test "DELETE /notifications/destroy-all settles every notification it deleted" do
+    notification = create(:admin_notification, admin_user: @admin_user)
+    create(:admin_notification, admin_user: @other_admin)
+    sign_in @admin_user
+
+    assert_broadcast_on(AdminNotificationsChannel.broadcasting_for(@admin_user), {settledIds: [notification.id]}) do
+      assert_api_response :delete, 204, api_path: "/notifications/destroy-all"
+    end
   end
 
   test "DELETE /notifications/destroy-all returns 401 when not signed in" do

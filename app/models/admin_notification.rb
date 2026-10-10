@@ -278,6 +278,16 @@ class AdminNotification < ApplicationRecord
   end
   private_class_method :broadcast
 
+  # A toast is shown in every tab the admin has open, while reading, archiving
+  # or deleting happens in one of them - so the others hear it from here.
+  def self.broadcast_settled(admin_user, ids)
+    return if ids.empty?
+
+    AdminNotificationsChannel.broadcast_to(admin_user, {settledIds: ids})
+  rescue => e
+    Rails.logger.error("Admin notification settle delivery failed for #{admin_user.id}: #{e.message}")
+  end
+
   # The default derives "api/v1/admin_notifications/admin_notification"; the
   # admin API namespaces its views one level deeper and drops the prefix.
   def jbuilder_template_path

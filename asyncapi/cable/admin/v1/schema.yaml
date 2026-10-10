@@ -29,6 +29,8 @@ channels:
     messages:
       AdminNotification:
         "$ref": "#/components/messages/AdminNotification"
+      AdminNotificationsSettledMessage:
+        "$ref": "#/components/messages/AdminNotificationsSettledMessage"
   AdminPresence:
     address: admin_presence:{admin_user_gid}
     x-actioncable-channel: AdminPresenceChannel
@@ -65,7 +67,9 @@ operations:
       "$ref": "#/channels/AdminNotifications"
     messages:
     - "$ref": "#/channels/AdminNotifications/messages/AdminNotification"
-    summary: A notification addressed to one admin user
+    - "$ref": "#/channels/AdminNotifications/messages/AdminNotificationsSettledMessage"
+    summary: A notification addressed to one admin user, or notifications of theirs
+      that were read, archived or deleted
   receiveAdminUserPresence:
     action: receive
     channel:
@@ -189,6 +193,17 @@ components:
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
       - INVENTORY_TRANSFER_REPORTS
+    AdminNotificationsSettledMessage:
+      type: object
+      properties:
+        settledIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - settledIds
     Announcement:
       type: object
       properties:
@@ -496,6 +511,9 @@ components:
     AdminNotification:
       payload:
         "$ref": "#/components/schemas/AdminNotification"
+    AdminNotificationsSettledMessage:
+      payload:
+        "$ref": "#/components/schemas/AdminNotificationsSettledMessage"
     Announcement:
       payload:
         "$ref": "#/components/schemas/Announcement"
