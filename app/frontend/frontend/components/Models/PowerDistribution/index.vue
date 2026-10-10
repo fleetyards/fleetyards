@@ -461,7 +461,7 @@ const cellHeight = (span: number) =>
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: $gray;
+    color: var(--color-text-dim, #959595);
     cursor: pointer;
 
     &:first-child {
@@ -481,7 +481,7 @@ const cellHeight = (span: number) =>
   &__budget {
     font-size: 11px;
     letter-spacing: 0.08em;
-    color: $gray;
+    color: var(--color-text-dim, #959595);
     font-variant-numeric: tabular-nums;
   }
 }
@@ -526,7 +526,7 @@ const cellHeight = (span: number) =>
   &__axis {
     font-size: 11px;
     font-weight: 600;
-    color: $gray;
+    color: var(--color-text-dim, #959595);
     margin-left: 2px;
   }
 }
@@ -542,7 +542,7 @@ const cellHeight = (span: number) =>
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: $gray;
+    color: var(--color-text-dim, #959595);
     min-width: 76px;
   }
 
@@ -690,7 +690,7 @@ const cellHeight = (span: number) =>
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
     letter-spacing: 0.08em;
-    color: $gray;
+    color: var(--color-text-dim, #959595);
     text-transform: uppercase;
     height: 16px;
     display: flex;

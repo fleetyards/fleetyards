@@ -847,27 +847,20 @@ const crumbs = computed<Crumb[]>(() => [
   }
 }
 
-/* One fact per line on a phone: a date range with its timezone does not fit
-   in half of a 390px card. */
+/* One fact per line on a phone, earlier than the shared split list does it:
+   a date range with its timezone does not fit in half of a 576px card. */
 @media (max-width: 576px) {
   .event-detail__hero .metrics-card__rows--split {
-    grid-template-columns: 1fr;
+    .metrics-card__row {
+      grid-column: 1 / -1;
+    }
 
-    .metrics-card__row:nth-last-child(-n + 2) {
+    .metrics-card__row:nth-last-child(2):not(:last-child) {
       border-bottom: 1px solid rgba($gray-light, 0.16);
-    }
-
-    .metrics-card__row:last-child {
-      border-bottom: 0;
-    }
-
-    // The row alone does not make room for a range with its timezone: the
-    // value keeps the shared one-line ellipsis, which cut off the end date.
-    .metrics-card__row__value {
-      white-space: normal;
     }
   }
 }
+
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;

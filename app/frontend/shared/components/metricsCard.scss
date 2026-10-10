@@ -52,8 +52,16 @@
         }
       }
 
+      // A label that wraps, like "Ship inventory" on a phone, takes the extra
+      // height itself, so the values in one row still line up.
       .metrics-card__tile {
+        display: flex;
+        flex-direction: column;
         padding: 12px 14px;
+      }
+
+      .metrics-card__tile__label {
+        flex-grow: 1;
       }
 
       // Flat, not the flex hero's container-relative scale. Track count differs
@@ -110,15 +118,48 @@
     flex-direction: column;
     margin: 0;
 
+    // Keyed to the list's own width rather than the viewport, since the same
+    // card is a phone's full width or one of three desktop columns. Below the
+    // threshold every row spans both tracks: half of a narrow card cannot hold
+    // a label and its value, so the value was cut off.
     &--split {
       display: grid;
       grid-template-columns: 1fr 1fr;
       column-gap: 26px;
+      container-type: inline-size;
 
-      // Both cells of the final line, since `:last-child` only reaches one of
-      // them. Assumes an even cell count — an odd trailing cell keeps its rule.
-      .metrics-card__row:nth-last-child(-n + 2) {
-        border-bottom: 0;
+      @container (max-width: 480px) {
+        .metrics-card__row {
+          grid-column: 1 / -1;
+        }
+      }
+
+      // The final line: the last cell, and the one beside it when the count is
+      // even. In one column the base `:last-child` rule already covers it.
+      @container (min-width: 481px) {
+        .metrics-card__row:nth-last-child(2):nth-child(odd) {
+          border-bottom: 0;
+        }
+      }
+
+      // A value that does not fit beside its label drops to its own line and
+      // wraps there, instead of being cut off; a label too long for the line,
+      // like German "Regenerationsverzögerung", breaks rather than overflows.
+      .metrics-card__row {
+        flex-wrap: wrap;
+        row-gap: 2px;
+      }
+
+      .metrics-card__row__label {
+        flex-shrink: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .metrics-card__row__value {
+        flex-grow: 1;
+        white-space: normal;
+        overflow-wrap: anywhere;
       }
     }
   }
