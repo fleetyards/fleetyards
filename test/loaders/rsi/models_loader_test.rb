@@ -132,6 +132,17 @@ module Rsi
       assert_in_delta 120.0, model.roll.to_f
     end
 
+    # The matrix gives one crew figure for almost every ship now. Where a range
+    # survives, the game files agree with its upper end.
+    test "#takes the upper end of a crew range" do
+      @loader.one(36)
+
+      model = Model.find_by(rsi_id: 36)
+
+      assert_equal 8, model.crew
+      assert_equal 8, model.rsi_crew
+    end
+
     test "#overrides present data" do
       polaris = create(:model, name: "Polaris", length: 20, rsi_id: 116, rsi_chassis_id: 4)
 

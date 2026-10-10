@@ -101,7 +101,13 @@ module Rsi
       updates[:rsi_cargo] = nil_or_decimal(data["cargocapacity"])
       updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if (model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
 
-      %w[max_crew min_crew scm_speed].each do |attr|
+      # The matrix now gives one figure, min and max alike. Where it still gives a
+      # range the upper end is the one the game files agree with.
+      crew = nil_or_decimal(data["max_crew"].presence || data["min_crew"])
+      updates[:rsi_crew] = crew
+      updates[:crew] = crew if (model_updated(model, data) && crew != model.rsi_crew) || model.read_attribute(:crew).blank? || model.read_attribute(:crew).zero?
+
+      %w[scm_speed].each do |attr|
         updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
         updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
