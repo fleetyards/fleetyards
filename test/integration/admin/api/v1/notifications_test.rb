@@ -235,6 +235,16 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /notifications narrows to the ids asked for" do
+    asked = create(:admin_notification, admin_user: @admin_user)
+    create(:admin_notification, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_api_response :get, 200, api_path: "/notifications", params: {q: {idIn: [asked.id]}} do
+      assert_equal [asked.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /notifications keeps unread notifications on top" do
     create(:admin_notification, :read, admin_user: @admin_user, title: "read newest")
     travel(-1.hour) do

@@ -186,7 +186,7 @@ module Admin
 
         private def notification_query_params
           @notification_query_params ||= params.permit(q: [
-            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: []
+            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: [], id_in: []
           ]).fetch(:q, {})
         end
       end

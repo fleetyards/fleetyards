@@ -10556,6 +10556,11 @@ components:
     AdminNotificationQuery:
       type: object
       properties:
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
         notificationTypeEq:
           "$ref": "#/components/schemas/AdminNotificationTypeEnum"
         severityEq:

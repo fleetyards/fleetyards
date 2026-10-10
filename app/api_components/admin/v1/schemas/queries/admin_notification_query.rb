@@ -10,6 +10,7 @@ module Admin
           schema({
             type: :object,
             properties: {
+              idIn: {type: :array, items: {type: :string, format: :uuid}},
               notificationTypeEq: ::Admin::V1::Schemas::Enums::AdminNotificationTypeEnum,
               severityEq: ::Admin::V1::Schemas::Enums::AdminNotificationSeverityEnum,
               readAtNull: {type: :boolean},

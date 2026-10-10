@@ -167,7 +167,7 @@ class AdminNotification < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[notification_type severity read_at archived_at created_at title body search unread]
+    %w[id notification_type severity read_at archived_at created_at title body search unread]
   end
 
   def self.ransackable_associations(_auth_object = nil)
