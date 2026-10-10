@@ -127,4 +127,12 @@ class Manufacturer < ApplicationRecord
   def name_clean
     name&.html_safe
   end
+
+  # Every form a ship name may start with to say who built it, longest first.
+  # The game files write whichever is shortest to say -- "Kruger S-65 Stingray"
+  # for Kruger Intergalactic, "Argo MOLE" for Argo Astronautics, "RSI
+  # Constellation Mk V Centaurus" for Roberts Space Industries.
+  def name_prefixes
+    [long_name, name, name.to_s.split.first, code].compact_blank.uniq.sort_by { |prefix| -prefix.length }
+  end
 end

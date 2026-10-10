@@ -182,7 +182,7 @@ module Rsi
       return if data["manufacturer"].blank?
 
       manufacturer = manufacturers_loader.one(data["manufacturer"])
-      prefixes = manufacturer_prefixes(manufacturer)
+      prefixes = manufacturer.name_prefixes
       target = comparable_name(data["name"], prefixes)
       return if target.blank?
 
@@ -191,11 +191,6 @@ module Rsi
       end
 
       candidates.first if candidates.one?
-    end
-
-    private def manufacturer_prefixes(manufacturer)
-      [manufacturer.long_name, manufacturer.name, manufacturer.name.to_s.split.first, manufacturer.code]
-        .compact_blank.uniq.sort_by { |prefix| -prefix.length }
     end
 
     private def comparable_name(name, prefixes)
