@@ -29,11 +29,17 @@ module Notifications
       fleet.fleet_memberships.kept.accepted
         .where.not(user_id: announcement.author_id)
         .includes(:user)
-        .find_in_batches(batch_size: BATCH_SIZE) do |memberships|
+        .find_in_batches(batch_size:) do |memberships|
+          # Taken down while the fleet was being told: deleting it withdrew the
+          # rows written so far, and later batches must not write more.
+          break unless FleetAnnouncement.exists?(announcement.id)
+
           users = memberships.filter_map(&:user)
           notify(users, fleet, announcement, messages) if users.any?
         end
     end
+
+    private def batch_size = BATCH_SIZE
 
     private def notify(users, fleet, announcement, messages)
       locales = users.to_h { |user| [user.id, user.notification_locale] }

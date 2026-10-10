@@ -60,6 +60,17 @@ module Notifications
       assert_empty notified
     end
 
+    test "stops telling the fleet once the announcement is taken down" do
+      job = FleetAnnouncementPostedJob.new
+      job.stubs(:batch_size).returns(1)
+      BulkDelivery.expects(:notify).once.with do
+        @announcement.destroy!
+        true
+      end
+
+      job.perform(@announcement.id)
+    end
+
     test "tells nobody twice when it runs again" do
       FleetAnnouncementPostedJob.new.perform(@announcement.id)
       ::Push::DeliverNotificationJob.jobs.clear
