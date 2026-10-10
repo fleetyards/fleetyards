@@ -31,7 +31,7 @@ const { t } = useI18n();
 // beside the feed link to the full lists.
 const LIMIT = 15;
 
-const { data, isLoading } = useFleetActivity(
+const { data, isLoading, isFetching } = useFleetActivity(
   computed(() => props.fleet.slug),
   computed(() => ({ limit: LIMIT, exclude: props.exclude })),
   { query: liveQuery },
@@ -42,9 +42,9 @@ const entries = computed(() => data.value?.items ?? []);
 
 <template>
   <DashboardPanel
-    v-if="entries.length"
+    v-if="isLoading || entries.length"
     :title="t('fleetDashboard.activity.title')"
-    :loading="isLoading"
+    :loading="isFetching"
     data-test="fleet-dashboard-activity"
   >
     <ActivityList :fleet="fleet" :entries="entries" />

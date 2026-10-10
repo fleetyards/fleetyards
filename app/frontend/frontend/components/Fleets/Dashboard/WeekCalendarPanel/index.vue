@@ -23,7 +23,7 @@ const mobile = useMobile();
 
 const visibleRange = ref<{ start: Date; end: Date } | null>(null);
 
-const { data } = useFleetCalendar(
+const { data, isFetching } = useFleetCalendar(
   computed(() => props.fleet.slug),
   computed(() =>
     visibleRange.value
@@ -52,6 +52,7 @@ const events = computed(() => data.value?.items ?? []);
     :events="events"
     view="week"
     compact
+    :loading="isFetching"
     data-test="fleet-dashboard-calendar"
     @update:range="visibleRange = $event"
   />

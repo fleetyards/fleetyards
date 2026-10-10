@@ -50,6 +50,7 @@ const SHOWN = 3;
 const {
   data: requests,
   isLoading: requestsLoading,
+  isFetching: requestsFetching,
   refetch: refetchRequests,
 } = useFleetMembers(
   fleetSlug,
@@ -62,20 +63,23 @@ const {
   },
 );
 
-const { data: transfers, isLoading: transfersLoading } =
-  useFleetInventoryTransfers(
-    fleetSlug,
-    {
-      direction: FleetInventoryTransfersDirection.incoming,
-      q: { stateEq: InventoryTransferStateEnum.PENDING },
+const {
+  data: transfers,
+  isLoading: transfersLoading,
+  isFetching: transfersFetching,
+} = useFleetInventoryTransfers(
+  fleetSlug,
+  {
+    direction: FleetInventoryTransfersDirection.incoming,
+    q: { stateEq: InventoryTransferStateEnum.PENDING },
+  },
+  {
+    query: {
+      ...liveQuery,
+      enabled: computed(() => props.canAnswerTransfers),
     },
-    {
-      query: {
-        ...liveQuery,
-        enabled: computed(() => props.canAnswerTransfers),
-      },
-    },
-  );
+  },
+);
 
 const requestItems = computed(() =>
   props.canAnswerJoinRequests ? (requests.value?.items ?? []) : [],
@@ -98,6 +102,12 @@ const loading = computed(
   () =>
     (props.canAnswerJoinRequests && requestsLoading.value) ||
     (props.canAnswerTransfers && transfersLoading.value),
+);
+
+const fetching = computed(
+  () =>
+    (props.canAnswerJoinRequests && requestsFetching.value) ||
+    (props.canAnswerTransfers && transfersFetching.value),
 );
 
 const empty = computed(
@@ -140,11 +150,12 @@ const answer = async (member: FleetMember, accept: boolean) => {
 </script>
 
 <template>
-  <!-- Nothing waiting is not news, so the panel is there only when something is. -->
+  <!-- Nothing waiting is not news, so once the answer is in the panel is there
+       only when something is. -->
   <DashboardPanel
-    v-if="!empty"
+    v-if="loading || !empty"
     :title="t('fleetDashboard.actionQueue.title')"
-    :loading="loading"
+    :loading="fetching"
     data-test="fleet-dashboard-action-queue"
   >
     <section v-if="requestItems.length" class="action-queue__group">

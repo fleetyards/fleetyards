@@ -37,7 +37,11 @@ const SHOWN = 4;
 const fleetSlug = computed(() => props.fleet.slug);
 
 // The reader's own work first, then what is there to be picked up.
-const { data: mine, isLoading: mineLoading } = useFleetContracts(
+const {
+  data: mine,
+  isLoading: mineLoading,
+  isFetching: mineFetching,
+} = useFleetContracts(
   fleetSlug,
   {
     mine: true,
@@ -56,7 +60,11 @@ const { data: mine, isLoading: mineLoading } = useFleetContracts(
 
 // Twice the page: the reader's own work is taken out of this list, and at most
 // SHOWN of it is, so what remains still fills the group.
-const { data: open, isLoading: openLoading } = useFleetContracts(
+const {
+  data: open,
+  isLoading: openLoading,
+  isFetching: openFetching,
+} = useFleetContracts(
   fleetSlug,
   {
     perPage: SHOWN * 2,
@@ -112,9 +120,9 @@ const groups = computed(() =>
 
 <template>
   <DashboardPanel
-    v-if="groups.length"
+    v-if="mineLoading || openLoading || groups.length"
     :title="t('fleetDashboard.contracts.title')"
-    :loading="mineLoading || openLoading"
+    :loading="mineFetching || openFetching"
     :more="{ name: 'fleet-contracts', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-contracts"
   >

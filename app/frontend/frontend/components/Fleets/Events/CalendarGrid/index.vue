@@ -37,11 +37,13 @@ type Props = {
   // things: the reader's place in the URL, the view switch and creating an
   // event by clicking a day all belong to the events page itself.
   compact?: boolean;
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   view: "month",
   compact: false,
+  loading: false,
 });
 const emit = defineEmits<{
   "update:range": [{ start: Date; end: Date }];
@@ -357,7 +359,7 @@ onUnmounted(() => {
     default slot directly when it has no background image, which is what the
     grid wants.
   -->
-  <Panel class="fy-calendar">
+  <Panel class="fy-calendar" :loading="loading">
     <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" divider>
       {{ titleLabel }}
       <template #actions>

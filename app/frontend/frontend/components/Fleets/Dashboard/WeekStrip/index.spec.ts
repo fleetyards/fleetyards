@@ -7,6 +7,7 @@ import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
 let params: Ref<{ from: string; to: string }> | undefined;
+const isLoading = ref(false);
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -20,7 +21,11 @@ vi.mock("@/services/fyApi", async () => {
     ) => {
       params = range;
 
-      return { data: computed(() => ({ items })), isLoading: ref(false) };
+      return {
+        data: computed(() => ({ items })),
+        isLoading,
+        isFetching: isLoading,
+      };
     },
   };
 });
@@ -78,6 +83,7 @@ describe("FleetDashboardWeekStrip", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(NOW);
     items = [];
+    isLoading.value = false;
   });
 
   afterEach(() => {
@@ -146,6 +152,15 @@ describe("FleetDashboardWeekStrip", () => {
     const subject = await mount();
 
     expect(subject.find(".week-strip__empty").exists()).toBe(true);
+  });
+
+  it("says nothing about the day before its week has been answered", async () => {
+    isLoading.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").exists()).toBe(false);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 
   it("asks for the next week when moved on", async () => {

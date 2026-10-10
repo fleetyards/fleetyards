@@ -34,7 +34,7 @@ const { t } = useI18n();
  */
 const ASK_AGAIN_AFTER_MS = 2_000 + Math.round(Math.random() * 8_000);
 
-const { data, refetch } = useFleetOnlineMembers(
+const { data, refetch, isLoading, isFetching } = useFleetOnlineMembers(
   computed(() => props.fleet.slug),
   { query: liveQuery },
 );
@@ -97,8 +97,9 @@ watch(resets, () => {
 
 <template>
   <DashboardPanel
-    v-if="members.length"
+    v-if="isLoading || members.length"
     :title="t('fleetDashboard.online.title', { count: total })"
+    :loading="isFetching"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-online"
   >

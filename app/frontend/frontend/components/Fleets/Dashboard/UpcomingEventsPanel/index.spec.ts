@@ -7,6 +7,8 @@ import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
 let askedFor: { from?: string; to?: string } | undefined;
+const isLoading = ref(false);
+const isFetching = ref(false);
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -22,7 +24,8 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: computed(() => ({ items })),
-        isLoading: ref(false),
+        isLoading,
+        isFetching,
       };
     },
   };
@@ -76,6 +79,27 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
   beforeEach(() => {
     items = [];
     askedFor = undefined;
+    isLoading.value = false;
+    isFetching.value = false;
+  });
+
+  it("stands in its place, loading, until the first answer is in", async () => {
+    isLoading.value = true;
+    isFetching.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find("[data-test='fleet-dashboard-events']").exists()).toBe(
+      true,
+    );
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  it("shows a refetch as loading too", async () => {
+    items = [event({})];
+    isFetching.value = true;
+
+    expect((await mount()).find(".panel--loading").exists()).toBe(true);
   });
 
   // From yesterday: the calendar answers by start time, and an op that began

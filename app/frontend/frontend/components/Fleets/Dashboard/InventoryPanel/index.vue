@@ -31,7 +31,7 @@ const SHOWN = 6;
 // Read as one page and split here: what touches the reader is a handful of
 // the fleet's recent movements, not a list of its own worth a second request.
 // Anything older is on the logistics page the panel links to.
-const { data, isLoading } = useFleetActivity(
+const { data, isLoading, isFetching } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.INVENTORY, limit: 10 },
   { query: liveQuery },
@@ -69,9 +69,9 @@ watch(
 
 <template>
   <DashboardPanel
-    v-if="data?.items.length"
+    v-if="isLoading || data?.items.length"
     :title="t('fleetDashboard.inventory.title')"
-    :loading="isLoading"
+    :loading="isFetching"
     :empty="!entries.length"
     :empty-text="
       scope === 'mine'

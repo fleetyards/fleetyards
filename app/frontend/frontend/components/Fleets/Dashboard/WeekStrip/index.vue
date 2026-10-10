@@ -61,7 +61,7 @@ const days = computed(() =>
   Array.from({ length: 7 }, (_, index) => addDays(weekStart.value, index)),
 );
 
-const { data } = useFleetCalendar(
+const { data, isLoading, isFetching } = useFleetCalendar(
   computed(() => props.fleet.slug),
   // From the day before: the calendar answers by start time, and an op that
   // began on Sunday night is still part of Monday.
@@ -144,7 +144,11 @@ const dayLabel = (day: Date) =>
 </script>
 
 <template>
-  <DashboardPanel :title="title" data-test="fleet-dashboard-week-strip">
+  <DashboardPanel
+    :title="title"
+    :loading="isFetching"
+    data-test="fleet-dashboard-week-strip"
+  >
     <template #actions>
       <BtnGroup>
         <Btn
@@ -203,7 +207,7 @@ const dayLabel = (day: Date) =>
         <EventCard :fleet="fleet" :event="event" />
       </li>
     </ul>
-    <p v-else class="week-strip__empty">
+    <p v-else-if="!isLoading" class="week-strip__empty">
       {{ t("fleetDashboard.week.emptyDay", { day: dayLabel(selected) }) }}
     </p>
   </DashboardPanel>

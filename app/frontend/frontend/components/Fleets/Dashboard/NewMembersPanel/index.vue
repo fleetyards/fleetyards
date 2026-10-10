@@ -24,7 +24,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { data, isLoading } = useFleetActivity(
+const { data, isLoading, isFetching } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.MEMBERS, limit: 6 },
   { query: liveQuery },
@@ -35,9 +35,9 @@ const entries = computed(() => data.value?.items ?? []);
 
 <template>
   <DashboardPanel
-    v-if="entries.length"
+    v-if="isLoading || entries.length"
     :title="t('fleetDashboard.newMembers.title')"
-    :loading="isLoading"
+    :loading="isFetching"
     :more="{
       name: 'fleet-members-index',
       params: { slug: fleet.slug },

@@ -41,7 +41,7 @@ const range = computed(() => ({
   to: addDays(today.value, WINDOW_DAYS).toISOString(),
 }));
 
-const { data, isLoading } = useFleetCalendar(
+const { data, isLoading, isFetching } = useFleetCalendar(
   computed(() => props.fleet.slug),
   range,
   { query: liveQuery },
@@ -80,9 +80,9 @@ watch(isEmpty, (value) => emit("empty", value), { immediate: true });
 
 <template>
   <DashboardPanel
-    v-if="entries.length"
+    v-if="isLoading || entries.length"
     :title="t('fleetDashboard.events.title')"
-    :loading="isLoading"
+    :loading="isFetching"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"
   >
