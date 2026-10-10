@@ -43,4 +43,17 @@ describe("syncOutcomeMessage", () => {
       key: "messages.syncExtension.onlySkippedItems",
     });
   });
+
+  it("says an empty run could not read every item, rather than found nothing", () => {
+    expect(
+      syncOutcomeMessage(HangarSyncOutcomeEnum.NOTHING_TO_SYNC, true),
+    ).toEqual({
+      synced: false,
+      key: "messages.syncExtension.nothingReadable",
+    });
+    expect(syncOutcomeMessage(HangarSyncOutcomeEnum.SYNCED, true)).toEqual({
+      synced: true,
+      key: "messages.syncExtension.success",
+    });
+  });
 });

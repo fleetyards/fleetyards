@@ -2672,7 +2672,8 @@
           "syncedHangarFlair": "Hangar flair synced",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
-        }
+        },
+        "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

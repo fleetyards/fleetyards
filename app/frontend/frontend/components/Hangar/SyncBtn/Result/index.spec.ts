@@ -2,7 +2,10 @@ import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import HangarSyncResult from "./index.vue";
 import type { SyncProcessStep } from "./types";
-import { RsiHangarItemKindEnum } from "@/services/fyApi";
+import {
+  type HangarSyncResult as Result,
+  RsiHangarItemKindEnum,
+} from "@/services/fyApi";
 
 const mount = (processSteps: SyncProcessStep[]) =>
   mountWithDefaults(HangarSyncResult, {
@@ -123,5 +126,44 @@ describe("HangarSyncResult", () => {
     expect(
       flairOff.find("[data-test='hangar-flair-not-synced']").exists(),
     ).toBe(true);
+  });
+
+  it("says when the sync could not read every item and left unmatched ships alone", async () => {
+    const result: Result = {
+      importedVehicles: [],
+      foundVehicles: [],
+      movedVehiclesToWanted: [],
+      deletedVehicles: [],
+      groupedVehicles: [],
+      unchangedVehicles: [],
+      missingModels: [],
+      importedComponents: [],
+      foundComponents: [],
+      missingComponents: [],
+      missingComponentVehicles: [],
+      importedUpgrades: [],
+      foundUpgrades: [],
+      missingUpgrades: [],
+      missingUpgradeVehicles: [],
+    };
+    const mountWith = (extra: Partial<Result>) =>
+      mountWithDefaults(HangarSyncResult, {
+        props: {
+          processSteps: [{ name: "submitData", status: "success" }],
+          currentPage: 1,
+          pledges: [],
+          finished: true,
+          finishedWithErrors: false,
+          result: { ...result, ...extra },
+        },
+      });
+
+    const incomplete = await mountWith({ incomplete: true });
+    const complete = await mountWith({});
+
+    expect(incomplete.find("[data-test='sync-incomplete']").text()).toContain(
+      "could not be read",
+    );
+    expect(complete.find("[data-test='sync-incomplete']").exists()).toBe(false);
   });
 });

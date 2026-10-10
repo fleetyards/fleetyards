@@ -98,8 +98,11 @@ const visibleSteps = computed(() =>
   props.processSteps.filter((step) => step.status !== "pending"),
 );
 
+const incomplete = computed(() => !!props.result?.incomplete);
+
 const hasWarnings = computed(
   () =>
+    incomplete.value ||
     missingModels.value.length > 0 ||
     missingComponents.value.length > 0 ||
     missingComponentVehicles.value.length > 0 ||
@@ -324,6 +327,9 @@ const hasWarnings = computed(
             {{ t("labels.syncExtension.warnings") }}
           </h6>
           <div class="sync-warnings__body">
+            <p v-if="incomplete" data-test="sync-incomplete">
+              {{ t("labels.syncExtension.incomplete") }}
+            </p>
             <dl class="row">
               <template v-if="missingModels.length">
                 <dt class="col-sm-8">

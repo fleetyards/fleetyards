@@ -693,6 +693,7 @@
         "pageNotRecognised": "La pagina di RSI è diversa da quella che FleetYards si aspetta, quindi la sincronizzazione si è fermata senza modificare nulla.",
         "nothingToSync": "FleetYards non ha trovato navi, vernici o componenti nel tuo hangar RSI, quindi non è stato modificato nulla.",
         "onlySkippedItems": "Il tuo hangar RSI contiene solo verniciature o decorazioni per l'hangar, che questa sincronizzazione è impostata per tralasciare, quindi non è stato modificato nulla.",
+        "nothingReadable": "Alcuni elementi del tuo hangar RSI non sono stati letti e FleetYards non ha trovato nient'altro, quindi non è stato modificato nulla.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },
       "admin": {

@@ -682,23 +682,69 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("reports a ship that lost its kind, and submits nothing", async () => {
+  it("submits the rest of a page holding a ship that lost its kind, and says which page", async () => {
     const { wrapper } = await mountModal();
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
 
-    extensionReplies(
-      "sync",
-      hangarPage(
-        '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div>',
-      ),
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div>',
     );
+
+    expect(reportMutateAsync).not.toHaveBeenCalled();
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
+        unreadPages: [
+          expect.objectContaining({
+            check: RsiPageCheckEnum.MISSING_KINDS,
+            pageNumber: 1,
+            markup: [expect.stringContaining("Cutlass Black")],
+          }),
+        ],
+      }),
+    });
+  });
+
+  it("keeps what a repeated page could not read, though its pledges were seen", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
     await flushPromises();
 
-    expect(mutateAsync).not.toHaveBeenCalled();
-    expect(reportMutateAsync).toHaveBeenCalledWith({
-      data: expect.objectContaining({ check: RsiPageCheckEnum.MISSING_KINDS }),
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      extensionReplies(
+        "sync",
+        hangarPage(
+          '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+        ),
+      );
+      await flushPromises();
+      vi.advanceTimersByTime(500);
+      await flushPromises();
+
+      extensionReplies(
+        "sync",
+        hangarPage(
+          '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div><div class="item"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div>',
+        ),
+      );
+      await flushPromises();
+    } finally {
+      vi.useRealTimers();
+    }
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        unreadPages: [
+          expect.objectContaining({
+            check: RsiPageCheckEnum.MISSING_KINDS,
+            pageNumber: 2,
+          }),
+        ],
+      }),
     });
   });
 
@@ -796,11 +842,12 @@ describe("HangarSyncModal", () => {
         items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
       }),
     });
-    // Only for a report on a page it does not recognise; the endpoint has no
-    // such field.
+    // Left out without a version from the extension, and without a page it
+    // read only in part.
     expect(mutateAsync.mock.calls[0][0]).not.toHaveProperty(
       "data.extensionVersion",
     );
+    expect(mutateAsync.mock.calls[0][0]).not.toHaveProperty("data.unreadPages");
     expect(useHangarSync().awaitingResult.value).toBe(true);
 
     const reopened = await mountModal();

@@ -1,10 +1,15 @@
-import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
+import {
+  RSIHangarParser,
+  type RSIHangarUnread,
+} from "@/frontend/lib/RSIHangarParser";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
 import { useSyncExtension } from "@/frontend/composables/useSyncExtension";
 import {
   RsiPageReportOutcome,
+  reportDetails,
+  reportExtensionVersion,
   useRsiPageReport,
 } from "@/frontend/composables/useRsiPageReport";
 import type {
@@ -22,6 +27,7 @@ import {
   type HangarSyncResult,
   type HangarSyncStatus,
   type RsiHangarItemInput,
+  type RsiHangarUnreadPageInput,
   type SyncRsiHangarInput,
 } from "@/services/fyApi";
 
@@ -91,6 +97,15 @@ let extensionVersion: string | undefined;
 
 let seenPledgeIds = new Set<string>();
 
+// The pages read only in part, sent along so the run leaves unmatched ships
+// alone. The server takes five; more only repeat that the sync is incomplete.
+const MAX_UNREAD_PAGES = 5;
+
+let unreadPages: RsiHangarUnreadPageInput[] = [];
+
+// Past the last page RSI repeats it, and that copy is no second page.
+let seenUnreadMarkup = new Set<string>();
+
 let abort = new AbortController();
 
 // The cable message for a run the poll already ended arrives late, and must
@@ -126,6 +141,8 @@ const clear = () => {
   submitted.value = false;
   answeredByPollAt = undefined;
   seenPledgeIds = new Set();
+  unreadPages = [];
+  seenUnreadMarkup = new Set();
 };
 
 export const useHangarSync = () => {
@@ -157,8 +174,15 @@ export const useHangarSync = () => {
     updateStep("submitData", "processing");
     submitted.value = false;
 
+    const version = reportExtensionVersion(extensionVersion);
+
     try {
-      await syncRsiHangar({ ...input, items: pledges.value });
+      await syncRsiHangar({
+        ...input,
+        items: pledges.value,
+        ...(version ? { extensionVersion: version } : {}),
+        ...(unreadPages.length ? { unreadPages } : {}),
+      });
     } catch (error) {
       if (id !== runId) return;
 
@@ -170,6 +194,21 @@ export const useHangarSync = () => {
     if (id === runId) {
       submitted.value = true;
     }
+  };
+
+  const recordUnread = (unread?: RSIHangarUnread) => {
+    if (!unread || unreadPages.length >= MAX_UNREAD_PAGES) return;
+
+    const signature = unread.markup.join("\n");
+    if (seenUnreadMarkup.has(signature)) return;
+    seenUnreadMarkup.add(signature);
+
+    unreadPages.push({
+      check: unread.check,
+      pageNumber: currentPage.value,
+      details: reportDetails(unread.details),
+      markup: unread.markup,
+    });
   };
 
   const readPage = async (id: number, htmlPage: string) => {
@@ -210,6 +249,11 @@ export const useHangarSync = () => {
       await submit();
       return;
     }
+
+    // Before the check for new pledges: a page of pledges already seen can
+    // still hold one that no longer reads, and missing it would let the run
+    // act on unmatched ships.
+    recordUnread(page.unread);
 
     const newPledgeIds = page.pledgeIds.filter(
       (pledgeId) => !seenPledgeIds.has(pledgeId),
@@ -327,7 +371,10 @@ export const useHangarSync = () => {
   const complete = (syncResult?: HangarSyncResult) => {
     result.value = syncResult;
 
-    const { synced, key } = syncOutcomeMessage(syncResult?.outcome);
+    const { synced, key } = syncOutcomeMessage(
+      syncResult?.outcome,
+      syncResult?.incomplete,
+    );
     (synced ? displaySuccess : displayInfo)({ text: t(key) });
 
     updateStep("submitData", "success");
