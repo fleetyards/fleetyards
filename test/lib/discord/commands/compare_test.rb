@@ -7,8 +7,8 @@ module Discord
   module Commands
     class CompareTest < ActiveSupport::TestCase
       setup do
-        @first = create(:model, name: "Origin 100i", slug: "orig-100i", cargo: 2, max_crew: 1, min_crew: 1)
-        @second = create(:model, name: "Origin 300i", slug: "orig-300i", cargo: 4, max_crew: 1, min_crew: 1)
+        @first = create(:model, name: "Origin 100i", slug: "orig-100i", cargo: 2, crew: 1)
+        @second = create(:model, name: "Origin 300i", slug: "orig-300i", cargo: 4, crew: 1)
       end
 
       def call(first, second)
