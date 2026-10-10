@@ -89,6 +89,14 @@ afterEach(() => {
 });
 
 describe("useAdminNotificationUpdates", () => {
+  it("keeps an error toast up until it is settled", () => {
+    const { receive } = render();
+
+    receive(notification({ severity: AdminNotificationSeverityEnum.ERROR }));
+
+    expect(messages()[0].timeout).toBe(false);
+  });
+
   it("lets a warning toast go on its own", () => {
     const { receive } = render();
 

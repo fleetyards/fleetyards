@@ -121,11 +121,15 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
   const { dismiss, resync } = useAdminNotificationToasts();
 
   const announce = (notification: AdminNotification) => {
-    // The notification center keeps what a toast only announces, so the toast
-    // can go on its own; clicking it lands in the center.
+    // An error waits until it is read, wherever that happens - the server
+    // reports it as settled. Anything less can go on its own: the notification
+    // center keeps what the toast only announces.
     const message = {
       text: notification.title,
-      timeout: 10_000,
+      timeout:
+        notification.severity === AdminNotificationSeverityEnum.ERROR
+          ? (false as const)
+          : 10_000,
       to: { name: "admin-notifications" },
       tag: toastTag(notification.id),
     };
