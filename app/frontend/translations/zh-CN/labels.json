@@ -3293,6 +3293,7 @@
         "fleet_squadron_request_received": "中队加入申请",
         "fleet_squadron_request_accepted": "中队申请已通过",
         "fleet_contract_published": "合约已发布",
+        "fleet_announcement_posted": "公告已发布",
         "fleet_contract_claimed": "合约已接取",
         "fleet_contract_crew_requested": "有人想加入合约",
         "fleet_contract_crew_answered": "合约成员申请已处理",

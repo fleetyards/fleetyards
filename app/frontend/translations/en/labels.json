@@ -3307,6 +3307,7 @@
         "fleet_squadron_request_received": "Squadron join request",
         "fleet_squadron_request_accepted": "Squadron request accepted",
         "fleet_contract_published": "Contract posted",
+        "fleet_announcement_posted": "Announcement posted",
         "fleet_contract_claimed": "Contract claimed",
         "fleet_contract_crew_requested": "Crew wants to join a contract",
         "fleet_contract_crew_answered": "Contract crew request answered",
