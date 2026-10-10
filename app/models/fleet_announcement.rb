@@ -64,7 +64,12 @@ class FleetAnnouncement < ApplicationRecord
     errors.add(:base, :announcement_limit_reached, count: ACTIVE_LIMIT)
   end
 
+  # Locked first, so a fan-out batch writing under its share lock finishes
+  # before this reads the rows, and none starts between the read and the
+  # delete.
   private def withdraw_notifications
+    lock!
+
     notifications = Notification.where(record: self)
 
     @withdrawn_notification_ids = notifications.pluck(:user_id, :id)

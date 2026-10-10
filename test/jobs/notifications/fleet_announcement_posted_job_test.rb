@@ -63,12 +63,40 @@ module Notifications
     test "stops telling the fleet once the announcement is taken down" do
       job = FleetAnnouncementPostedJob.new
       job.stubs(:batch_size).returns(1)
-      BulkDelivery.expects(:notify).once.with do
+      BulkDelivery.expects(:write).once.with do
         @announcement.destroy!
+        true
+      end.returns(stub(deliver: nil))
+
+      job.perform(@announcement.id)
+    end
+
+    test "stops telling the fleet once the announcement runs out" do
+      job = FleetAnnouncementPostedJob.new
+      job.stubs(:batch_size).returns(1)
+      BulkDelivery.expects(:write).once.with do
+        @announcement.update_columns(expires_at: 1.minute.ago)
+        true
+      end.returns(stub(deliver: nil))
+
+      job.perform(@announcement.id)
+    end
+
+    test "delivers a batch only once it is committed" do
+      @member.notification_preferences
+        .find_or_create_by!(notification_type: "fleet_announcement_posted")
+        .update!(push: true)
+      connection = FleetAnnouncement.connection
+      outside = connection.open_transactions
+      during_push = nil
+      ::Push::DeliverNotificationJob.stubs(:perform_bulk).with do
+        during_push = connection.open_transactions
         true
       end
 
-      job.perform(@announcement.id)
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+
+      assert_equal outside, during_push
     end
 
     test "tells nobody twice when it runs again" do

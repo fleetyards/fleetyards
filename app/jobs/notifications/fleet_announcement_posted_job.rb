@@ -30,34 +30,47 @@ module Notifications
         .where.not(user_id: announcement.author_id)
         .includes(:user)
         .find_in_batches(batch_size:) do |memberships|
-          # Taken down while the fleet was being told: deleting it withdrew the
-          # rows written so far, and later batches must not write more.
-          break unless FleetAnnouncement.exists?(announcement.id)
-
           users = memberships.filter_map(&:user)
-          notify(users, fleet, announcement, messages) if users.any?
+          next if users.empty?
+
+          delivery = write(users, fleet, announcement, messages)
+          break if delivery.nil?
+
+          delivery.deliver
         end
     end
 
     private def batch_size = BATCH_SIZE
 
-    private def notify(users, fleet, announcement, messages)
+    # Under a share lock on the announcement, which taking it down waits for:
+    # a batch written first is withdrawn with the rest, and a batch after the
+    # takedown finds it gone. Nil once there is nothing to tell -- taken down,
+    # run out or the fleet closed while the fleet was being told.
+    #
+    # Delivered only after the commit: the push and Discord jobs look the rows
+    # up, and could otherwise run before they exist.
+    private def write(users, fleet, announcement, messages)
       locales = users.to_h { |user| [user.id, user.notification_locale] }
 
-      BulkDelivery.notify(
-        type: NOTIFICATION_TYPE,
-        user_ids: locales.keys,
-        unique_by: RECIPIENT_INDEX,
-        mailer: Notification.mailer_for(NOTIFICATION_TYPE),
-        label: "Fleet announcement"
-      ) do |user_id|
-        {
-          link: "/fleets/#{fleet.slug}/",
-          icon: "fa-duotone fa-bullhorn",
-          record_type: "FleetAnnouncement",
-          record_id: announcement.id,
-          **messages[locales[user_id]]
-        }
+      FleetAnnouncement.transaction do
+        next unless FleetAnnouncement.active.lock("FOR SHARE").exists?(id: announcement.id)
+        next unless Fleet.kept.exists?(id: fleet.id)
+
+        BulkDelivery.write(
+          type: NOTIFICATION_TYPE,
+          user_ids: locales.keys,
+          unique_by: RECIPIENT_INDEX,
+          mailer: Notification.mailer_for(NOTIFICATION_TYPE),
+          label: "Fleet announcement"
+        ) do |user_id|
+          {
+            link: "/fleets/#{fleet.slug}/",
+            icon: "fa-duotone fa-bullhorn",
+            record_type: "FleetAnnouncement",
+            record_id: announcement.id,
+            **messages[locales[user_id]]
+          }
+        end
       end
     end
 
