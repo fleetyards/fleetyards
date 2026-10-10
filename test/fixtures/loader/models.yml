@@ -17,9 +17,8 @@ model_aegs_avenger_stalker:
   length: '22.5'
   loaners_count: 0
   mass: '50040.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Avenger Stalker
@@ -40,9 +39,8 @@ model_aegs_avenger_stalker:
   rsi_id: 100
   rsi_length: '22.5'
   rsi_mass: '50040.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: Avenger Stalker
   rsi_pledge_slug: p3i93go2l3vrj
   rsi_pledge_value: 6000
@@ -75,9 +73,8 @@ model_aegs_avenger_titan:
   length: '22.5'
   loaners_count: 0
   mass: '50056.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Avenger Titan
@@ -98,9 +95,8 @@ model_aegs_avenger_titan:
   rsi_id: 102
   rsi_length: '22.5'
   rsi_mass: '50056.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: Avenger Titan
   rsi_pledge_slug: rixelhka42s4z
   rsi_pledge_value: 6000
@@ -135,9 +131,8 @@ model_aegs_avenger_titan_renegade:
   length: '22.5'
   loaners_count: 0
   mass: '50735.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Avenger Titan Renegade
@@ -160,9 +155,8 @@ model_aegs_avenger_titan_renegade:
   rsi_id: 124
   rsi_length: '22.5'
   rsi_mass: '50735.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: Avenger Titan Renegade
   rsi_pledge_slug: py611vil3osq6
   rsi_pledge_value: 7500
@@ -198,9 +192,8 @@ model_aegs_avenger_warlock:
   length: '22.5'
   loaners_count: 0
   mass: '50070.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Avenger Warlock
@@ -224,9 +217,8 @@ model_aegs_avenger_warlock:
   rsi_id: 101
   rsi_length: '22.5'
   rsi_mass: '50070.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: Avenger Warlock
   rsi_pledge_slug: 9pk8u124dapnt
   rsi_pledge_value: 8500
@@ -259,9 +251,8 @@ model_aegs_eclipse:
   length: '20.5'
   loaners_count: 0
   mass: '54216.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Eclipse
@@ -282,9 +273,8 @@ model_aegs_eclipse:
   rsi_id: 130
   rsi_length: '20.5'
   rsi_mass: '54216.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Eclipse
   rsi_pledge_slug: kbeiage2u6wt7
   rsi_pledge_value: 30000
@@ -317,9 +307,8 @@ model_aegs_gladius:
   length: '20.0'
   loaners_count: 0
   mass: '48958.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Gladius
@@ -340,9 +329,8 @@ model_aegs_gladius:
   rsi_id: 60
   rsi_length: '20.0'
   rsi_mass: '48958.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Gladius
   rsi_pledge_slug: xriwbkclswwcc
   rsi_pledge_value: 9000
@@ -377,9 +365,8 @@ model_aegs_gladius_valiant:
   length: '20.0'
   loaners_count: 0
   mass: '48958.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Gladius Valiant
@@ -402,9 +389,8 @@ model_aegs_gladius_valiant:
   rsi_id: 121
   rsi_length: '20.0'
   rsi_mass: '48958.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Gladius Valiant
   rsi_pledge_slug: wvx36hv06cwzu
   rsi_pledge_value: 11000
@@ -437,9 +423,8 @@ model_aegs_hammerhead:
   length: '115.0'
   loaners_count: 0
   mass: '4260000.0'
-  max_crew: 9
+  crew: 9
   max_speed: '950.0'
-  min_crew: 3
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Hammerhead
@@ -460,9 +445,8 @@ model_aegs_hammerhead:
   rsi_id: 151
   rsi_length: '115.0'
   rsi_mass: '4260000.0'
-  rsi_max_crew: 9
+  rsi_crew: 9
   rsi_max_speed: '950.0'
-  rsi_min_crew: 3
   rsi_name: Hammerhead
   rsi_pledge_slug: 3295lyqqsmyvk
   rsi_pledge_value: 72500
@@ -495,9 +479,8 @@ model_aegs_idris_m:
   length: '240.0'
   loaners_count: 0
   mass: '37854373.0'
-  max_crew: 28
+  crew: 28
   max_speed: '800.0'
-  min_crew: 8
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Idris-M
@@ -519,9 +502,8 @@ model_aegs_idris_m:
   rsi_id: 27
   rsi_length: '240.0'
   rsi_mass: '37854373.0'
-  rsi_max_crew: 28
+  rsi_crew: 28
   rsi_max_speed: '800.0'
-  rsi_min_crew: 8
   rsi_name: Idris-M
   rsi_pledge_slug: jbc8zp4ufpbb7
   rsi_pledge_value: 100000
@@ -554,9 +536,8 @@ model_aegs_idris_p:
   length: '240.0'
   loaners_count: 0
   mass: '37854373.0'
-  max_crew: 28
+  crew: 28
   max_speed: '800.0'
-  min_crew: 8
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Idris-P
@@ -578,9 +559,8 @@ model_aegs_idris_p:
   rsi_id: 28
   rsi_length: '240.0'
   rsi_mass: '37854373.0'
-  rsi_max_crew: 28
+  rsi_crew: 28
   rsi_max_speed: '800.0'
-  rsi_min_crew: 8
   rsi_name: Idris-P
   rsi_pledge_slug: 8fw8a179ax03r
   rsi_pledge_value: 190000
@@ -613,9 +593,8 @@ model_aegs_javelin:
   length: '475.0'
   loaners_count: 0
   mass: '11080634.0'
-  max_crew: 65
+  crew: 65
   max_speed: '0.0'
-  min_crew: 12
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Javelin
@@ -637,9 +616,8 @@ model_aegs_javelin:
   rsi_id: 63
   rsi_length: '475.0'
   rsi_mass: '11080634.0'
-  rsi_max_crew: 65
+  rsi_crew: 65
   rsi_max_speed: '0.0'
-  rsi_min_crew: 12
   rsi_name: Javelin
   rsi_pledge_slug: ayon5doeub2ed
   rsi_pledge_value: 300000
@@ -672,8 +650,7 @@ model_aegs_nautilus:
   length: '125.0'
   loaners_count: 0
   mass: '13526320.0'
-  max_crew: 8
-  min_crew: 4
+  crew: 8
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Nautilus
@@ -694,8 +671,7 @@ model_aegs_nautilus:
   rsi_id: 186
   rsi_length: '125.0'
   rsi_mass: '13526320.0'
-  rsi_max_crew: 8
-  rsi_min_crew: 4
+  rsi_crew: 8
   rsi_name: Nautilus
   rsi_pledge_slug: kzw70l58akg51
   rsi_pledge_value: 72500
@@ -725,9 +701,8 @@ model_aegs_pirate_gladius:
   length: '20.0'
   loaners_count: 0
   mass: '48958.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Pirate Gladius
@@ -747,9 +722,8 @@ model_aegs_pirate_gladius:
   rsi_id: 188
   rsi_length: '20.0'
   rsi_mass: '48958.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Pirate Gladius
   rsi_pledge_slug: l23dm6t6twqqh
   rsi_pledge_value: 11000
@@ -785,9 +759,8 @@ model_aegs_reclaimer:
   length: '155.0'
   loaners_count: 0
   mass: '9500158.0'
-  max_crew: 5
+  crew: 5
   max_speed: '930.0'
-  min_crew: 4
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Reclaimer
@@ -812,9 +785,8 @@ model_aegs_reclaimer:
   rsi_id: 51
   rsi_length: '155.0'
   rsi_mass: '9500158.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '930.0'
-  rsi_min_crew: 4
   rsi_name: Reclaimer
   rsi_pledge_slug: 6mds48inys10c
   rsi_pledge_value: 40000
@@ -847,9 +819,8 @@ model_aegs_redeemer:
   length: '51.0'
   loaners_count: 0
   mass: '120380.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Redeemer
@@ -870,9 +841,8 @@ model_aegs_redeemer:
   rsi_id: 59
   rsi_length: '51.0'
   rsi_mass: '120380.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Redeemer
   rsi_pledge_slug: ztxvjl8tjd58k
   rsi_pledge_value: 33000
@@ -905,9 +875,8 @@ model_aegs_retaliator:
   length: '71.0'
   loaners_count: 0
   mass: '300392.0'
-  max_crew: 7
+  crew: 7
   max_speed: '1000.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Retaliator
@@ -928,9 +897,8 @@ model_aegs_retaliator:
   rsi_id: 99
   rsi_length: '71.0'
   rsi_mass: '300392.0'
-  rsi_max_crew: 7
+  rsi_crew: 7
   rsi_max_speed: '1000.0'
-  rsi_min_crew: 4
   rsi_name: Retaliator
   rsi_pledge_slug: 2ofmnzrht19zp
   rsi_pledge_value: 17500
@@ -963,9 +931,8 @@ model_aegs_sabre:
   length: '26.0'
   loaners_count: 0
   mass: '78513.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1235.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Sabre
@@ -987,9 +954,8 @@ model_aegs_sabre:
   rsi_id: 98
   rsi_length: '26.0'
   rsi_mass: '78513.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1235.0'
-  rsi_min_crew: 1
   rsi_name: Sabre
   rsi_pledge_slug: 524sx1s27pfsu
   rsi_pledge_value: 17500
@@ -1024,9 +990,8 @@ model_aegs_sabre_comet:
   length: '24.0'
   loaners_count: 0
   mass: '78513.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1235.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Sabre Comet
@@ -1049,9 +1014,8 @@ model_aegs_sabre_comet:
   rsi_id: 120
   rsi_length: '24.0'
   rsi_mass: '78513.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1235.0'
-  rsi_min_crew: 1
   rsi_name: Sabre Comet
   rsi_pledge_slug: ryf69jortpefe
   rsi_pledge_value: 18500
@@ -1084,9 +1048,8 @@ model_aegs_sabre_firebird:
   length: '26.0'
   loaners_count: 0
   mass: '78513.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1400.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Sabre Firebird
@@ -1107,9 +1070,8 @@ model_aegs_sabre_firebird:
   rsi_id: 267
   rsi_length: '26.0'
   rsi_mass: '78513.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1400.0'
-  rsi_min_crew: 1
   rsi_name: Sabre Firebird
   rsi_pledge_slug: 77x8jeyecc93n
   rsi_pledge_value: 18500
@@ -1142,9 +1104,8 @@ model_aegs_sabre_peregrine:
   length: '26.0'
   loaners_count: 0
   mass: '78513.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1448.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Sabre Peregrine
@@ -1165,9 +1126,8 @@ model_aegs_sabre_peregrine:
   rsi_id: 276
   rsi_length: '26.0'
   rsi_mass: '78513.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1448.0'
-  rsi_min_crew: 1
   rsi_name: Sabre Peregrine
   rsi_pledge_slug: 3dc0v942f5oz8
   rsi_pledge_value: 18500
@@ -1200,9 +1160,8 @@ model_aegs_sabre_raven:
   length: '24.0'
   loaners_count: 0
   mass: '69433.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1400.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Sabre Raven
@@ -1224,9 +1183,8 @@ model_aegs_sabre_raven:
   rsi_id: 148
   rsi_length: '24.0'
   rsi_mass: '69433.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1400.0'
-  rsi_min_crew: 1
   rsi_name: Sabre Raven
   rsi_pledge_slug: h171xxb3v52sr
   rsi_pledge_value: 20000
@@ -1261,9 +1219,8 @@ model_aegs_vanguard_harbinger:
   length: '38.5'
   loaners_count: 0
   mass: '2400920.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1100.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vanguard Harbinger
@@ -1286,9 +1243,8 @@ model_aegs_vanguard_harbinger:
   rsi_id: 95
   rsi_length: '38.5'
   rsi_mass: '2400920.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 2
   rsi_name: Vanguard Harbinger
   rsi_pledge_slug: hqv90pcmhghzk
   rsi_pledge_value: 29000
@@ -1321,9 +1277,8 @@ model_aegs_vanguard_hoplite:
   length: '38.5'
   loaners_count: 0
   mass: '2294400.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vanguard Hoplite
@@ -1345,9 +1300,8 @@ model_aegs_vanguard_hoplite:
   rsi_id: 127
   rsi_length: '38.5'
   rsi_mass: '2294400.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: Vanguard Hoplite
   rsi_pledge_slug: gley20banrril
   rsi_pledge_value: 24000
@@ -1380,9 +1334,8 @@ model_aegs_vanguard_sentinel:
   length: '38.5'
   loaners_count: 0
   mass: '2386160.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1100.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vanguard Sentinel
@@ -1404,9 +1357,8 @@ model_aegs_vanguard_sentinel:
   rsi_id: 96
   rsi_length: '38.5'
   rsi_mass: '2386160.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 2
   rsi_name: Vanguard Sentinel
   rsi_pledge_slug: k7ce63v75luzu
   rsi_pledge_value: 27500
@@ -1439,9 +1391,8 @@ model_aegs_vanguard_warden:
   length: '38.5'
   loaners_count: 0
   mass: '2386160.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1100.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vanguard Warden
@@ -1462,9 +1413,8 @@ model_aegs_vanguard_warden:
   rsi_id: 75
   rsi_length: '38.5'
   rsi_mass: '2386160.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 2
   rsi_name: Vanguard Warden
   rsi_pledge_slug: nptz0y56gnp4g
   rsi_pledge_value: 26000
@@ -1497,8 +1447,7 @@ model_aegs_vulcan:
   length: '38.5'
   loaners_count: 0
   mass: '625330.0'
-  max_crew: 3
-  min_crew: 1
+  crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vulcan
@@ -1519,8 +1468,7 @@ model_aegs_vulcan:
   rsi_id: 155
   rsi_length: '38.5'
   rsi_mass: '625330.0'
-  rsi_max_crew: 3
-  rsi_min_crew: 1
+  rsi_crew: 3
   rsi_name: Vulcan
   rsi_pledge_slug: qdo3z24rtecij
   rsi_pledge_value: 20000
@@ -1553,7 +1501,7 @@ model_anvl_arrow:
   length: '16.0'
   loaners_count: 0
   mass: '30752.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1210.0'
   model_paints_count: 0
   module_hardpoints_count: 0
@@ -1575,7 +1523,7 @@ model_anvl_arrow:
   rsi_id: 173
   rsi_length: '16.0'
   rsi_mass: '30752.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1210.0'
   rsi_name: Arrow
   rsi_pledge_slug: 4wo16o7htn7on
@@ -1608,8 +1556,7 @@ model_anvl_ballista:
   length: '17.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 2
   module_hardpoints_count: 0
   name: Ballista
@@ -1629,8 +1576,7 @@ model_anvl_ballista:
   rsi_id: 183
   rsi_length: '17.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Ballista
   rsi_pledge_slug: q6jqt9v1eahyg
   rsi_pledge_value: 14000
@@ -1663,9 +1609,8 @@ model_anvl_c8_pisces:
   length: '12.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: C8 Pisces
@@ -1686,9 +1631,8 @@ model_anvl_c8_pisces:
   rsi_id: 191
   rsi_length: '12.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: C8 Pisces
   rsi_pledge_slug: o8k9wcrgpcwwc
   rsi_pledge_value: 4500
@@ -1721,9 +1665,8 @@ model_anvl_c8r_pisces:
   length: '13.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: C8R Pisces
@@ -1744,9 +1687,8 @@ model_anvl_c8r_pisces:
   rsi_id: 241
   rsi_length: '13.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: C8R Pisces
   rsi_pledge_slug: o0szzqqb7cbt9
   rsi_pledge_value: 6500
@@ -1779,9 +1721,8 @@ model_anvl_c8x_pisces_expedition:
   length: '13.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: C8X Pisces Expedition
@@ -1802,9 +1743,8 @@ model_anvl_c8x_pisces_expedition:
   rsi_id: 192
   rsi_length: '13.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: C8X Pisces Expedition
   rsi_pledge_slug: tgoingv4iu58b
   rsi_pledge_value: 4500
@@ -1837,9 +1777,8 @@ model_anvl_carrack:
   length: '126.5'
   loaners_count: 0
   mass: '4397858.0'
-  max_crew: 6
+  crew: 6
   max_speed: '1050.0'
-  min_crew: 4
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Carrack
@@ -1860,9 +1799,8 @@ model_anvl_carrack:
   rsi_id: 62
   rsi_length: '126.5'
   rsi_mass: '4397858.0'
-  rsi_max_crew: 6
+  rsi_crew: 6
   rsi_max_speed: '1050.0'
-  rsi_min_crew: 4
   rsi_name: Carrack
   rsi_pledge_slug: guiwiw1a6xezs
   rsi_pledge_value: 60000
@@ -1895,8 +1833,7 @@ model_anvl_centurion:
   length: '17.0'
   loaners_count: 0
   mass: '33276.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Centurion
@@ -1917,8 +1854,7 @@ model_anvl_centurion:
   rsi_id: 233
   rsi_length: '17.0'
   rsi_mass: '33276.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Centurion
   rsi_pledge_slug: bv1y6xcxr9979
   rsi_pledge_value: 11000
@@ -1951,9 +1887,8 @@ model_anvl_crucible:
   length: '90.0'
   loaners_count: 0
   mass: '3650500.0'
-  max_crew: 8
+  crew: 8
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Crucible
@@ -1975,9 +1910,8 @@ model_anvl_crucible:
   rsi_id: 103
   rsi_length: '90.0'
   rsi_mass: '3650500.0'
-  rsi_max_crew: 8
+  rsi_crew: 8
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Crucible
   rsi_pledge_slug: 6f9qhjl7v8tyc
   rsi_pledge_value: 35000
@@ -2010,8 +1944,7 @@ model_anvl_f7a_hornet_mk_i:
   length: '22.5'
   loaners_count: 0
   mass: '73317.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7A Hornet Mk I
@@ -2034,8 +1967,7 @@ model_anvl_f7a_hornet_mk_i:
   rsi_id: 269
   rsi_length: '22.5'
   rsi_mass: '73317.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: F7A Hornet Mk I
   rsi_pitch: '0.0'
   rsi_pledge_slug: gpd0sk458h8j4
@@ -2072,9 +2004,8 @@ model_anvl_f7a_hornet_mk_ii:
   length: '22.5'
   loaners_count: 0
   mass: '73317.0'
-  max_crew: 1
+  crew: 1
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7A Hornet Mk II
@@ -2094,9 +2025,8 @@ model_anvl_f7a_hornet_mk_ii:
   rsi_id: 37
   rsi_length: '22.5'
   rsi_mass: '73317.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: F7A Hornet Mk II
   rsi_pledge_slug: ke3z7acq1gmwz
   rsi_scm_speed: '0.0'
@@ -2128,9 +2058,8 @@ model_anvl_f7c_hornet_mk_i:
   length: '22.5'
   loaners_count: 0
   mass: '73535.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1225.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C Hornet Mk I
@@ -2151,9 +2080,8 @@ model_anvl_f7c_hornet_mk_i:
   rsi_id: 11
   rsi_length: '22.5'
   rsi_mass: '73535.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1225.0'
-  rsi_min_crew: 1
   rsi_name: F7C Hornet Mk I
   rsi_pledge_slug: jj23r3vy7auib
   rsi_pledge_value: 12500
@@ -2186,9 +2114,8 @@ model_anvl_f7c_hornet_mk_ii:
   length: '22.2'
   loaners_count: 0
   mass: '73317.0'
-  max_crew: 1
+  crew: 1
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C Hornet Mk II
@@ -2209,9 +2136,8 @@ model_anvl_f7c_hornet_mk_ii:
   rsi_id: 270
   rsi_length: '22.2'
   rsi_mass: '73317.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: F7C Hornet Mk II
   rsi_pledge_slug: 7gp2loc18tm21
   rsi_pledge_value: 17500
@@ -2246,9 +2172,8 @@ model_anvl_f7c_hornet_wildfire_mk_i:
   length: '22.5'
   loaners_count: 0
   mass: '73535.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1174.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C Hornet Wildfire Mk I
@@ -2271,9 +2196,8 @@ model_anvl_f7c_hornet_wildfire_mk_i:
   rsi_id: 122
   rsi_length: '22.5'
   rsi_mass: '73535.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1174.0'
-  rsi_min_crew: 1
   rsi_name: F7C Hornet Wildfire Mk I
   rsi_pledge_slug: t029d5ysfp6og
   rsi_pledge_value: 17500
@@ -2306,9 +2230,8 @@ model_anvl_f7c_m_super_hornet_heartseeker_mk_i:
   length: '25.5'
   loaners_count: 0
   mass: '78466.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1166.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-M Super Hornet Heartseeker Mk I
@@ -2329,9 +2252,8 @@ model_anvl_f7c_m_super_hornet_heartseeker_mk_i:
   rsi_id: 177
   rsi_length: '25.5'
   rsi_mass: '78466.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1166.0'
-  rsi_min_crew: 1
   rsi_name: F7C-M Super Hornet Heartseeker Mk I
   rsi_pledge_slug: b4d3cop3ltr3y
   rsi_pledge_value: 20000
@@ -2364,9 +2286,8 @@ model_anvl_f7c_m_super_hornet_mk_i:
   length: '25.5'
   loaners_count: 0
   mass: '78466.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1220.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-M Super Hornet Mk I
@@ -2387,9 +2308,8 @@ model_anvl_f7c_m_super_hornet_mk_i:
   rsi_id: 15
   rsi_length: '25.5'
   rsi_mass: '78466.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1220.0'
-  rsi_min_crew: 1
   rsi_name: F7C-M Super Hornet Mk I
   rsi_pledge_slug: 9wbzml3ovg5s5
   rsi_pledge_value: 18000
@@ -2422,9 +2342,8 @@ model_anvl_f7c_r_hornet_tracker_mk_i:
   length: '22.5'
   loaners_count: 0
   mass: '73497.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1215.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-R Hornet Tracker Mk I
@@ -2445,9 +2364,8 @@ model_anvl_f7c_r_hornet_tracker_mk_i:
   rsi_id: 14
   rsi_length: '22.5'
   rsi_mass: '73497.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1215.0'
-  rsi_min_crew: 1
   rsi_name: F7C-R Hornet Tracker Mk I
   rsi_pledge_slug: n4o99ctni4lju
   rsi_pledge_value: 15000
@@ -2480,8 +2398,7 @@ model_anvl_f7c_r_hornet_tracker_mk_ii:
   length: '22.5'
   loaners_count: 0
   mass: '73317.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-R Hornet Tracker Mk II
@@ -2502,8 +2419,7 @@ model_anvl_f7c_r_hornet_tracker_mk_ii:
   rsi_id: 284
   rsi_length: '22.5'
   rsi_mass: '73317.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: F7C-R Hornet Tracker Mk II
   rsi_pledge_slug: 7xa6xowb0e7tk
   rsi_pledge_value: 18500
@@ -2536,9 +2452,8 @@ model_anvl_f7c_s_hornet_ghost_mk_i:
   length: '22.5'
   loaners_count: 0
   mass: '73454.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1225.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-S Hornet Ghost Mk I
@@ -2559,9 +2474,8 @@ model_anvl_f7c_s_hornet_ghost_mk_i:
   rsi_id: 13
   rsi_length: '22.5'
   rsi_mass: '73454.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1225.0'
-  rsi_min_crew: 1
   rsi_name: F7C-S Hornet Ghost Mk I
   rsi_pledge_slug: i4fxzcl4y3t1n
   rsi_pledge_value: 14000
@@ -2594,8 +2508,7 @@ model_anvl_f7c_s_hornet_ghost_mk_ii:
   length: '22.5'
   loaners_count: 0
   mass: '73317.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F7C-S Hornet Ghost Mk II
@@ -2616,8 +2529,7 @@ model_anvl_f7c_s_hornet_ghost_mk_ii:
   rsi_id: 285
   rsi_length: '22.5'
   rsi_mass: '73317.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: F7C-S Hornet Ghost Mk II
   rsi_pledge_slug: x52o8np3jfl0d
   rsi_pledge_value: 18500
@@ -2649,9 +2561,8 @@ model_anvl_f8c_lightning:
   length: '25.0'
   loaners_count: 0
   mass: '158774.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F8C Lightning
@@ -2671,9 +2582,8 @@ model_anvl_f8c_lightning:
   rsi_id: 261
   rsi_length: '25.0'
   rsi_mass: '158774.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: F8C Lightning
   rsi_pledge_slug: xr1wl7fxnegku
   rsi_pledge_value: 30000
@@ -2705,9 +2615,8 @@ model_anvl_f8c_lightning_executive_edition:
   length: '25.0'
   loaners_count: 0
   mass: '158770.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: F8C Lightning Executive Edition
@@ -2727,9 +2636,8 @@ model_anvl_f8c_lightning_executive_edition:
   rsi_id: 263
   rsi_length: '25.0'
   rsi_mass: '158770.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: F8C Lightning Executive Edition
   rsi_pledge_slug: w37f19pbcyr4r
   rsi_pledge_value: 30000
@@ -2762,9 +2670,8 @@ model_anvl_gladiator:
   length: '22.3'
   loaners_count: 0
   mass: '87497.0'
-  max_crew: 2
+  crew: 2
   max_speed: '980.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Gladiator
@@ -2785,9 +2692,8 @@ model_anvl_gladiator:
   rsi_id: 64
   rsi_length: '22.3'
   rsi_mass: '87497.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '980.0'
-  rsi_min_crew: 1
   rsi_name: Gladiator
   rsi_pledge_slug: 8d9g39p7khocj
   rsi_pledge_value: 16500
@@ -2820,9 +2726,8 @@ model_anvl_hawk:
   length: '17.0'
   loaners_count: 0
   mass: '40000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1175.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hawk
@@ -2843,9 +2748,8 @@ model_anvl_hawk:
   rsi_id: 150
   rsi_length: '17.0'
   rsi_mass: '40000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1175.0'
-  rsi_min_crew: 1
   rsi_name: Hawk
   rsi_pledge_slug: 7s4x8s3va9sts
   rsi_pledge_value: 10000
@@ -2878,9 +2782,8 @@ model_anvl_hurricane:
   length: '22.0'
   loaners_count: 0
   mass: '86454.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hurricane
@@ -2901,9 +2804,8 @@ model_anvl_hurricane:
   rsi_id: 128
   rsi_length: '22.0'
   rsi_mass: '86454.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 2
   rsi_name: Hurricane
   rsi_pledge_slug: a4jza12hwvg5e
   rsi_pledge_value: 21000
@@ -2936,8 +2838,7 @@ model_anvl_legionnaire:
   length: '32.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Legionnaire
@@ -2958,8 +2859,7 @@ model_anvl_legionnaire:
   rsi_id: 232
   rsi_length: '32.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Legionnaire
   rsi_pledge_slug: 91ay127t9vasm
   rsi_pledge_value: 12000
@@ -2990,8 +2890,7 @@ model_anvl_liberator:
   length: '119.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Liberator
@@ -3012,8 +2911,7 @@ model_anvl_liberator:
   rsi_id: 224
   rsi_length: '119.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Liberator
   rsi_pledge_slug: q6vw2eyczlajo
   rsi_pledge_value: 57500
@@ -3046,8 +2944,7 @@ model_anvl_paladin:
   length: '53.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 4
-  min_crew: 1
+  crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Paladin
@@ -3068,8 +2965,7 @@ model_anvl_paladin:
   rsi_id: 282
   rsi_length: '53.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 4
-  rsi_min_crew: 1
+  rsi_crew: 4
   rsi_name: Paladin
   rsi_pledge_slug: i55wpnnnh6a3g
   rsi_pledge_value: 35000
@@ -3100,8 +2996,7 @@ model_anvl_spartan:
   length: '17.0'
   loaners_count: 0
   mass: '33276.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Spartan
@@ -3122,8 +3017,7 @@ model_anvl_spartan:
   rsi_id: 225
   rsi_length: '17.0'
   rsi_mass: '33276.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Spartan
   rsi_pledge_slug: 3xu46913hw8xs
   rsi_pledge_value: 8000
@@ -3156,9 +3050,8 @@ model_anvl_terrapin:
   length: '19.5'
   loaners_count: 0
   mass: '148028.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Terrapin
@@ -3179,9 +3072,8 @@ model_anvl_terrapin:
   rsi_id: 115
   rsi_length: '19.5'
   rsi_mass: '148028.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: Terrapin
   rsi_pledge_slug: d7a6dfpnsrfpa
   rsi_pledge_value: 22000
@@ -3214,8 +3106,7 @@ model_anvl_terrapin_medic:
   length: '19.5'
   loaners_count: 0
   mass: '148028.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Terrapin Medic
@@ -3236,8 +3127,7 @@ model_anvl_terrapin_medic:
   rsi_id: 283
   rsi_length: '19.5'
   rsi_mass: '148028.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Terrapin Medic
   rsi_pledge_slug: ngmmndpafci0b
   rsi_pledge_value: 22000
@@ -3273,7 +3163,7 @@ model_anvl_valkyrie:
   length: '46.5'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 5
+  crew: 5
   max_speed: '1100.0'
   model_paints_count: 1
   module_hardpoints_count: 0
@@ -3298,7 +3188,7 @@ model_anvl_valkyrie:
   rsi_id: 169
   rsi_length: '46.5'
   rsi_mass: '0.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '1100.0'
   rsi_name: Valkyrie
   rsi_pledge_slug: cyfkg3a9r3mtu
@@ -3331,8 +3221,7 @@ model_argo_atls:
   length: '1.8'
   loaners_count: 0
   mass: '1440.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: ATLS
@@ -3352,8 +3241,7 @@ model_argo_atls:
   rsi_id: 277
   rsi_length: '1.8'
   rsi_mass: '1440.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: ATLS
   rsi_pledge_slug: 8kq6y6cndi2il
   rsi_pledge_value: 4000
@@ -3384,8 +3272,7 @@ model_argo_csv_sm:
   length: '5.4'
   loaners_count: 0
   mass: '12496.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: CSV-SM
@@ -3406,8 +3293,7 @@ model_argo_csv_sm:
   rsi_id: 281
   rsi_length: '5.4'
   rsi_mass: '12496.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: CSV-SM
   rsi_pledge_slug: 3lu9px6wf0gmm
   rsi_pledge_value: 4500
@@ -3438,9 +3324,8 @@ model_argo_mole:
   length: '45.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 4
+  crew: 4
   max_speed: '960.0'
-  min_crew: 1
   model_paints_count: 2
   module_hardpoints_count: 0
   name: MOLE
@@ -3461,9 +3346,8 @@ model_argo_mole:
   rsi_id: 201
   rsi_length: '45.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '960.0'
-  rsi_min_crew: 1
   rsi_name: MOLE
   rsi_pledge_slug: u9o9ypxaaclmc
   rsi_pledge_value: 31500
@@ -3496,9 +3380,8 @@ model_argo_mpuv_cargo:
   length: '9.0'
   loaners_count: 0
   mass: '12187.0'
-  max_crew: 1
+  crew: 1
   max_speed: '890.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: MPUV Cargo
@@ -3519,9 +3402,8 @@ model_argo_mpuv_cargo:
   rsi_id: 114
   rsi_length: '9.0'
   rsi_mass: '12187.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '890.0'
-  rsi_min_crew: 1
   rsi_name: MPUV Cargo
   rsi_pledge_slug: ywxg6nekvc56w
   rsi_pledge_value: 3500
@@ -3554,9 +3436,8 @@ model_argo_mpuv_personnel:
   length: '9.0'
   loaners_count: 0
   mass: '12187.0'
-  max_crew: 1
+  crew: 1
   max_speed: '890.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: MPUV Personnel
@@ -3577,9 +3458,8 @@ model_argo_mpuv_personnel:
   rsi_id: 113
   rsi_length: '9.0'
   rsi_mass: '12187.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '890.0'
-  rsi_min_crew: 1
   rsi_name: MPUV Personnel
   rsi_pledge_slug: aic83qfdcwrs7
   rsi_pledge_value: 4000
@@ -3612,8 +3492,7 @@ model_argo_mpuv_tractor:
   length: '9.0'
   loaners_count: 0
   mass: '12187.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: MPUV Tractor
@@ -3634,8 +3513,7 @@ model_argo_mpuv_tractor:
   rsi_id: 268
   rsi_length: '9.0'
   rsi_mass: '12187.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: MPUV Tractor
   rsi_pledge_slug: fe37o4euqlv9k
   rsi_pledge_value: 4000
@@ -3668,9 +3546,8 @@ model_argo_raft:
   length: '39.5'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
+  crew: 2
   max_speed: '900222024.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: RAFT
@@ -3691,9 +3568,8 @@ model_argo_raft:
   rsi_id: 226
   rsi_length: '39.5'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '900222024.0'
-  rsi_min_crew: 1
   rsi_name: RAFT
   rsi_pledge_slug: khlh8dsrpnoxp
   rsi_pledge_value: 19000
@@ -3728,9 +3604,8 @@ model_argo_srv:
   length: '28.5'
   loaners_count: 0
   mass: '122650.0'
-  max_crew: 1
+  crew: 1
   max_speed: '985.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: SRV
@@ -3753,9 +3628,8 @@ model_argo_srv:
   rsi_id: 176
   rsi_length: '28.5'
   rsi_mass: '122650.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '985.0'
-  rsi_min_crew: 1
   rsi_name: SRV
   rsi_pledge_slug: 7iu78ayyp5kyx
   rsi_pledge_value: 16500
@@ -3788,9 +3662,8 @@ model_banu_defender:
   length: '25.5'
   loaners_count: 0
   mass: '78406.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Defender
@@ -3811,9 +3684,8 @@ model_banu_defender:
   rsi_id: 129
   rsi_length: '25.5'
   rsi_mass: '78406.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Defender
   rsi_pledge_slug: dnzew0c5pdv0a
   rsi_pledge_value: 22000
@@ -3846,9 +3718,8 @@ model_banu_merchantman:
   length: '160.0'
   loaners_count: 0
   mass: '9635000.0'
-  max_crew: 8
+  crew: 8
   max_speed: '0.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Merchantman
@@ -3870,9 +3741,8 @@ model_banu_merchantman:
   rsi_id: 36
   rsi_length: '160.0'
   rsi_mass: '9635000.0'
-  rsi_max_crew: 8
+  rsi_crew: 8
   rsi_max_speed: '0.0'
-  rsi_min_crew: 4
   rsi_name: Merchantman
   rsi_pledge_slug: 5p7bhgbzzwi28
   rsi_pledge_value: 65000
@@ -3905,9 +3775,8 @@ model_cnou_hoverquad:
   length: '4.5'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: HoverQuad
@@ -3928,9 +3797,8 @@ model_cnou_hoverquad:
   rsi_id: 229
   rsi_length: '4.5'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: HoverQuad
   rsi_pledge_slug: h1qgu5hnbp9mr
   rsi_pledge_value: 3000
@@ -3963,9 +3831,8 @@ model_cnou_mustang_alpha:
   length: '21.5'
   loaners_count: 0
   mass: '32970.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Mustang Alpha
@@ -3986,9 +3853,8 @@ model_cnou_mustang_alpha:
   rsi_id: 65
   rsi_length: '21.5'
   rsi_mass: '32970.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Mustang Alpha
   rsi_pledge_slug: j4tgivm60z3ti
   rsi_pledge_value: 3000
@@ -4021,9 +3887,8 @@ model_cnou_mustang_beta:
   length: '21.5'
   loaners_count: 0
   mass: '39610.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mustang Beta
@@ -4044,9 +3909,8 @@ model_cnou_mustang_beta:
   rsi_id: 66
   rsi_length: '21.5'
   rsi_mass: '39610.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Mustang Beta
   rsi_pledge_slug: yq1p7p55veoz6
   rsi_pledge_value: 4000
@@ -4079,9 +3943,8 @@ model_cnou_mustang_delta:
   length: '21.5'
   loaners_count: 0
   mass: '37345.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mustang Delta
@@ -4102,9 +3965,8 @@ model_cnou_mustang_delta:
   rsi_id: 69
   rsi_length: '21.5'
   rsi_mass: '37345.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Mustang Delta
   rsi_pledge_slug: ffrb6wo2s715m
   rsi_pledge_value: 6500
@@ -4137,9 +3999,8 @@ model_cnou_mustang_gamma:
   length: '21.5'
   loaners_count: 0
   mass: '30263.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mustang Gamma
@@ -4160,9 +4021,8 @@ model_cnou_mustang_gamma:
   rsi_id: 67
   rsi_length: '21.5'
   rsi_mass: '30263.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Mustang Gamma
   rsi_pledge_slug: '08jg36fc9wkpa'
   rsi_pledge_value: 5500
@@ -4195,9 +4055,8 @@ model_cnou_mustang_omega:
   length: '17.5'
   loaners_count: 0
   mass: '30263.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mustang Omega
@@ -4218,9 +4077,8 @@ model_cnou_mustang_omega:
   rsi_id: 70
   rsi_length: '17.5'
   rsi_mass: '30263.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Mustang Omega
   rsi_pledge_slug: ru4usfo8qcolh
   rsi_pledge_value: 5500
@@ -4256,9 +4114,8 @@ model_cnou_nomad:
   length: '26.5'
   loaners_count: 0
   mass: '228123.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Nomad
@@ -4282,9 +4139,8 @@ model_cnou_nomad:
   rsi_id: 216
   rsi_length: '26.5'
   rsi_mass: '228123.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: Nomad
   rsi_pledge_slug: kqirzk86n7lar
   rsi_pledge_value: 8000
@@ -4315,8 +4171,7 @@ model_cnou_pioneer:
   length: '247.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 8
-  min_crew: 4
+  crew: 8
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Pioneer
@@ -4337,8 +4192,7 @@ model_cnou_pioneer:
   rsi_id: 149
   rsi_length: '247.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 8
-  rsi_min_crew: 4
+  rsi_crew: 8
   rsi_name: Pioneer
   rsi_pledge_slug: jp33swooal97e
   rsi_pledge_value: 92500
@@ -4369,9 +4223,8 @@ model_crus_a1_spirit:
   length: '47.5'
   loaners_count: 0
   mass: '314270.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1130.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: A1 Spirit
@@ -4392,9 +4245,8 @@ model_crus_a1_spirit:
   rsi_id: 237
   rsi_length: '47.5'
   rsi_mass: '314270.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1130.0'
-  rsi_min_crew: 1
   rsi_name: A1 Spirit
   rsi_pledge_slug: x28xq7e8384n4
   rsi_pledge_value: 20000
@@ -4427,9 +4279,8 @@ model_crus_a2_hercules:
   length: '94.0'
   loaners_count: 0
   mass: '3139240.0'
-  max_crew: 6
+  crew: 6
   max_speed: '950.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: A2 Hercules
@@ -4450,9 +4301,8 @@ model_crus_a2_hercules:
   rsi_id: 164
   rsi_length: '94.0'
   rsi_mass: '3139240.0'
-  rsi_max_crew: 6
+  rsi_crew: 6
   rsi_max_speed: '950.0'
-  rsi_min_crew: 1
   rsi_name: A2 Hercules
   rsi_pledge_slug: uhwgic6mje1wd
   rsi_pledge_value: 75000
@@ -4485,7 +4335,7 @@ model_crus_ares_inferno:
   length: '27.2'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
   model_paints_count: 0
   module_hardpoints_count: 0
@@ -4507,7 +4357,7 @@ model_crus_ares_inferno:
   rsi_id: 198
   rsi_length: '27.2'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
   rsi_name: Ares Inferno
   rsi_pledge_slug: 03ub2bf7v1so7
@@ -4541,7 +4391,7 @@ model_crus_ares_ion:
   length: '27.2'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
   model_paints_count: 0
   module_hardpoints_count: 0
@@ -4563,7 +4413,7 @@ model_crus_ares_ion:
   rsi_id: 200
   rsi_length: '27.2'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
   rsi_name: Ares Ion
   rsi_pledge_slug: z2aha5o22d2sr
@@ -4597,9 +4447,8 @@ model_crus_c1_spirit:
   length: '47.5'
   loaners_count: 0
   mass: '314270.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1130.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: C1 Spirit
@@ -4620,9 +4469,8 @@ model_crus_c1_spirit:
   rsi_id: 234
   rsi_length: '47.5'
   rsi_mass: '314270.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1130.0'
-  rsi_min_crew: 1
   rsi_name: C1 Spirit
   rsi_pledge_slug: q9htr8wd9pf4d
   rsi_pledge_value: 12500
@@ -4655,9 +4503,8 @@ model_crus_c2_hercules:
   length: '94.0'
   loaners_count: 0
   mass: '3139240.0'
-  max_crew: 2
+  crew: 2
   max_speed: '950.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: C2 Hercules
@@ -4678,9 +4525,8 @@ model_crus_c2_hercules:
   rsi_id: 162
   rsi_length: '94.0'
   rsi_mass: '3139240.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '950.0'
-  rsi_min_crew: 1
   rsi_name: C2 Hercules
   rsi_pledge_slug: k50il15zq7osw
   rsi_pledge_value: 40000
@@ -4713,8 +4559,7 @@ model_crus_e1_spirit:
   length: '46.5'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: E1 Spirit
@@ -4735,8 +4580,7 @@ model_crus_e1_spirit:
   rsi_id: 239
   rsi_length: '46.5'
   rsi_mass: '0.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: E1 Spirit
   rsi_pledge_slug: 8u2yi7tucy5qy
   rsi_pledge_value: 15000
@@ -4765,9 +4609,8 @@ model_crus_genesis:
   length: '85.0'
   loaners_count: 0
   mass: '3120000.0'
-  max_crew: 8
+  crew: 8
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Genesis
@@ -4789,9 +4632,8 @@ model_crus_genesis:
   rsi_id: 91
   rsi_length: '85.0'
   rsi_mass: '3120000.0'
-  rsi_max_crew: 8
+  rsi_crew: 8
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Genesis
   rsi_pledge_slug: srzgomjongzux
   rsi_pledge_value: 40000
@@ -4824,9 +4666,8 @@ model_crus_intrepid:
   length: '23.2'
   loaners_count: 0
   mass: '84898.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1225.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Intrepid
@@ -4847,9 +4688,8 @@ model_crus_intrepid:
   rsi_id: 280
   rsi_length: '23.2'
   rsi_mass: '84898.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1225.0'
-  rsi_min_crew: 1
   rsi_name: Intrepid
   rsi_pledge_slug: 9gb0f31ao0312
   rsi_pledge_value: 6500
@@ -4882,9 +4722,8 @@ model_crus_m2_hercules:
   length: '94.0'
   loaners_count: 0
   mass: '3139240.0'
-  max_crew: 3
+  crew: 3
   max_speed: '950.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: M2 Hercules
@@ -4905,9 +4744,8 @@ model_crus_m2_hercules:
   rsi_id: 163
   rsi_length: '94.0'
   rsi_mass: '3139240.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '950.0'
-  rsi_min_crew: 1
   rsi_name: M2 Hercules
   rsi_pledge_slug: efb79aihpg0bm
   rsi_pledge_value: 52000
@@ -4940,9 +4778,8 @@ model_crus_mercury:
   length: '56.0'
   loaners_count: 0
   mass: '1615175.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1200.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mercury
@@ -4963,9 +4800,8 @@ model_crus_mercury:
   rsi_id: 168
   rsi_length: '56.0'
   rsi_mass: '1615175.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 2
   rsi_name: Mercury
   rsi_pledge_slug: dwqsedkfpypxk
   rsi_pledge_value: 26000
@@ -4998,9 +4834,8 @@ model_drak_buccaneer:
   length: '15.0'
   loaners_count: 0
   mass: '40821.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1400.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Buccaneer
@@ -5021,9 +4856,8 @@ model_drak_buccaneer:
   rsi_id: 110
   rsi_length: '15.0'
   rsi_mass: '40821.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1400.0'
-  rsi_min_crew: 1
   rsi_name: Buccaneer
   rsi_pledge_slug: 8yehawamlfgeg
   rsi_pledge_value: 11000
@@ -5056,9 +4890,8 @@ model_drak_caterpillar:
   length: '111.5'
   loaners_count: 0
   mass: '1608205.0'
-  max_crew: 4
+  crew: 4
   max_speed: '890.0'
-  min_crew: 2
   model_paints_count: 2
   module_hardpoints_count: 0
   name: Caterpillar
@@ -5080,9 +4913,8 @@ model_drak_caterpillar:
   rsi_id: 24
   rsi_length: '111.5'
   rsi_mass: '1608205.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '890.0'
-  rsi_min_crew: 2
   rsi_name: Caterpillar
   rsi_pledge_slug: ajs3m6knkqi8w
   rsi_pledge_value: 33000
@@ -5115,9 +4947,8 @@ model_drak_corsair:
   length: '55.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 4
+  crew: 4
   max_speed: '1000.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Corsair
@@ -5138,9 +4969,8 @@ model_drak_corsair:
   rsi_id: 178
   rsi_length: '55.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '1000.0'
-  rsi_min_crew: 1
   rsi_name: Corsair
   rsi_pledge_slug: chr3kf00xi3y4
   rsi_pledge_value: 25000
@@ -5173,9 +5003,8 @@ model_drak_cutlass_black:
   length: '29.0'
   loaners_count: 0
   mass: '226700.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1115.0'
-  min_crew: 2
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Cutlass Black
@@ -5197,9 +5026,8 @@ model_drak_cutlass_black:
   rsi_id: 56
   rsi_length: '29.0'
   rsi_mass: '226700.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1115.0'
-  rsi_min_crew: 2
   rsi_name: Cutlass Black
   rsi_pledge_slug: 68aa6thqi6764
   rsi_pledge_value: 11000
@@ -5232,9 +5060,8 @@ model_drak_cutlass_blue:
   length: '36.0'
   loaners_count: 0
   mass: '226700.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1210.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutlass Blue
@@ -5255,9 +5082,8 @@ model_drak_cutlass_blue:
   rsi_id: 58
   rsi_length: '36.0'
   rsi_mass: '226700.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1210.0'
-  rsi_min_crew: 2
   rsi_name: Cutlass Blue
   rsi_pledge_slug: xvi8kgfo51km7
   rsi_pledge_value: 17500
@@ -5290,9 +5116,8 @@ model_drak_cutlass_red:
   length: '36.0'
   loaners_count: 0
   mass: '226700.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutlass Red
@@ -5313,9 +5138,8 @@ model_drak_cutlass_red:
   rsi_id: 57
   rsi_length: '36.0'
   rsi_mass: '226700.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Cutlass Red
   rsi_pledge_slug: pakgcafwmnk04
   rsi_pledge_value: 13500
@@ -5348,9 +5172,8 @@ model_drak_cutlass_steel:
   length: '36.0'
   loaners_count: 0
   mass: '226700.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutlass Steel
@@ -5373,9 +5196,8 @@ model_drak_cutlass_steel:
   rsi_id: 228
   rsi_length: '36.0'
   rsi_mass: '226700.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: Cutlass Steel
   rsi_pitch: '0.0'
   rsi_pledge_slug: nkeqph5m9nq1t
@@ -5412,9 +5234,8 @@ model_drak_cutter:
   length: '20.0'
   loaners_count: 0
   mass: '70000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1010.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutter
@@ -5435,9 +5256,8 @@ model_drak_cutter:
   rsi_id: 242
   rsi_length: '20.0'
   rsi_mass: '70000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1010.0'
-  rsi_min_crew: 1
   rsi_name: Cutter
   rsi_pledge_slug: mp59f13g60g9c
   rsi_pledge_value: 4500
@@ -5470,9 +5290,8 @@ model_drak_cutter_rambler:
   length: '20.0'
   loaners_count: 0
   mass: '70000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1010.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutter Rambler
@@ -5493,9 +5312,8 @@ model_drak_cutter_rambler:
   rsi_id: 266
   rsi_length: '20.0'
   rsi_mass: '70000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1010.0'
-  rsi_min_crew: 1
   rsi_name: Cutter Rambler
   rsi_pledge_slug: s7hzhne9l7dw4
   rsi_pledge_value: 5000
@@ -5528,9 +5346,8 @@ model_drak_cutter_scout:
   length: '20.0'
   loaners_count: 0
   mass: '70000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1010.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cutter Scout
@@ -5551,9 +5368,8 @@ model_drak_cutter_scout:
   rsi_id: 259
   rsi_length: '20.0'
   rsi_mass: '70000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1010.0'
-  rsi_min_crew: 1
   rsi_name: Cutter Scout
   rsi_pledge_slug: kvb3s9cumc1dm
   rsi_pledge_value: 5000
@@ -5588,9 +5404,8 @@ model_drak_dragonfly_black:
   length: '6.0'
   loaners_count: 0
   mass: '2169.0'
-  max_crew: 2
+  crew: 2
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Dragonfly Black
@@ -5614,9 +5429,8 @@ model_drak_dragonfly_black:
   rsi_id: 112
   rsi_length: '6.0'
   rsi_mass: '2169.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: Dragonfly Black
   rsi_pledge_slug: got2hts66e3ec
   rsi_pledge_value: 4000
@@ -5686,9 +5500,8 @@ model_drak_dragonfly_yellowjacket:
   length: '8.0'
   loaners_count: 0
   mass: '2169.0'
-  max_crew: 2
+  crew: 2
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Dragonfly Yellowjacket
@@ -5712,9 +5525,8 @@ model_drak_dragonfly_yellowjacket:
   rsi_id: 111
   rsi_length: '8.0'
   rsi_mass: '2169.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: Dragonfly Yellowjacket
   rsi_pledge_slug: admv1pidft7ic
   rsi_pledge_value: 4000
@@ -5747,9 +5559,8 @@ model_drak_herald:
   length: '23.5'
   loaners_count: 0
   mass: '66031.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1400.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Herald
@@ -5771,9 +5582,8 @@ model_drak_herald:
   rsi_id: 61
   rsi_length: '23.5'
   rsi_mass: '66031.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1400.0'
-  rsi_min_crew: 1
   rsi_name: Herald
   rsi_pledge_slug: vq0n1vmw27sks
   rsi_pledge_value: 8500
@@ -5806,8 +5616,7 @@ model_drak_ironclad:
   length: '120.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 1
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ironclad
@@ -5828,8 +5637,7 @@ model_drak_ironclad:
   rsi_id: 274
   rsi_length: '120.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 1
+  rsi_crew: 6
   rsi_name: Ironclad
   rsi_pledge_slug: x8v0o6kon78gd
   rsi_pledge_value: 45000
@@ -5860,8 +5668,7 @@ model_drak_ironclad_assault:
   length: '120.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 1
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ironclad Assault
@@ -5882,8 +5689,7 @@ model_drak_ironclad_assault:
   rsi_id: 275
   rsi_length: '120.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 1
+  rsi_crew: 6
   rsi_name: Ironclad Assault
   rsi_pledge_slug: czupmp4a4u4bj
   rsi_pledge_value: 53500
@@ -5914,7 +5720,7 @@ model_drak_kraken:
   length: '270.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 10
+  crew: 10
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Kraken
@@ -5935,7 +5741,7 @@ model_drak_kraken:
   rsi_id: 170
   rsi_length: '270.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 10
+  rsi_crew: 10
   rsi_name: Kraken
   rsi_pledge_slug: a32xdze717nmq
   rsi_pledge_value: 165000
@@ -5966,7 +5772,7 @@ model_drak_kraken_privateer:
   length: '270.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 10
+  crew: 10
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Kraken Privateer
@@ -5987,7 +5793,7 @@ model_drak_kraken_privateer:
   rsi_id: 175
   rsi_length: '270.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 10
+  rsi_crew: 10
   rsi_name: Kraken Privateer
   rsi_pledge_slug: ovvwc9bag4jsw
   rsi_pledge_value: 200000
@@ -6018,8 +5824,7 @@ model_drak_mule:
   length: '4.2'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mule
@@ -6040,8 +5845,7 @@ model_drak_mule:
   rsi_id: 231
   rsi_length: '4.2'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Mule
   rsi_pledge_slug: 1ze54inyrcexk
   rsi_pledge_value: 4500
@@ -6070,9 +5874,8 @@ model_drak_vulture:
   length: '33.0'
   loaners_count: 0
   mass: '1145910.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1050.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Vulture
@@ -6093,9 +5896,8 @@ model_drak_vulture:
   rsi_id: 165
   rsi_length: '33.0'
   rsi_mass: '1145910.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1050.0'
-  rsi_min_crew: 1
   rsi_name: Vulture
   rsi_pledge_slug: it7arzdyp0i8r
   rsi_pledge_value: 17500
@@ -6128,9 +5930,8 @@ model_espr_blade:
   length: '21.0'
   loaners_count: 0
   mass: '26056.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Blade
@@ -6151,9 +5952,8 @@ model_espr_blade:
   rsi_id: 108
   rsi_length: '21.0'
   rsi_mass: '26056.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Blade
   rsi_pledge_slug: wzaj5dyuttftt
   rsi_pledge_value: 27500
@@ -6190,9 +5990,8 @@ model_espr_glaive:
   length: '31.0'
   loaners_count: 0
   mass: '66013.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Glaive
@@ -6217,9 +6016,8 @@ model_espr_glaive:
   rsi_id: 93
   rsi_length: '31.0'
   rsi_mass: '66013.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Glaive
   rsi_pledge_slug: pk86s371hmxwb
   rsi_pledge_value: 35000
@@ -6252,9 +6050,8 @@ model_espr_prowler:
   length: '34.0'
   loaners_count: 0
   mass: '171700.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1100.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Prowler
@@ -6275,9 +6072,8 @@ model_espr_prowler:
   rsi_id: 117
   rsi_length: '34.0'
   rsi_mass: '171700.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 2
   rsi_name: Prowler
   rsi_pledge_slug: cangqaxs7vbss
   rsi_pledge_value: 44000
@@ -6313,9 +6109,8 @@ model_espr_talon:
   length: '26.0'
   loaners_count: 0
   mass: '28000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Talon
@@ -6339,9 +6134,8 @@ model_espr_talon:
   rsi_id: 211
   rsi_length: '26.0'
   rsi_mass: '28000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Talon
   rsi_pledge_slug: wu3226rdu5exc
   rsi_pledge_value: 11500
@@ -6377,9 +6171,8 @@ model_espr_talon_shrike:
   length: '26.0'
   loaners_count: 0
   mass: '28000.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Talon Shrike
@@ -6403,9 +6196,8 @@ model_espr_talon_shrike:
   rsi_id: 212
   rsi_length: '26.0'
   rsi_mass: '28000.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Talon Shrike
   rsi_pledge_slug: nlqwsn69rtmt0
   rsi_pledge_value: 11500
@@ -6438,7 +6230,7 @@ model_gama_railen:
   length: '53.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 4
+  crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Railen
@@ -6459,7 +6251,7 @@ model_gama_railen:
   rsi_id: 222
   rsi_length: '53.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_name: Railen
   rsi_pledge_slug: sr4396m2oth0r
   rsi_pledge_value: 22500
@@ -6488,9 +6280,8 @@ model_gama_syulen:
   length: '25.0'
   loaners_count: 0
   mass: '86877.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Syulen
@@ -6511,9 +6302,8 @@ model_gama_syulen:
   rsi_id: 265
   rsi_length: '25.0'
   rsi_mass: '86877.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Syulen
   rsi_pledge_slug: 2jqc5qwomj5yx
   rsi_pledge_value: 7000
@@ -6546,8 +6336,7 @@ model_grin_ptv:
   length: '32.2'
   loaners_count: 0
   mass: '1500.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: PTV
@@ -6568,8 +6357,7 @@ model_grin_ptv:
   rsi_id: 215
   rsi_length: '32.2'
   rsi_mass: '1500.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: PTV
   rsi_pledge_slug: 1dd8mtr1l691y
   rsi_pledge_value: 1500
@@ -6600,8 +6388,7 @@ model_grin_roc:
   length: '5.1'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: ROC
@@ -6622,8 +6409,7 @@ model_grin_roc:
   rsi_id: 214
   rsi_length: '5.1'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: ROC
   rsi_pledge_slug: vl6k58hry70ow
   rsi_pledge_value: 5500
@@ -6654,8 +6440,7 @@ model_grin_roc_ds:
   length: '6.6'
   loaners_count: 0
   mass: '2000.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: ROC-DS
@@ -6676,8 +6461,7 @@ model_grin_roc_ds:
   rsi_id: 219
   rsi_length: '6.6'
   rsi_mass: '2000.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: ROC-DS
   rsi_pledge_slug: kyqfaq8ax39ok
   rsi_pledge_value: 7500
@@ -6708,8 +6492,7 @@ model_grin_stv:
   length: '4.2'
   loaners_count: 0
   mass: '4304.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: STV
@@ -6730,8 +6513,7 @@ model_grin_stv:
   rsi_id: 240
   rsi_length: '4.2'
   rsi_mass: '4304.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: STV
   rsi_pledge_slug: 2suyv89ngchpn
   rsi_pledge_value: 4000
@@ -6762,9 +6544,8 @@ model_krig_p_52_merlin:
   length: '12.0'
   loaners_count: 0
   mass: '8909.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1450.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: P-52 Merlin
@@ -6785,9 +6566,8 @@ model_krig_p_52_merlin:
   rsi_id: 92
   rsi_length: '12.0'
   rsi_mass: '8909.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1450.0'
-  rsi_min_crew: 1
   rsi_name: P-52 Merlin
   rsi_pledge_slug: 8cm7nglvspyww
   rsi_pledge_value: 2500
@@ -6820,9 +6600,8 @@ model_krig_p_72_archimedes:
   length: '12.0'
   loaners_count: 0
   mass: '8909.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1485.0'
-  min_crew: 1
   model_paints_count: 1
   module_hardpoints_count: 0
   name: P-72 Archimedes
@@ -6843,9 +6622,8 @@ model_krig_p_72_archimedes:
   rsi_id: 104
   rsi_length: '12.0'
   rsi_mass: '8909.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1485.0'
-  rsi_min_crew: 1
   rsi_name: P-72 Archimedes
   rsi_pledge_slug: 1nu1ogk8a7mks
   rsi_pledge_value: 3500
@@ -6878,9 +6656,8 @@ model_misc_endeavor:
   length: '200.0'
   loaners_count: 0
   mass: '4055000.0'
-  max_crew: 5
+  crew: 5
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Endeavor
@@ -6901,9 +6678,8 @@ model_misc_endeavor:
   rsi_id: 97
   rsi_length: '200.0'
   rsi_mass: '4055000.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Endeavor
   rsi_pledge_slug: 5l3ynx7v6au7p
   rsi_pledge_value: 35000
@@ -6935,8 +6711,7 @@ model_misc_expanse:
   length: '35.5'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Expanse
@@ -6956,8 +6731,7 @@ model_misc_expanse:
   rsi_id: 230
   rsi_length: '35.5'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Expanse
   rsi_pledge_slug: mvkfptvt9o2sw
   rsi_pledge_value: 15000
@@ -6988,9 +6762,8 @@ model_misc_freelancer:
   length: '38.0'
   loaners_count: 0
   mass: '209230.0'
-  max_crew: 4
+  crew: 4
   max_speed: '1005.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Freelancer
@@ -7012,9 +6785,8 @@ model_misc_freelancer:
   rsi_id: 16
   rsi_length: '38.0'
   rsi_mass: '209230.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '1005.0'
-  rsi_min_crew: 2
   rsi_name: Freelancer
   rsi_pledge_slug: 5j21ev1hmb2b9
   rsi_pledge_value: 11000
@@ -7047,9 +6819,8 @@ model_misc_freelancer_dur:
   length: '38.0'
   loaners_count: 0
   mass: '213680.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Freelancer DUR
@@ -7070,9 +6841,8 @@ model_misc_freelancer_dur:
   rsi_id: 31
   rsi_length: '38.0'
   rsi_mass: '213680.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Freelancer DUR
   rsi_pledge_slug: ikecfli2753mg
   rsi_pledge_value: 13500
@@ -7105,9 +6875,8 @@ model_misc_freelancer_max:
   length: '38.0'
   loaners_count: 0
   mass: '336230.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Freelancer MAX
@@ -7128,9 +6897,8 @@ model_misc_freelancer_max:
   rsi_id: 32
   rsi_length: '38.0'
   rsi_mass: '336230.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Freelancer MAX
   rsi_pledge_slug: 4iwxyrjtihn8a
   rsi_pledge_value: 15000
@@ -7163,9 +6931,8 @@ model_misc_freelancer_mis:
   length: '38.0'
   loaners_count: 0
   mass: '213680.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Freelancer MIS
@@ -7186,9 +6953,8 @@ model_misc_freelancer_mis:
   rsi_id: 33
   rsi_length: '38.0'
   rsi_mass: '213680.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Freelancer MIS
   rsi_pledge_slug: rdhbqq5rixg0n
   rsi_pledge_value: 17500
@@ -7221,9 +6987,8 @@ model_misc_hull_a:
   length: '24.0'
   loaners_count: 0
   mass: '122650.0'
-  max_crew: 1
+  crew: 1
   max_speed: '985.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hull A
@@ -7244,9 +7009,8 @@ model_misc_hull_a:
   rsi_id: 84
   rsi_length: '24.0'
   rsi_mass: '122650.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '985.0'
-  rsi_min_crew: 1
   rsi_name: Hull A
   rsi_pledge_slug: ncqhrvnnawo4f
   rsi_pledge_value: 9000
@@ -7279,9 +7043,8 @@ model_misc_hull_b:
   length: '49.0'
   loaners_count: 0
   mass: '387500.0'
-  max_crew: 1
+  crew: 1
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hull B
@@ -7303,9 +7066,8 @@ model_misc_hull_b:
   rsi_id: 85
   rsi_length: '49.0'
   rsi_mass: '387500.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Hull B
   rsi_pledge_slug: 3jijkc0odvwjq
   rsi_pledge_value: 14000
@@ -7338,9 +7100,8 @@ model_misc_hull_c:
   length: '125.0'
   loaners_count: 0
   mass: '886930.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hull C
@@ -7361,9 +7122,8 @@ model_misc_hull_c:
   rsi_id: 41
   rsi_length: '125.0'
   rsi_mass: '886930.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 2
   rsi_name: Hull C
   rsi_pledge_slug: w6ixvo3y07p4b
   rsi_pledge_value: 50000
@@ -7396,9 +7156,8 @@ model_misc_hull_d:
   length: '209.0'
   loaners_count: 0
   mass: '1216000.0'
-  max_crew: 5
+  crew: 5
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hull D
@@ -7420,9 +7179,8 @@ model_misc_hull_d:
   rsi_id: 86
   rsi_length: '209.0'
   rsi_mass: '1216000.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Hull D
   rsi_pledge_slug: jamq4q5s9pfn0
   rsi_pledge_value: 55000
@@ -7455,9 +7213,8 @@ model_misc_hull_e:
   length: '372.0'
   loaners_count: 0
   mass: '1652000.0'
-  max_crew: 5
+  crew: 5
   max_speed: '0.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Hull E
@@ -7479,9 +7236,8 @@ model_misc_hull_e:
   rsi_id: 87
   rsi_length: '372.0'
   rsi_mass: '1652000.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '0.0'
-  rsi_min_crew: 4
   rsi_name: Hull E
   rsi_pledge_slug: c0nzu7iidc045
   rsi_pledge_value: 75000
@@ -7514,8 +7270,7 @@ model_misc_odyssey:
   length: '140.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 1
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Odyssey
@@ -7536,8 +7291,7 @@ model_misc_odyssey:
   rsi_id: 227
   rsi_length: '140.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 1
+  rsi_crew: 6
   rsi_name: Odyssey
   rsi_pledge_slug: 32xbiljxn0i20
   rsi_pledge_value: 70000
@@ -7568,9 +7322,8 @@ model_misc_prospector:
   length: '24.0'
   loaners_count: 0
   mass: '116477.0'
-  max_crew: 1
+  crew: 1
   max_speed: '994.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Prospector
@@ -7592,9 +7345,8 @@ model_misc_prospector:
   rsi_id: 109
   rsi_length: '24.0'
   rsi_mass: '116477.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '994.0'
-  rsi_min_crew: 1
   rsi_name: Prospector
   rsi_pledge_slug: 15j7qbefv5sp4
   rsi_pledge_value: 15500
@@ -7656,9 +7408,8 @@ model_misc_reliant_kore:
   length: '14.5'
   loaners_count: 0
   mass: '38566.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Reliant Kore
@@ -7680,9 +7431,8 @@ model_misc_reliant_kore:
   rsi_id: 90
   rsi_length: '14.5'
   rsi_mass: '38566.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Reliant Kore
   rsi_pledge_slug: r0gwwfq01f5ia
   rsi_pledge_value: 6500
@@ -7715,9 +7465,8 @@ model_misc_reliant_mako:
   length: '14.5'
   loaners_count: 0
   mass: '38566.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Reliant Mako
@@ -7738,9 +7487,8 @@ model_misc_reliant_mako:
   rsi_id: 105
   rsi_length: '14.5'
   rsi_mass: '38566.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Reliant Mako
   rsi_pledge_slug: scuq8h01o3511
   rsi_pledge_value: 9500
@@ -7773,9 +7521,8 @@ model_misc_reliant_sen:
   length: '14.5'
   loaners_count: 0
   mass: '38566.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Reliant Sen
@@ -7796,9 +7543,8 @@ model_misc_reliant_sen:
   rsi_id: 106
   rsi_length: '14.5'
   rsi_mass: '38566.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Reliant Sen
   rsi_pledge_slug: d1cynutgldmfv
   rsi_pledge_value: 8500
@@ -7831,9 +7577,8 @@ model_misc_reliant_tana:
   length: '14.5'
   loaners_count: 0
   mass: '38566.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Reliant Tana
@@ -7854,9 +7599,8 @@ model_misc_reliant_tana:
   rsi_id: 107
   rsi_length: '14.5'
   rsi_mass: '38566.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: Reliant Tana
   rsi_pledge_slug: i7pp06sc9002d
   rsi_pledge_value: 7500
@@ -7889,9 +7633,8 @@ model_misc_starfarer:
   length: '101.0'
   loaners_count: 0
   mass: '3510025.0'
-  max_crew: 8
+  crew: 8
   max_speed: '890.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Starfarer
@@ -7912,9 +7655,8 @@ model_misc_starfarer:
   rsi_id: 88
   rsi_length: '101.0'
   rsi_mass: '3510025.0'
-  rsi_max_crew: 8
+  rsi_crew: 8
   rsi_max_speed: '890.0'
-  rsi_min_crew: 4
   rsi_name: Starfarer
   rsi_pledge_slug: f27oy0hle39af
   rsi_pledge_value: 30000
@@ -7947,9 +7689,8 @@ model_misc_starfarer_gemini:
   length: '101.0'
   loaners_count: 0
   mass: '3517864.0'
-  max_crew: 6
+  crew: 6
   max_speed: '890.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Starfarer Gemini
@@ -7970,9 +7711,8 @@ model_misc_starfarer_gemini:
   rsi_id: 89
   rsi_length: '101.0'
   rsi_mass: '3517864.0'
-  rsi_max_crew: 6
+  rsi_crew: 6
   rsi_max_speed: '890.0'
-  rsi_min_crew: 4
   rsi_name: Starfarer Gemini
   rsi_pledge_slug: 2kczmphep4bqr
   rsi_pledge_value: 34000
@@ -8005,9 +7745,8 @@ model_misc_starlancer_max:
   length: '83.0'
   loaners_count: 0
   mass: '864355.0'
-  max_crew: 4
+  crew: 4
   max_speed: '950.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Starlancer MAX
@@ -8028,9 +7767,8 @@ model_misc_starlancer_max:
   rsi_id: 278
   rsi_length: '83.0'
   rsi_mass: '864355.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '950.0'
-  rsi_min_crew: 1
   rsi_name: Starlancer MAX
   rsi_pledge_slug: dcgwby659u3vg
   rsi_pledge_value: 25000
@@ -8061,8 +7799,7 @@ model_misc_starlancer_tac:
   length: '83.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 1
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Starlancer TAC
@@ -8083,8 +7820,7 @@ model_misc_starlancer_tac:
   rsi_id: 279
   rsi_length: '83.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 1
+  rsi_crew: 6
   rsi_name: Starlancer TAC
   rsi_pledge_slug: cjw30zn0k035m
   rsi_pledge_value: 37500
@@ -8113,9 +7849,8 @@ model_mrai_fury:
   length: '7.0'
   loaners_count: 0
   mass: '15339.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1250.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Fury
@@ -8136,9 +7871,8 @@ model_mrai_fury:
   rsi_id: 246
   rsi_length: '7.0'
   rsi_mass: '15339.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1250.0'
-  rsi_min_crew: 1
   rsi_name: Fury
   rsi_pledge_slug: iohqkgmnj8vi8
   rsi_pledge_value: 5500
@@ -8171,9 +7905,8 @@ model_mrai_fury_lx:
   length: '7.0'
   loaners_count: 0
   mass: '15339.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1250.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Fury LX
@@ -8194,9 +7927,8 @@ model_mrai_fury_lx:
   rsi_id: 250
   rsi_length: '7.0'
   rsi_mass: '15339.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1250.0'
-  rsi_min_crew: 1
   rsi_name: Fury LX
   rsi_pledge_slug: yw5uaguxd0a8o
   rsi_pledge_value: 5500
@@ -8229,9 +7961,8 @@ model_mrai_fury_mx:
   length: '7.0'
   loaners_count: 0
   mass: '15339.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1250.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Fury MX
@@ -8252,9 +7983,8 @@ model_mrai_fury_mx:
   rsi_id: 248
   rsi_length: '7.0'
   rsi_mass: '15339.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1250.0'
-  rsi_min_crew: 1
   rsi_name: Fury MX
   rsi_pledge_slug: hl0oayrt1avnr
   rsi_pledge_value: 5500
@@ -8287,9 +8017,8 @@ model_mrai_guardian:
   length: '25.0'
   loaners_count: 0
   mass: '117500.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1125.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Guardian
@@ -8310,9 +8039,8 @@ model_mrai_guardian:
   rsi_id: 286
   rsi_length: '25.0'
   rsi_mass: '117500.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1125.0'
-  rsi_min_crew: 1
   rsi_name: Guardian
   rsi_pledge_slug: slu0279cjbat1
   rsi_pledge_value: 25000
@@ -8345,9 +8073,8 @@ model_mrai_guardian_qi:
   length: '25.0'
   loaners_count: 0
   mass: '117500.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1100.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Guardian QI
@@ -8368,9 +8095,8 @@ model_mrai_guardian_qi:
   rsi_id: 287
   rsi_length: '25.0'
   rsi_mass: '117500.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1100.0'
-  rsi_min_crew: 1
   rsi_name: Guardian QI
   rsi_pledge_slug: s3kpzwn1at7jy
   rsi_pledge_value: 26000
@@ -8403,8 +8129,7 @@ model_mrai_pulse:
   length: '3.1'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Pulse
@@ -8425,8 +8150,7 @@ model_mrai_pulse:
   rsi_id: 271
   rsi_length: '3.1'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Pulse
   rsi_pledge_slug: ykajx7v892w6z
   rsi_pledge_value: 3000
@@ -8457,8 +8181,7 @@ model_mrai_pulse_lx:
   length: '3.1'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Pulse LX
@@ -8479,8 +8202,7 @@ model_mrai_pulse_lx:
   rsi_id: 272
   rsi_length: '3.1'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Pulse LX
   rsi_pledge_slug: 1cwznbcl59c8s
   rsi_pledge_value: 3000
@@ -8511,9 +8233,8 @@ model_mrai_razor:
   length: '11.5'
   loaners_count: 0
   mass: '10925.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1458.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Razor
@@ -8534,9 +8255,8 @@ model_mrai_razor:
   rsi_id: 126
   rsi_length: '11.5'
   rsi_mass: '10925.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1458.0'
-  rsi_min_crew: 1
   rsi_name: Razor
   rsi_pledge_slug: rit2mxyjswhqs
   rsi_pledge_value: 14500
@@ -8569,9 +8289,8 @@ model_mrai_razor_ex:
   length: '11.5'
   loaners_count: 0
   mass: '10925.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1450.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Razor EX
@@ -8592,9 +8311,8 @@ model_mrai_razor_ex:
   rsi_id: 157
   rsi_length: '11.5'
   rsi_mass: '10925.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1450.0'
-  rsi_min_crew: 1
   rsi_name: Razor EX
   rsi_pledge_slug: ddzz8a5a80kyg
   rsi_pledge_value: 15500
@@ -8627,9 +8345,8 @@ model_mrai_razor_lx:
   length: '11.5'
   loaners_count: 0
   mass: '10925.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1400.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Razor LX
@@ -8650,9 +8367,8 @@ model_mrai_razor_lx:
   rsi_id: 158
   rsi_length: '11.5'
   rsi_mass: '10925.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1400.0'
-  rsi_min_crew: 1
   rsi_name: Razor LX
   rsi_pledge_slug: 6s15txuj1a2h5
   rsi_pledge_value: 15000
@@ -8685,9 +8401,8 @@ model_orig_100i:
   length: '19.3'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 100i
@@ -8708,9 +8423,8 @@ model_orig_100i:
   rsi_id: 159
   rsi_length: '19.3'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: 100i
   rsi_pledge_slug: jhr09qzpxcd6k
   rsi_pledge_value: 5000
@@ -8743,9 +8457,8 @@ model_orig_125a:
   length: '19.3'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 125a
@@ -8766,9 +8479,8 @@ model_orig_125a:
   rsi_id: 160
   rsi_length: '19.3'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: 125a
   rsi_pledge_slug: ps7wnmekb36cl
   rsi_pledge_value: 6000
@@ -8801,9 +8513,8 @@ model_orig_135c:
   length: '19.3'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1425.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 135c
@@ -8824,9 +8535,8 @@ model_orig_135c:
   rsi_id: 161
   rsi_length: '19.3'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1425.0'
-  rsi_min_crew: 1
   rsi_name: 135c
   rsi_pledge_slug: 3a3k44fw9ufz4
   rsi_pledge_value: 6500
@@ -8859,9 +8569,8 @@ model_orig_300i:
   length: '27.0'
   loaners_count: 0
   mass: '66320.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1190.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 300i
@@ -8883,9 +8592,8 @@ model_orig_300i:
   rsi_id: 7
   rsi_length: '27.0'
   rsi_mass: '66320.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1190.0'
-  rsi_min_crew: 1
   rsi_name: 300i
   rsi_pledge_slug: euwwr0lwn6in0
   rsi_pledge_value: 6000
@@ -8918,9 +8626,8 @@ model_orig_315p:
   length: '27.0'
   loaners_count: 0
   mass: '69220.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1225.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 315p
@@ -8941,9 +8648,8 @@ model_orig_315p:
   rsi_id: 8
   rsi_length: '27.0'
   rsi_mass: '69220.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1225.0'
-  rsi_min_crew: 1
   rsi_name: 315p
   rsi_pledge_slug: fzts1fg7ykeo5
   rsi_pledge_value: 6500
@@ -8976,9 +8682,8 @@ model_orig_325a:
   length: '27.0'
   loaners_count: 0
   mass: '72500.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1315.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 325a
@@ -8999,9 +8704,8 @@ model_orig_325a:
   rsi_id: 9
   rsi_length: '27.0'
   rsi_mass: '72500.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1315.0'
-  rsi_min_crew: 1
   rsi_name: 325a
   rsi_pledge_slug: ogphgbaaarlbp
   rsi_pledge_value: 7000
@@ -9036,9 +8740,8 @@ model_orig_350r:
   length: '25.0'
   loaners_count: 0
   mass: '58530.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1345.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 350r
@@ -9061,9 +8764,8 @@ model_orig_350r:
   rsi_id: 10
   rsi_length: '25.0'
   rsi_mass: '58530.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1345.0'
-  rsi_min_crew: 1
   rsi_name: 350r
   rsi_pledge_slug: id69wp9ug7tts
   rsi_pledge_value: 12500
@@ -9096,9 +8798,8 @@ model_orig_400i:
   length: '60.0'
   loaners_count: 0
   mass: '430057.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1000.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 400i
@@ -9119,9 +8820,8 @@ model_orig_400i:
   rsi_id: 223
   rsi_length: '60.0'
   rsi_mass: '430057.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1000.0'
-  rsi_min_crew: 1
   rsi_name: 400i
   rsi_pledge_slug: bt22rny599s22
   rsi_pledge_value: 25000
@@ -9189,9 +8889,8 @@ model_orig_600i_explorer:
   length: '91.5'
   loaners_count: 0
   mass: '1576792.0'
-  max_crew: 5
+  crew: 5
   max_speed: '975.0'
-  min_crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 600i Explorer
@@ -9212,9 +8911,8 @@ model_orig_600i_explorer:
   rsi_id: 141
   rsi_length: '91.5'
   rsi_mass: '1576792.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '975.0'
-  rsi_min_crew: 2
   rsi_name: 600i Explorer
   rsi_pledge_slug: 4rzlgxtznqilp
   rsi_pledge_value: 47500
@@ -9247,9 +8945,8 @@ model_orig_600i_touring:
   length: '91.5'
   loaners_count: 0
   mass: '1576792.0'
-  max_crew: 5
+  crew: 5
   max_speed: '975.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 600i Touring
@@ -9270,9 +8967,8 @@ model_orig_600i_touring:
   rsi_id: 140
   rsi_length: '91.5'
   rsi_mass: '1576792.0'
-  rsi_max_crew: 5
+  rsi_crew: 5
   rsi_max_speed: '975.0'
-  rsi_min_crew: 3
   rsi_name: 600i Touring
   rsi_pledge_slug: 0ih9xvaedu7xx
   rsi_pledge_value: 43500
@@ -9307,9 +9003,8 @@ model_orig_85x:
   length: '13.0'
   loaners_count: 0
   mass: '19097.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1250.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 85X
@@ -9332,9 +9027,8 @@ model_orig_85x:
   rsi_id: 123
   rsi_length: '13.0'
   rsi_mass: '19097.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1250.0'
-  rsi_min_crew: 1
   rsi_name: 85X
   rsi_pledge_slug: nfxmuj6akp0ds
   rsi_pledge_value: 5000
@@ -9367,9 +9061,8 @@ model_orig_890_jump:
   length: '205.0'
   loaners_count: 0
   mass: '4590000.0'
-  max_crew: 8
+  crew: 8
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: 890 Jump
@@ -9390,9 +9083,8 @@ model_orig_890_jump:
   rsi_id: 55
   rsi_length: '205.0'
   rsi_mass: '4590000.0'
-  rsi_max_crew: 8
+  rsi_crew: 8
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: 890 Jump
   rsi_pledge_slug: b3pxqmapg37k4
   rsi_pledge_value: 95000
@@ -9575,9 +9267,8 @@ model_orig_m50:
   length: '11.0'
   loaners_count: 0
   mass: '10580.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1345.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: M50
@@ -9598,9 +9289,8 @@ model_orig_m50:
   rsi_id: 22
   rsi_length: '11.0'
   rsi_mass: '10580.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1345.0'
-  rsi_min_crew: 1
   rsi_name: M50
   rsi_pledge_slug: nd60bd48b3k12
   rsi_pledge_value: 10000
@@ -9633,9 +9323,8 @@ model_orig_x1:
   length: '5.5'
   loaners_count: 0
   mass: '1707.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: X1
@@ -9656,9 +9345,8 @@ model_orig_x1:
   rsi_id: 143
   rsi_length: '5.5'
   rsi_mass: '1707.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: X1
   rsi_pledge_slug: y5gb95fzkdfoc
   rsi_pledge_value: 4500
@@ -9691,9 +9379,8 @@ model_orig_x1_force:
   length: '5.5'
   loaners_count: 0
   mass: '1767.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: X1 Force
@@ -9714,9 +9401,8 @@ model_orig_x1_force:
   rsi_id: 147
   rsi_length: '5.5'
   rsi_mass: '1767.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: X1 Force
   rsi_pledge_slug: vjn9ksc4v6awc
   rsi_pledge_value: 5500
@@ -9749,9 +9435,8 @@ model_orig_x1_velocity:
   length: '5.5'
   loaners_count: 0
   mass: '1595.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: X1 Velocity
@@ -9772,9 +9457,8 @@ model_orig_x1_velocity:
   rsi_id: 145
   rsi_length: '5.5'
   rsi_mass: '1595.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: X1 Velocity
   rsi_pledge_slug: 33rip7jqpvj7q
   rsi_pledge_value: 5000
@@ -9807,7 +9491,7 @@ model_rsi_apollo_medivac:
   length: '43.0'
   loaners_count: 0
   mass: '376500.0'
-  max_crew: 2
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Apollo Medivac
@@ -9828,7 +9512,7 @@ model_rsi_apollo_medivac:
   rsi_id: 167
   rsi_length: '43.0'
   rsi_mass: '376500.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_name: Apollo Medivac
   rsi_pledge_slug: zjewpz08skadz
   rsi_pledge_value: 29000
@@ -9861,7 +9545,7 @@ model_rsi_apollo_triage:
   length: '43.0'
   loaners_count: 0
   mass: '376500.0'
-  max_crew: 2
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Apollo Triage
@@ -9882,7 +9566,7 @@ model_rsi_apollo_triage:
   rsi_id: 166
   rsi_length: '43.0'
   rsi_mass: '376500.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_name: Apollo Triage
   rsi_pledge_slug: 0nteq6g7cqyo9
   rsi_pledge_value: 26000
@@ -9915,8 +9599,7 @@ model_rsi_arrastra:
   length: '124.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 5
-  min_crew: 2
+  crew: 5
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Arrastra
@@ -9937,8 +9620,7 @@ model_rsi_arrastra:
   rsi_id: 260
   rsi_length: '124.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 5
-  rsi_min_crew: 2
+  rsi_crew: 5
   rsi_name: Arrastra
   rsi_pledge_slug: srmfzey00f0op
   rsi_pledge_value: 57500
@@ -9969,9 +9651,8 @@ model_rsi_aurora_cl:
   length: '18.0'
   loaners_count: 0
   mass: '25017.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1095.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Aurora CL
@@ -9992,9 +9673,8 @@ model_rsi_aurora_cl:
   rsi_id: 5
   rsi_length: '18.0'
   rsi_mass: '25017.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1095.0'
-  rsi_min_crew: 1
   rsi_name: Aurora CL
   rsi_pledge_slug: q16e8d9eob0gs
   rsi_pledge_value: 4500
@@ -10026,9 +9706,8 @@ model_rsi_aurora_es:
   length: '18.0'
   loaners_count: 0
   mass: '25017.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1140.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Aurora ES
@@ -10048,9 +9727,8 @@ model_rsi_aurora_es:
   rsi_id: 1
   rsi_length: '18.0'
   rsi_mass: '25017.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1140.0'
-  rsi_min_crew: 1
   rsi_name: Aurora ES
   rsi_pledge_slug: olnxn0e9bht7p
   rsi_pledge_value: 2000
@@ -10082,9 +9760,8 @@ model_rsi_aurora_ln:
   length: '18.0'
   loaners_count: 0
   mass: '25338.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1210.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Aurora LN
@@ -10104,9 +9781,8 @@ model_rsi_aurora_ln:
   rsi_id: 6
   rsi_length: '18.0'
   rsi_mass: '25338.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1210.0'
-  rsi_min_crew: 1
   rsi_name: Aurora LN
   rsi_pledge_slug: x54cglm033ygx
   rsi_pledge_value: 4000
@@ -10138,9 +9814,8 @@ model_rsi_aurora_lx:
   length: '18.0'
   loaners_count: 0
   mass: '25017.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1200.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Aurora LX
@@ -10160,9 +9835,8 @@ model_rsi_aurora_lx:
   rsi_id: 3
   rsi_length: '18.0'
   rsi_mass: '25017.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1200.0'
-  rsi_min_crew: 1
   rsi_name: Aurora LX
   rsi_pledge_slug: b98kpo5w5iehf
   rsi_pledge_value: 3500
@@ -10194,9 +9868,8 @@ model_rsi_aurora_mr:
   length: '18.0'
   loaners_count: 0
   mass: '25017.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1210.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Aurora MR
@@ -10216,9 +9889,8 @@ model_rsi_aurora_mr:
   rsi_id: 4
   rsi_length: '18.0'
   rsi_mass: '25017.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1210.0'
-  rsi_min_crew: 1
   rsi_name: Aurora MR
   rsi_pledge_slug: hh0dbpfzvzfe6
   rsi_pledge_value: 3000
@@ -10251,9 +9923,8 @@ model_rsi_constellation_andromeda:
   length: '61.0'
   loaners_count: 0
   mass: '419850.0'
-  max_crew: 4
+  crew: 4
   max_speed: '910.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Constellation Andromeda
@@ -10275,9 +9946,8 @@ model_rsi_constellation_andromeda:
   rsi_id: 45
   rsi_length: '61.0'
   rsi_mass: '419850.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '910.0'
-  rsi_min_crew: 3
   rsi_name: Constellation Andromeda
   rsi_pledge_slug: cyqqdak4v16gq
   rsi_pledge_value: 24000
@@ -10310,9 +9980,8 @@ model_rsi_constellation_aquila:
   length: '61.0'
   loaners_count: 0
   mass: '439108.0'
-  max_crew: 4
+  crew: 4
   max_speed: '985.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Constellation Aquila
@@ -10333,9 +10002,8 @@ model_rsi_constellation_aquila:
   rsi_id: 47
   rsi_length: '61.0'
   rsi_mass: '439108.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '985.0'
-  rsi_min_crew: 3
   rsi_name: Constellation Aquila
   rsi_pledge_slug: 1zrhcf8unucbh
   rsi_pledge_value: 31500
@@ -10368,9 +10036,8 @@ model_rsi_constellation_phoenix:
   length: '61.0'
   loaners_count: 0
   mass: '417510.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 1
   module_hardpoints_count: 0
   name: Constellation Phoenix
@@ -10391,9 +10058,8 @@ model_rsi_constellation_phoenix:
   rsi_id: 49
   rsi_length: '61.0'
   rsi_mass: '417510.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Constellation Phoenix
   rsi_pledge_slug: mbwojtsz3ej0w
   rsi_pledge_value: 35000
@@ -10426,9 +10092,8 @@ model_rsi_constellation_taurus:
   length: '61.0'
   loaners_count: 0
   mass: '416009.0'
-  max_crew: 4
+  crew: 4
   max_speed: '0.0'
-  min_crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Constellation Taurus
@@ -10449,9 +10114,8 @@ model_rsi_constellation_taurus:
   rsi_id: 46
   rsi_length: '61.0'
   rsi_mass: '416009.0'
-  rsi_max_crew: 4
+  rsi_crew: 4
   rsi_max_speed: '0.0'
-  rsi_min_crew: 3
   rsi_name: Constellation Taurus
   rsi_pledge_slug: atm0b1ju8t4bi
   rsi_pledge_value: 20000
@@ -10484,8 +10148,7 @@ model_rsi_galaxy:
   length: '110.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 1
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Galaxy
@@ -10506,8 +10169,7 @@ model_rsi_galaxy:
   rsi_id: 244
   rsi_length: '110.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 1
+  rsi_crew: 6
   rsi_name: Galaxy
   rsi_pledge_slug: mapj57j9f3gmc
   rsi_pledge_value: 38000
@@ -10537,8 +10199,7 @@ model_rsi_lynx:
   length: '7.7'
   loaners_count: 0
   mass: '10372.0'
-  max_crew: 2
-  min_crew: 1
+  crew: 2
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Lynx
@@ -10558,8 +10219,7 @@ model_rsi_lynx:
   rsi_id: 245
   rsi_length: '7.7'
   rsi_mass: '10372.0'
-  rsi_max_crew: 2
-  rsi_min_crew: 1
+  rsi_crew: 2
   rsi_name: Lynx
   rsi_pledge_slug: m090fy57flneg
   rsi_pledge_value: 6000
@@ -10592,9 +10252,8 @@ model_rsi_mantis:
   length: '30.0'
   loaners_count: 0
   mass: '225621.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1393.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Mantis
@@ -10615,9 +10274,8 @@ model_rsi_mantis:
   rsi_id: 189
   rsi_length: '30.0'
   rsi_mass: '225621.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1393.0'
-  rsi_min_crew: 1
   rsi_name: Mantis
   rsi_pledge_slug: a92wciia61u13
   rsi_pledge_value: 15000
@@ -10654,9 +10312,8 @@ model_rsi_orion:
   length: '170.0'
   loaners_count: 0
   mass: '26496000.0'
-  max_crew: 7
+  crew: 7
   max_speed: '0.0'
-  min_crew: 4
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Orion
@@ -10682,9 +10339,8 @@ model_rsi_orion:
   rsi_id: 71
   rsi_length: '170.0'
   rsi_mass: '26496000.0'
-  rsi_max_crew: 7
+  rsi_crew: 7
   rsi_max_speed: '0.0'
-  rsi_min_crew: 4
   rsi_name: Orion
   rsi_pledge_slug: s1bwe58g5amw1
   rsi_pledge_value: 65000
@@ -10717,8 +10373,7 @@ model_rsi_perseus:
   length: '100.0'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 6
-  min_crew: 6
+  crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Perseus
@@ -10739,8 +10394,7 @@ model_rsi_perseus:
   rsi_id: 217
   rsi_length: '100.0'
   rsi_mass: '0.0'
-  rsi_max_crew: 6
-  rsi_min_crew: 6
+  rsi_crew: 6
   rsi_name: Perseus
   rsi_pledge_slug: y96lx5vp4xq46
   rsi_pledge_value: 80000
@@ -10771,9 +10425,8 @@ model_rsi_polaris:
   length: '166.0'
   loaners_count: 0
   mass: '17155000.0'
-  max_crew: 12
+  crew: 12
   max_speed: '940.0'
-  min_crew: 6
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Polaris
@@ -10794,9 +10447,8 @@ model_rsi_polaris:
   rsi_id: 116
   rsi_length: '166.0'
   rsi_mass: '17155000.0'
-  rsi_max_crew: 12
+  rsi_crew: 12
   rsi_max_speed: '940.0'
-  rsi_min_crew: 6
   rsi_name: Polaris
   rsi_pledge_slug: zumu3m5q3ifoh
   rsi_pledge_value: 97500
@@ -10829,9 +10481,8 @@ model_rsi_scorpius:
   length: '24.0'
   loaners_count: 0
   mass: '97561.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1375.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Scorpius
@@ -10852,9 +10503,8 @@ model_rsi_scorpius:
   rsi_id: 221
   rsi_length: '24.0'
   rsi_mass: '97561.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1375.0'
-  rsi_min_crew: 1
   rsi_name: Scorpius
   rsi_pledge_slug: p9hiv02uzraqm
   rsi_pledge_value: 24000
@@ -10887,9 +10537,8 @@ model_rsi_scorpius_antares:
   length: '24.0'
   loaners_count: 0
   mass: '97561.0'
-  max_crew: 2
+  crew: 2
   max_speed: '1375.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Scorpius Antares
@@ -10910,9 +10559,8 @@ model_rsi_scorpius_antares:
   rsi_id: 243
   rsi_length: '24.0'
   rsi_mass: '97561.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '1375.0'
-  rsi_min_crew: 1
   rsi_name: Scorpius Antares
   rsi_pledge_slug: 0p6zczwm631h5
   rsi_pledge_value: 23000
@@ -10945,9 +10593,8 @@ model_rsi_ursa:
   length: '7.6'
   loaners_count: 0
   mass: '11732.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ursa
@@ -10969,9 +10616,8 @@ model_rsi_ursa:
   rsi_id: 139
   rsi_length: '7.6'
   rsi_mass: '11732.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Ursa
   rsi_pledge_slug: vll9hv6lbar6y
   rsi_pledge_value: 5000
@@ -11004,9 +10650,8 @@ model_rsi_ursa_fortuna:
   length: '7.6'
   loaners_count: 0
   mass: '11732.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ursa Fortuna
@@ -11027,9 +10672,8 @@ model_rsi_ursa_fortuna:
   rsi_id: 179
   rsi_length: '7.6'
   rsi_mass: '11732.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Ursa Fortuna
   rsi_pledge_slug: soa3xtkb2ohmt
   rsi_pledge_value: 5500
@@ -11062,8 +10706,7 @@ model_rsi_ursa_medivac:
   length: '8.0'
   loaners_count: 0
   mass: '11732.0'
-  max_crew: 3
-  min_crew: 1
+  crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ursa Medivac
@@ -11084,8 +10727,7 @@ model_rsi_ursa_medivac:
   rsi_id: 273
   rsi_length: '8.0'
   rsi_mass: '11732.0'
-  rsi_max_crew: 3
-  rsi_min_crew: 1
+  rsi_crew: 3
   rsi_name: Ursa Medivac
   rsi_pledge_slug: ycltcmy1e9zfw
   rsi_pledge_value: 6000
@@ -11118,9 +10760,8 @@ model_rsi_zeus_mk_ii_cl:
   length: '45.7'
   loaners_count: 0
   mass: '316802.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1050.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Zeus Mk II CL
@@ -11141,9 +10782,8 @@ model_rsi_zeus_mk_ii_cl:
   rsi_id: 257
   rsi_length: '45.7'
   rsi_mass: '316802.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1050.0'
-  rsi_min_crew: 1
   rsi_name: Zeus Mk II CL
   rsi_pledge_slug: 0c1ro69zd50ku
   rsi_pledge_value: 17500
@@ -11176,9 +10816,8 @@ model_rsi_zeus_mk_ii_es:
   length: '45.7'
   loaners_count: 0
   mass: '315359.0'
-  max_crew: 3
+  crew: 3
   max_speed: '1050.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Zeus Mk II ES
@@ -11199,9 +10838,8 @@ model_rsi_zeus_mk_ii_es:
   rsi_id: 251
   rsi_length: '45.7'
   rsi_mass: '315359.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '1050.0'
-  rsi_min_crew: 1
   rsi_name: Zeus Mk II ES
   rsi_pledge_slug: f117974drhf83
   rsi_pledge_value: 17500
@@ -11234,8 +10872,7 @@ model_rsi_zeus_mk_ii_mr:
   length: '45.7'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 3
-  min_crew: 1
+  crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Zeus Mk II MR
@@ -11256,8 +10893,7 @@ model_rsi_zeus_mk_ii_mr:
   rsi_id: 256
   rsi_length: '45.7'
   rsi_mass: '0.0'
-  rsi_max_crew: 3
-  rsi_min_crew: 1
+  rsi_crew: 3
   rsi_name: Zeus Mk II MR
   rsi_pledge_slug: aje6ug8qfxw50
   rsi_pledge_value: 19000
@@ -11288,9 +10924,8 @@ model_tmbl_cyclone:
   length: '6.0'
   loaners_count: 0
   mass: '3022.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone
@@ -11311,9 +10946,8 @@ model_tmbl_cyclone:
   rsi_id: 134
   rsi_length: '6.0'
   rsi_mass: '3022.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Cyclone
   rsi_pledge_slug: kmte9k7mvctnq
   rsi_pledge_value: 5500
@@ -11346,9 +10980,8 @@ model_tmbl_cyclone_aa:
   length: '6.0'
   loaners_count: 0
   mass: '3300.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone AA
@@ -11369,9 +11002,8 @@ model_tmbl_cyclone_aa:
   rsi_id: 138
   rsi_length: '6.0'
   rsi_mass: '3300.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Cyclone AA
   rsi_pledge_slug: mjbb0uzvjr2ov
   rsi_pledge_value: 8000
@@ -11403,8 +11035,7 @@ model_tmbl_cyclone_mt:
   length: '6.0'
   loaners_count: 0
   mass: '3022.0'
-  max_crew: 3
-  min_crew: 1
+  crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone MT
@@ -11424,8 +11055,7 @@ model_tmbl_cyclone_mt:
   rsi_id: 218
   rsi_length: '6.0'
   rsi_mass: '3022.0'
-  rsi_max_crew: 3
-  rsi_min_crew: 1
+  rsi_crew: 3
   rsi_name: Cyclone MT
   rsi_pledge_slug: 8289odlbphre9
   rsi_pledge_value: 7500
@@ -11456,9 +11086,8 @@ model_tmbl_cyclone_rc:
   length: '6.0'
   loaners_count: 0
   mass: '3022.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone RC
@@ -11479,9 +11108,8 @@ model_tmbl_cyclone_rc:
   rsi_id: 136
   rsi_length: '6.0'
   rsi_mass: '3022.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Cyclone RC
   rsi_pledge_slug: dzdv6kps4t3to
   rsi_pledge_value: 6500
@@ -11514,9 +11142,8 @@ model_tmbl_cyclone_rn:
   length: '6.0'
   loaners_count: 0
   mass: '3022.0'
-  max_crew: 2
+  crew: 2
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone RN
@@ -11537,9 +11164,8 @@ model_tmbl_cyclone_rn:
   rsi_id: 137
   rsi_length: '6.0'
   rsi_mass: '3022.0'
-  rsi_max_crew: 2
+  rsi_crew: 2
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Cyclone RN
   rsi_pledge_slug: mbnlnaqp3ejjl
   rsi_pledge_value: 6500
@@ -11572,9 +11198,8 @@ model_tmbl_cyclone_tr:
   length: '6.0'
   loaners_count: 0
   mass: '3022.0'
-  max_crew: 3
+  crew: 3
   max_speed: '0.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Cyclone TR
@@ -11595,9 +11220,8 @@ model_tmbl_cyclone_tr:
   rsi_id: 135
   rsi_length: '6.0'
   rsi_mass: '3022.0'
-  rsi_max_crew: 3
+  rsi_crew: 3
   rsi_max_speed: '0.0'
-  rsi_min_crew: 1
   rsi_name: Cyclone TR
   rsi_pledge_slug: zyyy3m2sxywkc
   rsi_pledge_value: 6500
@@ -11630,8 +11254,7 @@ model_tmbl_nova:
   length: '16.0'
   loaners_count: 0
   mass: '73190.0'
-  max_crew: 3
-  min_crew: 1
+  crew: 3
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Nova
@@ -11652,8 +11275,7 @@ model_tmbl_nova:
   rsi_id: 154
   rsi_length: '16.0'
   rsi_mass: '73190.0'
-  rsi_max_crew: 3
-  rsi_min_crew: 1
+  rsi_crew: 3
   rsi_name: Nova
   rsi_pledge_slug: ph5ql7orx5n9r
   rsi_pledge_value: 12000
@@ -11684,8 +11306,7 @@ model_tmbl_ranger_cv:
   length: '3.7'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ranger CV
@@ -11706,8 +11327,7 @@ model_tmbl_ranger_cv:
   rsi_id: 182
   rsi_length: '3.7'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Ranger CV
   rsi_pledge_slug: fqencq8dyyht7
   rsi_pledge_value: 3500
@@ -11738,8 +11358,7 @@ model_tmbl_ranger_rc:
   length: '3.7'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ranger RC
@@ -11760,8 +11379,7 @@ model_tmbl_ranger_rc:
   rsi_id: 180
   rsi_length: '3.7'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Ranger RC
   rsi_pledge_slug: lf9rcw1hr0aci
   rsi_pledge_value: 3500
@@ -11792,8 +11410,7 @@ model_tmbl_ranger_tr:
   length: '3.7'
   loaners_count: 0
   mass: '0.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Ranger TR
@@ -11814,8 +11431,7 @@ model_tmbl_ranger_tr:
   rsi_id: 181
   rsi_length: '3.7'
   rsi_mass: '0.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Ranger TR
   rsi_pledge_slug: ii9n0t8tg9sh8
   rsi_pledge_value: 4000
@@ -11846,8 +11462,7 @@ model_tmbl_storm:
   length: '10.5'
   loaners_count: 0
   mass: '115618.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Storm
@@ -11868,8 +11483,7 @@ model_tmbl_storm:
   rsi_id: 249
   rsi_length: '10.5'
   rsi_mass: '115618.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Storm
   rsi_pledge_slug: 2jblzkvwkkq7d
   rsi_pledge_value: 9000
@@ -11900,8 +11514,7 @@ model_tmbl_storm_aa:
   length: '10.5'
   loaners_count: 0
   mass: '115618.0'
-  max_crew: 1
-  min_crew: 1
+  crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Storm AA
@@ -11922,8 +11535,7 @@ model_tmbl_storm_aa:
   rsi_id: 264
   rsi_length: '10.5'
   rsi_mass: '115618.0'
-  rsi_max_crew: 1
-  rsi_min_crew: 1
+  rsi_crew: 1
   rsi_name: Storm AA
   rsi_pledge_slug: i57wzcie2eilc
   rsi_pledge_value: 10000
@@ -11954,9 +11566,8 @@ model_vncl_scythe:
   length: '31.0'
   loaners_count: 0
   mass: '59573.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1240.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Scythe
@@ -11977,9 +11588,8 @@ model_vncl_scythe:
   rsi_id: 26
   rsi_length: '31.0'
   rsi_mass: '59573.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1240.0'
-  rsi_min_crew: 1
   rsi_name: Scythe
   rsi_pledge_slug: zj6frva5viyih
   rsi_pledge_value: 30000
@@ -12012,9 +11622,8 @@ model_xnaa_khartu_al:
   length: '30.5'
   loaners_count: 0
   mass: '67115.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1325.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Khartu-Al
@@ -12035,9 +11644,8 @@ model_xnaa_khartu_al:
   rsi_id: 35
   rsi_length: '30.5'
   rsi_mass: '67115.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1325.0'
-  rsi_min_crew: 1
   rsi_name: Khartu-Al
   rsi_pledge_slug: z6ukrkg34nnml
   rsi_pledge_value: 17500
@@ -12072,9 +11680,8 @@ model_xnaa_nox:
   length: '5.5'
   loaners_count: 0
   mass: '1394.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Nox
@@ -12098,9 +11705,8 @@ model_xnaa_nox:
   rsi_id: 131
   rsi_length: '5.5'
   rsi_mass: '1394.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: Nox
   rsi_pledge_slug: g6y7vimcd50kk
   rsi_pledge_value: 4500
@@ -12135,9 +11741,8 @@ model_xnaa_nox_kue:
   length: '5.5'
   loaners_count: 0
   mass: '1394.0'
-  max_crew: 1
+  crew: 1
   max_speed: '550.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: Nox Kue
@@ -12160,9 +11765,8 @@ model_xnaa_nox_kue:
   rsi_id: 132
   rsi_length: '5.5'
   rsi_mass: '1394.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '550.0'
-  rsi_min_crew: 1
   rsi_name: Nox Kue
   rsi_pledge_slug: svg8p8yf98slx
   rsi_pledge_value: 4500
@@ -12195,9 +11799,8 @@ model_xnaa_san_tok_yai:
   length: '24.0'
   loaners_count: 0
   mass: '106566.0'
-  max_crew: 1
+  crew: 1
   max_speed: '1150.0'
-  min_crew: 1
   model_paints_count: 0
   module_hardpoints_count: 0
   name: San'tok.yāi
@@ -12218,9 +11821,8 @@ model_xnaa_san_tok_yai:
   rsi_id: 174
   rsi_length: '24.0'
   rsi_mass: '106566.0'
-  rsi_max_crew: 1
+  rsi_crew: 1
   rsi_max_speed: '1150.0'
-  rsi_min_crew: 1
   rsi_name: San'tok.yāi
   rsi_pledge_slug: h2gqwdd0fddwo
   rsi_pledge_value: 24000
