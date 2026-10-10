@@ -143,6 +143,25 @@ module Rsi
       assert_equal 8, model.rsi_crew
     end
 
+    test "#leaves the crew of a flight-ready ship to the game files" do
+      create(:model, :in_game, name: "Merchantman", rsi_id: 36, rsi_chassis_id: 20, production_status: "flight-ready", crew: nil)
+
+      @loader.one(36)
+
+      model = Model.find_by(rsi_id: 36)
+
+      assert_nil model.read_attribute(:crew)
+      assert_equal 8, model.rsi_crew
+    end
+
+    test "#leaves a crew already set on a ship not flying yet" do
+      create(:model, name: "Merchantman", rsi_id: 36, rsi_chassis_id: 20, production_status: "in-concept", crew: 6)
+
+      @loader.one(36)
+
+      assert_equal 6, Model.find_by(rsi_id: 36).read_attribute(:crew)
+    end
+
     test "#overrides present data" do
       polaris = create(:model, name: "Polaris", length: 20, rsi_id: 116, rsi_chassis_id: 4)
 

@@ -102,10 +102,13 @@ module Rsi
       updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if (model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
 
       # The matrix now gives one figure, min and max alike. Where it still gives a
-      # range the upper end is the one the game files agree with.
+      # range the upper end is the one the game files agree with. The game files
+      # own the crew column, so the matrix only fills a gap on a ship that is not
+      # flying yet.
       crew = [data["max_crew"], data["min_crew"]].map { |value| nil_or_decimal(value) }.find { |value| value&.positive? }
       updates[:rsi_crew] = crew
-      updates[:crew] = crew if (model_updated(model, data) && crew != model.rsi_crew) || model.read_attribute(:crew).blank? || model.read_attribute(:crew).zero?
+      flight_ready = updates.fetch(:production_status, model.production_status) == "flight-ready"
+      updates[:crew] = crew if !flight_ready && model.read_attribute(:crew).blank?
 
       scm_speed = nil_or_decimal(data["scm_speed"])
       updates[:rsi_scm_speed] = scm_speed

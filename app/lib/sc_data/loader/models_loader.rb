@@ -231,8 +231,8 @@ module ScData
         update_params.merge!(dimensions(model, model_data))
         update_params[:ground] = model_data.dig("ground") || false
 
-        # A ship with no crew has nothing to say rather than zero, and the matrix's
-        # figure answers instead.
+        # A ship with no crew has nothing to say rather than zero, so the column
+        # keeps what it had.
         crew = model_data["min_crew"].to_i
         update_params[:crew] = crew if crew.positive?
 
