@@ -28,7 +28,8 @@ class FleetAnnouncement < ApplicationRecord
 
   # Taking a post down takes it out of every inbox too: it is often taken down
   # because it should not have been posted.
-  has_many :notifications, as: :record, dependent: :delete_all
+  before_destroy :withdraw_notifications
+  after_destroy_commit :broadcast_withdrawn_notifications
 
   validates :body, presence: true, length: {maximum: BODY_LIMIT}
   validate :expires_in_the_future, if: -> { expires_at.present? }
@@ -61,5 +62,25 @@ class FleetAnnouncement < ApplicationRecord
     return if fleet.fleet_announcements.active.where.not(id: id).count < ACTIVE_LIMIT
 
     errors.add(:base, :announcement_limit_reached, count: ACTIVE_LIMIT)
+  end
+
+  private def withdraw_notifications
+    notifications = Notification.where(record: self)
+
+    @withdrawn_notification_ids = notifications.pluck(:user_id, :id)
+      .group_by(&:first)
+      .transform_values { |pairs| pairs.map(&:last) }
+
+    notifications.delete_all
+  end
+
+  # Only once the rows are really gone: a tab told before the commit would
+  # refetch and find them still there.
+  private def broadcast_withdrawn_notifications
+    return if @withdrawn_notification_ids.blank?
+
+    User.where(id: @withdrawn_notification_ids.keys).find_each do |user|
+      UserNotificationsChannel.broadcast_to(user, {withdrawnIds: @withdrawn_notification_ids[user.id]})
+    end
   end
 end

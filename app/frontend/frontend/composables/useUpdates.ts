@@ -22,14 +22,16 @@ import {
 import { NotificationsChannel } from "@/services/fyCable/channels/NotificationsChannel";
 import { OnSaleChannel } from "@/services/fyCable/channels/OnSaleChannel";
 import { OnSaleHangarChannel } from "@/services/fyCable/channels/OnSaleHangarChannel";
-import { UserNotificationsChannel } from "@/services/fyCable/channels/UserNotificationsChannel";
+import {
+  UserNotificationsChannel,
+  type UserNotificationsData,
+} from "@/services/fyCable/channels/UserNotificationsChannel";
 import { WishlistCreateChannel } from "@/services/fyCable/channels/WishlistCreateChannel";
 import { WishlistDestroyChannel } from "@/services/fyCable/channels/WishlistDestroyChannel";
 import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
 import { type AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
 import { type Model } from "@/services/fyCable/models/Model";
-import { type Notification } from "@/services/fyCable/models/Notification";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
 import { useSyncRsiHangarStatus } from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
@@ -151,14 +153,20 @@ export const useUpdates = () => {
   // The toast is also the way into the center it was just filed in — unlike the
   // admin's it keeps its timeout, because it interrupts browsing rather than
   // reporting an operational failure that must not be missed.
-  const handleUserNotification = (notification: Notification) => {
+  //
+  // Withdrawn ones were taken down with what they were about; the refetch drops
+  // them from the center and the badge, and there is nothing to toast.
+  const handleUserNotification = (message: UserNotificationsData) => {
     invalidateNotifications();
-    invalidateFidClaims(notification);
-    void followMovedFleet(notification);
+
+    if ("withdrawnIds" in message) return;
+
+    invalidateFidClaims(message);
+    void followMovedFleet(message);
 
     displayMessage({
-      text: notification.title,
-      icon: notification.icon,
+      text: message.title,
+      icon: message.icon,
       to: { name: "notifications" },
     });
   };
