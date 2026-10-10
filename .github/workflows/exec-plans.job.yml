@@ -1,0 +1,19 @@
+name: Exec-plans Job
+
+on:
+  workflow_call:
+
+jobs:
+  exec-plans:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: no exec-plans may reach main
+        run: |
+          plans=$(git ls-files docs/exec-plans)
+          if [ -n "$plans" ]; then
+            for plan in $plans; do
+              echo "::error file=${plan}::Exec-plans are deleted before a branch merges into main (see AGENTS.md)."
+            done
+            exit 1
+          fi
