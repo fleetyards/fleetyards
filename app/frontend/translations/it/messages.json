@@ -696,6 +696,10 @@
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
       },
       "admin": {
+        "form": {
+          "created": "Creato.",
+          "updated": "Modifiche salvate."
+        },
         "importLoaders": {
           "started": "%{name} avviato.",
           "failed": "Impossibile avviare %{name}."

@@ -16,6 +16,7 @@ import {
   getUserQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
@@ -72,7 +73,7 @@ const validationSchema = {
   email: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<UserInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<UserInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -130,11 +131,12 @@ const revokeMutation = useRevokeUserRsiVerification({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.user.id! }).catch((error) => {
-    console.error("Error revoking the RSI handle verification:", error);
-    alert(error);
-  });
+  await revokeMutation
+    .mutateAsync({ id: props.user.id! })
+    .catch((error) => failed(error));
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -142,9 +144,9 @@ const onSubmit = handleSubmit(async (values) => {
 
   await updateMutation
     .mutateAsync({ id: props.user.id!, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating user:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

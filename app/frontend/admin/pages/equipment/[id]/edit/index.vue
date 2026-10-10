@@ -15,6 +15,7 @@ import {
   getEquipmentDetailQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -60,7 +61,7 @@ const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<EquipmentInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<EquipmentInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -97,14 +98,16 @@ const updateMutation = useUpdateEquipment({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.equipment.id, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating equipment:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   type Location,
@@ -60,7 +61,7 @@ const crumbs = computed(() => [
   },
 ]);
 
-const { defineField, handleSubmit, meta, resetForm, values } =
+const { defineField, handleSubmit, meta, resetForm, setErrors, values } =
   useForm<LocationInput>({
     validationSchema: {
       color: { regex: /^#[0-9a-fA-F]{6}$/ },
@@ -139,6 +140,8 @@ const updateMutation = useUpdateLocation({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (formValues) => {
   submitting.value = true;
 
@@ -147,11 +150,15 @@ const onSubmit = handleSubmit(async (formValues) => {
       id: locationId.value,
       data: { ...formValues, color: formValues.color || null },
     })
-    .then(() =>
-      router.push({ name: "admin-location", params: { id: locationId.value } }),
-    )
+    .then(async () => {
+      updated();
+      await router.push({
+        name: "admin-location",
+        params: { id: locationId.value },
+      });
+    })
     .catch((error) => {
-      console.error("Error updating location:", error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

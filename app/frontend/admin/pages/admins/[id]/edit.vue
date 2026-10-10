@@ -15,6 +15,7 @@ import {
   getAdminUserQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -45,7 +46,7 @@ const validationSchema = {
   email: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<AdminUserInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<AdminUserInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -81,14 +82,16 @@ const updateMutation = useUpdateAdminUser({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.adminUser.id!, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating admin user:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

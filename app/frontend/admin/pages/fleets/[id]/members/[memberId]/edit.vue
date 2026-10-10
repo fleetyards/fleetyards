@@ -12,6 +12,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   type Fleet,
@@ -21,7 +22,6 @@ import {
   getFleetMembersQueryKey,
   getFleetMemberQueryKey,
 } from "@/services/fyAdminApi";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   fleet: Fleet;
@@ -33,7 +33,6 @@ const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const queryClient = useQueryClient();
-const { displayAlert } = useAppNotifications();
 
 const memberId = computed(() => route.params.memberId as string);
 
@@ -49,7 +48,7 @@ const roleOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-const { defineField, handleSubmit, resetForm, meta } = useForm<{
+const { defineField, handleSubmit, resetForm, meta, setErrors } = useForm<{
   fleetRoleId: string;
 }>({
   initialValues: { fleetRoleId: "" },
@@ -91,6 +90,8 @@ const backToMembers = () =>
     params: { id: props.fleet.id },
   });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -101,10 +102,11 @@ const onSubmit = handleSubmit(async (values) => {
       data: { fleetRoleId: values.fleetRoleId },
     })
     .then(async () => {
+      updated();
       await backToMembers();
     })
     .catch((error) => {
-      displayAlert({ text: error.response?.data?.message });
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

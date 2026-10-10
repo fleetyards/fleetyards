@@ -15,6 +15,7 @@ import {
   getVehicleQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -44,7 +45,7 @@ const initialValues = ref<VehicleInput>({
   loaner: props.vehicle.loaner,
 });
 
-const { defineField, handleSubmit, meta } = useForm<VehicleInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<VehicleInput>({
   initialValues: initialValues.value,
 });
 
@@ -75,14 +76,16 @@ const updateMutation = useUpdateVehicle({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.vehicle.id, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating vehicle:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

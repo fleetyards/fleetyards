@@ -17,6 +17,7 @@ import {
   getFleetQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
@@ -63,7 +64,7 @@ const validationSchema = {
   fid: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<FleetInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<FleetInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -127,18 +128,18 @@ const revokeMutation = useRevokeFleetRsiVerification({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const confirmVerification = async () => {
-  await confirmMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
-    console.error("Error verifying the RSI org:", error);
-    alert(error);
-  });
+  await confirmMutation
+    .mutateAsync({ id: props.fleet.id })
+    .catch((error) => failed(error));
 };
 
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
-    console.error("Error revoking the RSI verification:", error);
-    alert(error);
-  });
+  await revokeMutation
+    .mutateAsync({ id: props.fleet.id })
+    .catch((error) => failed(error));
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -146,9 +147,9 @@ const onSubmit = handleSubmit(async (values) => {
 
   await updateMutation
     .mutateAsync({ id: props.fleet.id, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating fleet:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

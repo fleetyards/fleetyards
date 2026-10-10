@@ -15,6 +15,7 @@ import {
   getModelModuleQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -52,10 +53,11 @@ const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ModelModuleInput>({
-  initialValues: initialValues.value,
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<ModelModuleInput>({
+    initialValues: initialValues.value,
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
@@ -84,14 +86,16 @@ const updateMutation = useUpdateModelModule({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.modelModule.id, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating model module:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;
