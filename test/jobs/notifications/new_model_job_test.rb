@@ -29,6 +29,15 @@ module Notifications
       assert_equal true, @model.reload.notified
     end
 
+    test "#perform skips a ship hidden again before the job ran" do
+      @model.update!(hidden: true)
+      ::Discord::NewShip.expects(:new).never
+
+      perform
+
+      assert_equal false, @model.reload.notified
+    end
+
     test "#perform posts the ship, its link and the hashtag to Bluesky" do
       ::Bsky::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })

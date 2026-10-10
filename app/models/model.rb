@@ -405,10 +405,11 @@ class Model < ApplicationRecord
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :record_sale, if: :saved_change_to_on_sale?
   after_save :broadcast_update
-  # Every new ship starts hidden -- the matrix loader and the game-file
-  # importer both create it that way -- so an admin publishing it is when it
-  # becomes new to anyone. It may never have an `rsi_id` at all.
-  after_save :send_new_model_notification, if: :saved_change_to_hidden?
+  # Every new ship starts hidden, so publishing it is when it becomes new to
+  # anyone: the matrix sync does that for every ship it lists, an admin for one
+  # that only the game files know, which may never have an `rsi_id`. After
+  # commit, so a rolled-back publish announces nothing.
+  after_commit :send_new_model_notification, if: -> { saved_change_to_hidden?(to: false) }
 
   validates :name, presence: true, uniqueness: {scope: :manufacturer_id}
   VEHICLE_SIZE = "vehicle"
@@ -1134,7 +1135,7 @@ class Model < ApplicationRecord
   end
 
   private def send_new_model_notification
-    return if notified? || hidden?
+    return if notified?
 
     Notifications::NewModelJob.perform_async(id)
 

@@ -10,7 +10,7 @@ module Notifications
 
     def perform(model_id)
       model = Model.find(model_id)
-      return if model.notified?
+      return if model.notified? || model.hidden?
 
       ::Discord::NewShip.new(model:).run
       post_socially(model, ::Announcements::Platform::BLUESKY) { |text| ::Bsky::Post.new.create(text) } if ::Bsky::Post.configured?
