@@ -36731,6 +36731,12 @@ components:
           items:
             type: string
             pattern: "^[^`\\r\\n]{1,200}$"
+        markup:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+            maxLength: 20000
       additionalProperties: false
       required:
       - page

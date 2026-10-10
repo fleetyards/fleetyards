@@ -45,7 +45,7 @@ describe("RSIHangarParser.extractPage", () => {
   it("does not read the empty marker on another page as the end", () => {
     expect(
       extract('<title>Sign In</title><div class="empty-list"></div>'),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_LIST,
       details: ['page title "Sign In"'],
@@ -93,7 +93,7 @@ describe("RSIHangarParser.extractPage", () => {
           `${pledge("101", item("Ship", "Cutter"))}<li><div class="item"><div class="kind">Ship</div></div></li>`,
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
       details: ["pledges 2, ids 1, a name missing"],
@@ -103,7 +103,7 @@ describe("RSIHangarParser.extractPage", () => {
   it("does not read a page without the pledge list as the end", () => {
     expect(
       extract("<html><body><form id='sign-in'></form></body></html>"),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_LIST,
       details: ['page title ""'],
@@ -111,7 +111,9 @@ describe("RSIHangarParser.extractPage", () => {
   });
 
   it("does not read pledges without ids", () => {
-    expect(extract(pledgesPage(`<li><div class="item"></div></li>`))).toEqual({
+    expect(
+      extract(pledgesPage(`<li><div class="item"></div></li>`)),
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
       details: ["pledges 1, ids 0, a name missing"],
@@ -125,7 +127,7 @@ describe("RSIHangarParser.extractPage", () => {
           pledge("101", `${item("Ship", "Cutter")}${item("Vehicle", "Ursa")}`),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.UNKNOWN_KINDS,
       details: ['unknown kind "Vehicle"'],
@@ -196,7 +198,7 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
@@ -234,7 +236,7 @@ describe("RSIHangarParser.extractPage", () => {
       ),
     );
 
-    expect(page).toEqual({
+    expect(page).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
@@ -267,7 +269,7 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: ['no ship in a "Standalone Ships" pledge, kinds none'],
@@ -301,7 +303,7 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
@@ -375,6 +377,62 @@ describe("RSIHangarParser.extractPage", () => {
     expect(page.status).toBe(RsiPageStatus.PAGE);
   });
 
+  it("keeps titles out of the details but sends the pledges it could not read", () => {
+    const unread = pledge(
+      "101",
+      '<div class="item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary <span class="custom-name-text">Sir Cutsalot</span></div></div></div>',
+      "Package - Cutlass Black Starter",
+    );
+    const page = extract(
+      pledgesPage(
+        pledge("100", item("Ship", "Cutter"), "Package - Cutter") + unread,
+      ),
+    );
+
+    expect(
+      JSON.stringify(
+        page.status === RsiPageStatus.UNRECOGNISED && page.details,
+      ),
+    ).not.toContain("Cutlass");
+    expect(page).toMatchObject({
+      markup: [expect.stringContaining('value="101"')],
+    });
+    expect(page).toMatchObject({
+      markup: [expect.stringContaining("Cutlass Black")],
+    });
+    expect(JSON.stringify(page)).not.toContain("Cutter");
+  });
+
+  it("sends at most five pledges, each cut to length", () => {
+    const longTitle = "x".repeat(30000);
+    const unread = (id: string) =>
+      pledge(
+        id,
+        `<div class="item"><div class="title">${longTitle}</div><div class="kind">Spaceship</div></div>`,
+        "Package - Odd",
+      );
+    const page = extract(
+      pledgesPage(["1", "2", "3", "4", "5", "6"].map(unread).join("")),
+    );
+
+    expect(
+      page.status === RsiPageStatus.UNRECOGNISED && page.markup,
+    ).toHaveLength(5);
+    (page.status === RsiPageStatus.UNRECOGNISED
+      ? (page.markup ?? [])
+      : []
+    ).forEach((markup) => expect(Array.from(markup)).toHaveLength(20000));
+  });
+
+  it("sends no markup for a page without the pledge list", () => {
+    const page = extract(
+      "<html><head><title>My Account</title></head><body>Jane</body></html>",
+    );
+
+    expect(page).toMatchObject({ status: RsiPageStatus.UNRECOGNISED });
+    expect(page).not.toHaveProperty("markup");
+  });
+
   it("reads a hangar of upgrades only", () => {
     expect(
       extract(
@@ -404,7 +462,7 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
@@ -420,7 +478,7 @@ describe("RSIHangarParser.extractPage", () => {
           `<li><input type="hidden" class="js-pledge-id" value="101">${item("Ship", "Cutter")}</li>`,
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_PLEDGE_IDS,
       details: ["pledges 1, ids 1, a name missing"],

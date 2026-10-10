@@ -90,7 +90,7 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     [["markup a", "markup b"], ["markup b", "markup c"]].each do |details|
-      post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details:}, as: :json
+      post "/api/v1/hangar/rsi-page-reports", params: {page: "buyback", check: "unparsed_entries", details:}, as: :json
     end
 
     assert_includes notifications.sole.body, "- Details:\n  - `markup a`\n  - `markup b`\n  - `markup c`"
@@ -127,7 +127,7 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
 
     [[3, "1.2.0", "markup a"], [1, "1.3.0", "markup b"]].each do |page_number, extension_version, detail|
       post "/api/v1/hangar/rsi-page-reports",
-        params: {page: "hangar", check: "missing_kinds", pageNumber: page_number, extensionVersion: extension_version, details: [detail]},
+        params: {page: "buyback", check: "unparsed_entries", pageNumber: page_number, extensionVersion: extension_version, details: [detail]},
         as: :json
     end
 
@@ -188,6 +188,58 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, body: {page: "hangar", check: "<script>"}
 
     assert_empty notifications
+  end
+
+  test "POST /hangar/rsi-page-reports records the stopped sync with the pledges it could not read" do
+    sign_in @user
+    markup = ['<li><input class="js-pledge-id" value="101"><div class="title">Cutlass Black</div></li>']
+
+    assert_api_response :post, 204,
+      body: {page: "hangar", check: "missing_kinds", pageNumber: 22, details: ["item without kind"], markup:} do
+      import = Imports::HangarSync.where(user: @user).sole
+      assert import.failed?
+      assert_equal markup.first, import.import_data
+      assert_equal({"check" => "missing_kinds", "page_number" => 22, "details" => ["item without kind"]}, import.input)
+      assert_includes import.info, "page 22"
+
+      notification = notifications.sole
+      assert_equal import, notification.record
+      assert_equal "/maintenance/imports/#{import.id}", notification.link
+      assert_includes notification.body, "(page 22, [import](/maintenance/imports/#{import.id}))"
+      assert_not_includes notification.body, "Cutlass"
+    end
+  end
+
+  test "POST /hangar/rsi-page-reports links each repeat's details to its own import" do
+    sign_in @user
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details: ["first"]}, as: :json
+    sign_in create(:user)
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details: ["second"]}, as: :json
+
+    first, second = Imports::HangarSync.order(:created_at).to_a
+    body = notifications.sole.body
+    assert_includes body, "`first` ([import](/maintenance/imports/#{first.id}))"
+    assert_includes body, "`second` ([import](/maintenance/imports/#{second.id}))"
+    assert_equal "/maintenance/imports/#{second.id}", notifications.sole.link
+  end
+
+  test "POST /hangar/rsi-page-reports records no import for a buyback page" do
+    sign_in @user
+
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "buyback", check: "missing_entries"}, as: :json
+
+    assert_response :no_content
+    assert_empty Import.all
+    assert_nil notifications.sole.link
+  end
+
+  test "POST /hangar/rsi-page-reports refuses more than five pledges of markup" do
+    sign_in @user
+
+    assert_api_response :post, 400,
+      body: {page: "hangar", check: "missing_kinds", markup: Array.new(6) { "<li></li>" }}
+
+    assert_empty Import.all
   end
 
   test "POST /hangar/rsi-page-reports returns 401 when not signed in" do

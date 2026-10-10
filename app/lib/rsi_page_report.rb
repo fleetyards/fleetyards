@@ -5,9 +5,12 @@
 # can notice RSI changing them -- and the parser is what needs fixing, not the
 # user's hangar.
 #
-# A report names the page and the check that failed, never the page itself: the
-# pledge pages are the user's purchase history. Its details are what the parser
-# tripped on, in RSI's labels and markup, without item titles or custom names.
+# The notification names the page and the check that failed, and its details
+# are what the parser tripped on, in RSI's labels and markup, without item
+# titles or custom names: it reaches everyone who watches the RSI status. A
+# hangar report also records a failed hangar sync holding the pledges the parser
+# could not read, which only admins who see imports can open -- the same admins
+# who already see every pledge a sync reads.
 class RsiPageReport
   PAGES = %w[hangar buyback].freeze
 
@@ -40,7 +43,9 @@ class RsiPageReport
 
   LATEST_EXTENSION_LINE = /\A- Latest extension: `([^`]+)`\z/
 
-  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil)
+  MAX_MARKUP_PLEDGES = 5
+
+  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil, markup: nil)
     if user
       first = Rails.cache.write(
         "rsi_page_report/#{user.id}/#{page}/#{check}", true,
@@ -57,6 +62,9 @@ class RsiPageReport
       ("page #{page_number}" if page_number),
       ("extension `#{extension_version}`" if extension_version)
     ].compact
+    import = record_import(user:, check:, page_number:, extension_version:, details:, markup:) if page == "hangar"
+    context << "[import](#{import_path(import)})" if import
+
     new_lines = details.map do |detail|
       "  - `#{detail}`#{" (#{context.join(", ")})" if context.any?}"
     end
@@ -85,9 +93,32 @@ class RsiPageReport
         ].compact.join("\n")
       },
       severity: :error,
+      link: (import_path(import) if import),
+      record: import,
       dedupe_key: "#{page}:#{check}"
     )
   end
+
+  # The sync stopped before it sent anything, so this is the only record of it,
+  # in the user's import history as well as the admins'.
+  def self.record_import(user:, check:, page_number:, extension_version:, details:, markup:)
+    return unless user
+
+    import = Imports::HangarSync.create!(
+      user:,
+      input: {check:, page_number:, extension_version:, details:}.compact,
+      import_data: Array(markup).first(MAX_MARKUP_PLEDGES).join("\n\n").presence,
+      info: "RSI hangar page #{page_number || "?"} not recognised (#{check})"
+    )
+    import.fail!
+    import
+  end
+  private_class_method :record_import
+
+  def self.import_path(import)
+    "/maintenance/imports/#{import.id}"
+  end
+  private_class_method :import_path
 
   # The admin notification renders a detail as inline code.
   def self.clean_detail(detail)
