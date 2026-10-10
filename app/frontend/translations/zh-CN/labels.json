@@ -3212,7 +3212,6 @@
       "notificationActions": {
         "open": "打开",
         "openHangar": "打开机库",
-        "openWishlist": "打开愿望清单",
         "openModel": "查看飞船",
         "openInvite": "查看邀请",
         "reviewRequest": "审核申请",
@@ -3256,12 +3255,8 @@
           "fleetContracts": "舰队合约"
         },
         "announcement": "公告",
-        "hangar_create": "添加到机库",
-        "hangar_destroy": "从机库移除",
         "hangar_sync_finished": "机库同步完成",
         "hangar_sync_failed": "机库同步失败",
-        "wishlist_create": "添加到愿望清单",
-        "wishlist_destroy": "从愿望清单移除",
         "model_on_sale": "型号特价销售",
         "new_model": "新型号发布",
         "fleet_invite": "收到舰队邀请",

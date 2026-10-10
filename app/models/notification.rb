@@ -5,10 +5,6 @@ class Notification < ApplicationRecord
   belongs_to :record, polymorphic: true, optional: true
 
   enum :notification_type, {
-    hangar_create: "hangar_create",
-    hangar_destroy: "hangar_destroy",
-    wishlist_create: "wishlist_create",
-    wishlist_destroy: "wishlist_destroy",
     model_on_sale: "model_on_sale",
     new_model: "new_model",
     hangar_sync_finished: "hangar_sync_finished",
@@ -61,22 +57,6 @@ class Notification < ApplicationRecord
   }
 
   TYPES = {
-    hangar_create: {
-      retention: 7.days,
-      channels: %i[app]
-    },
-    hangar_destroy: {
-      retention: 7.days,
-      channels: %i[app]
-    },
-    wishlist_create: {
-      retention: 7.days,
-      channels: %i[app]
-    },
-    wishlist_destroy: {
-      retention: 7.days,
-      channels: %i[app]
-    },
     model_on_sale: {
       retention: 30.days,
       channels: %i[app mail push discord],

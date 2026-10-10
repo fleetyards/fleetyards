@@ -71,7 +71,7 @@ class Api::V1::NotificationsRecordBehaviourTest < ActionDispatch::IntegrationTes
   # `Jbuilder.ignore_nil` is on for the whole API, so a notification about
   # nothing in particular leaves the key out rather than sending a null.
   test "a notification without a record carries no reference" do
-    create(:notification, user: @user, notification_type: "hangar_create", record: nil)
+    create(:notification, user: @user, notification_type: "hangar_sync_finished", record: nil)
 
     get "/api/v1/notifications", as: :json
 

@@ -244,7 +244,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     create_list(:notification, 3, user: @user)
     sign_in @user
 
-    assert_api_response :get, 200, api_path: "/notifications", params: {q: {"notificationTypeEq" => "hangar_create"}} do
+    assert_api_response :get, 200, api_path: "/notifications", params: {q: {"notificationTypeEq" => "hangar_sync_finished"}} do
       assert_equal 3, parsed_body["items"].count
     end
   end

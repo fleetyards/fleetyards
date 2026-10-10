@@ -37,7 +37,7 @@ test.describe("Notifications", () => {
   });
 
   test("Lists the inbox with an empty reading pane", async ({ page }) => {
-    await expect(page.getByTestId("notification-item")).toHaveCount(6);
+    await expect(page.getByTestId("notification-item")).toHaveCount(5);
     await expect(page.getByTestId("notification-detail-empty")).toBeVisible();
   });
 
@@ -116,17 +116,17 @@ test.describe("Notifications", () => {
     page,
     notification,
   }) => {
-    await row(page, "Aurora MR added to your hangar")
+    await row(page, "Your hangar is up to date")
       .getByLabel("Archive", { exact: true })
       .click();
 
     await notification.success("Notification archived");
 
-    await expect(row(page, "Aurora MR added to your hangar")).toHaveCount(0);
+    await expect(row(page, "Your hangar is up to date")).toHaveCount(0);
 
     await page.getByTestId("notifications-tab-archive").click();
 
-    await expect(row(page, "Aurora MR added to your hangar")).toHaveCount(1);
+    await expect(row(page, "Your hangar is up to date")).toHaveCount(1);
   });
 
   test("Moves an archived notification back to the inbox", async ({
@@ -154,12 +154,12 @@ test.describe("Notifications", () => {
   test("Shows a placeholder for a notification without a body", async ({
     page,
   }) => {
-    await row(page, "Aurora MR added to your hangar")
+    await row(page, "Your hangar is up to date")
       .getByTestId("notification-select")
       .click();
 
     await expect(page.getByTestId("notification-detail-title")).toContainText(
-      "Aurora MR added to your hangar",
+      "Your hangar is up to date",
     );
     await expect(page.getByTestId("notification-detail-no-body")).toBeVisible();
   });
@@ -167,7 +167,7 @@ test.describe("Notifications", () => {
   test("Names what the link leads to instead of a bare 'Open'", async ({
     page,
   }) => {
-    await row(page, "Aurora MR added to your hangar")
+    await row(page, "Your hangar is up to date")
       .getByTestId("notification-select")
       .click();
 

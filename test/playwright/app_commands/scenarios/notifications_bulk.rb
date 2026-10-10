@@ -18,7 +18,7 @@ end
 
   Notification.create!(
     user:,
-    notification_type: :hangar_create,
+    notification_type: :hangar_sync_finished,
     title: format("Bulk notification %02d", index + 1),
     icon: "fa-duotone fa-warehouse",
     created_at: occurred_at,
@@ -33,7 +33,7 @@ end
 
   Notification.create!(
     user:,
-    notification_type: :hangar_destroy,
+    notification_type: :hangar_sync_failed,
     title: format("Archived notification %02d", index + 1),
     icon: "fa-duotone fa-warehouse",
     archived_at:,

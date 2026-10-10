@@ -11,7 +11,7 @@ class NotificationTest < ActiveSupport::TestCase
   test "creates an unread notification and broadcasts when app is enabled" do
     notification = Notification.notify!(
       user: @user,
-      type: :hangar_create,
+      type: :hangar_sync_finished,
       title: "Test"
     )
 
@@ -20,13 +20,13 @@ class NotificationTest < ActiveSupport::TestCase
   end
 
   test "creates a read notification without broadcast when app is disabled" do
-    set_preference(@user, "hangar_create", app: false)
+    set_preference(@user, "hangar_sync_finished", app: false)
 
     UserNotificationsChannel.expects(:broadcast_to).never
 
     notification = Notification.notify!(
       user: @user,
-      type: :hangar_create,
+      type: :hangar_sync_finished,
       title: "Test"
     )
 
@@ -149,12 +149,6 @@ class NotificationTest < ActiveSupport::TestCase
     )
   end
 
-  %i[hangar_create hangar_destroy wishlist_create wishlist_destroy].each do |type|
-    test "#{type} only supports app channel" do
-      assert_equal %i[app], Notification.channels_for(type)
-    end
-  end
-
   test "hangar_sync_finished supports app, push and discord channels" do
     assert_equal %i[app push discord], Notification.channels_for(:hangar_sync_finished)
   end
@@ -210,8 +204,8 @@ class NotificationTest < ActiveSupport::TestCase
     assert_equal "Vehicle", notification.record_type
   end
 
-  test "sets 7-day retention for hangar types" do
-    notification = Notification.notify!(user: @user, type: :hangar_create, title: "Test")
+  test "sets 7-day retention for event reminders" do
+    notification = create(:notification, user: @user, notification_type: "fleet_event_starting_soon")
     assert_in_delta (Time.current + 7.days).to_f, notification.expires_at.to_f, 1.0
   end
 
@@ -329,7 +323,7 @@ class NotificationTest < ActiveSupport::TestCase
 
   test ".preference_defaults_for returns standard defaults for app-only types" do
     assert_equal({app: true, mail: false, push: false, discord: false},
-      Notification.preference_defaults_for(:hangar_create))
+      Notification.preference_defaults_for(:inventory_transfer_resolved))
   end
 
   private

@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :notification_preference do
     user
-    notification_type { "hangar_create" }
+    notification_type { "hangar_sync_finished" }
     app { true }
     mail { false }
     push { false }

@@ -96,7 +96,7 @@ class NotificationPushChannelTest < ActiveSupport::TestCase
   end
 
   test "the channel is not offered for a type without it" do
-    refute NotificationPreference.push_available?(:hangar_create, user: @user)
+    refute NotificationPreference.push_available?(:inventory_transfer_resolved, user: @user)
   end
 
   test "the channel is not offered with the flag off for the reader" do

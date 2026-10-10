@@ -39,7 +39,9 @@ describe("useNotificationActions", () => {
     ).toEqual(["openInvite"]);
 
     expect(
-      keysFor(notification(NotificationTypeEnum.HANGAR_CREATE, { link: "/x" })),
+      keysFor(
+        notification(NotificationTypeEnum.HANGAR_SYNC_FINISHED, { link: "/x" }),
+      ),
     ).toEqual(["openHangar"]);
 
     expect(
@@ -69,9 +71,9 @@ describe("useNotificationActions", () => {
   });
 
   it("offers nothing when the notification carries no link", () => {
-    expect(keysFor(notification(NotificationTypeEnum.HANGAR_CREATE))).toEqual(
-      [],
-    );
+    expect(
+      keysFor(notification(NotificationTypeEnum.HANGAR_SYNC_FINISHED)),
+    ).toEqual([]);
   });
 
   it("adds the calendar file for an event, off the reference alone", () => {
