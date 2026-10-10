@@ -36,8 +36,10 @@ A dashboard load, and every refetch on tab focus, sends one activity request and
 ## Discovery Log
 
 - **2026-10-10** Plan written from the code as it stands on #5544.
+- **2026-10-10** One union range that followed the week on screen would have stretched from yesterday to any week paged to, months away. The main query is fixed to the upcoming window plus this week. A week paged to is asked for on its own, and only while it is shown.
+- **2026-10-10** Checked on the dev dump: a MARU load sends one `/activity` (`limit=30&perCategory=true`) and one `/calendar`. Paging the grid one week ahead adds one request for that week only. Contracts still send two requests (mine and open), which is outside this issue.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
