@@ -59,12 +59,7 @@ class ScDataUnlistedModel < ApplicationRecord
     export_name = name.presence || identifier
     return export_name if manufacturer.blank?
 
-    # The export writes whichever form of the company name is shortest to say --
-    # "Kruger S-65 Stingray" for Kruger Intergalactic, "Argo MOLE" for Argo
-    # Astronautics -- so the first word of the name is tried alongside the whole
-    # of it and the long form.
-    prefixes = [manufacturer.long_name, manufacturer.name, manufacturer.name.to_s.split.first]
-      .compact_blank.uniq.sort_by { |prefix| -prefix.length }
+    prefixes = manufacturer.name_prefixes
 
     prefixes.each do |prefix|
       stripped = export_name.sub(/\A#{Regexp.escape(prefix)}\s+/i, "")

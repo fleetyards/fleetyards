@@ -715,7 +715,10 @@ class Model < ApplicationRecord
   # takes to reach SCM speed, which is `scm_speed / main_acceleration`. Every
   # figure those columns expressed still follows from these two and a speed the
   # model already carries, and these say what they hold.
-  def accelerations_from_hardpoints(source = ::ScData::Source.current)
+  #
+  # The loader passes the mass of the build it is loading: the column still holds
+  # the last load's, which is nothing at all on a ship's first.
+  def accelerations_from_hardpoints(source = ::ScData::Source.current, mass: read_attribute(:mass))
     thrust = {"Main" => 0.0, "Retro" => 0.0}
 
     thruster_components(source).each do |data|
@@ -724,7 +727,7 @@ class Model < ApplicationRecord
       thrust[data["thruster_type"]] += data["thrust_capacity"].to_f
     end
 
-    weight = read_attribute(:mass).to_f
+    weight = mass.to_f
 
     # Nothing to say rather than zero. A stored 0 claims the ship cannot move; a
     # nil says we do not know -- which is the truth for a catalogue loaded before

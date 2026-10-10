@@ -41,6 +41,40 @@ module ScData
 
       DEFAULT_AXIS_ORDER = %i[y x z].freeze
 
+      # The export's `career` in the ship matrix's vocabulary. Agrees with what the
+      # matrix says on most ships the two share; the matrix has no word for a
+      # capital ship, a gunship or a snub fighter and files them all under combat.
+      CLASSIFICATIONS = {
+        "Combat" => "combat",
+        "Capital Ship" => "combat",
+        "Destroyer" => "combat",
+        "Gunship" => "combat",
+        "Snub Fighter" => "combat",
+        "Transporter" => "transport",
+        "Transport" => "transport",
+        "Exploration" => "exploration",
+        "Multi-Role" => "multi",
+        "Support" => "support",
+        "Industrial" => "industrial",
+        "Competition" => "competition",
+        "Ground" => "ground"
+      }.freeze
+
+      # The export's item size in ours, where the two agree. Measured against the
+      # catalogue: 2 is small on 78 of 82 ships, 5 large on 19 of 23 -- the other
+      # four are medium only on flight dimensions, and need a large pad landed --
+      # and 6 capital on all six. 1 does not tell a snub from a small ship, and 3
+      # and 4 each straddle two of ours, so those stay for an admin.
+      SIZES = {"2" => "small", "5" => "large", "6" => "capital"}.freeze
+
+      # What CIG writes where a string is not filled in yet: "<= PLACEHOLDER =>",
+      # "<= UNINITIALIZED =>", "<-=MISSING=->".
+      UNFILLED = /\A<[-=]/
+
+      # "Manufacturer: RSI\nFocus: Medium Freight / Gunship\n\n" heads every
+      # description, and the ship page shows both already.
+      DESCRIPTION_HEADER = /\A(?:(?:Manufacturer|Focus):[^\n]*(?:\n|\z))+\s*/
+
       def all
         loaded = []
 
@@ -97,7 +131,7 @@ module ScData
 
         # Computed here because they read the loadout `update_loadout` just wrote.
         update_params[:fuel_consumption] = model.fuel_consumption_from_hardpoints(source)
-        update_params.merge!(model.accelerations_from_hardpoints(source))
+        update_params.merge!(model.accelerations_from_hardpoints(source, mass: model_data["mass"] || model.read_attribute(:mass)))
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
@@ -118,6 +152,7 @@ module ScData
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
+        update_params = fill_identity_gaps(model, model_data, update_params)
 
         # A ship the build ships is flying, and this is where that used to be
         # recorded -- alongside the flag, on the transition into the game. The
@@ -197,6 +232,38 @@ module ScData
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      # Only the ship matrix fills these in, so a ship it does not list has none of
+      # them. The export says each one too; it takes over only where nothing else
+      # has, because on 80 of the 220 ships both describe it disagrees with the
+      # crew the matrix gives, and an admin may have curated any of them. A crew of
+      # zero is a gap too, as it is to the matrix loader.
+      #
+      # These are the ship's own columns rather than a build's, so only the
+      # environment readers get by default writes them.
+      private def fill_identity_gaps(model, model_data, update_params)
+        return update_params unless default_environment?
+
+        crew = model_data["min_crew"].to_i
+        gaps = {
+          min_crew: crew.positive? ? crew : nil,
+          focus: filled(model_data["role"]),
+          classification: model_data["ground"] ? "ground" : CLASSIFICATIONS[model_data["career"]],
+          size: model_data["ground"] ? ::Model::VEHICLE_SIZE : SIZES[model_data["size"].to_s],
+          description: filled(model_data["description"].to_s.gsub('\\n', "\n").sub(DESCRIPTION_HEADER, "").strip)
+        }
+
+        gaps.each do |attribute, value|
+          current = model.read_attribute(attribute)
+          update_params[attribute] = value if value.present? && (current.blank? || current == 0)
+        end
+
+        update_params
+      end
+
+      private def filled(value)
+        value.presence unless UNFILLED.match?(value.to_s)
       end
 
       private def dimensions(model, model_data)

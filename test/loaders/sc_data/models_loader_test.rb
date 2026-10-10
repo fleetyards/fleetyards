@@ -104,6 +104,157 @@ module ScData
         assert_equal cross_section, model.reload.signature_cross_section
       end
 
+      # A ship made from the game files has no mass until this load writes one,
+      # and its accelerations are worked out before that.
+      test "#load_model derives the accelerations from the mass it is loading" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "First Load Test", mass: 0)
+        main = create(:component, category: "thrusters", type_data: {"thruster_type" => "Main", "thrust_capacity" => 50_000.0})
+        create(:hardpoint, parent: model, component: main)
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+        loader.stubs(:update_loadout)
+
+        loader.load_model(model)
+
+        assert_equal 50.0, model.reload.main_acceleration.to_f
+      end
+
+      test "#load_model fills in what the matrix never said about a ship" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Unlisted Test", min_crew: nil, max_crew: nil, focus: nil, classification: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "4",
+            "career" => "Multi-Role",
+            "role" => "Medium Freight / Gun Ship",
+            "description" => 'Manufacturer: RSI\\nFocus: Medium Freight / Gunship\\n\\nA classic.\\nReimagined.'
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 4, model.min_crew
+        assert_nil model.max_crew
+        assert_equal "Medium Freight / Gun Ship", model.focus
+        assert_equal "multi", model.classification
+        assert_equal "A classic.\nReimagined.", model.description
+      end
+
+      test "#load_model keeps what the matrix or an admin already said" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Listed Test", min_crew: 3, focus: "Gunship", classification: "combat", description: "Ours.")
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "4",
+            "career" => "Multi-Role",
+            "role" => "Medium Freight / Gun Ship",
+            "description" => 'Manufacturer: RSI\\nFocus: Medium Freight\\n\\nTheirs.'
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 3, model.min_crew
+        assert_equal "Gunship", model.focus
+        assert_equal "combat", model.classification
+        assert_equal "Ours.", model.description
+      end
+
+      test "#load_model fills in nothing the export left as a placeholder" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Placeholder Test", min_crew: nil, focus: nil, classification: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "0",
+            "career" => "<= PLACEHOLDER =>",
+            "role" => "<= PLACEHOLDER =>",
+            "description" => "<-=MISSING=->"
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_nil model.min_crew
+        assert_nil model.focus
+        assert_nil model.classification
+        assert_nil model.description
+      end
+
+      test "#load_model fills in a crew of zero and a description that is only its header" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Zero Crew Test", min_crew: 0)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "min_crew" => "2", "description" => 'Manufacturer: RSI\\nFocus: Gunship'}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 2, model.min_crew
+        assert_nil model.description
+      end
+
+      test "#load_model leaves the ship's own columns to the default environment" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Ptu Fill Test", min_crew: nil, focus: nil)
+        loader.stubs(:default_environment?).returns(false)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "min_crew" => "4", "role" => "Medium Freight"}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_nil model.min_crew
+        assert_nil model.focus
+      end
+
+      test "#load_model sizes a ship by the item sizes ours agrees with" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        large = create(:model, name: "Size Five Test", size: nil)
+        unsure = create(:model, name: "Size Three Test", size: nil)
+
+        loader.stubs(:load_model_data).with(large.sc_data_identifier).returns({"mass" => 1000.0, "loadout" => [], "size" => "5"})
+        loader.stubs(:load_model_data).with(unsure.sc_data_identifier).returns({"mass" => 1000.0, "loadout" => [], "size" => "3"})
+
+        loader.load_model(large)
+        loader.load_model(unsure)
+
+        assert_equal "large", large.reload.size
+        assert_nil unsure.reload.size, "3 is a small ship as often as a medium one"
+      end
+
+      test "#load_model classifies and sizes a ground vehicle as one whatever its career" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Ground Career Test", classification: nil, size: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "ground" => true, "career" => "Combat"}
+        )
+
+        loader.load_model(model)
+
+        model.reload
+
+        assert_equal "ground", model.classification
+        assert_equal "vehicle", model.size
+      end
+
       # The export's bounding box carries three correct magnitudes but no
       # consistent convention for which axis is which, so a handful of ships need
       # their own order. Read off the orthographic renders rather than the ship

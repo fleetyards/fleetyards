@@ -223,6 +223,17 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Neither "Roberts Space Industries" nor "Roberts" prefixes it; the code does.
+  test "the suggested name drops a manufacturer code the export prefixes" do
+    create(:manufacturer, code: "RSI", name: "Roberts Space Industries", long_name: "Roberts Space Industries")
+    entry = create(
+      :sc_data_unlisted_model,
+      identifier: "rsi_constellation_mk5_centaurus", name: "RSI Constellation Mk V Centaurus", manufacturer_code: "RSI"
+    )
+
+    assert_equal "Constellation Mk V Centaurus", entry.suggested_name
+  end
+
   # Only a quarter of models carry an `sc_key`, so a ship whose identifier comes
   # from its slug lands in this list even though the catalogue has it.
   test "POST create-model refuses when a ship of that name already exists" do
