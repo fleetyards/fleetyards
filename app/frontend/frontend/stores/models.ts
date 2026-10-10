@@ -1,4 +1,5 @@
 import { type ShipListState } from "@/frontend/types";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { defineStore } from "pinia";
 
@@ -121,5 +122,14 @@ export const useModelsStore = defineStore("models", {
       "tableViewImageCols",
       "sortFields",
     ],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<ModelTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          minCrew: ModelTableViewColsEnum.CREW,
+          maxCrew: ModelTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });

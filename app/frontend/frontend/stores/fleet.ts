@@ -1,4 +1,5 @@
 import type { ShipListState } from "@/frontend/types";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 import { defineStore } from "pinia";
 
 export enum FleetTableViewImageColsEnum {
@@ -186,5 +187,14 @@ export const useFleetStore = defineStore("fleet", {
       "dismissedFidWarnings",
       "pendingTours",
     ],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<FleetTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          modelMinCrew: FleetTableViewColsEnum.CREW,
+          modelMaxCrew: FleetTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });
