@@ -8,6 +8,7 @@ export default {
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useQueryClient } from "@tanstack/vue-query";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -51,6 +52,7 @@ const {
   data: requests,
   isLoading: requestsLoading,
   isFetching: requestsFetching,
+  isError: requestsFailed,
   refetch: refetchRequests,
 } = useFleetMembers(
   fleetSlug,
@@ -67,6 +69,7 @@ const {
   data: transfers,
   isLoading: transfersLoading,
   isFetching: transfersFetching,
+  isError: transfersFailed,
 } = useFleetInventoryTransfers(
   fleetSlug,
   {
@@ -110,6 +113,8 @@ const fetching = computed(
     (props.canAnswerTransfers && transfersFetching.value),
 );
 
+const failed = computed(() => requestsFailed.value || transfersFailed.value);
+
 const empty = computed(
   () => !requestItems.value.length && !transferCount.value,
 );
@@ -150,12 +155,12 @@ const answer = async (member: FleetMember, accept: boolean) => {
 </script>
 
 <template>
-  <!-- Nothing waiting is not news, so once the answer is in the panel is there
-       only when something is. -->
   <DashboardPanel
-    v-if="loading || !empty"
     :title="t('fleetDashboard.actionQueue.title')"
-    :loading="fetching"
+    :pending="loading"
+    :fetching="fetching"
+    :failed="failed"
+    :empty="empty"
     data-test="fleet-dashboard-action-queue"
   >
     <section v-if="requestItems.length" class="action-queue__group">
@@ -224,6 +229,13 @@ const answer = async (member: FleetMember, accept: boolean) => {
         <i class="fa-light fa-chevron-right" aria-hidden="true" />
       </router-link>
     </section>
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-check"
+        :title="t('fleetDashboard.actionQueue.empty.title')"
+        :hint="t('fleetDashboard.actionQueue.empty.hint')"
+      />
+    </template>
   </DashboardPanel>
 </template>
 

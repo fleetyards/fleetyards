@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "Tout afficher",
       "empty": "Rien pour l'instant.",
+      "failed": "Impossible de charger ceci pour le moment.",
       "unnamed": "Sans titre",
       "formats": {
         "weekday": "EEE",
@@ -21,11 +22,21 @@
           "inventory_transfer_completed": "Transfert terminé",
           "inventory_item_deposited": "Déposé",
           "inventory_item_withdrawn": "Retiré"
+        },
+        "empty": {
+          "title": "Rien ne s'est encore passé",
+          "hint": "Les événements et contrats publiés arrivent ici, les plus récents en premier."
         }
       },
       "events": {
         "title": "Événements à venir",
-        "signUp": "S'inscrire"
+        "signUp": "S'inscrire",
+        "empty": {
+          "title": "Rien de prévu pour les deux prochaines semaines",
+          "hint": "Consultez la page des événements pour la suite.",
+          "hintCreate": "Ajoutez une opération au calendrier et les membres pourront s'inscrire tout de suite.",
+          "action": "Planifier un événement"
+        }
       },
       "actionQueue": {
         "title": "Demande votre attention",
@@ -36,41 +47,45 @@
         "pendingTransfers": {
           "one": "%{count} transfert entrant à traiter",
           "other": "%{count} transferts entrants à traiter"
+        },
+        "empty": {
+          "title": "Tout est à jour",
+          "hint": "Les demandes d'adhésion et les transferts entrants qui attendent une réponse apparaissent ici."
         }
       },
       "contracts": {
         "title": "Contrats",
         "mine": "Votre travail",
-        "open": "Disponibles"
+        "open": "Disponibles",
+        "empty": {
+          "title": "Aucun contrat ouvert",
+          "hint": "Parcourez les travaux passés sur le tableau des contrats.",
+          "hintCreate": "Publiez une mission que les membres pourront prendre en charge.",
+          "action": "Publier un contrat"
+        }
       },
       "inventory": {
         "title": "Inventaire",
         "empty": "Aucun mouvement d'inventaire récemment.",
         "emptyMine": "Rien de ce qui vous concerne n'a bougé récemment.",
+        "emptyHint": "Les dépôts, retraits et transferts apparaissent ici.",
         "mine": "Les miens",
         "fleet": "Flotte"
       },
       "newMembers": {
-        "title": "Nouveaux membres"
+        "title": "Nouveaux membres",
+        "empty": {
+          "title": "Personne de nouveau récemment",
+          "hint": "Les membres apparaissent ici dès qu'ils ont rejoint la flotte."
+        }
       },
       "about": {
-        "title": "À propos de la flotte"
-      },
-      "getStarted": {
-        "title": "Lancez l'activité",
-        "events": {
-          "title": "Rien de prévu pour les deux prochaines semaines",
-          "hintCreate": "Ajoutez une opération au calendrier et les membres pourront s'inscrire tout de suite.",
-          "hint": "Consultez la page des événements pour la suite.",
-          "action": "Planifier un événement",
-          "link": "Événements"
-        },
-        "contracts": {
-          "title": "Aucun contrat ouvert",
-          "hintCreate": "Publiez une mission que les membres pourront prendre en charge.",
-          "hint": "Parcourez les travaux passés sur le tableau des contrats.",
-          "action": "Publier un contrat",
-          "link": "Contrats"
+        "title": "À propos de la flotte",
+        "empty": {
+          "title": "Pas encore de description",
+          "hint": "La flotte ne s'est pas encore présentée.",
+          "hintEdit": "Dites aux nouveaux membres de quoi parle la flotte.",
+          "action": "En rédiger une"
         }
       },
       "week": {
@@ -82,6 +97,10 @@
         "more": {
           "one": "et %{count} autre",
           "other": "et %{count} autres"
+        },
+        "empty": {
+          "title": "Personne d'autre n'est en ligne",
+          "hint": "Les membres apparaissent ici dès qu'ils se connectent."
         }
       },
       "announcements": {

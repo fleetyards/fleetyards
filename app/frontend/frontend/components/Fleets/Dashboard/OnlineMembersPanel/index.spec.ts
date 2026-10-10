@@ -1,12 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { computed, defineComponent, h, nextTick } from "vue";
+import { computed, defineComponent, h, nextTick, ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetOnlineMembersList } from "@/services/fyApi";
 import { usePresence } from "@/shared/composables/usePresence";
 import Component from "./index.vue";
 
 let online: FleetOnlineMembersList | undefined;
+const isFetching = ref(false);
 const refetch = vi.fn();
 let queryOptions: { query?: Record<string, unknown> } | undefined;
 let wrapper: { unmount: () => void } | undefined;
@@ -23,7 +24,13 @@ vi.mock("@/services/fyApi", async () => {
     ) => {
       queryOptions = options;
 
-      return { data: computed(() => online), refetch };
+      return {
+        data: computed(() => online),
+        refetch,
+        isLoading: computed(() => !online),
+        isFetching,
+        isError: ref(false),
+      };
     },
   };
 });
@@ -59,7 +66,8 @@ describe("FleetDashboardOnlineMembersPanel", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     online = undefined;
-    refetch.mockClear();
+    isFetching.value = false;
+    refetch.mockReset();
     resetPresence();
   });
 
@@ -71,31 +79,20 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     vi.useRealTimers();
   });
 
-  it("draws nothing while nobody else is online", async () => {
+  // The wait is spread per dashboard, up to ten seconds.
+  const settle = async () => {
+    await nextTick();
+    vi.advanceTimersByTime(10_000);
+  };
+
+  it("says so while nobody else is online", async () => {
     online = { totalCount: 0, items: [] };
 
     const subject = await mount();
 
-    expect(subject.find("[data-test='fleet-dashboard-online']").exists()).toBe(
-      false,
-    );
-  });
-
-  it("marks friends and says how many more there are", async () => {
-    online = {
-      totalCount: 3,
-      items: [
-        { userId: "z", username: "zulu", friend: true },
-        { userId: "a", username: "alpha", friend: false },
-      ],
-    };
-
-    const subject = await mount();
-
     expect(
-      subject.findAll("[data-test='fleet-dashboard-online-friend']"),
-    ).toHaveLength(1);
-    expect(subject.find(".online-members__more").text()).toContain("1");
+      subject.find("[data-test='fleet-dashboard-empty']").text(),
+    ).toContain("Nobody else is online");
   });
 
   // Pushes carry presence, so the panel follows them rather than polling.
@@ -124,12 +121,6 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     expect(names(subject)).toEqual(["zulu"]);
     expect(refetch).not.toHaveBeenCalled();
   });
-
-  // The wait is spread per dashboard, up to ten seconds.
-  const settle = async () => {
-    await nextTick();
-    vi.advanceTimersByTime(10_000);
-  };
 
   // A push names an id, not a member: only the server knows whether they are
   // in this fleet, and it is asked once while they stay online.

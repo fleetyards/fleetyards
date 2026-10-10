@@ -24,6 +24,8 @@ vi.mock("@/services/fyApi", async () => {
       return {
         data: computed(() => ({ items: params.mine ? mine : open })),
         isLoading: ref(false),
+        isFetching: ref(false),
+        isError: ref(false),
       };
     },
   };
@@ -40,12 +42,13 @@ const contract = (id: string): Partial<FleetContract> => ({
   reward: "0",
 });
 
-const mount = async () => {
+const mount = async (props: { canCreate?: boolean } = {}) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
       { path: "/", name: "home", component: Stub },
       { path: "/c/:slug", name: "fleet-contracts", component: Stub },
+      { path: "/c/:slug/new", name: "fleet-contract-new", component: Stub },
       { path: "/c/:slug/:contract", name: "fleet-contract", component: Stub },
     ],
   });
@@ -53,7 +56,7 @@ const mount = async () => {
   await router.isReady();
 
   return mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: { fleet: { slug: "maru" } as Fleet, ...props },
     plugins: [router],
   });
 };
@@ -87,5 +90,30 @@ describe("FleetDashboardContractsPanel", () => {
       "Job g",
       "Job h",
     ]);
+  });
+
+  // An empty board is offered as something to start.
+  it("offers somebody who may post one a new contract", async () => {
+    const subject = await mount({ canCreate: true });
+
+    expect(
+      subject
+        .find("[data-test='fleet-dashboard-post-contract']")
+        .attributes("href"),
+    ).toBe("#/c/maru/new");
+  });
+
+  it("points everybody else at the board", async () => {
+    const subject = await mount();
+
+    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
+      true,
+    );
+    expect(
+      subject.find("[data-test='fleet-dashboard-post-contract']").exists(),
+    ).toBe(false);
+    expect(subject.find("a.dashboard-panel__more").attributes("href")).toBe(
+      "#/c/maru",
+    );
   });
 });

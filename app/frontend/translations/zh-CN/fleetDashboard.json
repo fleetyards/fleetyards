@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "查看全部",
       "empty": "暂无内容。",
+      "failed": "暂时无法加载。",
       "unnamed": "未命名",
       "formats": {
         "weekday": "EEE",
@@ -21,11 +22,21 @@
           "inventory_transfer_completed": "转移已完成",
           "inventory_item_deposited": "已存入",
           "inventory_item_withdrawn": "已取出"
+        },
+        "empty": {
+          "title": "还没有动态",
+          "hint": "已发布的活动和合同会显示在这里，最新的在最前。"
         }
       },
       "events": {
         "title": "即将到来的活动",
-        "signUp": "报名"
+        "signUp": "报名",
+        "empty": {
+          "title": "未来两周没有安排",
+          "hint": "查看活动页面了解之后的安排。",
+          "hintCreate": "在日历上安排一次行动，成员即可立即报名。",
+          "action": "安排活动"
+        }
       },
       "actionQueue": {
         "title": "待你处理",
@@ -36,41 +47,45 @@
         "pendingTransfers": {
           "one": "%{count} 个待处理的转入",
           "other": "%{count} 个待处理的转入"
+        },
+        "empty": {
+          "title": "全部处理完毕",
+          "hint": "需要回应的入队申请和传入转移会显示在这里。"
         }
       },
       "contracts": {
         "title": "合同",
         "mine": "你的工作",
-        "open": "可接取"
+        "open": "可接取",
+        "empty": {
+          "title": "没有开放的合同",
+          "hint": "在合同面板查看以往的工作。",
+          "hintCreate": "发布一项工作，成员即可接取。",
+          "action": "发布合同"
+        }
       },
       "inventory": {
         "title": "库存",
         "empty": "最近没有库存变动。",
         "emptyMine": "最近没有与你相关的变动。",
+        "emptyHint": "存入、取出和转移会显示在这里。",
         "mine": "我的",
         "fleet": "舰队"
       },
       "newMembers": {
-        "title": "新成员"
+        "title": "新成员",
+        "empty": {
+          "title": "最近没有新成员",
+          "hint": "成员加入后会显示在这里。"
+        }
       },
       "about": {
-        "title": "关于舰队"
-      },
-      "getStarted": {
-        "title": "动起来",
-        "events": {
-          "title": "未来两周没有安排",
-          "hintCreate": "在日历上安排一次行动，成员即可立即报名。",
-          "hint": "查看活动页面了解之后的安排。",
-          "action": "安排活动",
-          "link": "活动"
-        },
-        "contracts": {
-          "title": "没有开放的合同",
-          "hintCreate": "发布一项工作，成员即可接取。",
-          "hint": "在合同面板查看以往的工作。",
-          "action": "发布合同",
-          "link": "合同"
+        "title": "关于舰队",
+        "empty": {
+          "title": "还没有简介",
+          "hint": "舰队还没有介绍自己。",
+          "hintEdit": "告诉新成员舰队是做什么的。",
+          "action": "撰写简介"
         }
       },
       "week": {
@@ -82,6 +97,10 @@
         "more": {
           "one": "还有 %{count} 人",
           "other": "还有 %{count} 人"
+        },
+        "empty": {
+          "title": "没有其他人在线",
+          "hint": "成员登录后会立即显示在这里。"
         }
       },
       "announcements": {

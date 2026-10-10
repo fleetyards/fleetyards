@@ -146,7 +146,7 @@ const dayLabel = (day: Date) =>
 <template>
   <DashboardPanel
     :title="title"
-    :loading="isFetching"
+    :fetching="isFetching"
     data-test="fleet-dashboard-week-strip"
   >
     <template #actions>

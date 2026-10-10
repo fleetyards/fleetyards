@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "Alle anzeigen",
       "empty": "Hier gibt es noch nichts.",
+      "failed": "Konnte gerade nicht geladen werden.",
       "unnamed": "Ohne Titel",
       "formats": {
         "weekday": "EEE",
@@ -21,11 +22,21 @@
           "inventory_transfer_completed": "Transfer abgeschlossen",
           "inventory_item_deposited": "Eingelagert",
           "inventory_item_withdrawn": "Entnommen"
+        },
+        "empty": {
+          "title": "Noch nichts passiert",
+          "hint": "Veröffentlichte Events und Aufträge landen hier, die neuesten zuerst."
         }
       },
       "events": {
         "title": "Anstehende Events",
-        "signUp": "Anmelden"
+        "signUp": "Anmelden",
+        "empty": {
+          "title": "Für die nächsten zwei Wochen ist nichts geplant",
+          "hint": "Auf der Event-Seite siehst du, was später ansteht.",
+          "hintCreate": "Trag eine Operation ein, und Mitglieder können sich sofort anmelden.",
+          "action": "Event planen"
+        }
       },
       "actionQueue": {
         "title": "Wartet auf dich",
@@ -36,41 +47,45 @@
         "pendingTransfers": {
           "one": "%{count} eingehender Transfer offen",
           "other": "%{count} eingehende Transfers offen"
+        },
+        "empty": {
+          "title": "Alles erledigt",
+          "hint": "Beitrittsanfragen und eingehende Transfers, die eine Antwort brauchen, erscheinen hier."
         }
       },
       "contracts": {
         "title": "Aufträge",
         "mine": "Deine Aufträge",
-        "open": "Offen zur Übernahme"
+        "open": "Offen zur Übernahme",
+        "empty": {
+          "title": "Keine offenen Aufträge",
+          "hint": "Frühere Aufträge findest du auf dem Auftragsbrett.",
+          "hintCreate": "Schreib einen Auftrag aus, den Mitglieder übernehmen können.",
+          "action": "Auftrag ausschreiben"
+        }
       },
       "inventory": {
         "title": "Inventar",
         "empty": "In letzter Zeit keine Inventarbewegungen.",
         "emptyMine": "Von deinen Sachen wurde zuletzt nichts bewegt.",
+        "emptyHint": "Einlagerungen, Entnahmen und Transfers erscheinen hier.",
         "mine": "Meine",
         "fleet": "Flotte"
       },
       "newMembers": {
-        "title": "Neue Mitglieder"
+        "title": "Neue Mitglieder",
+        "empty": {
+          "title": "In letzter Zeit niemand Neues",
+          "hint": "Mitglieder erscheinen hier, sobald sie beigetreten sind."
+        }
       },
       "about": {
-        "title": "Über die Flotte"
-      },
-      "getStarted": {
-        "title": "Leg los",
-        "events": {
-          "title": "Für die nächsten zwei Wochen ist nichts geplant",
-          "hintCreate": "Trag eine Operation ein, und Mitglieder können sich sofort anmelden.",
-          "hint": "Auf der Event-Seite siehst du, was später ansteht.",
-          "action": "Event planen",
-          "link": "Events"
-        },
-        "contracts": {
-          "title": "Keine offenen Aufträge",
-          "hintCreate": "Schreib einen Auftrag aus, den Mitglieder übernehmen können.",
-          "hint": "Frühere Aufträge findest du auf dem Auftragsbrett.",
-          "action": "Auftrag ausschreiben",
-          "link": "Aufträge"
+        "title": "Über die Flotte",
+        "empty": {
+          "title": "Noch keine Beschreibung",
+          "hint": "Die Flotte hat sich noch nicht vorgestellt.",
+          "hintEdit": "Erzähl neuen Mitgliedern, worum es in der Flotte geht.",
+          "action": "Beschreibung schreiben"
         }
       },
       "week": {
@@ -82,6 +97,10 @@
         "more": {
           "one": "und %{count} weiterer",
           "other": "und %{count} weitere"
+        },
+        "empty": {
+          "title": "Sonst ist niemand online",
+          "hint": "Mitglieder erscheinen hier, sobald sie sich anmelden."
         }
       },
       "announcements": {

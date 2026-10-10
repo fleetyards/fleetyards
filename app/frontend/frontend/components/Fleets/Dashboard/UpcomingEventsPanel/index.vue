@@ -9,20 +9,32 @@ import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { addDays } from "date-fns";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useEventDraft } from "@/frontend/composables/useDraftCreate";
 import {
   FleetEventStatusEnum,
   useFleetCalendar,
   type Fleet,
   type FleetEvent,
+  type Mission,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  canCreate?: boolean;
+  // Whoever can read the fleet's missions is asked for one to start from.
+  canReadMissions?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canCreate: false,
+  canReadMissions: false,
+});
 
 const { t } = useI18n();
 
@@ -41,7 +53,7 @@ const range = computed(() => ({
   to: addDays(today.value, WINDOW_DAYS).toISOString(),
 }));
 
-const { data, isLoading, isFetching } = useFleetCalendar(
+const { data, isLoading, isFetching, isError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   range,
   { query: liveQuery },
@@ -69,20 +81,40 @@ const entries = computed(() => {
     .slice(0, SHOWN);
 });
 
-// Said to the dashboard once the answer is in, so an empty module can be
-// offered as something to start instead of a box saying there is nothing.
-const emit = defineEmits<{ empty: [boolean] }>();
+const { create: createEventDraft, pending: creatingEvent } = useEventDraft();
 
-const isEmpty = computed(() => !!data.value && !entries.value.length);
+const comlink = useComlink();
 
-watch(isEmpty, (value) => emit("empty", value), { immediate: true });
+// The same start the events page makes: a mission template first, because the
+// API copies a mission's teams only while it writes the event.
+const planEvent = () => {
+  if (creatingEvent.value) return;
+
+  if (!props.canReadMissions) {
+    void createEventDraft(props.fleet.slug);
+    return;
+  }
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
+    props: {
+      fleet: props.fleet,
+      onPick: (mission: Mission | null) => {
+        void createEventDraft(props.fleet.slug, { missionSlug: mission?.slug });
+      },
+    },
+  });
+};
 </script>
 
 <template>
   <DashboardPanel
-    v-if="isLoading || entries.length"
     :title="t('fleetDashboard.events.title')"
-    :loading="isFetching"
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isError"
+    :empty="!entries.length"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"
   >
@@ -95,6 +127,29 @@ watch(isEmpty, (value) => emit("empty", value), { immediate: true });
         <EventCard :fleet="fleet" :event="event" />
       </li>
     </ul>
+    <!-- Two quiet weeks are offered as something to start. -->
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-calendar-star"
+        :title="t('fleetDashboard.events.empty.title')"
+        :hint="
+          canCreate
+            ? t('fleetDashboard.events.empty.hintCreate')
+            : t('fleetDashboard.events.empty.hint')
+        "
+      >
+        <Btn
+          v-if="canCreate"
+          :size="BtnSizesEnum.SM"
+          :loading="creatingEvent"
+          data-test="fleet-dashboard-plan-event"
+          @click="planEvent"
+        >
+          <i class="fa-light fa-plus" />
+          {{ t("fleetDashboard.events.empty.action") }}
+        </Btn>
+      </DashboardEmpty>
+    </template>
   </DashboardPanel>
 </template>
 

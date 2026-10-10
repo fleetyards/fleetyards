@@ -15,29 +15,47 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   title: string;
-  loading?: boolean;
-  // Said instead of the body when the panel has nothing to show. Left to the
-  // caller to say only once its first answer is in: a refetch shows the panel
-  // loading, and should not blank what it already says.
+  // The first answer is still out: the panel stands in its place, loading, and
+  // says nothing yet rather than that it has nothing.
+  pending?: boolean;
+  // Any ask is out, a refetch included. The bar shows over what the panel
+  // already says.
+  fetching?: boolean;
+  // The ask failed and there is nothing to show. An answer that failed on a
+  // refetch keeps what the panel already says.
+  failed?: boolean;
+  // Nothing to show once answered: the `empty` slot stands in for the body.
   empty?: boolean;
-  emptyText?: string;
   more?: RouteLocationRaw;
   moreLabel?: string;
 };
 
-withDefaults(defineProps<Props>(), {
-  loading: false,
+const props = withDefaults(defineProps<Props>(), {
+  pending: false,
+  fetching: false,
+  failed: false,
   empty: false,
-  emptyText: undefined,
   more: undefined,
   moreLabel: undefined,
+});
+
+const state = computed(() => {
+  if (!props.empty) return "content";
+  if (props.pending) return "pending";
+  if (props.failed) return "failed";
+
+  return "empty";
 });
 
 const { t } = useI18n();
 </script>
 
 <template>
-  <Panel :variant="PanelVariantsEnum.SLIM" :loading="loading">
+  <Panel
+    :variant="PanelVariantsEnum.SLIM"
+    :loading="pending || fetching"
+    :aria-busy="pending || fetching"
+  >
     <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ title }}
       <template v-if="more || $slots.actions" #actions>
@@ -49,10 +67,18 @@ const { t } = useI18n();
       </template>
     </PanelHeading>
     <PanelBody>
-      <p v-if="empty" class="dashboard-panel__empty">
-        {{ emptyText ?? t("fleetDashboard.empty") }}
+      <slot v-if="state === 'content'" />
+      <div v-else-if="state === 'pending'" class="dashboard-panel__pending" />
+      <p
+        v-else-if="state === 'failed'"
+        class="dashboard-panel__note"
+        data-test="fleet-dashboard-failed"
+      >
+        {{ t("fleetDashboard.failed") }}
       </p>
-      <slot v-else />
+      <slot v-else name="empty">
+        <p class="dashboard-panel__note">{{ t("fleetDashboard.empty") }}</p>
+      </slot>
     </PanelBody>
   </Panel>
 </template>
@@ -63,7 +89,13 @@ const { t } = useI18n();
   white-space: nowrap;
 }
 
-.dashboard-panel__empty {
+// Holds the panel at about one row's height, so the answer does not push the
+// column down as far.
+.dashboard-panel__pending {
+  min-height: 40px;
+}
+
+.dashboard-panel__note {
   margin: 0;
   color: var(--color-text-dim, #959595);
 }

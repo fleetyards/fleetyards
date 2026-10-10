@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useDebounceFn } from "@vueuse/core";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,7 +35,7 @@ const { t } = useI18n();
  */
 const ASK_AGAIN_AFTER_MS = 2_000 + Math.round(Math.random() * 8_000);
 
-const { data, refetch, isLoading, isFetching } = useFleetOnlineMembers(
+const { data, refetch, isLoading, isFetching, isError } = useFleetOnlineMembers(
   computed(() => props.fleet.slug),
   { query: liveQuery },
 );
@@ -97,9 +98,11 @@ watch(resets, () => {
 
 <template>
   <DashboardPanel
-    v-if="isLoading || members.length"
     :title="t('fleetDashboard.online.title', { count: total })"
-    :loading="isFetching"
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isError"
+    :empty="!total"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-online"
   >
@@ -126,6 +129,13 @@ watch(resets, () => {
     <p v-if="more > 0" class="online-members__more">
       {{ t("fleetDashboard.online.more", { count: more }) }}
     </p>
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-signal-stream"
+        :title="t('fleetDashboard.online.empty.title')"
+        :hint="t('fleetDashboard.online.empty.hint')"
+      />
+    </template>
   </DashboardPanel>
 </template>
 

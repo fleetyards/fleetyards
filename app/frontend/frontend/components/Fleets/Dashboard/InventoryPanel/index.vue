@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -31,23 +32,20 @@ const SHOWN = 6;
 // Read as one page and split here: what touches the reader is a handful of
 // the fleet's recent movements, not a list of its own worth a second request.
 // Anything older is on the logistics page the panel links to.
-const { data, isLoading, isFetching } = useFleetActivity(
+const { data, isLoading, isFetching, isError } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.INVENTORY, limit: 10 },
   { query: liveQuery },
 );
 
+const all = computed(() => data.value?.items ?? []);
+
 const scope = ref<"mine" | "fleet">("mine");
 
-const mine = computed(() =>
-  (data.value?.items ?? []).filter((entry) => entry.involvesViewer),
-);
+const mine = computed(() => all.value.filter((entry) => entry.involvesViewer));
 
 const entries = computed(() =>
-  (scope.value === "mine" ? mine.value : (data.value?.items ?? [])).slice(
-    0,
-    SHOWN,
-  ),
+  (scope.value === "mine" ? mine.value : all.value).slice(0, SHOWN),
 );
 
 // Nothing of the reader's own lately is not worth a panel that says so; the
@@ -69,21 +67,18 @@ watch(
 
 <template>
   <DashboardPanel
-    v-if="isLoading || data?.items.length"
     :title="t('fleetDashboard.inventory.title')"
-    :loading="isFetching"
-    :empty="!isLoading && !entries.length"
-    :empty-text="
-      scope === 'mine'
-        ? t('fleetDashboard.inventory.emptyMine')
-        : t('fleetDashboard.inventory.empty')
-    "
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isError"
+    :empty="!entries.length"
     :more="{ name: 'fleet-logistics', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-inventory"
   >
     <!-- The scope is chosen on the first answer, so the switch waits for it
-         rather than jumping from one side to the other. -->
-    <template v-if="!isLoading" #actions>
+         rather than jumping from one side to the other, and a fleet with no
+         movements at all has nothing to switch between. -->
+    <template v-if="all.length" #actions>
       <BtnGroup segmented>
         <Btn
           :size="BtnSizesEnum.SM"
@@ -104,5 +99,16 @@ watch(
       </BtnGroup>
     </template>
     <ActivityList :fleet="fleet" :entries="entries" />
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-boxes-stacked"
+        :title="
+          scope === 'mine'
+            ? t('fleetDashboard.inventory.emptyMine')
+            : t('fleetDashboard.inventory.empty')
+        "
+        :hint="t('fleetDashboard.inventory.emptyHint')"
+      />
+    </template>
   </DashboardPanel>
 </template>

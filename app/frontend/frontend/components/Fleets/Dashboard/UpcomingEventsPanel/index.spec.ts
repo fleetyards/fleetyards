@@ -9,6 +9,16 @@ let items: Partial<FleetEvent>[] = [];
 let askedFor: { from?: string; to?: string } | undefined;
 const isLoading = ref(false);
 const isFetching = ref(false);
+const createDraft = vi.fn();
+const emit = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit, on: () => () => undefined }),
+}));
+
+vi.mock("@/frontend/composables/useDraftCreate", () => ({
+  useEventDraft: () => ({ create: createDraft, pending: ref(false) }),
+}));
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -26,6 +36,7 @@ vi.mock("@/services/fyApi", async () => {
         data: computed(() => ({ items })),
         isLoading,
         isFetching,
+        isError: ref(false),
       };
     },
   };
@@ -64,9 +75,11 @@ const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
   ...overrides,
 });
 
-const mount = async () =>
+const mount = async (
+  props: { canCreate?: boolean; canReadMissions?: boolean } = {},
+) =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: { fleet: { slug: "maru" } as Fleet, ...props },
     plugins: [await router()],
   });
 
@@ -81,6 +94,8 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     askedFor = undefined;
     isLoading.value = false;
     isFetching.value = false;
+    createDraft.mockClear();
+    emit.mockClear();
   });
 
   it("stands in its place, loading, until the first answer is in", async () => {
@@ -186,5 +201,45 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     expect(subject.find("a.event-card").attributes("href")).toBe(
       "#/fleets/maru/events/weekly?occurrence=2026-05-21",
     );
+  });
+
+  it("lets somebody who may plan one start an event when nothing is on", async () => {
+    const subject = await mount({ canCreate: true });
+
+    await subject
+      .find("[data-test='fleet-dashboard-plan-event']")
+      .trigger("click");
+
+    expect(createDraft).toHaveBeenCalledWith("maru");
+  });
+
+  // The API copies a mission's teams only while it writes the event, so a
+  // reader of missions picks one first, as on the events page.
+  it("asks a reader of missions for a template before writing", async () => {
+    const subject = await mount({ canCreate: true, canReadMissions: true });
+
+    await subject
+      .find("[data-test='fleet-dashboard-plan-event']")
+      .trigger("click");
+
+    expect(createDraft).not.toHaveBeenCalled();
+
+    const [, payload] = emit.mock.calls.at(-1)!;
+    payload.props.onPick({ slug: "salvage-op" });
+
+    expect(createDraft).toHaveBeenCalledWith("maru", {
+      missionSlug: "salvage-op",
+    });
+  });
+
+  it("says nothing is planned to everybody else", async () => {
+    const subject = await mount();
+
+    expect(
+      subject.find("[data-test='fleet-dashboard-empty']").text(),
+    ).toContain("Nothing planned for the next two weeks");
+    expect(
+      subject.find("[data-test='fleet-dashboard-plan-event']").exists(),
+    ).toBe(false);
   });
 });

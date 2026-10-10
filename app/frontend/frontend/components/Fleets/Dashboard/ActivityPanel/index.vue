@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -31,7 +32,7 @@ const { t } = useI18n();
 // beside the feed link to the full lists.
 const LIMIT = 15;
 
-const { data, isLoading, isFetching } = useFleetActivity(
+const { data, isLoading, isFetching, isError } = useFleetActivity(
   computed(() => props.fleet.slug),
   computed(() => ({ limit: LIMIT, exclude: props.exclude })),
   { query: liveQuery },
@@ -42,11 +43,20 @@ const entries = computed(() => data.value?.items ?? []);
 
 <template>
   <DashboardPanel
-    v-if="isLoading || entries.length"
     :title="t('fleetDashboard.activity.title')"
-    :loading="isFetching"
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isError"
+    :empty="!entries.length"
     data-test="fleet-dashboard-activity"
   >
     <ActivityList :fleet="fleet" :entries="entries" />
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-wave-pulse"
+        :title="t('fleetDashboard.activity.empty.title')"
+        :hint="t('fleetDashboard.activity.empty.hint')"
+      />
+    </template>
   </DashboardPanel>
 </template>
