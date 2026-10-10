@@ -66,7 +66,7 @@ const { t } = useI18n();
         </router-link>
       </template>
     </PanelHeading>
-    <PanelBody>
+    <PanelBody class="dashboard-panel__body">
       <slot v-if="state === 'content'" />
       <div v-else-if="state === 'pending'" class="dashboard-panel__pending" />
       <p
@@ -84,6 +84,13 @@ const { t } = useI18n();
 </template>
 
 <style lang="scss" scoped>
+// The body's own top padding is sized for a heading without a rule under it;
+// under the divider the content would start against the line. Doubled class to
+// outrank PanelBody's scoped rule regardless of stylesheet order.
+.dashboard-panel__body.panel-body {
+  padding-top: 14px;
+}
+
 .dashboard-panel__more {
   font-size: 13px;
   white-space: nowrap;
