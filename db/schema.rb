@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2223,6 +2223,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_150000) do
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
     t.index ["user_id", "record_id"], name: "index_notifications_on_announcement_recipient", unique: true, where: "(((notification_type)::text = 'announcement'::text) AND (record_id IS NOT NULL))"
+    t.index ["user_id", "record_id"], name: "index_notifications_on_fleet_announcement_recipient", unique: true, where: "(((notification_type)::text = 'fleet_announcement_posted'::text) AND (record_id IS NOT NULL))"
   end
 
   create_table "oauth_access_grants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

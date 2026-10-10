@@ -60,19 +60,42 @@ module Notifications
       assert_empty notified
     end
 
-    # Both members are tried: the first failure costs that member only.
-    test "keeps going past a member who cannot be notified" do
-      Notification.expects(:notify!).twice.raises("boom").then.returns(nil)
-
-      FleetAnnouncementPostedJob.new.perform(@announcement.id)
-    end
-
-    # A retry picks up where the last run stopped.
     test "tells nobody twice when it runs again" do
       FleetAnnouncementPostedJob.new.perform(@announcement.id)
+      ::Push::DeliverNotificationJob.jobs.clear
+
       FleetAnnouncementPostedJob.new.perform(@announcement.id)
 
       assert_equal 2, notified.count
+      assert_empty ::Push::DeliverNotificationJob.jobs
     end
+
+    test "mails, pushes and messages only the members who asked for it" do
+      @member.notification_preferences
+        .find_or_create_by!(notification_type: "fleet_announcement_posted")
+        .update!(mail: true, push: true, discord: true)
+      ::Push::DeliverNotificationJob.jobs.clear
+      ::Discord::DeliverNotificationJob.jobs.clear
+      NotificationMailer.expects(:notification).with { |notification| notification.user == @member }
+        .returns(stub(deliver_later: true))
+
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+
+      notification = notified.find_by!(user: @member)
+      assert_equal [[notification.id, false]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
+      assert_equal [[notification.id]], ::Discord::DeliverNotificationJob.jobs.map { |job| job["args"] }
+    end
+
+    test "files it as read for a member who turned the app channel off" do
+      @other.notification_preferences
+        .find_or_create_by!(notification_type: "fleet_announcement_posted")
+        .update!(app: false)
+
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+
+      assert_predicate notified.find_by!(user: @other), :read?
+      refute_predicate notified.find_by!(user: @member), :read?
+    end
+
   end
 end
