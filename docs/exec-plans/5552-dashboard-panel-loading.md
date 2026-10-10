@@ -1,6 +1,6 @@
 # Fleet dashboard: panels show that they are loading
 
-Working plan for #5552. Decisions live in the issue body. Deleted before the PR merges. Stacked on `feat/5541-fleet-dashboard-online-announcements-health`.
+Working plan for #5552. Decisions live in the issue body. Deleted before the PR merges.
 
 ## Goal
 Every dashboard panel shows its own loading state, on the first answer and on refetches, and the dashboard links out for more instead of paging in place.
@@ -40,6 +40,7 @@ Every dashboard panel shows its own loading state, on the first answer and on re
 - **2026-10-10** The member list's default sort is `created_at desc`, so the new members link needs `acceptedAt desc` to open on who joined last.
 
 - **2026-10-10** Hiding empty panels made the page jump when an answer came back empty, and the first-load shells contradicted it. Panels now always stand with an empty state.
+- **2026-10-10** The query client keeps the previous answer across a key change for every query (`plugins/QueryClient.ts`), and TanStack reports a failed refetch as an error while keeping its data. A panel calls itself failed only on `isError && !data`, and the week views treat a placeholder as unanswered.
 
 ## Progress
 - [x] Phase 1
