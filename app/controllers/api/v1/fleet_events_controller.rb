@@ -366,8 +366,12 @@ module Api
         end
       end
 
+      # The API accepts a null lock window but the column cannot hold one, so a
+      # null leaves the stored window alone for when the lock is turned back on.
       private def event_params
-        authorized(params, with: FleetEventPolicy)
+        authorized(params, with: FleetEventPolicy).tap do |permitted|
+          permitted.delete(:auto_lock_minutes_before) if permitted[:auto_lock_minutes_before].nil?
+        end
       end
 
       # Whoever may run the fleet's events reaches all of them -- including the

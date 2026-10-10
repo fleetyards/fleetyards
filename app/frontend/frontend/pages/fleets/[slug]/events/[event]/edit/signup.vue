@@ -98,11 +98,8 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         fleetSquadronIds: restrictedToSquadrons.value
           ? (values.fleetSquadronIds ?? [])
           : [],
-        // The number only means anything while the lock is on, and the API
-        // refuses one without it.
-        autoLockMinutesBefore: values.autoLockEnabled
-          ? Number(values.autoLockMinutesBefore || 60)
-          : null,
+        // Kept while the lock is off, so turning it back on restores the window.
+        autoLockMinutesBefore: Number(values.autoLockMinutesBefore || 60),
       } as never,
       ctx,
     ),

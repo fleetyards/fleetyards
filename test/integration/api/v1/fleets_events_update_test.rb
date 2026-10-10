@@ -52,6 +52,18 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug/events/:slug keeps the lock window when the lock is turned off without one" do
+    @fleet_event.update!(auto_lock_minutes_before: 30)
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+      body: {autoLockEnabled: false, autoLockMinutesBefore: nil} do
+      assert_equal false, parsed_body["autoLockEnabled"]
+      assert_equal 30, parsed_body["autoLockMinutesBefore"]
+    end
+  end
+
   test "PUT /fleets/:slug/events/:slug sets a custom recurrence" do
     @fleet_event.update!(starts_at: Time.zone.parse("2026-10-08 20:00"), timezone: "UTC")
     sign_in @admin
