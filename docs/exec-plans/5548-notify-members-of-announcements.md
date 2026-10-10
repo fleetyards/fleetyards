@@ -37,8 +37,11 @@ Posting a fleet announcement tells every other member through their notification
 
 - **2026-10-10** A research pass mapped the pipeline. There is no per-type icon registry, so the icon is a full class passed to `notify!`. The event and contract subscribers pass bare names (`"calendar"`), which looks like a bug, so I won't copy it.
 
+- **2026-10-10** The job does not retry, because a retry would notify everyone already reached a second time. Each member is rescued on their own. The Discord post goes through `DeliverAnnouncementJob`, which retries by itself.
+- **2026-10-10** oasdiff 1.18.1 reports 12 warnings: the new `NotificationTypeEnum` and `NotificationRecordTypeEnum` values in notification responses. All are in the ignore list, and three runs passed against both the base branch and main.
+
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
