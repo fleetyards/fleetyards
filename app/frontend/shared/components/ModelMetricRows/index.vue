@@ -29,7 +29,9 @@ const visibleGroups = computed(() =>
     Rows rather than hero tiles: a card is the narrowest surface in the app, and
     three tiles leave about 110px each even at 520px wide - enough for a figure,
     not for "1 - 6 persons". `__tile__value` is nowrap and clips by design, so
-    text values belong in rows, which ellipsise against the full card width.
+    text values belong in rows, which ellipsise against the full card width -
+    or, in a split group, wrap. Only a row that can be cut off needs the
+    tooltip.
   -->
   <template v-for="(group, index) in visibleGroups" :key="index">
     <div v-if="index > 0" class="metrics-card__divider" />
@@ -42,7 +44,7 @@ const visibleGroups = computed(() =>
         <!-- eslint-disable-next-line vue/no-v-html -->
         <span
           v-if="row.html"
-          v-tooltip="row.value"
+          v-tooltip="group.split ? undefined : row.value"
           class="metrics-card__row__value"
           v-html="row.value"
         />
