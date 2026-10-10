@@ -93,6 +93,7 @@
       },
       "online": {
         "title": "当前在线（%{count}）",
+        "titlePending": "当前在线",
         "friend": "好友",
         "more": {
           "one": "还有 %{count} 人",

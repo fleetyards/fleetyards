@@ -95,6 +95,53 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     ).toContain("Nobody else is online");
   });
 
+  // A zero before the answer would read as nobody.
+  it("gives no count until the first answer is in", async () => {
+    const subject = await mount();
+
+    expect(subject.find(".panel-heading").text()).toContain("Online now");
+    expect(subject.find(".panel-heading").text()).not.toContain("(0)");
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // Every login in the fleet sets one off; the bar would never rest.
+  it("keeps the asks presence sets off out of the loading bar", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+    refetch.mockImplementation(() => {
+      isFetching.value = true;
+      return new Promise(() => undefined);
+    });
+
+    const subject = await mount();
+
+    applyPresence({ userId: "new", online: true });
+    await settle();
+    await nextTick();
+
+    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(subject.find(".panel--loading").exists()).toBe(false);
+  });
+
+  it("marks friends and says how many more there are", async () => {
+    online = {
+      totalCount: 3,
+      items: [
+        { userId: "z", username: "zulu", friend: true },
+        { userId: "a", username: "alpha", friend: false },
+      ],
+    };
+
+    const subject = await mount();
+
+    expect(
+      subject.findAll("[data-test='fleet-dashboard-online-friend']"),
+    ).toHaveLength(1);
+    expect(subject.find(".online-members__more").text()).toContain("1");
+  });
+
   // Pushes carry presence, so the panel follows them rather than polling.
   it("asks once and polls nothing", async () => {
     online = { totalCount: 0, items: [] };

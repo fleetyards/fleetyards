@@ -8,6 +8,7 @@ import Component from "./index.vue";
 let items: Partial<FleetEvent>[] = [];
 let params: Ref<{ from: string; to: string }> | undefined;
 const isLoading = ref(false);
+const isError = ref(false);
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -22,9 +23,12 @@ vi.mock("@/services/fyApi", async () => {
       params = range;
 
       return {
-        data: computed(() => ({ items })),
+        data: computed(() =>
+          isLoading.value || isError.value ? undefined : { items },
+        ),
         isLoading,
         isFetching: isLoading,
+        isError,
       };
     },
   };
@@ -84,6 +88,7 @@ describe("FleetDashboardWeekStrip", () => {
     vi.setSystemTime(NOW);
     items = [];
     isLoading.value = false;
+    isError.value = false;
   });
 
   afterEach(() => {
@@ -161,6 +166,16 @@ describe("FleetDashboardWeekStrip", () => {
 
     expect(subject.find(".week-strip__empty").exists()).toBe(false);
     expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  it("says the week failed rather than that the day is free", async () => {
+    isError.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").text()).toBe(
+      "This could not be loaded right now.",
+    );
   });
 
   it("asks for the next week when moved on", async () => {

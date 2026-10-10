@@ -93,6 +93,7 @@
       },
       "online": {
         "title": "Gerade online (%{count})",
+        "titlePending": "Gerade online",
         "friend": "Freund",
         "more": {
           "one": "und %{count} weiterer",

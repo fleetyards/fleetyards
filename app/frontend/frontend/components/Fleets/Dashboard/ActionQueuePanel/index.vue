@@ -107,10 +107,9 @@ const loading = computed(
     (props.canAnswerTransfers && transfersLoading.value),
 );
 
+// A disabled query never fetches, so these need no guard of their own.
 const fetching = computed(
-  () =>
-    (props.canAnswerJoinRequests && requestsFetching.value) ||
-    (props.canAnswerTransfers && transfersFetching.value),
+  () => requestsFetching.value || transfersFetching.value,
 );
 
 const failed = computed(() => requestsFailed.value || transfersFailed.value);

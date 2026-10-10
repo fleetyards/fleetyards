@@ -32,10 +32,12 @@ const { t } = useI18n();
 // beside the feed link to the full lists.
 const LIMIT = 15;
 
+// A change to what is left out keeps the old page up, under the loading bar,
+// rather than blanking the feed until the new one is in.
 const { data, isLoading, isFetching, isError } = useFleetActivity(
   computed(() => props.fleet.slug),
   computed(() => ({ limit: LIMIT, exclude: props.exclude })),
-  { query: liveQuery },
+  { query: { ...liveQuery, placeholderData: (previous) => previous } },
 );
 
 const entries = computed(() => data.value?.items ?? []);

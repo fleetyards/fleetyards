@@ -21,6 +21,8 @@ const props = defineProps<Props>();
 // width of a desk.
 const mobile = useMobile();
 
+// Set by the grid once it has drawn its week, so the first frame has no query
+// yet and counts as loading.
 const visibleRange = ref<{ start: Date; end: Date } | null>(null);
 
 const { data, isFetching } = useFleetCalendar(
@@ -52,7 +54,7 @@ const events = computed(() => data.value?.items ?? []);
     :events="events"
     view="week"
     compact
-    :loading="isFetching"
+    :loading="isFetching || !visibleRange"
     data-test="fleet-dashboard-calendar"
     @update:range="visibleRange = $event"
   />

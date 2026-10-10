@@ -61,7 +61,7 @@ const days = computed(() =>
   Array.from({ length: 7 }, (_, index) => addDays(weekStart.value, index)),
 );
 
-const { data, isLoading, isFetching } = useFleetCalendar(
+const { data, isFetching, isError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   // From the day before: the calendar answers by start time, and an op that
   // began on Sunday night is still part of Monday.
@@ -207,7 +207,12 @@ const dayLabel = (day: Date) =>
         <EventCard :fleet="fleet" :event="event" />
       </li>
     </ul>
-    <p v-else-if="!isLoading" class="week-strip__empty">
+    <!-- An unanswered week is not an empty one: say nothing while it loads,
+         and say it failed rather than that the day is free. -->
+    <p v-else-if="!data && isError" class="week-strip__empty">
+      {{ t("fleetDashboard.failed") }}
+    </p>
+    <p v-else-if="data" class="week-strip__empty">
       {{ t("fleetDashboard.week.emptyDay", { day: dayLabel(selected) }) }}
     </p>
   </DashboardPanel>

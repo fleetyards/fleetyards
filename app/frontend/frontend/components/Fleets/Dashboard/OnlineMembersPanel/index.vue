@@ -40,6 +40,22 @@ const { data, refetch, isLoading, isFetching, isError } = useFleetOnlineMembers(
   { query: liveQuery },
 );
 
+// The asks presence pushes and reconnects set off keep the list in step behind
+// the reader's back; with the bar on each of them it would flicker on every
+// login in the fleet. Only the first answer and a refocus show it.
+const quietly = ref(false);
+
+const refetchQuietly = async () => {
+  quietly.value = true;
+  try {
+    await refetch();
+  } finally {
+    quietly.value = false;
+  }
+};
+
+const fetching = computed(() => isFetching.value && !quietly.value);
+
 const { isOnline, knownOnlineIds, resets } = usePresence();
 
 const listed = computed(() => data.value?.items ?? []);
@@ -48,17 +64,24 @@ const members = computed(() =>
   listed.value.filter((member) => isOnline(member.userId, true)),
 );
 
-const total = computed(
-  () =>
-    (data.value?.totalCount ?? 0) -
-    (listed.value.length - members.value.length),
+const total = computed(() =>
+  data.value
+    ? data.value.totalCount - (listed.value.length - members.value.length)
+    : undefined,
 );
 
-const more = computed(() => total.value - members.value.length);
+// No count until there is one: a zero before the answer reads as nobody.
+const title = computed(() =>
+  total.value === undefined
+    ? t("fleetDashboard.online.titlePending")
+    : t("fleetDashboard.online.title", { count: total.value }),
+);
+
+const more = computed(() => (total.value ?? 0) - members.value.length);
 
 const askedAbout = new Set<string>();
 
-const askAgain = useDebounceFn(() => void refetch(), ASK_AGAIN_AFTER_MS);
+const askAgain = useDebounceFn(() => void refetchQuietly(), ASK_AGAIN_AFTER_MS);
 
 watch(knownOnlineIds, (ids) => {
   // Before the first answer there is nothing to compare against, and the ask
@@ -84,7 +107,7 @@ watch(knownOnlineIds, (ids) => {
 watch(
   () => members.value.length,
   (count) => {
-    if (count === 0 && total.value > 0) void askAgain();
+    if (count === 0 && (total.value ?? 0) > 0) void askAgain();
   },
 );
 
@@ -92,15 +115,15 @@ watch(
 // list is only as good as a fresh answer.
 watch(resets, () => {
   askedAbout.clear();
-  void refetch();
+  void refetchQuietly();
 });
 </script>
 
 <template>
   <DashboardPanel
-    :title="t('fleetDashboard.online.title', { count: total })"
+    :title="title"
     :pending="isLoading"
-    :fetching="isFetching"
+    :fetching="fetching"
     :failed="isError"
     :empty="!total"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
