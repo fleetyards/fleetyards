@@ -21,8 +21,11 @@ class Api::V1::FleetsActivityIndexTest < ActionDispatch::IntegrationTest
       # reference inside an array query parameter, and refuses every value.
       parameter name: :exclude, in: :query, required: false, style: :form, explode: true,
         schema: {type: :array, items: {type: :string, enum: ::Fleets::ActivityFeed::CATEGORIES}}
-      parameter name: :perCategory, in: :query, required: false, schema: {type: :boolean}
-      parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50}
+      parameter name: :perCategory, in: :query, required: false, schema: {type: :boolean},
+        description: "Apply `limit` to each category on its own rather than to the merged list, " \
+          "so the answer can hold up to `limit` entries per category"
+      parameter name: :limit, in: :query, required: false, schema: {type: :integer, minimum: 1, maximum: 50},
+        description: "Entries in the answer, or per category with `perCategory`"
 
       security [
         {SessionCookie: []},

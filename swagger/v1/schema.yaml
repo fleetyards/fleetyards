@@ -1479,6 +1479,8 @@ paths:
         required: false
         schema:
           type: boolean
+        description: Apply `limit` to each category on its own rather than to the
+          merged list, so the answer can hold up to `limit` entries per category
       - name: limit
         in: query
         required: false
@@ -1486,6 +1488,7 @@ paths:
           type: integer
           minimum: 1
           maximum: 50
+        description: Entries in the answer, or per category with `perCategory`
       security:
       - SessionCookie: []
       - Oauth2:
