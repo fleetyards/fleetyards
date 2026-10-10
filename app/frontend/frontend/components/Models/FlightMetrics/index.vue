@@ -221,7 +221,9 @@ const rotations = computed(() =>
       <div class="metrics-card__section-label">
         {{ t("labels.flight.boostCapacitor") }}
       </div>
-      <div class="metrics-card__rows metrics-card__rows--split">
+      <div
+        class="metrics-card__rows metrics-card__rows--split metrics-card__rows--stack-narrow"
+      >
         <div
           v-for="row in boostRows"
           :key="row.label"
@@ -238,7 +240,9 @@ const rotations = computed(() =>
       <div class="metrics-card__section-label">
         {{ t("labels.flight.fuel") }}
       </div>
-      <div class="metrics-card__rows metrics-card__rows--split">
+      <div
+        class="metrics-card__rows metrics-card__rows--split metrics-card__rows--stack-narrow"
+      >
         <div
           v-if="model.metrics.hydrogenFuelTankSize"
           class="metrics-card__row"

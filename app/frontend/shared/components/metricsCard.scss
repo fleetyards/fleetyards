@@ -52,8 +52,16 @@
         }
       }
 
+      // A label that wraps, like "Ship inventory" on a phone, takes the extra
+      // height itself, so the values in one row still line up.
       .metrics-card__tile {
+        display: flex;
+        flex-direction: column;
         padding: 12px 14px;
+      }
+
+      .metrics-card__tile__label {
+        flex-grow: 1;
       }
 
       // Flat, not the flex hero's container-relative scale. Track count differs
@@ -119,6 +127,23 @@
       // them. Assumes an even cell count — an odd trailing cell keeps its rule.
       .metrics-card__row:nth-last-child(-n + 2) {
         border-bottom: 0;
+      }
+    }
+
+    // Half a phone's width cannot hold a long label and its value side by side,
+    // so the value was cut off. Each row puts its label above its value there.
+    &--stack-narrow .metrics-card__row {
+      @media (max-width: 576px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+
+        .metrics-card__row__value {
+          max-width: 100%;
+          text-align: left;
+          white-space: normal;
+          overflow-wrap: anywhere;
+        }
       }
     }
   }
