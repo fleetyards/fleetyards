@@ -9,7 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
-            value: {type: :integer},
+            value: {type: [:integer, :null]},
             label: {type: :string}
           },
           additionalProperties: false

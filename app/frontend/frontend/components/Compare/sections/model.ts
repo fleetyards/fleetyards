@@ -169,7 +169,7 @@ export const useModelSections = (
     {
       key: "crew",
       label: t("model.crew"),
-      raw: (m) => m.crew.value,
+      raw: (m) => m.crew.value ?? undefined,
       value: (m) => number(m.crew.value, "people"),
     },
   ];

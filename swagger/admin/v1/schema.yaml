@@ -17866,7 +17866,9 @@ components:
       type: object
       properties:
         value:
-          type: integer
+          type:
+          - integer
+          - 'null'
         label:
           type: string
       additionalProperties: false
