@@ -310,13 +310,13 @@ class Notification < ApplicationRecord
       channels: %i[app]
     },
     # What officers want the whole fleet to read. It reaches every member, so
-    # mail and push wait for the member to ask for them -- the app badge and
-    # the dashboard already carry it.
+    # mail, push and Discord wait for the member to ask for them -- the app
+    # badge and the dashboard already carry it.
     fleet_announcement_posted: {
       retention: 30.days,
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
-      preference_defaults: {app: true, mail: false, push: false}
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     payout_ledger_settled: {
       retention: 90.days,
