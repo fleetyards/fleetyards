@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -54,21 +54,14 @@ describe("AdminNotificationsListItem", () => {
   });
 
   it("passes the row's events through", async () => {
-    const onToggle = vi.fn();
-    const onArchive = vi.fn();
     const wrapper = await mountWithDefaults(ListItem, {
-      props: {
-        notification: notification(),
-        selectable: true,
-        onToggle,
-        onArchive,
-      } as never,
+      props: { notification: notification(), selectable: true },
     });
 
     wrapper.findComponent(FormCheckbox).vm.$emit("update:modelValue", true);
     await wrapper.find('[aria-label="Archive"]').trigger("click");
 
-    expect(onToggle).toHaveBeenCalledWith(true);
-    expect(onArchive).toHaveBeenCalledOnce();
+    expect(wrapper.emitted("toggle")).toEqual([[true]]);
+    expect(wrapper.emitted("archive")).toHaveLength(1);
   });
 });

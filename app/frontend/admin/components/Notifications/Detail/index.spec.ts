@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   AdminNotificationSeverityEnum,
@@ -46,15 +46,14 @@ describe("AdminNotificationsDetail", () => {
   });
 
   it("passes the pane's events through", async () => {
-    const onUnread = vi.fn();
     const wrapper = await mountWithDefaults(Detail, {
-      props: { notification: notification(), onUnread } as never,
+      props: { notification: notification() },
     });
 
     await wrapper
       .find('[data-test="notification-detail-unread"]')
       .trigger("click");
 
-    expect(onUnread).toHaveBeenCalledOnce();
+    expect(wrapper.emitted("unread")).toHaveLength(1);
   });
 });

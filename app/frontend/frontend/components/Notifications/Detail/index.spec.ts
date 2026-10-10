@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
 import Detail from "./index.vue";
@@ -42,10 +42,8 @@ describe("NotificationsDetail", () => {
   });
 
   it("passes the pane's events through", async () => {
-    const onUnread = vi.fn();
-    const onArchive = vi.fn();
     const wrapper = await mountWithDefaults(Detail, {
-      props: { notification: notification(), onUnread, onArchive } as never,
+      props: { notification: notification() },
     });
 
     await wrapper
@@ -55,7 +53,7 @@ describe("NotificationsDetail", () => {
       .find('[data-test="notification-detail-archive"]')
       .trigger("click");
 
-    expect(onUnread).toHaveBeenCalledOnce();
-    expect(onArchive).toHaveBeenCalledOnce();
+    expect(wrapper.emitted("unread")).toHaveLength(1);
+    expect(wrapper.emitted("archive")).toHaveLength(1);
   });
 });

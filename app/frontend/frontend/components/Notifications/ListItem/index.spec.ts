@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
 import ListItem from "./index.vue";
@@ -34,16 +34,8 @@ describe("NotificationsListItem", () => {
   });
 
   it("passes the selection state and the row's events through", async () => {
-    const onSelect = vi.fn();
-    const onNext = vi.fn();
     const wrapper = await mountWithDefaults(ListItem, {
-      props: {
-        notification: notification(),
-        selectable: true,
-        selected: true,
-        onSelect,
-        onNext,
-      } as never,
+      props: { notification: notification(), selectable: true, selected: true },
     });
 
     expect(wrapper.classes()).toContain("notification-item--selected");
@@ -53,8 +45,8 @@ describe("NotificationsListItem", () => {
       .find('[data-test="notification-select"]')
       .trigger("keydown.down");
 
-    expect(onSelect).toHaveBeenCalledOnce();
-    expect(onNext).toHaveBeenCalledOnce();
+    expect(wrapper.emitted("select")).toHaveLength(1);
+    expect(wrapper.emitted("next")).toHaveLength(1);
   });
 
   it("offers to move an archived notification back", async () => {
