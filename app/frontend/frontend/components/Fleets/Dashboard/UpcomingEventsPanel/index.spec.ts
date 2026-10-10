@@ -92,9 +92,6 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     ).toHaveLength(1);
   });
 
-  // A recurring date is a page of the series, opened at that occurrence.
-  // An op that began this morning and runs until tonight is still the one the
-  // reader is in; one that already ended is not upcoming.
   // The dashboard's answer may reach past the two weeks, for the week shown.
   it("leaves out what starts past the next two weeks", async () => {
     items = [
@@ -109,6 +106,8 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     expect(titles(await mount())).toEqual(["Soon"]);
   });
 
+  // An op that began this morning and runs until tonight is still the one the
+  // reader is in; one that already ended is not upcoming.
   it("keeps what is underway and drops what has ended", async () => {
     const hoursAgo = (hours: number) =>
       new Date(Date.now() - hours * 3_600_000).toISOString();
@@ -132,6 +131,7 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     expect(titles(await mount())).toEqual(["Underway"]);
   });
 
+  // A recurring date is a page of the series, opened at that occurrence.
   it("links an occurrence to its series", async () => {
     items = [
       event({
