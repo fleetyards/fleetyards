@@ -60,6 +60,28 @@ export const useAdminNotificationInvalidation = () => {
   return { invalidate, invalidateUnreadCount, patchCached };
 };
 
+const TOAST_TAG_PREFIX = "admin-notification:";
+
+const toastTag = (id: string) => `${TOAST_TAG_PREFIX}${id}`;
+
+// A toast announces an unread notification, so reading, archiving or deleting
+// it on the notifications page takes the toast with it.
+export const useAdminNotificationToasts = () => {
+  const { dismissTagged } = useAppNotifications();
+
+  const dismiss = (ids: string[]) => {
+    const tags = ids.map(toastTag);
+
+    dismissTagged((tag) => tags.includes(tag));
+  };
+
+  const dismissAll = () => {
+    dismissTagged((tag) => tag.startsWith(TOAST_TAG_PREFIX));
+  };
+
+  return { dismiss, dismissAll };
+};
+
 // Subscribe once, from the navigation: the invalidation is global, so a page
 // listing notifications refreshes off this subscription too, and a second one
 // would only double every toast.
@@ -75,6 +97,7 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
       text: notification.title,
       timeout: 10_000,
       to: { name: "admin-notifications" },
+      tag: toastTag(notification.id),
     };
 
     switch (notification.severity) {
