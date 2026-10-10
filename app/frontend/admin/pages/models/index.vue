@@ -403,14 +403,9 @@ const unlistedCount = computed(
             toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
           }}</span>
         </template>
-        <template #col-minCrew="{ record }">
+        <template #col-crew="{ record }">
           <span class="no-break">{{
-            toNumber(record.crew.min || "", "people")
-          }}</span>
-        </template>
-        <template #col-maxCrew="{ record }">
-          <span class="no-break">{{
-            toNumber(record.crew.max || "", "people")
+            toNumber(record.crew.value || "", "people")
           }}</span>
         </template>
         <template #col-groundMaxSpeed="{ record }">

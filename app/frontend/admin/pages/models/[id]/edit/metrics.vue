@@ -50,8 +50,7 @@ const initialValues = ref<ModelUpdateInput>({
   extendedFleetchartOffsetBeam:
     props.model.metrics.extendedFleetchartOffsetBeam,
   mass: props.model.metrics.mass,
-  minCrew: props.model.crew.min,
-  maxCrew: props.model.crew.max,
+  crew: props.model.crew.value,
   scmSpeed: props.model.speeds.scmSpeed,
   scmSpeedBoosted: props.model.speeds.scmSpeedBoosted,
   maxSpeed: props.model.speeds.maxSpeed,
@@ -157,8 +156,7 @@ const applyScDimensions = () => {
   }
 };
 const [mass, massProps] = defineField("mass");
-const [minCrew, minCrewProps] = defineField("minCrew");
-const [maxCrew, maxCrewProps] = defineField("maxCrew");
+const [crew, crewProps] = defineField("crew");
 const [scmSpeed, scmSpeedProps] = defineField("scmSpeed");
 const [scmSpeedBoosted, scmSpeedBoostedProps] = defineField("scmSpeedBoosted");
 const [maxSpeed, maxSpeedProps] = defineField("maxSpeed");
@@ -483,27 +481,14 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
     <div class="row">
       <div class="col-12 col-md-4">
         <FormInput
-          v-model="minCrew"
-          v-bind="minCrewProps"
-          name="minCrew"
+          v-model="crew"
+          v-bind="crewProps"
+          name="crew"
           type="number"
           :step="1"
           clearable
           :alignment="InputAlignmentsEnum.RIGHT"
-          translation-key="model.minCrew"
-          :suffix="t('number.units.person')"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <FormInput
-          v-model="maxCrew"
-          v-bind="maxCrewProps"
-          name="maxCrew"
-          type="number"
-          :step="1"
-          clearable
-          :alignment="InputAlignmentsEnum.RIGHT"
-          translation-key="model.maxCrew"
+          translation-key="model.crew"
           :suffix="t('number.units.person')"
         />
       </div>

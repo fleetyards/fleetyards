@@ -55,7 +55,7 @@ const internalModel = computed(() => {
  * The fields are what the components actually read: eight on the panel itself,
  * plus everything `useModelMetricRows` touches for the expanded details - crew,
  * speeds, metrics, price, inGame. A first attempt with only the panel's eight
- * threw `reading 'min'` from that composable, so the shape is not optional.
+ * threw from that composable on the missing crew, so the shape is not optional.
  * Still a cast, because a complete Model would be pages of noise around them.
  */
 const model = computed(
@@ -70,7 +70,7 @@ const model = computed(
       focus: "Multi-Role",
       manufacturer: { name: "Roberts Space Industries" },
       media: { storeImage: { url: storeImage, mediumUrl: storeImage } },
-      crew: { min: 4, max: 6 },
+      crew: { value: 6, label: "6" },
       speeds: { scmSpeed: 195, maxSpeed: 1050, groundMaxSpeed: null },
       price: 6_000_000,
       metrics: {

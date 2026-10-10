@@ -36,24 +36,6 @@ export const useModelMetricRows = (
   model: () => Model,
   { t, toNumber, toUEC }: I18nHelpers,
 ) => {
-  const crew = computed(() => {
-    let { min, max } = model().crew;
-
-    if (min && min <= 0) {
-      min = undefined;
-    }
-
-    if (max && max <= 0) {
-      max = undefined;
-    }
-
-    if (min === max) {
-      return toNumber(model().crew.min, "people");
-    }
-
-    return toNumber([min, max].filter((item) => item).join(" - "), "people");
-  });
-
   // Ship-matrix speeds are not meaningful, so they are only shown for models
   // whose figures come from the game files. isGroundVehicle rather than a
   // classification check, matching FlightMetrics: a ground vehicle reports one
@@ -91,8 +73,9 @@ export const useModelMetricRows = (
       rows.push({ label: t("model.focus"), value: focus });
     }
 
-    if (model().crew.min || model().crew.max) {
-      rows.push({ label: t("model.crew"), value: crew.value });
+    const crew = model().crew.value;
+    if (crew && crew > 0) {
+      rows.push({ label: t("model.crew"), value: toNumber(crew, "people") });
     }
 
     return [...rows, ...speeds.value];

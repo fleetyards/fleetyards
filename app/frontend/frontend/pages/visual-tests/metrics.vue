@@ -18,7 +18,7 @@ const metricRowGroups = [
   {
     rows: [
       { label: "Focus", value: "Capital" },
-      { label: "Crew", value: "8 – 12" },
+      { label: "Crew", value: "12" },
     ],
   },
 ];

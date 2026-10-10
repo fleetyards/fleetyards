@@ -346,14 +346,9 @@ const resetSelected = () => {
           toNumber(record.model.metrics.cargo || "", "cargo")
         }}</span>
       </template>
-      <template #col-modelMinCrew="{ record }">
+      <template #col-modelCrew="{ record }">
         <span class="no-break">{{
-          toNumber(record.model.crew.min || "", "people")
-        }}</span>
-      </template>
-      <template #col-modelMaxCrew="{ record }">
-        <span class="no-break">{{
-          toNumber(record.model.crew.max || "", "people")
+          toNumber(record.model.crew.value || "", "people")
         }}</span>
       </template>
       <template #col-modelGroundMaxSpeed="{ record }">

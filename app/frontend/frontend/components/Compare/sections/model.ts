@@ -164,22 +164,13 @@ export const useModelSections = (
   );
 
   // ── Crew ────────────────────────────────────────────────────────────────────
-  // Fewer hands needed to fly is the advantage on min crew; more stations supported is
-  // the advantage on max.
+  // No direction: a bigger crew is neither better nor worse.
   const crewMetrics: CompareMetric<Model>[] = [
     {
-      key: "min-crew",
-      label: t("model.minCrew"),
-      direction: "lower",
-      raw: (m) => m.crew.min,
-      value: (m) => number(m.crew.min, "people"),
-    },
-    {
-      key: "max-crew",
-      label: t("model.maxCrew"),
-      direction: "higher",
-      raw: (m) => m.crew.max,
-      value: (m) => number(m.crew.max, "people"),
+      key: "crew",
+      label: t("model.crew"),
+      raw: (m) => m.crew.value,
+      value: (m) => number(m.crew.value, "people"),
     },
   ];
 

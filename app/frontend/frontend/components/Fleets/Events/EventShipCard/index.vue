@@ -109,9 +109,7 @@ const hasShipImage = computed(() => !!shipImage.value);
 const effectiveMinCrew = computed<number | null>(() => {
   const override = props.ship.filters?.minCrew;
   if (override != null) return override;
-  const model = props.ship.model as
-    { minCrew?: number | null } | null | undefined;
-  return model?.minCrew ?? null;
+  return props.ship.model?.crew ?? null;
 });
 
 const minCrewIsOverride = computed(

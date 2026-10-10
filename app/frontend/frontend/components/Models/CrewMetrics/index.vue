@@ -20,19 +20,11 @@ const { t, toNumber } = useI18n();
 
 <template>
   <MetricsCard :title="t('labels.metrics.crew')">
-    <div
-      class="metrics-card__hero metrics-card__hero--grid metrics-card__hero--grid-2"
-    >
+    <div class="metrics-card__hero">
       <div class="metrics-card__tile">
-        <div class="metrics-card__tile__label">{{ t("model.minCrew") }}</div>
+        <div class="metrics-card__tile__label">{{ t("model.crew") }}</div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(model.crew.min, "people") }}
-        </div>
-      </div>
-      <div class="metrics-card__tile">
-        <div class="metrics-card__tile__label">{{ t("model.maxCrew") }}</div>
-        <div class="metrics-card__tile__value">
-          {{ toNumber(model.crew.max, "people") }}
+          {{ toNumber(model.crew.value, "people") }}
         </div>
       </div>
     </div>

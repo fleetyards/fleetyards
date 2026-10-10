@@ -18,8 +18,7 @@ export enum ModelTableViewColsEnum {
   CARGO = "cargo",
   QUANTUM_FUEL = "quantumFuelTankSize",
   HYDROGEN_FUEL = "hydrogenFuelTankSize",
-  MIN_CREW = "minCrew",
-  MAX_CREW = "maxCrew",
+  CREW = "crew",
   SCM_SPEED = "scmSpeed",
   MAX_SPEED = "maxSpeed",
   GROUND_MAX_SPEED = "groundMaxSpeed",
@@ -73,7 +72,7 @@ export const useModelsStore = defineStore("models", {
       ModelTableViewColsEnum.HEIGHT,
       ModelTableViewColsEnum.MASS,
       ModelTableViewColsEnum.CARGO,
-      ModelTableViewColsEnum.MIN_CREW,
+      ModelTableViewColsEnum.CREW,
     ],
     sortFields: [
       ModelSortFieldsEnum.NAME,

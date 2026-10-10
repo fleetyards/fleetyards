@@ -196,7 +196,7 @@ const demoShip = {
   classificationLabel: "Exploration",
   productionStatus: "flight-ready",
   pledgePriceLabel: "$600",
-  crew: { minLabel: "4", maxLabel: "6" },
+  crew: { value: 6, label: "6" },
   manufacturer: { name: "Anvil Aerospace" },
   media: { storeImage: { smallUrl: storeImage } },
 } as unknown as Model;

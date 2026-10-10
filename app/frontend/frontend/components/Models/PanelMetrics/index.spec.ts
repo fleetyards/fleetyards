@@ -19,7 +19,7 @@ import PanelMetrics from "./index.vue";
 const model = (overrides: Record<string, unknown> = {}) =>
   ({
     focus: "Modular",
-    crew: { min: 1, max: 6 },
+    crew: { value: 6, label: "6" },
     inGame: true,
     speeds: { scmSpeed: 210, maxSpeed: 1125, groundMaxSpeed: 90 },
     metrics: {
