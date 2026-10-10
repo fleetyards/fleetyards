@@ -26,6 +26,10 @@ class FleetAnnouncement < ApplicationRecord
   belongs_to :fleet
   belongs_to :author, class_name: "User", optional: true
 
+  # Taking a post down takes it out of every inbox too: it is often taken down
+  # because it should not have been posted.
+  has_many :notifications, as: :record, dependent: :delete_all
+
   validates :body, presence: true, length: {maximum: BODY_LIMIT}
   validate :expires_in_the_future, if: -> { expires_at.present? }
   validate :within_active_limit, if: :becoming_active?

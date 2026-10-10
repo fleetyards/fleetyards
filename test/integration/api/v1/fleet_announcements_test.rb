@@ -273,6 +273,18 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
     refute FleetAnnouncement.exists?(announcement.id)
   end
 
+  # Often taken down because it should not have gone out: it leaves the inbox too.
+  test "DELETE announcement withdraws the notifications about it" do
+    announcement = create(:fleet_announcement, fleet: @fleet, author: @admin)
+    create(:notification, user: @member, notification_type: "fleet_announcement_posted", record: announcement)
+    other = create(:notification, user: @member, notification_type: "fleet_announcement_posted")
+
+    sign_in @officer
+    assert_api_response :delete, 204, path_params: {fleetSlug: @fleet.slug, id: announcement.id}
+
+    assert_equal [other.id], Notification.where(user: @member).pluck(:id)
+  end
+
   test "DELETE announcement refuses a plain member" do
     announcement = create(:fleet_announcement, fleet: @fleet, author: @admin)
 
