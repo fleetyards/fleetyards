@@ -1442,6 +1442,74 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/activity":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Activity
+      tags:
+      - Fleets
+      operationId: fleetActivity
+      parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/FleetActivityCategoryEnum"
+      - name: exclude
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - members
+            - events
+            - contracts
+            - inventory
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 50
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetActivitiesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/blueprints":
     parameters:
     - name: fleetSlug
@@ -23105,6 +23173,77 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
+    FleetActivitiesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetActivity"
+      required:
+      - items
+      title: FleetActivitiesList
+    FleetActivity:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/FleetActivityKindEnum"
+        category:
+          "$ref": "#/components/schemas/FleetActivityCategoryEnum"
+        occurredAt:
+          type: string
+          format: date-time
+        involvesViewer:
+          type: boolean
+        actor:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetActivityActor"
+          - type: 'null'
+        subject:
+          "$ref": "#/components/schemas/FleetActivitySubject"
+        inventory:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetActivityInventory"
+          - type: 'null'
+      required:
+      - id
+      - kind
+      - category
+      - occurredAt
+      - involvesViewer
+      - subject
+      title: FleetActivity
+    FleetActivityActor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+      required:
+      - id
+      - username
+      title: FleetActivityActor
+    FleetActivityCategoryEnum:
+      type: string
+      enum:
+      - members
+      - events
+      - contracts
+      - inventory
+      x-enumNames:
+      - MEMBERS
+      - EVENTS
+      - CONTRACTS
+      - INVENTORY
+      title: FleetActivityCategoryEnum
     FleetActivityEnum:
       type: string
       enum:
@@ -23138,6 +23277,79 @@ components:
       - TRADING
       - TRANSPORT
       title: FleetActivityEnum
+    FleetActivityInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - slug
+      - name
+      title: FleetActivityInventory
+    FleetActivityKindEnum:
+      type: string
+      enum:
+      - member_joined
+      - event_published
+      - event_cancelled
+      - contract_published
+      - contract_claimed
+      - contract_fulfilled
+      - inventory_transfer_completed
+      - inventory_item_deposited
+      - inventory_item_withdrawn
+      x-enumNames:
+      - MEMBER_JOINED
+      - EVENT_PUBLISHED
+      - EVENT_CANCELLED
+      - CONTRACT_PUBLISHED
+      - CONTRACT_CLAIMED
+      - CONTRACT_FULFILLED
+      - INVENTORY_TRANSFER_COMPLETED
+      - INVENTORY_ITEM_DEPOSITED
+      - INVENTORY_ITEM_WITHDRAWN
+      title: FleetActivityKindEnum
+    FleetActivitySubject:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/FleetActivitySubjectTypeEnum"
+        id:
+          type: string
+          format: uuid
+        slug:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+      required:
+      - type
+      - id
+      title: FleetActivitySubject
+    FleetActivitySubjectTypeEnum:
+      type: string
+      enum:
+      - member
+      - event
+      - contract
+      - inventory_transfer
+      - inventory_item
+      x-enumNames:
+      - MEMBER
+      - EVENT
+      - CONTRACT
+      - INVENTORY_TRANSFER
+      - INVENTORY_ITEM
+      title: FleetActivitySubjectTypeEnum
     FleetAlignmentEnum:
       type: string
       enum:
@@ -24492,6 +24704,10 @@ components:
           "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         viewerEventRole:
           "$ref": "#/components/schemas/FleetEventViewerRoleEnum"
+        viewerSignup:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetEventViewerSignup"
+          - type: 'null'
         archived:
           type: boolean
         archivedAt:
@@ -25500,6 +25716,21 @@ components:
       - ADMIN
       - MODERATOR
       title: FleetEventViewerRoleEnum
+    FleetEventViewerSignup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
+        occurrenceDate:
+          type: string
+          format: date
+      required:
+      - id
+      - status
+      title: FleetEventViewerSignup
     FleetEventVisibilityEnum:
       type: string
       enum:
@@ -26803,6 +27034,16 @@ components:
           type: boolean
         readBlueprints:
           type: boolean
+        readEvents:
+          type: boolean
+        createEvents:
+          type: boolean
+        readMissions:
+          type: boolean
+        readContracts:
+          type: boolean
+        createContracts:
+          type: boolean
         readRoles:
           type: boolean
         updateRoles:
@@ -26839,6 +27080,11 @@ components:
       - manageAllies
       - readVehicles
       - readBlueprints
+      - readEvents
+      - createEvents
+      - readMissions
+      - readContracts
+      - createContracts
       - readRoles
       - updateRoles
       - manageFleet

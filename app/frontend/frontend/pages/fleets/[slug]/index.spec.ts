@@ -62,6 +62,10 @@ vi.mock("@/services/fyApi", async () => {
       _params: unknown,
       options?: QueryOptions,
     ) => queryMock(options, publicAsked, () => publicSquadrons),
+    useFleetActivity: () => ({
+      data: computed(() => ({ items: [] })),
+      isLoading: ref(false),
+    }),
   };
 });
 
@@ -157,7 +161,7 @@ describe("FleetShow squadrons", () => {
   it("does not link a public squadron to the members-only page", async () => {
     const subject = await mount({ fleet: fleet() });
 
-    expect(subject.find("a.squadron").exists()).toBe(false);
+    expect(subject.find("a.squadron-strip__item").exists()).toBe(false);
   });
 
   it("shows a size only where the fleet shares it", async () => {
@@ -363,5 +367,53 @@ describe("FleetShow setup tour", () => {
 
     expect(guideButton()).toBeNull();
     expect(openedFor()).toEqual([]);
+  });
+});
+
+describe("FleetShow dashboard", () => {
+  it("gives a member the dashboard in place of the introduction", async () => {
+    const subject = await mount({
+      fleet: { ...fleet(), description: "We **haul**." } as Fleet,
+      membership: member(),
+    });
+
+    expect(subject.find("[data-test='fleet-dashboard']").exists()).toBe(true);
+    expect(
+      subject.find("[data-test='fleet-dashboard-about']").text(),
+    ).toContain("haul");
+    expect(subject.find(".heading--compact").exists()).toBe(true);
+  });
+
+  it("keeps the introduction for a visitor", async () => {
+    const subject = await mount({ fleet: fleet() });
+
+    expect(subject.find("[data-test='fleet-dashboard']").exists()).toBe(false);
+    expect(subject.find(".heading--compact").exists()).toBe(false);
+  });
+
+  it("keeps the introduction for somebody who only asked to join", async () => {
+    const subject = await mount({
+      fleet: fleet(),
+      membership: {
+        ...member(),
+        status: FleetMembershipStatusEnum.REQUESTED,
+      } as FleetMember,
+    });
+
+    expect(subject.find("[data-test='fleet-dashboard']").exists()).toBe(false);
+  });
+
+  // The member fixture reads squadrons and nothing else, so every panel that
+  // needs a module or a capability stays away rather than asking and failing,
+  // and the feed, which has nothing to tell, is not drawn as an empty box.
+  it("shows a member only the panels their role can read", async () => {
+    const subject = await mount({
+      fleet: { ...fleet(), description: "We haul." } as Fleet,
+      membership: member(),
+    });
+
+    expect(tests(subject, "fleet-dashboard-").sort()).toEqual([
+      "fleet-dashboard-about",
+    ]);
   });
 });

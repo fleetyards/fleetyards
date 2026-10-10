@@ -77,6 +77,42 @@ class Api::V1::FleetsCalendarShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A recurring signup names its day, so only that occurrence carries it, and a
+  # withdrawn one is no longer the reader's plan at all.
+  test "GET /fleets/:slug/calendar carries the reader's own signup per occurrence" do
+    travel_to Time.zone.parse("2026-05-13 20:00:00 UTC")
+
+    member = create(:user)
+    membership = create(:fleet_membership, :accepted, fleet: @fleet, user: member)
+    weekly = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly",
+      starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"), timezone: "UTC",
+      recurring: true, recurrence_interval: "weekly")
+    one_off = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "One-off",
+      starts_at: Time.zone.parse("2026-05-16 20:00:00 UTC"))
+    withdrawn = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Withdrawn",
+      starts_at: Time.zone.parse("2026-05-17 20:00:00 UTC"))
+
+    create(:fleet_event_signup, fleet_event: weekly, fleet_event_slot: nil, fleet_membership: membership,
+      status: "tentative", occurrence_date: Date.new(2026, 5, 21))
+    create(:fleet_event_signup, fleet_event: one_off, fleet_event_slot: nil, fleet_membership: membership)
+    create(:fleet_event_signup, fleet_event: withdrawn, fleet_event_slot: nil, fleet_membership: membership,
+      status: "withdrawn")
+
+    sign_in member
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {from: "2026-05-13", to: "2026-05-30"} do
+      signups = parsed_body["items"].to_h do |entry|
+        [[entry["title"], entry["occurrenceDate"]], entry.dig("viewerSignup", "status")]
+      end
+
+      assert_nil signups[["Weekly", "2026-05-14"]]
+      assert_equal "tentative", signups[["Weekly", "2026-05-21"]]
+      assert_equal "confirmed", signups[["One-off", nil]]
+      assert_nil signups[["Withdrawn", nil]]
+    end
+  end
+
   test "GET /fleets/:slug/calendar with OAuth bearer token" do
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},

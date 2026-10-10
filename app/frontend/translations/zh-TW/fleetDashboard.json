@@ -1,0 +1,82 @@
+{
+  "zh-TW": {
+    "fleetDashboard": {
+      "showAll": "查看全部",
+      "empty": "暫無內容。",
+      "unnamed": "未命名",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "最新動態",
+        "showMore": "查看更早的動態",
+        "you": "你",
+        "kinds": {
+          "member_joined": "加入了艦隊",
+          "event_published": "活動已發布",
+          "event_cancelled": "活動已取消",
+          "contract_published": "合約已發布",
+          "contract_claimed": "合約已認領",
+          "contract_fulfilled": "合約已完成",
+          "inventory_transfer_completed": "轉移已完成",
+          "inventory_item_deposited": "已存入",
+          "inventory_item_withdrawn": "已取出"
+        }
+      },
+      "events": {
+        "title": "即將到來的活動",
+        "signUp": "報名"
+      },
+      "actionQueue": {
+        "title": "待你處理",
+        "joinRequests": {
+          "one": "%{count} 個入隊申請",
+          "other": "%{count} 個入隊申請"
+        },
+        "pendingTransfers": {
+          "one": "%{count} 個待處理的轉入",
+          "other": "%{count} 個待處理的轉入"
+        }
+      },
+      "contracts": {
+        "title": "合約",
+        "mine": "你的工作",
+        "open": "可接取"
+      },
+      "inventory": {
+        "title": "庫存",
+        "empty": "最近沒有庫存變動。",
+        "emptyMine": "最近沒有與你相關的變動。",
+        "mine": "我的",
+        "fleet": "艦隊"
+      },
+      "newMembers": {
+        "title": "新成員"
+      },
+      "about": {
+        "title": "關於艦隊"
+      },
+      "getStarted": {
+        "title": "動起來",
+        "events": {
+          "title": "未來兩週沒有安排",
+          "hintCreate": "在日曆上安排一次行動，成員即可立即報名。",
+          "hint": "查看活動頁面了解之後的安排。",
+          "action": "安排活動",
+          "link": "活動"
+        },
+        "contracts": {
+          "title": "沒有開放的合約",
+          "hintCreate": "發布一項工作，成員即可接取。",
+          "hint": "在合約面板查看以往的工作。",
+          "action": "發布合約",
+          "link": "合約"
+        }
+      },
+      "week": {
+        "emptyDay": "%{day} 沒有安排。"
+      }
+    }
+  }
+}

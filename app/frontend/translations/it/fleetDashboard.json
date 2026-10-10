@@ -1,0 +1,82 @@
+{
+  "it": {
+    "fleetDashboard": {
+      "showAll": "Mostra tutto",
+      "empty": "Ancora niente qui.",
+      "unnamed": "Senza titolo",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Ultimi aggiornamenti",
+        "showMore": "Mostra aggiornamenti precedenti",
+        "you": "Tu",
+        "kinds": {
+          "member_joined": "Si è unito alla flotta",
+          "event_published": "Evento pubblicato",
+          "event_cancelled": "Evento annullato",
+          "contract_published": "Contratto pubblicato",
+          "contract_claimed": "Contratto preso in carico",
+          "contract_fulfilled": "Contratto completato",
+          "inventory_transfer_completed": "Trasferimento completato",
+          "inventory_item_deposited": "Depositato",
+          "inventory_item_withdrawn": "Prelevato"
+        }
+      },
+      "events": {
+        "title": "Prossimi eventi",
+        "signUp": "Iscriviti"
+      },
+      "actionQueue": {
+        "title": "Richiede la tua attenzione",
+        "joinRequests": {
+          "one": "%{count} richiesta di adesione",
+          "other": "%{count} richieste di adesione"
+        },
+        "pendingTransfers": {
+          "one": "%{count} trasferimento in entrata da gestire",
+          "other": "%{count} trasferimenti in entrata da gestire"
+        }
+      },
+      "contracts": {
+        "title": "Contratti",
+        "mine": "Il tuo lavoro",
+        "open": "Disponibili"
+      },
+      "inventory": {
+        "title": "Inventario",
+        "empty": "Nessun movimento di inventario di recente.",
+        "emptyMine": "Di recente non si è mosso nulla di tuo.",
+        "mine": "Miei",
+        "fleet": "Flotta"
+      },
+      "newMembers": {
+        "title": "Nuovi membri"
+      },
+      "about": {
+        "title": "Informazioni sulla flotta"
+      },
+      "getStarted": {
+        "title": "Datti da fare",
+        "events": {
+          "title": "Niente in programma nelle prossime due settimane",
+          "hintCreate": "Metti un'operazione in calendario e i membri potranno iscriversi subito.",
+          "hint": "Controlla la pagina degli eventi per quelli più avanti.",
+          "action": "Pianifica un evento",
+          "link": "Eventi"
+        },
+        "contracts": {
+          "title": "Nessun contratto aperto",
+          "hintCreate": "Pubblica un lavoro che i membri possono prendere in carico.",
+          "hint": "Sfoglia i lavori passati nella bacheca dei contratti.",
+          "action": "Pubblica un contratto",
+          "link": "Contratti"
+        }
+      },
+      "week": {
+        "emptyDay": "Niente in programma il %{day}."
+      }
+    }
+  }
+}

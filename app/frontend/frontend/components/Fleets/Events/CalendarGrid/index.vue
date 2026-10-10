@@ -33,10 +33,15 @@ type Props = {
   fleet: Fleet;
   events: FleetEvent[];
   view?: CalendarViewKind;
+  // A single row of this week, for a page that shows the calendar beside other
+  // things: the reader's place in the URL, the view switch and creating an
+  // event by clicking a day all belong to the events page itself.
+  compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   view: "month",
+  compact: false,
 });
 const emit = defineEmits<{
   "update:range": [{ start: Date; end: Date }];
@@ -52,14 +57,19 @@ const { resolve: resolveCover } = useMissionCover();
 const calendarEl = ref<HTMLElement | null>(null);
 let ec: EventCalendarInstance | null = null;
 
-type CalendarLibView = "dayGridMonth" | "timeGridWeek";
+type CalendarLibView = "dayGridMonth" | "timeGridWeek" | "dayGridWeek";
 
-const toLibView = (v: CalendarViewKind): CalendarLibView =>
-  v === "week" ? "timeGridWeek" : "dayGridMonth";
+const toLibView = (v: CalendarViewKind): CalendarLibView => {
+  if (props.compact) return "dayGridWeek";
+
+  return v === "week" ? "timeGridWeek" : "dayGridMonth";
+};
 
 const route = useRoute();
 
 const initialDate = (() => {
+  if (props.compact) return new Date();
+
   const q = route.query.date;
   if (typeof q === "string") {
     const parsed = parseISO(q);
@@ -69,6 +79,10 @@ const initialDate = (() => {
 })();
 
 const titleLabel = ref("");
+
+// The first day the view shows. A week is named by its Monday, where the
+// calendar's own date is whatever day it was opened on.
+let rangeStart: Date | null = null;
 
 type CategoryStyle = { icon: string; color: string };
 
@@ -139,7 +153,10 @@ const renderEventChip = (info: {
   view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  const isMonth = info.view.type === "dayGridMonth";
+  // The compact week has a whole column per day and one row of them, room
+  // enough for the cover; a month's cells are not.
+  const isCard = info.view.type === "dayGridWeek";
+  const isMonth = !info.view.type.startsWith("timeGrid") && !isCard;
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
@@ -168,6 +185,7 @@ const renderEventChip = (info: {
       chip.style.backgroundImage = `url(${cover})`;
       chip.classList.add("fy-event-chip--with-cover");
     }
+    if (isCard) chip.classList.add("fy-event-chip--card");
   }
 
   if (info.timeText) {
@@ -190,12 +208,12 @@ const updateTitle = () => {
   if (!date) return;
   const d = date instanceof Date ? date : new Date(date);
   const locale = i18nStore.locale;
-  if (props.view === "week") {
+  if (props.view === "week" || props.compact) {
     const formatted = new Intl.DateTimeFormat(locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
-    }).format(d);
+    }).format(rangeStart ?? d);
     titleLabel.value = t("labels.fleets.events.calendar.weekTitle", {
       date: formatted,
     });
@@ -210,6 +228,8 @@ const updateTitle = () => {
 // One-way: calendar drives the `date` query param. We never watch it back
 // onto the calendar (would create a feedback loop with datesSet).
 const syncDateToUrl = () => {
+  if (props.compact) return;
+
   const date = ec?.getOption("date") as Date | string | undefined;
   if (!date) return;
   const d = date instanceof Date ? date : new Date(date);
@@ -247,8 +267,8 @@ onMounted(() => {
     height: "auto",
     dayMaxEvents: true,
     nowIndicator: true,
-    selectable: true,
-    selectMirror: true,
+    selectable: !props.compact,
+    selectMirror: !props.compact,
     slotDuration: "01:00:00",
     slotHeight: 56,
     slotMinTime: "08:00:00",
@@ -273,13 +293,16 @@ onMounted(() => {
       }
     },
     dateClick: (info: { date: Date }) => {
+      if (props.compact) return;
       emit("create-event", info.date);
     },
     select: (info: { start: Date }) => {
+      if (props.compact) return;
       emit("create-event", info.start);
     },
     datesSet: (info: { start: Date; end: Date }) => {
       emit("update:range", { start: info.start, end: info.end });
+      rangeStart = info.start;
       updateTitle();
       syncDateToUrl();
     },
@@ -350,7 +373,7 @@ onUnmounted(() => {
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
-        <BtnGroup segmented data-test="calendar-view-switch">
+        <BtnGroup v-if="!compact" segmented data-test="calendar-view-switch">
           <Btn :active="props.view === 'month'" @click="setView('month')">
             {{ t("labels.fleets.events.calendar.month") }}
           </Btn>
@@ -551,6 +574,30 @@ onUnmounted(() => {
     min-height: 1.5rem;
     background-color: rgb(66 139 202 / 0.85);
     color: #fff;
+  }
+
+  // Compact week: the same card as the week view's, sized by its content
+  // rather than by a time slot, with room for a title on two lines.
+  :deep(.fy-event-chip--card) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 2px;
+    min-height: 64px;
+    padding: 6px 8px;
+    background-color: rgb(66 139 202 / 0.85);
+    color: #fff;
+  }
+
+  :deep(.fy-event-chip--card .fy-event-chip__time) {
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  :deep(.fy-event-chip--card .fy-event-chip__title) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
   }
 
   :deep(.fy-event-chip--with-cover) {

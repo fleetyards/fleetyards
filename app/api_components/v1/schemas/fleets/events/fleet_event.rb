@@ -40,6 +40,7 @@ module V1
               cancelledReason: {type: :string},
               signupApproval: ::V1::Schemas::Enums::FleetEventSignupApprovalEnum,
               viewerEventRole: ::V1::Schemas::Enums::FleetEventViewerRoleEnum,
+              viewerSignup: {anyOf: [::V1::Schemas::Fleets::Events::FleetEventViewerSignup, {type: :null}]},
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
               externalUid: {type: :string, format: :uuid},

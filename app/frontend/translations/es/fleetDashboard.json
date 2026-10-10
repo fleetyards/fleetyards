@@ -1,0 +1,82 @@
+{
+  "es": {
+    "fleetDashboard": {
+      "showAll": "Ver todo",
+      "empty": "Todavía no hay nada aquí.",
+      "unnamed": "Sin título",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "Últimas novedades",
+        "showMore": "Ver novedades anteriores",
+        "you": "Tú",
+        "kinds": {
+          "member_joined": "Se unió a la flota",
+          "event_published": "Evento publicado",
+          "event_cancelled": "Evento cancelado",
+          "contract_published": "Contrato publicado",
+          "contract_claimed": "Contrato aceptado",
+          "contract_fulfilled": "Contrato cumplido",
+          "inventory_transfer_completed": "Transferencia completada",
+          "inventory_item_deposited": "Depositado",
+          "inventory_item_withdrawn": "Retirado"
+        }
+      },
+      "events": {
+        "title": "Próximos eventos",
+        "signUp": "Apuntarse"
+      },
+      "actionQueue": {
+        "title": "Requiere tu atención",
+        "joinRequests": {
+          "one": "%{count} solicitud de ingreso",
+          "other": "%{count} solicitudes de ingreso"
+        },
+        "pendingTransfers": {
+          "one": "%{count} transferencia entrante por responder",
+          "other": "%{count} transferencias entrantes por responder"
+        }
+      },
+      "contracts": {
+        "title": "Contratos",
+        "mine": "Tu trabajo",
+        "open": "Disponibles"
+      },
+      "inventory": {
+        "title": "Inventario",
+        "empty": "No ha habido movimientos de inventario últimamente.",
+        "emptyMine": "No se ha movido nada tuyo últimamente.",
+        "mine": "Míos",
+        "fleet": "Flota"
+      },
+      "newMembers": {
+        "title": "Nuevos miembros"
+      },
+      "about": {
+        "title": "Sobre la flota"
+      },
+      "getStarted": {
+        "title": "Pon las cosas en marcha",
+        "events": {
+          "title": "Nada planeado para las próximas dos semanas",
+          "hintCreate": "Pon una operación en el calendario y los miembros podrán apuntarse enseguida.",
+          "hint": "Consulta la página de eventos para ver lo que viene más adelante.",
+          "action": "Planear un evento",
+          "link": "Eventos"
+        },
+        "contracts": {
+          "title": "No hay contratos abiertos",
+          "hintCreate": "Publica un trabajo y los miembros podrán aceptarlo.",
+          "hint": "Revisa trabajos anteriores en el tablón de contratos.",
+          "action": "Publicar un contrato",
+          "link": "Contratos"
+        }
+      },
+      "week": {
+        "emptyDay": "Nada previsto el %{day}."
+      }
+    }
+  }
+}

@@ -46,8 +46,7 @@ export const useFleetNavAccess = (
 
   const sessionStore = useSessionStore();
 
-  const { isFeatureEnabled, isFleetFeatureEnabled, isFleetSquadronsEnabled } =
-    useFeatures();
+  const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
 
   const fleetSlug = computed(() => route.params.slug as string);
 
@@ -98,7 +97,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasLogisticsAccess.value &&
-      isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS),
+      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_LOGISTICS),
   );
 
   // No feature flag and no subscription: the fleet's list of what its members

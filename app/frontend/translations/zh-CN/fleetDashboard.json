@@ -1,0 +1,82 @@
+{
+  "zh-CN": {
+    "fleetDashboard": {
+      "showAll": "查看全部",
+      "empty": "暂无内容。",
+      "unnamed": "未命名",
+      "formats": {
+        "weekday": "EEE",
+        "day": "d"
+      },
+      "activity": {
+        "title": "最新动态",
+        "showMore": "查看更早的动态",
+        "you": "你",
+        "kinds": {
+          "member_joined": "加入了舰队",
+          "event_published": "活动已发布",
+          "event_cancelled": "活动已取消",
+          "contract_published": "合同已发布",
+          "contract_claimed": "合同已认领",
+          "contract_fulfilled": "合同已完成",
+          "inventory_transfer_completed": "转移已完成",
+          "inventory_item_deposited": "已存入",
+          "inventory_item_withdrawn": "已取出"
+        }
+      },
+      "events": {
+        "title": "即将到来的活动",
+        "signUp": "报名"
+      },
+      "actionQueue": {
+        "title": "待你处理",
+        "joinRequests": {
+          "one": "%{count} 个入队申请",
+          "other": "%{count} 个入队申请"
+        },
+        "pendingTransfers": {
+          "one": "%{count} 个待处理的转入",
+          "other": "%{count} 个待处理的转入"
+        }
+      },
+      "contracts": {
+        "title": "合同",
+        "mine": "你的工作",
+        "open": "可接取"
+      },
+      "inventory": {
+        "title": "库存",
+        "empty": "最近没有库存变动。",
+        "emptyMine": "最近没有与你相关的变动。",
+        "mine": "我的",
+        "fleet": "舰队"
+      },
+      "newMembers": {
+        "title": "新成员"
+      },
+      "about": {
+        "title": "关于舰队"
+      },
+      "getStarted": {
+        "title": "动起来",
+        "events": {
+          "title": "未来两周没有安排",
+          "hintCreate": "在日历上安排一次行动，成员即可立即报名。",
+          "hint": "查看活动页面了解之后的安排。",
+          "action": "安排活动",
+          "link": "活动"
+        },
+        "contracts": {
+          "title": "没有开放的合同",
+          "hintCreate": "发布一项工作，成员即可接取。",
+          "hint": "在合同面板查看以往的工作。",
+          "action": "发布合同",
+          "link": "合同"
+        }
+      },
+      "week": {
+        "emptyDay": "%{day} 没有安排。"
+      }
+    }
+  }
+}
