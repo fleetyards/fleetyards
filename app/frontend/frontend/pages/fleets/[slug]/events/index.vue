@@ -30,7 +30,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useEventPlanner } from "@/frontend/composables/useDraftCreate";
+import { useEventPlanner } from "@/frontend/composables/useEventPlanner";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import {
   type EventCalendarView,

@@ -14,7 +14,7 @@ import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vu
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useEventPlanner } from "@/frontend/composables/useDraftCreate";
+import { useEventPlanner } from "@/frontend/composables/useEventPlanner";
 import {
   FleetEventStatusEnum,
   useFleetCalendar,
