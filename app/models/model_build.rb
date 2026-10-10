@@ -48,16 +48,15 @@ class ModelBuild < ApplicationRecord
   # excluded with the shapes: it classifies the ship rather than measuring it.
   DIFFABLE_FACTS = (FACTS - STRUCTURED_FACTS - %i[ground]).freeze
 
-  # Facts that joined after builds were already being written, and when. A build
-  # last written before then never had the chance to record one, so its nil says
-  # nothing about the ship, and a diff against it would report the fact appearing
-  # on every model at once.
-  FACTS_SINCE = {crew: Time.utc(2026, 10, 11)}.freeze
+  # Facts that joined after builds were already being written. A build from
+  # before then holds nil for them, which says nothing about the ship, so a diff
+  # skips a side without one rather than report the fact appearing on every
+  # model at once. Telling those builds apart by timestamp does not work: any
+  # later write to the row, an admin correction included, bumps `updated_at`.
+  LATE_FACTS = %i[crew].freeze
 
-  def self.fact_recorded?(fact, written_at)
-    since = FACTS_SINCE[fact]
-
-    since.nil? || written_at.nil? || written_at >= since
+  def self.fact_recorded?(fact, value)
+    !value.nil? || LATE_FACTS.exclude?(fact)
   end
 
   # The facts Model filters and sorts by, which is every one of them that

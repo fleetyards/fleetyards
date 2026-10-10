@@ -109,22 +109,24 @@ class ModelBuildChangeTest < ActiveSupport::TestCase
     assert_equal 1200, change.new_value
   end
 
-  test ".record! ignores a fact the previous build was written too early to record" do
+  test ".record! ignores a late fact the previous build never recorded" do
     previous = previous_build(scm_speed: 210, crew: nil)
-    previous.update_columns(updated_at: ModelBuild::FACTS_SINCE[:crew] - 1.day)
+    previous.touch
     build = current_build(scm_speed: 210, crew: 4)
 
     assert_equal 0, ModelBuildChange.record!(build)
   end
 
-  test ".record! records a fact the previous build could have recorded" do
-    previous = previous_build(scm_speed: 210, crew: nil)
-    previous.update_columns(updated_at: ModelBuild::FACTS_SINCE[:crew] + 1.day)
+  test ".record! records a late fact both builds carry" do
+    previous_build(scm_speed: 210, crew: 3)
     build = current_build(scm_speed: 210, crew: 4)
 
     ModelBuildChange.record!(build)
 
-    assert_equal "crew", ModelBuildChange.sole.field
+    change = ModelBuildChange.sole
+    assert_equal "crew", change.field
+    assert_equal 3, change.old_value
+    assert_equal 4, change.new_value
   end
 
   private def previous_build(attributes)

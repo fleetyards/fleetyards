@@ -164,7 +164,7 @@ module ScData
     private def recorded_by_both?(fact, before, after)
       return true unless build_class.respond_to?(:fact_recorded?)
 
-      build_class.fact_recorded?(fact, before["updated_at"]) && build_class.fact_recorded?(fact, after["updated_at"])
+      build_class.fact_recorded?(fact, before[fact.to_s]) && build_class.fact_recorded?(fact, after[fact.to_s])
     end
 
     # Both sides are read once and compared in Ruby rather than joined in SQL:
@@ -180,7 +180,7 @@ module ScData
     end
 
     private def rows_for(source)
-      columns = ([subject_key] + facts.map(&:to_s) + ["name", "updated_at"] + (figures? ? ["durability"] : [])).uniq
+      columns = ([subject_key] + facts.map(&:to_s) + ["name"] + (figures? ? ["durability"] : [])).uniq
         .select { |column| build_class.column_names.include?(column) }
 
       build_class
