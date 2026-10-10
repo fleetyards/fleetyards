@@ -2672,7 +2672,8 @@
           "syncedHangarFlair": "已同步機庫裝飾",
           "missingUpgrades": "未找到升級",
           "missingUpgradeVehicles": "未找到匹配的飛船用於升級"
-        }
+        },
+        "incomplete": "您的 RSI 機庫中有部分物品無法讀取，因此本次未找到的飛船保持不變。"
       },
       "cargoGridViewer": {
         "capacity": "容量",

@@ -67,6 +67,7 @@ class HangarSync < HangarImporter
     outcome = sync_outcome
     output = (outcome == "synced") ? sync_everything(import) : (SUMMARY_KEYS + WARNING_KEYS).index_with { [] }
     output[:outcome] = outcome
+    output[:incomplete] = true if import.unread_pages.any?
 
     import.update!(output:)
 
@@ -184,6 +185,8 @@ class HangarSync < HangarImporter
 
       "- #{I18n.t("notifications.hangar_sync_finished.summary.#{key}")}: **#{items.size}** (#{listed_items(items)})"
     end
+
+    warnings << "- #{I18n.t("notifications.hangar_sync_finished.incomplete")}" if output[:incomplete]
 
     lines = [I18n.t("notifications.hangar_sync_finished.body")]
     lines += ["", *counts] if counts.present?
@@ -387,6 +390,10 @@ class HangarSync < HangarImporter
     # hangar would go with them. A hangar whose ships really are all gone keeps
     # them, listed as unchanged.
     return outcome.merge(unchanged_vehicles: scope.pluck(:id)) unless recognised_any
+
+    # The parser could not read every item, and any one of them may be a ship.
+    # It would read as gone, so this run leaves the unmatched ones as they are.
+    return outcome.merge(unchanged_vehicles: scope.pluck(:id)) if @import&.unread_pages&.any?
 
     case @import&.unmatched_vehicles_action
     when "keep" then outcome.merge(unchanged_vehicles: scope.pluck(:id))
@@ -668,7 +675,7 @@ class HangarSync < HangarImporter
   private def sync_pledge_items(user)
     return {} if @cancelled || @import&.cancel_requested?
 
-    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds).run
+    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, keep_unlisted: @import&.unread_pages&.any?).run
   end
 
   private def pledge_item_kinds

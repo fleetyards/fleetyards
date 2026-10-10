@@ -34,6 +34,15 @@ export const reportDetail = (detail: string) =>
     .join("")
     .trim();
 
+// The details a report or a sync may send, in the form the server takes.
+export const reportDetails = (details: string[]) =>
+  details.map(reportDetail).filter(Boolean).slice(0, MAX_DETAILS);
+
+// A version the server would refuse is left out rather than sent: on a sync it
+// would refuse the whole sync with it.
+export const reportExtensionVersion = (version?: string) =>
+  version && /^[0-9A-Za-z.+-]{1,32}$/.test(version) ? version : undefined;
+
 // Tells the admins a sync met an RSI page its parser no longer recognises,
 // once the extension confirms the RSI session is still there. The report itself
 // is fired and forgotten: the sync has already stopped. No query hook: the
@@ -62,10 +71,7 @@ export const useRsiPageReport = () => {
       return RsiPageReportOutcome.SIGNED_OUT;
     }
 
-    const details = report.details
-      ?.map(reportDetail)
-      .filter(Boolean)
-      .slice(0, MAX_DETAILS);
+    const details = report.details && reportDetails(report.details);
 
     reportRsiPage({
       ...report,

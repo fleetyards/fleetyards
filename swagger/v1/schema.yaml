@@ -30195,6 +30195,8 @@ components:
             format: uuid
         outcome:
           "$ref": "#/components/schemas/HangarSyncOutcomeEnum"
+        incomplete:
+          type: boolean
       additionalProperties: false
       required:
       - importedVehicles
@@ -36678,6 +36680,30 @@ components:
       - SKIN
       - FLAIR
       title: RsiHangarItemKindEnum
+    RsiHangarUnreadPageInput:
+      type: object
+      properties:
+        check:
+          "$ref": "#/components/schemas/RsiPageCheckEnum"
+        pageNumber:
+          type: integer
+          minimum: 1
+        details:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            pattern: "^[^`\\r\\n]{1,200}$"
+        markup:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+            maxLength: 20000
+      additionalProperties: false
+      required:
+      - check
+      title: RsiHangarUnreadPageInput
     RsiPageCheckEnum:
       type: string
       enum:
@@ -37611,6 +37637,14 @@ components:
         unmatchedHangarGroupId:
           type: string
           format: uuid
+        extensionVersion:
+          type: string
+          pattern: "^[0-9A-Za-z.+-]{1,32}$"
+        unreadPages:
+          type: array
+          maxItems: 5
+          items:
+            "$ref": "#/components/schemas/RsiHangarUnreadPageInput"
       title: SyncRsiHangarInput
     Terminal:
       type: object

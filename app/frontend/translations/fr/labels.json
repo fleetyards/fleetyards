@@ -2672,7 +2672,8 @@
           "syncedHangarFlair": "Décorations de hangar synchronisées",
           "missingUpgrades": "Améliorations non trouvées",
           "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations"
-        }
+        },
+        "incomplete": "Certains éléments de votre hangar RSI n'ont pas pu être lus, les vaisseaux manquants ont donc été laissés tels quels cette fois-ci."
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

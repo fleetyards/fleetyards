@@ -27,6 +27,7 @@ it:
         missing_component_vehicles: Nessuna nave corrispondente per i componenti
         missing_upgrades: Upgrade non trovati
         missing_upgrade_vehicles: Nessuna nave corrispondente per gli upgrade
+      incomplete: "Alcuni elementi del tuo hangar RSI non sono stati letti, quindi questa volta le navi mancanti sono state lasciate come erano."
     hangar_sync_failed:
       title: Sincronizzazione hangar fallita
       body: 'La sincronizzazione del tuo hangar RSI è fallita: %{error}'

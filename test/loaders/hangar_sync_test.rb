@@ -151,6 +151,27 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_includes result[:unchanged_vehicles], @jav_ship.id
     end
 
+    test "leaves what it did not find alone when the parser could not read every item" do
+      unread = {unread_pages: [{check: "missing_kinds", page_number: 3, details: ["item without kind"]}]}.to_json
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, unmatched_vehicles_action: "delete", import_data: unread)
+
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+      assert_equal [], result[:deleted_vehicles]
+      assert_equal [@jav_ship.id], result[:unchanged_vehicles]
+      assert result[:incomplete]
+      assert import.reload.finished?
+      assert_includes Notification.where(user: @user, notification_type: "hangar_sync_finished").sole.body,
+        I18n.t("notifications.hangar_sync_finished.incomplete")
+    end
+
+    test "says nothing about unread items after a sync that read every one" do
+      result = run_with(unmatched_vehicles_action: "delete")
+
+      assert_nil result[:incomplete]
+    end
+
     # Ships the user added by hand and RSI lists only new models: the run
     # matched none of them, but it did recognise ships, so the choice applies.
     test "acts on what it did not find when it only imported new ships" do
@@ -499,6 +520,18 @@ class HangarSyncTest < ActiveSupport::TestCase
 
       assert_not @user.hangar_pledge_items.exists?(name: "Poster - Banu Merchantman")
       assert_equal first_seen, @user.hangar_pledge_items.flair.find_by!(name: "Space Globe - Terra").created_at
+    end
+
+    test "keeps paints and flair it did not see when the parser could not read every item" do
+      ::HangarSync.new(@input).run(@user.id)
+      stored_ids = @user.hangar_pledge_items.pluck(:id).sort
+
+      without_paints = @input.reject { |item| item["type"] == "skin" || item["name"] == "Space Globe - Terra" }
+      unread = {unread_pages: [{check: "unknown_kinds", page_number: 1, details: ['unknown kind "Livery"']}]}.to_json
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: without_paints, import_data: unread)
+      ::HangarSync.new(without_paints).run_with_import(import)
+
+      assert_equal stored_ids, @user.hangar_pledge_items.pluck(:id).sort
     end
 
     test "leaves the stored paints alone when the run does not sync them" do

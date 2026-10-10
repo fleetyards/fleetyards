@@ -230,7 +230,10 @@ export const useUpdates = () => {
     if (finished) {
       comlink.emit("hangar-sync-finished");
 
-      const { synced, key } = syncOutcomeMessage(message.result.outcome);
+      const { synced, key } = syncOutcomeMessage(
+        message.result.outcome,
+        message.result.incomplete,
+      );
       (synced ? displaySuccess : displayInfo)({ text: t(key) });
     } else if (failed) {
       displayAlert({ text: t("messages.syncExtension.failure") });

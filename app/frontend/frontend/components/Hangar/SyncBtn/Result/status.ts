@@ -7,7 +7,17 @@ export const isSyncStepRunning = (steps: SyncProcessStep[]) =>
 
 // The toast for a finished run, whether the modal or the cable listener
 // reports it. Runs from before the sync reported an outcome always synced.
-export const syncOutcomeMessage = (outcome?: string) => {
+// An empty run that could not read every item says so: "nothing found" would
+// read as an empty hangar.
+export const syncOutcomeMessage = (outcome?: string, incomplete = false) => {
+  const synced =
+    outcome !== HangarSyncOutcomeEnum.NOTHING_TO_SYNC &&
+    outcome !== HangarSyncOutcomeEnum.ONLY_SKIPPED_ITEMS;
+
+  if (!synced && incomplete) {
+    return { synced: false, key: "messages.syncExtension.nothingReadable" };
+  }
+
   if (outcome === HangarSyncOutcomeEnum.NOTHING_TO_SYNC) {
     return { synced: false, key: "messages.syncExtension.nothingToSync" };
   }

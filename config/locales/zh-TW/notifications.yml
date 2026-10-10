@@ -27,6 +27,7 @@ zh-TW:
         missing_component_vehicles: 沒有與元件相符的飛船
         missing_upgrades: 未找到的升級
         missing_upgrade_vehicles: 沒有與升級相符的飛船
+      incomplete: "您的 RSI 機庫中有部分物品無法讀取，因此本次未找到的飛船保持不變。"
     hangar_sync_failed:
       title: 機庫同步失敗
       body: '您的 RSI 機庫同步失敗: %{error}'

@@ -128,9 +128,11 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.UNKNOWN_KINDS,
-      details: ['unknown kind "Vehicle"'],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.UNKNOWN_KINDS,
+        details: ['unknown kind "Vehicle"'],
+      },
     });
   });
 
@@ -199,11 +201,13 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary (DRAK)", in a "Package" pledge',
-      ],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner, liner "Drake Interplanetary (DRAK)", in a "Package" pledge',
+        ],
+      },
     });
   });
 
@@ -237,11 +241,13 @@ describe("RSIHangarParser.extractPage", () => {
     );
 
     expect(page).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner custom-name-text, liner "Drake Interplanetary", in a "Package" pledge',
-      ],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner custom-name-text, liner "Drake Interplanetary", in a "Package" pledge',
+        ],
+      },
     });
   });
 
@@ -270,9 +276,11 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: ['no ship in a "Standalone Ships" pledge, kinds none'],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: ['no ship in a "Standalone Ships" pledge, kinds none'],
+      },
     });
   });
 
@@ -288,7 +296,9 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      details: ['no ship in a "Standalone Ships" pledge, kinds Insurance'],
+      unread: {
+        details: ['no ship in a "Standalone Ships" pledge, kinds Insurance'],
+      },
     });
   });
 
@@ -304,12 +314,14 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
-        'no ship in a "Standalone Ships" pledge, kinds none',
-      ],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
+          'no ship in a "Standalone Ships" pledge, kinds none',
+        ],
+      },
     });
   });
 
@@ -333,13 +345,15 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
-        'no ship in a "Standalone Ships" pledge, kinds none, Insurance, empty',
-        'unknown kind ""',
-        'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
-      ],
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Standalone Ships" pledge',
+          'no ship in a "Standalone Ships" pledge, kinds none, Insurance, empty',
+          'unknown kind ""',
+          'item without kind, markup item text title liner, liner "Anvil Aerospace", in a "Package" pledge',
+        ],
+      },
     });
   });
 
@@ -355,11 +369,13 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Package" pledge',
-        'unknown kind "Vehicle"',
-      ],
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner, liner "Drake Interplanetary", in a "Package" pledge',
+          'unknown kind "Vehicle"',
+        ],
+      },
     });
   });
 
@@ -377,6 +393,29 @@ describe("RSIHangarParser.extractPage", () => {
     expect(page.status).toBe(RsiPageStatus.PAGE);
   });
 
+  it("reads the rest of a page holding an item it could not read", () => {
+    const page = extract(
+      pledgesPage(
+        pledge("100", item("Ship", "Cutter"), "Package - Cutter") +
+          pledge("101", item("Vehicle", "Ursa"), "Package - Ursa"),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledgeIds: ["100", "101"],
+      pledges: [{ id: "100", name: "Cutter", type: "ship" }],
+      unread: { check: RsiPageCheckEnum.UNKNOWN_KINDS },
+    });
+  });
+
+  it("reads a page without anything it could not read as nothing unread", () => {
+    const page = extract(pledgesPage(pledge("101", item("Ship", "Cutter"))));
+
+    expect(page).toMatchObject({ status: RsiPageStatus.PAGE });
+    expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
   it("keeps titles out of the details but sends the pledges it could not read", () => {
     const unread = pledge(
       "101",
@@ -391,16 +430,18 @@ describe("RSIHangarParser.extractPage", () => {
 
     expect(
       JSON.stringify(
-        page.status === RsiPageStatus.UNRECOGNISED && page.details,
+        page.status === RsiPageStatus.PAGE && page.unread?.details,
       ),
     ).not.toContain("Cutlass");
     expect(page).toMatchObject({
-      markup: [expect.stringContaining('value="101"')],
+      unread: { markup: [expect.stringContaining('value="101"')] },
     });
     expect(page).toMatchObject({
-      markup: [expect.stringContaining("Cutlass Black")],
+      unread: { markup: [expect.stringContaining("Cutlass Black")] },
     });
-    expect(JSON.stringify(page)).not.toContain("Cutter");
+    expect(
+      JSON.stringify(page.status === RsiPageStatus.PAGE && page.unread),
+    ).not.toContain("Cutter");
   });
 
   it("sends at most five pledges, each cut to length", () => {
@@ -416,12 +457,12 @@ describe("RSIHangarParser.extractPage", () => {
     );
 
     expect(
-      page.status === RsiPageStatus.UNRECOGNISED && page.markup,
+      page.status === RsiPageStatus.PAGE && page.unread?.markup,
     ).toHaveLength(5);
-    (page.status === RsiPageStatus.UNRECOGNISED
-      ? (page.markup ?? [])
-      : []
-    ).forEach((markup) => expect(Array.from(markup)).toHaveLength(20000));
+    const markup =
+      page.status === RsiPageStatus.PAGE ? (page.unread?.markup ?? []) : [];
+    expect(markup).toHaveLength(5);
+    markup.forEach((pledge) => expect(Array.from(pledge)).toHaveLength(20000));
   });
 
   it("sends no markup for a page without the pledge list", () => {
@@ -463,11 +504,13 @@ describe("RSIHangarParser.extractPage", () => {
         ),
       ),
     ).toMatchObject({
-      status: RsiPageStatus.UNRECOGNISED,
-      check: RsiPageCheckEnum.MISSING_KINDS,
-      details: [
-        'item without kind, markup item text title liner, liner "", in a "Package" pledge',
-      ],
+      status: RsiPageStatus.PAGE,
+      unread: {
+        check: RsiPageCheckEnum.MISSING_KINDS,
+        details: [
+          'item without kind, markup item text title liner, liner "", in a "Package" pledge',
+        ],
+      },
     });
   });
 

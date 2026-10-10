@@ -7,7 +7,7 @@ module HangarPledgeItems
   class Sync
     KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair"}.freeze
 
-    attr_reader :user, :items, :kinds
+    attr_reader :user, :items, :kinds, :keep_unlisted
 
     # The kind an item would be stored as, or nil for one it cannot store.
     def self.kind_for(item)
@@ -17,9 +17,13 @@ module HangarPledgeItems
 
     # `kinds` the user chose not to sync are left exactly as stored, not
     # emptied: switching paints off is no statement that they are gone.
-    def initialize(user, items, kinds: HangarPledgeItem::KINDS)
+    #
+    # `keep_unlisted` is for a pledge list read only in part: an item it could
+    # not read is no statement that the pledge is gone either.
+    def initialize(user, items, kinds: HangarPledgeItem::KINDS, keep_unlisted: false)
       @user = user
       @kinds = kinds
+      @keep_unlisted = keep_unlisted
       @items = items.select { |item| kinds.include?(self.class.kind_for(item)) }
     end
 
@@ -42,7 +46,7 @@ module HangarPledgeItems
           []
         end
 
-        user.hangar_pledge_items.where(kind: kinds).where.not(id: kept.pluck("id")).delete_all
+        user.hangar_pledge_items.where(kind: kinds).where.not(id: kept.pluck("id")).delete_all unless keep_unlisted
 
         kinds.index_with { |kind| kept.select { |row| row["kind"] == kind }.pluck("id") }
       end

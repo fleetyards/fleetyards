@@ -2,6 +2,15 @@ import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
 import { RsiPageCheckEnum } from "@/services/fyApi";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 
+// What a page could not read. The rest of it still counts: the sync goes on,
+// and the server leaves unmatched ships alone, since a ship among these would
+// otherwise read as gone.
+export type RSIHangarUnread = {
+  check: RsiPageCheckEnum;
+  details: string[];
+  markup: string[];
+};
+
 // Only RSI's own empty-list markup ends the list. Anything else that does not
 // look like a pledge page is a page this parser no longer understands: read as
 // the end, it would cut the sync short and leave every ship after it unmatched.
@@ -10,6 +19,7 @@ export type RSIHangarPage =
       status: RsiPageStatus.PAGE;
       pledges: RSIHangarItem[];
       pledgeIds: string[];
+      unread?: RSIHangarUnread;
     }
   | { status: RsiPageStatus.END }
   | {
@@ -264,9 +274,31 @@ export class RSIHangarParser {
       };
     }
 
-    if (shipsWithoutKind.size) {
+    return {
+      status: RsiPageStatus.PAGE,
+      pledges,
+      pledgeIds,
+      unread: this.unread(
+        shipsWithoutKind,
+        unknownKinds,
+        standaloneShipsWithoutShip,
+        unreadEntries,
+      ),
+    };
+  }
+
+  unread(
+    shipsWithoutKind: Set<string>,
+    unknownKinds: Set<string>,
+    standaloneShipsWithoutShip: Set<string>,
+    unreadEntries: Set<Element>,
+  ): RSIHangarUnread | undefined {
+    if (!unreadEntries.size) return undefined;
+
+    const markup = this.pledgeMarkup(unreadEntries);
+
+    if (shipsWithoutKind.size || standaloneShipsWithoutShip.size) {
       return {
-        status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
         // Taken in turn, so no case is cut off by the report's cap.
         details: interleave(
@@ -274,29 +306,15 @@ export class RSIHangarParser {
           [...standaloneShipsWithoutShip],
           [...unknownKinds],
         ),
-        markup: this.pledgeMarkup(unreadEntries),
+        markup,
       };
     }
 
-    if (unknownKinds.size) {
-      return {
-        status: RsiPageStatus.UNRECOGNISED,
-        check: RsiPageCheckEnum.UNKNOWN_KINDS,
-        details: [...unknownKinds],
-        markup: this.pledgeMarkup(unreadEntries),
-      };
-    }
-
-    if (standaloneShipsWithoutShip.size) {
-      return {
-        status: RsiPageStatus.UNRECOGNISED,
-        check: RsiPageCheckEnum.MISSING_KINDS,
-        details: [...standaloneShipsWithoutShip],
-        markup: this.pledgeMarkup(unreadEntries),
-      };
-    }
-
-    return { status: RsiPageStatus.PAGE, pledges, pledgeIds };
+    return {
+      check: RsiPageCheckEnum.UNKNOWN_KINDS,
+      details: [...unknownKinds],
+      markup,
+    };
   }
 
   parseItem(

@@ -44,6 +44,61 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, body: body
   end
 
+  test "PUT /hangar/sync-rsi-hangar keeps the pages it read only in part and tells the admins" do
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    admin_user = create(:admin_user, resource_access: [:"rsi-api-status"])
+    user = create(:user)
+    sign_in user
+    unread_page = {check: "missing_kinds", pageNumber: 3, details: ["item without kind"], markup: ["<li>Cutlass Black</li>"]}
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], extensionVersion: "1.4.0", unreadPages: [unread_page]}
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.where(user_id: user.id).sole
+    assert_equal [{"check" => "missing_kinds", "page_number" => 3, "details" => ["item without kind"], "markup" => ["<li>Cutlass Black</li>"]}],
+      import.unread_pages
+
+    notification = AdminNotification.where(admin_user:, notification_type: "rsi_markup_changed").sole
+    assert_equal import, notification.record
+    assert_includes notification.body, "could not read every item"
+    assert_includes notification.body, "`item without kind` (page 3, extension `1.4.0`, [import](/maintenance/imports/#{import.id}))"
+    assert_not_includes notification.body, "Cutlass"
+  end
+
+  test "PUT /hangar/sync-rsi-hangar queues the sync even when the admins' report fails" do
+    user = create(:user)
+    sign_in user
+    RsiPageReport.stubs(:record!).raises(StandardError, "cache down")
+    Appsignal.expects(:report_error).once
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], unreadPages: [{check: "missing_kinds", pageNumber: 1}]}
+    assert_difference -> { HangarSyncJob.jobs.size }, 1 do
+      put "/api/v1/hangar/sync-rsi-hangar", params: body, as: :json
+    end
+
+    assert_response :ok
+  end
+
+  test "PUT /hangar/sync-rsi-hangar sends no report for a sync that read every item" do
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    create(:admin_user, resource_access: [:"rsi-api-status"])
+    user = create(:user)
+    sign_in user
+
+    put "/api/v1/hangar/sync-rsi-hangar", params: {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}]}, as: :json
+
+    assert_response :ok
+    assert_equal [], Imports::HangarSync.where(user_id: user.id).sole.unread_pages
+    assert_empty AdminNotification.where(notification_type: "rsi_markup_changed")
+  end
+
+  test "PUT /hangar/sync-rsi-hangar refuses more than five pages read in part" do
+    sign_in create(:user)
+
+    body = {items: [], unreadPages: Array.new(6) { |index| {check: "missing_kinds", pageNumber: index + 1} }}
+    assert_api_response :put, 400, body: body
+  end
+
   test "PUT /hangar/sync-rsi-hangar records the target group" do
     user = create(:user)
     group = HangarGroup.create!(user_id: user.id, name: "RSI", color: "#ffffff")

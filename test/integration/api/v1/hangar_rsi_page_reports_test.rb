@@ -198,13 +198,14 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
       body: {page: "hangar", check: "missing_kinds", pageNumber: 22, details: ["item without kind"], markup:} do
       import = Imports::HangarSync.where(user: @user).sole
       assert import.failed?
-      assert_equal markup.first, import.import_data
-      assert_equal({"check" => "missing_kinds", "page_number" => 22, "details" => ["item without kind"]}, import.input)
+      assert_equal [{"check" => "missing_kinds", "page_number" => 22, "details" => ["item without kind"], "markup" => markup}],
+        import.unread_pages
       assert_includes import.info, "page 22"
 
       notification = notifications.sole
       assert_equal import, notification.record
       assert_equal "/maintenance/imports/#{import.id}", notification.link
+      assert_includes notification.body, "stopped on a page"
       assert_includes notification.body, "(page 22, [import](/maintenance/imports/#{import.id}))"
       assert_not_includes notification.body, "Cutlass"
     end
@@ -221,6 +222,20 @@ class Api::V1::HangarRsiPageReportsTest < ActionDispatch::IntegrationTest
     assert_includes body, "`first` ([import](/maintenance/imports/#{first.id}))"
     assert_includes body, "`second` ([import](/maintenance/imports/#{second.id}))"
     assert_equal "/maintenance/imports/#{second.id}", notifications.sole.link
+  end
+
+  test "POST /hangar/rsi-page-reports keeps a sync that stopped apart from one that finished" do
+    sign_in @user
+    post "/api/v1/hangar/rsi-page-reports", params: {page: "hangar", check: "missing_kinds", details: ["stopped"]}, as: :json
+    finished = Imports::HangarSync.create!(user: create(:user))
+
+    RsiPageReport.record!(page: "hangar", check: "missing_kinds", details: ["finished"], import: finished)
+
+    stopped_body, finished_body = notifications.order(:created_at).map(&:body)
+    assert_includes stopped_body, "stopped on a page"
+    assert_not_includes stopped_body, "`finished`"
+    assert_includes finished_body, "could not read every item"
+    assert_not_includes finished_body, "`stopped`"
   end
 
   test "POST /hangar/rsi-page-reports records no import for a buyback page" do
