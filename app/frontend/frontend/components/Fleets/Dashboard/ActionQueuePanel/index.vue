@@ -112,7 +112,13 @@ const fetching = computed(
   () => requestsFetching.value || transfersFetching.value,
 );
 
-const failed = computed(() => requestsFailed.value || transfersFailed.value);
+// Guarded like `loading`: a query disabled after the reader lost the right
+// to answer it keeps its error.
+const failed = computed(
+  () =>
+    (props.canAnswerJoinRequests && requestsFailed.value) ||
+    (props.canAnswerTransfers && transfersFailed.value),
+);
 
 const empty = computed(
   () => !requestItems.value.length && !transferCount.value,

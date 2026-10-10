@@ -85,10 +85,10 @@ const mineItems = computed(() => mine.value?.items ?? []);
 
 const mineIds = computed(() => new Set(mineItems.value.map(({ id }) => id)));
 
-// Without the reader's own work there is nothing to take out of the open
+// Until the reader's own work is in there is nothing to take out of the open
 // list, and their own jobs would be offered back to them for pickup.
 const openItems = computed(() =>
-  mineMissing.value
+  !mine.value
     ? []
     : (open.value?.items ?? [])
         .filter(({ id }) => !mineIds.value.has(id))

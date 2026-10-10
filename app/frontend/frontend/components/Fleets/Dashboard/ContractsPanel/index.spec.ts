@@ -9,6 +9,7 @@ let mine: Partial<FleetContract>[] = [];
 let open: Partial<FleetContract>[] = [];
 let mineFails = false;
 let openFails = false;
+let minePending = false;
 const asked: { mine?: boolean; perPage?: number }[] = [];
 
 vi.mock("@/services/fyApi", async () => {
@@ -25,11 +26,11 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: computed(() =>
-          (params.mine ? mineFails : openFails)
+          (params.mine ? mineFails || minePending : openFails)
             ? undefined
             : { items: params.mine ? mine : open },
         ),
-        isLoading: ref(false),
+        isLoading: computed(() => !!params.mine && minePending),
         isFetching: ref(false),
         isLoadingError: computed(() => (params.mine ? mineFails : openFails)),
       };
@@ -80,6 +81,7 @@ describe("FleetDashboardContractsPanel", () => {
     open = [];
     mineFails = false;
     openFails = false;
+    minePending = false;
     asked.length = 0;
   });
 
@@ -133,9 +135,9 @@ describe("FleetDashboardContractsPanel", () => {
     const subject = await mount();
 
     expect(titles(subject, "mine")).toEqual(["Job a"]);
-    expect(
-      subject.find("[data-test='fleet-dashboard-notice']").exists(),
-    ).toBe(true);
+    expect(subject.find("[data-test='fleet-dashboard-notice']").exists()).toBe(
+      true,
+    );
   });
 
   // Without the reader's own work, their jobs would be offered back to them.
@@ -149,5 +151,15 @@ describe("FleetDashboardContractsPanel", () => {
     expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
       true,
     );
+  });
+
+  it("offers nothing for pickup until the reader's own work is in", async () => {
+    minePending = true;
+    open = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "open")).toEqual([]);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 });
