@@ -15,27 +15,52 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   title: string;
-  loading?: boolean;
-  // Said instead of the body once the panel has loaded and has nothing to show.
+  // The first answer is still out: the panel stands in its place, loading, and
+  // says nothing yet rather than that it has nothing.
+  pending?: boolean;
+  // Any ask is out, a refetch included. The bar shows over what the panel
+  // already says.
+  fetching?: boolean;
+  // The ask failed with no answer to fall back on: TanStack's `isLoadingError`,
+  // not `isError`, which a failed refetch also sets while it keeps the old
+  // answer the panel should go on saying.
+  failed?: boolean;
+  // Nothing to show once answered: the `empty` slot stands in for the body.
   empty?: boolean;
-  emptyText?: string;
+  // Said under what the panel shows, for a panel of several lists one of which
+  // failed: the missing list would otherwise read as having nothing in it.
+  notice?: string;
   more?: RouteLocationRaw;
   moreLabel?: string;
 };
 
-withDefaults(defineProps<Props>(), {
-  loading: false,
+const props = withDefaults(defineProps<Props>(), {
+  pending: false,
+  fetching: false,
+  failed: false,
   empty: false,
-  emptyText: undefined,
+  notice: undefined,
   more: undefined,
   moreLabel: undefined,
+});
+
+const state = computed(() => {
+  if (!props.empty) return "content";
+  if (props.pending) return "pending";
+  if (props.failed) return "failed";
+
+  return "empty";
 });
 
 const { t } = useI18n();
 </script>
 
 <template>
-  <Panel :variant="PanelVariantsEnum.SLIM" :loading="loading">
+  <Panel
+    :variant="PanelVariantsEnum.SLIM"
+    :loading="pending || fetching"
+    :aria-busy="pending || fetching"
+  >
     <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ title }}
       <template v-if="more || $slots.actions" #actions>
@@ -46,22 +71,58 @@ const { t } = useI18n();
         </router-link>
       </template>
     </PanelHeading>
-    <PanelBody>
-      <p v-if="empty && !loading" class="dashboard-panel__empty">
-        {{ emptyText ?? t("fleetDashboard.empty") }}
+    <PanelBody class="dashboard-panel__body">
+      <template v-if="state === 'content'">
+        <slot />
+        <p
+          v-if="notice"
+          class="dashboard-panel__notice"
+          data-test="fleet-dashboard-notice"
+        >
+          {{ notice }}
+        </p>
+      </template>
+      <div v-else-if="state === 'pending'" class="dashboard-panel__pending" />
+      <p
+        v-else-if="state === 'failed'"
+        class="dashboard-panel__note"
+        data-test="fleet-dashboard-failed"
+      >
+        {{ t("fleetDashboard.failed") }}
       </p>
-      <slot v-else />
+      <slot v-else name="empty">
+        <p class="dashboard-panel__note">{{ t("fleetDashboard.empty") }}</p>
+      </slot>
     </PanelBody>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
+// The body's own top padding is sized for a heading without a rule under it;
+// under the divider the content would start against the line. Doubled class to
+// outrank PanelBody's scoped rule regardless of stylesheet order.
+.dashboard-panel__body.panel-body {
+  padding-top: 14px;
+}
+
 .dashboard-panel__more {
   font-size: 13px;
   white-space: nowrap;
 }
 
-.dashboard-panel__empty {
+// Holds the panel at about one row's height, so the answer does not push the
+// column down as far.
+.dashboard-panel__pending {
+  min-height: 40px;
+}
+
+.dashboard-panel__notice {
+  margin: 16px 0 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+}
+
+.dashboard-panel__note {
   margin: 0;
   color: var(--color-text-dim, #959595);
 }

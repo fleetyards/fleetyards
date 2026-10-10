@@ -412,8 +412,11 @@ describe("FleetShow dashboard", () => {
       membership: member(),
     });
 
-    expect(tests(subject, "fleet-dashboard-").sort()).toEqual([
-      "fleet-dashboard-about",
-    ]);
+    // The feed stands for every member, with its empty state when quiet.
+    expect(
+      tests(subject, "fleet-dashboard-")
+        .filter((name) => name !== "fleet-dashboard-empty")
+        .sort(),
+    ).toEqual(["fleet-dashboard-about", "fleet-dashboard-activity"]);
   });
 });

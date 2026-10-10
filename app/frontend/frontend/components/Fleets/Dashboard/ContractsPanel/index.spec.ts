@@ -7,6 +7,9 @@ import Component from "./index.vue";
 
 let mine: Partial<FleetContract>[] = [];
 let open: Partial<FleetContract>[] = [];
+let mineFails = false;
+let openFails = false;
+let minePending = false;
 const asked: { mine?: boolean; perPage?: number }[] = [];
 
 vi.mock("@/services/fyApi", async () => {
@@ -22,8 +25,14 @@ vi.mock("@/services/fyApi", async () => {
       asked.push(params);
 
       return {
-        data: computed(() => ({ items: params.mine ? mine : open })),
-        isLoading: ref(false),
+        data: computed(() =>
+          (params.mine ? mineFails || minePending : openFails)
+            ? undefined
+            : { items: params.mine ? mine : open },
+        ),
+        isLoading: computed(() => !!params.mine && minePending),
+        isFetching: ref(false),
+        isLoadingError: computed(() => (params.mine ? mineFails : openFails)),
       };
     },
   };
@@ -40,12 +49,13 @@ const contract = (id: string): Partial<FleetContract> => ({
   reward: "0",
 });
 
-const mount = async () => {
+const mount = async (props: { canCreate?: boolean } = {}) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
       { path: "/", name: "home", component: Stub },
       { path: "/c/:slug", name: "fleet-contracts", component: Stub },
+      { path: "/c/:slug/new", name: "fleet-contract-new", component: Stub },
       { path: "/c/:slug/:contract", name: "fleet-contract", component: Stub },
     ],
   });
@@ -53,7 +63,7 @@ const mount = async () => {
   await router.isReady();
 
   return mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: { fleet: { slug: "maru" } as Fleet, ...props },
     plugins: [router],
   });
 };
@@ -69,6 +79,9 @@ describe("FleetDashboardContractsPanel", () => {
   beforeEach(() => {
     mine = [];
     open = [];
+    mineFails = false;
+    openFails = false;
+    minePending = false;
     asked.length = 0;
   });
 
@@ -87,5 +100,66 @@ describe("FleetDashboardContractsPanel", () => {
       "Job g",
       "Job h",
     ]);
+  });
+
+  // An empty board is offered as something to start.
+  it("offers somebody who may post one a new contract", async () => {
+    const subject = await mount({ canCreate: true });
+
+    expect(
+      subject
+        .find("[data-test='fleet-dashboard-post-contract']")
+        .attributes("href"),
+    ).toBe("#/c/maru/new");
+  });
+
+  it("points everybody else at the board", async () => {
+    const subject = await mount();
+
+    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
+      true,
+    );
+    expect(
+      subject.find("[data-test='fleet-dashboard-post-contract']").exists(),
+    ).toBe(false);
+    expect(subject.find("a.dashboard-panel__more").attributes("href")).toBe(
+      "#/c/maru",
+    );
+  });
+
+  // The reader's work alone would read as nothing being open for pickup.
+  it("says a group failed rather than leave it out", async () => {
+    openFails = true;
+    mine = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "mine")).toEqual(["Job a"]);
+    expect(subject.find("[data-test='fleet-dashboard-notice']").exists()).toBe(
+      true,
+    );
+  });
+
+  // Without the reader's own work, their jobs would be offered back to them.
+  it("offers nothing for pickup when the reader's own work failed", async () => {
+    mineFails = true;
+    open = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "open")).toEqual([]);
+    expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
+      true,
+    );
+  });
+
+  it("offers nothing for pickup until the reader's own work is in", async () => {
+    minePending = true;
+    open = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "open")).toEqual([]);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 });

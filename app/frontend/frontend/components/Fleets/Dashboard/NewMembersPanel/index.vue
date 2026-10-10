@@ -7,10 +7,12 @@ export default {
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetActivityCategoryEnum,
+  FleetMembershipSortEnum,
   useFleetActivity,
   type Fleet,
 } from "@/services/fyApi";
@@ -23,7 +25,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { data, isLoading } = useFleetActivity(
+const { data, isLoading, isFetching, isLoadingError } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.MEMBERS, limit: 6 },
   { query: liveQuery },
@@ -34,10 +36,16 @@ const entries = computed(() => data.value?.items ?? []);
 
 <template>
   <DashboardPanel
-    v-if="entries.length"
     :title="t('fleetDashboard.newMembers.title')"
-    :loading="isLoading"
-    :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isLoadingError"
+    :empty="!entries.length"
+    :more="{
+      name: 'fleet-members-index',
+      params: { slug: fleet.slug },
+      query: { s: FleetMembershipSortEnum.ACCEPTED_AT_DESC },
+    }"
     data-test="fleet-dashboard-new-members"
   >
     <ActivityList
@@ -46,5 +54,12 @@ const entries = computed(() => data.value?.items ?? []);
       :show-actor="false"
       :show-kind="false"
     />
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-user-plus"
+        :title="t('fleetDashboard.newMembers.empty.title')"
+        :hint="t('fleetDashboard.newMembers.empty.hint')"
+      />
+    </template>
   </DashboardPanel>
 </template>

@@ -9,6 +9,7 @@ import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import WeekStrip from "@/frontend/components/Fleets/Dashboard/WeekStrip/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetCalendar, type Fleet } from "@/services/fyApi";
 
 type Props = {
@@ -21,9 +22,11 @@ const props = defineProps<Props>();
 // width of a desk.
 const mobile = useMobile();
 
+// Set by the grid once it has drawn its week, so the first frame has no query
+// yet and counts as loading.
 const visibleRange = ref<{ start: Date; end: Date } | null>(null);
 
-const { data } = useFleetCalendar(
+const { data, isFetching, isLoadingError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   computed(() =>
     visibleRange.value
@@ -42,6 +45,8 @@ const { data } = useFleetCalendar(
 );
 
 const events = computed(() => data.value?.items ?? []);
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -52,7 +57,25 @@ const events = computed(() => data.value?.items ?? []);
     :events="events"
     view="week"
     compact
+    :loading="isFetching || !visibleRange"
     data-test="fleet-dashboard-calendar"
     @update:range="visibleRange = $event"
-  />
+  >
+    <template v-if="isLoadingError" #notice>
+      <p
+        class="week-calendar__failed"
+        data-test="fleet-dashboard-calendar-failed"
+      >
+        {{ t("fleetDashboard.failed") }}
+      </p>
+    </template>
+  </CalendarGrid>
 </template>
+
+<style lang="scss" scoped>
+.week-calendar__failed {
+  margin: 0;
+  padding: 12px 18px;
+  color: var(--color-text-dim, #959595);
+}
+</style>

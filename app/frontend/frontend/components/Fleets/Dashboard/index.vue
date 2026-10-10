@@ -13,7 +13,6 @@ import ContractsPanel from "@/frontend/components/Fleets/Dashboard/ContractsPane
 import InventoryPanel from "@/frontend/components/Fleets/Dashboard/InventoryPanel/index.vue";
 import NewMembersPanel from "@/frontend/components/Fleets/Dashboard/NewMembersPanel/index.vue";
 import AboutPanel from "@/frontend/components/Fleets/Dashboard/AboutPanel/index.vue";
-import GetStartedPanel from "@/frontend/components/Fleets/Dashboard/GetStartedPanel/index.vue";
 import AnnouncementsPanel from "@/frontend/components/Fleets/Dashboard/AnnouncementsPanel/index.vue";
 import OnlineMembersPanel from "@/frontend/components/Fleets/Dashboard/OnlineMembersPanel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -52,10 +51,6 @@ const {
   () => props.membership,
 );
 
-// Modules the reader may see that have nothing on right now. They are folded
-// into one prompt to start something, rather than a box each saying so.
-const empty = reactive({ events: false, contracts: false });
-
 // What a panel of its own already tells is left out of the feed, so nothing on
 // the page is said twice.
 const excludedFromFeed = computed(() => [
@@ -83,20 +78,12 @@ const postAnnouncement = () =>
   />
   <div class="fleet-dashboard" data-test="fleet-dashboard">
     <div class="fleet-dashboard__main">
-      <GetStartedPanel
-        :fleet="fleet"
-        :events="showEvents && empty.events"
-        :contracts="showContracts && empty.contracts"
-        :can-create-events="canCreateEvents"
-        :can-create-contracts="canCreateContracts"
-        :can-read-missions="canReadMissions"
-        class="fleet-dashboard__get-started"
-      />
       <UpcomingEventsPanel
         v-if="showEvents"
         :fleet="fleet"
+        :can-create="canCreateEvents"
+        :can-read-missions="canReadMissions"
         class="fleet-dashboard__events"
-        @empty="empty.events = $event"
       />
       <!-- Always there for a reader of events: an empty week is still the
            week, and where they go to look ahead. -->
@@ -135,8 +122,8 @@ const postAnnouncement = () =>
       <ContractsPanel
         v-if="showContracts"
         :fleet="fleet"
+        :can-create="canCreateContracts"
         class="fleet-dashboard__contracts"
-        @empty="empty.contracts = $event"
       />
       <InventoryPanel
         v-if="showInventory"
@@ -188,7 +175,6 @@ const postAnnouncement = () =>
   order: 1;
 }
 
-.fleet-dashboard__get-started,
 .fleet-dashboard__events {
   order: 2;
 }

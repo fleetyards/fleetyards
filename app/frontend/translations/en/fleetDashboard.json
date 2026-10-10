@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "Show all",
       "empty": "Nothing here yet.",
+      "failed": "This could not be loaded right now.",
       "unnamed": "Untitled",
       "formats": {
         "weekday": "EEE",
@@ -10,7 +11,6 @@
       },
       "activity": {
         "title": "Latest updates",
-        "showMore": "Show older updates",
         "you": "You",
         "kinds": {
           "member_joined": "Joined the fleet",
@@ -22,11 +22,21 @@
           "inventory_transfer_completed": "Transfer completed",
           "inventory_item_deposited": "Deposited",
           "inventory_item_withdrawn": "Withdrawn"
+        },
+        "empty": {
+          "title": "Nothing has happened yet",
+          "hint": "Published events and contracts land here, newest first."
         }
       },
       "events": {
         "title": "Upcoming events",
-        "signUp": "Sign up"
+        "signUp": "Sign up",
+        "empty": {
+          "title": "Nothing planned for the next two weeks",
+          "hint": "Check the events page for what is coming later.",
+          "hintCreate": "Put an op on the calendar and members can sign up right away.",
+          "action": "Plan an event"
+        }
       },
       "actionQueue": {
         "title": "Needs your attention",
@@ -37,41 +47,47 @@
         "pendingTransfers": {
           "one": "%{count} incoming transfer to answer",
           "other": "%{count} incoming transfers to answer"
+        },
+        "partFailed": "Some of what needs you could not be loaded right now.",
+        "empty": {
+          "title": "All caught up",
+          "hint": "Join requests and incoming transfers that need an answer show up here."
         }
       },
       "contracts": {
         "title": "Contracts",
         "mine": "Your work",
-        "open": "Open for pickup"
+        "open": "Open for pickup",
+        "partFailed": "Some contracts could not be loaded right now.",
+        "empty": {
+          "title": "No open contracts",
+          "hint": "Browse past work on the contracts board.",
+          "hintCreate": "Post a job and members can pick it up.",
+          "action": "Post a contract"
+        }
       },
       "inventory": {
         "title": "Inventory",
         "empty": "No inventory movements lately.",
         "emptyMine": "Nothing of yours moved lately.",
+        "emptyHint": "Deposits, withdrawals and transfers show up here.",
         "mine": "Mine",
         "fleet": "Fleet"
       },
       "newMembers": {
-        "title": "New members"
+        "title": "New members",
+        "empty": {
+          "title": "Nobody new lately",
+          "hint": "Members show up here once they have joined."
+        }
       },
       "about": {
-        "title": "About the fleet"
-      },
-      "getStarted": {
-        "title": "Get things moving",
-        "events": {
-          "title": "Nothing planned for the next two weeks",
-          "hintCreate": "Put an op on the calendar and members can sign up right away.",
-          "hint": "Check the events page for what is coming later.",
-          "action": "Plan an event",
-          "link": "Events"
-        },
-        "contracts": {
-          "title": "No open contracts",
-          "hintCreate": "Post a job and members can pick it up.",
-          "hint": "Browse past work on the contracts board.",
-          "action": "Post a contract",
-          "link": "Contracts"
+        "title": "About the fleet",
+        "empty": {
+          "title": "No description yet",
+          "hint": "The fleet has not described itself yet.",
+          "hintEdit": "Tell new members what the fleet is about.",
+          "action": "Write one"
         }
       },
       "week": {
@@ -79,10 +95,15 @@
       },
       "online": {
         "title": "Online now (%{count})",
+        "titlePending": "Online now",
         "friend": "Friend",
         "more": {
           "one": "and %{count} more",
           "other": "and %{count} more"
+        },
+        "empty": {
+          "title": "Nobody else is online",
+          "hint": "Members show up here as soon as they log in."
         }
       },
       "announcements": {

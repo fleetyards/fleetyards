@@ -1,13 +1,16 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { flushPromises } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { computed, defineComponent, h, nextTick } from "vue";
+import { computed, defineComponent, h, nextTick, ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetOnlineMembersList } from "@/services/fyApi";
 import { usePresence } from "@/shared/composables/usePresence";
 import Component from "./index.vue";
 
 let online: FleetOnlineMembersList | undefined;
-const refetch = vi.fn();
+const isFetching = ref(false);
+// The quiet asks fetch directly, around the query.
+const ask = vi.fn();
 let queryOptions: { query?: Record<string, unknown> } | undefined;
 let wrapper: { unmount: () => void } | undefined;
 
@@ -17,13 +20,19 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
+    fleetOnlineMembers: (...args: unknown[]) => ask(...args),
     useFleetOnlineMembers: (
       _slug: unknown,
       options: { query?: Record<string, unknown> },
     ) => {
       queryOptions = options;
 
-      return { data: computed(() => online), refetch };
+      return {
+        data: computed(() => online),
+        isLoading: computed(() => !online),
+        isFetching,
+        isLoadingError: ref(false),
+      };
     },
   };
 });
@@ -59,7 +68,8 @@ describe("FleetDashboardOnlineMembersPanel", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     online = undefined;
-    refetch.mockClear();
+    isFetching.value = false;
+    ask.mockReset().mockImplementation(async () => online);
     resetPresence();
   });
 
@@ -71,14 +81,47 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     vi.useRealTimers();
   });
 
-  it("draws nothing while nobody else is online", async () => {
+  // The wait is spread per dashboard, up to ten seconds.
+  const settle = async () => {
+    await nextTick();
+    vi.advanceTimersByTime(10_000);
+  };
+
+  it("says so while nobody else is online", async () => {
     online = { totalCount: 0, items: [] };
 
     const subject = await mount();
 
-    expect(subject.find("[data-test='fleet-dashboard-online']").exists()).toBe(
-      false,
-    );
+    expect(
+      subject.find("[data-test='fleet-dashboard-empty']").text(),
+    ).toContain("Nobody else is online");
+  });
+
+  // A zero before the answer would read as nobody.
+  it("gives no count until the first answer is in", async () => {
+    const subject = await mount();
+
+    expect(subject.find(".panel-heading").text()).toContain("Online now");
+    expect(subject.find(".panel-heading").text()).not.toContain("(0)");
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // Every login in the fleet sets one off; the bar would never rest.
+  it("keeps the asks presence sets off out of the loading bar", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+    ask.mockImplementation(() => new Promise(() => undefined));
+
+    const subject = await mount();
+
+    applyPresence({ userId: "new", online: true });
+    await settle();
+    await nextTick();
+
+    expect(ask).toHaveBeenCalledTimes(1);
+    expect(subject.find(".panel--loading").exists()).toBe(false);
   });
 
   it("marks friends and says how many more there are", async () => {
@@ -122,14 +165,8 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     await nextTick();
 
     expect(names(subject)).toEqual(["zulu"]);
-    expect(refetch).not.toHaveBeenCalled();
+    expect(ask).not.toHaveBeenCalled();
   });
-
-  // The wait is spread per dashboard, up to ten seconds.
-  const settle = async () => {
-    await nextTick();
-    vi.advanceTimersByTime(10_000);
-  };
 
   // A push names an id, not a member: only the server knows whether they are
   // in this fleet, and it is asked once while they stay online.
@@ -146,7 +183,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "z", online: true });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
   });
 
   // Gone before the answer came back, they would otherwise never be asked
@@ -166,7 +203,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "new", online: true });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(2);
+    expect(ask).toHaveBeenCalledTimes(2);
   });
 
   it("asks nothing before the first answer is in", async () => {
@@ -177,7 +214,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "new", online: true });
     await settle();
 
-    expect(refetch).not.toHaveBeenCalled();
+    expect(ask).not.toHaveBeenCalled();
   });
 
   // The page holds the first rows only.
@@ -192,7 +229,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "z", online: false });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
   });
 
   // Nothing is replayed after a dropped socket.
@@ -207,6 +244,71 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     resetPresence();
     await nextTick();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
+  });
+
+  // A refocus or the first answer: whatever the panel did not start quietly.
+  it("shows the bar for a fetch it did not start", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    const subject = await mount();
+
+    isFetching.value = true;
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // The query's own refocus refetch skips what is fresh, retries a failed
+  // first load and leaves a fetch already out alone.
+  it("leaves the refocus to the query", async () => {
+    online = { totalCount: 0, items: [] };
+
+    await mount();
+
+    expect(queryOptions?.query?.refetchOnWindowFocus).toBe(true);
+  });
+
+  // Neither a list nor nobody while the rest are asked for, through the wait
+  // before the ask too; a count after, whatever the ask brought.
+  it("waits, loading, once everybody it lists has gone but more are online", async () => {
+    online = {
+      totalCount: 5,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+    let answer = () => undefined as void;
+    ask.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          answer = resolve;
+        }),
+    );
+
+    const subject = await mount();
+
+    applyPresence({ userId: "z", online: false });
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+    expect(subject.find(".online-members__more").exists()).toBe(false);
+
+    await settle();
+    await nextTick();
+
+    expect(ask).toHaveBeenCalledTimes(1);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
+      false,
+    );
+
+    answer();
+    await flushPromises();
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(false);
+    expect(subject.find(".online-members__more").text()).toContain("4");
   });
 });

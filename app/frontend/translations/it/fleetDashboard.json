@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "Mostra tutto",
       "empty": "Ancora niente qui.",
+      "failed": "Al momento non è stato possibile caricarlo.",
       "unnamed": "Senza titolo",
       "formats": {
         "weekday": "EEE",
@@ -10,7 +11,6 @@
       },
       "activity": {
         "title": "Ultimi aggiornamenti",
-        "showMore": "Mostra aggiornamenti precedenti",
         "you": "Tu",
         "kinds": {
           "member_joined": "Si è unito alla flotta",
@@ -22,11 +22,21 @@
           "inventory_transfer_completed": "Trasferimento completato",
           "inventory_item_deposited": "Depositato",
           "inventory_item_withdrawn": "Prelevato"
+        },
+        "empty": {
+          "title": "Non è ancora successo niente",
+          "hint": "Qui arrivano gli eventi e i contratti pubblicati, i più recenti per primi."
         }
       },
       "events": {
         "title": "Prossimi eventi",
-        "signUp": "Iscriviti"
+        "signUp": "Iscriviti",
+        "empty": {
+          "title": "Niente in programma nelle prossime due settimane",
+          "hint": "Controlla la pagina degli eventi per quelli più avanti.",
+          "hintCreate": "Metti un'operazione in calendario e i membri potranno iscriversi subito.",
+          "action": "Pianifica un evento"
+        }
       },
       "actionQueue": {
         "title": "Richiede la tua attenzione",
@@ -37,41 +47,47 @@
         "pendingTransfers": {
           "one": "%{count} trasferimento in entrata da gestire",
           "other": "%{count} trasferimenti in entrata da gestire"
+        },
+        "partFailed": "Al momento non è stato possibile caricare una parte di ciò che ti aspetta.",
+        "empty": {
+          "title": "Tutto in ordine",
+          "hint": "Qui compaiono le richieste di adesione e i trasferimenti in arrivo che aspettano una risposta."
         }
       },
       "contracts": {
         "title": "Contratti",
         "mine": "Il tuo lavoro",
-        "open": "Disponibili"
+        "open": "Disponibili",
+        "partFailed": "Al momento non è stato possibile caricare alcuni contratti.",
+        "empty": {
+          "title": "Nessun contratto aperto",
+          "hint": "Sfoglia i lavori passati nella bacheca dei contratti.",
+          "hintCreate": "Pubblica un lavoro che i membri possono prendere in carico.",
+          "action": "Pubblica un contratto"
+        }
       },
       "inventory": {
         "title": "Inventario",
         "empty": "Nessun movimento di inventario di recente.",
         "emptyMine": "Di recente non si è mosso nulla di tuo.",
+        "emptyHint": "Qui compaiono depositi, prelievi e trasferimenti.",
         "mine": "Miei",
         "fleet": "Flotta"
       },
       "newMembers": {
-        "title": "Nuovi membri"
+        "title": "Nuovi membri",
+        "empty": {
+          "title": "Nessun nuovo arrivo di recente",
+          "hint": "I membri compaiono qui non appena si uniscono."
+        }
       },
       "about": {
-        "title": "Informazioni sulla flotta"
-      },
-      "getStarted": {
-        "title": "Datti da fare",
-        "events": {
-          "title": "Niente in programma nelle prossime due settimane",
-          "hintCreate": "Metti un'operazione in calendario e i membri potranno iscriversi subito.",
-          "hint": "Controlla la pagina degli eventi per quelli più avanti.",
-          "action": "Pianifica un evento",
-          "link": "Eventi"
-        },
-        "contracts": {
-          "title": "Nessun contratto aperto",
-          "hintCreate": "Pubblica un lavoro che i membri possono prendere in carico.",
-          "hint": "Sfoglia i lavori passati nella bacheca dei contratti.",
-          "action": "Pubblica un contratto",
-          "link": "Contratti"
+        "title": "Informazioni sulla flotta",
+        "empty": {
+          "title": "Ancora nessuna descrizione",
+          "hint": "La flotta non si è ancora presentata.",
+          "hintEdit": "Racconta ai nuovi membri di cosa si occupa la flotta.",
+          "action": "Scrivine una"
         }
       },
       "week": {
@@ -79,10 +95,15 @@
       },
       "online": {
         "title": "Online ora (%{count})",
+        "titlePending": "Online ora",
         "friend": "Amico",
         "more": {
           "one": "e altri %{count}",
           "other": "e altri %{count}"
+        },
+        "empty": {
+          "title": "Nessun altro è online",
+          "hint": "I membri compaiono qui non appena accedono."
         }
       },
       "announcements": {

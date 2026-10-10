@@ -9,8 +9,12 @@ import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { addDays } from "date-fns";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useEventPlanner } from "@/frontend/composables/useEventPlanner";
 import {
   FleetEventStatusEnum,
   useFleetCalendar,
@@ -20,9 +24,15 @@ import {
 
 type Props = {
   fleet: Fleet;
+  canCreate?: boolean;
+  // Whoever can read the fleet's missions is asked for one to start from.
+  canReadMissions?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canCreate: false,
+  canReadMissions: false,
+});
 
 const { t } = useI18n();
 
@@ -41,7 +51,7 @@ const range = computed(() => ({
   to: addDays(today.value, WINDOW_DAYS).toISOString(),
 }));
 
-const { data, isLoading } = useFleetCalendar(
+const { data, isLoading, isFetching, isLoadingError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   range,
   { query: liveQuery },
@@ -69,20 +79,19 @@ const entries = computed(() => {
     .slice(0, SHOWN);
 });
 
-// Said to the dashboard once the answer is in, so an empty module can be
-// offered as something to start instead of a box saying there is nothing.
-const emit = defineEmits<{ empty: [boolean] }>();
+const { plan, pending: creatingEvent } = useEventPlanner();
 
-const isEmpty = computed(() => !!data.value && !entries.value.length);
-
-watch(isEmpty, (value) => emit("empty", value), { immediate: true });
+const planEvent = () =>
+  plan(props.fleet, { withTemplate: props.canReadMissions });
 </script>
 
 <template>
   <DashboardPanel
-    v-if="entries.length"
     :title="t('fleetDashboard.events.title')"
-    :loading="isLoading"
+    :pending="isLoading"
+    :fetching="isFetching"
+    :failed="isLoadingError"
+    :empty="!entries.length"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"
   >
@@ -95,6 +104,29 @@ watch(isEmpty, (value) => emit("empty", value), { immediate: true });
         <EventCard :fleet="fleet" :event="event" />
       </li>
     </ul>
+    <!-- Two quiet weeks are offered as something to start. -->
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-calendar-star"
+        :title="t('fleetDashboard.events.empty.title')"
+        :hint="
+          canCreate
+            ? t('fleetDashboard.events.empty.hintCreate')
+            : t('fleetDashboard.events.empty.hint')
+        "
+      >
+        <Btn
+          v-if="canCreate"
+          :size="BtnSizesEnum.SM"
+          :loading="creatingEvent"
+          data-test="fleet-dashboard-plan-event"
+          @click="planEvent"
+        >
+          <i class="fa-light fa-plus" />
+          {{ t("fleetDashboard.events.empty.action") }}
+        </Btn>
+      </DashboardEmpty>
+    </template>
   </DashboardPanel>
 </template>
 

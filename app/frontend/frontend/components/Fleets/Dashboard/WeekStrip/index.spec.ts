@@ -7,6 +7,9 @@ import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
 let params: Ref<{ from: string; to: string }> | undefined;
+const isLoading = ref(false);
+const isError = ref(false);
+const isPlaceholderData = ref(false);
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -20,7 +23,15 @@ vi.mock("@/services/fyApi", async () => {
     ) => {
       params = range;
 
-      return { data: computed(() => ({ items })), isLoading: ref(false) };
+      return {
+        data: computed(() =>
+          isLoading.value || isError.value ? undefined : { items },
+        ),
+        isLoading,
+        isFetching: isLoading,
+        isLoadingError: isError,
+        isPlaceholderData,
+      };
     },
   };
 });
@@ -78,6 +89,9 @@ describe("FleetDashboardWeekStrip", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(NOW);
     items = [];
+    isLoading.value = false;
+    isError.value = false;
+    isPlaceholderData.value = false;
   });
 
   afterEach(() => {
@@ -146,6 +160,34 @@ describe("FleetDashboardWeekStrip", () => {
     const subject = await mount();
 
     expect(subject.find(".week-strip__empty").exists()).toBe(true);
+  });
+
+  it("says nothing about the day before its week has been answered", async () => {
+    isLoading.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").exists()).toBe(false);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // Paging keeps the last week's answer up until the new one is in.
+  it("says nothing about a day while the week shown is last week's answer", async () => {
+    isPlaceholderData.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").exists()).toBe(false);
+  });
+
+  it("says the week failed rather than that the day is free", async () => {
+    isError.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").text()).toBe(
+      "This could not be loaded right now.",
+    );
   });
 
   it("asks for the next week when moved on", async () => {

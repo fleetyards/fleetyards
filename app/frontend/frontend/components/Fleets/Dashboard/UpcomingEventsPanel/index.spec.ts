@@ -7,6 +7,15 @@ import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
 let askedFor: { from?: string; to?: string } | undefined;
+const isLoading = ref(false);
+const isFetching = ref(false);
+// The event write itself, so the planner runs for real down to the request.
+const createEvent = vi.fn();
+const emit = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit, on: () => () => undefined }),
+}));
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -14,6 +23,10 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
+    useCreateFleetEvent: () => ({
+      isPending: ref(false),
+      mutateAsync: createEvent,
+    }),
     useFleetCalendar: (
       _slug: unknown,
       params: { value: { from?: string; to?: string } },
@@ -22,7 +35,9 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: computed(() => ({ items })),
-        isLoading: ref(false),
+        isLoading,
+        isFetching,
+        isLoadingError: ref(false),
       };
     },
   };
@@ -61,9 +76,11 @@ const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
   ...overrides,
 });
 
-const mount = async () =>
+const mount = async (
+  props: { canCreate?: boolean; canReadMissions?: boolean } = {},
+) =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: { fleet: { slug: "maru" } as Fleet, ...props },
     plugins: [await router()],
   });
 
@@ -76,6 +93,29 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
   beforeEach(() => {
     items = [];
     askedFor = undefined;
+    isLoading.value = false;
+    isFetching.value = false;
+    createEvent.mockReset().mockResolvedValue({});
+    emit.mockClear();
+  });
+
+  it("stands in its place, loading, until the first answer is in", async () => {
+    isLoading.value = true;
+    isFetching.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find("[data-test='fleet-dashboard-events']").exists()).toBe(
+      true,
+    );
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  it("shows a refetch as loading too", async () => {
+    items = [event({})];
+    isFetching.value = true;
+
+    expect((await mount()).find(".panel--loading").exists()).toBe(true);
   });
 
   // From yesterday: the calendar answers by start time, and an op that began
@@ -162,5 +202,45 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     expect(subject.find("a.event-card").attributes("href")).toBe(
       "#/fleets/maru/events/weekly?occurrence=2026-05-21",
     );
+  });
+
+  it("lets somebody who may plan one start an event when nothing is on", async () => {
+    const subject = await mount({ canCreate: true });
+
+    await subject
+      .find("[data-test='fleet-dashboard-plan-event']")
+      .trigger("click");
+
+    expect(createEvent).toHaveBeenCalledTimes(1);
+    expect(createEvent.mock.calls[0][0].fleetSlug).toBe("maru");
+    expect(createEvent.mock.calls[0][0].data.missionSlug).toBeUndefined();
+  });
+
+  // The API copies a mission's teams only while it writes the event, so a
+  // reader of missions picks one first, as on the events page.
+  it("asks a reader of missions for a template before writing", async () => {
+    const subject = await mount({ canCreate: true, canReadMissions: true });
+
+    await subject
+      .find("[data-test='fleet-dashboard-plan-event']")
+      .trigger("click");
+
+    expect(createEvent).not.toHaveBeenCalled();
+
+    const [, payload] = emit.mock.calls.at(-1)!;
+    payload.props.onPick({ slug: "salvage-op" });
+
+    expect(createEvent.mock.calls[0][0].data.missionSlug).toBe("salvage-op");
+  });
+
+  it("says nothing is planned to everybody else", async () => {
+    const subject = await mount();
+
+    expect(
+      subject.find("[data-test='fleet-dashboard-empty']").text(),
+    ).toContain("Nothing planned for the next two weeks");
+    expect(
+      subject.find("[data-test='fleet-dashboard-plan-event']").exists(),
+    ).toBe(false);
   });
 });

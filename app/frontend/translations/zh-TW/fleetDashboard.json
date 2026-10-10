@@ -3,6 +3,7 @@
     "fleetDashboard": {
       "showAll": "查看全部",
       "empty": "暫無內容。",
+      "failed": "暫時無法載入。",
       "unnamed": "未命名",
       "formats": {
         "weekday": "EEE",
@@ -10,7 +11,6 @@
       },
       "activity": {
         "title": "最新動態",
-        "showMore": "查看更早的動態",
         "you": "你",
         "kinds": {
           "member_joined": "加入了艦隊",
@@ -22,11 +22,21 @@
           "inventory_transfer_completed": "轉移已完成",
           "inventory_item_deposited": "已存入",
           "inventory_item_withdrawn": "已取出"
+        },
+        "empty": {
+          "title": "還沒有動態",
+          "hint": "已發布的活動和合約會顯示在這裡，最新的在最前。"
         }
       },
       "events": {
         "title": "即將到來的活動",
-        "signUp": "報名"
+        "signUp": "報名",
+        "empty": {
+          "title": "未來兩週沒有安排",
+          "hint": "查看活動頁面了解之後的安排。",
+          "hintCreate": "在日曆上安排一次行動，成員即可立即報名。",
+          "action": "安排活動"
+        }
       },
       "actionQueue": {
         "title": "待你處理",
@@ -37,41 +47,47 @@
         "pendingTransfers": {
           "one": "%{count} 個待處理的轉入",
           "other": "%{count} 個待處理的轉入"
+        },
+        "partFailed": "部分待處理事項暫時無法載入。",
+        "empty": {
+          "title": "全部處理完畢",
+          "hint": "需要回應的入隊申請和傳入轉移會顯示在這裡。"
         }
       },
       "contracts": {
         "title": "合約",
         "mine": "你的工作",
-        "open": "可接取"
+        "open": "可接取",
+        "partFailed": "部分合約暫時無法載入。",
+        "empty": {
+          "title": "沒有開放的合約",
+          "hint": "在合約面板查看以往的工作。",
+          "hintCreate": "發布一項工作，成員即可接取。",
+          "action": "發布合約"
+        }
       },
       "inventory": {
         "title": "庫存",
         "empty": "最近沒有庫存變動。",
         "emptyMine": "最近沒有與你相關的變動。",
+        "emptyHint": "存入、取出和轉移會顯示在這裡。",
         "mine": "我的",
         "fleet": "艦隊"
       },
       "newMembers": {
-        "title": "新成員"
+        "title": "新成員",
+        "empty": {
+          "title": "最近沒有新成員",
+          "hint": "成員加入後會顯示在這裡。"
+        }
       },
       "about": {
-        "title": "關於艦隊"
-      },
-      "getStarted": {
-        "title": "動起來",
-        "events": {
-          "title": "未來兩週沒有安排",
-          "hintCreate": "在日曆上安排一次行動，成員即可立即報名。",
-          "hint": "查看活動頁面了解之後的安排。",
-          "action": "安排活動",
-          "link": "活動"
-        },
-        "contracts": {
-          "title": "沒有開放的合約",
-          "hintCreate": "發布一項工作，成員即可接取。",
-          "hint": "在合約面板查看以往的工作。",
-          "action": "發布合約",
-          "link": "合約"
+        "title": "關於艦隊",
+        "empty": {
+          "title": "還沒有簡介",
+          "hint": "艦隊還沒有介紹自己。",
+          "hintEdit": "告訴新成員艦隊是做什麼的。",
+          "action": "撰寫簡介"
         }
       },
       "week": {
@@ -79,10 +95,15 @@
       },
       "online": {
         "title": "目前在線（%{count}）",
+        "titlePending": "目前在線",
         "friend": "好友",
         "more": {
           "one": "還有 %{count} 人",
           "other": "還有 %{count} 人"
+        },
+        "empty": {
+          "title": "沒有其他人在線",
+          "hint": "成員登入後會立即顯示在這裡。"
         }
       },
       "announcements": {

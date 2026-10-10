@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import SquadronStrip from "@/frontend/components/Fleets/SquadronStrip/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,7 +35,12 @@ const showSquadrons = computed(
     (props.membership.capabilities?.readSquadrons ?? false),
 );
 
-const { data: squadrons } = useFleetSquadrons(
+const {
+  data: squadrons,
+  isLoading,
+  isFetching,
+  isLoadingError,
+} = useFleetSquadrons(
   computed(() => props.fleet.slug),
   { perPage: "all" },
   { query: { ...liveQuery, enabled: showSquadrons } },
@@ -57,12 +63,19 @@ const teamList = computed(() =>
 const empty = computed(
   () => !props.fleet.description && !allSquadrons.value.length,
 );
+
+const canEdit = computed(
+  () => props.membership.capabilities?.manageFleet ?? false,
+);
 </script>
 
 <template>
   <DashboardPanel
-    v-if="!empty"
     :title="t('fleetDashboard.about.title')"
+    :pending="showSquadrons && isLoading"
+    :fetching="showSquadrons && isFetching"
+    :failed="showSquadrons && isLoadingError"
+    :empty="empty"
     data-test="fleet-dashboard-about"
   >
     <!-- Markdown renders a fragment, so it never carries this component's
@@ -84,6 +97,26 @@ const empty = computed(
       class="about-panel__strip"
       linked
     />
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-scroll"
+        :title="t('fleetDashboard.about.empty.title')"
+        :hint="
+          canEdit
+            ? t('fleetDashboard.about.empty.hintEdit')
+            : t('fleetDashboard.about.empty.hint')
+        "
+      >
+        <router-link
+          v-if="canEdit"
+          :to="{ name: 'fleet-settings-fleet', params: { slug: fleet.slug } }"
+          data-test="fleet-dashboard-about-edit"
+        >
+          {{ t("fleetDashboard.about.empty.action") }}
+          <i class="fa-light fa-chevron-right" aria-hidden="true" />
+        </router-link>
+      </DashboardEmpty>
+    </template>
   </DashboardPanel>
 </template>
 

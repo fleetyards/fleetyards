@@ -8,6 +8,7 @@ export default {
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useQueryClient } from "@tanstack/vue-query";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -50,6 +51,8 @@ const SHOWN = 3;
 const {
   data: requests,
   isLoading: requestsLoading,
+  isFetching: requestsFetching,
+  isLoadingError: requestsFailed,
   refetch: refetchRequests,
 } = useFleetMembers(
   fleetSlug,
@@ -62,20 +65,24 @@ const {
   },
 );
 
-const { data: transfers, isLoading: transfersLoading } =
-  useFleetInventoryTransfers(
-    fleetSlug,
-    {
-      direction: FleetInventoryTransfersDirection.incoming,
-      q: { stateEq: InventoryTransferStateEnum.PENDING },
+const {
+  data: transfers,
+  isLoading: transfersLoading,
+  isFetching: transfersFetching,
+  isLoadingError: transfersFailed,
+} = useFleetInventoryTransfers(
+  fleetSlug,
+  {
+    direction: FleetInventoryTransfersDirection.incoming,
+    q: { stateEq: InventoryTransferStateEnum.PENDING },
+  },
+  {
+    query: {
+      ...liveQuery,
+      enabled: computed(() => props.canAnswerTransfers),
     },
-    {
-      query: {
-        ...liveQuery,
-        enabled: computed(() => props.canAnswerTransfers),
-      },
-    },
-  );
+  },
+);
 
 const requestItems = computed(() =>
   props.canAnswerJoinRequests ? (requests.value?.items ?? []) : [],
@@ -98,6 +105,19 @@ const loading = computed(
   () =>
     (props.canAnswerJoinRequests && requestsLoading.value) ||
     (props.canAnswerTransfers && transfersLoading.value),
+);
+
+// A disabled query never fetches, so these need no guard of their own.
+const fetching = computed(
+  () => requestsFetching.value || transfersFetching.value,
+);
+
+// Guarded like `loading`: a query disabled after the reader lost the right
+// to answer it keeps its error.
+const failed = computed(
+  () =>
+    (props.canAnswerJoinRequests && requestsFailed.value) ||
+    (props.canAnswerTransfers && transfersFailed.value),
 );
 
 const empty = computed(
@@ -140,11 +160,13 @@ const answer = async (member: FleetMember, accept: boolean) => {
 </script>
 
 <template>
-  <!-- Nothing waiting is not news, so the panel is there only when something is. -->
   <DashboardPanel
-    v-if="!empty"
     :title="t('fleetDashboard.actionQueue.title')"
-    :loading="loading"
+    :pending="loading"
+    :fetching="fetching"
+    :failed="failed"
+    :notice="failed ? t('fleetDashboard.actionQueue.partFailed') : undefined"
+    :empty="empty"
     data-test="fleet-dashboard-action-queue"
   >
     <section v-if="requestItems.length" class="action-queue__group">
@@ -213,6 +235,13 @@ const answer = async (member: FleetMember, accept: boolean) => {
         <i class="fa-light fa-chevron-right" aria-hidden="true" />
       </router-link>
     </section>
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-check"
+        :title="t('fleetDashboard.actionQueue.empty.title')"
+        :hint="t('fleetDashboard.actionQueue.empty.hint')"
+      />
+    </template>
   </DashboardPanel>
 </template>
 

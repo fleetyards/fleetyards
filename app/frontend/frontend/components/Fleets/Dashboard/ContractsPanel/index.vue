@@ -7,6 +7,9 @@ export default {
 <script lang="ts" setup>
 import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
@@ -20,9 +23,12 @@ import {
 
 type Props = {
   fleet: Fleet;
+  canCreate?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canCreate: false,
+});
 
 const { t, toUEC } = useI18n();
 
@@ -37,7 +43,12 @@ const SHOWN = 4;
 const fleetSlug = computed(() => props.fleet.slug);
 
 // The reader's own work first, then what is there to be picked up.
-const { data: mine, isLoading: mineLoading } = useFleetContracts(
+const {
+  data: mine,
+  isLoading: mineLoading,
+  isFetching: mineFetching,
+  isLoadingError: mineMissing,
+} = useFleetContracts(
   fleetSlug,
   {
     mine: true,
@@ -56,7 +67,12 @@ const { data: mine, isLoading: mineLoading } = useFleetContracts(
 
 // Twice the page: the reader's own work is taken out of this list, and at most
 // SHOWN of it is, so what remains still fills the group.
-const { data: open, isLoading: openLoading } = useFleetContracts(
+const {
+  data: open,
+  isLoading: openLoading,
+  isFetching: openFetching,
+  isLoadingError: openMissing,
+} = useFleetContracts(
   fleetSlug,
   {
     perPage: SHOWN * 2,
@@ -69,25 +85,15 @@ const mineItems = computed(() => mine.value?.items ?? []);
 
 const mineIds = computed(() => new Set(mineItems.value.map(({ id }) => id)));
 
+// Until the reader's own work is in there is nothing to take out of the open
+// list, and their own jobs would be offered back to them for pickup.
 const openItems = computed(() =>
-  (open.value?.items ?? [])
-    .filter(({ id }) => !mineIds.value.has(id))
-    .slice(0, SHOWN),
+  !mine.value
+    ? []
+    : (open.value?.items ?? [])
+        .filter(({ id }) => !mineIds.value.has(id))
+        .slice(0, SHOWN),
 );
-
-// Said to the dashboard once both answers are in, so an empty board can be
-// offered as something to start instead of a box saying there is nothing.
-const emit = defineEmits<{ empty: [boolean] }>();
-
-const isEmpty = computed(
-  () =>
-    !!mine.value &&
-    !!open.value &&
-    !mineItems.value.length &&
-    !openItems.value.length,
-);
-
-watch(isEmpty, (value) => emit("empty", value), { immediate: true });
 
 const linkFor = (contract: FleetContract) => ({
   name: "fleet-contract",
@@ -112,9 +118,16 @@ const groups = computed(() =>
 
 <template>
   <DashboardPanel
-    v-if="groups.length"
     :title="t('fleetDashboard.contracts.title')"
-    :loading="mineLoading || openLoading"
+    :pending="mineLoading || openLoading"
+    :fetching="mineFetching || openFetching"
+    :failed="mineMissing || openMissing"
+    :notice="
+      mineMissing || openMissing
+        ? t('fleetDashboard.contracts.partFailed')
+        : undefined
+    "
+    :empty="!groups.length"
     :more="{ name: 'fleet-contracts', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-contracts"
   >
@@ -150,6 +163,28 @@ const groups = computed(() =>
         </li>
       </ul>
     </section>
+    <!-- An empty board is offered as something to start. -->
+    <template #empty>
+      <DashboardEmpty
+        icon="fa-file-contract"
+        :title="t('fleetDashboard.contracts.empty.title')"
+        :hint="
+          canCreate
+            ? t('fleetDashboard.contracts.empty.hintCreate')
+            : t('fleetDashboard.contracts.empty.hint')
+        "
+      >
+        <Btn
+          v-if="canCreate"
+          :size="BtnSizesEnum.SM"
+          :to="{ name: 'fleet-contract-new', params: { slug: fleet.slug } }"
+          data-test="fleet-dashboard-post-contract"
+        >
+          <i class="fa-light fa-plus" />
+          {{ t("fleetDashboard.contracts.empty.action") }}
+        </Btn>
+      </DashboardEmpty>
+    </template>
   </DashboardPanel>
 </template>
 
