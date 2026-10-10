@@ -21,10 +21,10 @@ class UserNotificationsChannelTest < AsyncapiTestCase
     user = create(:user)
 
     payloads = assert_asyncapi_broadcast(params: {user_gid: user.to_gid_param}) do
-      Notification.notify!(user:, type: :hangar_create, title: "Ship added")
+      Notification.notify!(user:, type: :hangar_sync_finished, title: "Hangar sync finished")
     end
 
-    assert_equal "Ship added", payloads.first["title"]
+    assert_equal "Hangar sync finished", payloads.first["title"]
   end
 
   test "broadcasts the withdrawn notifications when their fleet announcement is taken down" do

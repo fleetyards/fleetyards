@@ -3212,7 +3212,6 @@
       "notificationActions": {
         "open": "開啟",
         "openHangar": "開啟機庫",
-        "openWishlist": "開啟願望清單",
         "openModel": "顯示飛船",
         "openInvite": "檢視邀請",
         "reviewRequest": "審核申請",
@@ -3256,12 +3255,8 @@
           "fleetContracts": "艦隊合約"
         },
         "announcement": "公告",
-        "hangar_create": "機庫已建立",
-        "hangar_destroy": "機庫已移除",
         "hangar_sync_finished": "機庫同步完成",
         "hangar_sync_failed": "機庫同步失敗",
-        "wishlist_create": "已加入願望清單",
-        "wishlist_destroy": "已從願望清單移除",
         "model_on_sale": "型號特價中",
         "new_model": "新型號發布",
         "fleet_invite": "收到艦隊邀請",

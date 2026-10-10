@@ -1,14 +1,6 @@
 ---
 it:
   notifications:
-    hangar_create:
-      title: "%{model} aggiunto all'hangar"
-    hangar_destroy:
-      title: "%{model} rimosso dall'hangar"
-    wishlist_create:
-      title: "%{model} aggiunto alla lista dei desideri"
-    wishlist_destroy:
-      title: "%{model} rimosso dalla lista dei desideri"
     model_on_sale:
       title: "%{model} è in vendita"
       body: "%{model} è attualmente in vendita nel negozio pledge."

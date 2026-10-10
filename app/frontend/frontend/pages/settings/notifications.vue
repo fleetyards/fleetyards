@@ -41,12 +41,8 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
   {
     key: "account",
     types: [
-      NotificationTypeEnum.HANGAR_CREATE,
-      NotificationTypeEnum.HANGAR_DESTROY,
       NotificationTypeEnum.HANGAR_SYNC_FINISHED,
       NotificationTypeEnum.HANGAR_SYNC_FAILED,
-      NotificationTypeEnum.WISHLIST_CREATE,
-      NotificationTypeEnum.WISHLIST_DESTROY,
       NotificationTypeEnum.MODEL_ON_SALE,
       NotificationTypeEnum.NEW_MODEL,
     ],

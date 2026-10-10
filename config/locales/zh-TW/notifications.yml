@@ -1,14 +1,6 @@
 ---
 zh-TW:
   notifications:
-    hangar_create:
-      title: "%{model} 已新增到機庫"
-    hangar_destroy:
-      title: "%{model} 已從機庫移除"
-    wishlist_create:
-      title: "%{model} 已新增到願望清單"
-    wishlist_destroy:
-      title: "%{model} 已從願望清單移除"
     model_on_sale:
       title: "%{model} 正在出售"
       body: "%{model} 目前在質押商店中出售。"

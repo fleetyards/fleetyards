@@ -3212,7 +3212,6 @@
       "notificationActions": {
         "open": "Öffnen",
         "openHangar": "Hangar öffnen",
-        "openWishlist": "Wunschliste öffnen",
         "openModel": "Schiff anzeigen",
         "openInvite": "Einladung ansehen",
         "reviewRequest": "Anfrage prüfen",
@@ -3256,12 +3255,8 @@
           "fleetContracts": "Flotten-Aufträge"
         },
         "announcement": "Ankündigung",
-        "hangar_create": "Hangar erstellt",
-        "hangar_destroy": "Hangar entfernt",
         "hangar_sync_finished": "Hangar-Sync abgeschlossen",
         "hangar_sync_failed": "Hangar-Sync fehlgeschlagen",
-        "wishlist_create": "Zur Wunschliste hinzugefügt",
-        "wishlist_destroy": "Von der Wunschliste entfernt",
         "model_on_sale": "Modell im Angebot",
         "new_model": "Neues Modell veröffentlicht",
         "fleet_invite": "Flotteneinladung erhalten",

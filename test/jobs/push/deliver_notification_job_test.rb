@@ -51,7 +51,7 @@ module Push
     end
 
     test "sends nothing for a type without the push channel" do
-      @notification.update!(notification_type: :hangar_create)
+      @notification.update!(notification_type: :inventory_transfer_resolved)
 
       perform
 

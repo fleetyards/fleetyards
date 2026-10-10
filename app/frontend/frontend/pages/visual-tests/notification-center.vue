@@ -26,7 +26,7 @@ import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
 const at = (iso: string) => iso;
 
 const base = {
-  notificationType: NotificationTypeEnum.HANGAR_CREATE,
+  notificationType: NotificationTypeEnum.HANGAR_SYNC_FINISHED,
   read: false,
   archived: false,
   expiresAt: at("2029-07-14T19:30:00.000Z"),
@@ -50,19 +50,18 @@ const unread = notification({
 // Read, so the list has something to contrast the unread ones against.
 const read = notification({
   id: "read",
-  title: "Carrack added to your wishlist",
-  notificationType: NotificationTypeEnum.WISHLIST_CREATE,
-  icon: "fa-duotone fa-heart",
+  title: "Cutlass Black is on sale",
+  notificationType: NotificationTypeEnum.MODEL_ON_SALE,
+  icon: "fa-duotone fa-tags",
   read: true,
   readAt: at("2029-06-14T20:00:00.000Z"),
 });
 
-// No body at all, which is the common case for the hangar and wishlist types
-// and the one the reading pane needs a placeholder for.
+// No body at all, which the reading pane needs a placeholder for.
 const bodyless = notification({
   id: "bodyless",
-  title: "Aurora MR added to your hangar",
-  icon: "fa-duotone fa-warehouse",
+  title: "Your hangar is up to date",
+  icon: "fa-duotone fa-rotate",
 });
 
 const failure = notification({
@@ -318,8 +317,8 @@ const record = (entry: string) => {
 
   <Heading :level="HeadingLevelEnum.H2">Detail | Without a body</Heading>
   <p>
-    Most hangar and wishlist notifications are a title and nothing else, so the
-    pane says so rather than showing an empty box.
+    Some notifications are a title and nothing else, so the pane says so rather
+    than showing an empty box.
   </p>
   <div class="row">
     <div class="col-12 col-lg-6">

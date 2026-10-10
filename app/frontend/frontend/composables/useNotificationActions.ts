@@ -23,10 +23,6 @@ export type NotificationLink = {
  * the build here rather than quietly falling back to "Open" in production.
  */
 const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
-  hangar_create: "openHangar",
-  hangar_destroy: "openHangar",
-  wishlist_create: "openWishlist",
-  wishlist_destroy: "openWishlist",
   model_on_sale: "openModel",
   new_model: "openModel",
   hangar_sync_finished: "openHangar",
@@ -88,7 +84,6 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
 
 const ACTION_ICONS: Record<string, Icon> = {
   openHangar: "fa-duotone fa-warehouse",
-  openWishlist: "fa-duotone fa-heart",
   openModel: SHIP_GLYPH,
   openInvite: "fa-duotone fa-envelope-open",
   reviewRequest: "fa-duotone fa-user-check",

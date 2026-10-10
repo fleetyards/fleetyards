@@ -97,8 +97,8 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
   test "PUT /notification-preferences/:id updates the preference" do
     sign_in @user
 
-    assert_api_response :put, 200, path_params: {id: "hangar_create"}, body: {app: false} do
-      assert_equal "hangar_create", parsed_body["notificationType"]
+    assert_api_response :put, 200, path_params: {id: "hangar_sync_finished"}, body: {app: false} do
+      assert_equal "hangar_sync_finished", parsed_body["notificationType"]
       assert_equal false, parsed_body["app"]
     end
   end
@@ -107,7 +107,7 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
     token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["notifications", "notifications:write"])
 
     assert_api_response :put, 200,
-      path_params: {id: "hangar_create"},
+      path_params: {id: "hangar_sync_finished"},
       body: {app: false},
       headers: {"Authorization" => "Bearer #{token.token}"}
   end
@@ -122,12 +122,12 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
     token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["public"])
 
     assert_api_response :put, 401,
-      path_params: {id: "hangar_create"},
+      path_params: {id: "hangar_sync_finished"},
       body: {app: false},
       headers: {"Authorization" => "Bearer #{token.token}"}
   end
 
   test "PUT /notification-preferences/:id returns 401 when not signed in" do
-    assert_api_response :put, 401, path_params: {id: "hangar_create"}, body: {app: false}
+    assert_api_response :put, 401, path_params: {id: "hangar_sync_finished"}, body: {app: false}
   end
 end

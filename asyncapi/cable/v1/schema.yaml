@@ -4254,10 +4254,6 @@ components:
     NotificationTypeEnum:
       type: string
       enum:
-      - hangar_create
-      - hangar_destroy
-      - wishlist_create
-      - wishlist_destroy
       - model_on_sale
       - new_model
       - hangar_sync_finished
@@ -4308,10 +4304,6 @@ components:
       - rsi_handle_verification_lost
       - announcement
       x-enumNames:
-      - HANGAR_CREATE
-      - HANGAR_DESTROY
-      - WISHLIST_CREATE
-      - WISHLIST_DESTROY
       - MODEL_ON_SALE
       - NEW_MODEL
       - HANGAR_SYNC_FINISHED

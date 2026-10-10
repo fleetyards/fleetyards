@@ -169,7 +169,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
   test "GET /commodities sorts by name, both directions" do
     assert_api_response :get, 200, params: {q: {"sorts" => ["name desc"]}} do
       names = parsed_body["items"].map { |item| item["name"] }
-      assert_equal names.sort.reverse, names
+      assert_equal Commodity.where(name: names).order(name: :desc).pluck(:name), names
     end
   end
 
@@ -178,7 +178,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
   test "GET /commodities accepts the s parameter as well as sorts" do
     assert_api_response :get, 200, params: {q: {"s" => "name desc"}} do
       names = parsed_body["items"].map { |item| item["name"] }
-      assert_equal names.sort.reverse, names
+      assert_equal Commodity.where(name: names).order(name: :desc).pluck(:name), names
     end
   end
 

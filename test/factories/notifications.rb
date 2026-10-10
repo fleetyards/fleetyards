@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :notification do
     user
-    notification_type { "hangar_create" }
-    title { "Vehicle added to hangar" }
+    notification_type { "hangar_sync_finished" }
+    title { "Hangar sync finished" }
     body { nil }
     link { nil }
     icon { nil }

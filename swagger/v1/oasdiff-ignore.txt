@@ -1930,3 +1930,27 @@ PUT /notifications/{id}/unarchive added the new `fleet_announcement_posted` enum
 PUT /notifications/{id}/unarchive added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`
+GET /notifications removed the enum value `hangar_create` from the property `notificationTypeEq` of the `query` request parameter `q`
+GET /notifications removed the enum value `hangar_destroy` from the property `notificationTypeEq` of the `query` request parameter `q`
+GET /notifications removed the enum value `wishlist_create` from the property `notificationTypeEq` of the `query` request parameter `q`
+GET /notifications removed the enum value `wishlist_destroy` from the property `notificationTypeEq` of the `query` request parameter `q`
+PUT /notifications/archive-bulk removed the enum value `hangar_create` of the request property `q/notificationTypeEq`
+PUT /notifications/archive-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/archive-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
+PUT /notifications/archive-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/destroy-bulk removed the enum value `hangar_create` of the request property `q/notificationTypeEq`
+PUT /notifications/destroy-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/destroy-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
+PUT /notifications/destroy-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/read-bulk removed the enum value `hangar_create` of the request property `q/notificationTypeEq`
+PUT /notifications/read-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/read-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
+PUT /notifications/read-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/unarchive-bulk removed the enum value `hangar_create` of the request property `q/notificationTypeEq`
+PUT /notifications/unarchive-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/unarchive-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
+PUT /notifications/unarchive-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/unread-bulk removed the enum value `hangar_create` of the request property `q/notificationTypeEq`
+PUT /notifications/unread-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
+PUT /notifications/unread-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
+PUT /notifications/unread-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
