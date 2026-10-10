@@ -76,6 +76,41 @@
       },
       "week": {
         "emptyDay": "Am %{day} steht nichts an."
+      },
+      "online": {
+        "title": "Gerade online (%{count})",
+        "friend": "Freund",
+        "more": {
+          "one": "und %{count} weiterer",
+          "other": "und %{count} weitere"
+        }
+      },
+      "announcements": {
+        "post": "Ankündigung veröffentlichen",
+        "postAction": "Veröffentlichen",
+        "edit": "Ankündigung bearbeiten",
+        "body": "Ankündigung",
+        "until": "bis %{date}",
+        "confirmRemove": "Diese Ankündigung für alle entfernen?",
+        "expiry": {
+          "label": "Anzeigen",
+          "keep": "Bisheriges Ende beibehalten",
+          "never": "Bis sie entfernt wird",
+          "day": "Einen Tag",
+          "days3": "Drei Tage",
+          "week": "Eine Woche",
+          "weeks2": "Zwei Wochen"
+        },
+        "messages": {
+          "saved": "Ankündigung gespeichert.",
+          "saveFailed": "Die Ankündigung konnte nicht gespeichert werden.",
+          "removed": "Ankündigung entfernt.",
+          "removeFailed": "Die Ankündigung konnte nicht entfernt werden."
+        },
+        "more": {
+          "one": "%{count} weitere Ankündigung anzeigen",
+          "other": "%{count} weitere Ankündigungen anzeigen"
+        }
       }
     }
   }

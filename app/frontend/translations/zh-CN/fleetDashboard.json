@@ -76,6 +76,41 @@
       },
       "week": {
         "emptyDay": "%{day} 没有安排。"
+      },
+      "online": {
+        "title": "当前在线（%{count}）",
+        "friend": "好友",
+        "more": {
+          "one": "还有 %{count} 人",
+          "other": "还有 %{count} 人"
+        }
+      },
+      "announcements": {
+        "post": "发布公告",
+        "postAction": "发布",
+        "edit": "编辑公告",
+        "body": "公告",
+        "until": "截至 %{date}",
+        "confirmRemove": "要为所有人删除此公告吗？",
+        "expiry": {
+          "label": "显示时长",
+          "keep": "保持当前截止时间",
+          "never": "直到被删除",
+          "day": "一天",
+          "days3": "三天",
+          "week": "一周",
+          "weeks2": "两周"
+        },
+        "messages": {
+          "saved": "公告已保存。",
+          "saveFailed": "无法保存公告。",
+          "removed": "公告已删除。",
+          "removeFailed": "无法删除公告。"
+        },
+        "more": {
+          "one": "再显示 %{count} 条公告",
+          "other": "再显示 %{count} 条公告"
+        }
       }
     }
   }

@@ -76,6 +76,41 @@
       },
       "week": {
         "emptyDay": "%{day} 沒有安排。"
+      },
+      "online": {
+        "title": "目前在線（%{count}）",
+        "friend": "好友",
+        "more": {
+          "one": "還有 %{count} 人",
+          "other": "還有 %{count} 人"
+        }
+      },
+      "announcements": {
+        "post": "發布公告",
+        "postAction": "發布",
+        "edit": "編輯公告",
+        "body": "公告",
+        "until": "截至 %{date}",
+        "confirmRemove": "要為所有人刪除此公告嗎？",
+        "expiry": {
+          "label": "顯示時長",
+          "keep": "保持目前截止時間",
+          "never": "直到被刪除",
+          "day": "一天",
+          "days3": "三天",
+          "week": "一週",
+          "weeks2": "兩週"
+        },
+        "messages": {
+          "saved": "公告已儲存。",
+          "saveFailed": "無法儲存公告。",
+          "removed": "公告已刪除。",
+          "removeFailed": "無法刪除公告。"
+        },
+        "more": {
+          "one": "再顯示 %{count} 則公告",
+          "other": "再顯示 %{count} 則公告"
+        }
       }
     }
   }

@@ -806,7 +806,8 @@
             "allies": "Alliés",
             "contracts": "Contrats",
             "payouts": "Répartitions",
-            "notifications": "Notifications"
+            "notifications": "Notifications",
+            "announcements": "Annonces"
           },
           "privileges": {
             "fleet:update": "Mettre à jour la flotte",
@@ -870,7 +871,8 @@
             "fleet:payouts:update": "Mettre à jour les répartitions",
             "fleet:payouts:delete": "Supprimer des répartitions",
             "fleet:payouts:manage": "Gérer les répartitions",
-            "fleet:notifications:manage": "Gérer les paramètres de notification"
+            "fleet:notifications:manage": "Gérer les paramètres de notification",
+            "fleet:announcements:manage": "Gérer les annonces"
           },
           "name": "Nom",
           "rank": "Rang"

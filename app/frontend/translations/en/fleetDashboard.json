@@ -76,6 +76,41 @@
       },
       "week": {
         "emptyDay": "Nothing on %{day}."
+      },
+      "online": {
+        "title": "Online now (%{count})",
+        "friend": "Friend",
+        "more": {
+          "one": "and %{count} more",
+          "other": "and %{count} more"
+        }
+      },
+      "announcements": {
+        "post": "Post an announcement",
+        "postAction": "Post",
+        "edit": "Edit announcement",
+        "body": "Announcement",
+        "until": "until %{date}",
+        "confirmRemove": "Remove this announcement for everyone?",
+        "expiry": {
+          "label": "Show it",
+          "keep": "Keep the current end",
+          "never": "Until it is removed",
+          "day": "For a day",
+          "days3": "For three days",
+          "week": "For a week",
+          "weeks2": "For two weeks"
+        },
+        "messages": {
+          "saved": "Announcement saved.",
+          "saveFailed": "The announcement could not be saved.",
+          "removed": "Announcement removed.",
+          "removeFailed": "The announcement could not be removed."
+        },
+        "more": {
+          "one": "Show %{count} more announcement",
+          "other": "Show %{count} more announcements"
+        }
       }
     }
   }

@@ -300,6 +300,8 @@ de:
         file_in_use: "wird bereits anderweitig verwendet; lade das Bild erneut hoch"
         file_too_large: "darf nicht größer als %{count} MB sein"
         markdown_image_limit_reached: "Du hast in den letzten 24 Stunden %{count} Bilder hochgeladen. Bitte versuche es später erneut."
+        announcement_limit_reached: "Deine Flotte hat bereits %{count} Ankündigungen aktiv. Entferne eine, bevor du eine weitere veröffentlichst."
+        already_passed: "ist bereits vorbei"
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:

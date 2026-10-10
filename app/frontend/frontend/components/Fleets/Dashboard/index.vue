@@ -14,6 +14,12 @@ import InventoryPanel from "@/frontend/components/Fleets/Dashboard/InventoryPane
 import NewMembersPanel from "@/frontend/components/Fleets/Dashboard/NewMembersPanel/index.vue";
 import AboutPanel from "@/frontend/components/Fleets/Dashboard/AboutPanel/index.vue";
 import GetStartedPanel from "@/frontend/components/Fleets/Dashboard/GetStartedPanel/index.vue";
+import AnnouncementsPanel from "@/frontend/components/Fleets/Dashboard/AnnouncementsPanel/index.vue";
+import OnlineMembersPanel from "@/frontend/components/Fleets/Dashboard/OnlineMembersPanel/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useFleetDashboardAccess } from "@/frontend/composables/useFleetDashboardAccess";
 import {
   FleetActivityCategoryEnum,
@@ -39,6 +45,8 @@ const {
   canCreateEvents,
   canCreateContracts,
   canReadMissions,
+  showOnline,
+  canManageAnnouncements,
 } = useFleetDashboardAccess(
   () => props.fleet,
   () => props.membership,
@@ -54,9 +62,25 @@ const excludedFromFeed = computed(() => [
   ...(showNewMembers.value ? [FleetActivityCategoryEnum.MEMBERS] : []),
   ...(showInventory.value ? [FleetActivityCategoryEnum.INVENTORY] : []),
 ]);
+
+const { t } = useI18n();
+
+const comlink = useComlink();
+
+const postAnnouncement = () =>
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Dashboard/AnnouncementModal/index.vue"),
+    props: { fleetSlug: props.fleet.slug },
+  });
 </script>
 
 <template>
+  <AnnouncementsPanel
+    :fleet="fleet"
+    :can-manage="canManageAnnouncements"
+    class="fleet-dashboard__announcements"
+  />
   <div class="fleet-dashboard" data-test="fleet-dashboard">
     <div class="fleet-dashboard__main">
       <GetStartedPanel
@@ -103,6 +127,11 @@ const excludedFromFeed = computed(() => [
         :can-answer-transfers="canAnswerTransfers"
         class="fleet-dashboard__queue"
       />
+      <OnlineMembersPanel
+        v-if="showOnline"
+        :fleet="fleet"
+        class="fleet-dashboard__online"
+      />
       <ContractsPanel
         v-if="showContracts"
         :fleet="fleet"
@@ -121,6 +150,18 @@ const excludedFromFeed = computed(() => [
       />
     </aside>
   </div>
+
+  <Teleport v-if="canManageAnnouncements" to="#header-right">
+    <Btn
+      v-tooltip="t('fleetDashboard.announcements.post')"
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('fleetDashboard.announcements.post')"
+      data-test="fleet-announcement-post"
+      @click="postAnnouncement"
+    >
+      <i class="fa-light fa-bullhorn" />
+    </Btn>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -137,6 +178,10 @@ const excludedFromFeed = computed(() => [
 .fleet-dashboard__main,
 .fleet-dashboard__side {
   display: contents;
+}
+
+.fleet-dashboard__announcements {
+  margin-top: 16px;
 }
 
 .fleet-dashboard__queue {
@@ -164,6 +209,7 @@ const excludedFromFeed = computed(() => [
   order: 6;
 }
 
+.fleet-dashboard__online,
 .fleet-dashboard__members {
   order: 7;
 }

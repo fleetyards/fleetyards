@@ -21,6 +21,10 @@ interface PresenceState {
  */
 const presence = reactive(new Map<string, PresenceState>());
 
+// Bumped when the map is dropped after a reconnect, so a surface holding its
+// own list knows it may have missed transitions and asks afresh.
+const resets = ref(0);
+
 export const usePresence = () => {
   const applyPresence = (update: PresenceUpdate) => {
     presence.set(update.userId, {
@@ -36,6 +40,7 @@ export const usePresence = () => {
    */
   const resetPresence = () => {
     presence.clear();
+    resets.value += 1;
   };
 
   /*
@@ -62,10 +67,23 @@ export const usePresence = () => {
     return known ? (known.lastActiveAt ?? fallback) : fallback;
   };
 
+  // Everybody the cable has last said is online, for a surface that has to
+  // notice somebody it does not list yet rather than only update who it does.
+  const knownOnlineIds = computed(
+    () =>
+      new Set(
+        [...presence.entries()]
+          .filter(([, state]) => state.online)
+          .map(([userId]) => userId),
+      ),
+  );
+
   return {
     applyPresence,
     resetPresence,
     isOnline,
     lastActiveAt,
+    knownOnlineIds,
+    resets: readonly(resets),
   };
 };

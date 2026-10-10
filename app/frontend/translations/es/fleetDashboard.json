@@ -76,6 +76,41 @@
       },
       "week": {
         "emptyDay": "Nada previsto el %{day}."
+      },
+      "online": {
+        "title": "En línea ahora (%{count})",
+        "friend": "Amigo",
+        "more": {
+          "one": "y %{count} más",
+          "other": "y %{count} más"
+        }
+      },
+      "announcements": {
+        "post": "Publicar un anuncio",
+        "postAction": "Publicar",
+        "edit": "Editar anuncio",
+        "body": "Anuncio",
+        "until": "hasta el %{date}",
+        "confirmRemove": "¿Eliminar este anuncio para todos?",
+        "expiry": {
+          "label": "Mostrarlo",
+          "keep": "Mantener el final actual",
+          "never": "Hasta que se elimine",
+          "day": "Un día",
+          "days3": "Tres días",
+          "week": "Una semana",
+          "weeks2": "Dos semanas"
+        },
+        "messages": {
+          "saved": "Anuncio guardado.",
+          "saveFailed": "No se pudo guardar el anuncio.",
+          "removed": "Anuncio eliminado.",
+          "removeFailed": "No se pudo eliminar el anuncio."
+        },
+        "more": {
+          "one": "Mostrar %{count} anuncio más",
+          "other": "Mostrar %{count} anuncios más"
+        }
       }
     }
   }
