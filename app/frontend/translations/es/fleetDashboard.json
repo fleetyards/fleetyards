@@ -48,6 +48,7 @@
           "one": "%{count} transferencia entrante por responder",
           "other": "%{count} transferencias entrantes por responder"
         },
+        "partFailed": "Parte de lo que te espera no se ha podido cargar ahora mismo.",
         "empty": {
           "title": "Todo al día",
           "hint": "Aquí aparecen las solicitudes de ingreso y las transferencias entrantes que necesitan respuesta."

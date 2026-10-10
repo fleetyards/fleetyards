@@ -8,6 +8,7 @@ import Component from "./index.vue";
 let mine: Partial<FleetContract>[] = [];
 let open: Partial<FleetContract>[] = [];
 let mineFails = false;
+let openFails = false;
 const asked: { mine?: boolean; perPage?: number }[] = [];
 
 vi.mock("@/services/fyApi", async () => {
@@ -24,13 +25,13 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: computed(() =>
-          params.mine && mineFails
+          (params.mine ? mineFails : openFails)
             ? undefined
             : { items: params.mine ? mine : open },
         ),
         isLoading: ref(false),
         isFetching: ref(false),
-        isError: computed(() => !!params.mine && mineFails),
+        isLoadingError: computed(() => (params.mine ? mineFails : openFails)),
       };
     },
   };
@@ -78,6 +79,7 @@ describe("FleetDashboardContractsPanel", () => {
     mine = [];
     open = [];
     mineFails = false;
+    openFails = false;
     asked.length = 0;
   });
 
@@ -123,16 +125,29 @@ describe("FleetDashboardContractsPanel", () => {
     );
   });
 
-  // The open group alone would read as the reader having no work in hand.
+  // The reader's work alone would read as nothing being open for pickup.
   it("says a group failed rather than leave it out", async () => {
+    openFails = true;
+    mine = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "mine")).toEqual(["Job a"]);
+    expect(
+      subject.find("[data-test='fleet-dashboard-contracts-failed']").exists(),
+    ).toBe(true);
+  });
+
+  // Without the reader's own work, their jobs would be offered back to them.
+  it("offers nothing for pickup when the reader's own work failed", async () => {
     mineFails = true;
     open = [contract("a")];
 
     const subject = await mount();
 
-    expect(titles(subject, "open")).toEqual(["Job a"]);
-    expect(
-      subject.find("[data-test='fleet-dashboard-contracts-failed']").exists(),
-    ).toBe(true);
+    expect(titles(subject, "open")).toEqual([]);
+    expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
+      true,
+    );
   });
 });

@@ -48,6 +48,7 @@
           "one": "%{count} transfert entrant à traiter",
           "other": "%{count} transferts entrants à traiter"
         },
+        "partFailed": "Une partie de ce qui vous attend n'a pas pu être chargée pour le moment.",
         "empty": {
           "title": "Tout est à jour",
           "hint": "Les demandes d'adhésion et les transferts entrants qui attendent une réponse apparaissent ici."

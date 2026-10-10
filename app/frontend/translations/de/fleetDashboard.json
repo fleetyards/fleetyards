@@ -48,6 +48,7 @@
           "one": "%{count} eingehender Transfer offen",
           "other": "%{count} eingehende Transfers offen"
         },
+        "partFailed": "Ein Teil dessen, was auf dich wartet, konnte gerade nicht geladen werden.",
         "empty": {
           "title": "Alles erledigt",
           "hint": "Beitrittsanfragen und eingehende Transfers, die eine Antwort brauchen, erscheinen hier."

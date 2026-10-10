@@ -48,6 +48,7 @@
           "one": "%{count} trasferimento in entrata da gestire",
           "other": "%{count} trasferimenti in entrata da gestire"
         },
+        "partFailed": "Al momento non è stato possibile caricare una parte di ciò che ti aspetta.",
         "empty": {
           "title": "Tutto in ordine",
           "hint": "Qui compaiono le richieste di adesione e i trasferimenti in arrivo che aspettano una risposta."

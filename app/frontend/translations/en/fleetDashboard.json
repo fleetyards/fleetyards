@@ -48,6 +48,7 @@
           "one": "%{count} incoming transfer to answer",
           "other": "%{count} incoming transfers to answer"
         },
+        "partFailed": "Some of what needs you could not be loaded right now.",
         "empty": {
           "title": "All caught up",
           "hint": "Join requests and incoming transfers that need an answer show up here."

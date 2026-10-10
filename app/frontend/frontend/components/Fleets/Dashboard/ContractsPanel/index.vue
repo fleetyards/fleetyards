@@ -47,7 +47,7 @@ const {
   data: mine,
   isLoading: mineLoading,
   isFetching: mineFetching,
-  isError: mineFailed,
+  isLoadingError: mineMissing,
 } = useFleetContracts(
   fleetSlug,
   {
@@ -71,7 +71,7 @@ const {
   data: open,
   isLoading: openLoading,
   isFetching: openFetching,
-  isError: openFailed,
+  isLoadingError: openMissing,
 } = useFleetContracts(
   fleetSlug,
   {
@@ -85,15 +85,15 @@ const mineItems = computed(() => mine.value?.items ?? []);
 
 const mineIds = computed(() => new Set(mineItems.value.map(({ id }) => id)));
 
+// Without the reader's own work there is nothing to take out of the open
+// list, and their own jobs would be offered back to them for pickup.
 const openItems = computed(() =>
-  (open.value?.items ?? [])
-    .filter(({ id }) => !mineIds.value.has(id))
-    .slice(0, SHOWN),
+  mineMissing.value
+    ? []
+    : (open.value?.items ?? [])
+        .filter(({ id }) => !mineIds.value.has(id))
+        .slice(0, SHOWN),
 );
-
-const mineMissing = computed(() => mineFailed.value && !mine.value);
-
-const openMissing = computed(() => openFailed.value && !open.value);
 
 const linkFor = (contract: FleetContract) => ({
   name: "fleet-contract",
