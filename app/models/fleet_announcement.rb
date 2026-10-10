@@ -84,8 +84,6 @@ class FleetAnnouncement < ApplicationRecord
   private def broadcast_withdrawn_notifications
     return if @withdrawn_notification_ids.blank?
 
-    User.where(id: @withdrawn_notification_ids.keys).find_each do |user|
-      UserNotificationsChannel.broadcast_to(user, {withdrawnIds: @withdrawn_notification_ids[user.id]})
-    end
+    Notifications::BroadcastWithdrawnJob.perform_async(@withdrawn_notification_ids)
   end
 end

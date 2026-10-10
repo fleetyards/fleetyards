@@ -28,13 +28,14 @@ class UserNotificationsChannelTest < AsyncapiTestCase
   end
 
   test "broadcasts the withdrawn notifications when their fleet announcement is taken down" do
-    user = create(:user)
+    user = create(:user, last_active_at: Time.current)
     fleet = create(:fleet, members: [user])
     announcement = create(:fleet_announcement, fleet:)
     notification = create(:notification, user:, notification_type: "fleet_announcement_posted", record: announcement)
 
     payloads = assert_asyncapi_broadcast(params: {user_gid: user.to_gid_param}) do
       announcement.destroy!
+      Notifications::BroadcastWithdrawnJob.drain
     end
 
     assert_equal [notification.id], payloads.first["withdrawnIds"]
