@@ -120,6 +120,92 @@ module ScData
         assert_equal 50.0, model.reload.main_acceleration.to_f
       end
 
+      test "#load_model fills in what the matrix never said about a ship" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Unlisted Test", min_crew: nil, max_crew: nil, focus: nil, classification: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "4",
+            "career" => "Multi-Role",
+            "role" => "Medium Freight / Gun Ship",
+            "description" => 'Manufacturer: RSI\\nFocus: Medium Freight / Gunship\\n\\nA classic.\\nReimagined.'
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 4, model.min_crew
+        assert_nil model.max_crew
+        assert_equal "Medium Freight / Gun Ship", model.focus
+        assert_equal "multi", model.classification
+        assert_equal "A classic.\nReimagined.", model.description
+      end
+
+      test "#load_model keeps what the matrix or an admin already said" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Listed Test", min_crew: 3, focus: "Gunship", classification: "combat", description: "Ours.")
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "4",
+            "career" => "Multi-Role",
+            "role" => "Medium Freight / Gun Ship",
+            "description" => 'Manufacturer: RSI\\nFocus: Medium Freight\\n\\nTheirs.'
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 3, model.min_crew
+        assert_equal "Gunship", model.focus
+        assert_equal "combat", model.classification
+        assert_equal "Ours.", model.description
+      end
+
+      test "#load_model fills in nothing the export left as a placeholder" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Placeholder Test", min_crew: nil, focus: nil, classification: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "min_crew" => "0",
+            "career" => "<= PLACEHOLDER =>",
+            "role" => "<= PLACEHOLDER =>",
+            "description" => "<-=MISSING=->"
+          }
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_nil model.min_crew
+        assert_nil model.focus
+        assert_nil model.classification
+        assert_nil model.description
+      end
+
+      test "#load_model classifies a ground vehicle as ground whatever its career" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Ground Career Test", classification: nil)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "ground" => true, "career" => "Combat"}
+        )
+
+        loader.load_model(model)
+
+        assert_equal "ground", model.reload.classification
+      end
+
       # The export's bounding box carries three correct magnitudes but no
       # consistent convention for which axis is which, so a handful of ships need
       # their own order. Read off the orthographic renders rather than the ship

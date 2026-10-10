@@ -41,6 +41,33 @@ module ScData
 
       DEFAULT_AXIS_ORDER = %i[y x z].freeze
 
+      # The export's `career` in the ship matrix's vocabulary. Agrees with what the
+      # matrix says on most ships the two share; the matrix has no word for a
+      # capital ship, a gunship or a snub fighter and files them all under combat.
+      CLASSIFICATIONS = {
+        "Combat" => "combat",
+        "Capital Ship" => "combat",
+        "Destroyer" => "combat",
+        "Gunship" => "combat",
+        "Snub Fighter" => "combat",
+        "Transporter" => "transport",
+        "Transport" => "transport",
+        "Exploration" => "exploration",
+        "Multi-Role" => "multi",
+        "Support" => "support",
+        "Industrial" => "industrial",
+        "Competition" => "competition",
+        "Ground" => "ground"
+      }.freeze
+
+      # What CIG writes where a string is not filled in yet: "<= PLACEHOLDER =>",
+      # "<= UNINITIALIZED =>", "<-=MISSING=->".
+      UNFILLED = /\A<[-=]/
+
+      # "Manufacturer: RSI\nFocus: Medium Freight / Gunship\n\n" heads every
+      # description, and the ship page shows both already.
+      DESCRIPTION_HEADER = /\A(?:(?:Manufacturer|Focus):[^\n]*\n)+\s*/
+
       def all
         loaded = []
 
@@ -118,6 +145,7 @@ module ScData
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
+        update_params = fill_identity_gaps(model, model_data, update_params)
 
         # A ship the build ships is flying, and this is where that used to be
         # recorded -- alongside the flag, on the transition into the game. The
@@ -197,6 +225,30 @@ module ScData
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      # Only the ship matrix fills these in, so a ship it does not list has none of
+      # them. The export says each one too; it takes over only where nothing else
+      # has, because on 80 of the 220 ships both describe it disagrees with the
+      # crew the matrix gives, and an admin may have curated any of them.
+      private def fill_identity_gaps(model, model_data, update_params)
+        crew = model_data["min_crew"].to_i
+        gaps = {
+          min_crew: crew.positive? ? crew : nil,
+          focus: filled(model_data["role"]),
+          classification: model_data["ground"] ? "ground" : CLASSIFICATIONS[model_data["career"]],
+          description: filled(model_data["description"].to_s.gsub('\\n', "\n").sub(DESCRIPTION_HEADER, "").strip)
+        }
+
+        gaps.each do |attribute, value|
+          update_params[attribute] = value if value.present? && model.read_attribute(attribute).blank?
+        end
+
+        update_params
+      end
+
+      private def filled(value)
+        value.presence unless UNFILLED.match?(value.to_s)
       end
 
       private def dimensions(model, model_data)
