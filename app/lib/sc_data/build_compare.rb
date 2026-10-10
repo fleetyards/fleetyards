@@ -139,7 +139,7 @@ module ScData
         before = from_rows[id]
         after = to_rows[id]
 
-        differing = facts.select { |fact| before[fact.to_s] != after[fact.to_s] }
+        differing = facts.select { |fact| before[fact.to_s] != after[fact.to_s] && recorded_by_both?(fact, before, after) }
         differing += changed_figures(before, after)
 
         next if differing.empty?
@@ -161,6 +161,12 @@ module ScData
       build_class.respond_to?(:durability_changes)
     end
 
+    private def recorded_by_both?(fact, before, after)
+      return true unless build_class.respond_to?(:fact_recorded?)
+
+      build_class.fact_recorded?(fact, before["updated_at"]) && build_class.fact_recorded?(fact, after["updated_at"])
+    end
+
     # Both sides are read once and compared in Ruby rather than joined in SQL:
     # the sets are thousands of rows, the comparison needs every diffable column
     # anyway, and a self-join on a table this size buys nothing over two index
@@ -174,7 +180,7 @@ module ScData
     end
 
     private def rows_for(source)
-      columns = ([subject_key] + facts.map(&:to_s) + ["name"] + (figures? ? ["durability"] : [])).uniq
+      columns = ([subject_key] + facts.map(&:to_s) + ["name", "updated_at"] + (figures? ? ["durability"] : [])).uniq
         .select { |column| build_class.column_names.include?(column) }
 
       build_class

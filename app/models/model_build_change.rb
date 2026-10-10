@@ -60,6 +60,8 @@ class ModelBuildChange < ApplicationRecord
 
   def self.changed_facts(previous, build)
     ModelBuild::DIFFABLE_FACTS.each_with_object({}) do |fact, changes|
+      next unless ModelBuild.fact_recorded?(fact, previous.updated_at)
+
       old_value = previous.public_send(fact)
       new_value = build.public_send(fact)
       next if old_value == new_value

@@ -48,6 +48,18 @@ class ModelBuild < ApplicationRecord
   # excluded with the shapes: it classifies the ship rather than measuring it.
   DIFFABLE_FACTS = (FACTS - STRUCTURED_FACTS - %i[ground]).freeze
 
+  # Facts that joined after builds were already being written, and when. A build
+  # last written before then never had the chance to record one, so its nil says
+  # nothing about the ship, and a diff against it would report the fact appearing
+  # on every model at once.
+  FACTS_SINCE = {crew: Time.utc(2026, 10, 11)}.freeze
+
+  def self.fact_recorded?(fact, written_at)
+    since = FACTS_SINCE[fact]
+
+    since.nil? || written_at.nil? || written_at >= since
+  end
+
   # The facts Model filters and sorts by, which is every one of them that
   # `Model.ransackable_attributes` lists. The other twelve nothing queries.
   FILTERABLE = %i[
