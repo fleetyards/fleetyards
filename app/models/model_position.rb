@@ -62,8 +62,8 @@ class ModelPosition < ApplicationRecord
       sort_order += 1
     end
 
-    # 3. Loadmaster (if max_crew > 1 AND model has cargogrid hardpoint)
-    if model.max_crew.to_i > 1 && model.hardpoints.in_build.where(category: :cargogrid).exists?
+    # 3. Loadmaster (if crew > 1 AND model has cargogrid hardpoint)
+    if model.crew.to_i > 1 && model.hardpoints.in_build.where(category: :cargogrid).exists?
       positions << {
         name: "Loadmaster",
         position_type: :loadmaster,
@@ -83,7 +83,7 @@ class ModelPosition < ApplicationRecord
     auto_count = model.model_positions.sc_data.count
     curated_count = model.model_positions.curated.count
     total = auto_count + curated_count
-    needs_curation = total < model.max_crew.to_i
+    needs_curation = total < model.crew.to_i
 
     model.update_column(:positions_need_curation, needs_curation) if model.positions_need_curation != needs_curation
   end

@@ -15,7 +15,7 @@ class ModelBuild < ApplicationRecord
   # running against the schema of its own moment, not this list as it later
   # becomes.
   FACTS = %i[
-    mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground
+    mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground crew
     personal_inventory fuel_consumption main_acceleration retro_acceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
@@ -51,7 +51,7 @@ class ModelBuild < ApplicationRecord
   # The facts Model filters and sorts by, which is every one of them that
   # `Model.ransackable_attributes` lists. The other twelve nothing queries.
   FILTERABLE = %i[
-    mass scm_speed max_speed personal_inventory ground
+    mass scm_speed max_speed personal_inventory ground crew
     pitch yaw roll
     ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks
