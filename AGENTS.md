@@ -251,6 +251,8 @@ An exec-plan does not outlive its branch. In the PR's last commit before merge:
 2. Move anything worth keeping as long-lived reference — research, measurements, a design rationale future work depends on — to `docs/findings/`.
 3. Delete the plan. PRs are squash-merged, so it never lands on `main` and stays readable in the PR's commits.
 
+The `exec-plans` CI job fails while any file under `docs/exec-plans/` is tracked, on every PR into `main`, in the merge queue and on `main` itself. A PR that targets another branch of a stack is not checked, so its plan stays until that PR is the next to merge.
+
 Code, comments, specs, migrations and config never reference an exec-plan or one of this repo's issues or PRs — no `docs/exec-plans/…`, no `#1234`, no issue or PR URLs. A comment that needs a *why* states it in full, so it still makes sense to someone reading the file cold.
 
 ## API Development Workflow

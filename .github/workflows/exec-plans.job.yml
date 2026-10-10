@@ -1,0 +1,23 @@
+name: Exec-plans Job
+
+on:
+  workflow_call:
+
+jobs:
+  exec-plans:
+    # The condition sits here rather than on the caller so a skipped run still reports as
+    # `exec-plans / exec-plans`, the name a required check matches.
+    if: github.event_name == 'merge_group' || github.base_ref == 'main' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - name: no exec-plans may reach main
+        run: |
+          status=0
+          while IFS= read -r -d '' plan; do
+            echo "::error file=${plan}::Exec-plans are deleted before a branch merges into main (see AGENTS.md)."
+            status=1
+          done < <(git ls-files -z docs/exec-plans)
+          exit $status
