@@ -31,6 +31,7 @@ module ScData
             movement_class: values.dig("Components", "VehicleComponentParams", "movementClass"),
             gravlev: values.dig("Components", "VehicleComponentParams", "isGravlevVehicle"),
             min_crew: values.dig("Components", "VehicleComponentParams", "crewSize"),
+            size: extract_size(values),
             name: localize_name(values.dig("Components", "VehicleComponentParams", "vehicleName")),
             description: translate(values.dig("Components", "VehicleComponentParams", "vehicleDescription")),
             career: translate(values.dig("Components", "VehicleComponentParams", "vehicleCareer")),
@@ -55,6 +56,13 @@ module ScData
         end
 
         save_items(ships, folder: "models")
+      end
+
+      # The ship's own item size, 1 to 6, which is what the game sizes a hull by.
+      private def extract_size(values)
+        attach_def = Array.wrap(values.dig("Components", "SAttachableComponentParams", "AttachDef")).first
+
+        value_or_nil(attach_def&.dig("Size"))
       end
 
       private def parse_vehicles
@@ -87,6 +95,7 @@ module ScData
             movement_class: values.dig("Components", "VehicleComponentParams", "movementClass"),
             gravlev: values.dig("Components", "VehicleComponentParams", "isGravlevVehicle"),
             min_crew: values.dig("Components", "VehicleComponentParams", "crewSize"),
+            size: extract_size(values),
             name: localize_name(values.dig("Components", "VehicleComponentParams", "vehicleName")),
             description: translate(values.dig("Components", "VehicleComponentParams", "vehicleDescription")),
             career: translate(values.dig("Components", "VehicleComponentParams", "vehicleCareer")),

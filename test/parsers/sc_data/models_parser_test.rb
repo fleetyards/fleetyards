@@ -122,6 +122,10 @@ module ScData
         assert_equal 'Focus: Combat\n\nA bomber.', parsed_ship["description"]
       end
 
+      test "carries the ship's own item size" do
+        assert_equal "5", parsed_ship["size"]
+      end
+
       private def parsed_ship
         @parser.all
 
@@ -135,6 +139,9 @@ module ScData
           <EntityClassDefinition.TEST_Bomber>
             <Components>
               <VehicleComponentParams vehicleName="#{name}" vehicleDescription="@vehicle_DescTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
+              <SAttachableComponentParams>
+                <AttachDef Type="NOITEM_Vehicle" SubType="Vehicle_Spaceship" Size="5" />
+              </SAttachableComponentParams>
               <SItemPortContainerComponentParams>
                 <Ports>
                   <SItemPortDef Name="hardpoint_relay" MinSize="0" MaxSize="1" PortTags="Relay_Bay" RequiredPortTags="$Relay_Bay" Flags="$uneditable">
