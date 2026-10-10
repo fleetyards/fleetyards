@@ -192,6 +192,7 @@ describe("RSIHangarParser.extractPage", () => {
           pledge(
             "101",
             `${item("Ship", "Cutter")}<div class="item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary (<span>DRAK</span>)</div></div></div>`,
+            "Package - Drake Starter",
           ),
         ),
       ),
@@ -199,9 +200,27 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary (DRAK)", in a pledge without a category',
+        'item without kind, markup item text title liner, liner "Drake Interplanetary (DRAK)", in a "Package" pledge',
       ],
     });
+  });
+
+  it("reads a pledge without a category holding an item with a manufacturer and no kind", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `${item("Hangar decoration", "Statue")}<div class="item"><div class="image"></div><div class="text"><div class="title">Reward</div><div class="liner">Roberts Space Industries (<span>RSI</span>)</div></div></div>`,
+          "Luminalia 2955 Day 7",
+        ),
+      ),
+    );
+
+    expect(page.status).toBe(RsiPageStatus.PAGE);
+    expect(
+      page.status === RsiPageStatus.PAGE &&
+        page.pledges.map((pledge) => pledge.type),
+    ).toEqual(["flair"]);
   });
 
   it("reports an item it could not read without its title or custom name", () => {
@@ -342,23 +361,18 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("does not report the title of a pledge without RSI's category", () => {
+  it("reads a pledge whose title holds a dash but none of RSI's categories", () => {
     const page = extract(
       pledgesPage(
         pledge(
           "101",
-          '<div class="item"><div class="text"><div class="title">Cutlass Black</div><div class="liner">Drake Interplanetary</div></div></div>',
-          "Cutlass Black - Warbond Edition",
+          `${item("Hangar decoration", "Trophy")}<div class="item"><div class="text"><div class="title">Goodies</div><div class="liner">Roberts Space Industries (<span>RSI</span>)</div></div></div>`,
+          "CitizenCon 2955 - Digital Goodies",
         ),
       ),
     );
 
-    expect(page).toMatchObject({
-      details: [
-        'item without kind, markup item text title liner, liner "Drake Interplanetary", in a pledge with an unlisted category',
-      ],
-    });
-    expect(JSON.stringify(page)).not.toContain("Cutlass");
+    expect(page.status).toBe(RsiPageStatus.PAGE);
   });
 
   it("reads a hangar of upgrades only", () => {
@@ -386,6 +400,7 @@ describe("RSIHangarParser.extractPage", () => {
           pledge(
             "101",
             '<div class="item"><div class="text"><div class="title">Upgrade - Clipper To S-65 Stingray</div><div class="liner"> </div></div></div>',
+            "Package - Clipper",
           ),
         ),
       ),
@@ -393,7 +408,7 @@ describe("RSIHangarParser.extractPage", () => {
       status: RsiPageStatus.UNRECOGNISED,
       check: RsiPageCheckEnum.MISSING_KINDS,
       details: [
-        'item without kind, markup item text title liner, liner "", in a pledge without a category',
+        'item without kind, markup item text title liner, liner "", in a "Package" pledge',
       ],
     });
   });

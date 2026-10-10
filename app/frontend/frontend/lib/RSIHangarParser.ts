@@ -186,8 +186,11 @@ export class RSIHangarParser {
           // RSI gives no kind to ship upgrades, the game download or old
           // merchandise, but none of those names a manufacturer. Every ship
           // does: one with a manufacturer and no kind would drop out of the
-          // sync, and the unmatched action would act on it.
-          if (this.hasManufacturer(item)) {
+          // sync, and the unmatched action would act on it. Event and reward
+          // pledges carry none of RSI's categories, and RSI lists items there
+          // that name a manufacturer without a kind: stopping on them blocked
+          // every sync of a hangar holding one.
+          if (this.hasManufacturer(item) && this.hasCategory(name)) {
             shipsWithoutKind.add(
               `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
             );
@@ -379,9 +382,16 @@ export class RSIHangarParser {
 
     if (title === undefined) return "a pledge without a category";
 
-    return PLEDGE_CATEGORIES.includes(category.trim())
+    return this.hasCategory(name)
       ? `a "${category.trim()}" pledge`
       : "a pledge with an unlisted category";
+  }
+
+  // Event and reward titles can hold " - " too, so only RSI's own labels count.
+  hasCategory(name: string | undefined): boolean {
+    const [category, title] = (name ?? "").split(" - ");
+
+    return title !== undefined && PLEDGE_CATEGORIES.includes(category.trim());
   }
 
   markupClasses(item: Element): string {
