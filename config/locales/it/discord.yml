@@ -144,8 +144,6 @@ it:
     event_availability:
       signups: '%{count} iscritti'
       slots: '%{open} di %{total} posti liberi'
-    fleet_announcement:
-      title: "Annuncio da %{fleet}"
     event_published:
       recurrence:
         daily: Ogni giorno

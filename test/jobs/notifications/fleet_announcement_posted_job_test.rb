@@ -11,7 +11,6 @@ module Notifications
       @fleet = create(:fleet, name: "MARU", admins: [@author], members: [@member, @other])
       @announcement = create(:fleet_announcement, fleet: @fleet, author: @author,
         body: "Ops night moves to **Friday** this week.")
-      ::Discord::DeliverAnnouncementJob.jobs.clear
     end
 
     def notified
@@ -61,27 +60,19 @@ module Notifications
       assert_empty notified
     end
 
-    test "posts to the fleet's Discord when it has somewhere to post" do
-      @fleet.create_fleet_notification_setting!(discord_webhook_url: "https://discord.com/api/webhooks/1/token")
-
-      FleetAnnouncementPostedJob.new.perform(@announcement.id)
-
-      assert_equal 1, ::Discord::DeliverAnnouncementJob.jobs.size
-      content = ::Discord::DeliverAnnouncementJob.jobs.first["args"][3]
-      assert_includes content, "Announcement from MARU"
-      assert_includes content, "Ops night moves to **Friday**"
-    end
-
-    test "posts nothing to a fleet without Discord" do
-      FleetAnnouncementPostedJob.new.perform(@announcement.id)
-
-      assert_empty ::Discord::DeliverAnnouncementJob.jobs
-    end
-
+    # Both members are tried: the first failure costs that member only.
     test "keeps going past a member who cannot be notified" do
-      Notification.stubs(:notify!).raises("boom").then.returns(nil)
+      Notification.expects(:notify!).twice.raises("boom").then.returns(nil)
 
-      assert_nothing_raised { FleetAnnouncementPostedJob.new.perform(@announcement.id) }
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+    end
+
+    # A retry picks up where the last run stopped.
+    test "tells nobody twice when it runs again" do
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+      FleetAnnouncementPostedJob.new.perform(@announcement.id)
+
+      assert_equal 2, notified.count
     end
   end
 end

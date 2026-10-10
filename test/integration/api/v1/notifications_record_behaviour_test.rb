@@ -43,7 +43,8 @@ class Api::V1::NotificationsRecordBehaviourTest < ActionDispatch::IntegrationTes
     assert_equal event.slug, record["eventSlug"]
   end
 
-  # The fleet slug is what gives the notification its "open fleet" action.
+  # The reference names the fleet the announcement belongs to, so a client can
+  # load it; the notification's own link is what opens the dashboard.
   test "an announcement notification carries the fleet's slug" do
     fleet = create(:fleet, admins: [create(:user)])
     announcement = create(:fleet_announcement, fleet: fleet)

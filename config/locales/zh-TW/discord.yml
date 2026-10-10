@@ -144,8 +144,6 @@ zh-TW:
     event_availability:
       signups: '%{count} 人已報名'
       slots: '%{total} 個位置中還有 %{open} 個空缺'
-    fleet_announcement:
-      title: "來自 %{fleet} 的公告"
     event_published:
       recurrence:
         daily: 每天

@@ -144,8 +144,6 @@ fr:
     event_availability:
       signups: '%{count} inscrits'
       slots: '%{open} places libres sur %{total}'
-    fleet_announcement:
-      title: "Annonce de %{fleet}"
     event_published:
       recurrence:
         daily: Tous les jours

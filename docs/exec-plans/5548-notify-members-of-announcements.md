@@ -3,7 +3,7 @@
 Working plan for #5548. Decisions live in the issue body. Deleted before the PR merges. Stacked on `feat/5541-fleet-dashboard-online-announcements-health`.
 
 ## Goal
-Posting a fleet announcement tells every other member through their notification channels, and the fleet's Discord when it has one.
+Posting a fleet announcement tells every other member through their notification channels.
 
 ## What changed
 
@@ -16,10 +16,7 @@ Posting a fleet announcement tells every other member through their notification
 1. Instrument `fleet_announcement.posted` in `FleetAnnouncementsController#create`.
 2. A subscriber, `Notifications::InApp::FleetAnnouncementSubscriber`, enqueues a job (`Notifications::FleetAnnouncementPostedJob`). The job notifies every kept, accepted member except the author, each in their own locale.
 
-### Phase 3 — Discord channel post
-1. Post to `Discord::EventAnnouncement.fleet_targets(fleet)` through `DeliverAnnouncementJob`, with copy in all 7 `discord.yml` files.
-
-### Phase 4 — Schema and CI
+### Phase 3 — Schema and CI
 1. Regenerate the schema, AsyncAPI and clients, and add oasdiff-ignore lines for the new enum values, generated with the pinned 1.18.1.
 
 ## Key files
@@ -37,11 +34,10 @@ Posting a fleet announcement tells every other member through their notification
 
 - **2026-10-10** A research pass mapped the pipeline. There is no per-type icon registry, so the icon is a full class passed to `notify!`. The event and contract subscribers pass bare names (`"calendar"`), which looks like a bug, so I won't copy it.
 
-- **2026-10-10** The job does not retry, because a retry would notify everyone already reached a second time. Each member is rescued on their own. The Discord post goes through `DeliverAnnouncementJob`, which retries by itself.
+- **2026-10-10** After review, the Discord channel post was dropped (see the issue). The job now retries, and skips members already notified for this record, so a failure outside the per-member rescue no longer loses the fan-out.
 - **2026-10-10** oasdiff 1.18.1 reports 12 warnings: the new `NotificationTypeEnum` and `NotificationRecordTypeEnum` values in notification responses. All are in the ignore list, and three runs passed against both the base branch and main.
 
 ## Progress
 - [x] Phase 1
 - [x] Phase 2
-- [x] Phase 3
 - [x] Phase 4
