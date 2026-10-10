@@ -145,7 +145,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {"sorts" => ["name desc"]}} do
       names = parsed_body["items"].map { |item| item["name"] }
-      assert_equal names.sort.reverse, names
+      assert_equal Component.where(name: names).order(name: :desc).pluck(:name), names
     end
   end
 
@@ -157,7 +157,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {"s" => "name desc"}} do
       names = parsed_body["items"].map { |item| item["name"] }
-      assert_equal names.sort.reverse, names
+      assert_equal Component.where(name: names).order(name: :desc).pluck(:name), names
     end
   end
 
