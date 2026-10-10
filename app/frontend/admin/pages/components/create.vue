@@ -13,6 +13,7 @@ import {
   getComponentsQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
@@ -34,7 +35,7 @@ const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ComponentInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<ComponentInput>({
   validationSchema,
 });
 
@@ -64,22 +65,24 @@ const createMutation = useCreateComponent({
   },
 });
 
+const { created, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await createMutation
     .mutateAsync({ data: values })
-    .then(async (created) => {
+    .then(async (record) => {
+      created();
       await router.push(
         extend({
           name: "admin-component-edit",
-          params: { id: created.id },
+          params: { id: record.id },
         }),
       );
     })
     .catch((error) => {
-      console.error("Error creating component:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

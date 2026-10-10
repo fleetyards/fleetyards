@@ -14,6 +14,7 @@ import {
   getOauthApplicationsQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
@@ -36,15 +37,16 @@ const validationSchema = {
   redirectUri: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<OauthApplicationInput>({
-  initialValues: {
-    name: "",
-    redirectUri: "",
-    confidential: true,
-    scopes: [] as string[],
-  },
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<OauthApplicationInput>({
+    initialValues: {
+      name: "",
+      redirectUri: "",
+      confidential: true,
+      scopes: [] as string[],
+    },
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [redirectUri, redirectUriProps] = defineField("redirectUri");
@@ -55,24 +57,27 @@ const submitting = ref(false);
 
 const createMutation = useCreateOauthApplication();
 
+const { created, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await createMutation
     .mutateAsync({ data: values })
-    .then(async (created) => {
+    .then(async (record) => {
+      created();
       void queryClient.invalidateQueries({
         queryKey: getOauthApplicationsQueryKey(),
       });
       await router.push(
         extend({
           name: "admin-oauth-application-edit",
-          params: { id: created.id },
+          params: { id: record.id },
         }),
       );
     })
     .catch((error) => {
-      console.error("Error creating OAuth application:", error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

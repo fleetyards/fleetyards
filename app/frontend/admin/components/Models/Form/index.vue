@@ -7,15 +7,13 @@ export default {
 <script lang="ts" setup>
 import { type SubmissionHandler } from "vee-validate";
 import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import {
   type ModelExtended,
   type ModelUpdateInput,
 } from "@/services/fyAdminApi";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useI18n } from "@/shared/composables/useI18n";
-import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 type FormMeta = {
   dirty: boolean;
@@ -37,8 +35,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
-const { displayAlert } = useAppNotifications();
+const { updated, failed } = useFormFeedback();
 
 const submitting = ref(false);
 
@@ -52,14 +49,9 @@ const onSubmit = props.handleSubmit(async (values) => {
       id: props.model.id,
       data: values,
     })
+    .then(updated)
     .catch((error) => {
-      const { message, formErrors } = validationErrorFrom(error);
-
-      props.setErrors?.(formErrors);
-
-      displayAlert({
-        text: message || t("errors.generic"),
-      });
+      failed(error, props.setErrors);
     })
     .finally(() => {
       submitting.value = false;

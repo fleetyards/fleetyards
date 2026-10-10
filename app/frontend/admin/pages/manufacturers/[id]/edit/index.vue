@@ -15,6 +15,7 @@ import {
   getManufacturerQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
@@ -48,10 +49,11 @@ const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ManufacturerInput>({
-  initialValues: initialValues.value,
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<ManufacturerInput>({
+    initialValues: initialValues.value,
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [longName, longNameProps] = defineField("longName");
@@ -93,14 +95,16 @@ const updateMutation = useUpdateManufacturer({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.manufacturer.id, data: values })
+    .then(updated)
     .catch((error) => {
-      console.error("Error updating manufacturer:", error);
-      alert(error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

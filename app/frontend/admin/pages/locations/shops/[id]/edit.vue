@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   type ShopInput,
@@ -54,7 +55,7 @@ const crumbs = computed(() => [
   },
 ]);
 
-const { defineField, handleSubmit, meta } = useForm<ShopInput>({
+const { defineField, handleSubmit, meta, setErrors } = useForm<ShopInput>({
   initialValues: { image: undefined },
 });
 
@@ -83,14 +84,19 @@ const updateMutation = useUpdateShop({
   },
 });
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: shopId.value, data: values })
-    .then(backToPlace)
+    .then(async () => {
+      updated();
+      await backToPlace();
+    })
     .catch((error) => {
-      console.error("Error updating shop:", error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

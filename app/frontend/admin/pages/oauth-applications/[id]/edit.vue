@@ -16,6 +16,7 @@ import {
   getOauthApplicationQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
@@ -53,10 +54,11 @@ const validationSchema = {
   redirectUri: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<OauthApplicationInput>({
-  initialValues: initialValues.value,
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<OauthApplicationInput>({
+    initialValues: initialValues.value,
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [redirectUri, redirectUriProps] = defineField("redirectUri");
@@ -67,12 +69,15 @@ const submitting = ref(false);
 
 const updateMutation = useUpdateOauthApplication();
 
+const { updated, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({ id: props.oauthApplication.id, data: values })
     .then(() => {
+      updated();
       void Promise.all([
         queryClient.invalidateQueries({
           queryKey: getOauthApplicationsQueryKey(),
@@ -83,7 +88,7 @@ const onSubmit = handleSubmit(async (values) => {
       ]);
     })
     .catch((error) => {
-      console.error("Error updating OAuth application:", error);
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

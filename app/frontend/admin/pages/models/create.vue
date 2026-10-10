@@ -13,6 +13,7 @@ import {
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
@@ -24,14 +25,11 @@ import ModelClassificationSelect from "@/frontend/components/base/ModelClassific
 import ModelFocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const router = useRouter();
 const { extend } = useBreadCrumbs();
-const { displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
 const validationSchema = {
@@ -77,12 +75,15 @@ const createMutation = useCreateModel({
   },
 });
 
+const { created, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await createMutation
     .mutateAsync({ data: values })
     .then(async (createdModel) => {
+      created();
       await router.push(
         extend({
           name: "admin-model-edit",
@@ -91,13 +92,7 @@ const onSubmit = handleSubmit(async (values) => {
       );
     })
     .catch((error) => {
-      const { message, formErrors } = validationErrorFrom(error);
-
-      setErrors(formErrors);
-
-      displayAlert({
-        text: message || t("errors.generic"),
-      });
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;

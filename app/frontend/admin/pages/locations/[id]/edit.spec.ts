@@ -26,6 +26,10 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
+vi.mock("@/admin/composables/useFormFeedback", () => ({
+  useFormFeedback: () => ({ updated: vi.fn(), failed: vi.fn() }),
+}));
+
 vi.mock("@/shared/composables/useMetaInfo", () => ({
   useMetaInfo: () => ({ updateMetaInfo: vi.fn() }),
 }));

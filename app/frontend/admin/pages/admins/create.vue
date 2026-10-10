@@ -14,20 +14,18 @@ import {
   getAdminUsersQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
+import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import AdminUserResourceAccess from "@/admin/components/AdminUsers/ResourceAccess/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const router = useRouter();
 const { extend } = useBreadCrumbs();
 const queryClient = useQueryClient();
-const { displayAlert } = useAppNotifications();
 
 const validationSchema = {
   username: "required|alpha_dash",
@@ -61,30 +59,27 @@ const submitting = ref(false);
 
 const createMutation = useCreateAdminUser();
 
+const { created, failed } = useFormFeedback();
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await createMutation
     .mutateAsync({ data: values })
-    .then(async (created) => {
+    .then(async (record) => {
+      created();
       void queryClient.invalidateQueries({
         queryKey: getAdminUsersQueryKey(),
       });
       await router.push(
         extend({
           name: "admin-admin-edit",
-          params: { id: created.id! },
+          params: { id: record.id! },
         }),
       );
     })
     .catch((error) => {
-      const { message, formErrors } = validationErrorFrom(error);
-
-      setErrors(formErrors);
-
-      displayAlert({
-        text: message || t("errors.generic"),
-      });
+      failed(error, setErrors);
     })
     .finally(() => {
       submitting.value = false;
