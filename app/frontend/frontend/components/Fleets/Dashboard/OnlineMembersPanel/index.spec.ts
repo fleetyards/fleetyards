@@ -1,4 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { flushPromises } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { computed, defineComponent, h, nextTick, ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -8,7 +9,8 @@ import Component from "./index.vue";
 
 let online: FleetOnlineMembersList | undefined;
 const isFetching = ref(false);
-const refetch = vi.fn();
+// The quiet asks fetch directly, around the query.
+const ask = vi.fn();
 let queryOptions: { query?: Record<string, unknown> } | undefined;
 let wrapper: { unmount: () => void } | undefined;
 
@@ -18,6 +20,7 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
+    fleetOnlineMembers: (...args: unknown[]) => ask(...args),
     useFleetOnlineMembers: (
       _slug: unknown,
       options: { query?: Record<string, unknown> },
@@ -26,7 +29,6 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: computed(() => online),
-        refetch,
         isLoading: computed(() => !online),
         isFetching,
         isLoadingError: ref(false),
@@ -67,7 +69,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     vi.useFakeTimers();
     online = undefined;
     isFetching.value = false;
-    refetch.mockReset();
+    ask.mockReset().mockImplementation(async () => online);
     resetPresence();
   });
 
@@ -110,10 +112,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
       totalCount: 1,
       items: [{ userId: "z", username: "zulu", friend: false }],
     };
-    refetch.mockImplementation(() => {
-      isFetching.value = true;
-      return new Promise(() => undefined);
-    });
+    ask.mockImplementation(() => new Promise(() => undefined));
 
     const subject = await mount();
 
@@ -121,7 +120,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     await settle();
     await nextTick();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
     expect(subject.find(".panel--loading").exists()).toBe(false);
   });
 
@@ -166,7 +165,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     await nextTick();
 
     expect(names(subject)).toEqual(["zulu"]);
-    expect(refetch).not.toHaveBeenCalled();
+    expect(ask).not.toHaveBeenCalled();
   });
 
   // A push names an id, not a member: only the server knows whether they are
@@ -184,7 +183,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "z", online: true });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
   });
 
   // Gone before the answer came back, they would otherwise never be asked
@@ -204,7 +203,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "new", online: true });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(2);
+    expect(ask).toHaveBeenCalledTimes(2);
   });
 
   it("asks nothing before the first answer is in", async () => {
@@ -215,7 +214,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "new", online: true });
     await settle();
 
-    expect(refetch).not.toHaveBeenCalled();
+    expect(ask).not.toHaveBeenCalled();
   });
 
   // The page holds the first rows only.
@@ -230,7 +229,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     applyPresence({ userId: "z", online: false });
     await settle();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
   });
 
   // Nothing is replayed after a dropped socket.
@@ -245,7 +244,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     resetPresence();
     await nextTick();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
   });
 
   // A refocus or the first answer: whatever the panel did not start quietly.
@@ -263,58 +262,50 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 
-  // A fetch already out may predate the push, so the ask waits for it rather
-  // than cancelling it.
-  it("asks after a fetch already out instead of cancelling it", async () => {
-    online = {
-      totalCount: 1,
-      items: [{ userId: "z", username: "zulu", friend: false }],
-    };
+  // The query's own refocus refetch skips what is fresh, retries a failed
+  // first load and leaves a fetch already out alone.
+  it("leaves the refocus to the query", async () => {
+    online = { totalCount: 0, items: [] };
 
     await mount();
 
-    isFetching.value = true;
-    applyPresence({ userId: "new", online: true });
-    await settle();
-
-    expect(refetch).not.toHaveBeenCalled();
-
-    isFetching.value = false;
-    await nextTick();
-
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(queryOptions?.query?.refetchOnWindowFocus).toBe(true);
   });
 
-  // Neither a list nor nobody while the rest are asked for; a count after.
+  // Neither a list nor nobody while the rest are asked for, through the wait
+  // before the ask too; a count after, whatever the ask brought.
   it("waits, loading, once everybody it lists has gone but more are online", async () => {
     online = {
       totalCount: 5,
       items: [{ userId: "z", username: "zulu", friend: false }],
     };
     let answer = () => undefined as void;
-    refetch.mockImplementation(() => {
-      isFetching.value = true;
-      return new Promise<void>((resolve) => {
-        answer = resolve;
-      });
-    });
+    ask.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          answer = resolve;
+        }),
+    );
 
     const subject = await mount();
 
     applyPresence({ userId: "z", online: false });
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+    expect(subject.find(".online-members__more").exists()).toBe(false);
+
     await settle();
     await nextTick();
 
-    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(ask).toHaveBeenCalledTimes(1);
     expect(subject.find(".panel--loading").exists()).toBe(true);
     expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
       false,
     );
-    expect(subject.find(".online-members__more").exists()).toBe(false);
 
-    isFetching.value = false;
     answer();
-    await nextTick();
+    await flushPromises();
     await nextTick();
 
     expect(subject.find(".panel--loading").exists()).toBe(false);
