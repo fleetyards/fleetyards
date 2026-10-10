@@ -224,9 +224,24 @@ module ScData
         assert_nil model.focus
       end
 
-      test "#load_model classifies a ground vehicle as ground whatever its career" do
+      test "#load_model sizes a ship by the item sizes ours agrees with" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Ground Career Test", classification: nil)
+        large = create(:model, name: "Size Five Test", size: nil)
+        unsure = create(:model, name: "Size Three Test", size: nil)
+
+        loader.stubs(:load_model_data).with(large.sc_data_identifier).returns({"mass" => 1000.0, "loadout" => [], "size" => "5"})
+        loader.stubs(:load_model_data).with(unsure.sc_data_identifier).returns({"mass" => 1000.0, "loadout" => [], "size" => "3"})
+
+        loader.load_model(large)
+        loader.load_model(unsure)
+
+        assert_equal "large", large.reload.size
+        assert_nil unsure.reload.size, "3 is a small ship as often as a medium one"
+      end
+
+      test "#load_model classifies and sizes a ground vehicle as one whatever its career" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Ground Career Test", classification: nil, size: nil)
 
         loader.stubs(:load_model_data).returns(
           {"mass" => 1000.0, "loadout" => [], "ground" => true, "career" => "Combat"}
@@ -234,7 +249,10 @@ module ScData
 
         loader.load_model(model)
 
-        assert_equal "ground", model.reload.classification
+        model.reload
+
+        assert_equal "ground", model.classification
+        assert_equal "vehicle", model.size
       end
 
       # The export's bounding box carries three correct magnitudes but no

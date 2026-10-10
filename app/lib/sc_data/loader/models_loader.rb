@@ -60,6 +60,13 @@ module ScData
         "Ground" => "ground"
       }.freeze
 
+      # The export's item size in ours, where the two agree. Measured against the
+      # catalogue: 2 is small on 78 of 82 ships, 5 large on 19 of 23 -- the other
+      # four are medium only on flight dimensions, and need a large pad landed --
+      # and 6 capital on all six. 1 does not tell a snub from a small ship, and 3
+      # and 4 each straddle two of ours, so those stay for an admin.
+      SIZES = {"2" => "small", "5" => "large", "6" => "capital"}.freeze
+
       # What CIG writes where a string is not filled in yet: "<= PLACEHOLDER =>",
       # "<= UNINITIALIZED =>", "<-=MISSING=->".
       UNFILLED = /\A<[-=]/
@@ -243,6 +250,7 @@ module ScData
           min_crew: crew.positive? ? crew : nil,
           focus: filled(model_data["role"]),
           classification: model_data["ground"] ? "ground" : CLASSIFICATIONS[model_data["career"]],
+          size: model_data["ground"] ? ::Model::VEHICLE_SIZE : SIZES[model_data["size"].to_s],
           description: filled(model_data["description"].to_s.gsub('\\n', "\n").sub(DESCRIPTION_HEADER, "").strip)
         }
 
