@@ -30,9 +30,10 @@ const SHOWN = 6;
 
 // Read as one page and split here: what touches the reader is a handful of
 // the fleet's recent movements, not a list of its own worth a second request.
+// Anything older is on the logistics page the panel links to.
 const { data, isLoading } = useFleetActivity(
   computed(() => props.fleet.slug),
-  { category: FleetActivityCategoryEnum.INVENTORY, limit: 30 },
+  { category: FleetActivityCategoryEnum.INVENTORY, limit: 10 },
   { query: liveQuery },
 );
 
