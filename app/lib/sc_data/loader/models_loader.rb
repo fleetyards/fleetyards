@@ -66,7 +66,7 @@ module ScData
 
       # "Manufacturer: RSI\nFocus: Medium Freight / Gunship\n\n" heads every
       # description, and the ship page shows both already.
-      DESCRIPTION_HEADER = /\A(?:(?:Manufacturer|Focus):[^\n]*\n)+\s*/
+      DESCRIPTION_HEADER = /\A(?:(?:Manufacturer|Focus):[^\n]*(?:\n|\z))+\s*/
 
       def all
         loaded = []
@@ -230,8 +230,14 @@ module ScData
       # Only the ship matrix fills these in, so a ship it does not list has none of
       # them. The export says each one too; it takes over only where nothing else
       # has, because on 80 of the 220 ships both describe it disagrees with the
-      # crew the matrix gives, and an admin may have curated any of them.
+      # crew the matrix gives, and an admin may have curated any of them. A crew of
+      # zero is a gap too, as it is to the matrix loader.
+      #
+      # These are the ship's own columns rather than a build's, so only the
+      # environment readers get by default writes them.
       private def fill_identity_gaps(model, model_data, update_params)
+        return update_params unless default_environment?
+
         crew = model_data["min_crew"].to_i
         gaps = {
           min_crew: crew.positive? ? crew : nil,
@@ -241,7 +247,8 @@ module ScData
         }
 
         gaps.each do |attribute, value|
-          update_params[attribute] = value if value.present? && model.read_attribute(attribute).blank?
+          current = model.read_attribute(attribute)
+          update_params[attribute] = value if value.present? && (current.blank? || current == 0)
         end
 
         update_params

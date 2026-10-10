@@ -193,6 +193,37 @@ module ScData
         assert_nil model.description
       end
 
+      test "#load_model fills in a crew of zero and a description that is only its header" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Zero Crew Test", min_crew: 0)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "min_crew" => "2", "description" => 'Manufacturer: RSI\\nFocus: Gunship'}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_equal 2, model.min_crew
+        assert_nil model.description
+      end
+
+      test "#load_model leaves the ship's own columns to the default environment" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Ptu Fill Test", min_crew: nil, focus: nil)
+        loader.stubs(:default_environment?).returns(false)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "min_crew" => "4", "role" => "Medium Freight"}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_nil model.min_crew
+        assert_nil model.focus
+      end
+
       test "#load_model classifies a ground vehicle as ground whatever its career" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "Ground Career Test", classification: nil)
