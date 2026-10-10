@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.21.0](https://github.com/fleetyards/fleetyards/compare/v8.20.0...v8.21.0) (2026-10-10)
+
+
+### Features
+
+* **buyback-sync:** run the whole buy-back sync in the background ([#5546](https://github.com/fleetyards/fleetyards/issues/5546)) ([2cdcfa0](https://github.com/fleetyards/fleetyards/commit/2cdcfa0e8a9476ba83d563bb91970250d98e53ac))
+* **fleets:** announcements and who is online on the fleet dashboard ([#5544](https://github.com/fleetyards/fleetyards/issues/5544)) ([bfa41cb](https://github.com/fleetyards/fleetyards/commit/bfa41cb292418dc99de7711051a8e09cd7d8aca1))
+* **fleets:** notify members when an announcement is posted ([#5551](https://github.com/fleetyards/fleetyards/issues/5551)) ([51a4b39](https://github.com/fleetyards/fleetyards/commit/51a4b39c69083b42483275811c0882fbe8bf32a9))
+* **fleets:** operations dashboard on the fleet page for members ([#5537](https://github.com/fleetyards/fleetyards/issues/5537)) ([ee3228e](https://github.com/fleetyards/fleetyards/commit/ee3228ede18f58b6a8f08e95295bc7c9cddb797d))
+* **hangar-sync:** keep the sync running when the modal is closed ([#5532](https://github.com/fleetyards/fleetyards/issues/5532)) ([9df623d](https://github.com/fleetyards/fleetyards/commit/9df623dc966e72958ccf5236134794e15582f27a))
+* **hangar-sync:** rework the sync modal's settings and close flow ([#5531](https://github.com/fleetyards/fleetyards/issues/5531)) ([9f7c2aa](https://github.com/fleetyards/fleetyards/commit/9f7c2aa87cca7a4bbfdc745d5d695b68af460b1b))
+* **hangar-sync:** say what the parser tripped on in RSI page reports ([#5520](https://github.com/fleetyards/fleetyards/issues/5520)) ([e1b221d](https://github.com/fleetyards/fleetyards/commit/e1b221d2d0647ada0d05906740815bd5f13a3c26))
+* **hangar-sync:** show when paints or hangar flair are not synced ([#5526](https://github.com/fleetyards/fleetyards/issues/5526)) ([e339289](https://github.com/fleetyards/fleetyards/commit/e3392896bd2523116cf95dee510d15025d40bf39))
+* **hangar:** read buy-back prices in the background ([#5517](https://github.com/fleetyards/fleetyards/issues/5517)) ([85e02a1](https://github.com/fleetyards/fleetyards/commit/85e02a1d35a469b4b6ef8baaff226e3283dba17d))
+* **hangar:** remove a single buy-back pledge ([#5522](https://github.com/fleetyards/fleetyards/issues/5522)) ([94f831d](https://github.com/fleetyards/fleetyards/commit/94f831d32cc4d6bcb349eaf12f0b63251af5417e))
+* **hangar:** sort buy-back pledges ([#5521](https://github.com/fleetyards/fleetyards/issues/5521)) ([4c80e06](https://github.com/fleetyards/fleetyards/commit/4c80e0619ada77f2a1b6611c0d43f2d32d5733fd))
+* **push:** hold push back while the user is active on any device ([#5518](https://github.com/fleetyards/fleetyards/issues/5518)) ([66871b7](https://github.com/fleetyards/fleetyards/commit/66871b7d95bb6cba754578649291df2507ecd642))
+
+
+### Bug Fixes
+
+* **events:** show the publish button in the page header ([fb57fd5](https://github.com/fleetyards/fleetyards/commit/fb57fd56a6bce2edcb352706e4a59ca5f0a30f24))
+* **fleets:** ask for a mission template before writing an event ([#5536](https://github.com/fleetyards/fleetyards/issues/5536)) ([e5fa440](https://github.com/fleetyards/fleetyards/commit/e5fa440fe2449ae98ed9320e7d2293affa1767f0))
+* **fleets:** show each dashboard panel loading, and link out instead of paging ([#5553](https://github.com/fleetyards/fleetyards/issues/5553)) ([1e82546](https://github.com/fleetyards/fleetyards/commit/1e82546f75f2f6afc71eb95e100d711bef1d68a6))
+* **models:** adopt a game-file model the ship matrix spells differently ([#5539](https://github.com/fleetyards/fleetyards/issues/5539)) ([db2ed39](https://github.com/fleetyards/fleetyards/commit/db2ed3905c4c697b3fada4ef4e6937e6036e8b1b))
+* **navigation:** keep the header search left-aligned next to the back button ([#5529](https://github.com/fleetyards/fleetyards/issues/5529)) ([48edf9e](https://github.com/fleetyards/fleetyards/commit/48edf9e92cdb9b15d0935753c2026e3596029f70))
+* **session:** stop requests from before sign-in replacing the new session ([#5538](https://github.com/fleetyards/fleetyards/issues/5538)) ([8176c4a](https://github.com/fleetyards/fleetyards/commit/8176c4a33940dd34bfd8a37ec55f72a031c1c488))
+* **tours:** mobile pass for the tours pages ([#5542](https://github.com/fleetyards/fleetyards/issues/5542)) ([5ba8a4a](https://github.com/fleetyards/fleetyards/commit/5ba8a4ab7ee4a13e49b4599ed80314e4b05d39e0))
+
+
+### Refactorings
+
+* **components:** drop the legacy item_type and component_class columns ([#5503](https://github.com/fleetyards/fleetyards/issues/5503)) ([2629d56](https://github.com/fleetyards/fleetyards/commit/2629d563685d1f39a4a8edc54b8f8e0ce8d0895a))
+* **hangar-sync:** let the run decide when a sync has nothing to do ([#5530](https://github.com/fleetyards/fleetyards/issues/5530)) ([5059ef1](https://github.com/fleetyards/fleetyards/commit/5059ef1a5725b06f1ba99b1e9b0cafbcf9f1980b))
+* **modal:** one footer convention across all modals ([#5533](https://github.com/fleetyards/fleetyards/issues/5533)) ([e149a5c](https://github.com/fleetyards/fleetyards/commit/e149a5cce4243f5ecebc8ff3da2a790ec9c2f990))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/parser from 8.71.0 to 8.71.1 ([#5524](https://github.com/fleetyards/fleetyards/issues/5524)) ([73559e2](https://github.com/fleetyards/fleetyards/commit/73559e22b860b7d3c14fdb8edd52302225c02503))
+* **deps-dev:** bump standard from 1.56.0 to 1.57.0 ([#5527](https://github.com/fleetyards/fleetyards/issues/5527)) ([dc7cd95](https://github.com/fleetyards/fleetyards/commit/dc7cd9517c0b5b0389d6a1eb5af68e62af7070c1))
+* **deps:** bump @event-calendar/core from 5.15.0 to 5.16.0 ([#5525](https://github.com/fleetyards/fleetyards/issues/5525)) ([35c816b](https://github.com/fleetyards/fleetyards/commit/35c816b2aab4f5101a5ace77617ceb079676f142))
+* **docs:** remove exec-plans that landed on main ([d39b17f](https://github.com/fleetyards/fleetyards/commit/d39b17f1c4141f25ce90e68e561b8dce12a00157))
+* **sc_data:** bump live to 4.10.2-live.12881860 and ptu to 4.10.2-ptu.12858901 ([#5545](https://github.com/fleetyards/fleetyards/issues/5545)) ([020ab83](https://github.com/fleetyards/fleetyards/commit/020ab835b6b535db6c65e3de61f1334606985205))
+
 ## [8.20.0](https://github.com/fleetyards/fleetyards/compare/v8.19.0...v8.20.0) (2026-10-08)
 
 
