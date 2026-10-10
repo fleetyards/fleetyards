@@ -17,14 +17,15 @@ module Api
           check: report_params[:check],
           page_number: report_params[:page_number],
           extension_version: report_params[:extension_version],
-          details: report_params[:details]
+          details: report_params[:details],
+          markup: report_params[:markup]
         )
 
         head :no_content
       end
 
       private def report_params
-        @report_params ||= params.permit(:page, :check, :page_number, :extension_version, details: [])
+        @report_params ||= params.permit(:page, :check, :page_number, :extension_version, details: [], markup: [])
       end
     end
   end

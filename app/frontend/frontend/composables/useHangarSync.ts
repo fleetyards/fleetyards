@@ -188,6 +188,7 @@ export const useHangarSync = () => {
         pageNumber: currentPage.value,
         extensionVersion,
         details: page.details,
+        markup: page.markup,
       });
 
       if (id !== runId) return;

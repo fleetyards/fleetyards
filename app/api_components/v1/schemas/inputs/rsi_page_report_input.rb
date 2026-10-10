@@ -17,6 +17,11 @@ module V1
               type: :array,
               maxItems: 10,
               items: {type: :string, pattern: "^[^`\\r\\n]{1,200}$"}
+            },
+            markup: {
+              type: :array,
+              maxItems: 5,
+              items: {type: :string, maxLength: 20_000}
             }
           },
           additionalProperties: false,

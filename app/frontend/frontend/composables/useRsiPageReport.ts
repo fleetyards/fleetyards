@@ -47,6 +47,7 @@ export const useRsiPageReport = () => {
     pageNumber?: number;
     extensionVersion?: string;
     details?: string[];
+    markup?: string[];
   }) => {
     const identity = await extension
       .request(FleetyardsSyncAction.IDENTIFY)
@@ -69,6 +70,7 @@ export const useRsiPageReport = () => {
     reportRsiPage({
       ...report,
       details: details?.length ? details : undefined,
+      markup: report.markup?.length ? report.markup : undefined,
     }).catch(() => undefined);
 
     return RsiPageReportOutcome.REPORTED;

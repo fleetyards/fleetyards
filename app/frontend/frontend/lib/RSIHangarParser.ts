@@ -16,6 +16,7 @@ export type RSIHangarPage =
       status: RsiPageStatus.UNRECOGNISED;
       check: RsiPageCheckEnum;
       details: string[];
+      markup?: string[];
     };
 
 const READ_KINDS = new Map<string, RSIHangarItemKind>([
@@ -52,6 +53,12 @@ const PLEDGE_CATEGORIES = [
   "Combo",
   "Subscribers Exclusive",
 ];
+
+// The pledges a report sends along, so an admin can read what tripped the
+// parser. Only ever pledge rows: a page without the list may be any account
+// page, naming the user.
+const MAX_MARKUP_PLEDGES = 5;
+const MAX_MARKUP_LENGTH = 20000;
 
 const interleave = (...lists: string[][]) =>
   Array.from({
@@ -142,6 +149,8 @@ export class RSIHangarParser {
     const shipsWithoutKind = new Set<string>();
     const unknownKinds = new Set<string>();
     const standaloneShipsWithoutShip = new Set<string>();
+    const unidentifiedEntries = new Set<Element>();
+    const unreadEntries = new Set<Element>();
 
     entries.forEach((entry) => {
       const id = (
@@ -156,6 +165,10 @@ export class RSIHangarParser {
 
       if (name === undefined) {
         missingPledgeName = true;
+      }
+
+      if (!id || name === undefined) {
+        unidentifiedEntries.add(entry);
       }
 
       const items: RSIHangarItem[] = [];
@@ -186,17 +199,22 @@ export class RSIHangarParser {
           // RSI gives no kind to ship upgrades, the game download or old
           // merchandise, but none of those names a manufacturer. Every ship
           // does: one with a manufacturer and no kind would drop out of the
-          // sync, and the unmatched action would act on it.
-          if (this.hasManufacturer(item)) {
+          // sync, and the unmatched action would act on it. Event and reward
+          // pledges carry none of RSI's categories, and RSI lists items there
+          // that name a manufacturer without a kind: stopping on them blocked
+          // every sync of a hangar holding one.
+          if (this.hasManufacturer(item) && this.hasCategory(name)) {
             shipsWithoutKind.add(
               `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
             );
+            unreadEntries.add(entry);
           }
           return;
         }
 
         if (!KNOWN_KINDS.includes(kind)) {
           unknownKinds.add(`unknown kind "${kind}"`);
+          unreadEntries.add(entry);
           return;
         }
 
@@ -222,6 +240,7 @@ export class RSIHangarParser {
         standaloneShipsWithoutShip.add(
           `no ship in ${this.pledgeCategory(name)}, kinds ${[...kinds].join(", ") || "none"}`,
         );
+        unreadEntries.add(entry);
       }
 
       pledges.push(...items);
@@ -241,6 +260,7 @@ export class RSIHangarParser {
         details: [
           `pledges ${entries.length}, ids ${pledgeIds.length}, ${missingPledgeName ? "a name missing" : "no name missing"}`,
         ],
+        markup: this.pledgeMarkup(unidentifiedEntries),
       };
     }
 
@@ -254,6 +274,7 @@ export class RSIHangarParser {
           [...standaloneShipsWithoutShip],
           [...unknownKinds],
         ),
+        markup: this.pledgeMarkup(unreadEntries),
       };
     }
 
@@ -262,6 +283,7 @@ export class RSIHangarParser {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.UNKNOWN_KINDS,
         details: [...unknownKinds],
+        markup: this.pledgeMarkup(unreadEntries),
       };
     }
 
@@ -270,6 +292,7 @@ export class RSIHangarParser {
         status: RsiPageStatus.UNRECOGNISED,
         check: RsiPageCheckEnum.MISSING_KINDS,
         details: [...standaloneShipsWithoutShip],
+        markup: this.pledgeMarkup(unreadEntries),
       };
     }
 
@@ -379,9 +402,27 @@ export class RSIHangarParser {
 
     if (title === undefined) return "a pledge without a category";
 
-    return PLEDGE_CATEGORIES.includes(category.trim())
+    return this.hasCategory(name)
       ? `a "${category.trim()}" pledge`
       : "a pledge with an unlisted category";
+  }
+
+  // Event and reward titles can hold " - " too, so only RSI's own labels count.
+  hasCategory(name: string | undefined): boolean {
+    const [category, title] = (name ?? "").split(" - ");
+
+    return title !== undefined && PLEDGE_CATEGORIES.includes(category.trim());
+  }
+
+  // Cut by code point, as the server counts them.
+  pledgeMarkup(entries: Set<Element>): string[] {
+    return [...entries]
+      .slice(0, MAX_MARKUP_PLEDGES)
+      .map((entry) =>
+        Array.from(entry.outerHTML.replace(/\s+/g, " ").trim())
+          .slice(0, MAX_MARKUP_LENGTH)
+          .join(""),
+      );
   }
 
   markupClasses(item: Element): string {
