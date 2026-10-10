@@ -69,12 +69,11 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
   const { displayInfo, displayWarning, displayAlert } = useAppNotifications();
 
   const announce = (notification: AdminNotificationsData) => {
-    // No timeout: a report that arrives while nobody is looking is the whole
-    // point of the notification center, so the toast waits to be clicked away,
-    // and that click lands in the center rather than only dismissing it.
+    // The notification center keeps what a toast only announces, so the toast
+    // can go on its own; clicking it lands in the center.
     const message = {
       text: notification.title,
-      timeout: false as const,
+      timeout: 10_000,
       to: { name: "admin-notifications" },
     };
 
