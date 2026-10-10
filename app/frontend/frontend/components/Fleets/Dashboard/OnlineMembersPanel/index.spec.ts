@@ -4,6 +4,7 @@ import { computed, defineComponent, h, nextTick, ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetOnlineMembersList } from "@/services/fyApi";
 import { usePresence } from "@/shared/composables/usePresence";
+import { focusManager } from "@tanstack/vue-query";
 import Component from "./index.vue";
 
 let online: FleetOnlineMembersList | undefined;
@@ -76,6 +77,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
   afterEach(() => {
     wrapper?.unmount();
     wrapper = undefined;
+    focusManager.setFocused(undefined);
     vi.useRealTimers();
   });
 
@@ -246,5 +248,44 @@ describe("FleetDashboardOnlineMembersPanel", () => {
     await nextTick();
 
     expect(refetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows the bar for a refocus, which the reader asked for", async () => {
+    online = {
+      totalCount: 1,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+    refetch.mockImplementation(() => {
+      isFetching.value = true;
+      return new Promise(() => undefined);
+    });
+
+    const subject = await mount();
+
+    focusManager.setFocused(false);
+    focusManager.setFocused(true);
+    await nextTick();
+
+    expect(refetch).toHaveBeenCalledTimes(1);
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // Neither a list nor nobody: the rest are still being asked for.
+  it("waits, loading, once everybody it lists has gone but more are online", async () => {
+    online = {
+      totalCount: 5,
+      items: [{ userId: "z", username: "zulu", friend: false }],
+    };
+
+    const subject = await mount();
+
+    applyPresence({ userId: "z", online: false });
+    await nextTick();
+
+    expect(subject.find(".panel--loading").exists()).toBe(true);
+    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
+      false,
+    );
+    expect(subject.find(".online-members__more").exists()).toBe(false);
   });
 });

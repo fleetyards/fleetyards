@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useDebounceFn } from "@vueuse/core";
+import { focusManager } from "@tanstack/vue-query";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
@@ -35,26 +36,34 @@ const { t } = useI18n();
  */
 const ASK_AGAIN_AFTER_MS = 2_000 + Math.round(Math.random() * 8_000);
 
+// The refocus ask is made here rather than by the query, so the panel knows
+// which fetch the reader asked for.
 const { data, refetch, isLoading, isFetching, isError } = useFleetOnlineMembers(
   computed(() => props.fleet.slug),
-  { query: liveQuery },
+  { query: { ...liveQuery, refetchOnWindowFocus: false } },
 );
 
-// The asks presence pushes and reconnects set off keep the list in step behind
-// the reader's back; with the bar on each of them it would flicker on every
-// login in the fleet. Only the first answer and a refocus show it.
-const quietly = ref(false);
+/*
+ * The asks presence pushes and reconnects set off keep the list in step behind
+ * the reader's back; with the bar on each of them it would flicker on every
+ * login in the fleet. Only the first answer and a refocus show it. The refocus
+ * holds the bar until no fetch is out at all, so a push that restarts the
+ * fetch under it does not take the bar away.
+ */
+const refocusing = ref(false);
 
-const refetchQuietly = async () => {
-  quietly.value = true;
-  try {
-    await refetch();
-  } finally {
-    quietly.value = false;
-  }
-};
+watch(isFetching, (now) => {
+  if (!now) refocusing.value = false;
+});
 
-const fetching = computed(() => isFetching.value && !quietly.value);
+onScopeDispose(
+  focusManager.subscribe((focused) => {
+    if (!focused || !data.value) return;
+
+    refocusing.value = true;
+    void refetch();
+  }),
+);
 
 const { isOnline, knownOnlineIds, resets } = usePresence();
 
@@ -79,9 +88,15 @@ const title = computed(() =>
 
 const more = computed(() => (total.value ?? 0) - members.value.length);
 
+// Everybody the page listed has gone, and those online past it are still
+// being asked for: neither a list nor nobody yet.
+const waitingForMore = computed(
+  () => !members.value.length && (total.value ?? 0) > 0,
+);
+
 const askedAbout = new Set<string>();
 
-const askAgain = useDebounceFn(() => void refetchQuietly(), ASK_AGAIN_AFTER_MS);
+const askAgain = useDebounceFn(() => void refetch(), ASK_AGAIN_AFTER_MS);
 
 watch(knownOnlineIds, (ids) => {
   // Before the first answer there is nothing to compare against, and the ask
@@ -115,17 +130,17 @@ watch(
 // list is only as good as a fresh answer.
 watch(resets, () => {
   askedAbout.clear();
-  void refetchQuietly();
+  void refetch();
 });
 </script>
 
 <template>
   <DashboardPanel
     :title="title"
-    :pending="isLoading"
-    :fetching="fetching"
+    :pending="isLoading || waitingForMore"
+    :fetching="refocusing"
     :failed="isError && !data"
-    :empty="!total"
+    :empty="!members.length"
     :more="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-online"
   >
