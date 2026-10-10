@@ -12,8 +12,6 @@
       "personalInventory": "Inventario de la nave",
       "crew": "Tripulación",
       "speed": "Velocidad",
-      "minCrew": "Tripulación mín.",
-      "maxCrew": "Tripulación máx.",
       "scmSpeed": "SCM Speed",
       "scmSpeedBoosted": "SCM Speed Boosted",
       "reverseSpeedBoosted": "Reverse Speed Boosted",

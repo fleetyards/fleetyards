@@ -17,8 +17,6 @@
         "cargo": "貨物",
         "crew": "船員",
         "speed": "速度",
-        "minCrew": "最少船員",
-        "maxCrew": "最多船員",
         "scmSpeed": "SCM Speed",
         "maxSpeed": "最大速度",
         "scm": "SCM",
