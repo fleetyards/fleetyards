@@ -14,8 +14,8 @@ Posting a fleet announcement tells every other member through their notification
 
 ### Phase 2 — Fan-out
 1. `FleetAnnouncement` enqueues `Notifications::FleetAnnouncementPostedJob` from `after_create_commit`, so every path that creates one notifies.
-2. The job writes every kept, accepted member except the author a row, each in their own locale, with one `insert_all` per 1000 members against the partial unique index `index_notifications_on_fleet_announcement_recipient`. Delivery goes through `Notifications::BulkDelivery`, which was extracted from `Announcements::NotifyBatchJob`.
-3. Deleting an announcement deletes its notifications (`dependent: :delete_all`).
+2. The job writes every kept, accepted member except the author a row, each in their own locale, with one `insert_all` per 1000 members against the partial unique index `index_notifications_on_fleet_announcement_recipient`. Delivery goes through `Notifications::BulkDelivery`, which was extracted from `Announcements::NotifyBatchJob` and now does the insert as well as the delivery. The index is built concurrently.
+3. Deleting an announcement deletes its notifications, and after the commit sends each affected member a `NotificationsWithdrawnMessage` on `UserNotificationsChannel`, so open tabs refetch. The job checks before each batch that the announcement still exists, and `NotificationMailer` discards a queued mail whose notification is gone.
 
 ### Phase 3 — Schema and CI
 1. Regenerate the schema, AsyncAPI and clients, and add oasdiff-ignore lines for the new enum values, generated with the pinned 1.18.1.
@@ -38,6 +38,7 @@ Posting a fleet announcement tells every other member through their notification
 
 - **2026-10-10** After review, the Discord channel post was dropped (see the issue). The job now retries, and skips members already notified for this record, so a failure outside the per-member rescue no longer loses the fan-out.
 - **2026-10-10** A code review found that the per-member rescue swallowed every error, so retries almost never ran, and that "once per member" had no index behind it. The job now inserts in bulk against a unique index and lets errors raise. Retries are therefore safe. Discord DM is now `false` in the defaults explicitly. Reviving an expired announcement still notifies nobody, by decision.
+- **2026-10-10** A second review found that deleting an announcement mid-send, or before its mails went out, left notifications or failing mail jobs behind, and that open tabs kept withdrawn notifications until a reload. All three are fixed. Live updates now reach only members active in the last 15 minutes or with a tab open, as site announcements already do.
 - **2026-10-10** oasdiff 1.18.1 reports 12 warnings: the new `NotificationTypeEnum` and `NotificationRecordTypeEnum` values in notification responses. All are in the ignore list, and three runs passed against both the base branch and main.
 
 ## Progress
