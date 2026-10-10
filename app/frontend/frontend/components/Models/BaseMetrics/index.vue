@@ -140,9 +140,7 @@ const openAvailability = () => {
       <div class="metrics-card__section-label">
         {{ t("labels.base.price") }}
       </div>
-      <div
-        class="metrics-card__rows metrics-card__rows--split metrics-card__rows--stack-narrow"
-      >
+      <div class="metrics-card__rows metrics-card__rows--split">
         <div v-if="model.price" class="metrics-card__row">
           <span class="metrics-card__row__label">
             {{ t("labels.base.priceInGame") }}
