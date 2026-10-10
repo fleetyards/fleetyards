@@ -3,14 +3,9 @@
 module Announcements
   # Writes one batch of readers their notification.
   #
-  # Not Notification.notify! per reader: that is a preference SELECT, an INSERT
-  # and a broadcast each, which at 57k readers is ~115k round trips. This loads
-  # the batch's preferences in one query and inserts in one statement.
+  # In bulk rather than Notification.notify! per reader, which at 57k readers
+  # is ~115k round trips.
   class NotifyBatchJob < Announcements::BaseJob
-    # How recently a reader has to have been here for a live push to reach a
-    # tab that is still open.
-    BROADCAST_WINDOW = 15.minutes
-
     # The partial unique index that makes a retry a no-op.
     RECIPIENT_INDEX = :index_notifications_on_announcement_recipient
 
@@ -19,54 +14,27 @@ module Announcements
       return if announcement.blank?
       return if user_ids.blank?
 
-      preferences = preferences_for(user_ids)
-      now = Time.zone.now
-      expires_at = now + Notification.retention_for(Announcement::NOTIFICATION_TYPE)
-
-      rows = user_ids.map do |user_id|
-        preference = preferences[user_id]
-
+      # `unique_by` makes the insert ON CONFLICT DO NOTHING against the
+      # announcement recipient index, so a retry after a partial failure
+      # re-inserts nothing and, just as importantly, re-delivers nothing.
+      Notifications::BulkDelivery.notify(
+        type: Announcement::NOTIFICATION_TYPE,
+        user_ids:,
+        unique_by: RECIPIENT_INDEX,
+        mailer: ->(notification) { AnnouncementMailer.published(notification).deliver_later },
+        label: "Announcement"
+      ) do
         {
-          user_id:,
-          notification_type: Announcement::NOTIFICATION_TYPE.to_s,
           title: announcement.title,
           body: announcement.body,
           link: announcement.link,
           icon: announcement.icon,
           record_type: "Announcement",
-          record_id: announcement.id,
-          # A reader who turned the app channel off still gets the row -- the
-          # inbox is where an announcement lives -- but it arrives already
-          # read, so it does not put a badge on a bell they asked to be quiet.
-          read_at: preference[:app] ? nil : now,
-          expires_at:,
-          created_at: now,
-          updated_at: now
+          record_id: announcement.id
         }
       end
 
-      # `unique_by` makes this ON CONFLICT DO NOTHING against the announcement
-      # recipient index, and `returning` then names only the rows this run
-      # actually wrote. A retry after a partial failure therefore re-inserts
-      # nothing and, just as importantly, re-delivers nothing.
-      notifications = Notification.insert_all(rows, unique_by: RECIPIENT_INDEX, returning: %w[id user_id])
-
-      deliver(notifications, preferences)
       settle(announcement)
-    end
-
-    # Existing accounts have no row for a type added after they signed up --
-    # the defaults are written in an after_create hook -- so a miss is the
-    # normal case here, not an error.
-    private def preferences_for(user_ids)
-      defaults = Notification.preference_defaults_for(Announcement::NOTIFICATION_TYPE)
-
-      stored = NotificationPreference
-        .where(user_id: user_ids, notification_type: Announcement::NOTIFICATION_TYPE)
-        .pluck(:user_id, :app, :mail, :push, :discord)
-        .to_h { |user_id, app, mail, push, discord| [user_id, {app:, mail:, push:, discord:}] }
-
-      user_ids.index_with { |user_id| stored[user_id] || defaults.slice(:app, :mail, :push, :discord) }
     end
 
     # The in-app delivery is done when every reader has a row, which each batch
@@ -89,97 +57,6 @@ module Announcements
       # Two batches finished at the same moment and both went to write the row.
       # The other one got there first, which is the answer this wanted anyway.
       nil
-    end
-
-    private def deliver(notifications, preferences)
-      app_user_ids = preferences.select { |_id, channels| channels[:app] }.keys
-      mail_user_ids = preferences.select { |_id, channels| channels[:mail] }.keys
-      push_user_ids = preferences.select { |_id, channels| channels[:push] }.keys
-      discord_user_ids = preferences.select { |_id, channels| channels[:discord] }.keys
-
-      # Each channel on its own. The rows are already written, so a retry
-      # inserts nothing and delivers nothing: a channel that raised here takes
-      # every channel after it down for good.
-      seen_in_app = deliver_channel(:app) { broadcast(notifications, app_user_ids) } || Set.new
-      deliver_channel(:mail) { mail(notifications, mail_user_ids) }
-      deliver_channel(:push) { push(notifications, push_user_ids, seen_in_app) }
-      deliver_channel(:discord) { direct_message(notifications, discord_user_ids) }
-    end
-
-    private def deliver_channel(channel)
-      yield
-    rescue => e
-      Rails.logger.error("Announcement #{channel} delivery failed: #{e.message}")
-      nil
-    end
-
-    # Only readers who were using the site in the last few minutes. A broadcast
-    # is worth something to an open tab and nothing to anybody else -- whoever
-    # is not here loads the notification from the API on their next visit, the
-    # same as for every notification written while they were away.
-    #
-    # The cost this avoids is not the publish, it is `to_jbuilder_hash`: it
-    # renders the notification through ActionController::Renderer, so an
-    # unfiltered fan-out is ~57k template renders for an audience of a few
-    # hundred.
-    #
-    # A tab in use counts too: reading a loaded page makes no API request, and
-    # push holds back for exactly those readers on the strength of this toast.
-    # Returns them, for the push to skip.
-    private def broadcast(notifications, user_ids)
-      return Set.new if user_ids.empty?
-
-      in_use = UserPresence.active_among(user_ids)
-      active_ids = User.where(id: user_ids)
-        .where(last_active_at: BROADCAST_WINDOW.ago..)
-        .pluck(:id)
-        .map(&:to_s) | in_use.to_a
-      return Set.new if active_ids.empty?
-
-      ids = notification_ids(notifications, active_ids)
-
-      Notification.where(id: ids).includes(:user).find_each do |notification|
-        UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
-      rescue => e
-        in_use.delete(notification.user_id.to_s)
-        Rails.logger.error("Announcement broadcast failed for #{notification.id}: #{e.message}")
-      end
-
-      in_use
-    end
-
-    private def mail(notifications, user_ids)
-      return if user_ids.empty?
-
-      # Enqueued in each reader's locale, which is the one the mail renders in.
-      Notification.where(id: notification_ids(notifications, user_ids)).includes(:user).find_each do |notification|
-        I18n.with_locale(notification.user.notification_locale) do
-          AnnouncementMailer.published(notification).deliver_later
-        end
-      end
-    end
-
-    private def push(notifications, user_ids, seen_in_app)
-      return if user_ids.empty?
-
-      wanted = user_ids.to_set
-      args = notifications.rows.filter_map do |id, user_id|
-        [id, seen_in_app.include?(user_id.to_s)] if wanted.include?(user_id)
-      end
-      ::Push::DeliverNotificationJob.perform_bulk(args) if args.any?
-    end
-
-    private def direct_message(notifications, user_ids)
-      return if user_ids.empty?
-
-      ids = notification_ids(notifications, user_ids)
-      ::Discord::DeliverNotificationJob.perform_bulk(ids.zip) if ids.any?
-    end
-
-    private def notification_ids(notifications, user_ids)
-      wanted = user_ids.to_set
-
-      notifications.rows.filter_map { |id, user_id| id if wanted.include?(user_id) }
     end
   end
 end

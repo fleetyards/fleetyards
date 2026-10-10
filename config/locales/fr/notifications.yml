@@ -123,6 +123,10 @@ fr:
       title: "%{user} a soumis une dépense sur %{subject}"
     payout_entry_declined:
       title: "Votre dépense \"%{description}\" sur %{subject} a été refusée"
+    fleet_announcement:
+      posted:
+        title: "Nouvelle annonce dans %{fleet}"
+        body: "%{author} : %{excerpt}"
     fleet_contract:
       someone: "Un membre"
       published:

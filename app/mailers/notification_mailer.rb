@@ -3,6 +3,8 @@
 # Notifications whose stored text says everything: the title, the body and the
 # link are the same ones the app shows.
 class NotificationMailer < ApplicationMailer
+  self.delivery_job = Notifications::MailDeliveryJob
+
   helper MarkdownHelper
 
   def notification(notification)

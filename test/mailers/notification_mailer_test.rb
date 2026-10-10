@@ -21,4 +21,16 @@ class NotificationMailerTest < ActionMailer::TestCase
     assert_includes html, "/fleets/maru/settings/rsi/"
     assert_includes html, I18n.t("mailer.notification.action")
   end
+
+  # Its announcement was taken down while the mail was still queued.
+  test "drops the mail of a notification deleted before it went out" do
+    notification = create(:notification, title: "New announcement in MARU")
+    job = NotificationMailer.delivery_job.new("NotificationMailer", "notification", "deliver_now", args: [notification])
+    queued = job.serialize
+    notification.delete
+
+    assert_no_emails do
+      ActiveJob::Base.execute(queued)
+    end
+  end
 end

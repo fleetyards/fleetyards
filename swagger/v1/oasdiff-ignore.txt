@@ -1918,3 +1918,15 @@ PUT /fleets/{fleetSlug}/members/{username}/demote added the new `fleet:announcem
 PUT /fleets/{fleetSlug}/members/{username}/promote added the new `fleet:announcements:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
 PUT /fleets/{fleetSlug}/membership added the new `fleet:announcements:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
 PUT /fleets/{fleetSlug}/roles/{id} added the new `fleet:announcements:manage` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /notification-preferences added the new `fleet_announcement_posted` enum value to the `items/notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_announcement_posted` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_announcement` enum value to the `items/items/record/type` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_announcement_posted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_announcement` enum value to the `record/type` response property for the response status `200`

@@ -26,11 +26,19 @@ class FleetAnnouncement < ApplicationRecord
   belongs_to :fleet
   belongs_to :author, class_name: "User", optional: true
 
+  # Taking a post down takes it out of every inbox too: it is often taken down
+  # because it should not have been posted.
+  before_destroy :withdraw_notifications
+  after_destroy_commit :broadcast_withdrawn_notifications
+
   validates :body, presence: true, length: {maximum: BODY_LIMIT}
   validate :expires_in_the_future, if: -> { expires_at.present? }
   validate :within_active_limit, if: :becoming_active?
 
   scope :active, -> { where(expires_at: nil).or(where(expires_at: Time.current..)) }
+
+  # Editing says nothing: it is the same news reworded.
+  after_create_commit -> { Notifications::FleetAnnouncementPostedJob.perform_async(id) }
 
   # One that has already ended would be saved and never shown, and nobody could
   # reach it to take it down -- whether the end was just set or was kept while
@@ -54,5 +62,28 @@ class FleetAnnouncement < ApplicationRecord
     return if fleet.fleet_announcements.active.where.not(id: id).count < ACTIVE_LIMIT
 
     errors.add(:base, :announcement_limit_reached, count: ACTIVE_LIMIT)
+  end
+
+  # Locked first, so a fan-out batch writing under its share lock finishes
+  # before this reads the rows, and none starts between the read and the
+  # delete.
+  private def withdraw_notifications
+    lock!
+
+    notifications = Notification.where(record: self)
+
+    @withdrawn_notification_ids = notifications.pluck(:user_id, :id)
+      .group_by(&:first)
+      .transform_values { |pairs| pairs.map(&:last) }
+
+    notifications.delete_all
+  end
+
+  # Only once the rows are really gone: a tab told before the commit would
+  # refetch and find them still there.
+  private def broadcast_withdrawn_notifications
+    return if @withdrawn_notification_ids.blank?
+
+    Notifications::BroadcastWithdrawnJob.perform_async(@withdrawn_notification_ids)
   end
 end

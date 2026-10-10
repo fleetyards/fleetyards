@@ -123,6 +123,10 @@ de:
       title: "%{user} hat eine Ausgabe für %{subject} eingereicht"
     payout_entry_declined:
       title: "Deine Ausgabe \"%{description}\" für %{subject} wurde abgelehnt"
+    fleet_announcement:
+      posted:
+        title: "Neue Ankündigung in %{fleet}"
+        body: "%{author}: %{excerpt}"
     fleet_contract:
       someone: "Ein Mitglied"
       published:

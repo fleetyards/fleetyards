@@ -34810,6 +34810,7 @@ components:
       - fleet_membership
       - fleet_event
       - fleet_inventory
+      - fleet_announcement
       - friendship
       - vehicle
       - hangar_sync
@@ -34817,6 +34818,7 @@ components:
       - FLEET_MEMBERSHIP
       - FLEET_EVENT
       - FLEET_INVENTORY
+      - FLEET_ANNOUNCEMENT
       - FRIENDSHIP
       - VEHICLE
       - HANGAR_SYNC
@@ -34882,6 +34884,7 @@ components:
       - fleet_contract_crew_answered
       - fleet_contract_fulfilled
       - fleet_contract_settled
+      - fleet_announcement_posted
       - payout_ledger_settled
       - payout_entry_pending_review
       - payout_entry_declined
@@ -34935,6 +34938,7 @@ components:
       - FLEET_CONTRACT_CREW_ANSWERED
       - FLEET_CONTRACT_FULFILLED
       - FLEET_CONTRACT_SETTLED
+      - FLEET_ANNOUNCEMENT_POSTED
       - PAYOUT_LEDGER_SETTLED
       - PAYOUT_ENTRY_PENDING_REVIEW
       - PAYOUT_ENTRY_DECLINED

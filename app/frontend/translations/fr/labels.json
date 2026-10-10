@@ -3293,6 +3293,7 @@
         "fleet_squadron_request_received": "Demande pour rejoindre l'escadron",
         "fleet_squadron_request_accepted": "Demande d'escadron acceptée",
         "fleet_contract_published": "Contrat publié",
+        "fleet_announcement_posted": "Annonce publiée",
         "fleet_contract_claimed": "Contrat pris en charge",
         "fleet_contract_crew_requested": "Quelqu'un veut rejoindre un contrat",
         "fleet_contract_crew_answered": "Demande d'équipage traitée",

@@ -43,6 +43,20 @@ class Api::V1::NotificationsRecordBehaviourTest < ActionDispatch::IntegrationTes
     assert_equal event.slug, record["eventSlug"]
   end
 
+  # The reference names the fleet the announcement belongs to, so a client can
+  # load it; the notification's own link is what opens the dashboard.
+  test "an announcement notification carries the fleet's slug" do
+    fleet = create(:fleet, admins: [create(:user)])
+    announcement = create(:fleet_announcement, fleet: fleet)
+
+    create(:notification, user: @user, notification_type: "fleet_announcement_posted", record: announcement)
+
+    record = notification_record
+    assert_equal "fleet_announcement", record["type"]
+    assert_equal announcement.id, record["id"]
+    assert_equal fleet.slug, record["fleetSlug"]
+  end
+
   test "a hangar sync notification points at the import" do
     import = Imports::HangarSync.create!(user: @user)
 

@@ -20,10 +20,11 @@ class NotificationRecordReference
   PRELOADS = {
     "FleetMembership" => %i[fleet user],
     "FleetEvent" => %i[fleet],
-    "FleetInventory" => %i[fleet]
+    "FleetInventory" => %i[fleet],
+    "FleetAnnouncement" => %i[fleet]
   }.freeze
 
-  TYPES = %w[fleet_membership fleet_event fleet_inventory friendship vehicle hangar_sync].freeze
+  TYPES = %w[fleet_membership fleet_event fleet_inventory fleet_announcement friendship vehicle hangar_sync].freeze
 
   def self.for(notification)
     new(notification).to_h
@@ -54,6 +55,8 @@ class NotificationRecordReference
       {type: "fleet_event", id: record.id, fleet_slug: record.fleet&.slug, event_slug: record.slug}
     when FleetInventory
       {type: "fleet_inventory", id: record.id, fleet_slug: record.fleet&.slug, inventory_slug: record.slug}
+    when FleetAnnouncement
+      {type: "fleet_announcement", id: record.id, fleet_slug: record.fleet&.slug}
     when Friendship
       # Addressed by the other person, because that is how every friendship
       # endpoint is addressed -- the row's own id appears in no route. Which of

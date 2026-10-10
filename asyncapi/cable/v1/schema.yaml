@@ -147,6 +147,8 @@ channels:
     messages:
       Notification:
         "$ref": "#/components/messages/Notification"
+      NotificationsWithdrawnMessage:
+        "$ref": "#/components/messages/NotificationsWithdrawnMessage"
   UserPresence:
     address: user_presence:{user_gid}
     x-actioncable-channel: UserPresenceChannel
@@ -297,7 +299,9 @@ operations:
       "$ref": "#/channels/UserNotifications"
     messages:
     - "$ref": "#/channels/UserNotifications/messages/Notification"
-    summary: A notification addressed to one user
+    - "$ref": "#/channels/UserNotifications/messages/NotificationsWithdrawnMessage"
+    summary: A notification addressed to one user, or notifications of theirs that
+      were withdrawn
   receiveUserPresence:
     action: receive
     channel:
@@ -4235,6 +4239,7 @@ components:
       - fleet_membership
       - fleet_event
       - fleet_inventory
+      - fleet_announcement
       - friendship
       - vehicle
       - hangar_sync
@@ -4242,6 +4247,7 @@ components:
       - FLEET_MEMBERSHIP
       - FLEET_EVENT
       - FLEET_INVENTORY
+      - FLEET_ANNOUNCEMENT
       - FRIENDSHIP
       - VEHICLE
       - HANGAR_SYNC
@@ -4289,6 +4295,7 @@ components:
       - fleet_contract_crew_answered
       - fleet_contract_fulfilled
       - fleet_contract_settled
+      - fleet_announcement_posted
       - payout_ledger_settled
       - payout_entry_pending_review
       - payout_entry_declined
@@ -4342,6 +4349,7 @@ components:
       - FLEET_CONTRACT_CREW_ANSWERED
       - FLEET_CONTRACT_FULFILLED
       - FLEET_CONTRACT_SETTLED
+      - FLEET_ANNOUNCEMENT_POSTED
       - PAYOUT_LEDGER_SETTLED
       - PAYOUT_ENTRY_PENDING_REVIEW
       - PAYOUT_ENTRY_DECLINED
@@ -4353,6 +4361,17 @@ components:
       - FLEET_FID_CLAIM_CANCELLED
       - RSI_HANDLE_VERIFICATION_LOST
       - ANNOUNCEMENT
+    NotificationsWithdrawnMessage:
+      type: object
+      properties:
+        withdrawnIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - withdrawnIds
     NullableFleetActivityEnum:
       type:
       - string
@@ -5154,6 +5173,9 @@ components:
     Notification:
       payload:
         "$ref": "#/components/schemas/Notification"
+    NotificationsWithdrawnMessage:
+      payload:
+        "$ref": "#/components/schemas/NotificationsWithdrawnMessage"
     PayoutLedger:
       payload:
         "$ref": "#/components/schemas/PayoutLedger"

@@ -10,9 +10,10 @@ class UserNotificationsChannelTest < AsyncapiTestCase
       description: "GlobalID param of the subscribed user, derived from the connection",
       client_supplied: false
 
-    broadcast "A notification addressed to one user" do
+    broadcast "A notification addressed to one user, or notifications of theirs that were withdrawn" do
       operationId "receiveUserNotification"
       message ::V1::Schemas::Notification
+      message ::Cable::V1::Schemas::NotificationsWithdrawnMessage
     end
   end
 
@@ -24,5 +25,19 @@ class UserNotificationsChannelTest < AsyncapiTestCase
     end
 
     assert_equal "Ship added", payloads.first["title"]
+  end
+
+  test "broadcasts the withdrawn notifications when their fleet announcement is taken down" do
+    user = create(:user, last_active_at: Time.current)
+    fleet = create(:fleet, members: [user])
+    announcement = create(:fleet_announcement, fleet:)
+    notification = create(:notification, user:, notification_type: "fleet_announcement_posted", record: announcement)
+
+    payloads = assert_asyncapi_broadcast(params: {user_gid: user.to_gid_param}) do
+      announcement.destroy!
+      Notifications::BroadcastWithdrawnJob.drain
+    end
+
+    assert_equal [notification.id], payloads.first["withdrawnIds"]
   end
 end
