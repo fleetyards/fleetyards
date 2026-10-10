@@ -103,14 +103,13 @@ module Rsi
 
       # The matrix now gives one figure, min and max alike. Where it still gives a
       # range the upper end is the one the game files agree with.
-      crew = nil_or_decimal(data["max_crew"].presence || data["min_crew"])
+      crew = [data["max_crew"], data["min_crew"]].map { |value| nil_or_decimal(value) }.find { |value| value&.positive? }
       updates[:rsi_crew] = crew
       updates[:crew] = crew if (model_updated(model, data) && crew != model.rsi_crew) || model.read_attribute(:crew).blank? || model.read_attribute(:crew).zero?
 
-      %w[scm_speed].each do |attr|
-        updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
-        updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
-      end
+      scm_speed = nil_or_decimal(data["scm_speed"])
+      updates[:rsi_scm_speed] = scm_speed
+      updates[:scm_speed] = scm_speed if (model_updated(model, data) && scm_speed != model.rsi_scm_speed) || model.scm_speed.blank? || model.scm_speed.zero?
 
       # These four asked whether the *matrix* value was missing, where every other
       # field asks whether the live one is. The matrix supplies none of them for
