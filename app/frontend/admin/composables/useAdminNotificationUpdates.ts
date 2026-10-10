@@ -9,7 +9,9 @@ import {
   type AdminNotificationsData,
 } from "@/services/fyCableAdmin/channels/AdminNotificationsChannel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useNotificationsStore } from "@/shared/stores/notifications";
 import {
+  adminNotifications,
   getAdminNotificationsQueryKey,
   getAdminNotificationsUnreadCountQueryKey,
   type AdminNotification,
@@ -64,10 +66,10 @@ const TOAST_TAG_PREFIX = "admin-notification:";
 
 const toastTag = (id: string) => `${TOAST_TAG_PREFIX}${id}`;
 
-// A toast announces an unread notification, so reading, archiving or deleting
-// it on the notifications page takes the toast with it.
 export const useAdminNotificationToasts = () => {
   const { dismissTagged } = useAppNotifications();
+
+  const notificationsStore = useNotificationsStore();
 
   const dismiss = (ids: string[]) => {
     const tags = ids.map(toastTag);
@@ -75,11 +77,37 @@ export const useAdminNotificationToasts = () => {
     dismissTagged((tag) => tags.includes(tag));
   };
 
-  const dismissAll = () => {
-    dismissTagged((tag) => tag.startsWith(TOAST_TAG_PREFIX));
+  const openIds = () =>
+    notificationsStore.messages
+      .filter(
+        ({ visible, tag }) => visible && tag?.startsWith(TOAST_TAG_PREFIX),
+      )
+      .map(({ tag }) => tag!.slice(TOAST_TAG_PREFIX.length));
+
+  // A settled message sent while the socket was down is gone like any other,
+  // so the toasts still up ask whether their notification is still unread.
+  const resync = async () => {
+    const ids = openIds();
+
+    if (!ids.length) {
+      return;
+    }
+
+    try {
+      const { items } = await adminNotifications({
+        perPage: String(ids.length),
+        q: { idIn: ids, readAtNull: true },
+      });
+
+      const unread = new Set(items.map(({ id }) => id));
+
+      dismiss(ids.filter((id) => !unread.has(id)));
+    } catch {
+      // The toasts stay up; the next settle or reconnect takes them down.
+    }
   };
 
-  return { dismiss, dismissAll };
+  return { dismiss, resync };
 };
 
 // Subscribe once, from the navigation: the invalidation is global, so a page
@@ -90,7 +118,9 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
 
   const { displayInfo, displayWarning, displayAlert } = useAppNotifications();
 
-  const announce = (notification: AdminNotificationsData) => {
+  const { dismiss, resync } = useAdminNotificationToasts();
+
+  const announce = (notification: AdminNotification) => {
     // The notification center keeps what a toast only announces, so the toast
     // can go on its own; clicking it lands in the center.
     const message = {
@@ -99,6 +129,10 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
       to: { name: "admin-notifications" },
       tag: toastTag(notification.id),
     };
+
+    // A repeat report folds into the unread row, so its toast replaces the
+    // earlier one rather than stacking beside it.
+    dismiss([notification.id]);
 
     switch (notification.severity) {
       case AdminNotificationSeverityEnum.ERROR:
@@ -112,10 +146,16 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
     }
   };
 
-  const received = (notification: AdminNotificationsData) => {
+  const received = (message: AdminNotificationsData) => {
     invalidate();
 
-    announce(notification);
+    if ("settledIds" in message) {
+      dismiss(message.settledIds);
+
+      return;
+    }
+
+    announce(message);
   };
 
   // Whatever was broadcast while the socket was down is gone - the channel has
@@ -127,6 +167,7 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
   const connected = ({ reconnect }: ConnectEvent) => {
     if (reconnect) {
       invalidate();
+      void resync();
     }
   };
 

@@ -126,8 +126,7 @@ const {
 const { invalidate, invalidateUnreadCount, patchCached } =
   useAdminNotificationInvalidation();
 
-const { dismiss: dismissToasts, dismissAll: dismissAllToasts } =
-  useAdminNotificationToasts();
+const { dismiss: dismissToasts } = useAdminNotificationToasts();
 
 watch([sorts, archive], async () => {
   await refetch();
@@ -199,15 +198,17 @@ const markRead = async (notification: AdminNotification) => {
   try {
     patchCached(await readAdminNotification(notification.id));
     invalidateUnreadCount();
-    dismissToasts([notification.id]);
   } catch {
     displayAlert({ text: t("messages.adminNotifications.error") });
   }
 };
 
 // Opening a notification is what reading it means, so it costs no second click.
+// Its toast goes even when the row already reads as read: the cached row can
+// be older than the toast, and then no read reaches the server to settle it.
 const select = (notification: AdminNotification) => {
   selectedId.value = notification.id;
+  dismissToasts([notification.id]);
 
   if (!notification.read) {
     void markRead(notification);
@@ -256,10 +257,10 @@ const markUnread = async (notification: AdminNotification) => {
 };
 
 const archiveNotification = (notification: AdminNotification) =>
-  withFeedback(async () => {
-    await archiveAdminNotification(notification.id);
-    dismissToasts([notification.id]);
-  }, t("messages.adminNotifications.archived"));
+  withFeedback(
+    () => archiveAdminNotification(notification.id),
+    t("messages.adminNotifications.archived"),
+  );
 
 const unarchiveNotification = (notification: AdminNotification) =>
   withFeedback(
@@ -268,22 +269,22 @@ const unarchiveNotification = (notification: AdminNotification) =>
   );
 
 const markAllRead = () =>
-  withFeedback(async () => {
-    await readAllAdminNotifications();
-    dismissAllToasts();
-  }, t("messages.adminNotifications.readAll"));
+  withFeedback(
+    () => readAllAdminNotifications(),
+    t("messages.adminNotifications.readAll"),
+  );
 
 const destroy = (notification: AdminNotification) =>
-  withFeedback(async () => {
-    await destroyAdminNotification(notification.id);
-    dismissToasts([notification.id]);
-  }, t("messages.adminNotifications.destroyed"));
+  withFeedback(
+    () => destroyAdminNotification(notification.id),
+    t("messages.adminNotifications.destroyed"),
+  );
 
 const destroyAll = () =>
-  withFeedback(async () => {
-    await destroyAllAdminNotifications();
-    dismissAllToasts();
-  }, t("messages.adminNotifications.destroyedAll"));
+  withFeedback(
+    () => destroyAllAdminNotifications(),
+    t("messages.adminNotifications.destroyedAll"),
+  );
 
 // The selection is spent once the action lands: leaving it ticked invites a
 // second run over rows that have already moved on, and after "all matching"
@@ -305,27 +306,9 @@ const withBulkFeedback = async (
   }
 };
 
-const dismissingToasts =
-  (
-    action: (
-      input: AdminNotificationBulkInput,
-    ) => Promise<AdminNotificationBulkResult>,
-  ) =>
-  async (input: AdminNotificationBulkInput) => {
-    const result = await action(input);
-
-    if (input.all) {
-      dismissAllToasts();
-    } else {
-      dismissToasts(input.ids ?? []);
-    }
-
-    return result;
-  };
-
 const readSelected = () =>
   withBulkFeedback(
-    dismissingToasts(readBulkAdminNotifications),
+    readBulkAdminNotifications,
     "messages.adminNotifications.bulk.read",
   );
 
@@ -342,7 +325,7 @@ const unreadSelected = () => {
 
 const archiveSelected = () =>
   withBulkFeedback(
-    dismissingToasts(archiveBulkAdminNotifications),
+    archiveBulkAdminNotifications,
     "messages.adminNotifications.bulk.archived",
   );
 
@@ -354,7 +337,7 @@ const unarchiveSelected = () =>
 
 const destroySelected = () =>
   withBulkFeedback(
-    dismissingToasts(destroyBulkAdminNotifications),
+    destroyBulkAdminNotifications,
     "messages.adminNotifications.bulk.destroyed",
   );
 </script>
