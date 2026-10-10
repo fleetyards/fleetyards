@@ -39,7 +39,7 @@ const entries = computed(() => data.value?.items ?? []);
     :title="t('fleetDashboard.newMembers.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError"
+    :failed="isError && !data"
     :empty="!entries.length"
     :more="{
       name: 'fleet-members-index',

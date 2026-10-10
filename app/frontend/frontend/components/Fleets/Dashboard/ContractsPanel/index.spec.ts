@@ -7,6 +7,7 @@ import Component from "./index.vue";
 
 let mine: Partial<FleetContract>[] = [];
 let open: Partial<FleetContract>[] = [];
+let mineFails = false;
 const asked: { mine?: boolean; perPage?: number }[] = [];
 
 vi.mock("@/services/fyApi", async () => {
@@ -22,10 +23,14 @@ vi.mock("@/services/fyApi", async () => {
       asked.push(params);
 
       return {
-        data: computed(() => ({ items: params.mine ? mine : open })),
+        data: computed(() =>
+          params.mine && mineFails
+            ? undefined
+            : { items: params.mine ? mine : open },
+        ),
         isLoading: ref(false),
         isFetching: ref(false),
-        isError: ref(false),
+        isError: computed(() => !!params.mine && mineFails),
       };
     },
   };
@@ -72,6 +77,7 @@ describe("FleetDashboardContractsPanel", () => {
   beforeEach(() => {
     mine = [];
     open = [];
+    mineFails = false;
     asked.length = 0;
   });
 
@@ -115,5 +121,18 @@ describe("FleetDashboardContractsPanel", () => {
     expect(subject.find("a.dashboard-panel__more").attributes("href")).toBe(
       "#/c/maru",
     );
+  });
+
+  // The open group alone would read as the reader having no work in hand.
+  it("says a group failed rather than leave it out", async () => {
+    mineFails = true;
+    open = [contract("a")];
+
+    const subject = await mount();
+
+    expect(titles(subject, "open")).toEqual(["Job a"]);
+    expect(
+      subject.find("[data-test='fleet-dashboard-contracts-failed']").exists(),
+    ).toBe(true);
   });
 });

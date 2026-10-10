@@ -57,6 +57,7 @@
         "title": "Contratti",
         "mine": "Il tuo lavoro",
         "open": "Disponibili",
+        "partFailed": "Al momento non è stato possibile caricare alcuni contratti.",
         "empty": {
           "title": "Nessun contratto aperto",
           "hint": "Sfoglia i lavori passati nella bacheca dei contratti.",

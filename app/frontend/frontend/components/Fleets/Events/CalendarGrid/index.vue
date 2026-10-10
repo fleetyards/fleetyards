@@ -385,6 +385,7 @@ onUnmounted(() => {
         </BtnGroup>
       </template>
     </PanelHeading>
+    <slot name="notice" />
     <div ref="calendarEl" class="fy-calendar__body ec-dark" />
   </Panel>
 </template>

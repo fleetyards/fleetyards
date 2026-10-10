@@ -9,6 +9,7 @@ import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import WeekStrip from "@/frontend/components/Fleets/Dashboard/WeekStrip/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetCalendar, type Fleet } from "@/services/fyApi";
 
 type Props = {
@@ -25,7 +26,7 @@ const mobile = useMobile();
 // yet and counts as loading.
 const visibleRange = ref<{ start: Date; end: Date } | null>(null);
 
-const { data, isFetching } = useFleetCalendar(
+const { data, isFetching, isError, isPlaceholderData } = useFleetCalendar(
   computed(() => props.fleet.slug),
   computed(() =>
     visibleRange.value
@@ -44,6 +45,14 @@ const { data, isFetching } = useFleetCalendar(
 );
 
 const events = computed(() => data.value?.items ?? []);
+
+const { t } = useI18n();
+
+// Paging keeps the last week's answer as a placeholder, so a failed new week
+// would otherwise draw as an empty one.
+const failed = computed(
+  () => isError.value && (!data.value || isPlaceholderData.value),
+);
 </script>
 
 <template>
@@ -57,5 +66,22 @@ const events = computed(() => data.value?.items ?? []);
     :loading="isFetching || !visibleRange"
     data-test="fleet-dashboard-calendar"
     @update:range="visibleRange = $event"
-  />
+  >
+    <template v-if="failed" #notice>
+      <p
+        class="week-calendar__failed"
+        data-test="fleet-dashboard-calendar-failed"
+      >
+        {{ t("fleetDashboard.failed") }}
+      </p>
+    </template>
+  </CalendarGrid>
 </template>
+
+<style lang="scss" scoped>
+.week-calendar__failed {
+  margin: 0;
+  padding: 12px 18px;
+  color: var(--color-text-dim, #959595);
+}
+</style>

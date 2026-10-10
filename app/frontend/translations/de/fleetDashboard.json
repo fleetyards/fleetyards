@@ -57,6 +57,7 @@
         "title": "Aufträge",
         "mine": "Deine Aufträge",
         "open": "Offen zur Übernahme",
+        "partFailed": "Ein Teil der Aufträge konnte gerade nicht geladen werden.",
         "empty": {
           "title": "Keine offenen Aufträge",
           "hint": "Frühere Aufträge findest du auf dem Auftragsbrett.",

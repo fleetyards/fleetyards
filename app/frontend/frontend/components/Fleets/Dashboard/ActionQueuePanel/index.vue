@@ -112,7 +112,11 @@ const fetching = computed(
   () => requestsFetching.value || transfersFetching.value,
 );
 
-const failed = computed(() => requestsFailed.value || transfersFailed.value);
+const failed = computed(
+  () =>
+    (requestsFailed.value && !requests.value) ||
+    (transfersFailed.value && !transfers.value),
+);
 
 const empty = computed(
   () => !requestItems.value.length && !transferCount.value,

@@ -90,7 +90,7 @@ const planEvent = () =>
     :title="t('fleetDashboard.events.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError"
+    :failed="isError && !data"
     :empty="!entries.length"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"

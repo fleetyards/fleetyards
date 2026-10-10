@@ -39,6 +39,7 @@ const {
   data: squadrons,
   isLoading,
   isFetching,
+  isError,
 } = useFleetSquadrons(
   computed(() => props.fleet.slug),
   { perPage: "all" },
@@ -73,6 +74,7 @@ const canEdit = computed(
     :title="t('fleetDashboard.about.title')"
     :pending="showSquadrons && isLoading"
     :fetching="showSquadrons && isFetching"
+    :failed="showSquadrons && isError && !squadrons"
     :empty="empty"
     data-test="fleet-dashboard-about"
   >

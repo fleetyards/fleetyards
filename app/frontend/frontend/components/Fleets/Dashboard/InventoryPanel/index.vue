@@ -74,7 +74,7 @@ watch(
     :title="t('fleetDashboard.inventory.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError"
+    :failed="isError && !data"
     :empty="!entries.length"
     :more="{ name: 'fleet-logistics', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-inventory"

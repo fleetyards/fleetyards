@@ -46,7 +46,7 @@ const entries = computed(() => data.value?.items ?? []);
     :title="t('fleetDashboard.activity.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError"
+    :failed="isError && !data"
     :empty="!entries.length"
     data-test="fleet-dashboard-activity"
   >

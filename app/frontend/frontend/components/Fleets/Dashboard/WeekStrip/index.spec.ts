@@ -9,6 +9,7 @@ let items: Partial<FleetEvent>[] = [];
 let params: Ref<{ from: string; to: string }> | undefined;
 const isLoading = ref(false);
 const isError = ref(false);
+const isPlaceholderData = ref(false);
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -29,6 +30,7 @@ vi.mock("@/services/fyApi", async () => {
         isLoading,
         isFetching: isLoading,
         isError,
+        isPlaceholderData,
       };
     },
   };
@@ -89,6 +91,7 @@ describe("FleetDashboardWeekStrip", () => {
     items = [];
     isLoading.value = false;
     isError.value = false;
+    isPlaceholderData.value = false;
   });
 
   afterEach(() => {
@@ -166,6 +169,15 @@ describe("FleetDashboardWeekStrip", () => {
 
     expect(subject.find(".week-strip__empty").exists()).toBe(false);
     expect(subject.find(".panel--loading").exists()).toBe(true);
+  });
+
+  // Paging keeps the last week's answer up until the new one is in.
+  it("says nothing about a day while the week shown is last week's answer", async () => {
+    isPlaceholderData.value = true;
+
+    const subject = await mount();
+
+    expect(subject.find(".week-strip__empty").exists()).toBe(false);
   });
 
   it("says the week failed rather than that the day is free", async () => {

@@ -57,6 +57,7 @@
         "title": "Contratos",
         "mine": "Tu trabajo",
         "open": "Disponibles",
+        "partFailed": "Algunos contratos no se han podido cargar ahora mismo.",
         "empty": {
           "title": "No hay contratos abiertos",
           "hint": "Revisa trabajos anteriores en el tablón de contratos.",

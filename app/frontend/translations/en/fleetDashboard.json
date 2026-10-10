@@ -57,6 +57,7 @@
         "title": "Contracts",
         "mine": "Your work",
         "open": "Open for pickup",
+        "partFailed": "Some contracts could not be loaded right now.",
         "empty": {
           "title": "No open contracts",
           "hint": "Browse past work on the contracts board.",

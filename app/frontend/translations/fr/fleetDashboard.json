@@ -57,6 +57,7 @@
         "title": "Contrats",
         "mine": "Votre travail",
         "open": "Disponibles",
+        "partFailed": "Certains contrats n'ont pas pu être chargés pour le moment.",
         "empty": {
           "title": "Aucun contrat ouvert",
           "hint": "Parcourez les travaux passés sur le tableau des contrats.",
