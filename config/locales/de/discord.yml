@@ -144,6 +144,8 @@ de:
     event_availability:
       signups: '%{count} Anmeldungen'
       slots: '%{open} von %{total} Plätzen frei'
+    fleet_announcement:
+      title: "Ankündigung von %{fleet}"
     event_published:
       recurrence:
         daily: Täglich

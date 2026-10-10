@@ -144,6 +144,8 @@ zh-CN:
     event_availability:
       signups: '%{count} 人已报名'
       slots: '%{total} 个位置中还有 %{open} 个空缺'
+    fleet_announcement:
+      title: "来自 %{fleet} 的公告"
     event_published:
       recurrence:
         daily: 每天

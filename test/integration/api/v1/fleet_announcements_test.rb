@@ -120,6 +120,7 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
+    Notifications::FleetAnnouncementPostedJob.jobs.clear
     @admin = create(:user)
     @officer = create(:user)
     @member = create(:user)
@@ -155,6 +156,9 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
       assert_equal "Welcome aboard", parsed_body["body"]
       assert_equal @officer.username, parsed_body.dig("author", "username")
     end
+
+    # Telling the fleet waits for the queue, so posting stays quick.
+    assert_equal [[parsed_body["id"]]], Notifications::FleetAnnouncementPostedJob.jobs.map { |job| job["args"] }
   end
 
   test "POST announcements refuses a plain member" do
@@ -246,6 +250,9 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
       body: {body: "Corrected", expiresAt: nil} do
       assert_equal "Corrected", parsed_body["body"]
     end
+
+    # The same news reworded: nobody is told again.
+    assert_empty Notifications::FleetAnnouncementPostedJob.jobs
   end
 
   test "PUT announcement refuses a plain member" do

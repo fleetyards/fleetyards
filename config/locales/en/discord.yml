@@ -144,6 +144,8 @@ en:
     event_availability:
       signups: '%{count} signed up'
       slots: '%{open} of %{total} slots open'
+    fleet_announcement:
+      title: "Announcement from %{fleet}"
     event_published:
       recurrence:
         daily: Every day
