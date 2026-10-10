@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { addDays } from "date-fns";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
@@ -13,16 +12,22 @@ import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vu
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetEventStatusEnum,
-  useFleetCalendar,
   type Fleet,
   type FleetEvent,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  // From the dashboard's one calendar answer, which reaches at least two
+  // weeks ahead. Undefined until it is in.
+  events?: FleetEvent[];
+  loading?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  events: undefined,
+  loading: false,
+});
 
 const { t } = useI18n();
 
@@ -30,22 +35,6 @@ const WINDOW_DAYS = 14;
 const SHOWN = 6;
 
 const today = useToday();
-
-// The calendar rather than the event list: it expands a recurring series into
-// its dates, where the list would show a weekly op once, on the day it began.
-// From the start of yesterday, because the calendar answers by start time and
-// an op that began last night may still be running; what has ended is dropped
-// below. Whole days, so the query key holds still between renders.
-const range = computed(() => ({
-  from: addDays(today.value, -1).toISOString(),
-  to: addDays(today.value, WINDOW_DAYS).toISOString(),
-}));
-
-const { data, isLoading } = useFleetCalendar(
-  computed(() => props.fleet.slug),
-  range,
-  { query: liveQuery },
-);
 
 const HIDDEN: FleetEvent["status"][] = [
   FleetEventStatusEnum.DRAFT,
@@ -61,11 +50,19 @@ const endsAt = (event: FleetEvent) =>
     ? new Date(event.endsAt).getTime()
     : new Date(event.startsAt).getTime() + DEFAULT_DURATION_MS;
 
+// What has not ended yet and starts within the window: the answer may reach
+// further back or ahead, for the week on screen.
 const entries = computed(() => {
   const now = Date.now();
+  const until = addDays(today.value, WINDOW_DAYS).getTime();
 
-  return (data.value?.items ?? [])
-    .filter((event) => !HIDDEN.includes(event.status) && endsAt(event) >= now)
+  return (props.events ?? [])
+    .filter(
+      (event) =>
+        !HIDDEN.includes(event.status) &&
+        endsAt(event) >= now &&
+        new Date(event.startsAt).getTime() < until,
+    )
     .slice(0, SHOWN);
 });
 
@@ -73,7 +70,7 @@ const entries = computed(() => {
 // offered as something to start instead of a box saying there is nothing.
 const emit = defineEmits<{ empty: [boolean] }>();
 
-const isEmpty = computed(() => !!data.value && !entries.value.length);
+const isEmpty = computed(() => !!props.events && !entries.value.length);
 
 watch(isEmpty, (value) => emit("empty", value), { immediate: true });
 </script>
@@ -82,7 +79,7 @@ watch(isEmpty, (value) => emit("empty", value), { immediate: true });
   <DashboardPanel
     v-if="entries.length"
     :title="t('fleetDashboard.events.title')"
-    :loading="isLoading"
+    :loading="loading"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"
   >

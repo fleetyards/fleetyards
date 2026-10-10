@@ -21,6 +21,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFleetDashboardAccess } from "@/frontend/composables/useFleetDashboardAccess";
+import { useDashboardActivity } from "@/frontend/components/Fleets/Dashboard/useDashboardActivity";
+import { useDashboardCalendar } from "@/frontend/components/Fleets/Dashboard/useDashboardCalendar";
 import {
   FleetActivityCategoryEnum,
   type Fleet,
@@ -63,6 +65,11 @@ const excludedFromFeed = computed(() => [
   ...(showInventory.value ? [FleetActivityCategoryEnum.INVENTORY] : []),
 ]);
 
+// One request for each source, however many panels read it.
+const activity = useDashboardActivity(() => props.fleet.slug, excludedFromFeed);
+
+const calendar = useDashboardCalendar(() => props.fleet.slug, showEvents);
+
 const { t } = useI18n();
 
 const comlink = useComlink();
@@ -95,6 +102,8 @@ const postAnnouncement = () =>
       <UpcomingEventsPanel
         v-if="showEvents"
         :fleet="fleet"
+        :events="calendar.events.value"
+        :loading="calendar.loading.value"
         class="fleet-dashboard__events"
         @empty="empty.events = $event"
       />
@@ -103,11 +112,16 @@ const postAnnouncement = () =>
       <WeekCalendarPanel
         v-if="showEvents"
         :fleet="fleet"
+        :events="calendar.weekEvents.value ?? []"
+        @week="calendar.showWeek"
         class="fleet-dashboard__calendar"
       />
       <ActivityPanel
         :fleet="fleet"
-        :exclude="excludedFromFeed"
+        :entries="activity.feed.value"
+        :loading="activity.loading.value"
+        :has-more="activity.hasMore.value"
+        @more="activity.showMore"
         class="fleet-dashboard__activity"
       />
       <!-- The fleet's own words read best at the width they were written
@@ -141,11 +155,15 @@ const postAnnouncement = () =>
       <InventoryPanel
         v-if="showInventory"
         :fleet="fleet"
+        :entries="activity.inventory.value"
+        :loading="activity.loading.value"
         class="fleet-dashboard__inventory"
       />
       <NewMembersPanel
         v-if="showNewMembers"
         :fleet="fleet"
+        :entries="activity.newMembers.value ?? []"
+        :loading="activity.loading.value"
         class="fleet-dashboard__members"
       />
     </aside>

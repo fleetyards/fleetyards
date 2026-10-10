@@ -22,6 +22,7 @@ let publicSquadrons: PublicFleetSquadron[] = [];
 let memberAsked: (boolean | undefined)[] = [];
 let publicAsked: (boolean | undefined)[] = [];
 let cachedMember = false;
+let activityAsked = 0;
 
 type QueryOptions = { query?: { enabled?: Ref<boolean> } };
 
@@ -62,10 +63,14 @@ vi.mock("@/services/fyApi", async () => {
       _params: unknown,
       options?: QueryOptions,
     ) => queryMock(options, publicAsked, () => publicSquadrons),
-    useFleetActivity: () => ({
-      data: computed(() => ({ items: [] })),
-      isLoading: ref(false),
-    }),
+    useFleetActivity: () => {
+      activityAsked += 1;
+
+      return {
+        data: computed(() => ({ items: [] })),
+        isLoading: ref(false),
+      };
+    },
   };
 });
 
@@ -120,6 +125,7 @@ beforeEach(() => {
   memberAsked = [];
   publicAsked = [];
   cachedMember = false;
+  activityAsked = 0;
 });
 
 afterEach(() => {
@@ -415,5 +421,23 @@ describe("FleetShow dashboard", () => {
     expect(tests(subject, "fleet-dashboard-").sort()).toEqual([
       "fleet-dashboard-about",
     ]);
+  });
+});
+
+describe("FleetShow dashboard requests", () => {
+  // The feed, the inventory and the newcomers all read one answer.
+  it("asks for the fleet's activity once however many panels read it", async () => {
+    await mount({
+      fleet: {
+        ...fleet(),
+        features: ["fleet_logistics"],
+      } as unknown as Fleet,
+      membership: {
+        status: FleetMembershipStatusEnum.ACCEPTED,
+        capabilities: { readMembers: true, readInventories: true },
+      } as unknown as FleetMember,
+    });
+
+    expect(activityAsked).toBe(1);
   });
 });

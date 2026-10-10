@@ -5,47 +5,34 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import WeekStrip from "@/frontend/components/Fleets/Dashboard/WeekStrip/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useFleetCalendar, type Fleet } from "@/services/fyApi";
+import type { Fleet, FleetEvent } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  // From the dashboard's one calendar answer, which covers the week shown.
+  events: FleetEvent[];
 };
 
-const props = defineProps<Props>();
+defineProps<Props>();
+
+// Which days are on screen, so the dashboard's one calendar query covers them.
+const emit = defineEmits<{ week: [{ start: Date; end: Date }] }>();
 
 // A phone gets the week as a strip of days; the grid's seven columns need the
 // width of a desk.
 const mobile = useMobile();
-
-const visibleRange = ref<{ start: Date; end: Date } | null>(null);
-
-const { data } = useFleetCalendar(
-  computed(() => props.fleet.slug),
-  computed(() =>
-    visibleRange.value
-      ? {
-          from: visibleRange.value.start.toISOString(),
-          to: visibleRange.value.end.toISOString(),
-        }
-      : {},
-  ),
-  {
-    query: {
-      ...liveQuery,
-      enabled: computed(() => !mobile.value && !!visibleRange.value),
-    },
-  },
-);
-
-const events = computed(() => data.value?.items ?? []);
 </script>
 
 <template>
-  <WeekStrip v-if="mobile" :fleet="fleet" />
+  <WeekStrip
+    v-if="mobile"
+    :fleet="fleet"
+    :events="events"
+    @week="emit('week', $event)"
+  />
   <CalendarGrid
     v-else
     :fleet="fleet"
@@ -53,6 +40,6 @@ const events = computed(() => data.value?.items ?? []);
     view="week"
     compact
     data-test="fleet-dashboard-calendar"
-    @update:range="visibleRange = $event"
+    @update:range="emit('week', $event)"
   />
 </template>

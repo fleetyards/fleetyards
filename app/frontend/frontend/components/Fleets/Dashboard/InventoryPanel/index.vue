@@ -5,48 +5,38 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import ActivityList from "@/frontend/components/Fleets/Dashboard/ActivityList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  FleetActivityCategoryEnum,
-  useFleetActivity,
-  type Fleet,
-} from "@/services/fyApi";
+import type { Fleet, FleetActivity } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  // The fleet's movements, from the dashboard's one activity answer.
+  entries?: FleetActivity[];
+  loading?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  entries: undefined,
+  loading: false,
+});
 
 const { t } = useI18n();
 
 const SHOWN = 6;
 
-// Read as one page and split here: what touches the reader is a handful of
-// the fleet's recent movements, not a list of its own worth a second request.
-const { data, isLoading } = useFleetActivity(
-  computed(() => props.fleet.slug),
-  { category: FleetActivityCategoryEnum.INVENTORY, limit: 30 },
-  { query: liveQuery },
-);
-
 const scope = ref<"mine" | "fleet">("mine");
 
 const mine = computed(() =>
-  (data.value?.items ?? []).filter((entry) => entry.involvesViewer),
+  (props.entries ?? []).filter((entry) => entry.involvesViewer),
 );
 
-const entries = computed(() =>
-  (scope.value === "mine" ? mine.value : (data.value?.items ?? [])).slice(
-    0,
-    SHOWN,
-  ),
+const shown = computed(() =>
+  (scope.value === "mine" ? mine.value : (props.entries ?? [])).slice(0, SHOWN),
 );
 
 // Nothing of the reader's own lately is not worth a panel that says so; the
@@ -55,7 +45,7 @@ const entries = computed(() =>
 let scopeChosen = false;
 
 watch(
-  () => data.value,
+  () => props.entries,
   (value) => {
     if (!value || scopeChosen) return;
 
@@ -68,10 +58,10 @@ watch(
 
 <template>
   <DashboardPanel
-    v-if="data?.items.length"
+    v-if="props.entries?.length"
     :title="t('fleetDashboard.inventory.title')"
-    :loading="isLoading"
-    :empty="!entries.length"
+    :loading="loading"
+    :empty="!shown.length"
     :empty-text="
       scope === 'mine'
         ? t('fleetDashboard.inventory.emptyMine')
@@ -100,6 +90,6 @@ watch(
         </Btn>
       </BtnGroup>
     </template>
-    <ActivityList :fleet="fleet" :entries="entries" />
+    <ActivityList :fleet="fleet" :entries="shown" />
   </DashboardPanel>
 </template>

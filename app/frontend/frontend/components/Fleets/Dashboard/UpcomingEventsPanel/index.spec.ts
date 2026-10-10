@@ -1,32 +1,11 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { computed, defineComponent, h, ref } from "vue";
+import { beforeEach, describe, expect, it } from "vitest";
+import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetEvent } from "@/services/fyApi";
 import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
-let askedFor: { from?: string; to?: string } | undefined;
-
-vi.mock("@/services/fyApi", async () => {
-  const actual =
-    await vi.importActual<Record<string, unknown>>("@/services/fyApi");
-
-  return {
-    ...actual,
-    useFleetCalendar: (
-      _slug: unknown,
-      params: { value: { from?: string; to?: string } },
-    ) => {
-      askedFor = params.value;
-
-      return {
-        data: computed(() => ({ items })),
-        isLoading: ref(false),
-      };
-    },
-  };
-});
 
 const Stub = defineComponent({ render: () => h("div") });
 
@@ -63,7 +42,10 @@ const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
 
 const mount = async () =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: {
+      fleet: { slug: "maru" } as Fleet,
+      events: items as FleetEvent[],
+    },
     plugins: [await router()],
   });
 
@@ -75,18 +57,6 @@ const titles = (subject: Awaited<ReturnType<typeof mount>>) =>
 describe("FleetDashboardUpcomingEventsPanel", () => {
   beforeEach(() => {
     items = [];
-    askedFor = undefined;
-  });
-
-  // From yesterday: the calendar answers by start time, and an op that began
-  // last night may still be running.
-  it("asks the calendar from yesterday to two weeks out", async () => {
-    await mount();
-
-    const from = new Date(askedFor?.from ?? "");
-    const to = new Date(askedFor?.to ?? "");
-    expect(Math.round((+to - +from) / 86_400_000)).toBe(15);
-    expect(from.getTime()).toBeLessThan(Date.now() - 86_400_000 / 2);
   });
 
   it("leaves out what nobody is going to", async () => {
@@ -125,6 +95,20 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
   // A recurring date is a page of the series, opened at that occurrence.
   // An op that began this morning and runs until tonight is still the one the
   // reader is in; one that already ended is not upcoming.
+  // The dashboard's answer may reach past the two weeks, for the week shown.
+  it("leaves out what starts past the next two weeks", async () => {
+    items = [
+      event({ id: "a", title: "Soon" }),
+      event({
+        id: "b",
+        title: "Later",
+        startsAt: new Date(Date.now() + 20 * 86_400_000).toISOString(),
+      }),
+    ];
+
+    expect(titles(await mount())).toEqual(["Soon"]);
+  });
+
   it("keeps what is underway and drops what has ended", async () => {
     const hoursAgo = (hours: number) =>
       new Date(Date.now() - hours * 3_600_000).toISOString();

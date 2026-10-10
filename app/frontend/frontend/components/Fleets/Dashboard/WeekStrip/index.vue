@@ -8,7 +8,6 @@ export default {
 import { addDays, isSameDay, parseISO, startOfWeek } from "date-fns";
 import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -17,16 +16,20 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
 import {
   FleetEventStatusEnum,
-  useFleetCalendar,
   type Fleet,
   type FleetEvent,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
+  // From the dashboard's one calendar answer, which covers the week shown.
+  events: FleetEvent[];
 };
 
 const props = defineProps<Props>();
+
+// Which days are on screen, so the dashboard's one calendar query covers them.
+const emit = defineEmits<{ week: [{ start: Date; end: Date }] }>();
 
 const { t, l } = useI18n();
 
@@ -61,16 +64,9 @@ const days = computed(() =>
   Array.from({ length: 7 }, (_, index) => addDays(weekStart.value, index)),
 );
 
-const { data } = useFleetCalendar(
-  computed(() => props.fleet.slug),
-  // From the day before: the calendar answers by start time, and an op that
-  // began on Sunday night is still part of Monday.
-  computed(() => ({
-    from: addDays(weekStart.value, -1).toISOString(),
-    to: addDays(weekStart.value, 7).toISOString(),
-  })),
-  { query: liveQuery },
-);
+watch(weekStart, (start) => emit("week", { start, end: addDays(start, 7) }), {
+  immediate: true,
+});
 
 const HIDDEN: FleetEvent["status"][] = [
   FleetEventStatusEnum.DRAFT,
@@ -78,7 +74,7 @@ const HIDDEN: FleetEvent["status"][] = [
 ];
 
 const events = computed(() =>
-  (data.value?.items ?? []).filter((event) => !HIDDEN.includes(event.status)),
+  props.events.filter((event) => !HIDDEN.includes(event.status)),
 );
 
 // An hour when the event carries no end, as the calendar grid assumes too.

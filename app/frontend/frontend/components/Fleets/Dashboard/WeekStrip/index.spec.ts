@@ -1,29 +1,11 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { computed, defineComponent, h, ref, type Ref } from "vue";
+import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { Fleet, FleetEvent } from "@/services/fyApi";
 import Component from "./index.vue";
 
 let items: Partial<FleetEvent>[] = [];
-let params: Ref<{ from: string; to: string }> | undefined;
-
-vi.mock("@/services/fyApi", async () => {
-  const actual =
-    await vi.importActual<Record<string, unknown>>("@/services/fyApi");
-
-  return {
-    ...actual,
-    useFleetCalendar: (
-      _slug: unknown,
-      range: Ref<{ from: string; to: string }>,
-    ) => {
-      params = range;
-
-      return { data: computed(() => ({ items })), isLoading: ref(false) };
-    },
-  };
-});
 
 const Stub = defineComponent({ render: () => h("div") });
 
@@ -64,7 +46,10 @@ const event = (overrides: Partial<FleetEvent>): Partial<FleetEvent> => ({
 
 const mount = async () =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru" } as Fleet },
+    props: {
+      fleet: { slug: "maru" } as Fleet,
+      events: items as FleetEvent[],
+    },
     plugins: [await router()],
   });
 
@@ -139,7 +124,6 @@ describe("FleetDashboardWeekStrip", () => {
 
     expect(days[0].find(".week-strip__dot--on").exists()).toBe(true);
     expect(days[1].find(".week-strip__dot--on").exists()).toBe(false);
-    expect(new Date(params?.value.from ?? "").getDate()).toBe(4);
   });
 
   it("says so when the day picked has nothing on", async () => {
@@ -148,12 +132,14 @@ describe("FleetDashboardWeekStrip", () => {
     expect(subject.find(".week-strip__empty").exists()).toBe(true);
   });
 
-  it("asks for the next week when moved on", async () => {
+  it("reports the week it shows, and the next when moved on", async () => {
     const subject = await mount();
 
     await subject.find("[aria-label='Next']").trigger("click");
 
-    // The Sunday before the week of the 12th, for what runs over midnight.
-    expect(new Date(params?.value.from ?? "").getDate()).toBe(11);
+    const weeks = (subject.emitted("week") ?? []).map(([week]) =>
+      (week as { start: Date }).start.getDate(),
+    );
+    expect(weeks).toEqual([5, 12]);
   });
 });
