@@ -244,6 +244,7 @@ class Api::V1::FleetAnnouncementsTest < ActionDispatch::IntegrationTest
 
   test "PUT announcement lets an officer edit it" do
     announcement = create(:fleet_announcement, fleet: @fleet, author: @admin)
+    Notifications::FleetAnnouncementPostedJob.jobs.clear
 
     sign_in @officer
     assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, id: announcement.id},

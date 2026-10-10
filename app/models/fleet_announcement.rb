@@ -32,6 +32,9 @@ class FleetAnnouncement < ApplicationRecord
 
   scope :active, -> { where(expires_at: nil).or(where(expires_at: Time.current..)) }
 
+  # Editing says nothing: it is the same news reworded.
+  after_create_commit -> { Notifications::FleetAnnouncementPostedJob.perform_async(id) }
+
   # One that has already ended would be saved and never shown, and nobody could
   # reach it to take it down -- whether the end was just set or was kept while
   # the announcement was being edited and ran out meanwhile.

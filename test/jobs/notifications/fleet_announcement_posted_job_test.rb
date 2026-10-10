@@ -97,5 +97,13 @@ module Notifications
       refute_predicate notified.find_by!(user: @member), :read?
     end
 
+    test "is enqueued when an announcement is posted, not when it is edited" do
+      FleetAnnouncementPostedJob.jobs.clear
+
+      announcement = create(:fleet_announcement, fleet: @fleet, author: @author)
+      announcement.update!(body: "Reworded")
+
+      assert_equal [[announcement.id]], FleetAnnouncementPostedJob.jobs.map { |job| job["args"] }
+    end
   end
 end

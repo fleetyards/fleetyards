@@ -30,8 +30,6 @@ module Api
         authorize! @fleet_announcement, context: {fleet: @fleet}
 
         if @fleet_announcement.save
-          ActiveSupport::Notifications.instrument("fleet_announcement.posted", announcement: @fleet_announcement)
-
           render :show, status: :created
         else
           render json: ValidationError.new("fleet_announcements.create", errors: @fleet_announcement.errors),
