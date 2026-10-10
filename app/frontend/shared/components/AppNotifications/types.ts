@@ -22,6 +22,8 @@ export type AppNotification = {
   icon?: string;
   // Where clicking the message takes you, on top of dismissing it.
   to?: RouteLocationRaw;
+  // Lets the sender take the message back once it no longer applies.
+  tag?: string;
 };
 
 export const appNotificationDismissKey: InjectionKey<() => void> = Symbol(
