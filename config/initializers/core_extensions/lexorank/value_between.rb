@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require "lexorank/rankable"
+require "lexorank"
+require "lexorank/ranking"
 
 # Lexorank 0.4.0 keeps comparing against the upper rank's characters after the
 # two ranks have already diverged, so between "3tgd" and "4<" it answers "3X",
@@ -10,16 +11,19 @@ require "lexorank/rankable"
 # Once a character has been taken from the lower rank while the upper one is
 # larger there, the result already sorts below the upper rank, so every later
 # position is bounded by MAX_CHAR alone.
+#
+# The whole method is replaced, so a newer release has to be checked against it
+# before this is kept or dropped.
+unless Lexorank::VERSION == "0.4.0"
+  raise "lexorank #{Lexorank::VERSION} is not the version #{__FILE__} replaces value_between for"
+end
+
 module CoreExtensions
   module Lexorank
     module ValueBetween
       def value_between(before_, after_)
         before = before_ || ::Lexorank::MIN_CHAR
         after = after_ || ::Lexorank::MAX_CHAR
-
-        if before_ && after_ && before >= after
-          raise ::Lexorank::InvalidRankError, "Cannot rank between #{before_.inspect} and #{after_.inspect}."
-        end
 
         rank = +""
         below_after = false
@@ -44,7 +48,7 @@ module CoreExtensions
           break
         end
 
-        if rank >= after
+        if rank >= after || (before_ && rank <= before_)
           raise ::Lexorank::InvalidRankError, "Cannot rank between #{before_.inspect} and #{after_.inspect}."
         end
 

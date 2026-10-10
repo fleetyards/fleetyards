@@ -556,19 +556,34 @@ class VehicleRankTest < ActiveSupport::TestCase
 end
 
 class LexorankValueBetweenTest < ActiveSupport::TestCase
+  # `mid` answers any character between two others, so ranks pick up uppercase
+  # letters and punctuation as well as the base-36 ones they start with.
+  ALPHABET = ("0".ord.."z".ord).map(&:chr).freeze
+
   test "every rank lands strictly between its neighbours" do
     ranking = Vehicle.lexorank_ranking
-    alphabet = ("0".."9").to_a + ("A".."Z").to_a + ("a".."y").to_a + %w[< X]
-    random = Random.new(4211)
+    seed = Random.new_seed
+    random = Random.new(seed)
 
-    2000.times do
-      before, after = Array.new(2) { Array.new(random.rand(1..5)) { alphabet.sample(random:) }.join }.sort
-      next if before == after
+    5000.times do
+      before, after = Array.new(2) { Array.new(random.rand(1..5)) { ALPHABET.sample(random:) }.join }.sort
+      before = nil if random.rand(10).zero?
+      after = nil if random.rand(10).zero?
+      # Nothing may start with "z", and nothing sorts below "0".
+      next if before == after || [before, after].any? { |rank| rank&.start_with?("z") } || after&.match?(/\A0+\z/)
+
+      message = "between #{before.inspect} and #{after.inspect} (seed #{seed})"
+      # Nothing sorts between "3" and "30": the next character would have to be
+      # below "0".
+      if before && after&.match?(/\A#{Regexp.escape(before)}0+\z/)
+        assert_raises(Lexorank::InvalidRankError, message) { ranking.value_between(before, after) }
+        next
+      end
 
       rank = ranking.value_between(before, after)
 
-      assert_operator rank, :>, before, "between #{before.inspect} and #{after.inspect}"
-      assert_operator rank, :<, after, "between #{before.inspect} and #{after.inspect}"
+      assert_operator rank, :>, before, message if before
+      assert_operator rank, :<, after, message if after
     end
   end
 
