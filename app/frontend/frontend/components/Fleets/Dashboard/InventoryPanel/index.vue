@@ -36,7 +36,7 @@ const SHOWN = 6;
 // older is on the logistics page the panel links to.
 const READ = 30;
 
-const { data, isLoading, isFetching, isError } = useFleetActivity(
+const { data, isLoading, isFetching, isLoadingError } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.INVENTORY, limit: READ },
   { query: liveQuery },
@@ -74,7 +74,7 @@ watch(
     :title="t('fleetDashboard.inventory.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError && !data"
+    :failed="isLoadingError"
     :empty="!entries.length"
     :more="{ name: 'fleet-logistics', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-inventory"

@@ -26,7 +26,7 @@ const mobile = useMobile();
 // yet and counts as loading.
 const visibleRange = ref<{ start: Date; end: Date } | null>(null);
 
-const { data, isFetching, isError, isPlaceholderData } = useFleetCalendar(
+const { data, isFetching, isLoadingError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   computed(() =>
     visibleRange.value
@@ -47,12 +47,6 @@ const { data, isFetching, isError, isPlaceholderData } = useFleetCalendar(
 const events = computed(() => data.value?.items ?? []);
 
 const { t } = useI18n();
-
-// Paging keeps the last week's answer as a placeholder, so a failed new week
-// would otherwise draw as an empty one.
-const failed = computed(
-  () => isError.value && (!data.value || isPlaceholderData.value),
-);
 </script>
 
 <template>
@@ -67,7 +61,7 @@ const failed = computed(
     data-test="fleet-dashboard-calendar"
     @update:range="visibleRange = $event"
   >
-    <template v-if="failed" #notice>
+    <template v-if="isLoadingError" #notice>
       <p
         class="week-calendar__failed"
         data-test="fleet-dashboard-calendar-failed"

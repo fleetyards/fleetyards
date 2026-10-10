@@ -51,7 +51,7 @@ const range = computed(() => ({
   to: addDays(today.value, WINDOW_DAYS).toISOString(),
 }));
 
-const { data, isLoading, isFetching, isError } = useFleetCalendar(
+const { data, isLoading, isFetching, isLoadingError } = useFleetCalendar(
   computed(() => props.fleet.slug),
   range,
   { query: liveQuery },
@@ -90,7 +90,7 @@ const planEvent = () =>
     :title="t('fleetDashboard.events.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError && !data"
+    :failed="isLoadingError"
     :empty="!entries.length"
     :more="{ name: 'fleet-events', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-events"

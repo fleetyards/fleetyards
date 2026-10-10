@@ -37,7 +37,7 @@ vi.mock("@/services/fyApi", async () => {
         data: computed(() => ({ items })),
         isLoading,
         isFetching,
-        isError: ref(false),
+        isLoadingError: ref(false),
       };
     },
   };

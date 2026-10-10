@@ -29,7 +29,7 @@ vi.mock("@/services/fyApi", async () => {
         ),
         isLoading,
         isFetching: isLoading,
-        isError,
+        isLoadingError: isError,
         isPlaceholderData,
       };
     },

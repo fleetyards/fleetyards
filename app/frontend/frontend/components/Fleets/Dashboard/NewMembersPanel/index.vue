@@ -25,7 +25,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { data, isLoading, isFetching, isError } = useFleetActivity(
+const { data, isLoading, isFetching, isLoadingError } = useFleetActivity(
   computed(() => props.fleet.slug),
   { category: FleetActivityCategoryEnum.MEMBERS, limit: 6 },
   { query: liveQuery },
@@ -39,7 +39,7 @@ const entries = computed(() => data.value?.items ?? []);
     :title="t('fleetDashboard.newMembers.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError && !data"
+    :failed="isLoadingError"
     :empty="!entries.length"
     :more="{
       name: 'fleet-members-index',

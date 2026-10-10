@@ -32,7 +32,7 @@ const { t } = useI18n();
 // beside the feed link to the full lists.
 const LIMIT = 15;
 
-const { data, isLoading, isFetching, isError } = useFleetActivity(
+const { data, isLoading, isFetching, isLoadingError } = useFleetActivity(
   computed(() => props.fleet.slug),
   computed(() => ({ limit: LIMIT, exclude: props.exclude })),
   { query: liveQuery },
@@ -46,7 +46,7 @@ const entries = computed(() => data.value?.items ?? []);
     :title="t('fleetDashboard.activity.title')"
     :pending="isLoading"
     :fetching="isFetching"
-    :failed="isError && !data"
+    :failed="isLoadingError"
     :empty="!entries.length"
     data-test="fleet-dashboard-activity"
   >

@@ -61,16 +61,17 @@ const days = computed(() =>
   Array.from({ length: 7 }, (_, index) => addDays(weekStart.value, index)),
 );
 
-const { data, isFetching, isError, isPlaceholderData } = useFleetCalendar(
-  computed(() => props.fleet.slug),
-  // From the day before: the calendar answers by start time, and an op that
-  // began on Sunday night is still part of Monday.
-  computed(() => ({
-    from: addDays(weekStart.value, -1).toISOString(),
-    to: addDays(weekStart.value, 7).toISOString(),
-  })),
-  { query: liveQuery },
-);
+const { data, isFetching, isLoadingError, isPlaceholderData } =
+  useFleetCalendar(
+    computed(() => props.fleet.slug),
+    // From the day before: the calendar answers by start time, and an op that
+    // began on Sunday night is still part of Monday.
+    computed(() => ({
+      from: addDays(weekStart.value, -1).toISOString(),
+      to: addDays(weekStart.value, 7).toISOString(),
+    })),
+    { query: liveQuery },
+  );
 
 const answered = computed(() => !!data.value && !isPlaceholderData.value);
 
@@ -212,7 +213,7 @@ const dayLabel = (day: Date) =>
     <!-- An unanswered week is not an empty one: say nothing while it loads,
          and say it failed rather than that the day is free. Paging keeps the
          last week's answer as a placeholder, which says nothing of this one. -->
-    <p v-else-if="!answered && isError" class="week-strip__empty">
+    <p v-else-if="isLoadingError" class="week-strip__empty">
       {{ t("fleetDashboard.failed") }}
     </p>
     <p v-else-if="answered" class="week-strip__empty">

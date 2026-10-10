@@ -21,9 +21,9 @@ type Props = {
   // Any ask is out, a refetch included. The bar shows over what the panel
   // already says.
   fetching?: boolean;
-  // The ask failed with no answer to fall back on. Callers pass it as
-  // `isError && !data`: TanStack keeps a failed refetch's old answer and still
-  // reports the error, and that answer is what the panel should go on saying.
+  // The ask failed with no answer to fall back on: TanStack's `isLoadingError`,
+  // not `isError`, which a failed refetch also sets while it keeps the old
+  // answer the panel should go on saying.
   failed?: boolean;
   // Nothing to show once answered: the `empty` slot stands in for the body.
   empty?: boolean;
