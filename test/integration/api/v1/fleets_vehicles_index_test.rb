@@ -93,8 +93,9 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
   def fleet_with_ships(lengths)
     owner = create(:user)
     lengths.each_with_index do |length, index|
-      manufacturer = create(:manufacturer, name: "Maker #{("A".ord + index).chr}")
-      create(:vehicle, user: owner, model: create(:model, length:, manufacturer:))
+      letter = ("A".ord + index).chr
+      manufacturer = create(:manufacturer, name: "Maker #{letter}")
+      create(:vehicle, user: owner, model: create(:model, name: "Ship #{letter}", length:, manufacturer:))
     end
 
     [owner, create(:fleet, admins: [owner])]
