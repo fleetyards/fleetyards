@@ -25666,10 +25666,10 @@ components:
           type: string
         size:
           type: string
-        minCrew:
-          type: integer
-        maxCrew:
-          type: integer
+        crew:
+          type:
+          - integer
+          - 'null'
         cargo:
           type: integer
         positionCount:
@@ -29743,9 +29743,7 @@ components:
           type: number
         totalIngameValue:
           type: number
-        totalMinCrew:
-          type: integer
-        totalMaxCrew:
+        totalCrew:
           type: integer
         totalCargo:
           type: number
@@ -29774,8 +29772,7 @@ components:
       - totalMoney
       - totalCredits
       - totalIngameValue
-      - totalMinCrew
-      - totalMaxCrew
+      - totalCrew
       - totalCargo
       - averagePledgePrice
       - flightReadyCount
@@ -29788,9 +29785,7 @@ components:
     HangarMetricsPublic:
       type: object
       properties:
-        totalMinCrew:
-          type: integer
-        totalMaxCrew:
+        totalCrew:
           type: integer
         totalCargo:
           type: number
@@ -29810,8 +29805,7 @@ components:
             type: string
       additionalProperties: false
       required:
-      - totalMinCrew
-      - totalMaxCrew
+      - totalCrew
       - totalCargo
       - flightReadyCount
       - uniqueModelsCount
@@ -33140,13 +33134,9 @@ components:
     ModelCrew:
       type: object
       properties:
-        max:
+        value:
           type: integer
-        maxLabel:
-          type: string
-        min:
-          type: integer
-        minLabel:
+        label:
           type: string
       additionalProperties: false
       title: ModelCrew
@@ -37190,10 +37180,10 @@ components:
           type: string
         slug:
           type: string
-        minCrew:
-          type: integer
-        maxCrew:
-          type: integer
+        crew:
+          type:
+          - integer
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
       required:

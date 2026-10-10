@@ -114,8 +114,7 @@ module Api
           missing_classifications = Model.classifications - present_classifications.to_a
 
           {
-            total_min_crew: models.map(&:min_crew).sum(&:to_i),
-            total_max_crew: models.map(&:max_crew).sum(&:to_i),
+            total_crew: models.map(&:crew).sum(&:to_i),
             total_cargo: models.map(&:cargo).sum(&:to_i),
             largest_ship: lengths.max,
             smallest_ship: lengths.min,

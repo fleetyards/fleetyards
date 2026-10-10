@@ -16,8 +16,7 @@ module V1
               classification: {type: :string},
               focus: {type: :string},
               size: {type: :string},
-              minCrew: {type: :integer},
-              maxCrew: {type: :integer},
+              crew: {type: [:integer, :null]},
               cargo: {type: :integer},
               positionCount: {type: :integer}
             }

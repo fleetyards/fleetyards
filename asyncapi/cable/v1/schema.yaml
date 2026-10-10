@@ -3482,13 +3482,9 @@ components:
     ModelCrew:
       type: object
       properties:
-        max:
+        value:
           type: integer
-        maxLabel:
-          type: string
-        min:
-          type: integer
-        minLabel:
+        label:
           type: string
       additionalProperties: false
     ModelHullDoor:

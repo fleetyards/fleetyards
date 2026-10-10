@@ -9,8 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            totalMinCrew: {type: :integer},
-            totalMaxCrew: {type: :integer},
+            totalCrew: {type: :integer},
             totalCargo: {type: :number},
             largestShip: {type: :number},
             smallestShip: {type: :number},
@@ -20,7 +19,7 @@ module V1
             missingClassifications: {type: :array, items: {type: :string}}
           },
           additionalProperties: false,
-          required: %w[totalMinCrew totalMaxCrew
+          required: %w[totalCrew
             totalCargo flightReadyCount uniqueModelsCount
             manufacturerCount missingClassifications]
         })
