@@ -34,9 +34,13 @@ export const useNotificationsStore = defineStore("notifications", {
       }
     },
     hideTagged(matches: (tag: string) => boolean) {
-      this.messages
-        .filter((message) => message.tag && matches(message.tag))
-        .forEach((message) => this.hideMessage(message.id));
+      this.messages = this.messages.flatMap((message) => {
+        if (!message.tag || !matches(message.tag)) {
+          return [message];
+        }
+
+        return message.persist ? [{ ...message, visible: false }] : [];
+      });
     },
   },
 });
