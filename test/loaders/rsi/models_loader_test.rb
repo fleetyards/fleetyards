@@ -88,6 +88,22 @@ module Rsi
       assert_in_delta 27.0, model.length.to_f
     end
 
+    test "#announces a ship it publishes, once" do
+      Notifications::NewModelJob.jobs.clear
+
+      @loader.one(7)
+
+      assert_equal [Model.find_by(name: "300i").id], Notifications::NewModelJob.jobs.map { |job| job["args"].first }
+
+      Notifications::NewModelJob.jobs.clear
+      Model.find_by(name: "300i").update!(notified: true)
+      Timecop.travel(1.day)
+
+      @loader.one(7)
+
+      assert_empty Notifications::NewModelJob.jobs
+    end
+
     test "#updates production status only when time_modified changes" do
       @loader.one(7)
 

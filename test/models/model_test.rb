@@ -617,6 +617,46 @@ class ModelTest < ActiveSupport::TestCase
     assert_not_predicate sale, :valid?
     assert_predicate sale.errors[:ended_at], :present?
   end
+
+  test "publishing a ship from the matrix announces it" do
+    model = create(:model, hidden: true, rsi_id: 999)
+
+    assert_difference("Notifications::NewModelJob.jobs.size", 1) do
+      model.update!(hidden: false)
+    end
+  end
+
+  test "publishing a ship from the game files announces it" do
+    model = create(:model, hidden: true, rsi_id: nil, rsi_chassis_id: nil)
+
+    assert_difference("Notifications::NewModelJob.jobs.size", 1) do
+      model.update!(hidden: false)
+    end
+  end
+
+  test "a hidden ship is not announced" do
+    assert_no_difference("Notifications::NewModelJob.jobs.size") do
+      create(:model, hidden: true)
+    end
+  end
+
+  test "later saves of a published ship do not announce it again" do
+    model = create(:model, hidden: true)
+    model.update!(hidden: false)
+
+    assert_no_difference("Notifications::NewModelJob.jobs.size") do
+      model.update!(rsi_id: 1000, mass: 1)
+    end
+  end
+
+  test "a ship already announced is not announced when published again" do
+    model = create(:model, notified: true)
+    model.update!(hidden: true)
+
+    assert_no_difference("Notifications::NewModelJob.jobs.size") do
+      model.update!(hidden: false)
+    end
+  end
 end
 
 # The ladder a berth is measured against. Curated rather than derived — the
