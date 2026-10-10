@@ -14,8 +14,15 @@ module Notifications
 
     # The block returns a reader's own attributes -- the text, the link, the
     # record -- given their id. `mailer` takes a notification and sends its
-    # mail. Returns the `insert_all` result.
-    def self.notify(type:, user_ids:, unique_by:, mailer:, label:)
+    # mail.
+    def self.notify(type:, user_ids:, unique_by:, mailer:, label:, &)
+      write(type:, user_ids:, unique_by:, mailer:, label:, &).deliver
+    end
+
+    # The insert alone, for a caller that has to commit it before anything is
+    # delivered: a job enqueued inside a transaction can run before the rows
+    # it delivers exist. Returns the delivery, to call `deliver` on after.
+    def self.write(type:, user_ids:, unique_by:, mailer:, label:)
       preferences = preferences_for(type, user_ids)
       now = Time.zone.now
       expires_at = now + Notification.retention_for(type)
@@ -35,9 +42,16 @@ module Notifications
       end
 
       notifications = Notification.insert_all(rows, unique_by:, returning: %w[id user_id])
-      new(notifications, preferences, mailer:, label:).deliver
+      new(notifications, preferences, mailer:, label:)
+    end
 
-      notifications
+    # Who a live message can still reach: whoever was here in the last few
+    # minutes, plus `in_use`, the readers with a tab open. String ids.
+    def self.reachable_ids(user_ids, in_use: UserPresence.active_among(user_ids))
+      User.where(id: user_ids)
+        .where(last_active_at: BROADCAST_WINDOW.ago..)
+        .pluck(:id)
+        .map(&:to_s) | in_use.to_a
     end
 
     # Existing accounts have no row for a type added after they signed up --
@@ -100,10 +114,7 @@ module Notifications
       return Set.new if user_ids.empty?
 
       in_use = UserPresence.active_among(user_ids)
-      active_ids = User.where(id: user_ids)
-        .where(last_active_at: BROADCAST_WINDOW.ago..)
-        .pluck(:id)
-        .map(&:to_s) | in_use.to_a
+      active_ids = self.class.reachable_ids(user_ids, in_use:)
       return Set.new if active_ids.empty?
 
       Notification.where(id: notification_ids(active_ids)).includes(:user).find_each do |notification|
