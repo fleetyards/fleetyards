@@ -131,17 +131,15 @@ const revokeMutation = useRevokeFleetRsiVerification({
 const { updated, failed } = useFormFeedback();
 
 const confirmVerification = async () => {
-  await confirmMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
-    console.error("Error verifying the RSI org:", error);
-    alert(error);
-  });
+  await confirmMutation
+    .mutateAsync({ id: props.fleet.id })
+    .catch((error) => failed(error));
 };
 
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
-    console.error("Error revoking the RSI verification:", error);
-    alert(error);
-  });
+  await revokeMutation
+    .mutateAsync({ id: props.fleet.id })
+    .catch((error) => failed(error));
 };
 
 const onSubmit = handleSubmit(async (values) => {
