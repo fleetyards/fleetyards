@@ -123,6 +123,10 @@ zh-CN:
       title: "%{user} 在 %{subject} 提交了一笔支出"
     payout_entry_declined:
       title: "你在 %{subject} 的支出“%{description}”已被拒绝"
+    fleet_announcement:
+      posted:
+        title: "%{fleet} 有新公告"
+        body: "%{author}：%{excerpt}"
     fleet_contract:
       someone: "一名成员"
       published:

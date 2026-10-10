@@ -125,6 +125,10 @@ en:
       title: "Your transfer to %{recipient} was %{outcome}"
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
+    fleet_announcement:
+      posted:
+        title: "New announcement in %{fleet}"
+        body: "%{author}: %{excerpt}"
     fleet_contract:
       someone: "A member"
       published:
