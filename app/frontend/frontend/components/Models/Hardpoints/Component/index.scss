@@ -16,4 +16,10 @@
     font-size: 90%;
     white-space: nowrap;
   }
+
+  // The component's name is slotted inside a popover trigger, which is a span
+  // too, so the rule above kept a long name on one line and the row clipped it.
+  :deep(.popover__trigger) {
+    white-space: normal;
+  }
 }
