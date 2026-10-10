@@ -159,6 +159,7 @@ const answer = async (member: FleetMember, accept: boolean) => {
     :pending="loading"
     :fetching="fetching"
     :failed="failed"
+    :notice="failed ? t('fleetDashboard.actionQueue.partFailed') : undefined"
     :empty="empty"
     data-test="fleet-dashboard-action-queue"
   >
@@ -228,15 +229,6 @@ const answer = async (member: FleetMember, accept: boolean) => {
         <i class="fa-light fa-chevron-right" aria-hidden="true" />
       </router-link>
     </section>
-    <!-- One queue answered and the other failed: an officer would otherwise
-         read the missing one as having nothing waiting. -->
-    <p
-      v-if="failed"
-      class="action-queue__failed"
-      data-test="fleet-dashboard-action-queue-failed"
-    >
-      {{ t("fleetDashboard.actionQueue.partFailed") }}
-    </p>
     <template #empty>
       <DashboardEmpty
         icon="fa-check"
@@ -250,12 +242,6 @@ const answer = async (member: FleetMember, accept: boolean) => {
 <style lang="scss" scoped>
 .action-queue__group + .action-queue__group {
   margin-top: 16px;
-}
-
-.action-queue__failed {
-  margin: 16px 0 0;
-  color: var(--color-text-dim, #959595);
-  font-size: 13px;
 }
 
 .action-queue__headline {

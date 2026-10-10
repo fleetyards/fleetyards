@@ -27,6 +27,9 @@ type Props = {
   failed?: boolean;
   // Nothing to show once answered: the `empty` slot stands in for the body.
   empty?: boolean;
+  // Said under what the panel shows, for a panel of several lists one of which
+  // failed: the missing list would otherwise read as having nothing in it.
+  notice?: string;
   more?: RouteLocationRaw;
   moreLabel?: string;
 };
@@ -36,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   fetching: false,
   failed: false,
   empty: false,
+  notice: undefined,
   more: undefined,
   moreLabel: undefined,
 });
@@ -68,7 +72,16 @@ const { t } = useI18n();
       </template>
     </PanelHeading>
     <PanelBody class="dashboard-panel__body">
-      <slot v-if="state === 'content'" />
+      <template v-if="state === 'content'">
+        <slot />
+        <p
+          v-if="notice"
+          class="dashboard-panel__notice"
+          data-test="fleet-dashboard-notice"
+        >
+          {{ notice }}
+        </p>
+      </template>
       <div v-else-if="state === 'pending'" class="dashboard-panel__pending" />
       <p
         v-else-if="state === 'failed'"
@@ -101,6 +114,12 @@ const { t } = useI18n();
 // column down as far.
 .dashboard-panel__pending {
   min-height: 40px;
+}
+
+.dashboard-panel__notice {
+  margin: 16px 0 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
 }
 
 .dashboard-panel__note {

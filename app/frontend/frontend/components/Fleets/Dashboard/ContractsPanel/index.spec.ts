@@ -134,7 +134,7 @@ describe("FleetDashboardContractsPanel", () => {
 
     expect(titles(subject, "mine")).toEqual(["Job a"]);
     expect(
-      subject.find("[data-test='fleet-dashboard-contracts-failed']").exists(),
+      subject.find("[data-test='fleet-dashboard-notice']").exists(),
     ).toBe(true);
   });
 

@@ -122,6 +122,11 @@ const groups = computed(() =>
     :pending="mineLoading || openLoading"
     :fetching="mineFetching || openFetching"
     :failed="mineMissing || openMissing"
+    :notice="
+      mineMissing || openMissing
+        ? t('fleetDashboard.contracts.partFailed')
+        : undefined
+    "
     :empty="!groups.length"
     :more="{ name: 'fleet-contracts', params: { slug: fleet.slug } }"
     data-test="fleet-dashboard-contracts"
@@ -158,15 +163,6 @@ const groups = computed(() =>
         </li>
       </ul>
     </section>
-    <!-- One group answered and the other failed: say so, rather than let the
-         missing group read as having nothing in it. -->
-    <p
-      v-if="mineMissing || openMissing"
-      class="contracts-panel__failed"
-      data-test="fleet-dashboard-contracts-failed"
-    >
-      {{ t("fleetDashboard.contracts.partFailed") }}
-    </p>
     <!-- An empty board is offered as something to start. -->
     <template #empty>
       <DashboardEmpty
@@ -195,12 +191,6 @@ const groups = computed(() =>
 <style lang="scss" scoped>
 .contracts-panel__group + .contracts-panel__group {
   margin-top: 16px;
-}
-
-.contracts-panel__failed {
-  margin: 16px 0 0;
-  color: var(--color-text-dim, #959595);
-  font-size: 13px;
 }
 
 .contracts-panel__label {
