@@ -190,6 +190,20 @@ const openAdminsModal = () => {
 </script>
 
 <template>
+  <Teleport to="#header-right">
+    <Btn
+      v-if="!archived && status === 'draft'"
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.fleets.events.publish')"
+      :loading="publishMutation.isPending.value"
+      data-test="publish-event"
+      mobile-icon-only
+      @click="transition('publish', publishMutation as never)"
+    >
+      <i class="fa-duotone fa-paper-plane" />
+      {{ t("actions.fleets.events.publish") }}
+    </Btn>
+  </Teleport>
   <BtnGroup>
     <Btn v-if="canUpdate" :size="BtnSizesEnum.SM" @click="goToEdit">
       <i class="fa-light fa-pen" />
@@ -204,15 +218,6 @@ const openAdminsModal = () => {
       >
         <i class="fa-light fa-box-open" />
         <span>{{ t("actions.fleets.events.unarchive") }}</span>
-      </Btn>
-      <Btn
-        v-if="!archived && status === 'draft'"
-        :size="BtnSizesEnum.SM"
-        :loading="publishMutation.isPending.value"
-        @click="transition('publish', publishMutation as never)"
-      >
-        <i class="fa-light fa-paper-plane" />
-        <span>{{ t("actions.fleets.events.publish") }}</span>
       </Btn>
       <Btn
         v-if="!archived && status === 'open'"
