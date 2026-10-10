@@ -119,6 +119,14 @@ const openAvailability = () => {
         </div>
       </div>
       <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.crew") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.crew.value || "", "people") }}
+        </div>
+      </div>
+      <!-- Inventory comes last: a lone last tile spans the row, and its label
+           does not fit a third of this card. -->
+      <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
         <div class="metrics-card__tile__value">
           {{ toNumber(model.metrics.cargo || "", "integer") }}
