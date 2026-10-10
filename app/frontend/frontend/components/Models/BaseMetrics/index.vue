@@ -93,7 +93,7 @@ const openAvailability = () => {
       </span>
     </template>
 
-    <div class="metrics-card__hero metrics-card__hero--grid">
+    <div class="metrics-card__hero base-panel__hero">
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.length") }}</div>
         <div class="metrics-card__tile__value">
@@ -124,8 +124,6 @@ const openAvailability = () => {
           {{ toNumber(model.crew.value || "", "people") }}
         </div>
       </div>
-      <!-- Inventory comes last: a lone last tile spans the row, and its label
-           does not fit a third of this card. -->
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
         <div class="metrics-card__tile__value">
@@ -197,6 +195,31 @@ const openAvailability = () => {
 @import "@/shared/components/metricsCard";
 
 .base-panel {
+  // Three dimensions, then mass and crew, then cargo and the ship's own
+  // inventory: six tracks so the first row splits in three and the others in
+  // two. Inventory is the one tile a ship may lack, and cargo then takes its row.
+  &__hero {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+
+    .metrics-card__tile {
+      grid-column: span 3;
+      padding: 12px 14px;
+
+      &:nth-child(-n + 3) {
+        grid-column: span 2;
+      }
+
+      &:last-child:nth-child(6) {
+        grid-column: span 6;
+      }
+    }
+
+    .metrics-card__tile__value {
+      font-size: 15px;
+    }
+  }
+
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 11px;
