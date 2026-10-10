@@ -3,7 +3,7 @@
 // different translation scopes.
 export type NotificationScope = "notifications" | "adminNotifications";
 
-export type NotificationRecord = {
+export interface NotificationEntry {
   id: string;
   title: string;
   body?: string;
@@ -11,4 +11,4 @@ export type NotificationRecord = {
   read: boolean;
   archived: boolean;
   createdAt: string;
-};
+}

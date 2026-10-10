@@ -12,13 +12,28 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationActions } from "@/frontend/composables/useNotificationActions";
 import { type Notification } from "@/services/fyApi";
 
-// Everything else - the selection state and the row's events - falls through
-// to the shared row.
 type Props = {
   notification: Notification;
+  selected?: boolean;
+  selectable?: boolean;
+  checked?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  selected: false,
+  selectable: false,
+  checked: false,
+});
+
+const emit = defineEmits<{
+  select: [];
+  toggle: [checked: boolean];
+  archive: [];
+  unarchive: [];
+  destroy: [];
+  previous: [];
+  next: [];
+}>();
 
 const { t } = useI18n();
 
@@ -37,6 +52,16 @@ defineExpose({ focus: () => row.value?.focus() });
     :notification="notification"
     :type-label="t(`labels.notificationTypes.${notification.notificationType}`)"
     scope="notifications"
+    :selected="selected"
+    :selectable="selectable"
+    :checked="checked"
+    @select="emit('select')"
+    @toggle="emit('toggle', $event)"
+    @archive="emit('archive')"
+    @unarchive="emit('unarchive')"
+    @destroy="emit('destroy')"
+    @previous="emit('previous')"
+    @next="emit('next')"
   >
     <template #actions>
       <!-- Only the way on, and only as an icon: the row has to survive on a

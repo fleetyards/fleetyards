@@ -15,8 +15,6 @@ import {
 } from "@/admin/components/Notifications/severity";
 import { type AdminNotification } from "@/services/fyAdminApi";
 
-// The pane's events (close, unread, archive, ...) fall through to the shared
-// pane.
 type Props = {
   notification?: AdminNotification;
 };
@@ -24,6 +22,14 @@ type Props = {
 withDefaults(defineProps<Props>(), {
   notification: undefined,
 });
+
+const emit = defineEmits<{
+  close: [];
+  unread: [];
+  archive: [];
+  unarchive: [];
+  destroy: [];
+}>();
 
 const { t, l } = useI18n();
 </script>
@@ -39,41 +45,43 @@ const { t, l } = useI18n();
         : undefined
     "
     scope="adminNotifications"
+    @close="emit('close')"
+    @unread="emit('unread')"
+    @archive="emit('archive')"
+    @unarchive="emit('unarchive')"
+    @destroy="emit('destroy')"
   >
-    <template v-if="notification" #title>
-      <span
-        v-if="notification.occurrences > 1"
-        class="notification-detail__count"
-      >
-        &times;{{ notification.occurrences }}
+    <template #title="{ notification: open }">
+      <span v-if="open.occurrences > 1" class="notification-detail__count">
+        &times;{{ open.occurrences }}
       </span>
     </template>
 
-    <template v-if="notification" #meta>
+    <template #meta="{ notification: open }">
       <BasePill
-        v-if="hasSeverityLabel(notification.severity)"
-        :variant="severityPillVariant(notification.severity)"
+        v-if="hasSeverityLabel(open.severity)"
+        :variant="severityPillVariant(open.severity)"
         uppercase
       >
-        {{ t(`labels.adminNotifications.severities.${notification.severity}`) }}
+        {{ t(`labels.adminNotifications.severities.${open.severity}`) }}
       </BasePill>
     </template>
 
-    <template v-if="notification" #actions>
-      <Btn v-if="notification.link" :to="notification.link">
+    <template #actions="{ notification: open }">
+      <Btn v-if="open.link" :to="open.link">
         <i class="fa-duotone fa-arrow-up-right-from-square" />
         {{ t("actions.open") }}
       </Btn>
     </template>
 
-    <template v-if="notification" #facts>
-      <div v-if="notification.occurrences > 1">
+    <template #facts="{ notification: open }">
+      <div v-if="open.occurrences > 1">
         <dt>{{ t("labels.adminNotifications.lastSeen") }}</dt>
-        <dd>{{ l(notification.lastOccurredAt) }}</dd>
+        <dd>{{ l(open.lastOccurredAt) }}</dd>
       </div>
       <div>
         <dt>{{ t("labels.adminNotifications.expires") }}</dt>
-        <dd>{{ l(notification.expiresAt) }}</dd>
+        <dd>{{ l(open.expiresAt) }}</dd>
       </div>
     </template>
   </NotificationDetail>

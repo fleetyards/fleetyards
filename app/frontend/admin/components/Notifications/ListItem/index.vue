@@ -14,13 +14,28 @@ import {
 } from "@/admin/components/Notifications/severity";
 import { type AdminNotification } from "@/services/fyAdminApi";
 
-// Everything else - the selection state and the row's events - falls through
-// to the shared row.
 type Props = {
   notification: AdminNotification;
+  selected?: boolean;
+  selectable?: boolean;
+  checked?: boolean;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  selected: false,
+  selectable: false,
+  checked: false,
+});
+
+const emit = defineEmits<{
+  select: [];
+  toggle: [checked: boolean];
+  archive: [];
+  unarchive: [];
+  destroy: [];
+  previous: [];
+  next: [];
+}>();
 
 const { t } = useI18n();
 
@@ -39,6 +54,16 @@ defineExpose({ focus: () => row.value?.focus() });
       t(`labels.adminNotifications.types.${notification.notificationType}`)
     "
     scope="adminNotifications"
+    :selected="selected"
+    :selectable="selectable"
+    :checked="checked"
+    @select="emit('select')"
+    @toggle="emit('toggle', $event)"
+    @archive="emit('archive')"
+    @unarchive="emit('unarchive')"
+    @destroy="emit('destroy')"
+    @previous="emit('previous')"
+    @next="emit('next')"
   >
     <template #title>
       <span

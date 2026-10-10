@@ -9,13 +9,14 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { NOTIFICATION_LABELS } from "@/shared/components/Notifications/labels";
 import type {
-  NotificationRecord,
+  NotificationEntry,
   NotificationScope,
 } from "@/shared/components/Notifications/types";
 
 type Props = {
-  notification: NotificationRecord;
+  notification: NotificationEntry;
   typeLabel: string;
   scope: NotificationScope;
   selected?: boolean;
@@ -41,6 +42,8 @@ const emit = defineEmits<{
 
 const { t, l } = useI18n();
 
+const labels = computed(() => NOTIFICATION_LABELS[props.scope]);
+
 const select = ref<HTMLButtonElement>();
 
 // The page moves the selection with the arrow keys, and focus has to follow it
@@ -60,9 +63,9 @@ defineExpose({ focus: () => select.value?.focus() });
   >
     <FormCheckbox
       v-if="props.selectable"
-      v-tooltip="t(`actions.${scope}.select`)"
+      v-tooltip="t(labels.select)"
       :model-value="props.checked"
-      :aria-label="t(`actions.${scope}.select`)"
+      :aria-label="t(labels.select)"
       class="notification-item__checkbox"
       name="notification-selection"
       data-test="notification-checkbox"
@@ -102,16 +105,16 @@ defineExpose({ focus: () => select.value?.focus() });
       <slot name="actions" />
       <Btn
         v-if="notification.archived"
-        v-tooltip="t(`actions.${scope}.unarchive`)"
-        :aria-label="t(`actions.${scope}.unarchive`)"
+        v-tooltip="t(labels.unarchive)"
+        :aria-label="t(labels.unarchive)"
         @click="emit('unarchive')"
       >
         <i class="fa-duotone fa-inbox-in" />
       </Btn>
       <Btn
         v-else
-        v-tooltip="t(`actions.${scope}.archive`)"
-        :aria-label="t(`actions.${scope}.archive`)"
+        v-tooltip="t(labels.archive)"
+        :aria-label="t(labels.archive)"
         @click="emit('archive')"
       >
         <i class="fa-duotone fa-box-archive" />

@@ -17,8 +17,6 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Notification } from "@/services/fyApi";
 
-// The pane's own events (close, unread, archive, ...) fall through to the
-// shared pane; `refresh` is the one this app adds.
 type Props = {
   notification?: Notification;
 };
@@ -28,6 +26,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
+  close: [];
+  unread: [];
+  archive: [];
+  unarchive: [];
+  destroy: [];
   refresh: [];
 }>();
 
@@ -49,19 +52,24 @@ const links = computed(() =>
         : undefined
     "
     scope="notifications"
+    @close="emit('close')"
+    @unread="emit('unread')"
+    @archive="emit('archive')"
+    @unarchive="emit('unarchive')"
+    @destroy="emit('destroy')"
   >
-    <template v-if="notification" #footer>
+    <template #footer="{ notification: open }">
       <!-- The way on. A row of its own rather than another icon beside archive
            and delete: what the notification is asking for should not have to
            compete with the housekeeping. -->
       <div
-        v-if="links.length || notification.record"
+        v-if="links.length || open.record"
         class="notification-detail__cta"
         data-test="notification-detail-actions"
       >
         <RecordActions
-          v-if="notification.record"
-          :notification="notification"
+          v-if="open.record"
+          :notification="open"
           @done="emit('refresh')"
         />
         <Btn
@@ -78,16 +86,16 @@ const links = computed(() =>
       </div>
     </template>
 
-    <template v-if="notification" #facts>
+    <template #facts="{ notification: open }">
       <!-- Retention files a notification into the archive; the archive is what
            eventually deletes it. Each state names the date it is heading for. -->
-      <div v-if="notification.archived && notification.deletesAt">
+      <div v-if="open.archived && open.deletesAt">
         <dt>{{ t("labels.notifications.deletesOn") }}</dt>
-        <dd>{{ l(notification.deletesAt) }}</dd>
+        <dd>{{ l(open.deletesAt) }}</dd>
       </div>
-      <div v-else-if="!notification.archived">
+      <div v-else-if="!open.archived">
         <dt>{{ t("labels.notifications.archivesOn") }}</dt>
-        <dd>{{ l(notification.expiresAt) }}</dd>
+        <dd>{{ l(open.expiresAt) }}</dd>
       </div>
     </template>
   </NotificationDetail>

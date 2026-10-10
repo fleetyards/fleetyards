@@ -4,20 +4,21 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T extends NotificationEntry">
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { NOTIFICATION_LABELS } from "@/shared/components/Notifications/labels";
 import type {
-  NotificationRecord,
+  NotificationEntry,
   NotificationScope,
 } from "@/shared/components/Notifications/types";
 
 type Props = {
-  notification?: NotificationRecord;
+  notification?: T;
   typeLabel?: string;
   scope: NotificationScope;
 };
@@ -35,7 +36,19 @@ const emit = defineEmits<{
   destroy: [];
 }>();
 
+// Each slot is handed the open notification, typed as the caller's own
+// record, so the caller's extras need no guard of their own.
+defineSlots<{
+  title?: (props: { notification: T }) => unknown;
+  meta?: (props: { notification: T }) => unknown;
+  actions?: (props: { notification: T }) => unknown;
+  footer?: (props: { notification: T }) => unknown;
+  facts?: (props: { notification: T }) => unknown;
+}>();
+
 const { t, l } = useI18n();
+
+const labels = computed(() => NOTIFICATION_LABELS[props.scope]);
 
 const body = ref<HTMLElement>();
 
@@ -77,20 +90,20 @@ watch(
             data-test="notification-detail-title"
           >
             {{ notification.title }}
-            <slot name="title" />
+            <slot name="title" :notification="notification" />
           </h2>
           <div class="notification-detail__meta">
-            <slot name="meta" />
+            <slot name="meta" :notification="notification" />
             <span>{{ typeLabel }}</span>
             <span>{{ l(notification.createdAt) }}</span>
           </div>
         </div>
         <div class="notification-detail__actions">
-          <slot name="actions" />
+          <slot name="actions" :notification="notification" />
           <Btn
             v-if="notification.read"
-            v-tooltip="t(`actions.${scope}.unread`)"
-            :aria-label="t(`actions.${scope}.unread`)"
+            v-tooltip="t(labels.unread)"
+            :aria-label="t(labels.unread)"
             data-test="notification-detail-unread"
             @click="emit('unread')"
           >
@@ -98,8 +111,8 @@ watch(
           </Btn>
           <Btn
             v-if="notification.archived"
-            v-tooltip="t(`actions.${scope}.unarchive`)"
-            :aria-label="t(`actions.${scope}.unarchive`)"
+            v-tooltip="t(labels.unarchive)"
+            :aria-label="t(labels.unarchive)"
             data-test="notification-detail-unarchive"
             @click="emit('unarchive')"
           >
@@ -107,8 +120,8 @@ watch(
           </Btn>
           <Btn
             v-else
-            v-tooltip="t(`actions.${scope}.archive`)"
-            :aria-label="t(`actions.${scope}.archive`)"
+            v-tooltip="t(labels.archive)"
+            :aria-label="t(labels.archive)"
             data-test="notification-detail-archive"
             @click="emit('archive')"
           >
@@ -136,13 +149,13 @@ watch(
         class="notification-detail__body notification-detail__body--empty"
         data-test="notification-detail-no-body"
       >
-        {{ t(`labels.${scope}.noBody`) }}
+        {{ t(labels.noBody) }}
       </p>
 
-      <slot name="footer" />
+      <slot name="footer" :notification="notification" />
 
       <dl class="notification-detail__facts">
-        <slot name="facts" />
+        <slot name="facts" :notification="notification" />
       </dl>
     </div>
 
@@ -152,7 +165,7 @@ watch(
       data-test="notification-detail-empty"
     >
       <i class="fa-duotone fa-envelope-open-text" />
-      <p>{{ t(`labels.${scope}.selectPrompt`) }}</p>
+      <p>{{ t(labels.selectPrompt) }}</p>
     </div>
   </Panel>
 </template>
