@@ -12,6 +12,10 @@ module Uex
       "ares-inferno-starfighter" => "crus-ares-inferno",
       "ares-ion-starfighter" => "crus-ares-ion",
       "c8r-pisces-rescue" => "anvl-c8r-pisces",
+      "constellation-andromeda" => "rsi-constellation-mk-iv-andromeda",
+      "rsi-constellation-aquila" => "rsi-constellation-mk-iv-aquila",
+      "rsi-constellation-phoenix" => "rsi-constellation-mk-iv-phoenix",
+      "rsi-constellation-taurus" => "rsi-constellation-mk-iv-taurus",
       "nova-tank" => "tmbl-nova",
       "san-tok-y-i" => "xnaa-san-tok-yai"
     }.freeze
