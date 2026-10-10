@@ -61,7 +61,6 @@ jobs:
     uses: ./.github/workflows/feature-flags.job.yml
 
   exec-plans:
-    if: github.event_name != 'pull_request' || github.base_ref == 'main'
     uses: ./.github/workflows/exec-plans.job.yml
 
   seeds:
