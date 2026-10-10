@@ -38,7 +38,7 @@ module UexFixtures
     {
       slug_match: create(:model, name: "100i", manufacturer: create(:manufacturer, code: "ORIG")),
       name_match: create(:model, name: "Avenger Titan", manufacturer: create(:manufacturer, code: "AEGS")),
-      name_full_match: create(:model, name: "Constellation Andromeda", manufacturer: create(:manufacturer, code: "RSI")),
+      name_full_match: create(:model, name: "890 Jump", manufacturer: create(:manufacturer, code: "ORIG")),
       mapping_match: create(:model, name: "C2 Hercules", manufacturer: create(:manufacturer, code: "CRUS"))
     }
   end
