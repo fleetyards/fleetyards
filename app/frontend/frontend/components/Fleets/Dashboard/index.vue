@@ -113,6 +113,7 @@ const postAnnouncement = () =>
         v-if="showEvents"
         :fleet="fleet"
         :events="calendar.weekEvents.value ?? []"
+        :loading="calendar.weekLoading.value"
         @week="calendar.showWeek"
         class="fleet-dashboard__calendar"
       />

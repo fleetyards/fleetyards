@@ -24,9 +24,12 @@ type Props = {
   fleet: Fleet;
   // From the dashboard's one calendar answer, which covers the week shown.
   events: FleetEvent[];
+  loading?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+});
 
 // Which days are on screen, so the dashboard's one calendar query covers them.
 const emit = defineEmits<{ week: [{ start: Date; end: Date }] }>();
@@ -140,7 +143,11 @@ const dayLabel = (day: Date) =>
 </script>
 
 <template>
-  <DashboardPanel :title="title" data-test="fleet-dashboard-week-strip">
+  <DashboardPanel
+    :title="title"
+    :loading="loading"
+    data-test="fleet-dashboard-week-strip"
+  >
     <template #actions>
       <BtnGroup>
         <Btn
@@ -199,7 +206,7 @@ const dayLabel = (day: Date) =>
         <EventCard :fleet="fleet" :event="event" />
       </li>
     </ul>
-    <p v-else class="week-strip__empty">
+    <p v-else-if="!loading" class="week-strip__empty">
       {{ t("fleetDashboard.week.emptyDay", { day: dayLabel(selected) }) }}
     </p>
   </DashboardPanel>

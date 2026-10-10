@@ -65,6 +65,17 @@ describe("useDashboardCalendar", () => {
     expect(asking()).toHaveLength(1);
   });
 
+  it("asks nothing more for next week, which the upcoming two already hold", () => {
+    const calendar = useDashboardCalendar("maru", true);
+
+    calendar.showWeek({
+      start: new Date(2026, 9, 12),
+      end: new Date(2026, 9, 19),
+    });
+
+    expect(asking()).toHaveLength(1);
+  });
+
   // Paging far ahead fetches that week, not every week in between.
   it("asks for a week paged to on its own", () => {
     const calendar = useDashboardCalendar("maru", true);

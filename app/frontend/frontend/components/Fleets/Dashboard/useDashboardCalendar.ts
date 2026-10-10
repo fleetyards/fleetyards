@@ -38,24 +38,32 @@ export const useDashboardCalendar = (
 
   const shownWeek = ref<Week | null>(null);
 
+  const mainRange = computed(() => {
+    const upcomingEnd = addDays(today.value, UPCOMING_DAYS);
+
+    return {
+      from: addDays(thisWeek.value.start, -1),
+      to: thisWeek.value.end > upcomingEnd ? thisWeek.value.end : upcomingEnd,
+    };
+  });
+
+  // Only a week the main answer does not cover is asked for: next week sits
+  // inside the upcoming two.
   const browsing = computed(
-    () => !!shownWeek.value && !sameWeek(shownWeek.value, thisWeek.value),
+    () =>
+      !!shownWeek.value &&
+      (shownWeek.value.start < thisWeek.value.start ||
+        shownWeek.value.end > mainRange.value.to),
   );
 
   const slug = computed(() => toValue(fleetSlug));
 
   const main = useFleetCalendar(
     slug,
-    computed(() => {
-      const upcomingEnd = addDays(today.value, UPCOMING_DAYS);
-      const end =
-        thisWeek.value.end > upcomingEnd ? thisWeek.value.end : upcomingEnd;
-
-      return {
-        from: addDays(thisWeek.value.start, -1).toISOString(),
-        to: end.toISOString(),
-      };
-    }),
+    computed(() => ({
+      from: mainRange.value.from.toISOString(),
+      to: mainRange.value.to.toISOString(),
+    })),
     {
       query: {
         ...liveQuery,
@@ -93,6 +101,9 @@ export const useDashboardCalendar = (
       browsing.value ? browsed.data.value?.items : main.data.value?.items,
     ),
     loading: main.isLoading,
+    weekLoading: computed(() =>
+      browsing.value ? browsed.isLoading.value : main.isLoading.value,
+    ),
     showWeek,
   };
 };

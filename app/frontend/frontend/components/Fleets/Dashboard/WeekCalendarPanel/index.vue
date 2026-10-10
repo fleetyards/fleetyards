@@ -14,9 +14,12 @@ type Props = {
   fleet: Fleet;
   // From the dashboard's one calendar answer, which covers the week shown.
   events: FleetEvent[];
+  loading?: boolean;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  loading: false,
+});
 
 // Which days are on screen, so the dashboard's one calendar query covers them.
 const emit = defineEmits<{ week: [{ start: Date; end: Date }] }>();
@@ -31,6 +34,7 @@ const mobile = useMobile();
     v-if="mobile"
     :fleet="fleet"
     :events="events"
+    :loading="loading"
     @week="emit('week', $event)"
   />
   <CalendarGrid
