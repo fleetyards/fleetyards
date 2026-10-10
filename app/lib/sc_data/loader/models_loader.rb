@@ -97,7 +97,7 @@ module ScData
 
         # Computed here because they read the loadout `update_loadout` just wrote.
         update_params[:fuel_consumption] = model.fuel_consumption_from_hardpoints(source)
-        update_params.merge!(model.accelerations_from_hardpoints(source))
+        update_params.merge!(model.accelerations_from_hardpoints(source, mass: model_data["mass"]))
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)

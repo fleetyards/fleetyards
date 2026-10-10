@@ -104,6 +104,22 @@ module ScData
         assert_equal cross_section, model.reload.signature_cross_section
       end
 
+      # A ship made from the game files has no mass until this load writes one,
+      # and its accelerations are worked out before that.
+      test "#load_model derives the accelerations from the mass it is loading" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "First Load Test", mass: 0)
+        main = create(:component, category: "thrusters", type_data: {"thruster_type" => "Main", "thrust_capacity" => 50_000.0})
+        create(:hardpoint, parent: model, component: main)
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+        loader.stubs(:update_loadout)
+
+        loader.load_model(model)
+
+        assert_equal 50.0, model.reload.main_acceleration.to_f
+      end
+
       # The export's bounding box carries three correct magnitudes but no
       # consistent convention for which axis is which, so a handful of ships need
       # their own order. Read off the orthographic renders rather than the ship
