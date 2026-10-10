@@ -137,10 +137,13 @@ module Api
           sync_hangar_flair: sync_pledge_items?(:sync_hangar_flair),
           unmatched_vehicles_action: unmatched_vehicles_action,
           unmatched_hangar_group_id: unmatched_hangar_group_id,
-          input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
+          input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } },
+          import_data: unread_pages.presence && {unread_pages:}.to_json
         )
 
         HangarSyncJob.perform_async(import.id)
+
+        report_unread_pages(import, unread_pages)
 
         render json: {id: import.id, status: "pending"}
       end
@@ -221,8 +224,34 @@ module Api
       private def sync_params
         @sync_params ||= params.permit(
           :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :unmatched_vehicles_action,
-          :unmatched_hangar_group_id, items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable]
+          :unmatched_hangar_group_id, :extension_version,
+          items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable],
+          unread_pages: [:check, :page_number, details: [], markup: []]
         )
+      end
+
+      private def unread_pages
+        @unread_pages ||= sync_params[:unread_pages].to_a.map(&:to_h)
+      end
+
+      # One report per check: a user counts once per check and hour, so a second
+      # report of the same check would be dropped. After the job is queued, and
+      # never failing the request: the sync is what the user asked for, and the
+      # admins' report must not leave it stuck in `created`.
+      private def report_unread_pages(import, pages_read_in_part)
+        pages_read_in_part.group_by { |page| page["check"] }.each do |check, pages|
+          ::RsiPageReport.record!(
+            page: "hangar",
+            check:,
+            user: current_resource_owner,
+            page_number: pages.first["page_number"],
+            extension_version: sync_params[:extension_version],
+            details: pages.flat_map { |page| Array(page["details"]) },
+            import:
+          )
+        end
+      rescue => e
+        Appsignal.report_error(e)
       end
 
       # Absent means on: every sync before the option existed created the snub

@@ -31,6 +31,17 @@ module Imports
       end.compact.sort
     end
 
+    # The pages the parser read only in part, kept in `import_data` as the raw
+    # RSI data the sync came from: the admin imports page shows it as is.
+    def unread_pages
+      @unread_pages ||= begin
+        data = import_data.present? ? JSON.parse(import_data) : {}
+        data.is_a?(Hash) ? Array(data["unread_pages"]) : []
+      rescue JSON::ParserError
+        []
+      end
+    end
+
     def notify_admin
       # don't notify on hangar sync
     end

@@ -35,6 +35,7 @@ fr:
         missing_component_vehicles: Aucun vaisseau correspondant pour les composants
         missing_upgrades: Améliorations introuvables
         missing_upgrade_vehicles: Aucun vaisseau correspondant pour les améliorations
+      incomplete: "Certains éléments de votre hangar RSI n'ont pas pu être lus, les vaisseaux manquants ont donc été laissés tels quels cette fois-ci."
     hangar_sync_failed:
       title: Échec de la synchronisation du hangar
       body: 'La synchronisation de votre hangar RSI a échoué : %{error}'

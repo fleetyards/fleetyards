@@ -7,10 +7,12 @@
 #
 # The notification names the page and the check that failed, and its details
 # are what the parser tripped on, in RSI's labels and markup, without item
-# titles or custom names: it reaches everyone who watches the RSI status. A
-# hangar report also records a failed hangar sync holding the pledges the parser
+# titles or custom names: it reaches everyone who watches the RSI status. Each
+# hangar report links the sync it came from, holding the pledges the parser
 # could not read, which only admins who see imports can open -- the same admins
-# who already see every pledge a sync reads.
+# who already see every pledge a sync reads. A sync that read the rest of the
+# page finished and brings its own import; one that stopped sent nothing, so a
+# failed one is recorded in its place.
 class RsiPageReport
   PAGES = %w[hangar buyback].freeze
 
@@ -45,7 +47,7 @@ class RsiPageReport
 
   MAX_MARKUP_PLEDGES = 5
 
-  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil, markup: nil)
+  def self.record!(page:, check:, user: nil, page_number: nil, extension_version: nil, details: nil, markup: nil, import: nil)
     if user
       first = Rails.cache.write(
         "rsi_page_report/#{user.id}/#{page}/#{check}", true,
@@ -62,7 +64,8 @@ class RsiPageReport
       ("page #{page_number}" if page_number),
       ("extension `#{extension_version}`" if extension_version)
     ].compact
-    import = record_import(user:, check:, page_number:, extension_version:, details:, markup:) if page == "hangar"
+    stopped = import.nil?
+    import ||= (record_import(user:, check:, page_number:, extension_version:, details:, markup:) if page == "hangar")
     context << "[import](#{import_path(import)})" if import
 
     new_lines = details.map do |detail|
@@ -84,7 +87,11 @@ class RsiPageReport
         latest_extension = extension_version || earlier.filter_map { |line| line[LATEST_EXTENSION_LINE, 1] }.first
 
         [
-          "A #{page} sync stopped on a page its parser does not recognise.",
+          if stopped
+            "A #{page} sync stopped on a page its parser does not recognise."
+          else
+            "A #{page} sync could not read every item. It finished and left unmatched ships as they were."
+          end,
           "- Check: `#{check}`",
           ("- Latest page: #{latest_page}" if latest_page),
           ("- Latest extension: `#{latest_extension}`" if latest_extension),
@@ -95,7 +102,9 @@ class RsiPageReport
       severity: :error,
       link: (import_path(import) if import),
       record: import,
-      dedupe_key: "#{page}:#{check}"
+      # Kept apart from a sync that stopped on the same check: the headline
+      # says which happened, and would otherwise speak for both.
+      dedupe_key: [page, check, ("finished" unless stopped)].compact.join(":")
     )
   end
 
@@ -104,11 +113,11 @@ class RsiPageReport
   def self.record_import(user:, check:, page_number:, extension_version:, details:, markup:)
     return unless user
 
+    unread_page = {check:, page_number:, details:, markup: Array(markup).first(MAX_MARKUP_PLEDGES)}.compact
     import = Imports::HangarSync.create!(
       user:,
-      input: {check:, page_number:, extension_version:, details:}.compact,
-      import_data: Array(markup).first(MAX_MARKUP_PLEDGES).join("\n\n").presence,
-      info: "RSI hangar page #{page_number || "?"} not recognised (#{check})"
+      import_data: {unread_pages: [unread_page]}.to_json,
+      info: "RSI hangar page #{page_number || "?"} not recognised (#{[check, ("extension #{extension_version}" if extension_version)].compact.join(", ")})"
     )
     import.fail!
     import

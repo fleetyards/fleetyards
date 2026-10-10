@@ -34,7 +34,10 @@ module V1
             syncedPaints: {type: :array, items: {type: :string, format: :uuid}},
             syncedHangarFlair: {type: :array, items: {type: :string, format: :uuid}},
             # Left out by a run from before the sync decided it had nothing to do.
-            outcome: {"$ref": "#/components/schemas/HangarSyncOutcomeEnum"}
+            outcome: {"$ref": "#/components/schemas/HangarSyncOutcomeEnum"},
+            # Only there when the parser could not read every item: unmatched
+            # ships were then left as they are.
+            incomplete: {type: :boolean}
           },
           additionalProperties: false,
           required: %w[

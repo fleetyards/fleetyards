@@ -35,6 +35,7 @@ de:
         missing_component_vehicles: Kein passendes Schiff für Komponenten
         missing_upgrades: Upgrades nicht gefunden
         missing_upgrade_vehicles: Kein passendes Schiff für Upgrades
+      incomplete: "Einige Gegenstände in Ihrem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen."
     hangar_sync_failed:
       title: Hangar-Synchronisierung fehlgeschlagen
       body: 'Ihre RSI-Hangar-Synchronisierung ist fehlgeschlagen: %{error}'

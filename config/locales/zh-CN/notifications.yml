@@ -35,6 +35,7 @@ zh-CN:
         missing_component_vehicles: 没有与组件匹配的飞船
         missing_upgrades: 未找到的升级
         missing_upgrade_vehicles: 没有与升级匹配的飞船
+      incomplete: "您的 RSI 机库中有部分物品无法读取，因此本次未找到的飞船保持不变。"
     hangar_sync_failed:
       title: 机库同步失败
       body: '您的 RSI 机库同步失败: %{error}'
