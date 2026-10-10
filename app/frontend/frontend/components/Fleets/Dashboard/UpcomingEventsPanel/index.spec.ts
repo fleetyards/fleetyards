@@ -9,15 +9,12 @@ let items: Partial<FleetEvent>[] = [];
 let askedFor: { from?: string; to?: string } | undefined;
 const isLoading = ref(false);
 const isFetching = ref(false);
-const createDraft = vi.fn();
+// The event write itself, so the planner runs for real down to the request.
+const createEvent = vi.fn();
 const emit = vi.fn();
 
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit, on: () => () => undefined }),
-}));
-
-vi.mock("@/frontend/composables/useDraftCreate", () => ({
-  useEventDraft: () => ({ create: createDraft, pending: ref(false) }),
 }));
 
 vi.mock("@/services/fyApi", async () => {
@@ -26,6 +23,10 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
+    useCreateFleetEvent: () => ({
+      isPending: ref(false),
+      mutateAsync: createEvent,
+    }),
     useFleetCalendar: (
       _slug: unknown,
       params: { value: { from?: string; to?: string } },
@@ -94,7 +95,7 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
     askedFor = undefined;
     isLoading.value = false;
     isFetching.value = false;
-    createDraft.mockClear();
+    createEvent.mockReset().mockResolvedValue({});
     emit.mockClear();
   });
 
@@ -210,7 +211,9 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
       .find("[data-test='fleet-dashboard-plan-event']")
       .trigger("click");
 
-    expect(createDraft).toHaveBeenCalledWith("maru");
+    expect(createEvent).toHaveBeenCalledTimes(1);
+    expect(createEvent.mock.calls[0][0].fleetSlug).toBe("maru");
+    expect(createEvent.mock.calls[0][0].data.missionSlug).toBeUndefined();
   });
 
   // The API copies a mission's teams only while it writes the event, so a
@@ -222,14 +225,12 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
       .find("[data-test='fleet-dashboard-plan-event']")
       .trigger("click");
 
-    expect(createDraft).not.toHaveBeenCalled();
+    expect(createEvent).not.toHaveBeenCalled();
 
     const [, payload] = emit.mock.calls.at(-1)!;
     payload.props.onPick({ slug: "salvage-op" });
 
-    expect(createDraft).toHaveBeenCalledWith("maru", {
-      missionSlug: "salvage-op",
-    });
+    expect(createEvent.mock.calls[0][0].data.missionSlug).toBe("salvage-op");
   });
 
   it("says nothing is planned to everybody else", async () => {

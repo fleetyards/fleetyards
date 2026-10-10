@@ -23,7 +23,6 @@ import {
   type Fleet,
   type FleetMember,
   type FleetEvent,
-  type Mission,
   useFleetEvents,
   useFleetCalendar,
   useFleetCalendarSubscription,
@@ -31,7 +30,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useEventDraft } from "@/frontend/composables/useDraftCreate";
+import { useEventPlanner } from "@/frontend/composables/useDraftCreate";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import {
   type EventCalendarView,
@@ -133,39 +132,20 @@ const visibleRange = ref<{ start: Date; end: Date }>({
   end: addDays(endOfMonth(new Date()), 7),
 });
 
-const { create: createEventDraft, pending: creating } = useEventDraft();
+const { plan: planEvent, pending: creating } = useEventPlanner();
 
 /*
  * The button writes the event rather than opening a form that would write it
  * later: an event has to exist before its teams, ships and slots can hang off
  * it, and those are the editor's whole job. Clicking a day on the calendar
  * starts it there rather than now.
- *
- * The mission template is asked for first, because the API copies a mission's
- * teams only while it writes the event -- the editor cannot apply one later.
- * Whoever cannot read the fleet's missions has none to pick from.
  */
 const goToCreate = (date: Date) => {
-  // A pick made while the last draft is still being written would be dropped.
-  if (!canCreate.value || creating.value) return;
+  if (!canCreate.value) return;
 
-  if (!canManageMissions.value) {
-    void createEventDraft(props.fleet.slug, { startsAt: date });
-    return;
-  }
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
-    props: {
-      fleet: props.fleet,
-      onPick: (mission: Mission | null) => {
-        void createEventDraft(props.fleet.slug, {
-          startsAt: date,
-          missionSlug: mission?.slug,
-        });
-      },
-    },
+  planEvent(props.fleet, {
+    startsAt: date,
+    withTemplate: canManageMissions.value,
   });
 };
 

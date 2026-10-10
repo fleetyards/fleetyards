@@ -2,9 +2,12 @@ import {
   FleetEventVisibilityEnum,
   useCreateFleetEvent,
   useCreateFleetMission,
+  type Fleet,
+  type Mission,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 
 /*
  * Writing a mission or an event and going straight to its editor. Shared rather
@@ -130,4 +133,41 @@ export const useEventDraft = () => {
   };
 
   return { create, pending: mutation.isPending };
+};
+
+/*
+ * Planning an event from a button: a mission template first, because the API
+ * copies a mission's teams only while it writes the event -- the editor cannot
+ * apply one later. Whoever cannot read the fleet's missions has none to pick
+ * from, and goes straight to a blank draft.
+ */
+export const useEventPlanner = () => {
+  const comlink = useComlink();
+  const { create, pending } = useEventDraft();
+
+  const plan = (
+    fleet: Fleet,
+    { startsAt, withTemplate }: { startsAt?: Date; withTemplate: boolean },
+  ) => {
+    // A pick made while the last draft is still being written would be dropped.
+    if (pending.value) return;
+
+    if (!withTemplate) {
+      void create(fleet.slug, { startsAt });
+      return;
+    }
+
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
+      props: {
+        fleet,
+        onPick: (mission: Mission | null) => {
+          void create(fleet.slug, { startsAt, missionSlug: mission?.slug });
+        },
+      },
+    });
+  };
+
+  return { plan, pending };
 };

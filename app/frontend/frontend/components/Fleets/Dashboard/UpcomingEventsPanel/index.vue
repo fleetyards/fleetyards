@@ -14,14 +14,12 @@ import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vu
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
-import { useEventDraft } from "@/frontend/composables/useDraftCreate";
+import { useEventPlanner } from "@/frontend/composables/useDraftCreate";
 import {
   FleetEventStatusEnum,
   useFleetCalendar,
   type Fleet,
   type FleetEvent,
-  type Mission,
 } from "@/services/fyApi";
 
 type Props = {
@@ -81,31 +79,10 @@ const entries = computed(() => {
     .slice(0, SHOWN);
 });
 
-const { create: createEventDraft, pending: creatingEvent } = useEventDraft();
+const { plan, pending: creatingEvent } = useEventPlanner();
 
-const comlink = useComlink();
-
-// The same start the events page makes: a mission template first, because the
-// API copies a mission's teams only while it writes the event.
-const planEvent = () => {
-  if (creatingEvent.value) return;
-
-  if (!props.canReadMissions) {
-    void createEventDraft(props.fleet.slug);
-    return;
-  }
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
-    props: {
-      fleet: props.fleet,
-      onPick: (mission: Mission | null) => {
-        void createEventDraft(props.fleet.slug, { missionSlug: mission?.slug });
-      },
-    },
-  });
-};
+const planEvent = () =>
+  plan(props.fleet, { withTemplate: props.canReadMissions });
 </script>
 
 <template>
