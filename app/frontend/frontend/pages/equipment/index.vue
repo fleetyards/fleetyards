@@ -16,10 +16,7 @@ import { useEquipmentSortFields } from "@/frontend/composables/useEquipmentSortF
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useEquipmentFilters } from "@/frontend/composables/useEquipmentFilters";
-import {
-  useEquipment as useEquipmentQuery,
-  getEquipmentQueryKey,
-} from "@/services/fyApi";
+import { useEquipment as useEquipmentQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -29,11 +26,7 @@ const equipmentQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const equipmentQueryKey = computed(() =>
-  getEquipmentQueryKey(equipmentQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(equipmentQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useEquipmentFilters(async () => {
   await refetch();

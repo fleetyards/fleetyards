@@ -23,7 +23,6 @@ import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import {
   useHangarBuybacks,
-  getHangarBuybacksQueryKey,
   type BuybackPledge,
   type BuybackPledgeQuery,
 } from "@/services/fyApi";
@@ -38,9 +37,8 @@ const queryParams = computed(() => ({
 
 // Declared before the pagination it reads: both sides are computed, so the
 // forward reference resolves on first access rather than at definition.
-const queryKey = computed(() => getHangarBuybacksQueryKey(queryParams));
 
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useFilters<BuybackPledgeQuery>({
   updateCallback: async () => {

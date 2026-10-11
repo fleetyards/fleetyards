@@ -32,10 +32,7 @@ import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import {
-  usePublicWishlist as usePublicWishlistQuery,
-  getPublicWishlistQueryKey,
-} from "@/services/fyApi";
+import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -80,11 +77,7 @@ const wishlistQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const wishlistQueryKey = computed(() => {
-  return getPublicWishlistQueryKey(username.value, wishlistQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(wishlistQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const wishlistQuery = usePublicWishlistQuery(username, wishlistQueryParams);
 const wishlist = wishlistQuery.data;

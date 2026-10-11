@@ -13,7 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Blueprints/FilterForm/index.vue";
 import {
   useBlueprints,
-  getBlueprintsQueryKey,
   type Blueprint,
   type BlueprintSortEnum,
 } from "@/services/fyAdminApi";
@@ -35,11 +34,7 @@ watch(
   },
 );
 
-const blueprintsQueryKey = computed(() => {
-  return getBlueprintsQueryKey(blueprintsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(blueprintsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useBlueprintFilters(async () => {
   await refetch();

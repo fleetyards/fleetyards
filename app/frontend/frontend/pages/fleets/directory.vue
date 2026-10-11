@@ -27,7 +27,6 @@ import { useFleetDirectoryFilters } from "@/frontend/composables/useFleetDirecto
 import {
   type FleetDirectoryEntry,
   useFleetDirectory as useFleetDirectoryQuery,
-  getFleetDirectoryQueryKey,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -38,11 +37,7 @@ const directoryQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const directoryQueryKey = computed(() =>
-  getFleetDirectoryQueryKey(directoryQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(directoryQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useFleetDirectoryFilters(async () => {
   await refetch();

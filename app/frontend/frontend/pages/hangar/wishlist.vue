@@ -45,7 +45,6 @@ import {
   useWishlist as useWishlistQuery,
   exportWishlist,
   useDestroyWishlist as useDestroyWishlistMutation,
-  getWishlistQueryKey,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -101,11 +100,7 @@ const wishlistQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const wishlistQueryKey = computed(() => {
-  return getWishlistQueryKey(wishlistQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(wishlistQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const {
   data: vehicles,

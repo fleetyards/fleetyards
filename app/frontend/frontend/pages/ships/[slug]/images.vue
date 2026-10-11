@@ -17,10 +17,7 @@ import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { usePagination } from "@/shared/composables/usePagination";
 import { type Model } from "@/services/fyApi";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  useModelImages as useModelImagesQuery,
-  getModelImagesQueryKey,
-} from "@/services/fyApi";
+import { useModelImages as useModelImagesQuery } from "@/services/fyApi";
 
 type Props = {
   model: Model;
@@ -89,11 +86,7 @@ const modelImagesQueryParams = computed(() => {
   };
 });
 
-const imagesQueryKey = computed(() => {
-  return getModelImagesQueryKey(modelSlug.value, modelImagesQueryParams.value);
-});
-
-const { page, perPage } = usePagination(imagesQueryKey);
+const { page, perPage } = usePagination();
 
 const { data: images, ...asyncStatus } = useModelImagesQuery(
   modelSlug,

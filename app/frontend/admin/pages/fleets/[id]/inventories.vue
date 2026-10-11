@@ -16,7 +16,6 @@ import {
   type Fleet,
   type FleetInventory,
   useFleetInventories as useFleetInventoriesQuery,
-  getFleetInventoriesQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -32,11 +31,7 @@ const queryParams = computed(() => ({
   perPage: perPage.value,
 }));
 
-const queryKey = computed(() =>
-  getFleetInventoriesQueryKey(props.fleet.id, queryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data: inventories, ...asyncStatus } = useFleetInventoriesQuery(
   props.fleet.id,

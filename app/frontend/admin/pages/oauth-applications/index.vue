@@ -13,7 +13,6 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import {
   useOauthApplications,
-  getOauthApplicationsQueryKey,
   type OauthApplication,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -26,11 +25,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useBulkSelection } from "@/shared/composables/useBulkSelection";
 import { useComlink } from "@/shared/composables/useComlink";
 
-const queryKey = computed(() => {
-  return getOauthApplicationsQueryKey(queryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const queryParams = computed(() => {
   return {

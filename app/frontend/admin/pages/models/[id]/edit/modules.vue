@@ -61,11 +61,7 @@ const modulesQueryParams = computed(() => ({
   },
 }));
 
-const modulesQueryKey = computed(() =>
-  getListModelModulesQueryKey(modulesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(modulesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelModulesQuery(modulesQueryParams);
 

@@ -43,7 +43,6 @@ import {
 import {
   useNotifications as useNotificationsQuery,
   useNotificationsUnreadCount,
-  getNotificationsQueryKey,
   readNotification,
   unreadNotification,
   readAllNotifications,
@@ -108,9 +107,7 @@ const sortLink = computed(() => ({
   },
 }));
 
-const queryKey = computed(() => getNotificationsQueryKey(queryParams.value));
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useNotificationFilters(async () => {
   await refetch();

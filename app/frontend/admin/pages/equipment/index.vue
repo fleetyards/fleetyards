@@ -14,7 +14,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Equipment/FilterForm/index.vue";
 import {
   useEquipment,
-  getEquipmentQueryKey,
   type Equipment,
   type EquipmentSortEnum,
 } from "@/services/fyAdminApi";
@@ -39,11 +38,7 @@ watch(
   },
 );
 
-const equipmentQueryKey = computed(() => {
-  return getEquipmentQueryKey(equipmentQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(equipmentQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useEquipmentFilters(async () => {
   await refetch();

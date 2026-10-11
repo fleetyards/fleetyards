@@ -26,7 +26,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import {
   type ShopItem,
   type ShopItemQuery,
-  getShopItemsQueryKey,
   useShop,
   useShopItems,
 } from "@/services/fyApi";
@@ -53,9 +52,7 @@ const itemsParams = computed(() => ({
   q: getQuery(),
 }));
 
-const { perPage, page, updatePerPage } = usePagination(
-  computed(() => getShopItemsQueryKey(slug, itemsParams)),
-);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useFilters<ShopItemQuery>({
   updateCallback: async () => {

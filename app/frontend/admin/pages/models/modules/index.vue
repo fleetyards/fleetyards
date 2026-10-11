@@ -36,11 +36,7 @@ const modulesQueryParams = computed(() => {
   };
 });
 
-const modulesQueryKey = computed(() => {
-  return getListModelModulesQueryKey(modulesQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(modulesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useModelModuleFilters(async () => {
   await refetch();

@@ -14,7 +14,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Components/FilterForm/index.vue";
 import {
   useComponents,
-  getComponentsQueryKey,
   type Component,
   type ComponentSortEnum,
 } from "@/services/fyAdminApi";
@@ -39,11 +38,7 @@ watch(
   },
 );
 
-const componentsQueryKey = computed(() => {
-  return getComponentsQueryKey(componentsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(componentsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useComponentFilters(async () => {
   await refetch();

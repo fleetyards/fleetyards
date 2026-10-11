@@ -16,10 +16,7 @@ import { useBlueprintSortFields } from "@/frontend/composables/useBlueprintSortF
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useBlueprintFilters } from "@/frontend/composables/useBlueprintFilters";
-import {
-  useBlueprints as useBlueprintsQuery,
-  getBlueprintsQueryKey,
-} from "@/services/fyApi";
+import { useBlueprints as useBlueprintsQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -29,11 +26,7 @@ const blueprintsQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const blueprintsQueryKey = computed(() =>
-  getBlueprintsQueryKey(blueprintsQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(blueprintsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useBlueprintFilters(async () => {
   await refetch();

@@ -17,7 +17,6 @@ import ManufacturerActions from "@/admin/components/Manufacturers/Actions/index.
 import FilterForm from "@/admin/components/Manufacturers/FilterForm/index.vue";
 import {
   useManufacturers,
-  getManufacturersQueryKey,
   type Manufacturer,
   type ManufacturerSortEnum,
 } from "@/services/fyAdminApi";
@@ -39,11 +38,7 @@ watch(
   },
 );
 
-const manufacturersQueryKey = computed(() => {
-  return getManufacturersQueryKey(manufacturersQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(manufacturersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useManufacturerFilters(async () => {
   await refetch();

@@ -20,7 +20,6 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type Vehicle,
   useVehicles as useVehiclesQuery,
-  getVehiclesQueryKey,
   type VehicleSortEnum,
 } from "@/services/fyAdminApi";
 import VehicleActions from "@/admin/components/Vehicles/Actions/index.vue";
@@ -55,11 +54,7 @@ const vehiclesQueryParams = computed(() => {
   };
 });
 
-const vehiclesQueryKey = computed(() => {
-  return getVehiclesQueryKey(vehiclesQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const {
   data: vehicles,

@@ -16,7 +16,6 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import FleetFidClaimActions from "@/admin/components/FleetFidClaims/Actions/index.vue";
 import {
   type AdminFleetFidClaim,
-  getFleetFidClaimsQueryKey,
   useFleetFidClaims,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -34,11 +33,7 @@ const crumbs = computed<Crumb[]>(() => [
   },
 ]);
 
-const claimsQueryKey = computed(() =>
-  getFleetFidClaimsQueryKey(claimsQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(claimsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const claimsQueryParams = computed(() => ({
   page: page.value,

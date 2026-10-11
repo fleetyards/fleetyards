@@ -60,11 +60,7 @@ const packagesQueryParams = computed(() => ({
   },
 }));
 
-const packagesQueryKey = computed(() =>
-  getListModelModulePackagesQueryKey(packagesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(packagesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } =
   useListModelModulePackagesQuery(packagesQueryParams);

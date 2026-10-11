@@ -34,7 +34,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import {
   usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
   usePublicFleetVehicles as usePublicFleetVehiclesQuery,
-  getPublicFleetVehiclesQueryKey,
 } from "@/services/fyApi";
 
 type Props = {
@@ -95,20 +94,13 @@ watch(
   () => refetch(),
 );
 
-const vehiclesQueryKey = computed(() => {
-  return getPublicFleetVehiclesQueryKey(
-    props.fleet.slug,
-    vehiclesQueryParams.value,
-  );
-});
-
 const { getQuery } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
     await refetch();
   },
 });
 
-const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const vehiclesQueryParams = computed(() => {
   return {

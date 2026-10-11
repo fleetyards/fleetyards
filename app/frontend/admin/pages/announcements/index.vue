@@ -15,7 +15,6 @@ import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import AnnouncementRow from "@/admin/components/Announcements/Row/index.vue";
 import {
   useAnnouncements,
-  getAnnouncementsQueryKey,
   type AnnouncementSortEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -38,11 +37,7 @@ watch(
   },
 );
 
-const announcementsQueryKey = computed(() => {
-  return getAnnouncementsQueryKey(announcementsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(announcementsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useAnnouncementFilters(async () => {
   await refetch();

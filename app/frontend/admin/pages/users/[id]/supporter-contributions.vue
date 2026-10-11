@@ -23,7 +23,6 @@ import {
   type SupporterContribution,
   SupporterContributionSortEnum,
   useSupporterContributions,
-  getSupporterContributionsQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -52,11 +51,7 @@ const queryParams = computed(() => ({
   },
 }));
 
-const queryKey = computed(() =>
-  getSupporterContributionsQueryKey(queryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data: contributions, ...asyncStatus } =
   useSupporterContributions(queryParams);

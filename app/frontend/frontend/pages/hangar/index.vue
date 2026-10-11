@@ -62,7 +62,6 @@ import {
   hangarLinkExport as fetchHangarLinkExport,
   useDestroyHangar as useDestroyHangarMutation,
   type HangarParams,
-  getHangarQueryKey,
 } from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
@@ -107,11 +106,7 @@ const hangarQueryParams = computed(() => {
   return params;
 });
 
-const hangarQueryKey = computed(() => {
-  return getHangarQueryKey(hangarQueryParams);
-});
-
-const { perPage, page, updatePerPage } = usePagination(hangarQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const {
   data: vehicles,

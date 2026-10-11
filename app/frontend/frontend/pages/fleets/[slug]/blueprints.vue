@@ -19,7 +19,6 @@ import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { usePagination } from "@/shared/composables/usePagination";
 import {
   useFleetBlueprints as useFleetBlueprintsQuery,
-  getFleetBlueprintsQueryKey,
   type Fleet,
   type FleetMember,
 } from "@/services/fyApi";
@@ -42,11 +41,7 @@ const queryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const queryKey = computed(() =>
-  getFleetBlueprintsQueryKey(fleetSlug, queryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useBlueprintFilters(async () => {
   await refetch();

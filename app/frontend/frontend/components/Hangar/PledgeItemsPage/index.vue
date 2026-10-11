@@ -76,9 +76,8 @@ const queryParams = computed(() => ({
 
 // Declared before the pagination it reads: both sides are computed, so the
 // forward reference resolves on first access rather than at definition.
-const queryKey = computed(() => config.getQueryKey(queryParams));
 
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useFilters<HangarPledgeItemQuery>({
   updateCallback: async () => {
