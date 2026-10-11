@@ -1,6 +1,6 @@
 import { useRoute, useRouter, type LocationQueryValue } from "vue-router";
 import { usePaginationStore } from "@/shared/stores/pagination";
-import { useQueryClient } from "@tanstack/vue-query";
+import { useQuery } from "@tanstack/vue-query";
 import type { QueryKey } from "@tanstack/vue-query";
 import type { MaybeRef } from "vue";
 import { errorCodeFrom } from "@/shared/utils/ErrorTypes";
@@ -16,53 +16,57 @@ const firstOf = (
   value: LocationQueryValue | LocationQueryValue[] | undefined,
 ): LocationQueryValue | undefined => (Array.isArray(value) ? value[0] : value);
 
-// The endpoint part of a query key, without the params: ['fleets', slug,
-// 'vehicles'] for a fleet's ships, so a sibling list under the same fleet is
-// not mistaken for this one.
-const keyPath = (key: unknown) => {
-  const value = unref(key);
-  const segments = Array.isArray(value) ? value : [value];
-
-  return JSON.stringify(
-    segments
-      .map((segment) => unref(segment) as unknown)
-      .filter((segment) => typeof segment !== "object" || segment === null),
-  );
-};
-
 type PaginatedData = { meta?: { pagination?: { perPageSteps?: unknown[] } } };
 
-const stepsOf = (data: unknown) =>
-  (data as PaginatedData | undefined)?.meta?.pagination?.perPageSteps?.map(
-    String,
-  );
-
 export const usePagination = (
-  queryKey: MaybeRef<QueryKey | string | undefined>,
+  queryKey?: MaybeRef<QueryKey | string | undefined>,
 ) => {
   const paginationStore = usePaginationStore();
 
   const route = useRoute();
 
-  const key = computed(() => {
-    return (route.name as string) || "";
-  });
-
   const router = useRouter();
 
-  const queryClient = useQueryClient();
+  // The route this list belongs to. A page transition keeps the leaving page
+  // mounted for a moment while the route already names the next one, whose
+  // saved and linked sizes are none of this list's business.
+  const listRoute = route.name;
 
-  const isThisList = (other: unknown) => keyPath(other) === keyPath(queryKey);
+  const key = (listRoute as string) || "";
 
-  // The sizes this list offers, as its last answer named them. Until one has
-  // arrived, only the shared set is known.
-  const listSteps = ref<string[] | undefined>(
-    queryClient
-      .getQueryCache()
-      .findAll()
-      .filter((query) => isThisList(query.queryKey))
-      .map((query) => stepsOf(query.state.data))
-      .find((steps) => !!steps),
+  const onListRoute = () => route.name === listRoute;
+
+  // This list's own query, observed and never fetched: its answer names the
+  // sizes the list offers, and its error says when a size was refused. No
+  // placeholder, so a new key never shows the steps of the last one.
+  //
+  // The caller builds its key from the `perPage` and `page` this returns, so
+  // reading it during setup would touch them before they exist: the key is
+  // read from mount on.
+  const mounted = ref(!getCurrentInstance());
+
+  onMounted(() => {
+    mounted.value = true;
+  });
+
+  const ownQuery = useQuery({
+    queryKey: computed(() => {
+      if (!mounted.value) {
+        return ["usePagination", "unmounted"] as QueryKey;
+      }
+
+      const value = unref(queryKey);
+
+      return (Array.isArray(value) ? value : [value]) as QueryKey;
+    }),
+    enabled: false,
+    placeholderData: undefined,
+  });
+
+  const listSteps = computed(() =>
+    (
+      ownQuery.data.value as PaginatedData | undefined
+    )?.meta?.pagination?.perPageSteps?.map(String),
   );
 
   const offered = (size: string | number | null | undefined) =>
@@ -71,23 +75,35 @@ export const usePagination = (
 
   const linkedPerPage = computed(() => firstOf(route.query.perPage));
 
-  const savedPerPage = computed(() => paginationStore.findByKey(key.value));
+  const savedPerPage = computed(() => paginationStore.findByKey(key));
+
+  // Set while a picked size waits for the route to drop the old page, so the
+  // new size and page one reach the request together.
+  const pending = ref<string>();
 
   // A shared link carries the sender's page size, so it shows the same items
-  // without overwriting the size this visitor keeps for the list. A size the
-  // list does not offer is never requested: it falls back to the saved size,
-  // then to its default.
+  // without overwriting the size this visitor keeps for the list. A size off
+  // the shared set is never requested; one this list turns out not to offer is
+  // dropped once its answer says so.
   const perPage = computed(() => {
-    if (offered(linkedPerPage.value)) {
+    if (pending.value) {
+      return pending.value;
+    }
+
+    if (isPageSize(linkedPerPage.value)) {
       return String(linkedPerPage.value);
     }
 
-    if (offered(savedPerPage.value)) {
+    if (isPageSize(savedPerPage.value)) {
       return String(savedPerPage.value);
     }
 
     return undefined;
   });
+
+  const page = computed(() =>
+    pending.value ? "1" : (route.query.page as string) || "1",
+  );
 
   // The page number goes with the size: it counted pages of that size, so it
   // would point at different items, and can lie past the end.
@@ -100,79 +116,59 @@ export const usePagination = (
   watch(
     [linkedPerPage, savedPerPage, listSteps],
     ([linked, saved]) => {
+      if (!onListRoute()) {
+        return;
+      }
+
       if (linked && !offered(linked)) {
         void clearSizeFromQuery();
       }
 
       if (saved !== undefined && !offered(saved)) {
-        paginationStore.removeByKey(key.value);
+        paginationStore.removeByKey(key);
       }
     },
     { immediate: true },
   );
 
-  // The page goes first, and the size change alone already refetches.
-  const updatePerPage = async (newPerPage: string | number) => {
-    if (route.query.perPage || route.query.page) {
-      await clearSizeFromQuery();
-    }
-
-    paginationStore.setBykey(key.value, newPerPage);
-  };
-
-  const page = computed(() => (route.query.page as string) || "1");
-
+  // A size above what this list allows is refused with a 400 before the list
+  // has named its sizes. The refused request is this list's own, so it asked
+  // for the size in use: dropping that one refetches at the default.
   watch(
-    () => page.value,
-    () => {
-      void queryClient.invalidateQueries({
-        queryKey: [queryKey],
-      });
-    },
-  );
-
-  watch(
-    () => perPage.value,
-    () => {
-      void queryClient.invalidateQueries({
-        queryKey: [queryKey],
-      });
-    },
-  );
-
-  // A shared size can be above what this list allows, which the API refuses
-  // with a 400 before the list has named its sizes. Dropping the size that was
-  // requested changes the request, and the list refetches at its default.
-  const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
-    if (event.type !== "updated" || !isThisList(event.query.queryKey)) {
-      return;
-    }
-
-    if (event.action.type === "success") {
-      const steps = stepsOf(event.action.data);
-
-      if (steps) {
-        listSteps.value = steps;
+    () => ownQuery.error.value,
+    (error) => {
+      if (
+        !onListRoute() ||
+        errorCodeFrom(error) !== "pagination.max_per_page_reached"
+      ) {
+        return;
       }
 
+      if (isPageSize(linkedPerPage.value)) {
+        void clearSizeFromQuery();
+      } else if (savedPerPage.value !== undefined) {
+        paginationStore.removeByKey(key);
+      }
+    },
+  );
+
+  const updatePerPage = async (newPerPage: string | number) => {
+    if (!offered(newPerPage)) {
       return;
     }
 
-    if (
-      event.action.type !== "error" ||
-      errorCodeFrom(event.action.error) !== "pagination.max_per_page_reached"
-    ) {
-      return;
-    }
+    pending.value = String(newPerPage);
 
-    if (offered(linkedPerPage.value)) {
-      void clearSizeFromQuery();
-    } else if (offered(savedPerPage.value)) {
-      paginationStore.removeByKey(key.value);
-    }
-  });
+    try {
+      if (route.query.perPage || route.query.page) {
+        await clearSizeFromQuery();
+      }
 
-  onScopeDispose(unsubscribe);
+      paginationStore.setBykey(key, newPerPage);
+    } finally {
+      pending.value = undefined;
+    }
+  };
 
   return {
     perPage,
