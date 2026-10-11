@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "AdminEngineFrame",
+};
+</script>
+
 <script lang="ts" setup>
 type Props = {
   src: string;
@@ -48,17 +54,55 @@ const fitContent = () => {
   element.style.height = `${doc.documentElement.scrollHeight}px`;
 };
 
+// Browsers refuse to read the location of a page from another origin.
+const readLocation = () => {
+  try {
+    const location = frame.value?.contentWindow?.location;
+
+    return location?.pathname === undefined ? undefined : location;
+  } catch {
+    return undefined;
+  }
+};
+
+/*
+ * Once a frame has gone to another site there is no reading where it went, so
+ * a link off the host is caught while the page holding it can still be read,
+ * and opened outside the admin instead.
+ */
+const openOffsiteLinksOutside = (doc: Document) => {
+  doc.addEventListener("click", (event) => {
+    const anchor = (event.target as Element | null)?.closest?.("a[href]");
+    if (!anchor) return;
+
+    const url = new URL(
+      (anchor as HTMLAnchorElement).href,
+      window.location.href,
+    );
+    if (!url.protocol.startsWith("http")) return;
+    if (url.origin === window.location.origin) return;
+
+    event.preventDefault();
+    window.open(url.href, "_blank", "noopener");
+  });
+};
+
 const onLoad = () => {
-  const location = frame.value?.contentWindow?.location;
+  const location = readLocation();
   if (!location) return;
 
   const href = `${location.pathname}${location.search}${location.hash}`;
 
-  // A link out of the tool -- the admin login after a session ran out, say --
-  // belongs in the window, not in a frame inside the admin.
+  /*
+   * A page out of the tool -- the admin root a lapsed session is sent to, say
+   * -- belongs in the window, not in a frame inside the admin. So does the
+   * admin app itself: when Rails turns an engine URL down it serves the app's
+   * catch-all at the same path, which would otherwise pass for the tool.
+   */
   const insideEngine =
-    location.pathname === props.src ||
-    location.pathname.startsWith(`${props.src}/`);
+    (location.pathname === props.src ||
+      location.pathname.startsWith(`${props.src}/`)) &&
+    !("ON_SUBDOMAIN" in (frame.value?.contentWindow ?? {}));
 
   if (!insideEngine) {
     window.location.assign(href);
@@ -71,11 +115,13 @@ const onLoad = () => {
     query: { ...route.query, path: path && path !== "/" ? path : undefined },
   });
 
+  const doc = frame.value?.contentDocument;
+  if (doc) openOffsiteLinksOutside(doc);
+
   resizeObserver?.disconnect();
-  const body = frame.value?.contentDocument?.body;
-  if (body) {
+  if (doc?.body) {
     resizeObserver = new ResizeObserver(fitContent);
-    resizeObserver.observe(body);
+    resizeObserver.observe(doc.body);
   }
 
   fitContent();
