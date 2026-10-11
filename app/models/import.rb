@@ -46,7 +46,20 @@ class Import < ApplicationRecord
   # before it runs, and that wait is not the job hanging.
   STUCK_AFTER = 1.hour
 
-  scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
+  # Types whose healthy runs outlast `STUCK_AFTER`. The weekly loaner sync walks
+  # every vehicle of every loaner-bearing model and takes over three hours.
+  STUCK_AFTER_BY_TYPE = {
+    "Imports::LoanersImport" => 6.hours
+  }.freeze
+
+  scope :stuck, -> {
+    started = where(aasm_state: "started")
+    default = started.where.not(type: STUCK_AFTER_BY_TYPE.keys).where(started_at: ...STUCK_AFTER.ago)
+
+    STUCK_AFTER_BY_TYPE.reduce(default) do |scope, (type, after)|
+      scope.or(started.where(type:, started_at: ...after.ago))
+    end
+  }
 
   # Only a finished run is left out: a no-op that was cancelled or failed is
   # still news to the user, and so is one that could not read every RSI page.

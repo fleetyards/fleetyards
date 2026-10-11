@@ -133,6 +133,13 @@ class ImportTest < ActiveSupport::TestCase
     assert_equal [stuck.id], Import.stuck.pluck(:id)
   end
 
+  test "the stuck scope gives a loaner sync six hours before calling it stuck" do
+    stuck = create(:import, :loaners_import, aasm_state: "started", started_at: 7.hours.ago)
+    create(:import, :loaners_import, aasm_state: "started", started_at: 3.hours.ago)
+
+    assert_equal [stuck.id], Import.stuck.pluck(:id)
+  end
+
   test "cleanup! records the timestamp and who did it" do
     admin_user = create(:admin_user)
     record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago)
