@@ -62,3 +62,8 @@
   // Pushed to the far end so the actions sit where a row's own buttons do.
   margin-left: auto;
 }
+
+.bulk-selection-bar__number {
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+}

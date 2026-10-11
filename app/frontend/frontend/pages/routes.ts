@@ -206,6 +206,7 @@ export const routes: RouteRecordRaw[] = [
       title: "notifications",
       needsAuthentication: true,
       nav: "sub",
+      mobileBack: true,
     },
   },
   {

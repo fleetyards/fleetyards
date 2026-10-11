@@ -28,6 +28,8 @@ declare module "vue-router" {
     // A fleet setting that has to be on as well, read from the route's fleet.
     fleetSetting?: "squadronsEnabled";
     hideWhenAuthenticated?: boolean;
+    // Show the header's back button on a phone, not only in an installed app.
+    mobileBack?: boolean;
     needsNoAuthentication?: boolean;
   }
 }

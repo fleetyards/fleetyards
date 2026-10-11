@@ -21,12 +21,14 @@ type Props = {
   selected?: boolean;
   selectable?: boolean;
   checked?: boolean;
+  swipeable?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   selected: false,
   selectable: false,
   checked: false,
+  swipeable: true,
 });
 
 // No emits declared, so the page's listeners fall through to the shared row.
@@ -51,6 +53,7 @@ defineExpose({ focus: () => row.value?.focus() });
     :selected="selected"
     :selectable="selectable"
     :checked="checked"
+    :swipeable="swipeable"
   >
     <template #title="{ notification: entry }">
       <span v-if="entry.occurrences > 1" class="notification-item__count">

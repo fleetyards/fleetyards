@@ -1,4 +1,5 @@
 import { useEventListener } from "@vueuse/core";
+import { hapticTick } from "@/shared/utils/Haptics";
 
 /*
  * How far a row has to travel before letting go acts on it, and how far it
@@ -22,6 +23,7 @@ export type SwipeDirection = "left" | "right";
 type UseSwipeActionsOptions = {
   target: Ref<HTMLElement | undefined> | ComputedRef<HTMLElement | undefined>;
   onSwipe: (direction: SwipeDirection) => void;
+  enabled?: MaybeRefOrGetter<boolean>;
 };
 
 const damp = (travel: number) => {
@@ -48,6 +50,7 @@ const damp = (travel: number) => {
 export const useSwipeActions = ({
   target,
   onSwipe,
+  enabled = true,
 }: UseSwipeActionsOptions) => {
   const offset = ref(0);
   const swiping = ref(false);
@@ -60,6 +63,14 @@ export const useSwipeActions = ({
   });
 
   const armed = computed(() => Math.abs(offset.value) >= SWIPE_THRESHOLD_PX);
+
+  // A tick each time the row crosses into the armed range, so the finger feels
+  // the point past which letting go acts. Crossing back out stays silent.
+  watch(armed, (isArmed) => {
+    if (isArmed && swiping.value) {
+      hapticTick();
+    }
+  });
 
   let startX = 0;
   let startY = 0;
@@ -80,7 +91,7 @@ export const useSwipeActions = ({
     // A new touch is a new gesture: a tap that starts now is meant.
     swipedAt = 0;
 
-    if (event.touches.length !== 1) {
+    if (event.touches.length !== 1 || !toValue(enabled)) {
       return;
     }
 
@@ -89,8 +100,25 @@ export const useSwipeActions = ({
     tracking = true;
   };
 
+  // A long press can turn swiping off while the finger that started it is
+  // still down; that finger must not go on to swipe.
+  watch(
+    () => toValue(enabled),
+    (isEnabled) => {
+      if (!isEnabled) {
+        reset();
+      }
+    },
+  );
+
   const onTouchMove = (event: TouchEvent) => {
     if (!tracking) {
+      return;
+    }
+
+    if (!toValue(enabled)) {
+      reset();
+
       return;
     }
 
@@ -135,6 +163,12 @@ export const useSwipeActions = ({
 
   const onTouchEnd = () => {
     if (!tracking) {
+      return;
+    }
+
+    if (!toValue(enabled)) {
+      reset();
+
       return;
     }
 

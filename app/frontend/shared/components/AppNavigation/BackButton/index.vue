@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useMediaQuery } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
@@ -33,10 +34,26 @@ const canGoBack = computed(
   () => !!route.fullPath && !!router.options.history.state.back,
 );
 
+const mobile = useMobile();
+
+// A page that opts in has a way back on a phone even in the browser, where it
+// stands in for the heading the page leaves out there. Reached directly, with
+// nothing of this app's to go back to, it leads home.
+const pageBack = computed(() => mobile.value && !!route.meta.mobileBack);
+
 const visible = computed(
   () =>
-    (displayModeWithoutToolbar.value || iosHomeScreenApp) && canGoBack.value,
+    pageBack.value ||
+    ((displayModeWithoutToolbar.value || iosHomeScreenApp) && canGoBack.value),
 );
+
+const back = () => {
+  if (canGoBack.value) {
+    router.back();
+  } else {
+    void router.push("/");
+  }
+};
 </script>
 
 <template>
@@ -46,7 +63,7 @@ const visible = computed(
     :aria-label="t('nav.back')"
     class="app-navigation-back-button"
     data-test="app-navigation-back"
-    @click="router.back()"
+    @click="back"
   >
     <i class="fa-light fa-chevron-left" />
   </Btn>

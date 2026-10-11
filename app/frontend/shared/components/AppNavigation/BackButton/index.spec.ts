@@ -26,6 +26,12 @@ const mountAfter = async (paths: string[]) => {
       { path: "/", name: "home", component: Stub },
       { path: "/ships/:slug", name: "ship", component: Stub },
       { path: "/components/:slug", name: "component", component: Stub },
+      {
+        path: "/notifications",
+        name: "notifications",
+        component: Stub,
+        meta: { mobileBack: true },
+      },
     ],
   });
 
@@ -44,9 +50,19 @@ const backButton = (
   wrapper: Awaited<ReturnType<typeof mountAfter>>["wrapper"],
 ) => wrapper.find('[data-test="app-navigation-back"]');
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
 describe("AppNavigationBackButton", () => {
   beforeEach(() => {
     installed.value = true;
+    setViewport(false);
     window.history.replaceState(null, "", "/");
   });
 
@@ -88,5 +104,44 @@ describe("AppNavigationBackButton", () => {
     await backButton(wrapper).trigger("click");
 
     expect(await arrived).toBe("/ships/carrack");
+  });
+
+  describe("on a page that opts in", () => {
+    beforeEach(() => {
+      installed.value = false;
+    });
+
+    it("appears on a phone in a browser tab", async () => {
+      setViewport(true);
+
+      const { wrapper } = await mountAfter([
+        "/ships/carrack",
+        "/notifications",
+      ]);
+
+      expect(backButton(wrapper).exists()).toBe(true);
+    });
+
+    it("stays hidden on a desktop browser tab", async () => {
+      const { wrapper } = await mountAfter([
+        "/ships/carrack",
+        "/notifications",
+      ]);
+
+      expect(backButton(wrapper).exists()).toBe(false);
+    });
+
+    it("leads home when the page was reached directly", async () => {
+      setViewport(true);
+
+      const { wrapper, router } = await mountAfter(["/notifications"]);
+      const arrived = new Promise<string>((resolve) => {
+        router.afterEach((to) => resolve(to.fullPath));
+      });
+
+      await backButton(wrapper).trigger("click");
+
+      expect(await arrived).toBe("/");
+    });
   });
 });

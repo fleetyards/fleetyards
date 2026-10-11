@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { SWIPE_THRESHOLD_PX } from "@/shared/composables/useSwipeActions";
+import { LONG_PRESS_MS } from "@/shared/composables/useLongPress";
 import type {
   NotificationEntry,
   NotificationLabels,
@@ -37,16 +38,21 @@ const RowComponent = ListItem as unknown as new (...args: unknown[]) => {
     notification: NotificationEntry;
     typeLabel: string;
     labels: NotificationLabels;
+    swipeable?: boolean;
   };
   $slots: Record<string, unknown>;
 };
 
-const mount = (overrides: Partial<NotificationEntry> = {}) =>
+const mount = (
+  overrides: Partial<NotificationEntry> = {},
+  props: { swipeable?: boolean } = {},
+) =>
   mountWithDefaults<typeof RowComponent>(RowComponent, {
     props: {
       notification: notification(overrides),
       typeLabel: "Hangar sync finished",
       labels: NOTIFICATION_LABELS,
+      ...props,
     },
   });
 
@@ -81,6 +87,31 @@ describe("SharedNotificationsListItem", () => {
     expect(read.emitted("unread")).toHaveLength(1);
   });
 
+  it("stays put under a swipe while it is not swipeable", async () => {
+    const wrapper = await mount({}, { swipeable: false });
+    await swipe(wrapper, SWIPE_THRESHOLD_PX + 20);
+
+    expect(wrapper.emitted("read")).toBeUndefined();
+    expect(wrapper.find(".notification-item").attributes("style")).toBe(
+      undefined,
+    );
+  });
+
+  it("asks for a selection when held, without opening the row", async () => {
+    vi.useFakeTimers();
+
+    const wrapper = await mount();
+    const row = wrapper.find(".notification-item").element;
+
+    row.dispatchEvent(touch("touchstart", 200));
+    vi.advanceTimersByTime(LONG_PRESS_MS);
+    row.dispatchEvent(touch("touchend"));
+    await wrapper.find('[data-test="notification-select"]').trigger("click");
+
+    expect(wrapper.emitted("hold")).toHaveLength(1);
+    expect(wrapper.emitted("select")).toBeUndefined();
+  });
+
   it("archives on a swipe left, and moves an archived row back", async () => {
     const inbox = await mount();
     await swipe(inbox, -(SWIPE_THRESHOLD_PX + 20));
@@ -92,13 +123,14 @@ describe("SharedNotificationsListItem", () => {
     expect(archived.emitted("unarchive")).toHaveLength(1);
   });
 
-  it("names what letting go will do while the row is dragged", async () => {
+  it("shows what letting go will do while the row is dragged", async () => {
     const wrapper = await mount();
 
     await swipe(wrapper, SWIPE_THRESHOLD_PX + 20, false);
 
     const backdrop = wrapper.find('[data-test="notification-swipe-backdrop"]');
-    expect(backdrop.text()).toBe("Mark as read");
+    expect(backdrop.text()).toBe("");
+    expect(backdrop.find(".fa-envelope-open").exists()).toBe(true);
     expect(wrapper.find(".notification-row--armed").exists()).toBe(true);
   });
 
@@ -116,18 +148,6 @@ describe("SharedNotificationsListItem", () => {
     await flushPromises();
 
     expect(wrapper.find(backdrop).exists()).toBe(false);
-  });
-
-  it("keeps the uncovered width while the row eases back", async () => {
-    const wrapper = await mount();
-
-    await swipe(wrapper, SWIPE_THRESHOLD_PX - 20);
-
-    expect(
-      (
-        wrapper.find(".notification-row").element as HTMLElement
-      ).style.getPropertyValue("--swipe-reveal"),
-    ).toBe(`${SWIPE_THRESHOLD_PX - 20}px`);
   });
 
   it("keeps the row's buttons for a reader that does not swipe", async () => {

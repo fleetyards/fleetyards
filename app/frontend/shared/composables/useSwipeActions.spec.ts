@@ -25,7 +25,7 @@ const touch = (type: string, clientX?: number, clientY = 0) => {
   return event;
 };
 
-const render = async () => {
+const render = async (enabled = ref(true)) => {
   const state = { offset: 0, armed: false };
   const swipes: SwipeDirection[] = [];
   const parentMoves = vi.fn();
@@ -41,6 +41,7 @@ const render = async () => {
         const swipe = useSwipeActions({
           target: row,
           onSwipe: (direction) => swipes.push(direction),
+          enabled,
         });
 
         return () => {
@@ -147,6 +148,22 @@ describe("useSwipeActions", () => {
     row.click();
 
     expect(clicks).toHaveBeenCalledOnce();
+  });
+
+  it("drops a gesture that is disabled while the finger is still down", async () => {
+    const enabled = ref(true);
+    const { state, swipes, row, release } = await render(enabled);
+
+    row.dispatchEvent(touch("touchstart", 100, 100));
+    enabled.value = false;
+    await flushPromises();
+
+    row.dispatchEvent(touch("touchmove", 100 - SWIPE_THRESHOLD_PX - 20, 100));
+    await flushPromises();
+    await release();
+
+    expect(state.offset).toBe(0);
+    expect(swipes).toEqual([]);
   });
 
   it("lets a new tap through right after a short nudge", async () => {

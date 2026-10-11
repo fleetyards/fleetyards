@@ -5,8 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTonesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -23,6 +28,8 @@ import FilterForm from "@/frontend/components/Notifications/FilterForm/index.vue
 import ListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useBulkSelection } from "@/shared/composables/useBulkSelection";
+import { useSelectionMode } from "@/shared/composables/useSelectionMode";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -182,6 +189,26 @@ const {
   payload: bulkPayload,
 } = useBulkSelection(records, () => queryParams.value.q, totalCount);
 
+const mobile = useMobile();
+
+const { selecting, start: startSelecting } = useSelectionMode(
+  selectedCount,
+  mobile,
+);
+
+const isChecked = (notification: Notification) =>
+  allMatchingSelected.value || selectedIds.value.includes(notification.id);
+
+// Holding a row picks it and turns the list into a selection, never the other
+// way round: a hold on a row already picked keeps it.
+const hold = (notification: Notification) => {
+  if (!isChecked(notification)) {
+    toggleSelection(notification.id);
+  }
+
+  startSelecting();
+};
+
 const selectedId = ref<string>();
 
 const selected = computed(() =>
@@ -226,6 +253,18 @@ const select = (notification: Notification) => {
   if (!notification.read) {
     void markRead(notification);
   }
+};
+
+// While picking, a tap picks too - opening a notification in the middle of a
+// selection would throw the reader out of it.
+const tap = (notification: Notification) => {
+  if (selecting.value) {
+    toggleSelection(notification.id);
+
+    return;
+  }
+
+  select(notification);
 };
 
 const move = (offset: number) => {
@@ -387,7 +426,9 @@ const destroySelected = () =>
 </script>
 
 <template>
-  <Heading hero>
+  <!-- Left to a screen reader on a phone, where the header's search and the
+       list's own controls are what the first screen is for. -->
+  <Heading hero class="notifications__heading">
     {{ t("headlines.notifications.index") }}
     <!-- The line is reserved whether or not the count is known yet: rendered
          only once the answer is in, the heading grows by its height the moment
@@ -408,35 +449,65 @@ const destroySelected = () =>
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn
+    <!-- On a phone the three would take a row of their own under the search,
+         so they fold into one menu beside it. A selection takes the header
+         over, and the menu goes with the search: nothing is left in this slot
+         to claim the header's gap. -->
+    <BtnDropdown
+      v-if="mobile && !selecting"
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.notifications.settings')"
-      :to="{ name: 'settings-notifications' }"
-      mobile-icon-only
+      expand-left
+      data-test="notifications-menu"
     >
-      <i class="fa-duotone fa-sliders" />
-      {{ t("actions.notifications.settings") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.notifications.readAll')"
-      mobile-icon-only
-      @click="markAllRead"
-    >
-      <i class="fa-duotone fa-check-double" />
-      {{ t("actions.notifications.readAll") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.notifications.destroyAll')"
-      :tone="BtnTonesEnum.DANGER"
-      :confirm="t('messages.confirm.notifications.destroyAll')"
-      mobile-icon-only
-      @click="destroyAll"
-    >
-      <i class="fa-duotone fa-trash" />
-      {{ t("actions.notifications.destroyAll") }}
-    </Btn>
+      <Btn :to="{ name: 'settings-notifications' }">
+        <i class="fa-duotone fa-sliders" />
+        {{ t("actions.notifications.settings") }}
+      </Btn>
+      <Btn @click="markAllRead">
+        <i class="fa-duotone fa-check-double" />
+        {{ t("actions.notifications.readAll") }}
+      </Btn>
+      <Btn
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.confirm.notifications.destroyAll')"
+        @click="destroyAll"
+      >
+        <i class="fa-duotone fa-trash" />
+        {{ t("actions.notifications.destroyAll") }}
+      </Btn>
+    </BtnDropdown>
+    <template v-else-if="!mobile">
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.notifications.settings')"
+        :to="{ name: 'settings-notifications' }"
+        mobile-icon-only
+      >
+        <i class="fa-duotone fa-sliders" />
+        {{ t("actions.notifications.settings") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.notifications.readAll')"
+        mobile-icon-only
+        @click="markAllRead"
+      >
+        <i class="fa-duotone fa-check-double" />
+        {{ t("actions.notifications.readAll") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.notifications.destroyAll')"
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.confirm.notifications.destroyAll')"
+        mobile-icon-only
+        @click="destroyAll"
+      >
+        <i class="fa-duotone fa-trash" />
+        {{ t("actions.notifications.destroyAll") }}
+      </Btn>
+    </template>
   </Teleport>
 
   <!-- `hide-empty`, because the page draws that state itself: the list's own
@@ -451,7 +522,7 @@ const destroySelected = () =>
     hide-empty
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm :hide-quicksearch="selecting" />
     </template>
     <template #actions-left>
       <BtnGroup segmented>
@@ -479,7 +550,9 @@ const destroySelected = () =>
           {{ t("labels.notifications.archive") }}
         </Btn>
       </BtnGroup>
-      <Btn :to="sortLink" route-active-class="" mobile-icon-only>
+      <!-- The sort bar under the toolbar carries the same order, and on a phone
+           the toolbar has no room to say it twice. -->
+      <Btn v-if="!mobile" :to="sortLink" route-active-class="" mobile-icon-only>
         <i
           :class="
             oldestFirst
@@ -504,6 +577,7 @@ const destroySelected = () =>
          row's left inset over from the title. -->
     <template #skeleton="{ count }">
       <BulkSelectionBar
+        v-if="!mobile"
         class="notifications__bulk"
         :selected-count="0"
         :matching-count="0"
@@ -515,7 +589,11 @@ const destroySelected = () =>
       />
 
       <div class="notifications">
-        <ListSkeleton class="notifications__list" :count="count" selectable />
+        <ListSkeleton
+          class="notifications__list"
+          :count="count"
+          :selectable="!mobile"
+        />
 
         <Detail class="notifications__detail" />
       </div>
@@ -526,69 +604,92 @@ const destroySelected = () =>
     </template>
 
     <template #default="{ records: shown, emptyVisible }">
-      <BulkSelectionBar
-        class="notifications__bulk"
-        :disabled="!shown.length"
-        :class="{ 'notifications__bulk--hidden': !!selected }"
-        :selected-count="selectedCount"
-        :matching-count="matchingCount"
-        :page-selected="pageSelected"
-        :page-partially-selected="pagePartiallySelected"
-        :can-select-all-matching="canSelectAllMatching"
-        :all-matching-selected="allMatchingSelected"
-        @toggle-page="togglePage"
-        @select-all-matching="selectAllMatching"
-        @clear="clearSelection"
-      >
-        <Btn
-          v-tooltip="t('actions.notifications.readSelected')"
-          :aria-label="t('actions.notifications.readSelected')"
-          data-test="bulk-read"
-          @click="readSelected"
+      <!-- On a phone the bar only exists while a held row has started a
+           selection, and then it stands in for the search in the header, where
+           the thumb already is. -->
+      <Teleport to="#header-left" :disabled="!selecting">
+        <div
+          v-if="!mobile || selecting"
+          class="notifications__bulk"
+          :class="{
+            'notifications__bulk--hidden': !!selected && !selecting,
+            'notifications__bulk--header navigation-header-takeover navigation-header-pinned':
+              selecting,
+          }"
         >
-          <i class="fa-duotone fa-envelope-open" />
-        </Btn>
-        <Btn
-          v-tooltip="t('actions.notifications.unreadSelected')"
-          :aria-label="t('actions.notifications.unreadSelected')"
-          data-test="bulk-unread"
-          @click="unreadSelected"
-        >
-          <i class="fa-duotone fa-envelope-dot" />
-        </Btn>
-        <Btn
-          v-if="archive"
-          v-tooltip="t('actions.notifications.unarchiveSelected')"
-          :aria-label="t('actions.notifications.unarchiveSelected')"
-          data-test="bulk-unarchive"
-          @click="unarchiveSelected"
-        >
-          <i class="fa-duotone fa-inbox-in" />
-        </Btn>
-        <Btn
-          v-else
-          v-tooltip="t('actions.notifications.archiveSelected')"
-          :aria-label="t('actions.notifications.archiveSelected')"
-          data-test="bulk-archive"
-          @click="archiveSelected"
-        >
-          <i class="fa-duotone fa-box-archive" />
-        </Btn>
-        <Btn
-          v-tooltip="t('actions.notifications.destroySelected')"
-          :aria-label="t('actions.notifications.destroySelected')"
-          :tone="BtnTonesEnum.DANGER"
-          :confirm="
-            t('messages.confirm.notifications.destroySelected', {
-              count: selectedCount,
-            })
-          "
-          data-test="bulk-destroy"
-          @click="destroySelected"
-        >
-          <i class="fa-duotone fa-trash" />
-        </Btn>
-      </BulkSelectionBar>
+          <Btn
+            v-if="selecting"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="t('bulkSelection.actions.clear')"
+            data-test="bulk-exit"
+            @click="clearSelection"
+          >
+            <i class="fa-light fa-xmark" />
+          </Btn>
+          <BulkSelectionBar
+            :disabled="!shown.length"
+            :compact="selecting"
+            :selected-count="selectedCount"
+            :matching-count="matchingCount"
+            :page-selected="pageSelected"
+            :page-partially-selected="pagePartiallySelected"
+            :can-select-all-matching="canSelectAllMatching"
+            :all-matching-selected="allMatchingSelected"
+            @toggle-page="togglePage"
+            @select-all-matching="selectAllMatching"
+            @clear="clearSelection"
+          >
+            <Btn
+              v-tooltip="t('actions.notifications.readSelected')"
+              :aria-label="t('actions.notifications.readSelected')"
+              data-test="bulk-read"
+              @click="readSelected"
+            >
+              <i class="fa-duotone fa-envelope-open" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.notifications.unreadSelected')"
+              :aria-label="t('actions.notifications.unreadSelected')"
+              data-test="bulk-unread"
+              @click="unreadSelected"
+            >
+              <i class="fa-duotone fa-envelope-dot" />
+            </Btn>
+            <Btn
+              v-if="archive"
+              v-tooltip="t('actions.notifications.unarchiveSelected')"
+              :aria-label="t('actions.notifications.unarchiveSelected')"
+              data-test="bulk-unarchive"
+              @click="unarchiveSelected"
+            >
+              <i class="fa-duotone fa-inbox-in" />
+            </Btn>
+            <Btn
+              v-else
+              v-tooltip="t('actions.notifications.archiveSelected')"
+              :aria-label="t('actions.notifications.archiveSelected')"
+              data-test="bulk-archive"
+              @click="archiveSelected"
+            >
+              <i class="fa-duotone fa-box-archive" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.notifications.destroySelected')"
+              :aria-label="t('actions.notifications.destroySelected')"
+              :tone="BtnTonesEnum.DANGER"
+              :confirm="
+                t('messages.confirm.notifications.destroySelected', {
+                  count: selectedCount,
+                })
+              "
+              data-test="bulk-destroy"
+              @click="destroySelected"
+            >
+              <i class="fa-duotone fa-trash" />
+            </Btn>
+          </BulkSelectionBar>
+        </div>
+      </Teleport>
 
       <div
         class="notifications"
@@ -610,12 +711,12 @@ const destroySelected = () =>
               :ref="registerRow(notification)"
               :notification="notification"
               :selected="notification.id === selectedId"
-              :checked="
-                allMatchingSelected || selectedIds.includes(notification.id)
-              "
-              selectable
+              :checked="isChecked(notification)"
+              :selectable="!mobile || selecting"
+              :swipeable="!selecting"
               @toggle="toggleSelection(notification.id)"
-              @select="select(notification)"
+              @select="tap(notification)"
+              @hold="hold(notification)"
               @read="readOne(notification)"
               @unread="markUnread(notification)"
               @archive="archiveOne(notification)"
@@ -647,11 +748,13 @@ const destroySelected = () =>
         />
       </div>
     </template>
+    <!-- The page size stays with the bottom paginator on a phone, so the top
+         one fits beside the filter and the tabs on a single row. -->
     <template #pagination-top>
       <Paginator
         :query-result-ref="notifications"
         :per-page="perPage"
-        :update-per-page="updatePerPage"
+        :update-per-page="mobile ? undefined : updatePerPage"
       />
     </template>
     <template #pagination-bottom>
@@ -685,7 +788,25 @@ const destroySelected = () =>
 }
 
 .notifications__bulk {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   margin-bottom: 10px;
+
+  > .bulk-selection-bar {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// In the header's search slot, which already has its insets: the bar keeps
+// only the gap to the way out in front of it.
+.notifications__bulk--header {
+  margin-bottom: 0;
+
+  > .bulk-selection-bar {
+    padding: 0;
+  }
 }
 
 // Below the two-pane breakpoint the reading pane replaces the list, and a
@@ -736,6 +857,25 @@ const destroySelected = () =>
     display: block;
     flex: 1;
     min-width: 0;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .notifications__heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  // The reading pane is a page over the list on a phone, so the list stays
+  // where it was underneath and the way back lands on the same scroll.
+  .notifications--reading .notifications__list {
+    display: flex;
   }
 }
 
