@@ -138,6 +138,7 @@
         "unown": "Remove owned mark"
       },
       "resetFilter": "Reset Filter",
+      "resetPageSize": "Reset Page Size",
       "requestPassword": "Request Password email",
       "changePassword": "Change Password",
       "updatePassword": "Update Password",

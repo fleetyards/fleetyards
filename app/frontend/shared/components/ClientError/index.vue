@@ -14,10 +14,14 @@ import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
 interface Props {
   reset?: () => void;
+  // The list refused the page size rather than a filter, so the reset clears
+  // the size and says so.
+  pageSize?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   reset: undefined,
+  pageSize: false,
 });
 
 const { t } = useI18n();
@@ -34,13 +38,20 @@ const { t } = useI18n();
       {{ t("headlines.invalidRequest") }}
     </template>
     <template #default>
-      <Text v-if="props.reset">{{ t("texts.invalidListRequest") }}</Text>
+      <Text v-if="props.reset && props.pageSize">
+        {{ t("texts.pageSizeTooLarge") }}
+      </Text>
+      <Text v-else-if="props.reset">{{ t("texts.invalidListRequest") }}</Text>
       <Text v-else>{{ t("texts.invalidRequest") }}</Text>
     </template>
     <template v-if="props.reset" #footer>
       <Btn data-test="client-error-reset" @click="props.reset">
         <i class="fa-light fa-times" />
-        {{ t("actions.resetFilter").toUpperCase() }}
+        {{
+          t(
+            props.pageSize ? "actions.resetPageSize" : "actions.resetFilter",
+          ).toUpperCase()
+        }}
       </Btn>
     </template>
   </Box>

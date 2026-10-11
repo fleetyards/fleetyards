@@ -29,7 +29,6 @@ const { emptyQuery } = vi.hoisted(() => ({
       isLoading: { value: false },
       isError: { value: false },
       isSuccess: { value: true },
-      error: { value: null },
     };
   },
 }));
@@ -55,13 +54,6 @@ vi.mock("vue-router", () => ({
 vi.mock("@tanstack/vue-query", async (importOriginal) => ({
   ...(await importOriginal<object>()),
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
-  // `usePagination` observes the list's own query; reading its key here is
-  // what would throw if that happened before the page had its params.
-  useQuery: (options: { queryKey?: { value: unknown } }) => {
-    void options.queryKey?.value;
-
-    return emptyQuery();
-  },
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({

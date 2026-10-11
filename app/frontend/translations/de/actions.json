@@ -138,6 +138,7 @@
         "unown": "Markierung entfernen"
       },
       "resetFilter": "Filter zurücksetzen",
+      "resetPageSize": "Seitengröße zurücksetzen",
       "requestPassword": "Passwort-E-Mail anfordern",
       "changePassword": "Passwort ändern",
       "updatePassword": "Passwort aktualisieren",

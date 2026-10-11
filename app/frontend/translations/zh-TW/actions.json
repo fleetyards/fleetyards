@@ -138,6 +138,7 @@
         "unown": "取消已擁有標記"
       },
       "resetFilter": "重置篩選器",
+      "resetPageSize": "重置每頁數量",
       "requestPassword": "請求密碼郵件",
       "changePassword": "更改密碼",
       "updatePassword": "更新密碼",
