@@ -129,7 +129,7 @@ class HangarSync < HangarImporter
   private def sync_outcome
     return "synced" if @ships.any? || @components.any? || @upgrades.any?
 
-    pledge_kinds = ::HangarPledgeItems::Sync.kinds_for(@data).compact
+    pledge_kinds = item_kinds.compact
     return "nothing_to_sync" if pledge_kinds.empty?
 
     pledge_kinds.intersect?(pledge_item_kinds) ? "synced" : "only_skipped_items"
@@ -677,7 +677,14 @@ class HangarSync < HangarImporter
   private def sync_pledge_items(user)
     return {} if @cancelled || @import&.cancel_requested?
 
-    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, keep_unlisted: @import&.unread_pages&.any?).run
+    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, item_kinds:,
+      keep_unlisted: @import&.unread_pages&.any?).run
+  end
+
+  # Sorting the extras reads the whole equipment catalogue, so it happens once
+  # a run.
+  private def item_kinds
+    @item_kinds ||= ::HangarPledgeItems::Sync.kinds_for(@data)
   end
 
   private def pledge_item_kinds

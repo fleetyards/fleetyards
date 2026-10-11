@@ -71,11 +71,13 @@ module HangarPledgeItems
     #
     # `keep_unlisted` is for a pledge list read only in part: an item it could
     # not read is no statement that the pledge is gone either.
-    def initialize(user, items, kinds: HangarPledgeItem::KINDS, keep_unlisted: false)
+    #
+    # `item_kinds` is `kinds_for(items)`, for a caller that already has it.
+    def initialize(user, items, kinds: HangarPledgeItem::KINDS, keep_unlisted: false, item_kinds: nil)
       @user = user
       @kinds = kinds
       @keep_unlisted = keep_unlisted
-      @items = items.zip(self.class.kinds_for(items))
+      @items = items.zip(item_kinds || self.class.kinds_for(items))
         .select { |_item, kind| kinds.include?(kind) }
         .map { |item, kind| item.merge(kind:) }
     end

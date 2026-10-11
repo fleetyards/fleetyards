@@ -582,6 +582,18 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_includes body, "- FPS equipment synced: **3**"
     end
 
+    test "sorts the catalogue only once a run" do
+      input = @input + [{"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}]
+
+      queries = []
+      callback = ->(*, payload) { queries << payload[:sql] if payload[:sql].include?('FROM "equipment"') }
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") do
+        ::HangarSync.new(input).run(@user.id)
+      end
+
+      assert_equal 1, queries.size
+    end
+
     test "leaves the stored equipment alone when the run does not sync it" do
       input = @input + [{"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"}]
       ::HangarSync.new(input).run(@user.id)
