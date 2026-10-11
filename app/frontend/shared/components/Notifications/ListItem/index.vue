@@ -93,11 +93,18 @@ const { offset, swiping, direction, armed } = useSwipeActions({
   enabled: () => props.swipeable,
 });
 
-// How far the colour has flooded out from the icon: from the first pixel the
-// finger moves, full at the point past which letting go acts.
-const floodProgress = computed(() =>
-  Math.min(Math.abs(offset.value) / SWIPE_THRESHOLD_PX, 1),
-);
+// How far the colour has flooded out from the icon. Sized against what the
+// row has uncovered, not against the row: only that strip is visible, and a
+// circle sized against the whole row outgrew it at once, so the strip read as
+// blue from the first pixel. Grown by how near letting go is to acting, it
+// starts as a dot at the icon and covers the strip at the threshold - the
+// strip is then as wide as the threshold, and a circle that wide around the
+// icon reaches its corners even on a two-line row.
+const floodRadius = computed(() => {
+  const travel = Math.abs(offset.value);
+
+  return travel * Math.min(travel / SWIPE_THRESHOLD_PX, 1);
+});
 
 // Holding a row is how a phone, which hides the checkboxes, starts picking.
 useLongPress({ target: item, onLongPress: () => emit("hold") });
@@ -158,7 +165,7 @@ defineExpose({ focus: () => select.value?.focus() });
       'notification-row--armed': armed,
       'notification-row--swiping': swiping,
     }"
-    :style="{ '--swipe-flood': floodProgress }"
+    :style="{ '--swipe-flood-radius': `${floodRadius}px` }"
   >
     <div
       v-if="shownDirection"
@@ -277,9 +284,10 @@ $swipe-backdrop-inset: 18px;
   justify-content: flex-end;
 }
 
-// The colour floods out from the icon as the finger moves, filling the row at
-// the point past which letting go acts; there the icon grows too. It follows
-// the finger without easing, and drains back once the finger lifts.
+// The colour floods out from the icon as the finger moves, covering what the
+// row has uncovered at the point past which letting go acts; there the icon
+// grows too. It follows the finger without easing, and drains back with the
+// row once the finger lifts.
 .notification-row__backdrop::before {
   content: "";
   position: absolute;
@@ -287,15 +295,14 @@ $swipe-backdrop-inset: 18px;
   background: var(--color-primary, #{$primary});
   border-radius: inherit;
   clip-path: circle(
-    calc(var(--swipe-flood, 0) * 150%) at $swipe-backdrop-inset 50%
+    var(--swipe-flood-radius, 0px) at $swipe-backdrop-inset 50%
   );
   transition: clip-path 0.25s ease-out;
 }
 
 .notification-row--left .notification-row__backdrop::before {
   clip-path: circle(
-    calc(var(--swipe-flood, 0) * 150%) at calc(100% - #{$swipe-backdrop-inset})
-      50%
+    var(--swipe-flood-radius, 0px) at calc(100% - #{$swipe-backdrop-inset}) 50%
   );
 }
 
