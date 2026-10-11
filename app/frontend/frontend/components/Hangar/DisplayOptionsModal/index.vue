@@ -217,12 +217,8 @@ const displayAsList = () => {
           <legend>
             <h3>{{ t("labels.models.extraColumns") }}:</h3>
           </legend>
-          <div class="row">
-            <div
-              v-for="option in imageColumnOptions"
-              :key="option"
-              class="col-12 col-md-6"
-            >
+          <div class="grid grid-cols-2 gap-x-4 sm:grid-cols-3">
+            <div v-for="option in imageColumnOptions" :key="option">
               <FormCheckbox
                 v-model="tableViewImageCols"
                 :checkbox-value="option"
@@ -230,11 +226,7 @@ const displayAsList = () => {
                 :label="t('labels.hangarTable.columns.' + option)"
               />
             </div>
-            <div
-              v-for="option in columnOptions"
-              :key="option"
-              class="col-12 col-md-6"
-            >
+            <div v-for="option in columnOptions" :key="option">
               <FormCheckbox
                 v-model="tableViewCols"
                 :checkbox-value="option"
