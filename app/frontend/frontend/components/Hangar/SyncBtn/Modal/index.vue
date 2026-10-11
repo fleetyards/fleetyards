@@ -105,6 +105,9 @@ const skippedItems = computed(() => [
   ...(hangarStore.syncHangarFlair
     ? []
     : [t("labels.syncExtension.pledgeItems.hangarFlair")]),
+  ...(hangarStore.syncEquipment
+    ? []
+    : [t("labels.syncExtension.pledgeItems.equipment")]),
 ]);
 
 // Only once Start could be pressed: a check mid-run would spend an RSI request
@@ -216,6 +219,7 @@ const start = () => {
     addBundledVehicles: hangarStore.syncAddBundledVehicles,
     syncPaints: hangarStore.syncPaints,
     syncHangarFlair: hangarStore.syncHangarFlair,
+    syncEquipment: hangarStore.syncEquipment,
     unmatchedVehiclesAction: hangarStore.syncUnmatchedVehiclesAction,
     unmatchedHangarGroupId: filesUnmatchedIntoGroup.value
       ? hangarStore.syncUnmatchedHangarGroupId
@@ -267,6 +271,14 @@ const refreshPage = async () => {
             autosaved
             :label="t('labels.syncExtension.syncHangarFlair')"
             :info="t('labels.syncExtension.syncHangarFlairHint')"
+            no-placeholder
+          />
+          <FormToggle
+            v-model="hangarStore.syncEquipment"
+            name="syncEquipment"
+            autosaved
+            :label="t('labels.syncExtension.syncEquipment')"
+            :info="t('labels.syncExtension.syncEquipmentHint')"
             no-placeholder
           />
           <BaseSelect
@@ -358,6 +370,7 @@ const refreshPage = async () => {
           :show-support-hint="showSupportHint"
           :sync-paints="hangarStore.syncPaints"
           :sync-hangar-flair="hangarStore.syncHangarFlair"
+          :sync-equipment="hangarStore.syncEquipment"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>

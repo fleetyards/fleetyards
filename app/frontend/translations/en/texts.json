@@ -294,6 +294,9 @@
       "hangarFlair": {
         "intro": "The hangar flair in your RSI hangar, as of your last hangar sync. Syncing reads your RSI hangar through the Fleetyards Sync Extension."
       },
+      "hangarEquipment": {
+        "intro": "The FPS gear in your RSI hangar, as of your last hangar sync. Syncing reads your RSI hangar through the Fleetyards Sync Extension."
+      },
       "hangarPaints": {
         "intro": "The paints in your RSI hangar, as of your last hangar sync. Syncing reads your RSI hangar through the Fleetyards Sync Extension."
       },

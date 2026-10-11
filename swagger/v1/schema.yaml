@@ -10430,6 +10430,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/equipment":
+    get:
+      summary: Hangar Equipment
+      tags:
+      - Hangar
+      operationId: hangarEquipment
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/export":
     get:
       summary: Export your personal Hangar
@@ -23030,6 +23074,7 @@ components:
       - shirt
       - jacket
       - backpack
+      - eyewear
       x-enumNames:
       - UNDERSUIT
       - ARMS
@@ -23043,6 +23088,7 @@ components:
       - SHIRT
       - JACKET
       - BACKPACK
+      - EYEWEAR
       title: EquipmentSlotEnum
     EquipmentSortingEnum:
       type: string
@@ -29871,9 +29917,11 @@ components:
       enum:
       - paint
       - flair
+      - equipment
       x-enumNames:
       - PAINT
       - FLAIR
+      - EQUIPMENT
       title: HangarPledgeItemKindEnum
     HangarPledgeItemQuery:
       type: object
@@ -30183,6 +30231,11 @@ components:
             type: string
             format: uuid
         syncedHangarFlair:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedEquipment:
           type: array
           items:
             type: string
@@ -36665,12 +36718,16 @@ components:
       - upgrade
       - skin
       - flair
+      - equipment
+      - extra
       x-enumNames:
       - SHIP
       - COMPONENT
       - UPGRADE
       - SKIN
       - FLAIR
+      - EQUIPMENT
+      - EXTRA
       title: RsiHangarItemKindEnum
     RsiHangarUnreadPageInput:
       type: object
@@ -37622,6 +37679,9 @@ components:
           type: boolean
           default: false
         syncHangarFlair:
+          type: boolean
+          default: false
+        syncEquipment:
           type: boolean
           default: false
         unmatchedVehiclesAction:

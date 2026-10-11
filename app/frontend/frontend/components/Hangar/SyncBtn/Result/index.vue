@@ -23,6 +23,7 @@ type Props = {
   showSupportHint?: boolean;
   syncPaints?: boolean;
   syncHangarFlair?: boolean;
+  syncEquipment?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   showSupportHint: false,
   syncPaints: true,
   syncHangarFlair: true,
+  syncEquipment: true,
 });
 
 defineEmits<{
@@ -41,7 +43,15 @@ const { t } = useI18n();
 
 const items = computed(() =>
   props.pledges.filter((pledge) =>
-    ["ship", "component", "upgrade", "skin", "flair"].includes(pledge.type),
+    [
+      "ship",
+      "component",
+      "upgrade",
+      "skin",
+      "flair",
+      "equipment",
+      "extra",
+    ].includes(pledge.type),
   ),
 );
 
@@ -70,6 +80,11 @@ const paints = computed(() => pledgeRows("skin"));
 
 const hangarFlair = computed(() => pledgeRows("flair"));
 
+const equipment = computed(() => pledgeRows("equipment"));
+
+// Sorted into flair or equipment only once the server stores them.
+const extras = computed(() => pledgeRows("extra"));
+
 const importedVehicles = computed(() => props.result?.importedVehicles || []);
 const foundVehicles = computed(() => props.result?.foundVehicles || []);
 const movedVehiclesToWanted = computed(
@@ -91,6 +106,7 @@ const importedUpgrades = computed(() => props.result?.importedUpgrades || []);
 const foundUpgrades = computed(() => props.result?.foundUpgrades || []);
 const syncedPaints = computed(() => props.result?.syncedPaints || []);
 const syncedHangarFlair = computed(() => props.result?.syncedHangarFlair || []);
+const syncedEquipment = computed(() => props.result?.syncedEquipment || []);
 const missingUpgrades = computed(() => props.result?.missingUpgrades || []);
 const missingUpgradeVehicles = computed(
   () => props.result?.missingUpgradeVehicles || [],
@@ -223,6 +239,27 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-5 text-right">{{ hangarFlair.size }}</dd>
             </template>
+            <template v-if="equipment.size">
+              <dt
+                class="col-sm-7"
+                :data-test="syncEquipment ? undefined : 'equipment-not-synced'"
+              >
+                {{
+                  t(
+                    syncEquipment
+                      ? "labels.syncExtension.pledgeItems.equipment"
+                      : "labels.syncExtension.pledgeItems.equipmentNotSynced",
+                  )
+                }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ equipment.size }}</dd>
+            </template>
+            <template v-if="extras.size">
+              <dt class="col-sm-7">
+                {{ t("labels.syncExtension.pledgeItems.extras") }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ extras.size }}</dd>
+            </template>
           </dl>
         </div>
         <div v-if="step.name === 'submitData'" class="process-steps-item-info">
@@ -321,6 +358,14 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-4 text-right">
                 {{ syncedHangarFlair.length }}
+              </dd>
+            </template>
+            <template v-if="syncedEquipment.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.syncedEquipment") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ syncedEquipment.length }}
               </dd>
             </template>
           </dl>

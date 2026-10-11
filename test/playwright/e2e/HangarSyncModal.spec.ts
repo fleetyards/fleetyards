@@ -53,11 +53,14 @@ test.describe("Hangar sync modal", () => {
     await expect(input(page)).toBeChecked();
   });
 
-  test("syncs paints and hangar flair by default", async ({ page }) => {
+  test("syncs paints, hangar flair and equipment by default", async ({
+    page,
+  }) => {
     await openStartScreen(page);
 
     await expect(page.getByTestId("toggle-syncPaints")).toBeChecked();
     await expect(page.getByTestId("toggle-syncHangarFlair")).toBeChecked();
+    await expect(page.getByTestId("toggle-syncEquipment")).toBeChecked();
   });
 
   test("keeps the bundled choice for the next sync", async ({ page }) => {

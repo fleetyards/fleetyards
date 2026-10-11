@@ -185,8 +185,40 @@ describe("RSIHangarParser.extractPage", () => {
       pledges: [
         { id: "101", name: "CSV-SM", type: "ship" },
         { id: "102", name: "Cutter", type: "ship" },
+        { id: "102", name: "Self-Land Hangar", type: "extra" },
       ],
     });
+  });
+
+  it("skips a ship upgrade RSI labels as one", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          item("Upgrade", "Upgrade - Merchantman To Hull E"),
+          "Upgrade - Merchantman to Hull E Warbond Edition",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({ status: RsiPageStatus.PAGE, pledges: [] });
+    expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
+  it("reads FPS equipment", () => {
+    const page = extract(
+      pledgesPage(
+        pledge("101", item("FPS Equipment", "Arrowhead Sniper Rifle")),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        { id: "101", name: "Arrowhead Sniper Rifle", type: "equipment" },
+      ],
+    });
+    expect(page).not.toHaveProperty("unread", expect.anything());
   });
 
   it("does not read a page where a ship lost its kind", () => {
@@ -561,17 +593,22 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("does not count a pledge's text-only extras as its items", () => {
+  it("reads what a pledge also contains as extras, and counts them as its items", () => {
     const page = extract(
       pledgesPage(
         pledge(
           "101",
-          `<div class="with-images">${item("Skin", "Cutlass - Akuma Paint")}</div><div class="without-images"><div class="item"><div class="title">Digital Wallpaper</div></div></div>`,
+          `<div class="with-images">${item("Skin", "Buccaneer - Redline Paint")}</div><div class="without-images"><div class="item"><div class="title"> Gallant ‘Redline’ Rifle </div></div></div>`,
         ),
       ),
     );
 
-    expect(page).toMatchObject({ pledges: [{ pledgeItemCount: 1 }] });
+    expect(page).toMatchObject({
+      pledges: [
+        { name: "Buccaneer - Redline Paint", type: "skin", pledgeItemCount: 2 },
+        { name: "Gallant ‘Redline’ Rifle", type: "extra", pledgeItemCount: 2 },
+      ],
+    });
   });
 
   it("counts an item RSI lists without an image when it has a kind", () => {

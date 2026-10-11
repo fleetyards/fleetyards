@@ -37,6 +37,16 @@ const route = useRoute();
       {{ t("nav.hangar.flair") }}
     </Btn>
     <Btn
+      :to="{ name: 'hangar-equipment' }"
+      :active="route.name === 'hangar-equipment'"
+      route-active-class=""
+      mobile-icon-only
+      data-test="pledge-items-switch-equipment"
+    >
+      <i class="fa-light fa-shirt" />
+      {{ t("nav.hangar.equipment") }}
+    </Btn>
+    <Btn
       :to="{ name: 'hangar-buybacks' }"
       :active="route.name === 'hangar-buybacks'"
       route-active-class=""

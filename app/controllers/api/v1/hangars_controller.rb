@@ -135,6 +135,7 @@ module Api
           add_bundled_vehicles: add_bundled_vehicles?,
           sync_paints: sync_pledge_items?(:sync_paints),
           sync_hangar_flair: sync_pledge_items?(:sync_hangar_flair),
+          sync_equipment: sync_pledge_items?(:sync_equipment),
           unmatched_vehicles_action: unmatched_vehicles_action,
           unmatched_hangar_group_id: unmatched_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } },
@@ -223,7 +224,8 @@ module Api
 
       private def sync_params
         @sync_params ||= params.permit(
-          :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :unmatched_vehicles_action,
+          :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :sync_equipment,
+          :unmatched_vehicles_action,
           :unmatched_hangar_group_id, :extension_version,
           items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable],
           unread_pages: [:check, :page_number, details: [], markup: []]

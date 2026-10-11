@@ -128,6 +128,42 @@ describe("HangarSyncResult", () => {
     ).toBe(true);
   });
 
+  it("counts FPS equipment, and the extras the server sorts on storing", async () => {
+    const wrapper = await mountWithDefaults(HangarSyncResult, {
+      props: {
+        processSteps: [{ name: "fetchHangar", status: "success" }],
+        currentPage: 1,
+        pledges: [
+          {
+            id: "1",
+            name: "Arrowhead Sniper Rifle",
+            type: RsiHangarItemKindEnum.EQUIPMENT,
+          },
+          {
+            id: "2",
+            name: "Self-Land Hangar",
+            type: RsiHangarItemKindEnum.EXTRA,
+          },
+          {
+            id: "2",
+            name: "Gallant ‘Redline’ Rifle",
+            type: RsiHangarItemKindEnum.EXTRA,
+          },
+        ],
+        finished: false,
+        finishedWithErrors: false,
+        syncEquipment: false,
+      },
+    });
+
+    const text = wrapper.text();
+    expect(text).toContain("FPS Gear (not synced):");
+    expect(text).toContain("Other Items (sorted into flair and FPS gear):");
+    expect(wrapper.find("[data-test='equipment-not-synced'] + dd").text()).toBe(
+      "1",
+    );
+  });
+
   it("says when the sync could not read every item and left unmatched ships alone", async () => {
     const result: Result = {
       importedVehicles: [],

@@ -2536,6 +2536,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Décorations de hangar",
+        "equipment": "Équipement FPS",
         "createdOn": "Créé",
         "meltable": "Fondable",
         "withValue": "Avec valeur de fonte",
@@ -2621,6 +2622,8 @@
         "syncPaintsHint": "Remplace vos peintures par celles de votre hangar RSI. Désactivé, les peintures enregistrées restent telles quelles.",
         "syncHangarFlair": "Synchroniser les décorations de hangar",
         "syncHangarFlairHint": "Remplace vos décorations de hangar par celles de votre hangar RSI. Désactivé, les décorations enregistrées restent telles quelles.",
+        "syncEquipment": "Synchroniser l'équipement FPS",
+        "syncEquipmentHint": "Remplace votre équipement FPS par celui de votre hangar RSI. Désactivé, l'équipement enregistré reste tel quel.",
         "settings": "Paramètres",
         "unmatchedVehiclesAction": "Vaisseaux absents de votre hangar RSI",
         "unmatchedVehiclesActionHint": "Ce qu'il advient des vaisseaux présents ici que la synchronisation ne trouve pas dans votre liste de pledges RSI.",
@@ -2653,7 +2656,10 @@
           "paints": "Peintures",
           "hangarFlair": "Décorations de hangar",
           "paintsNotSynced": "Peintures (non synchronisées)",
-          "hangarFlairNotSynced": "Décorations de hangar (non synchronisées)"
+          "hangarFlairNotSynced": "Décorations de hangar (non synchronisées)",
+          "equipment": "Équipement FPS",
+          "equipmentNotSynced": "Équipement FPS (non synchronisé)",
+          "extras": "Autres objets (répartis entre décorations et équipement FPS)"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",
@@ -2671,6 +2677,7 @@
           "foundUpgrades": "Améliorations trouvées",
           "syncedPaints": "Peintures synchronisées",
           "syncedHangarFlair": "Décorations de hangar synchronisées",
+          "syncedEquipment": "Équipement FPS synchronisé",
           "missingUpgrades": "Améliorations non trouvées",
           "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations"
         },

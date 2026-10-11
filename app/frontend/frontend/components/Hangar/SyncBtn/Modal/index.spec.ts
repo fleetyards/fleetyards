@@ -521,6 +521,13 @@ describe("HangarSyncModal", () => {
       "labels.syncExtension.pledgeItems.hangarFlair",
     ]);
 
+    hangarStore.syncEquipment = false;
+    await flushPromises();
+    expect(skippedItems()).toEqual([
+      "labels.syncExtension.pledgeItems.hangarFlair",
+      "labels.syncExtension.pledgeItems.equipment",
+    ]);
+
     await wrapper.find("[data-test='open-sync-settings']").trigger("click");
     expect(wrapper.find("[data-test='sync-settings']").exists()).toBe(true);
   });
@@ -648,10 +655,11 @@ describe("HangarSyncModal", () => {
     expect(wrapper.find("[data-test='recheck-sync']").exists()).toBe(true);
   });
 
-  it("passes the paint and flair choices on to the sync", async () => {
+  it("passes the paint, flair and equipment choices on to the sync", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
     hangarStore.syncPaints = false;
+    hangarStore.syncEquipment = false;
     await flushPromises();
 
     await submitHangar(wrapper);
@@ -660,6 +668,7 @@ describe("HangarSyncModal", () => {
       data: expect.objectContaining({
         syncPaints: false,
         syncHangarFlair: true,
+        syncEquipment: false,
       }),
     });
   });

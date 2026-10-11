@@ -3,7 +3,7 @@ class HangarSync < HangarImporter
 
   attr_accessor :data, :ships, :components, :upgrades
 
-  ITEM_TYPES = %w[ship component upgrade skin flair].freeze
+  ITEM_TYPES = %w[ship component upgrade skin flair equipment extra].freeze
 
   OUTCOMES = %w[synced nothing_to_sync only_skipped_items].freeze
 
@@ -27,6 +27,7 @@ class HangarSync < HangarImporter
     found_upgrades
     synced_paints
     synced_hangar_flair
+    synced_equipment
   ].freeze
 
   WARNING_KEYS = %i[
@@ -128,7 +129,7 @@ class HangarSync < HangarImporter
   private def sync_outcome
     return "synced" if @ships.any? || @components.any? || @upgrades.any?
 
-    pledge_kinds = @data.filter_map { |item| ::HangarPledgeItems::Sync.kind_for(item) }
+    pledge_kinds = item_kinds.compact
     return "nothing_to_sync" if pledge_kinds.empty?
 
     pledge_kinds.intersect?(pledge_item_kinds) ? "synced" : "only_skipped_items"
@@ -165,7 +166,8 @@ class HangarSync < HangarImporter
       missing_upgrades:,
       missing_upgrade_vehicles:,
       synced_paints: pledge_items.fetch("paint", []),
-      synced_hangar_flair: pledge_items.fetch("flair", [])
+      synced_hangar_flair: pledge_items.fetch("flair", []),
+      synced_equipment: pledge_items.fetch("equipment", [])
     }
   end
 
@@ -670,18 +672,26 @@ class HangarSync < HangarImporter
     TaskForce.insert_all(rows) if rows.any?
   end
 
-  # The paints and flair are replaced as a whole, so a run stopped part way
+  # The paints, flair and equipment are replaced as a whole, so a run stopped part way
   # leaves the stored ones alone rather than replacing them with a partial list.
   private def sync_pledge_items(user)
     return {} if @cancelled || @import&.cancel_requested?
 
-    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, keep_unlisted: @import&.unread_pages&.any?).run
+    ::HangarPledgeItems::Sync.new(user, @data, kinds: pledge_item_kinds, item_kinds:,
+      keep_unlisted: @import&.unread_pages&.any?).run
+  end
+
+  # Sorting the extras reads the whole equipment catalogue, so it happens once
+  # a run.
+  private def item_kinds
+    @item_kinds ||= ::HangarPledgeItems::Sync.kinds_for(@data)
   end
 
   private def pledge_item_kinds
     kinds = []
     kinds << "paint" if @import.nil? || @import.sync_paints?
     kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
+    kinds << "equipment" if @import.nil? || @import.sync_equipment?
     kinds
   end
 

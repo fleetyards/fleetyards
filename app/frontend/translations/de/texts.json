@@ -294,6 +294,9 @@
       "hangarFlair": {
         "intro": "Das Hangar-Flair in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
       },
+      "hangarEquipment": {
+        "intro": "Die FPS-Ausrüstung in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
+      },
       "hangarPaints": {
         "intro": "Die Lackierungen in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
       },

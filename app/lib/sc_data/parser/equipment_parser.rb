@@ -14,8 +14,17 @@ module ScData
         entities/scitem/characters/human/armor
         entities/scitem/characters/human/clothing
         entities/scitem/characters/human/starwear
+        entities/scitem/characters/human/head/npc/eyes/accessories
         entities/scitem/consumables
       ].freeze
+
+      # Folders holding a few pieces of gear among props, read only for those.
+      # The game files the flares with the flair and calls them grenades, and
+      # the tool cases are "Misc", so each takes its type from here.
+      PICKED_RECORDS = {
+        "entities/scitem/flair/carryables" => [/_glowstick_/, "tool", "flare"],
+        "entities/scitem/carryables/2h" => [/_container_anim_(medgun|(grin_)?multitool)_/, "tool", "tool_case"]
+      }.freeze
 
       # AttachDef Type is the game's own split between a weapon and the things
       # that bolt onto one. Magazines sit under WeaponAttachment there, which is
@@ -63,7 +72,8 @@ module ScData
         "Char_Clothing_Feet" => ["clothing", "footwear"],
         "Char_Clothing_Hat" => ["clothing", "hat"],
         "Char_Clothing_Hands" => ["clothing", "gloves"],
-        "Char_Clothing_Backpack" => ["clothing", "backpack"]
+        "Char_Clothing_Backpack" => ["clothing", "backpack"],
+        "Char_Accessory_Eyes" => ["clothing", "eyewear"]
       }.freeze
 
       # Consumables split by SubType rather than by Type: the tree writes both
@@ -166,6 +176,7 @@ module ScData
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
         worn_type, slot = CHAR_TYPES[attach_def["Type"]]
+        picked_type, picked_item_type = item[:types]
         carried_type, carried_item_type = consumable_types(attach_def, key)
 
         {
@@ -173,11 +184,12 @@ module ScData
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: picked_type || worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
           slot:,
           # The description header is written by hand and says "Assault Rifle"
-          # where the record key only says "rifle", so it wins where it exists.
-          item_type: described[:item_type] || carried_item_type || item_type(segments),
+          # where the record key only says "rifle", so it wins where it exists --
+          # bar a picked record, whose header would call a flare a grenade.
+          item_type: picked_item_type || described[:item_type] || carried_item_type || item_type(segments),
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
@@ -328,15 +340,19 @@ module ScData
       end
 
       private def load_equipment_data
-        SOURCE_PATHS.flat_map do |path|
-          Dir.glob("#{import_path}/#{path}/**/*.xml").filter_map do |file|
-            data = Hash.from_xml(File.read(file))
+        picked = PICKED_RECORDS.flat_map do |path, (pattern, *types)|
+          load_records(path).select { |item| pattern.match?(item[:key]) }.map { |item| item.merge(types:) }
+        end
 
-            {
-              key: File.basename(file, ".xml"),
-              values: data.values.first
-            }
-          end
+        SOURCE_PATHS.flat_map { |path| load_records(path) } + picked
+      end
+
+      private def load_records(path)
+        Dir.glob("#{import_path}/#{path}/**/*.xml").map do |file|
+          {
+            key: File.basename(file, ".xml"),
+            values: Hash.from_xml(File.read(file)).values.first
+          }
         end
       end
     end

@@ -557,6 +557,76 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
     end
 
+    test "stores FPS equipment, and sorts the items RSI lists without a kind or as the wrong one" do
+      create(:equipment, name: "Arrowhead \"Pathfinder\" Sniper Rifle")
+      create(:equipment, name: "Njakte Knife")
+      create(:equipment, name: "Tailwind Flight Helmet Drake")
+      create(:equipment, name: "Skullcap Helmet")
+      create(:equipment, name: "Poster")
+      input = @input + [
+        {"id" => "00064540", "name" => "Klaus & Werner Arrowhead 'Pathfinder' Snipe...", "type" => "equipment"},
+        {"id" => "00064540", "name" => "Enjakte Knife", "type" => "equipment"},
+        {"id" => "00064540", "name" => "Enjakte Kni...", "type" => "equipment"},
+        {"id" => "00064541", "name" => "RSI Constellation Mk V Coin", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Luminalia Mug", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
+        {"id" => "00064541", "name" => "Doomsday Skullcap Helmet", "type" => "extra"},
+        {"id" => "00064541", "name" => "600i Explorer - 2953 Best In Show Poster", "type" => "extra"},
+        {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"},
+        {"id" => "00064541", "name" => "Galaxy - Starwalker Paint", "type" => "extra"}
+      ]
+
+      result = ::HangarSync.new(input).run(@user.id)
+
+      assert_equal ["Doomsday Skullcap Helmet", "Enjakte Kni...", "Enjakte Knife", "Klaus & Werner Arrowhead 'Pathfinder' Snipe...",
+        "Tailwind ‘Drake’ Helmet"],
+        @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
+      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Luminalia Mug", "RSI Constellation Mk V Coin",
+        "Self-Land Hangar"],
+        @user.hangar_pledge_items.flair.where(rsi_pledge_id: "00064541").order(:name).pluck(:name)
+      assert_equal ["Galaxy - Starwalker Paint"],
+        @user.hangar_pledge_items.paints.where(rsi_pledge_id: "00064541").pluck(:name)
+      assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+      assert_includes body, "- FPS equipment synced: **5**"
+    end
+
+    test "matches gear RSI names differently from the game" do
+      create(:equipment, name: "The Hill Horror Helmet")
+      create(:equipment, name: "Second Tevarin War Service Trousers")
+      input = @input + [
+        {"id" => "00064541", "name" => "Scarecrow Helmet", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Navy Surplus Second Tevarin War Service Pants", "type" => "equipment"}
+      ]
+
+      ::HangarSync.new(input).run(@user.id)
+
+      assert_equal ["Navy Surplus Second Tevarin War Service Pants", "Scarecrow Helmet"],
+        @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
+    end
+
+    test "sorts the catalogue only once a run" do
+      input = @input + [{"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}]
+
+      catalogue = ::HangarPledgeItems::Sync::EquipmentCatalogue.new
+      ::HangarPledgeItems::Sync::EquipmentCatalogue.expects(:new).once.returns(catalogue)
+
+      ::HangarSync.new(input).run(@user.id)
+    end
+
+    test "leaves the stored equipment alone when the run does not sync it" do
+      create(:equipment, name: "Arrowhead Sniper Rifle")
+      input = @input + [{"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"}]
+      ::HangarSync.new(input).run(@user.id)
+
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, sync_equipment: false)
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert_empty result[:synced_equipment]
+      assert @user.hangar_pledge_items.equipment.exists?(name: "Arrowhead Sniper Rifle")
+    end
+
     test "a cancelled run leaves the stored paints and flair alone" do
       ::HangarSync.new(@input).run(@user.id)
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: [])

@@ -2300,3 +2300,5 @@ GET /wishlist removed the optional property `items/items/model/crew/max` from th
 GET /wishlist removed the optional property `items/items/model/crew/maxLabel` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/model/crew/min` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/model/crew/minLabel` from the response with the `200` status
+GET /hangar/flair added the new `equipment` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/paints added the new `equipment` enum value to the `items/items/kind` response property for the response status `200`

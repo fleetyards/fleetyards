@@ -26,7 +26,7 @@ module ScData
       test "every parsed item carries a family the model knows" do
         assert_empty parsed.values.reject { |item| item[:equipment_type].present? }.map { |item| item[:key] }
 
-        assert_equal %w[armor clothing hacking_tool medical undersuit weapon weapon_attachment],
+        assert_equal %w[armor clothing hacking_tool medical tool undersuit weapon weapon_attachment],
           parsed.values.filter_map { |item| item[:equipment_type] }.uniq.sort
       end
 

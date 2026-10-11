@@ -294,6 +294,9 @@
       "hangarFlair": {
         "intro": "La decoración de hangar de tu hangar de RSI, según tu última sincronización del hangar. La sincronización lee tu hangar de RSI mediante la extensión Fleetyards Sync."
       },
+      "hangarEquipment": {
+        "intro": "El equipo FPS de tu hangar de RSI, según tu última sincronización del hangar. La sincronización lee tu hangar de RSI mediante la extensión Fleetyards Sync."
+      },
       "hangarPaints": {
         "intro": "Las pinturas de tu hangar de RSI, según tu última sincronización del hangar. La sincronización lee tu hangar de RSI mediante la extensión Fleetyards Sync."
       },

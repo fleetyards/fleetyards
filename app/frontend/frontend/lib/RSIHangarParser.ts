@@ -34,12 +34,14 @@ const READ_KINDS = new Map<string, RSIHangarItemKind>([
   ["Component", "component"],
   ["Skin", "skin"],
   ["Hangar decoration", "flair"],
+  ["FPS Equipment", "equipment"],
 ]);
 
 // Kinds that never become a vehicle. Any other label may be a ship RSI has
 // relabelled: skipped, it would drop out of the sync and the unmatched action
-// would act on it.
-const SKIPPED_KINDS = ["Insurance", "Credits", "FPS Equipment"];
+// would act on it. "Upgrade" is a ship-to-ship upgrade, which RSI once listed
+// without a kind.
+const SKIPPED_KINDS = ["Insurance", "Credits", "Upgrade"];
 
 const KNOWN_KINDS = [...READ_KINDS.keys(), ...SKIPPED_KINDS];
 
@@ -190,11 +192,7 @@ export class RSIHangarParser {
         pledgeValue: this.parsePledgeValue(
           this.hiddenValue(entry, "js-pledge-value"),
         ),
-        pledgeItemCount: elements.filter(
-          (item) =>
-            this.itemKind(item) !== undefined ||
-            !item.closest(".without-images"),
-        ).length,
+        pledgeItemCount: elements.length,
         pledgeCreatedOn: this.parseCreatedOn(
           entry.getElementsByClassName("date-col")[0]?.textContent,
         ),
@@ -213,11 +211,16 @@ export class RSIHangarParser {
           // pledges carry none of RSI's categories, and RSI lists items there
           // that name a manufacturer without a kind: stopping on them blocked
           // every sync of a hangar holding one.
+          //
+          // What a pledge lists under "Also Contains" never has a kind, gear
+          // and flair alike, and goes to the server as an extra to sort.
           if (this.hasManufacturer(item) && this.hasCategory(name)) {
             shipsWithoutKind.add(
               `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
             );
             unreadEntries.add(entry);
+          } else if (item.closest(".without-images")) {
+            items.push(this.parseItem(id, item, kind, pledgeInfo));
           }
           return;
         }
@@ -317,13 +320,16 @@ export class RSIHangarParser {
     };
   }
 
+  // Without a kind, the item is one of a pledge's "Also Contains" extras.
   parseItem(
     id: string,
     item: Element,
-    kind: string,
+    kind: string | undefined,
     pledgeInfo: RSIPledgeInfo = {},
   ): RSIHangarItem {
-    const name = item.getElementsByClassName("title")[0]?.textContent || "";
+    const name = (
+      item.getElementsByClassName("title")[0]?.textContent || ""
+    ).trim();
 
     let kindOverride: RSIHangarItemKind | undefined;
     if (
@@ -349,7 +355,11 @@ export class RSIHangarParser {
       customName:
         item.getElementsByClassName("custom-name-text")[0]?.textContent ||
         undefined,
-      type: kindOverride || (READ_KINDS.get(kind) as RSIHangarItemKind),
+      type:
+        kindOverride ||
+        (kind === undefined
+          ? "extra"
+          : (READ_KINDS.get(kind) as RSIHangarItemKind)),
       ...pledgeInfo,
     };
   }
