@@ -217,7 +217,7 @@ const crumbs = computed<Crumb[]>(() => {
     </template>
   </Heading>
 
-  <PageActions>
+  <PageActions menu-tour="fleet-invite">
     <Btn :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }">
       <i class="fa-duotone fa-globe" />
       {{ t("actions.fleet.worldmap") }}
