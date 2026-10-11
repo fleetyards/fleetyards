@@ -8,16 +8,19 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
+  type FleetMissionsParams,
   type Mission,
   MissionStatusEnum,
   useFleetMissions,
 } from "@/services/fyApi";
+import { refDebounced } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
@@ -34,19 +37,123 @@ const comlink = useComlink();
 const { resolve } = useMissionCover();
 
 const fleetSlug = computed(() => props.fleet.slug);
+
+const search = ref("");
+const debouncedSearch = refDebounced(search, 300);
+
+const page = ref(1);
+
+// Published only, and asked of the server: an event is never spawned from a
+// draft, and a draft filtered out here would still take a slot on the page.
+const queryParams = computed<FleetMissionsParams>(() => ({
+  page: String(page.value),
+  q: {
+    statusEq: MissionStatusEnum.PUBLISHED,
+    titleCont: debouncedSearch.value || undefined,
+  },
+}));
+
 const {
   data: missions,
   isLoading,
+  isPlaceholderData,
   isError,
   refetch,
-} = useFleetMissions(fleetSlug, ref({}));
+} = useFleetMissions(fleetSlug, queryParams);
 
-// A draft has not been offered to the fleet yet, so nothing is spawned from it.
-const missionList = computed<Mission[]>(() =>
-  (missions.value?.items ?? []).filter(
-    (mission) => mission.status !== MissionStatusEnum.DRAFT,
-  ),
+/*
+ * Accumulated rather than replaced, the way the squadron member picker grows
+ * its list. A new search starts again -- page one of a different question is
+ * not page four of this one.
+ */
+const missionList = ref<Mission[]>([]);
+
+// Synchronously, so the query never sees the new search with the old page.
+watch(
+  debouncedSearch,
+  () => {
+    page.value = 1;
+    missionList.value = [];
+  },
+  { flush: "sync" },
 );
+
+// The query client keeps the previous page on screen while the next one loads,
+// so only data that answers the current page and search is taken in.
+watch(
+  [missions, isPlaceholderData],
+  ([value, placeholder]) => {
+    if (!value || placeholder) return;
+
+    const items = value.items ?? [];
+    const held = new Set(missionList.value.map((mission) => mission.id));
+
+    missionList.value =
+      page.value === 1
+        ? items
+        : [...missionList.value, ...items.filter((item) => !held.has(item.id))];
+  },
+  { immediate: true },
+);
+
+const hasMore = computed(
+  () => page.value < (missions.value?.meta?.pagination?.totalPages ?? 1),
+);
+
+// A placeholder is the previous page or search standing in while the request
+// for this one runs, so it counts as loading rather than as an answer.
+const pending = computed(
+  () => (isLoading.value || isPlaceholderData.value) && !isError.value,
+);
+
+// Nothing to show yet: the first page, or a new search that cleared the list.
+const loadingFirst = computed(() => pending.value && !missionList.value.length);
+
+// While the next page loads, `missions` still holds the one before it, so
+// `hasMore` cannot tell; the button stays, spinning, until the page is in.
+const loadingMore = computed(
+  () => pending.value && missionList.value.length > 0,
+);
+
+// A page that failed after earlier ones arrived. Without its own retry the
+// list would end there, with neither "Load more" nor the error above.
+const pageFailed = computed(
+  () => isError.value && missionList.value.length > 0,
+);
+
+const loadMore = () => {
+  page.value += 1;
+};
+
+const nothingPublished = computed(
+  () =>
+    !pending.value &&
+    !!missions.value &&
+    !missionList.value.length &&
+    !debouncedSearch.value,
+);
+
+// One row of any status, asked for only once the published list came back
+// empty: it is what tells "nothing published yet" apart from "no missions".
+// Both lists are the active ones, so the labels say so -- a fleet whose
+// missions are all archived has none to spawn an event from either.
+const { data: anyMission } = useFleetMissions(
+  fleetSlug,
+  { perPage: "1" },
+  { query: { enabled: nothingPublished } },
+);
+
+const emptyLabel = computed(() => {
+  if (debouncedSearch.value) {
+    return t("labels.fleets.events.pickTemplateNoMatch");
+  }
+
+  if (anyMission.value?.items?.length) {
+    return t("labels.fleets.events.pickTemplateNonePublished");
+  }
+
+  return t("labels.fleets.events.pickTemplateNoneActive");
+});
 
 const pick = (mission: Mission | null) => {
   props.onPick(mission);
@@ -60,12 +167,27 @@ const pick = (mission: Mission | null) => {
       {{ t("labels.fleets.events.pickTemplateHint") }}
     </p>
 
-    <p v-if="isLoading" class="template-picker__note">
+    <FormInput
+      v-model="search"
+      name="mission-template-search"
+      :label="t('labels.fleets.events.pickTemplateSearch')"
+      :placeholder="t('labels.fleets.events.pickTemplateSearch')"
+      icon="fa-light fa-magnifying-glass"
+      data-test="mission-template-search"
+      no-label
+      clearable
+    />
+
+    <p
+      v-if="loadingFirst"
+      class="template-picker__note"
+      data-test="mission-template-loading"
+    >
       {{ t("messages.loading") }}
     </p>
 
     <div
-      v-else-if="isError && !missions"
+      v-else-if="isError && !missionList.length"
       class="template-picker__error"
       data-test="mission-template-error"
     >
@@ -81,8 +203,12 @@ const pick = (mission: Mission | null) => {
       </Btn>
     </div>
 
-    <p v-else-if="!missionList.length" class="template-picker__note">
-      {{ t("labels.fleets.missions.noMissions") }}
+    <p
+      v-else-if="!missionList.length"
+      class="template-picker__note"
+      data-test="mission-template-empty"
+    >
+      {{ emptyLabel }}
     </p>
 
     <div class="template-list">
@@ -143,6 +269,34 @@ const pick = (mission: Mission | null) => {
       </button>
     </div>
 
+    <div
+      v-if="pageFailed"
+      class="template-picker__error template-picker__more"
+      data-test="mission-template-page-error"
+    >
+      <span class="template-picker__note">
+        {{ t("labels.fleets.events.pickTemplatePageFailed") }}
+      </span>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        data-test="mission-template-page-retry"
+        @click="refetch()"
+      >
+        {{ t("actions.retry") }}
+      </Btn>
+    </div>
+
+    <div v-else-if="hasMore || loadingMore" class="template-picker__more">
+      <Btn
+        :loading="loadingMore"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="mission-template-more"
+        @click="loadMore"
+      >
+        {{ t("actions.loadMore") }}
+      </Btn>
+    </div>
+
     <template #footer>
       <Btn
         :size="BtnSizesEnum.LG"
@@ -164,6 +318,11 @@ const pick = (mission: Mission | null) => {
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+}
+.template-picker__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
 }
 .template-list {
   display: grid;
