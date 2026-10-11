@@ -77,6 +77,7 @@ const mountPicker = async (onPick = vi.fn()) => {
 };
 
 afterEach(() => {
+  vi.useRealTimers();
   mounted.splice(0).forEach((wrapper) => wrapper.unmount());
   missions.value = undefined;
   anyMission.value = undefined;
@@ -159,8 +160,6 @@ describe("MissionTemplatePicker", () => {
       wrapper.find('[data-test="mission-template-bluebird"]').exists(),
     ).toBe(false);
     expect(toValue(requested[0]).q?.titleCont).toBe("red");
-
-    vi.useRealTimers();
   });
 
   it("offers a retry when a later page fails to load", async () => {
