@@ -171,7 +171,7 @@ watch(
                 <Paginator
                   :query-result-ref="items"
                   :per-page="perPage"
-                  @update-per-page="updatePerPage"
+                  :update-per-page="updatePerPage"
                 />
               </template>
 
@@ -199,7 +199,7 @@ watch(
                 <Paginator
                   :query-result-ref="items"
                   :per-page="perPage"
-                  @update-per-page="updatePerPage"
+                  :update-per-page="updatePerPage"
                 />
               </template>
             </FilteredList>

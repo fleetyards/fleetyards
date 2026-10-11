@@ -8,6 +8,8 @@ class Fleet < ApplicationRecord
   include LinkedLocations
   include FeatureFlagActor
 
+  per_page_steps [25, 50, 100]
+
   # Where the fleet is based: free text, linked to one of our places where it
   # is one.
   links_location :headquarters, foreign_key: :headquarters_location_id, as: :headquarters_location

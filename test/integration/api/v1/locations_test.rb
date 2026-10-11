@@ -80,4 +80,12 @@ class Api::V1::LocationsTest < ActionDispatch::IntegrationTest
       assert_includes names, "Hurston"
     end
   end
+
+  test "GET /locations pages by perPage and offers its page sizes" do
+    assert_api_response :get, 200, params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal Location.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end

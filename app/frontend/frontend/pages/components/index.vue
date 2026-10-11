@@ -68,7 +68,7 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
       <Paginator
         :query-result-ref="components"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -98,7 +98,7 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
       <Paginator
         :query-result-ref="components"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

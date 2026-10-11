@@ -51,6 +51,15 @@ const internalPerPage = computed(
   () => props.perPage || pagination.value?.defaultPerPage,
 );
 
+// Picking the size on screen again changes nothing, so it keeps the page.
+const changePerPage = (step: number | string) => {
+  if (String(step) === String(internalPerPage.value)) {
+    return;
+  }
+
+  props.updatePerPage?.(step);
+};
+
 // An empty list still has a page one, and a page count is only unknown while the
 // request is out.
 const totalPages = computed(() => pagination.value?.totalPages || 1);
@@ -89,7 +98,7 @@ const pagesLabel = computed(() =>
         :size="size"
         :per-page="internalPerPage"
         :steps="pagination?.perPageSteps"
-        @change="updatePerPage"
+        @change="changePerPage"
       />
       <template v-if="pagesVisible">
         <Btn

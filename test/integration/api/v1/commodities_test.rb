@@ -54,6 +54,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
   test "GET /commodities paginates with perPage" do
     assert_api_response :get, 200, params: {perPage: 2} do
       assert_equal 2, parsed_body["items"].count
+      assert_equal Commodity.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
     end
   end
 

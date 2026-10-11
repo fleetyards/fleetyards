@@ -26,4 +26,4 @@ json.items @items do |row|
   json.sell_price row.sell_price&.to_f
 end
 
-json.partial! "api/shared/meta", result: @items
+json.partial! "api/shared/meta", result: @items, per_page_steps: Shop.per_page_steps

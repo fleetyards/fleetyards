@@ -151,7 +151,7 @@ onUnmounted(() => {
       <Paginator
         :query-result-ref="pledgeItems"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -172,7 +172,7 @@ onUnmounted(() => {
       <Paginator
         :query-result-ref="pledgeItems"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

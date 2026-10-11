@@ -12,6 +12,7 @@ class GameMission < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 60
+  per_page_steps [15, 30, 60, 90]
 
   # What each build of the game says about this mission.
   has_many :builds, class_name: "GameMissionBuild", dependent: :destroy

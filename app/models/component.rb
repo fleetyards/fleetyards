@@ -10,6 +10,7 @@ class Component < ApplicationRecord
 
   paginates_per 50
   max_paginates_per 240
+  per_page_steps [25, 50, 100, 200]
 
   # One row per component, with the spec history kept as versions rather than as
   # a row per build. `version` is deliberately not tracked: it moves on every
