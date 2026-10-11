@@ -363,8 +363,8 @@ class PaintsImporter
     aurora_mk2 = ["Aurora Mk II"]
     avenger = ["Avenger Stalker", "Avenger Titan", "Avenger Titan Renegade", "Avenger Warlock"]
     connie = [
-      "Constellation Andromeda", "Constellation Aquila", "Constellation Phoenix",
-      "Constellation Taurus"
+      "Constellation Mk IV Andromeda", "Constellation Mk IV Aquila", "Constellation Mk IV Phoenix",
+      "Constellation Mk IV Taurus"
     ]
     cyclone = %w[Cyclone Cyclone-TR Cyclone-RN Cyclone-RC Cyclone-AA]
     vanguard = ["Vanguard Warden", "Vanguard Sentinel", "Vanguard Hoplite", "Vanguard Harbinger"]
