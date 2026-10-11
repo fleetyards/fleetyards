@@ -11,8 +11,6 @@ it:
       message: Errore del server
     unprocessable_entity:
       message: Entità non elaborabile
-    pagination:
-      max_per_page_reached: Max per pagina raggiunto
     messages:
       extension_allowlist_error: 'extension not allowed. You are not allowed to upload
         %{extension} files, allowed types: %{allowed_types}'

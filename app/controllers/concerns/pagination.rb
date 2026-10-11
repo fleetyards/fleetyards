@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 module Pagination
-  class MaxPerPageReached < StandardError; end
-
+  # A size above the list's maximum is answered with the maximum.
   def per_page(model)
     return model.default_per_page if per_page_params.blank? || per_page_params.to_i.zero?
 
-    raise Pagination::MaxPerPageReached if per_page_params.to_i > model.max_per_page
-
-    per_page_params.to_i
+    [per_page_params.to_i, model.max_per_page].compact.min
   end
 
   def pagination_header(name)

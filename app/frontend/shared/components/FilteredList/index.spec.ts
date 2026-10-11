@@ -194,57 +194,6 @@ describe("FilteredList", () => {
     expect(router.currentRoute.value.query).toEqual({ tab: "grid" });
   });
 
-  // Nothing in the route to clear: the saved size alone has to offer a reset.
-  it("clears a saved page size the API refused", async () => {
-    await router.push({ name: "ships" });
-
-    const wrapper = await mountWithDefaults<typeof ListComponent>(
-      ListComponent,
-      {
-        props: {
-          name: "test-list",
-          records: [],
-          asyncStatus: failedWith(400, {
-            code: "pagination.max_per_page_reached",
-          }),
-        },
-        initialState: { pagination: { perPage: { ships: 500 } } },
-        plugins: [router],
-      },
-    );
-
-    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
-    await flushPromises();
-
-    // The testing pinia stubs actions, so the call is what is observable.
-    const store = usePaginationStore();
-
-    expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
-  });
-
-  it("clears a page size from a link the API refused", async () => {
-    await router.push({ name: "ships", query: { perPage: "999999" } });
-
-    const wrapper = await mountWithDefaults<typeof ListComponent>(
-      ListComponent,
-      {
-        props: {
-          name: "test-list",
-          records: [],
-          asyncStatus: failedWith(400, {
-            code: "pagination.max_per_page_reached",
-          }),
-        },
-        plugins: [router],
-      },
-    );
-
-    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
-    await flushPromises();
-
-    expect(router.currentRoute.value.query).toEqual({});
-  });
-
   it("keeps a saved page size when something else was refused", async () => {
     await router.push({ name: "ships", query: { s: "bogus_asc" } });
 

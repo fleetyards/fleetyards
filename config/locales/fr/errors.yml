@@ -11,8 +11,6 @@ fr:
       message: Erreur Serveur
     unprocessable_entity:
       message: Entité impossible à traiter
-    pagination:
-      max_per_page_reached: Le maximum par page est atteint
     messages:
       extension_allowlist_error: 'extension not allowed. You are not allowed to upload
         %{extension} files, allowed types: %{allowed_types}'

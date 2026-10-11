@@ -11,8 +11,6 @@ zh-TW:
       message: 伺服器錯誤
     unprocessable_entity:
       message: Unprocessable Entity
-    pagination:
-      max_per_page_reached: Max per Page reached
     messages:
       extension_allowlist_error: 'extension not allowed. You are not allowed to upload
         %{extension} files, allowed types: %{allowed_types}'
