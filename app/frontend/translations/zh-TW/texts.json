@@ -294,6 +294,9 @@
       "hangarFlair": {
         "intro": "你 RSI 機庫中的機庫裝飾，以你上次機庫同步為準。同步會透過 Fleetyards Sync 擴充功能讀取你的 RSI 機庫。"
       },
+      "hangarEquipment": {
+        "intro": "你 RSI 機庫中的 FPS 裝備，以你上次機庫同步為準。同步會透過 Fleetyards Sync 擴充功能讀取你的 RSI 機庫。"
+      },
       "hangarPaints": {
         "intro": "你 RSI 機庫中的塗裝，以你上次機庫同步為準。同步會透過 Fleetyards Sync 擴充功能讀取你的 RSI 機庫。"
       },

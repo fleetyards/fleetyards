@@ -40,6 +40,7 @@ type FrontendSimpleRoutes =
   | "hangar-buybacks"
   | "hangar-paints"
   | "hangar-flair"
+  | "hangar-equipment"
   | "hangar-transfers"
   | "fleet-logistics-transfers"
   | "hangar-inventories"

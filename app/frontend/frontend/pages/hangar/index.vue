@@ -625,6 +625,14 @@ const openDisplayOptionsModal = () => {
         </Btn>
 
         <Btn
+          :aria-label="t('nav.hangar.equipment')"
+          :to="{ name: 'hangar-equipment' }"
+        >
+          <i class="fa-light fa-shirt" />
+          <span>{{ t("nav.hangar.equipment") }}</span>
+        </Btn>
+
+        <Btn
           :aria-label="t('nav.hangar.imports')"
           :to="{ name: 'hangar-imports' }"
         >

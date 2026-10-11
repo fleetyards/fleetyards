@@ -238,6 +238,7 @@
         "buybacks": "Pledges rachetables",
         "paints": "Peintures",
         "flair": "Décorations de hangar",
+        "equipment": "Équipement FPS",
         "imports": "Imports"
       },
       "buybackSync": "Synchroniser les pledges rachetables RSI",

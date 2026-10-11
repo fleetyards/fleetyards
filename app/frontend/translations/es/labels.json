@@ -2536,6 +2536,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Decoración de hangar",
+        "equipment": "Equipo FPS",
         "createdOn": "Creado",
         "meltable": "Fundible",
         "withValue": "Con valor de fundición",
@@ -2617,6 +2618,8 @@
         "syncPaintsHint": "Sustituye tus pinturas por las de tu hangar de RSI. Desactivado deja las pinturas guardadas como están.",
         "syncHangarFlair": "Sincronizar decoración de hangar",
         "syncHangarFlairHint": "Sustituye tu decoración de hangar por la de tu hangar de RSI. Desactivado deja la decoración guardada como está.",
+        "syncEquipment": "Sincronizar equipo FPS",
+        "syncEquipmentHint": "Sustituye tu equipo FPS por el de tu hangar de RSI. Desactivado deja el equipo guardado como está.",
         "settings": "Ajustes",
         "unmatchedVehiclesAction": "Naves que no están en tu hangar RSI",
         "unmatchedVehiclesActionHint": "Qué hacer con las naves que tienes aquí y que la sincronización no encuentra en tu lista de pledges de RSI.",
@@ -2649,7 +2652,10 @@
           "paints": "Pinturas",
           "hangarFlair": "Decoración de hangar",
           "paintsNotSynced": "Pinturas (no se sincronizan)",
-          "hangarFlairNotSynced": "Decoración de hangar (no se sincroniza)"
+          "hangarFlairNotSynced": "Decoración de hangar (no se sincroniza)",
+          "equipment": "Equipo FPS",
+          "equipmentNotSynced": "Equipo FPS (no se sincroniza)",
+          "extras": "Otros objetos (se reparten entre decoración y equipo FPS)"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",
@@ -2667,6 +2673,7 @@
           "foundUpgrades": "Mejoras encontradas",
           "syncedPaints": "Pinturas sincronizadas",
           "syncedHangarFlair": "Decoración de hangar sincronizada",
+          "syncedEquipment": "Equipo FPS sincronizado",
           "missingUpgrades": "Mejoras no encontradas",
           "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras"
         },

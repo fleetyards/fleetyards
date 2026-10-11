@@ -2536,6 +2536,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Hangar Flair",
+        "equipment": "FPS Gear",
         "createdOn": "Created",
         "meltable": "Meltable",
         "withValue": "Has a melt value",
@@ -2617,6 +2618,8 @@
         "syncPaintsHint": "Replaces your paints with the ones in your RSI hangar. Off leaves the stored paints as they are.",
         "syncHangarFlair": "Sync hangar flair",
         "syncHangarFlairHint": "Replaces your hangar flair with the ones in your RSI hangar. Off leaves the stored flair as it is.",
+        "syncEquipment": "Sync FPS gear",
+        "syncEquipmentHint": "Replaces your FPS gear with the gear in your RSI hangar. Off leaves the stored gear as it is.",
         "settings": "Settings",
         "unmatchedVehiclesAction": "Ships not in your RSI hangar",
         "unmatchedVehiclesActionHint": "What to do with ships you have here that the sync cannot find in your RSI pledge list.",
@@ -2649,7 +2652,10 @@
           "paints": "Paints",
           "hangarFlair": "Hangar Flair",
           "paintsNotSynced": "Paints (not synced)",
-          "hangarFlairNotSynced": "Hangar Flair (not synced)"
+          "hangarFlairNotSynced": "Hangar Flair (not synced)",
+          "equipment": "FPS Gear",
+          "equipmentNotSynced": "FPS Gear (not synced)",
+          "extras": "Other Items (sorted into flair and FPS gear)"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -2667,6 +2673,7 @@
           "foundUpgrades": "Found Upgrades",
           "syncedPaints": "Paints synced",
           "syncedHangarFlair": "Hangar flair synced",
+          "syncedEquipment": "FPS gear synced",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         },

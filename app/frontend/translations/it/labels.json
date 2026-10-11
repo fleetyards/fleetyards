@@ -2536,6 +2536,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Decorazioni per l'hangar",
+        "equipment": "Equipaggiamento FPS",
         "createdOn": "Creato",
         "meltable": "Fondibile",
         "withValue": "Con valore di fusione",
@@ -2617,6 +2618,8 @@
         "syncPaintsHint": "Sostituisce le tue verniciature con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
         "syncHangarFlair": "Sincronizza decorazioni per l'hangar",
         "syncHangarFlairHint": "Sostituisce le tue decorazioni con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
+        "syncEquipment": "Sincronizza equipaggiamento FPS",
+        "syncEquipmentHint": "Sostituisce il tuo equipaggiamento FPS con quello del tuo hangar RSI. Disattivato lascia invariato quello salvato.",
         "settings": "Impostazioni",
         "unmatchedVehiclesAction": "Navi non presenti nel tuo hangar RSI",
         "unmatchedVehiclesActionHint": "Cosa fare con le navi che hai qui ma che la sincronizzazione non trova nella tua lista di pledge RSI.",
@@ -2649,7 +2652,10 @@
           "paints": "Verniciature",
           "hangarFlair": "Decorazioni per l'hangar",
           "paintsNotSynced": "Verniciature (non sincronizzate)",
-          "hangarFlairNotSynced": "Decorazioni per l'hangar (non sincronizzate)"
+          "hangarFlairNotSynced": "Decorazioni per l'hangar (non sincronizzate)",
+          "equipment": "Equipaggiamento FPS",
+          "equipmentNotSynced": "Equipaggiamento FPS (non sincronizzato)",
+          "extras": "Altri oggetti (smistati tra decorazioni ed equipaggiamento FPS)"
         },
         "importedItems": {
           "importedVehicles": "Navi aggiunte",
@@ -2667,6 +2673,7 @@
           "foundUpgrades": "Upgrade trovati",
           "syncedPaints": "Verniciature sincronizzate",
           "syncedHangarFlair": "Decorazioni per l'hangar sincronizzate",
+          "syncedEquipment": "Equipaggiamento FPS sincronizzato",
           "missingUpgrades": "Upgrade non trovati",
           "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade"
         },

@@ -2536,6 +2536,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Hangar-Flair",
+        "equipment": "FPS-Ausrüstung",
         "createdOn": "Erstellt",
         "meltable": "Einschmelzbar",
         "withValue": "Mit Einschmelzwert",
@@ -2617,6 +2618,8 @@
         "syncPaintsHint": "Ersetzt deine Lackierungen durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Lackierungen unverändert.",
         "syncHangarFlair": "Hangar-Flair synchronisieren",
         "syncHangarFlairHint": "Ersetzt dein Hangar-Flair durch das aus deinem RSI-Hangar. Aus lässt das gespeicherte Flair unverändert.",
+        "syncEquipment": "FPS-Ausrüstung synchronisieren",
+        "syncEquipmentHint": "Ersetzt deine FPS-Ausrüstung durch die aus deinem RSI-Hangar. Aus lässt die gespeicherte Ausrüstung unverändert.",
         "settings": "Einstellungen",
         "unmatchedVehiclesAction": "Schiffe, die nicht im RSI-Hangar sind",
         "unmatchedVehiclesActionHint": "Was mit Schiffen passiert, die hier stehen, die der Sync aber nicht in deiner RSI-Pledge-Liste findet.",
@@ -2649,7 +2652,10 @@
           "paints": "Lackierungen",
           "hangarFlair": "Hangar-Flair",
           "paintsNotSynced": "Lackierungen (nicht synchronisiert)",
-          "hangarFlairNotSynced": "Hangar-Flair (nicht synchronisiert)"
+          "hangarFlairNotSynced": "Hangar-Flair (nicht synchronisiert)",
+          "equipment": "FPS-Ausrüstung",
+          "equipmentNotSynced": "FPS-Ausrüstung (nicht synchronisiert)",
+          "extras": "Weitere Gegenstände (werden Flair und FPS-Ausrüstung zugeordnet)"
         },
         "importedItems": {
           "importedVehicles": "Hinzugefügte Schiffe",
@@ -2667,6 +2673,7 @@
           "foundUpgrades": "Gefundene Upgrades",
           "syncedPaints": "Synchronisierte Lackierungen",
           "syncedHangarFlair": "Synchronisiertes Hangar-Flair",
+          "syncedEquipment": "Synchronisierte FPS-Ausrüstung",
           "missingUpgrades": "Upgrades nicht gefunden",
           "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"
         },

@@ -25,11 +25,13 @@ import {
   getHangarPaintsQueryKey,
   useHangarFlair,
   getHangarFlairQueryKey,
+  useHangarEquipment,
+  getHangarEquipmentQueryKey,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
 
 type Props = {
-  kind: "paints" | "flair";
+  kind: "paints" | "flair" | "equipment";
 };
 
 const props = defineProps<Props>();
@@ -50,6 +52,14 @@ const KINDS = {
     intro: "texts.hangarFlair.intro",
     emptyName: "labels.hangarPledgeItems.flair",
     icon: "fa-duotone fa-trophy-star",
+  },
+  equipment: {
+    useItems: useHangarEquipment,
+    getQueryKey: getHangarEquipmentQueryKey,
+    headline: "headlines.hangar.equipment",
+    intro: "texts.hangarEquipment.intro",
+    emptyName: "labels.hangarPledgeItems.equipment",
+    icon: "fa-duotone fa-shirt",
   },
 };
 
