@@ -7,9 +7,11 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useFleetSquadrons, type Fleet } from "@/services/fyApi";
 
@@ -24,6 +26,8 @@ type SquadronFilters = { squadronSlugIn?: string[] };
 const { t } = useI18n();
 
 const { isFleetSquadronsEnabled } = useFeatures();
+
+const mobile = useMobile();
 
 const enabled = computed(() => isFleetSquadronsEnabled(props.fleet));
 
@@ -77,10 +81,42 @@ const clear = () => filter({ squadronSlugIn: [] });
 const select = (slug: string) => {
   filter({ squadronSlugIn: isSelected(slug) ? [] : [slug] });
 };
+
+const current = computed(() =>
+  squadronList.value.find((squadron) => isSelected(squadron.slug)),
+);
 </script>
 
 <template>
-  <BtnGroup v-if="squadronList.length" segmented class="squadron-filter">
+  <!-- One button on a phone, showing the squadron the list is narrowed to:
+       a segment per squadron took the toolbar's row and pushed the paginator
+       below it. The menu names each one, which the emblems alone do not. -->
+  <BtnDropdown
+    v-if="squadronList.length && mobile"
+    class="squadron-filter"
+    data-test="squadron-filter-menu"
+  >
+    <template #label>
+      <SquadronEmblem v-if="current" :squadron="current" :size="18" />
+      <span v-else>{{ t("labels.all") }}</span>
+      <span v-if="current" class="sr-only">{{ current.name }}</span>
+      <i class="fa-light fa-chevron-down" />
+    </template>
+    <Btn :active="showingAll" data-test="squadron-filter-all" @click="clear">
+      <span>{{ t("labels.all") }}</span>
+    </Btn>
+    <Btn
+      v-for="squadron in squadronList"
+      :key="squadron.id"
+      :active="isSelected(squadron.slug)"
+      :data-test="`squadron-filter-${squadron.slug}`"
+      @click="select(squadron.slug)"
+    >
+      <SquadronEmblem :squadron="squadron" :size="18" />
+      <span>{{ squadron.name }}</span>
+    </Btn>
+  </BtnDropdown>
+  <BtnGroup v-else-if="squadronList.length" segmented class="squadron-filter">
     <Btn :active="showingAll" data-test="squadron-filter-all" @click="clear">
       {{ t("labels.all") }}
     </Btn>

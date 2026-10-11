@@ -41,10 +41,20 @@ vi.mock("@/services/fyApi", async () => {
 
 let wrapper: VueWrapper | undefined;
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
 beforeEach(() => {
   items = all;
   askedWith = [];
   cached = false;
+  setViewport(false);
 });
 
 afterEach(() => {
@@ -105,5 +115,29 @@ describe("FleetSquadronFilter", () => {
       "squadron-filter-combat",
       "squadron-filter-rota",
     ]);
+  });
+
+  describe("on a phone", () => {
+    beforeEach(() => {
+      setViewport(true);
+    });
+
+    it("collapses into one button reading All", async () => {
+      const subject = await mount();
+
+      const menu = subject.find("[data-test='squadron-filter-menu']");
+
+      expect(menu.exists()).toBe(true);
+      expect(menu.text()).toContain("All");
+      expect(subject.find(".btn-group").exists()).toBe(false);
+    });
+
+    it("draws nothing for a fleet that has no squadrons", async () => {
+      items = [];
+
+      const subject = await mount();
+
+      expect(subject.find("[data-test]").exists()).toBe(false);
+    });
   });
 });
