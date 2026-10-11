@@ -81,13 +81,14 @@ module ScData
 
       test "reads the flares and tool cases among the props, and nothing else there" do
         write_equipment("carryable_1h_cu_glowstick_blue", name: "@item_Nameun_portable_light_1_a_cyan",
-          path: "entities/scitem/flair/carryables", type: "WeaponPersonal")
+          path: "entities/scitem/flair/carryables", type: "WeaponPersonal", description: "@item_Desc_flare")
         write_equipment("carryable_2h_fl_container_anim_medgun_1_a", name: "@item_Name_medic_kit",
           path: "entities/scitem/carryables/2h", type: "Misc")
         write_equipment("carryable_2h_fl_container_anim_coin_case_1_a", name: "@item_Name_coin_case",
           path: "entities/scitem/carryables/2h", type: "Misc")
         @parser.translations = {
           "item_Nameun_portable_light_1_a_cyan" => "Cyan QuikFlarePro",
+          "item_Desc_flare" => "Item Type: Grenade\\n\\nGlows longer than regular flares.",
           "item_Name_medic_kit" => "Field Medic Kit",
           "item_Name_coin_case" => "Chairman's Club Coin Case"
         }
@@ -110,7 +111,7 @@ module ScData
         end
       end
 
-      private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet")
+      private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", description: "@LOC_EMPTY")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
@@ -120,7 +121,7 @@ module ScData
             <Components>
               <SAttachableComponentParams>
                 <AttachDef Type="#{type}" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{key}">
-                  <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="@LOC_EMPTY" />
+                  <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="#{description}" />
                 </AttachDef>
               </SAttachableComponentParams>
             </Components>

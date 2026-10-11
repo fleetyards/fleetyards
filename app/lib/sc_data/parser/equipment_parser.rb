@@ -176,18 +176,20 @@ module ScData
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
         worn_type, slot = CHAR_TYPES[attach_def["Type"]]
-        carried_type, carried_item_type = item[:types] || consumable_types(attach_def, key)
+        picked_type, picked_item_type = item[:types]
+        carried_type, carried_item_type = consumable_types(attach_def, key)
 
         {
           key:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: picked_type || worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
           slot:,
           # The description header is written by hand and says "Assault Rifle"
-          # where the record key only says "rifle", so it wins where it exists.
-          item_type: described[:item_type] || carried_item_type || item_type(segments),
+          # where the record key only says "rifle", so it wins where it exists --
+          # bar a picked record, whose header would call a flare a grenade.
+          item_type: picked_item_type || described[:item_type] || carried_item_type || item_type(segments),
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
