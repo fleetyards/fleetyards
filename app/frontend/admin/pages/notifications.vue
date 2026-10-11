@@ -427,7 +427,7 @@ const destroySelected = () =>
 <template>
   <!-- Left to a screen reader on a phone, where the header's search and the
        list's own controls are what the first screen is for. -->
-  <Heading hero class="admin-notifications__heading">
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.notifications.index") }}
     <!-- The line is reserved whether or not the count is known yet: rendered
          only once the answer is in, the heading grows by its height the moment
@@ -691,13 +691,11 @@ const destroySelected = () =>
         />
       </div>
     </template>
-    <!-- The page size stays with the bottom paginator on a phone, so the top
-         one fits beside the filter and the tabs on a single row. -->
     <template #pagination-top>
       <Paginator
         :query-result-ref="notifications"
         :per-page="perPage"
-        :update-per-page="mobile ? undefined : updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
     <template #pagination-bottom>
@@ -790,17 +788,6 @@ const destroySelected = () =>
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .admin-notifications__heading {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
   // The reading pane is a page over the list on a phone, so the list stays
   // where it was underneath and the way back lands on the same scroll.
   .admin-notifications--reading .admin-notifications__list {
