@@ -126,6 +126,10 @@ module Api
         render json: ValidationError.new("fleet_members.update", errors: @member.errors), status: :bad_request
       end
 
+      private def roster_filters?
+        true
+      end
+
       private def set_fleet
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
