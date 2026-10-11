@@ -29,10 +29,11 @@ class AdminWeeklyReportTest < ActiveSupport::TestCase
     user = create(:user)
     create(:import, :hangar_sync, user:, aasm_state: "finished", output: {"outcome" => "synced"})
     create(:import, :hangar_sync, user:, aasm_state: "failed")
+    create(:import, :hangar_sync, user:, aasm_state: "failed", output: {"outcome" => "nothing_to_sync"})
     HangarSync::NO_OP_OUTCOMES.each do |outcome|
       create(:import, :hangar_sync, user:, aasm_state: "finished", output: {"outcome" => outcome})
     end
 
-    assert_equal 2, gauge(AdminWeeklyReport.build, :ops, :hangar_syncs).current
+    assert_equal 3, gauge(AdminWeeklyReport.build, :ops, :hangar_syncs).current
   end
 end

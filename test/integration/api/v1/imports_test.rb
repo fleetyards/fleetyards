@@ -222,6 +222,21 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /imports still lists a sync with nothing to do that did not simply finish" do
+    user = create(:user)
+    cancelled = create_import(user, state: "cancelled")
+    cancelled.update!(output: {"outcome" => "nothing_to_sync"})
+    failed = create_import(user, state: "failed")
+    failed.update!(output: {"outcome" => "nothing_to_sync"})
+    incomplete = create_import(user, state: "finished")
+    incomplete.update!(output: {"outcome" => "nothing_to_sync", "incomplete" => true})
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [cancelled.id, failed.id, incomplete.id].sort, parsed_body["items"].pluck("id").sort
+    end
+  end
+
   # The list is the only place it is hidden: the sync status card still reads
   # the run back, and its id stays a valid link.
   test "GET /imports/{id} still shows a sync that had nothing to do" do

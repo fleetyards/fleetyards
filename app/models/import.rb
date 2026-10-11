@@ -46,10 +46,20 @@ class Import < ApplicationRecord
 
   scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
 
-  # Only a hangar sync records an outcome, so every other type, and a sync that
-  # failed before deciding one, has none and stays in.
+  # Only a finished run is left out: a no-op that was cancelled or failed is
+  # still news to the user, and so is one that could not read every RSI page.
+  # COALESCE because a missing key makes the condition NULL, and NOT NULL would
+  # drop the row.
   scope :without_no_op_syncs, -> {
-    where("imports.output->>'outcome' IS NULL OR imports.output->>'outcome' NOT IN (?)", ::HangarSync::NO_OP_OUTCOMES)
+    where(<<~SQL.squish, ::HangarSync::NO_OP_OUTCOMES)
+      NOT COALESCE(
+        imports.type = 'Imports::HangarSync'
+        AND imports.aasm_state = 'finished'
+        AND imports.output->>'outcome' IN (?)
+        AND imports.output->>'incomplete' IS NULL,
+        false
+      )
+    SQL
   }
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
