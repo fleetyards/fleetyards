@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :manufacturer do
-    name { Faker::Name.name }
+    sequence(:name) { |n| "#{Faker::Name.name} #{n}" }
     code { Faker::Name.initials(number: 4) }
     long_name { name }
     sc_ref { name.parameterize }
