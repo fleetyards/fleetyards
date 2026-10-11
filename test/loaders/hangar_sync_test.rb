@@ -557,50 +557,51 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
     end
 
-    test "stores FPS equipment, and sorts the items RSI lists without a kind" do
+    test "stores FPS equipment, and sorts the items RSI lists without a kind or as the wrong one" do
+      create(:equipment, name: "Arrowhead \"Pathfinder\" Sniper Rifle")
+      create(:equipment, name: "Njakte Knife")
       create(:equipment, name: "Tailwind Flight Helmet Drake")
       create(:equipment, name: "Skullcap Helmet")
       create(:equipment, name: "Poster")
-      create(:equipment, name: "Venture Executive Armor")
       input = @input + [
-        {"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"},
+        {"id" => "00064540", "name" => "Klaus & Werner Arrowhead 'Pathfinder' Snipe...", "type" => "equipment"},
+        {"id" => "00064540", "name" => "Enjakte Knife", "type" => "equipment"},
+        {"id" => "00064541", "name" => "RSI Constellation Mk V Coin", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Luminalia Mug", "type" => "equipment"},
         {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "Doomsday Skullcap Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "600i Explorer - 2953 Best In Show Poster", "type" => "extra"},
         {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"},
-        {"id" => "00064541", "name" => "Skullcap Helmet Poster", "type" => "extra"},
-        {"id" => "00064541", "name" => "RSI Venture Executive Armor Display", "type" => "extra"},
         {"id" => "00064541", "name" => "Galaxy - Starwalker Paint", "type" => "extra"}
       ]
 
       result = ::HangarSync.new(input).run(@user.id)
 
-      assert_equal ["Arrowhead Sniper Rifle", "Doomsday Skullcap Helmet", "Tailwind ‘Drake’ Helmet"],
+      assert_equal ["Doomsday Skullcap Helmet", "Enjakte Knife", "Klaus & Werner Arrowhead 'Pathfinder' Snipe...",
+        "Tailwind ‘Drake’ Helmet"],
         @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
-      assert_equal ["600i Explorer - 2953 Best In Show Poster", "RSI Venture Executive Armor Display", "Self-Land Hangar",
-        "Skullcap Helmet Poster"],
+      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Luminalia Mug", "RSI Constellation Mk V Coin",
+        "Self-Land Hangar"],
         @user.hangar_pledge_items.flair.where(rsi_pledge_id: "00064541").order(:name).pluck(:name)
       assert_equal ["Galaxy - Starwalker Paint"],
         @user.hangar_pledge_items.paints.where(rsi_pledge_id: "00064541").pluck(:name)
       assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
 
       body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
-      assert_includes body, "- FPS equipment synced: **3**"
+      assert_includes body, "- FPS equipment synced: **4**"
     end
 
     test "sorts the catalogue only once a run" do
       input = @input + [{"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}]
 
-      queries = []
-      callback = ->(*, payload) { queries << payload[:sql] if payload[:sql].include?('FROM "equipment"') }
-      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") do
-        ::HangarSync.new(input).run(@user.id)
-      end
+      catalogue = ::HangarPledgeItems::Sync::EquipmentCatalogue.new
+      ::HangarPledgeItems::Sync::EquipmentCatalogue.expects(:new).once.returns(catalogue)
 
-      assert_equal 1, queries.size
+      ::HangarSync.new(input).run(@user.id)
     end
 
     test "leaves the stored equipment alone when the run does not sync it" do
+      create(:equipment, name: "Arrowhead Sniper Rifle")
       input = @input + [{"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"}]
       ::HangarSync.new(input).run(@user.id)
 

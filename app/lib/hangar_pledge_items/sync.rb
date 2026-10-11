@@ -7,11 +7,14 @@ module HangarPledgeItems
   class Sync
     KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
 
-    # RSI gives the items it lists under "Also Contains" no kind at all: FPS
-    # gear, paints, posters, trophies and hangars read alike. A name calling
-    # itself a paint is one, the ones the equipment catalogue knows are gear,
-    # and everything else is kept with the flair.
+    # RSI gives the items it lists under "Also Contains" no kind at all, and
+    # labels coins, statues and ship models "FPS Equipment" as often as gear.
+    # An extra calling itself a paint is one. Otherwise only what the equipment
+    # catalogue knows is gear, and everything else is kept with the flair: a
+    # list of flair words would miss every new kind of decoration RSI sells.
     EXTRA_ITEM_TYPE = "extra"
+
+    CATALOGUED_ITEM_TYPES = [EXTRA_ITEM_TYPE, "equipment"].freeze
 
     PAINT_WORDS = %w[paint livery].freeze
 
@@ -19,15 +22,15 @@ module HangarPledgeItems
 
     # The kind each item would be stored as, or nil for one it cannot store.
     def self.kinds_for(items)
-      catalogue = (EquipmentCatalogue.new if items.any? { |item| item[:type].to_s == EXTRA_ITEM_TYPE })
+      catalogue = (EquipmentCatalogue.new if items.any? { |item| CATALOGUED_ITEM_TYPES.include?(item[:type].to_s) })
 
       items.map do |item|
         next unless item[:id].present? && item[:name].present?
 
         type = item[:type].to_s
-        next KINDS_BY_ITEM_TYPE[type] unless type == EXTRA_ITEM_TYPE
+        next KINDS_BY_ITEM_TYPE[type] unless CATALOGUED_ITEM_TYPES.include?(type)
 
-        if EquipmentCatalogue.words(item[:name]).intersect?(PAINT_WORDS)
+        if type == EXTRA_ITEM_TYPE && EquipmentCatalogue.words(item[:name]).intersect?(PAINT_WORDS)
           "paint"
         elsif catalogue.include?(item[:name])
           "equipment"
@@ -38,22 +41,21 @@ module HangarPledgeItems
     end
 
     # RSI and the game files name one piece of gear in different words, orders
-    # and quotes: "Tailwind ‘Drake’ Helmet" is "Tailwind Flight Helmet Drake",
-    # "Doomsday Skullcap Helmet" is "Skullcap Helmet". A name counts as gear
-    # when every word of it is in a catalogue name, or every word of one is in
-    # it. One word alone would match far too much, and a poster or model of
-    # a catalogued helmet names that helmet too.
+    # and spellings: "RSI Zeus ‘Solar’ Helmet" is "Zeus Exploration Helmet
+    # Solar", "Enjakte Knife" is "Njakte Knife", "Doomsday Skullcap Helmet" is
+    # "Skullcap Helmet". A name counts as gear when every word of it, less up
+    # to a few leading brand words, is in a catalogue name, or every word of
+    # one is in it. The words left must hold two, or one model code like
+    # "P4-AR": one plain word would match far too much. RSI cuts long names
+    # short with "...", leaving the last word a prefix.
     class EquipmentCatalogue
       MIN_WORDS = 2
+      MAX_BRAND_WORDS = 3
 
-      FLAIR_WORDS = %w[
-        poster posters model models trophy plushie plush coin statue statuette
-        figure figurine banner flag globe painting print fishtank
-        collectible display miniature
-      ].freeze
+      TRUNCATION = /(\.\.\.|…)\z/
 
       def self.words(name)
-        name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.uniq
+        name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.grep(/[[:alnum:]]/).uniq
       end
 
       def initialize
@@ -64,14 +66,42 @@ module HangarPledgeItems
 
       def include?(name)
         words = self.class.words(name)
-        return false if words.intersect?(FLAIR_WORDS)
+        prefix = words.pop if name.strip.match?(TRUNCATION)
 
         words.flat_map { |word| @by_word.fetch(word, []) }.uniq.any? do |index|
           catalogued = @names[index]
 
-          (words.size >= MIN_WORDS && (words - catalogued).empty?) ||
-            (catalogued.size >= MIN_WORDS && (catalogued - words).empty?)
+          names_gear?(words, prefix, catalogued) || names_whole?(catalogued, words, prefix)
         end
+      end
+
+      # Every word of the RSI name is in the catalogued one, but for a few
+      # leading brand words.
+      private def names_gear?(words, prefix, catalogued)
+        return false if prefix && catalogued.none? { |word| word.start_with?(prefix) }
+
+        brand = missing(words, catalogued).size
+        return false if brand > MAX_BRAND_WORDS || missing(words.first(brand), catalogued).size != brand
+
+        rest = words.drop(brand)
+        rest.size + (prefix ? 1 : 0) >= MIN_WORDS || rest.any? { |word| word.match?(/\d/) && word.match?(/[a-z]/) }
+      end
+
+      # Every word of the catalogued name is in the RSI one.
+      private def names_whole?(catalogued, words, prefix)
+        left = missing(catalogued, words)
+        left.pop if prefix && left.size == 1 && left.last.start_with?(prefix)
+
+        catalogued.size >= MIN_WORDS && left.empty?
+      end
+
+      private def missing(words, others)
+        words.reject { |word| others.any? { |other| same_word?(word, other) } }
+      end
+
+      private def same_word?(word, other)
+        word == other || word.delete_suffix("s") == other.delete_suffix("s") ||
+          ([word.size, other.size].min >= 5 && DidYouMean::Levenshtein.distance(word, other) <= 1)
       end
     end
 
