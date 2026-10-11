@@ -532,134 +532,147 @@ const openDisplayOptionsModal = () => {
         <i class="fa-duotone fa-sliders" />
       </Btn>
       <HangarSyncBtn :size="BtnSizesEnum.SM" data-tour="hangar-sync" />
-      <BtnDropdown data-tour="hangar-menu">
-        <template v-if="mobile">
-          <Btn :to="{ name: 'hangar-wishlist' }">
-            <i class="fa-duotone fa-wand-sparkles" />
-            <span>{{ t("labels.wishlist") }}</span>
+      <!-- The page's menu. On a phone it already carries the header's buttons
+           too, so it moves up to the header as the page's one menu and the
+           toolbar keeps to the list. -->
+      <Teleport to="#header-right" :disabled="!mobile">
+        <BtnDropdown
+          data-tour="hangar-menu"
+          :class="{ 'navigation-header-pinned': mobile }"
+          :size="mobile ? BtnSizesEnum.MD : undefined"
+          :expand-left="mobile"
+        >
+          <template v-if="mobile">
+            <Btn :to="{ name: 'hangar-wishlist' }">
+              <i class="fa-duotone fa-wand-sparkles" />
+              <span>{{ t("labels.wishlist") }}</span>
+            </Btn>
+
+            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+              <DuotoneGlyph :glyph="SHIP_GLYPH" />
+              <span>{{ t("labels.fleetchart") }}</span>
+            </Btn>
+
+            <Btn
+              v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
+              :to="{ name: 'hangar-inventories' }"
+            >
+              <i class="fa-duotone fa-boxes-stacked" />
+              <span>{{ t("labels.hangarInventories") }}</span>
+            </Btn>
+
+            <Btn :to="{ name: 'hangar-stats' }">
+              <i class="fa-duotone fa-chart-bar" />
+              <span>{{ t("labels.hangarStats") }}</span>
+            </Btn>
+
+            <ShareBtn
+              v-if="currentUser && currentUser.publicHangar && shareUrl"
+              :url="shareUrl"
+              :title="shareTitle"
+              :size="BtnSizesEnum.SM"
+            />
+
+            <hr />
+          </template>
+
+          <Btn
+            :aria-label="t('actions.showGuide')"
+            data-test="hangar-show-guide"
+            @click="openGuide"
+          >
+            <i class="fa-duotone fa-question" />
+            <span>{{ t("actions.showGuide") }}</span>
           </Btn>
 
-          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-            <DuotoneGlyph :glyph="SHIP_GLYPH" />
-            <span>{{ t("labels.fleetchart") }}</span>
+          <hr />
+
+          <Btn
+            href="https://robertsspaceindustries.com/account/pledges"
+            target="_blank"
+          >
+            <img :src="rsiLogo" />
+            <span>{{ t("nav.rsiHangar") }}</span>
+          </Btn>
+
+          <hr />
+
+          <Btn :aria-label="t('actions.export')" @click="exportJson">
+            <i class="fa-light fa-download" />
+            <span>{{ t("actions.export") }}</span>
           </Btn>
 
           <Btn
-            v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
-            :to="{ name: 'hangar-inventories' }"
+            :aria-label="t('actions.exportHangarLink')"
+            @click="exportHangarLink"
           >
-            <i class="fa-duotone fa-boxes-stacked" />
-            <span>{{ t("labels.hangarInventories") }}</span>
+            <i class="fa-light fa-link" />
+            <span>{{ t("actions.exportHangarLink") }}</span>
           </Btn>
 
-          <Btn :to="{ name: 'hangar-stats' }">
-            <i class="fa-duotone fa-chart-bar" />
-            <span>{{ t("labels.hangarStats") }}</span>
+          <HangarImportBtn :size="BtnSizesEnum.SM" />
+
+          <Btn
+            :aria-label="t('nav.hangar.buybacks')"
+            :to="{ name: 'hangar-buybacks' }"
+          >
+            <i class="fa-light fa-rotate-left" />
+            <span>{{ t("nav.hangar.buybacks") }}</span>
           </Btn>
 
-          <ShareBtn
-            v-if="currentUser && currentUser.publicHangar && shareUrl"
-            :url="shareUrl"
-            :title="shareTitle"
-            :size="BtnSizesEnum.SM"
-          />
+          <Btn
+            :aria-label="t('nav.hangar.paints')"
+            :to="{ name: 'hangar-paints' }"
+          >
+            <i class="fa-light fa-paintbrush" />
+            <span>{{ t("nav.hangar.paints") }}</span>
+          </Btn>
+
+          <Btn
+            :aria-label="t('nav.hangar.flair')"
+            :to="{ name: 'hangar-flair' }"
+          >
+            <i class="fa-light fa-trophy-star" />
+            <span>{{ t("nav.hangar.flair") }}</span>
+          </Btn>
+
+          <Btn
+            :aria-label="t('nav.hangar.equipment')"
+            :to="{ name: 'hangar-equipment' }"
+          >
+            <i class="fa-light fa-shirt" />
+            <span>{{ t("nav.hangar.equipment") }}</span>
+          </Btn>
+
+          <Btn
+            :aria-label="t('nav.hangar.imports')"
+            :to="{ name: 'hangar-imports' }"
+          >
+            <i class="fa-light fa-clock-rotate-left" />
+            <span>{{ t("nav.hangar.imports") }}</span>
+          </Btn>
+
+          <Btn
+            :aria-label="t('actions.hangar.resetIngame.openModal')"
+            @click="showResetIngameModal"
+          >
+            <i class="fa-light fa-arrow-rotate-left" />
+            <span>{{ t("actions.hangar.resetIngame.openModal") }}</span>
+          </Btn>
 
           <hr />
-        </template>
 
-        <Btn
-          :aria-label="t('actions.showGuide')"
-          data-test="hangar-show-guide"
-          @click="openGuide"
-        >
-          <i class="fa-duotone fa-question" />
-          <span>{{ t("actions.showGuide") }}</span>
-        </Btn>
-
-        <hr />
-
-        <Btn
-          href="https://robertsspaceindustries.com/account/pledges"
-          target="_blank"
-        >
-          <img :src="rsiLogo" />
-          <span>{{ t("nav.rsiHangar") }}</span>
-        </Btn>
-
-        <hr />
-
-        <Btn :aria-label="t('actions.export')" @click="exportJson">
-          <i class="fa-light fa-download" />
-          <span>{{ t("actions.export") }}</span>
-        </Btn>
-
-        <Btn
-          :aria-label="t('actions.exportHangarLink')"
-          @click="exportHangarLink"
-        >
-          <i class="fa-light fa-link" />
-          <span>{{ t("actions.exportHangarLink") }}</span>
-        </Btn>
-
-        <HangarImportBtn :size="BtnSizesEnum.SM" />
-
-        <Btn
-          :aria-label="t('nav.hangar.buybacks')"
-          :to="{ name: 'hangar-buybacks' }"
-        >
-          <i class="fa-light fa-rotate-left" />
-          <span>{{ t("nav.hangar.buybacks") }}</span>
-        </Btn>
-
-        <Btn
-          :aria-label="t('nav.hangar.paints')"
-          :to="{ name: 'hangar-paints' }"
-        >
-          <i class="fa-light fa-paintbrush" />
-          <span>{{ t("nav.hangar.paints") }}</span>
-        </Btn>
-
-        <Btn :aria-label="t('nav.hangar.flair')" :to="{ name: 'hangar-flair' }">
-          <i class="fa-light fa-trophy-star" />
-          <span>{{ t("nav.hangar.flair") }}</span>
-        </Btn>
-
-        <Btn
-          :aria-label="t('nav.hangar.equipment')"
-          :to="{ name: 'hangar-equipment' }"
-        >
-          <i class="fa-light fa-shirt" />
-          <span>{{ t("nav.hangar.equipment") }}</span>
-        </Btn>
-
-        <Btn
-          :aria-label="t('nav.hangar.imports')"
-          :to="{ name: 'hangar-imports' }"
-        >
-          <i class="fa-light fa-clock-rotate-left" />
-          <span>{{ t("nav.hangar.imports") }}</span>
-        </Btn>
-
-        <Btn
-          :aria-label="t('actions.hangar.resetIngame.openModal')"
-          @click="showResetIngameModal"
-        >
-          <i class="fa-light fa-arrow-rotate-left" />
-          <span>{{ t("actions.hangar.resetIngame.openModal") }}</span>
-        </Btn>
-
-        <hr />
-
-        <Btn
-          :tone="BtnTonesEnum.DANGER"
-          :disabled="deleting"
-          :aria-label="t('actions.hangar.destroyAll')"
-          @click="destroyAll"
-        >
-          <i class="fa-light fa-trash" />
-          <span>{{ t("actions.hangar.destroyAll") }}</span>
-        </Btn>
-      </BtnDropdown>
+          <Btn
+            :tone="BtnTonesEnum.DANGER"
+            :disabled="deleting"
+            :aria-label="t('actions.hangar.destroyAll')"
+            @click="destroyAll"
+          >
+            <i class="fa-light fa-trash" />
+            <span>{{ t("actions.hangar.destroyAll") }}</span>
+          </Btn>
+        </BtnDropdown>
+      </Teleport>
     </template>
 
     <template #filter>

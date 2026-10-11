@@ -296,44 +296,53 @@ const openDisplayOptionsModal = () => {
       >
         <i class="fa-duotone fa-cog" />
       </Btn>
-      <BtnDropdown>
-        <template v-if="mobile">
-          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-            <DuotoneGlyph :glyph="SHIP_GLYPH" />
-            <span>{{ t("labels.fleetchart") }}</span>
-          </Btn>
+      <!-- The page's menu. On a phone it already carries the header's buttons
+           too, so it moves up to the header as the page's one menu and the
+           toolbar keeps to the list. -->
+      <Teleport to="#header-right" :disabled="!mobile">
+        <BtnDropdown
+          :class="{ 'navigation-header-pinned': mobile }"
+          :size="mobile ? BtnSizesEnum.MD : undefined"
+          :expand-left="mobile"
+        >
+          <template v-if="mobile">
+            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+              <DuotoneGlyph :glyph="SHIP_GLYPH" />
+              <span>{{ t("labels.fleetchart") }}</span>
+            </Btn>
 
-          <Btn :to="{ name: 'hangar-stats' }">
-            <i class="fa-duotone fa-chart-bar" />
-            <span>{{ t("labels.hangarStats") }}</span>
-          </Btn>
+            <Btn :to="{ name: 'hangar-stats' }">
+              <i class="fa-duotone fa-chart-bar" />
+              <span>{{ t("labels.hangarStats") }}</span>
+            </Btn>
 
-          <ShareBtn
-            v-if="currentUser && currentUser.publicWishlist && shareUrl"
-            :url="shareUrl"
-            :title="shareTitle"
-            :size="BtnSizesEnum.SM"
-          />
+            <ShareBtn
+              v-if="currentUser && currentUser.publicWishlist && shareUrl"
+              :url="shareUrl"
+              :title="shareTitle"
+              :size="BtnSizesEnum.SM"
+            />
+
+            <hr />
+          </template>
+          <Btn :aria-label="t('actions.export')" @click="exportJson">
+            <i class="fa-light fa-download" />
+            <span>{{ t("actions.export") }}</span>
+          </Btn>
 
           <hr />
-        </template>
-        <Btn :aria-label="t('actions.export')" @click="exportJson">
-          <i class="fa-light fa-download" />
-          <span>{{ t("actions.export") }}</span>
-        </Btn>
 
-        <hr />
-
-        <Btn
-          :tone="BtnTonesEnum.DANGER"
-          :disabled="deleting"
-          :aria-label="t('actions.hangar.destroyAll')"
-          @click="destroyAll"
-        >
-          <i class="fa-light fa-trash" />
-          <span>{{ t("actions.hangar.destroyAll") }}</span>
-        </Btn>
-      </BtnDropdown>
+          <Btn
+            :tone="BtnTonesEnum.DANGER"
+            :disabled="deleting"
+            :aria-label="t('actions.hangar.destroyAll')"
+            @click="destroyAll"
+          >
+            <i class="fa-light fa-trash" />
+            <span>{{ t("actions.hangar.destroyAll") }}</span>
+          </Btn>
+        </BtnDropdown>
+      </Teleport>
     </template>
 
     <template #filter>
