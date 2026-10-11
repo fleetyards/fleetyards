@@ -122,3 +122,15 @@
     }
   }
 }
+
+// An app installed to an iPhone's home screen draws its own blurred, darkened
+// band just under the status bar (iOS 26's scroll edge), about 15pt deep, and
+// a page cannot switch it off. Clear of it, the band lies over the header's
+// empty top strip instead of over the search and the buttons. A browser tab
+// keeps the tighter spacing: Safari's own bars sit outside the page.
+@media (max-width: $desktop-breakpoint) and (display-mode: standalone),
+  (max-width: $desktop-breakpoint) and (display-mode: fullscreen) {
+  .navigation-header {
+    padding-top: 22px;
+  }
+}

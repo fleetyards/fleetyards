@@ -384,6 +384,15 @@ onBeforeUnmount(() => {
   }
 }
 
+// The installed app's band under the status bar (see the navigation header):
+// the full-screen pane starts at the very top, so its bar clears the band too.
+@media (max-width: $desktop-breakpoint) and (display-mode: standalone),
+  (max-width: $desktop-breakpoint) and (display-mode: fullscreen) {
+  .notification-detail-pane--open .notification-detail__toolbar {
+    padding-top: calc(22px + env(safe-area-inset-top));
+  }
+}
+
 @media (min-width: $notifications-two-pane-breakpoint) {
   .notification-detail__back {
     display: none;
