@@ -1,5 +1,5 @@
 import { useEventListener } from "@vueuse/core";
-import { hapticTick } from "@/shared/utils/Haptics";
+import { canVibrateNow, hapticTick } from "@/shared/utils/Haptics";
 
 /*
  * How far a row has to travel before letting go acts on it, and how far it
@@ -67,7 +67,7 @@ export const useSwipeActions = ({
   // A tick each time the row crosses into the armed range, so the finger feels
   // the point past which letting go acts. Crossing back out stays silent.
   watch(armed, (isArmed) => {
-    if (isArmed && swiping.value) {
+    if (isArmed && swiping.value && canVibrateNow()) {
       hapticTick();
     }
   });
@@ -182,6 +182,11 @@ export const useSwipeActions = ({
     }
 
     if (action) {
+      // Where the device cannot buzz mid-move, the release is the tick.
+      if (!canVibrateNow()) {
+        hapticTick();
+      }
+
       onSwipe(action);
     }
   };
