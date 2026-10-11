@@ -7,6 +7,13 @@ module Shops
   class Items
     SORTS = ["name asc", "name desc", "price asc", "price desc"].freeze
 
+    # A paginated array has no model to carry its page sizes.
+    def self.default_per_page = 24
+
+    def self.max_per_page = Kaminari.config.max_per_page
+
+    def self.per_page_steps = PageSizes.up_to(PageSizes::STEPS, max_per_page)
+
     Row = Struct.new(:item, :prices, :category_id, :category_label) do
       # Shop-perspective, as `item_prices` stores it: what the shop sells at is
       # what a reader buys for.

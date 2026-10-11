@@ -19,7 +19,7 @@ module Api
 
         rows = ::Shops::Items.new(shop, name_cont: query[:name_cont], category_in: query[:category_in], category_not_in: query[:category_not_in], sort: query[:s]).call
 
-        @items = Kaminari.paginate_array(rows).page(page_params).per(per_page(Shop))
+        @items = Kaminari.paginate_array(rows).page(page_params).per(per_page(::Shops::Items))
         ::Shops::Items.preload_manufacturers(@items)
       end
     end
