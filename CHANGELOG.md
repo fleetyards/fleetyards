@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.2](https://github.com/fleetyards/fleetyards/compare/v9.1.1...v9.1.2) (2026-10-11)
+
+
+### Bug Fixes
+
+* **gestures:** haptics on iOS tick on the release, where Safari lets a page tick at all ([8074b55](https://github.com/fleetyards/fleetyards/commit/8074b556b419405be108a2223ff38afb49bd87e4))
+* **navigation:** the installed app's header clears iOS's blurred band under the status bar ([a8d2cfd](https://github.com/fleetyards/fleetyards/commit/a8d2cfd5a346ec4153a07b6fbb3613980eda406d))
+* **notifications:** the swipe colour floods out with the finger, full where letting go acts ([2f34c09](https://github.com/fleetyards/fleetyards/commit/2f34c09ea1c29446847bb462100484e7275a434e))
+
 ## [9.1.1](https://github.com/fleetyards/fleetyards/compare/v9.1.0...v9.1.1) (2026-10-11)
 
 
