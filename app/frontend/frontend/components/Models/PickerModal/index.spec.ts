@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
+import { nextTick, type Ref, ref } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
+import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
+import { type ModelQuery } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const option = {
@@ -16,16 +19,26 @@ const option = {
   media: {},
 };
 
+const requested = vi.hoisted(() => ({
+  params: undefined as Ref<{ q: ModelQuery }> | undefined,
+}));
+
+const lastQuery = () => requested.params?.value.q;
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<object>()),
-  useModelOptions: () => ({
-    data: ref({
-      items: [option],
-      meta: { pagination: { currentPage: 1, totalPages: 1, totalCount: 1 } },
-    }),
-    isLoading: ref(false),
-    isFetching: ref(false),
-  }),
+  useModelOptions: (params: Ref<{ q: ModelQuery }>) => {
+    requested.params = params;
+
+    return {
+      data: ref({
+        items: [option],
+        meta: { pagination: { currentPage: 1, totalPages: 1, totalCount: 1 } },
+      }),
+      isLoading: ref(false),
+      isFetching: ref(false),
+    };
+  },
 }));
 
 vi.stubGlobal(
@@ -119,5 +132,54 @@ describe("Models/PickerModal", () => {
 
     expect(offered.findComponent(ProductionStatusSelect).exists()).toBe(true);
     expect(pinned.findComponent(ProductionStatusSelect).exists()).toBe(false);
+  });
+
+  it("asks for the focus, size and production status picked", async () => {
+    const wrapper = await mount();
+
+    wrapper
+      .findComponent(FocusSelect)
+      .vm.$emit("update:modelValue", ["mining"]);
+    wrapper.findComponent(SizeSelect).vm.$emit("update:modelValue", ["large"]);
+    wrapper
+      .findComponent(ProductionStatusSelect)
+      .vm.$emit("update:modelValue", ["in-concept"]);
+    await nextTick();
+
+    expect(lastQuery()).toEqual({
+      focusIn: ["mining"],
+      sizeIn: ["large"],
+      productionStatusIn: ["in-concept"],
+    });
+  });
+
+  it("drops the extra filters on reset", async () => {
+    const wrapper = await mount();
+
+    wrapper
+      .findComponent(FocusSelect)
+      .vm.$emit("update:modelValue", ["mining"]);
+    wrapper.findComponent(SizeSelect).vm.$emit("update:modelValue", ["large"]);
+    await nextTick();
+
+    await wrapper.find(".model-picker__reset").trigger("click");
+
+    expect(lastQuery()).toEqual({});
+  });
+
+  it("keeps the caller's production status pin whatever else is picked", async () => {
+    const wrapper = await mount({
+      query: { productionStatusIn: ["flight-ready"] },
+    });
+
+    wrapper
+      .findComponent(FocusSelect)
+      .vm.$emit("update:modelValue", ["mining"]);
+    await nextTick();
+
+    expect(lastQuery()).toEqual({
+      productionStatusIn: ["flight-ready"],
+      focusIn: ["mining"],
+    });
   });
 });
