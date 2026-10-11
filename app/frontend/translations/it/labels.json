@@ -2603,7 +2603,8 @@
         "status": {
           "started": "Importazione avviata...",
           "finished": "Importazione completata",
-          "failed": "Importazione fallita!"
+          "failed": "Importazione fallita!",
+          "cancelled": "Importazione annullata"
         },
         "processSteps": {
           "fetchHangar": "Recupero dati dall'hangar RSI",

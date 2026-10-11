@@ -19,6 +19,7 @@ type Props = {
   result?: HangarSyncResult;
   finished: boolean;
   finishedWithErrors: boolean;
+  cancelled?: boolean;
   showSupportHint?: boolean;
   syncPaints?: boolean;
   syncHangarFlair?: boolean;
@@ -26,6 +27,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   result: undefined,
+  cancelled: false,
   showSupportHint: false,
   syncPaints: true,
   syncHangarFlair: true,
@@ -119,10 +121,14 @@ const hasWarnings = computed(
       :class="{
         'text-warning': !finished && !finishedWithErrors,
         'text-success': finished,
-        'text-danger': finishedWithErrors,
+        'text-danger': finishedWithErrors && !cancelled,
       }"
+      data-test="sync-result-status"
     >
       <b v-if="finished">{{ t("labels.syncExtension.status.finished") }}</b>
+      <b v-else-if="cancelled">
+        {{ t("labels.syncExtension.status.cancelled") }}
+      </b>
       <b v-else-if="finishedWithErrors">
         {{ t("labels.syncExtension.status.failed") }}
       </b>

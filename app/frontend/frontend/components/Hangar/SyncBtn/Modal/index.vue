@@ -60,6 +60,7 @@ const {
   finished,
   finishedWithErrors,
   retryable,
+  cancelled,
   running,
   fetching,
 } = hangarSync;
@@ -353,6 +354,7 @@ const refreshPage = async () => {
           :result="result"
           :finished="finished"
           :finished-with-errors="finishedWithErrors"
+          :cancelled="cancelled"
           :show-support-hint="showSupportHint"
           :sync-paints="hangarStore.syncPaints"
           :sync-hangar-flair="hangarStore.syncHangarFlair"

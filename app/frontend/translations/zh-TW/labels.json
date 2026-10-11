@@ -2603,7 +2603,8 @@
         "status": {
           "started": "匯入已開始...",
           "finished": "匯入完成",
-          "failed": "匯入失敗!"
+          "failed": "匯入失敗!",
+          "cancelled": "匯入已取消"
         },
         "processSteps": {
           "fetchHangar": "正在從 RSI 機庫取得資料",
