@@ -77,7 +77,7 @@ const openDisplayOptionsModal = () => {
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.fleets.directory") }}</Heading>
+  <Heading hero mobile-hidden>{{ t("headlines.fleets.directory") }}</Heading>
   <p class="text-muted">{{ t("texts.fleets.directory") }}</p>
 
   <FilteredList

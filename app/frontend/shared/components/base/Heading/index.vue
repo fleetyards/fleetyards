@@ -18,6 +18,9 @@ type Props = {
   alignment?: `${HeadingAlignmentEnum}`;
   hero?: boolean;
   hidden?: boolean;
+  // Left to a screen reader on a phone, for a list page whose header and
+  // toolbar already say where the reader is.
+  mobileHidden?: boolean;
   shadow?: boolean;
   truncate?: boolean;
   mb?: boolean;
@@ -31,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   hero: false,
   alignment: HeadingAlignmentEnum.LEFT,
   hidden: false,
+  mobileHidden: false,
   shadow: false,
   mb: false,
   mt: false,
@@ -43,6 +47,7 @@ const cssClasses = computed(() => {
     "font-opensans": !props.hero,
     [`text-${props.size}`]: true,
     "sr-only": props.hidden,
+    "heading--mobile-hidden": props.mobileHidden,
     "text-shadow": props.shadow,
     "mb-4": props.mb,
     "mt-4": props.mt,

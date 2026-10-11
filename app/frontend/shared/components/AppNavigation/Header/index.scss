@@ -12,8 +12,16 @@
 
   // Content that takes the header over - a selection standing in for the
   // search - brings its own way out, and a back button beside it would leave
-  // the page instead.
-  &:has(.navigation-header-takeover) &__back {
+  // the page instead. The search and the page's actions step aside too: the
+  // component taking over cannot always reach the page that put them there.
+  &:has(.navigation-header-takeover) &__back,
+  &:has(.navigation-header-takeover) &__right {
+    display: none;
+  }
+
+  &:has(.navigation-header-takeover)
+    &__left
+    > :deep(*:not(.navigation-header-takeover)) {
     display: none;
   }
 
@@ -45,7 +53,10 @@
     right: 0;
     left: auto;
     flex-wrap: wrap;
-    padding: 15px;
+    // Tighter top and bottom: on a phone the header is often just the back
+    // button and a search, and 15px either side of them is a screen's worth
+    // of nothing over the course of a few pages.
+    padding: 8px 15px;
     transition: right ease $transition-base-speed;
 
     &__left {

@@ -173,8 +173,6 @@ const summary = (item: Import) => {
 
   <Heading hero>{{ t("headlines.hangar.imports") }}</Heading>
 
-  <p class="imports-intro">{{ t("labels.imports.intro") }}</p>
-
   <ListGroup
     :items="items"
     :loading="isLoading"
@@ -273,11 +271,6 @@ const summary = (item: Import) => {
 </template>
 
 <style lang="scss" scoped>
-.imports-intro {
-  margin-bottom: 1rem;
-  color: var(--text-muted);
-}
-
 .import-info {
   display: flex;
   flex-direction: column;

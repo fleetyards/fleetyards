@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -221,41 +222,30 @@ const crumbs = computed<Crumb[]>(() => [
           {{ inventory.description }}
         </p>
 
-        <Teleport to="#header-right">
-          <Btn
-            :size="BtnSizesEnum.MD"
-            data-test="inventory-deposit"
-            mobile-icon-only
-            @click="openItemModal('deposit')"
-          >
+        <PageActions v-slot="{ menu }">
+          <Btn data-test="inventory-deposit" @click="openItemModal('deposit')">
             <i class="fa-duotone fa-arrow-down-to-square" />
             {{ t("actions.logistics.deposit") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            @click="openItemModal('withdrawal')"
-          >
+          <Btn @click="openItemModal('withdrawal')">
             <i class="fa-duotone fa-arrow-up-from-square" />
             {{ t("actions.logistics.withdraw") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            @click="openCsvImportModal"
-          >
+          <Btn @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.MD"
             :aria-label="t('actions.logistics.editInventory')"
             data-test="inventory-edit"
             @click="openEditModal"
           >
             <i class="fa-duotone fa-pen" />
+            <template v-if="menu">
+              {{ t("actions.logistics.editInventory") }}
+            </template>
           </Btn>
-        </Teleport>
+        </PageActions>
 
         <!-- `placeholders`, so both views draw their own wait. The two tables
              take a loading flag already and hold themselves open with a header and

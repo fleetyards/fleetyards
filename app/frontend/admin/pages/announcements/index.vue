@@ -75,7 +75,7 @@ const sortFields = useAnnouncementSortFields();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.announcements.index") }}
     <HeadingSmall v-if="announcements">
       {{
@@ -89,6 +89,7 @@ const sortFields = useAnnouncementSortFields();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-announcement-create' }"
       :aria-label="t('actions.create')"

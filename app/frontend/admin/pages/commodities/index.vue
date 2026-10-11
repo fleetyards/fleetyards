@@ -124,7 +124,7 @@ const { t, l, toUEC } = useI18n();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.commodities.index") }}
     <HeadingSmall v-if="commodities">
       {{
@@ -138,6 +138,7 @@ const { t, l, toUEC } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-commodity-create' }"
       :aria-label="t('actions.create')"

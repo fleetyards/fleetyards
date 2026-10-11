@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
@@ -271,38 +272,27 @@ onMounted(() => {
          behind the same icons: the two hold the same goods and differ only in
          what is carrying them. What acts on this hold in particular is in the
          menu over the table instead. -->
-    <Teleport to="#header-right">
-      <Btn
-        :size="BtnSizesEnum.MD"
-        data-test="vehicle-cargo-deposit"
-        mobile-icon-only
-        @click="openItemModal('deposit')"
-      >
+    <PageActions>
+      <Btn data-test="vehicle-cargo-deposit" @click="openItemModal('deposit')">
         <i class="fa-duotone fa-arrow-down-to-square" />
         {{ t("actions.logistics.deposit") }}
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        mobile-icon-only
-        @click="openItemModal('withdrawal')"
-      >
+      <Btn @click="openItemModal('withdrawal')">
         <i class="fa-duotone fa-arrow-up-from-square" />
         {{ t("actions.logistics.withdraw") }}
       </Btn>
-      <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openCsvImportModal">
+      <Btn @click="openCsvImportModal">
         <i class="fa-duotone fa-file-csv" />
         {{ t("actions.logistics.importCsv") }}
       </Btn>
       <Btn
-        :size="BtnSizesEnum.MD"
         :to="{ name: 'hangar-inventories' }"
         data-test="vehicle-cargo-inventories-link"
-        mobile-icon-only
       >
         <i class="fa-duotone fa-boxes-stacked" />
         {{ t("nav.hangar.inventories") }}
       </Btn>
-    </Teleport>
+    </PageActions>
 
     <!-- `placeholders`, so both views draw their own wait. The two tables
          take a loading flag already and hold themselves open with a header and

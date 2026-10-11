@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from "pinia";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { route, replace } = vi.hoisted(() => ({
+const { route, replace, push } = vi.hoisted(() => ({
   route: {
     name: "fleet-members",
     params: {},
@@ -12,11 +12,12 @@ const { route, replace } = vi.hoisted(() => ({
   replace: vi.fn((_to: { query: Record<string, unknown> }) =>
     Promise.resolve(),
   ),
+  push: vi.fn((_to: { query: Record<string, unknown> }) => Promise.resolve()),
 }));
 
 vi.mock("vue-router", () => ({
   useRoute: () => route,
-  useRouter: () => ({ replace }),
+  useRouter: () => ({ replace, push }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -39,6 +40,7 @@ describe("FleetMembersFilterForm", () => {
     setActivePinia(createPinia());
     vi.useFakeTimers();
     replace.mockClear();
+    push.mockClear();
   });
 
   afterEach(() => {
@@ -66,11 +68,16 @@ describe("FleetMembersFilterForm", () => {
     const input = wrapper.find("input#member-search");
     expect((input.element as HTMLInputElement).value).toBe("alice");
 
+    // Typed once the page has settled, not on arrival.
+    vi.advanceTimersByTime(2000);
+    push.mockClear();
+    replace.mockClear();
+
     await input.setValue("wingman");
     vi.advanceTimersByTime(400);
 
-    expect(replace).toHaveBeenCalled();
-    const { query } = replace.mock.lastCall![0];
+    expect(push).toHaveBeenCalled();
+    const { query } = push.mock.lastCall![0];
     expect(query.searchCont).toBe("wingman");
     expect(query).not.toHaveProperty("usernameCont");
   });

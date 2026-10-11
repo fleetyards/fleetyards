@@ -33,6 +33,7 @@ export const routes: RouteRecordRaw[] = [
     name: "fleet-blueprints",
     component: () => import("@/frontend/pages/fleets/[slug]/blueprints.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       backgroundImage: "bg-8",
       customTitle: true,

@@ -284,7 +284,6 @@
           "failed": "Fehlgeschlagen",
           "cancelled": "Abgebrochen"
         },
-        "intro": "Alle Hangar-Importe und RSI-Syncs, die du ausgeführt hast, neueste zuerst.",
         "targetGroupHint": "Wähle eine Hangar-Gruppe, dann landet jedes importierte Schiff darin. Leer lassen, um die Gruppen aus der Datei zu verwenden.",
         "types": {
           "Imports::HangarImport": "Hangar-Import",

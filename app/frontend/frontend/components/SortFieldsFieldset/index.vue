@@ -24,12 +24,8 @@ const { t } = useI18n();
     <legend>
       <h3>{{ t("labels.sortOptions") }}:</h3>
     </legend>
-    <div class="row">
-      <div
-        v-for="field in fields"
-        :key="String(field.name)"
-        class="col-12 col-md-6"
-      >
+    <div class="grid grid-cols-2 gap-x-4 sm:grid-cols-3">
+      <div v-for="field in fields" :key="String(field.name)">
         <FormCheckbox
           v-model="picked"
           :checkbox-value="String(field.name)"

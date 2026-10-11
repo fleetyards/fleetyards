@@ -291,18 +291,6 @@
         "requestingAccess": "%{clientName} demande l'accès à votre compte.",
         "scopesIntro": "Cette application pourra :"
       },
-      "hangarFlair": {
-        "intro": "Les décorations de votre hangar RSI, à la date de votre dernière synchronisation du hangar. La synchronisation lit votre hangar RSI via l'extension Fleetyards Sync."
-      },
-      "hangarEquipment": {
-        "intro": "L'équipement FPS de votre hangar RSI, à la date de votre dernière synchronisation du hangar. La synchronisation lit votre hangar RSI via l'extension Fleetyards Sync."
-      },
-      "hangarPaints": {
-        "intro": "Les peintures de votre hangar RSI, à la date de votre dernière synchronisation du hangar. La synchronisation lit votre hangar RSI via l'extension Fleetyards Sync."
-      },
-      "buybacks": {
-        "intro": "Les pledges que vous avez fondus sur RSI et pourriez racheter, à la date de votre dernière synchronisation. La synchronisation lit votre liste de rachat RSI via l'extension Fleetyards Sync."
-      },
       "buybackSync": {
         "info": "Lit chaque page de votre liste de rachat RSI et remplace par celle-ci les pledges rachetables enregistrés sur Fleetyards. Votre hangar n'est pas modifié. Les longues listes prennent quelques minutes. La synchronisation se fait en arrière-plan : vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards tant que l'onglet reste ouvert.",
         "unsupported": "Votre extension Fleetyards Sync ne sait pas encore lire les pledges rachetables. Mettez-la à jour pour les synchroniser.",

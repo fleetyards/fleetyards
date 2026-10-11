@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/announcements/index.vue"),
     strict: true,
     meta: {
+      mobileBack: true,
       title: "admin.announcements.index",
       needsAuthentication: true,
       access: ["announcements"],

@@ -84,8 +84,6 @@ onUnmounted(() => {
 
   <Heading hero>{{ t("headlines.hangar.buybacks") }}</Heading>
 
-  <p class="buybacks-intro">{{ t("texts.buybacks.intro") }}</p>
-
   <FilteredList
     name="buybacks"
     :records="buybacks?.items || []"
@@ -133,10 +131,3 @@ onUnmounted(() => {
     </template>
   </FilteredList>
 </template>
-
-<style lang="scss" scoped>
-.buybacks-intro {
-  margin-bottom: 1rem;
-  color: var(--color-text-dim);
-}
-</style>

@@ -60,8 +60,10 @@ const headerLeft = () => document.getElementById("header-left")!;
 // phone - which is the layout these tests are about.
 let mounted: { unmount: () => void } | undefined;
 
-const mount = async () => {
-  const router = createRouter({
+let router: ReturnType<typeof createRouter>;
+
+const mount = async (path = "/notifications") => {
+  router = createRouter({
     history: createMemoryHistory(),
     routes: [
       { path: "/notifications", name: "admin-notifications", component: {} },
@@ -73,7 +75,7 @@ const mount = async () => {
     ],
   });
 
-  await router.push("/notifications");
+  await router.push(path);
 
   const wrapper = await mountWithDefaults(AdminNotificationsPage, {
     plugins: [router],
@@ -132,9 +134,10 @@ describe("AdminNotificationsPage on a phone", () => {
     expect(
       headerLeft().querySelector('[data-test="bulk-exit"]'),
     ).not.toBeNull();
+    // The takeover is what the header's stylesheet hides the menu by.
     expect(
-      document.querySelector('[data-test="notifications-menu"]'),
-    ).toBeNull();
+      headerLeft().querySelector(".navigation-header-takeover"),
+    ).not.toBeNull();
     expect(wrapper.findAll('[data-test="notification-checkbox"]')).toHaveLength(
       2,
     );
@@ -169,10 +172,58 @@ describe("AdminNotificationsPage on a phone", () => {
     expect(headerLeft().querySelector('input[name="search"]')).not.toBeNull();
     expect(headerLeft().querySelector('[data-test="bulk-exit"]')).toBeNull();
     expect(
-      document.querySelector('[data-test="notifications-menu"]'),
+      document.querySelector('[data-test="page-actions-menu"]'),
     ).not.toBeNull();
     expect(wrapper.find('[data-test="notification-checkbox"]').exists()).toBe(
       false,
+    );
+  });
+
+  it("opens a tapped notification as a page the back gesture closes", async () => {
+    const wrapper = await mount();
+
+    await wrapper
+      .findAll('[data-test="notification-select"]')[1]
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.notification).toBe("2");
+    expect(wrapper.find('[data-test="notification-detail-title"]').text()).toBe(
+      "Notification 2",
+    );
+
+    router.back();
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.notification).toBeUndefined();
+    expect(wrapper.find('[data-test="notification-detail"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("steps back over the entry when the pane's own back button closes it", async () => {
+    const wrapper = await mount();
+
+    await wrapper
+      .findAll('[data-test="notification-select"]')[0]
+      .trigger("click");
+    await flushPromises();
+    await wrapper
+      .find('[data-test="notification-detail-back"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.fullPath).toBe("/notifications");
+    expect(wrapper.find('[data-test="notification-detail"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("reopens the notification the URL names", async () => {
+    const wrapper = await mount("/notifications?notification=2");
+
+    expect(wrapper.find('[data-test="notification-detail-title"]').text()).toBe(
+      "Notification 2",
     );
   });
 });

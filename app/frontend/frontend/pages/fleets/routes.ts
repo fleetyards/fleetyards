@@ -33,6 +33,7 @@ export const routes: RouteRecordRaw[] = [
     name: "fleet-directory",
     component: () => import("@/frontend/pages/fleets/directory.vue"),
     meta: {
+      mobileBack: true,
       title: "fleets.directory",
       feature: FeatureFlagName.FLEET_DIRECTORY,
     },

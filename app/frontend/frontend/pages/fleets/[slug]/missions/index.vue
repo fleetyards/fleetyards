@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -182,19 +183,17 @@ const crumbs = computed<Crumb[]>(() => [
   <!-- Creating a mission is what this page is for, so it sits in the header
        beside the fleet's own actions - where the events and contracts pages
        already put theirs - rather than in the list's toolbar. -->
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
       v-if="canCreate"
-      :size="BtnSizesEnum.MD"
       :aria-label="t('actions.fleets.missions.create')"
       data-test="create-mission"
-      mobile-icon-only
       @click="goToCreate"
     >
       <i class="fa-light fa-plus" />
       <span>{{ t("actions.fleets.missions.create") }}</span>
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     key="fleet-missions-index"

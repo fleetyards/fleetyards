@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/oauth-applications/index.vue"),
     strict: true,
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       access: ["oauth_applications"],
     },

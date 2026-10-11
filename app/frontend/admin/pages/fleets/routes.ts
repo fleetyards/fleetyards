@@ -11,6 +11,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/fleets/index.vue"),
     strict: true,
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       access: ["fleets"],
     },

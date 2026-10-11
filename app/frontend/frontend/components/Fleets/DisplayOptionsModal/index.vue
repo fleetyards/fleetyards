@@ -86,29 +86,25 @@ const displayAsList = () => {
 
 <template>
   <Modal :title="t('headlines.modals.models.displayOptions')">
-    <div class="row">
-      <div class="col-6">
-        <Btn
-          block
-          :active="fleetStore.gridView"
-          @click="displayAsGrid"
-          :size="BtnSizesEnum.LG"
-        >
-          <i class="fa-solid fa-th"></i>
-          {{ t("actions.showGridView") }}
-        </Btn>
-      </div>
-      <div class="col-6">
-        <Btn
-          block
-          :active="!fleetStore.gridView"
-          @click="displayAsList"
-          :size="BtnSizesEnum.LG"
-        >
-          <i class="fa-duotone fa-list"></i>
-          {{ t("actions.showTableView") }}
-        </Btn>
-      </div>
+    <div class="grid grid-cols-2 gap-4">
+      <Btn
+        block
+        :active="fleetStore.gridView"
+        @click="displayAsGrid"
+        :size="BtnSizesEnum.LG"
+      >
+        <i class="fa-solid fa-th"></i>
+        {{ t("actions.showGridView") }}
+      </Btn>
+      <Btn
+        block
+        :active="!fleetStore.gridView"
+        @click="displayAsList"
+        :size="BtnSizesEnum.LG"
+      >
+        <i class="fa-duotone fa-list"></i>
+        {{ t("actions.showTableView") }}
+      </Btn>
     </div>
     <hr />
     <div class="row">
@@ -141,12 +137,8 @@ const displayAsList = () => {
             <legend>
               <h3>{{ t("labels.fleetTable.extraColumns") }}:</h3>
             </legend>
-            <div class="row">
-              <div
-                v-for="option in imageColumnOptions"
-                :key="option"
-                class="col-12 col-md-6"
-              >
+            <div class="grid grid-cols-2 gap-x-4 sm:grid-cols-3">
+              <div v-for="option in imageColumnOptions" :key="option">
                 <FormCheckbox
                   v-model="tableViewImageCols"
                   :checkbox-value="option"
@@ -154,11 +146,7 @@ const displayAsList = () => {
                   :label="t('labels.fleetTable.columns.' + option)"
                 />
               </div>
-              <div
-                v-for="option in columnOptions"
-                :key="option"
-                class="col-12 col-md-6"
-              >
+              <div v-for="option in columnOptions" :key="option">
                 <FormCheckbox
                   v-model="tableViewCols"
                   :checkbox-value="option"

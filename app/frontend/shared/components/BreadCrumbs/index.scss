@@ -62,3 +62,51 @@
     }
   }
 }
+
+// A trail is a way back up, not the page's subject: on a phone it is body
+// text rather than the desktop's 110%, whether it sits above the title or up
+// in the header. The links keep their tap target, which is drawn around them
+// rather than taken from their size.
+@media (max-width: $desktop-breakpoint) {
+  .breadcrumbs {
+    gap: 4px 12px;
+    margin-bottom: 6px;
+  }
+
+  .breadcrumb .breadcrumb-item {
+    padding: 2px 6px;
+    font-size: 1em;
+
+    + .breadcrumb-item::before {
+      padding-right: 0.35rem;
+    }
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}
+
+// The header's copy of the trail, on a phone. It sits in the search's slot, so
+// it only shows where there is no search there; the copy above the title
+// stands down when the header's is the one showing.
+.breadcrumb--header {
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.navigation-header__left:has(.base-input) .breadcrumb--header {
+  display: none;
+}
+
+body:has(.navigation-header__left > .breadcrumb--header:only-child) {
+  .breadcrumbs--movable {
+    display: none;
+  }
+
+  .breadcrumbs--trail-movable > .breadcrumb {
+    display: none;
+  }
+}

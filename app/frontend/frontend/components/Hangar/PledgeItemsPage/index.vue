@@ -41,7 +41,6 @@ const KINDS = {
     useItems: useHangarPaints,
     getQueryKey: getHangarPaintsQueryKey,
     headline: "headlines.hangar.paints",
-    intro: "texts.hangarPaints.intro",
     emptyName: "labels.hangarPledgeItems.paints",
     icon: "fa-duotone fa-paintbrush",
   },
@@ -49,7 +48,6 @@ const KINDS = {
     useItems: useHangarFlair,
     getQueryKey: getHangarFlairQueryKey,
     headline: "headlines.hangar.flair",
-    intro: "texts.hangarFlair.intro",
     emptyName: "labels.hangarPledgeItems.flair",
     icon: "fa-duotone fa-trophy-star",
   },
@@ -57,7 +55,6 @@ const KINDS = {
     useItems: useHangarEquipment,
     getQueryKey: getHangarEquipmentQueryKey,
     headline: "headlines.hangar.equipment",
-    intro: "texts.hangarEquipment.intro",
     emptyName: "labels.hangarPledgeItems.equipment",
     icon: "fa-duotone fa-shirt",
   },
@@ -127,8 +124,6 @@ onUnmounted(() => {
     </HeadingSmall>
   </Heading>
 
-  <p class="pledge-items-intro">{{ t(config.intro) }}</p>
-
   <FilteredList
     :name="`hangar-${kind}`"
     :records="pledgeItems?.items || []"
@@ -177,10 +172,3 @@ onUnmounted(() => {
     </template>
   </FilteredList>
 </template>
-
-<style lang="scss" scoped>
-.pledge-items-intro {
-  margin-bottom: 1rem;
-  color: var(--color-text-dim);
-}
-</style>

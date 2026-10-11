@@ -108,7 +108,7 @@ const { formatCents } = useCurrencyFormat();
       },
     ]"
   />
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.fundingGoals.index") }}
     <HeadingSmall v-if="fundingGoals">
       {{
@@ -122,6 +122,7 @@ const { formatCents } = useCurrencyFormat();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-funding-goal-create' }"
       :aria-label="t('actions.create')"

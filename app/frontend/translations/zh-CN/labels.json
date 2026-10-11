@@ -284,7 +284,6 @@
           "failed": "已失败",
           "cancelled": "已取消"
         },
-        "intro": "你运行过的所有机库导入和 RSI 同步，最新的在前。",
         "targetGroupHint": "选择一个机库分组，所有导入的舰船都会归入其中。留空则使用文件中指定的分组。",
         "types": {
           "Imports::HangarImport": "机库导入",

@@ -6,11 +6,16 @@ import { useFilters } from "@/shared/composables/useFilters";
 // active", the way the model lists do with their fleetchart view switch.
 export const NOTIFICATION_TAB_QUERY_KEY = "t";
 
+// The notification open as a page of its own on a phone. In the route so the
+// back gesture closes it, and not a filter either.
+export const NOTIFICATION_DETAIL_QUERY_KEY = "notification";
+
 export const useNotificationFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),
 ) => {
   return useFilters<NotificationQuery>({
     ignoreKeys: [NOTIFICATION_TAB_QUERY_KEY],
+    viewKeys: [NOTIFICATION_DETAIL_QUERY_KEY],
     updateCallback,
   });
 };

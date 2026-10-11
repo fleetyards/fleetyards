@@ -5,13 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -22,6 +18,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
+import MobileSelectionHeader from "@/shared/components/MobileSelectionHeader/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Detail from "@/admin/components/Notifications/Detail/index.vue";
 import FilterForm from "@/admin/components/Notifications/FilterForm/index.vue";
@@ -29,12 +26,14 @@ import ListItem from "@/admin/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useBulkSelection } from "@/shared/composables/useBulkSelection";
 import { useSelectionMode } from "@/shared/composables/useSelectionMode";
+import { useRoutedSelection } from "@/shared/composables/useRoutedSelection";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useAdminNotificationFilters,
   NOTIFICATION_TAB_QUERY_KEY,
+  NOTIFICATION_DETAIL_QUERY_KEY,
 } from "@/admin/composables/useAdminNotificationFilters";
 import {
   useAdminNotificationInvalidation,
@@ -186,25 +185,24 @@ const {
 
 const mobile = useMobile();
 
-const { selecting, start: startSelecting } = useSelectionMode(
-  selectedCount,
-  mobile,
-);
+const { selecting } = useSelectionMode(selectedCount, mobile);
 
 const isChecked = (notification: AdminNotification) =>
   allMatchingSelected.value || selectedIds.value.includes(notification.id);
 
-// Holding a row picks it and turns the list into a selection, never the other
-// way round: a hold on a row already picked keeps it.
+// Holding a row picks it, which is what turns the list into a selection; a
+// hold on a row already picked keeps it.
 const hold = (notification: AdminNotification) => {
   if (!isChecked(notification)) {
     toggleSelection(notification.id);
   }
-
-  startSelecting();
 };
 
-const selectedId = ref<string>();
+const {
+  selectedId,
+  open: openNotification,
+  close: closeNotification,
+} = useRoutedSelection({ key: NOTIFICATION_DETAIL_QUERY_KEY, mobile });
 
 const selected = computed(() =>
   records.value.find((record) => record.id === selectedId.value),
@@ -213,7 +211,7 @@ const selected = computed(() =>
 // A deletion, a filter or another page takes the open notification with it.
 watch(records, () => {
   if (selectedId.value && !selected.value) {
-    selectedId.value = undefined;
+    closeNotification();
   }
 });
 
@@ -241,13 +239,30 @@ const markRead = async (notification: AdminNotification) => {
 // Opening a notification is what reading it means, so it costs no second click.
 // Its toast goes even when the row already reads as read: the cached row can
 // be older than the toast, and then no read reaches the server to settle it.
-const select = (notification: AdminNotification) => {
-  selectedId.value = notification.id;
-  dismissToasts([notification.id]);
+// Watched rather than done on the click, because the route opens one too: a
+// reload, or the forward gesture back onto a notification.
+watch(
+  () => selected.value?.id,
+  (id) => {
+    const notification = selected.value;
 
-  if (!notification.read) {
-    void markRead(notification);
-  }
+    if (!id || !notification) {
+      return;
+    }
+
+    dismissToasts([id]);
+
+    if (!notification.read) {
+      void markRead(notification);
+    }
+  },
+  // A notification the URL opens can be on screen before this runs, when
+  // its list is already cached.
+  { immediate: true },
+);
+
+const select = (notification: AdminNotification) => {
+  openNotification(notification.id);
 };
 
 // While picking, a tap picks too - opening a notification in the middle of a
@@ -311,7 +326,7 @@ const readOne = async (notification: AdminNotification) => {
 // it unread is to come back to it later.
 const markUnread = async (notification: AdminNotification) => {
   if (selectedId.value === notification.id) {
-    selectedId.value = undefined;
+    closeNotification();
   }
 
   await withFeedback(
@@ -380,7 +395,7 @@ const readSelected = () =>
 // Same reason the single-record one closes the pane: an unread notification
 // left open only invites the click that marks it read again.
 const unreadSelected = () => {
-  selectedId.value = undefined;
+  closeNotification();
 
   return withBulkFeedback(
     unreadBulkAdminNotifications,
@@ -410,7 +425,7 @@ const destroySelected = () =>
 <template>
   <!-- Left to a screen reader on a phone, where the header's search and the
        list's own controls are what the first screen is for. -->
-  <Heading hero class="admin-notifications__heading">
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.notifications.index") }}
     <!-- The line is reserved whether or not the count is known yet: rendered
          only once the answer is in, the heading grows by its height the moment
@@ -430,70 +445,27 @@ const destroySelected = () =>
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <!-- Announcements carries no nav row of its own: it is the other end of
          this page's job -- what the admin sends out, against what comes back
-         in -- so the way to it is from here.
-
-         On a phone the three would take a row of their own under the search,
-         so they fold into one menu beside it. A selection takes the header
-         over, and the menu goes with the search. -->
-    <BtnDropdown
-      v-if="mobile && !selecting"
-      class="navigation-header-pinned"
-      :size="BtnSizesEnum.MD"
-      expand-left
-      data-test="notifications-menu"
+         in -- so the way to it is from here. -->
+    <Btn :to="{ name: 'admin-announcements' }">
+      <i class="fa-duotone fa-bullhorn" />
+      {{ t("nav.admin.announcements.index") }}
+    </Btn>
+    <Btn @click="markAllRead">
+      <i class="fa-duotone fa-check-double" />
+      {{ t("actions.adminNotifications.readAll") }}
+    </Btn>
+    <Btn
+      :tone="BtnTonesEnum.DANGER"
+      :confirm="t('messages.confirm.adminNotifications.destroyAll')"
+      @click="destroyAll"
     >
-      <Btn :to="{ name: 'admin-announcements' }">
-        <i class="fa-duotone fa-bullhorn" />
-        {{ t("nav.admin.announcements.index") }}
-      </Btn>
-      <Btn @click="markAllRead">
-        <i class="fa-duotone fa-check-double" />
-        {{ t("actions.adminNotifications.readAll") }}
-      </Btn>
-      <Btn
-        :tone="BtnTonesEnum.DANGER"
-        :confirm="t('messages.confirm.adminNotifications.destroyAll')"
-        @click="destroyAll"
-      >
-        <i class="fa-duotone fa-trash" />
-        {{ t("actions.adminNotifications.destroyAll") }}
-      </Btn>
-    </BtnDropdown>
-    <template v-else-if="!mobile">
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :to="{ name: 'admin-announcements' }"
-        :aria-label="t('nav.admin.announcements.index')"
-        mobile-icon-only
-      >
-        <i class="fa-duotone fa-bullhorn" />
-        {{ t("nav.admin.announcements.index") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :aria-label="t('actions.adminNotifications.readAll')"
-        mobile-icon-only
-        @click="markAllRead"
-      >
-        <i class="fa-duotone fa-check-double" />
-        {{ t("actions.adminNotifications.readAll") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :aria-label="t('actions.adminNotifications.destroyAll')"
-        :tone="BtnTonesEnum.DANGER"
-        :confirm="t('messages.confirm.adminNotifications.destroyAll')"
-        mobile-icon-only
-        @click="destroyAll"
-      >
-        <i class="fa-duotone fa-trash" />
-        {{ t("actions.adminNotifications.destroyAll") }}
-      </Btn>
-    </template>
-  </Teleport>
+      <i class="fa-duotone fa-trash" />
+      {{ t("actions.adminNotifications.destroyAll") }}
+    </Btn>
+  </PageActions>
 
   <!-- `hide-empty`, because the page draws that state itself: the list's own
        box stands in place of the whole default slot, which on this page is the
@@ -503,7 +475,7 @@ const destroySelected = () =>
     :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
-    :view-keys="[NOTIFICATION_TAB_QUERY_KEY]"
+    :view-keys="[NOTIFICATION_TAB_QUERY_KEY, NOTIFICATION_DETAIL_QUERY_KEY]"
     hide-empty
   >
     <template #filter>
@@ -589,92 +561,77 @@ const destroySelected = () =>
     </template>
 
     <template #default="{ records: shown, emptyVisible }">
-      <!-- On a phone the bar only exists while a held row has started a
-           selection, and then it stands in for the search in the header, where
-           the thumb already is. -->
-      <Teleport to="#header-left" :disabled="!selecting">
-        <div
-          v-if="!mobile || selecting"
-          class="admin-notifications__bulk"
-          :class="{
-            'admin-notifications__bulk--hidden': !!selected && !selecting,
-            'admin-notifications__bulk--header navigation-header-takeover navigation-header-pinned':
-              selecting,
-          }"
+      <!-- Collapses once the bar has moved into the header: only the
+           comments that mark the teleport are left behind. -->
+      <div
+        class="admin-notifications__bulk"
+        :class="{
+          'admin-notifications__bulk--hidden': !!selected && !selecting,
+        }"
+      >
+        <MobileSelectionHeader
+          :selecting="selecting"
+          :disabled="!shown.length"
+          :selected-count="selectedCount"
+          :matching-count="matchingCount"
+          :page-selected="pageSelected"
+          :page-partially-selected="pagePartiallySelected"
+          :can-select-all-matching="canSelectAllMatching"
+          :all-matching-selected="allMatchingSelected"
+          @toggle-page="togglePage"
+          @select-all-matching="selectAllMatching"
+          @clear="clearSelection"
         >
           <Btn
-            v-if="selecting"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('bulkSelection.actions.clear')"
-            data-test="bulk-exit"
-            @click="clearSelection"
+            v-tooltip="t('actions.adminNotifications.readSelected')"
+            :aria-label="t('actions.adminNotifications.readSelected')"
+            data-test="bulk-read"
+            @click="readSelected"
           >
-            <i class="fa-light fa-xmark" />
+            <i class="fa-duotone fa-envelope-open" />
           </Btn>
-          <BulkSelectionBar
-            :disabled="!shown.length"
-            :compact="selecting"
-            :selected-count="selectedCount"
-            :matching-count="matchingCount"
-            :page-selected="pageSelected"
-            :page-partially-selected="pagePartiallySelected"
-            :can-select-all-matching="canSelectAllMatching"
-            :all-matching-selected="allMatchingSelected"
-            @toggle-page="togglePage"
-            @select-all-matching="selectAllMatching"
-            @clear="clearSelection"
+          <Btn
+            v-tooltip="t('actions.adminNotifications.unreadSelected')"
+            :aria-label="t('actions.adminNotifications.unreadSelected')"
+            data-test="bulk-unread"
+            @click="unreadSelected"
           >
-            <Btn
-              v-tooltip="t('actions.adminNotifications.readSelected')"
-              :aria-label="t('actions.adminNotifications.readSelected')"
-              data-test="bulk-read"
-              @click="readSelected"
-            >
-              <i class="fa-duotone fa-envelope-open" />
-            </Btn>
-            <Btn
-              v-tooltip="t('actions.adminNotifications.unreadSelected')"
-              :aria-label="t('actions.adminNotifications.unreadSelected')"
-              data-test="bulk-unread"
-              @click="unreadSelected"
-            >
-              <i class="fa-duotone fa-envelope-dot" />
-            </Btn>
-            <Btn
-              v-if="archive"
-              v-tooltip="t('actions.adminNotifications.unarchiveSelected')"
-              :aria-label="t('actions.adminNotifications.unarchiveSelected')"
-              data-test="bulk-unarchive"
-              @click="unarchiveSelected"
-            >
-              <i class="fa-duotone fa-inbox-in" />
-            </Btn>
-            <Btn
-              v-else
-              v-tooltip="t('actions.adminNotifications.archiveSelected')"
-              :aria-label="t('actions.adminNotifications.archiveSelected')"
-              data-test="bulk-archive"
-              @click="archiveSelected"
-            >
-              <i class="fa-duotone fa-box-archive" />
-            </Btn>
-            <Btn
-              v-tooltip="t('actions.adminNotifications.destroySelected')"
-              :aria-label="t('actions.adminNotifications.destroySelected')"
-              :tone="BtnTonesEnum.DANGER"
-              :confirm="
-                t('messages.confirm.adminNotifications.destroySelected', {
-                  count: selectedCount,
-                })
-              "
-              data-test="bulk-destroy"
-              @click="destroySelected"
-            >
-              <i class="fa-duotone fa-trash" />
-            </Btn>
-          </BulkSelectionBar>
-        </div>
-      </Teleport>
+            <i class="fa-duotone fa-envelope-dot" />
+          </Btn>
+          <Btn
+            v-if="archive"
+            v-tooltip="t('actions.adminNotifications.unarchiveSelected')"
+            :aria-label="t('actions.adminNotifications.unarchiveSelected')"
+            data-test="bulk-unarchive"
+            @click="unarchiveSelected"
+          >
+            <i class="fa-duotone fa-inbox-in" />
+          </Btn>
+          <Btn
+            v-else
+            v-tooltip="t('actions.adminNotifications.archiveSelected')"
+            :aria-label="t('actions.adminNotifications.archiveSelected')"
+            data-test="bulk-archive"
+            @click="archiveSelected"
+          >
+            <i class="fa-duotone fa-box-archive" />
+          </Btn>
+          <Btn
+            v-tooltip="t('actions.adminNotifications.destroySelected')"
+            :aria-label="t('actions.adminNotifications.destroySelected')"
+            :tone="BtnTonesEnum.DANGER"
+            :confirm="
+              t('messages.confirm.adminNotifications.destroySelected', {
+                count: selectedCount,
+              })
+            "
+            data-test="bulk-destroy"
+            @click="destroySelected"
+          >
+            <i class="fa-duotone fa-trash" />
+          </Btn>
+        </MobileSelectionHeader>
+      </div>
 
       <div
         class="admin-notifications"
@@ -724,7 +681,7 @@ const destroySelected = () =>
         <Detail
           class="admin-notifications__detail"
           :notification="selected"
-          @close="selectedId = undefined"
+          @close="closeNotification"
           @unread="selected && markUnread(selected)"
           @archive="selected && archiveNotification(selected)"
           @unarchive="selected && unarchiveNotification(selected)"
@@ -732,13 +689,11 @@ const destroySelected = () =>
         />
       </div>
     </template>
-    <!-- The page size stays with the bottom paginator on a phone, so the top
-         one fits beside the filter and the tabs on a single row. -->
     <template #pagination-top>
       <Paginator
         :query-result-ref="notifications"
         :per-page="perPage"
-        :update-per-page="mobile ? undefined : updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
     <template #pagination-bottom>
@@ -772,24 +727,10 @@ const destroySelected = () =>
 }
 
 .admin-notifications__bulk {
-  display: flex;
-  align-items: center;
-  gap: 4px;
   margin-bottom: 10px;
 
-  > .bulk-selection-bar {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
-// In the header's search slot, which already has its insets: the bar keeps
-// only the gap to the way out in front of it.
-.admin-notifications__bulk--header {
-  margin-bottom: 0;
-
-  > .bulk-selection-bar {
-    padding: 0;
+  &:empty {
+    display: none;
   }
 }
 
@@ -845,17 +786,6 @@ const destroySelected = () =>
 }
 
 @media (max-width: $desktop-breakpoint) {
-  .admin-notifications__heading {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
   // The reading pane is a page over the list on a phone, so the list stays
   // where it was underneath and the way back lands on the same scroll.
   .admin-notifications--reading .admin-notifications__list {

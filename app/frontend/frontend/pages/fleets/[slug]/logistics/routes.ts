@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
     component: () =>
       import("@/frontend/pages/fleets/[slug]/logistics/index.vue"),
     meta: {
+      mobileBack: true,
       backgroundImage: "bg-8",
       title: "fleets.logistics.index",
       needsAuthentication: true,
@@ -69,6 +70,7 @@ export const routes: RouteRecordRaw[] = [
     component: () =>
       import("@/frontend/pages/fleets/[slug]/logistics/inventories/[inventory].vue"),
     meta: {
+      mobileBack: true,
       backgroundImage: "bg-8",
       title: "fleets.logistics.inventories",
       needsAuthentication: true,

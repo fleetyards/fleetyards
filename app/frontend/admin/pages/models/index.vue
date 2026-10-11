@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -220,7 +220,7 @@ const unlistedCount = computed(
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.models.index") }}
     <HeadingSmall v-if="models">
       {{
@@ -232,7 +232,7 @@ const unlistedCount = computed(
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <!--
       Always rendered, never hidden on a zero count. The dashboard's attention
       tile is the only other way in and it filters itself out at zero, so a
@@ -241,10 +241,8 @@ const unlistedCount = computed(
       disappears instead.
     -->
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-unlisted-models' }"
       :aria-label="t('headlines.admin.unlistedModels.index')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-magnifying-glass-plus" />
       {{ t("labels.admin.models.unlisted") }}
@@ -253,46 +251,35 @@ const unlistedCount = computed(
       }}</span>
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-modules' }"
       :aria-label="t('headlines.admin.modelModules.index')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-puzzle" />
       {{ t("headlines.admin.modelModules.index") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
-      mobile-icon-only
       @click="reloadModels"
     >
       <i class="fa fa-rotate" />
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
-      mobile-icon-only
       @click="reloadScData"
     >
       <i class="fa fa-database" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :to="{ name: 'admin-model-create' }"
-      :aria-label="t('actions.create')"
-      mobile-icon-only
-    >
+    <Btn :to="{ name: 'admin-model-create' }" :aria-label="t('actions.create')">
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     name="admin-models"

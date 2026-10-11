@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import { type BaseTableCol } from "./types";
 
@@ -37,6 +37,12 @@ const mount = (props: {
 
 const skeletonRows = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.findAll('[data-test="base-table-skeleton-row"]');
+
+// The header the app renders around every page: a table in selection mode
+// on a phone hands its bulk actions to it.
+beforeEach(() => {
+  document.body.innerHTML = '<div id="header-left"></div>';
+});
 
 describe("BaseTable", () => {
   it("holds the table open with placeholder rows on the first load", async () => {

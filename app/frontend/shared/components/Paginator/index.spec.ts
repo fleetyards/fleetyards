@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
+import { PAGINATOR_ABOVE_LIST } from "./placement";
 import type { BaseList } from "@/services/fyApi";
 
 const listWith = (pagination: Partial<BaseList["meta"]["pagination"]>) =>
@@ -160,5 +161,31 @@ describe("Paginator", () => {
 
       expect(active.map((btn) => btn.text())).toEqual(["30"]);
     });
+  });
+
+  it("leaves the page size to the paginator under the list", async () => {
+    const AboveList = defineComponent({
+      setup() {
+        provide(PAGINATOR_ABOVE_LIST, true);
+
+        return () =>
+          h(Component, {
+            queryResultRef: listWith({
+              totalCount: 248,
+              totalPages: 10,
+              perPageSteps: [25, 50],
+            }),
+            updatePerPage: () => {},
+          });
+      },
+    });
+
+    const wrapper = await mountWithDefaults(
+      AboveList as unknown as typeof Component,
+    );
+
+    expect(wrapper.findComponent({ name: "PerPageDropdown" }).exists()).toBe(
+      false,
+    );
   });
 });

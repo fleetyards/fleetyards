@@ -62,14 +62,19 @@
 @media (max-width: $desktop-breakpoint) {
   .filtered-list {
     &__actions {
-      // No row gap: a wrapped paginator is centred on its own row, so it never
-      // reads as touching the actions above it, and 10px of air there would be
-      // 10px every list page pays for one that wraps.
-      gap: 0 10px;
+      // A row gap as well: a row that wraps puts the paginator directly under
+      // the buttons, and without air between them the two read as one block.
+      // It costs nothing on a toolbar that fits its row.
+      gap: 8px;
 
       &-left,
       &-right {
         display: flex;
+      }
+
+      // An empty slot would still claim a gap of its own.
+      &-right:not(:has(*)) {
+        display: none;
       }
 
       &-left {

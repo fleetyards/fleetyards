@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     name: "fleet-events",
     component: () => import("@/frontend/pages/fleets/[slug]/events/index.vue"),
     meta: {
+      mobileBack: true,
       backgroundImage: "bg-8",
       title: "fleets.events.index",
       needsAuthentication: true,

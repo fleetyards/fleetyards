@@ -114,7 +114,7 @@ const { t, l } = useI18n();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.oauthApplications.index") }}
     <HeadingSmall v-if="oauthApplications">
       {{
@@ -128,6 +128,7 @@ const { t, l } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-oauth-application-create' }"
       :aria-label="t('actions.create')"

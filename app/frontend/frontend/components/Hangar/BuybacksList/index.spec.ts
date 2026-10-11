@@ -87,8 +87,18 @@ const mount = async (
     plugins: [router ?? (await routerOnBuybacks())],
   });
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
 describe("Hangar/BuybacksList", () => {
   beforeEach(() => {
+    setViewport(false);
     window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
     destroyBuyback.mockReset().mockResolvedValue(undefined);
     invalidateQueries.mockReset();
@@ -281,5 +291,13 @@ describe("Hangar/BuybacksList", () => {
     const wrapper = await mount([], true);
 
     expect(wrapper.find("[data-test='buyback-row']").exists()).toBe(false);
+  });
+
+  it("folds a row's actions into one menu on a phone", async () => {
+    setViewport(true);
+
+    const wrapper = await mount([buyback()]);
+
+    expect(wrapper.find("[data-test='buyback-menu']").exists()).toBe(true);
   });
 });
