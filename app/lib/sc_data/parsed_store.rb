@@ -141,7 +141,8 @@ module ScData
       return true if found == expected
 
       raise VersionMismatch,
-        "s3://#{bucket}/#{prefix} carries #{found.inspect}, expected #{expected.inspect}"
+        "The parsed #{environment} tree is #{found || "missing"}, but the config asks for #{expected}. " \
+          "Run the parser for #{expected} and push the tree (s3://#{bucket}/#{prefix})."
     end
 
     def local_root
