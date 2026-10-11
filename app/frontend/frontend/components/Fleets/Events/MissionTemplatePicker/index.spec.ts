@@ -17,6 +17,7 @@ type MissionsPage = {
 
 const missions = ref<MissionsPage | undefined>();
 const anyMission = ref<MissionsPage | undefined>();
+const isLoading = ref(false);
 const isError = ref(false);
 const refetch = vi.fn();
 const requested: MaybeRefOrGetter<FleetMissionsParams>[] = [];
@@ -41,7 +42,7 @@ vi.mock("@/services/fyApi", async () => {
 
       return {
         data: missions,
-        isLoading: ref(false),
+        isLoading,
         isError,
         refetch,
       };
@@ -79,6 +80,7 @@ afterEach(() => {
   anyMission.value = undefined;
   requested.splice(0);
   isError.value = false;
+  isLoading.value = false;
   refetch.mockClear();
 });
 
@@ -104,6 +106,16 @@ describe("MissionTemplatePicker", () => {
 
     expect(toValue(requested[0]).page).toBe("2");
 
+    // The next page has no data while it loads; the button stays to say so.
+    missions.value = undefined;
+    isLoading.value = true;
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.find('[data-test="mission-template-more"]').exists()).toBe(
+      true,
+    );
+
+    isLoading.value = false;
     missions.value = {
       items: [mission({ slug: "redbird" })],
       meta: { pagination: { totalPages: 2 } },

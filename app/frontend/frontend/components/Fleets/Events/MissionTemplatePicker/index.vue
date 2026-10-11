@@ -67,10 +67,15 @@ const {
  */
 const missionList = ref<Mission[]>([]);
 
-watch(debouncedSearch, () => {
-  page.value = 1;
-  missionList.value = [];
-});
+// Synchronously, so the query never sees the new search with the old page.
+watch(
+  debouncedSearch,
+  () => {
+    page.value = 1;
+    missionList.value = [];
+  },
+  { flush: "sync" },
+);
 
 watch(
   missions,
@@ -78,22 +83,24 @@ watch(
     if (!value) return;
 
     const items = value.items ?? [];
+    const held = new Set(missionList.value.map((mission) => mission.id));
 
     missionList.value =
       page.value === 1
         ? items
-        : [
-            ...missionList.value,
-            ...items.filter(
-              (item) => !missionList.value.some((held) => held.id === item.id),
-            ),
-          ];
+        : [...missionList.value, ...items.filter((item) => !held.has(item.id))];
   },
   { immediate: true },
 );
 
 const hasMore = computed(
   () => page.value < (missions.value?.meta?.pagination?.totalPages ?? 1),
+);
+
+// The next page's query has no data while it loads, so `hasMore` cannot tell;
+// the button stays, spinning, until the page is in.
+const loadingMore = computed(
+  () => isLoading.value && missionList.value.length > 0,
 );
 
 const loadMore = () => {
@@ -234,9 +241,9 @@ const pick = (mission: Mission | null) => {
       </button>
     </div>
 
-    <div v-if="hasMore" class="template-picker__more">
+    <div v-if="hasMore || loadingMore" class="template-picker__more">
       <Btn
-        :loading="isLoading"
+        :loading="loadingMore"
         :variant="BtnVariantsEnum.BARE"
         data-test="mission-template-more"
         @click="loadMore"
