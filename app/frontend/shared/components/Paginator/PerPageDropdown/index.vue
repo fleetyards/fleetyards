@@ -60,7 +60,11 @@ const update = (step: number | string) => {
 </script>
 
 <template>
-  <BtnDropdown :size="size" :variant="variant" class="w-full md:w-auto">
+  <BtnDropdown
+    :size="size"
+    :variant="variant"
+    class="pagination__per-page w-full md:w-auto"
+  >
     <template #label>
       <template v-if="!mobile">{{ t("paginator.labels.perPage") }}:</template>
       {{ internalValue }}

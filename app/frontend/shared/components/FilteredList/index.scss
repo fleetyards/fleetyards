@@ -105,6 +105,12 @@
       flex: 1 1 auto;
       min-width: 0;
       justify-content: flex-end;
+
+      // The page size stays with the paginator under the list, so the one
+      // up here fits beside the filter and the list's own controls.
+      :deep(.pagination__per-page) {
+        display: none;
+      }
     }
   }
 
