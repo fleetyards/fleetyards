@@ -40,9 +40,9 @@ class Vehicle < ApplicationRecord
       reason: :update_reason,
       reason_description: :update_reason_description
     }
-  paginates_per 30
+  paginates_per 24
   max_paginates_per 240
-  per_page_steps [15, 30, 60, 120, 240, :all]
+  per_page_steps [*PageSizes::STEPS, :all]
 
   scope :visible, -> { where(hidden: false) }
 

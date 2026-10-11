@@ -23,10 +23,10 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.per_page_steps(val = :none)
     if val == :none
-      # getter
-      defined?(@_per_page_steps) && @_per_page_steps
+      return unless defined?(@_per_page_steps) && @_per_page_steps
+
+      PageSizes.up_to(@_per_page_steps, max_per_page)
     else
-      # setter
       @_per_page_steps = val
     end
   end

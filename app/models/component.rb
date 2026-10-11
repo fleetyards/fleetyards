@@ -8,9 +8,9 @@ class Component < ApplicationRecord
   include KeyedSlug
   include ScDataVersioned
 
-  paginates_per 50
+  paginates_per 48
   max_paginates_per 240
-  per_page_steps [25, 50, 100, 200]
+  per_page_steps PageSizes::STEPS
 
   # One row per component, with the spec history kept as versions rather than as
   # a row per build. `version` is deliberately not tracked: it moves on every

@@ -32,8 +32,8 @@ class Equipment < ApplicationRecord
   include KeyedSlug
   include ScDataVersioned
 
-  paginates_per 50
-  per_page_steps [25, 50, 100]
+  paginates_per 48
+  per_page_steps PageSizes::STEPS
 
   belongs_to :manufacturer, optional: true
 

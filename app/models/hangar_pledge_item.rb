@@ -4,9 +4,9 @@
 # as read by the hangar sync. None becomes a vehicle, so all are kept as RSI
 # lists them.
 class HangarPledgeItem < ApplicationRecord
-  paginates_per 50
+  paginates_per 48
   max_paginates_per 200
-  per_page_steps [25, 50, 100, 200]
+  per_page_steps PageSizes::STEPS
 
   KINDS = %w[paint flair equipment].freeze
 

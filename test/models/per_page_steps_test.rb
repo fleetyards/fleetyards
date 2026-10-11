@@ -20,5 +20,11 @@ class PerPageStepsTest < ActiveSupport::TestCase
 
       assert_operator sizes.max, :<=, model.max_per_page
     end
+
+    # A size off the shared set leaves a short last row on some width of the
+    # card grid.
+    test "#{model.name} offers only the shared page sizes" do
+      assert_empty model.per_page_steps.grep(Integer) - PageSizes::STEPS
+    end
   end
 end

@@ -26,8 +26,8 @@ class Commodity < ApplicationRecord
   include ItemPriceConcern
   include ScDataVersioned
 
-  paginates_per 60
-  per_page_steps [15, 30, 60, 90]
+  paginates_per 48
+  per_page_steps PageSizes::STEPS
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
   has_many :inventory_items, as: :item, dependent: :nullify
