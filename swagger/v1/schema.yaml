@@ -6735,6 +6735,20 @@ paths:
         schema:
           type: boolean
         required: false
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/MissionQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -32590,6 +32604,22 @@ components:
         required:
         - teams
       title: MissionExtended
+    MissionQuery:
+      type: object
+      properties:
+        titleCont:
+          type: string
+        statusEq:
+          "$ref": "#/components/schemas/MissionStatusEnum"
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/MissionSortEnum"
+          - "$ref": "#/components/schemas/MissionSortEnum"
+      additionalProperties: false
+      example: {}
+      title: MissionQuery
     MissionShip:
       type: object
       properties:
@@ -32824,6 +32854,23 @@ components:
       - MISSION_TEAM
       - MISSION_SHIP
       title: MissionSlottableTypeEnum
+    MissionSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: MissionSortEnum
     MissionStatusEnum:
       type: string
       enum:

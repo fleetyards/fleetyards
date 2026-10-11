@@ -16,6 +16,13 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: :archived, in: :query, schema: {type: :boolean}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::MissionQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
 
       security [
         {SessionCookie: []},
@@ -69,6 +76,61 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal 2, parsed_body["items"].size
+    end
+  end
+
+  test "GET /fleets/:slug/missions reaches missions past the first page" do
+    create_list(:mission, 31, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {page: 2} do
+      assert_equal 1, parsed_body["items"].size
+      assert_equal 2, parsed_body.dig("meta", "pagination", "totalPages")
+    end
+  end
+
+  test "GET /fleets/:slug/missions honours perPage" do
+    create_list(:mission, 3, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {perPage: 2} do
+      assert_equal 2, parsed_body["items"].size
+    end
+  end
+
+  test "GET /fleets/:slug/missions filters by status" do
+    published = create(:mission, fleet: @fleet, created_by: @admin)
+    create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {statusEq: "published"}} do
+      assert_equal [published.slug], parsed_body["items"].map { |item| item["slug"] }
+    end
+  end
+
+  test "GET /fleets/:slug/missions searches by title" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Jumptown Raid")
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Cargo Run")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {titleCont: "jumptown"}} do
+      assert_equal ["Jumptown Raid"], parsed_body["items"].map { |item| item["title"] }
+    end
+  end
+
+  test "GET /fleets/:slug/missions sorts by title desc" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Alpha")
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Bravo")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {s: "title desc"}} do
+      assert_equal %w[Bravo Alpha], parsed_body["items"].map { |item| item["title"] }
     end
   end
 
