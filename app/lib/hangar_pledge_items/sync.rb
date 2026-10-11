@@ -1,18 +1,61 @@
 # frozen_string_literal: true
 
 module HangarPledgeItems
-  # Replaces a user's paints and hangar flair with the ones a hangar sync read.
-  # The pledge list is the whole truth: a melted or gifted pledge simply stops
-  # being listed, so anything not in `items` goes.
+  # Replaces a user's paints, hangar flair and FPS equipment with the ones a
+  # hangar sync read. The pledge list is the whole truth: a melted or gifted
+  # pledge simply stops being listed, so anything not in `items` goes.
   class Sync
-    KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair"}.freeze
+    KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
+
+    # RSI gives the items it lists under "Also Contains" no kind at all: FPS
+    # gear, posters, trophies and hangars read alike. The ones the equipment
+    # catalogue knows are gear, and everything else is kept with the flair.
+    EXTRA_ITEM_TYPE = "extra"
 
     attr_reader :user, :items, :kinds, :keep_unlisted
 
-    # The kind an item would be stored as, or nil for one it cannot store.
-    def self.kind_for(item)
-      kind = KINDS_BY_ITEM_TYPE[item[:type].to_s]
-      kind if item[:id].present? && item[:name].present?
+    # The kind each item would be stored as, or nil for one it cannot store.
+    def self.kinds_for(items)
+      catalogue = (EquipmentCatalogue.new if items.any? { |item| item[:type].to_s == EXTRA_ITEM_TYPE })
+
+      items.map do |item|
+        next unless item[:id].present? && item[:name].present?
+
+        type = item[:type].to_s
+        next KINDS_BY_ITEM_TYPE[type] unless type == EXTRA_ITEM_TYPE
+
+        catalogue.include?(item[:name]) ? "equipment" : "flair"
+      end
+    end
+
+    # RSI and the game files name one piece of gear in different words, orders
+    # and quotes: "Tailwind ‘Drake’ Helmet" is "Tailwind Flight Helmet Drake",
+    # "Doomsday Skullcap Helmet" is "Skullcap Helmet". A name counts as gear
+    # when every word of it is in a catalogue name, or every word of one is in
+    # it. One word alone would match far too much.
+    class EquipmentCatalogue
+      MIN_WORDS = 2
+
+      def self.words(name)
+        name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.uniq
+      end
+
+      def initialize
+        @names = Equipment.where.not(name: nil).distinct.pluck(:name).map { |name| self.class.words(name) }
+        @by_word = Hash.new { |hash, word| hash[word] = [] }
+        @names.each_with_index { |words, index| words.each { |word| @by_word[word] << index } }
+      end
+
+      def include?(name)
+        words = self.class.words(name)
+
+        words.flat_map { |word| @by_word.fetch(word, []) }.uniq.any? do |index|
+          catalogued = @names[index]
+
+          (words.size >= MIN_WORDS && (words - catalogued).empty?) ||
+            (catalogued.size >= MIN_WORDS && (catalogued - words).empty?)
+        end
+      end
     end
 
     # `kinds` the user chose not to sync are left exactly as stored, not
@@ -24,7 +67,9 @@ module HangarPledgeItems
       @user = user
       @kinds = kinds
       @keep_unlisted = keep_unlisted
-      @items = items.select { |item| kinds.include?(self.class.kind_for(item)) }
+      @items = items.zip(self.class.kinds_for(items))
+        .select { |_item, kind| kinds.include?(kind) }
+        .map { |item, kind| item.merge(kind:) }
     end
 
     # The ids stored for each kind it synced.
@@ -54,7 +99,7 @@ module HangarPledgeItems
 
     # A pledge can hold the same poster twice, which RSI lists as two items.
     private def build_rows
-      items.group_by { |item| [KINDS_BY_ITEM_TYPE[item[:type].to_s], item[:id].to_s, item[:name].strip] }
+      items.group_by { |item| [item[:kind], item[:id].to_s, item[:name].strip] }
         .map do |(kind, rsi_pledge_id, name), group|
           {
             user_id: user.id,

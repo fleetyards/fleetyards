@@ -22,6 +22,7 @@ en:
         found_upgrades: Found upgrades
         synced_paints: Paints synced
         synced_hangar_flair: Hangar flair synced
+        synced_equipment: FPS equipment synced
         missing_models: Ships not found
         missing_components: Components not found
         missing_component_vehicles: No matching ship for components

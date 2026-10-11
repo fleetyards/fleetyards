@@ -557,6 +557,41 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert @user.hangar_pledge_items.flair.exists?(name: "Space Globe - Terra")
     end
 
+    test "stores FPS equipment, and sorts the items RSI lists without a kind" do
+      create(:equipment, name: "Tailwind Flight Helmet Drake")
+      create(:equipment, name: "Skullcap Helmet")
+      create(:equipment, name: "Poster")
+      input = @input + [
+        {"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
+        {"id" => "00064541", "name" => "Doomsday Skullcap Helmet", "type" => "extra"},
+        {"id" => "00064541", "name" => "600i Explorer - 2953 Best In Show Poster", "type" => "extra"},
+        {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}
+      ]
+
+      result = ::HangarSync.new(input).run(@user.id)
+
+      assert_equal ["Arrowhead Sniper Rifle", "Doomsday Skullcap Helmet", "Tailwind ‘Drake’ Helmet"],
+        @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
+      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Self-Land Hangar"],
+        @user.hangar_pledge_items.flair.where(rsi_pledge_id: "00064541").order(:name).pluck(:name)
+      assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+      assert_includes body, "- FPS equipment synced: **3**"
+    end
+
+    test "leaves the stored equipment alone when the run does not sync it" do
+      input = @input + [{"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"}]
+      ::HangarSync.new(input).run(@user.id)
+
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, sync_equipment: false)
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert_empty result[:synced_equipment]
+      assert @user.hangar_pledge_items.equipment.exists?(name: "Arrowhead Sniper Rifle")
+    end
+
     test "a cancelled run leaves the stored paints and flair alone" do
       ::HangarSync.new(@input).run(@user.id)
       import = ::Imports::HangarSync.create!(user_id: @user.id, input: [])

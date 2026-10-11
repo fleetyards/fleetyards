@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# A paint or a piece of hangar flair in the user's RSI hangar, as read by the
-# hangar sync. Neither becomes a vehicle, so both are kept as RSI lists them.
+# A paint, a piece of hangar flair or FPS equipment in the user's RSI hangar,
+# as read by the hangar sync. None becomes a vehicle, so all are kept as RSI
+# lists them.
 class HangarPledgeItem < ApplicationRecord
   paginates_per 50
   max_paginates_per 200
 
-  KINDS = %w[paint flair].freeze
+  KINDS = %w[paint flair equipment].freeze
 
   belongs_to :user
 
@@ -16,6 +17,7 @@ class HangarPledgeItem < ApplicationRecord
 
   scope :paints, -> { where(kind: "paint") }
   scope :flair, -> { where(kind: "flair") }
+  scope :equipment, -> { where(kind: "equipment") }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
   # Newest pledge first, the order RSI lists the hangar in. Pledge ids grow

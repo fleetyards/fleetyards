@@ -9,7 +9,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   {
     "/hangar/paints" => ["Hangar Paints", "hangarPaints"],
-    "/hangar/flair" => ["Hangar Flair", "hangarFlair"]
+    "/hangar/flair" => ["Hangar Flair", "hangarFlair"],
+    "/hangar/equipment" => ["Hangar Equipment", "hangarEquipment"]
   }.each do |path, (summary, operation_id)|
     api_path path do
       get(summary) do

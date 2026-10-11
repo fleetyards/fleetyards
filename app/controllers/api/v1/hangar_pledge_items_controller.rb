@@ -3,12 +3,12 @@
 module Api
   module V1
     class HangarPledgeItemsController < ::Api::BaseController
-      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair]
+      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment]
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[paints flair]
+        only: %i[paints flair equipment]
 
       def paints
         list(HangarPledgeItem.paints)
@@ -16,6 +16,10 @@ module Api
 
       def flair
         list(HangarPledgeItem.flair)
+      end
+
+      def equipment
+        list(HangarPledgeItem.equipment)
       end
 
       private def list(scope)
