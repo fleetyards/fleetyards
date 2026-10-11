@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { h } from "vue";
 import Component from "./index.vue";
 
@@ -31,6 +31,20 @@ const mountBar = async (props: Record<string, unknown> = {}) =>
 
 const selectAll = (wrapper: BarWrapper) =>
   wrapper.findComponent({ name: "FormCheckbox" });
+
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
+beforeEach(() => {
+  document.body.innerHTML = '<div id="header-left"></div>';
+  setViewport(false);
+});
 
 describe("BaseListToolbar", () => {
   it("offers no selection to a list whose rows cannot be picked", async () => {
@@ -100,5 +114,30 @@ describe("BaseListToolbar", () => {
     expect(wrapper.findAll(".base-list-toolbar-chip")[0].classes()).toContain(
       "base-list-toolbar-chip--active",
     );
+  });
+
+  describe("on a phone", () => {
+    beforeEach(() => {
+      setViewport(true);
+    });
+
+    it("has no select-all box until a row is picked", async () => {
+      const wrapper = await mountBar({ selectable: true, recordIds: ["a"] });
+
+      expect(
+        wrapper.find('[data-test="list-toolbar-select-all"]').exists(),
+      ).toBe(false);
+    });
+
+    it("hands the bulk actions to the header once a row is picked", async () => {
+      await mountBar({ selectable: true, recordIds: ["a"], selected: ["a"] });
+
+      const header = document.getElementById("header-left")!;
+
+      expect(header.textContent).toContain("bulk actions");
+      expect(
+        header.querySelector(".navigation-header-takeover"),
+      ).not.toBeNull();
+    });
   });
 });

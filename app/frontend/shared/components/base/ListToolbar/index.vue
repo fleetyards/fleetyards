@@ -11,6 +11,7 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 
 type Props = {
@@ -38,6 +39,17 @@ defineSlots<{
 }>();
 
 const { t } = useI18n();
+
+const mobile = useMobile();
+
+// A phone hides the rows' checkboxes until a held row starts a selection, so
+// the box that ticks them all waits for one too - and the bulk actions take
+// the header over, where the thumb already is.
+const selecting = computed(() => mobile.value && !!selected.value.length);
+
+const selectAllVisible = computed(
+  () => props.selectable && (!mobile.value || selecting.value),
+);
 
 // The same column list the table is built from, so a column that gains or
 // loses its sort does so in both places at once -- and the metric columns,
@@ -76,7 +88,7 @@ const onSelectAll = (value?: boolean) => {
     :class="{ 'base-list-toolbar--selectable': props.selectable }"
   >
     <FormCheckbox
-      v-if="props.selectable"
+      v-if="selectAllVisible"
       class="base-list-toolbar__select-all"
       :disabled="props.selectionDisabled || !props.recordIds.length"
       name="all"
@@ -99,26 +111,32 @@ const onSelectAll = (value?: boolean) => {
     </template>
     <!-- At the far end of the same line, so picking a row does not push the
          list down by a row of buttons. -->
-    <transition name="base-list-toolbar-fade">
-      <div
-        v-if="props.selectable && selected.length"
-        class="base-list-toolbar__bulk"
-        data-test="list-toolbar-bulk"
-      >
-        <span class="base-list-toolbar__count">
-          {{ t("filteredTable.labels.selected", { count: selected.length }) }}
-          <Btn
-            v-tooltip="t('filteredTable.actions.unselect')"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('filteredTable.actions.unselect')"
-            @click="selected = []"
-          >
-            <i class="fa fa-times" />
-          </Btn>
-        </span>
-        <slot name="selected-actions" :selected="selected" />
-      </div>
-    </transition>
+    <Teleport to="#header-left" :disabled="!selecting">
+      <transition name="base-list-toolbar-fade">
+        <div
+          v-if="props.selectable && selected.length"
+          class="base-list-toolbar__bulk"
+          :class="{
+            'base-list-toolbar__bulk--header navigation-header-takeover navigation-header-pinned':
+              selecting,
+          }"
+          data-test="list-toolbar-bulk"
+        >
+          <span class="base-list-toolbar__count">
+            {{ t("filteredTable.labels.selected", { count: selected.length }) }}
+            <Btn
+              v-tooltip="t('filteredTable.actions.unselect')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('filteredTable.actions.unselect')"
+              @click="selected = []"
+            >
+              <i class="fa fa-times" />
+            </Btn>
+          </span>
+          <slot name="selected-actions" :selected="selected" />
+        </div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 

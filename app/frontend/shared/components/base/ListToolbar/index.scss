@@ -27,6 +27,14 @@
     margin-left: auto;
   }
 
+  // In the header's search slot on a phone: one row, the count at the start
+  // where the search was and the actions at the end.
+  &__bulk--header {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
   &__count {
     display: flex;
     align-items: center;
