@@ -39,3 +39,12 @@
     }
   }
 }
+
+// A held finger starts a selection, not the text selection or the link
+// callout iOS would otherwise put over it.
+@media (hover: none) and (pointer: coarse) {
+  .base-table-row--holdable {
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+}

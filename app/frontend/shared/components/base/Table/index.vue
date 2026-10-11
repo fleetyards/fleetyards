@@ -19,6 +19,7 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useSelectionMode } from "@/shared/composables/useSelectionMode";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useListGeometry,
@@ -94,6 +95,17 @@ const isLoading = computed(() => {
 const internalSelected = ref<string[]>([]);
 
 const mobile = useMobile();
+
+// A phone hides the checkboxes until a held row starts a selection, and the
+// table stays in that mode for as long as something is picked.
+const { selecting, start: startSelecting } = useSelectionMode(
+  () => internalSelected.value.length,
+  mobile,
+);
+
+const selectionVisible = computed(
+  () => props.selectable && (!mobile.value || selecting.value),
+);
 
 const { t } = useI18n();
 
@@ -173,10 +185,15 @@ const allSelected = computed(() => {
 
 // Immediate: a table that mounts into a list with rows already picked -- back
 // from the grid view, say -- has to show their boxes ticked.
+// On a phone, rows handed over already picked are a selection in progress.
 watch(
   () => props.selected,
   () => {
     internalSelected.value = props.selected;
+
+    if (props.selected.length) {
+      startSelecting();
+    }
   },
   { immediate: true },
 );
@@ -235,12 +252,46 @@ const slots = defineSlots<Slots>();
 
 const columnCount = computed(() => {
   return (
-    props.columns.length + (slots.actions ? 1 : 0) + (props.selectable ? 1 : 0)
+    props.columns.length +
+    (slots.actions ? 1 : 0) +
+    (selectionVisible.value ? 1 : 0)
   );
 });
 
 const resetSelected = () => {
   internalSelected.value = [];
+};
+
+const toggleRecord = (record: T) => {
+  const key = primaryValue(record) as string;
+
+  internalSelected.value = internalSelected.value.includes(key)
+    ? internalSelected.value.filter((selected) => selected !== key)
+    : [...internalSelected.value, key];
+};
+
+// Holding a row picks it and turns the table into a selection, never the
+// other way round: a hold on a row already picked keeps it.
+const holdRecord = (record: T) => {
+  if (!internalSelected.value.includes(primaryValue(record) as string)) {
+    toggleRecord(record);
+  }
+
+  startSelecting();
+};
+
+// While picking, a tap picks too - following a row in the middle of a
+// selection would throw the reader out of it.
+const onRowClick = (record: T) => {
+  if (selecting.value) {
+    toggleRecord(record);
+
+    return;
+  }
+
+  if (props.rowClickable) {
+    emit("row-click", record);
+  }
 };
 
 // The body is a transition group, so the rows sit under its root element.
@@ -304,8 +355,19 @@ onUnmounted(() => {
     <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">
       <slot name="title">{{ props.title }}</slot>
     </PanelHeading>
+    <!-- On a phone a selection takes the header over, where the thumb
+         already is, instead of opening above the rows. -->
+    <Teleport v-if="props.selectionControls && selecting" to="#header-left">
+      <BulkActions
+        class="base-table__bulk--header navigation-header-takeover navigation-header-pinned"
+        :selected="internalSelected"
+        @reset="resetSelected"
+      >
+        <slot name="selected-actions" :selected="internalSelected" />
+      </BulkActions>
+    </Teleport>
     <BulkActions
-      v-if="props.selectionControls"
+      v-else-if="props.selectionControls"
       :selected="internalSelected"
       @reset="resetSelected"
     >
@@ -323,7 +385,7 @@ onUnmounted(() => {
             :id="props.id"
             :col-key="colKey"
             :selected="internalSelected"
-            :selectable="props.selectable"
+            :selectable="selectionVisible"
             :loading="isLoading"
             :empty-visible="props.emptyVisible"
             :columns="filteredColumns"
@@ -364,7 +426,7 @@ onUnmounted(() => {
                 aria-hidden="true"
                 data-test="base-table-skeleton-row"
               >
-                <TableCol v-if="props.selectable" variant="selection" />
+                <TableCol v-if="selectionVisible" variant="selection" />
                 <TableCol
                   v-for="column in filteredColumns"
                   :key="`base-table__skeleton-${colKey}-${column.name}`"
@@ -390,11 +452,13 @@ onUnmounted(() => {
               v-else
               :id="String(primaryValue(record))"
               :key="primaryValue(record)"
-              :clickable="props.rowClickable"
+              :clickable="props.rowClickable || selecting"
               :disabled="props.rowDisabled?.(record)"
-              @click="props.rowClickable && emit('row-click', record)"
+              :holdable="props.selectable && mobile"
+              @click="onRowClick(record)"
+              @hold="holdRecord(record)"
             >
-              <TableCol v-if="props.selectable" variant="selection" @click.stop>
+              <TableCol v-if="selectionVisible" variant="selection" @click.stop>
                 <FormCheckbox
                   v-model="internalSelected"
                   name="item"
