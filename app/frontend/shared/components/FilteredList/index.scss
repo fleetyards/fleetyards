@@ -123,9 +123,3 @@
     }
   }
 }
-
-// The page size is set once, on the paginator under the list. The one above
-// it only turns pages, which keeps the toolbar it shares a row with short.
-.filtered-list__pagination-top :deep(.pagination__per-page) {
-  display: none;
-}

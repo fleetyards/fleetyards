@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { PAGINATOR_ABOVE_LIST } from "@/shared/components/Paginator/placement";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PerPageDropdown from "./PerPageDropdown/index.vue";
@@ -51,8 +52,11 @@ const perPageHandler = computed(
   () => props.updatePerPage ?? props.onUpdatePerPage,
 );
 
+const aboveList = inject(PAGINATOR_ABOVE_LIST, false);
+
 const perPageSelectable = computed(
-  () => !!pagination.value?.perPageSteps && !!perPageHandler.value,
+  () =>
+    !aboveList && !!pagination.value?.perPageSteps && !!perPageHandler.value,
 );
 
 const internalPerPage = computed(

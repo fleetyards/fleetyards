@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup generic="T">
 import Btn from "@/shared/components/base/Btn/index.vue";
+import PaginatorAboveList from "@/shared/components/Paginator/AboveList/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
@@ -364,7 +365,9 @@ const toggleFilter = () => {
                line breaks on a child's unwrapped width - so the paginator has to
                be that child. -->
           <div v-if="hasPaginationTop" class="filtered-list__pagination-top">
-            <slot name="pagination-top" />
+            <PaginatorAboveList>
+              <slot name="pagination-top" />
+            </PaginatorAboveList>
           </div>
         </div>
       </div>
