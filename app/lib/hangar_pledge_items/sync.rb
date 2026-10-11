@@ -52,10 +52,22 @@ module HangarPledgeItems
       MIN_WORDS = 2
       MAX_BRAND_WORDS = 3
 
+      # RSI's names for gear the game calls something else entirely, or that
+      # the game's record names after another item.
+      ALIASES = {
+        "Scarecrow Helmet" => "The Hill Horror Helmet",
+        "RRS Knife - Fallout" => 'TBF-4 "Balefire" Combat Knife',
+        "CitizenCon 2948 Wearable In-Game Duster Jacket" => "Duotone Duster",
+        "Luminalia Sweater" => "Good Gift Sweater"
+      }.freeze
+
+      SYNONYMS = {"trousers" => "pants"}.freeze
+
       TRUNCATION = /(\.\.\.|…)\z/
 
       def self.words(name)
-        name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.grep(/[[:alnum:]]/).uniq
+        name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.grep(/[[:alnum:]]/)
+          .map { |word| SYNONYMS.fetch(word, word) }.uniq
       end
 
       def initialize
@@ -65,6 +77,7 @@ module HangarPledgeItems
       end
 
       def include?(name)
+        name = ALIASES.fetch(name.to_s.strip, name)
         words = self.class.words(name)
         prefix = words.pop if name.strip.match?(TRUNCATION)
 
