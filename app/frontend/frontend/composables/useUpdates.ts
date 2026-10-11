@@ -3,7 +3,11 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
+import {
+  notificationToastTag,
+  useNotificationInvalidation,
+  useNotificationToasts,
+} from "@/frontend/composables/useNotificationUpdates";
 import { useMovedFleetRedirect } from "@/frontend/composables/useMovedFleetRedirect";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -147,6 +151,8 @@ export const useUpdates = () => {
   const { invalidate: invalidateNotifications, invalidateFidClaims } =
     useNotificationInvalidation();
 
+  const { dismiss: dismissNotificationToasts } = useNotificationToasts();
+
   const followMovedFleet = useMovedFleetRedirect(useRouter(), useRoute());
 
   // A notification is a record, so its fields have to be mapped onto the toast.
@@ -155,11 +161,15 @@ export const useUpdates = () => {
   // reporting an operational failure that must not be missed.
   //
   // Withdrawn ones were taken down with what they were about; the refetch drops
-  // them from the center and the badge, and there is nothing to toast.
+  // them from the center and the badge, and a toast still up for one goes too.
   const handleUserNotification = (message: UserNotificationsData) => {
     invalidateNotifications();
 
-    if ("withdrawnIds" in message) return;
+    if ("withdrawnIds" in message) {
+      dismissNotificationToasts(message.withdrawnIds);
+
+      return;
+    }
 
     invalidateFidClaims(message);
     void followMovedFleet(message);
@@ -168,6 +178,7 @@ export const useUpdates = () => {
       text: message.title,
       icon: message.icon,
       to: { name: "notifications" },
+      tag: notificationToastTag(message.id),
     });
   };
 

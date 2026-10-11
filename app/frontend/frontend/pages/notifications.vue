@@ -29,7 +29,10 @@ import {
   useNotificationFilters,
   NOTIFICATION_TAB_QUERY_KEY,
 } from "@/frontend/composables/useNotificationFilters";
-import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
+import {
+  useNotificationInvalidation,
+  useNotificationToasts,
+} from "@/frontend/composables/useNotificationUpdates";
 import {
   useNotifications as useNotificationsQuery,
   useNotificationsUnreadCount,
@@ -136,6 +139,8 @@ const {
 const { invalidate, invalidateUnreadCount, patchCached } =
   useNotificationInvalidation();
 
+const { dismiss: dismissToasts } = useNotificationToasts();
+
 watch([sorts, archive], async () => {
   await refetch();
 });
@@ -212,8 +217,11 @@ const markRead = async (notification: Notification) => {
 };
 
 // Opening a notification is what reading it means, so it costs no second click.
+// Its toast goes even when the row already reads as read: the cached row can
+// be older than the toast.
 const select = (notification: Notification) => {
   selectedId.value = notification.id;
+  dismissToasts([notification.id]);
 
   if (!notification.read) {
     void markRead(notification);
@@ -236,13 +244,19 @@ const move = (offset: number) => {
   void nextTick(() => rows.get(next.id)?.focus());
 };
 
+// `settles` names the notifications whose toasts the action takes down; `all`
+// takes down every one.
 const withFeedback = async (
   action: () => Promise<unknown>,
   message: string,
+  settles?: string[] | "all",
 ) => {
   try {
     await action();
     invalidate();
+    if (settles) {
+      dismissToasts(settles === "all" ? undefined : settles);
+    }
     displaySuccess({ text: message });
   } catch {
     displayAlert({ text: t("messages.notifications.error") });
@@ -265,6 +279,7 @@ const archiveOne = (notification: Notification) =>
   withFeedback(
     () => archiveNotification(notification.id),
     t("messages.notifications.archived"),
+    [notification.id],
   );
 
 const unarchiveOne = (notification: Notification) =>
@@ -277,18 +292,21 @@ const markAllRead = () =>
   withFeedback(
     () => readAllNotifications(),
     t("messages.notifications.readAll"),
+    "all",
   );
 
 const destroy = (notification: Notification) =>
   withFeedback(
     () => destroyNotification(notification.id),
     t("messages.notifications.destroyed"),
+    [notification.id],
   );
 
 const destroyAll = () =>
   withFeedback(
     () => destroyAllNotifications(),
     t("messages.notifications.destroyedAll"),
+    "all",
   );
 
 // The selection is spent once the action lands: leaving it ticked invites a
@@ -297,12 +315,18 @@ const destroyAll = () =>
 const withBulkFeedback = async (
   action: (input: NotificationBulkInput) => Promise<NotificationBulkResult>,
   key: string,
+  { settles = false } = {},
 ) => {
+  const payload = bulkPayload.value;
+
   try {
-    const { count } = await action(bulkPayload.value);
+    const { count } = await action(payload);
 
     clearSelection();
     invalidate();
+    if (settles) {
+      dismissToasts("ids" in payload ? payload.ids : undefined);
+    }
     displaySuccess({ text: t(key, { count }) });
   } catch {
     displayAlert({ text: t("messages.notifications.error") });
@@ -310,7 +334,9 @@ const withBulkFeedback = async (
 };
 
 const readSelected = () =>
-  withBulkFeedback(readBulkNotifications, "messages.notifications.bulk.read");
+  withBulkFeedback(readBulkNotifications, "messages.notifications.bulk.read", {
+    settles: true,
+  });
 
 // Same reason the single-record one closes the pane: an unread notification
 // left open only invites the click that marks it read again.
@@ -327,6 +353,7 @@ const archiveSelected = () =>
   withBulkFeedback(
     archiveBulkNotifications,
     "messages.notifications.bulk.archived",
+    { settles: true },
   );
 
 const unarchiveSelected = () =>
@@ -339,6 +366,7 @@ const destroySelected = () =>
   withBulkFeedback(
     destroyBulkNotifications,
     "messages.notifications.bulk.destroyed",
+    { settles: true },
   );
 </script>
 
