@@ -100,13 +100,19 @@ const hasMore = computed(
   () => page.value < (missions.value?.meta?.pagination?.totalPages ?? 1),
 );
 
+// A placeholder is the previous page or search standing in while the request
+// for this one runs, so it counts as loading rather than as an answer.
+const pending = computed(
+  () => (isLoading.value || isPlaceholderData.value) && !isError.value,
+);
+
+// Nothing to show yet: the first page, or a new search that cleared the list.
+const loadingFirst = computed(() => pending.value && !missionList.value.length);
+
 // While the next page loads, `missions` still holds the one before it, so
 // `hasMore` cannot tell; the button stays, spinning, until the page is in.
 const loadingMore = computed(
-  () =>
-    (isLoading.value || isPlaceholderData.value) &&
-    !isError.value &&
-    missionList.value.length > 0,
+  () => pending.value && missionList.value.length > 0,
 );
 
 // A page that failed after earlier ones arrived. Without its own retry the
@@ -120,7 +126,11 @@ const loadMore = () => {
 };
 
 const nothingPublished = computed(
-  () => !!missions.value && !missionList.value.length && !debouncedSearch.value,
+  () =>
+    !pending.value &&
+    !!missions.value &&
+    !missionList.value.length &&
+    !debouncedSearch.value,
 );
 
 // One row of any status, asked for only once the published list came back
@@ -168,7 +178,11 @@ const pick = (mission: Mission | null) => {
       clearable
     />
 
-    <p v-if="isLoading && !missionList.length" class="template-picker__note">
+    <p
+      v-if="loadingFirst"
+      class="template-picker__note"
+      data-test="mission-template-loading"
+    >
       {{ t("messages.loading") }}
     </p>
 

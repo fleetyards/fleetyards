@@ -136,6 +136,33 @@ describe("MissionTemplatePicker", () => {
     );
   });
 
+  it("says it is loading, not that nothing matches, while a new search runs", async () => {
+    vi.useFakeTimers();
+    missions.value = { items: [mission({ slug: "bluebird" })] };
+    const wrapper = await mountPicker();
+
+    await wrapper
+      .find('[data-test="mission-template-search"] input')
+      .setValue("red");
+    // The previous search stands in as placeholder data until "red" answers.
+    isPlaceholderData.value = true;
+    vi.advanceTimersByTime(300);
+    await wrapper.vm.$nextTick();
+
+    expect(
+      wrapper.find('[data-test="mission-template-loading"]').exists(),
+    ).toBe(true);
+    expect(wrapper.find('[data-test="mission-template-empty"]').exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper.find('[data-test="mission-template-bluebird"]').exists(),
+    ).toBe(false);
+    expect(toValue(requested[0]).q?.titleCont).toBe("red");
+
+    vi.useRealTimers();
+  });
+
   it("offers a retry when a later page fails to load", async () => {
     missions.value = {
       items: [mission({ slug: "bluebird" })],
