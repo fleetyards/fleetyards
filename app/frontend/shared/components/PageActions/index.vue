@@ -20,6 +20,12 @@ withDefaults(defineProps<Props>(), {
   hidden: false,
 });
 
+// `menu` lets a button that is an icon alone in the header bring a label to
+// the phone's menu, where an icon alone reads as nothing.
+defineSlots<{
+  default?: (props: { menu: boolean }) => unknown;
+}>();
+
 const mobile = useMobile();
 
 // The buttons are written once, without a size, and take the header's. In
@@ -43,9 +49,9 @@ provide(BTN_CONTAINER, {
         expand-left
         data-test="page-actions-menu"
       >
-        <slot />
+        <slot :menu="true" />
       </BtnDropdown>
-      <slot v-else />
+      <slot v-else :menu="false" />
     </template>
   </Teleport>
 </template>
