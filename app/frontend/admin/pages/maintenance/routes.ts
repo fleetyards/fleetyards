@@ -13,6 +13,7 @@ export const routes: RouteRecordRaw[] = [
     name: "imports",
     component: () => import("@/admin/pages/maintenance/imports.vue"),
     meta: {
+      mobileBack: true,
       title: "admin.maintenance.imports",
       icon: "fa-duotone fa-cloud-arrow-down",
       needsAuthentication: true,

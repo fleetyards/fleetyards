@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar",
     component: () => import("@/frontend/pages/hangar/index.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.index",
       primaryAction: true,
@@ -20,6 +21,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-wishlist",
     component: () => import("@/frontend/pages/hangar/wishlist.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.wishlist",
       primaryAction: true,
@@ -90,6 +92,7 @@ export const routes: RouteRecordRaw[] = [
     component: () =>
       import("@/frontend/pages/hangar/inventories/[inventory].vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",

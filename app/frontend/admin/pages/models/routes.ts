@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/admin/pages/models/index.vue"),
     strict: true,
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "admin.models.index",
       icon: "fa-duotone fa-list",

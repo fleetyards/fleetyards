@@ -18,6 +18,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-vehicle-cargo",
     component: () => import("@/frontend/pages/hangar/[id]/cargo.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.vehicleCargo",
       backgroundImage: "bg-5",
