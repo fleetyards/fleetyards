@@ -139,7 +139,7 @@ const { t, l, toUEC } = useI18n();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.components.index") }}
     <HeadingSmall v-if="components">
       {{
@@ -153,6 +153,7 @@ const { t, l, toUEC } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-component-create' }"
       :aria-label="t('actions.create')"

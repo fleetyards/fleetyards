@@ -113,7 +113,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.models.index") }}
     <HeadingSmall v-if="models">
       {{
@@ -127,6 +127,7 @@ const { t } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
+      class="navigation-header-pinned"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-create' }"
       :aria-label="t('actions.create')"
