@@ -13,6 +13,7 @@ class Blueprint < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 60
+  per_page_steps [15, 30, 60, 90]
 
   # Component, Equipment or Commodity. Optional because 28 of the 1607 recipes
   # in 4.10.1 make something no catalogue here carries: 23 armour colourways and

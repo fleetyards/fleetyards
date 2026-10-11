@@ -33,6 +33,7 @@ class Equipment < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 50
+  per_page_steps [25, 50, 100]
 
   belongs_to :manufacturer, optional: true
 

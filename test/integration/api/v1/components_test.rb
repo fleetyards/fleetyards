@@ -54,7 +54,10 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /components paginates with perPage" do
+    create(:component)
+
     assert_api_response :get, 200, params: {perPage: 2} do
+      assert_equal Component.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
       assert_equal 2, parsed_body.count
     end
   end

@@ -197,4 +197,15 @@ class Api::V1::FleetBlueprintsTest < ActionDispatch::IntegrationTest
   test "GET without a session is refused" do
     assert_api_response :get, 401, api_path: PATH, path_params: {fleetSlug: @fleet.slug}
   end
+
+  test "GET pages by perPage and offers its page sizes" do
+    create(:user_blueprint, user: @crafter, blueprint: @other)
+    sign_in @reader
+
+    assert_api_response :get, 200, api_path: PATH, path_params: {fleetSlug: @fleet.slug}, params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal Blueprint.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end

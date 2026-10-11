@@ -230,4 +230,12 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
       assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "icon", "url")
     end
   end
+
+  test "GET /equipment pages by perPage and offers its page sizes" do
+    assert_api_response :get, 200, params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal Equipment.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end

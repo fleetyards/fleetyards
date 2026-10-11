@@ -8,6 +8,7 @@ class Location < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 60
+  per_page_steps [15, 30, 60, 90]
 
   KINDS = %w[
     system star planet moon city spaceport station outpost clinic district asteroid

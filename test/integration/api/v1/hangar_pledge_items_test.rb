@@ -164,4 +164,16 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
   test "GET /hangar/equipment needs a signed-in user" do
     assert_api_response :get, 401, api_path: "/hangar/equipment"
   end
+
+  test "GET /hangar/paints pages by perPage and offers its page sizes" do
+    user = create(:user)
+    create_list(:hangar_pledge_item, 2, user:)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/paints", params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal HangarPledgeItem.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end

@@ -641,4 +641,17 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     assert BuybackPledge.exists?(pledge.id)
   end
+
+  test "GET /hangar/buybacks pages by perPage and offers its page sizes" do
+    user = create(:user)
+    buyback(user, reclaimed_on: Date.new(2023, 11, 26))
+    buyback(user, reclaimed_on: Date.new(2026, 9, 21))
+    sign_in user
+
+    assert_api_response :get, 200, params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal BuybackPledge.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end
