@@ -668,7 +668,7 @@ const destroySelected = () =>
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 10px;
+  @include list-row-gap;
   min-width: 0;
   margin: 0;
   padding: 0;
