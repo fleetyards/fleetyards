@@ -126,7 +126,8 @@ const {
 const { invalidate, invalidateUnreadCount, patchCached } =
   useAdminNotificationInvalidation();
 
-const { dismiss: dismissToasts } = useAdminNotificationToasts();
+const { dismiss: dismissToasts, resync: resyncToasts } =
+  useAdminNotificationToasts();
 
 watch([sorts, archive], async () => {
   await refetch();
@@ -238,6 +239,7 @@ const withFeedback = async (
   try {
     await action();
     invalidate();
+    void resyncToasts();
     displaySuccess({ text: message });
   } catch {
     displayAlert({ text: t("messages.adminNotifications.error") });
@@ -300,6 +302,7 @@ const withBulkFeedback = async (
 
     clearSelection();
     invalidate();
+    void resyncToasts();
     displaySuccess({ text: t(key, { count }) });
   } catch {
     displayAlert({ text: t("messages.adminNotifications.error") });

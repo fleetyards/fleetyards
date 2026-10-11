@@ -64,6 +64,14 @@ export const useAdminNotificationInvalidation = () => {
 
 const TOAST_TAG_PREFIX = "admin-notification:";
 
+// The API's per-page ceiling.
+const RESYNC_PAGE_SIZE = 100;
+
+const chunk = <T>(items: T[], size: number) =>
+  Array.from({ length: Math.ceil(items.length / size) }, (_, index) =>
+    items.slice(index * size, (index + 1) * size),
+  );
+
 const toastTag = (id: string) => `${TOAST_TAG_PREFIX}${id}`;
 
 export const useAdminNotificationToasts = () => {
@@ -84,26 +92,29 @@ export const useAdminNotificationToasts = () => {
       )
       .map(({ tag }) => tag!.slice(TOAST_TAG_PREFIX.length));
 
-  // A settled message sent while the socket was down is gone like any other,
-  // so the toasts still up ask whether their notification is still unread.
+  // The settled broadcast is the usual way a toast goes, but a socket that is
+  // down drops it like any other, so the toasts still up can also ask whether
+  // their notification is still unread.
   const resync = async () => {
     const ids = openIds();
 
-    if (!ids.length) {
-      return;
-    }
-
     try {
-      const { items } = await adminNotifications({
-        perPage: String(ids.length),
-        q: { idIn: ids, readAtNull: true },
-      });
+      const pages = await Promise.all(
+        chunk(ids, RESYNC_PAGE_SIZE).map((page) =>
+          adminNotifications({
+            perPage: String(page.length),
+            q: { idIn: page, readAtNull: true },
+          }),
+        ),
+      );
 
-      const unread = new Set(items.map(({ id }) => id));
+      const unread = new Set(
+        pages.flatMap(({ items }) => items.map(({ id }) => id)),
+      );
 
       dismiss(ids.filter((id) => !unread.has(id)));
     } catch {
-      // The toasts stay up; the next settle or reconnect takes them down.
+      // The toasts stay up; the next settle or resync takes them down.
     }
   };
 
@@ -114,7 +125,8 @@ export const useAdminNotificationToasts = () => {
 // listing notifications refreshes off this subscription too, and a second one
 // would only double every toast.
 export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
-  const { invalidate } = useAdminNotificationInvalidation();
+  const { invalidate, invalidateUnreadCount } =
+    useAdminNotificationInvalidation();
 
   const { displayInfo, displayWarning, displayAlert } = useAppNotifications();
 
@@ -150,15 +162,17 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
     }
   };
 
+  // A settle only refreshes the count: refetching the list would reorder it
+  // under the reader, who has just opened the notification it reports.
   const received = (message: AdminNotificationsData) => {
-    invalidate();
-
     if ("settledIds" in message) {
+      invalidateUnreadCount();
       dismiss(message.settledIds);
 
       return;
     }
 
+    invalidate();
     announce(message);
   };
 

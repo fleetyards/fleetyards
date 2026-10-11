@@ -133,6 +133,24 @@ describe("useAdminNotificationUpdates", () => {
     expect(texts()).toEqual(["b"]);
   });
 
+  it("asks about the open toasts within the API's page size", async () => {
+    const { receive, reconnect } = render();
+
+    Array.from({ length: 101 }, (_, index) =>
+      receive(notification({ id: `n${index}`, title: `n${index}` })),
+    );
+
+    listed.mockResolvedValue({ items: [] });
+
+    reconnect();
+    await flushPromises();
+
+    expect(listed.mock.calls.map(([params]) => params.q.idIn.length)).toEqual([
+      100, 1,
+    ]);
+    expect(texts()).toEqual([]);
+  });
+
   it("replaces the toast of a repeated report", () => {
     const { receive } = render();
 
