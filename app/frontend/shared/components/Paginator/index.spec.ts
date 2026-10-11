@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { BaseList } from "@/services/fyApi";
 
@@ -73,5 +73,61 @@ describe("Paginator", () => {
     const wrapper = await mount({ meta: {} } as BaseList);
 
     expect(wrapper.find(".pagination").exists()).toBe(false);
+  });
+
+  describe("page size", () => {
+    const withSteps = listWith({
+      totalCount: 248,
+      totalPages: 5,
+      defaultPerPage: 60,
+      perPageSteps: [15, 30, 60, 90],
+    });
+
+    const mountWithSize = (perPage?: string) => {
+      const updatePerPage = vi.fn();
+
+      return mountWithDefaults(Component, {
+        props: { queryResultRef: withSteps, updatePerPage, perPage },
+      }).then((wrapper) => ({ wrapper, updatePerPage }));
+    };
+
+    const pick = (wrapper: Awaited<ReturnType<typeof mount>>, step: number) =>
+      wrapper
+        .findComponent({ name: "PerPageDropdown" })
+        .vm.$emit("change", step);
+
+    it("passes on a new size", async () => {
+      const { wrapper, updatePerPage } = await mountWithSize();
+
+      await pick(wrapper, 30);
+
+      expect(updatePerPage).toHaveBeenCalledWith(30);
+    });
+
+    it("ignores the default size picked again", async () => {
+      const { wrapper, updatePerPage } = await mountWithSize();
+
+      await pick(wrapper, 60);
+
+      expect(updatePerPage).not.toHaveBeenCalled();
+    });
+
+    it("ignores the size from the URL picked again", async () => {
+      const { wrapper, updatePerPage } = await mountWithSize("30");
+
+      await pick(wrapper, 30);
+
+      expect(updatePerPage).not.toHaveBeenCalled();
+    });
+
+    it("marks the size from the URL as the active step", async () => {
+      const { wrapper } = await mountWithSize("30");
+
+      const active = wrapper
+        .findAllComponents({ name: "BaseBtn" })
+        .filter((btn) => btn.props("active"));
+
+      expect(active.map((btn) => btn.text())).toEqual(["30"]);
+    });
   });
 });

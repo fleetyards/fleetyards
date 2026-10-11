@@ -31,22 +31,16 @@ export const usePagination = (
     return paginationStore.findByKey(key.value) as string;
   });
 
-  const updatePerPage = (newPerPage: string | number) => {
-    const sizeChanged = String(newPerPage) !== String(perPage.value);
+  // The page goes first: at a new size the old page number means different
+  // items and can lie past the end, and the size change alone already refetches.
+  const updatePerPage = async (newPerPage: string | number) => {
+    if (route.query.perPage || route.query.page) {
+      const { perPage: _perPage, page: _page, ...query } = route.query;
+
+      await router.replace({ query });
+    }
 
     paginationStore.setBykey(key.value, newPerPage);
-
-    // At a new size the current page number means different items, and can
-    // point past the last page.
-    const { perPage: _perPage, page, ...query } = route.query;
-
-    if (!sizeChanged && page) {
-      query.page = page;
-    }
-
-    if (route.query.perPage || (sizeChanged && page)) {
-      void router.replace({ query });
-    }
   };
 
   const page = computed(() => (route.query.page as string) || "1");

@@ -80,7 +80,7 @@ describe("usePagination", () => {
   it("drops the link's page size once the visitor picks one", async () => {
     const { pagination, store, router } = await render({ perPage: "120" });
 
-    pagination.updatePerPage(60);
+    await pagination.updatePerPage(60);
     await flushPromises();
 
     expect(store.findByKey("ships")).toBe(60);
@@ -91,30 +91,24 @@ describe("usePagination", () => {
   it("goes back to the first page when the page size changes", async () => {
     const { pagination, router } = await render({ page: "2", q: "x" });
 
-    pagination.updatePerPage(100);
+    await pagination.updatePerPage(100);
     await flushPromises();
 
     expect(router.currentRoute.value.query).toEqual({ q: "x" });
     expect(pagination.page.value).toBe("1");
   });
 
-  it("stays on the page when the size already in use is picked again", async () => {
-    const { pagination, store, router } = await render({ page: "2" });
+  // Otherwise the list asks for the old page at the new size first, which can
+  // lie past the end and flash an empty list.
+  it("leaves page one before it takes the new size", async () => {
+    const { pagination, store, router } = await render({ page: "10" });
+    const sizes: unknown[] = [];
 
-    store.setBykey("ships", 30);
-    pagination.updatePerPage(30);
-    await flushPromises();
+    router.afterEach(() => sizes.push(store.findByKey("ships")));
 
-    expect(router.currentRoute.value.query).toEqual({ page: "2" });
-  });
+    await pagination.updatePerPage(200);
 
-  it("drops a link's page size but keeps the page when that size is picked", async () => {
-    const { pagination, router } = await render({ page: "2", perPage: "120" });
-
-    pagination.updatePerPage(120);
-    await flushPromises();
-
-    expect(router.currentRoute.value.query).toEqual({ page: "2" });
-    expect(String(pagination.perPage.value)).toBe("120");
+    expect(sizes).toEqual([undefined]);
+    expect(store.findByKey("ships")).toBe(200);
   });
 });
