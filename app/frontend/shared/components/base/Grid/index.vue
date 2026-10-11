@@ -41,19 +41,14 @@ const gridClasses = computed(() => {
   return `col-12 col-lg-6 ${gridClassesWithFilter.value}`;
 });
 
+// No five-column step: every count left divides 12, so the grid page sizes
+// (multiples of 12) fill every row.
 const gridClassesWithFilter = computed(() => {
-  if (props.gridBase === "3") {
-    if (props.filterVisible) {
-      return "col-xxl-3 col-3xl-2dot4";
-    }
-    return "col-xl-3 col-xxl-2dot4 col-3xl-2";
-  }
-
   if (props.filterVisible) {
-    return "col-xxl-3 col-3xl-2dot4";
+    return "col-xxl-3 col-3xl-2";
   }
 
-  return "col-xl-3 col-xxl-2dot4 col-3xl-2";
+  return "col-xl-3 col-xxl-2";
 });
 
 const cssClasses = computed(() => {

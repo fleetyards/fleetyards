@@ -70,9 +70,6 @@ $gutter: $grid-gutter-width; // 30px from variables.scss
       @extend %col-base;
     }
   }
-  .col#{$infix}-2dot4 {
-    @extend %col-base;
-  }
 
   @if $min-width == 0 {
     // xs breakpoint (no media query)
@@ -82,20 +79,12 @@ $gutter: $grid-gutter-width; // 30px from variables.scss
       }
     }
 
-    .col#{$infix}-2dot4 {
-      @include make-col(2.4);
-    }
-
     @for $i from 0 through ($grid-columns - 1) {
       @if $i > 0 {
         .offset#{$infix}-#{$i} {
           @include make-col-offset($i);
         }
       }
-    }
-
-    .offset#{$infix}-2dot4 {
-      @include make-col-offset(2.4);
     }
   } @else {
     @media (min-width: $min-width) {
@@ -105,20 +94,12 @@ $gutter: $grid-gutter-width; // 30px from variables.scss
         }
       }
 
-      .col#{$infix}-2dot4 {
-        @include make-col(2.4);
-      }
-
       @for $i from 0 through ($grid-columns - 1) {
         @if $i > 0 {
           .offset#{$infix}-#{$i} {
             @include make-col-offset($i);
           }
         }
-      }
-
-      .offset#{$infix}-2dot4 {
-        @include make-col-offset(2.4);
       }
     }
   }
