@@ -68,6 +68,29 @@ const changePerPage = (step: number | string) => {
   perPageHandler.value?.(step);
 };
 
+// A size saved, or carried by a link, from before the list offered these steps
+// (30 on a card grid) would leave a short row on every page and match no step,
+// so the list goes back to its default instead.
+watch(
+  [() => pagination.value?.perPageSteps, () => props.perPage],
+  ([steps, perPage]) => {
+    if (!steps || !perPage || !perPageHandler.value) {
+      return;
+    }
+
+    if (steps.some((step) => String(step) === String(perPage))) {
+      return;
+    }
+
+    const fallback = pagination.value?.defaultPerPage;
+
+    if (fallback) {
+      perPageHandler.value(fallback);
+    }
+  },
+  { immediate: true },
+);
+
 // An empty list still has a page one, and a page count is only unknown while the
 // request is out.
 const totalPages = computed(() => pagination.value?.totalPages || 1);

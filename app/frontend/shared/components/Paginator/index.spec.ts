@@ -115,6 +115,18 @@ describe("Paginator", () => {
       expect(onUpdatePerPage).toHaveBeenCalledWith(30);
     });
 
+    it("falls back to the default when the size in use is no step", async () => {
+      const { updatePerPage } = await mountWithSize("25");
+
+      expect(updatePerPage).toHaveBeenCalledWith(60);
+    });
+
+    it("keeps a size in use that is a step", async () => {
+      const { updatePerPage } = await mountWithSize("90");
+
+      expect(updatePerPage).not.toHaveBeenCalled();
+    });
+
     it("passes on a new size", async () => {
       const { wrapper, updatePerPage } = await mountWithSize();
 
