@@ -75,7 +75,7 @@ const sortFields = useMissionSortFields();
       <Paginator
         :query-result-ref="missions"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -101,7 +101,7 @@ const sortFields = useMissionSortFields();
       <Paginator
         :query-result-ref="missions"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

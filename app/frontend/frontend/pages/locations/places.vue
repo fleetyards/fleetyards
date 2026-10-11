@@ -70,7 +70,7 @@ const crumbs = computed<Crumb[]>(() => [
       <Paginator
         :query-result-ref="locations"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -90,7 +90,7 @@ const crumbs = computed<Crumb[]>(() => [
       <Paginator
         :query-result-ref="locations"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

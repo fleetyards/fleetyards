@@ -68,7 +68,7 @@ const sortFields = useCommoditySortFields();
       <Paginator
         :query-result-ref="commodities"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -94,7 +94,7 @@ const sortFields = useCommoditySortFields();
       <Paginator
         :query-result-ref="commodities"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

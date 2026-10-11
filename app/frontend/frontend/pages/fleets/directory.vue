@@ -105,7 +105,7 @@ const openDisplayOptionsModal = () => {
       <Paginator
         :query-result-ref="fleets"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -140,7 +140,7 @@ const openDisplayOptionsModal = () => {
       <Paginator
         :query-result-ref="fleets"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>

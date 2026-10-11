@@ -65,7 +65,7 @@ const sortFields = useEquipmentSortFields(() => equipment.value?.items || []);
       <Paginator
         :query-result-ref="equipment"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -87,7 +87,7 @@ const sortFields = useEquipmentSortFields(() => equipment.value?.items || []);
       <Paginator
         :query-result-ref="equipment"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>
