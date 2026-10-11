@@ -147,4 +147,21 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
   test "GET /hangar/flair requires a session or token" do
     assert_api_response :get, 401, api_path: "/hangar/flair"
   end
+
+  test "GET /hangar/equipment lists only the caller's FPS equipment" do
+    user = create(:user)
+    rifle = create(:hangar_pledge_item, user:, kind: "equipment", name: "Gallant ‘Redline’ Rifle")
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
+    create(:hangar_pledge_item, kind: "equipment", name: "Arrowhead Sniper Rifle")
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+      assert_equal [rifle.id], parsed_body["items"].pluck("id")
+      assert_equal "equipment", parsed_body["items"].first["kind"]
+    end
+  end
+
+  test "GET /hangar/equipment needs a signed-in user" do
+    assert_api_response :get, 401, api_path: "/hangar/equipment"
+  end
 end
