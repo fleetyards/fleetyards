@@ -86,18 +86,17 @@ class PaintsImporter
     end
   end
 
+  # The hangar syncs hold hundreds of megabytes of JSON, almost all of it the
+  # same skins repeated per user, so Postgres hands back each distinct skin
+  # once rather than every sync being loaded into the worker.
   private def collect_paints
-    paints = []
+    skins = Imports::HangarSync
+      .joins(Arel.sql("CROSS JOIN LATERAL jsonb_array_elements(CASE WHEN jsonb_typeof(imports.input) = 'array' THEN imports.input ELSE '[]'::jsonb END) AS item"))
+      .where(Arel.sql("item->>'type' = 'skin' AND COALESCE(item->>'image', '') <> ''"))
+      .distinct
+      .pluck(Arel.sql("item->>'name'"), Arel.sql("item->>'image'"))
 
-    Imports::HangarSync.find_each do |import|
-      paints << extract_paints(import)
-    end
-
-    paints.flatten!
-    paints.uniq!
-    paints.compact!
-
-    paints
+    skins.map { |name, image| extract_paint(name, image) }.uniq
   end
 
   private def paint_for_target?(paint)
@@ -122,22 +121,16 @@ class PaintsImporter
     name.to_s.downcase.gsub(/[^a-z0-9]/, "")
   end
 
-  private def extract_paints(import)
-    return unless import.input.is_a?(Array)
+  private def extract_paint(name, image)
+    name = name.tr("–", "-")
+    name = name.tr(" ", " ").strip
+    name_parts = name.split(" - ")
 
-    import.input.filter_map do |item|
-      next if item["type"] != "skin" || item["image"].blank?
-
-      name = item["name"].tr("–", "-")
-      name = name.tr(" ", " ").strip
-      name_parts = name.split(" - ")
-
-      {
-        name: cleanup_name(name_parts.last),
-        model_name: cleanup_name(name_parts.first),
-        image: item["image"]
-      }
-    end
+    {
+      name: cleanup_name(name_parts.last),
+      model_name: cleanup_name(name_parts.first),
+      image:
+    }
   end
 
   private def import_paint(paint)

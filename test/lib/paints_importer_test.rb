@@ -30,6 +30,25 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["Dread Pirate"], aurora_es.paints.pluck(:name)
   end
 
+  test "#run skips syncs without a list and items that are not skins with an image" do
+    arrow = create(:model, name: "Arrow")
+    create(:import, :hangar_sync, input: {"error" => "unreadable"})
+    create(
+      :import,
+      :hangar_sync,
+      input: [
+        {"type" => "skin", "name" => "Arrow - Twilight Paint", "image" => ""},
+        {"type" => "ship", "name" => "Arrow - Metallic Grey Paint", "image" => IMAGE_URL}
+      ]
+    )
+    hangar_sync("Arrow - Twilight Paint", "Arrow - Twilight Paint")
+
+    results = PaintsImporter.new.run
+
+    assert_equal ["Twilight"], arrow.paints.pluck(:name)
+    assert_equal 1, results[:new][:count]
+  end
+
   test "#run for a single model imports a series paint into the whole series" do
     aurora_cl = create(:model, name: "Aurora Mk I CL")
     aurora_es = create(:model, name: "Aurora Mk I ES")
