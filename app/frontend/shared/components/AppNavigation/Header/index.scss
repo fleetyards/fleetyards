@@ -53,7 +53,10 @@
     right: 0;
     left: auto;
     flex-wrap: wrap;
-    padding: 15px;
+    // Tighter top and bottom: on a phone the header is often just the back
+    // button and a search, and 15px either side of them is a screen's worth
+    // of nothing over the course of a few pages.
+    padding: 8px 15px;
     transition: right ease $transition-base-speed;
 
     &__left {
