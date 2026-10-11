@@ -4,10 +4,11 @@ import { ref } from "vue";
 const query = ref<Record<string, string>>({});
 // The composable chains `.catch` onto every navigation.
 const replace = vi.fn().mockResolvedValue(undefined);
+const push = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("vue-router", () => ({
   useRoute: () => ({ query: query.value, path: "/hangar/inventories/main" }),
-  useRouter: () => ({ replace, push: vi.fn() }),
+  useRouter: () => ({ replace, push }),
 }));
 
 const { useFilters } = await import("./useFilters");
@@ -52,15 +53,16 @@ describe("useFilters#getQuery", () => {
 describe("useFilters navigation", () => {
   beforeEach(() => {
     replace.mockClear();
+    push.mockClear();
   });
 
   it("keeps the view somebody is filtering in", async () => {
     query.value = { view: "invites", tab: "log", direction: "outgoing" };
 
     useFilters().filter({ nameCont: "ti" } as never);
-    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+    await vi.waitFor(() => expect(push).toHaveBeenCalled());
 
-    expect(replace.mock.calls[0][0].query).toMatchObject({
+    expect(push.mock.calls[0][0].query).toMatchObject({
       nameCont: "ti",
       view: "invites",
       tab: "log",
@@ -72,9 +74,9 @@ describe("useFilters navigation", () => {
     query.value = { nameCont: "ti", page: "3" };
 
     useFilters().filter({ nameCont: "tit" } as never);
-    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+    await vi.waitFor(() => expect(push).toHaveBeenCalled());
 
-    expect(replace.mock.calls[0][0].query.page).toBeUndefined();
+    expect(push.mock.calls[0][0].query.page).toBeUndefined();
   });
 
   it("keeps the page when the form writes back what the URL held", async () => {
@@ -91,7 +93,7 @@ describe("useFilters navigation", () => {
 
     void useFilters().resetFilter();
 
-    expect(replace).toHaveBeenCalledWith(
+    expect(push).toHaveBeenCalledWith(
       expect.objectContaining({
         query: { view: "invites", direction: "outgoing" },
       }),
@@ -103,7 +105,7 @@ describe("useFilters navigation", () => {
 
     void useFilters({ viewKeys: ["t"] }).resetFilter();
 
-    expect(replace).toHaveBeenCalledWith(
+    expect(push).toHaveBeenCalledWith(
       expect.objectContaining({ query: { t: "archive", tab: "log" } }),
     );
   });
@@ -121,13 +123,13 @@ describe("useFilters navigation", () => {
     query.value = { nameCont: "ti", page: "2", perPage: "120" };
 
     useFilters().filter({ nameCont: "tit" } as never);
-    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+    await vi.waitFor(() => expect(push).toHaveBeenCalled());
 
-    expect(replace.mock.calls[0][0].query).toMatchObject({
+    expect(push.mock.calls[0][0].query).toMatchObject({
       nameCont: "tit",
       perPage: "120",
     });
-    expect(replace.mock.calls[0][0].query.page).toBeUndefined();
+    expect(push.mock.calls[0][0].query.page).toBeUndefined();
   });
 
   // A reset goes back to the reader's own defaults, and is the way out of a
@@ -137,7 +139,7 @@ describe("useFilters navigation", () => {
 
     void useFilters().resetFilter();
 
-    expect(replace).toHaveBeenCalledWith(
+    expect(push).toHaveBeenCalledWith(
       expect.objectContaining({ query: { tab: "log" } }),
     );
   });
@@ -146,5 +148,51 @@ describe("useFilters navigation", () => {
     query.value = { perPage: "120" };
 
     expect(useFilters().hasResettableQuery.value).toBe(false);
+  });
+
+  it("is a step the back gesture can undo when the filter changed", async () => {
+    query.value = { nameCont: "ti" };
+
+    useFilters().filter({ nameCont: "tit" } as never);
+    await vi.waitFor(() => expect(push).toHaveBeenCalled());
+
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it("is no step at all when the form writes back what the URL held", async () => {
+    query.value = { nameCont: "ti" };
+
+    useFilters().filter({ nameCont: "ti" } as never);
+    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("folds one burst of typing into a single step", async () => {
+    vi.useFakeTimers();
+
+    try {
+      query.value = { nameCont: "t" };
+      const filters = useFilters();
+
+      filters.filter({ nameCont: "ti" } as never);
+      vi.advanceTimersByTime(400);
+      query.value = { nameCont: "ti" };
+
+      filters.filter({ nameCont: "tit" } as never);
+      vi.advanceTimersByTime(400);
+
+      expect(push).toHaveBeenCalledTimes(1);
+      expect(replace).toHaveBeenCalledTimes(1);
+
+      query.value = { nameCont: "tit" };
+      vi.advanceTimersByTime(2000);
+      filters.filter({ nameCont: "tita" } as never);
+      vi.advanceTimersByTime(400);
+
+      expect(push).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

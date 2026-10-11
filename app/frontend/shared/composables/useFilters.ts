@@ -1,5 +1,8 @@
 import debounce from "lodash.debounce";
 
+// How long after one filter change the next still counts as the same edit.
+const FILTER_BURST_MS = 1500;
+
 export const useFilters = <T>({
   ignoreKeys,
   viewKeys = [],
@@ -106,29 +109,46 @@ export const useFilters = <T>({
   const shouldResetPage = (query: ReturnType<typeof getQuery>) =>
     comparable(query) !== comparable(getQuery());
 
+  // Every filter change is a step the back gesture can undo - except within
+  // one burst: a search typed with pauses lands here once per pause, and each
+  // of those would otherwise be its own entry to step back through.
+  let lastFilteredAt = 0;
+
+  const navigationFor = (changed: boolean): "push" | "replace" => {
+    const now = Date.now();
+    const sameBurst = now - lastFilteredAt < FILTER_BURST_MS;
+
+    if (!changed) {
+      return "replace";
+    }
+
+    lastFilteredAt = now;
+
+    return sameBurst ? "replace" : "push";
+  };
+
   const debouncedFilter = (filter: T) => {
     const query = getQuery(filter);
+    const changed = shouldResetPage(query);
 
-    router
-      .replace({
-        ...route,
-        hash: undefined,
-        query: {
-          ...query,
-          ...viewState.value,
-          page: shouldResetPage(query) ? undefined : route.query.page,
-          // A page size in the URL came with a shared link. Filtering keeps
-          // it; a reset goes back to the reader's own, which also drops one
-          // the API refused.
-          perPage: route.query.perPage,
-        },
-      })
-      .catch(() => {});
+    router[navigationFor(changed)]({
+      ...route,
+      hash: undefined,
+      query: {
+        ...query,
+        ...viewState.value,
+        page: changed ? undefined : route.query.page,
+        // A page size in the URL came with a shared link. Filtering keeps
+        // it; a reset goes back to the reader's own, which also drops one
+        // the API refused.
+        perPage: route.query.perPage,
+      },
+    }).catch(() => {});
   };
 
   const resetFilter = () =>
     router
-      .replace({
+      .push({
         ...route,
         // Clearing the filters is not leaving the view they were set in.
         query: { ...viewState.value },
