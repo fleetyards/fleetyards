@@ -50,8 +50,10 @@ module Loaders
 
         import.finish!
       rescue => e
+        # Before the transition: `fail!` sends the admin notification, and it
+        # reads the reason from `info`.
+        import.info = e.message
         import.fail!
-        import.update!(info: e.message)
 
         raise e
       end

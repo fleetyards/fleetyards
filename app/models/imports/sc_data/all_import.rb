@@ -19,6 +19,10 @@ module Imports
       # the first check after it reload once per source.
       store_accessor :input, :tree_checksum
 
+      def label
+        "sc_data #{version} import"
+      end
+
       # The build this source is on, once a load has finished for it -- rather
       # than whichever load finished last, which with two sources configured
       # answers for the wrong one.

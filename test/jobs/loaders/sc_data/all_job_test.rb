@@ -233,6 +233,18 @@ module Loaders
         assert_equal "failed", import.aasm_state
         assert_equal "sc data error", import.info
       end
+
+      test "#perform says why it failed in the notification" do
+        admin_user = create(:admin_user, resource_access: [:imports])
+        ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
+
+        assert_raises(StandardError) { ::Loaders::ScData::AllJob.new.perform }
+
+        failed = AdminNotification.find_by(admin_user:, notification_type: "import_run")
+
+        assert_equal "sc_data 3.24.0 import failed", failed.title
+        assert_equal "sc data error", failed.body
+      end
     end
   end
 end
