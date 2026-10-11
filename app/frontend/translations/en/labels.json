@@ -3473,6 +3473,7 @@
           "noTemplate": "No template",
           "noTemplateHint": "Build the event from scratch.",
           "pickTemplateLoadFailed": "The fleet's missions could not be loaded.",
+          "pickTemplatePageFailed": "The next missions could not be loaded.",
           "pickTemplateSearch": "Search missions",
           "pickTemplateNonePublished": "None of the fleet's active missions is published yet.",
           "pickTemplateNoneActive": "The fleet has no active missions.",

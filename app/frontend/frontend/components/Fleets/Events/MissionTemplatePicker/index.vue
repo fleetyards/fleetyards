@@ -56,6 +56,7 @@ const queryParams = computed<FleetMissionsParams>(() => ({
 const {
   data: missions,
   isLoading,
+  isPlaceholderData,
   isError,
   refetch,
 } = useFleetMissions(fleetSlug, queryParams);
@@ -77,10 +78,12 @@ watch(
   { flush: "sync" },
 );
 
+// The query client keeps the previous page on screen while the next one loads,
+// so only data that answers the current page and search is taken in.
 watch(
-  missions,
-  (value) => {
-    if (!value) return;
+  [missions, isPlaceholderData],
+  ([value, placeholder]) => {
+    if (!value || placeholder) return;
 
     const items = value.items ?? [];
     const held = new Set(missionList.value.map((mission) => mission.id));
@@ -97,10 +100,19 @@ const hasMore = computed(
   () => page.value < (missions.value?.meta?.pagination?.totalPages ?? 1),
 );
 
-// The next page's query has no data while it loads, so `hasMore` cannot tell;
-// the button stays, spinning, until the page is in.
+// While the next page loads, `missions` still holds the one before it, so
+// `hasMore` cannot tell; the button stays, spinning, until the page is in.
 const loadingMore = computed(
-  () => isLoading.value && missionList.value.length > 0,
+  () =>
+    (isLoading.value || isPlaceholderData.value) &&
+    !isError.value &&
+    missionList.value.length > 0,
+);
+
+// A page that failed after earlier ones arrived. Without its own retry the
+// list would end there, with neither "Load more" nor the error above.
+const pageFailed = computed(
+  () => isError.value && missionList.value.length > 0,
 );
 
 const loadMore = () => {
@@ -161,7 +173,7 @@ const pick = (mission: Mission | null) => {
     </p>
 
     <div
-      v-else-if="isError && !missions"
+      v-else-if="isError && !missionList.length"
       class="template-picker__error"
       data-test="mission-template-error"
     >
@@ -243,7 +255,24 @@ const pick = (mission: Mission | null) => {
       </button>
     </div>
 
-    <div v-if="hasMore || loadingMore" class="template-picker__more">
+    <div
+      v-if="pageFailed"
+      class="template-picker__error template-picker__more"
+      data-test="mission-template-page-error"
+    >
+      <span class="template-picker__note">
+        {{ t("labels.fleets.events.pickTemplatePageFailed") }}
+      </span>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        data-test="mission-template-page-retry"
+        @click="refetch()"
+      >
+        {{ t("actions.retry") }}
+      </Btn>
+    </div>
+
+    <div v-else-if="hasMore || loadingMore" class="template-picker__more">
       <Btn
         :loading="loadingMore"
         :variant="BtnVariantsEnum.BARE"

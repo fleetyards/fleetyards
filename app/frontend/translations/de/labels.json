@@ -3459,6 +3459,7 @@
           "noTemplate": "Keine Vorlage",
           "noTemplateHint": "Das Event von Grund auf erstellen.",
           "pickTemplateLoadFailed": "Die Missionen der Flotte konnten nicht geladen werden.",
+          "pickTemplatePageFailed": "Die nächsten Missionen konnten nicht geladen werden.",
           "pickTemplateSearch": "Missionen durchsuchen",
           "pickTemplateNonePublished": "Noch keine aktive Mission der Flotte ist veröffentlicht.",
           "pickTemplateNoneActive": "Die Flotte hat keine aktiven Missionen.",

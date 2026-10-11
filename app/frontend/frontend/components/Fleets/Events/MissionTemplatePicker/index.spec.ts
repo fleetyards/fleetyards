@@ -18,6 +18,7 @@ type MissionsPage = {
 const missions = ref<MissionsPage | undefined>();
 const anyMission = ref<MissionsPage | undefined>();
 const isLoading = ref(false);
+const isPlaceholderData = ref(false);
 const isError = ref(false);
 const refetch = vi.fn();
 const requested: MaybeRefOrGetter<FleetMissionsParams>[] = [];
@@ -43,6 +44,7 @@ vi.mock("@/services/fyApi", async () => {
       return {
         data: missions,
         isLoading,
+        isPlaceholderData,
         isError,
         refetch,
       };
@@ -81,6 +83,7 @@ afterEach(() => {
   requested.splice(0);
   isError.value = false;
   isLoading.value = false;
+  isPlaceholderData.value = false;
   refetch.mockClear();
 });
 
@@ -106,16 +109,16 @@ describe("MissionTemplatePicker", () => {
 
     expect(toValue(requested[0]).page).toBe("2");
 
-    // The next page has no data while it loads; the button stays to say so.
-    missions.value = undefined;
-    isLoading.value = true;
+    // The query client shows the previous page while the next one loads; the
+    // button stays to say so.
+    isPlaceholderData.value = true;
     await wrapper.vm.$nextTick();
 
     expect(wrapper.find('[data-test="mission-template-more"]').exists()).toBe(
       true,
     );
 
-    isLoading.value = false;
+    isPlaceholderData.value = false;
     missions.value = {
       items: [mission({ slug: "redbird" })],
       meta: { pagination: { totalPages: 2 } },
@@ -131,6 +134,32 @@ describe("MissionTemplatePicker", () => {
     expect(wrapper.find('[data-test="mission-template-more"]').exists()).toBe(
       false,
     );
+  });
+
+  it("offers a retry when a later page fails to load", async () => {
+    missions.value = {
+      items: [mission({ slug: "bluebird" })],
+      meta: { pagination: { totalPages: 2 } },
+    };
+    const wrapper = await mountPicker();
+
+    await wrapper.find('[data-test="mission-template-more"]').trigger("click");
+    isError.value = true;
+    await wrapper.vm.$nextTick();
+
+    expect(
+      wrapper.find('[data-test="mission-template-bluebird"]').exists(),
+    ).toBe(true);
+    expect(wrapper.find('[data-test="mission-template-error"]').exists()).toBe(
+      false,
+    );
+
+    await wrapper
+      .find('[data-test="mission-template-page-retry"]')
+      .trigger("click");
+
+    expect(refetch).toHaveBeenCalled();
+    expect(toValue(requested[0]).page).toBe("2");
   });
 
   it("says none is published when the fleet only has drafts", async () => {

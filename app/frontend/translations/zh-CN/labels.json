@@ -3459,6 +3459,7 @@
           "noTemplate": "不使用模板",
           "noTemplateHint": "从零开始创建活动。",
           "pickTemplateLoadFailed": "无法加载舰队的任务。",
+          "pickTemplatePageFailed": "无法加载更多任务。",
           "pickTemplateSearch": "搜索任务",
           "pickTemplateNonePublished": "舰队进行中的任务尚未发布。",
           "pickTemplateNoneActive": "舰队没有进行中的任务。",
