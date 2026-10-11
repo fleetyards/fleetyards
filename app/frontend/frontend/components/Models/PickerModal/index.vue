@@ -15,6 +15,7 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import ClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
 import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
@@ -36,6 +37,7 @@ import {
 import { useSessionStore } from "@/frontend/stores/session";
 import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -110,6 +112,8 @@ const focusIn = ref<string[]>([]);
 const sizeIn = ref<string[]>([]);
 const productionStatusIn = ref<string[]>([]);
 const moreFiltersOpen = ref(false);
+
+const { prefersReducedMotion } = useReducedMotion();
 
 // The cargo grid and trade route pickers pin flight-ready ships. Offering the
 // filter there would let it override the pin and widen the list instead.
@@ -477,30 +481,32 @@ const save = () => {
           Behind a toggle because the header is sticky: six fields wrap to three
           rows on a phone and leave no room for the ships under them.
         -->
-        <div
-          v-show="moreFiltersOpen"
+        <Collapsed
           id="model-picker-more-filters"
-          class="model-picker__toolbar model-picker__toolbar--more"
+          :visible="moreFiltersOpen"
+          :duration="prefersReducedMotion ? 1 : 200"
         >
-          <FocusSelect
-            v-model="focusIn"
-            class="model-picker__filter"
-            name="model-picker-focus"
-          />
+          <div class="model-picker__toolbar model-picker__toolbar--more">
+            <FocusSelect
+              v-model="focusIn"
+              class="model-picker__filter"
+              name="model-picker-focus"
+            />
 
-          <SizeSelect
-            v-model="sizeIn"
-            class="model-picker__filter"
-            name="model-picker-size"
-          />
+            <SizeSelect
+              v-model="sizeIn"
+              class="model-picker__filter"
+              name="model-picker-size"
+            />
 
-          <ProductionStatusSelect
-            v-if="productionStatusOffered"
-            v-model="productionStatusIn"
-            class="model-picker__filter"
-            name="model-picker-production-status"
-          />
-        </div>
+            <ProductionStatusSelect
+              v-if="productionStatusOffered"
+              v-model="productionStatusIn"
+              class="model-picker__filter"
+              name="model-picker-production-status"
+            />
+          </div>
+        </Collapsed>
 
         <div v-if="containerFilter" class="model-picker__containers">
           <span class="model-picker__containers-label">
@@ -669,6 +675,8 @@ const save = () => {
   @apply self-stretch;
 }
 
+/* Inside the element Collapsed animates, not on it: it holds the animated
+   element's padding at zero until the end, and the row would jump down. */
 .model-picker__toolbar--more {
   padding-top: 12px;
 }

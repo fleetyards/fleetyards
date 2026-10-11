@@ -29,6 +29,15 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
+
+vi.stubGlobal(
   "IntersectionObserver",
   class {
     observe() {}
@@ -89,15 +98,17 @@ describe("Models/PickerModal", () => {
 
   it("keeps the extra filters folded away until asked for", async () => {
     const wrapper = await mount();
-    const more = () => wrapper.find("#model-picker-more-filters");
+    const display = () =>
+      wrapper.find(".model-picker__toolbar--more").element.parentElement?.style
+        .display;
 
-    expect(more().attributes("style")).toContain("display: none");
+    expect(display()).toBe("none");
 
     await wrapper
       .find('[data-test="model-picker-more-filters"]')
       .trigger("click");
 
-    expect(more().attributes("style") ?? "").not.toContain("display: none");
+    expect(display()).toBe("");
   });
 
   it("offers no production status filter when the caller pins one", async () => {
