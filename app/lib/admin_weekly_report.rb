@@ -105,7 +105,7 @@ class AdminWeeklyReport
     Section.new(
       key: :ops,
       metrics: [
-        windowed(:hangar_syncs) { |range| Imports::HangarSync.where(created_at: range).count },
+        windowed(:hangar_syncs) { |range| Imports::HangarSync.without_no_op_syncs.where(created_at: range).count },
         windowed(:failed_hangar_syncs) do |range|
           Imports::HangarSync.where(created_at: range, aasm_state: "failed").count
         end,
