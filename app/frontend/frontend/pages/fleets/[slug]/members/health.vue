@@ -180,8 +180,16 @@ const daysLink = (value: number) => ({
   query: { ...route.query, days: value === DEFAULT_DAYS ? undefined : value },
 });
 
-const memberTo = (member: FleetMemberHealthMember) =>
-  membersLink({ searchCont: member.username });
+// Requests and invitations are not on the roster: the member list only finds
+// them in its invites view.
+const PENDING_CHECKS: MemberHealthCheckKey[] = ["joinRequests", "invitations"];
+
+const memberTo = (check: MemberHealthCheck, member: FleetMemberHealthMember) =>
+  membersLink(
+    PENDING_CHECKS.includes(check.key)
+      ? { view: "invites", searchCont: member.username }
+      : { searchCont: member.username },
+  );
 
 const joinedLine = (member: FleetMemberHealthMember) =>
   member.acceptedAt
@@ -612,7 +620,7 @@ const crumbs = computed<Crumb[]>(() => [
                 v-for="member in membersOf(check)"
                 :key="member.id"
                 :title="member.username"
-                :to="memberTo(member)"
+                :to="memberTo(check, member)"
                 :avatar="member.avatar?.smallUrl"
                 :subline="memberSubline(check, member)"
                 :chip="member.fleetRole?.name"

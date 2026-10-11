@@ -62,7 +62,10 @@ const canRemove = computed(
 const memberLink = computed(() => ({
   name: "fleet-members-index",
   params: { slug: props.fleetSlug },
-  query: { searchCont: props.member.username },
+  // An invitation is only listed in the invites view.
+  query: props.revoke
+    ? { view: "invites", searchCont: props.member.username }
+    : { searchCont: props.member.username },
 }));
 
 const busy = ref(false);

@@ -290,6 +290,10 @@ describe("FleetMembersHealthPage", () => {
     const row = subject.find("[data-test='health-joinRequests-bria']");
 
     expect(row.find("[data-test='health-accept']").exists()).toBe(true);
+    // A request is not on the roster, only in the invites view.
+    const href = row.find(".health-row__title").attributes("href");
+    expect(href).toContain("view=invites");
+    expect(href).toContain("searchCont=bria");
     expect(row.find("[data-test='health-decline']").exists()).toBe(true);
   });
 
