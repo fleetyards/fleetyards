@@ -18,7 +18,7 @@ import { useLocationSortFields } from "@/frontend/composables/useLocationSortFie
 import { useLocationFilters } from "@/frontend/composables/useLocationFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useLocations, getLocationsQueryKey } from "@/services/fyApi";
+import { useLocations } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -28,11 +28,7 @@ const locationsQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const locationsQueryKey = computed(() =>
-  getLocationsQueryKey(locationsQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(locationsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useLocationFilters(async () => {
   await refetch();

@@ -20,7 +20,6 @@ import {
   type FleetInventoryItem,
   useFleetInventory as useFleetInventoryQuery,
   useFleetInventoryItems as useFleetInventoryItemsQuery,
-  getFleetInventoryItemsQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -44,15 +43,7 @@ const itemsQueryParams = computed(() => ({
   perPage: perPage.value,
 }));
 
-const itemsQueryKey = computed(() =>
-  getFleetInventoryItemsQueryKey(
-    props.fleet.id,
-    inventoryId.value,
-    itemsQueryParams.value,
-  ),
-);
-
-const { perPage, page, updatePerPage } = usePagination(itemsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data: items } = useFleetInventoryItemsQuery(
   props.fleet.id,

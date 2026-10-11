@@ -14,11 +14,7 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterForm from "@/admin/components/Fleets/FilterForm/index.vue";
-import {
-  useFleets,
-  getFleetsQueryKey,
-  type Fleet,
-} from "@/services/fyAdminApi";
+import { useFleets, type Fleet } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -39,11 +35,7 @@ watch(
   },
 );
 
-const fleetsQueryKey = computed(() => {
-  return getFleetsQueryKey(fleetsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(fleetsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useFilters<FleetQuery>({
   updateCallback: async () => {

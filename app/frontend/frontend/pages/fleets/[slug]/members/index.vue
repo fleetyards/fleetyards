@@ -31,7 +31,6 @@ import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
-  getFleetMembersQueryKey,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
@@ -84,9 +83,7 @@ const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   },
 });
 
-const fleetMembersQueryKey = getFleetMembersQueryKey(props.fleet.slug);
-
-const { perPage, page, updatePerPage } = usePagination(fleetMembersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const stateIn = computed(() => {
   if (view.value === "members") return ["accepted"];

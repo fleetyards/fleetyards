@@ -18,7 +18,6 @@ import {
   type User,
   type AdminUserFleet,
   useUserFleets as useUserFleetsQuery,
-  getUserFleetsQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -34,11 +33,7 @@ const fleetsQueryParams = computed(() => ({
   perPage: perPage.value,
 }));
 
-const fleetsQueryKey = computed(() =>
-  getUserFleetsQueryKey(props.user.id!, fleetsQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(fleetsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data: fleets, ...asyncStatus } = useUserFleetsQuery(
   props.user.id!,

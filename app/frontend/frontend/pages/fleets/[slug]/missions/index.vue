@@ -26,7 +26,6 @@ import {
   type FleetMember,
   type Mission,
   MissionSortEnum,
-  getFleetMissionsQueryKey,
   useFleetMissions,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -70,11 +69,7 @@ const queryParams = computed(() => ({
   q: sort.value ? { s: sort.value } : undefined,
 }));
 
-const queryKey = computed(() =>
-  getFleetMissionsQueryKey(fleetSlug, queryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 // The other tab has its own page count, so the page a reader was on may not
 // exist there.

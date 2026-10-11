@@ -18,7 +18,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/DestroyedFleets/FilterForm/index.vue";
 import {
   useDestroyedFleets,
-  getDestroyedFleetsQueryKey,
   DestroyedFleetSourceEnum,
   type DestroyedFleet,
   type DestroyedFleetQuery,
@@ -56,11 +55,7 @@ const setSource = async (value: DestroyedFleetSourceEnum) => {
   await refetch();
 };
 
-const destroyedFleetsQueryKey = computed(() => {
-  return getDestroyedFleetsQueryKey(destroyedFleetsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(destroyedFleetsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useFilters<DestroyedFleetQuery>({
   updateCallback: async () => {

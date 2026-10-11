@@ -45,6 +45,7 @@ class FleetMembership < ApplicationRecord
   before_destroy -> { association(:fleet_squadron_memberships).reset }, prepend: true
 
   paginates_per 24
+  paginates_all
 
   enum :ships_filter,
     {all: 0, hangar_group: 1, hide: 2},

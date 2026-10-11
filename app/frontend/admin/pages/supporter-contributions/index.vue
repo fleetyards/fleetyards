@@ -24,7 +24,6 @@ import {
   useSupporterContributions,
   useSupporterContributionsStats,
   useSyncSupporterContributionsFromPatreon,
-  getSupporterContributionsQueryKey,
   type SupporterContribution,
   type SupporterContributionSortEnum,
 } from "@/services/fyAdminApi";
@@ -48,15 +47,7 @@ watch(
   },
 );
 
-const supporterContributionsQueryKey = computed(() => {
-  return getSupporterContributionsQueryKey(
-    supporterContributionsQueryParams.value,
-  );
-});
-
-const { perPage, page, updatePerPage } = usePagination(
-  supporterContributionsQueryKey,
-);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useSupporterContributionFilters(
   async () => {

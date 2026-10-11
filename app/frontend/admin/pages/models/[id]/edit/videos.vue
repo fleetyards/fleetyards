@@ -54,11 +54,7 @@ const videosQueryParams = computed(() => ({
   },
 }));
 
-const videosQueryKey = computed(() =>
-  getVideosQueryKey(videosQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(videosQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useVideosQuery(videosQueryParams);
 

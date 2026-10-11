@@ -20,7 +20,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  getModelsQueryKey,
   useModels as useModelsQuery,
   type Model,
   type ModelSortEnum,
@@ -50,11 +49,7 @@ const modelsQueryParams = computed(() => {
   };
 });
 
-const modelsQueryKey = computed(() => {
-  return getModelsQueryKey(modelsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters } = useModelFilters(async () => {
   await refetch();

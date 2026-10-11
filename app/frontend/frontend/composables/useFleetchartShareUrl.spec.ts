@@ -81,15 +81,15 @@ describe("useFleetchartShareUrl", () => {
   });
 
   it("adds the page size the sender keeps for the list", async () => {
-    const url = await shareUrlFor("/ships/", { page: "2" }, 120);
+    const url = await shareUrlFor("/ships/", { page: "2" }, 144);
 
-    expect(url.searchParams.get("perPage")).toBe("120");
+    expect(url.searchParams.get("perPage")).toBe("144");
   });
 
   it("passes on the page size of a link the sender followed", async () => {
-    const url = await shareUrlFor("/ships/", { perPage: "60" }, 120);
+    const url = await shareUrlFor("/ships/", { perPage: "48" }, 144);
 
-    expect(url.searchParams.getAll("perPage")).toEqual(["60"]);
+    expect(url.searchParams.getAll("perPage")).toEqual(["48"]);
   });
 
   it("adds no page size when the sender never picked one", async () => {

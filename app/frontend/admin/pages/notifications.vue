@@ -42,7 +42,6 @@ import {
 import {
   useAdminNotifications as useAdminNotificationsQuery,
   useAdminNotificationsUnreadCount,
-  getAdminNotificationsQueryKey,
   readAdminNotification,
   unreadAdminNotification,
   readAllAdminNotifications,
@@ -99,11 +98,7 @@ const sortLink = computed(() => ({
   },
 }));
 
-const queryKey = computed(() =>
-  getAdminNotificationsQueryKey(queryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useAdminNotificationFilters(async () => {
   await refetch();

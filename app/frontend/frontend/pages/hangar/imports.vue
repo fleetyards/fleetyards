@@ -18,7 +18,6 @@ import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   useImports,
   useImport,
-  getImportsQueryKey,
   cancelImport,
   ImportStatusEnum,
   type Import,
@@ -38,11 +37,7 @@ const RUNNING_STATES: ImportStatusEnum[] = [
 
 const isRunning = (item: Import) => RUNNING_STATES.includes(item.status);
 
-// Declared before the pagination it reads: both sides are computed, so the
-// forward reference resolves on first access rather than at definition.
-const queryKey = computed(() => getImportsQueryKey(queryParams.value));
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const queryParams = computed(() => ({
   page: page.value,

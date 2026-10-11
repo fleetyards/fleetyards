@@ -41,7 +41,6 @@ import {
   fleetVehiclesExport as fetchFleetVehiclesExport,
   fleetVehiclesHangarLinkExport as fetchFleetVehiclesHangarLinkExport,
   useFleetVehicles as useFleetVehiclesQuery,
-  getFleetVehiclesQueryKey,
   type FleetVehicleQuery,
   type Fleet,
   type VehicleExport,
@@ -156,20 +155,13 @@ const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
   document.body.removeChild(link);
 };
 
-const fleetVehiclesQueryKey = computed(() => {
-  return getFleetVehiclesQueryKey(
-    fleetSlug.value,
-    fleetVehiclesQueryParams.value,
-  );
-});
-
 const { getQuery } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
     await refetch();
   },
 });
 
-const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const fleetVehiclesQueryParams = computed(() => {
   return {

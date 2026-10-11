@@ -8,6 +8,7 @@ class FleetSquadron < ApplicationRecord
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
   paginates_per 24
+  paginates_all
 
   belongs_to :fleet, touch: true
 

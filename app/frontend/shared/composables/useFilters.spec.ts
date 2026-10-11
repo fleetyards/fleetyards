@@ -44,7 +44,7 @@ describe("useFilters#getQuery", () => {
     query.value = {
       nameCont: "titanium",
       page: "3",
-      perPage: "30",
+      perPage: "24",
       tab: "log",
     };
 
@@ -152,14 +152,14 @@ describe("useFilters navigation", () => {
   });
 
   it("keeps a shared page size through a changed filter", async () => {
-    query.value = { nameCont: "ti", page: "2", perPage: "120" };
+    query.value = { nameCont: "ti", page: "2", perPage: "144" };
 
     settled().filter({ nameCont: "tit" } as never);
     debounced();
 
     expect(push.mock.calls[0][0].query).toMatchObject({
       nameCont: "tit",
-      perPage: "120",
+      perPage: "144",
     });
     expect(push.mock.calls[0][0].query.page).toBeUndefined();
   });
@@ -167,7 +167,7 @@ describe("useFilters navigation", () => {
   // A reset goes back to the reader's own defaults, and is the way out of a
   // page size the API refused.
   it("drops a shared page size when the filters are cleared", () => {
-    query.value = { nameCont: "ti", perPage: "120", tab: "log" };
+    query.value = { nameCont: "ti", perPage: "144", tab: "log" };
 
     void useFilters().resetFilter();
 
@@ -177,7 +177,7 @@ describe("useFilters navigation", () => {
   });
 
   it("has nothing to reset when the route holds only a page size", () => {
-    query.value = { perPage: "120" };
+    query.value = { perPage: "144" };
 
     expect(useFilters().hasResettableQuery.value).toBe(false);
   });

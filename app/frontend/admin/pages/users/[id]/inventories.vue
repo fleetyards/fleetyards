@@ -16,7 +16,6 @@ import {
   type User,
   type Inventory,
   useUserInventories as useUserInventoriesQuery,
-  getUserInventoriesQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -32,11 +31,7 @@ const queryParams = computed(() => ({
   perPage: perPage.value,
 }));
 
-const queryKey = computed(() =>
-  getUserInventoriesQueryKey(props.user.id!, queryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data: inventories, ...asyncStatus } = useUserInventoriesQuery(
   props.user.id!,

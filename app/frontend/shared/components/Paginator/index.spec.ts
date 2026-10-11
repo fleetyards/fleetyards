@@ -11,7 +11,7 @@ const listWith = (pagination: Partial<BaseList["meta"]["pagination"]>) =>
         totalCount: 0,
         currentPage: 1,
         totalPages: 0,
-        perPage: 25,
+        perPage: 24,
         ...pagination,
       },
     },
@@ -80,8 +80,8 @@ describe("Paginator", () => {
     const withSteps = listWith({
       totalCount: 248,
       totalPages: 5,
-      defaultPerPage: 60,
-      perPageSteps: [15, 30, 60, 90],
+      defaultPerPage: 48,
+      perPageSteps: [12, 24, 48, 96],
     });
 
     const mountWithSize = (perPage?: string) => {
@@ -105,61 +105,60 @@ describe("Paginator", () => {
       );
     });
 
+    it("offers no steps without a handler to pass a size to", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { queryResultRef: withSteps, perPage: "24" },
+      });
+
+      expect(wrapper.findComponent({ name: "PerPageDropdown" }).exists()).toBe(
+        false,
+      );
+      expect(wrapper.get(".pagination__pages").text()).toBe("1 of 5");
+    });
+
     it("offers the steps to a handler bound as a listener", async () => {
       const onUpdatePerPage = vi.fn();
       const wrapper = await mountWithDefaults(Component, {
         props: { queryResultRef: withSteps, onUpdatePerPage },
       });
 
-      await pick(wrapper, 30);
+      await pick(wrapper, 24);
 
-      expect(onUpdatePerPage).toHaveBeenCalledWith(30);
-    });
-
-    it("falls back to the default when the size in use is no step", async () => {
-      const { updatePerPage } = await mountWithSize("25");
-
-      expect(updatePerPage).toHaveBeenCalledWith(60);
-    });
-
-    it("keeps a size in use that is a step", async () => {
-      const { updatePerPage } = await mountWithSize("90");
-
-      expect(updatePerPage).not.toHaveBeenCalled();
+      expect(onUpdatePerPage).toHaveBeenCalledWith(24);
     });
 
     it("passes on a new size", async () => {
       const { wrapper, updatePerPage } = await mountWithSize();
 
-      await pick(wrapper, 30);
+      await pick(wrapper, 24);
 
-      expect(updatePerPage).toHaveBeenCalledWith(30);
+      expect(updatePerPage).toHaveBeenCalledWith(24);
     });
 
     it("ignores the default size picked again", async () => {
       const { wrapper, updatePerPage } = await mountWithSize();
 
-      await pick(wrapper, 60);
+      await pick(wrapper, 48);
 
       expect(updatePerPage).not.toHaveBeenCalled();
     });
 
     it("ignores the size from the URL picked again", async () => {
-      const { wrapper, updatePerPage } = await mountWithSize("30");
+      const { wrapper, updatePerPage } = await mountWithSize("24");
 
-      await pick(wrapper, 30);
+      await pick(wrapper, 24);
 
       expect(updatePerPage).not.toHaveBeenCalled();
     });
 
     it("marks the size from the URL as the active step", async () => {
-      const { wrapper } = await mountWithSize("30");
+      const { wrapper } = await mountWithSize("24");
 
       const active = wrapper
         .findAllComponents({ name: "BaseBtn" })
         .filter((btn) => btn.props("active"));
 
-      expect(active.map((btn) => btn.text())).toEqual(["30"]);
+      expect(active.map((btn) => btn.text())).toEqual(["24"]);
     });
   });
 

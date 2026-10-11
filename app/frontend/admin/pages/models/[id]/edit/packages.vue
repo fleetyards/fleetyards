@@ -60,11 +60,7 @@ const packagesQueryParams = computed(() => ({
   },
 }));
 
-const packagesQueryKey = computed(() =>
-  getListModelModulePackagesQueryKey(packagesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(packagesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } =
   useListModelModulePackagesQuery(packagesQueryParams);
@@ -95,7 +91,7 @@ const fetchModules = async (params: BaseSelectParams<ModelModule>) => {
 
   return listModelModules({
     page: String(params.page || 1),
-    perPage: "50",
+    perPage: "48",
     q,
   });
 };

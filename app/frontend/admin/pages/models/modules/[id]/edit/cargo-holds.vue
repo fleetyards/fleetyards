@@ -52,9 +52,7 @@ const queryParams = computed(() => ({
   },
 }));
 
-const queryKey = computed(() => getListCargoHoldsQueryKey(queryParams.value));
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListCargoHoldsQuery(queryParams);
 

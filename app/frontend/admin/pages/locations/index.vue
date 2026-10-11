@@ -13,7 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Locations/FilterForm/index.vue";
 import {
   useLocations,
-  getLocationsQueryKey,
   type Location,
   type LocationSortEnum,
 } from "@/services/fyAdminApi";
@@ -35,11 +34,7 @@ watch(
   },
 );
 
-const locationsQueryKey = computed(() => {
-  return getLocationsQueryKey(locationsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(locationsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useLocationFilters(async () => {
   await refetch();

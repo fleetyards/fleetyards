@@ -14,10 +14,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useGallery } from "@/shared/composables/useGallery";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  useImages as useImagesQuery,
-  getImagesQueryKey,
-} from "@/services/fyApi";
+import { useImages as useImagesQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -28,11 +25,7 @@ const imagesQueryParams = computed(() => {
   };
 });
 
-const imagesQueryKey = computed(() => {
-  return getImagesQueryKey(imagesQueryParams.value);
-});
-
-const { page, perPage } = usePagination(imagesQueryKey);
+const { page, perPage } = usePagination();
 
 const { data: images, ...asyncStatus } = useImagesQuery(imagesQueryParams);
 

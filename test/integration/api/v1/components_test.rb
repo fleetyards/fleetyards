@@ -62,6 +62,12 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components answers a size above its maximum with the maximum" do
+    assert_api_response :get, 200, params: {perPage: Component.max_per_page + 1} do
+      assert_equal Component.max_per_page, parsed_body.dig("meta", "pagination", "perPage")
+    end
+  end
+
   test "GET /components filters by categoryIn query" do
     shield = create(:component, category: "shieldgenerator")
     create(:component, category: "cooler")

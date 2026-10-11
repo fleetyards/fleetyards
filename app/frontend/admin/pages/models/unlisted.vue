@@ -17,7 +17,6 @@ import {
   useScDataUnlistedModels,
   useScDataUnlistedModelBulkIgnore,
   useScDataUnlistedModelBulkMarkAsPaint,
-  getScDataUnlistedModelsQueryKey,
   type ScDataUnlistedModel,
   type ScDataUnlistedModelSortEnum,
 } from "@/services/fyAdminApi";
@@ -30,11 +29,7 @@ const sorts = computed((): ScDataUnlistedModelSortEnum[] => {
   return route.query.s ? [route.query.s as ScDataUnlistedModelSortEnum] : [];
 });
 
-const queryKey = computed(() => {
-  return getScDataUnlistedModelsQueryKey(queryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const queryParams = computed(() => {
   return {

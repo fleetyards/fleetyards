@@ -11,21 +11,13 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
-import {
-  useAdminUsers,
-  getAdminUsersQueryKey,
-  type AdminUser,
-} from "@/services/fyAdminApi";
+import { useAdminUsers, type AdminUser } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import AdminUserActions from "@/admin/components/AdminUsers/Actions/index.vue";
 
-const adminUsersQueryKey = computed(() => {
-  return getAdminUsersQueryKey(adminUsersQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(adminUsersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const adminUsersQueryParams = computed(() => {
   return {

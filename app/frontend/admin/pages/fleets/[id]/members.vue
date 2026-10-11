@@ -22,7 +22,6 @@ import {
   type AdminFleetMember,
   type FleetMembershipSortEnum,
   useFleetMembers as useFleetMembersQuery,
-  getFleetMembersQueryKey,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -56,11 +55,7 @@ const membersQueryParams = computed(() => {
   };
 });
 
-const membersQueryKey = computed(() => {
-  return getFleetMembersQueryKey(props.fleet.id, membersQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(membersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const {
   data: members,

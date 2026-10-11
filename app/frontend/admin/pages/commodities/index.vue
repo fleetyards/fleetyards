@@ -14,7 +14,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Commodities/FilterForm/index.vue";
 import {
   useCommodities,
-  getCommoditiesQueryKey,
   type Commodity,
   type CommoditySortEnum,
 } from "@/services/fyAdminApi";
@@ -39,11 +38,7 @@ watch(
   },
 );
 
-const commoditiesQueryKey = computed(() => {
-  return getCommoditiesQueryKey(commoditiesQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(commoditiesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useCommodityFilters(async () => {
   await refetch();

@@ -16,10 +16,7 @@ import { useComponentSortFields } from "@/frontend/composables/useComponentSortF
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
-import {
-  useComponents as useComponentsQuery,
-  getComponentsQueryKey,
-} from "@/services/fyApi";
+import { useComponents as useComponentsQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -29,11 +26,7 @@ const componentsQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const componentsQueryKey = computed(() =>
-  getComponentsQueryKey(componentsQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(componentsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useComponentFilters(async () => {
   await refetch();

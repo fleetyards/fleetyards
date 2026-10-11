@@ -16,10 +16,7 @@ import { useCommoditySortFields } from "@/frontend/composables/useCommoditySortF
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useCommodityFilters } from "@/frontend/composables/useCommodityFilters";
-import {
-  useCommodities as useCommoditiesQuery,
-  getCommoditiesQueryKey,
-} from "@/services/fyApi";
+import { useCommodities as useCommoditiesQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -29,11 +26,7 @@ const commoditiesQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const commoditiesQueryKey = computed(() =>
-  getCommoditiesQueryKey(commoditiesQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(commoditiesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useCommodityFilters(async () => {
   await refetch();

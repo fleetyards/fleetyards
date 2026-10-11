@@ -59,11 +59,7 @@ const imagesQueryParams = computed(() => ({
   },
 }));
 
-const imagesQueryKey = computed(() =>
-  getImagesQueryKey(imagesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(imagesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useImagesQuery(imagesQueryParams);
 

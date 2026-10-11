@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Pagination
-  class MaxPerPageReached < StandardError; end
-
+  # A size above the list's maximum is answered with the maximum, and "all" only
+  # where the list allows it; anything else non-numeric gets the default.
   def per_page(model)
+    @paginate_all = per_page_params == "all" && model.paginates_all?
+
     return model.default_per_page if per_page_params.blank? || per_page_params.to_i.zero?
 
-    raise Pagination::MaxPerPageReached if per_page_params.to_i > model.max_per_page
-
-    per_page_params.to_i
+    [per_page_params.to_i, model.max_per_page].compact.min
   end
 
   def pagination_header(name)
@@ -23,7 +23,7 @@ module Pagination
     scope = name
     scope = scope.find { |item| instance_variable_get(:"@#{item}") } if scope.is_a?(Array)
 
-    if per_page_params != "all" && instance_variable_get(:"@#{scope}").present?
+    if !paginate_all? && instance_variable_get(:"@#{scope}").present?
       links = links.merge(pagination_links(instance_variable_get(:"@#{scope}")))
     end
 
@@ -35,7 +35,7 @@ module Pagination
   end
 
   private def result_with_pagination(result, per_page)
-    if per_page_params == "all"
+    if paginate_all?
       result.all
     else
       result.page(page_params)
@@ -59,6 +59,10 @@ module Pagination
       page:,
       per_page: (page.present? && !per_page_params.to_i.zero?) ? per_page_params.to_i : nil
     )
+  end
+
+  private def paginate_all?
+    !!@paginate_all
   end
 
   private def page_params

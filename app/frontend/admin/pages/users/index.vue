@@ -18,7 +18,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
   useUsers as useUsersQuery,
-  getUsersQueryKey,
   type User,
   type UserSortEnum,
 } from "@/services/fyAdminApi";
@@ -53,11 +52,7 @@ const usersQueryParams = computed(() => {
   };
 });
 
-const usersQueryKey = computed(() => {
-  return getUsersQueryKey(usersQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(usersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters } = useUserFilters(async () => {
   await refetch();

@@ -49,11 +49,7 @@ const snubCraftsQueryParams = computed(() => ({
   },
 }));
 
-const snubCraftsQueryKey = computed(() =>
-  getListModelSnubCraftsQueryKey(snubCraftsQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(snubCraftsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelSnubCraftsQuery(snubCraftsQueryParams);
 

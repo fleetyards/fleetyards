@@ -32,7 +32,6 @@ import {
   useFleetSquadronRoles,
   useDestroyFleetSquadronMember,
   useUpdateFleetSquadronMember,
-  getFleetSquadronMembersQueryKey,
   type Fleet,
   type FleetMember,
   type FleetSquadronMemberQuery,
@@ -88,9 +87,7 @@ const { isFilterSelected, getQuery } = useFilters<FleetSquadronMemberQuery>({
   },
 });
 
-const { perPage, page, updatePerPage } = usePagination(
-  getFleetSquadronMembersQueryKey(props.fleet.slug, squadronSlug.value),
-);
+const { perPage, page, updatePerPage } = usePagination();
 
 /*
  * The squadron's own roster endpoint, which renders the fleet's member rows

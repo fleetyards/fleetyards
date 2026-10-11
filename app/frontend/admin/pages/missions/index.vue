@@ -13,7 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FilterForm from "@/admin/components/Missions/FilterForm/index.vue";
 import {
   useGameMissions,
-  getGameMissionsQueryKey,
   type GameMission,
   type GameMissionSortEnum,
 } from "@/services/fyAdminApi";
@@ -35,11 +34,7 @@ watch(
   },
 );
 
-const missionsQueryKey = computed(() => {
-  return getGameMissionsQueryKey(missionsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(missionsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useMissionFilters(async () => {
   await refetch();

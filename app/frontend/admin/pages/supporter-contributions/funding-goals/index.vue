@@ -15,7 +15,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import FundingGoalActions from "@/admin/components/FundingGoals/Actions/index.vue";
 import {
   useFundingGoals,
-  getFundingGoalsQueryKey,
   type FundingGoal,
   type FundingGoalSortEnum,
 } from "@/services/fyAdminApi";
@@ -39,11 +38,7 @@ watch(
   },
 );
 
-const fundingGoalsQueryKey = computed(() => {
-  return getFundingGoalsQueryKey(fundingGoalsQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(fundingGoalsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { filters, isFilterSelected } = useFundingGoalFilters(async () => {
   await refetch();

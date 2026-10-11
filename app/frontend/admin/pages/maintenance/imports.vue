@@ -42,8 +42,7 @@ const onRowClick = async (record: Import) => {
   await router.push({ name: "import", params: { id: record.id } });
 };
 
-const queryKey = "admin-imports";
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { getQuery, isFilterSelected } = useFilters<ImportQuery>();
 

@@ -27,6 +27,15 @@ class PerPageStepsTest < ActiveSupport::TestCase
     PageSizes::STEPS.each { |size| assert_equal 0, size % 12, "#{size} is no multiple of 12" }
   end
 
+  # The frontend drops a saved or linked size off this set before requesting
+  # it, so the two lists have to agree.
+  test "the frontend knows the shared sizes" do
+    source = Rails.root.join("app/frontend/shared/composables/usePagination.ts").read
+    sizes = source[/const PAGE_SIZES = \[([^\]]*)\]/, 1].scan(/"(\w+)"/).flatten
+
+    assert_equal PageSizes::STEPS.map(&:to_s) + ["all"], sizes
+  end
+
   paginated.each do |list|
     # Kaminari's own default is 25, and any size off the shared set leaves a
     # short last row on some width of the card grid.
@@ -46,6 +55,15 @@ class PerPageStepsTest < ActiveSupport::TestCase
     # is a dropdown entry that breaks the list.
     test "#{list.name} offers no size above its maximum" do
       assert_operator list.per_page_steps.grep(Integer).max, :<=, list.max_per_page
+    end
+
+    # `up_to` reads the maximum when the steps are declared, so a
+    # `max_paginates_per` after them would cap the steps at the global maximum.
+    test "#{list.name} offers every shared size up to its maximum" do
+      expected = PageSizes.up_to(list.max_per_page)
+      expected += [:all] if list.per_page_steps.include?(:all)
+
+      assert_equal expected, list.per_page_steps
     end
 
     test "#{list.name} offers only the shared page sizes" do

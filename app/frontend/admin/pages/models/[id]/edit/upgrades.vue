@@ -60,11 +60,7 @@ const upgradesQueryParams = computed(() => ({
   },
 }));
 
-const upgradesQueryKey = computed(() =>
-  getListModelUpgradesQueryKey(upgradesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(upgradesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelUpgradesQuery(upgradesQueryParams);
 

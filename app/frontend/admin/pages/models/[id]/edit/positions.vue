@@ -70,11 +70,7 @@ const positionsQueryParams = computed(() => ({
   },
 }));
 
-const positionsQueryKey = computed(() =>
-  getListModelPositionsQueryKey(positionsQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(positionsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelPositionsQuery(positionsQueryParams);
 

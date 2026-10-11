@@ -32,10 +32,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import {
-  useModels as useModelsQuery,
-  getModelsQueryKey,
-} from "@/services/fyApi";
+import { useModels as useModelsQuery } from "@/services/fyApi";
 
 useHangarItems();
 useWishlistItems();
@@ -74,11 +71,7 @@ const modelsQueryParams = computed(() => {
   };
 });
 
-const modelsQueryKey = computed(() => {
-  return getModelsQueryKey(modelsQueryParams);
-});
-
-const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useModelFilters(async () => {
   await refetch();

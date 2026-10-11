@@ -90,11 +90,7 @@ const imagesQueryParams = computed(() => ({
   q: routeQuery.value,
 }));
 
-const imagesQueryKey = computed(() =>
-  getImagesQueryKey(imagesQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(imagesQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, ...asyncStatus } = useImagesQuery(imagesQueryParams);
 

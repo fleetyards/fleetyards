@@ -45,7 +45,6 @@ import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   usePublicHangar as usePublicHangarQuery,
-  getPublicHangarQueryKey,
   usePublicHangarStats,
   usePublicHangarGroups,
   type HangarGroupMetric,
@@ -112,11 +111,7 @@ const publicHangarQueryParams = computed(() => {
   };
 });
 
-const publicHangarQueryKey = computed(() => {
-  return getPublicHangarQueryKey(username.value, publicHangarQueryParams.value);
-});
-
-const { perPage, page, updatePerPage } = usePagination(publicHangarQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const {
   data: vehicles,

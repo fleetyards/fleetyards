@@ -49,11 +49,7 @@ const loanersQueryParams = computed(() => ({
   },
 }));
 
-const loanersQueryKey = computed(() =>
-  getListModelLoanersQueryKey(loanersQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(loanersQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelLoanersQuery(loanersQueryParams);
 

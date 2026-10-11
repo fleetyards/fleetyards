@@ -59,10 +59,6 @@ module Api
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-    rescue_from Pagination::MaxPerPageReached do |_exception|
-      render json: {code: "pagination.max_per_page_reached", message: I18n.t("errors.pagination.max_per_page_reached")}, status: :bad_request
-    end
-
     def current_resource_owner
       @current_user ||= if doorkeeper_token
         User.find(doorkeeper_token.resource_owner_id)

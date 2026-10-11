@@ -16,10 +16,7 @@ import { useMissionSortFields } from "@/frontend/composables/useMissionSortField
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
-import {
-  useGameMissions as useMissionsQuery,
-  getGameMissionsQueryKey,
-} from "@/services/fyApi";
+import { useGameMissions as useMissionsQuery } from "@/services/fyApi";
 import { useMissionShip } from "@/frontend/composables/useMissionShip";
 
 const { t } = useI18n();
@@ -34,11 +31,7 @@ const missionsQueryParams = computed(() => ({
   q: getQuery(),
 }));
 
-const missionsQueryKey = computed(() =>
-  getGameMissionsQueryKey(missionsQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(missionsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useMissionFilters(async () => {
   await refetch();

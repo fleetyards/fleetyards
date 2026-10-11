@@ -24,7 +24,7 @@ import {
   type AsyncStatus,
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
-import { errorCodeFrom, errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -221,22 +221,7 @@ const { resetFilter, hasResettableQuery } = useFilters({
   viewKeys: props.viewKeys,
 });
 
-const paginationKey = computed(() => (route.name as string) || "");
-
-// A saved page size is persisted outside the route, so the URL cannot carry it
-// back out. It is only dropped when it is what the API refused. One that came
-// in the URL with a shared link goes with the reset.
-const pageSizeRejected = computed(
-  () =>
-    errorCodeFrom(props.asyncStatus.error?.value) ===
-      "pagination.max_per_page_reached" &&
-    (paginationStore.findByKey(paginationKey.value) !== undefined ||
-      !!route.query.perPage),
-);
-
-const resettable = computed(
-  () => hasResettableQuery.value || pageSizeRejected.value,
-);
+const resettable = computed(() => hasResettableQuery.value);
 
 // Filter forms copy the route into local state once, on mount. Unmounting the
 // form before the route is cleared drops the rejected values it holds, along
@@ -249,9 +234,6 @@ const resetQuery = async () => {
   await nextTick();
 
   filtersStore.removeFilter(props.name);
-  if (pageSizeRejected.value) {
-    paginationStore.removeByKey(paginationKey.value);
-  }
   await resetFilter();
 
   filterFormReset.value = false;

@@ -24,7 +24,6 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   useModels as useModelsQuery,
   useScDataUnlistedModels,
-  getModelsQueryKey,
   type Model,
   type ModelSortEnum,
 } from "@/services/fyAdminApi";
@@ -74,11 +73,7 @@ const modelsQueryParams = computed(() => {
   };
 });
 
-const modelsQueryKey = computed(() => {
-  return getModelsQueryKey(modelsQueryParams);
-});
-
-const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { getQuery, isFilterSelected } = useModelFilters(async () => {
   await refetch();

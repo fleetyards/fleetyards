@@ -60,11 +60,7 @@ const paintsQueryParams = computed(() => ({
   },
 }));
 
-const paintsQueryKey = computed(() =>
-  getListModelPaintsQueryKey(paintsQueryParams.value),
-);
-
-const { perPage, page, updatePerPage } = usePagination(paintsQueryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const { data, isLoading } = useListModelPaintsQuery(paintsQueryParams);
 

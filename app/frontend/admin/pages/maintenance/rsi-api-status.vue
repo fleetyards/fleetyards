@@ -28,8 +28,7 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 const { t, l } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const queryKey = "admin-rsi-request-logs";
-const { perPage, page, updatePerPage } = usePagination(queryKey);
+const { perPage, page, updatePerPage } = usePagination();
 
 const queryParams = computed(() => ({
   page: page.value,
