@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import LocationName from "@/frontend/components/LocationName/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -261,39 +262,29 @@ const crumbs = computed<Crumb[]>(() => [
         <p v-if="inventory.description" class="text-muted">
           {{ inventory.description }}
         </p>
-        <Teleport v-if="canManageInventory" to="#header-right">
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            @click="openDepositModal"
-          >
+        <PageActions v-if="canManageInventory" v-slot="{ menu }">
+          <Btn @click="openDepositModal">
             <i class="fa-duotone fa-arrow-down-to-square" />
             {{ t("actions.logistics.deposit") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            @click="openWithdrawModal"
-          >
+          <Btn @click="openWithdrawModal">
             <i class="fa-duotone fa-arrow-up-from-square" />
             {{ t("actions.logistics.withdraw") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            @click="openCsvImportModal"
-          >
+          <Btn @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.MD"
             :aria-label="t('actions.logistics.editInventory')"
             @click="openEditModal"
           >
             <i class="fa-duotone fa-pen" />
+            <template v-if="menu">
+              {{ t("actions.logistics.editInventory") }}
+            </template>
           </Btn>
-        </Teleport>
+        </PageActions>
 
         <!-- `placeholders`, so both views draw their own wait. The two tables
              take a loading flag already and hold themselves open with a header and
