@@ -97,4 +97,24 @@ describe("usePagination", () => {
     expect(router.currentRoute.value.query).toEqual({ q: "x" });
     expect(pagination.page.value).toBe("1");
   });
+
+  it("stays on the page when the size already in use is picked again", async () => {
+    const { pagination, store, router } = await render({ page: "2" });
+
+    store.setBykey("ships", 30);
+    pagination.updatePerPage(30);
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ page: "2" });
+  });
+
+  it("drops a link's page size but keeps the page when that size is picked", async () => {
+    const { pagination, router } = await render({ page: "2", perPage: "120" });
+
+    pagination.updatePerPage(120);
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ page: "2" });
+    expect(String(pagination.perPage.value)).toBe("120");
+  });
 });
