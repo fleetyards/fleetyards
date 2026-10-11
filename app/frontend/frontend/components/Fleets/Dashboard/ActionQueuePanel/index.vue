@@ -23,6 +23,7 @@ import {
   useAcceptFleetMember,
   useDeclineFleetMember,
   useFleetInventoryTransfers,
+  useFleetMemberHealth,
   useFleetMembers,
   type Fleet,
   type FleetMember,
@@ -32,9 +33,12 @@ type Props = {
   fleet: Fleet;
   canAnswerJoinRequests: boolean;
   canAnswerTransfers: boolean;
+  canCheckMemberHealth?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canCheckMemberHealth: false,
+});
 
 const { t } = useI18n();
 
@@ -84,6 +88,28 @@ const {
   },
 );
 
+const {
+  data: health,
+  isLoading: healthLoading,
+  isFetching: healthFetching,
+  isLoadingError: healthFailed,
+} = useFleetMemberHealth(fleetSlug, undefined, {
+  query: {
+    ...liveQuery,
+    enabled: computed(() => props.canCheckMemberHealth),
+  },
+});
+
+const healthCount = computed(() => {
+  if (!props.canCheckMemberHealth || !health.value) return 0;
+
+  return (
+    health.value.inactiveMembers.totalCount +
+    (health.value.unverifiedMembers?.totalCount ?? 0) +
+    (health.value.emptyRoles?.length ?? 0)
+  );
+});
+
 const requestItems = computed(() =>
   props.canAnswerJoinRequests ? (requests.value?.items ?? []) : [],
 );
@@ -104,12 +130,14 @@ const transferCount = computed(() =>
 const loading = computed(
   () =>
     (props.canAnswerJoinRequests && requestsLoading.value) ||
-    (props.canAnswerTransfers && transfersLoading.value),
+    (props.canAnswerTransfers && transfersLoading.value) ||
+    (props.canCheckMemberHealth && healthLoading.value),
 );
 
 // A disabled query never fetches, so these need no guard of their own.
 const fetching = computed(
-  () => requestsFetching.value || transfersFetching.value,
+  () =>
+    requestsFetching.value || transfersFetching.value || healthFetching.value,
 );
 
 // Guarded like `loading`: a query disabled after the reader lost the right
@@ -117,11 +145,13 @@ const fetching = computed(
 const failed = computed(
   () =>
     (props.canAnswerJoinRequests && requestsFailed.value) ||
-    (props.canAnswerTransfers && transfersFailed.value),
+    (props.canAnswerTransfers && transfersFailed.value) ||
+    (props.canCheckMemberHealth && healthFailed.value),
 );
 
 const empty = computed(
-  () => !requestItems.value.length && !transferCount.value,
+  () =>
+    !requestItems.value.length && !transferCount.value && !healthCount.value,
 );
 
 const acceptMutation = useAcceptFleetMember();
@@ -231,6 +261,22 @@ const answer = async (member: FleetMember, accept: boolean) => {
           t("fleetDashboard.actionQueue.pendingTransfers", {
             count: transferCount,
           })
+        }}
+        <i class="fa-light fa-chevron-right" aria-hidden="true" />
+      </router-link>
+    </section>
+    <section v-if="healthCount" class="action-queue__group">
+      <router-link
+        :to="{
+          name: 'fleet-members-health',
+          params: { slug: fleet.slug },
+        }"
+        class="action-queue__headline"
+        data-test="fleet-dashboard-member-health"
+      >
+        <i class="fa-light fa-heart-pulse" aria-hidden="true" />
+        {{
+          t("fleetDashboard.actionQueue.memberHealth", { count: healthCount })
         }}
         <i class="fa-light fa-chevron-right" aria-hidden="true" />
       </router-link>

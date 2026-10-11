@@ -52,6 +52,10 @@
         "empty": {
           "title": "全部处理完毕",
           "hint": "需要回应的入队申请和传入转移会显示在这里。"
+        },
+        "memberHealth": {
+          "one": "%{count} 个成员问题待查看",
+          "other": "%{count} 个成员问题待查看"
         }
       },
       "contracts": {

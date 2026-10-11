@@ -52,6 +52,10 @@
         "empty": {
           "title": "All caught up",
           "hint": "Join requests and incoming transfers that need an answer show up here."
+        },
+        "memberHealth": {
+          "one": "%{count} roster issue to review",
+          "other": "%{count} roster issues to review"
         }
       },
       "contracts": {

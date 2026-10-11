@@ -52,6 +52,10 @@
         "empty": {
           "title": "Alles erledigt",
           "hint": "Beitrittsanfragen und eingehende Transfers, die eine Antwort brauchen, erscheinen hier."
+        },
+        "memberHealth": {
+          "one": "%{count} Punkt im Mitgliederbestand zu prüfen",
+          "other": "%{count} Punkte im Mitgliederbestand zu prüfen"
         }
       },
       "contracts": {

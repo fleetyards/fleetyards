@@ -52,6 +52,10 @@
         "empty": {
           "title": "Tout est à jour",
           "hint": "Les demandes d'adhésion et les transferts entrants qui attendent une réponse apparaissent ici."
+        },
+        "memberHealth": {
+          "one": "%{count} point de l'effectif à vérifier",
+          "other": "%{count} points de l'effectif à vérifier"
         }
       },
       "contracts": {
