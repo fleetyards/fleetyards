@@ -68,6 +68,11 @@ describe("FleetMembersFilterForm", () => {
     const input = wrapper.find("input#member-search");
     expect((input.element as HTMLInputElement).value).toBe("alice");
 
+    // Typed once the page has settled, not on arrival.
+    vi.advanceTimersByTime(2000);
+    push.mockClear();
+    replace.mockClear();
+
     await input.setValue("wingman");
     vi.advanceTimersByTime(400);
 

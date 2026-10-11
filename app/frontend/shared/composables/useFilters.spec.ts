@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 
 const query = ref<Record<string, string>>({});
@@ -50,17 +50,35 @@ describe("useFilters#getQuery", () => {
  * Filtering an invite list dropped `?view=invites` and the page fell back to
  * the roster under the reader.
  */
+// A filter changed right after arriving on the page counts as part of
+// arriving; these are changes made once the page has settled.
+const settled = (options?: Parameters<typeof useFilters>[0]) => {
+  const filters = useFilters(options);
+
+  vi.advanceTimersByTime(2000);
+
+  return filters;
+};
+
+// Past the filter's debounce.
+const debounced = () => vi.advanceTimersByTime(400);
+
 describe("useFilters navigation", () => {
   beforeEach(() => {
+    vi.useFakeTimers();
     replace.mockClear();
     push.mockClear();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("keeps the view somebody is filtering in", async () => {
     query.value = { view: "invites", tab: "log", direction: "outgoing" };
 
-    useFilters().filter({ nameCont: "ti" } as never);
-    await vi.waitFor(() => expect(push).toHaveBeenCalled());
+    settled().filter({ nameCont: "ti" } as never);
+    debounced();
 
     expect(push.mock.calls[0][0].query).toMatchObject({
       nameCont: "ti",
@@ -73,8 +91,8 @@ describe("useFilters navigation", () => {
   it("starts a changed filter from the first page", async () => {
     query.value = { nameCont: "ti", page: "3" };
 
-    useFilters().filter({ nameCont: "tit" } as never);
-    await vi.waitFor(() => expect(push).toHaveBeenCalled());
+    settled().filter({ nameCont: "tit" } as never);
+    debounced();
 
     expect(push.mock.calls[0][0].query.page).toBeUndefined();
   });
@@ -82,8 +100,8 @@ describe("useFilters navigation", () => {
   it("keeps the page when the form writes back what the URL held", async () => {
     query.value = { activityIn: "piracy", page: "2" };
 
-    useFilters().filter({ activityIn: ["piracy"] } as never);
-    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+    settled().filter({ activityIn: ["piracy"] } as never);
+    debounced();
 
     expect(replace.mock.calls[0][0].query.page).toBe("2");
   });
@@ -122,8 +140,8 @@ describe("useFilters navigation", () => {
   it("keeps a shared page size through a changed filter", async () => {
     query.value = { nameCont: "ti", page: "2", perPage: "120" };
 
-    useFilters().filter({ nameCont: "tit" } as never);
-    await vi.waitFor(() => expect(push).toHaveBeenCalled());
+    settled().filter({ nameCont: "tit" } as never);
+    debounced();
 
     expect(push.mock.calls[0][0].query).toMatchObject({
       nameCont: "tit",
@@ -153,8 +171,8 @@ describe("useFilters navigation", () => {
   it("is a step the back gesture can undo when the filter changed", async () => {
     query.value = { nameCont: "ti" };
 
-    useFilters().filter({ nameCont: "tit" } as never);
-    await vi.waitFor(() => expect(push).toHaveBeenCalled());
+    settled().filter({ nameCont: "tit" } as never);
+    debounced();
 
     expect(replace).not.toHaveBeenCalled();
   });
@@ -162,18 +180,16 @@ describe("useFilters navigation", () => {
   it("is no step at all when the form writes back what the URL held", async () => {
     query.value = { nameCont: "ti" };
 
-    useFilters().filter({ nameCont: "ti" } as never);
-    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+    settled().filter({ nameCont: "ti" } as never);
+    debounced();
 
     expect(push).not.toHaveBeenCalled();
   });
 
   it("folds one burst of typing into a single step", async () => {
-    vi.useFakeTimers();
-
-    try {
+    {
       query.value = { nameCont: "t" };
-      const filters = useFilters();
+      const filters = settled();
 
       filters.filter({ nameCont: "ti" } as never);
       vi.advanceTimersByTime(400);
@@ -191,8 +207,16 @@ describe("useFilters navigation", () => {
       vi.advanceTimersByTime(400);
 
       expect(push).toHaveBeenCalledTimes(2);
-    } finally {
-      vi.useRealTimers();
     }
+  });
+
+  it("adds no step for a change made right on arrival", () => {
+    query.value = { nameCont: "ti" };
+
+    useFilters().filter({ nameCont: "ti", readAtNull: "true" } as never);
+    debounced();
+
+    expect(push).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledTimes(1);
   });
 });

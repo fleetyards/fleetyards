@@ -112,11 +112,26 @@ export const useFilters = <T>({
   // Every filter change is a step the back gesture can undo - except within
   // one burst: a search typed with pauses lands here once per pause, and each
   // of those would otherwise be its own entry to step back through.
+  //
+  // A navigation starts a burst too - arriving on the page, or the back
+  // gesture landing on an older entry. A form writing what it read back into
+  // the URL in its own shape, or filling in a default, does so right then;
+  // pushing that would leave an entry the back gesture lands on only to be
+  // pushed forward again.
   let lastFilteredAt = 0;
+  let routeChangedAt = Date.now();
+
+  watch(
+    () => route.fullPath,
+    () => {
+      routeChangedAt = Date.now();
+    },
+  );
 
   const navigationFor = (changed: boolean): "push" | "replace" => {
     const now = Date.now();
-    const sameBurst = now - lastFilteredAt < FILTER_BURST_MS;
+    const sameBurst =
+      now - Math.max(lastFilteredAt, routeChangedAt) < FILTER_BURST_MS;
 
     if (!changed) {
       return "replace";
