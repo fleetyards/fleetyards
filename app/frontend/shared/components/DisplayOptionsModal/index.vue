@@ -37,31 +37,27 @@ const select = (next: boolean) => {
 
 <template>
   <Modal :title="t('headlines.modals.models.displayOptions')">
-    <div class="row">
-      <div class="col-6">
-        <Btn
-          block
-          :active="active"
-          :size="BtnSizesEnum.LG"
-          :data-test="`${testPrefix}-grid-view`"
-          @click="select(true)"
-        >
-          <i class="fa-solid fa-th" />
-          {{ t("actions.showGridView") }}
-        </Btn>
-      </div>
-      <div class="col-6">
-        <Btn
-          block
-          :active="!active"
-          :size="BtnSizesEnum.LG"
-          :data-test="`${testPrefix}-list-view`"
-          @click="select(false)"
-        >
-          <i class="fa-duotone fa-list" />
-          {{ t("actions.showTableView") }}
-        </Btn>
-      </div>
+    <div class="grid grid-cols-2 gap-4">
+      <Btn
+        block
+        :active="active"
+        :size="BtnSizesEnum.LG"
+        :data-test="`${testPrefix}-grid-view`"
+        @click="select(true)"
+      >
+        <i class="fa-solid fa-th" />
+        {{ t("actions.showGridView") }}
+      </Btn>
+      <Btn
+        block
+        :active="!active"
+        :size="BtnSizesEnum.LG"
+        :data-test="`${testPrefix}-list-view`"
+        @click="select(false)"
+      >
+        <i class="fa-duotone fa-list" />
+        {{ t("actions.showTableView") }}
+      </Btn>
     </div>
   </Modal>
 </template>

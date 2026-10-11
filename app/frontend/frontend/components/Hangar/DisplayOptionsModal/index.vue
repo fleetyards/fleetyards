@@ -160,29 +160,25 @@ const displayAsList = () => {
 
 <template>
   <Modal :title="t('headlines.modals.models.displayOptions')">
-    <div class="row">
-      <div class="col-6">
-        <Btn
-          block
-          :active="hangarStore.gridView"
-          @click="displayAsGrid"
-          :size="BtnSizesEnum.LG"
-        >
-          <i class="fa-solid fa-th"></i>
-          {{ t("actions.showGridView") }}
-        </Btn>
-      </div>
-      <div class="col-6">
-        <Btn
-          block
-          :active="!hangarStore.gridView"
-          @click="displayAsList"
-          :size="BtnSizesEnum.LG"
-        >
-          <i class="fa-duotone fa-list"></i>
-          {{ t("actions.showTableView") }}
-        </Btn>
-      </div>
+    <div class="grid grid-cols-2 gap-4">
+      <Btn
+        block
+        :active="hangarStore.gridView"
+        @click="displayAsGrid"
+        :size="BtnSizesEnum.LG"
+      >
+        <i class="fa-solid fa-th"></i>
+        {{ t("actions.showGridView") }}
+      </Btn>
+      <Btn
+        block
+        :active="!hangarStore.gridView"
+        @click="displayAsList"
+        :size="BtnSizesEnum.LG"
+      >
+        <i class="fa-duotone fa-list"></i>
+        {{ t("actions.showTableView") }}
+      </Btn>
     </div>
     <hr />
     <div class="row">
