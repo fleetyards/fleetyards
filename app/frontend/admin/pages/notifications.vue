@@ -445,7 +445,7 @@ const destroySelected = () =>
     </HeadingSmall>
   </Heading>
 
-  <PageActions :hidden="selecting">
+  <PageActions>
     <!-- Announcements carries no nav row of its own: it is the other end of
          this page's job -- what the admin sends out, against what comes back
          in -- so the way to it is from here. -->

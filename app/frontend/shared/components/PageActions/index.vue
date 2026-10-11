@@ -12,13 +12,13 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { Comment, Fragment, Text, type VNode } from "vue";
 
 type Props = {
-  // A selection takes the header over on a phone, and the actions go with
-  // the search: nothing is left in the slot to claim the header's gap.
-  hidden?: boolean;
+  // A tour step pointing at one of the actions: on a phone that action is
+  // inside the closed menu, so the step points at the menu instead.
+  menuTour?: string;
 };
 
 withDefaults(defineProps<Props>(), {
-  hidden: false,
+  menuTour: undefined,
 });
 
 // `menu` lets a button that is an icon alone in the header bring a label to
@@ -59,16 +59,15 @@ provide(BTN_CONTAINER, {
        phone they would take a row of their own under it, so they fold into
        one menu instead and the header stays a single row. -->
   <Teleport to="#header-right">
-    <template v-if="!hidden">
-      <BtnDropdown
-        v-if="mobile && hasActions()"
-        class="navigation-header-pinned"
-        expand-left
-        data-test="page-actions-menu"
-      >
-        <slot :menu="true" />
-      </BtnDropdown>
-      <slot v-else-if="!mobile" :menu="false" />
-    </template>
+    <BtnDropdown
+      v-if="mobile && hasActions()"
+      class="navigation-header-pinned"
+      expand-left
+      :data-tour="menuTour"
+      data-test="page-actions-menu"
+    >
+      <slot :menu="true" />
+    </BtnDropdown>
+    <slot v-else-if="!mobile" :menu="false" />
   </Teleport>
 </template>

@@ -18,7 +18,7 @@ const headerRight = () => document.getElementById("header-right")!;
 
 let mounted: { unmount: () => void } | undefined;
 
-const mount = async (props: { hidden?: boolean } = {}, available = true) => {
+const mount = async (props: { menuTour?: string } = {}, available = true) => {
   const wrapper = await mountWithDefaults(PageActions, {
     props,
     slots: {
@@ -70,11 +70,11 @@ describe("PageActions", () => {
     ).not.toBeNull();
   });
 
-  it("leaves the header empty while hidden", async () => {
+  it("hands a tour step the menu on a phone", async () => {
     setViewport(true);
-    await mount({ hidden: true });
+    await mount({ menuTour: "invite" });
 
-    expect(headerRight().children).toHaveLength(0);
+    expect(headerRight().querySelector('[data-tour="invite"]')).not.toBeNull();
   });
 
   it("shows no menu on a phone when no action is available", async () => {

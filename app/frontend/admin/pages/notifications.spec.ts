@@ -134,9 +134,10 @@ describe("AdminNotificationsPage on a phone", () => {
     expect(
       headerLeft().querySelector('[data-test="bulk-exit"]'),
     ).not.toBeNull();
+    // The takeover is what the header's stylesheet hides the menu by.
     expect(
-      document.querySelector('[data-test="page-actions-menu"]'),
-    ).toBeNull();
+      headerLeft().querySelector(".navigation-header-takeover"),
+    ).not.toBeNull();
     expect(wrapper.findAll('[data-test="notification-checkbox"]')).toHaveLength(
       2,
     );

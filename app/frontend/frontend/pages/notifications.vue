@@ -463,7 +463,7 @@ const destroySelected = () =>
     </HeadingSmall>
   </Heading>
 
-  <PageActions :hidden="selecting">
+  <PageActions>
     <Btn :to="{ name: 'settings-notifications' }">
       <i class="fa-duotone fa-sliders" />
       {{ t("actions.notifications.settings") }}
