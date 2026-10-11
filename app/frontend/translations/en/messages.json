@@ -808,6 +808,7 @@
         }
       },
       "adminNotifications": {
+        "read": "Notification marked as read",
         "unread": "Notification marked as unread",
         "archived": "Notification archived",
         "unarchived": "Notification moved back to the inbox",
@@ -1073,6 +1074,7 @@
         }
       },
       "notifications": {
+        "read": "Notification marked as read",
         "unread": "Notification marked as unread",
         "archived": "Notification archived",
         "unarchived": "Notification moved back to the inbox",

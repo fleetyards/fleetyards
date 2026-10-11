@@ -381,6 +381,7 @@
         "removeLine": "Quitar"
       },
       "adminNotifications": {
+        "read": "Marcar como leída",
         "unread": "Marcar como no leída",
         "archive": "Archivar",
         "unarchive": "Devolver a la bandeja de entrada",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "Marcar como leída",
         "unread": "Marcar como no leída",
         "archive": "Archivar",
         "unarchive": "Devolver a la bandeja de entrada",

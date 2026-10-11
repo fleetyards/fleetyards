@@ -381,6 +381,7 @@
         "removeLine": "移除"
       },
       "adminNotifications": {
+        "read": "標示為已讀",
         "unread": "標示為未讀",
         "archive": "封存",
         "unarchive": "移回收件匣",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "標示為已讀",
         "unread": "標示為未讀",
         "archive": "封存",
         "unarchive": "移回收件匣",

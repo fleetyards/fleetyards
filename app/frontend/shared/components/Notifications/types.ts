@@ -3,6 +3,7 @@
 // different translation scopes, so each centre hands in its own keys.
 export interface NotificationLabels {
   select: string;
+  read: string;
   unread: string;
   archive: string;
   unarchive: string;

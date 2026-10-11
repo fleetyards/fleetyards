@@ -236,11 +236,27 @@ const withFeedback = async (
   }
 };
 
-// Closes the reading pane: leaving it open on a notification that is now unread
+// A swipe reads a notification without opening it, so unlike opening one it
+// gets a confirmation. The row is patched in place rather than refetched for
+// the same reason opening one is: the list sorts unread first, and a refetch
+// would pull the row out from under the finger that swiped it.
+const readOne = async (notification: AdminNotification) => {
+  try {
+    patchCached(await readAdminNotification(notification.id));
+    invalidateUnreadCount();
+    displaySuccess({ text: t("messages.adminNotifications.read") });
+  } catch {
+    displayAlert({ text: t("messages.adminNotifications.error") });
+  }
+};
+
+// Closes the reading pane on it: leaving it open on a notification now unread
 // invites a click that would only mark it read again, and the point of marking
 // it unread is to come back to it later.
 const markUnread = async (notification: AdminNotification) => {
-  selectedId.value = undefined;
+  if (selectedId.value === notification.id) {
+    selectedId.value = undefined;
+  }
 
   await withFeedback(
     () => unreadAdminNotification(notification.id),
@@ -567,6 +583,8 @@ const destroySelected = () =>
               selectable
               @toggle="toggleSelection(notification.id)"
               @select="select(notification)"
+              @read="readOne(notification)"
+              @unread="markUnread(notification)"
               @archive="archiveNotification(notification)"
               @unarchive="unarchiveNotification(notification)"
               @destroy="destroy(notification)"

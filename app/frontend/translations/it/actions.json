@@ -381,6 +381,7 @@
         "removeLine": "Rimuovi"
       },
       "adminNotifications": {
+        "read": "Segna come letta",
         "unread": "Segna come non letta",
         "archive": "Archivia",
         "unarchive": "Riporta in arrivo",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "Segna come letta",
         "unread": "Segna come non letta",
         "archive": "Archivia",
         "unarchive": "Riporta in arrivo",
