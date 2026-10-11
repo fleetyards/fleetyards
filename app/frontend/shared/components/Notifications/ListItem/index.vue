@@ -9,6 +9,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  type SwipeDirection,
+  useSwipeActions,
+} from "@/shared/composables/useSwipeActions";
 import type {
   NotificationEntry,
   NotificationLabels,
@@ -32,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   select: [];
   toggle: [checked: boolean];
+  read: [];
+  unread: [];
   archive: [];
   unarchive: [];
   destroy: [];
@@ -48,6 +54,94 @@ defineSlots<{
 
 const { t, l } = useI18n();
 
+const item = ref<HTMLElement>();
+
+// Right to toggle read, left to file it away: the two a reader does to a row
+// without opening it. Deleting stays a deliberate tap in the reading pane.
+const toggleRead = () => {
+  if (props.notification.read) {
+    emit("unread");
+  } else {
+    emit("read");
+  }
+};
+
+const toggleArchived = () => {
+  if (props.notification.archived) {
+    emit("unarchive");
+  } else {
+    emit("archive");
+  }
+};
+
+const onSwipe = (direction: SwipeDirection) => {
+  if (direction === "right") {
+    toggleRead();
+  } else {
+    toggleArchived();
+  }
+};
+
+const { offset, swiping, direction, armed } = useSwipeActions({
+  target: item,
+  onSwipe,
+});
+
+// The row eases back after the finger lifts, so the backdrop has to outlast the
+// gesture by as long as that takes. A timer rather than `transitionend`: with
+// reduced motion there is no transition to end.
+const SETTLE_MS = 250;
+
+const shownDirection = ref<SwipeDirection>();
+
+// How much of the backdrop the row last uncovered. Kept through the settle
+// too, or the label would vanish the moment the finger lifts.
+const reveal = ref(0);
+
+watch(offset, (next) => {
+  if (next) {
+    reveal.value = Math.abs(next);
+  }
+});
+
+let settleTimer: ReturnType<typeof setTimeout> | undefined;
+
+watch(direction, (next) => {
+  clearTimeout(settleTimer);
+
+  if (next) {
+    shownDirection.value = next;
+  } else {
+    settleTimer = setTimeout(() => {
+      shownDirection.value = undefined;
+    }, SETTLE_MS);
+  }
+});
+
+onBeforeUnmount(() => clearTimeout(settleTimer));
+
+const readIcon = computed(() =>
+  props.notification.read
+    ? "fa-duotone fa-envelope-dot"
+    : "fa-duotone fa-envelope-open",
+);
+
+const archiveIcon = computed(() =>
+  props.notification.archived
+    ? "fa-duotone fa-inbox-in"
+    : "fa-duotone fa-box-archive",
+);
+
+const readLabel = computed(() =>
+  props.notification.read ? t(props.labels.unread) : t(props.labels.read),
+);
+
+const archiveLabel = computed(() =>
+  props.notification.archived
+    ? t(props.labels.unarchive)
+    : t(props.labels.archive),
+);
+
 const select = ref<HTMLButtonElement>();
 
 // The page moves the selection with the arrow keys, and focus has to follow it
@@ -57,85 +151,163 @@ defineExpose({ focus: () => select.value?.focus() });
 
 <template>
   <div
-    class="notification-item"
-    data-test="notification-item"
+    class="notification-row"
     :class="{
-      'notification-item--unread': !notification.read,
-      'notification-item--selected': props.selected,
-      'notification-item--selectable': props.selectable,
+      [`notification-row--${shownDirection}`]: shownDirection,
+      'notification-row--armed': armed,
     }"
+    :style="{ '--swipe-reveal': `${reveal}px` }"
   >
-    <FormCheckbox
-      v-if="props.selectable"
-      v-tooltip="t(labels.select)"
-      :model-value="props.checked"
-      :aria-label="t(labels.select)"
-      class="notification-item__checkbox"
-      name="notification-selection"
-      data-test="notification-checkbox"
-      no-label
-      inline
-      @update:model-value="emit('toggle', $event)"
-    />
-    <button
-      ref="select"
-      type="button"
-      class="notification-item__select"
-      data-test="notification-select"
-      :aria-current="props.selected ? 'true' : undefined"
-      @click="emit('select')"
-      @keydown.down.prevent="emit('next')"
-      @keydown.up.prevent="emit('previous')"
+    <div
+      v-if="shownDirection"
+      class="notification-row__backdrop"
+      aria-hidden="true"
+      data-test="notification-swipe-backdrop"
     >
-      <i
-        class="notification-item__icon"
-        :class="notification.icon || 'fa-duotone fa-bell'"
+      <span v-if="shownDirection === 'right'" class="notification-row__hint">
+        <i :class="readIcon" />
+        <span>{{ readLabel }}</span>
+      </span>
+      <span v-else class="notification-row__hint">
+        <span>{{ archiveLabel }}</span>
+        <i :class="archiveIcon" />
+      </span>
+    </div>
+    <div
+      ref="item"
+      class="notification-item"
+      data-test="notification-item"
+      :class="{
+        'notification-item--unread': !notification.read,
+        'notification-item--selected': props.selected,
+        'notification-item--selectable': props.selectable,
+        'notification-item--swiping': swiping,
+      }"
+      :style="offset ? { transform: `translateX(${offset}px)` } : undefined"
+    >
+      <FormCheckbox
+        v-if="props.selectable"
+        v-tooltip="t(labels.select)"
+        :model-value="props.checked"
+        :aria-label="t(labels.select)"
+        class="notification-item__checkbox"
+        name="notification-selection"
+        data-test="notification-checkbox"
+        no-label
+        inline
+        @update:model-value="emit('toggle', $event)"
       />
-      <span class="notification-item__content">
-        <span class="notification-item__title">
-          {{ notification.title }}
-          <slot name="title" :notification="notification" />
-        </span>
-        <span class="notification-item__meta">
-          <slot name="meta" :notification="notification" />
-          <span>{{ typeLabel }}</span>
-          <span>
-            {{ l(notification.createdAt, "datetime.formats.short") }}
+      <button
+        ref="select"
+        type="button"
+        class="notification-item__select"
+        data-test="notification-select"
+        :aria-current="props.selected ? 'true' : undefined"
+        @click="emit('select')"
+        @keydown.down.prevent="emit('next')"
+        @keydown.up.prevent="emit('previous')"
+      >
+        <i
+          class="notification-item__icon"
+          :class="notification.icon || 'fa-duotone fa-bell'"
+        />
+        <span class="notification-item__content">
+          <span class="notification-item__title">
+            {{ notification.title }}
+            <slot name="title" :notification="notification" />
+          </span>
+          <span class="notification-item__meta">
+            <slot name="meta" :notification="notification" />
+            <span>{{ typeLabel }}</span>
+            <span>
+              {{ l(notification.createdAt, "datetime.formats.short") }}
+            </span>
           </span>
         </span>
-      </span>
-    </button>
-    <div class="notification-item__actions">
-      <slot name="actions" :notification="notification" />
-      <Btn
-        v-if="notification.archived"
-        v-tooltip="t(labels.unarchive)"
-        :aria-label="t(labels.unarchive)"
-        @click="emit('unarchive')"
-      >
-        <i class="fa-duotone fa-inbox-in" />
-      </Btn>
-      <Btn
-        v-else
-        v-tooltip="t(labels.archive)"
-        :aria-label="t(labels.archive)"
-        @click="emit('archive')"
-      >
-        <i class="fa-duotone fa-box-archive" />
-      </Btn>
-      <Btn
-        v-tooltip="t('actions.delete')"
-        :aria-label="t('actions.delete')"
-        :tone="BtnTonesEnum.DANGER"
-        @click="emit('destroy')"
-      >
-        <i class="fa-duotone fa-trash" />
-      </Btn>
+      </button>
+      <div class="notification-item__actions">
+        <slot name="actions" :notification="notification" />
+        <Btn
+          v-tooltip="archiveLabel"
+          class="notification-item__housekeeping"
+          :aria-label="archiveLabel"
+          @click="toggleArchived"
+        >
+          <i :class="archiveIcon" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.delete')"
+          class="notification-item__housekeeping"
+          :aria-label="t('actions.delete')"
+          :tone="BtnTonesEnum.DANGER"
+          @click="emit('destroy')"
+        >
+          <i class="fa-duotone fa-trash" />
+        </Btn>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+// The surface a swiped row slides off. Painted only while a row is moving, so a
+// list at rest is the rows alone.
+// Clipped, so a row dragged off its edge never widens the page.
+.notification-row {
+  position: relative;
+  overflow: hidden;
+}
+
+$swipe-backdrop-inset: 18px;
+$swipe-hint-gap: 12px;
+
+.notification-row__backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 $swipe-backdrop-inset;
+  color: $text-color;
+  font-size: 0.85em;
+  background: rgba($gray-light, 0.18);
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.notification-row--left .notification-row__backdrop {
+  justify-content: flex-end;
+}
+
+// Past the threshold the backdrop takes on colour, which is the only sign that
+// letting go now will act.
+.notification-row--armed .notification-row__backdrop {
+  background: color-mix(
+    in srgb,
+    var(--color-primary, #{$primary}) 45%,
+    transparent
+  );
+}
+
+// No wider than what the row has uncovered: a label longer than the travel,
+// like the French "move back to inbox", ends in an ellipsis instead of
+// running on under the row.
+.notification-row__hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: max(
+    0px,
+    calc(var(--swipe-reveal, 0px) - #{$swipe-backdrop-inset + $swipe-hint-gap})
+  );
+  overflow: hidden;
+  white-space: nowrap;
+
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 // The row surface a list of records wears elsewhere (ListGroup): a hairline and
 // a tint instead of a Panel's framed edge. The tint is over $panel-bg rather
 // than bare, because this page sits on a photo and ListGroup's translucent fill
@@ -149,11 +321,30 @@ defineExpose({ focus: () => select.value?.focus() });
   background: $panel-bg;
   border: 1px solid rgba(#fff, 0.1);
   border-radius: 6px;
-  transition: background 0.15s ease;
+  // Vertical travel scrolls the page; horizontal travel is the swipe's.
+  touch-action: pan-y pinch-zoom;
+  transition:
+    background 0.15s ease,
+    transform 0.2s ease;
 
   &:hover {
     background: color.mix(#fff, $gray-darker, 6%);
   }
+}
+
+// Opaque while it moves: the row's own fill is translucent so the page photo
+// reads through it, and the backdrop's label would read through it too. The
+// selected fill is opaque already and keeps its highlight.
+.notification-row--left .notification-item:not(.notification-item--selected),
+.notification-row--right .notification-item:not(.notification-item--selected) {
+  background: $gray-darker;
+}
+
+// Following the finger, not easing after it - and turning opaque at once, or
+// the label shows through for the length of a fade. Two classes, so the
+// reduced-motion rule further down cannot bring the fade back.
+.notification-item.notification-item--swiping {
+  transition: none;
 }
 
 .notification-item--selected {
@@ -274,8 +465,39 @@ defineExpose({ focus: () => select.value?.focus() });
   }
 }
 
-// A phone has no hover, so the actions are permanently part of the row and take
-// their width off the title. The row gives back what padding it can.
+// A touch screen swipes a row to file it away instead, and the two buttons took
+// most of the title's width on a phone. They stay in the row for a screen
+// reader, which takes the swipe for itself, and come back into view for
+// keyboard focus, so a keyboard never lands on an invisible button. Keyboard
+// focus only: a tap focuses the row too, and would bring them back on every
+// open. The way on stays.
+@media (hover: none) and (pointer: coarse) {
+  .notification-item:not(:has(:focus-visible))
+    .notification-item__housekeeping {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-item {
+    transition: background 0.15s ease;
+  }
+
+  .notification-row__backdrop {
+    transition: none;
+  }
+}
+
+// A phone has no hover, so whatever actions the row still shows are permanently
+// part of it and take their width off the title. The row gives back what
+// padding it can.
 @media (max-width: $tablet-breakpoint) {
   .notification-item {
     gap: 2px;

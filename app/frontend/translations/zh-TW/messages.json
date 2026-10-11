@@ -798,6 +798,7 @@
         }
       },
       "adminNotifications": {
+        "read": "通知已標示為已讀",
         "unread": "通知已標示為未讀",
         "archived": "通知已封存",
         "unarchived": "通知已移回收件匣",
@@ -1063,6 +1064,7 @@
         }
       },
       "notifications": {
+        "read": "通知已標示為已讀",
         "unread": "通知已標示為未讀",
         "archived": "通知已封存",
         "unarchived": "通知已移回收件匣",

@@ -6,6 +6,7 @@ import {
   AdminNotificationTypeEnum,
   type AdminNotification,
 } from "@/services/fyAdminApi";
+import SharedListItem from "@/shared/components/Notifications/ListItem/index.vue";
 import ListItem from "./index.vue";
 
 const notification = (
@@ -80,5 +81,21 @@ describe("AdminNotificationsListItem", () => {
       wrapper.find('[data-test="notification-select"]').element,
     );
     wrapper.unmount();
+  });
+
+  it("lets the swipe's read and unread through to the page", async () => {
+    const onRead = vi.fn();
+    const onUnread = vi.fn();
+    const wrapper = await mountWithDefaults(ListItem, {
+      props: { notification: notification() },
+      attrs: { onRead, onUnread },
+    });
+
+    const row = wrapper.findComponent(SharedListItem);
+    row.vm.$emit("read");
+    row.vm.$emit("unread");
+
+    expect(onRead).toHaveBeenCalledOnce();
+    expect(onUnread).toHaveBeenCalledOnce();
   });
 });

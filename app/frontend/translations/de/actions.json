@@ -381,6 +381,7 @@
         "removeLine": "Entfernen"
       },
       "adminNotifications": {
+        "read": "Als gelesen markieren",
         "unread": "Als ungelesen markieren",
         "archive": "Archivieren",
         "unarchive": "Zurück in den Posteingang",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "Als gelesen markieren",
         "unread": "Als ungelesen markieren",
         "archive": "Archivieren",
         "unarchive": "Zurück in den Posteingang",

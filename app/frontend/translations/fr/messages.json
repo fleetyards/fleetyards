@@ -798,6 +798,7 @@
         }
       },
       "adminNotifications": {
+        "read": "Notification marquée comme lue",
         "unread": "Notification marquée comme non lue",
         "archived": "Notification archivée",
         "unarchived": "Notification remise dans la boîte de réception",
@@ -1063,6 +1064,7 @@
         }
       },
       "notifications": {
+        "read": "Notification marquée comme lue",
         "unread": "Notification marquée comme non lue",
         "archived": "Notification archivée",
         "unarchived": "Notification remise dans la boîte de réception",

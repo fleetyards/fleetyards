@@ -381,6 +381,7 @@
         "removeLine": "Remove"
       },
       "adminNotifications": {
+        "read": "Mark as read",
         "unread": "Mark as unread",
         "archive": "Archive",
         "unarchive": "Move back to inbox",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "Mark as read",
         "unread": "Mark as unread",
         "archive": "Archive",
         "unarchive": "Move back to inbox",

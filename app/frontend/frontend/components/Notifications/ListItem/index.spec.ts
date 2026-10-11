@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
+import SharedListItem from "@/shared/components/Notifications/ListItem/index.vue";
 import ListItem from "./index.vue";
 
 window.API_ENDPOINT = "https://api.fleetyards.test/v1";
@@ -41,7 +42,9 @@ describe("NotificationsListItem", () => {
       attrs: { onSelect, onNext },
     });
 
-    expect(wrapper.classes()).toContain("notification-item--selected");
+    expect(wrapper.find(".notification-item").classes()).toContain(
+      "notification-item--selected",
+    );
 
     await wrapper.find('[data-test="notification-select"]').trigger("click");
     await wrapper
@@ -74,5 +77,21 @@ describe("NotificationsListItem", () => {
     expect(wrapper.find('[aria-label="Move back to inbox"]').exists()).toBe(
       true,
     );
+  });
+
+  it("lets the swipe's read and unread through to the page", async () => {
+    const onRead = vi.fn();
+    const onUnread = vi.fn();
+    const wrapper = await mountWithDefaults(ListItem, {
+      props: { notification: notification() },
+      attrs: { onRead, onUnread },
+    });
+
+    const row = wrapper.findComponent(SharedListItem);
+    row.vm.$emit("read");
+    row.vm.$emit("unread");
+
+    expect(onRead).toHaveBeenCalledOnce();
+    expect(onUnread).toHaveBeenCalledOnce();
   });
 });

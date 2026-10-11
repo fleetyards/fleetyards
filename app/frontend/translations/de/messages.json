@@ -798,6 +798,7 @@
         }
       },
       "adminNotifications": {
+        "read": "Benachrichtigung als gelesen markiert",
         "unread": "Benachrichtigung als ungelesen markiert",
         "archived": "Benachrichtigung archiviert",
         "unarchived": "Benachrichtigung zurück in den Posteingang verschoben",
@@ -1063,6 +1064,7 @@
         }
       },
       "notifications": {
+        "read": "Benachrichtigung als gelesen markiert",
         "unread": "Benachrichtigung als ungelesen markiert",
         "archived": "Benachrichtigung archiviert",
         "unarchived": "Benachrichtigung zurück in den Posteingang verschoben",

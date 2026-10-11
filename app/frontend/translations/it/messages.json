@@ -798,6 +798,7 @@
         }
       },
       "adminNotifications": {
+        "read": "Notifica segnata come letta",
         "unread": "Notifica segnata come non letta",
         "archived": "Notifica archiviata",
         "unarchived": "Notifica riportata in arrivo",
@@ -1063,6 +1064,7 @@
         }
       },
       "notifications": {
+        "read": "Notifica segnata come letta",
         "unread": "Notifica segnata come non letta",
         "archived": "Notifica archiviata",
         "unarchived": "Notifica riportata in arrivo",

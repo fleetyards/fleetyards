@@ -381,6 +381,7 @@
         "removeLine": "Retirer"
       },
       "adminNotifications": {
+        "read": "Marquer comme lu",
         "unread": "Marquer comme non lu",
         "archive": "Archiver",
         "unarchive": "Remettre dans la boîte de réception",
@@ -465,6 +466,7 @@
         }
       },
       "notifications": {
+        "read": "Marquer comme lu",
         "unread": "Marquer comme non lu",
         "archive": "Archiver",
         "unarchive": "Remettre dans la boîte de réception",
