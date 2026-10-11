@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import NotificationListItem from "@/shared/components/Notifications/ListItem/index.vue";
+import type { ComponentExposed } from "vue-component-type-helpers";
 import { NOTIFICATION_LABELS } from "@/admin/components/Notifications/labels";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -40,7 +41,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const row = ref<InstanceType<typeof NotificationListItem>>();
+const row = ref<ComponentExposed<typeof NotificationListItem>>();
 
 defineExpose({ focus: () => row.value?.focus() });
 </script>
@@ -66,21 +67,18 @@ defineExpose({ focus: () => row.value?.focus() });
     @previous="emit('previous')"
     @next="emit('next')"
   >
-    <template #title>
-      <span
-        v-if="notification.occurrences > 1"
-        class="notification-item__count"
-      >
-        &times;{{ notification.occurrences }}
+    <template #title="{ notification: entry }">
+      <span v-if="entry.occurrences > 1" class="notification-item__count">
+        &times;{{ entry.occurrences }}
       </span>
     </template>
-    <template #meta>
+    <template #meta="{ notification: entry }">
       <BasePill
-        v-if="hasSeverityLabel(notification.severity)"
-        :variant="severityPillVariant(notification.severity)"
+        v-if="hasSeverityLabel(entry.severity)"
+        :variant="severityPillVariant(entry.severity)"
         uppercase
       >
-        {{ t(`labels.adminNotifications.severities.${notification.severity}`) }}
+        {{ t(`labels.adminNotifications.severities.${entry.severity}`) }}
       </BasePill>
     </template>
   </NotificationListItem>

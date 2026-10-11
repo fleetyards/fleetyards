@@ -4,7 +4,7 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T extends NotificationEntry">
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -15,7 +15,7 @@ import type {
 } from "@/shared/components/Notifications/types";
 
 type Props = {
-  notification: NotificationEntry;
+  notification: T;
   typeLabel: string;
   labels: NotificationLabels;
   selected?: boolean;
@@ -37,6 +37,13 @@ const emit = defineEmits<{
   destroy: [];
   previous: [];
   next: [];
+}>();
+
+// Each slot is handed the notification, typed as the caller's own record.
+defineSlots<{
+  title?: (props: { notification: T }) => unknown;
+  meta?: (props: { notification: T }) => unknown;
+  actions?: (props: { notification: T }) => unknown;
 }>();
 
 const { t, l } = useI18n();
@@ -87,10 +94,10 @@ defineExpose({ focus: () => select.value?.focus() });
       <span class="notification-item__content">
         <span class="notification-item__title">
           {{ notification.title }}
-          <slot name="title" />
+          <slot name="title" :notification="notification" />
         </span>
         <span class="notification-item__meta">
-          <slot name="meta" />
+          <slot name="meta" :notification="notification" />
           <span>{{ typeLabel }}</span>
           <span>
             {{ l(notification.createdAt, "datetime.formats.short") }}
@@ -99,7 +106,7 @@ defineExpose({ focus: () => select.value?.focus() });
       </span>
     </button>
     <div class="notification-item__actions">
-      <slot name="actions" />
+      <slot name="actions" :notification="notification" />
       <Btn
         v-if="notification.archived"
         v-tooltip="t(labels.unarchive)"

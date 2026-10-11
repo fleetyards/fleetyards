@@ -8,6 +8,7 @@ export default {
 import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import NotificationListItem from "@/shared/components/Notifications/ListItem/index.vue";
+import type { ComponentExposed } from "vue-component-type-helpers";
 import { NOTIFICATION_LABELS } from "@/frontend/components/Notifications/labels";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationActions } from "@/frontend/composables/useNotificationActions";
@@ -42,7 +43,7 @@ const { primaryLink } = useNotificationActions();
 
 const primary = computed(() => primaryLink(props.notification));
 
-const row = ref<InstanceType<typeof NotificationListItem>>();
+const row = ref<ComponentExposed<typeof NotificationListItem>>();
 
 defineExpose({ focus: () => row.value?.focus() });
 </script>
