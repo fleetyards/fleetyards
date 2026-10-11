@@ -13,6 +13,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
@@ -23,11 +24,14 @@ import {
   type Fleet,
   type FleetMember,
   type Mission,
+  type MissionSortEnum,
+  getFleetMissionsQueryKey,
   useFleetMissions,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionDraft } from "@/frontend/composables/useDraftCreate";
+import { usePagination } from "@/shared/composables/usePagination";
 import { checkAccess } from "@/shared/utils/Access";
 import { storeToRefs } from "pinia";
 import { useMissionsStore } from "@/frontend/stores/missions";
@@ -43,13 +47,39 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const route = useRoute();
+const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const showArchived = ref(false);
 
+// The table's sortable headers write `s` into the route; the order has to come
+// from the server once the list is paged, or each page is sorted on its own.
+const sort = computed(
+  () => (route.query.s as MissionSortEnum | undefined) || undefined,
+);
+
 const queryParams = computed(() => ({
   archived: showArchived.value || undefined,
+  page: page.value,
+  perPage: perPage.value,
+  q: sort.value ? { s: sort.value } : undefined,
 }));
+
+const queryKey = computed(() =>
+  getFleetMissionsQueryKey(fleetSlug, queryParams),
+);
+
+const { perPage, page, updatePerPage } = usePagination(queryKey);
+
+// The other tab has its own page count, so the page a reader was on may not
+// exist there.
+const selectTab = (archived: boolean) => {
+  showArchived.value = archived;
+
+  if (route.query.page) {
+    void router.replace({ query: { ...route.query, page: undefined } });
+  }
+};
 
 const {
   data: missions,
@@ -187,23 +217,23 @@ const crumbs = computed<Crumb[]>(() => [
 
     <template #actions-left>
       <BtnGroup segmented>
-        <Btn
-          :active="!showArchived"
-          mobile-icon-only
-          @click="showArchived = false"
-        >
+        <Btn :active="!showArchived" mobile-icon-only @click="selectTab(false)">
           <i class="fa-light fa-flag" />
           {{ t("labels.fleets.missions.activeTab") }}
         </Btn>
-        <Btn
-          :active="showArchived"
-          mobile-icon-only
-          @click="showArchived = true"
-        >
+        <Btn :active="showArchived" mobile-icon-only @click="selectTab(true)">
           <i class="fa-light fa-box-archive" />
           {{ t("labels.fleets.missions.archivedTab") }}
         </Btn>
       </BtnGroup>
+    </template>
+
+    <template #pagination-top>
+      <Paginator
+        :query-result-ref="missions"
+        :per-page="perPage"
+        @update-per-page="updatePerPage"
+      />
     </template>
 
     <!-- Only the grid needs placeholder cards. In table view the slot is gone,
@@ -259,6 +289,14 @@ const crumbs = computed<Crumb[]>(() => [
         :missions="records as Mission[]"
         :async-status="asyncStatus"
         :empty-visible="emptyVisible"
+      />
+    </template>
+
+    <template #pagination-bottom>
+      <Paginator
+        :query-result-ref="missions"
+        :per-page="perPage"
+        @update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>
