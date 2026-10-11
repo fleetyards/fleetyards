@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "Moins de deux admins",
+                "title": "Admins",
                 "overview": "Admins",
                 "description": "Admin est le seul rôle qui peut tout gérer. Avec un seul titulaire, la flotte dépend d'un seul compte.",
-                "clear": "Plusieurs membres sont admin."
+                "clear": "%{admins} membres sont admin."
               },
               "emptyRoles": {
                 "title": "Rôles sans membre",

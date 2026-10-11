@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "Menos de dos administradores",
+                "title": "Administradores",
                 "overview": "Administradores",
                 "description": "Administrador es el único rol que puede gestionarlo todo. Con un solo titular, la flota depende de una cuenta.",
-                "clear": "Más de un miembro es administrador."
+                "clear": "%{admins} miembros son administradores."
               },
               "emptyRoles": {
                 "title": "Roles sin miembros",

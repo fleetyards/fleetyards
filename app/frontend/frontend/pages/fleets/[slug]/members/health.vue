@@ -152,6 +152,7 @@ const checkText = (check: MemberHealthCheck, part: string) =>
   t(`labels.fleet.members.health.checks.${check.key}.${part}`, {
     sid: sid.value,
     count: days.value,
+    admins: check.display,
   });
 
 const membersLink = (query: Record<string, string>) => ({

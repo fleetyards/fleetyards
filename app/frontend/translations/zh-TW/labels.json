@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "管理員少於兩名",
+                "title": "管理員",
                 "overview": "管理員",
                 "description": "管理員是唯一可以管理一切的角色。只有一人擔任時，艦隊仰賴單一帳號。",
-                "clear": "有多名成員擔任管理員。"
+                "clear": "%{admins} 名成員擔任管理員。"
               },
               "emptyRoles": {
                 "title": "無人擔任的角色",

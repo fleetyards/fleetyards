@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "Weniger als zwei Admins",
+                "title": "Admins",
                 "overview": "Admins",
                 "description": "Admin ist die einzige Rolle, die alles verwalten kann. Mit nur einem Inhaber hängt die Flotte an einem Konto.",
-                "clear": "Mehr als ein Mitglied ist Admin."
+                "clear": "%{admins} Mitglieder sind Admin."
               },
               "emptyRoles": {
                 "title": "Rollen ohne Mitglieder",

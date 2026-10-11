@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "Meno di due admin",
+                "title": "Admin",
                 "overview": "Admin",
                 "description": "Admin è l'unico ruolo che può gestire tutto. Con un solo titolare, la flotta dipende da un account.",
-                "clear": "Più di un membro è admin."
+                "clear": "%{admins} membri sono admin."
               },
               "emptyRoles": {
                 "title": "Ruoli senza membri",

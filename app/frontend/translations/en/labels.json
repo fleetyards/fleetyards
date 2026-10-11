@@ -765,10 +765,10 @@
             },
             "checks": {
               "admins": {
-                "title": "Fewer than two admins",
+                "title": "Admins",
                 "overview": "Admins",
                 "description": "Admin is the one role that can manage everything. With a single holder, the fleet depends on one account.",
-                "clear": "More than one member holds Admin."
+                "clear": "%{admins} members hold Admin."
               },
               "emptyRoles": {
                 "title": "Roles nobody holds",
