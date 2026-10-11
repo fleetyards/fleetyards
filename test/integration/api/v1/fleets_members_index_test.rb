@@ -196,6 +196,43 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members filters by withoutRsiHandle" do
+    [@admin, @another_member].each { |user| user.update_columns(rsi_handle: "Handle#{user.id.first(6)}") }
+    @member.update_columns(rsi_handle: nil)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"withoutRsiHandle" => true}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members filters by withoutDiscord" do
+    [@admin, @another_member].each { |user| create(:omniauth_connection, user:, provider: :discord) }
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"withoutDiscord" => true}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members filters by withoutSquadron" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    [@admin, @another_member].each do |user|
+      create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: @fleet.fleet_memberships.find_by(user:))
+    end
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"withoutSquadron" => true}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
   # The filter names roles by slug, so a renamed role still filters.
   test "GET /fleets/:slug/members filters by role after the role is renamed" do
     @fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")

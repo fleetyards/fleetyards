@@ -67,7 +67,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["inactive_since"]
+    ["inactive_since", "without_rsi_handle", "without_discord", "without_squadron"]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -120,6 +120,19 @@ class FleetMembership < ApplicationRecord
   # tracking began is the longest gone of all.
   scope :inactive_since, ->(time) {
     where(user_id: User.where("users.last_active_at IS NULL OR users.last_active_at < ?", time).select(:id))
+  }
+
+  scope :without_rsi_handle, -> {
+    where(user_id: User.where(rsi_handle: [nil, ""]).select(:id))
+  }
+
+  scope :without_discord, -> {
+    where.not(user_id: OmniauthConnection.discord.select(:user_id))
+  }
+
+  # Teams count: a member placed in one has been placed.
+  scope :without_squadron, -> {
+    where.not(id: FleetSquadronMembership.select(:fleet_membership_id))
   }
 
   before_validation :set_default_ships_filter
