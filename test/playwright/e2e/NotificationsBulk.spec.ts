@@ -4,9 +4,9 @@ import { test, expect } from "../support/commands";
 const row = (page: import("@playwright/test").Page, title: string) =>
   page.getByTestId("notification-item").filter({ hasText: title });
 
-// The scenario fills one page and a bit: 25 rows are shown, 30 exist.
-const PER_PAGE = 25;
-const TOTAL = 30;
+// The scenario fills one page and a bit: 24 rows are shown, 29 exist.
+const PER_PAGE = 24;
+const TOTAL = 29;
 
 test.describe("Notifications bulk operations", () => {
   test.beforeEach(async ({ page }) => {
