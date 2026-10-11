@@ -134,6 +134,18 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/missions sorts by several columns" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Alpha")
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Bravo")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {s: ["title desc", "createdAt asc"]}} do
+      assert_equal %w[Bravo Alpha], parsed_body["items"].map { |item| item["title"] }
+    end
+  end
+
   test "GET /fleets/:slug/missions with OAuth bearer token" do
     create_list(:mission, 1, fleet: @fleet, created_by: @admin)
 

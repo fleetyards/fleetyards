@@ -26,7 +26,7 @@ module Api
         scope = visible_scope
         scope = (params[:archived] == "true") ? scope.archived : scope.active
 
-        query_params = params.fetch(:q, {}).permit(:title_cont, :status_eq, :s)
+        query_params = params.fetch(:q, {}).permit(:title_cont, :status_eq, :s, s: [])
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(Mission, query_params["sorts"])
 
