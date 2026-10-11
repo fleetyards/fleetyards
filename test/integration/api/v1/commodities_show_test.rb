@@ -16,7 +16,7 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
       parameter name: :slug, in: :path, schema: {type: :string}, required: true
 
       response(200, "successful") do
-        schema ::V1::Schemas::Commodity
+        schema ::V1::Schemas::CommodityDetail
       end
 
       response(404, "not found") do

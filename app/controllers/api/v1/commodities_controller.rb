@@ -33,8 +33,11 @@ module Api
         # for the default it inner-joins the build we are on, and that join
         # already leaves out what that build does not describe. Adding the scope
         # beside it scanned `commodity_builds` a second time for the same answer.
+        #
+        # `item_prices` without their shops: the row states only the two price
+        # figures, and the terminals behind them are on the detail.
         @q = Commodity.with_facts(current_version)
-          .includes({item_prices: ItemPrice::SHOP_LINK}, :refines_into)
+          .includes(:item_prices, :refines_into)
           .ransack(commodities_query_params)
 
         @commodities = @q.result

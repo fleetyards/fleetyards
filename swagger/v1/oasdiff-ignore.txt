@@ -2393,3 +2393,5 @@ PUT /users/me added the new `github` enum value to the `authConnections/items/` 
 PUT /users/me added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
 PUT /users/me added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
 PUT /users/me added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
+GET /commodities removed the optional property `items/items/refinedFrom` from the response with the `200` status
+GET /commodities removed the required property `items/items/availability` from the response with the `200` status

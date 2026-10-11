@@ -11843,10 +11843,6 @@ components:
             type: number
         refinesInto:
           "$ref": "#/components/schemas/NullableCommodityRef"
-        refinedFrom:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CommodityRef"
         retired:
           type: boolean
         storeImage:
@@ -11859,8 +11855,6 @@ components:
           type:
           - number
           - 'null'
-        availability:
-          "$ref": "#/components/schemas/ItemAvailability"
         createdAt:
           type: string
           format: date-time
@@ -11896,7 +11890,6 @@ components:
       - consumable
       - containerSizes
       - retired
-      - availability
       - createdAt
       - updatedAt
       title: Commodity

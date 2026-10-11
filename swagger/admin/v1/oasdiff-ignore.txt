@@ -203,3 +203,13 @@ GET /model-upgrades for the `query` request parameter `perPage`, default value w
 GET /notifications for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
 GET /supporter-contributions for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /videos for the `query` request parameter `perPage`, default value was changed from `8.00` to `12.00`
+DELETE /commodities/{id} removed the optional property `refinedFrom` from the response with the `200` status
+DELETE /commodities/{id} removed the required property `availability` from the response with the `200` status
+GET /commodities removed the optional property `items/items/refinedFrom` from the response with the `200` status
+GET /commodities removed the required property `items/items/availability` from the response with the `200` status
+GET /commodities/{id} removed the optional property `refinedFrom` from the response with the `200` status
+GET /commodities/{id} removed the required property `availability` from the response with the `200` status
+POST /commodities removed the optional property `refinedFrom` from the response with the `200` status
+POST /commodities removed the required property `availability` from the response with the `200` status
+PUT /commodities/{id} removed the optional property `refinedFrom` from the response with the `200` status
+PUT /commodities/{id} removed the required property `availability` from the response with the `200` status
