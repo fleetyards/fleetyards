@@ -278,7 +278,8 @@ const holdRecord = (record: T) => {
 };
 
 const onRowClick = (record: T) => {
-  if (props.rowClickable) {
+  // A tap while picking is the row's to take, and it has: see `intercept`.
+  if (props.rowClickable && !selecting.value) {
     emit("row-click", record);
   }
 };

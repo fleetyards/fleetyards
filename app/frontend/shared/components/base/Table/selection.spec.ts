@@ -172,4 +172,27 @@ describe("BaseTable on a phone", () => {
 
     expect(boxes(wrapper)).toEqual([]);
   });
+
+  it("keeps a held row picked when the table became holdable after mounting", async () => {
+    const setViewport = (phone: boolean) => {
+      window.matchMedia = ((query: string) => ({
+        matches: phone,
+        media: query,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      })) as unknown as typeof window.matchMedia;
+    };
+
+    setViewport(false);
+    const wrapper = await mount();
+
+    setViewport(true);
+    window.dispatchEvent(new Event("resize"));
+    await flushPromises();
+
+    await hold(wrapper, 0);
+    await rows(wrapper)[0].trigger("click");
+
+    expect(boxes(wrapper)).toEqual([true, false]);
+  });
 });

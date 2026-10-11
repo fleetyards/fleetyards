@@ -28,6 +28,10 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
   let startY = 0;
   let pressedAt = 0;
 
+  // Whether the click arriving now is the one a lifted finger sends after a
+  // hold, for a listener that cannot count on running after this one's guard.
+  const justHeld = () => Date.now() - pressedAt < CLICK_GUARD_MS;
+
   // A second finger that lands outside the row never reaches the row's own
   // listeners, so the document watches for it while a hold is pending.
   const onAnyTouchStart = (event: TouchEvent) => {
@@ -86,10 +90,9 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
     }
   };
 
-  // The finger lifting off a row it has held must not also open it - nor
-  // reach a click listener registered on the row after this one.
+  // The finger lifting off a row it has held must not also open it.
   const onClick = (event: MouseEvent) => {
-    if (Date.now() - pressedAt < CLICK_GUARD_MS) {
+    if (justHeld()) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -111,4 +114,6 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
   useEventListener(target, "contextmenu", onContextMenu);
 
   onBeforeUnmount(cancel);
+
+  return { justHeld };
 };

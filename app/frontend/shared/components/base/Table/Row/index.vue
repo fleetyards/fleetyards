@@ -34,13 +34,11 @@ const emit = defineEmits<{
 
 const row = ref<HTMLElement>();
 
-useLongPress({
+const { justHeld } = useLongPress({
   target: computed(() => (props.holdable ? row.value : undefined)),
   onLongPress: () => emit("hold"),
 });
 
-// After the hold's own guard, which stops the click a lifted finger sends so
-// the row it just picked is not unpicked again.
 useEventListener(
   row,
   "click",
@@ -50,8 +48,13 @@ useEventListener(
     }
 
     event.preventDefault();
-    event.stopPropagation();
-    emit("intercepted");
+    event.stopImmediatePropagation();
+
+    // The click a lifted finger sends after a hold is not a tap: reported, it
+    // would unpick the row the hold just picked.
+    if (!justHeld()) {
+      emit("intercepted");
+    }
   },
   { capture: true },
 );
