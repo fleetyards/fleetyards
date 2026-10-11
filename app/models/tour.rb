@@ -3,7 +3,7 @@
 class Tour < ApplicationRecord
   include AASM
 
-  paginates_per 30
+  paginates_per 24
 
   belongs_to :created_by, class_name: "User"
 

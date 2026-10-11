@@ -18,7 +18,7 @@ class FleetInviteUrl < ApplicationRecord
     member: []
   }.freeze
 
-  paginates_per 30
+  paginates_per 24
 
   belongs_to :fleet
   belongs_to :user

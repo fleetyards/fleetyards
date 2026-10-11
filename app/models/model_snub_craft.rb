@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ModelSnubCraft < ApplicationRecord
+  paginates_per 24
+
   belongs_to :model, touch: true
   belongs_to :snub_craft,
     class_name: "Model"

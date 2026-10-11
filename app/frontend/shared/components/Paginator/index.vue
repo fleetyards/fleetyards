@@ -18,6 +18,9 @@ import type { MaybeRef } from "vue";
 type Props = {
   queryResultRef: MaybeRef<BaseList | undefined>;
   updatePerPage?: (perPage: number | string) => void;
+  // Declared so `@update-per-page` arrives here instead of falling through as
+  // an attribute and leaving the dropdown hidden.
+  onUpdatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
   size?: BtnSizesEnum;
   inline?: boolean;
@@ -26,6 +29,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   updatePerPage: undefined,
+  onUpdatePerPage: undefined,
   perPage: undefined,
   size: undefined,
   inline: false,
@@ -43,8 +47,12 @@ const pagination = computed(() => result.value?.meta.pagination);
 
 const visible = computed(() => loading.value || !!pagination.value);
 
+const perPageHandler = computed(
+  () => props.updatePerPage ?? props.onUpdatePerPage,
+);
+
 const perPageSelectable = computed(
-  () => !!pagination.value?.perPageSteps && !!props.updatePerPage,
+  () => !!pagination.value?.perPageSteps && !!perPageHandler.value,
 );
 
 const internalPerPage = computed(
@@ -57,8 +65,31 @@ const changePerPage = (step: number | string) => {
     return;
   }
 
-  props.updatePerPage?.(step);
+  perPageHandler.value?.(step);
 };
+
+// A size saved, or carried by a link, from before the list offered these steps
+// (30 on a card grid) would leave a short row on every page and match no step,
+// so the list goes back to its default instead.
+watch(
+  [() => pagination.value?.perPageSteps, () => props.perPage],
+  ([steps, perPage]) => {
+    if (!steps || !perPage || !perPageHandler.value) {
+      return;
+    }
+
+    if (steps.some((step) => String(step) === String(perPage))) {
+      return;
+    }
+
+    const fallback = pagination.value?.defaultPerPage;
+
+    if (fallback) {
+      perPageHandler.value(fallback);
+    }
+  },
+  { immediate: true },
+);
 
 // An empty list still has a page one, and a page count is only unknown while the
 // request is out.

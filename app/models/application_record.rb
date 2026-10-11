@@ -4,6 +4,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   include SlugConcern
+  extend PageSizes::Declarable
 
   def self.human_enum_name(enum_name, enum_value)
     return if enum_value.blank?
@@ -19,16 +20,6 @@ class ApplicationRecord < ActiveRecord::Base
   # moment a partial starts rendering it.
   def self.attachment_preloads
     attachment_reflections.keys.map { |name| {"#{name}_attachment": :blob} }
-  end
-
-  def self.per_page_steps(val = :none)
-    if val == :none
-      # getter
-      defined?(@_per_page_steps) && @_per_page_steps
-    else
-      # setter
-      @_per_page_steps = val
-    end
   end
 
   def jbuilder_collection_folder

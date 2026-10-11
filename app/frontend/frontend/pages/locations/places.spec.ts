@@ -13,10 +13,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           totalCount: 120,
           currentPage: 1,
           totalPages: 2,
-          perPage: 60,
-          defaultPerPage: 60,
+          perPage: 48,
+          defaultPerPage: 48,
           maxPerPage: 100,
-          perPageSteps: [15, 30, 60, 90],
+          perPageSteps: [12, 24, 48, 96],
         },
       },
     }),
@@ -77,6 +77,6 @@ describe("places page", () => {
     const dropdowns = wrapper.findAllComponents({ name: "PerPageDropdown" });
 
     expect(dropdowns.length).toBeGreaterThan(0);
-    expect(dropdowns[0].props("steps")).toEqual([15, 30, 60, 90]);
+    expect(dropdowns[0].props("steps")).toEqual([12, 24, 48, 96]);
   });
 });

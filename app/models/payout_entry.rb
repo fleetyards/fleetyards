@@ -8,7 +8,7 @@ class PayoutEntry < ApplicationRecord
   # is not reviewed: recording money you hold only raises what you owe.
   REVIEW_STATUSES = {pending: 0, approved: 1, declined: 2}.freeze
 
-  paginates_per 50
+  paginates_per 48
 
   belongs_to :payout_ledger, touch: true
   belongs_to :payout_participant

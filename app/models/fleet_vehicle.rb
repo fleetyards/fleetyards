@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class FleetVehicle < ApplicationRecord
-  paginates_per 30
+  paginates_per 24
   max_paginates_per 240
-  per_page_steps [15, 30, 60, 120, 240, :all]
+  per_page_steps [*PageSizes.up_to(max_per_page), :all]
 
   belongs_to :fleet, touch: true
   belongs_to :vehicle

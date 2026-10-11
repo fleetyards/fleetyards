@@ -16,7 +16,7 @@ class InventoryTransfer < ApplicationRecord
 
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
-  paginates_per 30
+  paginates_per 24
 
   # How long a pending transfer waits before the goods go home by themselves.
   # Escrowed stock must not be able to sit in limbo indefinitely.

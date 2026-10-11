@@ -17,7 +17,7 @@ class FundingGoal < ApplicationRecord
       reason: :update_reason,
       reason_description: :update_reason_description
     }
-  paginates_per 30
+  paginates_per 24
 
   DEFAULT_SORTING_PARAMS = "effective_from desc"
   ALLOWED_SORTING_PARAMS = [

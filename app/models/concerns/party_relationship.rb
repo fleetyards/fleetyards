@@ -29,7 +29,7 @@ module PartyRelationship
   included do
     include AASM
 
-    paginates_per 30
+    paginates_per 24
 
     validate :not_between_a_party_and_itself
 

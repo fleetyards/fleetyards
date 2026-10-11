@@ -1,4 +1,6 @@
 class ItemPrice < ApplicationRecord
+  paginates_per 24
+
   belongs_to :item, polymorphic: true
   belongs_to :terminal, optional: true
   # The shop `location` names, matched from that string by

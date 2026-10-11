@@ -7,8 +7,8 @@ class Location < ApplicationRecord
   include SlugConcern
   include ScDataVersioned
 
-  paginates_per 60
-  per_page_steps [15, 30, 60, 90]
+  paginates_per 48
+  per_page_steps PageSizes.up_to(max_per_page)
 
   KINDS = %w[
     system star planet moon city spaceport station outpost clinic district asteroid

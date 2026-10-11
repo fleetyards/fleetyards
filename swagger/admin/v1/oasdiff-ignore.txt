@@ -171,3 +171,35 @@ GET /components/class_filters api path removed without deprecation
 GET /components/item_type_filters api path removed without deprecation
 POST /components request property `componentType` was restricted to a list of enum values
 PUT /components/{id} request property `componentType` was restricted to a list of enum values
+GET /blueprints for the `query` request parameter `perPage`, default value was changed from `60.00` to `48.00`
+GET /cargo-holds for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /commodities for the `query` request parameter `perPage`, default value was changed from `60.00` to `48.00`
+GET /components for the `query` request parameter `perPage`, default value was changed from `50.00` to `48.00`
+GET /dock-additions for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /dock-capacities for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /docks for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /equipment for the `query` request parameter `perPage`, default value was changed from `50.00` to `48.00`
+GET /fleet-fid-claims for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /imports for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /item-prices for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /locations for the `query` request parameter `perPage`, default value was changed from `60.00` to `48.00`
+GET /missions for the `query` request parameter `perPage`, default value was changed from `60.00` to `48.00`
+GET /model-loaners for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-positions for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /model-snub-crafts for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /models for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /rsi-request-logs for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /unlisted-models for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /users for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /vehicles for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /announcements for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /funding-goals for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /images for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /manufacturers for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-module-packages for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-modules for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-paints for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-upgrades for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /notifications for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /supporter-contributions for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /videos for the `query` request parameter `perPage`, default value was changed from `8.00` to `12.00`

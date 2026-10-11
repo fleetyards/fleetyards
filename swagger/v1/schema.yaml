@@ -22,7 +22,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 60
+          default: 48
         required: false
       - name: q
         in: query
@@ -198,7 +198,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 60
+          default: 48
         required: false
       - name: q
         in: query
@@ -308,7 +308,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -411,7 +411,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -662,7 +662,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -792,7 +792,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -1686,7 +1686,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 60
+          default: 48
         required: false
       - name: q
         in: query
@@ -4793,7 +4793,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -4896,7 +4896,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -5341,7 +5341,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -5905,7 +5905,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       security:
       - SessionCookie: []
@@ -6061,7 +6061,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -6740,7 +6740,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -7963,7 +7963,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -8076,7 +8076,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -9226,7 +9226,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -10266,7 +10266,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -10314,7 +10314,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -10456,7 +10456,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -10574,7 +10574,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -10892,7 +10892,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -10987,7 +10987,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -11401,7 +11401,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -11916,7 +11916,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -12284,7 +12284,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -12320,7 +12320,7 @@ paths:
         schema:
           type: number
           minimum: 1
-          maximum: 30
+          maximum: 100
           default: 14
         required: false
       responses:
@@ -12344,7 +12344,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - name: q
         in: query
@@ -12474,7 +12474,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 60
+          default: 48
         required: false
       - name: q
         in: query
@@ -12675,7 +12675,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -13438,7 +13438,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 60
+          default: 48
         required: false
       - name: q
         in: query
@@ -13495,7 +13495,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -13525,7 +13525,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -13677,7 +13677,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -13834,7 +13834,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -13870,7 +13870,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -13906,7 +13906,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -13942,7 +13942,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -14165,7 +14165,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -14201,7 +14201,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 8
+          default: 12
         required: false
       responses:
         '200':
@@ -14327,7 +14327,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - name: q
         in: query
@@ -15979,7 +15979,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - name: q
         in: query
@@ -16022,7 +16022,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       responses:
         '200':
@@ -16372,7 +16372,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -16545,7 +16545,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -16838,7 +16838,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -17292,7 +17292,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - name: q
         in: query
@@ -18203,7 +18203,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       - name: q
         in: query
@@ -19051,7 +19051,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -19642,7 +19642,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query

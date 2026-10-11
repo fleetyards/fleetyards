@@ -61,9 +61,6 @@ $gutter: $grid-gutter-width;
       @include col-base;
     }
   }
-  .col#{$infix}-2dot4 {
-    @include col-base;
-  }
 
   @if $min-width == 0 {
     @for $i from 1 through $grid-columns {
@@ -71,16 +68,10 @@ $gutter: $grid-gutter-width;
         @include make-col($i);
       }
     }
-    .col#{$infix}-2dot4 {
-      @include make-col(2.4);
-    }
     @for $i from 1 through ($grid-columns - 1) {
       .offset#{$infix}-#{$i} {
         @include make-col-offset($i);
       }
-    }
-    .offset#{$infix}-2dot4 {
-      @include make-col-offset(2.4);
     }
   } @else {
     @media (min-width: $min-width) {
@@ -89,16 +80,10 @@ $gutter: $grid-gutter-width;
           @include make-col($i);
         }
       }
-      .col#{$infix}-2dot4 {
-        @include make-col(2.4);
-      }
       @for $i from 1 through ($grid-columns - 1) {
         .offset#{$infix}-#{$i} {
           @include make-col-offset($i);
         }
-      }
-      .offset#{$infix}-2dot4 {
-        @include make-col-offset(2.4);
       }
     }
   }

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RsiRequestLog < ApplicationRecord
+  paginates_per 24
+
   after_create :notify_admin
   after_save :notify_admin_resolved
 

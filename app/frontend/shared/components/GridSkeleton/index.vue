@@ -35,8 +35,9 @@ const props = withDefaults(defineProps<Props>(), {
 const geometry = useListGeometry();
 
 // `??`, not `||`: a remembered zero means this list has been seen empty, and
-// reserving nothing for it is the right answer rather than a missing one.
-const count = computed(() => props.count ?? geometry?.count.value ?? 10);
+// reserving nothing for it is the right answer rather than a missing one. A
+// list not seen yet gets 12, which fills every row at every column count.
+const count = computed(() => props.count ?? geometry?.count.value ?? 12);
 
 // Nothing until this grid has been seen once, and then exactly what a card of
 // it measured: the image floor below only has to carry the very first load.

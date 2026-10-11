@@ -33,7 +33,7 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
 
       parameter name: "slug", in: :path, schema: {type: :string}, required: true
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: Shop.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ::Shops::Items.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::ShopItemQuery,
         style: :deepObject,
@@ -140,7 +140,7 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug, perPage: 1} do
       assert_equal 1, parsed_body["items"].count
       assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
-      assert_equal Shop.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+      assert_equal ::Shops::Items.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
     end
   end
 end

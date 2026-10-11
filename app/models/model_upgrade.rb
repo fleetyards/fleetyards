@@ -3,7 +3,7 @@
 class ModelUpgrade < ApplicationRecord
   include ActiveStorageVariants
 
-  paginates_per 30
+  paginates_per 24
 
   has_many :upgrade_kits,
     dependent: :destroy

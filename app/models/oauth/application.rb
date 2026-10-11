@@ -3,6 +3,8 @@ module Oauth
     include ::Doorkeeper::Orm::ActiveRecord::Mixins::Application
     include AASM
 
+    paginates_per 24
+
     belongs_to :owner, polymorphic: true, optional: true
     belongs_to :reviewed_by, class_name: "AdminUser", optional: true
 

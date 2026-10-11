@@ -156,7 +156,7 @@ class AdminNotification < ApplicationRecord
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
 
-  paginates_per 25
+  paginates_per 24
 
   ransack_alias :search, :title_or_body
 

@@ -4,8 +4,6 @@
 # as long as UEX names it on a price: "Casaba Outlet - Everus Harbor" is the
 # Casaba Outlet at Everus Harbor, made by Uex::ShopLocationMatcher.
 class Shop < ApplicationRecord
-  per_page_steps [25, 50, 100]
-
   belongs_to :location
   has_many :item_prices, dependent: :nullify
 

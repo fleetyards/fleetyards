@@ -9,7 +9,7 @@
 class InventoryTransferReport < ApplicationRecord
   include AASM
 
-  paginates_per 30
+  paginates_per 24
 
   REASONS = {spam: 0, harassment: 1, scam: 2, other: 3}.freeze
 

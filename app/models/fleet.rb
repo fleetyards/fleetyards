@@ -8,7 +8,8 @@ class Fleet < ApplicationRecord
   include LinkedLocations
   include FeatureFlagActor
 
-  per_page_steps [25, 50, 100]
+  paginates_per 24
+  per_page_steps PageSizes.up_to(max_per_page)
 
   # Where the fleet is based: free text, linked to one of our places where it
   # is one.

@@ -3,9 +3,9 @@
 # A pledge the user melted on RSI and could buy back, as listed on the RSI
 # buy-back page. Kept apart from vehicles: none of these are ships the user owns.
 class BuybackPledge < ApplicationRecord
-  paginates_per 50
-  max_paginates_per 200
-  per_page_steps [25, 50, 100, 200]
+  paginates_per 48
+  max_paginates_per 240
+  per_page_steps PageSizes.up_to(max_per_page)
 
   KINDS = %w[package ship upgrade paint addon other].freeze
 
