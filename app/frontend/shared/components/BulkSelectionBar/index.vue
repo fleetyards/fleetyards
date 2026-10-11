@@ -21,10 +21,13 @@ type Props = {
   canSelectAllMatching: boolean;
   allMatchingSelected: boolean;
   disabled?: boolean;
+  // The count as a bare number, for a bar squeezed into a phone's header.
+  compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  compact: false,
 });
 
 const emit = defineEmits<{
@@ -36,6 +39,14 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const hasSelection = computed(() => props.selectedCount > 0);
+
+const countLabel = computed(() =>
+  props.allMatchingSelected
+    ? t("bulkSelection.labels.allMatchingSelected", {
+        count: props.selectedCount,
+      })
+    : t("bulkSelection.labels.selected", { count: props.selectedCount }),
+);
 
 // Three states, three things the box does - and the label has to say which,
 // since a minus box that clears is not what a minus box does everywhere. It
@@ -95,16 +106,18 @@ const onTogglePage = (value?: boolean) => {
         class="bulk-selection-bar__count"
         :class="{ 'bulk-selection-bar__count--empty': !hasSelection }"
       >
-        <span data-test="bulk-selection-count">
-          {{
-            props.allMatchingSelected
-              ? t("bulkSelection.labels.allMatchingSelected", {
-                  count: props.selectedCount,
-                })
-              : t("bulkSelection.labels.selected", {
-                  count: props.selectedCount,
-                })
-          }}
+        <span
+          v-if="props.compact"
+          v-tooltip="countLabel"
+          :aria-label="countLabel"
+          role="status"
+          class="bulk-selection-bar__number"
+          data-test="bulk-selection-count"
+        >
+          {{ props.selectedCount }}
+        </span>
+        <span v-else data-test="bulk-selection-count">
+          {{ countLabel }}
         </span>
         <Btn
           v-if="props.canSelectAllMatching"
