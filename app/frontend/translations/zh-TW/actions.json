@@ -240,6 +240,7 @@
         "changeInSettings": "在設定中變更",
         "retry": "重試同步",
         "runInBackground": "在背景繼續",
+        "showResult": "查看結果",
         "close": "關閉",
         "refresh": "重新整理頁面"
       },

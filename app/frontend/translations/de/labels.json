@@ -2597,10 +2597,14 @@
       "syncExtension": {
         "warnings": "Warnungen",
         "backgroundProgress": "Hangar wird synchronisiert",
+        "backgroundFinished": "Hangar-Synchronisierung abgeschlossen",
+        "backgroundFailed": "Hangar-Synchronisierung fehlgeschlagen",
+        "backgroundCancelled": "Hangar-Synchronisierung abgebrochen",
         "status": {
           "started": "Import gestartet...",
           "finished": "Import abgeschlossen",
-          "failed": "Import fehlgeschlagen!"
+          "failed": "Import fehlgeschlagen!",
+          "cancelled": "Import abgebrochen"
         },
         "processSteps": {
           "fetchHangar": "Daten aus dem RSI-Hangar abrufen",

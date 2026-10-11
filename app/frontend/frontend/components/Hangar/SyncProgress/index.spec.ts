@@ -6,10 +6,15 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import Component from "./index.vue";
 
 const run = vi.hoisted(() => ({
+  started: undefined as unknown as Ref<boolean>,
   running: undefined as unknown as Ref<boolean>,
+  finishedWithErrors: undefined as unknown as Ref<boolean>,
+  retryable: undefined as unknown as Ref<boolean>,
+  cancelled: undefined as unknown as Ref<boolean>,
   fetching: undefined as unknown as Ref<boolean>,
   currentPage: undefined as unknown as Ref<number>,
   cancel: vi.fn(),
+  reset: vi.fn(),
 }));
 
 vi.mock("@/frontend/composables/useHangarSync", () => ({
@@ -33,10 +38,15 @@ const mountProgress = () =>
 
 describe("HangarSyncProgress", () => {
   beforeEach(() => {
+    run.started = ref(false);
     run.running = ref(false);
+    run.finishedWithErrors = ref(false);
+    run.retryable = ref(false);
+    run.cancelled = ref(false);
     run.fetching = ref(false);
     run.currentPage = ref(1);
     run.cancel.mockClear();
+    run.reset.mockClear();
     emit.mockClear();
   });
 
@@ -100,6 +110,65 @@ describe("HangarSyncProgress", () => {
     expect(emit).toHaveBeenCalledWith(
       "open-modal",
       expect.objectContaining({ component: expect.any(Function) }),
+    );
+  });
+
+  it("stays up once the run has finished, and opens its result", async () => {
+    run.started.value = true;
+
+    const wrapper = mountProgress();
+
+    expect(wrapper.find("[data-test='hangar-sync-ended']").text()).toBe(
+      "labels.syncExtension.backgroundFinished",
+    );
+
+    await wrapper.find("[data-test='open-hangar-sync']").trigger("click");
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({ component: expect.any(Function) }),
+    );
+  });
+
+  it("says when the run failed", () => {
+    run.started.value = true;
+    run.retryable.value = true;
+
+    const wrapper = mountProgress();
+
+    expect(wrapper.find("[data-test='hangar-sync-ended']").text()).toBe(
+      "labels.syncExtension.backgroundFailed",
+    );
+  });
+
+  it("tells a cancelled run apart from a failed one", () => {
+    run.started.value = true;
+    run.finishedWithErrors.value = true;
+    run.cancelled.value = true;
+
+    const wrapper = mountProgress();
+
+    const ended = wrapper.find("[data-test='hangar-sync-ended']");
+    expect(ended.text()).toBe("labels.syncExtension.backgroundCancelled");
+    expect(ended.classes()).not.toContain("text-danger");
+  });
+
+  it("can dismiss a finished run without opening it", async () => {
+    run.started.value = true;
+
+    const wrapper = mountProgress();
+
+    await wrapper.find("[data-test='dismiss-hangar-sync']").trigger("click");
+    expect(run.reset).toHaveBeenCalled();
+  });
+
+  it("offers no dismiss while the run is going", () => {
+    run.started.value = true;
+    run.running.value = true;
+
+    const wrapper = mountProgress();
+
+    expect(wrapper.find("[data-test='dismiss-hangar-sync']").exists()).toBe(
+      false,
     );
   });
 });

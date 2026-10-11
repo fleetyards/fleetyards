@@ -18,7 +18,39 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 
 const { t } = useI18n();
 
-const { running, fetching, currentPage, cancel } = useHangarSync();
+const {
+  started,
+  running,
+  fetching,
+  finishedWithErrors,
+  retryable,
+  cancelled,
+  currentPage,
+  cancel,
+  reset,
+} = useHangarSync();
+
+// A run that ended in the background stays up until its result is opened or
+// dismissed, so the outcome is not only a toast that was easy to miss.
+const ended = computed(() => started.value && !running.value);
+
+const failed = computed(
+  () => !cancelled.value && (finishedWithErrors.value || retryable.value),
+);
+
+const endedLabel = computed(() => {
+  if (cancelled.value) return t("labels.syncExtension.backgroundCancelled");
+
+  return failed.value
+    ? t("labels.syncExtension.backgroundFailed")
+    : t("labels.syncExtension.backgroundFinished");
+});
+
+const endedClass = computed(() => {
+  if (cancelled.value) return undefined;
+
+  return failed.value ? "text-danger" : "text-success";
+});
 
 const hangarStore = useHangarStore();
 
@@ -35,10 +67,16 @@ const open = () => {
 <template>
   <transition name="fade">
     <SyncProgressCard
-      v-if="running && !hangarStore.syncModalOpen"
+      v-if="(running || ended) && !hangarStore.syncModalOpen"
+      :loading="running"
       data-test="hangar-sync-progress"
     >
-      <span>{{ t("labels.syncExtension.backgroundProgress") }}</span>
+      <span v-if="running">{{
+        t("labels.syncExtension.backgroundProgress")
+      }}</span>
+      <span v-else :class="endedClass" data-test="hangar-sync-ended">
+        {{ endedLabel }}
+      </span>
       <span
         v-if="fetching"
         class="hangar-sync-progress__count"
@@ -53,7 +91,11 @@ const open = () => {
         data-test="open-hangar-sync"
         @click="open"
       >
-        {{ t("actions.showDetails") }}
+        {{
+          ended
+            ? t("actions.syncExtension.showResult")
+            : t("actions.showDetails")
+        }}
       </Btn>
       <Btn
         v-if="fetching"
@@ -63,6 +105,15 @@ const open = () => {
         @click="cancel"
       >
         {{ t("actions.syncExtension.cancel") }}
+      </Btn>
+      <Btn
+        v-if="ended"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        data-test="dismiss-hangar-sync"
+        @click="reset()"
+      >
+        {{ t("actions.syncExtension.close") }}
       </Btn>
     </SyncProgressCard>
   </transition>

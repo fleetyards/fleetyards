@@ -2597,10 +2597,14 @@
       "syncExtension": {
         "warnings": "警告",
         "backgroundProgress": "正在同步機庫",
+        "backgroundFinished": "機庫同步已完成",
+        "backgroundFailed": "機庫同步失敗",
+        "backgroundCancelled": "機庫同步已取消",
         "status": {
           "started": "匯入已開始...",
           "finished": "匯入完成",
-          "failed": "匯入失敗!"
+          "failed": "匯入失敗!",
+          "cancelled": "匯入已取消"
         },
         "processSteps": {
           "fetchHangar": "正在從 RSI 機庫取得資料",

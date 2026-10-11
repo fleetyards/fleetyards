@@ -240,6 +240,7 @@
         "changeInSettings": "Cambiar en los ajustes",
         "retry": "Reintentar sincronización",
         "runInBackground": "Continuar en segundo plano",
+        "showResult": "Mostrar resultado",
         "close": "Cerrar",
         "refresh": "Actualizar página"
       },

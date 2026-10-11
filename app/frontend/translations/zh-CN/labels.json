@@ -2597,10 +2597,14 @@
       "syncExtension": {
         "warnings": "警告",
         "backgroundProgress": "正在同步机库",
+        "backgroundFinished": "机库同步已完成",
+        "backgroundFailed": "机库同步失败",
+        "backgroundCancelled": "机库同步已取消",
         "status": {
           "started": "导入已开始...",
           "finished": "导入完成",
-          "failed": "导入失败!"
+          "failed": "导入失败!",
+          "cancelled": "导入已取消"
         },
         "processSteps": {
           "fetchHangar": "正在从 RSI 机库获取数据",

@@ -240,6 +240,7 @@
         "changeInSettings": "In den Einstellungen ändern",
         "retry": "Synchronisierung wiederholen",
         "runInBackground": "Im Hintergrund fortsetzen",
+        "showResult": "Ergebnis anzeigen",
         "close": "Schließen",
         "refresh": "Seite aktualisieren"
       },

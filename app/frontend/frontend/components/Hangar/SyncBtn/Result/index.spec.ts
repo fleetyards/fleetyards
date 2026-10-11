@@ -166,4 +166,24 @@ describe("HangarSyncResult", () => {
     );
     expect(complete.find("[data-test='sync-incomplete']").exists()).toBe(false);
   });
+
+  it("tells a cancelled run apart from a failed one", async () => {
+    const wrapper = await mountWithDefaults(HangarSyncResult, {
+      props: {
+        processSteps: [
+          { name: "fetchHangar", status: "success" },
+          { name: "submitData", status: "failure" },
+        ],
+        currentPage: 1,
+        pledges: [],
+        finished: false,
+        finishedWithErrors: true,
+        cancelled: true,
+      },
+    });
+
+    const status = wrapper.find("[data-test='sync-result-status']");
+    expect(status.text()).toBe("Import Cancelled");
+    expect(status.classes()).not.toContain("text-danger");
+  });
 });
