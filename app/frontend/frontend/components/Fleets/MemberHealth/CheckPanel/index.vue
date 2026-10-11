@@ -71,6 +71,11 @@ const panelTone = computed(() =>
         />
         <span class="health-check__clear-title">{{ title }}</span>
         <span class="health-check__clear-line">{{ clearLine }}</span>
+        <!-- Kept on a clear check: the inactive check's threshold is how a
+             reader asks whether a shorter window would find anyone. -->
+        <span v-if="$slots.actions" class="health-check__clear-actions">
+          <slot name="actions" />
+        </span>
       </p>
     </Panel>
     <Panel
@@ -136,6 +141,10 @@ const panelTone = computed(() =>
 
 .health-check__clear-line {
   color: var(--color-text-dim, #959595);
+}
+
+.health-check__clear-actions {
+  margin-left: auto;
 }
 
 .health-check__footer {

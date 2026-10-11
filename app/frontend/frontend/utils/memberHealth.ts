@@ -53,7 +53,8 @@ const DEFINITIONS: Definition[] = [
     key: "admins",
     group: "leadership",
     tone: "critical",
-    count: (health) => (health.admins.totalCount === 1 ? 1 : 0),
+    // None at all is worse than one, not fine.
+    count: (health) => (health.admins.totalCount <= 1 ? 1 : 0),
     // The check is about having one; the number shown is how many there are.
     display: (health) => health.admins.totalCount,
   },

@@ -12,7 +12,7 @@ const healthWith = (
   rsiMemberCount: null,
   memberCount: 10,
   hiddenShipsCount: 0,
-  admins: { totalCount: 2, items: [] },
+  admins: { totalCount: 2, items: [], candidates: [] },
   emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: none,
@@ -43,9 +43,19 @@ describe("memberHealthChecks", () => {
     ]);
   });
 
+  it("flags no admin at all as critical too", () => {
+    expect(
+      byKey(
+        healthWith({ admins: { totalCount: 0, items: [], candidates: [] } }),
+      ).admins.tone,
+    ).toBe("critical");
+  });
+
   it("flags a single admin as critical and shows how many there are", () => {
     expect(
-      byKey(healthWith({ admins: { totalCount: 1, items: [] } })).admins,
+      byKey(
+        healthWith({ admins: { totalCount: 1, items: [], candidates: [] } }),
+      ).admins,
     ).toMatchObject({ tone: "critical", count: 1, display: 1 });
     expect(byKey(healthWith()).admins).toMatchObject({
       tone: "ok",
@@ -73,7 +83,7 @@ describe("memberHealthChecks", () => {
     const sorted = byUrgency(
       memberHealthChecks(
         healthWith({
-          admins: { totalCount: 1, items: [] },
+          admins: { totalCount: 1, items: [], candidates: [] },
           inactiveMembers: { totalCount: 2, items: [] },
           waitingJoinRequests: { totalCount: 1, items: [] },
           hiddenShipsCount: 1,
