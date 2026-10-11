@@ -105,12 +105,6 @@
       flex: 1 1 auto;
       min-width: 0;
       justify-content: flex-end;
-
-      // The page size stays with the paginator under the list, so the one
-      // up here fits beside the filter and the list's own controls.
-      :deep(.pagination__per-page) {
-        display: none;
-      }
     }
   }
 
@@ -123,4 +117,10 @@
       justify-content: center;
     }
   }
+}
+
+// The page size is set once, on the paginator under the list. The one above
+// it only turns pages, which keeps the toolbar it shares a row with short.
+.filtered-list__pagination-top :deep(.pagination__per-page) {
+  display: none;
 }
