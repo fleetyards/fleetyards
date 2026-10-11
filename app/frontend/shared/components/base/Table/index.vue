@@ -265,11 +265,6 @@ const toggleRecord = (record: T) => {
     : [...internalSelected.value, key];
 };
 
-// The click a lifted finger sends after a hold arrives shortly after it.
-const HOLD_CLICK_MS = 400;
-
-let heldAt = 0;
-
 // Holding a row picks it, which is what turns the table into a selection; a
 // hold on a row already picked keeps it.
 const holdRecord = (record: T) => {
@@ -277,30 +272,9 @@ const holdRecord = (record: T) => {
     return;
   }
 
-  heldAt = Date.now();
-
   if (!internalSelected.value.includes(primaryValue(record) as string)) {
     toggleRecord(record);
   }
-};
-
-// While picking, a tap picks too - following a row in the middle of a
-// selection would throw the reader out of it. Taken before it reaches
-// anything inside the row, so a linked name or an action button does not
-// navigate away either; the click that ends the hold only gets swallowed.
-const onRowClickCapture = (record: T, event: MouseEvent) => {
-  if (!selecting.value || props.rowDisabled?.(record)) {
-    return;
-  }
-
-  event.preventDefault();
-  event.stopPropagation();
-
-  if (Date.now() - heldAt < HOLD_CLICK_MS) {
-    return;
-  }
-
-  toggleRecord(record);
 };
 
 const onRowClick = (record: T) => {
@@ -472,7 +446,8 @@ onUnmounted(() => {
               :holdable="
                 props.selectable && mobile && !props.rowDisabled?.(record)
               "
-              @click.capture="onRowClickCapture(record, $event)"
+              :intercept="selecting && !props.rowDisabled?.(record)"
+              @intercepted="toggleRecord(record)"
               @click="onRowClick(record)"
               @hold="holdRecord(record)"
             >

@@ -86,11 +86,12 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
     }
   };
 
-  // The finger lifting off a row it has held must not also open it.
+  // The finger lifting off a row it has held must not also open it - nor
+  // reach a click listener registered on the row after this one.
   const onClick = (event: MouseEvent) => {
     if (Date.now() - pressedAt < CLICK_GUARD_MS) {
       event.preventDefault();
-      event.stopPropagation();
+      event.stopImmediatePropagation();
     }
   };
 
