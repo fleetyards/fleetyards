@@ -27530,6 +27530,10 @@ components:
           type:
           - string
           - 'null'
+        discordProfileUrl:
+          type:
+          - string
+          - 'null'
         verificationGap:
           anyOf:
           - "$ref": "#/components/schemas/FleetMemberVerificationGapEnum"
@@ -27541,6 +27545,12 @@ components:
           - string
           - 'null'
           format: date-time
+        verificationRemindedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the fleet last reminded the member to verify
       required:
       - id
       - username

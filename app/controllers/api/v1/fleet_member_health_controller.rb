@@ -36,6 +36,10 @@ module Api
 
         if @fleet.rsi_sid.present?
           @unverified = check(@members.where(verified: false), order: :accepted_at)
+          @unverified[:reminders] = Notification
+            .where(record_type: "FleetMembership", record_id: @unverified[:items].map(&:id), notification_type: "fleet_verification_requested")
+            .group(:record_id)
+            .maximum(:created_at)
         else
           @without_rsi_handle = check(@members.without_rsi_handle, order: :accepted_at)
         end

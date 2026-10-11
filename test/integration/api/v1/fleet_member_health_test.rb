@@ -131,12 +131,17 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     @gone.update_columns(rsi_handle: nil)
     @away.update_columns(rsi_handle: "AwayHandle", rsi_handle_verified: true, rsi_organizations_checked_at: 3.days.ago)
     @recent.update_columns(rsi_handle: "RecentHandle", rsi_handle_verified: false)
+    reminded_at = 2.days.ago.change(usec: 0)
+    create(:notification, user: @gone, notification_type: "fleet_verification_requested",
+      record: @fleet.fleet_memberships.find_by(user: @gone), created_at: reminded_at)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       gaps = health["unverifiedMembers"]["items"].to_h { |item| [item["username"], item["verificationGap"]] }
 
       assert_equal({@gone.username => "no_handle", @away.username => "org_not_listed", @recent.username => "handle_unverified"}, gaps)
+      reminded = health["unverifiedMembers"]["items"].find { |item| item["username"] == @gone.username }
+      assert_equal reminded_at.utc.iso8601, reminded["verificationRemindedAt"]
       assert_equal 40, health["rsiMemberCount"]
       assert_equal 6, health["memberCount"]
       assert_nil health["membersWithoutRsiHandle"]
