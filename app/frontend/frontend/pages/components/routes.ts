@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
     name: "components",
     component: () => import("@/frontend/pages/components/index.vue"),
     meta: {
+      mobileBack: true,
       title: "components.index",
       nav: "main",
     },

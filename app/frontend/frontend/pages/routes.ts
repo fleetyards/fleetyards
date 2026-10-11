@@ -115,6 +115,7 @@ export const routes: RouteRecordRaw[] = [
     name: "shop",
     component: () => import("@/frontend/pages/shops/[slug].vue"),
     meta: {
+      mobileBack: true,
       customTitle: true,
     },
   },

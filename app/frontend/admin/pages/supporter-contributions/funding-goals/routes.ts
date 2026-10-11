@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
       import("@/admin/pages/supporter-contributions/funding-goals/index.vue"),
     strict: true,
     meta: {
+      mobileBack: true,
       title: "admin.fundingGoals.index",
       needsAuthentication: true,
       access: ["supporters"],

@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     name: "locations-places",
     component: () => import("@/frontend/pages/locations/places.vue"),
     meta: {
+      mobileBack: true,
       title: "locations.places",
     },
   },

@@ -137,6 +137,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-buybacks",
     component: () => import("@/frontend/pages/hangar/buybacks.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.buybacks",
       backgroundImage: "bg-5",

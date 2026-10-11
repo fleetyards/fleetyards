@@ -20,6 +20,7 @@ export const routes: RouteRecordRaw[] = [
     name: "admin-model-modules-packages",
     component: () => import("@/admin/pages/models/modules/packages.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "admin.modelModulePackages.index",
       nav: "hidden",

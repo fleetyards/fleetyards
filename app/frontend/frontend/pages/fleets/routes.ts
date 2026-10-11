@@ -26,6 +26,7 @@ export const routes: RouteRecordRaw[] = [
     path: "",
     name: "fleets",
     component: () => import("@/frontend/pages/fleets/directory.vue"),
+    meta: { mobileBack: true },
     beforeEnter: fleetsIndexGuard,
   },
   {
