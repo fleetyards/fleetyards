@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.1](https://github.com/fleetyards/fleetyards/compare/v9.1.0...v9.1.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* **loaners:** map Constellations to their Mk IV names ([b0e0a66](https://github.com/fleetyards/fleetyards/commit/b0e0a66773534e531696838c5c5d5f07872ea783))
+* **paints:** map Constellation Mk IV and Mk V paint prefixes ([5912fda](https://github.com/fleetyards/fleetyards/commit/5912fda07e74b7a649f6a4547bde99ad93660ae7)), closes [#5596](https://github.com/fleetyards/fleetyards/issues/5596)
+* **paints:** map Constellation paints to the Mk IV names ([58fc439](https://github.com/fleetyards/fleetyards/commit/58fc439937e287e40081d5986945903a131d9da1))
+
 ## [9.1.0](https://github.com/fleetyards/fleetyards/compare/v9.0.0...v9.1.0) (2026-10-11)
 
 
