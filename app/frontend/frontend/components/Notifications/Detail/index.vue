@@ -26,12 +26,9 @@ const props = withDefaults(defineProps<Props>(), {
   notification: undefined,
 });
 
+// Only its own event is declared, so the page's other listeners fall through
+// to the shared pane.
 const emit = defineEmits<{
-  close: [];
-  unread: [];
-  archive: [];
-  unarchive: [];
-  destroy: [];
   refresh: [];
 }>();
 
@@ -53,11 +50,6 @@ const links = computed(() =>
         : undefined
     "
     :labels="NOTIFICATION_LABELS"
-    @close="emit('close')"
-    @unread="emit('unread')"
-    @archive="emit('archive')"
-    @unarchive="emit('unarchive')"
-    @destroy="emit('destroy')"
   >
     <template #footer="{ notification: open }">
       <!-- The way on. A row of its own rather than another icon beside archive

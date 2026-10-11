@@ -33,6 +33,11 @@ export const mountWithDefaults = async <C extends new (...args: any) => any>(
   component: C,
   params?: {
     props?: InstanceType<C>["$props"];
+    /**
+     * Listeners and attributes the component does not declare, such as events
+     * that fall through to its root.
+     */
+    attrs?: Record<string, unknown>;
     slots?: InstanceType<C>["$slots"];
     initialState?: TestingOptions["initialState"];
     plugins?: Plugin[];
@@ -51,6 +56,7 @@ export const mountWithDefaults = async <C extends new (...args: any) => any>(
 
   const wrapper = mount(component, {
     props: params?.props,
+    attrs: params?.attrs,
     slots: params?.slots,
     attachTo: params?.attachTo,
     global: {

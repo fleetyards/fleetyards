@@ -24,13 +24,7 @@ withDefaults(defineProps<Props>(), {
   notification: undefined,
 });
 
-const emit = defineEmits<{
-  close: [];
-  unread: [];
-  archive: [];
-  unarchive: [];
-  destroy: [];
-}>();
+// No emits declared, so the page's listeners fall through to the shared pane.
 
 const { t, l } = useI18n();
 </script>
@@ -46,11 +40,6 @@ const { t, l } = useI18n();
         : undefined
     "
     :labels="NOTIFICATION_LABELS"
-    @close="emit('close')"
-    @unread="emit('unread')"
-    @archive="emit('archive')"
-    @unarchive="emit('unarchive')"
-    @destroy="emit('destroy')"
   >
     <template #title="{ notification: open }">
       <span v-if="open.occurrences > 1" class="notification-detail__count">

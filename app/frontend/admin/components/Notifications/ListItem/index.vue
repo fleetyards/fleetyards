@@ -29,15 +29,7 @@ withDefaults(defineProps<Props>(), {
   checked: false,
 });
 
-const emit = defineEmits<{
-  select: [];
-  toggle: [checked: boolean];
-  archive: [];
-  unarchive: [];
-  destroy: [];
-  previous: [];
-  next: [];
-}>();
+// No emits declared, so the page's listeners fall through to the shared row.
 
 const { t } = useI18n();
 
@@ -59,13 +51,6 @@ defineExpose({ focus: () => row.value?.focus() });
     :selected="selected"
     :selectable="selectable"
     :checked="checked"
-    @select="emit('select')"
-    @toggle="emit('toggle', $event)"
-    @archive="emit('archive')"
-    @unarchive="emit('unarchive')"
-    @destroy="emit('destroy')"
-    @previous="emit('previous')"
-    @next="emit('next')"
   >
     <template #title="{ notification: entry }">
       <span v-if="entry.occurrences > 1" class="notification-item__count">
