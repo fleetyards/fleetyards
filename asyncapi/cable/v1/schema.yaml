@@ -341,17 +341,6 @@ operations:
       are held back on all of their devices
 components:
   schemas:
-    AdminNotificationsSettledMessage:
-      type: object
-      properties:
-        settledIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-      additionalProperties: false
-      required:
-      - settledIds
     AnnouncementMessage:
       type: object
       properties:

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Cable
+module Admin
   module V1
     module Schemas
       # Notifications that were read, archived or deleted, so every open admin

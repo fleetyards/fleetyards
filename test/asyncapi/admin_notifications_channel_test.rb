@@ -13,7 +13,7 @@ class AdminNotificationsChannelTest < AsyncapiTestCase
     broadcast "A notification addressed to one admin user, or notifications of theirs that were read, archived or deleted" do
       operationId "receiveAdminNotification"
       message ::Admin::V1::Schemas::AdminNotification
-      message ::Cable::V1::Schemas::AdminNotificationsSettledMessage
+      message ::Admin::V1::Schemas::AdminNotificationsSettledMessage
     end
   end
 
