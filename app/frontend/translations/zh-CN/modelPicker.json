@@ -15,6 +15,7 @@
       },
       "actions": {
         "resetFilters": "重置筛选",
+        "moreFilters": "更多筛选",
         "clearSelection": "清除选择",
         "increase": "再添加一艘 %{name}",
         "decrease": "移除一艘 %{name}"

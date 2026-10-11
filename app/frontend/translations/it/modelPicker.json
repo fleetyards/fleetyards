@@ -15,6 +15,7 @@
       },
       "actions": {
         "resetFilters": "Reimposta i filtri",
+        "moreFilters": "Altri filtri",
         "clearSelection": "Cancella la selezione",
         "increase": "Aggiungi un'altra %{name}",
         "decrease": "Rimuovi una %{name}"
