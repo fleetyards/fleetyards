@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+import { useMobile } from "@/shared/composables/useMobile";
 import { type ListMeta, type Crumb } from "./types";
 
 type Props = {
@@ -35,6 +36,20 @@ const { t } = useI18n();
 
 const { extend } = useBreadCrumbs();
 
+const mobile = useMobile();
+
+// A test, an embed or any page rendered without the app's navigation has no
+// header to hand the trail to.
+const headerAvailable = ref(false);
+
+onMounted(() => {
+  headerAvailable.value = !!document.getElementById("header-left");
+});
+
+const inHeader = computed(
+  () => mobile.value && headerAvailable.value && !!props.crumbs?.length,
+);
+
 const hasStepperList = computed(
   () => !!props.stepperList && props.stepperList.length > 0,
 );
@@ -57,8 +72,25 @@ const nextItem = computed(() => {
 </script>
 
 <template>
+  <!-- On a phone the trail also goes up into the header, beside the back
+       button, where a page without a search leaves the row empty; whichever
+       copy has room is the one shown (see the stylesheet). -->
+  <Teleport v-if="inHeader" to="#header-left">
+    <ol aria-label="breadcrumb" class="breadcrumb breadcrumb--header">
+      <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
+        <router-link v-if="crumb.to" :to="extend(crumb.to)">
+          {{ crumb.label }}
+        </router-link>
+        <span v-else>{{ crumb.label }}</span>
+      </li>
+    </ol>
+  </Teleport>
   <div
     class="breadcrumbs"
+    :class="{
+      'breadcrumbs--movable': inHeader && !hasStepperList && !$slots.actions,
+      'breadcrumbs--trail-movable': inHeader,
+    }"
     v-if="crumbs?.length || hasStepperList || $slots.actions"
   >
     <!-- No home crumb: the navigation's home link sits right beside the

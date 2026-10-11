@@ -85,3 +85,27 @@
     }
   }
 }
+
+// The header's copy of the trail, on a phone. It sits in the search's slot, so
+// it only shows where there is no search there; the copy above the title
+// stands down when the header's is the one showing.
+.breadcrumb--header {
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.navigation-header__left:has(.base-input) .breadcrumb--header {
+  display: none;
+}
+
+body:has(.navigation-header__left > .breadcrumb--header:only-child) {
+  .breadcrumbs--movable {
+    display: none;
+  }
+
+  .breadcrumbs--trail-movable > .breadcrumb {
+    display: none;
+  }
+}
