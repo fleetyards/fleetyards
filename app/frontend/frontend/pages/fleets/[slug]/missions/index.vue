@@ -24,7 +24,7 @@ import {
   type Fleet,
   type FleetMember,
   type Mission,
-  type MissionSortEnum,
+  MissionSortEnum,
   getFleetMissionsQueryKey,
   useFleetMissions,
 } from "@/services/fyApi";
@@ -54,9 +54,13 @@ const showArchived = ref(false);
 
 // The table's sortable headers write `s` into the route; the order has to come
 // from the server once the list is paged, or each page is sorted on its own.
-const sort = computed(
-  () => (route.query.s as MissionSortEnum | undefined) || undefined,
-);
+// Anything else in `s` -- an old bookmark -- is left out rather than sent, as
+// the endpoint answers an unknown sort with a 400.
+const sort = computed(() => {
+  const value = route.query.s;
+
+  return Object.values(MissionSortEnum).find((known) => known === value);
+});
 
 const queryParams = computed(() => ({
   archived: showArchived.value || undefined,
@@ -232,7 +236,7 @@ const crumbs = computed<Crumb[]>(() => [
       <Paginator
         :query-result-ref="missions"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
 
@@ -296,7 +300,7 @@ const crumbs = computed<Crumb[]>(() => [
       <Paginator
         :query-result-ref="missions"
         :per-page="perPage"
-        @update-per-page="updatePerPage"
+        :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>
