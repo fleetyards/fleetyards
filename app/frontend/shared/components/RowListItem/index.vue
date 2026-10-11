@@ -72,6 +72,8 @@ useMutationObserver(nameElement, measureName, {
   characterData: true,
   childList: true,
   subtree: true,
+  attributes: true,
+  attributeFilter: ["class"],
 });
 
 onMounted(measureName);
