@@ -284,7 +284,6 @@
           "failed": "失敗",
           "cancelled": "已取消"
         },
-        "intro": "你執行過的所有機庫匯入與 RSI 同步，最新的在前。",
         "targetGroupHint": "選擇一個機庫分組，所有匯入的艦船都會歸入其中。留空則使用檔案中指定的分組。",
         "types": {
           "Imports::HangarImport": "機庫匯入",

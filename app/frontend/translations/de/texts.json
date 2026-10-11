@@ -291,18 +291,6 @@
         "requestingAccess": "%{clientName} fordert Zugriff auf Ihr Konto an.",
         "scopesIntro": "Diese Anwendung wird in der Lage sein:"
       },
-      "hangarFlair": {
-        "intro": "Das Hangar-Flair in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
-      },
-      "hangarEquipment": {
-        "intro": "Die FPS-Ausrüstung in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
-      },
-      "hangarPaints": {
-        "intro": "Die Lackierungen in deinem RSI-Hangar, Stand deiner letzten Hangar-Synchronisierung. Die Synchronisierung liest deinen RSI-Hangar über die Fleetyards-Sync-Erweiterung."
-      },
-      "buybacks": {
-        "intro": "Die Pledges, die du bei RSI eingeschmolzen hast und zurückkaufen könntest, Stand deiner letzten Synchronisierung. Die Synchronisierung liest deine RSI-Rückkaufliste über die Fleetyards-Sync-Erweiterung."
-      },
       "buybackSync": {
         "info": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die auf Fleetyards gespeicherten Rückkauf-Pledges. Dein Hangar bleibt unverändert. Lange Listen dauern einige Minuten. Die Synchronisierung läuft im Hintergrund: Du kannst dieses Fenster schließen und Fleetyards weiter nutzen, solange der Tab offen bleibt.",
         "unsupported": "Deine Fleetyards-Sync-Erweiterung kann Rückkauf-Pledges noch nicht lesen. Aktualisiere sie, um sie zu synchronisieren.",
