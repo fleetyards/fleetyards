@@ -52,6 +52,20 @@ describe("NotificationsListItem", () => {
     expect(onNext).toHaveBeenCalledOnce();
   });
 
+  it("moves focus onto the row when the page asks it to", async () => {
+    const wrapper = await mountWithDefaults(ListItem, {
+      props: { notification: notification() },
+      attachTo: document.body,
+    });
+
+    (wrapper.vm as unknown as { focus: () => void }).focus();
+
+    expect(document.activeElement).toBe(
+      wrapper.find('[data-test="notification-select"]').element,
+    );
+    wrapper.unmount();
+  });
+
   it("offers to move an archived notification back", async () => {
     const wrapper = await mountWithDefaults(ListItem, {
       props: { notification: notification({ archived: true }) },
