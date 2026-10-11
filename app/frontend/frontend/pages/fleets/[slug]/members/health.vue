@@ -820,7 +820,9 @@ const crumbs = computed<Crumb[]>(() => [
 // The slim panel's surface, so the overview reads as part of the page rather
 // than as outlined ghost buttons over the background.
 .member-health__overview-item {
-  @apply bg-surface rounded-surface-slim border border-edge;
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-surface-slim, 12px);
+  background-color: var(--color-surface, rgb(39 43 48 / 0.9));
   display: flex;
   align-items: center;
   gap: 10px;
