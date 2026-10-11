@@ -96,6 +96,25 @@ describe("Paginator", () => {
         .findComponent({ name: "PerPageDropdown" })
         .vm.$emit("change", step);
 
+    it("offers the steps to a handler bound as a prop", async () => {
+      const { wrapper } = await mountWithSize();
+
+      expect(wrapper.findComponent({ name: "PerPageDropdown" }).exists()).toBe(
+        true,
+      );
+    });
+
+    it("offers the steps to a handler bound as a listener", async () => {
+      const onUpdatePerPage = vi.fn();
+      const wrapper = await mountWithDefaults(Component, {
+        props: { queryResultRef: withSteps, onUpdatePerPage },
+      });
+
+      await pick(wrapper, 30);
+
+      expect(onUpdatePerPage).toHaveBeenCalledWith(30);
+    });
+
     it("passes on a new size", async () => {
       const { wrapper, updatePerPage } = await mountWithSize();
 
