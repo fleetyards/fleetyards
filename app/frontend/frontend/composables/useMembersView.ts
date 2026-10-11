@@ -18,7 +18,7 @@ export const MEMBERS_VIEW_FILTER_KEYS: Record<
   MembersView,
   (keyof FleetMemberQuery)[]
 > = {
-  members: ["acceptedAtGteq", "acceptedAtLteq"],
+  members: ["acceptedAtGteq", "acceptedAtLteq", "inactiveSince", "verifiedEq"],
   invites: [
     "stateIn",
     "invitedAtGteq",

@@ -2349,7 +2349,11 @@
             "requestedAtGt": "Demandé depuis",
             "requestedAtLt": "Demandé jusqu'à",
             "declinedAtGt": "Refusé depuis",
-            "declinedAtLt": "Refusé jusqu'à"
+            "declinedAtLt": "Refusé jusqu'à",
+            "inactiveSince": "Inactif depuis",
+            "verified": "Organisation RSI",
+            "verifiedYes": "Vérifié",
+            "verifiedNo": "Non vérifié"
           },
           "inviteUrls": {
             "expiresAfter": "Expire après",

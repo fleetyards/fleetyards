@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -96,6 +97,17 @@ const roleOptions = computed<FilterOption[]>(() =>
   })),
 );
 
+const verifiedOptions = [
+  {
+    label: t("labels.filters.fleets.members.verifiedYes"),
+    value: "true",
+  },
+  {
+    label: t("labels.filters.fleets.members.verifiedNo"),
+    value: "false",
+  },
+];
+
 const stateOptions: FilterOption[] = [
   {
     label: t("labels.fleet.members.invited"),
@@ -157,6 +169,21 @@ const stateOptions: FilterOption[] = [
           />
         </div>
       </div>
+
+      <FormDatePicker
+        v-model="form.inactiveSince"
+        name="inactive-since"
+        translation-key="filters.fleets.members.inactiveSince"
+        :no-placeholder="true"
+      />
+
+      <RadioList
+        v-model="form.verifiedEq"
+        :label="t('labels.filters.fleets.members.verified')"
+        :reset-label="t('labels.all')"
+        :options="verifiedOptions"
+        name="verifiedEq"
+      />
     </template>
 
     <template v-if="variant === 'invites'">

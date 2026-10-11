@@ -2349,7 +2349,11 @@
             "requestedAtGt": "Requested from",
             "requestedAtLt": "Requested until",
             "declinedAtGt": "Declined from",
-            "declinedAtLt": "Declined until"
+            "declinedAtLt": "Declined until",
+            "inactiveSince": "不活躍起始日期",
+            "verified": "RSI 組織",
+            "verifiedYes": "已驗證",
+            "verifiedNo": "未驗證"
           },
           "inviteUrls": {
             "expiresAfter": "Expire after",
