@@ -6110,6 +6110,56 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/members/health":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Member Health
+      tags:
+      - FleetMembers
+      operationId: fleetMemberHealth
+      parameters:
+      - name: inactiveDays
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 30
+        required: false
+        description: Days without activity after which a member counts as inactive
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMemberHealth"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members/{username}":
     parameters:
     - name: fleetSlug
@@ -27224,6 +27274,49 @@ components:
           type: string
       additionalProperties: false
       title: FleetMemberCreateInput
+    FleetMemberHealth:
+      type: object
+      properties:
+        inactiveDays:
+          type: integer
+        inactiveMembers:
+          "$ref": "#/components/schemas/FleetMemberHealthSection"
+        fleetRsiVerified:
+          type: boolean
+        unverifiedMembers:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSection"
+          - type: 'null'
+          description: Null when the fleet has no RSI SID to verify against
+        emptyRoles:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetRole"
+          - type: 'null'
+          description: Null when the reader cannot read roles
+      required:
+      - inactiveDays
+      - inactiveMembers
+      - fleetRsiVerified
+      - unverifiedMembers
+      - emptyRoles
+      additionalProperties: false
+      title: FleetMemberHealth
+    FleetMemberHealthSection:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMember"
+      required:
+      - totalCount
+      - items
+      additionalProperties: false
+      title: FleetMemberHealthSection
     FleetMemberQuery:
       type: object
       properties:

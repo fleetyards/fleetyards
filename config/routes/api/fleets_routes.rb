@@ -15,6 +15,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  # Before the members resource, which would read "health" as a username.
+  get "members/health", to: "fleet_member_health#show"
+
   resources :fleet_members, path: "members", param: :username, only: %i[index show create update destroy] do
     member do
       put :demote
