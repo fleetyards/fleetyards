@@ -194,6 +194,7 @@ es:
         slots:
           arms: Brazos
           backpack: Mochila
+          eyewear: Gafas
           footwear: Calzado
           gloves: Guantes
           hat: Sombrero

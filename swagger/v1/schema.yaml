@@ -23074,6 +23074,7 @@ components:
       - shirt
       - jacket
       - backpack
+      - eyewear
       x-enumNames:
       - UNDERSUIT
       - ARMS
@@ -23087,6 +23088,7 @@ components:
       - SHIRT
       - JACKET
       - BACKPACK
+      - EYEWEAR
       title: EquipmentSlotEnum
     EquipmentSortingEnum:
       type: string

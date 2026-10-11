@@ -194,6 +194,7 @@ de:
         slots:
           arms: Arme
           backpack: Rucksack
+          eyewear: Brille
           footwear: Schuhwerk
           gloves: Handschuhe
           hat: Hut

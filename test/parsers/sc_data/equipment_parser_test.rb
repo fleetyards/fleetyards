@@ -71,6 +71,33 @@ module ScData
         assert_not parsed.fetch("hdh_boots_01_01_13")["hidden"]
       end
 
+      test "reads glasses as eyewear" do
+        write_equipment("r6p_glasses_01_01_01", name: "@item_Name_r6p_glasses_01_01_01",
+          path: "entities/scitem/characters/human/head/npc/eyes/accessories", type: "Char_Accessory_Eyes")
+        @parser.translations = {"item_Name_r6p_glasses_01_01_01" => "Yaeger Aviator Glasses"}
+
+        assert_equal %w[clothing eyewear], parsed.fetch("r6p_glasses_01_01_01").values_at("equipment_type", "slot")
+      end
+
+      test "reads the flares and tool cases among the props, and nothing else there" do
+        write_equipment("carryable_1h_cu_glowstick_blue", name: "@item_Nameun_portable_light_1_a_cyan",
+          path: "entities/scitem/flair/carryables", type: "WeaponPersonal")
+        write_equipment("carryable_2h_fl_container_anim_medgun_1_a", name: "@item_Name_medic_kit",
+          path: "entities/scitem/carryables/2h", type: "Misc")
+        write_equipment("carryable_2h_fl_container_anim_coin_case_1_a", name: "@item_Name_coin_case",
+          path: "entities/scitem/carryables/2h", type: "Misc")
+        @parser.translations = {
+          "item_Nameun_portable_light_1_a_cyan" => "Cyan QuikFlarePro",
+          "item_Name_medic_kit" => "Field Medic Kit",
+          "item_Name_coin_case" => "Chairman's Club Coin Case"
+        }
+
+        assert_equal %w[tool flare], parsed.fetch("carryable_1h_cu_glowstick_blue").values_at("equipment_type", "item_type")
+        assert_equal %w[tool tool_case],
+          parsed.fetch("carryable_2h_fl_container_anim_medgun_1_a").values_at("equipment_type", "item_type")
+        assert_not parsed.key?("carryable_2h_fl_container_anim_coin_case_1_a")
+      end
+
       # Memoized: a second `all` on the same parser writes over a folder
       # `clear_once` has already swept, which the parser reports as a duplicate.
       private def parsed
@@ -83,8 +110,8 @@ module ScData
         end
       end
 
-      private def write_equipment(key, name:)
-        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{SOURCE_PATH}"
+      private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet")
+        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
 
@@ -92,7 +119,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="Char_Clothing_Feet" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{key}">
+                <AttachDef Type="#{type}" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{key}">
                   <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="@LOC_EMPTY" />
                 </AttachDef>
               </SAttachableComponentParams>
