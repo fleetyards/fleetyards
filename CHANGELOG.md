@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.0](https://github.com/fleetyards/fleetyards/compare/v9.0.0...v9.1.0) (2026-10-11)
+
+
+### Features
+
+* **admin:** open workers, pghero and tasks inside the admin ([#5581](https://github.com/fleetyards/fleetyards/issues/5581)) ([0f74b77](https://github.com/fleetyards/fleetyards/commit/0f74b7752bd0ce4c2eafb7adf568d4191f534dd8))
+* **hangar-sync:** FPS equipment and package extras ([#5580](https://github.com/fleetyards/fleetyards/issues/5580)) ([ffaccda](https://github.com/fleetyards/fleetyards/commit/ffaccda4e8b8adc2d8515a2477842e6d3f05c573))
+* **hangar-sync:** keep the background card up with the result once the sync ends ([#5582](https://github.com/fleetyards/fleetyards/issues/5582)) ([f8b24f3](https://github.com/fleetyards/fleetyards/commit/f8b24f3336cd94f73487b7c7d4a103ecd6c315bc))
+* **maintenance:** rebuild fleet entries of memberships sharing by hangar group ([2241b98](https://github.com/fleetyards/fleetyards/commit/2241b98f62ed30489affa7cf0aa4dee10a0078c0))
+* **notifications:** phone layout for both notification centres ([#5584](https://github.com/fleetyards/fleetyards/issues/5584)) ([8272882](https://github.com/fleetyards/fleetyards/commit/827288220a70ffbf299553d8d0c12f0ad01f8122))
+* **ships:** filter the ship picker by focus, size and production status ([#5579](https://github.com/fleetyards/fleetyards/issues/5579)) ([3755e27](https://github.com/fleetyards/fleetyards/commit/3755e2745dc0ca3270610ea71ce1f0d5227ab4d7))
+
+
+### Bug Fixes
+
+* **fleets:** refresh loaner fleet entries when the parent's groups change ([24733d8](https://github.com/fleetyards/fleetyards/commit/24733d8e14186dd79b65694c07e3d7730f75ccae))
+* **hangar-sync:** no-op runs no longer count as a sync ([#5587](https://github.com/fleetyards/fleetyards/issues/5587)) ([aff6140](https://github.com/fleetyards/fleetyards/commit/aff6140e4336d009f44e4802764e1359cda5bedc))
+* **imports:** call a loaner sync stuck after an hour again ([860b713](https://github.com/fleetyards/fleetyards/commit/860b7130a594ce4eddfde5390cebaebb92d3b2ed))
+* **imports:** collect paints in Postgres instead of loading every hangar sync ([9b3aca2](https://github.com/fleetyards/fleetyards/commit/9b3aca2bee143615947a475d0eba2578c1e4a0ae))
+* **imports:** give the loaner sync six hours before calling it stuck ([5dfabee](https://github.com/fleetyards/fleetyards/commit/5dfabee39d37dd1577b47d11087fc19879ac35fe))
+* **missions:** page the fleet missions list and filter it by status ([#5588](https://github.com/fleetyards/fleetyards/issues/5588)) ([2073a69](https://github.com/fleetyards/fleetyards/commit/2073a695bf188a9f395c7e175a3e2ac6b3c4d77a))
+* **pagination:** drop page sizes no longer offered, once per list ([#5594](https://github.com/fleetyards/fleetyards/issues/5594)) ([9e5f450](https://github.com/fleetyards/fleetyards/commit/9e5f45029371bb5a247b4113c5c00aadc352a12d))
+* **pagination:** full grid rows on every page, one shared set of page sizes ([#5593](https://github.com/fleetyards/fleetyards/issues/5593)) ([5becb45](https://github.com/fleetyards/fleetyards/commit/5becb459dffa0e2f9db27e4dbd7576a520d51aba))
+* **pagination:** per-page selector on 11 lists that never had it ([#5590](https://github.com/fleetyards/fleetyards/issues/5590)) ([5ff398e](https://github.com/fleetyards/fleetyards/commit/5ff398e4d9480dc7493336b0d4820df1ed9e0184))
+* **sc-data:** carry the failure reason into the import notification ([a0e8da8](https://github.com/fleetyards/fleetyards/commit/a0e8da8acaf18aef2ad018a1789e595242da917d))
+* **sc-data:** say what to do when the parsed tree is a different build ([5de8ac5](https://github.com/fleetyards/fleetyards/commit/5de8ac5808d16acdf9cc55fff0cf2b535326a9e7))
+* **test:** give factory manufacturers a unique name ([9f29372](https://github.com/fleetyards/fleetyards/commit/9f293728e0b0d5816d868fa4608a0d03f76986f3))
+
+
+### Refactorings
+
+* **lists:** phone list layout across the list pages ([#5591](https://github.com/fleetyards/fleetyards/issues/5591)) ([80e4af7](https://github.com/fleetyards/fleetyards/commit/80e4af71ae5421a8e6163f0f5a7ae978ad808387))
+
 ## [9.0.0](https://github.com/fleetyards/fleetyards/compare/v8.21.0...v9.0.0) (2026-10-11)
 
 
