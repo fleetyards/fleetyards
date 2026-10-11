@@ -340,6 +340,18 @@ class Vehicle < ApplicationRecord
     Updater::FleetVehicleUpdateJob.perform_async(id)
   end
 
+  # The bulk counterpart of `schedule_fleet_vehicle_update`, for writes that
+  # skip the callback. Queued once the outermost transaction commits, so a worker
+  # cannot read the hangar as it was before the write.
+  def self.schedule_fleet_vehicle_updates(vehicle_ids)
+    ids = visible.where(id: vehicle_ids).ids
+    return if ids.empty?
+
+    ActiveRecord.after_all_transactions_commit do
+      ids.each_slice(1000) { |slice| Updater::FleetVehicleUpdateJob.perform_bulk(slice.zip) }
+    end
+  end
+
   def update_fleet_vehicle
     user.fleet_memberships.kept.each do |fleet_membership|
       fleet_membership.update_fleet_vehicle(self)

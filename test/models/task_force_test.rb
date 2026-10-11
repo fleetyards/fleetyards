@@ -30,4 +30,34 @@ class TaskForceTest < ActiveSupport::TestCase
 
     assert_equal 1, Updater::FleetVehicleUpdateJob.jobs.size
   end
+
+  test "refreshes the fleet entries of the vehicle's visible loaners" do
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    parent = create(:vehicle, model: parent_model, user: @vehicle.user, wanted: false)
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+    Sidekiq::Worker.clear_all
+
+    task_force = TaskForce.create!(vehicle: parent, hangar_group: @hangar_group)
+
+    assert_includes Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }, loaner.id
+
+    Sidekiq::Worker.clear_all
+    task_force.destroy!
+
+    assert_includes Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }, loaner.id
+  end
+
+  test "leaves a hidden loaner's fleet entry alone" do
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    parent = create(:vehicle, model: parent_model, user: @vehicle.user, wanted: false)
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+    loaner.update_columns(hidden: true)
+    Sidekiq::Worker.clear_all
+
+    TaskForce.create!(vehicle: parent, hangar_group: @hangar_group)
+
+    assert_not_includes Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }, loaner.id
+  end
 end

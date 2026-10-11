@@ -217,6 +217,16 @@ class HangarSyncTest < ActiveSupport::TestCase
       refute_predicate @jav_ship.reload, :wanted?
     end
 
+    # The rows are inserted in bulk, so no callback queues the fleet update.
+    test "refreshes the fleet entry of a vehicle it files into a group" do
+      group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
+      Updater::FleetVehicleUpdateJob.jobs.clear
+
+      run_with(unmatched_vehicles_action: "group", unmatched_hangar_group_id: group.id)
+
+      assert_includes Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }, @jav_ship.id
+    end
+
     test "does not stack a task force when the same run is repeated" do
       group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
 

@@ -673,7 +673,12 @@ class HangarSync < HangarImporter
     # `task_forces` carries no unique index, so a duplicate would be accepted
     # rather than rejected -- the read above is what keeps a re-sync from
     # stacking rows.
-    TaskForce.insert_all(rows) if rows.any?
+    return if rows.empty?
+
+    TaskForce.insert_all(rows)
+
+    filed_ids = rows.pluck(:vehicle_id)
+    Vehicle.schedule_fleet_vehicle_updates(filed_ids + Vehicle.where(loaner: true, vehicle_id: filed_ids).ids)
   end
 
   # The paints, flair and equipment are replaced as a whole, so a run stopped part way
