@@ -36,6 +36,20 @@ $large-desktop-breakpoint: 1800px;
 
 $tap-target-min: 32px;
 
+// The space between the rows of a list: records, catalogue rows,
+// notifications. Every row is a framed card, so on a phone the gap read as a
+// column of separate boxes rather than one list, and it halves there.
+$list-row-gap: 8px;
+$list-row-gap-phone: 4px;
+
+@mixin list-row-gap {
+  gap: $list-row-gap;
+
+  @media (max-width: 576px) {
+    gap: $list-row-gap-phone;
+  }
+}
+
 // Grows a small control's hit area to the minimum on a touch screen without
 // changing how it looks. The control must not use its own `::after`.
 @mixin touch-tap-target($min: $tap-target-min) {

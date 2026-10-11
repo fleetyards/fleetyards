@@ -387,7 +387,7 @@ const record = (entry: string) => {
 .vt-notifications {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  @include list-row-gap;
   margin: 0;
   padding: 0;
   list-style: none;
