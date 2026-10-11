@@ -14980,7 +14980,7 @@ paths:
     - name: provider
       in: path
       schema:
-        type: string
+        "$ref": "#/components/schemas/OmniauthProviderEnum"
       required: true
     delete:
       summary: Disconnect OAuth provider
@@ -35969,6 +35969,25 @@ components:
       items:
         "$ref": "#/components/schemas/OauthApplication"
       title: OauthApplicationsList
+    OmniauthProviderEnum:
+      type: string
+      enum:
+      - discord
+      - github
+      - twitch
+      - google
+      - bluesky
+      - citizenid
+      - patreon
+      x-enumNames:
+      - DISCORD
+      - GITHUB
+      - TWITCH
+      - GOOGLE
+      - BLUESKY
+      - CITIZENID
+      - PATREON
+      title: OmniauthProviderEnum
     OtpBackupCodes:
       type: object
       properties:
@@ -38335,7 +38354,7 @@ components:
         authConnections:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/OmniauthProviderEnum"
         passwordSetManually:
           type: boolean
         oauthOnly:
