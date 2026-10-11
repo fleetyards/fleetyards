@@ -7,11 +7,23 @@ module PageSizes
   # share them so there is one set to reason about.
   STEPS = [12, 24, 48, 96, 240].freeze
 
-  # A size above the maximum is answered with a 400, so the dropdown never
-  # offers one.
-  def self.up_to(sizes, max)
+  # The steps a list whose maximum is `max` can offer: `per_page` answers a size
+  # above the maximum with a 400.
+  def self.up_to(max, sizes = STEPS)
     return sizes if max.nil?
 
     sizes.reject { |size| size.is_a?(Integer) && size > max }
+  end
+
+  # The `per_page_steps` macro beside Kaminari's `paginates_per`, for anything
+  # that pages: a model, or a list built in memory.
+  module Declarable
+    def per_page_steps(val = :none)
+      if val == :none
+        defined?(@_per_page_steps) && @_per_page_steps
+      else
+        @_per_page_steps = val
+      end
+    end
   end
 end

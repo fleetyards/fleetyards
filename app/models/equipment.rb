@@ -33,7 +33,7 @@ class Equipment < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 48
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   belongs_to :manufacturer, optional: true
 

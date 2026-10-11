@@ -5,7 +5,7 @@
 class BuybackPledge < ApplicationRecord
   paginates_per 48
   max_paginates_per 200
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   KINDS = %w[package ship upgrade paint addon other].freeze
 

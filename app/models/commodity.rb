@@ -27,7 +27,7 @@ class Commodity < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 48
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
   has_many :inventory_items, as: :item, dependent: :nullify

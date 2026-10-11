@@ -42,7 +42,7 @@ class Vehicle < ApplicationRecord
     }
   paginates_per 24
   max_paginates_per 240
-  per_page_steps [*PageSizes::STEPS, :all]
+  per_page_steps [*PageSizes.up_to(max_per_page), :all]
 
   scope :visible, -> { where(hidden: false) }
 

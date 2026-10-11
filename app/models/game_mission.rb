@@ -12,7 +12,7 @@ class GameMission < ApplicationRecord
   include ScDataVersioned
 
   paginates_per 48
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   # What each build of the game says about this mission.
   has_many :builds, class_name: "GameMissionBuild", dependent: :destroy

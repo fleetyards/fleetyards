@@ -9,7 +9,7 @@ class Fleet < ApplicationRecord
   include FeatureFlagActor
 
   paginates_per 24
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   # Where the fleet is based: free text, linked to one of our places where it
   # is one.

@@ -10,7 +10,7 @@ class Component < ApplicationRecord
 
   paginates_per 48
   max_paginates_per 240
-  per_page_steps PageSizes::STEPS
+  per_page_steps PageSizes.up_to(max_per_page)
 
   # One row per component, with the spec history kept as versions rather than as
   # a row per build. `version` is deliberately not tracked: it moves on every
