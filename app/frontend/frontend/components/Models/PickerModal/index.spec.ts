@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
 import Component from "./index.vue";
 
 const option = {
@@ -84,5 +85,28 @@ describe("Models/PickerModal", () => {
       false,
     );
     expect(wrapper.find(".model-picker__selected").exists()).toBe(false);
+  });
+
+  it("keeps the extra filters folded away until asked for", async () => {
+    const wrapper = await mount();
+    const more = () => wrapper.find("#model-picker-more-filters");
+
+    expect(more().attributes("style")).toContain("display: none");
+
+    await wrapper
+      .find('[data-test="model-picker-more-filters"]')
+      .trigger("click");
+
+    expect(more().attributes("style") ?? "").not.toContain("display: none");
+  });
+
+  it("offers no production status filter when the caller pins one", async () => {
+    const offered = await mount();
+    const pinned = await mount({
+      query: { productionStatusIn: ["flight-ready"] },
+    });
+
+    expect(offered.findComponent(ProductionStatusSelect).exists()).toBe(true);
+    expect(pinned.findComponent(ProductionStatusSelect).exists()).toBe(false);
   });
 });

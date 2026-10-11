@@ -15,6 +15,7 @@
       },
       "actions": {
         "resetFilters": "Reset Filters",
+        "moreFilters": "More Filters",
         "clearSelection": "Clear Selection",
         "increase": "Add another %{name}",
         "decrease": "Remove one %{name}"

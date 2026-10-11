@@ -17,6 +17,9 @@ import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import ClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
+import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
+import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
+import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
 import ModelCard from "@/frontend/components/Models/PickerModal/ModelCard/index.vue";
 import {
   type ModelPickerBadge,
@@ -103,6 +106,23 @@ const searchTerm = ref<string>("");
 const manufacturerIn = ref<string[]>([]);
 const classificationIn = ref<string[]>([]);
 const hangarOnly = ref(false);
+const focusIn = ref<string[]>([]);
+const sizeIn = ref<string[]>([]);
+const productionStatusIn = ref<string[]>([]);
+const moreFiltersOpen = ref(false);
+
+// The cargo grid and trade route pickers pin flight-ready ships. Offering the
+// filter there would let it override the pin and widen the list instead.
+const productionStatusOffered = computed(
+  () => !props.query?.productionStatusIn,
+);
+
+const moreFiltersCount = computed(
+  () =>
+    [focusIn, sizeIn, productionStatusIn].filter(
+      (filter) => filter.value.length,
+    ).length,
+);
 
 // The sizes the API knows, as the literal keys ContainerFitQuery declares - so
 // the counts below index it without a cast, and a size added on the Ruby side
@@ -155,6 +175,18 @@ const queryParams = computed(() => {
 
   if (hangarOnly.value) {
     q.inHangar = true;
+  }
+
+  if (focusIn.value.length) {
+    q.focusIn = focusIn.value;
+  }
+
+  if (sizeIn.value.length) {
+    q.sizeIn = sizeIn.value;
+  }
+
+  if (productionStatusOffered.value && productionStatusIn.value.length) {
+    q.productionStatusIn = productionStatusIn.value;
   }
 
   return {
@@ -228,9 +260,20 @@ watch(search, (value) => {
   applySearch(value);
 });
 
-watch([manufacturerIn, classificationIn, hangarOnly, containerFit], () => {
-  page.value = 1;
-});
+watch(
+  [
+    manufacturerIn,
+    classificationIn,
+    hangarOnly,
+    focusIn,
+    sizeIn,
+    productionStatusIn,
+    containerFit,
+  ],
+  () => {
+    page.value = 1;
+  },
+);
 
 const filtersActive = computed(
   () =>
@@ -238,6 +281,7 @@ const filtersActive = computed(
     !!manufacturerIn.value.length ||
     !!classificationIn.value.length ||
     hangarOnly.value ||
+    !!moreFiltersCount.value ||
     !!containerFit.value,
 );
 
@@ -247,6 +291,9 @@ const resetFilters = () => {
   manufacturerIn.value = [];
   classificationIn.value = [];
   hangarOnly.value = false;
+  focusIn.value = [];
+  sizeIn.value = [];
+  productionStatusIn.value = [];
   containerCounts.value = {};
   page.value = 1;
 };
@@ -409,6 +456,50 @@ const save = () => {
           >
             {{ t("modelPicker.labels.hangarOnly") }}
           </Btn>
+
+          <Btn
+            class="model-picker__more-filters"
+            :active="moreFiltersOpen"
+            :aria-expanded="moreFiltersOpen"
+            aria-controls="model-picker-more-filters"
+            data-test="model-picker-more-filters"
+            @click="moreFiltersOpen = !moreFiltersOpen"
+          >
+            <i class="fa-light fa-sliders" />
+            {{ t("modelPicker.actions.moreFilters") }}
+            <span v-if="moreFiltersCount" class="model-picker__filter-count">
+              {{ moreFiltersCount }}
+            </span>
+          </Btn>
+        </div>
+
+        <!--
+          Behind a toggle because the header is sticky: six fields wrap to three
+          rows on a phone and leave no room for the ships under them.
+        -->
+        <div
+          v-show="moreFiltersOpen"
+          id="model-picker-more-filters"
+          class="model-picker__toolbar model-picker__toolbar--more"
+        >
+          <FocusSelect
+            v-model="focusIn"
+            class="model-picker__filter"
+            name="model-picker-focus"
+          />
+
+          <SizeSelect
+            v-model="sizeIn"
+            class="model-picker__filter"
+            name="model-picker-size"
+          />
+
+          <ProductionStatusSelect
+            v-if="productionStatusOffered"
+            v-model="productionStatusIn"
+            class="model-picker__filter"
+            name="model-picker-production-status"
+          />
         </div>
 
         <div v-if="containerFilter" class="model-picker__containers">
@@ -573,8 +664,18 @@ const save = () => {
 
 /* Matched to the fields it stands next to rather than sized by its own text, so
    the toolbar reads as one row. */
-.model-picker__hangar {
+.model-picker__hangar,
+.model-picker__more-filters {
   @apply self-stretch;
+}
+
+.model-picker__toolbar--more {
+  padding-top: 12px;
+}
+
+.model-picker__filter-count {
+  @apply text-gold font-semibold;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- container filter ----------
