@@ -90,10 +90,11 @@ const panelTone = computed(() =>
         compact
         divider
       >
-        {{ title }}
-        <Pill :variant="pillVariant" class="health-check__count">
-          {{ check.display }}
-        </Pill>
+        <!-- One element: Heading stacks its slot's children as rows. -->
+        <span class="health-check__title">
+          {{ title }}
+          <Pill :variant="pillVariant">{{ check.display }}</Pill>
+        </span>
         <template #subtitle>{{ description }}</template>
         <template v-if="$slots.actions" #actions>
           <slot name="actions" />
@@ -116,9 +117,11 @@ const panelTone = computed(() =>
   scroll-margin-top: 80px;
 }
 
-.health-check__count {
-  margin-left: 8px;
-  vertical-align: middle;
+.health-check__title {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
 }
 
 .health-check__clear {
