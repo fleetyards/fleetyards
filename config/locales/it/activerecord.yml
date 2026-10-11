@@ -194,6 +194,7 @@ it:
         slots:
           arms: Braccia
           backpack: Zaino
+          eyewear: Occhiali
           footwear: Calzature
           gloves: Guanti
           hat: Cappelli

@@ -48,7 +48,7 @@ class EquipmentBuild < ApplicationRecord
   enum :slot,
     {
       undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7,
-      pants: 8, shirt: 9, jacket: 10, backpack: 11
+      pants: 8, shirt: 9, jacket: 10, backpack: 11, eyewear: 12
     },
     suffix: true
 

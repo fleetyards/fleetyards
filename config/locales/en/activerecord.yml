@@ -194,6 +194,7 @@ en:
         slots:
           arms: Arms
           backpack: Backpack
+          eyewear: Eyewear
           footwear: Footwear
           gloves: Gloves
           hat: Hat

@@ -10,8 +10,8 @@ module Uex
     # a gap.
     SECTIONS = ["Armor", "Clothing", "Personal Weapons", "Undersuits"].freeze
 
-    # Filed under Personal Weapons, but the Pink QuikFlare is a glowstick, a
-    # carryable the parser does not load as equipment.
+    # Filed under Personal Weapons, but the game files carry no glowstick
+    # record for the Pink QuikFlare, only its name, so it has nothing to match.
     FOREIGN_ITEMS = [414].freeze
 
     private def build_matcher

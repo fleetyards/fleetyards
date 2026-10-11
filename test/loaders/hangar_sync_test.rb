@@ -592,6 +592,20 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_includes body, "- FPS equipment synced: **5**"
     end
 
+    test "matches gear RSI names differently from the game" do
+      create(:equipment, name: "The Hill Horror Helmet")
+      create(:equipment, name: "Second Tevarin War Service Trousers")
+      input = @input + [
+        {"id" => "00064541", "name" => "Scarecrow Helmet", "type" => "equipment"},
+        {"id" => "00064541", "name" => "Navy Surplus Second Tevarin War Service Pants", "type" => "equipment"}
+      ]
+
+      ::HangarSync.new(input).run(@user.id)
+
+      assert_equal ["Navy Surplus Second Tevarin War Service Pants", "Scarecrow Helmet"],
+        @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
+    end
+
     test "sorts the catalogue only once a run" do
       input = @input + [{"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}]
 

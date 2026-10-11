@@ -14633,6 +14633,7 @@ components:
       - shirt
       - jacket
       - backpack
+      - eyewear
       x-enumNames:
       - UNDERSUIT
       - ARMS
@@ -14646,6 +14647,7 @@ components:
       - SHIRT
       - JACKET
       - BACKPACK
+      - EYEWEAR
       title: EquipmentSlotEnum
     EquipmentSortEnum:
       type: string
@@ -19942,6 +19944,7 @@ components:
       - shirt
       - jacket
       - backpack
+      - eyewear
       -
       x-enumNames:
       - UNDERSUIT
@@ -19956,6 +19959,7 @@ components:
       - SHIRT
       - JACKET
       - BACKPACK
+      - EYEWEAR
       - 'NULL'
       title: NullableEquipmentSlotEnum
     NullableFleetFidClaimCancelReasonEnum:
