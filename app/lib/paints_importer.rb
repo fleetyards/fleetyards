@@ -425,6 +425,8 @@ class PaintsImporter
       "Cutter" => cutter,
       "Syluen" => ["Syulen"],
       "Constellation" => connie,
+      "Constellation Mk IV" => connie,
+      "Constellation Mk V" => ["Constellation Mk V Centaurus"],
       "2950 Invictus Constellation Blue and Gold" => connie,
       "2950 Invictus Constellation Dark Green" => connie,
       "2950 Invictus Retaliator Midnight Blue and Gold" => tali,
