@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
 import type { ComponentPublicInstance } from "vue";
-import { useResizeObserver } from "@vueuse/core";
+import { useMutationObserver, useResizeObserver } from "@vueuse/core";
 import {
   type RowListItemBadge,
   type RowListItemChip,
@@ -63,10 +63,18 @@ const measureName = () => {
       : "";
 };
 
+// Measured when the name's box or its text changes, not on every render of
+// the row: a list re-renders all its rows for a tick in one of them, and each
+// measurement forces a layout.
 useResizeObserver(nameElement, measureName);
 
+useMutationObserver(nameElement, measureName, {
+  characterData: true,
+  childList: true,
+  subtree: true,
+});
+
 onMounted(measureName);
-onUpdated(measureName);
 </script>
 
 <template>
