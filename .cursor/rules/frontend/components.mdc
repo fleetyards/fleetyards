@@ -53,6 +53,8 @@ Fleetyards frontend. Components here should be:
 - **TeaserPanel/**, **TeaserPanel2/** — Teaser/info panels
 - **Video/** — Video player
 - **PrimaryAction/** — Primary action button
+- **PageActions/** — A page's actions in the navigation header: buttons on desktop, folded into one ⋮ menu on phones, hidden while a selection takes the header over
+- **MobileSelectionHeader/** — A list's bulk bar: above the list on desktop, in place of the header's search on phones while a held row has started a selection
 - **ServerError/** — Server error message
 - **ClientError/** — Rejected-request message (400), with an optional filter reset
 - **Loader/** — General loading spinner
