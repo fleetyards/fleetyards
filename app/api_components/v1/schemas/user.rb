@@ -50,7 +50,7 @@ module V1
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
           resourceAccess: {type: :array, items: ::V1::Schemas::Enums::UserResourceAccessEnum},
-          authConnections: {type: :array, items: {type: :string}},
+          authConnections: {type: :array, items: {"$ref": "#/components/schemas/OmniauthProviderEnum"}},
           passwordSetManually: {type: :boolean},
           oauthOnly: {type: :boolean},
           placeholderEmail: {type: :boolean},

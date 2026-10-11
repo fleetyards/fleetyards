@@ -8,7 +8,7 @@ class Api::V1::OmniauthConnectionsTest < ActionDispatch::IntegrationTest
   openapi_schema :"v1/schema"
 
   api_path "/omniauth-connections/{provider}" do
-    parameter name: :provider, in: :path, schema: {type: :string}, required: true
+    parameter name: :provider, in: :path, schema: {"$ref": "#/components/schemas/OmniauthProviderEnum"}, required: true
 
     delete("Disconnect OAuth provider") do
       operationId "disconnectOauthProvider"

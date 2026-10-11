@@ -2350,3 +2350,46 @@ GET /notifications for the `query` request parameter `perPage`, default value wa
 GET /public/fleets/{fleetSlug}/squadrons for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /trade-routes for the `query` request parameter `perPage`, default value was changed from `50.00` to `48.00`
 GET /vehicles/{vehicle_id}/inventory/items for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+DELETE /omniauth-connections/{provider} added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `discord` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `github` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
+DELETE /omniauth-connections/{provider} the `path` request parameter `provider` was restricted to a list of enum values
+GET /users/me added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `discord` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `github` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
+GET /users/me added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `discord` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `github` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
+POST /sessions added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
+POST /users/signup added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `discord` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `github` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `google` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `patreon` enum value to the `authConnections/items/` response property for the response status `201`
+POST /users/signup added the new `twitch` enum value to the `authConnections/items/` response property for the response status `201`
+PUT /users/account added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `discord` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `github` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/account added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `bluesky` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `citizenid` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `discord` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `github` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `google` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `patreon` enum value to the `authConnections/items/` response property for the response status `200`
+PUT /users/me added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`

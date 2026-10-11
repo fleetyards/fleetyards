@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { OauthBtnProvidersEnum } from "./types";
+import { OmniauthProviderEnum } from "@/services/fyApi";
+import { oauthProviderFeatureFlags } from "./types";
 import citizenIdIconProd from "@/images/icons/citizenid.jpg";
 import citizenIdIconDev from "@/images/icons/citizenid-dev.jpg";
 import {
@@ -21,7 +22,7 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useRouter } from "vue-router";
 
 type Props = {
-  provider: `${OauthBtnProvidersEnum}`;
+  provider: OmniauthProviderEnum;
   size?: BtnSizesEnum;
   variant?: BtnVariantsEnum;
   block?: boolean;
@@ -44,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  disconnect: [provider: `${OauthBtnProvidersEnum}`];
+  disconnect: [provider: OmniauthProviderEnum];
 }>();
 
 const { t } = useI18n();
@@ -100,11 +101,11 @@ const label = computed(() => {
 const { isFeatureEnabled } = useFeatures();
 
 const providerActive = computed(() => {
-  return isFeatureEnabled(`oauth-${props.provider}`);
+  return isFeatureEnabled(oauthProviderFeatureFlags[props.provider]);
 });
 
 const isCitizenId = computed(
-  () => props.provider === OauthBtnProvidersEnum.CITIZENID,
+  () => props.provider === OmniauthProviderEnum.CITIZENID,
 );
 
 const citizenIdIcon = computed(() =>

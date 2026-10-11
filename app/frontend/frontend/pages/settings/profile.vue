@@ -22,6 +22,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FilterOption,
   type UserUpdateInput,
+  OmniauthProviderEnum,
   UserDateFormatEnum,
 } from "@/services/fyApi";
 import {
@@ -33,7 +34,6 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
-import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
@@ -291,7 +291,7 @@ const onSubmit = handleSubmit(async (values) => {
           </Btn>
           <OauthBtn
             v-if="!citizenIdConnected && !rsiHandleVerified"
-            :provider="OauthBtnProvidersEnum.CITIZENID"
+            :provider="OmniauthProviderEnum.CITIZENID"
             :size="BtnSizesEnum.SM"
             inline
           >

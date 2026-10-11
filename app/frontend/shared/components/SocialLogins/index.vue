@@ -10,14 +10,17 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
-import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
-import { useDisconnectOauthProvider as useDisconnectOauthProviderMutation } from "@/services/fyApi";
+import { oauthProviderFeatureFlags } from "@/shared/components/OauthBtn/types";
+import {
+  OmniauthProviderEnum,
+  useDisconnectOauthProvider as useDisconnectOauthProviderMutation,
+} from "@/services/fyApi";
 
 type Props = {
   block?: boolean;
   onlyIcons?: boolean;
   disconnectable?: boolean;
-  primaryProviders?: `${OauthBtnProvidersEnum}`[];
+  primaryProviders?: OmniauthProviderEnum[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,8 +39,8 @@ const { isFeatureEnabled } = useFeatures();
 
 const disconnectingProvider = ref<string | null>(null);
 
-const providerActive = (provider: OauthBtnProvidersEnum) => {
-  return isFeatureEnabled(`oauth-${provider}`);
+const providerActive = (provider: OmniauthProviderEnum) => {
+  return isFeatureEnabled(oauthProviderFeatureFlags[provider]);
 };
 
 // Only a signed-in viewer has connections. Read unconditionally, a session that
@@ -53,7 +56,7 @@ const connections = computed(() => {
 });
 
 const activeProviders = computed(() => {
-  const providers = Object.values(OauthBtnProvidersEnum).filter(providerActive);
+  const providers = Object.values(OmniauthProviderEnum).filter(providerActive);
 
   return providers.sort((a, b) => {
     const aPrimary = props.primaryProviders.includes(a);
@@ -72,7 +75,7 @@ const activeProviders = computed(() => {
 
 const disconnectMutation = useDisconnectOauthProviderMutation();
 
-const handleDisconnect = async (provider: `${OauthBtnProvidersEnum}`) => {
+const handleDisconnect = async (provider: OmniauthProviderEnum) => {
   disconnectingProvider.value = provider;
 
   await disconnectMutation
