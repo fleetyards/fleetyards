@@ -34,7 +34,7 @@ const { t, l } = useI18n();
 const queryClient = useQueryClient();
 
 const { data, isLoading } = useVersionsQuery({
-  perPage: "48",
+  perPage: "50",
   itemType: props.itemType,
   itemId: props.itemId,
 });
