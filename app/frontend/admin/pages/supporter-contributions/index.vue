@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -160,7 +160,7 @@ const syncFromPatreon = () => {
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.supporterContributions.index") }}
     <HeadingSmall v-if="supporterContributions">
       {{
@@ -172,37 +172,31 @@ const syncFromPatreon = () => {
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-funding-goals' }"
       :aria-label="t('headlines.admin.fundingGoals.index')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-bullseye-arrow" />
       {{ t("headlines.admin.fundingGoals.index") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       v-if="stats?.patreonSyncEnabled"
       :aria-label="t('actions.admin.supporterContributions.syncFromPatreon')"
       :loading="syncMutation.isPending.value"
-      mobile-icon-only
       @click="syncFromPatreon"
     >
       <i class="fa-brands fa-patreon" />
       {{ t("actions.admin.supporterContributions.syncFromPatreon") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-supporter-contribution-create' }"
       :aria-label="t('actions.create')"
-      mobile-icon-only
     >
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     name="admin-supporter-contributions"

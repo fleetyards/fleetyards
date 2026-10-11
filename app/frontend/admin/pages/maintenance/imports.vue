@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import PageActions from "@/shared/components/PageActions/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -169,7 +170,7 @@ const columns: BaseTableCol<Import>[] = [
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.imports.index") }}
     <HeadingSmall v-if="importsList">
       {{
@@ -181,15 +182,13 @@ const columns: BaseTableCol<Import>[] = [
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <!-- Running shows on the icon rather than through `loading`, which
          disables the button: a load already running must not keep the
          others in its group out of reach. -->
     <Btn
-      :size="BtnSizesEnum.MD"
       :aria-label="t('actions.admin.imports.loadShipMatrix')"
       :aria-busy="isLoadingShipMatrix"
-      mobile-icon-only
       data-test="imports-load-ship-matrix"
       @click="openLoaders('shipMatrix')"
     >
@@ -203,10 +202,8 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.imports.loadShipMatrix") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :aria-label="t('actions.admin.imports.loadScData')"
       :aria-busy="isLoadingScData"
-      mobile-icon-only
       data-test="imports-load-sc-data"
       @click="openLoaders('scData')"
     >
@@ -219,7 +216,7 @@ const columns: BaseTableCol<Import>[] = [
       />
       {{ t("actions.admin.imports.loadScData") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     name="admin-imports"

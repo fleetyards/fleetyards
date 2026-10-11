@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -120,7 +120,7 @@ const { t, l } = useI18n();
 </script>
 
 <template>
-  <Heading hero>
+  <Heading hero mobile-hidden>
     {{ t("headlines.admin.fleets.index") }}
     <HeadingSmall v-if="fleets">
       {{
@@ -132,26 +132,22 @@ const { t, l } = useI18n();
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-fleet-fid-claims' }"
       :aria-label="t('nav.admin.fleetFidClaims.index')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-id-badge" />
       {{ t("nav.admin.fleetFidClaims.index") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-destroyed-fleets' }"
       :aria-label="t('nav.admin.destroyedFleets.index')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-trash-can-arrow-up" />
       {{ t("nav.admin.destroyedFleets.index") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     name="admin-fleets"
