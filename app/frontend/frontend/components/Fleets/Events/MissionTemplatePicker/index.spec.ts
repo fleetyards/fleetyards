@@ -142,17 +142,17 @@ describe("MissionTemplatePicker", () => {
 
     expect(
       wrapper.find('[data-test="mission-template-empty"]').text(),
-    ).toContain("None of the fleet's missions is published yet.");
+    ).toContain("None of the fleet's active missions is published yet.");
   });
 
-  it("says the fleet has no missions when it has none at all", async () => {
+  it("says the fleet has no active missions when it has none", async () => {
     missions.value = { items: [] };
     anyMission.value = { items: [] };
     const wrapper = await mountPicker();
 
     expect(
       wrapper.find('[data-test="mission-template-empty"]').text(),
-    ).toContain("No missions yet.");
+    ).toContain("The fleet has no active missions.");
   });
 
   it("hands the picked mission to the caller", async () => {
@@ -186,7 +186,7 @@ describe("MissionTemplatePicker", () => {
     expect(wrapper.find('[data-test="mission-template-error"]').exists()).toBe(
       true,
     );
-    expect(wrapper.text()).not.toContain("No missions yet.");
+    expect(wrapper.text()).not.toContain("The fleet has no active missions.");
   });
 
   it("keeps a list it already has when a refetch fails", async () => {

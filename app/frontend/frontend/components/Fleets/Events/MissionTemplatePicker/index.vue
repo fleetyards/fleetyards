@@ -113,6 +113,8 @@ const nothingPublished = computed(
 
 // One row of any status, asked for only once the published list came back
 // empty: it is what tells "nothing published yet" apart from "no missions".
+// Both lists are the active ones, so the labels say so -- a fleet whose
+// missions are all archived has none to spawn an event from either.
 const { data: anyMission } = useFleetMissions(
   fleetSlug,
   { perPage: "1" },
@@ -128,7 +130,7 @@ const emptyLabel = computed(() => {
     return t("labels.fleets.events.pickTemplateNonePublished");
   }
 
-  return t("labels.fleets.missions.noMissions");
+  return t("labels.fleets.events.pickTemplateNoneActive");
 });
 
 const pick = (mission: Mission | null) => {
