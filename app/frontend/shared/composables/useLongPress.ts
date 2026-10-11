@@ -28,9 +28,18 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
   let startY = 0;
   let pressedAt = 0;
 
+  // A second finger that lands outside the row never reaches the row's own
+  // listeners, so the document watches for it while a hold is pending.
+  const onAnyTouchStart = (event: TouchEvent) => {
+    if (event.touches.length > 1) {
+      cancel();
+    }
+  };
+
   const cancel = () => {
     clearTimeout(timer);
     timer = undefined;
+    document.removeEventListener("touchstart", onAnyTouchStart);
   };
 
   const onTouchStart = (event: TouchEvent) => {
@@ -44,8 +53,10 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
 
+    document.addEventListener("touchstart", onAnyTouchStart, { passive: true });
+
     timer = setTimeout(() => {
-      timer = undefined;
+      cancel();
       pressedAt = Date.now();
 
       // The tick says the hold landed while the finger is still down, the way
@@ -58,6 +69,12 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
 
   const onTouchMove = (event: TouchEvent) => {
     if (!timer) {
+      return;
+    }
+
+    if (event.touches.length !== 1) {
+      cancel();
+
       return;
     }
 

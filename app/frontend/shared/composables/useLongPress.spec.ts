@@ -10,11 +10,14 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-const touch = (type: string, clientX?: number, clientY = 0) => {
+const touch = (type: string, clientX?: number, clientY = 0, fingers = 1) => {
   const event = new Event(type, { bubbles: true, cancelable: true });
 
   Object.defineProperty(event, "touches", {
-    value: clientX === undefined ? [] : [{ clientX, clientY }],
+    value:
+      clientX === undefined
+        ? []
+        : Array.from({ length: fingers }, () => ({ clientX, clientY })),
   });
 
   return event;
@@ -87,6 +90,26 @@ describe("useLongPress", () => {
     vi.advanceTimersByTime(LONG_PRESS_MS);
 
     expect(onLongPress).toHaveBeenCalledTimes(1);
+  });
+
+  it("gives way to a second finger landing outside the row", async () => {
+    const { row, onLongPress } = await render();
+
+    row.dispatchEvent(touch("touchstart", 100, 100));
+    document.body.dispatchEvent(touch("touchstart", 300, 300, 2));
+    vi.advanceTimersByTime(LONG_PRESS_MS);
+
+    expect(onLongPress).not.toHaveBeenCalled();
+  });
+
+  it("gives way when a move reports a second finger", async () => {
+    const { row, onLongPress } = await render();
+
+    row.dispatchEvent(touch("touchstart", 100, 100));
+    row.dispatchEvent(touch("touchmove", 100, 100, 2));
+    vi.advanceTimersByTime(LONG_PRESS_MS);
+
+    expect(onLongPress).not.toHaveBeenCalled();
   });
 
   it("swallows the click that follows the hold, not a later tap", async () => {
