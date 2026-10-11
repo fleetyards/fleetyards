@@ -42,12 +42,7 @@ const travel = async (
   router: Awaited<ReturnType<typeof setup>>["router"],
   delta: number,
 ) => {
-  const arrived = new Promise((resolve) => {
-    const stop = router.afterEach(() => {
-      stop();
-      resolve(undefined);
-    });
-  });
+  const arrived = nextNavigation(router);
 
   router.go(delta);
   await arrived;
@@ -136,5 +131,19 @@ describe("useRoutedSelection", () => {
 
     expect(router.currentRoute.value.fullPath).toBe("/list");
     expect(router.options.history.state.forward).toBe("/list?open=a");
+  });
+
+  it("steps back over the entry on a list with a hash", async () => {
+    const { router, selection } = await setup(true, "/list#top");
+
+    selection.open("a");
+    await flushPromises();
+
+    const closed = nextNavigation(router);
+    selection.close();
+    await closed;
+
+    expect(router.currentRoute.value.fullPath).toBe("/list#top");
+    expect(router.options.history.state.forward).not.toBeNull();
   });
 });

@@ -24,7 +24,10 @@ export const useRoutedSelection = ({
 
   const selectedId = ref<string | undefined>(routed.value);
 
-  const withKey = (id?: string) => ({ query: { ...route.query, [key]: id } });
+  const withKey = (id?: string) => ({
+    query: { ...route.query, [key]: id },
+    hash: route.hash,
+  });
 
   // Closing steps back only when the entry behind this one is the same list
   // without the record open - the one opening it pushed. A filter changed
