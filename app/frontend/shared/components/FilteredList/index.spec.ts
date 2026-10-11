@@ -256,7 +256,7 @@ describe("FilteredList", () => {
           records: [],
           asyncStatus: failedWith(400, { code: "validation_error" }),
         },
-        initialState: { pagination: { perPage: { ships: 30 } } },
+        initialState: { pagination: { perPage: { ships: 24 } } },
         plugins: [router],
       },
     );
@@ -281,7 +281,7 @@ describe("FilteredList", () => {
           records: [],
           asyncStatus: failedWith(400),
         },
-        initialState: { pagination: { perPage: { ships: 30 } } },
+        initialState: { pagination: { perPage: { ships: 24 } } },
         plugins: [router],
       },
     );

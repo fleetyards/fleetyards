@@ -82,10 +82,10 @@ const paginated: BaseList = {
       totalCount: 248,
       currentPage: 1,
       totalPages: 10,
-      perPage: 25,
-      defaultPerPage: 25,
+      perPage: 24,
+      defaultPerPage: 24,
       maxPerPage: 100,
-      perPageSteps: [25, 50, 100],
+      perPageSteps: [12, 24, 48, 96],
     },
   },
 };
@@ -96,8 +96,8 @@ const singlePage: BaseList = {
       totalCount: 8,
       currentPage: 1,
       totalPages: 1,
-      perPage: 25,
-      defaultPerPage: 25,
+      perPage: 24,
+      defaultPerPage: 24,
     },
   },
 };
@@ -108,8 +108,8 @@ const emptyList: BaseList = {
       totalCount: 0,
       currentPage: 1,
       totalPages: 0,
-      perPage: 25,
-      defaultPerPage: 25,
+      perPage: 24,
+      defaultPerPage: 24,
     },
   },
 };
@@ -142,7 +142,7 @@ const inventories: InventoryPanelRecord[] = [
   },
 ];
 
-const perPage = ref<number | string>(25);
+const perPage = ref<number | string>(24);
 
 const updatePerPage = (value: number | string) => {
   perPage.value = value;
