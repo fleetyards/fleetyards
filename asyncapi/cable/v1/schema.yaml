@@ -4277,6 +4277,7 @@ components:
       - fleet_fid_claim_completed
       - fleet_fid_claim_cancelled
       - rsi_handle_verification_lost
+      - fleet_verification_requested
       - announcement
       x-enumNames:
       - MODEL_ON_SALE
@@ -4327,6 +4328,7 @@ components:
       - FLEET_FID_CLAIM_COMPLETED
       - FLEET_FID_CLAIM_CANCELLED
       - RSI_HANDLE_VERIFICATION_LOST
+      - FLEET_VERIFICATION_REQUESTED
       - ANNOUNCEMENT
     NotificationsWithdrawnMessage:
       type: object

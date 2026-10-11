@@ -24,6 +24,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :promote
       put :accept, to: "fleet_members#accept_request"
       put :decline, to: "fleet_members#decline_request"
+      post "verification-reminder", to: "fleet_members#remind_verification"
     end
   end
 

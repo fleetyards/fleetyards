@@ -191,6 +191,12 @@ class FleetMembership < ApplicationRecord
   end
 
   VERIFICATION_GAPS = %w[no_handle handle_unverified orgs_not_checked org_not_listed].freeze
+  VERIFICATION_REMINDER_COOLDOWN = 7.days
+
+  # Read off the notification it sent, so a reminder needs no column of its own.
+  def verification_reminded_at
+    Notification.where(record: self, notification_type: "fleet_verification_requested").maximum(:created_at)
+  end
 
   # Why the membership is not verified against the fleet's RSI org, in the
   # order a member would have to fix it.

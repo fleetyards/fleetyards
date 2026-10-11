@@ -18,10 +18,10 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update accept_request decline_request promote demote destroy]
+        only: %i[create update accept_request decline_request promote demote destroy remind_verification]
 
-      before_action :set_fleet, only: %i[index show create update accept_request decline_request promote demote destroy]
-      before_action :set_member, only: %i[show accept_request decline_request promote demote destroy]
+      before_action :set_fleet, only: %i[index show create update accept_request decline_request promote demote destroy remind_verification]
+      before_action :set_member, only: %i[show accept_request decline_request promote demote destroy remind_verification]
 
       def index
         authorize! with: FleetMembershipPolicy, context: {fleet: @fleet}
@@ -100,6 +100,35 @@ module Api
         return if @member.demote
 
         render json: ValidationError.new("fleet_members.demote", message: I18n.t("validation_error.fleet_memberships.demote_not_permitted")), status: :bad_request
+      end
+
+      # Tells the member what keeps them from being verified against the
+      # fleet's RSI org, through whichever channels they chose. Once a week at
+      # most: it is a nudge from their fleet, not a way to flood their inbox.
+      def remind_verification
+        gap = @fleet.rsi_sid.present? && @member.accepted? && @member.verification_gap
+        unless gap
+          return render json: ValidationError.new("fleet_members.remind_verification", message: I18n.t("validation_error.fleet_memberships.nothing_to_verify")), status: :bad_request
+        end
+
+        if @member.verification_reminded_at&.after?(FleetMembership::VERIFICATION_REMINDER_COOLDOWN.ago)
+          return render json: ValidationError.new("fleet_members.remind_verification", message: I18n.t("validation_error.fleet_memberships.verification_recently_reminded")), status: :bad_request
+        end
+
+        user = @member.user
+        I18n.with_locale(user.notification_locale) do
+          Notification.notify!(
+            user:,
+            type: :fleet_verification_requested,
+            title: I18n.t("notifications.fleet_verification_requested.title", fleet: @fleet.name),
+            body: I18n.t("notifications.fleet_verification_requested.#{gap}", fleet: @fleet.name, sid: @fleet.rsi_sid),
+            link: Rails.application.routes.url_helpers.frontend_profile_settings_path,
+            icon: "fa-duotone fa-badge-check",
+            record: @member
+          )
+        end
+
+        head :no_content
       end
 
       # Discarded like a member leaving, with whoever removed them on the

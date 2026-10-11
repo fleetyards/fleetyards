@@ -49,6 +49,7 @@ es:
       destroy: No se pudo eliminar al miembro de la flota.
       update: No se pudo actualizar al miembro de la flota.
       demote: No se pudo degradar al miembro de la flota.
+      remind_verification: "No se pudo enviar el recordatorio de verificación."
     fleet_memberships:
       create: La invitación de flota no pudo ser utilizada
       destroy: No se pudo abandonar la flota.
@@ -57,6 +58,8 @@ es:
       demote_not_permitted: No puede degradar al último miembro de un rol de flota
         permanente.
       update: No se pudo actualizar la membresía de la flota.
+      nothing_to_verify: "Este miembro ya no tiene nada que verificar con la organización de RSI de la flota."
+      verification_recently_reminded: "A este miembro se le recordó hace menos de una semana."
     markdown_image:
       create: "No se pudo subir la imagen."
     hangar_group:
