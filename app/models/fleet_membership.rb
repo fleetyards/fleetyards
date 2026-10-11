@@ -71,6 +71,12 @@ class FleetMembership < ApplicationRecord
     ["inactive_since", "without_rsi_handle", "without_discord", "without_squadron"]
   end
 
+  # Ransack turns "1" or "true" into a boolean before a scope sees it; a date
+  # has to arrive as the text it was sent as.
+  def self.ransackable_scopes_skip_sanitize_args
+    ["inactive_since"]
+  end
+
   def self.ransackable_associations(auth_object = nil)
     ["fleet", "fleet_role", "user", "fleet_squadrons", "fleet_squadron_memberships"]
   end
@@ -119,9 +125,13 @@ class FleetMembership < ApplicationRecord
 
   # Never active counts as inactive: an account that has not been used since
   # tracking began is the longest gone of all.
-  scope :inactive_since, ->(time) {
+  # A value that is not a date filters nothing rather than reaching Postgres.
+  scope :inactive_since, ->(time) do
+    time = Date.iso8601(time) if time.is_a?(String)
     where(user_id: User.where("users.last_active_at IS NULL OR users.last_active_at < ?", time).select(:id))
-  }
+  rescue Date::Error
+    all
+  end
 
   scope :without_rsi_handle, -> {
     where(user_id: User.where(rsi_handle: [nil, ""]).select(:id))
