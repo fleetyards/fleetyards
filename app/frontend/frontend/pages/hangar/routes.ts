@@ -70,6 +70,7 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-inventories",
     component: () => import("@/frontend/pages/hangar/inventories/index.vue"),
     meta: {
+      mobileBack: true,
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
