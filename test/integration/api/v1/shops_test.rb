@@ -132,4 +132,15 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
   test "GET /shops/{slug}/items answers 404 for an unknown shop" do
     assert_api_response :get, 404, api_path: "/shops/{slug}/items", params: {slug: "dumpers-depot-port-olisar"}
   end
+
+  test "GET /shops/{slug}/items pages by perPage and offers its page sizes" do
+    hat = create(:equipment, name: "Beacon Hat", equipment_type: "clothing")
+    create(:item_price, item: hat, location: "Casaba Outlet - Everus Harbor", price: 40, price_type: "sell", time_range: nil, shop: @casaba)
+
+    assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug, perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal 1, parsed_body.dig("meta", "pagination", "perPage")
+      assert_equal Shop.per_page_steps, parsed_body.dig("meta", "pagination", "perPageSteps")
+    end
+  end
 end
