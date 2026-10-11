@@ -57,13 +57,13 @@ const nextItem = computed(() => {
 </script>
 
 <template>
-  <div class="breadcrumbs" v-if="crumbs || hasStepperList || $slots.actions">
-    <ol v-if="crumbs" aria-label="breadcrumb" class="breadcrumb">
-      <li class="breadcrumb-item">
-        <router-link :to="{ name: 'home' }">
-          {{ t("nav.home") }}
-        </router-link>
-      </li>
+  <div
+    class="breadcrumbs"
+    v-if="crumbs?.length || hasStepperList || $slots.actions"
+  >
+    <!-- No home crumb: the navigation's home link sits right beside the
+         trail, and the trail starts where the section does. -->
+    <ol v-if="crumbs?.length" aria-label="breadcrumb" class="breadcrumb">
       <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
         <router-link v-if="crumb.to" :to="extend(crumb.to)">
           {{ crumb.label }}
