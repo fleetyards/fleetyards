@@ -24,12 +24,16 @@ export const useRoutedSelection = ({
 
   const selectedId = ref<string | undefined>(routed.value);
 
-  // Whether the entry carrying the key is one this page pushed. Closing steps
-  // back over it then; one that came with the URL - a reload, a shared link -
-  // has nothing of this list's behind it, so it is replaced instead.
-  let pushed = false;
-
   const withKey = (id?: string) => ({ query: { ...route.query, [key]: id } });
+
+  // Closing steps back only when the entry behind this one is the same list
+  // without the record open - the one opening it pushed. A filter changed
+  // while it was open, a reload or a shared link leaves something else
+  // there, and stepping back would undo that instead; the key is replaced
+  // away then.
+  const behindIsTheList = () =>
+    router.options.history.state.back ===
+    router.resolve(withKey(undefined)).fullPath;
 
   const open = (id: string) => {
     selectedId.value = id;
@@ -52,7 +56,6 @@ export const useRoutedSelection = ({
       return;
     }
 
-    pushed = true;
     void router.push(withKey(id));
   };
 
@@ -63,8 +66,7 @@ export const useRoutedSelection = ({
       return;
     }
 
-    if (pushed) {
-      pushed = false;
+    if (behindIsTheList()) {
       router.back();
 
       return;
@@ -75,15 +77,9 @@ export const useRoutedSelection = ({
 
   // The back and forward gestures, which change the route without asking.
   watch(routed, (id) => {
-    if (id === selectedId.value) {
-      return;
+    if (id !== selectedId.value) {
+      selectedId.value = id;
     }
-
-    if (!id) {
-      pushed = false;
-    }
-
-    selectedId.value = id;
   });
 
   return { selectedId, open, close };
