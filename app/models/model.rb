@@ -10,11 +10,6 @@ class Model < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
-  # Replaced by `crew` and `rsi_crew`. Ignored for one release before they are
-  # dropped: the deploy migrates before the new containers boot, and the release
-  # still serving would otherwise select columns that are gone.
-  self.ignored_columns += %w[min_crew max_crew rsi_min_crew rsi_max_crew]
-
   # `name`, `description` and `ground` are here because an admin can edit all
   # three, not because the ship matrix writes them -- an edit with no history is
   # the gap, and the loader's own report reading them is the second reason.

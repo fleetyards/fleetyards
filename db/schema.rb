@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2078,8 +2078,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_120000) do
     t.decimal "cargo", precision: 15, scale: 2
     t.string "size"
     t.decimal "scm_speed", precision: 15, scale: 2
-    t.integer "min_crew"
-    t.integer "max_crew"
     t.decimal "pitch", precision: 15, scale: 2
     t.decimal "yaw", precision: 15, scale: 2
     t.decimal "roll", precision: 15, scale: 2
@@ -2099,8 +2097,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_120000) do
     t.decimal "rsi_cargo", precision: 15, scale: 2
     t.integer "dock_size"
     t.boolean "ground", default: false
-    t.integer "rsi_max_crew"
-    t.integer "rsi_min_crew"
     t.decimal "rsi_scm_speed", precision: 15, scale: 2
     t.decimal "rsi_max_speed", precision: 15, scale: 2
     t.decimal "rsi_pitch", precision: 15, scale: 2
