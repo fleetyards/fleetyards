@@ -78,7 +78,7 @@ const tab = computed<EventTab>(() => eventTabFrom(view.value));
 
 const setView = (next: EventView) => {
   if (view.value === next) return;
-  void router.replace({
+  void router.push({
     name: "fleet-events",
     params: { slug: props.fleet.slug },
     query: {

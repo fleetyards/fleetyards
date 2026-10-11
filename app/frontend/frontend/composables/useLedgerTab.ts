@@ -33,7 +33,7 @@ export const useLedgerTab = () => {
         delete query.tab;
       }
 
-      void router.replace({ query });
+      void router.push({ query });
     },
   });
 

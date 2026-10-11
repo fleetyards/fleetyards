@@ -21,7 +21,7 @@ export const useTransferDirection = () => {
         delete query.direction;
       }
 
-      void router.replace({ query });
+      void router.push({ query });
     },
   });
 

@@ -45,7 +45,7 @@ const filter = async (event: Event, filterSlug: string) => {
     hangarGroupsIn = [...currentGroups, filterSlug];
   }
 
-  await router.replace({
+  await router.push({
     name: route.name,
     query: {
       ...route.query,
