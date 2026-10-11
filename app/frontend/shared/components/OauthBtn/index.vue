@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { OauthBtnProvidersEnum } from "./types";
+import { OauthBtnProvidersEnum, oauthProviderFeatureFlags } from "./types";
 import citizenIdIconProd from "@/images/icons/citizenid.jpg";
 import citizenIdIconDev from "@/images/icons/citizenid-dev.jpg";
 import {
@@ -100,7 +100,7 @@ const label = computed(() => {
 const { isFeatureEnabled } = useFeatures();
 
 const providerActive = computed(() => {
-  return isFeatureEnabled(`oauth-${props.provider}`);
+  return isFeatureEnabled(oauthProviderFeatureFlags[props.provider]);
 });
 
 const isCitizenId = computed(

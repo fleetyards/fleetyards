@@ -10,7 +10,10 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
-import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
+import {
+  OauthBtnProvidersEnum,
+  oauthProviderFeatureFlags,
+} from "@/shared/components/OauthBtn/types";
 import { useDisconnectOauthProvider as useDisconnectOauthProviderMutation } from "@/services/fyApi";
 
 type Props = {
@@ -37,7 +40,7 @@ const { isFeatureEnabled } = useFeatures();
 const disconnectingProvider = ref<string | null>(null);
 
 const providerActive = (provider: OauthBtnProvidersEnum) => {
-  return isFeatureEnabled(`oauth-${provider}`);
+  return isFeatureEnabled(oauthProviderFeatureFlags[provider]);
 };
 
 // Only a signed-in viewer has connections. Read unconditionally, a session that
