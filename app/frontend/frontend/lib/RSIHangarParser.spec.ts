@@ -189,6 +189,21 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("skips a ship upgrade RSI labels as one", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          item("Upgrade", "Upgrade - Merchantman To Hull E"),
+          "Upgrade - Merchantman to Hull E Warbond Edition",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({ status: RsiPageStatus.PAGE, pledges: [] });
+    expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
   it("does not read a page where a ship lost its kind", () => {
     expect(
       extract(

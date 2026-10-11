@@ -38,8 +38,9 @@ const READ_KINDS = new Map<string, RSIHangarItemKind>([
 
 // Kinds that never become a vehicle. Any other label may be a ship RSI has
 // relabelled: skipped, it would drop out of the sync and the unmatched action
-// would act on it.
-const SKIPPED_KINDS = ["Insurance", "Credits", "FPS Equipment"];
+// would act on it. "Upgrade" is a ship-to-ship upgrade, which RSI once listed
+// without a kind.
+const SKIPPED_KINDS = ["Insurance", "Credits", "FPS Equipment", "Upgrade"];
 
 const KNOWN_KINDS = [...READ_KINDS.keys(), ...SKIPPED_KINDS];
 
