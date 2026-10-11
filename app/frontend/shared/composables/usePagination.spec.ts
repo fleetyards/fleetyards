@@ -9,7 +9,10 @@ import { usePagination } from "./usePagination";
 
 // Against the real store rather than the testing pinia, whose actions are
 // stubs: the point is that removing a saved size reaches the list's request.
-const render = async (query: Record<string, string> = {}) => {
+const render = async (
+  query: Record<string, string> = {},
+  seed: (queryClient: QueryClient) => void = () => {},
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -20,6 +23,7 @@ const render = async (query: Record<string, string> = {}) => {
 
   const pinia = createPinia();
   const queryClient = new QueryClient();
+  seed(queryClient);
   const invalidate = vi.spyOn(queryClient, "invalidateQueries");
 
   let pagination: ReturnType<typeof usePagination> | undefined;
@@ -52,7 +56,7 @@ const render = async (query: Record<string, string> = {}) => {
 const refuse = (queryClient: QueryClient, key: unknown[], code: string) =>
   queryClient
     .fetchQuery({
-      queryKey: [...key, code],
+      queryKey: [...key, { code }],
       retry: false,
       queryFn: () =>
         Promise.reject(
@@ -63,6 +67,12 @@ const refuse = (queryClient: QueryClient, key: unknown[], code: string) =>
         ),
     })
     .catch(() => undefined);
+
+// An answer for this list, naming the sizes it offers.
+const answer = (steps: (number | string)[]) => ({
+  items: [],
+  meta: { pagination: { perPageSteps: steps } },
+});
 
 describe("usePagination", () => {
   it("drops a removed page size and refetches the list", async () => {
@@ -212,6 +222,20 @@ describe("usePagination", () => {
       expect(store.findByKey("ships")).toBe(240);
     });
 
+    it("keeps the size when a sibling list was refused", async () => {
+      const { store, queryClient } = await render();
+
+      store.setBykey("ships", 240);
+      await refuse(
+        queryClient,
+        ["ships", "x", "squadrons", {}],
+        "pagination.max_per_page_reached",
+      );
+      await flushPromises();
+
+      expect(store.findByKey("ships")).toBe(240);
+    });
+
     it("keeps the size when another list was refused", async () => {
       const { store, queryClient } = await render();
 
@@ -225,5 +249,69 @@ describe("usePagination", () => {
 
       expect(store.findByKey("ships")).toBe(240);
     });
+  });
+
+  describe("a size this list does not offer", () => {
+    it("drops a linked one once the list names its sizes", async () => {
+      const { pagination, router, queryClient } = await render({
+        perPage: "all",
+      });
+
+      expect(pagination.perPage.value).toBe("all");
+
+      queryClient.setQueryData(
+        ["ships", { perPage: "all" }],
+        answer([12, 24, 48, 96]),
+      );
+      await flushPromises();
+
+      expect(pagination.perPage.value).toBeUndefined();
+      expect(router.currentRoute.value.query).toEqual({});
+    });
+
+    it("never requests one an earlier answer ruled out", async () => {
+      const { pagination, store } = await render({}, (queryClient) =>
+        queryClient.setQueryData(["ships", {}], answer([12, 24, 48, 96])),
+      );
+
+      store.setBykey("ships", 240);
+
+      expect(pagination.perPage.value).toBeUndefined();
+    });
+
+    it("keeps one the list offers", async () => {
+      const { pagination, queryClient } = await render({ perPage: "all" });
+
+      queryClient.setQueryData(["ships", {}], answer([12, 24, "all"]));
+      await flushPromises();
+
+      expect(pagination.perPage.value).toBe("all");
+    });
+
+    it("ignores the sizes another list names", async () => {
+      const { pagination, queryClient } = await render({ perPage: "240" });
+
+      queryClient.setQueryData(["ships", "x", "squadrons"], answer([12, 24]));
+      await flushPromises();
+
+      expect(pagination.perPage.value).toBe("240");
+    });
+  });
+
+  it("blames the saved size when the linked one was never requested", async () => {
+    const { store, router, queryClient } = await render({ perPage: "30" });
+
+    store.setBykey("ships", 240);
+    await flushPromises();
+    await router.replace({ query: { perPage: "30" } });
+
+    await refuse(
+      queryClient,
+      ["ships", { perPage: "240" }],
+      "pagination.max_per_page_reached",
+    );
+    await flushPromises();
+
+    expect(store.findByKey("ships")).toBeUndefined();
   });
 });
