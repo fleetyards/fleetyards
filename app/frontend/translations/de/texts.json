@@ -331,7 +331,21 @@
         "expenseNeedsReview": "Eine Ausgabe zählt, sobald sie von der Verwaltung des Buchs freigegeben wurde."
       },
       "fleet": {
-        "contractCovers": "Das Bild, das die Auftragstafel je Auftragsart zeigt. Bleibt eines leer, wird das eingebaute Bild darunter verwendet."
+        "contractCovers": "Das Bild, das die Auftragstafel je Auftragsart zeigt. Bleibt eines leer, wird das eingebaute Bild darunter verwendet.",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "Alle waren in den letzten %{count} Tagen aktiv."
+            },
+            "unverified": {
+              "none": "Alle Mitglieder sind in der RSI-Organisation der Flotte.",
+              "fleetNotVerified": "Die Flotte hat ihre RSI-Organisation noch nicht verifiziert, deshalb wird an anderer Stelle kein Mitglied als verifiziert angezeigt. Diese Liste zeigt, wer in der Organisation fehlt."
+            },
+            "emptyRoles": {
+              "none": "Jede Rolle hat mindestens ein Mitglied."
+            }
+          }
+        }
       }
     }
   }

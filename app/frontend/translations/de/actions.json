@@ -301,7 +301,13 @@
           "decline": "Ablehnen",
           "remove": "Entfernen",
           "editRole": "Rolle bearbeiten",
-          "editNickname": "Spitzname bearbeiten"
+          "editNickname": "Spitzname bearbeiten",
+          "health": {
+            "open": "Mitglieder-Zustand",
+            "showAll": "Alle %{count} anzeigen",
+            "editRoles": "Rollen bearbeiten",
+            "viewRoles": "Rollen ansehen"
+          }
         },
         "inviteUrls": {
           "create": "Neue Einladungs-URL erstellen"

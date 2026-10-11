@@ -331,7 +331,21 @@
         "expenseNeedsReview": "支出需經帳本管理者核准後才會計入。"
       },
       "fleet": {
-        "contractCovers": "合約板為每種合約顯示的圖片。留空則使用下方的內建圖片。"
+        "contractCovers": "合約板為每種合約顯示的圖片。留空則使用下方的內建圖片。",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "所有人在過去 %{count} 天內都有活動。"
+            },
+            "unverified": {
+              "none": "所有成員都在艦隊的 RSI 組織中。",
+              "fleetNotVerified": "艦隊尚未驗證其 RSI 組織，因此其他地方不會將任何成員顯示為已驗證。此列表顯示組織中缺少的成員。"
+            },
+            "emptyRoles": {
+              "none": "每個角色至少有一名成員。"
+            }
+          }
+        }
       }
     }
   }

@@ -742,6 +742,31 @@
           "views": {
             "members": "成员",
             "invites": "邀请"
+          },
+          "health": {
+            "inactive": {
+              "title": {
+                "one": "%{count} 名不活跃成员",
+                "other": "%{count} 名不活跃成员"
+              },
+              "threshold": "至少不活跃",
+              "days": {
+                "one": "%{count} 天",
+                "other": "%{count} 天"
+              }
+            },
+            "unverified": {
+              "title": {
+                "one": "%{count} 名成员不在 RSI 组织中",
+                "other": "%{count} 名成员不在 RSI 组织中"
+              }
+            },
+            "emptyRoles": {
+              "title": {
+                "one": "%{count} 个无人担任的角色",
+                "other": "%{count} 个无人担任的角色"
+              }
+            }
           }
         },
         "squadrons": {

@@ -63,7 +63,8 @@
           "index": "%{fleet} Members",
           "invites": "%{fleet} Invites",
           "worldmap": "%{fleet} 成员世界地图",
-          "starmap": "%{fleet} 成员星图"
+          "starmap": "%{fleet} 成员星图",
+          "health": "%{fleet} 成员健康检查"
         },
         "squadrons": {
           "index": "%{fleet} 中队",

@@ -301,7 +301,13 @@
           "decline": "Decline",
           "remove": "Remove",
           "editRole": "Edit Role",
-          "editNickname": "Edit Nickname"
+          "editNickname": "Edit Nickname",
+          "health": {
+            "open": "Member health",
+            "showAll": "Show all %{count}",
+            "editRoles": "Edit roles",
+            "viewRoles": "View roles"
+          }
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

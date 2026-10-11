@@ -331,7 +331,21 @@
         "expenseNeedsReview": "An expense counts once whoever manages the ledger has approved it."
       },
       "fleet": {
-        "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used."
+        "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used.",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "Everyone has been active in the last %{count} days."
+            },
+            "unverified": {
+              "none": "Every member is in the fleet's RSI organisation.",
+              "fleetNotVerified": "The fleet has not verified its RSI organisation yet, so no member is shown as verified anywhere else. This list shows who is missing from the organisation."
+            },
+            "emptyRoles": {
+              "none": "Every role has at least one member."
+            }
+          }
+        }
       }
     }
   }

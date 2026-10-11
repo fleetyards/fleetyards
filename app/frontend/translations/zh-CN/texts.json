@@ -331,7 +331,21 @@
         "expenseNeedsReview": "支出需经账本管理者批准后才会计入。"
       },
       "fleet": {
-        "contractCovers": "合约板为每种合约显示的图片。留空则使用下方的内置图片。"
+        "contractCovers": "合约板为每种合约显示的图片。留空则使用下方的内置图片。",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "所有人在过去 %{count} 天内都有活动。"
+            },
+            "unverified": {
+              "none": "所有成员都在舰队的 RSI 组织中。",
+              "fleetNotVerified": "舰队尚未验证其 RSI 组织，因此其他地方不会将任何成员显示为已验证。此列表显示组织中缺少的成员。"
+            },
+            "emptyRoles": {
+              "none": "每个角色至少有一名成员。"
+            }
+          }
+        }
       }
     }
   }

@@ -301,7 +301,13 @@
           "decline": "Rifiuta",
           "remove": "Rimuovi",
           "editRole": "Modifica ruolo",
-          "editNickname": "Modifica soprannome"
+          "editNickname": "Modifica soprannome",
+          "health": {
+            "open": "Stato dei membri",
+            "showAll": "Mostra tutti i %{count}",
+            "editRoles": "Modifica ruoli",
+            "viewRoles": "Vedi ruoli"
+          }
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"

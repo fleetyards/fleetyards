@@ -33,6 +33,9 @@ type Props = {
   // it would say nothing.
   showSquadrons?: boolean;
   showMemberActions?: boolean;
+  // Off where the rows are a fixed sample rather than a page of the roster,
+  // so a column header has no list to sort.
+  sortableColumns?: boolean;
   squadronSlug?: string;
 };
 
@@ -40,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   capabilities: undefined,
   showSquadrons: true,
   showMemberActions: true,
+  sortableColumns: true,
   squadronSlug: undefined,
 });
 
@@ -81,14 +85,14 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     name: "username",
     label: t("labels.username"),
     width: "30%",
-    sortable: true,
+    sortable: props.sortableColumns,
   },
   {
     name: "rsiHandle",
     label: t("labels.user.rsiHandle"),
     width: "15%",
     mobile: false,
-    sortable: true,
+    sortable: props.sortableColumns,
   },
   {
     name: "role",
@@ -101,7 +105,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
           name: "squadronRank",
           label: t("labels.fleet.squadrons.rank"),
           width: "15%",
-          sortable: true,
+          sortable: props.sortableColumns,
         },
       ]
     : []),
@@ -112,7 +116,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       : t("labels.fleet.members.joined"),
     width: "15%",
     mobile: false,
-    sortable: true,
+    sortable: props.sortableColumns,
   },
   {
     name: "currentLocation",
@@ -125,7 +129,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     label: t("labels.user.lastActiveAt"),
     width: "15%",
     mobile: false,
-    sortable: true,
+    sortable: props.sortableColumns,
   },
   {
     name: "links",

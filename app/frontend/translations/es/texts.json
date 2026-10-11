@@ -331,7 +331,21 @@
         "expenseNeedsReview": "Un gasto cuenta cuando quien gestiona el libro lo aprueba."
       },
       "fleet": {
-        "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo."
+        "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo.",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "Todos han estado activos en los últimos %{count} días."
+            },
+            "unverified": {
+              "none": "Todos los miembros están en la organización de RSI de la flota.",
+              "fleetNotVerified": "La flota aún no ha verificado su organización de RSI, por lo que en ningún otro lugar se muestra a ningún miembro como verificado. Esta lista muestra quién falta en la organización."
+            },
+            "emptyRoles": {
+              "none": "Cada rol tiene al menos un miembro."
+            }
+          }
+        }
       }
     }
   }

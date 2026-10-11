@@ -331,7 +331,21 @@
         "expenseNeedsReview": "Una spesa conta dopo che chi gestisce il registro l'ha approvata."
       },
       "fleet": {
-        "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto."
+        "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto.",
+        "members": {
+          "health": {
+            "inactive": {
+              "none": "Tutti sono stati attivi negli ultimi %{count} giorni."
+            },
+            "unverified": {
+              "none": "Tutti i membri fanno parte dell'organizzazione RSI della flotta.",
+              "fleetNotVerified": "La flotta non ha ancora verificato la sua organizzazione RSI, quindi altrove nessun membro risulta verificato. Questo elenco mostra chi manca nell'organizzazione."
+            },
+            "emptyRoles": {
+              "none": "Ogni ruolo ha almeno un membro."
+            }
+          }
+        }
       }
     }
   }

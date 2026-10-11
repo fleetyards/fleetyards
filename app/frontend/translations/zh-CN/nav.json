@@ -53,7 +53,8 @@
           "index": "Members",
           "invites": "Invites",
           "worldmap": "世界地图",
-          "starmap": "星图"
+          "starmap": "星图",
+          "health": "健康检查"
         },
         "squadrons": {
           "index": "中队",

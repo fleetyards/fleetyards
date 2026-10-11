@@ -301,7 +301,13 @@
           "decline": "Decline",
           "remove": "移除",
           "editRole": "編輯角色",
-          "editNickname": "編輯暱稱"
+          "editNickname": "編輯暱稱",
+          "health": {
+            "open": "成員健康檢查",
+            "showAll": "顯示全部 %{count} 個",
+            "editRoles": "編輯角色",
+            "viewRoles": "查看角色"
+          }
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

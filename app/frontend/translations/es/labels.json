@@ -742,6 +742,31 @@
           "views": {
             "members": "Miembros",
             "invites": "Invitaciones"
+          },
+          "health": {
+            "inactive": {
+              "title": {
+                "one": "%{count} miembro inactivo",
+                "other": "%{count} miembros inactivos"
+              },
+              "threshold": "Inactivos durante al menos",
+              "days": {
+                "one": "%{count} día",
+                "other": "%{count} días"
+              }
+            },
+            "unverified": {
+              "title": {
+                "one": "%{count} miembro fuera de la organización de RSI",
+                "other": "%{count} miembros fuera de la organización de RSI"
+              }
+            },
+            "emptyRoles": {
+              "title": {
+                "one": "%{count} rol sin miembros",
+                "other": "%{count} roles sin miembros"
+              }
+            }
           }
         },
         "squadrons": {
