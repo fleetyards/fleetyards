@@ -34,8 +34,10 @@ export const usePagination = (
   const updatePerPage = (newPerPage: string | number) => {
     paginationStore.setBykey(key.value, newPerPage);
 
-    if (route.query.perPage) {
-      const { perPage: _perPage, ...query } = route.query;
+    // The current page number means different items at the new size, and can
+    // point past the last page.
+    if (route.query.perPage || route.query.page) {
+      const { perPage: _perPage, page: _page, ...query } = route.query;
 
       void router.replace({ query });
     }

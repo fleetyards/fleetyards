@@ -87,4 +87,14 @@ describe("usePagination", () => {
     expect(router.currentRoute.value.query).not.toHaveProperty("perPage");
     expect(String(pagination.perPage.value)).toBe("60");
   });
+
+  it("goes back to the first page when the page size changes", async () => {
+    const { pagination, router } = await render({ page: "2", q: "x" });
+
+    pagination.updatePerPage(100);
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ q: "x" });
+    expect(pagination.page.value).toBe("1");
+  });
 });
