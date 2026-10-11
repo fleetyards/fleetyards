@@ -173,7 +173,6 @@ const summary = (item: Import) => {
 
   <Heading hero>{{ t("headlines.hangar.imports") }}</Heading>
 
-
   <ListGroup
     :items="items"
     :loading="isLoading"

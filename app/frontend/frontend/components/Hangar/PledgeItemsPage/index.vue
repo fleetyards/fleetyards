@@ -124,7 +124,6 @@ onUnmounted(() => {
     </HeadingSmall>
   </Heading>
 
-
   <FilteredList
     :name="`hangar-${kind}`"
     :records="pledgeItems?.items || []"

@@ -84,7 +84,6 @@ onUnmounted(() => {
 
   <Heading hero>{{ t("headlines.hangar.buybacks") }}</Heading>
 
-
   <FilteredList
     name="buybacks"
     :records="buybacks?.items || []"
@@ -132,4 +131,3 @@ onUnmounted(() => {
     </template>
   </FilteredList>
 </template>
-
