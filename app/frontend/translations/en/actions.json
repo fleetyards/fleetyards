@@ -240,6 +240,7 @@
         "changeInSettings": "Change this in Settings",
         "retry": "Retry Sync",
         "runInBackground": "Continue in background",
+        "showResult": "Show Result",
         "close": "Close",
         "refresh": "Refresh Page"
       },

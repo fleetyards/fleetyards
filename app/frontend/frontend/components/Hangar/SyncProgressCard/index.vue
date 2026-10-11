@@ -6,10 +6,18 @@ export default {
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
+
+type Props = {
+  loading?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  loading: true,
+});
 </script>
 
 <template>
-  <Panel :loading="true" :outer-spacing="false">
+  <Panel :loading="loading" :outer-spacing="false">
     <div class="sync-progress-card__body">
       <slot />
     </div>

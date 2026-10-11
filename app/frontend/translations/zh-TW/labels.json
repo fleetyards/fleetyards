@@ -2597,6 +2597,8 @@
       "syncExtension": {
         "warnings": "警告",
         "backgroundProgress": "正在同步機庫",
+        "backgroundFinished": "機庫同步已完成",
+        "backgroundFailed": "機庫同步失敗",
         "status": {
           "started": "匯入已開始...",
           "finished": "匯入完成",

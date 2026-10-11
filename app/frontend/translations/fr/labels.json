@@ -2597,6 +2597,8 @@
       "syncExtension": {
         "warnings": "Avertissements",
         "backgroundProgress": "Synchronisation de votre hangar",
+        "backgroundFinished": "Synchronisation du hangar terminée",
+        "backgroundFailed": "La synchronisation du hangar a échoué",
         "status": {
           "started": "Import démarré...",
           "finished": "Import terminé",
