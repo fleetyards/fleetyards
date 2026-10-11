@@ -46,6 +46,12 @@ class Import < ApplicationRecord
 
   scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
 
+  # Only a hangar sync records an outcome, so every other type, and a sync that
+  # failed before deciding one, has none and stays in.
+  scope :without_no_op_syncs, -> {
+    where("imports.output->>'outcome' IS NULL OR imports.output->>'outcome' NOT IN (?)", ::HangarSync::NO_OP_OUTCOMES)
+  }
+
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
 

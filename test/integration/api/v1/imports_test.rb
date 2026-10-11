@@ -208,6 +208,31 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /imports leaves out a sync that had nothing to do" do
+    user = create(:user)
+    synced = create_import(user, state: "finished")
+    synced.update!(output: {"outcome" => "synced"})
+    HangarSync::NO_OP_OUTCOMES.each do |outcome|
+      create_import(user, state: "finished").update!(output: {"outcome" => outcome})
+    end
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [synced.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # The list is the only place it is hidden: the sync status card still reads
+  # the run back, and its id stays a valid link.
+  test "GET /imports/{id} still shows a sync that had nothing to do" do
+    user = create(:user)
+    import = create_import(user, state: "finished")
+    import.update!(output: {"outcome" => "nothing_to_sync"})
+    sign_in user
+
+    assert_api_response :get, 200, params: {id: import.id}
+  end
+
   test "GET /imports/{id} returns 404 for somebody else's import" do
     user = create(:user)
     import = create_import(create(:user))
