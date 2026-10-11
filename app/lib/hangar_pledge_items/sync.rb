@@ -32,9 +32,16 @@ module HangarPledgeItems
     # and quotes: "Tailwind ‘Drake’ Helmet" is "Tailwind Flight Helmet Drake",
     # "Doomsday Skullcap Helmet" is "Skullcap Helmet". A name counts as gear
     # when every word of it is in a catalogue name, or every word of one is in
-    # it. One word alone would match far too much.
+    # it. One word alone would match far too much, and a poster or model of
+    # a catalogued helmet names that helmet too.
     class EquipmentCatalogue
       MIN_WORDS = 2
+
+      FLAIR_WORDS = %w[
+        poster posters model models trophy plushie plush coin statue statuette
+        figure figurine banner flag globe painting print fishtank
+        collectible display miniature
+      ].freeze
 
       def self.words(name)
         name.to_s.downcase.gsub(/[^[:alnum:]\s-]/, " ").split.uniq
@@ -48,6 +55,7 @@ module HangarPledgeItems
 
       def include?(name)
         words = self.class.words(name)
+        return false if words.intersect?(FLAIR_WORDS)
 
         words.flat_map { |word| @by_word.fetch(word, []) }.uniq.any? do |index|
           catalogued = @names[index]

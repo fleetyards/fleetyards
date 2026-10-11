@@ -566,14 +566,15 @@ class HangarSyncTest < ActiveSupport::TestCase
         {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "Doomsday Skullcap Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "600i Explorer - 2953 Best In Show Poster", "type" => "extra"},
-        {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"}
+        {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"},
+        {"id" => "00064541", "name" => "Skullcap Helmet Poster", "type" => "extra"}
       ]
 
       result = ::HangarSync.new(input).run(@user.id)
 
       assert_equal ["Arrowhead Sniper Rifle", "Doomsday Skullcap Helmet", "Tailwind ‘Drake’ Helmet"],
         @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
-      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Self-Land Hangar"],
+      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Self-Land Hangar", "Skullcap Helmet Poster"],
         @user.hangar_pledge_items.flair.where(rsi_pledge_id: "00064541").order(:name).pluck(:name)
       assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
 
