@@ -91,6 +91,23 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules labels a component in the caller's locale after another locale cached it" do
+    model = create(:model)
+    model_module = create(:model_module)
+    create(:module_hardpoint, model:, model_module:)
+    cooler = create(:component, name: "Module Cooler", item_class: "industrial")
+    create(:hardpoint, parent: model_module, sc_name: "hardpoint_cooler", source: :game_files, component: cooler)
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules", headers: {"Accept-Language" => "zh-CN"}
+      assert_equal "工业", item_class_label(response.parsed_body)
+
+      get "/api/v1/models/#{model.slug}/modules", headers: {"Accept-Language" => "en"}
+
+      assert_equal "Industrial", item_class_label(response.parsed_body)
+    end
+  end
+
   test "GET /models/:slug/modules serves the module's own new price after the payload was cached" do
     model = create(:model)
     model_module = create(:model_module)
@@ -110,6 +127,10 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
 
   private def sold_at_prices(body)
     body["items"].sole["hardpoints"].sole.dig("component", "availability", "soldAt").map { |entry| entry["price"] }
+  end
+
+  private def item_class_label(body)
+    body["items"].sole["hardpoints"].sole.dig("component", "itemClassLabel")
   end
 
   private def module_sold_at_prices(body)

@@ -5,7 +5,7 @@
 # the slot alone would serve the previous build's loadout. For a matrix slot
 # `facts` is the slot itself and this collapses back to one entry.
 json.cache! [
-  "admin-v4", hardpoint, hardpoint.facts, hardpoint.facts.component, ItemPrice.cache_key_for("Component"),
+  "admin-v5", I18n.locale, hardpoint, hardpoint.facts, hardpoint.facts.component, ItemPrice.cache_key_for("Component"),
   Manufacturer.artwork_version
 ] do
   json.partial!("admin/api/v1/hardpoints/base", hardpoint:)

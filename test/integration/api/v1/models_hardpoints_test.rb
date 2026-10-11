@@ -118,6 +118,21 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/hardpoints labels a component in the caller's locale after another locale cached it" do
+    model = create(:model)
+    cooler = create(:component, name: "Cooler", item_class: "industrial")
+    create(:hardpoint, parent: model, sc_name: "hardpoint_cooler", source: :game_files, component: cooler)
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/hardpoints", headers: {"Accept-Language" => "zh-CN"}
+      assert_equal "工业", response.parsed_body.sole.dig("component", "itemClassLabel")
+
+      get "/api/v1/models/#{model.slug}/hardpoints", headers: {"Accept-Language" => "en"}
+
+      assert_equal "Industrial", response.parsed_body.sole.dig("component", "itemClassLabel")
+    end
+  end
+
   private def sold_at_prices(body)
     body.sole["hardpoints"].sole.dig("component", "availability", "soldAt").map { |entry| entry["price"] }
   end
