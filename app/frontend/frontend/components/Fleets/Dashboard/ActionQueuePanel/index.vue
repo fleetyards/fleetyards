@@ -24,6 +24,7 @@ import {
   FleetInventoryTransfersDirection,
   InventoryTransferStateEnum,
   getFleetActivityQueryKey,
+  getFleetMemberHealthQueryKey,
   useAcceptFleetMember,
   useDeclineFleetMember,
   useFleetInventoryTransfers,
@@ -92,17 +93,22 @@ const {
   },
 );
 
+// A number is all the panel shows, so it asks for no rows.
 const {
   data: health,
   isLoading: healthLoading,
   isFetching: healthFetching,
   isLoadingError: healthFailed,
-} = useFleetMemberHealth(fleetSlug, undefined, {
-  query: {
-    ...liveQuery,
-    enabled: computed(() => props.canCheckMemberHealth),
+} = useFleetMemberHealth(
+  fleetSlug,
+  { sample: 0 },
+  {
+    query: {
+      ...liveQuery,
+      enabled: computed(() => props.canCheckMemberHealth),
+    },
   },
-});
+);
 
 // Checks, not members: one fleet with forty inactive members has one thing to
 // look at, not forty.
@@ -178,6 +184,10 @@ const answer = async (member: FleetMember, accept: boolean) => {
 
     comlink.emit("fleet-member-update");
     void refetchRequests();
+    // An answered request may have been the oldest one waiting.
+    void queryClient.invalidateQueries({
+      queryKey: getFleetMemberHealthQueryKey(fleetSlug.value),
+    });
     void queryClient.invalidateQueries({
       queryKey: getFleetActivityQueryKey(fleetSlug.value),
     });

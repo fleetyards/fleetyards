@@ -55,7 +55,7 @@ const healthWith = (
   rsiMemberCount: null,
   memberCount: 10,
   hiddenShipsCount: 0,
-  admins: { totalCount: 2, items: [] },
+  admins: { totalCount: 2, items: [], candidates: [] },
   emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: none,
@@ -119,7 +119,9 @@ describe("FleetDashboardActionQueuePanel", () => {
     health = healthWith({
       inactiveMembers: { totalCount: 4, items: [] },
       unverifiedMembers: { totalCount: 2, items: [] },
-      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
+      emptyRoles: [
+        { role: { id: "r", name: "Officer", slug: "officer" }, candidates: [] },
+      ],
     });
 
     const subject = await mount({ canCheckMemberHealth: true });
