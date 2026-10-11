@@ -1,6 +1,7 @@
 @import "@/shared/components/skeleton";
 
-// Built to the recipe of the row it stands in for - see NotificationsListItem -
+// Built to the recipe of the row it stands in for - see
+// shared/components/Notifications/ListItem -
 // rather than to a height written by hand, and to the same two boxes it splits
 // its insets between: the row, and the button filling it. The height then falls
 // out of the same arithmetic the row's does, so the first load reserves the
