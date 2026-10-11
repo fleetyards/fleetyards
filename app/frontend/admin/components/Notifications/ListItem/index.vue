@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import NotificationListItem from "@/shared/components/Notifications/ListItem/index.vue";
+import { NOTIFICATION_LABELS } from "@/admin/components/Notifications/labels";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   hasSeverityLabel,
@@ -53,7 +54,7 @@ defineExpose({ focus: () => row.value?.focus() });
     :type-label="
       t(`labels.adminNotifications.types.${notification.notificationType}`)
     "
-    scope="adminNotifications"
+    :labels="NOTIFICATION_LABELS"
     :selected="selected"
     :selectable="selectable"
     :checked="checked"

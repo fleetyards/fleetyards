@@ -9,16 +9,15 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { NOTIFICATION_LABELS } from "@/shared/components/Notifications/labels";
 import type {
   NotificationEntry,
-  NotificationScope,
+  NotificationLabels,
 } from "@/shared/components/Notifications/types";
 
 type Props = {
   notification: NotificationEntry;
   typeLabel: string;
-  scope: NotificationScope;
+  labels: NotificationLabels;
   selected?: boolean;
   selectable?: boolean;
   checked?: boolean;
@@ -41,8 +40,6 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
-
-const labels = computed(() => NOTIFICATION_LABELS[props.scope]);
 
 const select = ref<HTMLButtonElement>();
 

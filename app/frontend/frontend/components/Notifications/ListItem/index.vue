@@ -8,6 +8,7 @@ export default {
 import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import NotificationListItem from "@/shared/components/Notifications/ListItem/index.vue";
+import { NOTIFICATION_LABELS } from "@/frontend/components/Notifications/labels";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationActions } from "@/frontend/composables/useNotificationActions";
 import { type Notification } from "@/services/fyApi";
@@ -51,7 +52,7 @@ defineExpose({ focus: () => row.value?.focus() });
     ref="row"
     :notification="notification"
     :type-label="t(`labels.notificationTypes.${notification.notificationType}`)"
-    scope="notifications"
+    :labels="NOTIFICATION_LABELS"
     :selected="selected"
     :selectable="selectable"
     :checked="checked"

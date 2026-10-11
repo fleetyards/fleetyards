@@ -9,6 +9,7 @@ import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import NotificationDetail from "@/shared/components/Notifications/Detail/index.vue";
+import { NOTIFICATION_LABELS } from "@/frontend/components/Notifications/labels";
 import RecordActions from "@/frontend/components/Notifications/RecordActions/index.vue";
 import {
   actionTestId,
@@ -51,7 +52,7 @@ const links = computed(() =>
         ? t(`labels.notificationTypes.${notification.notificationType}`)
         : undefined
     "
-    scope="notifications"
+    :labels="NOTIFICATION_LABELS"
     @close="emit('close')"
     @unread="emit('unread')"
     @archive="emit('archive')"

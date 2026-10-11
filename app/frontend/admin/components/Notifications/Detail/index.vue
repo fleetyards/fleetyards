@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import NotificationDetail from "@/shared/components/Notifications/Detail/index.vue";
+import { NOTIFICATION_LABELS } from "@/admin/components/Notifications/labels";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   hasSeverityLabel,
@@ -44,7 +45,7 @@ const { t, l } = useI18n();
         ? t(`labels.adminNotifications.types.${notification.notificationType}`)
         : undefined
     "
-    scope="adminNotifications"
+    :labels="NOTIFICATION_LABELS"
     @close="emit('close')"
     @unread="emit('unread')"
     @archive="emit('archive')"

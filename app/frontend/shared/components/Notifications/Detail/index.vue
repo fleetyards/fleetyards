@@ -11,16 +11,15 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { NOTIFICATION_LABELS } from "@/shared/components/Notifications/labels";
 import type {
   NotificationEntry,
-  NotificationScope,
+  NotificationLabels,
 } from "@/shared/components/Notifications/types";
 
 type Props = {
   notification?: T;
   typeLabel?: string;
-  scope: NotificationScope;
+  labels: NotificationLabels;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,8 +46,6 @@ defineSlots<{
 }>();
 
 const { t, l } = useI18n();
-
-const labels = computed(() => NOTIFICATION_LABELS[props.scope]);
 
 const body = ref<HTMLElement>();
 
