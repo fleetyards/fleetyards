@@ -159,6 +159,17 @@ describe("usePagination", () => {
       expect(router.currentRoute.value.query).toEqual({ page: "3" });
     });
 
+    it("saves nothing when the navigation throws", async () => {
+      const { pagination, store, router } = await render();
+
+      router.beforeEach(() => {
+        throw new Error("guard failed");
+      });
+
+      await expect(pagination.updatePerPage(48)).resolves.toBeUndefined();
+      expect(store.findByKey("ships")).toBeUndefined();
+    });
+
     it("saves nothing when the navigation is cancelled", async () => {
       const { pagination, store, router } = await render();
 

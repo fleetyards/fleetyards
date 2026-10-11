@@ -96,9 +96,15 @@ export const usePagination = () => {
 
     const { page: _page, ...query } = route.query;
 
-    const failure = await router.replace({
-      query: { ...query, perPage: String(newPerPage) },
-    });
+    let failure: unknown;
+
+    try {
+      failure = await router.replace({
+        query: { ...query, perPage: String(newPerPage) },
+      });
+    } catch (error) {
+      failure = error;
+    }
 
     if (
       failure &&
