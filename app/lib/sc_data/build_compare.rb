@@ -139,7 +139,7 @@ module ScData
         before = from_rows[id]
         after = to_rows[id]
 
-        differing = facts.select { |fact| before[fact.to_s] != after[fact.to_s] }
+        differing = facts.select { |fact| before[fact.to_s] != after[fact.to_s] && recorded_by_both?(fact, before, after) }
         differing += changed_figures(before, after)
 
         next if differing.empty?
@@ -159,6 +159,12 @@ module ScData
 
     private def figures?
       build_class.respond_to?(:durability_changes)
+    end
+
+    private def recorded_by_both?(fact, before, after)
+      return true unless build_class.respond_to?(:fact_recorded?)
+
+      build_class.fact_recorded?(fact, before[fact.to_s]) && build_class.fact_recorded?(fact, after[fact.to_s])
     end
 
     # Both sides are read once and compared in Ruby rather than joined in SQL:

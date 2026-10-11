@@ -9,10 +9,8 @@ module Shared
         schema({
           type: :object,
           properties: {
-            max: {type: :integer},
-            maxLabel: {type: :string},
-            min: {type: :integer},
-            minLabel: {type: :string}
+            value: {type: [:integer, :null]},
+            label: {type: :string}
           },
           additionalProperties: false
 

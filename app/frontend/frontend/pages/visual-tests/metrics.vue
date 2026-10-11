@@ -18,7 +18,7 @@ const metricRowGroups = [
   {
     rows: [
       { label: "Focus", value: "Capital" },
-      { label: "Crew", value: "8 – 12" },
+      { label: "Crew", value: "12" },
     ],
   },
 ];
@@ -48,7 +48,6 @@ import {
   MODEL_STATES,
   ModelStateEnum,
 } from "@/frontend/composables/useModelStates";
-import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
@@ -303,9 +302,6 @@ const sampleMetrics = [
   <div v-if="model" class="row">
     <div class="col-12 col-lg-4">
       <ModelBaseMetrics :model="model" :state="modelState" />
-    </div>
-    <div class="col-12 col-lg-4">
-      <ModelCrewMetrics :model="model" />
     </div>
   </div>
 

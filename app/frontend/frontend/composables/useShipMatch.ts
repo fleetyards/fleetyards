@@ -8,11 +8,9 @@ type VehicleModel = {
   classification?: string | null;
   focus?: string | null;
   size?: string | null;
-  minCrew?: number | null;
-  maxCrew?: number | null;
   cargo?: number | null;
   metrics?: { size?: string | null; cargo?: number | null } | null;
-  crew?: { min?: number | null; max?: number | null } | null;
+  crew?: { value?: number | null } | number | null;
 };
 
 type VehicleLike = {
@@ -21,8 +19,8 @@ type VehicleLike = {
 
 const sizeOf = (m: VehicleModel) => m.metrics?.size ?? m.size ?? undefined;
 const cargoOf = (m: VehicleModel) => m.metrics?.cargo ?? m.cargo ?? null;
-const minCrewOf = (m: VehicleModel) => m.crew?.min ?? m.minCrew ?? null;
-const maxCrewOf = (m: VehicleModel) => m.crew?.max ?? m.maxCrew ?? null;
+const crewOf = (m: VehicleModel) =>
+  typeof m.crew === "number" ? m.crew : (m.crew?.value ?? null);
 
 const SIZE_ORDER = [
   "snub",
@@ -70,8 +68,7 @@ export const vehicleMatchesShip = (
   if (f.maxSize && !sizeAtMost(size, f.maxSize)) return false;
 
   if (f.minCrew != null) {
-    const crewCap = maxCrewOf(m) ?? minCrewOf(m) ?? 0;
-    if (crewCap < f.minCrew) return false;
+    if ((crewOf(m) ?? 0) < f.minCrew) return false;
   }
   if (f.minCargo != null) {
     const cargo = Number(cargoOf(m) ?? 0);

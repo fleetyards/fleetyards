@@ -24,6 +24,7 @@ function model(
 ): Model {
   return {
     availability: {},
+    crew: { value: 4, label: "4" },
     metrics: { length: 23.58, beam: 19.62, height: 3.28, ...metrics },
     ...overrides,
   } as Model;

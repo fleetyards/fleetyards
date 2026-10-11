@@ -15,8 +15,7 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             slug: {type: :string},
-            minCrew: {type: :integer},
-            maxCrew: {type: :integer},
+            crew: {type: [:integer, :null]},
             image: ::Shared::V1::Schemas::MediaFile
           },
           required: %w[id name slug]

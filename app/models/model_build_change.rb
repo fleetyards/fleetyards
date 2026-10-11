@@ -63,6 +63,7 @@ class ModelBuildChange < ApplicationRecord
       old_value = previous.public_send(fact)
       new_value = build.public_send(fact)
       next if old_value == new_value
+      next unless ModelBuild.fact_recorded?(fact, old_value) && ModelBuild.fact_recorded?(fact, new_value)
 
       changes[fact] = [old_value, new_value]
     end

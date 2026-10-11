@@ -10,6 +10,11 @@ class Model < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
+  # Replaced by `crew` and `rsi_crew`. Ignored for one release before they are
+  # dropped: the deploy migrates before the new containers boot, and the release
+  # still serving would otherwise select columns that are gone.
+  self.ignored_columns += %w[min_crew max_crew rsi_min_crew rsi_max_crew]
+
   # `name`, `description` and `ground` are here because an admin can edit all
   # three, not because the ship matrix writes them -- an edit with no history is
   # the gap, and the loader's own report reading them is the second reason.
@@ -23,10 +28,10 @@ class Model < ApplicationRecord
   has_paper_trail on: %i[update], only: %i[
     name description ground
     rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
-    rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_min_crew rsi_max_crew
+    rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_crew
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
     classification production_status production_note focus pledge_price length beam height mass
-    cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
+    cargo personal_inventory size crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom sales_page_url
@@ -455,20 +460,20 @@ class Model < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "base_model_id",
-      "beam", "cargo", "cargo_holds", "classification", "created_at", "description",
+      "beam", "cargo", "cargo_holds", "classification", "created_at", "crew", "description",
       "dimensions_measured_at", "dock_size", "erkul_identifier", "fleetchart_image",
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only", "can_land_on_planets",
       "images_count", "last_updated_at", "length", "loaners_count",
-      "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "min_crew", "model_paints_count", "module_hardpoints_count",
+      "manufacturer", "manufacturer_id", "mass", "max_speed", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "positions_need_curation", "price",
       "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
-      "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
-      "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
+      "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_speed",
+      "rsi_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height", "sc_key",
       "sc_length", "scm_speed", "search",
       "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",

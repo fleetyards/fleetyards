@@ -30,8 +30,7 @@ if fleet_event_signup.vehicle.present?
         json.classification fleet_event_signup.vehicle.model.classification
         json.focus fleet_event_signup.vehicle.model.focus
         json.size fleet_event_signup.vehicle.model.size
-        json.min_crew fleet_event_signup.vehicle.model.min_crew
-        json.max_crew fleet_event_signup.vehicle.model.max_crew
+        json.crew fleet_event_signup.vehicle.model.crew
         json.cargo fleet_event_signup.vehicle.model.cargo
         json.position_count fleet_event_signup.vehicle.model.model_positions.size
       end

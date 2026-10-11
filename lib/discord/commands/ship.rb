@@ -33,18 +33,11 @@ module Discord
         {
           I18n.t("discord.commands.ship.fields.classification") => model.classification&.humanize,
           I18n.t("discord.commands.ship.fields.size") => model.size&.humanize,
-          I18n.t("discord.commands.ship.fields.crew") => crew(model),
+          I18n.t("discord.commands.ship.fields.crew") => model.crew&.to_s,
           I18n.t("discord.commands.ship.fields.pledge_price") => model.pledge_price_label,
           I18n.t("discord.commands.ship.fields.price") => model.price_label,
           I18n.t("discord.commands.ship.fields.dimensions") => dimensions(model)
         }.compact_blank
-      end
-
-      private def crew(model)
-        return model.max_crew.to_s if model.min_crew.blank? || model.min_crew == model.max_crew
-        return if model.max_crew.blank?
-
-        "#{model.min_crew}–#{model.max_crew}"
       end
 
       private def dimensions(model)

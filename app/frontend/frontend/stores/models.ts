@@ -1,4 +1,5 @@
 import { type ShipListState } from "@/frontend/types";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { defineStore } from "pinia";
 
@@ -18,8 +19,7 @@ export enum ModelTableViewColsEnum {
   CARGO = "cargo",
   QUANTUM_FUEL = "quantumFuelTankSize",
   HYDROGEN_FUEL = "hydrogenFuelTankSize",
-  MIN_CREW = "minCrew",
-  MAX_CREW = "maxCrew",
+  CREW = "crew",
   SCM_SPEED = "scmSpeed",
   MAX_SPEED = "maxSpeed",
   GROUND_MAX_SPEED = "groundMaxSpeed",
@@ -73,7 +73,7 @@ export const useModelsStore = defineStore("models", {
       ModelTableViewColsEnum.HEIGHT,
       ModelTableViewColsEnum.MASS,
       ModelTableViewColsEnum.CARGO,
-      ModelTableViewColsEnum.MIN_CREW,
+      ModelTableViewColsEnum.CREW,
     ],
     sortFields: [
       ModelSortFieldsEnum.NAME,
@@ -122,5 +122,14 @@ export const useModelsStore = defineStore("models", {
       "tableViewImageCols",
       "sortFields",
     ],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<ModelTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          minCrew: ModelTableViewColsEnum.CREW,
+          maxCrew: ModelTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });

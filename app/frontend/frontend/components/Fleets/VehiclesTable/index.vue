@@ -261,14 +261,9 @@ const openOwnersModal = (modelSlug: string) => {
           toNumber(getModel(record).metrics.cargo || "", "cargo")
         }}</span>
       </template>
-      <template #col-modelMinCrew="{ record }">
+      <template #col-modelCrew="{ record }">
         <span class="no-break">{{
-          toNumber(getModel(record).crew.min || "", "people")
-        }}</span>
-      </template>
-      <template #col-modelMaxCrew="{ record }">
-        <span class="no-break">{{
-          toNumber(getModel(record).crew.max || "", "people")
+          toNumber(getModel(record).crew.value || "", "people")
         }}</span>
       </template>
       <template #col-modelGroundMaxSpeed="{ record }">

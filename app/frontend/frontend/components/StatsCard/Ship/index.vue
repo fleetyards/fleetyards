@@ -56,14 +56,12 @@ const badges = computed<StatsCardBadge[]>(() => {
   const model = props.model;
   if (!model) return [];
 
-  const crew = [model.crew.minLabel, model.crew.maxLabel].filter(Boolean);
-
   return [
-    crew.length
+    model.crew.label
       ? {
           key: "crew",
-          label: t("labels.model.minCrew"),
-          value: crew.join(" – "),
+          label: t("labels.model.crew"),
+          value: model.crew.label,
         }
       : undefined,
     model.pledgePriceLabel

@@ -12,8 +12,7 @@ json.metrics do
   json.total_money @quick_stats.metrics[:total_money]
   json.total_credits @quick_stats.metrics[:total_credits]
   json.total_ingame_value @quick_stats.metrics[:total_ingame_value]
-  json.total_min_crew @quick_stats.metrics[:total_min_crew]
-  json.total_max_crew @quick_stats.metrics[:total_max_crew]
+  json.total_crew @quick_stats.metrics[:total_crew]
   json.total_cargo @quick_stats.metrics[:total_cargo]
   json.largest_ship @quick_stats.metrics[:largest_ship]&.to_f
   json.smallest_ship @quick_stats.metrics[:smallest_ship]&.to_f

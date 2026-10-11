@@ -25,10 +25,8 @@ json.adi_map model.adi_map
 
 json.crew({})
 json.crew do
-  json.max model.max_crew
-  json.max_label model.max_crew.to_s
-  json.min model.min_crew
-  json.min_label model.min_crew.to_s
+  json.value model.crew
+  json.label model.crew.to_s
 end
 
 json.description model.description

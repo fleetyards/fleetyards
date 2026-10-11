@@ -32,7 +32,7 @@ module Api
       end
 
       def vehicles
-        scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+        scope = vehicle_scope.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: %i[build last_build])
 
         scope = scope.where(loaner: loaner_included?)
         scope = narrow_to_squadrons(scope)
@@ -199,8 +199,7 @@ module Api
           total_money: pledge_store_models.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
           total_credits: ingame_models.map(&:price).sum(&:to_i),
           total_ingame_value: non_loaner_models.map(&:price).sum(&:to_i),
-          total_min_crew: models.map(&:min_crew).sum(&:to_i),
-          total_max_crew: models.map(&:max_crew).sum(&:to_i),
+          total_crew: models.map(&:crew).sum(&:to_i),
           total_cargo: models.map(&:cargo).sum(&:to_i),
           largest_ship: lengths.max&.to_f,
           smallest_ship: lengths.min&.to_f,

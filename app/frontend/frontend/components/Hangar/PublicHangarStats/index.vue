@@ -57,8 +57,7 @@ const {
 } = usePublicHangarModelsByProductionStatusQuery(props.username, shareParams);
 
 const totalCount = ref(0);
-const minCrew = ref(0);
-const maxCrew = ref(0);
+const totalCrew = ref(0);
 const totalCargo = ref(0);
 const largestShip = ref(0);
 const smallestShip = ref(0);
@@ -69,8 +68,7 @@ const manufacturerCount = ref(0);
 watch(
   () => [
     quickStats.value?.total,
-    quickStats.value?.metrics.totalMinCrew,
-    quickStats.value?.metrics.totalMaxCrew,
+    quickStats.value?.metrics.totalCrew,
     quickStats.value?.metrics.totalCargo,
     quickStats.value?.metrics.largestShip,
     quickStats.value?.metrics.smallestShip,
@@ -81,8 +79,7 @@ watch(
   () => {
     setTimeout(() => {
       totalCount.value = quickStats.value?.total || 0;
-      minCrew.value = quickStats.value?.metrics.totalMinCrew || 0;
-      maxCrew.value = quickStats.value?.metrics.totalMaxCrew || 0;
+      totalCrew.value = quickStats.value?.metrics.totalCrew || 0;
       totalCargo.value = quickStats.value?.metrics.totalCargo || 0;
       largestShip.value = quickStats.value?.metrics.largestShip || 0;
       smallestShip.value = quickStats.value?.metrics.smallestShip || 0;
@@ -172,12 +169,8 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     value: quickStats.value?.metrics.smallestShip,
   },
   {
-    label: t("labels.hangarMetrics.totalMinCrew"),
-    value: quickStats.value?.metrics.totalMinCrew,
-  },
-  {
-    label: t("labels.hangarMetrics.totalMaxCrew"),
-    value: quickStats.value?.metrics.totalMaxCrew,
+    label: t("labels.hangarMetrics.totalCrew"),
+    value: quickStats.value?.metrics.totalCrew,
   },
 ]);
 </script>
@@ -253,20 +246,9 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fa-duotone fa-user fa-4x"
-        :value="minCrew"
-        :label="t('labels.hangarMetrics.totalMinCrew')"
-        :suffix="t('number.units.people', { count: minCrew })"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fa-duotone fa-users fa-4x"
-        :value="maxCrew"
-        :label="t('labels.hangarMetrics.totalMaxCrew')"
-        :suffix="t('number.units.people', { count: maxCrew })"
+        :value="totalCrew"
+        :label="t('labels.hangarMetrics.totalCrew')"
+        :suffix="t('number.units.people', { count: totalCrew })"
       />
     </div>
   </div>

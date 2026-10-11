@@ -1,6 +1,7 @@
 import { type AdminShipListState } from "@/admin/types";
 import { type Models } from "@/services/fyAdminApi";
 import { defineStore } from "pinia";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 import { type ListMeta } from "@/shared/components/BreadCrumbs/types";
 
 export enum AdminModelTableViewImageColsEnum {
@@ -18,8 +19,7 @@ export enum AdminModelTableViewColsEnum {
   CARGO = "cargo",
   QUANTUM_FUEL = "quantumFuelTankSize",
   HYDROGEN_FUEL = "hydrogenFuelTankSize",
-  MIN_CREW = "minCrew",
-  MAX_CREW = "maxCrew",
+  CREW = "crew",
   SCM_SPEED = "scmSpeed",
   MAX_SPEED = "maxSpeed",
   GROUND_MAX_SPEED = "groundMaxSpeed",
@@ -77,5 +77,14 @@ export const useModelsStore = defineStore("adminModels", {
   },
   persist: {
     pick: ["tableViewCols", "tableViewImageCols"],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<AdminModelTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          minCrew: AdminModelTableViewColsEnum.CREW,
+          maxCrew: AdminModelTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });

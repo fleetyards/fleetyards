@@ -17769,10 +17769,10 @@ components:
           type: boolean
         mass:
           type: number
-        minCrew:
-          type: integer
-        maxCrew:
-          type: integer
+        crew:
+          type:
+          - integer
+          - 'null'
         scmSpeed:
           type: number
         scmSpeedBoosted:
@@ -17865,13 +17865,11 @@ components:
     ModelCrew:
       type: object
       properties:
-        max:
-          type: integer
-        maxLabel:
-          type: string
-        min:
-          type: integer
-        minLabel:
+        value:
+          type:
+          - integer
+          - 'null'
+        label:
           type: string
       additionalProperties: false
       title: ModelCrew
@@ -19407,11 +19405,7 @@ components:
           type:
           - number
           - 'null'
-        minCrew:
-          type:
-          - integer
-          - 'null'
-        maxCrew:
+        crew:
           type:
           - integer
           - 'null'

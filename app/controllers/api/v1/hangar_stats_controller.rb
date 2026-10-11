@@ -13,7 +13,7 @@ module Api
       def show
         authorize! with: ::HangarPolicy
 
-        scope = authorized_scope(Vehicle.all).visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
+        scope = authorized_scope(Vehicle.all).visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: %i[build last_build])
 
         scope = loaner_included?(scope)
         scope = bundled_included?(scope)
@@ -139,8 +139,7 @@ module Api
           total_money: pledge_store_models.map(&:pledge_price).sum(&:to_i) + modules.map(&:pledge_price).sum(&:to_i) + upgrades.map(&:pledge_price).sum(&:to_i),
           total_credits: ingame_models.map(&:price).sum(&:to_i),
           total_ingame_value: non_loaner_models.map(&:price).sum(&:to_i),
-          total_min_crew: models.map(&:min_crew).sum(&:to_i),
-          total_max_crew: models.map(&:max_crew).sum(&:to_i),
+          total_crew: models.map(&:crew).sum(&:to_i),
           total_cargo: models.map(&:cargo).sum(&:to_i),
           largest_ship: lengths.max,
           smallest_ship: lengths.min,

@@ -7,8 +7,7 @@
 json.id model.id
 json.name model.name
 json.slug model.slug
-json.min_crew model.min_crew
-json.max_crew model.max_crew
+json.crew model.crew
 
 image_attr = if model.store_image.attached?
   :store_image

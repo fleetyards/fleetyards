@@ -188,8 +188,7 @@ const dedicatedShip = computed<FleetEventShip>(() =>
       id: shipModel.value.id,
       name: shipModel.value.name,
       slug: shipModel.value.slug,
-      minCrew: shipModel.value.crew?.min,
-      maxCrew: shipModel.value.crew?.max,
+      crew: shipModel.value.crew?.value,
       image:
         shipModel.value.media?.storeImage ?? shipModel.value.media?.angledView,
     },

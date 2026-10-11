@@ -17,8 +17,6 @@
         "cargo": "Cargo",
         "crew": "Crew",
         "speed": "Speed",
-        "minCrew": "min. Crew",
-        "maxCrew": "max. Crew",
         "scmSpeed": "SCM Speed",
         "maxSpeed": "Max Speed",
         "scm": "SCM",

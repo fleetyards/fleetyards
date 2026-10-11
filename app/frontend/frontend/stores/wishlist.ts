@@ -1,4 +1,5 @@
 import type { ShipListState } from "@/frontend/types";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 import { defineStore } from "pinia";
 
 export enum WishlistTableViewImageColsEnum {
@@ -15,8 +16,7 @@ export enum WishlistTableViewColsEnum {
   HEIGHT = "modelHeight",
   MASS = "modelMass",
   CARGO = "modelCargo",
-  MIN_CREW = "modelMinCrew",
-  MAX_CREW = "modelMaxCrew",
+  CREW = "modelCrew",
   SCM_SPEED = "modelScmSpeed",
   MAX_SPEED = "modelMaxSpeed",
   GROUND_MAX_SPEED = "modelGroundMaxSpeed",
@@ -106,5 +106,14 @@ export const useWishlistStore = defineStore("wishlist", {
       "tableViewCols",
       "sortFields",
     ],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<WishlistTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          modelMinCrew: WishlistTableViewColsEnum.CREW,
+          modelMaxCrew: WishlistTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });

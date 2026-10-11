@@ -41,7 +41,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
       slug: "odyssey",
       media: {},
       inGame: true,
-      crew: { min: 1, max: 6 },
+      crew: { value: 6, label: "6" },
       speeds: { scmSpeed: 210, maxSpeed: 1125, groundMaxSpeed: 90 },
       metrics: {
         isGroundVehicle: false,

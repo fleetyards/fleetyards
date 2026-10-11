@@ -4,7 +4,7 @@
 # the package. So are the modules' prices and their hardpoints' component
 # prices.
 json.cache! [
-  "v4", model_module_package, model_module_package.model, ItemPrice.cache_key_for("Component", "ModelModule"),
+  "v5", model_module_package, model_module_package.model, ItemPrice.cache_key_for("Component", "ModelModule"),
   Manufacturer.artwork_version
 ] do
   json.partial!("admin/api/v1/model_module_packages/base", model_module_package:)

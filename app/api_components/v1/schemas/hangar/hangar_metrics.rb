@@ -12,8 +12,7 @@ module V1
             totalMoney: {type: :number},
             totalCredits: {type: :number},
             totalIngameValue: {type: :number},
-            totalMinCrew: {type: :integer},
-            totalMaxCrew: {type: :integer},
+            totalCrew: {type: :integer},
             totalCargo: {type: :number},
             largestShip: {type: :number},
             smallestShip: {type: :number},
@@ -26,7 +25,7 @@ module V1
             wishlistTotalCredits: {type: :number}
           },
           additionalProperties: false,
-          required: %w[totalMoney totalCredits totalIngameValue totalMinCrew totalMaxCrew
+          required: %w[totalMoney totalCredits totalIngameValue totalCrew
             totalCargo averagePledgePrice flightReadyCount uniqueModelsCount
             manufacturerCount missingClassifications wishlistTotalMoney wishlistTotalCredits]
         })

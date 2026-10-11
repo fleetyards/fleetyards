@@ -231,23 +231,24 @@ module ScData
         update_params.merge!(dimensions(model, model_data))
         update_params[:ground] = model_data.dig("ground") || false
 
+        # A ship with no crew has nothing to say rather than zero, so the column
+        # keeps what it had.
+        crew = model_data["min_crew"].to_i
+        update_params[:crew] = crew if crew.positive?
+
         update_params
       end
 
       # Only the ship matrix fills these in, so a ship it does not list has none of
       # them. The export says each one too; it takes over only where nothing else
-      # has, because on 80 of the 220 ships both describe it disagrees with the
-      # crew the matrix gives, and an admin may have curated any of them. A crew of
-      # zero is a gap too, as it is to the matrix loader.
+      # has, because an admin may have curated any of them.
       #
       # These are the ship's own columns rather than a build's, so only the
       # environment readers get by default writes them.
       private def fill_identity_gaps(model, model_data, update_params)
         return update_params unless default_environment?
 
-        crew = model_data["min_crew"].to_i
         gaps = {
-          min_crew: crew.positive? ? crew : nil,
           focus: filled(model_data["role"]),
           classification: model_data["ground"] ? "ground" : CLASSIFICATIONS[model_data["career"]],
           size: model_data["ground"] ? ::Model::VEHICLE_SIZE : SIZES[model_data["size"].to_s],
@@ -256,7 +257,7 @@ module ScData
 
         gaps.each do |attribute, value|
           current = model.read_attribute(attribute)
-          update_params[attribute] = value if value.present? && (current.blank? || current == 0)
+          update_params[attribute] = value if value.present? && current.blank?
         end
 
         update_params

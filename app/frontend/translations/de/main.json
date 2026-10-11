@@ -12,8 +12,6 @@
       "personalInventory": "Schiffsinventar",
       "crew": "Besatzung",
       "speed": "Geschwindigkeit",
-      "minCrew": "min. Besatzung",
-      "maxCrew": "max. Besatzung",
       "scmSpeed": "SCM-Geschwindigkeit",
       "scmSpeedBoosted": "SCM-Geschwindigkeit verstärkt",
       "reverseSpeedBoosted": "Rückwärts-Geschwindigkeit verstärkt",

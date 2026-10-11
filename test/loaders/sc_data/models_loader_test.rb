@@ -122,13 +122,12 @@ module ScData
 
       test "#load_model fills in what the matrix never said about a ship" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Unlisted Test", min_crew: nil, max_crew: nil, focus: nil, classification: nil)
+        model = create(:model, name: "Unlisted Test", focus: nil, classification: nil)
 
         loader.stubs(:load_model_data).returns(
           {
             "mass" => 1000.0,
             "loadout" => [],
-            "min_crew" => "4",
             "career" => "Multi-Role",
             "role" => "Medium Freight / Gun Ship",
             "description" => 'Manufacturer: RSI\\nFocus: Medium Freight / Gunship\\n\\nA classic.\\nReimagined.'
@@ -138,8 +137,6 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_equal 4, model.min_crew
-        assert_nil model.max_crew
         assert_equal "Medium Freight / Gun Ship", model.focus
         assert_equal "multi", model.classification
         assert_equal "A classic.\nReimagined.", model.description
@@ -147,13 +144,12 @@ module ScData
 
       test "#load_model keeps what the matrix or an admin already said" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Listed Test", min_crew: 3, focus: "Gunship", classification: "combat", description: "Ours.")
+        model = create(:model, name: "Listed Test", focus: "Gunship", classification: "combat", description: "Ours.")
 
         loader.stubs(:load_model_data).returns(
           {
             "mass" => 1000.0,
             "loadout" => [],
-            "min_crew" => "4",
             "career" => "Multi-Role",
             "role" => "Medium Freight / Gun Ship",
             "description" => 'Manufacturer: RSI\\nFocus: Medium Freight\\n\\nTheirs.'
@@ -163,7 +159,6 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_equal 3, model.min_crew
         assert_equal "Gunship", model.focus
         assert_equal "combat", model.classification
         assert_equal "Ours.", model.description
@@ -171,13 +166,12 @@ module ScData
 
       test "#load_model fills in nothing the export left as a placeholder" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Placeholder Test", min_crew: nil, focus: nil, classification: nil)
+        model = create(:model, name: "Placeholder Test", focus: nil, classification: nil)
 
         loader.stubs(:load_model_data).returns(
           {
             "mass" => 1000.0,
             "loadout" => [],
-            "min_crew" => "0",
             "career" => "<= PLACEHOLDER =>",
             "role" => "<= PLACEHOLDER =>",
             "description" => "<-=MISSING=->"
@@ -187,41 +181,60 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_nil model.min_crew
         assert_nil model.focus
         assert_nil model.classification
         assert_nil model.description
       end
 
-      test "#load_model fills in a crew of zero and a description that is only its header" do
+      test "#load_model fills in nothing from a description that is only its header" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Zero Crew Test", min_crew: 0)
+        model = create(:model, name: "Header Only Test")
 
         loader.stubs(:load_model_data).returns(
-          {"mass" => 1000.0, "loadout" => [], "min_crew" => "2", "description" => 'Manufacturer: RSI\\nFocus: Gunship'}
+          {"mass" => 1000.0, "loadout" => [], "description" => 'Manufacturer: RSI\\nFocus: Gunship'}
         )
 
         loader.load_model(model)
-        model.reload
 
-        assert_equal 2, model.min_crew
-        assert_nil model.description
+        assert_nil model.reload.description
+      end
+
+      test "#load_model takes the crew from the build" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Crew Test", crew: 6)
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "min_crew" => "4"})
+
+        build = loader.load_model(model)
+
+        assert_equal 4, build.crew
+        assert_equal 4, model.reload.crew
+      end
+
+      test "#load_model leaves the crew to the matrix when the export gives none" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "No Crew Test", crew: 6)
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "min_crew" => "0"})
+
+        build = loader.load_model(model)
+
+        assert_nil build.crew
+        assert_equal 6, model.reload.crew
       end
 
       test "#load_model leaves the ship's own columns to the default environment" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Ptu Fill Test", min_crew: nil, focus: nil)
+        model = create(:model, name: "Ptu Fill Test", focus: nil)
         loader.stubs(:default_environment?).returns(false)
 
         loader.stubs(:load_model_data).returns(
-          {"mass" => 1000.0, "loadout" => [], "min_crew" => "4", "role" => "Medium Freight"}
+          {"mass" => 1000.0, "loadout" => [], "role" => "Medium Freight"}
         )
 
         loader.load_model(model)
-        model.reload
 
-        assert_nil model.min_crew
-        assert_nil model.focus
+        assert_nil model.reload.focus
       end
 
       test "#load_model sizes a ship by the item sizes ours agrees with" do

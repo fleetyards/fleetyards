@@ -265,18 +265,10 @@ useSubscription({
           </div>
           <div class="metrics-item">
             <div class="metrics-label">
-              {{ t("labels.hangarMetrics.totalMinCrew") }}:
+              {{ t("labels.hangarMetrics.totalCrew") }}:
             </div>
             <div class="metrics-value">
-              {{ toNumber(fleetStats.metrics.totalMinCrew, "people") }}
-            </div>
-          </div>
-          <div class="metrics-item">
-            <div class="metrics-label">
-              {{ t("labels.hangarMetrics.totalMaxCrew") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(fleetStats.metrics.totalMaxCrew, "people") }}
+              {{ toNumber(fleetStats.metrics.totalCrew, "people") }}
             </div>
           </div>
           <div class="metrics-item">

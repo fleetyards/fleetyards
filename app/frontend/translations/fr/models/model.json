@@ -17,8 +17,6 @@
         "cargo": "Cargaison",
         "crew": "Équipage",
         "speed": "Vitesse",
-        "minCrew": "Équipage min.",
-        "maxCrew": "Équipage max.",
         "scmSpeed": "SCM Speed",
         "maxSpeed": "Vitesse max.",
         "scm": "SCM",

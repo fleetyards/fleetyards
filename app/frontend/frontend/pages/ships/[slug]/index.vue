@@ -23,7 +23,6 @@ import {
 } from "@/services/fyApi";
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
-import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
@@ -437,7 +436,6 @@ const adiMap = computed(() => {
             />
           </template>
           <ModelBaseMetrics :model="model" :state="activeState" />
-          <ModelCrewMetrics :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"

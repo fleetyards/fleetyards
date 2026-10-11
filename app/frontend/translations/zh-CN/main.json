@@ -12,8 +12,6 @@
       "personalInventory": "飞船库存",
       "crew": "船员",
       "speed": "速度",
-      "minCrew": "最少船员",
-      "maxCrew": "最多船员",
       "scmSpeed": "SCM速度",
       "scmSpeedBoosted": "SCM增强速度",
       "reverseSpeedBoosted": "倒车增强速度",

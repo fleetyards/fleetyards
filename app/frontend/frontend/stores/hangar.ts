@@ -1,4 +1,5 @@
 import { type ShipListState } from "@/frontend/types";
+import { renameTableCols } from "@/frontend/utils/renamedTableCols";
 // Type-only: a value import would put `@/services/fyApi` in the runtime graph of
 // every store that reaches this one, and the specs that mock that module
 // without `importOriginal` would lose whichever export they do not name.
@@ -19,8 +20,7 @@ export enum HangarTableViewColsEnum {
   HEIGHT = "modelHeight",
   MASS = "modelMass",
   CARGO = "modelCargo",
-  MIN_CREW = "modelMinCrew",
-  MAX_CREW = "modelMaxCrew",
+  CREW = "modelCrew",
   SCM_SPEED = "modelScmSpeed",
   MAX_SPEED = "modelMaxSpeed",
   GROUND_MAX_SPEED = "modelGroundMaxSpeed",
@@ -168,5 +168,14 @@ export const useHangarStore = defineStore("hangar", {
       "syncUnmatchedVehiclesAction",
       "syncUnmatchedHangarGroupId",
     ],
+    afterHydrate: ({ store }) => {
+      store.tableViewCols = renameTableCols<HangarTableViewColsEnum>(
+        store.tableViewCols,
+        {
+          modelMinCrew: HangarTableViewColsEnum.CREW,
+          modelMaxCrew: HangarTableViewColsEnum.CREW,
+        },
+      );
+    },
   },
 });

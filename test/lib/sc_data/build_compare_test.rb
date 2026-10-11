@@ -77,6 +77,18 @@ module ScData
       assert_equal %w[durability.distortion.maximum durability.mass], compare.changed.sole.fields
     end
 
+    # Builds written before crew existed hold nil for it, however recently
+    # something else touched the row.
+    test "#call skips a late fact one side never recorded" do
+      model = create(:model)
+      create(:model_build, model:, environment: OLD.environment, version: OLD.version, crew: nil, mass: 1000)
+      create(:model_build, model:, environment: NEW.environment, version: NEW.version, crew: 4, mass: 1200)
+
+      change = ::ScData::BuildCompare.new(ModelBuild, from: OLD, to: NEW).call.changed.sole
+
+      assert_equal %i[mass], change.fields
+    end
+
     test "#call leaves out a record neither build changed" do
       component = create(:component, :without_build)
       build_for(OLD, component:, name: "Same")

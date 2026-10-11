@@ -1954,3 +1954,349 @@ PUT /notifications/unread-bulk removed the enum value `hangar_create` of the req
 PUT /notifications/unread-bulk removed the enum value `hangar_destroy` of the request property `q/notificationTypeEq`
 PUT /notifications/unread-bulk removed the enum value `wishlist_create` of the request property `q/notificationTypeEq`
 PUT /notifications/unread-bulk removed the enum value `wishlist_destroy` of the request property `q/notificationTypeEq`
+GET /fleets/{fleetSlug}/stats/vehicles removed the required property `metrics/totalMaxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/stats/vehicles removed the required property `metrics/totalMinCrew` from the response with the `200` status
+GET /hangar/stats removed the required property `metrics/totalMaxCrew` from the response with the `200` status
+GET /hangar/stats removed the required property `metrics/totalMinCrew` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the required property `metrics/totalMaxCrew` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the required property `metrics/totalMinCrew` from the response with the `200` status
+GET /public/hangars/{username}/stats removed the required property `metrics/totalMaxCrew` from the response with the `200` status
+GET /public/hangars/{username}/stats removed the required property `metrics/totalMinCrew` from the response with the `200` status
+PATCH /fleet-event-signups/{id}/assign removed the optional property `vehicle/model/maxCrew` from the response with the `200` status
+PATCH /fleet-event-signups/{id}/assign removed the optional property `vehicle/model/minCrew` from the response with the `200` status
+POST /fleet-event-slots removed the optional property `signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleet-event-slots removed the optional property `signups/items/vehicle/model/minCrew` from the response with the `201` status
+PUT /fleet-event-slots/{id} removed the optional property `signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleet-event-slots/{id} removed the optional property `signups/items/vehicle/model/minCrew` from the response with the `200` status
+PATCH /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/maxCrew` from the response with the `200` status
+PATCH /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/minCrew` from the response with the `200` status
+POST /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/maxCrew` from the response with the `201` status
+POST /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `allowedModels/items/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `allowedModels/items/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/signup removed the optional property `vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/signup removed the optional property `vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `201` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/maxCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams removed the optional property `ships/items/allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams removed the optional property `ships/items/allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams removed the optional property `ships/items/model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams removed the optional property `ships/items/model/minCrew` from the response with the `201` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{id} removed the optional property `ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{id} removed the optional property `ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{id} removed the optional property `ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{id} removed the optional property `ships/items/model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the optional property `allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the optional property `allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the optional property `model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the optional property `model/minCrew` from the response with the `201` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the optional property `allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the optional property `allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the optional property `model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the optional property `model/minCrew` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate removed the optional property `allowedModels/items/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate removed the optional property `allowedModels/items/minCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate removed the optional property `model/maxCrew` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate removed the optional property `model/minCrew` from the response with the `201` status
+DELETE /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/allowedModels/items/minCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/maxCrew` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/model/minCrew` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/max` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/maxLabel` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/min` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/minLabel` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/max` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/maxLabel` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/min` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/minLabel` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/crew/max` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/crew/maxLabel` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/crew/min` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/crew/minLabel` from the response with the `200` status
+GET /models removed the optional property `items/items/crew/max` from the response with the `200` status
+GET /models removed the optional property `items/items/crew/maxLabel` from the response with the `200` status
+GET /models removed the optional property `items/items/crew/min` from the response with the `200` status
+GET /models removed the optional property `items/items/crew/minLabel` from the response with the `200` status
+GET /models/embed removed the optional property `items/crew/max` from the response with the `200` status
+GET /models/embed removed the optional property `items/crew/maxLabel` from the response with the `200` status
+GET /models/embed removed the optional property `items/crew/min` from the response with the `200` status
+GET /models/embed removed the optional property `items/crew/minLabel` from the response with the `200` status
+GET /models/latest removed the optional property `items/crew/max` from the response with the `200` status
+GET /models/latest removed the optional property `items/crew/maxLabel` from the response with the `200` status
+GET /models/latest removed the optional property `items/crew/min` from the response with the `200` status
+GET /models/latest removed the optional property `items/crew/minLabel` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/crew/max` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/crew/maxLabel` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/crew/min` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/crew/minLabel` from the response with the `200` status
+GET /models/{slug} removed the optional property `crew/max` from the response with the `200` status
+GET /models/{slug} removed the optional property `crew/maxLabel` from the response with the `200` status
+GET /models/{slug} removed the optional property `crew/min` from the response with the `200` status
+GET /models/{slug} removed the optional property `crew/minLabel` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/crew/max` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/crew/maxLabel` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/crew/min` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/crew/minLabel` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/crew/max` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/crew/maxLabel` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/crew/min` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/crew/minLabel` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/crew/max` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/crew/maxLabel` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/crew/min` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/crew/minLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/max` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/maxLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/min` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/crew/minLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/max` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/maxLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/min` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/crew/minLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/crew/max` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/crew/maxLabel` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/crew/min` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/crew/minLabel` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/crew/max` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/crew/maxLabel` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/crew/min` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/crew/minLabel` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/crew/max` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/crew/maxLabel` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/crew/min` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/crew/minLabel` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/crew/max` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/crew/maxLabel` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/crew/min` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/crew/minLabel` from the response with the `200` status
+POST /vehicles removed the optional property `model/crew/max` from the response with the `201` status
+POST /vehicles removed the optional property `model/crew/maxLabel` from the response with the `201` status
+POST /vehicles removed the optional property `model/crew/min` from the response with the `201` status
+POST /vehicles removed the optional property `model/crew/minLabel` from the response with the `201` status
+DELETE /vehicles/{id} removed the optional property `model/crew/max` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/crew/maxLabel` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/crew/min` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/crew/minLabel` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/crew/max` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/crew/maxLabel` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/crew/min` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/crew/minLabel` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/crew/max` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/crew/maxLabel` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/crew/min` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/crew/minLabel` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/crew/max` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/crew/maxLabel` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/crew/min` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/crew/minLabel` from the response with the `200` status

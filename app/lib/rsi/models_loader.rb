@@ -101,10 +101,18 @@ module Rsi
       updates[:rsi_cargo] = nil_or_decimal(data["cargocapacity"])
       updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if (model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?
 
-      %w[max_crew min_crew scm_speed].each do |attr|
-        updates["rsi_#{attr}"] = nil_or_decimal(data[attr])
-        updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
-      end
+      # The matrix now gives one figure, min and max alike. Where it still gives a
+      # range the upper end is the one the game files agree with. The game files
+      # own the crew column, so the matrix only fills a gap on a ship that is not
+      # flying yet.
+      crew = [data["max_crew"], data["min_crew"]].map { |value| nil_or_decimal(value) }.find { |value| value&.positive? }
+      updates[:rsi_crew] = crew
+      flight_ready = updates.fetch(:production_status, model.production_status) == "flight-ready"
+      updates[:crew] = crew if !flight_ready && model.read_attribute(:crew).blank?
+
+      scm_speed = nil_or_decimal(data["scm_speed"])
+      updates[:rsi_scm_speed] = scm_speed
+      updates[:scm_speed] = scm_speed if (model_updated(model, data) && scm_speed != model.rsi_scm_speed) || model.scm_speed.blank? || model.scm_speed.zero?
 
       # These four asked whether the *matrix* value was missing, where every other
       # field asks whether the live one is. The matrix supplies none of them for

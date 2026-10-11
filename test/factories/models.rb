@@ -14,8 +14,7 @@ FactoryBot.define do
     length { 63.5 }
     manufacturer
     mass { 430057.0 }
-    max_crew { 4 }
-    min_crew { 3 }
+    crew { 4 }
     model_paints_count { 0 }
     module_hardpoints_count { 0 }
     rsi_chassis_id { 45 }

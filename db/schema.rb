@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_10_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_11_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1927,6 +1927,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_120000) do
     t.decimal "fuel_consumption", precision: 15, scale: 2
     t.decimal "main_acceleration", precision: 15, scale: 2
     t.decimal "retro_acceleration", precision: 15, scale: 2
+    t.integer "crew"
     t.index ["environment", "version"], name: "index_model_builds_on_environment_and_version"
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
   end
@@ -2173,6 +2174,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_120000) do
     t.datetime "dimensions_measured_at"
     t.boolean "ingame_only", default: false, null: false
     t.boolean "can_land_on_planets", default: true, null: false
+    t.integer "crew"
+    t.integer "rsi_crew"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
