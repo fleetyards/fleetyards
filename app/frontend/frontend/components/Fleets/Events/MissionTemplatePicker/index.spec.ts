@@ -1,17 +1,25 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
+import { type MaybeRefOrGetter, ref, toValue } from "vue";
 import {
   type Fleet,
+  type FleetMissionsParams,
   type Mission,
   MissionCategoryEnum,
   MissionStatusEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const missions = ref<{ items: Mission[] } | undefined>();
+type MissionsPage = {
+  items: Mission[];
+  meta?: { pagination: { totalPages: number } };
+};
+
+const missions = ref<MissionsPage | undefined>();
+const anyMission = ref<MissionsPage | undefined>();
 const isError = ref(false);
 const refetch = vi.fn();
+const requested: MaybeRefOrGetter<FleetMissionsParams>[] = [];
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -19,12 +27,25 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
-    useFleetMissions: () => ({
-      data: missions,
-      isLoading: ref(false),
-      isError,
-      refetch,
-    }),
+    // The picker asks twice: its published list, and a one-row probe of any
+    // status that only runs when that list is empty.
+    useFleetMissions: (
+      _slug: unknown,
+      params: MaybeRefOrGetter<FleetMissionsParams>,
+    ) => {
+      if (toValue(params).perPage === "1") {
+        return { data: anyMission };
+      }
+
+      requested.push(params);
+
+      return {
+        data: missions,
+        isLoading: ref(false),
+        isError,
+        refetch,
+      };
+    },
   };
 });
 
@@ -55,26 +76,71 @@ const mountPicker = async (onPick = vi.fn()) => {
 afterEach(() => {
   mounted.splice(0).forEach((wrapper) => wrapper.unmount());
   missions.value = undefined;
+  anyMission.value = undefined;
+  requested.splice(0);
   isError.value = false;
   refetch.mockClear();
 });
 
 describe("MissionTemplatePicker", () => {
-  it("offers published missions and leaves drafts out", async () => {
+  it("asks the server for published missions only", async () => {
+    missions.value = { items: [mission({ slug: "bluebird" })] };
+    const wrapper = await mountPicker();
+
+    expect(toValue(requested[0]).q?.statusEq).toBe(MissionStatusEnum.PUBLISHED);
+    expect(
+      wrapper.find('[data-test="mission-template-bluebird"]').exists(),
+    ).toBe(true);
+  });
+
+  it("loads the next page onto the list", async () => {
     missions.value = {
-      items: [
-        mission({ slug: "bluebird" }),
-        mission({ slug: "unfinished", status: MissionStatusEnum.DRAFT }),
-      ],
+      items: [mission({ slug: "bluebird" })],
+      meta: { pagination: { totalPages: 2 } },
     };
     const wrapper = await mountPicker();
+
+    await wrapper.find('[data-test="mission-template-more"]').trigger("click");
+
+    expect(toValue(requested[0]).page).toBe("2");
+
+    missions.value = {
+      items: [mission({ slug: "redbird" })],
+      meta: { pagination: { totalPages: 2 } },
+    };
+    await wrapper.vm.$nextTick();
 
     expect(
       wrapper.find('[data-test="mission-template-bluebird"]').exists(),
     ).toBe(true);
     expect(
-      wrapper.find('[data-test="mission-template-unfinished"]').exists(),
-    ).toBe(false);
+      wrapper.find('[data-test="mission-template-redbird"]').exists(),
+    ).toBe(true);
+    expect(wrapper.find('[data-test="mission-template-more"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("says none is published when the fleet only has drafts", async () => {
+    missions.value = { items: [] };
+    anyMission.value = {
+      items: [mission({ slug: "unfinished", status: MissionStatusEnum.DRAFT })],
+    };
+    const wrapper = await mountPicker();
+
+    expect(
+      wrapper.find('[data-test="mission-template-empty"]').text(),
+    ).toContain("None of the fleet's missions is published yet.");
+  });
+
+  it("says the fleet has no missions when it has none at all", async () => {
+    missions.value = { items: [] };
+    anyMission.value = { items: [] };
+    const wrapper = await mountPicker();
+
+    expect(
+      wrapper.find('[data-test="mission-template-empty"]').text(),
+    ).toContain("No missions yet.");
   });
 
   it("hands the picked mission to the caller", async () => {
