@@ -56,7 +56,7 @@ const editableList = ref<{
 } | null>(null);
 
 const { data, isLoading } = useItemPricesQuery({
-  perPage: "100",
+  perPage: "96",
   q: {
     itemIdEq: props.itemId,
     itemTypeEq: props.itemType,

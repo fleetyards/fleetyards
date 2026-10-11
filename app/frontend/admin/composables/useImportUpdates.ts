@@ -72,7 +72,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
 
   // Seed store with currently active imports on page load
   const activeImportsParams = computed(() => ({
-    perPage: "50",
+    perPage: "48",
   }));
 
   const { data: existingImports } = useImports(activeImportsParams, {

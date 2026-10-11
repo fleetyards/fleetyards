@@ -46,7 +46,7 @@ const page = ref(1);
 
 const queryParams = computed<FleetMembersParams>(() => ({
   page: String(page.value),
-  perPage: "30",
+  perPage: "24",
   q: {
     usernameCont: debouncedSearch.value || undefined,
     stateIn: ["accepted"],

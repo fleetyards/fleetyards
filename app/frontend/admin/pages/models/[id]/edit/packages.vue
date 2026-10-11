@@ -95,7 +95,7 @@ const fetchModules = async (params: BaseSelectParams<ModelModule>) => {
 
   return listModelModules({
     page: String(params.page || 1),
-    perPage: "50",
+    perPage: "48",
     q,
   });
 };
