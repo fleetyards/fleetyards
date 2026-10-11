@@ -879,7 +879,6 @@
             "deleteLinkFailed": "No se pudo eliminar el enlace de invitación.",
             "noAdmin": "Nadie es administrador, así que nadie puede gestionar %{fleet} en FleetYards.",
             "adminCandidates": "Ascender a administrador",
-            "noCandidates": "Nadie tiene tampoco el rango inmediatamente inferior, así que no hay nadie a quien ascender en un paso.",
             "addedToSquadron": {
               "success": "Añadido al escuadrón.",
               "failure": "No se pudo añadir al escuadrón."

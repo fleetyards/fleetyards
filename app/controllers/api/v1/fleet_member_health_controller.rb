@@ -32,9 +32,7 @@ module Api
         # Who a promotion would make the second admin: promoting moves a member
         # one rank up, so only the rank right below can get there in one step.
         @admin_candidates = promotion_candidates(admin_role) if admin_role && @admins[:total_count] <= 1
-        if can?(:read_roles)
-          @empty_roles = empty_roles.map { |role| {role:, candidates: promotion_candidates(role)} }
-        end
+        @empty_roles = empty_roles if can?(:read_roles)
 
         if @fleet.rsi_sid.present?
           @unverified = check(@members.where(verified: false), order: :accepted_at)

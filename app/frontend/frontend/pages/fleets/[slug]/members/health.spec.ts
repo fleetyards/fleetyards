@@ -320,25 +320,16 @@ describe("FleetMembersHealthPage", () => {
     expect(row.find("[data-test='health-decline']").exists()).toBe(true);
   });
 
-  it("offers to promote the rank below into an empty role", async () => {
+  it("lists the empty roles by name and links to the role settings", async () => {
     health = healthWith({
-      emptyRoles: [
-        {
-          role: { id: "r", name: "Officer", slug: "officer" },
-          candidates: [member("ward")],
-        },
-      ],
+      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
     });
 
     const subject = await mount();
 
-    expect(
-      subject
-        .find(
-          "[data-test='health-candidate-officer-ward'] [data-test='health-promote']",
-        )
-        .text(),
-    ).toContain("Officer");
+    expect(subject.find("[data-test='health-empty-role-officer']").text()).toBe(
+      "Officer",
+    );
     expect(
       subject.find("[data-test='health-roles-settings']").attributes("href"),
     ).toBe("#/f/maru/settings/roles");

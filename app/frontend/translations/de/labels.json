@@ -879,7 +879,6 @@
             "deleteLinkFailed": "Der Einladungslink konnte nicht gelöscht werden.",
             "noAdmin": "Niemand ist Admin, deshalb kann niemand %{fleet} auf FleetYards verwalten.",
             "adminCandidates": "Zum Admin befördern",
-            "noCandidates": "Auch den Rang direkt darunter hat niemand, also gibt es niemanden, der mit einem Schritt befördert werden kann.",
             "addedToSquadron": {
               "success": "Zur Staffel hinzugefügt.",
               "failure": "Konnte nicht zur Staffel hinzugefügt werden."

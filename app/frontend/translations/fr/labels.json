@@ -879,7 +879,6 @@
             "deleteLinkFailed": "Le lien d'invitation n'a pas pu être supprimé.",
             "noAdmin": "Personne n'est admin, donc personne ne peut gérer %{fleet} sur FleetYards.",
             "adminCandidates": "Promouvoir admin",
-            "noCandidates": "Personne n'a non plus le rang juste en dessous, donc personne ne peut être promu en une étape.",
             "addedToSquadron": {
               "success": "Ajouté à l'escadron.",
               "failure": "Impossible d'ajouter à l'escadron."

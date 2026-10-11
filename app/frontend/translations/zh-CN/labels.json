@@ -879,7 +879,6 @@
             "deleteLinkFailed": "无法删除该邀请链接。",
             "noAdmin": "没有人担任管理员，因此没有人能在 FleetYards 上管理 %{fleet}。",
             "adminCandidates": "提升为管理员",
-            "noCandidates": "下一级角色也无人担任，因此没有可以一步提升的人。",
             "addedToSquadron": {
               "success": "已加入中队。",
               "failure": "无法加入中队。"

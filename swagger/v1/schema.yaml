@@ -27307,7 +27307,7 @@ components:
           anyOf:
           - type: array
             items:
-              "$ref": "#/components/schemas/FleetMemberHealthEmptyRole"
+              "$ref": "#/components/schemas/FleetRole"
           - type: 'null'
           description: Null when the reader cannot read roles
         unverifiedMembers:
@@ -27384,20 +27384,6 @@ components:
       - candidates
       additionalProperties: false
       title: FleetMemberHealthAdmins
-    FleetMemberHealthEmptyRole:
-      type: object
-      properties:
-        role:
-          "$ref": "#/components/schemas/FleetRole"
-        candidates:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FleetMemberHealthMember"
-      required:
-      - role
-      - candidates
-      additionalProperties: false
-      title: FleetMemberHealthEmptyRole
     FleetMemberHealthInviteUrls:
       type: object
       properties:

@@ -598,44 +598,15 @@ const crumbs = computed<Crumb[]>(() => [
               </template>
             </template>
 
-            <template v-if="check.key === 'emptyRoles'">
-              <div
-                v-for="entry in health.emptyRoles ?? []"
-                :key="entry.role.id"
-                class="member-health__role"
-                :data-test="`health-empty-role-${entry.role.slug}`"
+            <ul v-if="check.key === 'emptyRoles'" class="member-health__chips">
+              <li
+                v-for="role in health.emptyRoles ?? []"
+                :key="role.id"
+                :data-test="`health-empty-role-${role.slug}`"
               >
-                <h4 class="member-health__role-title">
-                  {{ entry.role.name }}
-                </h4>
-                <ul v-if="entry.candidates.length" class="member-health__rows">
-                  <HealthRow
-                    v-for="member in entry.candidates"
-                    :key="member.id"
-                    :title="member.username"
-                    :to="memberTo(check, member)"
-                    :avatar="member.avatar?.smallUrl"
-                    :subline="joinedLine(member)"
-                    :chip="member.fleetRole?.name"
-                    :fact="lastActive(member)"
-                    :data-test="`health-candidate-${entry.role.slug}-${member.username}`"
-                  >
-                    <template #actions>
-                      <MemberActions
-                        :fleet-slug="fleet.slug"
-                        :member="member"
-                        :actions="['promote']"
-                        :capabilities="capabilities"
-                        :promote-to="entry.role.name"
-                      />
-                    </template>
-                  </HealthRow>
-                </ul>
-                <p v-else class="member-health__quiet">
-                  {{ t("labels.fleet.members.health.noCandidates") }}
-                </p>
-              </div>
-            </template>
+                {{ role.name }}
+              </li>
+            </ul>
 
             <p
               v-else-if="check.key === 'hiddenShips'"
@@ -887,7 +858,22 @@ const crumbs = computed<Crumb[]>(() => [
   list-style: none;
 }
 
-.member-health__role + .member-health__role,
+.member-health__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 14px 20px 16px;
+  list-style: none;
+
+  li {
+    padding: 6px 12px;
+    border: 1px dashed rgb(122 130 136 / 0.5);
+    border-radius: 3px;
+    color: var(--color-lifted, #eee);
+  }
+}
+
 .member-health__rows + .member-health__role {
   border-top: 1px solid rgb(122 130 136 / 0.15);
 }

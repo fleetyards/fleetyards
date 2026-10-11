@@ -879,7 +879,6 @@
             "deleteLinkFailed": "Non è stato possibile eliminare il link d'invito.",
             "noAdmin": "Nessuno è admin, quindi nessuno può gestire %{fleet} su FleetYards.",
             "adminCandidates": "Promuovi ad admin",
-            "noCandidates": "Nessuno ha nemmeno il grado subito sotto, quindi non c'è nessuno da promuovere in un passo.",
             "addedToSquadron": {
               "success": "Aggiunto alla squadriglia.",
               "failure": "Impossibile aggiungere alla squadriglia."

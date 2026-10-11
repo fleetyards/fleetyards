@@ -119,9 +119,7 @@ describe("FleetDashboardActionQueuePanel", () => {
     health = healthWith({
       inactiveMembers: { totalCount: 4, items: [] },
       unverifiedMembers: { totalCount: 2, items: [] },
-      emptyRoles: [
-        { role: { id: "r", name: "Officer", slug: "officer" }, candidates: [] },
-      ],
+      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
     });
 
     const subject = await mount({ canCheckMemberHealth: true });

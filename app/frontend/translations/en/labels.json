@@ -879,7 +879,6 @@
             "deleteLinkFailed": "The invite link could not be deleted.",
             "noAdmin": "Nobody holds Admin, so nobody can manage %{fleet} on FleetYards.",
             "adminCandidates": "Promote to Admin",
-            "noCandidates": "Nobody holds the rank right below either, so there is nobody to promote in one step.",
             "addedToSquadron": {
               "success": "Added to the squadron.",
               "failure": "Could not be added to the squadron."

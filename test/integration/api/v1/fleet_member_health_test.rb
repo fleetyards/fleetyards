@@ -148,11 +148,7 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      empty_role = health["emptyRoles"].sole
-
-      assert_equal "officer", empty_role["role"]["slug"]
-      assert_equal 5, empty_role["candidates"].size
-      assert_includes empty_role["candidates"].pluck("username"), @officer.username
+      assert_equal ["officer"], health["emptyRoles"].pluck("slug")
     end
   end
 

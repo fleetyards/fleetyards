@@ -33,12 +33,7 @@ json.admins do
 end
 
 if @empty_roles
-  json.empty_roles @empty_roles do |entry|
-    json.role do
-      json.partial! "api/v1/fleet_roles/base", fleet_role: entry[:role]
-    end
-    json.candidates entry[:candidates], partial: "api/v1/fleet_member_health/member", as: :membership, leader_role_ids: @leader_role_ids
-  end
+  json.empty_roles @empty_roles, partial: "api/v1/fleet_roles/base", as: :fleet_role
 else
   json.empty_roles nil
 end
