@@ -352,6 +352,53 @@ class Vehicle < ApplicationRecord
     add_loaners
   end
 
+  # The parents of the given models whose `add_loaners` would change something:
+  # one missing a listed loaner, holding one its model no longer lists, a
+  # duplicate, or one whose `wanted` differs from its own, or a loaner in a group
+  # without exactly one visible row. Walking every parent instead takes hours,
+  # and on most runs none of them needs a write.
+  def self.out_of_sync_loaner_parent_ids(model_ids)
+    return [] if model_ids.blank?
+
+    connection.select_values(sanitize_sql_array([<<~SQL.squish, model_ids]))
+      WITH parents AS (
+        SELECT id, user_id, model_id, wanted FROM vehicles
+        WHERE loaner = FALSE AND model_id IN (?)
+      ),
+      listed AS (
+        SELECT model_id, loaner_model_id FROM model_loaners WHERE hidden = FALSE
+      ),
+      children AS (
+        SELECT loaners.id, loaners.user_id, loaners.model_id, loaners.wanted,
+          parents.id AS parent_id, parents.model_id AS parent_model_id, parents.wanted AS parent_wanted
+        FROM vehicles loaners
+        JOIN parents ON parents.id = loaners.vehicle_id AND parents.user_id = loaners.user_id
+        WHERE loaners.loaner = TRUE
+      ),
+      broken_groups AS (
+        SELECT user_id, model_id, wanted FROM vehicles
+        WHERE loaner = TRUE
+        GROUP BY user_id, model_id, wanted
+        HAVING count(*) FILTER (WHERE hidden = FALSE) <> 1
+      )
+      SELECT parents.id FROM parents
+      JOIN listed ON listed.model_id = parents.model_id
+      LEFT JOIN children ON children.parent_id = parents.id AND children.model_id = listed.loaner_model_id
+      WHERE children.id IS NULL
+      UNION
+      SELECT children.parent_id FROM children
+      LEFT JOIN listed ON listed.model_id = children.parent_model_id AND listed.loaner_model_id = children.model_id
+      WHERE listed.model_id IS NULL OR children.wanted IS DISTINCT FROM children.parent_wanted
+      UNION
+      SELECT parent_id FROM children GROUP BY parent_id, model_id HAVING count(*) > 1
+      UNION
+      SELECT children.parent_id FROM children
+      JOIN broken_groups ON broken_groups.user_id = children.user_id
+        AND broken_groups.model_id = children.model_id
+        AND broken_groups.wanted IS NOT DISTINCT FROM children.wanted
+    SQL
+  end
+
   def add_loaners
     return if loaner?
 

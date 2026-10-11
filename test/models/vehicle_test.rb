@@ -208,6 +208,61 @@ class VehicleLoanersTest < ActiveSupport::TestCase
   end
 end
 
+class VehicleOutOfSyncLoanerParentIdsTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+    @loaner_model = create(:model)
+    @parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+    @parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    @loaner = Vehicle.find_by!(loaner: true, vehicle_id: @parent.id)
+  end
+
+  def out_of_sync
+    Vehicle.out_of_sync_loaner_parent_ids([@parent_model.id])
+  end
+
+  test "leaves out a parent whose loaners are in sync" do
+    assert_empty out_of_sync
+  end
+
+  test "names a parent missing a listed loaner" do
+    @loaner.delete
+
+    assert_equal [@parent.id], out_of_sync
+  end
+
+  test "names a parent holding a loaner its model no longer lists" do
+    ModelLoaner.where(model: @parent_model).update_all(hidden: true)
+
+    assert_equal [@parent.id], out_of_sync
+  end
+
+  test "names a parent holding two loaners of one model" do
+    create(:vehicle, :loaner, user: @user, model: @loaner_model, vehicle_id: @parent.id, hidden: true)
+
+    assert_equal [@parent.id], out_of_sync
+  end
+
+  test "names a parent whose loaner disagrees on wanted" do
+    @loaner.update_columns(wanted: true)
+
+    assert_equal [@parent.id], out_of_sync
+  end
+
+  test "names a parent whose loaner group has no visible row" do
+    @loaner.update_columns(hidden: true)
+
+    assert_equal [@parent.id], out_of_sync
+  end
+
+  test "names both parents of a loaner group with two visible rows" do
+    second = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    Vehicle.where(loaner: true, vehicle_id: second.id).update_all(hidden: false)
+
+    assert_equal [@parent.id, second.id].sort, out_of_sync.sort
+  end
+end
+
 class VehicleScheduleFleetVehicleUpdateTest < ActiveSupport::TestCase
   setup do
     @vehicle = create(:vehicle)

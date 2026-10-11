@@ -11,7 +11,7 @@ module Loaders
 
       model_ids = ModelLoaner.pluck(:model_id).uniq
 
-      # `add_loaners` runs over every vehicle of every loaner-bearing model, so
+      # `add_loaners` can reach any vehicle of every loaner-bearing model, so
       # this is the widest machine write there is against the hangar.
       PaperTrail.request(enabled: false) do
         # A pairing RSI dropped, where the loaner model is still lent by other
@@ -28,14 +28,14 @@ module Loaders
           )
         SQL
 
-        model_ids.each do |model_id|
-          Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
-        end
+        Vehicle.where(id: Vehicle.out_of_sync_loaner_parent_ids(model_ids)).find_each(&:add_loaners)
 
         loaner_model_ids = ModelLoaner.pluck(:loaner_model_id).uniq
 
         Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
       end
+
+      refresh_loaner_fleet_vehicles(model_ids)
 
       actionable = missing_loaners.present? || missing_models.present?
 
@@ -54,6 +54,18 @@ module Loaders
       import&.update!(info: e.message)
 
       raise e
+    end
+
+    # A loaner's fleet entry follows its parent's hangar groups, and a change to
+    # those alone never revisits the loaner, so this run does. Only owners with a
+    # fleet membership have an entry to refresh.
+    private def refresh_loaner_fleet_vehicles(model_ids)
+      Vehicle.where(loaner: true, hidden: false)
+        .where(vehicle_id: Vehicle.where(loaner: false, model_id: model_ids).select(:id))
+        .where(user_id: FleetMembership.kept.select(:user_id))
+        .in_batches(of: 1000) do |batch|
+          Updater::FleetVehicleUpdateJob.perform_bulk(batch.ids.zip)
+        end
     end
 
     private def missing_loaners_body(missing_loaners, missing_models)

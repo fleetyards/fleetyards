@@ -85,6 +85,39 @@ module Loaders
       assert_empty Vehicle.where(loaner: true, vehicle_id: parent.id)
     end
 
+    test "#perform leaves a parent whose loaners are in sync alone" do
+      ModelLoaner.unstub(:pluck)
+      @loader.stubs(:run).returns([[], []])
+
+      loaner_model = create(:model)
+      parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+      create(:vehicle, user: create(:user), model: parent_model, wanted: false)
+
+      Vehicle.any_instance.expects(:add_loaners).never
+
+      ::Loaders::LoanerJob.new.perform
+    end
+
+    # A loaner's fleet entry follows its parent's hangar groups, and nothing
+    # else revisits it when only those change.
+    test "#perform refreshes the fleet entries of visible loaners of fleet members" do
+      ModelLoaner.unstub(:pluck)
+      @loader.stubs(:run).returns([[], []])
+
+      loaner_model = create(:model)
+      parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+      member = create(:user)
+      create(:fleet_membership, :accepted, user: member)
+      member_parent = create(:vehicle, user: member, model: parent_model, wanted: false)
+      create(:vehicle, user: create(:user), model: parent_model, wanted: false)
+      Updater::FleetVehicleUpdateJob.jobs.clear
+
+      ::Loaders::LoanerJob.new.perform
+
+      assert_equal Vehicle.where(loaner: true, vehicle_id: member_parent.id).ids,
+        Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }
+    end
+
     test "#perform creates a GitHub issue when there are missing loaners" do
       missing_loaners = [{loaner: "F7C Hornet", model: "Mole", model_id: "abc-123"}]
       @loader.stubs(:run).returns([missing_loaners, []])
