@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -312,41 +313,35 @@ const openDisplayOptionsModal = () => {
     {{ t("headlines.fleets.events.index") }}
   </Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
       v-if="canManageMissions"
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-missions', params: { slug: props.fleet.slug } }"
       :aria-label="t('actions.fleets.missions.viewMissions')"
       variant="bare"
-      mobile-icon-only
     >
       <i class="fa-light fa-flag-checkered" />
       <span>{{ t("actions.fleets.missions.viewMissions") }}</span>
     </Btn>
     <Btn
       v-if="showToursNav"
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-tours', params: { slug: props.fleet.slug } }"
       :aria-label="t('actions.fleets.tours.viewTours')"
       variant="bare"
-      mobile-icon-only
     >
       <i class="fa-light fa-coins" />
       <span>{{ t("actions.fleets.tours.viewTours") }}</span>
     </Btn>
     <Btn
       v-if="canCreate"
-      :size="BtnSizesEnum.MD"
       :loading="creating"
       @click="goToCreate(new Date())"
       :aria-label="t('actions.fleets.events.create')"
-      mobile-icon-only
     >
       <i class="fa-light fa-plus" />
       <span>{{ t("actions.fleets.events.create") }}</span>
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <div class="events-toolbar">
     <!-- The leading slot answers "which events", and what that means depends on

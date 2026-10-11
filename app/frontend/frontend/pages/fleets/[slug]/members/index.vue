@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -217,39 +217,26 @@ const crumbs = computed<Crumb[]>(() => {
     </template>
   </Heading>
 
-  <Teleport to="#header-right">
-    <Btn
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
-    >
+  <PageActions>
+    <Btn :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }">
       <i class="fa-duotone fa-globe" />
       {{ t("actions.fleet.worldmap") }}
     </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
-    >
+    <Btn :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }">
       <i class="fa-duotone fa-planet-ringed" />
       {{ t("actions.fleet.starmap") }}
     </Btn>
     <template v-if="canInvite">
-      <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInviteUrlModal">
+      <Btn @click="openInviteUrlModal">
         <i class="fa-light fa-plus" />
         {{ t("actions.fleet.createInviteUrl") }}
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        mobile-icon-only
-        data-tour="fleet-invite"
-        @click="openInviteModal"
-      >
+      <Btn data-tour="fleet-invite" @click="openInviteModal">
         <i class="fa-duotone fa-user-plus" />
         {{ t("actions.fleet.inviteMember") }}
       </Btn>
     </template>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     key="fleet-members-index"

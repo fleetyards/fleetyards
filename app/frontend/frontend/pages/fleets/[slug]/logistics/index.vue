@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -197,27 +197,20 @@ const crumbs = computed<Crumb[]>(() => [
     </div>
   </div>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
       v-if="canUpdateInventories"
-      :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-logistics-transfers' }"
       data-test="fleet-transfers-link"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-right-left" />
       {{ t("nav.hangar.transfers") }}
     </Btn>
-    <Btn
-      v-if="canCreateInventories"
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      @click="openInventoryModal()"
-    >
+    <Btn v-if="canCreateInventories" @click="openInventoryModal()">
       <i class="fa-light fa-plus" />
       {{ t("actions.logistics.createInventory") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <Loader :loading="inventoriesLoading" />
 
