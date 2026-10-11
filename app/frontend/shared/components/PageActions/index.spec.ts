@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { flushPromises } from "@vue/test-utils";
+import { createCommentVNode } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PageActions from "./index.vue";
@@ -17,11 +18,14 @@ const headerRight = () => document.getElementById("header-right")!;
 
 let mounted: { unmount: () => void } | undefined;
 
-const mount = async (props: { hidden?: boolean } = {}) => {
+const mount = async (props: { hidden?: boolean } = {}, available = true) => {
   const wrapper = await mountWithDefaults(PageActions, {
     props,
     slots: {
-      default: () => [h(Btn, { "data-test": "action" }, () => "Mark all read")],
+      default: () =>
+        available
+          ? [h(Btn, { "data-test": "action" }, () => "Mark all read")]
+          : [createCommentVNode("v-if")],
     },
     attachTo: document.getElementById("app")!,
   });
@@ -71,5 +75,14 @@ describe("PageActions", () => {
     await mount({ hidden: true });
 
     expect(headerRight().children).toHaveLength(0);
+  });
+
+  it("shows no menu on a phone when no action is available", async () => {
+    setViewport(true);
+    await mount({}, false);
+
+    expect(
+      headerRight().querySelector('[data-test="page-actions-menu"]'),
+    ).toBeNull();
   });
 });
