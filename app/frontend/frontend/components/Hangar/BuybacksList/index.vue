@@ -8,6 +8,7 @@ export default {
 import RowList from "@/shared/components/RowList/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   RowListItemTonesEnum,
@@ -15,6 +16,7 @@ import {
   type RowListItemTag,
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -33,6 +35,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const mobile = useMobile();
 
 const { t, l } = useI18n();
 
@@ -193,28 +197,55 @@ const badges = (buyback: BuybackPledge): RowListItemBadge[] => {
         </template>
 
         <template #actions>
-          <Btn
-            v-if="record.available"
-            :href="rsiUrl(record)"
-            :variant="BtnVariantsEnum.GHOST"
-            :aria-label="t('labels.buybacks.openOnRsi')"
-            mobile-icon-only
-            data-test="buyback-rsi-link"
+          <!-- One menu on a phone: two icon buttons beside a title that is
+               already cut short read as a row of stray boxes. -->
+          <BtnDropdown
+            v-if="mobile"
+            :variant="BtnVariantsEnum.BARE"
+            expand-left
+            data-test="buyback-menu"
           >
-            <i class="fa-light fa-arrow-up-right-from-square" />
-            <span>{{ t("labels.buybacks.openOnRsi") }}</span>
-          </Btn>
-          <Btn
-            :variant="BtnVariantsEnum.GHOST"
-            :aria-label="t('labels.buybacks.remove')"
-            :loading="removingId === record.id"
-            mobile-icon-only
-            data-test="buyback-remove"
-            @click="remove(record)"
-          >
-            <i class="fa-light fa-trash" />
-            <span>{{ t("labels.buybacks.remove") }}</span>
-          </Btn>
+            <Btn
+              v-if="record.available"
+              :href="rsiUrl(record)"
+              data-test="buyback-rsi-link"
+            >
+              <i class="fa-light fa-arrow-up-right-from-square" />
+              <span>{{ t("labels.buybacks.openOnRsi") }}</span>
+            </Btn>
+            <Btn
+              :loading="removingId === record.id"
+              data-test="buyback-remove"
+              @click="remove(record)"
+            >
+              <i class="fa-light fa-trash" />
+              <span>{{ t("labels.buybacks.remove") }}</span>
+            </Btn>
+          </BtnDropdown>
+          <template v-else>
+            <Btn
+              v-if="record.available"
+              :href="rsiUrl(record)"
+              :variant="BtnVariantsEnum.GHOST"
+              :aria-label="t('labels.buybacks.openOnRsi')"
+              mobile-icon-only
+              data-test="buyback-rsi-link"
+            >
+              <i class="fa-light fa-arrow-up-right-from-square" />
+              <span>{{ t("labels.buybacks.openOnRsi") }}</span>
+            </Btn>
+            <Btn
+              :variant="BtnVariantsEnum.GHOST"
+              :aria-label="t('labels.buybacks.remove')"
+              :loading="removingId === record.id"
+              mobile-icon-only
+              data-test="buyback-remove"
+              @click="remove(record)"
+            >
+              <i class="fa-light fa-trash" />
+              <span>{{ t("labels.buybacks.remove") }}</span>
+            </Btn>
+          </template>
         </template>
       </RowListItem>
     </template>
