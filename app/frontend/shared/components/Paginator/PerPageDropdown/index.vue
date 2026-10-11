@@ -68,7 +68,7 @@ const update = (step: number | string) => {
     <Btn
       v-for="(step, index) in steps"
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
-      :active="step === internalValue"
+      :active="String(step) === String(internalValue)"
       @click="update(step)"
     >
       {{ step }}
