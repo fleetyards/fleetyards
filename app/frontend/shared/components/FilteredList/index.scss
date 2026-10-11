@@ -105,6 +105,18 @@
       flex: 1 1 auto;
       min-width: 0;
       justify-content: flex-end;
+
+      // Across whatever is left of its row, the page count taking the slack:
+      // wrapped onto a row of its own it was a short control stranded at one
+      // edge, and beside the actions it now meets the right edge either way.
+      :deep(.pagination),
+      :deep(.btn-group) {
+        width: 100%;
+      }
+
+      :deep(.pagination__pages) {
+        flex: 1 1 auto;
+      }
     }
   }
 
