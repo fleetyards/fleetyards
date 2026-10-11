@@ -54,8 +54,8 @@
           "hint": "Beitrittsanfragen und eingehende Transfers, die eine Antwort brauchen, erscheinen hier."
         },
         "memberHealth": {
-          "one": "%{count} Punkt im Mitgliederbestand zu prüfen",
-          "other": "%{count} Punkte im Mitgliederbestand zu prüfen"
+          "one": "%{count} Prüfung im Mitgliederbestand braucht Aufmerksamkeit",
+          "other": "%{count} Prüfungen im Mitgliederbestand brauchen Aufmerksamkeit"
         }
       },
       "contracts": {

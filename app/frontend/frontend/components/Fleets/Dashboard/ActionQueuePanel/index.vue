@@ -14,6 +14,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  memberHealthChecks,
+  needsAttention,
+} from "@/frontend/utils/memberHealth";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -100,14 +104,12 @@ const {
   },
 });
 
+// Checks, not members: one fleet with forty inactive members has one thing to
+// look at, not forty.
 const healthCount = computed(() => {
   if (!props.canCheckMemberHealth || !health.value) return 0;
 
-  return (
-    health.value.inactiveMembers.totalCount +
-    (health.value.unverifiedMembers?.totalCount ?? 0) +
-    (health.value.emptyRoles?.length ?? 0)
-  );
+  return memberHealthChecks(health.value).filter(needsAttention).length;
 });
 
 const requestItems = computed(() =>

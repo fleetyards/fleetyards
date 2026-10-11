@@ -54,8 +54,8 @@
           "hint": "需要回应的入队申请和传入转移会显示在这里。"
         },
         "memberHealth": {
-          "one": "%{count} 个成员问题待查看",
-          "other": "%{count} 个成员问题待查看"
+          "one": "%{count} 项成员检查需要处理",
+          "other": "%{count} 项成员检查需要处理"
         }
       },
       "contracts": {

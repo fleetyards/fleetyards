@@ -54,8 +54,8 @@
           "hint": "Qui compaiono le richieste di adesione e i trasferimenti in arrivo che aspettano una risposta."
         },
         "memberHealth": {
-          "one": "%{count} punto dell'organico da controllare",
-          "other": "%{count} punti dell'organico da controllare"
+          "one": "%{count} controllo dell'organico richiede attenzione",
+          "other": "%{count} controlli dell'organico richiedono attenzione"
         }
       },
       "contracts": {

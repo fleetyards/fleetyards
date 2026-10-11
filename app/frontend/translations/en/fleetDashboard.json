@@ -54,8 +54,8 @@
           "hint": "Join requests and incoming transfers that need an answer show up here."
         },
         "memberHealth": {
-          "one": "%{count} roster issue to review",
-          "other": "%{count} roster issues to review"
+          "one": "%{count} roster check needs attention",
+          "other": "%{count} roster checks need attention"
         }
       },
       "contracts": {

@@ -45,14 +45,27 @@ vi.mock("@/services/fyApi", async () => {
 
 const Stub = defineComponent({ render: () => h("div") });
 
+const none = { totalCount: 0, items: [] };
+
 const healthWith = (
   overrides: Partial<FleetMemberHealth> = {},
 ): FleetMemberHealth => ({
   inactiveDays: 30,
-  inactiveMembers: { totalCount: 0, items: [] },
   fleetRsiVerified: true,
-  unverifiedMembers: null,
+  rsiMemberCount: null,
+  memberCount: 10,
+  hiddenShipsCount: 0,
+  admins: { totalCount: 2, items: [] },
   emptyRoles: null,
+  unverifiedMembers: null,
+  membersWithoutRsiHandle: none,
+  inactiveMembers: none,
+  waitingJoinRequests: none,
+  unansweredInvitations: none,
+  staleInviteUrls: null,
+  membersWithoutDiscord: null,
+  membersWithoutSquadron: null,
+  emptySquadrons: null,
   ...overrides,
 });
 
@@ -101,7 +114,8 @@ describe("FleetDashboardActionQueuePanel", () => {
     healthAsked = false;
   });
 
-  it("links to the health page with every loose end counted", async () => {
+  // Checks, not members: forty inactive members are one thing to look at.
+  it("links to the health page with the checks that need attention counted", async () => {
     health = healthWith({
       inactiveMembers: { totalCount: 4, items: [] },
       unverifiedMembers: { totalCount: 2, items: [] },
@@ -113,11 +127,12 @@ describe("FleetDashboardActionQueuePanel", () => {
     expect(healthLink(subject).attributes("href")).toBe(
       "#/f/maru/members/health",
     );
-    expect(healthLink(subject).text()).toContain("7");
+    expect(healthLink(subject).text()).toContain("3");
   });
 
+  // Hidden hangars are worth knowing, not something to answer.
   it("stays quiet when nothing needs attention", async () => {
-    health = healthWith({ emptyRoles: [] });
+    health = healthWith({ emptyRoles: [], hiddenShipsCount: 4 });
 
     const subject = await mount({ canCheckMemberHealth: true });
 
