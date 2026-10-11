@@ -2308,7 +2308,6 @@ GET /components for the `query` request parameter `perPage`, default value was c
 GET /equipment for the `query` request parameter `perPage`, default value was changed from `50.00` to `48.00`
 GET /filters/models/options for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /fleets/{fleetSlug}/blueprints for the `query` request parameter `perPage`, default value was changed from `60.00` to `48.00`
-GET /fleets/{fleetSlug}/invite-urls for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /fleets/{fleetSlug}/vehicles for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /hangar for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
 GET /hangar/buybacks for the `query` request parameter `perPage`, default value was changed from `50.00` to `48.00`
