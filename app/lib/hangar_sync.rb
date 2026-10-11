@@ -7,6 +7,10 @@ class HangarSync < HangarImporter
 
   OUTCOMES = %w[synced nothing_to_sync only_skipped_items].freeze
 
+  # Runs that skipped every sync step. They still finish an import, which the
+  # sync status endpoint reads back for the result card, but they are not a sync.
+  NO_OP_OUTCOMES = (OUTCOMES - ["synced"]).freeze
+
   COMPONENT_FIND_QUERY = [
     "lower(name) = :name",
     "slug = :slug",

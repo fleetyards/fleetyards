@@ -21,7 +21,7 @@ module Api
         normalize_sort_params(import_query_params)
         import_query_params["sorts"] = sorting_params(Import, import_query_params["sorts"])
 
-        @q = scope.ransack(import_query_params)
+        @q = scope.without_no_op_syncs.ransack(import_query_params)
         @imports = @q.result
           .includes(:hangar_group)
           .page(page_params)

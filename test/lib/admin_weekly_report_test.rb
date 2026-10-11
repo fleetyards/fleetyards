@@ -22,4 +22,18 @@ class AdminWeeklyReportTest < ActiveSupport::TestCase
 
     assert_equal 0, gauge(AdminWeeklyReport.build, :content, :models_without_price).current
   end
+
+  # A failed run has no outcome and is still a sync someone tried, which is what
+  # `failed_hangar_syncs` is read against.
+  test "counts hangar syncs but not runs that had nothing to do" do
+    user = create(:user)
+    create(:import, :hangar_sync, user:, aasm_state: "finished", output: {"outcome" => "synced"})
+    create(:import, :hangar_sync, user:, aasm_state: "failed")
+    create(:import, :hangar_sync, user:, aasm_state: "failed", output: {"outcome" => "nothing_to_sync"})
+    HangarSync::NO_OP_OUTCOMES.each do |outcome|
+      create(:import, :hangar_sync, user:, aasm_state: "finished", output: {"outcome" => outcome})
+    end
+
+    assert_equal 3, gauge(AdminWeeklyReport.build, :ops, :hangar_syncs).current
+  end
 end
