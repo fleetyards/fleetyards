@@ -4,7 +4,7 @@
 # buy-back page. Kept apart from vehicles: none of these are ships the user owns.
 class BuybackPledge < ApplicationRecord
   paginates_per 48
-  max_paginates_per 200
+  max_paginates_per 240
   per_page_steps PageSizes.up_to(max_per_page)
 
   KINDS = %w[package ship upgrade paint addon other].freeze

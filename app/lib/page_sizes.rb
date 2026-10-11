@@ -5,7 +5,7 @@ module PageSizes
   # The card grid shows 1, 2, 3, 4 or 6 columns, and every one divides 12, so a
   # full page of any of these ends on a full row. Lists of one item per row
   # share them so there is one set to reason about.
-  STEPS = [12, 24, 48, 96, 240].freeze
+  STEPS = [12, 24, 48, 96, 144, 240].freeze
 
   # The steps a list whose maximum is `max` can offer: `per_page` answers a size
   # above the maximum with a 400.
