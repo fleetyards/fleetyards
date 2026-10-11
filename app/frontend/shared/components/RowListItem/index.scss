@@ -269,3 +269,24 @@
     flex: none;
   }
 }
+
+// A phone has no room for a thumbnail, a title and a run of badges on one
+// line: the badges never shrink, so the title took what was left - one word a
+// line, with the badges running off the row. The row wraps instead, only when
+// it has to: the title keeps a floor beside the thumbnail, and the badges that
+// do not fit move to a line of their own under it.
+@media (max-width: 992px) {
+  .row-list-item {
+    flex-wrap: wrap;
+    row-gap: 8px;
+
+    &__main {
+      flex: 1 1 160px;
+    }
+
+    &__badges {
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+  }
+}
