@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -183,6 +184,22 @@ const stateOptions: FilterOption[] = [
         :reset-label="t('labels.all')"
         :options="verifiedOptions"
         name="verifiedEq"
+      />
+
+      <FormCheckbox
+        v-model="form.withoutRsiHandle"
+        name="withoutRsiHandle"
+        :label="t('labels.filters.fleets.members.withoutRsiHandle')"
+      />
+      <FormCheckbox
+        v-model="form.withoutDiscord"
+        name="withoutDiscord"
+        :label="t('labels.filters.fleets.members.withoutDiscord')"
+      />
+      <FormCheckbox
+        v-model="form.withoutSquadron"
+        name="withoutSquadron"
+        :label="t('labels.filters.fleets.members.withoutSquadron')"
       />
     </template>
 

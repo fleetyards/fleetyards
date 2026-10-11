@@ -2378,7 +2378,10 @@
             "inactiveSince": "不活跃起始日期",
             "verified": "RSI 组织",
             "verifiedYes": "已验证",
-            "verifiedNo": "未验证"
+            "verifiedNo": "未验证",
+            "withoutRsiHandle": "没有 RSI 账号名",
+            "withoutDiscord": "未关联 Discord",
+            "withoutSquadron": "未加入中队"
           },
           "inviteUrls": {
             "expiresAfter": "Expire after",

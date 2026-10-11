@@ -2378,7 +2378,10 @@
             "inactiveSince": "Inactivo desde",
             "verified": "Organización de RSI",
             "verifiedYes": "Verificado",
-            "verifiedNo": "No verificado"
+            "verifiedNo": "No verificado",
+            "withoutRsiHandle": "Sin handle de RSI",
+            "withoutDiscord": "Sin Discord vinculado",
+            "withoutSquadron": "Sin escuadrón"
           },
           "inviteUrls": {
             "expiresAfter": "Expire after",
