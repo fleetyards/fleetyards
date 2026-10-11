@@ -2,7 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
-const mount = (props: { count: number; details?: boolean }) =>
+const mount = (props: { count?: number; details?: boolean }) =>
   mountWithDefaults<typeof Component>(Component, { props });
 
 describe("GridSkeleton", () => {
@@ -10,6 +10,12 @@ describe("GridSkeleton", () => {
     const wrapper = await mount({ count: 7 });
 
     expect(wrapper.findAll(".grid-skeleton__media")).toHaveLength(7);
+  });
+
+  it("fills whole rows for a list not seen yet", async () => {
+    const wrapper = await mount({});
+
+    expect(wrapper.findAll(".grid-skeleton__media")).toHaveLength(12);
   });
 
   // The cells are the real grid's, so the placeholders break onto rows exactly
