@@ -2599,6 +2599,7 @@
         "backgroundProgress": "正在同步机库",
         "backgroundFinished": "机库同步已完成",
         "backgroundFailed": "机库同步失败",
+        "backgroundCancelled": "机库同步已取消",
         "status": {
           "started": "导入已开始...",
           "finished": "导入完成",

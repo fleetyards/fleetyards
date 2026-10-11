@@ -60,6 +60,10 @@ const result = ref<HangarSyncResult | undefined>();
 // previous run's result as this one's.
 const submitted = ref(false);
 
+// Ended by a cancel from the imports history, which the steps can only tell as
+// a failure.
+const cancelled = ref(false);
+
 const stepStatus = (name: SyncProcessStepName) =>
   processSteps.value.find((step) => step.name === name)?.status;
 
@@ -139,6 +143,7 @@ const clear = () => {
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
+  cancelled.value = false;
   answeredByPollAt = undefined;
   seenPledgeIds = new Set();
   unreadPages = [];
@@ -334,6 +339,7 @@ export const useHangarSync = () => {
         console.error("Hangar sync failed:", message.error);
       }
     } else if (message.status === "cancelled") {
+      cancelled.value = true;
       updateStep("submitData", "failure");
       displayInfo({ text: t("messages.syncExtension.cancelled") });
     } else {
@@ -407,6 +413,7 @@ export const useHangarSync = () => {
     finished,
     finishedWithErrors,
     retryable,
+    cancelled,
     running,
     fetching,
     awaitingResult,

@@ -10,6 +10,7 @@ const run = vi.hoisted(() => ({
   running: undefined as unknown as Ref<boolean>,
   finishedWithErrors: undefined as unknown as Ref<boolean>,
   retryable: undefined as unknown as Ref<boolean>,
+  cancelled: undefined as unknown as Ref<boolean>,
   fetching: undefined as unknown as Ref<boolean>,
   currentPage: undefined as unknown as Ref<number>,
   cancel: vi.fn(),
@@ -41,6 +42,7 @@ describe("HangarSyncProgress", () => {
     run.running = ref(false);
     run.finishedWithErrors = ref(false);
     run.retryable = ref(false);
+    run.cancelled = ref(false);
     run.fetching = ref(false);
     run.currentPage = ref(1);
     run.cancel.mockClear();
@@ -136,6 +138,18 @@ describe("HangarSyncProgress", () => {
     expect(wrapper.find("[data-test='hangar-sync-ended']").text()).toBe(
       "labels.syncExtension.backgroundFailed",
     );
+  });
+
+  it("tells a cancelled run apart from a failed one", () => {
+    run.started.value = true;
+    run.finishedWithErrors.value = true;
+    run.cancelled.value = true;
+
+    const wrapper = mountProgress();
+
+    const ended = wrapper.find("[data-test='hangar-sync-ended']");
+    expect(ended.text()).toBe("labels.syncExtension.backgroundCancelled");
+    expect(ended.classes()).not.toContain("text-danger");
   });
 
   it("can dismiss a finished run without opening it", async () => {

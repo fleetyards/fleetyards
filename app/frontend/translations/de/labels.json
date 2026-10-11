@@ -2599,6 +2599,7 @@
         "backgroundProgress": "Hangar wird synchronisiert",
         "backgroundFinished": "Hangar-Synchronisierung abgeschlossen",
         "backgroundFailed": "Hangar-Synchronisierung fehlgeschlagen",
+        "backgroundCancelled": "Hangar-Synchronisierung abgebrochen",
         "status": {
           "started": "Import gestartet...",
           "finished": "Import abgeschlossen",

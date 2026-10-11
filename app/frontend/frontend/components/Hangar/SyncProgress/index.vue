@@ -24,6 +24,7 @@ const {
   fetching,
   finishedWithErrors,
   retryable,
+  cancelled,
   currentPage,
   cancel,
   reset,
@@ -33,7 +34,23 @@ const {
 // dismissed, so the outcome is not only a toast that was easy to miss.
 const ended = computed(() => started.value && !running.value);
 
-const failed = computed(() => finishedWithErrors.value || retryable.value);
+const failed = computed(
+  () => !cancelled.value && (finishedWithErrors.value || retryable.value),
+);
+
+const endedLabel = computed(() => {
+  if (cancelled.value) return t("labels.syncExtension.backgroundCancelled");
+
+  return failed.value
+    ? t("labels.syncExtension.backgroundFailed")
+    : t("labels.syncExtension.backgroundFinished");
+});
+
+const endedClass = computed(() => {
+  if (cancelled.value) return undefined;
+
+  return failed.value ? "text-danger" : "text-success";
+});
 
 const hangarStore = useHangarStore();
 
@@ -57,16 +74,8 @@ const open = () => {
       <span v-if="running">{{
         t("labels.syncExtension.backgroundProgress")
       }}</span>
-      <span
-        v-else
-        :class="failed ? 'text-danger' : 'text-success'"
-        data-test="hangar-sync-ended"
-      >
-        {{
-          failed
-            ? t("labels.syncExtension.backgroundFailed")
-            : t("labels.syncExtension.backgroundFinished")
-        }}
+      <span v-else :class="endedClass" data-test="hangar-sync-ended">
+        {{ endedLabel }}
       </span>
       <span
         v-if="fetching"
