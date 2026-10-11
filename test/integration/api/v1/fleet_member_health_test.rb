@@ -45,18 +45,24 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     @never = create(:user)
     @never.update_columns(last_active_at: nil)
     @recent = create(:user, last_active_at: 10.days.ago)
-    @fleet = create(:fleet, admins: [@admin], members: [@gone, @away, @never, @recent])
+    @officer = create(:user, last_active_at: 50.days.ago)
+    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@gone, @away, @never, @recent])
   end
 
-  test "GET health lists inactive members, longest gone first" do
+  def health
+    parsed_body
+  end
+
+  test "GET health lists inactive members, officers first, then longest gone" do
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      inactive = parsed_body["inactiveMembers"]
+      inactive = health["inactiveMembers"]
 
-      assert_equal 30, parsed_body["inactiveDays"]
-      assert_equal 3, inactive["totalCount"]
-      assert_equal [@never, @gone, @away].map(&:username), inactive["items"].pluck("username")
+      assert_equal 30, health["inactiveDays"]
+      assert_equal 4, inactive["totalCount"]
+      assert_equal [@officer, @never, @gone, @away].map(&:username), inactive["items"].pluck("username")
+      assert_equal [true, false, false, false], inactive["items"].pluck("leader")
     end
   end
 
@@ -64,60 +70,142 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {inactiveDays: 60} do
-      assert_equal 60, parsed_body["inactiveDays"]
-      assert_equal [@never, @gone].map(&:username), parsed_body["inactiveMembers"]["items"].pluck("username")
+      assert_equal 60, health["inactiveDays"]
+      assert_equal [@never, @gone].map(&:username), health["inactiveMembers"]["items"].pluck("username")
     end
   end
 
-  test "GET health leaves out members who have not joined" do
-    create(:fleet_membership, :requested, fleet: @fleet, user: create(:user, last_active_at: 90.days.ago))
-    @fleet.fleet_memberships.find_by(user: @away).discard
+  test "GET health counts the admins" do
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal [@never, @gone].map(&:username), parsed_body["inactiveMembers"]["items"].pluck("username")
+      assert_equal 1, health["admins"]["totalCount"]
+      assert_equal [@admin.username], health["admins"]["items"].pluck("username")
     end
   end
 
-  test "GET health has no unverified section without an RSI SID" do
+  test "GET health asks for an RSI handle when the fleet has no SID" do
+    @gone.update_columns(rsi_handle: "GoneHandle")
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_nil parsed_body["unverifiedMembers"]
+      assert_nil health["unverifiedMembers"]
+      assert_nil health["rsiMemberCount"]
+      assert_not_includes health["membersWithoutRsiHandle"]["items"].pluck("username"), @gone.username
     end
   end
 
-  test "GET health lists members the fleet's RSI org does not know" do
-    @fleet.update_columns(rsi_sid: "TESTORG")
-    @fleet.fleet_memberships.where.not(user: [@gone, @recent]).update_all(verified: true)
+  test "GET health says why each member is not verified against the fleet's RSI org" do
+    @fleet.update_columns(rsi_sid: "TESTORG", rsi_member_count: 40)
+    @fleet.fleet_memberships.where(user: [@admin, @officer, @never]).update_all(verified: true)
+    @gone.update_columns(rsi_handle: nil)
+    @away.update_columns(rsi_handle: "AwayHandle", rsi_handle_verified: true, rsi_organizations_checked_at: 3.days.ago)
+    @recent.update_columns(rsi_handle: "RecentHandle", rsi_handle_verified: false)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      unverified = parsed_body["unverifiedMembers"]
+      gaps = health["unverifiedMembers"]["items"].to_h { |item| [item["username"], item["verificationGap"]] }
 
-      assert_equal false, parsed_body["fleetRsiVerified"]
-      assert_equal 2, unverified["totalCount"]
-      assert_equal [@gone, @recent].map(&:username).sort, unverified["items"].pluck("username").sort
+      assert_equal({@gone.username => "no_handle", @away.username => "org_not_listed", @recent.username => "handle_unverified"}, gaps)
+      assert_equal 40, health["rsiMemberCount"]
+      assert_equal 6, health["memberCount"]
+      assert_nil health["membersWithoutRsiHandle"]
     end
   end
 
   test "GET health lists roles nobody holds" do
+    @fleet.fleet_memberships.find_by(user: @officer).update_columns(fleet_role_id: @fleet.fleet_roles.find_by(slug: "member").id)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal ["officer"], parsed_body["emptyRoles"].pluck("slug")
+      assert_equal ["officer"], health["emptyRoles"].pluck("slug")
     end
   end
 
-  test "GET health leaves out empty roles for a reader who cannot read roles" do
+  test "GET health lists join requests and invitations left waiting" do
+    old_request = create(:fleet_membership, :requested, fleet: @fleet, requested_at: 10.days.ago)
+    create(:fleet_membership, :requested, fleet: @fleet, requested_at: 2.days.ago)
+    old_invite = create(:fleet_membership, :invited, fleet: @fleet, invited_at: 20.days.ago, invited_by: @admin.id)
+    create(:fleet_membership, :invited, fleet: @fleet, invited_at: 3.days.ago)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [old_request.user.username], health["waitingJoinRequests"]["items"].pluck("username")
+      invitations = health["unansweredInvitations"]["items"]
+      assert_equal [old_invite.user.username], invitations.pluck("username")
+      assert_equal @admin.username, invitations.first["invitedBy"]
+    end
+  end
+
+  test "GET health lists invite links that are expired, used up or unlimited" do
+    expired = create(:fleet_invite_url, :expired, fleet: @fleet, user: @admin, limit: 5)
+    used_up = create(:fleet_invite_url, fleet: @fleet, user: @admin, limit: 0, expires_after: 3.days.from_now)
+    unlimited = create(:fleet_invite_url, :unlimited, fleet: @fleet, user: @admin)
+    create(:fleet_invite_url, fleet: @fleet, user: @admin, limit: 5, expires_after: 3.days.from_now)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [expired, used_up, unlimited].map(&:token).sort, health["staleInviteUrls"]["items"].pluck("token").sort
+    end
+  end
+
+  test "GET health asks for Discord only when the fleet hands out Discord roles" do
+    create(:omniauth_connection, user: @gone, provider: :discord)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_nil health["membersWithoutDiscord"]
+    end
+
+    FleetNotificationSetting.create!(fleet: @fleet, discord_guild_id: "123456789012345678", discord_member_role_id: "223456789012345678")
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 5, health["membersWithoutDiscord"]["totalCount"]
+    end
+  end
+
+  test "GET health lists empty squadrons and members in none when squadrons are on" do
+    @fleet.update_columns(squadrons_enabled: true)
+    wing = create(:fleet_squadron, fleet: @fleet)
+    empty = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: wing, fleet_membership: @fleet.fleet_memberships.find_by(user: @admin))
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [empty.slug], health["emptySquadrons"]["items"].pluck("slug")
+      assert_equal 5, health["membersWithoutSquadron"]["totalCount"]
+    end
+  end
+
+  test "GET health leaves squadrons out when they are off" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_nil health["emptySquadrons"]
+      assert_nil health["membersWithoutSquadron"]
+    end
+  end
+
+  test "GET health counts members who keep their ships out of the fleet" do
+    @fleet.fleet_memberships.find_by(user: @gone).update_columns(ships_filter: FleetMembership.ships_filters[:hide])
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 1, health["hiddenShipsCount"]
+    end
+  end
+
+  test "GET health leaves out what the reader may not see" do
     role = create(:fleet_role, fleet: @fleet, name: "Recruiter", resource_access: ["fleet:memberships:read", "fleet:memberships:update"])
     recruiter = create(:user)
     create(:fleet_membership, fleet: @fleet, user: recruiter, fleet_role: role, aasm_state: :accepted)
+    @fleet.update_columns(squadrons_enabled: true)
     sign_in recruiter
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_nil parsed_body["emptyRoles"]
-      assert_equal 3, parsed_body["inactiveMembers"]["totalCount"]
+      assert_nil health["emptyRoles"]
+      assert_nil health["staleInviteUrls"]
+      assert_nil health["emptySquadrons"]
     end
   end
 

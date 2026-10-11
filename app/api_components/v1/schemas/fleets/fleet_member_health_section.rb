@@ -11,7 +11,7 @@ module V1
           type: :object,
           properties: {
             totalCount: {type: :integer},
-            items: {type: :array, items: ::V1::Schemas::Fleets::FleetMember}
+            items: {type: :array, items: ::V1::Schemas::Fleets::FleetMemberHealthMember}
           },
           required: %w[totalCount items],
           additionalProperties: false

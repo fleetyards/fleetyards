@@ -33,6 +33,7 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
+  belongs_to :inviter, class_name: "User", foreign_key: :invited_by, optional: true, inverse_of: false
 
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadrons, through: :fleet_squadron_memberships
@@ -177,6 +178,19 @@ class FleetMembership < ApplicationRecord
   # it.
   def rsi_verified?
     verified? && fleet.rsi_verified?
+  end
+
+  VERIFICATION_GAPS = %w[no_handle handle_unverified orgs_not_checked org_not_listed].freeze
+
+  # Why the membership is not verified against the fleet's RSI org, in the
+  # order a member would have to fix it.
+  def verification_gap
+    return if verified?
+    return :no_handle if user.rsi_handle.blank?
+    return :handle_unverified unless user.rsi_handle_verified?
+    return :orgs_not_checked if user.rsi_organizations_checked_at.blank?
+
+    :org_not_listed
   end
 
   def has_access?(privileges)

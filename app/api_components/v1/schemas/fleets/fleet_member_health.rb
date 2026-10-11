@@ -3,25 +3,37 @@
 module V1
   module Schemas
     module Fleets
+      # Every check on the member health page. A check that is null does not
+      # apply to this fleet, or the reader may not see it.
       class FleetMemberHealth
         include OpenapiRuby::Components::Base
+
+        section = ::V1::Schemas::Fleets::FleetMemberHealthSection
+        nullable = ->(ref, description) { {anyOf: [ref, {type: :null}], description:} }
 
         schema({
           type: :object,
           properties: {
             inactiveDays: {type: :integer},
-            inactiveMembers: ::V1::Schemas::Fleets::FleetMemberHealthSection,
             fleetRsiVerified: {type: :boolean},
-            unverifiedMembers: {
-              anyOf: [::V1::Schemas::Fleets::FleetMemberHealthSection, {type: :null}],
-              description: "Null when the fleet has no RSI SID to verify against"
-            },
-            emptyRoles: {
-              anyOf: [{type: :array, items: ::V1::Schemas::Fleets::FleetRole}, {type: :null}],
-              description: "Null when the reader cannot read roles"
-            }
+            rsiMemberCount: {type: [:integer, :null], description: "Members of the fleet's RSI org on RSI; null without an RSI SID"},
+            memberCount: {type: :integer},
+            hiddenShipsCount: {type: :integer, description: "Members who keep their ships out of the fleet"},
+            admins: section,
+            emptyRoles: nullable.call({type: :array, items: ::V1::Schemas::Fleets::FleetRole}, "Null when the reader cannot read roles"),
+            unverifiedMembers: nullable.call(section, "Null when the fleet has no RSI SID"),
+            membersWithoutRsiHandle: nullable.call(section, "Null when the fleet has an RSI SID"),
+            inactiveMembers: section,
+            waitingJoinRequests: section,
+            unansweredInvitations: section,
+            staleInviteUrls: nullable.call(::V1::Schemas::Fleets::FleetMemberHealthInviteUrls, "Null when the reader cannot read invites"),
+            membersWithoutDiscord: nullable.call(section, "Null unless the fleet hands out Discord roles"),
+            membersWithoutSquadron: nullable.call(section, "Null unless squadrons are on and the reader can read them"),
+            emptySquadrons: nullable.call(::V1::Schemas::Fleets::FleetMemberHealthSquadrons, "Null unless squadrons are on and the reader can read them")
           },
-          required: %w[inactiveDays inactiveMembers fleetRsiVerified unverifiedMembers emptyRoles],
+          required: %w[inactiveDays fleetRsiVerified rsiMemberCount memberCount hiddenShipsCount admins emptyRoles
+            unverifiedMembers membersWithoutRsiHandle inactiveMembers waitingJoinRequests unansweredInvitations
+            staleInviteUrls membersWithoutDiscord membersWithoutSquadron emptySquadrons],
           additionalProperties: false
         })
       end
