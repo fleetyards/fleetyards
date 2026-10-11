@@ -5,13 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  BtnSizesEnum,
-  BtnTonesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import PageActions from "@/shared/components/PageActions/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -22,6 +18,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
+import MobileSelectionHeader from "@/shared/components/MobileSelectionHeader/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Detail from "@/frontend/components/Notifications/Detail/index.vue";
 import FilterForm from "@/frontend/components/Notifications/FilterForm/index.vue";
@@ -29,12 +26,14 @@ import ListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useBulkSelection } from "@/shared/composables/useBulkSelection";
 import { useSelectionMode } from "@/shared/composables/useSelectionMode";
+import { useRoutedSelection } from "@/shared/composables/useRoutedSelection";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useNotificationFilters,
   NOTIFICATION_TAB_QUERY_KEY,
+  NOTIFICATION_DETAIL_QUERY_KEY,
 } from "@/frontend/composables/useNotificationFilters";
 import {
   useNotificationInvalidation,
@@ -209,7 +208,11 @@ const hold = (notification: Notification) => {
   startSelecting();
 };
 
-const selectedId = ref<string>();
+const {
+  selectedId,
+  open: openNotification,
+  close: closeNotification,
+} = useRoutedSelection({ key: NOTIFICATION_DETAIL_QUERY_KEY, mobile });
 
 const selected = computed(() =>
   records.value.find((record) => record.id === selectedId.value),
@@ -218,7 +221,7 @@ const selected = computed(() =>
 // A deletion, a filter or another page takes the open notification with it.
 watch(records, () => {
   if (selectedId.value && !selected.value) {
-    selectedId.value = undefined;
+    closeNotification();
   }
 });
 
@@ -246,13 +249,27 @@ const markRead = async (notification: Notification) => {
 // Opening a notification is what reading it means, so it costs no second click.
 // Its toast goes even when the row already reads as read: the cached row can
 // be older than the toast.
-const select = (notification: Notification) => {
-  selectedId.value = notification.id;
-  dismissToasts([notification.id]);
+// Watched rather than done on the click, because the route opens one too: a
+// reload, or the forward gesture back onto a notification.
+watch(
+  () => selected.value?.id,
+  (id) => {
+    const notification = selected.value;
 
-  if (!notification.read) {
-    void markRead(notification);
-  }
+    if (!id || !notification) {
+      return;
+    }
+
+    dismissToasts([id]);
+
+    if (!notification.read) {
+      void markRead(notification);
+    }
+  },
+);
+
+const select = (notification: Notification) => {
+  openNotification(notification.id);
 };
 
 // While picking, a tap picks too - opening a notification in the middle of a
@@ -321,7 +338,7 @@ const readOne = async (notification: Notification) => {
 // it unread is to come back to it later.
 const markUnread = async (notification: Notification) => {
   if (selectedId.value === notification.id) {
-    selectedId.value = undefined;
+    closeNotification();
   }
 
   await withFeedback(
@@ -396,7 +413,7 @@ const readSelected = () =>
 // Same reason the single-record one closes the pane: an unread notification
 // left open only invites the click that marks it read again.
 const unreadSelected = () => {
-  selectedId.value = undefined;
+  closeNotification();
 
   return withBulkFeedback(
     unreadBulkNotifications,
@@ -448,67 +465,24 @@ const destroySelected = () =>
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
-    <!-- On a phone the three would take a row of their own under the search,
-         so they fold into one menu beside it. A selection takes the header
-         over, and the menu goes with the search: nothing is left in this slot
-         to claim the header's gap. -->
-    <BtnDropdown
-      v-if="mobile && !selecting"
-      class="navigation-header-pinned"
-      :size="BtnSizesEnum.MD"
-      expand-left
-      data-test="notifications-menu"
+  <PageActions :hidden="selecting">
+    <Btn :to="{ name: 'settings-notifications' }">
+      <i class="fa-duotone fa-sliders" />
+      {{ t("actions.notifications.settings") }}
+    </Btn>
+    <Btn @click="markAllRead">
+      <i class="fa-duotone fa-check-double" />
+      {{ t("actions.notifications.readAll") }}
+    </Btn>
+    <Btn
+      :tone="BtnTonesEnum.DANGER"
+      :confirm="t('messages.confirm.notifications.destroyAll')"
+      @click="destroyAll"
     >
-      <Btn :to="{ name: 'settings-notifications' }">
-        <i class="fa-duotone fa-sliders" />
-        {{ t("actions.notifications.settings") }}
-      </Btn>
-      <Btn @click="markAllRead">
-        <i class="fa-duotone fa-check-double" />
-        {{ t("actions.notifications.readAll") }}
-      </Btn>
-      <Btn
-        :tone="BtnTonesEnum.DANGER"
-        :confirm="t('messages.confirm.notifications.destroyAll')"
-        @click="destroyAll"
-      >
-        <i class="fa-duotone fa-trash" />
-        {{ t("actions.notifications.destroyAll") }}
-      </Btn>
-    </BtnDropdown>
-    <template v-else-if="!mobile">
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :aria-label="t('actions.notifications.settings')"
-        :to="{ name: 'settings-notifications' }"
-        mobile-icon-only
-      >
-        <i class="fa-duotone fa-sliders" />
-        {{ t("actions.notifications.settings") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :aria-label="t('actions.notifications.readAll')"
-        mobile-icon-only
-        @click="markAllRead"
-      >
-        <i class="fa-duotone fa-check-double" />
-        {{ t("actions.notifications.readAll") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.MD"
-        :aria-label="t('actions.notifications.destroyAll')"
-        :tone="BtnTonesEnum.DANGER"
-        :confirm="t('messages.confirm.notifications.destroyAll')"
-        mobile-icon-only
-        @click="destroyAll"
-      >
-        <i class="fa-duotone fa-trash" />
-        {{ t("actions.notifications.destroyAll") }}
-      </Btn>
-    </template>
-  </Teleport>
+      <i class="fa-duotone fa-trash" />
+      {{ t("actions.notifications.destroyAll") }}
+    </Btn>
+  </PageActions>
 
   <!-- `hide-empty`, because the page draws that state itself: the list's own
        box stands in place of the whole default slot, which on this page is the
@@ -518,7 +492,7 @@ const destroySelected = () =>
     :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
-    :view-keys="[NOTIFICATION_TAB_QUERY_KEY]"
+    :view-keys="[NOTIFICATION_TAB_QUERY_KEY, NOTIFICATION_DETAIL_QUERY_KEY]"
     hide-empty
   >
     <template #filter>
@@ -604,92 +578,75 @@ const destroySelected = () =>
     </template>
 
     <template #default="{ records: shown, emptyVisible }">
-      <!-- On a phone the bar only exists while a held row has started a
-           selection, and then it stands in for the search in the header, where
-           the thumb already is. -->
-      <Teleport to="#header-left" :disabled="!selecting">
-        <div
-          v-if="!mobile || selecting"
-          class="notifications__bulk"
-          :class="{
-            'notifications__bulk--hidden': !!selected && !selecting,
-            'notifications__bulk--header navigation-header-takeover navigation-header-pinned':
-              selecting,
-          }"
+      <!-- Collapses once the bar has moved into the header: only the
+           comments that mark the teleport are left behind. -->
+      <div
+        class="notifications__bulk"
+        :class="{ 'notifications__bulk--hidden': !!selected && !selecting }"
+      >
+        <MobileSelectionHeader
+          :selecting="selecting"
+          :disabled="!shown.length"
+          :selected-count="selectedCount"
+          :matching-count="matchingCount"
+          :page-selected="pageSelected"
+          :page-partially-selected="pagePartiallySelected"
+          :can-select-all-matching="canSelectAllMatching"
+          :all-matching-selected="allMatchingSelected"
+          @toggle-page="togglePage"
+          @select-all-matching="selectAllMatching"
+          @clear="clearSelection"
         >
           <Btn
-            v-if="selecting"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('bulkSelection.actions.clear')"
-            data-test="bulk-exit"
-            @click="clearSelection"
+            v-tooltip="t('actions.notifications.readSelected')"
+            :aria-label="t('actions.notifications.readSelected')"
+            data-test="bulk-read"
+            @click="readSelected"
           >
-            <i class="fa-light fa-xmark" />
+            <i class="fa-duotone fa-envelope-open" />
           </Btn>
-          <BulkSelectionBar
-            :disabled="!shown.length"
-            :compact="selecting"
-            :selected-count="selectedCount"
-            :matching-count="matchingCount"
-            :page-selected="pageSelected"
-            :page-partially-selected="pagePartiallySelected"
-            :can-select-all-matching="canSelectAllMatching"
-            :all-matching-selected="allMatchingSelected"
-            @toggle-page="togglePage"
-            @select-all-matching="selectAllMatching"
-            @clear="clearSelection"
+          <Btn
+            v-tooltip="t('actions.notifications.unreadSelected')"
+            :aria-label="t('actions.notifications.unreadSelected')"
+            data-test="bulk-unread"
+            @click="unreadSelected"
           >
-            <Btn
-              v-tooltip="t('actions.notifications.readSelected')"
-              :aria-label="t('actions.notifications.readSelected')"
-              data-test="bulk-read"
-              @click="readSelected"
-            >
-              <i class="fa-duotone fa-envelope-open" />
-            </Btn>
-            <Btn
-              v-tooltip="t('actions.notifications.unreadSelected')"
-              :aria-label="t('actions.notifications.unreadSelected')"
-              data-test="bulk-unread"
-              @click="unreadSelected"
-            >
-              <i class="fa-duotone fa-envelope-dot" />
-            </Btn>
-            <Btn
-              v-if="archive"
-              v-tooltip="t('actions.notifications.unarchiveSelected')"
-              :aria-label="t('actions.notifications.unarchiveSelected')"
-              data-test="bulk-unarchive"
-              @click="unarchiveSelected"
-            >
-              <i class="fa-duotone fa-inbox-in" />
-            </Btn>
-            <Btn
-              v-else
-              v-tooltip="t('actions.notifications.archiveSelected')"
-              :aria-label="t('actions.notifications.archiveSelected')"
-              data-test="bulk-archive"
-              @click="archiveSelected"
-            >
-              <i class="fa-duotone fa-box-archive" />
-            </Btn>
-            <Btn
-              v-tooltip="t('actions.notifications.destroySelected')"
-              :aria-label="t('actions.notifications.destroySelected')"
-              :tone="BtnTonesEnum.DANGER"
-              :confirm="
-                t('messages.confirm.notifications.destroySelected', {
-                  count: selectedCount,
-                })
-              "
-              data-test="bulk-destroy"
-              @click="destroySelected"
-            >
-              <i class="fa-duotone fa-trash" />
-            </Btn>
-          </BulkSelectionBar>
-        </div>
-      </Teleport>
+            <i class="fa-duotone fa-envelope-dot" />
+          </Btn>
+          <Btn
+            v-if="archive"
+            v-tooltip="t('actions.notifications.unarchiveSelected')"
+            :aria-label="t('actions.notifications.unarchiveSelected')"
+            data-test="bulk-unarchive"
+            @click="unarchiveSelected"
+          >
+            <i class="fa-duotone fa-inbox-in" />
+          </Btn>
+          <Btn
+            v-else
+            v-tooltip="t('actions.notifications.archiveSelected')"
+            :aria-label="t('actions.notifications.archiveSelected')"
+            data-test="bulk-archive"
+            @click="archiveSelected"
+          >
+            <i class="fa-duotone fa-box-archive" />
+          </Btn>
+          <Btn
+            v-tooltip="t('actions.notifications.destroySelected')"
+            :aria-label="t('actions.notifications.destroySelected')"
+            :tone="BtnTonesEnum.DANGER"
+            :confirm="
+              t('messages.confirm.notifications.destroySelected', {
+                count: selectedCount,
+              })
+            "
+            data-test="bulk-destroy"
+            @click="destroySelected"
+          >
+            <i class="fa-duotone fa-trash" />
+          </Btn>
+        </MobileSelectionHeader>
+      </div>
 
       <div
         class="notifications"
@@ -739,7 +696,7 @@ const destroySelected = () =>
         <Detail
           class="notifications__detail"
           :notification="selected"
-          @close="selectedId = undefined"
+          @close="closeNotification"
           @unread="selected && markUnread(selected)"
           @archive="selected && archiveOne(selected)"
           @unarchive="selected && unarchiveOne(selected)"
@@ -788,24 +745,10 @@ const destroySelected = () =>
 }
 
 .notifications__bulk {
-  display: flex;
-  align-items: center;
-  gap: 4px;
   margin-bottom: 10px;
 
-  > .bulk-selection-bar {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
-// In the header's search slot, which already has its insets: the bar keeps
-// only the gap to the way out in front of it.
-.notifications__bulk--header {
-  margin-bottom: 0;
-
-  > .bulk-selection-bar {
-    padding: 0;
+  &:empty {
+    display: none;
   }
 }
 
