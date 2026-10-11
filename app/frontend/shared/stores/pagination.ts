@@ -22,6 +22,10 @@ export const usePaginationStore = defineStore("pagination", {
     },
   },
   persist: {
+    // A new key when the offered sizes change: a size saved from the old set
+    // (30 on a card grid) would leave a short row on every page and match no
+    // step in the dropdown.
+    key: "pagination-v2",
     pick: ["perPage"],
   },
 });
