@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "仅有一名管理员",
+                "title": "管理员少于两名",
                 "overview": "管理员",
                 "description": "管理员是唯一可以管理一切的角色。只有一人担任时，舰队依赖于一个账户。",
                 "clear": "有多名成员担任管理员。"
@@ -876,7 +876,14 @@
               "one": "%{count} 名成员未将机库纳入舰队舰船列表。",
               "other": "%{count} 名成员未将机库纳入舰队舰船列表。"
             },
-            "deleteLinkFailed": "无法删除该邀请链接。"
+            "deleteLinkFailed": "无法删除该邀请链接。",
+            "noAdmin": "没有人担任管理员，因此没有人能在 FleetYards 上管理 %{fleet}。",
+            "adminCandidates": "提升为管理员",
+            "noCandidates": "下一级角色也无人担任，因此没有可以一步提升的人。",
+            "addedToSquadron": {
+              "success": "已加入中队。",
+              "failure": "无法加入中队。"
+            }
           }
         },
         "squadrons": {

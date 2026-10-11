@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "Un seul admin",
+                "title": "Moins de deux admins",
                 "overview": "Admins",
                 "description": "Admin est le seul rôle qui peut tout gérer. Avec un seul titulaire, la flotte dépend d'un seul compte.",
                 "clear": "Plusieurs membres sont admin."
@@ -876,7 +876,14 @@
               "one": "%{count} membre garde son hangar hors de la liste des vaisseaux de la flotte.",
               "other": "%{count} membres gardent leur hangar hors de la liste des vaisseaux de la flotte."
             },
-            "deleteLinkFailed": "Le lien d'invitation n'a pas pu être supprimé."
+            "deleteLinkFailed": "Le lien d'invitation n'a pas pu être supprimé.",
+            "noAdmin": "Personne n'est admin, donc personne ne peut gérer %{fleet} sur FleetYards.",
+            "adminCandidates": "Promouvoir admin",
+            "noCandidates": "Personne n'a non plus le rang juste en dessous, donc personne ne peut être promu en une étape.",
+            "addedToSquadron": {
+              "success": "Ajouté à l'escadron.",
+              "failure": "Impossible d'ajouter à l'escadron."
+            }
           }
         },
         "squadrons": {

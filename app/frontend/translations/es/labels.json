@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "Solo un administrador",
+                "title": "Menos de dos administradores",
                 "overview": "Administradores",
                 "description": "Administrador es el único rol que puede gestionarlo todo. Con un solo titular, la flota depende de una cuenta.",
                 "clear": "Más de un miembro es administrador."
@@ -876,7 +876,14 @@
               "one": "%{count} miembro mantiene su hangar fuera de la lista de naves de la flota.",
               "other": "%{count} miembros mantienen su hangar fuera de la lista de naves de la flota."
             },
-            "deleteLinkFailed": "No se pudo eliminar el enlace de invitación."
+            "deleteLinkFailed": "No se pudo eliminar el enlace de invitación.",
+            "noAdmin": "Nadie es administrador, así que nadie puede gestionar %{fleet} en FleetYards.",
+            "adminCandidates": "Ascender a administrador",
+            "noCandidates": "Nadie tiene tampoco el rango inmediatamente inferior, así que no hay nadie a quien ascender en un paso.",
+            "addedToSquadron": {
+              "success": "Añadido al escuadrón.",
+              "failure": "No se pudo añadir al escuadrón."
+            }
           }
         },
         "squadrons": {

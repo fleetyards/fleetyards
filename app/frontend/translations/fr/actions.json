@@ -309,11 +309,13 @@
             "inviteLinks": "Liens d'invitation",
             "discordSettings": "Paramètres Discord",
             "verifyOrg": "Vérifier l'organisation RSI",
-            "openMember": "Ouvrir le membre",
             "remove": "Retirer de la flotte",
             "revoke": "Retirer l'invitation",
             "deleteLink": "Supprimer le lien",
-            "actionsFor": "Actions pour %{name}"
+            "promoteTo": "Promouvoir %{role}",
+            "addToSquadron": "Ajouter à un escadron",
+            "addMembers": "Ajouter des membres",
+            "deleteSquadron": "Dissoudre"
           }
         },
         "inviteUrls": {

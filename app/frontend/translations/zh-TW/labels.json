@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "僅有一名管理員",
+                "title": "管理員少於兩名",
                 "overview": "管理員",
                 "description": "管理員是唯一可以管理一切的角色。只有一人擔任時，艦隊仰賴單一帳號。",
                 "clear": "有多名成員擔任管理員。"
@@ -876,7 +876,14 @@
               "one": "%{count} 名成員未將機庫納入艦隊艦船列表。",
               "other": "%{count} 名成員未將機庫納入艦隊艦船列表。"
             },
-            "deleteLinkFailed": "無法刪除該邀請連結。"
+            "deleteLinkFailed": "無法刪除該邀請連結。",
+            "noAdmin": "沒有人擔任管理員，因此沒有人能在 FleetYards 上管理 %{fleet}。",
+            "adminCandidates": "晉升為管理員",
+            "noCandidates": "下一級角色也無人擔任，因此沒有可以一步晉升的人。",
+            "addedToSquadron": {
+              "success": "已加入中隊。",
+              "failure": "無法加入中隊。"
+            }
           }
         },
         "squadrons": {

@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "Nur ein Admin",
+                "title": "Weniger als zwei Admins",
                 "overview": "Admins",
                 "description": "Admin ist die einzige Rolle, die alles verwalten kann. Mit nur einem Inhaber hängt die Flotte an einem Konto.",
                 "clear": "Mehr als ein Mitglied ist Admin."
@@ -876,7 +876,14 @@
               "one": "%{count} Mitglied hält seinen Hangar aus der Schiffsliste der Flotte heraus.",
               "other": "%{count} Mitglieder halten ihren Hangar aus der Schiffsliste der Flotte heraus."
             },
-            "deleteLinkFailed": "Der Einladungslink konnte nicht gelöscht werden."
+            "deleteLinkFailed": "Der Einladungslink konnte nicht gelöscht werden.",
+            "noAdmin": "Niemand ist Admin, deshalb kann niemand %{fleet} auf FleetYards verwalten.",
+            "adminCandidates": "Zum Admin befördern",
+            "noCandidates": "Auch den Rang direkt darunter hat niemand, also gibt es niemanden, der mit einem Schritt befördert werden kann.",
+            "addedToSquadron": {
+              "success": "Zur Staffel hinzugefügt.",
+              "failure": "Konnte nicht zur Staffel hinzugefügt werden."
+            }
           }
         },
         "squadrons": {

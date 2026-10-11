@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import { keepPreviousData } from "@tanstack/vue-query";
-import { subDays, formatISO } from "date-fns";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -18,9 +17,12 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import CheckPanel from "@/frontend/components/Fleets/MemberHealth/CheckPanel/index.vue";
 import HealthRow from "@/frontend/components/Fleets/MemberHealth/Row/index.vue";
-import MemberMenu from "@/frontend/components/Fleets/MemberHealth/MemberMenu/index.vue";
+import MemberActions, {
+  type MemberHealthAction,
+} from "@/frontend/components/Fleets/MemberHealth/Actions/index.vue";
 import {
   MEMBER_HEALTH_GROUPS,
   byUrgency,
@@ -30,10 +32,10 @@ import {
   type MemberHealthCheckKey,
 } from "@/frontend/utils/memberHealth";
 import {
-  useAcceptFleetMember,
-  useDeclineFleetMember,
   useDestroyFleetInviteUrl,
+  useDestroyFleetSquadron,
   useFleetMemberHealth,
+  useFleetSquadrons,
   type Fleet,
   type FleetMember,
   type FleetMemberHealthMember,
@@ -53,7 +55,7 @@ const route = useRoute();
 
 const comlink = useComlink();
 
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const DAY_STEPS = [14, 30, 60, 90, 180];
 
@@ -69,12 +71,25 @@ const params = computed<FleetMemberHealthParams>(() => ({
   inactiveDays: days.value,
 }));
 
+// The route lets in anyone holding one of the privileges; the page lists
+// members and acts on them, so it needs both, as the API does.
+const canCheckHealth = computed(
+  () =>
+    !!props.membership?.capabilities?.readMembers &&
+    !!props.membership?.capabilities?.updateMembers,
+);
+
 const { data: health, ...asyncStatus } = useFleetMemberHealth(
   props.fleet.slug,
   params,
-  // A new threshold keeps the old answer on screen until the new one arrives,
-  // instead of dropping the whole page to a spinner.
-  { query: { placeholderData: keepPreviousData } },
+  {
+    query: {
+      enabled: canCheckHealth,
+      // A new threshold keeps the old answer on screen until the new one
+      // arrives, instead of dropping the whole page to a spinner.
+      placeholderData: keepPreviousData,
+    },
+  },
 );
 
 const refetch = () => {
@@ -94,6 +109,27 @@ onUnmounted(() => {
 const capabilities = computed(() => props.membership?.capabilities);
 
 const sid = computed(() => props.fleet.rsiSid ?? "");
+
+const { data: squadrons } = useFleetSquadrons(
+  props.fleet.slug,
+  { perPage: "all" },
+  {
+    query: {
+      enabled: computed(
+        () =>
+          !!health.value?.membersWithoutSquadron &&
+          !!capabilities.value?.manageSquadronMembers,
+      ),
+    },
+  },
+);
+
+// Teams last: a member is placed in a squadron first.
+const squadronOptions = computed(() =>
+  [...(squadrons.value?.items ?? [])].sort(
+    (a, b) => Number(a.team) - Number(b.team),
+  ),
+);
 
 const checks = computed(() =>
   health.value ? memberHealthChecks(health.value) : [],
@@ -129,10 +165,11 @@ const moreLinks = computed<Partial<Record<MemberHealthCheckKey, object>>>(
   () => ({
     unverified: membersLink({ verifiedEq: "false" }),
     noHandle: membersLink({ withoutRsiHandle: "true" }),
+    // The UTC day the API counted from, so the list matches the count.
     inactive: membersLink({
-      inactiveSince: formatISO(subDays(new Date(), days.value), {
-        representation: "date",
-      }),
+      inactiveSince: new Date(Date.now() - days.value * 86_400_000)
+        .toISOString()
+        .slice(0, 10),
       s: "lastActiveAt asc",
     }),
     joinRequests: membersLink({ view: "invites" }),
@@ -274,30 +311,53 @@ const orgGap = computed(() => {
   return Math.max(count - health.value.memberCount, 0);
 });
 
-const answering = ref<string | null>(null);
-
-const acceptMutation = useAcceptFleetMember();
-
-const declineMutation = useDeclineFleetMember();
-
-const answer = async (member: FleetMemberHealthMember, accept: boolean) => {
-  answering.value = member.username;
-  const messages = accept
-    ? "messages.fleet.members.accept"
-    : "messages.fleet.members.decline";
-
-  try {
-    await (accept ? acceptMutation : declineMutation).mutateAsync({
-      fleetSlug: props.fleet.slug,
-      username: member.username,
-    });
-    comlink.emit("fleet-member-update");
-    displaySuccess({ text: t(`${messages}.success`) });
-  } catch {
-    displayAlert({ text: t(`${messages}.failure`) });
-  } finally {
-    answering.value = null;
+// What resolves each row: see MemberActions.
+const actionsFor = (
+  check: MemberHealthCheck,
+  member: FleetMemberHealthMember,
+): MemberHealthAction[] => {
+  switch (check.key) {
+    case "joinRequests":
+      return ["answer"];
+    case "invitations":
+      return ["revoke"];
+    case "inactive":
+      return member.leader ? ["demote", "remove"] : ["remove"];
+    // Only a member their own org list does not name is resolved here; the
+    // other gaps are theirs to close.
+    case "unverified":
+      return member.verificationGap === "org_not_listed" ? ["remove"] : [];
+    case "noSquadron":
+      return ["addToSquadron"];
+    default:
+      return [];
   }
+};
+
+const adminRoleName = computed(
+  () => health.value?.admins.items[0]?.fleetRole?.name,
+);
+
+const destroySquadronMutation = useDestroyFleetSquadron();
+
+const deleteSquadron = (squadron: { slug: string; name: string }) => {
+  displayConfirm({
+    text: t("messages.fleet.squadrons.destroy.confirm", {
+      name: squadron.name,
+    }),
+    onConfirm: async () => {
+      try {
+        await destroySquadronMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          slug: squadron.slug,
+        });
+        refetch();
+        displaySuccess({ text: t("messages.fleet.squadrons.destroy.success") });
+      } catch {
+        displayAlert({ text: t("messages.fleet.squadrons.destroy.failure") });
+      }
+    },
+  });
 };
 
 const destroyInviteUrlMutation = useDestroyFleetInviteUrl();
@@ -357,7 +417,8 @@ const crumbs = computed<Crumb[]>(() => [
     {{ t("headlines.fleets.members.health") }}
   </Heading>
 
-  <AsyncData :async-status="asyncStatus">
+  <Forbidden v-if="!canCheckHealth" />
+  <AsyncData v-else :async-status="asyncStatus">
     <template #resolved>
       <div v-if="health" class="member-health">
         <p class="member-health__summary" data-test="health-summary">
@@ -472,17 +533,21 @@ const crumbs = computed<Crumb[]>(() => [
 
             <template #before>
               <Alert
-                v-if="check.key === 'admins' && singleAdmin"
+                v-if="check.key === 'admins'"
                 variant="danger"
                 size="compact"
                 class="member-health__note"
                 data-test="health-single-admin"
               >
                 {{
-                  t("labels.fleet.members.health.singleAdmin", {
-                    name: singleAdmin.username,
-                    fleet: fleet.name,
-                  })
+                  singleAdmin
+                    ? t("labels.fleet.members.health.singleAdmin", {
+                        name: singleAdmin.username,
+                        fleet: fleet.name,
+                      })
+                    : t("labels.fleet.members.health.noAdmin", {
+                        fleet: fleet.name,
+                      })
                 }}
               </Alert>
               <template v-if="check.key === 'unverified'">
@@ -532,15 +597,44 @@ const crumbs = computed<Crumb[]>(() => [
               </template>
             </template>
 
-            <ul v-if="check.key === 'emptyRoles'" class="member-health__chips">
-              <li
-                v-for="role in health.emptyRoles ?? []"
-                :key="role.id"
-                :data-test="`health-empty-role-${role.slug}`"
+            <template v-if="check.key === 'emptyRoles'">
+              <div
+                v-for="entry in health.emptyRoles ?? []"
+                :key="entry.role.id"
+                class="member-health__role"
+                :data-test="`health-empty-role-${entry.role.slug}`"
               >
-                {{ role.name }}
-              </li>
-            </ul>
+                <h4 class="member-health__role-title">
+                  {{ entry.role.name }}
+                </h4>
+                <ul v-if="entry.candidates.length" class="member-health__rows">
+                  <HealthRow
+                    v-for="member in entry.candidates"
+                    :key="member.id"
+                    :title="member.username"
+                    :to="memberTo(check, member)"
+                    :avatar="member.avatar?.smallUrl"
+                    :subline="joinedLine(member)"
+                    :chip="member.fleetRole?.name"
+                    :fact="lastActive(member)"
+                    :data-test="`health-candidate-${entry.role.slug}-${member.username}`"
+                  >
+                    <template #actions>
+                      <MemberActions
+                        :fleet-slug="fleet.slug"
+                        :member="member"
+                        :actions="['promote']"
+                        :capabilities="capabilities"
+                        :promote-to="entry.role.name"
+                      />
+                    </template>
+                  </HealthRow>
+                </ul>
+                <p v-else class="member-health__quiet">
+                  {{ t("labels.fleet.members.health.noCandidates") }}
+                </p>
+              </div>
+            </template>
 
             <p
               v-else-if="check.key === 'hiddenShips'"
@@ -612,7 +706,30 @@ const crumbs = computed<Crumb[]>(() => [
                     date: l(squadron.createdAt, 'datetime.formats.date'),
                   })
                 "
-              />
+                :data-test="`health-emptySquadrons-${squadron.slug}`"
+              >
+                <template #actions>
+                  <Btn
+                    v-if="capabilities?.manageSquadronMembers"
+                    :size="BtnSizesEnum.SM"
+                    :to="{
+                      name: 'fleet-squadron-members',
+                      params: { slug: fleet.slug, squadron: squadron.slug },
+                    }"
+                    data-test="health-squadron-add-members"
+                  >
+                    {{ t("actions.fleet.members.health.addMembers") }}
+                  </Btn>
+                  <Btn
+                    v-if="capabilities?.destroySquadrons"
+                    :size="BtnSizesEnum.SM"
+                    data-test="health-squadron-delete"
+                    @click="deleteSquadron(squadron)"
+                  >
+                    {{ t("actions.fleet.members.health.deleteSquadron") }}
+                  </Btn>
+                </template>
+              </HealthRow>
             </ul>
 
             <ul v-else class="member-health__rows">
@@ -632,36 +749,49 @@ const crumbs = computed<Crumb[]>(() => [
                 :fact-loud="check.key === 'inactive' && !member.lastActiveAt"
                 :data-test="`health-${check.key}-${member.username}`"
               >
-                <template v-if="check.key === 'joinRequests'" #actions>
-                  <Btn
-                    :size="BtnSizesEnum.SM"
-                    :loading="answering === member.username"
-                    :disabled="!!answering"
-                    data-test="health-accept"
-                    @click="answer(member, true)"
-                  >
-                    {{ t("actions.fleet.members.accept") }}
-                  </Btn>
-                  <Btn
-                    :size="BtnSizesEnum.SM"
-                    :disabled="!!answering"
-                    data-test="health-decline"
-                    @click="answer(member, false)"
-                  >
-                    {{ t("actions.fleet.members.decline") }}
-                  </Btn>
-                </template>
-                <template v-else-if="check.key !== 'admins'" #actions>
-                  <MemberMenu
+                <template v-if="actionsFor(check, member).length" #actions>
+                  <MemberActions
                     :fleet-slug="fleet.slug"
                     :member="member"
+                    :actions="actionsFor(check, member)"
                     :capabilities="capabilities"
-                    :demote="check.key === 'inactive' && member.leader"
-                    :revoke="check.key === 'invitations'"
+                    :squadrons="squadronOptions"
                   />
                 </template>
               </HealthRow>
             </ul>
+
+            <div
+              v-if="check.key === 'admins' && health.admins.candidates.length"
+              class="member-health__role"
+            >
+              <h4 class="member-health__role-title">
+                {{ t("labels.fleet.members.health.adminCandidates") }}
+              </h4>
+              <ul class="member-health__rows">
+                <HealthRow
+                  v-for="member in health.admins.candidates"
+                  :key="member.id"
+                  :title="member.username"
+                  :to="memberTo(check, member)"
+                  :avatar="member.avatar?.smallUrl"
+                  :subline="joinedLine(member)"
+                  :chip="member.fleetRole?.name"
+                  :fact="lastActive(member)"
+                  :data-test="`health-admin-candidate-${member.username}`"
+                >
+                  <template #actions>
+                    <MemberActions
+                      :fleet-slug="fleet.slug"
+                      :member="member"
+                      :actions="['promote']"
+                      :capabilities="capabilities"
+                      :promote-to="adminRoleName"
+                    />
+                  </template>
+                </HealthRow>
+              </ul>
+            </div>
           </CheckPanel>
         </div>
       </div>
@@ -687,14 +817,16 @@ const crumbs = computed<Crumb[]>(() => [
   gap: 8px;
 }
 
+// The slim panel's surface, so the overview reads as part of the page rather
+// than as outlined ghost buttons over the background.
 .member-health__overview-item {
+  @apply bg-surface rounded-surface-slim border border-edge;
   display: flex;
   align-items: center;
   gap: 10px;
   min-height: 44px;
   padding: 8px 12px;
-  border: 1px solid rgb(122 130 136 / 0.35);
-  border-radius: 3px;
+  box-shadow: var(--shadow-surface-slim, 0 6px 20px -14px rgb(0 0 0 / 0.9));
   color: var(--color-text, #c8c8c8);
 
   &[data-tone="critical"] {
@@ -752,20 +884,17 @@ const crumbs = computed<Crumb[]>(() => [
   list-style: none;
 }
 
-.member-health__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 14px 20px 16px;
-  list-style: none;
+.member-health__role + .member-health__role,
+.member-health__rows + .member-health__role {
+  border-top: 1px solid rgb(122 130 136 / 0.15);
+}
 
-  li {
-    padding: 6px 12px;
-    border: 1px dashed rgb(122 130 136 / 0.5);
-    border-radius: 3px;
-    color: var(--color-lifted, #eee);
-  }
+.member-health__role-title {
+  margin: 0;
+  padding: 12px 20px 4px;
+  color: var(--color-lifted, #eee);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .member-health__quiet {

@@ -309,11 +309,13 @@
             "inviteLinks": "邀请链接",
             "discordSettings": "Discord 设置",
             "verifyOrg": "验证 RSI 组织",
-            "openMember": "打开成员",
             "remove": "移出舰队",
             "revoke": "撤回邀请",
             "deleteLink": "删除链接",
-            "actionsFor": "%{name} 的操作"
+            "promoteTo": "提升为 %{role}",
+            "addToSquadron": "加入中队",
+            "addMembers": "添加成员",
+            "deleteSquadron": "解散"
           }
         },
         "inviteUrls": {

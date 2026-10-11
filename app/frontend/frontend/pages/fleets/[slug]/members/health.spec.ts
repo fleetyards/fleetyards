@@ -20,6 +20,11 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
+    useFleetSquadrons: () => ({
+      data: computed(() => ({
+        items: [{ id: "s", name: "Alpha Wing", slug: "alpha", team: false }],
+      })),
+    }),
     useFleetMemberHealth: (_slug: unknown, params: unknown) => {
       asked.push(toValue(params) as FleetMemberHealthParams);
 
@@ -66,7 +71,7 @@ const healthWith = (
   rsiMemberCount: null,
   memberCount: 10,
   hiddenShipsCount: 0,
-  admins: section([member("aria", { leader: true })], 2),
+  admins: { ...section([member("aria", { leader: true })], 2), candidates: [] },
   emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: section([]),
@@ -115,6 +120,11 @@ const mount = async (query: Record<string, string> = {}) => {
         name: "fleet-squadron",
         component: Stub,
       },
+      {
+        path: "/f/:slug/squadrons/:squadron/members",
+        name: "fleet-squadron-members",
+        component: Stub,
+      },
     ],
   });
   await router.push({
@@ -132,6 +142,7 @@ const mount = async (query: Record<string, string> = {}) => {
           readMembers: true,
           updateMembers: true,
           destroyMembers: true,
+          manageSquadronMembers: true,
         },
       } as FleetMember,
     },
@@ -177,7 +188,10 @@ describe("FleetMembersHealthPage", () => {
 
   it("lists the worst checks first in the overview", async () => {
     health = healthWith({
-      admins: section([member("aria", { leader: true })]),
+      admins: {
+        ...section([member("aria", { leader: true })]),
+        candidates: [],
+      },
       inactiveMembers: section([member("gone")]),
       hiddenShipsCount: 3,
     });
@@ -201,7 +215,16 @@ describe("FleetMembersHealthPage", () => {
   });
 
   it("warns when the fleet has a single admin", async () => {
-    health = healthWith({ admins: section([member("aria")]) });
+    health = healthWith({
+      admins: {
+        ...section([member("aria")]),
+        candidates: [
+          member("nyx", {
+            fleetRole: { id: "o", name: "Officer", slug: "officer" },
+          }),
+        ],
+      },
+    });
 
     const subject = await mount();
 
@@ -297,16 +320,25 @@ describe("FleetMembersHealthPage", () => {
     expect(row.find("[data-test='health-decline']").exists()).toBe(true);
   });
 
-  it("links the empty roles to the role settings", async () => {
+  it("offers to promote the rank below into an empty role", async () => {
     health = healthWith({
-      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
+      emptyRoles: [
+        {
+          role: { id: "r", name: "Officer", slug: "officer" },
+          candidates: [member("ward")],
+        },
+      ],
     });
 
     const subject = await mount();
 
-    expect(subject.find("[data-test='health-empty-role-officer']").text()).toBe(
-      "Officer",
-    );
+    expect(
+      subject
+        .find(
+          "[data-test='health-candidate-officer-ward'] [data-test='health-promote']",
+        )
+        .text(),
+    ).toContain("Officer");
     expect(
       subject.find("[data-test='health-roles-settings']").attributes("href"),
     ).toBe("#/f/maru/settings/roles");
@@ -352,5 +384,68 @@ describe("FleetMembersHealthPage", () => {
     expect(keys.indexOf("health-emptySquadrons")).toBeLessThan(
       keys.indexOf("health-noSquadron"),
     );
+  });
+
+  it("offers to add a member in no squadron to one", async () => {
+    health = healthWith({ membersWithoutSquadron: section([member("ward")]) });
+
+    const subject = await mount();
+    const row = subject.find("[data-test='health-noSquadron-ward']");
+
+    expect(row.find("[data-test='health-add-to-squadron']").exists()).toBe(
+      true,
+    );
+    expect(row.find("[data-test='health-remove']").exists()).toBe(false);
+  });
+
+  it("offers removal only where the org list does not name the fleet", async () => {
+    health = healthWith({
+      membersWithoutRsiHandle: null,
+      unverifiedMembers: section([
+        member("vesna", { verificationGap: "org_not_listed" }),
+        member("grimsby", { verificationGap: "no_handle" }),
+      ]),
+    });
+
+    const subject = await mount();
+
+    expect(
+      subject
+        .find(
+          "[data-test='health-unverified-vesna'] [data-test='health-remove']",
+        )
+        .exists(),
+    ).toBe(true);
+    expect(
+      subject
+        .find(
+          "[data-test='health-unverified-grimsby'] [data-test='health-remove']",
+        )
+        .exists(),
+    ).toBe(false);
+  });
+
+  it("offers demotion only to an inactive officer", async () => {
+    health = healthWith({
+      inactiveMembers: section([
+        member("kestrel", { leader: true }),
+        member("gone"),
+      ]),
+    });
+
+    const subject = await mount();
+
+    expect(
+      subject
+        .find(
+          "[data-test='health-inactive-kestrel'] [data-test='health-demote']",
+        )
+        .exists(),
+    ).toBe(true);
+    expect(
+      subject
+        .find("[data-test='health-inactive-gone'] [data-test='health-demote']")
+        .exists(),
+    ).toBe(false);
   });
 });

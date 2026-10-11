@@ -765,7 +765,7 @@
             },
             "checks": {
               "admins": {
-                "title": "Only one admin",
+                "title": "Fewer than two admins",
                 "overview": "Admins",
                 "description": "Admin is the one role that can manage everything. With a single holder, the fleet depends on one account.",
                 "clear": "More than one member holds Admin."
@@ -876,7 +876,14 @@
               "one": "%{count} member keeps their hangar out of the fleet's ship list.",
               "other": "%{count} members keep their hangar out of the fleet's ship list."
             },
-            "deleteLinkFailed": "The invite link could not be deleted."
+            "deleteLinkFailed": "The invite link could not be deleted.",
+            "noAdmin": "Nobody holds Admin, so nobody can manage %{fleet} on FleetYards.",
+            "adminCandidates": "Promote to Admin",
+            "noCandidates": "Nobody holds the rank right below either, so there is nobody to promote in one step.",
+            "addedToSquadron": {
+              "success": "Added to the squadron.",
+              "failure": "Could not be added to the squadron."
+            }
           }
         },
         "squadrons": {
