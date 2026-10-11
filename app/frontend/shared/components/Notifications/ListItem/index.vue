@@ -10,6 +10,7 @@ import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  SWIPE_THRESHOLD_PX,
   type SwipeDirection,
   useSwipeActions,
 } from "@/shared/composables/useSwipeActions";
@@ -92,6 +93,12 @@ const { offset, swiping, direction, armed } = useSwipeActions({
   enabled: () => props.swipeable,
 });
 
+// How far the colour has flooded out from the icon: from the first pixel the
+// finger moves, full at the point past which letting go acts.
+const floodProgress = computed(() =>
+  Math.min(Math.abs(offset.value) / SWIPE_THRESHOLD_PX, 1),
+);
+
 // Holding a row is how a phone, which hides the checkboxes, starts picking.
 useLongPress({ target: item, onLongPress: () => emit("hold") });
 
@@ -149,7 +156,9 @@ defineExpose({ focus: () => select.value?.focus() });
     :class="{
       [`notification-row--${shownDirection}`]: shownDirection,
       'notification-row--armed': armed,
+      'notification-row--swiping': swiping,
     }"
+    :style="{ '--swipe-flood': floodProgress }"
   >
     <div
       v-if="shownDirection"
@@ -268,30 +277,30 @@ $swipe-backdrop-inset: 18px;
   justify-content: flex-end;
 }
 
-// Past the threshold the colour floods out from the icon and the icon grows,
-// the two signs that letting go now will act. Both drain back if the row is
-// pulled short of it again.
+// The colour floods out from the icon as the finger moves, filling the row at
+// the point past which letting go acts; there the icon grows too. It follows
+// the finger without easing, and drains back once the finger lifts.
 .notification-row__backdrop::before {
   content: "";
   position: absolute;
   inset: 0;
   background: var(--color-primary, #{$primary});
   border-radius: inherit;
-  clip-path: circle(0 at $swipe-backdrop-inset 50%);
-  transition: clip-path 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
+  clip-path: circle(
+    calc(var(--swipe-flood, 0) * 150%) at $swipe-backdrop-inset 50%
+  );
+  transition: clip-path 0.25s ease-out;
 }
 
 .notification-row--left .notification-row__backdrop::before {
-  clip-path: circle(0 at calc(100% - #{$swipe-backdrop-inset}) 50%);
+  clip-path: circle(
+    calc(var(--swipe-flood, 0) * 150%) at calc(100% - #{$swipe-backdrop-inset})
+      50%
+  );
 }
 
-.notification-row--armed .notification-row__backdrop::before {
-  clip-path: circle(150% at $swipe-backdrop-inset 50%);
-}
-
-.notification-row--armed.notification-row--left
-  .notification-row__backdrop::before {
-  clip-path: circle(150% at calc(100% - #{$swipe-backdrop-inset}) 50%);
+.notification-row--swiping .notification-row__backdrop::before {
+  transition: none;
 }
 
 // A transition rather than a keyframed bounce: the row arms and disarms as
