@@ -100,8 +100,25 @@ export const useSwipeActions = ({
     tracking = true;
   };
 
+  // A long press can turn swiping off while the finger that started it is
+  // still down; that finger must not go on to swipe.
+  watch(
+    () => toValue(enabled),
+    (isEnabled) => {
+      if (!isEnabled) {
+        reset();
+      }
+    },
+  );
+
   const onTouchMove = (event: TouchEvent) => {
     if (!tracking) {
+      return;
+    }
+
+    if (!toValue(enabled)) {
+      reset();
+
       return;
     }
 
@@ -146,6 +163,12 @@ export const useSwipeActions = ({
 
   const onTouchEnd = () => {
     if (!tracking) {
+      return;
+    }
+
+    if (!toValue(enabled)) {
+      reset();
+
       return;
     }
 
