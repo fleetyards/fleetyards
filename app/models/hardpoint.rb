@@ -1,4 +1,6 @@
 class Hardpoint < ApplicationRecord
+  paginates_per 24
+
   GAME_FILE_CATEGORIES = %w[thrusters].freeze
 
   SHIP_MATRIX_CATEGORIES = %w[

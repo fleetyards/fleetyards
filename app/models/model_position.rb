@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ModelPosition < ApplicationRecord
+  paginates_per 24
+
   belongs_to :model
   belongs_to :hardpoint, optional: true
 

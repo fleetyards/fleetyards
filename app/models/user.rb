@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  paginates_per 24
+
   # A version of a user row holds their old email and username verbatim, so it
   # has to go when the account does.
   include ErasableVersionsConcern

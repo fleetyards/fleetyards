@@ -6,6 +6,8 @@
 # matrix is the only thing that creates a `Model`, so anything in the game and
 # not on the matrix is invisible, and until now nothing said so.
 class ScDataUnlistedModel < ApplicationRecord
+  paginates_per 24
+
   # The ship it appears to be a variant of, where the identifier extends one we
   # already carry.
   belongs_to :base_model, class_name: "Model", optional: true

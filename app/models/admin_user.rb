@@ -3,6 +3,8 @@
 class AdminUser < ApplicationRecord
   include ResourceAccessConcern
 
+  paginates_per 24
+
   # Every privilege an `Admin::*Policy` asks for has to appear here, or the
   # policy names something nobody can be granted and the section it guards is
   # silently super-admin-only. Fifteen were missing -- equipment, commodities,

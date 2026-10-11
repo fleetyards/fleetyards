@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Dock < ApplicationRecord
+  paginates_per 24
+
   # A hull or a module, and nothing else. `parent_type` is a plain string
   # column, so without this a dock could end up hanging off a User -- a new way
   # to grow orphans like the station docks that once had to be deleted -- and

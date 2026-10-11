@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CargoHold < ApplicationRecord
+  paginates_per 24
+
   belongs_to :parent, polymorphic: true, touch: true
   has_many :cargo_hold_container_capacities, dependent: :destroy
 

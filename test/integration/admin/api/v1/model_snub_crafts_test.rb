@@ -43,7 +43,7 @@ class Admin::Api::V1::ModelSnubCraftsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ModelSnubCraft.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::ModelSnubCraftQuery,
         style: :deepObject,

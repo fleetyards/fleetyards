@@ -7,6 +7,8 @@
 # links. The holder gets a grace period to prove the SID itself, which cancels
 # the claim because the latest proof wins, or to tell its members.
 class FleetFidClaim < ApplicationRecord
+  paginates_per 24
+
   GRACE_PERIOD = 14.days
 
   belongs_to :claimant, class_name: "Fleet"

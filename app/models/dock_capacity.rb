@@ -6,6 +6,8 @@
 # one large ship or two mediums carries both entries, and a reader picks the row
 # that matches what they are carrying.
 class DockCapacity < ApplicationRecord
+  paginates_per 24
+
   belongs_to :dock, touch: true
 
   # Which ladder `size` is measured on. Ship classes come from the game's

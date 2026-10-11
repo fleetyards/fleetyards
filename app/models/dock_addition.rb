@@ -7,6 +7,8 @@
 # allowed rather than refused -- it is a statement about that ship, and a berth
 # whose class changes later keeps it.
 class DockAddition < ApplicationRecord
+  paginates_per 24
+
   belongs_to :dock, touch: true
   belongs_to :model
 

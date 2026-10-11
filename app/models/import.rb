@@ -3,6 +3,8 @@
 class Import < ApplicationRecord
   include AASM
 
+  paginates_per 24
+
   belongs_to :admin_user, optional: true
   belongs_to :user, optional: true
 
