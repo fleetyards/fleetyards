@@ -1,16 +1,20 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  type RouteLocationRaw,
+} from "vue-router";
 import Component from "./AttentionTile.vue";
 
 const Blank = { template: "<div />" };
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [{ path: "/workers/", name: "workers", component: Blank }],
+  routes: [{ path: "/jobs/", name: "workers", component: Blank }],
 });
 
-const mountTile = async (props: Record<string, unknown>) => {
+const mountTile = async (props: { to: RouteLocationRaw }) => {
   await router.push("/");
   await router.isReady();
 
@@ -22,21 +26,13 @@ const mountTile = async (props: Record<string, unknown>) => {
 
 describe("DashboardAttentionTile", () => {
   it("routes in place when given a route", async () => {
-    const wrapper = await mountTile({ to: { name: "workers" } });
+    const wrapper = await mountTile({
+      to: { name: "workers", query: { path: "/morgue" } },
+    });
 
     const link = wrapper.find("a");
 
-    expect(link.attributes("href")).toBe("#/workers/");
+    expect(link.attributes("href")).toBe("#/jobs/?path=/morgue");
     expect(link.attributes("target")).toBeUndefined();
-  });
-
-  it("opens an engine mounted outside the app in a new tab", async () => {
-    const wrapper = await mountTile({ href: "/admin/workers" });
-
-    const link = wrapper.find("a");
-
-    expect(link.attributes("href")).toBe("/admin/workers");
-    expect(link.attributes("target")).toBe("_blank");
-    expect(link.attributes("rel")).toBe("noopener");
   });
 });

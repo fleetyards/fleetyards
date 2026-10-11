@@ -23,7 +23,6 @@ import {
   useRegistrationsPerMonth as useRegistrationsPerMonthQuery,
 } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
-import { engineUrls } from "@/admin/utils/EngineUrls";
 import { patchOf, environmentOf } from "@/admin/utils/CatalogueVersion";
 import { type RouteLocationRaw } from "vue-router";
 
@@ -55,8 +54,7 @@ type AttentionTile = {
   key: string;
   count?: number;
   icon: string;
-  to?: RouteLocationRaw;
-  href?: string;
+  to: RouteLocationRaw;
   severity: "warning" | "error";
 };
 
@@ -87,14 +85,14 @@ const attentionTiles = computed(() => {
       key: "deadJobs",
       count: dashboard.value?.jobsDeadCount,
       icon: "fa-duotone fa-skull fa-4x",
-      href: engineUrls.workers,
+      to: { name: "workers", query: { path: "/morgue" } },
       severity: "error",
     },
     {
       key: "retryJobs",
       count: dashboard.value?.jobsRetryCount,
       icon: "fa-duotone fa-arrow-rotate-right fa-4x",
-      href: engineUrls.workers,
+      to: { name: "workers", query: { path: "/retries" } },
       severity: "warning",
     },
     {
@@ -211,7 +209,6 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
           :label="t(`labels.admin.dashboard.attention.${tile.key}`)"
           :icon="tile.icon"
           :to="tile.to"
-          :href="tile.href"
           :severity="tile.severity"
         />
       </div>
