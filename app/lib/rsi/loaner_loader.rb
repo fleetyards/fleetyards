@@ -93,7 +93,11 @@ module Rsi
         "Kraken (+ Privateer)" => ["Kraken", "Kraken Privateer"],
         "Mercury" => ["Mercury", "Mercury Star Runner"],
         "Mercury Star Runner" => ["Mercury", "Mercury Star Runner"],
-        "Constellation Phoenix Emerald" => ["Constellation Phoenix"],
+        "Constellation Andromeda" => ["Constellation Mk IV Andromeda"],
+        "Constellation Aquila" => ["Constellation Mk IV Aquila"],
+        "Constellation Phoenix" => ["Constellation Mk IV Phoenix"],
+        "Constellation Phoenix Emerald" => ["Constellation Mk IV Phoenix"],
+        "Constellation Taurus" => ["Constellation Mk IV Taurus"],
         "Mole" => ["MOLE"],
         "G12A" => ["G12a"],
         "G12R" => ["G12r"],
@@ -129,6 +133,7 @@ module Rsi
     private def model_mapping(name)
       model_map = {
         "85x" => "85X",
+        "Constellation Andromeda" => "Constellation Mk IV Andromeda",
         "F7C - Hornet" => "F7C Hornet Mk I",
         "F7C Hornet" => "F7C Hornet Mk I",
         "F7C-M Super Hornet" => "F7C-M Super Hornet Mk I",
