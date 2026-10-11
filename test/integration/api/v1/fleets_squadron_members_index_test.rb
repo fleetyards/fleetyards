@@ -17,7 +17,7 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: FleetMembership.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::FleetSquadronMemberQuery,
         style: :deepObject,

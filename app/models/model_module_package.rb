@@ -3,7 +3,7 @@
 class ModelModulePackage < ApplicationRecord
   include ActiveStorageVariants
 
-  paginates_per 30
+  paginates_per 24
 
   belongs_to :model, touch: true
 

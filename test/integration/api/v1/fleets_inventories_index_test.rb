@@ -16,7 +16,7 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: FleetInventory.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::FleetInventoryQuery,
         style: :deepObject,

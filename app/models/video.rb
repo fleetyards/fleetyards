@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Video < ApplicationRecord
-  paginates_per 8
+  paginates_per 12
 
   belongs_to :model, touch: true, counter_cache: true
 

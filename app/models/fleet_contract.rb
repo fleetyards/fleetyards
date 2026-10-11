@@ -19,7 +19,7 @@ class FleetContract < ApplicationRecord
 
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
-  paginates_per 30
+  paginates_per 24
 
   KINDS = {transport: 0, procurement: 1, crafting: 2}.freeze
 

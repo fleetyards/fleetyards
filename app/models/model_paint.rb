@@ -20,7 +20,7 @@ class ModelPaint < ApplicationRecord
     }
   include ActiveStorageVariants
 
-  paginates_per 30
+  paginates_per 24
 
   belongs_to :model, optional: true, touch: true, counter_cache: true
 

@@ -17,7 +17,7 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
 
       parameter name: :archived, in: :query, schema: {type: :boolean}, required: false
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Mission.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::MissionQuery,
         style: :deepObject,
@@ -80,7 +80,7 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/missions reaches missions past the first page" do
-    create_list(:mission, 31, fleet: @fleet, created_by: @admin)
+    create_list(:mission, Mission.default_per_page + 1, fleet: @fleet, created_by: @admin)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {page: 2} do

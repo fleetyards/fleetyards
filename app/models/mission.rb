@@ -3,7 +3,7 @@
 class Mission < ApplicationRecord
   include ActiveStorageVariants
 
-  paginates_per 30
+  paginates_per 24
 
   belongs_to :fleet, touch: true
   belongs_to :created_by, class_name: "User"

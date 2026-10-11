@@ -5,7 +5,7 @@ class TradeRoute < ApplicationRecord
   belongs_to :origin_terminal, class_name: "Terminal"
   belongs_to :destination_terminal, class_name: "Terminal"
 
-  paginates_per 50
+  paginates_per 48
 
   DEFAULT_SORTING_PARAMS = ["profit_per_scu desc"]
   DEFAULT_SHIP_SORTING_PARAMS = ["profit_per_run desc"]

@@ -23,7 +23,7 @@ class SupporterContribution < ApplicationRecord
       reason: :update_reason,
       reason_description: :update_reason_description
     }
-  paginates_per 30
+  paginates_per 24
 
   # Touch so a linked account's cached public profile picks the badge up.
   belongs_to :user, optional: true, touch: true

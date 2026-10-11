@@ -35,7 +35,7 @@ class FleetSubscription < ApplicationRecord
 
   enum :granted_via, GRANTS.index_by(&:itself), prefix: :granted_via, default: "manual"
 
-  paginates_per 30
+  paginates_per 24
 
   DEFAULT_SORTING_PARAMS = "started_at desc"
   ALLOWED_SORTING_PARAMS = [

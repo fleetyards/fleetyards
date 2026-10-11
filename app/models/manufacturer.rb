@@ -21,7 +21,7 @@ class Manufacturer < ApplicationRecord
   include ActiveStorageVariants
   include AttachmentRansackers
 
-  paginates_per 30
+  paginates_per 24
 
   # Two pictures, from two sources that must not overwrite each other: `logo`
   # is curated -- an admin uploads it, and RSI's own artwork lands there --

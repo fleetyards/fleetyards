@@ -192,3 +192,14 @@ GET /rsi-request-logs for the `query` request parameter `perPage`, default value
 GET /unlisted-models for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
 GET /users for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
 GET /vehicles for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /announcements for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /funding-goals for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /images for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /manufacturers for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-module-packages for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-modules for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-paints for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /model-upgrades for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /notifications for the `query` request parameter `perPage`, default value was changed from `25.00` to `24.00`
+GET /supporter-contributions for the `query` request parameter `perPage`, default value was changed from `30.00` to `24.00`
+GET /videos for the `query` request parameter `perPage`, default value was changed from `8.00` to `12.00`

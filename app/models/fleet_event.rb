@@ -4,7 +4,7 @@ class FleetEvent < ApplicationRecord
   include AASM
   include ActiveStorageVariants
 
-  paginates_per 30
+  paginates_per 24
 
   include LinkedLocations
 

@@ -5,7 +5,7 @@ class InventoryItem < ApplicationRecord
 
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
-  paginates_per 30
+  paginates_per 24
 
   inventory_association :inventory
   position_association :inventory_position

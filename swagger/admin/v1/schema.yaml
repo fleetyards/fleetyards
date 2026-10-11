@@ -249,7 +249,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -3786,7 +3786,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -4071,7 +4071,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -4770,7 +4770,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -5344,7 +5344,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -5526,7 +5526,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - name: q
         in: query
@@ -5844,7 +5844,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -6434,7 +6434,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -7205,7 +7205,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 25
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -8254,7 +8254,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 30
+          default: 24
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
       - name: q
@@ -9767,7 +9767,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 8
+          default: 12
         required: false
       - name: q
         in: query

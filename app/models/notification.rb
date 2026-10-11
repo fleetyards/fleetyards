@@ -409,7 +409,7 @@ class Notification < ApplicationRecord
     "notificationType asc", "notificationType desc"
   ].freeze
 
-  paginates_per 25
+  paginates_per 24
 
   ransack_alias :search, :title_or_body
 

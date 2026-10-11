@@ -4,7 +4,7 @@ class ModelModule < ApplicationRecord
   include ActiveStorageVariants
   include DerivedCargoHolds
 
-  paginates_per 30
+  paginates_per 24
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 

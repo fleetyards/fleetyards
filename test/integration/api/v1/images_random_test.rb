@@ -17,7 +17,7 @@ class Api::V1::ImagesRandomTest < ActionDispatch::IntegrationTest
       parameter name: "limit", in: :query, schema: {
         type: :number,
         minimum: 1,
-        maximum: Image.default_per_page,
+        maximum: 100,
         default: 14
       }, required: false
 
