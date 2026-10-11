@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/fleetyards/fleetyards/compare/v8.21.0...v9.0.0) (2026-10-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* one crew figure per ship ([#5569](https://github.com/fleetyards/fleetyards/issues/5569))
+
+### Features
+
+* **hangar-sync:** finish a sync past items the parser could not read ([#5565](https://github.com/fleetyards/fleetyards/issues/5565)) ([e177660](https://github.com/fleetyards/fleetyards/commit/e177660ff5dcd6c4dee2950adca358c0ff0dc301))
+* **notifications:** swipe a row to mark it read or archive it ([#5573](https://github.com/fleetyards/fleetyards/issues/5573)) ([ac7df68](https://github.com/fleetyards/fleetyards/commit/ac7df68b39e00dbe234619b178c4a75063fbed2b))
+* one crew figure per ship ([#5569](https://github.com/fleetyards/fleetyards/issues/5569)) ([5c31d64](https://github.com/fleetyards/fleetyards/commit/5c31d645ee7aa58512fd64b7261818cfc8d1631f))
+
+
+### Bug Fixes
+
+* **admin:** admin notification toasts close on their own and when read ([#5574](https://github.com/fleetyards/fleetyards/issues/5574)) ([ccf5132](https://github.com/fleetyards/fleetyards/commit/ccf51329fb900b865be5f051258545ab4fec660d))
+* **admin:** confirm a successful form submit with a toast ([#5564](https://github.com/fleetyards/fleetyards/issues/5564)) ([3aaf562](https://github.com/fleetyards/fleetyards/commit/3aaf56231ea1ad6f38a0682ee1350b318af842a7))
+* cache component-bearing payloads per locale ([#5577](https://github.com/fleetyards/fleetyards/issues/5577)) ([b577086](https://github.com/fleetyards/fleetyards/commit/b577086201e292d310e26e21fa51fc7b283f5136))
+* **fleet-events:** saving an event with auto-lock off no longer 500s ([#5566](https://github.com/fleetyards/fleetyards/issues/5566)) ([d00a5ab](https://github.com/fleetyards/fleetyards/commit/d00a5abf6e4b3cabc77193fb0d0851eb14c51d8b))
+* **hangar-sync:** unblock syncs on reward pledges, link page reports to an import, unwrap old syncs ([#5562](https://github.com/fleetyards/fleetyards/issues/5562)) ([4f5872b](https://github.com/fleetyards/fleetyards/commit/4f5872b14581c0c03dd23ab95612fb45888a2f4b))
+* **hangar:** stop notifying about your own hangar and wishlist changes ([#5563](https://github.com/fleetyards/fleetyards/issues/5563)) ([8205601](https://github.com/fleetyards/fleetyards/commit/8205601bc80c7c9a766b418e17d829193f929df3))
+* **lists:** one row gap for every list, halved on phones ([#5575](https://github.com/fleetyards/fleetyards/issues/5575)) ([3818547](https://github.com/fleetyards/fleetyards/commit/3818547210c9c70c4e2bdd2618a6c8e8624f7ef7))
+* **models:** announce a new ship when it is published ([#5570](https://github.com/fleetyards/fleetyards/issues/5570)) ([64f48a4](https://github.com/fleetyards/fleetyards/commit/64f48a401fd1ebb1528fc2812aac1f6b4ffa96cb))
+* **notifications:** notification toasts close when read ([#5578](https://github.com/fleetyards/fleetyards/issues/5578)) ([2b05b24](https://github.com/fleetyards/fleetyards/commit/2b05b24e2ac245203694a15d8b4616c0541dca3d))
+* **ranks:** moving a ship no longer collides with a sibling's rank ([#5567](https://github.com/fleetyards/fleetyards/issues/5567)) ([20d61a3](https://github.com/fleetyards/fleetyards/commit/20d61a36c56a8b8fb666d213cc15979e8b38a394))
+* **sc-data:** name and fill in ships created from the game files ([#5561](https://github.com/fleetyards/fleetyards/issues/5561)) ([2908371](https://github.com/fleetyards/fleetyards/commit/29083719df1f6248f5e1d3153922338c36903656))
+* **ships:** readable metrics on phones ([#5571](https://github.com/fleetyards/fleetyards/issues/5571)) ([48cf210](https://github.com/fleetyards/fleetyards/commit/48cf2105814c9ebd1faea03d229f66d89ed62efc))
+* **uex:** map the renamed Constellation Mk IV variants ([#5558](https://github.com/fleetyards/fleetyards/issues/5558)) ([1eda949](https://github.com/fleetyards/fleetyards/commit/1eda949da6feec5ed7d21efae0ef7b6dd8db8fd8))
+
+
+### Refactorings
+
+* **notifications:** share the row and reading pane between both centres ([#5572](https://github.com/fleetyards/fleetyards/issues/5572)) ([58d3c58](https://github.com/fleetyards/fleetyards/commit/58d3c5869421c48dd50e90e198f38e935f0a1bda))
+
+
+### Chores
+
+* **docs:** remove the dashboard panel loading exec-plan ([#5559](https://github.com/fleetyards/fleetyards/issues/5559)) ([1395788](https://github.com/fleetyards/fleetyards/commit/1395788ce17435ab7775b183b63bb3a0968d44c1))
+* **release:** name 9.0.0 Constellation ([#5576](https://github.com/fleetyards/fleetyards/issues/5576)) ([1e36877](https://github.com/fleetyards/fleetyards/commit/1e3687756519b16cd783fd8789902821a74a8cac))
+
 ## [8.21.0](https://github.com/fleetyards/fleetyards/compare/v8.20.0...v8.21.0) (2026-10-10)
 
 
