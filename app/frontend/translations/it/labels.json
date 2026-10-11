@@ -757,8 +757,8 @@
             },
             "unverified": {
               "title": {
-                "one": "%{count} membro non nell'organizzazione RSI",
-                "other": "%{count} membri non nell'organizzazione RSI"
+                "one": "%{count} membro non verificato con l'organizzazione RSI",
+                "other": "%{count} membri non verificati con l'organizzazione RSI"
               }
             },
             "emptyRoles": {

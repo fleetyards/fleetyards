@@ -27373,7 +27373,7 @@ components:
           description: Members not active since this date, including those never active
         verifiedEq:
           type: boolean
-          description: Whether the member is in the fleet's RSI org
+          description: Whether the member is verified against the fleet's RSI org
         s:
           anyOf:
           - type: array
@@ -28300,7 +28300,7 @@ components:
           description: Members not active since this date, including those never active
         verifiedEq:
           type: boolean
-          description: Whether the member is in the fleet's RSI org
+          description: Whether the member is verified against the fleet's RSI org
         squadronMembershipCreatedAtGteq:
           type: string
           format: date

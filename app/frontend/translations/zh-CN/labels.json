@@ -757,8 +757,8 @@
             },
             "unverified": {
               "title": {
-                "one": "%{count} 名成员不在 RSI 组织中",
-                "other": "%{count} 名成员不在 RSI 组织中"
+                "one": "%{count} 名成员未通过 RSI 组织验证",
+                "other": "%{count} 名成员未通过 RSI 组织验证"
               }
             },
             "emptyRoles": {

@@ -338,8 +338,8 @@
               "none": "Tutti sono stati attivi negli ultimi %{count} giorni."
             },
             "unverified": {
-              "none": "Tutti i membri fanno parte dell'organizzazione RSI della flotta.",
-              "fleetNotVerified": "La flotta non ha ancora verificato la sua organizzazione RSI, quindi altrove nessun membro risulta verificato. Questo elenco mostra chi manca nell'organizzazione."
+              "none": "Tutti i membri sono verificati con l'organizzazione RSI della flotta.",
+              "fleetNotVerified": "La flotta non ha ancora verificato la sua organizzazione RSI, quindi altrove nessun membro risulta verificato. Questo elenco mostra chi non è stato possibile confermare come parte dell'organizzazione."
             },
             "emptyRoles": {
               "none": "Ogni ruolo ha almeno un membro."

@@ -3,8 +3,8 @@
 module Api
   module V1
     # The roster's loose ends, for whoever can act on them: members who stopped
-    # showing up, members the fleet's RSI org does not know, and roles nobody
-    # holds. A count and the first few of each; the members list, filtered the
+    # showing up, members not verified against the fleet's RSI org, and roles
+    # nobody holds. A count and the first few of each; the members list, filtered the
     # same way, holds the rest.
     class FleetMemberHealthController < ::Api::BaseController
       DEFAULT_INACTIVE_DAYS = 30

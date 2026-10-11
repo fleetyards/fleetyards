@@ -338,8 +338,8 @@
               "none": "Alle waren in den letzten %{count} Tagen aktiv."
             },
             "unverified": {
-              "none": "Alle Mitglieder sind in der RSI-Organisation der Flotte.",
-              "fleetNotVerified": "Die Flotte hat ihre RSI-Organisation noch nicht verifiziert, deshalb wird an anderer Stelle kein Mitglied als verifiziert angezeigt. Diese Liste zeigt, wer in der Organisation fehlt."
+              "none": "Alle Mitglieder sind gegen die RSI-Organisation der Flotte verifiziert.",
+              "fleetNotVerified": "Die Flotte hat ihre RSI-Organisation noch nicht verifiziert, deshalb wird an anderer Stelle kein Mitglied als verifiziert angezeigt. Diese Liste zeigt, wessen Zugehörigkeit zur Organisation nicht bestätigt werden konnte."
             },
             "emptyRoles": {
               "none": "Jede Rolle hat mindestens ein Mitglied."
