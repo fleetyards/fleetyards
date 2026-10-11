@@ -10,6 +10,13 @@
     flex: 0 0 auto;
   }
 
+  // Content that takes the header over - a selection standing in for the
+  // search - brings its own way out, and a back button beside it would leave
+  // the page instead.
+  &:has(.navigation-header-takeover) &__back {
+    display: none;
+  }
+
   &__left {
     max-width: 400px;
     transition: max-width $transition-base-speed ease-in-out;
@@ -63,6 +70,21 @@
       // it rather than huddling against one edge of it.
       > :deep(*) {
         flex: 1 1 auto;
+      }
+    }
+
+    // Content marked pinned keeps the header to one row: a search beside a
+    // single menu button, or a selection standing in for both, would wrap
+    // onto a row of its own and push the page down for one icon.
+    &:has(.navigation-header-pinned) {
+      flex-wrap: nowrap;
+
+      .navigation-header__left {
+        flex: 1 1 auto;
+      }
+
+      .navigation-header__right > :deep(*) {
+        flex: 0 0 auto;
       }
     }
   }
