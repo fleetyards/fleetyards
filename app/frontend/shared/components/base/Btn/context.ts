@@ -16,8 +16,10 @@ import type {
  * - `menu`  — dropdown list. Members go full-width and left-aligned.
  * - `footer` — a modal's action row. Members take its size, and a component
  *   that renders a dismiss button there may read it to make that one bare.
+ * - `header` — a page's actions in the navigation header. Members take its
+ *   size, so the same buttons can be handed to a dropdown menu on a phone.
  */
-export type BtnContainer = "group" | "menu" | "footer";
+export type BtnContainer = "group" | "menu" | "footer" | "header";
 
 export type BtnContainerContext = {
   container: BtnContainer;
