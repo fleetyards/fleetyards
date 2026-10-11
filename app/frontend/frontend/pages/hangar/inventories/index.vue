@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -148,26 +148,16 @@ onMounted(() => {
     {{ t("headlines.logistics.hangarInventories") }}
   </Heading>
 
-  <Teleport to="#header-right">
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :to="{ name: 'hangar-transfers' }"
-      data-test="hangar-transfers-link"
-      mobile-icon-only
-    >
+  <PageActions>
+    <Btn :to="{ name: 'hangar-transfers' }" data-test="hangar-transfers-link">
       <i class="fa-duotone fa-right-left" />
       {{ t("nav.hangar.transfers") }}
     </Btn>
-    <Btn
-      :size="BtnSizesEnum.MD"
-      data-test="hangar-inventory-create"
-      mobile-icon-only
-      @click="openInventoryModal()"
-    >
+    <Btn data-test="hangar-inventory-create" @click="openInventoryModal()">
       <i class="fa-light fa-plus" />
       {{ t("actions.logistics.createInventory") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <Loader :loading="inventoriesLoading" />
 

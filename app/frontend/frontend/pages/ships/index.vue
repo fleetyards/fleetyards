@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PageActions from "@/shared/components/PageActions/index.vue";
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -102,30 +103,26 @@ const openDisplayOptionsModal = () => {
 <template>
   <Heading hidden>{{ t("headlines.ships.index") }}</Heading>
 
-  <Teleport to="#header-right">
+  <PageActions>
     <Btn
-      :size="BtnSizesEnum.MD"
       data-test="model-compare-link"
       :to="{
         name: 'compare',
       }"
       :aria-label="t('actions.compare.ships')"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-code-compare" />
       {{ t("actions.compare.ships") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
       :aria-label="t('labels.fleetchart')"
-      mobile-icon-only
       @click="toggleFleetchart"
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />
       {{ t("labels.fleetchart") }}
     </Btn>
-  </Teleport>
+  </PageActions>
 
   <FilteredList
     name="models"
