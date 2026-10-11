@@ -43,7 +43,7 @@ class NotificationReaderLocaleTest < ActiveSupport::TestCase
     reader = create(:user, locale: "fr")
     model = create(:model)
     create(:vehicle, user: reader, model:, wanted: true, sale_notify: true, notify: true)
-    reader.update!(sale_notify: true)
+    reader.notification_preferences.find_by!(notification_type: :model_on_sale).update!(app: true)
     VehicleMailer.stubs(:on_sale).returns(stub(deliver_later: true))
     ::Discord::ShipOnSale.any_instance.stubs(:run)
 

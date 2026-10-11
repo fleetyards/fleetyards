@@ -37,7 +37,11 @@ import { type AnnouncementTypeEnum } from "@/services/fyCable/models/Announcemen
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
 import { type Model } from "@/services/fyCable/models/Model";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
-import { useSyncRsiHangarStatus } from "@/services/fyApi";
+import {
+  NotificationTypeEnum,
+  useNotificationPreferences,
+  useSyncRsiHangarStatus,
+} from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
@@ -104,13 +108,23 @@ export const useUpdates = () => {
 
   const sessionStore = useSessionStore();
 
-  const { currentUser, isAuthenticated } = storeToRefs(sessionStore);
+  const { isAuthenticated } = storeToRefs(sessionStore);
+
+  const { data: notificationPreferences } = useNotificationPreferences({
+    query: { enabled: isAuthenticated },
+  });
+
+  const saleAlertsEnabled = computed(
+    () =>
+      isAuthenticated.value &&
+      (notificationPreferences.value?.find(
+        (preference) =>
+          preference.notificationType === NotificationTypeEnum.MODEL_ON_SALE,
+      )?.app ??
+        false),
+  );
 
   const notifyVehicleOnSale = (vehicle: Vehicle) => {
-    if (!currentUser?.value?.saleNotify) {
-      return;
-    }
-
     if (!vehicle.saleNotify) {
       return;
     }
@@ -124,10 +138,6 @@ export const useUpdates = () => {
   };
 
   const notifyOnSale = (model: Model) => {
-    if (!currentUser?.value?.saleNotify) {
-      return;
-    }
-
     displayInfo({
       text: t("messages.model.onSale", { model: model.name }),
       icon: model.media?.storeImage?.smallUrl,
@@ -190,13 +200,13 @@ export const useUpdates = () => {
   useSubscription({
     channel: OnSaleHangarChannel,
     received: notifyVehicleOnSale,
-    enabled: isAuthenticated,
+    enabled: saleAlertsEnabled,
   });
 
   useSubscription({
     channel: OnSaleChannel,
     received: notifyOnSale,
-    enabled: isAuthenticated,
+    enabled: saleAlertsEnabled,
   });
 
   useSubscription({
