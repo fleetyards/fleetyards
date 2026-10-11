@@ -14,6 +14,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type NotificationQuery, NotificationTypeEnum } from "@/services/fyApi";
 import { useNotificationFilters } from "@/frontend/composables/useNotificationFilters";
 
+type Props = {
+  hideQuicksearch?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  hideQuicksearch: false,
+});
+
 const { t } = useI18n();
 
 const prefillFormValues = () => {
@@ -60,7 +68,7 @@ watch(
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#header-left">
+    <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
         v-model="form.searchCont"
         :size="InputSizesEnum.MEDIUM"

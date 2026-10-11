@@ -13,6 +13,7 @@ import {
   type SwipeDirection,
   useSwipeActions,
 } from "@/shared/composables/useSwipeActions";
+import { useLongPress } from "@/shared/composables/useLongPress";
 import type {
   NotificationEntry,
   NotificationLabels,
@@ -25,12 +26,14 @@ type Props = {
   selected?: boolean;
   selectable?: boolean;
   checked?: boolean;
+  swipeable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
   selectable: false,
   checked: false,
+  swipeable: true,
 });
 
 const emit = defineEmits<{
@@ -43,6 +46,7 @@ const emit = defineEmits<{
   destroy: [];
   previous: [];
   next: [];
+  hold: [];
 }>();
 
 // Each slot is handed the notification, typed as the caller's own record.
@@ -85,7 +89,11 @@ const onSwipe = (direction: SwipeDirection) => {
 const { offset, swiping, direction, armed } = useSwipeActions({
   target: item,
   onSwipe,
+  enabled: () => props.swipeable,
 });
+
+// Holding a row is how a phone, which hides the checkboxes, starts picking.
+useLongPress({ target: item, onLongPress: () => emit("hold") });
 
 // The row eases back after the finger lifts, so the backdrop has to outlast the
 // gesture by as long as that takes. A timer rather than `transitionend`: with
@@ -93,16 +101,6 @@ const { offset, swiping, direction, armed } = useSwipeActions({
 const SETTLE_MS = 250;
 
 const shownDirection = ref<SwipeDirection>();
-
-// How much of the backdrop the row last uncovered. Kept through the settle
-// too, or the label would vanish the moment the finger lifts.
-const reveal = ref(0);
-
-watch(offset, (next) => {
-  if (next) {
-    reveal.value = Math.abs(next);
-  }
-});
 
 let settleTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -132,10 +130,6 @@ const archiveIcon = computed(() =>
     : "fa-duotone fa-box-archive",
 );
 
-const readLabel = computed(() =>
-  props.notification.read ? t(props.labels.unread) : t(props.labels.read),
-);
-
 const archiveLabel = computed(() =>
   props.notification.archived
     ? t(props.labels.unarchive)
@@ -156,7 +150,6 @@ defineExpose({ focus: () => select.value?.focus() });
       [`notification-row--${shownDirection}`]: shownDirection,
       'notification-row--armed': armed,
     }"
-    :style="{ '--swipe-reveal': `${reveal}px` }"
   >
     <div
       v-if="shownDirection"
@@ -164,14 +157,12 @@ defineExpose({ focus: () => select.value?.focus() });
       aria-hidden="true"
       data-test="notification-swipe-backdrop"
     >
-      <span v-if="shownDirection === 'right'" class="notification-row__hint">
-        <i :class="readIcon" />
-        <span>{{ readLabel }}</span>
-      </span>
-      <span v-else class="notification-row__hint">
-        <span>{{ archiveLabel }}</span>
-        <i :class="archiveIcon" />
-      </span>
+      <!-- The icon alone, as a native list draws it: a label had to be cut
+           to whatever the row had uncovered, and read as a fragment. -->
+      <i
+        class="notification-row__hint"
+        :class="shownDirection === 'right' ? readIcon : archiveIcon"
+      />
     </div>
     <div
       ref="item"
@@ -259,7 +250,6 @@ defineExpose({ focus: () => select.value?.focus() });
 }
 
 $swipe-backdrop-inset: 18px;
-$swipe-hint-gap: 12px;
 
 .notification-row__backdrop {
   position: absolute;
@@ -278,34 +268,47 @@ $swipe-hint-gap: 12px;
   justify-content: flex-end;
 }
 
-// Past the threshold the backdrop takes on colour, which is the only sign that
-// letting go now will act.
-.notification-row--armed .notification-row__backdrop {
-  background: color-mix(
-    in srgb,
-    var(--color-primary, #{$primary}) 45%,
-    transparent
-  );
+// Past the threshold the colour floods out from the icon and the icon grows,
+// the two signs that letting go now will act. Both drain back if the row is
+// pulled short of it again.
+.notification-row__backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary, #{$primary});
+  border-radius: inherit;
+  clip-path: circle(0 at $swipe-backdrop-inset 50%);
+  transition: clip-path 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-// No wider than what the row has uncovered: a label longer than the travel,
-// like the French "move back to inbox", ends in an ellipsis instead of
-// running on under the row.
-.notification-row__hint {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: max(
-    0px,
-    calc(var(--swipe-reveal, 0px) - #{$swipe-backdrop-inset + $swipe-hint-gap})
-  );
-  overflow: hidden;
-  white-space: nowrap;
+.notification-row--left .notification-row__backdrop::before {
+  clip-path: circle(0 at calc(100% - #{$swipe-backdrop-inset}) 50%);
+}
 
-  > span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.notification-row--armed .notification-row__backdrop::before {
+  clip-path: circle(150% at $swipe-backdrop-inset 50%);
+}
+
+.notification-row--armed.notification-row--left
+  .notification-row__backdrop::before {
+  clip-path: circle(150% at calc(100% - #{$swipe-backdrop-inset}) 50%);
+}
+
+// A transition rather than a keyframed bounce: the row arms and disarms as
+// the finger wavers around the threshold, and a transition picks up from
+// wherever the icon is instead of restarting from its rest size.
+.notification-row__hint {
+  position: relative;
+  font-size: 1.4em;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease-out;
+  will-change: transform;
+}
+
+.notification-row--armed .notification-row__hint {
+  color: #fff;
+  transform: scale(1.35);
 }
 
 // The row surface a list of records wears elsewhere (ListGroup): a hairline and
@@ -472,6 +475,13 @@ $swipe-hint-gap: 12px;
 // focus only: a tap focuses the row too, and would bring them back on every
 // open. The way on stays.
 @media (hover: none) and (pointer: coarse) {
+  // A held finger starts a selection, not the text selection or the link
+  // callout iOS would otherwise put over it.
+  .notification-item {
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
   .notification-item:not(:has(:focus-visible))
     .notification-item__housekeeping {
     position: absolute;
@@ -490,7 +500,9 @@ $swipe-hint-gap: 12px;
     transition: background 0.15s ease;
   }
 
-  .notification-row__backdrop {
+  .notification-row__backdrop,
+  .notification-row__backdrop::before,
+  .notification-row__hint {
     transition: none;
   }
 }

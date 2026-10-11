@@ -272,6 +272,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-bell",
       nav: "hidden",
+      mobileBack: true,
     },
   },
   {

@@ -19,12 +19,14 @@ type Props = {
   selected?: boolean;
   selectable?: boolean;
   checked?: boolean;
+  swipeable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
   selectable: false,
   checked: false,
+  swipeable: true,
 });
 
 // No emits declared, so the page's listeners fall through to the shared row.
@@ -49,6 +51,7 @@ defineExpose({ focus: () => row.value?.focus() });
     :selected="selected"
     :selectable="selectable"
     :checked="checked"
+    :swipeable="swipeable"
   >
     <template #actions>
       <!-- Only the way on, and only as an icon: the row has to survive on a
