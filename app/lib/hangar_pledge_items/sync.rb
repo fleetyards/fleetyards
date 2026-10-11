@@ -68,11 +68,19 @@ module HangarPledgeItems
         words = self.class.words(name)
         prefix = words.pop if name.strip.match?(TRUNCATION)
 
-        words.flat_map { |word| @by_word.fetch(word, []) }.uniq.any? do |index|
+        candidates(words, prefix).any? do |index|
           catalogued = @names[index]
 
           names_gear?(words, prefix, catalogued) || names_whole?(catalogued, words, prefix)
         end
+      end
+
+      # Names sharing a word with the RSI one, or starting the word it was cut
+      # off in: "Enjakte Kni..." shares no word with "Njakte Knife" but that.
+      private def candidates(words, prefix)
+        prefixed = prefix ? @by_word.keys.select { |word| word.start_with?(prefix) } : []
+
+        (words + prefixed).flat_map { |word| @by_word.fetch(word, []) }.uniq
       end
 
       # Every word of the RSI name is in the catalogued one, but for a few

@@ -566,6 +566,7 @@ class HangarSyncTest < ActiveSupport::TestCase
       input = @input + [
         {"id" => "00064540", "name" => "Klaus & Werner Arrowhead 'Pathfinder' Snipe...", "type" => "equipment"},
         {"id" => "00064540", "name" => "Enjakte Knife", "type" => "equipment"},
+        {"id" => "00064540", "name" => "Enjakte Kni...", "type" => "equipment"},
         {"id" => "00064541", "name" => "RSI Constellation Mk V Coin", "type" => "equipment"},
         {"id" => "00064541", "name" => "Luminalia Mug", "type" => "equipment"},
         {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
@@ -577,7 +578,7 @@ class HangarSyncTest < ActiveSupport::TestCase
 
       result = ::HangarSync.new(input).run(@user.id)
 
-      assert_equal ["Doomsday Skullcap Helmet", "Enjakte Knife", "Klaus & Werner Arrowhead 'Pathfinder' Snipe...",
+      assert_equal ["Doomsday Skullcap Helmet", "Enjakte Kni...", "Enjakte Knife", "Klaus & Werner Arrowhead 'Pathfinder' Snipe...",
         "Tailwind ‘Drake’ Helmet"],
         @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
       assert_equal ["600i Explorer - 2953 Best In Show Poster", "Luminalia Mug", "RSI Constellation Mk V Coin",
@@ -588,7 +589,7 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
 
       body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
-      assert_includes body, "- FPS equipment synced: **4**"
+      assert_includes body, "- FPS equipment synced: **5**"
     end
 
     test "sorts the catalogue only once a run" do
