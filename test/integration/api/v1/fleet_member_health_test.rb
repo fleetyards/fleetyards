@@ -17,6 +17,8 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
 
       parameter name: "inactiveDays", in: :query, schema: {type: :integer, minimum: 1, default: 30}, required: false,
         description: "Days without activity after which a member counts as inactive"
+      parameter name: "sample", in: :query, schema: {type: :integer, minimum: 0, maximum: 5, default: 5}, required: false,
+        description: "Rows returned per check; 0 for counts only"
 
       security [
         {SessionCookie: []},
@@ -75,12 +77,40 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET health counts the admins" do
+  test "GET health leaves out the RSI org size until the fleet proved the SID" do
+    @fleet.update_columns(rsi_sid: "TESTORG", rsi_member_count: 40)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_nil health["rsiMemberCount"]
+    end
+  end
+
+  test "GET health returns counts only for sample 0" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {sample: 0} do
+      assert_equal 4, health["inactiveMembers"]["totalCount"]
+      assert_empty health["inactiveMembers"]["items"]
+    end
+  end
+
+  test "GET health counts the admins and offers the rank below for promotion" do
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal 1, health["admins"]["totalCount"]
       assert_equal [@admin.username], health["admins"]["items"].pluck("username")
+      assert_equal [@officer.username], health["admins"]["candidates"].pluck("username")
+    end
+  end
+
+  test "GET health offers no admin candidates once there are two admins" do
+    @fleet.fleet_memberships.find_by(user: @officer).update_columns(fleet_role_id: @fleet.fleet_roles.find_by(permanent: true).id)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_empty health["admins"]["candidates"]
     end
   end
 
@@ -96,7 +126,7 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
   end
 
   test "GET health says why each member is not verified against the fleet's RSI org" do
-    @fleet.update_columns(rsi_sid: "TESTORG", rsi_member_count: 40)
+    @fleet.update_columns(rsi_sid: "TESTORG", rsi_member_count: 40, rsi_verified_sid: "TESTORG", rsi_verified_at: 1.day.ago)
     @fleet.fleet_memberships.where(user: [@admin, @officer, @never]).update_all(verified: true)
     @gone.update_columns(rsi_handle: nil)
     @away.update_columns(rsi_handle: "AwayHandle", rsi_handle_verified: true, rsi_organizations_checked_at: 3.days.ago)
@@ -118,7 +148,11 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal ["officer"], health["emptyRoles"].pluck("slug")
+      empty_role = health["emptyRoles"].sole
+
+      assert_equal "officer", empty_role["role"]["slug"]
+      assert_equal 5, empty_role["candidates"].size
+      assert_includes empty_role["candidates"].pluck("username"), @officer.username
     end
   end
 

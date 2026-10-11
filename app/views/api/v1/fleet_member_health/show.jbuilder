@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 checks = {
-  admins: @admins,
   unverified_members: @unverified,
   members_without_rsi_handle: @without_rsi_handle,
   inactive_members: @inactive,
@@ -13,7 +12,8 @@ checks = {
 
 json.inactive_days @inactive_days
 json.fleet_rsi_verified @fleet.rsi_verified?
-json.rsi_member_count(@fleet.rsi_sid.present? ? @fleet.rsi_member_count : nil)
+# Only an org the fleet proved is its own: anyone can type any SID.
+json.rsi_member_count @fleet.verified_rsi_member_count
 json.member_count @members.count
 json.hidden_ships_count @hidden_ships_count
 
@@ -27,8 +27,18 @@ checks.each do |key, check|
   end
 end
 
+json.admins do
+  json.partial! "api/v1/fleet_member_health/check", check: @admins, leader_role_ids: @leader_role_ids
+  json.candidates (@admin_candidates || []), partial: "api/v1/fleet_member_health/member", as: :membership, leader_role_ids: @leader_role_ids
+end
+
 if @empty_roles
-  json.empty_roles @empty_roles, partial: "api/v1/fleet_roles/base", as: :fleet_role
+  json.empty_roles @empty_roles do |entry|
+    json.role do
+      json.partial! "api/v1/fleet_roles/base", fleet_role: entry[:role]
+    end
+    json.candidates entry[:candidates], partial: "api/v1/fleet_member_health/member", as: :membership, leader_role_ids: @leader_role_ids
+  end
 else
   json.empty_roles nil
 end
