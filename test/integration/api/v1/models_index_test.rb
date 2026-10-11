@@ -152,6 +152,14 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models answers perPage=all with every model, since it offers all" do
+    create_list(:model, Model.default_per_page + 1)
+
+    assert_api_response :get, 200, params: {perPage: "all"} do
+      assert_equal Model.default_per_page + 1, parsed_body["items"].count
+    end
+  end
+
   # The logo and the icon hang off the manufacturer, so neither one moves the
   # model's own `updated_at` -- the cache key has to name the manufacturer or the
   # list keeps serving the picture the first request happened to render.

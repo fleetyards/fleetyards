@@ -25,5 +25,15 @@ module PageSizes
         @_per_page_steps = val
       end
     end
+
+    # For a list read whole by a picker or a map without offering "all" in its
+    # dropdown.
+    def paginates_all
+      @_paginates_all = true
+    end
+
+    def paginates_all?
+      (defined?(@_paginates_all) && @_paginates_all) || !!per_page_steps&.include?(:all)
+    end
   end
 end
