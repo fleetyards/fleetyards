@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
+import type { ComponentPublicInstance } from "vue";
+import { useResizeObserver } from "@vueuse/core";
 import {
   type RowListItemBadge,
   type RowListItemChip,
@@ -39,6 +41,32 @@ const shownChips = computed(() => props.chips.slice(0, props.chipsMax));
 const extraChips = computed(() =>
   Math.max(props.chips.length - props.chipsMax, 0),
 );
+
+// The name is one line with an ellipsis, so a long one loses its end; the
+// tooltip gives it back, and only to a name that was actually cut.
+const name = ref<HTMLElement | ComponentPublicInstance>();
+
+const nameElement = computed<HTMLElement | undefined>(() =>
+  name.value instanceof HTMLElement
+    ? name.value
+    : (name.value?.$el as HTMLElement | undefined),
+);
+
+const cutName = ref("");
+
+const measureName = () => {
+  const node = nameElement.value;
+
+  cutName.value =
+    node && node.scrollWidth > node.clientWidth + 1
+      ? (node.textContent ?? "").trim()
+      : "";
+};
+
+useResizeObserver(nameElement, measureName);
+
+onMounted(measureName);
+onUpdated(measureName);
 </script>
 
 <template>
@@ -50,10 +78,16 @@ const extraChips = computed(() =>
     <slot name="leading" />
 
     <span class="row-list-item__main">
-      <router-link v-if="to" class="row-list-item__name" :to="to">
+      <router-link
+        v-if="to"
+        ref="name"
+        v-tooltip="cutName"
+        class="row-list-item__name"
+        :to="to"
+      >
         <slot name="name" />
       </router-link>
-      <span v-else class="row-list-item__name">
+      <span v-else ref="name" v-tooltip="cutName" class="row-list-item__name">
         <slot name="name" />
       </span>
 

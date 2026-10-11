@@ -287,6 +287,10 @@
     &__badges {
       flex-wrap: wrap;
       max-width: 100%;
+      // After the row's action rather than before it: a wrapped row keeps its
+      // action up beside the title, where a card's menu sits, and the badges
+      // take the line below.
+      order: 1;
     }
   }
 }
