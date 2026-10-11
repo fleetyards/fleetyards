@@ -5,10 +5,24 @@ const query = ref<Record<string, string>>({});
 // The composable chains `.catch` onto every navigation.
 const replace = vi.fn().mockResolvedValue(undefined);
 const push = vi.fn().mockResolvedValue(undefined);
+// What the history reports: the back and forward gestures only.
+const historyListeners: (() => void)[] = [];
 
 vi.mock("vue-router", () => ({
   useRoute: () => ({ query: query.value, path: "/hangar/inventories/main" }),
-  useRouter: () => ({ replace, push }),
+  useRouter: () => ({
+    replace,
+    push,
+    options: {
+      history: {
+        listen: (listener: () => void) => {
+          historyListeners.push(listener);
+
+          return () => {};
+        },
+      },
+    },
+  }),
 }));
 
 const { useFilters } = await import("./useFilters");
@@ -214,6 +228,18 @@ describe("useFilters navigation", () => {
     query.value = { nameCont: "ti" };
 
     useFilters().filter({ nameCont: "ti", readAtNull: "true" } as never);
+    debounced();
+
+    expect(push).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledTimes(1);
+  });
+
+  it("adds no step for a change made right after a back gesture", () => {
+    query.value = { nameCont: "ti" };
+    const filters = settled();
+
+    historyListeners.forEach((listener) => listener());
+    filters.filter({ nameCont: "tit" } as never);
     debounced();
 
     expect(push).not.toHaveBeenCalled();

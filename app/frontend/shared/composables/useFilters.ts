@@ -113,20 +113,21 @@ export const useFilters = <T>({
   // one burst: a search typed with pauses lands here once per pause, and each
   // of those would otherwise be its own entry to step back through.
   //
-  // A navigation starts a burst too - arriving on the page, or the back
-  // gesture landing on an older entry. A form writing what it read back into
+  // Arriving on the page starts a burst too, and so does the back or forward
+  // gesture landing on another entry. A form writing what it read back into
   // the URL in its own shape, or filling in a default, does so right then;
   // pushing that would leave an entry the back gesture lands on only to be
-  // pushed forward again.
+  // pushed forward again. Other navigations - a page turn, a record opened -
+  // are a step of their own, which a filter right after must not overwrite.
   let lastFilteredAt = 0;
   let routeChangedAt = Date.now();
 
-  watch(
-    () => route.fullPath,
-    () => {
-      routeChangedAt = Date.now();
-    },
-  );
+  // The history only reports the back and forward gestures, never a push.
+  const stopListening = router?.options?.history?.listen?.(() => {
+    routeChangedAt = Date.now();
+  });
+
+  if (getCurrentScope()) onScopeDispose(() => stopListening?.());
 
   const navigationFor = (changed: boolean): "push" | "replace" => {
     const now = Date.now();
