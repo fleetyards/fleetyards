@@ -561,21 +561,27 @@ class HangarSyncTest < ActiveSupport::TestCase
       create(:equipment, name: "Tailwind Flight Helmet Drake")
       create(:equipment, name: "Skullcap Helmet")
       create(:equipment, name: "Poster")
+      create(:equipment, name: "Venture Executive Armor")
       input = @input + [
         {"id" => "00064540", "name" => "Arrowhead Sniper Rifle", "type" => "equipment"},
         {"id" => "00064541", "name" => "Tailwind ‘Drake’ Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "Doomsday Skullcap Helmet", "type" => "extra"},
         {"id" => "00064541", "name" => "600i Explorer - 2953 Best In Show Poster", "type" => "extra"},
         {"id" => "00064541", "name" => "Self-Land Hangar", "type" => "extra"},
-        {"id" => "00064541", "name" => "Skullcap Helmet Poster", "type" => "extra"}
+        {"id" => "00064541", "name" => "Skullcap Helmet Poster", "type" => "extra"},
+        {"id" => "00064541", "name" => "RSI Venture Executive Armor Display", "type" => "extra"},
+        {"id" => "00064541", "name" => "Galaxy - Starwalker Paint", "type" => "extra"}
       ]
 
       result = ::HangarSync.new(input).run(@user.id)
 
       assert_equal ["Arrowhead Sniper Rifle", "Doomsday Skullcap Helmet", "Tailwind ‘Drake’ Helmet"],
         @user.hangar_pledge_items.equipment.order(:name).pluck(:name)
-      assert_equal ["600i Explorer - 2953 Best In Show Poster", "Self-Land Hangar", "Skullcap Helmet Poster"],
+      assert_equal ["600i Explorer - 2953 Best In Show Poster", "RSI Venture Executive Armor Display", "Self-Land Hangar",
+        "Skullcap Helmet Poster"],
         @user.hangar_pledge_items.flair.where(rsi_pledge_id: "00064541").order(:name).pluck(:name)
+      assert_equal ["Galaxy - Starwalker Paint"],
+        @user.hangar_pledge_items.paints.where(rsi_pledge_id: "00064541").pluck(:name)
       assert_equal @user.hangar_pledge_items.equipment.pluck(:id).sort, result[:synced_equipment].sort
 
       body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body

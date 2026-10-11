@@ -8,9 +8,12 @@ module HangarPledgeItems
     KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
 
     # RSI gives the items it lists under "Also Contains" no kind at all: FPS
-    # gear, posters, trophies and hangars read alike. The ones the equipment
-    # catalogue knows are gear, and everything else is kept with the flair.
+    # gear, paints, posters, trophies and hangars read alike. A name calling
+    # itself a paint is one, the ones the equipment catalogue knows are gear,
+    # and everything else is kept with the flair.
     EXTRA_ITEM_TYPE = "extra"
+
+    PAINT_WORDS = %w[paint livery].freeze
 
     attr_reader :user, :items, :kinds, :keep_unlisted
 
@@ -24,7 +27,13 @@ module HangarPledgeItems
         type = item[:type].to_s
         next KINDS_BY_ITEM_TYPE[type] unless type == EXTRA_ITEM_TYPE
 
-        catalogue.include?(item[:name]) ? "equipment" : "flair"
+        if EquipmentCatalogue.words(item[:name]).intersect?(PAINT_WORDS)
+          "paint"
+        elsif catalogue.include?(item[:name])
+          "equipment"
+        else
+          "flair"
+        end
       end
     end
 
