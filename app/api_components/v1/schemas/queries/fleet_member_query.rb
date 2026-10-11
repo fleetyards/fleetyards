@@ -23,7 +23,9 @@ module V1
           requestedAtGteq: {type: :string, format: :date},
           requestedAtLteq: {type: :string, format: :date},
           declinedAtGteq: {type: :string, format: :date},
-          declinedAtLteq: {type: :string, format: :date}
+          declinedAtLteq: {type: :string, format: :date},
+          inactiveSince: {type: :string, format: :date, description: "Members not active since this date, including those never active"},
+          verifiedEq: {type: :boolean, description: "Whether the member is in the fleet's RSI org"}
         }.freeze
 
         schema({

@@ -62,8 +62,12 @@ class FleetMembership < ApplicationRecord
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
       "blueprints_filter", "role", "squadron_slug", "squadron_membership_created_at",
-      "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
+      "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state", "verified"
     ]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["inactive_since"]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -111,6 +115,12 @@ class FleetMembership < ApplicationRecord
   ransack_alias :squadron_slug, :fleet_squadrons_slug
   ransack_alias :squadron_membership_created_at, :fleet_squadron_memberships_created_at
   ransack_alias :state, :aasm_state
+
+  # Never active counts as inactive: an account that has not been used since
+  # tracking began is the longest gone of all.
+  scope :inactive_since, ->(time) {
+    where(user_id: User.where("users.last_active_at IS NULL OR users.last_active_at < ?", time).select(:id))
+  }
 
   before_validation :set_default_ships_filter
   before_validation :set_default_blueprints_filter

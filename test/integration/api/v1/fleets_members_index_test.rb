@@ -172,6 +172,30 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members filters by inactiveSince, counting the never active" do
+    @admin.update_columns(last_active_at: 1.hour.ago)
+    @member.update_columns(last_active_at: 60.days.ago)
+    @another_member.update_columns(last_active_at: nil)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"inactiveSince" => 30.days.ago.to_date.iso8601}} do
+      assert_equal [@another_member.username, @member.username].sort, parsed_body["items"].map { |item| item["username"] }.sort
+    end
+  end
+
+  test "GET /fleets/:slug/members filters by verifiedEq" do
+    @fleet.fleet_memberships.where(user: [@admin, @another_member]).update_all(verified: true)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"verifiedEq" => false}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
   # The filter names roles by slug, so a renamed role still filters.
   test "GET /fleets/:slug/members filters by role after the role is renamed" do
     @fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")

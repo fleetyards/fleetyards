@@ -27274,6 +27274,13 @@ components:
         declinedAtLteq:
           type: string
           format: date
+        inactiveSince:
+          type: string
+          format: date
+          description: Members not active since this date, including those never active
+        verifiedEq:
+          type: boolean
+          description: Whether the member is in the fleet's RSI org
         s:
           anyOf:
           - type: array
@@ -28194,6 +28201,13 @@ components:
         declinedAtLteq:
           type: string
           format: date
+        inactiveSince:
+          type: string
+          format: date
+          description: Members not active since this date, including those never active
+        verifiedEq:
+          type: boolean
+          description: Whether the member is in the fleet's RSI org
         squadronMembershipCreatedAtGteq:
           type: string
           format: date
