@@ -16,6 +16,7 @@ const TableComponent = Component as unknown as new (...args: unknown[]) => {
     primaryKey: keyof Row;
     selectable?: boolean;
     rowClickable?: boolean;
+    rowDisabled?: (record: Row) => boolean;
   };
 };
 
@@ -38,7 +39,7 @@ let mounted: { unmount: () => void } | undefined;
 
 // jsdom lays nothing out, so its document is 0px wide and every mount is a
 // phone - which is the layout these tests are about.
-const mount = async () => {
+const mount = async (rowDisabled?: (record: Row) => boolean) => {
   const wrapper = await mountWithDefaults<typeof TableComponent>(
     TableComponent,
     {
@@ -48,9 +49,14 @@ const mount = async () => {
         records,
         selectable: true,
         rowClickable: true,
+        rowDisabled,
       },
       slots: {
         "selected-actions": () => h("button", { "data-test": "bulk-go" }),
+        "col-name": ({ record }: { record: Row }) =>
+          h("a", { href: `/ships/${record.slug}`, "data-test": "name-link" }, [
+            record.name,
+          ]),
       },
       attachTo: document.getElementById("app")!,
     },
@@ -109,6 +115,7 @@ describe("BaseTable on a phone", () => {
     const wrapper = await mount();
 
     await hold(wrapper, 0);
+    vi.advanceTimersByTime(500);
     await rows(wrapper)[1].trigger("click");
 
     expect(boxes(wrapper)).toEqual([true, true]);
@@ -132,5 +139,37 @@ describe("BaseTable on a phone", () => {
 
     expect(header.querySelector(".navigation-header-takeover")).not.toBeNull();
     expect(header.querySelector('[data-test="bulk-go"]')).not.toBeNull();
+  });
+
+  it("picks a row from its linked name while selecting, without following it", async () => {
+    const wrapper = await mount();
+
+    await hold(wrapper, 0);
+    vi.advanceTimersByTime(500);
+
+    const link = wrapper.findAll('[data-test="name-link"]')[1].element;
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true });
+    link.dispatchEvent(click);
+    await flushPromises();
+
+    expect(click.defaultPrevented).toBe(true);
+    expect(boxes(wrapper)).toEqual([true, true]);
+  });
+
+  it("keeps a held row picked when the finger lifts", async () => {
+    const wrapper = await mount();
+
+    await hold(wrapper, 0);
+    await rows(wrapper)[0].trigger("click");
+
+    expect(boxes(wrapper)).toEqual([true, false]);
+  });
+
+  it("does not start a selection from a disabled row", async () => {
+    const wrapper = await mount((record) => record.slug === "a");
+
+    await hold(wrapper, 0);
+
+    expect(boxes(wrapper)).toEqual([]);
   });
 });
