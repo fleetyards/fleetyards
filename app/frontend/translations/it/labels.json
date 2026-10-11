@@ -744,29 +744,139 @@
             "invites": "Inviti"
           },
           "health": {
-            "inactive": {
-              "title": {
-                "one": "%{count} membro inattivo",
-                "other": "%{count} membri inattivi"
+            "overview": "Controlli",
+            "summary": {
+              "attention": {
+                "one": "%{count} controllo su %{total} richiede attenzione",
+                "other": "%{count} controlli su %{total} richiedono attenzione"
               },
-              "threshold": "Inattivi da almeno",
-              "days": {
-                "one": "%{count} giorno",
-                "other": "%{count} giorni"
+              "clear": "Tutti i %{total} controlli sono a posto"
+            },
+            "groups": {
+              "leadership": "Comando",
+              "rsi": "Organizzazione RSI",
+              "activity": "Attività",
+              "requests": "Richieste e inviti",
+              "integrations": "Integrazioni"
+            },
+            "days": {
+              "one": "%{count} giorno",
+              "other": "%{count} giorni"
+            },
+            "checks": {
+              "admins": {
+                "title": "Un solo admin",
+                "overview": "Admin",
+                "description": "Admin è l'unico ruolo che può gestire tutto. Con un solo titolare, la flotta dipende da un account.",
+                "clear": "Più di un membro è admin."
+              },
+              "emptyRoles": {
+                "title": "Ruoli senza membri",
+                "overview": "Ruoli vuoti",
+                "description": "Promuovi qualcuno a questi ruoli o rinominali.",
+                "clear": "Ogni ruolo ha almeno un membro."
+              },
+              "unverified": {
+                "title": "Non verificati con %{sid}",
+                "overview": "Non verificati",
+                "description": "Un membro è verificato quando il suo elenco di organizzazioni RSI include %{sid}. Ogni riga spiega perché non è stato possibile confermarlo.",
+                "clear": "Tutti i membri sono verificati con %{sid}."
+              },
+              "noHandle": {
+                "title": "Nessun handle RSI",
+                "overview": "Nessun handle RSI",
+                "description": "Senza handle non c'è un profilo RSI da collegare né nulla da verificare quando la flotta aggiungerà il suo SID RSI.",
+                "clear": "Tutti i membri hanno indicato un handle RSI."
+              },
+              "inactive": {
+                "title": "Membri inattivi",
+                "overview": "Inattivi da %{count}+ giorni",
+                "description": "Nessuna attività su FleetYards per almeno il periodo scelto. Gli ufficiali sono elencati per primi.",
+                "clear": "Tutti sono stati attivi negli ultimi %{count} giorni."
+              },
+              "joinRequests": {
+                "title": "Richieste di adesione in attesa da oltre una settimana",
+                "overview": "Richieste vecchie",
+                "description": "Qualcuno ha chiesto di entrare e aspetta ancora una risposta.",
+                "clear": "Nessuna richiesta attende da più di una settimana."
+              },
+              "invitations": {
+                "title": "Inviti senza risposta",
+                "overview": "Inviti senza risposta",
+                "description": "Invitati più di due settimane fa e mai accettati o rifiutati.",
+                "clear": "Nessun invito è aperto da più di due settimane."
+              },
+              "inviteUrls": {
+                "title": "Link d'invito da sistemare",
+                "overview": "Link d'invito",
+                "description": "I link che non funzionano più sono solo ingombro. Un link senza scadenza né limite di utilizzi permette a chiunque lo trovi di entrare.",
+                "clear": "Tutti i link d'invito sono attuali e limitati."
+              },
+              "discord": {
+                "title": "Discord non collegato",
+                "overview": "Discord",
+                "description": "La flotta assegna ruoli Discord, ma questi membri non hanno collegato un account Discord e quindi non possono riceverli.",
+                "clear": "Tutti i membri hanno collegato Discord."
+              },
+              "emptySquadrons": {
+                "title": "Squadriglie senza membri",
+                "overview": "Squadriglie vuote",
+                "description": "Riempile o eliminale.",
+                "clear": "Ogni squadriglia ha dei membri."
+              },
+              "noSquadron": {
+                "title": "Membri senza squadriglia",
+                "overview": "Senza squadriglia",
+                "description": "Membri accettati che non sono in nessuna squadriglia o squadra.",
+                "clear": "Tutti i membri sono in una squadriglia."
+              },
+              "hiddenShips": {
+                "title": "Navi escluse dalla flotta",
+                "overview": "Hangar nascosti",
+                "description": "Lo scelgono i membri stessi. I conteggi e le statistiche delle navi della flotta escludono queste navi.",
+                "clear": "Tutti i membri condividono le loro navi con la flotta."
               }
             },
-            "unverified": {
-              "title": {
-                "one": "%{count} membro non verificato con l'organizzazione RSI",
-                "other": "%{count} membri non verificati con l'organizzazione RSI"
-              }
+            "facts": {
+              "joined": "Entrato il %{date}",
+              "lastActive": "Ultima attività %{distance}",
+              "neverActive": "Mai attivo",
+              "checked": "Controllato %{distance}",
+              "requested": "Richiesto %{distance}",
+              "invited": "Invitato %{distance}",
+              "invitedBy": "Invitato da %{name}",
+              "noDiscord": "Nessun account Discord collegato",
+              "noSquadron": "Nessuna squadriglia",
+              "noHandle": "Nessun handle indicato",
+              "linkExpired": "Scaduto %{distance}",
+              "linkUsedUp": "Nessun utilizzo rimasto",
+              "linkUnlimited": "Non scade mai, nessun limite di utilizzi",
+              "createdBy": "Creato da %{name}",
+              "used": {
+                "one": "Usato una volta",
+                "other": "Usato %{count} volte"
+              },
+              "team": "Squadra",
+              "created": "Creata il %{date}"
             },
-            "emptyRoles": {
-              "title": {
-                "one": "%{count} ruolo senza membri",
-                "other": "%{count} ruoli senza membri"
-              }
-            }
+            "gaps": {
+              "no_handle": "Nessun handle RSI nel profilo",
+              "handle_unverified": "Handle RSI non verificato",
+              "orgs_not_checked": "Elenco organizzazioni non ancora letto",
+              "org_not_listed": "%{sid} non è nel suo elenco di organizzazioni"
+            },
+            "orgStats": {
+              "rsi": "%{sid} su RSI",
+              "roster": "Su FleetYards",
+              "gap": "Mai entrati qui"
+            },
+            "fleetNotVerified": "%{sid} non è ancora verificata, quindi altrove nessun membro risulta verificato.",
+            "singleAdmin": "Se %{name} se ne va o perde l'accesso, nessuno potrà gestire %{fleet} su FleetYards.",
+            "hiddenShips": {
+              "one": "%{count} membro tiene il suo hangar fuori dall'elenco navi della flotta.",
+              "other": "%{count} membri tengono il loro hangar fuori dall'elenco navi della flotta."
+            },
+            "deleteLinkFailed": "Non è stato possibile eliminare il link d'invito."
           }
         },
         "squadrons": {

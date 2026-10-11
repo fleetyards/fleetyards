@@ -305,8 +305,15 @@
           "health": {
             "open": "成員健康檢查",
             "showAll": "顯示全部 %{count} 個",
-            "editRoles": "編輯角色",
-            "viewRoles": "查看角色"
+            "roleSettings": "角色設定",
+            "inviteLinks": "邀請連結",
+            "discordSettings": "Discord 設定",
+            "verifyOrg": "驗證 RSI 組織",
+            "openMember": "開啟成員",
+            "remove": "移出艦隊",
+            "revoke": "撤回邀請",
+            "deleteLink": "刪除連結",
+            "actionsFor": "%{name} 的操作"
           }
         },
         "inviteUrls": {

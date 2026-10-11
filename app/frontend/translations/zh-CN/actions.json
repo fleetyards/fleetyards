@@ -305,8 +305,15 @@
           "health": {
             "open": "成员健康检查",
             "showAll": "显示全部 %{count} 个",
-            "editRoles": "编辑角色",
-            "viewRoles": "查看角色"
+            "roleSettings": "角色设置",
+            "inviteLinks": "邀请链接",
+            "discordSettings": "Discord 设置",
+            "verifyOrg": "验证 RSI 组织",
+            "openMember": "打开成员",
+            "remove": "移出舰队",
+            "revoke": "撤回邀请",
+            "deleteLink": "删除链接",
+            "actionsFor": "%{name} 的操作"
           }
         },
         "inviteUrls": {

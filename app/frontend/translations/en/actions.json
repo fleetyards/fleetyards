@@ -305,8 +305,15 @@
           "health": {
             "open": "Member health",
             "showAll": "Show all %{count}",
-            "editRoles": "Edit roles",
-            "viewRoles": "View roles"
+            "roleSettings": "Role settings",
+            "inviteLinks": "Invite links",
+            "discordSettings": "Discord settings",
+            "verifyOrg": "Verify the RSI organisation",
+            "openMember": "Open member",
+            "remove": "Remove from fleet",
+            "revoke": "Revoke invitation",
+            "deleteLink": "Delete link",
+            "actionsFor": "Actions for %{name}"
           }
         },
         "inviteUrls": {

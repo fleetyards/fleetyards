@@ -305,8 +305,15 @@
           "health": {
             "open": "Mitglieder-Zustand",
             "showAll": "Alle %{count} anzeigen",
-            "editRoles": "Rollen bearbeiten",
-            "viewRoles": "Rollen ansehen"
+            "roleSettings": "Rolleneinstellungen",
+            "inviteLinks": "Einladungslinks",
+            "discordSettings": "Discord-Einstellungen",
+            "verifyOrg": "RSI-Organisation verifizieren",
+            "openMember": "Mitglied öffnen",
+            "remove": "Aus der Flotte entfernen",
+            "revoke": "Einladung zurückziehen",
+            "deleteLink": "Link löschen",
+            "actionsFor": "Aktionen für %{name}"
           }
         },
         "inviteUrls": {
