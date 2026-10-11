@@ -129,4 +129,18 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_empty nova_tank.paints
     assert_empty nova.paints
   end
+
+  test "#run files the older Constellation Invictus names under the current ones" do
+    andromeda = create(:model, name: "Constellation Mk IV Andromeda")
+    hangar_sync(
+      "Constellation - 2950 Invictus Dark Green Paint",
+      "Constellation Mk IV - Dark Green Paint",
+      "2950 Invictus Constellation Blue and Gold",
+      "Constellation Mk IV - Invictus Blue and Gold Paint"
+    )
+
+    PaintsImporter.new.run
+
+    assert_equal ["Dark Green", "Invictus Blue and Gold"], andromeda.paints.order(:name).pluck(:name)
+  end
 end
