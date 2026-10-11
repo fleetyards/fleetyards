@@ -98,7 +98,7 @@ const mobile = useMobile();
 
 // A phone hides the checkboxes until a held row starts a selection, and the
 // table stays in that mode for as long as something is picked.
-const { selecting, start: startSelecting } = useSelectionMode(
+const { selecting } = useSelectionMode(
   () => internalSelected.value.length,
   mobile,
 );
@@ -185,15 +185,10 @@ const allSelected = computed(() => {
 
 // Immediate: a table that mounts into a list with rows already picked -- back
 // from the grid view, say -- has to show their boxes ticked.
-// On a phone, rows handed over already picked are a selection in progress.
 watch(
   () => props.selected,
   () => {
     internalSelected.value = props.selected;
-
-    if (props.selected.length) {
-      startSelecting();
-    }
   },
   { immediate: true },
 );
@@ -275,8 +270,8 @@ const HOLD_CLICK_MS = 400;
 
 let heldAt = 0;
 
-// Holding a row picks it and turns the table into a selection, never the
-// other way round: a hold on a row already picked keeps it.
+// Holding a row picks it, which is what turns the table into a selection; a
+// hold on a row already picked keeps it.
 const holdRecord = (record: T) => {
   if (props.rowDisabled?.(record)) {
     return;
@@ -287,8 +282,6 @@ const holdRecord = (record: T) => {
   if (!internalSelected.value.includes(primaryValue(record) as string)) {
     toggleRecord(record);
   }
-
-  startSelecting();
 };
 
 // While picking, a tap picks too - following a row in the middle of a

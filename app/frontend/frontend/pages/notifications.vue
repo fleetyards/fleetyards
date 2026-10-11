@@ -190,22 +190,17 @@ const {
 
 const mobile = useMobile();
 
-const { selecting, start: startSelecting } = useSelectionMode(
-  selectedCount,
-  mobile,
-);
+const { selecting } = useSelectionMode(selectedCount, mobile);
 
 const isChecked = (notification: Notification) =>
   allMatchingSelected.value || selectedIds.value.includes(notification.id);
 
-// Holding a row picks it and turns the list into a selection, never the other
-// way round: a hold on a row already picked keeps it.
+// Holding a row picks it, which is what turns the list into a selection; a
+// hold on a row already picked keeps it.
 const hold = (notification: Notification) => {
   if (!isChecked(notification)) {
     toggleSelection(notification.id);
   }
-
-  startSelecting();
 };
 
 const {

@@ -12,6 +12,7 @@ import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useSelectionMode } from "@/shared/composables/useSelectionMode";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 
 type Props = {
@@ -45,7 +46,7 @@ const mobile = useMobile();
 // A phone hides the rows' checkboxes until a held row starts a selection, so
 // the box that ticks them all waits for one too - and the bulk actions take
 // the header over, where the thumb already is.
-const selecting = computed(() => mobile.value && !!selected.value.length);
+const { selecting } = useSelectionMode(() => selected.value.length, mobile);
 
 const selectAllVisible = computed(
   () => props.selectable && (!mobile.value || selecting.value),
