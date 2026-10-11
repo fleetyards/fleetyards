@@ -115,6 +115,18 @@ h4 {
 }
 
 @media (max-width: $desktop-breakpoint) {
+  // A page title sized for a desktop took two or three lines of a phone's
+  // first screen on its own.
+  .text-hero {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .text-hero-sm {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
   .heading--mobile-hidden {
     position: absolute;
     width: 1px;
