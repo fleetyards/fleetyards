@@ -6,6 +6,7 @@ import {
   type Notification,
   type Notifications,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 // No subscription of its own: `useUpdates` already listens on
 // UserNotificationsChannel for the toast and calls in here, so the center and
@@ -78,4 +79,28 @@ export const useNotificationInvalidation = () => {
     invalidateFidClaims,
     patchCached,
   };
+};
+
+const TOAST_TAG_PREFIX = "notification:";
+
+export const notificationToastTag = (id: string) => `${TOAST_TAG_PREFIX}${id}`;
+
+// Takes down the toast that announced a notification once the notification has
+// been read, archived, deleted or withdrawn. Without ids, every one goes.
+export const useNotificationToasts = () => {
+  const { dismissTagged } = useAppNotifications();
+
+  const dismiss = (ids?: string[]) => {
+    if (!ids) {
+      dismissTagged((tag) => tag.startsWith(TOAST_TAG_PREFIX));
+
+      return;
+    }
+
+    const tags = ids.map(notificationToastTag);
+
+    dismissTagged((tag) => tags.includes(tag));
+  };
+
+  return { dismiss };
 };
