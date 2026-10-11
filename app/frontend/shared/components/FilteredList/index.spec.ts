@@ -213,10 +213,6 @@ describe("FilteredList", () => {
       },
     );
 
-    expect(
-      wrapper.findComponent({ name: "ClientError" }).props("pageSize"),
-    ).toBe(true);
-
     await wrapper.get('[data-test="client-error-reset"]').trigger("click");
     await flushPromises();
 
@@ -264,10 +260,6 @@ describe("FilteredList", () => {
         plugins: [router],
       },
     );
-
-    expect(
-      wrapper.findComponent({ name: "ClientError" }).props("pageSize"),
-    ).toBe(false);
 
     await wrapper.get('[data-test="client-error-reset"]').trigger("click");
     await flushPromises();

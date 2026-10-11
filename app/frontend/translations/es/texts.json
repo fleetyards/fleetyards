@@ -36,7 +36,6 @@
       "offline": "La solicitud no ha llegado al servidor. Tu dispositivo parece estar sin conexión o no se ha podido contactar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
       "invalidRequest": "El servidor no ha podido procesar esta solicitud. Recarga la página e inténtalo de nuevo.",
       "invalidListRequest": "Este filtro u orden no es válido. Restablécelo para volver a ver la lista.",
-      "pageSizeTooLarge": "Este tamaño de página es mayor de lo que permite esta lista. Restablécelo para volver a ver la lista.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

@@ -406,7 +406,6 @@ const toggleFilter = () => {
               <ClientError
                 v-else-if="clientError"
                 :reset="resettable ? resetQuery : undefined"
-                :page-size="pageSizeRejected"
               />
               <ServerError v-else />
             </transition>
