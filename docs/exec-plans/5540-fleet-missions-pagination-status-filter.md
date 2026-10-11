@@ -18,8 +18,8 @@ Every mission a member may see is reachable from the missions page, and the even
 
 ### Phase 3 — Template picker
 1. Ask for `q[statusEq]=published` and drop the client-side draft filter.
-2. Title search and a local page (prev / next) inside the modal — the route-bound `Paginator` would page the events list behind it.
-3. Empty state: with no published mission and no search, a one-row probe without the status filter tells "none published yet" apart from "no missions".
+2. Title search and "Load more" inside the modal, as the squadron member picker does — the route-bound `Paginator` would page the events list behind it.
+3. Empty state: with no published mission and no search, a one-row request without the status filter tells "none published yet" apart from "no missions".
 4. New label in all seven locales.
 
 ## Intent Verification
@@ -44,6 +44,6 @@ Every mission a member may see is reachable from the missions page, and the even
 - **2026-10-11** The controller already paginated and permitted `q[title_cont]`/`q[s]`; only the schema refused them. The table's sortable columns wrote `?s=` which the page never sent, so sorting did nothing either.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
