@@ -20945,8 +20945,6 @@ components:
           type: string
         homepage:
           type: string
-        saleNotify:
-          type: boolean
         publicHangar:
           type: boolean
         publicHangarUrl:
@@ -21000,7 +20998,6 @@ components:
       required:
       - username
       - email
-      - saleNotify
       - publicHangar
       - publicHangarLoaners
       - publicWishlist
@@ -21022,8 +21019,6 @@ components:
           type: string
         rsiHandle:
           type: string
-        saleNotify:
-          type: boolean
         publicHangar:
           type: boolean
         publicHangarLoaners:

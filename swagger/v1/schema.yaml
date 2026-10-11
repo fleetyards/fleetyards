@@ -38362,8 +38362,6 @@ components:
           type: string
         currentSystemCode:
           type: string
-        saleNotify:
-          type: boolean
         dateFormat:
           "$ref": "#/components/schemas/UserDateFormatEnum"
         publicHangar:
@@ -38434,7 +38432,6 @@ components:
       required:
       - username
       - email
-      - saleNotify
       - dateFormat
       - publicHangar
       - publicHangarLoaners
@@ -38707,8 +38704,6 @@ components:
           type:
           - string
           - 'null'
-        saleNotify:
-          type: boolean
         dateFormat:
           "$ref": "#/components/schemas/UserDateFormatEnum"
         publicHangar:

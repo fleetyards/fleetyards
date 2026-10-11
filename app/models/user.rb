@@ -16,7 +16,15 @@ class User < ApplicationRecord
   # stopped selecting them.
   self.ignored_columns += %w[purchased_vehicles_count wanted_vehicles_count]
 
+  # Replaced by the `model_on_sale` notification preference; ignored a release
+  # ahead of the migration that drops it, for the same reason as above.
+  self.ignored_columns += %w[sale_notify]
+
   attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # The signup opt-in. It only seeds the `model_on_sale` preference; the
+  # preference is what decides delivery from then on.
+  attr_accessor :sale_notify
 
   # Only an admin action sets `author_id`, so a change a user makes to their own
   # account files nothing -- this records what an admin did to somebody else's.
@@ -28,7 +36,7 @@ class User < ApplicationRecord
   # where devise writes it directly.
   has_paper_trail on: %i[update],
     only: %i[
-      username email unconfirmed_email rsi_handle sale_notify public_hangar
+      username email unconfirmed_email rsi_handle public_hangar
       public_hangar_loaners public_wishlist hide_owner tester
       friends_hangar friends_hangar_stats friends_wishlist show_online_status
     ],
@@ -226,7 +234,6 @@ class User < ApplicationRecord
     }
 
   after_update :notify_user
-  after_update :sync_sale_notify_preference
   after_save :touch_fleet_memberships
 
   # Turning the switch off has to reach the rosters already showing the dot, and
@@ -1037,13 +1044,6 @@ class User < ApplicationRecord
     self.longitude = nil
   end
 
-  private def sync_sale_notify_preference
-    return unless saved_change_to_sale_notify?
-
-    pref = notification_preferences.find_or_initialize_by(notification_type: "model_on_sale")
-    pref.update!(app: sale_notify?, mail: sale_notify?)
-  end
-
   # One statement for all two dozen types. A `create!` each ran a uniqueness
   # SELECT before its INSERT -- 48 round trips on a signup -- and the row it
   # went looking for cannot be there: the user was created a moment ago, and
@@ -1058,7 +1058,7 @@ class User < ApplicationRecord
     now = Time.zone.now
 
     rows = Notification.notification_types.each_key.map do |type|
-      defaults = if type == "model_on_sale" && sale_notify?
+      defaults = if type == "model_on_sale" && ActiveModel::Type::Boolean.new.cast(sale_notify)
         {app: true, mail: true}
       else
         NotificationPreference.defaults_for(type)

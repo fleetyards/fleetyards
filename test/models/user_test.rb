@@ -525,7 +525,7 @@ class UserTest < ActiveSupport::TestCase
       assert_equal expected, actual
     end
 
-    # The sale toggle predates the preferences and still seeds this one.
+    # The signup opt-in seeds this one; the preference decides delivery after.
     test "sale_notify turns the on-sale preference on for both channels" do
       preference = create(:user, sale_notify: true)
         .notification_preferences

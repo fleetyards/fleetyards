@@ -26,7 +26,6 @@ module V1
           currentLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
           currentSystem: {type: :string},
           currentSystemCode: {type: :string},
-          saleNotify: {type: :boolean},
           dateFormat: ::V1::Schemas::Enums::UserDateFormatEnum,
           publicHangar: {type: :boolean},
           publicHangarUrl: {type: :string},
@@ -59,7 +58,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter supporterTier supporterRecurring
+          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })
