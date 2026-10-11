@@ -261,6 +261,9 @@ watch(
       void markRead(notification);
     }
   },
+  // A notification the URL opens can be on screen before this runs, when
+  // its list is already cached.
+  { immediate: true },
 );
 
 const select = (notification: AdminNotification) => {
