@@ -124,6 +124,10 @@ export const useAppNotifications = () => {
     });
   };
 
+  const dismissTagged = (matches: (tag: string) => boolean) => {
+    notificationsStore.hideTagged(matches);
+  };
+
   const comlink = useComlink();
 
   const displayConfirm = (options: AppConfirmOptions) => {
@@ -140,6 +144,7 @@ export const useAppNotifications = () => {
     displaySuccess,
     displayInfo,
     displayWarning,
+    dismissTagged,
     displayConfirm,
     dismissConfirm,
     displayNativeNotification,

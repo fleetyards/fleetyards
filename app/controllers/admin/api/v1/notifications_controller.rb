@@ -36,6 +36,7 @@ module Admin
           authorize! @notification, with: ::Admin::NotificationPolicy
 
           @notification.mark_as_read!
+          settled([@notification.id])
 
           render :show
         end
@@ -52,6 +53,7 @@ module Admin
           authorize! @notification, with: ::Admin::NotificationPolicy
 
           @notification.archive!
+          settled([@notification.id])
 
           render :show
         end
@@ -69,7 +71,10 @@ module Admin
 
           # The inbox, not the archive: this clears what the unread badge counts,
           # and an archived notification left unread on purpose stays that way.
-          scope.inbox.unread.update_all(read_at: Time.current, updated_at: Time.current)
+          unread = scope.inbox.unread
+          ids = unread.pluck(:id)
+          unread.where(id: ids).update_all(read_at: Time.current, updated_at: Time.current)
+          settled(ids)
 
           head :no_content
         end
@@ -78,6 +83,7 @@ module Admin
           authorize! @notification, with: ::Admin::NotificationPolicy
 
           @notification.destroy!
+          settled([@notification.id])
 
           head :no_content
         end
@@ -85,7 +91,9 @@ module Admin
         def destroy_all
           authorize! with: ::Admin::NotificationPolicy
 
-          scope.delete_all
+          ids = scope.pluck(:id)
+          scope.where(id: ids).delete_all
+          settled(ids)
 
           head :no_content
         end
@@ -93,31 +101,33 @@ module Admin
         def read_bulk
           authorize! with: ::Admin::NotificationPolicy
 
-          bulk(:unread, read_at: Time.current)
+          bulk(:unread, {read_at: Time.current}, settles: true)
         end
 
         def unread_bulk
           authorize! with: ::Admin::NotificationPolicy
 
-          bulk(:read, read_at: nil)
+          bulk(:read, {read_at: nil})
         end
 
         def archive_bulk
           authorize! with: ::Admin::NotificationPolicy
 
-          bulk(:inbox, archived_at: Time.current)
+          bulk(:inbox, {archived_at: Time.current}, settles: true)
         end
 
         def unarchive_bulk
           authorize! with: ::Admin::NotificationPolicy
 
-          bulk(:archived, archived_at: nil)
+          bulk(:archived, {archived_at: nil})
         end
 
         def destroy_bulk
           authorize! with: ::Admin::NotificationPolicy
 
-          @count = bulk_selection.delete_all
+          ids = bulk_selection.pluck(:id)
+          @count = bulk_selection.where(id: ids).delete_all
+          settled(ids)
 
           render :bulk
         end
@@ -125,11 +135,20 @@ module Admin
         # Only the rows the action has something to do to: marking an already read
         # notification read again would move its `read_at` to now for nothing,
         # and the count that comes back is then what actually changed.
-        private def bulk(narrow, attributes)
-          @count = bulk_selection.public_send(narrow)
-            .update_all(**attributes, updated_at: Time.current)
+        private def bulk(narrow, attributes, settles: false)
+          selection = bulk_selection.public_send(narrow)
+          ids = selection.pluck(:id)
+          @count = selection.where(id: ids).update_all(**attributes, updated_at: Time.current)
+          settled(ids) if settles
 
           render :bulk
+        end
+
+        # Plucked before the write, not re-selected after it: a notification
+        # that arrives mid-request is not part of what the admin acted on, and
+        # its toast has to survive the "all" that missed it.
+        private def settled(ids)
+          AdminNotification.broadcast_settled(current_admin_user, ids)
         end
 
         # The reader either ticked rows or asked for everything the current
@@ -167,7 +186,7 @@ module Admin
 
         private def notification_query_params
           @notification_query_params ||= params.permit(q: [
-            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: []
+            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: [], id_in: []
           ]).fetch(:q, {})
         end
       end

@@ -6,6 +6,7 @@ require "openapi_helper"
 # the verb alone, so each assertion names its `api_path`.
 class Admin::Api::V1::NotificationsBulkTest < ActionDispatch::IntegrationTest
   include OpenapiRuby::Adapters::Minitest::DSL
+  include ActionCable::TestHelper
 
   openapi_schema :"admin/v1/schema"
 
@@ -154,6 +155,17 @@ class Admin::Api::V1::NotificationsBulkTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /notifications/read-bulk on all settles only what the filter matched" do
+    matched = create(:admin_notification, admin_user: @admin_user, title: "Paints Import Results")
+    create(:admin_notification, admin_user: @admin_user, title: "Loaner Sync")
+    sign_in @admin_user
+
+    assert_broadcast_on(AdminNotificationsChannel.broadcasting_for(@admin_user), {settledIds: [matched.id]}) do
+      assert_api_response :put, 200, api_path: "/notifications/read-bulk",
+        body: {all: true, q: {searchCont: "paints"}}
+    end
+  end
+
   # A body naming neither `ids` nor `all` must never be read as "everything":
   # the endpoint next door is `destroy-all`.
   test "PUT /notifications/read-bulk changes nothing when nothing is selected" do
@@ -201,6 +213,15 @@ class Admin::Api::V1::NotificationsBulkTest < ActionDispatch::IntegrationTest
       body: {ids: selected.map(&:id)} do
       assert_equal 2, parsed_body["count"]
       assert selected.none? { |notification| notification.reload.read? }
+    end
+  end
+
+  test "PUT /notifications/unread-bulk settles nothing" do
+    notification = create(:admin_notification, :read, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_no_broadcasts(AdminNotificationsChannel.broadcasting_for(@admin_user)) do
+      assert_api_response :put, 200, api_path: "/notifications/unread-bulk", body: {ids: [notification.id]}
     end
   end
 
@@ -301,6 +322,15 @@ class Admin::Api::V1::NotificationsBulkTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, api_path: "/notifications/destroy-bulk", body: {ids: [stranger.id]} do
       assert_equal 0, parsed_body["count"]
       assert AdminNotification.exists?(stranger.id)
+    end
+  end
+
+  test "PUT /notifications/destroy-bulk settles the notifications it deleted" do
+    notification = create(:admin_notification, admin_user: @admin_user)
+    sign_in @admin_user
+
+    assert_broadcast_on(AdminNotificationsChannel.broadcasting_for(@admin_user), {settledIds: [notification.id]}) do
+      assert_api_response :put, 200, api_path: "/notifications/destroy-bulk", body: {ids: [notification.id]}
     end
   end
 

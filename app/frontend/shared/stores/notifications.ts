@@ -33,5 +33,14 @@ export const useNotificationsStore = defineStore("notifications", {
         this.removeMessage(id);
       }
     },
+    hideTagged(matches: (tag: string) => boolean) {
+      this.messages = this.messages.flatMap((message) => {
+        if (!message.tag || !matches(message.tag)) {
+          return [message];
+        }
+
+        return message.persist ? [{ ...message, visible: false }] : [];
+      });
+    },
   },
 });

@@ -10556,6 +10556,11 @@ components:
     AdminNotificationQuery:
       type: object
       properties:
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
         notificationTypeEq:
           "$ref": "#/components/schemas/AdminNotificationTypeEnum"
         severityEq:
@@ -10667,6 +10672,18 @@ components:
       - meta
       - items
       title: AdminNotifications
+    AdminNotificationsSettledMessage:
+      type: object
+      properties:
+        settledIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - settledIds
+      title: AdminNotificationsSettledMessage
     AdminResourceAccessGroup:
       type: object
       properties:

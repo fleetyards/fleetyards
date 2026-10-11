@@ -27,7 +27,10 @@ import {
   useAdminNotificationFilters,
   NOTIFICATION_TAB_QUERY_KEY,
 } from "@/admin/composables/useAdminNotificationFilters";
-import { useAdminNotificationInvalidation } from "@/admin/composables/useAdminNotificationUpdates";
+import {
+  useAdminNotificationInvalidation,
+  useAdminNotificationToasts,
+} from "@/admin/composables/useAdminNotificationUpdates";
 import {
   useAdminNotifications as useAdminNotificationsQuery,
   useAdminNotificationsUnreadCount,
@@ -123,6 +126,9 @@ const {
 const { invalidate, invalidateUnreadCount, patchCached } =
   useAdminNotificationInvalidation();
 
+const { dismiss: dismissToasts, resync: resyncToasts } =
+  useAdminNotificationToasts();
+
 watch([sorts, archive], async () => {
   await refetch();
 });
@@ -199,8 +205,11 @@ const markRead = async (notification: AdminNotification) => {
 };
 
 // Opening a notification is what reading it means, so it costs no second click.
+// Its toast goes even when the row already reads as read: the cached row can
+// be older than the toast, and then no read reaches the server to settle it.
 const select = (notification: AdminNotification) => {
   selectedId.value = notification.id;
+  dismissToasts([notification.id]);
 
   if (!notification.read) {
     void markRead(notification);
@@ -230,6 +239,7 @@ const withFeedback = async (
   try {
     await action();
     invalidate();
+    void resyncToasts();
     displaySuccess({ text: message });
   } catch {
     displayAlert({ text: t("messages.adminNotifications.error") });
@@ -292,6 +302,7 @@ const withBulkFeedback = async (
 
     clearSelection();
     invalidate();
+    void resyncToasts();
     displaySuccess({ text: t(key, { count }) });
   } catch {
     displayAlert({ text: t("messages.adminNotifications.error") });
