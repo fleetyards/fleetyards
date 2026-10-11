@@ -3,6 +3,25 @@
 require "test_helper"
 
 class AdminUserPrivilegesTest < ActiveSupport::TestCase
+  test "a privilege saved as a string satisfies a check made with a symbol" do
+    admin = build(:admin_user, resource_access: ["workers"])
+
+    assert admin.has_access?([:workers])
+    assert admin.has_access?(:workers)
+  end
+
+  test "a privilege saved as a symbol satisfies a check made with a string" do
+    admin = build(:admin_user, resource_access: [:workers])
+
+    assert admin.has_access?(["workers"])
+  end
+
+  test "a privilege not granted is refused" do
+    admin = build(:admin_user, resource_access: ["models"])
+
+    refute admin.has_access?([:workers])
+  end
+
   # The failure this catches is silent: a policy asking for a privilege that is
   # not in the catalogue cannot be satisfied by any grant, so the section it
   # guards becomes super-admin-only without anybody deciding that. Fifteen
