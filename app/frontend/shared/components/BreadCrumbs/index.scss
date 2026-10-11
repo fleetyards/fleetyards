@@ -63,9 +63,10 @@
   }
 }
 
-// A trail is a way back up, not the page's subject: on a phone it shrinks to
-// a caption above the title. The links keep their tap target, which is drawn
-// around them rather than taken from their size.
+// A trail is a way back up, not the page's subject: on a phone it is body
+// text rather than the desktop's 110%, whether it sits above the title or up
+// in the header. The links keep their tap target, which is drawn around them
+// rather than taken from their size.
 @media (max-width: $desktop-breakpoint) {
   .breadcrumbs {
     gap: 4px 12px;
@@ -74,7 +75,7 @@
 
   .breadcrumb .breadcrumb-item {
     padding: 2px 6px;
-    font-size: 0.85em;
+    font-size: 1em;
 
     + .breadcrumb-item::before {
       padding-right: 0.35rem;
