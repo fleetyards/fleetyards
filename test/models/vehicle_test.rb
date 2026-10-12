@@ -656,14 +656,15 @@ class LexorankValueBetweenTest < ActiveSupport::TestCase
   end
 
   test "finds a vehicle by its serial, in any case" do
-    vehicle = create(:vehicle, serial: "IC-021")
+    vehicle = create(:vehicle, serial: "IC-0210-AB")
 
-    assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!("ic-021")
+    assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!("ic-0210-ab")
   end
 
   test "finds a vehicle whose serial looks like an id" do
     serial = SecureRandom.uuid.upcase
-    vehicle = create(:vehicle, serial:)
+    vehicle = create(:vehicle)
+    vehicle.update_column(:serial, serial)
 
     assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!(serial.downcase)
   end
@@ -674,6 +675,34 @@ class LexorankValueBetweenTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotFound) do
       create(:user).vehicles.find_by_id_or_serial!(vehicle.id)
     end
+  end
+
+  test "normalises a serial into the game's format" do
+    assert_equal "L8-4261-HA", create(:vehicle, serial: " l8-4261-ha ").serial
+    assert_equal "L8-4261-HA", create(:vehicle, serial: "l84261ha").serial
+    assert_equal "L8-4261-HA", create(:vehicle, serial: "L8 4261 HA").serial
+  end
+
+  test "rejects a serial outside the game's format" do
+    vehicle = build(:vehicle, serial: "SUB FLAGSHIP")
+
+    assert_not vehicle.valid?
+    assert vehicle.errors.added?(:serial, :serial_format)
+  end
+
+  test "keeps a serial from before the format when other fields change" do
+    vehicle = create(:vehicle)
+    vehicle.update_column(:serial, "LTI   ")
+
+    assert vehicle.update(name: "Renamed")
+    assert_equal "LTI   ", vehicle.reload.serial
+  end
+
+  test "rejects a serial from before the format once it is edited" do
+    vehicle = create(:vehicle)
+    vehicle.update_column(:serial, "LTI")
+
+    assert_not vehicle.update(serial: "LTI2")
   end
 end
 

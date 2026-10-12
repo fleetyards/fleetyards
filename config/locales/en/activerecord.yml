@@ -487,6 +487,7 @@ en:
             user_id:
               taken: already present or has a pending invite
         vehicle:
+          serial_format: "must look like the registration the game shows, such as L8-4261-HA"
           attributes:
             model:
               not_player_ownable: cannot be added to a hangar (not player ownable)

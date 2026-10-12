@@ -40,7 +40,10 @@ FactoryBot.define do
     end
 
     trait :with_serial do
-      serial { SecureRandom.hex(8) }
+      serial do
+        letters = SecureRandom.alphanumeric(4).upcase
+        "#{letters[0, 2]}-#{rand(1000..9999)}-#{letters[2, 2]}"
+      end
     end
 
     trait :with_paint do

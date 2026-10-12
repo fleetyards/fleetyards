@@ -456,6 +456,8 @@ es:
                 de la flota del rol permanente
             user_id:
               taken: ya presente o tiene una invitación pendiente
+        vehicle:
+          serial_format: "debe tener el formato del registro que muestra el juego, por ejemplo L8-4261-HA"
         user:
           attributes:
             base:

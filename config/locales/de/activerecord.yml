@@ -456,6 +456,8 @@ de:
                 aus einer permanenten Rolle entfernt werden
             user_id:
               taken: bereits vorhanden oder hat eine ausstehende Einladung
+        vehicle:
+          serial_format: "muss wie die Registrierung im Spiel aussehen, etwa L8-4261-HA"
         user:
           attributes:
             base:

@@ -455,6 +455,8 @@ zh-TW:
               cannot_destroy_from_permanent_role: 無法將成員從永久角色中移除
             user_id:
               taken: 已存在或有待處理的邀請
+        vehicle:
+          serial_format: "必須符合遊戲中顯示的註冊編號格式，例如 L8-4261-HA"
         user:
           attributes:
             base:

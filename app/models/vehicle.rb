@@ -126,7 +126,14 @@ class Vehicle < ApplicationRecord
     ]
   end
 
+  # The registration the game prints on a ship, such as `L8-4261-HA`. Which
+  # positions may hold letters is not settled, so every position accepts both.
+  SERIAL_FORMAT = /\A[A-Z0-9]{2}-[A-Z0-9]{4}-[A-Z0-9]{2}\z/
+
   validates :serial, uniqueness: {scope: :user_id}, allow_nil: true
+  # Only on change: thousands of serials predate the format and stay readable,
+  # and a vehicle carrying one must still save its other fields.
+  validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
   NULL_ATTRS = %w[name serial].freeze
@@ -135,7 +142,8 @@ class Vehicle < ApplicationRecord
     {pledge_store: 0, ingame: 1},
     prefix: true
 
-  before_validation :normalize_serial, :force_ingame_bought_via
+  before_validation :normalize_serial, if: :serial_changed?
+  before_validation :force_ingame_bought_via
   before_save :nil_if_blank
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
@@ -256,6 +264,20 @@ class Vehicle < ApplicationRecord
     vehicle = find_by(id: identifier) if identifier.match?(UUID_FORMAT)
 
     vehicle || find_by!(serial: identifier.upcase)
+  end
+
+  # Strips and upcases, and sets the dashes into a serial typed without them.
+  def self.normalized_serial(value)
+    serial = value.to_s.strip.upcase
+    compact = serial.delete("- ")
+    return serial unless compact.match?(/\A[A-Z0-9]{8}\z/)
+
+    "#{compact[0, 2]}-#{compact[2, 4]}-#{compact[6, 2]}"
+  end
+
+  def self.game_serial(value)
+    serial = normalized_serial(value)
+    serial if SERIAL_FORMAT.match?(serial)
   end
 
   def self.delete_with_dependents(vehicle_ids)
@@ -671,9 +693,11 @@ class Vehicle < ApplicationRecord
   end
 
   protected def normalize_serial
-    return if serial.blank?
+    self.serial = self.class.normalized_serial(serial) if serial.present?
+  end
 
-    self.serial = serial.upcase
+  private def serial_in_game_format
+    errors.add(:serial, :serial_format) unless SERIAL_FORMAT.match?(serial)
   end
 
   # A ship the pledge store never sells cannot have been bought there, whichever

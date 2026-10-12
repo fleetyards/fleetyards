@@ -456,6 +456,8 @@ it:
                 della flotta dal ruolo permanente
             user_id:
               taken: già presente o ha un invito in attesa
+        vehicle:
+          serial_format: "deve avere il formato della registrazione mostrata nel gioco, ad esempio L8-4261-HA"
         user:
           attributes:
             base:
