@@ -173,12 +173,10 @@ describe("HangarVehicleOverviewPage", () => {
     expect(sideCards(wrapper)[0]).toBe("vehicle-overview-plaque");
   });
 
-  it("keeps the plaque invitation below the ship's settings", async () => {
+  it("puts the plaque invitation at the top of the side column too", async () => {
     const wrapper = await mount({ vehicle: vehicle() });
-    const cards = sideCards(wrapper);
 
-    expect(cards).toContain("vehicle-overview-plaque");
-    expect(cards[0]).not.toBe("vehicle-overview-plaque");
+    expect(sideCards(wrapper)[0]).toBe("vehicle-overview-plaque");
   });
 
   it("offers no plaque for a loaner", async () => {
