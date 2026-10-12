@@ -43,22 +43,28 @@ module HangarPledgeItems
 
     # Older pledges run ship and paint together -- "2950 Invictus Constellation
     # Blue and Gold", "Spirit Citizens for Prosperity Liberation". The
-    # importer's name map knows those; the ship is any word of the model's name
-    # in it, so "C1 Spirit" is found by "Spirit" though it starts with "C1".
+    # importer's name map knows those. The ship is what is left once the paint's
+    # own words are taken out, and it has to share a word with the model: "C1
+    # Spirit" is found by "Spirit", while a Cutlass Black is not found by
+    # "2950 Invictus Starfarer Black", whose "Black" is the paint.
     private def legacy_paint(name)
       mapped = PaintsImporter.paint_mapping(name.sub(PAINT_SUFFIX, "").strip)
       return if mapped == name
 
-      pledge = normalize(name)
-      return unless model_words.any? { |word| pledge.include?(word) }
+      ship_words = words(name) - words(mapped)
+      return unless model_words.intersect?(ship_words)
 
       normalize(mapped).presence
+    end
+
+    private def words(name)
+      name.split.map { |word| normalize(word) }.compact_blank
     end
 
     # Words long enough to name a ship: a variant code ("C1", "M2", "Mk")
     # would match far too much.
     private def model_words
-      @model_words ||= model.name.split.map { |word| normalize(word) }.select { |word| word.length >= 4 }
+      @model_words ||= words(model.name).select { |word| word.length >= 4 }
     end
 
     # "Spirit" names the C1 Spirit as much as "C1 Spirit" does, so either name

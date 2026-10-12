@@ -54,6 +54,14 @@ class HangarPledgeItems::OwnedPaintsTest < ActiveSupport::TestCase
     assert_equal [paint.id], HangarPledgeItems::OwnedPaints.new(@user, @model).paint_ids([paint])
   end
 
+  test "ignores an older pledge whose paint shares a word with the model" do
+    model = create(:model, name: "Cutlass Black")
+    paint = create(:model_paint, model:, name: "Black")
+    create(:hangar_pledge_item, user: @user, name: "2950 Invictus Starfarer Black")
+
+    assert_empty HangarPledgeItems::OwnedPaints.new(@user, model).paint_ids([paint])
+  end
+
   test "ignores an older pledge for another series" do
     model = create(:model, name: "Retaliator Bomber")
     paint = create(:model_paint, model:, name: "Invictus Blue and Gold")
