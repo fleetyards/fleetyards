@@ -236,7 +236,7 @@ module MissionBuilderExamples
   def materialize_seats(ship)
     return unless ship.model_id
 
-    ship.model.model_positions.order(:position).each_with_index do |mp, idx|
+    ship.model.model_positions.in_build.order(:position).each_with_index do |mp, idx|
       ship.mission_slots.create!(
         title: mp.name,
         model_position_id: mp.id,
