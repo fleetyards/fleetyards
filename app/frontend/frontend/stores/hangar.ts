@@ -56,6 +56,7 @@ interface HangarState extends ShipListState {
   // Per account, so a second person signing in on this browser still gets it.
   tourSeenBy: string[];
   money: boolean;
+  credits: boolean;
   extensionReady: boolean;
   extensionVersion?: string;
   // The sync modal shows the run, so the progress card stays out of its way.
@@ -80,6 +81,7 @@ export const useHangarStore = defineStore("hangar", {
     detailsVisible: false,
     filterVisible: true,
     money: true,
+    credits: true,
     ships: [],
     preview: true,
     tourSeenBy: [],
@@ -122,9 +124,6 @@ export const useHangarStore = defineStore("hangar", {
     toggleFilter() {
       this.filterVisible = !this.filterVisible;
     },
-    toggleMoney() {
-      this.money = !this.money;
-    },
     hidePreview() {
       this.preview = false;
     },
@@ -159,6 +158,7 @@ export const useHangarStore = defineStore("hangar", {
       "detailsVisible",
       "preview",
       "money",
+      "credits",
       "tourSeenBy",
       "gridView",
       "tableViewImageCols",

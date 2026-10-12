@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 const update = vi.fn((_variables: unknown) => Promise.resolve());
 const displayAlert = vi.fn();
@@ -77,5 +78,27 @@ describe("HangarDisplayOptionsModal", () => {
       { data: { hangarDefaultSort: "modelPrice desc" } },
     ]);
     expect(select.props("modelValue")).toBe("modelPrice desc");
+  });
+
+  it("hides the pledge value without hiding the in-game value", async () => {
+    const wrapper = await mountWithDefaults(Component);
+    const hangarStore = useHangarStore();
+    const toggle = (name: string) =>
+      wrapper
+        .findAllComponents({ name: "FormToggle" })
+        .find((component) => component.props("name") === name)!;
+
+    toggle("money").vm.$emit("update:modelValue", false);
+    await flushPromises();
+
+    expect(hangarStore.money).toBe(false);
+    expect(hangarStore.credits).toBe(true);
+
+    toggle("credits").vm.$emit("update:modelValue", false);
+    toggle("money").vm.$emit("update:modelValue", true);
+    await flushPromises();
+
+    expect(hangarStore.money).toBe(true);
+    expect(hangarStore.credits).toBe(false);
   });
 });

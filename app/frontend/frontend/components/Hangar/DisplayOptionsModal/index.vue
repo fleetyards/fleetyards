@@ -202,6 +202,21 @@ const displayAsList = () => {
       </div>
     </div>
     <hr />
+    <div class="row">
+      <div class="col-12">
+        <FormToggle
+          v-model="hangarStore.money"
+          name="money"
+          :label="t('actions.showPledgeValue')"
+        />
+        <FormToggle
+          v-model="hangarStore.credits"
+          name="credits"
+          :label="t('actions.showInGameBoughtValue')"
+        />
+      </div>
+    </div>
+    <hr />
     <div v-if="hangarStore.gridView" class="row">
       <div class="col-12">
         <FormToggle

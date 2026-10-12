@@ -84,7 +84,7 @@ const { currentUser } = storeToRefs(sessionStore);
 
 const hangarStore = useHangarStore();
 
-const { detailsVisible, gridView, money } = storeToRefs(hangarStore);
+const { detailsVisible, gridView, money, credits } = storeToRefs(hangarStore);
 
 const fleetchartStore = useFleetchartStore();
 
@@ -222,10 +222,6 @@ onUnmounted(() => {
   hangarGroupSaveComlink.value();
   hangarSyncFinishedComlink.value();
 });
-
-const toggleMoney = () => {
-  hangarStore.toggleMoney();
-};
 
 const toggleFleetchart = () => {
   fleetchartStore.toggleFleetchart("hangar");
@@ -409,7 +405,7 @@ const openDisplayOptionsModal = () => {
         </div>
       </div>
       <div v-if="hangarStats && !mobile" class="row">
-        <div class="col-12 hangar-metrics metrics-block" @click="toggleMoney">
+        <div class="col-12 hangar-metrics metrics-block">
           <div v-if="money" class="metrics-item">
             <div class="metrics-label">
               {{ t("labels.hangarMetrics.totalMoney") }}:
@@ -418,7 +414,7 @@ const openDisplayOptionsModal = () => {
               {{ toDollar(hangarStats.metrics.totalMoney) }}
             </div>
           </div>
-          <div v-if="money" class="metrics-item">
+          <div v-if="credits" class="metrics-item">
             <div class="metrics-label">
               {{ t("labels.hangarMetrics.totalCredits") }}:
             </div>
