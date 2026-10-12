@@ -10,6 +10,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   PanelTonesEnum,
   PanelVariantsEnum,
@@ -104,10 +105,10 @@ const panelTone = computed(() =>
       <slot name="before" />
       <slot />
       <PanelBody v-if="more" class="health-check__footer">
-        <router-link :to="more" :data-test="`health-${check.key}-all`">
+        <Btn :to="more" block :data-test="`health-${check.key}-all`">
           {{ moreLabel }}
           <i class="fa-light fa-arrow-right" aria-hidden="true" />
-        </router-link>
+        </Btn>
       </PanelBody>
     </Panel>
   </section>
@@ -152,6 +153,6 @@ const panelTone = computed(() =>
 }
 
 .health-check__footer {
-  font-weight: 600;
+  padding-top: 12px;
 }
 </style>
