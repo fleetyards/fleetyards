@@ -137,20 +137,23 @@ const displayAsList = () => {
         />
       </div>
     </div>
-    <div v-if="metrics" class="row">
-      <div class="col-12">
-        <FormToggle
-          v-model="fleetStore.money"
-          name="money"
-          :label="t('actions.showPledgeValue')"
-        />
-        <FormToggle
-          v-model="fleetStore.credits"
-          name="credits"
-          :label="t('actions.showInGameBoughtValue')"
-        />
+    <template v-if="metrics">
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <FormToggle
+            v-model="fleetStore.money"
+            name="money"
+            :label="t('actions.showPledgeValue')"
+          />
+          <FormToggle
+            v-model="fleetStore.credits"
+            name="credits"
+            :label="t('actions.showInGameBoughtValue')"
+          />
+        </div>
       </div>
-    </div>
+    </template>
     <template v-if="!fleetStore.gridView">
       <hr />
       <div class="row">
