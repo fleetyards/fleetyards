@@ -11,7 +11,6 @@ import ViewImage from "@/shared/components/ViewImage/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useVehicleImage } from "@/frontend/composables/useVehicleImage";
 import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
@@ -22,9 +21,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-const { uploadedImage } = useVehicleImage();
-
-const uploaded = computed(() => uploadedImage(props.vehicle));
+const uploaded = computed(() => props.vehicle.image);
 
 const picture = computed(
   () =>

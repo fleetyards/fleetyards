@@ -11,14 +11,11 @@ import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
-import { useVehicleImage } from "@/frontend/composables/useVehicleImage";
 import {
-  FeatureFlagName,
   type Vehicle,
   type VehiclePublic,
   type Manufacturer,
 } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -55,14 +52,12 @@ const emit = defineEmits<{ move: [offset: number] }>();
 
 const { t } = useI18n();
 
-const { uploadedImage } = useVehicleImage();
-
-const { isFeatureEnabled } = useFeatures();
-
+// Only a ship with something shared gets the button; the count is already in
+// the payload, so empty logs cost no request.
 const publicLogVisible = computed(
   () =>
     !!props.publicLogUsername &&
-    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+    !!(props.vehicle as VehiclePublic).publicLogEntriesCount,
 );
 
 const openPublicLog = () => {
@@ -76,10 +71,11 @@ const openPublicLog = () => {
   });
 };
 
+// A picture the owner uploaded comes before every stock render, the paint's
+// included.
 const image = computed(() => {
-  const uploaded = uploadedImage(props.vehicle);
-  if (uploaded) {
-    return uploaded.mediumUrl || uploaded.url;
+  if (props.vehicle.image) {
+    return props.vehicle.image.mediumUrl || props.vehicle.image.url;
   }
 
   if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {

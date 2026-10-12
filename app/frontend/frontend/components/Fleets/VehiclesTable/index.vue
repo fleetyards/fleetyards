@@ -11,7 +11,6 @@ import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
-import { useVehicleImage } from "@/frontend/composables/useVehicleImage";
 import type {
   VehiclePublic,
   Model,
@@ -109,14 +108,11 @@ const getModel = (record: FleetVehicle): Model => {
   return record as Model;
 };
 
-const { uploadedImage } = useVehicleImage();
-
 const storeImage = (record: FleetVehicle) => {
   const vehicle = record as VehiclePublic;
 
-  const uploaded = uploadedImage(vehicle);
-  if (uploaded) {
-    return uploaded;
+  if (vehicle.image) {
+    return vehicle.image;
   }
 
   if (vehicle.paint?.media.storeImage) {

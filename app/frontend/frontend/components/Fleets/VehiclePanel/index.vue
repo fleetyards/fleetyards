@@ -14,7 +14,6 @@ import type {
   FleetModelCountsStats,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useVehicleImage } from "@/frontend/composables/useVehicleImage";
 import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
@@ -49,14 +48,12 @@ const id = computed(() => {
   return model.value.slug;
 });
 
-const { uploadedImage } = useVehicleImage();
-
+// Grouped rows are models and carry no `image`, so they keep the stock render.
 const storeImage = computed(() => {
   const vehicle = props.fleetVehicle as VehiclePublic;
 
-  const uploaded = uploadedImage(vehicle);
-  if (uploaded) {
-    return uploaded.mediumUrl || uploaded.url;
+  if (vehicle.image) {
+    return vehicle.image.mediumUrl || vehicle.image.url;
   }
 
   if (vehicle.paint?.media.storeImage) {

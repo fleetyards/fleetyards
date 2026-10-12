@@ -4,10 +4,6 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./overview.vue";
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
-}));
-
 vi.mock("@/shared/components/ViewImage/index.vue", () => ({
   default: { name: "ViewImage", props: ["image", "alt"], template: "<div />" },
 }));

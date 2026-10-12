@@ -18,14 +18,6 @@ beforeEach(() => {
   );
 });
 
-const vehicleOverviewEnabled = ref(false);
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: () => vehicleOverviewEnabled.value,
-  }),
-}));
-
 const NOW = "2026-08-24T12:00:00Z";
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
@@ -94,6 +86,7 @@ const mount = async (props: {
   vehicle: Vehicle;
   highlight?: boolean;
   sortable?: boolean;
+  publicLogUsername?: string;
 }) => {
   await router.push({ name: "hangar" });
   await router.isReady();
@@ -105,10 +98,6 @@ const mount = async (props: {
 };
 
 describe("VehiclesPanel", () => {
-  beforeEach(() => {
-    vehicleOverviewEnabled.value = false;
-  });
-
   const withPicture = () =>
     vehicle({
       image: {
@@ -132,8 +121,6 @@ describe("VehiclesPanel", () => {
     });
 
   it("draws the owner's picture before the paint's render", async () => {
-    vehicleOverviewEnabled.value = true;
-
     const wrapper = await mount({ vehicle: withPicture() });
 
     expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
@@ -141,8 +128,24 @@ describe("VehiclesPanel", () => {
     );
   });
 
-  it("keeps the stock render while the feature is off", async () => {
-    const wrapper = await mount({ vehicle: withPicture() });
+  it("offers the public log only for a ship with shared entries", async () => {
+    const shared = await mount({
+      vehicle: { ...vehicle(), publicLogEntriesCount: 2 } as Vehicle,
+      publicLogUsername: "captain",
+    });
+    const empty = await mount({
+      vehicle: { ...vehicle(), publicLogEntriesCount: 0 } as Vehicle,
+      publicLogUsername: "captain",
+    });
+
+    expect(shared.find('[data-test="vehicle-public-log"]').exists()).toBe(true);
+    expect(empty.find('[data-test="vehicle-public-log"]').exists()).toBe(false);
+  });
+
+  it("draws the paint's render when the owner set no picture", async () => {
+    const wrapper = await mount({
+      vehicle: { ...withPicture(), image: undefined },
+    });
 
     expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
       "https://example.test/paint.webp",
