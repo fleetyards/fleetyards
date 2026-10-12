@@ -34,7 +34,9 @@ const scu = (value: number) => (value ? String(toNumber(value)) : "0");
 
 const capacity = computed(() => props.vehicle.model.metrics.cargo || 0);
 
-const stowed = computed(() => inventory.value?.totalScu || 0);
+// The measured volume of everything aboard, boxed gear included -- what the
+// cargo tab fills its hold with.
+const stowed = computed(() => inventory.value?.totalVolumeScu ?? 0);
 
 const fill = computed(() =>
   capacity.value

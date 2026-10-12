@@ -503,13 +503,25 @@ const openImageModal = () => {
       display: none;
     }
 
+    // A phone's banner keeps the name alone, on one line: the stage is 96px
+    // and the actions take the right, so the details would wrap out of it.
     &--compact {
-      .vehicle-hero__specs {
+      .vehicle-hero__specs,
+      .vehicle-hero__subline {
         display: none;
       }
 
       .vehicle-hero__bottom {
+        top: 0;
+        bottom: 0;
         right: 150px;
+        align-items: center;
+      }
+
+      .vehicle-hero__title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }

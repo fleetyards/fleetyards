@@ -46,6 +46,7 @@ const [image, imageProps] = defineField("image");
 const stockImage = computed(
   () =>
     props.vehicle.paint?.media.storeImage?.smallUrl ||
+    props.vehicle.upgrade?.media.storeImage?.smallUrl ||
     props.vehicle.model.media.storeImage?.smallUrl,
 );
 
