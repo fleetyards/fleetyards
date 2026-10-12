@@ -5036,6 +5036,10 @@ components:
           type: boolean
         saleNotify:
           type: boolean
+        logEntriesPublicByDefault:
+          type: boolean
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
@@ -5059,6 +5063,7 @@ components:
       - public
       - nameVisible
       - saleNotify
+      - logEntriesPublicByDefault
       - alternativeNames
       - modelUpgradeIds
       - hangarGroupIds
