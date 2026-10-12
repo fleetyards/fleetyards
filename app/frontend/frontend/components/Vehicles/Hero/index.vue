@@ -146,7 +146,7 @@ const openImageModal = () => {
             <i class="fa-duotone fa-camera" />
             <span class="vehicle-hero__action-label">
               {{
-                vehicle.image
+                vehicle.image || vehicle.modelImage
                   ? t("actions.vehicleOverview.changePicture")
                   : t("actions.vehicleOverview.uploadPicture")
               }}
