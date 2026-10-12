@@ -134,7 +134,7 @@ module Api
       def check_serial
         authorize!
 
-        render json: {taken: current_resource_owner.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
+        render json: {taken: current_resource_owner.vehicles.visible.purchased.exists?(serial: Vehicle.normalized_serial(params[:value]))}
       end
 
       private def set_vehicle

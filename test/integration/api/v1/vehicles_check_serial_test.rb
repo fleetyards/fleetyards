@@ -45,6 +45,15 @@ class Api::V1::VehiclesCheckSerialTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /vehicles/check-serial reads a serial the way saving would" do
+    create(:vehicle, serial: "DO-5920-FL", user: @user)
+    sign_in @user
+
+    assert_api_response :post, 200, body: {value: " do5920fl "} do
+      assert_equal true, parsed_body["taken"]
+    end
+  end
+
   test "POST /vehicles/check-serial reports availability" do
     sign_in @user
 
