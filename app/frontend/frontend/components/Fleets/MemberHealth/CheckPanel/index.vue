@@ -102,17 +102,16 @@ const panelTone = computed(() =>
       </PanelHeading>
       <slot name="before" />
       <slot />
-      <!-- Flush with the panel's edges: the footer is the panel's own way on,
-           not a button sitting in it. -->
-      <router-link
-        v-if="more"
-        :to="more"
-        class="health-check__more"
-        :data-test="`health-${check.key}-all`"
-      >
-        {{ moreLabel }}
-        <i class="fa-light fa-arrow-right" aria-hidden="true" />
-      </router-link>
+      <template v-if="more" #footer>
+        <router-link
+          :to="more"
+          class="health-check__more"
+          :data-test="`health-${check.key}-all`"
+        >
+          {{ moreLabel }}
+          <i class="fa-light fa-arrow-right" aria-hidden="true" />
+        </router-link>
+      </template>
     </Panel>
   </section>
 </template>
@@ -155,23 +154,41 @@ const panelTone = computed(() =>
   margin-left: auto;
 }
 
+// The catalogue card's link row (StatsCard `__link`): a menu's last row
+// rather than a button, flush with the panel and closed by its corners.
 .health-check__more {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   min-height: 44px;
-  border-top: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  padding: 0 16px;
+  border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 0 0 var(--radius-surface-slim, 12px)
     var(--radius-surface-slim, 12px);
-  color: var(--color-text, #c8c8c8);
+  background: rgb(0 0 0 / 0.2);
+  color: var(--color-primary, #428bca);
+  font-size: 0.85rem;
   font-weight: 600;
-  transition: background-color 150ms ease;
+  text-decoration: none;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
 
   &:hover,
   &:focus-visible {
-    background-color: rgb(122 130 136 / 0.15);
+    background: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 16%,
+      transparent
+    );
     color: var(--color-lifted, #eee);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
   }
 }
 </style>
