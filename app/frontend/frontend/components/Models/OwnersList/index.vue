@@ -245,10 +245,6 @@ const fleetShipsRoute = (slug: string) => ({
       border-top: 1px solid var(--color-edge-faint);
     }
 
-    &:first-child {
-      padding-top: 0;
-    }
-
     &:last-child {
       padding-bottom: 0;
     }
@@ -434,6 +430,7 @@ const fleetShipsRoute = (slug: string) => ({
 
   &__empty {
     margin: 0;
+    padding-top: 12px;
   }
 }
 </style>
