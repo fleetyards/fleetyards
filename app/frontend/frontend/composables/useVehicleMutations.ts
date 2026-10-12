@@ -223,14 +223,25 @@ export const useVehicleMutations = () => {
       (current) => (current ? { ...current, ...vehicle } : current),
     );
 
+    const identifiers = [vehicle.id, vehicle.serial].filter(
+      (identifier): identifier is string => !!identifier,
+    );
+
+    // Seeded too, so the address the page moves to opens on the answer already
+    // in hand instead of a cold fetch that blanks the page.
+    identifiers.forEach((identifier) => {
+      queryClient.setQueryData<Vehicle>(
+        getShowVehicleQueryKey(identifier),
+        (current) => ({ ...current, ...vehicle }),
+      );
+    });
+
     await Promise.all(
-      [vehicle.id, vehicle.serial]
-        .filter((identifier): identifier is string => !!identifier)
-        .map((identifier) =>
-          queryClient.invalidateQueries({
-            queryKey: getShowVehicleQueryKey(identifier),
-          }),
-        ),
+      identifiers.map((identifier) =>
+        queryClient.invalidateQueries({
+          queryKey: getShowVehicleQueryKey(identifier),
+        }),
+      ),
     );
   };
 
