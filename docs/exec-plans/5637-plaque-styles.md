@@ -48,8 +48,10 @@ A supporter picks one of nine general plaque styles or the ship's manufacturer s
 ## Discovery Log
 - **2026-10-12** Production CDN sends `Access-Control-Allow-Origin: *` for assets; uploaded blob URLs redirect to object storage with unverified CORS, so plaque emblems ship as bundled assets.
 - **2026-10-12** Vanduul's `vnc.json` in the parsed tree carries `ui/sharedassets/manufacturerlogos/esperia_256.tif`.
+- **2026-10-12** html2canvas drops clip-path, masks and conic gradients; dom-to-image (already a dependency) renders through the browser but cannot follow mask URLs, so the download inlines them as data URLs first. Verified on the visual-test page at 3x: Drake bevels, MISC pattern, Grey's ragged edge and the tinted emblems all survive.
+- **2026-10-12** All 28 styles checked on `/visual-tests/dedication-plaques/` against the approved mockups.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
 - [ ] Review
