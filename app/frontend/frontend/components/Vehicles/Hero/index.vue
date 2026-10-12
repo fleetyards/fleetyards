@@ -161,6 +161,7 @@ const openImageModal = () => {
             :wishlist="vehicle.wanted"
             editable
             hide-edit
+            on-vehicle-page
           />
         </div>
       </div>
