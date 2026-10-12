@@ -76,6 +76,26 @@ class Api::V1::FleetsMembersRemindVerificationTest < ActionDispatch::Integration
     assert_equal 2, reminders.count
   end
 
+  # The member can delete the notification; the limit must not go with it.
+  test "POST verification-reminder keeps the limit after the member deletes the reminder" do
+    sign_in @admin
+
+    assert_api_response :post, 204, path_params: {fleetSlug: @fleet.slug, username: @member.username}, body: {}
+    reminders.delete_all
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug, username: @member.username}, body: {}
+    assert_not_nil @membership.reload.verification_reminded_at
+  end
+
+  test "POST verification-reminder keeps the week's reminder when it fails to go out" do
+    Notification.stubs(:notify!).raises(RuntimeError, "delivery failed")
+    sign_in @admin
+
+    assert_raises(RuntimeError) do
+      post "/api/v1/fleets/#{@fleet.slug}/members/#{@member.username}/verification-reminder", params: {}, as: :json
+    end
+    assert_nil @membership.reload.verification_reminded_at
+  end
+
   test "POST verification-reminder refuses a member with nothing to verify" do
     @membership.update_columns(verified: true)
     sign_in @admin

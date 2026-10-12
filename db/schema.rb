@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1050,6 +1050,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_100000) do
     t.string "discord_request_channel_id"
     t.string "discord_request_message_id"
     t.boolean "discord_role_granted", default: false, null: false
+    t.datetime "verification_reminded_at"
     t.index ["discarded_at"], name: "index_fleet_memberships_on_discarded_at"
     t.index ["fleet_id"], name: "index_fleet_memberships_on_fleet_id_accepted", where: "(((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))"
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"

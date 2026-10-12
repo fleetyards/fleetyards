@@ -111,21 +111,28 @@ module Api
           return render json: ValidationError.new("fleet_members.remind_verification", message: I18n.t("validation_error.fleet_memberships.nothing_to_verify")), status: :bad_request
         end
 
-        if @member.verification_reminded_at&.after?(FleetMembership::VERIFICATION_REMINDER_COOLDOWN.ago)
+        previously_reminded_at = @member.verification_reminded_at
+        unless @member.claim_verification_reminder
           return render json: ValidationError.new("fleet_members.remind_verification", message: I18n.t("validation_error.fleet_memberships.verification_recently_reminded")), status: :bad_request
         end
 
         user = @member.user
-        I18n.with_locale(user.notification_locale) do
-          Notification.notify!(
-            user:,
-            type: :fleet_verification_requested,
-            title: I18n.t("notifications.fleet_verification_requested.title", fleet: @fleet.name),
-            body: I18n.t("notifications.fleet_verification_requested.#{gap}", fleet: @fleet.name, sid: @fleet.rsi_sid),
-            link: Rails.application.routes.url_helpers.frontend_profile_settings_path,
-            icon: "fa-duotone fa-badge-check",
-            record: @member
-          )
+        begin
+          I18n.with_locale(user.notification_locale) do
+            Notification.notify!(
+              user:,
+              type: :fleet_verification_requested,
+              title: I18n.t("notifications.fleet_verification_requested.title", fleet: @fleet.name),
+              body: I18n.t("notifications.fleet_verification_requested.#{gap}", fleet: @fleet.name, sid: @fleet.rsi_sid),
+              link: Rails.application.routes.url_helpers.frontend_profile_settings_path,
+              icon: "fa-duotone fa-badge-check",
+              record: @member
+            )
+          end
+        rescue
+          # A reminder that never went out must not use up the week's one.
+          @member.update_columns(verification_reminded_at: previously_reminded_at)
+          raise
         end
 
         head :no_content

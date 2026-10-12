@@ -193,9 +193,17 @@ class FleetMembership < ApplicationRecord
   VERIFICATION_GAPS = %w[no_handle handle_unverified orgs_not_checked org_not_listed].freeze
   VERIFICATION_REMINDER_COOLDOWN = 7.days
 
-  # Read off the notification it sent, so a reminder needs no column of its own.
-  def verification_reminded_at
-    Notification.where(record: self, notification_type: "fleet_verification_requested").maximum(:created_at)
+  # Not read off the notification it sent: the member can delete that, and the
+  # limit with it. One conditional update, so two officers clicking at once
+  # cannot both pass it: the second waits on the row lock, then matches
+  # nothing.
+  def claim_verification_reminder
+    now = Time.current
+    claimed = self.class.where(id:)
+      .where("verification_reminded_at IS NULL OR verification_reminded_at <= ?", now - VERIFICATION_REMINDER_COOLDOWN)
+      .update_all(verification_reminded_at: now) == 1
+    self.verification_reminded_at = now if claimed
+    claimed
   end
 
   # Why the membership is not verified against the fleet's RSI org, in the
