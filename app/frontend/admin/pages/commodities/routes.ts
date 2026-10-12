@@ -14,16 +14,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "create/",
-    name: "admin-commodity-create",
-    component: () => import("@/admin/pages/commodities/create.vue"),
-    meta: {
-      needsAuthentication: true,
-      nav: "hidden",
-      access: ["commodities"],
-    },
-  },
-  {
     path: ":id/",
     component: () => import("@/admin/pages/commodities/[id].vue"),
     children: commodityRoutes,

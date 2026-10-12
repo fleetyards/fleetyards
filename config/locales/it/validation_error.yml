@@ -257,11 +257,9 @@ it:
     location:
       update: Impossibile aggiornare il luogo.
     commodity:
-      create: Impossibile creare il prodotto.
       destroy: Impossibile eliminare il prodotto.
       update: Impossibile aggiornare il prodotto.
     equipment:
-      create: Impossibile creare l'equipaggiamento.
       destroy: Impossibile eliminare l'equipaggiamento.
       update: Impossibile aggiornare l'equipaggiamento.
     fleet_event_admins:

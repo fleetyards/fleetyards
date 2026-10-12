@@ -173,14 +173,29 @@ class CommodityTest < ActiveSupport::TestCase
     assert_equal "Current Build Name", commodity.reload.name
   end
 
-  # The UEX importer creates commodities the export has never named, and an admin
-  # can create one by hand. Neither has a build, and both have to read.
+  # A commodity every retained build has dropped lost its last build to
+  # `prune_builds`, and still has to read.
   test "a commodity with no build at all falls back to its own columns" do
     commodity = create(:commodity, :without_build, name: "Column Name", commodity_type: "metal", version: nil)
 
     assert_nil commodity.build
     assert_equal "Column Name", commodity.name
     assert_equal "metal", commodity.commodity_type
+  end
+
+  # Preloaded for a whole page of rows, so it has to come back as one build per
+  # commodity rather than every build the environment retains.
+  test "#last_build preloads only the newest build of each commodity" do
+    commodity = create(:commodity, :without_build)
+    travel_to(2.days.ago) { create(:commodity_build, commodity:, version: "0.0.1-live.1", name: "Oldest") }
+    travel_to(1.day.ago) { create(:commodity_build, commodity:, version: "0.0.2-live.1", name: "Newer") }
+    other = create(:commodity)
+
+    rows = Commodity.where(id: [commodity.id, other.id]).includes(:last_build).index_by(&:id)
+
+    assert_equal "Newer", rows[commodity.id].last_build.name
+    assert_equal other.build, rows[other.id].last_build
+    assert_equal 2, CommodityBuild.newest.where(commodity_id: [commodity.id, other.id]).count
   end
 
   test "#update_with_facts writes the correction to the build as well" do

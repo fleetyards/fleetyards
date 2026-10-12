@@ -13,9 +13,9 @@ module Admin
           commodity_query_params["sorts"] = sorting_params(Commodity, commodity_query_params[:sorts])
 
           # The fallback join, not the current one: an admin list has to show a
-          # commodity the export dropped, and one no load has ever described.
+          # commodity the export dropped.
           @q = authorized_scope(Commodity.with_facts(false))
-            .includes(:item_prices, :refines_into)
+            .includes(:item_prices, :refines_into, :build, :last_build)
             .ransack(commodity_query_params)
 
           @commodities = @q.result
@@ -24,16 +24,6 @@ module Admin
         end
 
         def show
-        end
-
-        def create
-          @commodity = Commodity.new(commodity_params)
-
-          authorize! @commodity, with: ::Admin::CommodityPolicy
-
-          return if @commodity.save
-
-          render json: ValidationError.new("commodity.create", errors: @commodity.errors), status: :bad_request
         end
 
         def update
@@ -60,7 +50,9 @@ module Admin
         end
 
         private def set_commodity
-          @commodity = Commodity.find(params[:id])
+          # The builds up front: `destroy` deletes them, and its response still
+          # renders their facts.
+          @commodity = Commodity.includes(:build, :last_build).find(params[:id])
 
           authorize! @commodity, with: ::Admin::CommodityPolicy
         end

@@ -831,38 +831,6 @@ paths:
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
-    post:
-      summary: Create Commodity
-      tags:
-      - Commodities
-      operationId: createCommodity
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CommodityInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Commodity"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Commodities list
       tags:
@@ -1897,38 +1865,6 @@ paths:
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/equipment":
-    post:
-      summary: Create Equipment
-      tags:
-      - Equipment
-      operationId: createEquipment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/EquipmentInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Equipment"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Equipment list
       tags:

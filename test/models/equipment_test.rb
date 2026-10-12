@@ -95,7 +95,23 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal "4", equipment.reload.size
   end
 
-  # An admin can create a record by hand, and no load has given it a build yet.
+  # Preloaded for a whole page of rows, so it has to come back as one build per
+  # record rather than every build the environment retains.
+  test "#last_build preloads only the newest build of each record" do
+    equipment = create(:equipment, :without_build)
+    travel_to(2.days.ago) { create(:equipment_build, equipment:, version: "0.0.1-live.1", name: "Oldest") }
+    travel_to(1.day.ago) { create(:equipment_build, equipment:, version: "0.0.2-live.1", name: "Newer") }
+    other = create(:equipment)
+
+    rows = Equipment.where(id: [equipment.id, other.id]).includes(:last_build).index_by(&:id)
+
+    assert_equal "Newer", rows[equipment.id].last_build.name
+    assert_equal other.build, rows[other.id].last_build
+    assert_equal 2, EquipmentBuild.newest.where(equipment_id: [equipment.id, other.id]).count
+  end
+
+  # A record every retained build has dropped lost its last build to
+  # `prune_builds`, and still has to read.
   test "a record with no build at all falls back to its own columns" do
     equipment = create(:equipment, :without_build, name: "Hand Made", size: "2")
 

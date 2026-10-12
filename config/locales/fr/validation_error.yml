@@ -257,11 +257,9 @@ fr:
     location:
       update: Impossible de mettre à jour le lieu.
     commodity:
-      create: Impossible de créer la marchandise.
       destroy: Impossible de supprimer la marchandise.
       update: Impossible de mettre à jour la marchandise.
     equipment:
-      create: Impossible de créer l'équipement.
       destroy: Impossible de supprimer l'équipement.
       update: Impossible de mettre à jour l'équipement.
     fleet_event_admins:

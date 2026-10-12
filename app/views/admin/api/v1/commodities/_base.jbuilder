@@ -35,6 +35,6 @@ json.uex_code commodity.uex_code
 
 json.sc_key commodity.sc_key
 json.sc_ref commodity.sc_ref
-json.version commodity.version
+json.version commodity.facts&.version
 
 json.partial! "api/shared/dates", record: commodity

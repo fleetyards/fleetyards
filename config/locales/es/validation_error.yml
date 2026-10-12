@@ -260,11 +260,9 @@ es:
     location:
       update: No se pudo actualizar el lugar.
     commodity:
-      create: No se pudo crear la mercancía.
       destroy: No se pudo eliminar la mercancía.
       update: No se pudo actualizar la mercancía.
     equipment:
-      create: No se pudo crear el equipamiento.
       destroy: No se pudo eliminar el equipamiento.
       update: No se pudo actualizar el equipamiento.
     fleet_event_admins:

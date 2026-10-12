@@ -37,7 +37,7 @@ module Api
         # `item_prices` without their shops: the row states only the two price
         # figures, and the terminals behind them are on the detail.
         @q = Commodity.with_facts(current_version)
-          .includes(:item_prices, :refines_into)
+          .includes(:item_prices, :refines_into, *fact_builds(current_version))
           .ransack(commodities_query_params)
 
         @commodities = @q.result
@@ -114,6 +114,12 @@ module Api
         return @current_version if defined?(@current_version)
 
         @current_version = commodities_query_params.delete(:current_version) { true }
+      end
+
+      # Every row the default list shows has a build we are on, so `facts` never
+      # reaches `last_build` there and preloading it would be a wasted query.
+      private def fact_builds(current_only)
+        ActiveModel::Type::Boolean.new.cast(current_only) ? [:build] : %i[build last_build]
       end
 
       private def commodities_query_params

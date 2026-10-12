@@ -3,7 +3,7 @@
 json.partial! "api/v1/fleet_contracts/base", fleet_contract: @fleet_contract
 
 json.items do
-  json.array! @fleet_contract.fleet_contract_items.preload(:item).ordered,
+  json.array! @fleet_contract.fleet_contract_items.preload(item: %i[build last_build]).ordered,
     partial: "api/v1/fleet_contract_items/fleet_contract_item",
     as: :fleet_contract_item
 end

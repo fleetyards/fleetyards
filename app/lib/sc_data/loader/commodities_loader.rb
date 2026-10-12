@@ -7,7 +7,6 @@ module ScData
 
         link_refined_versions(parsed)
 
-        retire_absent(Commodity, loaded)
         retire_absent_builds(CommodityBuild, :commodity_id, loaded)
 
         prune_builds(CommodityBuild)
@@ -21,7 +20,7 @@ module ScData
         commodity ||= Commodity.new(sc_key: commodity_data["sc_key"])
 
         apply(commodity, update_params(commodity_data))
-        apply_build(commodity, update_params(commodity_data).except(:sc_key, :sc_ref, :version))
+        apply_build(commodity, update_params(commodity_data).except(:sc_key, :sc_ref))
 
         # Filled in only while empty, the same way the manufacturer logo is:
         # `store_image` is curated -- an admin uploads it -- so following the
@@ -71,8 +70,7 @@ module ScData
           counted: commodity_data["counted"] || false,
           piece_volume: commodity_data["piece_volume"],
           consumable: commodity_data["consumable"] || false,
-          container_sizes: Array.wrap(commodity_data["container_sizes"]),
-          version: sc_version
+          container_sizes: Array.wrap(commodity_data["container_sizes"])
         }
       end
     end

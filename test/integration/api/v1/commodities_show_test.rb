@@ -75,6 +75,27 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A load writes the build and leaves the row alone when no fact on it changed,
+  # so the row alone cannot key the fragment.
+  test "GET /commodities/{slug} picks up a build a load wrote after it was cached" do
+    dropped = create(:commodity, name: "Astatine", version: "0.0.1-live.1")
+
+    with_fragment_caching do
+      assert_api_response :get, 200, params: {slug: dropped.slug} do
+        assert parsed_body["retired"]
+      end
+
+      travel 1.second do
+        create(:commodity_build, commodity: dropped, name: "Astatine Ore")
+      end
+
+      assert_api_response :get, 200, params: {slug: dropped.slug} do
+        assert_not parsed_body["retired"]
+        assert_equal "Astatine Ore", parsed_body["name"]
+      end
+    end
+  end
+
   test "GET /commodities/{slug} lists the raw forms that refine into it" do
     create(:commodity, name: "Gold (Raw)", refines_into: @gold)
     create(:commodity, name: "Gold (Ore)", refines_into: @gold)

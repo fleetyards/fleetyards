@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-json.cache! ["v3", equipment, equipment.item_prices_cache_key, Manufacturer.artwork_version] do
+json.cache! [
+  "v5", equipment, equipment.retired?, equipment.facts, equipment.item_prices_cache_key, Manufacturer.artwork_version
+] do
   json.partial!("admin/api/v1/equipment/base", equipment:)
 end

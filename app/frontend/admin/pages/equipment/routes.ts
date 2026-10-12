@@ -14,16 +14,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "create/",
-    name: "admin-equipment-create",
-    component: () => import("@/admin/pages/equipment/create.vue"),
-    meta: {
-      needsAuthentication: true,
-      nav: "hidden",
-      access: ["equipment"],
-    },
-  },
-  {
     path: ":id/",
     component: () => import("@/admin/pages/equipment/[id].vue"),
     children: equipmentRoutes,
