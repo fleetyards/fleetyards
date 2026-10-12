@@ -36,6 +36,20 @@ class Api::V1::ModelsPositionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A seat the build dropped keeps its row, and so does its position -- a slot
+  # may point at it. Readers only get the ones this build carries.
+  test "GET /models/:slug/positions leaves out seats the build does not carry" do
+    model = create(:model)
+    pilot = create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_seat_pilot")
+    dropped = create(:hardpoint, :without_build, parent: model, source: :game_files, sc_name: "hardpoint_seat_gunner")
+    create(:model_position, model:, hardpoint: pilot)
+    create(:model_position, :copilot, model:, hardpoint: dropped)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal ["Pilot"], parsed_body.pluck("name")
+    end
+  end
+
   test "GET /models/:slug/positions returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end

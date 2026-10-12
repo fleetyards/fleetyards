@@ -32,7 +32,7 @@ if fleet_event_signup.vehicle.present?
         json.size fleet_event_signup.vehicle.model.size
         json.crew fleet_event_signup.vehicle.model.crew
         json.cargo fleet_event_signup.vehicle.model.cargo
-        json.position_count fleet_event_signup.vehicle.model.model_positions.size
+        json.position_count fleet_event_signup.vehicle.model.model_positions.in_build.count
       end
     else
       json.model nil
