@@ -11,9 +11,6 @@ module Api
       FRIENDS_LIMIT = 12
       FLEET_MEMBERS_LIMIT = 8
 
-      # What FleetVehiclePolicy#index? asks of a member to show the fleet's ships.
-      FLEET_VEHICLES_PRIVILEGES = ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"].freeze
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) }
@@ -59,17 +56,18 @@ module Api
           .map { |user_id, count| [users[user_id], count] }
       end
 
-      # What each fleet's own ship list shows of the model: its listed ships,
-      # loaners left out as that list does. Members who hide themselves as
-      # owners are counted but not named. The reader's own ships are already
-      # listed above, so a fleet only shows when someone else flies the model.
+      # Only fleets whose ship list the reader may open, and only when someone
+      # besides the reader flies the model there. `total` is what that list
+      # shows, the reader's own ships included; the owners are everyone else,
+      # and those hiding themselves as owners are counted but not named.
+      # Loaners are left out, as the list does.
       private def load_fleets
         @fleets = []
         return unless fleets_readable?
 
-        fleet_ids = current_resource_owner.kept_fleet_memberships.accepted.includes(:fleet_role)
-          .select { |membership| membership.has_access?(FLEET_VEHICLES_PRIVILEGES) }
-          .map(&:fleet_id)
+        fleet_ids = current_resource_owner.fleets
+          .select { |fleet| allowed_to?(:index?, fleet, with: FleetVehiclePolicy) }
+          .map(&:id)
 
         listed = FleetVehicle.joins(:vehicle)
           .where(fleet_id: fleet_ids, vehicles: {model_id: @model.id, loaner: false})
