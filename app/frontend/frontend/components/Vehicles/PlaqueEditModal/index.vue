@@ -398,8 +398,11 @@ const onSubmit = handleSubmit(async (values) => {
   margin: 0 0 14px;
 }
 
+// A glance at the plaque, not the plaque itself: small and centred above the
+// fields. It scales as a whole, so a narrower frame is a smaller plaque.
 .plaque-edit__preview {
-  margin-bottom: 20px;
+  max-width: 480px;
+  margin: 0 auto 20px;
 }
 
 .plaque-edit__fleets {
