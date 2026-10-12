@@ -209,7 +209,7 @@ describe("VehiclesPanel", () => {
 
   it("offers the dedication plaque only on someone else's dedicated ship", async () => {
     const dedicated = await mount({
-      vehicle: vehicle({ dedication: "To boldly go" }),
+      vehicle: vehicle({ dedication: "To boldly go", public: true }),
     });
     const undedicated = await mount({ vehicle: vehicle() });
     const own = await mount({
@@ -224,6 +224,16 @@ describe("VehiclesPanel", () => {
       false,
     );
     expect(own.find('[data-test="vehicle-plaque-show"]').exists()).toBe(false);
+  });
+
+  it("keeps the plaque of a private ship to itself", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ dedication: "To boldly go", public: false }),
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-show"]').exists()).toBe(
+      false,
+    );
   });
 
   it("draws a picture picked from the gallery before the paint's render", async () => {

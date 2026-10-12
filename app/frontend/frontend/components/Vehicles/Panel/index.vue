@@ -63,8 +63,13 @@ const publicLogVisible = computed(
     !!(props.vehicle as VehiclePublic).publicLogEntriesCount,
 );
 
+// The public payload carries a plaque only for a public ship; the owner's own
+// payload carries it either way, so a private ship is checked for here.
 const plaqueVisible = computed(
-  () => !props.editable && !!(props.vehicle as VehiclePublic).dedication,
+  () =>
+    !props.editable &&
+    !!props.vehicle.dedication &&
+    (props.vehicle as Vehicle).public !== false,
 );
 
 const openPlaque = () => {
