@@ -745,4 +745,17 @@ class VehicleModelImageTest < ActiveSupport::TestCase
 
     assert_equal "Port Olisar", vehicle.launch_port
   end
+
+  test "draws the plaque in the owner's style only while they support" do
+    vehicle = create(:vehicle, dedication: "To boldly go", plaque_style: "carbon")
+    assert_equal "brass", vehicle.effective_plaque_style
+
+    create(:supporter_contribution, user: vehicle.user)
+    assert_equal "carbon", Vehicle.find(vehicle.id).effective_plaque_style
+  end
+
+  test "accepts only the known plaque styles" do
+    assert build(:vehicle, plaque_style: "manufacturer").valid?
+    assert_not build(:vehicle, plaque_style: "chrome").valid?
+  end
 end

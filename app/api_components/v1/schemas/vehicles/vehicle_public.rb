@@ -25,6 +25,10 @@ module V1
             affiliation: {type: [:string, :null]},
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             manufacturerShortName: {type: [:string, :null]},
+            manufacturerCode: {type: [:string, :null]},
+            # The style the plaque is drawn in, once a supporter's choice has
+            # fallen back to the default for an owner no longer supporting.
+            plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
             shipyard: {type: [:string, :null]},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,

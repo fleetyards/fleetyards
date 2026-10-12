@@ -35,6 +35,7 @@ it:
     fleet_subscriptions:
       already_open: "Questa flotta ha già un abbonamento aperto."
     subscription_required: "Questa flotta non ha un abbonamento per questa funzione."
+    supporter_required: "Le targhe di dedica sono un vantaggio per chi sostiene il progetto."
     record_not_found:
       fleet_subscription: Nessun abbonamento della flotta trovato
       announcement: Nessun annuncio trovato

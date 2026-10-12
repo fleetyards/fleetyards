@@ -121,6 +121,13 @@ class Vehicle < ApplicationRecord
   }.freeze
   validates :operations_group, inclusion: {in: OPERATIONS_GROUPS.keys}, allow_blank: true
 
+  # How the plaque is drawn. `manufacturer` is the style of the company that built
+  # the ship. Styles are a supporter perk: once the owner stops supporting, the
+  # plaque stays but is drawn in the default style.
+  PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
+  DEFAULT_PLAQUE_STYLE = "brass"
+  validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy
@@ -160,7 +167,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group].freeze
+  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},
@@ -826,6 +833,12 @@ class Vehicle < ApplicationRecord
       last = lexorank_ranking.value_between(last, nil)
       where(id:).update_all(rank: last)
     end
+  end
+
+  def effective_plaque_style
+    return DEFAULT_PLAQUE_STYLE unless user&.supporter?
+
+    plaque_style.presence || DEFAULT_PLAQUE_STYLE
   end
 
   protected def nil_if_blank

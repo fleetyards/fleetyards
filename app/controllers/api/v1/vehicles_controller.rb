@@ -12,6 +12,11 @@ module Api
         except: %i[check_serial]
 
       before_action :set_vehicle, only: %i[show update destroy move]
+      before_action :require_supporter_for_plaque, only: %i[create update]
+
+      PLAQUE_PARAMS = %w[
+        dedication launched_on launch_port launch_port_location_id affiliation operations_group plaque_style
+      ].freeze
 
       def create
         @vehicle = Vehicle.new(
@@ -156,12 +161,24 @@ module Api
           ).merge(user_id: current_resource_owner.id)
       end
 
+      # The dedication plaque is a supporter perk: making or changing one needs
+      # support now, while a plaque made earlier stays where it is.
+      private def require_supporter_for_plaque
+        return if (vehicle_params.keys & PLAQUE_PARAMS).empty?
+        return if current_resource_owner.supporter?
+
+        render json: {
+          code: "supporter_required",
+          message: I18n.t("messages.supporter_required")
+        }, status: :forbidden
+      end
+
       private def vehicle_overview_params
         return [] unless feature_enabled?("vehicle_overview")
 
         %i[
           image model_image_id log_entries_public_by_default location location_id
-          dedication launched_on launch_port launch_port_location_id affiliation operations_group
+          dedication launched_on launch_port launch_port_location_id affiliation operations_group plaque_style
         ]
       end
 
