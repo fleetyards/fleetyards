@@ -33,9 +33,7 @@ module ScData
         # the tree does not carry and `resolve_loadout` indexes it straight away,
         # so this used to be a NoMethodError on nil -- and since the whole of
         # `BaseLoader.all` runs in one job, it took every loader after this one
-        # with it. Guarded the way `ModelsLoader#load_model` guards, rather than
-        # by making `resolve_loadout` tolerant: it raises on a payload carrying
-        # no loadout on purpose, and that is pinned.
+        # with it. Guarded the way `ModelsLoader#load_model` guards.
         #
         # The module keeps the loadout the last build gave it, which is the only
         # answer available while `ModelModule` has no build table of its own --
@@ -43,10 +41,7 @@ module ScData
         # build instead.
         return if module_data.blank?
 
-        # Some module items carry no ports at all -- the Apollo's bed modules
-        # are one -- and `resolve_loadout` raises on that on purpose. Such a
-        # module still has a name and a description to load.
-        update_loadout(model_module, module_data) if module_data["loadout"] || module_data["default_loadout"]
+        update_loadout(model_module, module_data)
 
         # Curated until the live game ships it, automatic afterwards.
         #

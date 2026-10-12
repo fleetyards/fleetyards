@@ -606,11 +606,13 @@ module ScData
         assert_equal [game_files_hardpoints(@model).sole.id], ids
       end
 
-      # QUIRK: neither key is a NoMethodError on nil rather than a no-op. Every
-      # real caller passes one, so this is latent rather than live -- but it is
-      # what the method does today.
-      test "raises when the payload carries neither loadout nor default_loadout" do
-        assert_raises(NoMethodError) { update_loadout(@model, {}) }
+      # An item with no ports names neither key. That used to be a NoMethodError
+      # on nil, inside the one job that runs every loader.
+      test "an item naming neither loadout nor default_loadout retires every slot" do
+        existing = create(:hardpoint, parent: @model, sc_name: "was_here", source: :game_files)
+
+        assert_equal [], update_loadout(@model, {})
+        assert_predicate existing.reload, :retired?
       end
     end
   end

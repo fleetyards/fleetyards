@@ -49,9 +49,8 @@ module ScData
         assert_not_nil model_module.builds.sole
       end
 
-      # The Apollo's bed modules ship as items with no ports at all, and
-      # `resolve_loadout` raises on that on purpose -- inside the one job that
-      # runs every loader.
+      # Some module items ship with no ports at all, and still carry a name and
+      # a description to load.
       test "#load_model_module loads a module whose item has no loadout" do
         model_module = create(:model_module, sc_key: "RSI_Apollo_Module_Left_Tier_2", description: nil)
 
