@@ -50,14 +50,15 @@ module Api
 
       # What each fleet's own ship list shows of the model: its listed ships,
       # loaners left out as that list does. Members who hide themselves as
-      # owners are counted but not named.
+      # owners are counted but not named. The reader's own ships are already
+      # listed above, so a fleet only shows when someone else flies the model.
       private def load_fleets
         fleets = Fleet.where(id: current_resource_owner.kept_fleet_memberships.accepted.select(:fleet_id))
           .with_attached_logo
           .order(:name)
 
         @fleets = fleets.filter_map do |fleet|
-          scope = fleet.vehicles.where(model: @model, loaner: false)
+          scope = fleet.vehicles.where(model: @model, loaner: false).where.not(user: current_resource_owner)
           total = scope.count
           next if total.zero?
 

@@ -121,6 +121,28 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/owners leaves out a fleet where only the reader flies the model" do
+    solo = create(:fleet, name: "Solo")
+    create(:fleet_membership, :accepted, fleet: solo, user: @user)
+    shared = create(:fleet, name: "Shared")
+    create(:fleet_membership, :accepted, fleet: shared, user: @user)
+    member = create(:user)
+    create(:fleet_membership, :accepted, fleet: shared, user: member)
+    own = create(:vehicle, user: @user, model: @model)
+    FleetVehicle.find_or_create_by!(fleet: solo, vehicle: own)
+    FleetVehicle.find_or_create_by!(fleet: shared, vehicle: own)
+    FleetVehicle.find_or_create_by!(fleet: shared, vehicle: create(:vehicle, user: member, model: @model))
+
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      entry = parsed_body["fleets"].sole
+      assert_equal shared.slug, entry["slug"]
+      assert_equal 1, entry["total"]
+      assert_equal [member.username], entry["members"]
+    end
+  end
+
   test "GET /models/:slug/owners counts but does not name a member hiding as owner" do
     fleet = create(:fleet)
     create(:fleet_membership, :accepted, fleet:, user: @user)
