@@ -11,12 +11,10 @@ module ModelSlugLookup
     scope = Model.visible.active
     scope = scope.includes(*includes) if includes.any?
     scope = scope.joins(joins) if joins
-    # A model's current slug wins over another one's former or RSI slug.
     model = scope
       .where(slug:)
-      .or(scope.where(rsi_slug: slug))
-      .or(scope.where(legacy_slug: slug))
-      .order(Arel.sql(Model.sanitize_sql_array(["models.slug = ? DESC", slug])))
+      .or(Model.where(rsi_slug: slug))
+      .or(Model.where(legacy_slug: slug))
       .first!
 
     if model.slug != slug
