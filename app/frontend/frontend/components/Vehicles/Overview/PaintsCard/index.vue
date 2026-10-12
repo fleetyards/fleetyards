@@ -6,6 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -68,6 +71,17 @@ const apply = async (entry: VehiclePaint) => {
     });
 };
 
+const comlink = useComlink();
+
+const openPicker = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/PaintPickerModal/index.vue"),
+    props: { vehicle: props.vehicle },
+    wide: true,
+  });
+};
+
 const thumb = (entry: VehiclePaint) =>
   entry.paint.media.storeImage?.smallUrl || entry.paint.media.storeImage?.url;
 </script>
@@ -77,17 +91,22 @@ const thumb = (entry: VehiclePaint) =>
     v-if="isLoading || all.length"
     :title="
       owned.length
-        ? t('labels.vehicleOverview.ownedPaints', {
-            model: vehicle.model.name,
-          })
-        : t('labels.vehicleOverview.availablePaints', {
-            model: vehicle.model.name,
-          })
+        ? t('labels.vehicleOverview.ownedPaints')
+        : t('labels.vehicleOverview.availablePaints')
     "
     :loading="isLoading"
     variant="slim"
     data-test="vehicle-overview-paints"
   >
+    <template #head>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        data-test="vehicle-overview-paints-all"
+        @click="openPicker"
+      >
+        {{ t("actions.vehicleOverview.choosePaint") }}
+      </Btn>
+    </template>
     <div class="overview-paints">
       <button
         v-for="entry in shown"

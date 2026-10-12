@@ -48,6 +48,26 @@ const choices = computed<Choice[]>(() => [
   })),
 ]);
 
+// A handful fits at a glance; a ship with a dozen liveries needs narrowing.
+const SEARCH_THRESHOLD = 9;
+
+const searchable = computed(
+  () => (paints.value?.length || 0) > SEARCH_THRESHOLD,
+);
+
+const search = ref("");
+
+const visibleChoices = computed(() => {
+  const term = search.value.trim().toLowerCase();
+  if (!term) return choices.value;
+
+  return choices.value.filter((choice) =>
+    choice.name.toLowerCase().includes(term),
+  );
+});
+
+const searchId = `paint-picker-search-${Math.random().toString(36).slice(2)}`;
+
 const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
 </script>
 
@@ -56,9 +76,24 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
     <legend class="paint-picker__legend">
       {{ t("labels.vehicle.modelPaintSelect.label") }}
     </legend>
+    <!-- A plain input, not FormInput: inside the vehicle form a registered
+         field would be submitted with the vehicle. -->
+    <div v-if="searchable" class="paint-picker__search">
+      <label :for="searchId" class="sr-only">
+        {{ t("labels.vehicleOverview.searchPaints") }}
+      </label>
+      <input
+        :id="searchId"
+        v-model="search"
+        type="search"
+        class="form-control"
+        :placeholder="t('labels.vehicleOverview.searchPaints')"
+        data-test="paint-picker-search"
+      />
+    </div>
     <div class="paint-picker__grid">
       <button
-        v-for="choice in choices"
+        v-for="choice in visibleChoices"
         :key="choice.id ?? 'none'"
         type="button"
         class="paint-picker__choice"
@@ -89,6 +124,10 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
   &__legend {
     margin-bottom: 6px;
     font-size: inherit;
+  }
+
+  &__search {
+    margin-bottom: 8px;
   }
 
   &__grid {
