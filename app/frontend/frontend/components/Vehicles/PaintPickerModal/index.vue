@@ -61,6 +61,7 @@ const save = async () => {
       v-model="paintId"
       :model-slug="vehicle.model.slug"
       :default-image="vehicle.model.media.storeImage?.smallUrl"
+      hide-legend
     />
 
     <template #footer>

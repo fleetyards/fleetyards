@@ -14,11 +14,15 @@ type Props = {
   modelValue?: string | null;
   // The model's own render, for the "no paint" choice.
   defaultImage?: string;
+  // Where a heading already names the choice, the legend stays for screen
+  // readers only.
+  hideLegend?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   defaultImage: undefined,
+  hideLegend: false,
 });
 
 const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
@@ -74,7 +78,7 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
 
 <template>
   <fieldset class="paint-picker" :aria-busy="isLoading">
-    <legend class="paint-picker__legend">
+    <legend class="paint-picker__legend" :class="{ 'sr-only': hideLegend }">
       {{ t("labels.vehicle.modelPaintSelect.label") }}
     </legend>
     <!-- Standalone, so inside the vehicle form the search is not submitted
