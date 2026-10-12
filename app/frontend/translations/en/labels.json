@@ -876,9 +876,9 @@
             "remindedAt": "Reminded %{distance}. You can remind again a week later."
           },
           "card": {
-            "verified": "Verified in %{sid}",
-            "unverified": "Not verified in %{sid}",
-            "squadron": "Squadron"
+            "verified": "Verified",
+            "unverified": "Not verified",
+            "squadrons": "Squadrons"
           }
         },
         "squadrons": {

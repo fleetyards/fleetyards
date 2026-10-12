@@ -876,9 +876,9 @@
             "remindedAt": "Promemoria inviato %{distance}. Potrai inviarne un altro una settimana dopo."
           },
           "card": {
-            "verified": "Verificato in %{sid}",
-            "unverified": "Non verificato in %{sid}",
-            "squadron": "Squadriglia"
+            "verified": "Verificato",
+            "unverified": "Non verificato",
+            "squadrons": "Squadriglie"
           }
         },
         "squadrons": {

@@ -876,9 +876,9 @@
             "remindedAt": "Erinnert %{distance}. Eine Woche danach kannst du erneut erinnern."
           },
           "card": {
-            "verified": "In %{sid} verifiziert",
-            "unverified": "Nicht in %{sid} verifiziert",
-            "squadron": "Staffel"
+            "verified": "Verifiziert",
+            "unverified": "Nicht verifiziert",
+            "squadrons": "Staffeln"
           }
         },
         "squadrons": {

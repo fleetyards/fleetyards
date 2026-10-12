@@ -876,9 +876,9 @@
             "remindedAt": "Recordado %{distance}. Puedes volver a recordar una semana después."
           },
           "card": {
-            "verified": "Verificado en %{sid}",
-            "unverified": "No verificado en %{sid}",
-            "squadron": "Escuadrón"
+            "verified": "Verificado",
+            "unverified": "No verificado",
+            "squadrons": "Escuadrones"
           }
         },
         "squadrons": {

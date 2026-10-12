@@ -876,9 +876,9 @@
             "remindedAt": "Rappel envoyé %{distance}. Vous pourrez relancer une semaine plus tard."
           },
           "card": {
-            "verified": "Vérifié dans %{sid}",
-            "unverified": "Non vérifié dans %{sid}",
-            "squadron": "Escadron"
+            "verified": "Vérifié",
+            "unverified": "Non vérifié",
+            "squadrons": "Escadrons"
           }
         },
         "squadrons": {

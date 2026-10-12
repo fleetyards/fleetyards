@@ -876,9 +876,9 @@
             "remindedAt": "已於%{distance}提醒。一週後可再次提醒。"
           },
           "card": {
-            "verified": "已在 %{sid} 驗證",
-            "unverified": "未在 %{sid} 驗證",
-            "squadron": "中隊"
+            "verified": "已驗證",
+            "unverified": "未驗證",
+            "squadrons": "中隊"
           }
         },
         "squadrons": {

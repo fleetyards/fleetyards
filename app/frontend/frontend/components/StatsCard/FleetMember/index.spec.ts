@@ -36,9 +36,10 @@ describe("FleetMemberStatsCard", () => {
     expect(text).toContain("kestrel");
     expect(text).toContain("Officer");
     expect(text).toContain("Kes");
-    expect(text).toContain("Alpha Wing");
+    // Drawn as its emblem; the name is the badge's title.
+    expect(wrapper.find("[title='Alpha Wing']").exists()).toBe(true);
     expect(text).toContain("Stanton");
-    expect(text).toContain("MARU");
+    expect(text).toContain("Not verified");
   });
 
   // Without the fleet's SID there is nothing to be verified against.
