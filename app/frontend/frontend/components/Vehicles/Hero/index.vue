@@ -174,7 +174,7 @@ const openImageModal = () => {
               class="vehicle-hero__badge vehicle-hero__badge--flagship"
               data-test="vehicle-badge-flagship"
             >
-              <i class="fa-solid fa-star" />
+              <i class="fa fa-certificate" />
               {{ t("labels.vehicle.flagship") }}
             </span>
             <span
