@@ -1248,7 +1248,19 @@
         "landedBeam": "Breite gelandet",
         "landedHeight": "Höhe gelandet",
         "landedFleetchartOffsetLength": "Flottenübersicht-Versatz Länge gelandet",
-        "landedFleetchartOffsetBeam": "Flottenübersicht-Versatz Breite gelandet"
+        "landedFleetchartOffsetBeam": "Flottenübersicht-Versatz Breite gelandet",
+        "owners": {
+          "title": "In deinem Umfeld",
+          "yourShips": "Deine Schiffe",
+          "friends": "Freunde",
+          "fleets": "Deine Flotten",
+          "more": "+%{count} weitere",
+          "empty": "Noch niemand, den du kennst, hat eins.",
+          "fleetShips": {
+            "one": "%{count} Schiff",
+            "other": "%{count} Schiffe"
+          }
+        }
       },
       "models": {
         "extraColumns": "Spalten",

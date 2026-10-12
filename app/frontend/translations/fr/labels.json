@@ -1248,7 +1248,19 @@
         "landedBeam": "Largeur au sol",
         "landedHeight": "Hauteur au sol",
         "landedFleetchartOffsetLength": "Décalage de longueur posé",
-        "landedFleetchartOffsetBeam": "Décalage de largeur posé"
+        "landedFleetchartOffsetBeam": "Décalage de largeur posé",
+        "owners": {
+          "title": "Dans ton entourage",
+          "yourShips": "Tes vaisseaux",
+          "friends": "Amis",
+          "fleets": "Tes flottes",
+          "more": "+%{count} de plus",
+          "empty": "Personne de ton entourage n’en a encore.",
+          "fleetShips": {
+            "one": "%{count} vaisseau",
+            "other": "%{count} vaisseaux"
+          }
+        }
       },
       "models": {
         "extraColumns": "Colonnes",

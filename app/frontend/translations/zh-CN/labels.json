@@ -1248,7 +1248,19 @@
         "landedBeam": "着陆宽度",
         "landedHeight": "着陆高度",
         "landedFleetchartOffsetLength": "着陆舰队图长度偏移",
-        "landedFleetchartOffsetBeam": "着陆舰队图宽度偏移"
+        "landedFleetchartOffsetBeam": "着陆舰队图宽度偏移",
+        "owners": {
+          "title": "你的圈子",
+          "yourShips": "你的舰船",
+          "friends": "好友",
+          "fleets": "你的舰队",
+          "more": "另外 %{count} 个",
+          "empty": "你认识的人还没有拥有这艘舰船。",
+          "fleetShips": {
+            "one": "%{count} 艘舰船",
+            "other": "%{count} 艘舰船"
+          }
+        }
       },
       "models": {
         "extraColumns": "列",

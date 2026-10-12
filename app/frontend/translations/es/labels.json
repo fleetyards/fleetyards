@@ -1248,7 +1248,19 @@
         "landedBeam": "Manga aterrizado",
         "landedHeight": "Altura aterrizado",
         "landedFleetchartOffsetLength": "Desplazamiento de longitud aterrizado",
-        "landedFleetchartOffsetBeam": "Desplazamiento de manga aterrizado"
+        "landedFleetchartOffsetBeam": "Desplazamiento de manga aterrizado",
+        "owners": {
+          "title": "En tu entorno",
+          "yourShips": "Tus naves",
+          "friends": "Amigos",
+          "fleets": "Tus flotas",
+          "more": "+%{count} más",
+          "empty": "Nadie que conozcas tiene uno todavía.",
+          "fleetShips": {
+            "one": "%{count} nave",
+            "other": "%{count} naves"
+          }
+        }
       },
       "models": {
         "extraColumns": "Columnas",
