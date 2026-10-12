@@ -256,11 +256,9 @@ zh-TW:
     location:
       update: 無法更新地點。
     commodity:
-      create: 無法建立商品。
       destroy: 無法刪除商品。
       update: 無法更新商品。
     equipment:
-      create: 無法建立裝備。
       destroy: 無法刪除裝備。
       update: 無法更新裝備。
     fleet_event_admins:

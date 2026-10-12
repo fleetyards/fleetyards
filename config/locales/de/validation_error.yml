@@ -265,11 +265,9 @@ de:
     location:
       update: Ort konnte nicht aktualisiert werden.
     commodity:
-      create: Ware konnte nicht erstellt werden.
       destroy: Ware konnte nicht gelöscht werden.
       update: Ware konnte nicht aktualisiert werden.
     equipment:
-      create: Ausrüstung konnte nicht erstellt werden.
       destroy: Ausrüstung konnte nicht gelöscht werden.
       update: Ausrüstung konnte nicht aktualisiert werden.
     fleet_event_admins:
