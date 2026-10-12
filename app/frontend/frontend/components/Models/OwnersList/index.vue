@@ -108,7 +108,7 @@ const fleetShipsRoute = (slug: string) => ({
                 <span class="model-owners__name">
                   <i
                     v-if="vehicle.flagship"
-                    class="fa-solid fa-star model-owners__flagship"
+                    class="fa fa-certificate model-owners__flagship"
                     :aria-label="t('labels.vehicle.flagship')"
                   />
                   {{ vehicle.name || model.name }}
