@@ -4161,7 +4161,7 @@
         "step": "Step %{current} of %{total}"
       },
       "vehiclePlaque": {
-        "alignment": "Alignment",
+        "operationsGroup": "Operations crew",
         "title": "Dedication plaque",
         "dedication": "Dedication",
         "launchedOn": "Launch date",

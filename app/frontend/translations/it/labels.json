@@ -4147,7 +4147,7 @@
         "step": "Passo %{current} di %{total}"
       },
       "vehiclePlaque": {
-        "alignment": "Allineamento",
+        "operationsGroup": "Squadra operativa",
         "title": "Targa di dedica",
         "dedication": "Dedica",
         "launchedOn": "Data del varo",

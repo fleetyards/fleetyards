@@ -4147,7 +4147,7 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehiclePlaque": {
-        "alignment": "阵营",
+        "operationsGroup": "行动组",
         "title": "命名铭牌",
         "dedication": "献词",
         "launchedOn": "下水日期",

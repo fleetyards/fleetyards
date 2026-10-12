@@ -120,18 +120,20 @@ describe("VehiclePlaque", () => {
 
     expect(credits.findAll("section")).toHaveLength(5);
     expect(credits.find("h4").text()).toBe("RSI Founders");
-    expect(credits.findAll("h4")[4].text()).toBe("Civilian Operations");
+    expect(credits.findAll("h4")[4].text()).toBe("UEE Operations");
     expect(credits.text()).toContain("Chris Roberts");
   });
 });
 
 describe("VehiclePlaque operations crew", () => {
-  it("follows the captain's side of the law", async () => {
-    const wrapper = await mount({ vehicle: vehicle({ alignment: "outlaw" }) });
+  it("credits the lore group the captain picked", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ operationsGroup: "nine_tails" }),
+    });
 
     expect(
       wrapper.findAll('[data-test="vehicle-plaque-credits"] h4')[4].text(),
-    ).toBe("Outlaw Operations");
+    ).toBe("Nine Tails");
   });
 
   it("falls back to the maker's name without a short name", async () => {

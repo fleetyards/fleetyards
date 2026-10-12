@@ -4147,7 +4147,7 @@
         "step": "Schritt %{current} von %{total}"
       },
       "vehiclePlaque": {
-        "alignment": "Gesinnung",
+        "operationsGroup": "Einsatzcrew",
         "title": "Widmungstafel",
         "dedication": "Widmung",
         "launchedOn": "Stapellauf",

@@ -4147,7 +4147,7 @@
         "step": "Paso %{current} de %{total}"
       },
       "vehiclePlaque": {
-        "alignment": "Alineación",
+        "operationsGroup": "Equipo de operaciones",
         "title": "Placa de dedicatoria",
         "dedication": "Dedicatoria",
         "launchedOn": "Fecha de botadura",

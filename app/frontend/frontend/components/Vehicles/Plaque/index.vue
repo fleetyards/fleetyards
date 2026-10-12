@@ -9,6 +9,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle, type VehiclePublic } from "@/services/fyApi";
 import { inUniverseLaunchDate } from "./launchDate";
 import { PLAQUE_CREDITS } from "./credits";
+import {
+  DEFAULT_OPERATIONS_GROUP,
+  OPERATIONS_GROUPS,
+} from "./operationsGroups";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
@@ -30,7 +34,7 @@ const logo = computed(
 );
 
 // The columns carry the maker's everyday name, "Drake Shipwrights", and the
-// operations crew follows the side of the law the captain flies on.
+// operations crew is the lore group the captain picked.
 const builder = computed(
   () => props.vehicle.manufacturerShortName || manufacturer.value?.name || "",
 );
@@ -40,9 +44,9 @@ const credits = computed(() =>
     ...group,
     heading:
       group.role === "operations"
-        ? t(
-            `texts.vehiclePlaque.credits.operations.${props.vehicle.alignment || "neutral"}`,
-          )
+        ? OPERATIONS_GROUPS[
+            props.vehicle.operationsGroup ?? DEFAULT_OPERATIONS_GROUP
+          ].heading
         : t(`texts.vehiclePlaque.credits.${group.role}`, {
             manufacturer: builder.value,
           }),

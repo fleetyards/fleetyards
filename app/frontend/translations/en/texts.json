@@ -349,12 +349,7 @@
           "founders": "%{manufacturer} Founders",
           "shipwrights": "%{manufacturer} Shipwrights",
           "designers": "%{manufacturer} Designers",
-          "directors": "%{manufacturer} Directors",
-          "operations": {
-            "lawful": "UEE Operations",
-            "neutral": "Civilian Operations",
-            "outlaw": "Outlaw Operations"
-          }
+          "directors": "%{manufacturer} Directors"
         },
         "fromFleet": "From a fleet",
         "classLine": "%{model} by %{manufacturer}",

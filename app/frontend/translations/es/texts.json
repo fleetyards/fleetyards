@@ -349,12 +349,7 @@
           "founders": "Fundadores de %{manufacturer}",
           "shipwrights": "Constructores de %{manufacturer}",
           "designers": "Diseñadores de %{manufacturer}",
-          "directors": "Dirección de %{manufacturer}",
-          "operations": {
-            "lawful": "Operaciones UEE",
-            "neutral": "Operaciones civiles",
-            "outlaw": "Operaciones ilegales"
-          }
+          "directors": "Dirección de %{manufacturer}"
         },
         "fromFleet": "De una flota",
         "classLine": "%{model} de %{manufacturer}",

@@ -349,12 +349,7 @@
           "founders": "%{manufacturer}創辦人",
           "shipwrights": "%{manufacturer}造船師",
           "designers": "%{manufacturer}設計師",
-          "directors": "%{manufacturer}總監",
-          "operations": {
-            "lawful": "UEE行動組",
-            "neutral": "民間行動組",
-            "outlaw": "法外行動組"
-          }
+          "directors": "%{manufacturer}總監"
         },
         "fromFleet": "來自艦隊",
         "classLine": "%{manufacturer} 出品的 %{model}",

@@ -15,7 +15,7 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
+import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -50,7 +50,7 @@ const { defineField, handleSubmit } = useForm({
     launchPort: props.vehicle.launchPort ?? "",
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
     affiliation: props.vehicle.affiliation ?? "",
-    alignment: props.vehicle.alignment ?? null,
+    operationsGroup: props.vehicle.operationsGroup ?? null,
   },
 });
 
@@ -59,9 +59,15 @@ const [launchedOn] = defineField("launchedOn");
 const [launchPort] = defineField("launchPort");
 const [launchPortLocationId] = defineField("launchPortLocationId");
 const [affiliation] = defineField("affiliation");
-const [alignment] = defineField("alignment");
+const [operationsGroup] = defineField("operationsGroup");
 
-const { alignmentOptions } = useFleetProfileLabels();
+// Grouped by side of the law, lawful first, as the select keeps this order.
+const operationsGroupOptions = computed(() =>
+  Object.entries(OPERATIONS_GROUPS).map(([value, group]) => ({
+    value,
+    label: `${group.name} · ${t(`labels.fleet.alignments.${group.alignment}`)}`,
+  })),
+);
 
 // The fleets the ship is listed in, offered as the organization it serves.
 const fleetNames = computed(() =>
@@ -82,7 +88,7 @@ const onSubmit = handleSubmit(async (values) => {
         launchPort: values.launchPort || null,
         launchPortLocationId: values.launchPortLocationId ?? null,
         affiliation: values.affiliation || null,
-        alignment: values.alignment || null,
+        operationsGroup: values.operationsGroup || null,
       },
     })
     .then(() => comlink.emit("close-modal"))
@@ -136,10 +142,10 @@ const onSubmit = handleSubmit(async (values) => {
         </Btn>
       </div>
       <BaseSelect
-        v-model="alignment"
-        :options="alignmentOptions"
-        :label="t('labels.vehiclePlaque.alignment')"
-        name="alignment"
+        v-model="operationsGroup"
+        :options="operationsGroupOptions"
+        :label="t('labels.vehiclePlaque.operationsGroup')"
+        name="operationsGroup"
         :searchable="false"
         unsorted
         nullable
