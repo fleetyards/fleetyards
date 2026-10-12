@@ -1222,6 +1222,9 @@
           "failure": "无法移除"
         }
       },
+      "vehiclePlaque": {
+        "failure": "铭牌未能保存"
+      },
       "vehicleOverview": {
         "image": {
           "success": "图片已保存",

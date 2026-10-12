@@ -344,6 +344,19 @@
         "noneForFilter": "Keine Einträge für diesen Filter.",
         "unavailable": "Dieses Logbuch ist gerade nicht verfügbar."
       },
+      "vehiclePlaque": {
+        "classLine": "%{model} von %{manufacturer}",
+        "registry": "Registernummer %{serial}",
+        "commissioned": "In Auftrag gegeben bei %{shipyard}",
+        "launched": "Vom Stapel gelaufen im %{date}",
+        "launchedAt": "Vom Stapel gelaufen im %{date}, %{port}",
+        "launchedFrom": "Vom Stapel gelaufen in %{port}",
+        "captain": "Captain %{name}",
+        "captainOf": "Captain %{name}, %{affiliation}",
+        "year": "%{month} %{year}",
+        "empty": "Noch keine Widmung. Schreib eine, und das Schiff bekommt seine Tafel.",
+        "visibility": "Solange das Schiff öffentlich ist, sieht jeder die Tafel in deinem öffentlichen Hangar."
+      },
       "vehicleOverview": {
         "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",
         "locationPrivate": "Nur du siehst, wo dein Schiff steht.",

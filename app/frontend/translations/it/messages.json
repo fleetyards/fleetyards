@@ -1222,6 +1222,9 @@
           "failure": "Impossibile rimuovere"
         }
       },
+      "vehiclePlaque": {
+        "failure": "Non è stato possibile salvare la targa"
+      },
       "vehicleOverview": {
         "image": {
           "success": "Immagine salvata",

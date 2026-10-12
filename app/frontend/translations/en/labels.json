@@ -1542,6 +1542,7 @@
         "totalHp": "Total Hull HP"
       },
       "manufacturer": {
+        "shipyard": "Shipyard",
         "longName": "Long Name",
         "code": "Code",
         "logo": "Logo",
@@ -4157,6 +4158,13 @@
       },
       "tour": {
         "step": "Step %{current} of %{total}"
+      },
+      "vehiclePlaque": {
+        "title": "Dedication plaque",
+        "dedication": "Dedication",
+        "launchedOn": "Launch date",
+        "launchPort": "Launch port",
+        "affiliation": "Affiliation"
       },
       "vehicleOverview": {
         "picture": "Picture",

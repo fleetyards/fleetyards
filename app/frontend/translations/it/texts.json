@@ -344,6 +344,19 @@
         "noneForFilter": "Nessuna voce corrisponde a questo filtro.",
         "unavailable": "Questo diario non è disponibile al momento."
       },
+      "vehiclePlaque": {
+        "classLine": "%{model} di %{manufacturer}",
+        "registry": "Matricola %{serial}",
+        "commissioned": "Commissionata a %{shipyard}",
+        "launched": "Varata a %{date}",
+        "launchedAt": "Varata a %{date}, %{port}",
+        "launchedFrom": "Varata a %{port}",
+        "captain": "Capitano %{name}",
+        "captainOf": "Capitano %{name}, %{affiliation}",
+        "year": "%{month} %{year}",
+        "empty": "Ancora nessuna dedica. Scrivine una e la nave avrà la sua targa.",
+        "visibility": "Finché questa nave è pubblica, chiunque può vedere la targa nel tuo hangar pubblico."
+      },
       "vehicleOverview": {
         "noLoadouts": "Ancora nessun loadout. Collegane uno da Erkul o SPViewer.",
         "locationPrivate": "Solo tu puoi vedere dove si trova la tua nave.",

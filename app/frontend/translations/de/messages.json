@@ -1222,6 +1222,9 @@
           "failure": "Konnte nicht entfernt werden"
         }
       },
+      "vehiclePlaque": {
+        "failure": "Die Tafel konnte nicht gespeichert werden"
+      },
       "vehicleOverview": {
         "image": {
           "success": "Bild gespeichert",

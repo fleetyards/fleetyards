@@ -1,6 +1,9 @@
 {
   "it": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Targa di dedica"
+      },
       "vehicleOverview": {
         "paints": "Verniciature %{model}",
         "location": "Dov'è la nave?",

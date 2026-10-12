@@ -1542,6 +1542,7 @@
         "totalHp": "HP totaux de la coque"
       },
       "manufacturer": {
+        "shipyard": "Chantier naval",
         "longName": "Nom complet",
         "code": "Code",
         "logo": "Logo",
@@ -4143,6 +4144,13 @@
       },
       "tour": {
         "step": "Étape %{current} sur %{total}"
+      },
+      "vehiclePlaque": {
+        "title": "Plaque de dédicace",
+        "dedication": "Dédicace",
+        "launchedOn": "Date de lancement",
+        "launchPort": "Port de lancement",
+        "affiliation": "Affiliation"
       },
       "vehicleOverview": {
         "picture": "Image",

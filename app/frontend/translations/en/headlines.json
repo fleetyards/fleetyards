@@ -1,6 +1,9 @@
 {
   "en": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Dedication plaque"
+      },
       "vehicleOverview": {
         "paints": "%{model} paints",
         "location": "Where is the ship?",

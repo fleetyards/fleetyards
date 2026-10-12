@@ -344,6 +344,19 @@
         "noneForFilter": "沒有符合此篩選的條目。",
         "unavailable": "此日誌暫時無法使用。"
       },
+      "vehiclePlaque": {
+        "classLine": "%{manufacturer} 出品的 %{model}",
+        "registry": "註冊編號 %{serial}",
+        "commissioned": "建造於 %{shipyard}",
+        "launched": "%{date} 下水",
+        "launchedAt": "%{date} 於 %{port} 下水",
+        "launchedFrom": "於 %{port} 下水",
+        "captain": "艦長 %{name}",
+        "captainOf": "艦長 %{name}，%{affiliation}",
+        "year": "%{year}年%{month}",
+        "empty": "還沒有獻詞。寫下一段，這艘船就有了自己的銘牌。",
+        "visibility": "只要這艘船是公開的，任何人都能在你的公開機庫中看到銘牌。"
+      },
       "vehicleOverview": {
         "noLoadouts": "還沒有配裝。從 Erkul 或 SPViewer 連結一個。",
         "locationPrivate": "只有你能看到你的艦船在哪裡。",

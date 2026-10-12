@@ -1222,6 +1222,9 @@
           "failure": "無法移除"
         }
       },
+      "vehiclePlaque": {
+        "failure": "銘牌未能儲存"
+      },
       "vehicleOverview": {
         "image": {
           "success": "圖片已儲存",

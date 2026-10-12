@@ -1,6 +1,9 @@
 {
   "zh-TW": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "命名銘牌"
+      },
       "vehicleOverview": {
         "paints": "%{model} 塗裝",
         "location": "艦船在哪裡？",

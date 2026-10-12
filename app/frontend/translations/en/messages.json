@@ -1232,6 +1232,9 @@
           "failure": "Could not remove it"
         }
       },
+      "vehiclePlaque": {
+        "failure": "The plaque could not be saved"
+      },
       "vehicleOverview": {
         "image": {
           "success": "Picture saved",

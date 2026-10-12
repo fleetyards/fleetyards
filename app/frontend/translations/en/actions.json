@@ -563,6 +563,10 @@
       "supporterNomination": {
         "change": "Change fleet"
       },
+      "vehiclePlaque": {
+        "edit": "Edit plaque",
+        "show": "Show dedication plaque"
+      },
       "vehicleOverview": {
         "open": "Overview",
         "uploadPicture": "Upload a picture",

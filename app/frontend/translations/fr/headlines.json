@@ -1,6 +1,9 @@
 {
   "fr": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Plaque de dédicace"
+      },
       "vehicleOverview": {
         "paints": "Peintures %{model}",
         "location": "Où est le vaisseau ?",

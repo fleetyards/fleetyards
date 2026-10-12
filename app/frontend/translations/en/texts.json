@@ -344,6 +344,19 @@
         "noneForFilter": "No entries match this filter.",
         "unavailable": "This log is not available right now."
       },
+      "vehiclePlaque": {
+        "classLine": "%{model} by %{manufacturer}",
+        "registry": "Registry %{serial}",
+        "commissioned": "Commissioned from %{shipyard}",
+        "launched": "Launched %{date}",
+        "launchedAt": "Launched %{date}, %{port}",
+        "launchedFrom": "Launched from %{port}",
+        "captain": "Captain %{name}",
+        "captainOf": "Captain %{name}, %{affiliation}",
+        "year": "%{month} %{year}",
+        "empty": "No dedication yet. Write one and the ship gets its plaque.",
+        "visibility": "Anyone can see the plaque in your public hangar while this ship is public."
+      },
       "vehicleOverview": {
         "noLoadouts": "No loadouts yet. Link one from Erkul or SPViewer.",
         "locationPrivate": "Only you can see where your ship is.",

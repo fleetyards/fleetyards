@@ -1542,6 +1542,7 @@
         "totalHp": "Gesamte Rumpf-HP"
       },
       "manufacturer": {
+        "shipyard": "Werft",
         "longName": "Vollständiger Name",
         "code": "Code",
         "logo": "Logo",
@@ -4143,6 +4144,13 @@
       },
       "tour": {
         "step": "Schritt %{current} von %{total}"
+      },
+      "vehiclePlaque": {
+        "title": "Widmungstafel",
+        "dedication": "Widmung",
+        "launchedOn": "Stapellauf",
+        "launchPort": "Starthafen",
+        "affiliation": "Zugehörigkeit"
       },
       "vehicleOverview": {
         "picture": "Bild",

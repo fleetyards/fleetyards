@@ -344,6 +344,19 @@
         "noneForFilter": "没有符合此筛选的条目。",
         "unavailable": "此日志暂时不可用。"
       },
+      "vehiclePlaque": {
+        "classLine": "%{manufacturer} 出品的 %{model}",
+        "registry": "注册编号 %{serial}",
+        "commissioned": "建造于 %{shipyard}",
+        "launched": "%{date} 下水",
+        "launchedAt": "%{date} 于 %{port} 下水",
+        "launchedFrom": "于 %{port} 下水",
+        "captain": "舰长 %{name}",
+        "captainOf": "舰长 %{name}，%{affiliation}",
+        "year": "%{year}年%{month}",
+        "empty": "还没有献词。写下一段，这艘船就有了自己的铭牌。",
+        "visibility": "只要这艘船是公开的，任何人都能在你的公开机库中看到铭牌。"
+      },
       "vehicleOverview": {
         "noLoadouts": "还没有配装。从 Erkul 或 SPViewer 链接一个。",
         "locationPrivate": "只有你能看到你的舰船在哪里。",

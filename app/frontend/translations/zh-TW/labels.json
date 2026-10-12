@@ -1542,6 +1542,7 @@
         "totalHp": "船體總 HP"
       },
       "manufacturer": {
+        "shipyard": "船塢",
         "longName": "全名",
         "code": "代碼",
         "logo": "標誌",
@@ -4143,6 +4144,13 @@
       },
       "tour": {
         "step": "第 %{current} 步，共 %{total} 步"
+      },
+      "vehiclePlaque": {
+        "title": "命名銘牌",
+        "dedication": "獻詞",
+        "launchedOn": "下水日期",
+        "launchPort": "下水港口",
+        "affiliation": "所屬"
       },
       "vehicleOverview": {
         "picture": "圖片",

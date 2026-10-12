@@ -1542,6 +1542,7 @@
         "totalHp": "HP scafo totali"
       },
       "manufacturer": {
+        "shipyard": "Cantiere navale",
         "longName": "Nome completo",
         "code": "Codice",
         "logo": "Logo",
@@ -4143,6 +4144,13 @@
       },
       "tour": {
         "step": "Passo %{current} di %{total}"
+      },
+      "vehiclePlaque": {
+        "title": "Targa di dedica",
+        "dedication": "Dedica",
+        "launchedOn": "Data del varo",
+        "launchPort": "Porto del varo",
+        "affiliation": "Affiliazione"
       },
       "vehicleOverview": {
         "picture": "Immagine",

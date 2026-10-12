@@ -344,6 +344,19 @@
         "noneForFilter": "Ninguna entrada coincide con este filtro.",
         "unavailable": "Este cuaderno no está disponible ahora mismo."
       },
+      "vehiclePlaque": {
+        "classLine": "%{model} de %{manufacturer}",
+        "registry": "Matrícula %{serial}",
+        "commissioned": "Encargada a %{shipyard}",
+        "launched": "Botada en %{date}",
+        "launchedAt": "Botada en %{date}, %{port}",
+        "launchedFrom": "Botada en %{port}",
+        "captain": "Capitán %{name}",
+        "captainOf": "Capitán %{name}, %{affiliation}",
+        "year": "%{month} de %{year}",
+        "empty": "Aún no hay dedicatoria. Escribe una y la nave tendrá su placa.",
+        "visibility": "Mientras esta nave sea pública, cualquiera puede ver la placa en tu hangar público."
+      },
       "vehicleOverview": {
         "noLoadouts": "Aún no hay loadouts. Enlaza uno de Erkul o SPViewer.",
         "locationPrivate": "Solo tú puedes ver dónde está tu nave.",

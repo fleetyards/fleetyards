@@ -63,6 +63,18 @@ const publicLogVisible = computed(
     !!(props.vehicle as VehiclePublic).publicLogEntriesCount,
 );
 
+const plaqueVisible = computed(
+  () => !props.editable && !!(props.vehicle as VehiclePublic).dedication,
+);
+
+const openPlaque = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/PlaqueModal/index.vue"),
+    props: { vehicle: props.vehicle },
+  });
+};
+
 const openPublicLog = () => {
   comlink.emit("open-modal", {
     component: () =>
@@ -313,6 +325,17 @@ const tone = computed(() => {
         @click="openPublicLog"
       >
         <i class="fa-duotone fa-book" />
+      </Btn>
+      <Btn
+        v-if="plaqueVisible"
+        v-tooltip="t('actions.vehiclePlaque.show')"
+        :variant="BtnVariantsEnum.BARE"
+        :aria-label="t('actions.vehiclePlaque.show')"
+        class="vehicle-panel--plaque-button"
+        data-test="vehicle-plaque-show"
+        @click="openPlaque"
+      >
+        <i class="fa-duotone fa-award" />
       </Btn>
       <AddToHangar
         v-if="!editable"

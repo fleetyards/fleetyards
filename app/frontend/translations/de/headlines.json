@@ -1,6 +1,9 @@
 {
   "de": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Widmungstafel"
+      },
       "vehicleOverview": {
         "paints": "%{model}-Lackierungen",
         "location": "Wo steht das Schiff?",

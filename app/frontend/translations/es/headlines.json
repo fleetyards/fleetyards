@@ -1,6 +1,9 @@
 {
   "es": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Placa de dedicatoria"
+      },
       "vehicleOverview": {
         "paints": "Pinturas de %{model}",
         "location": "¿Dónde está la nave?",

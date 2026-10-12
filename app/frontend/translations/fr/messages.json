@@ -1222,6 +1222,9 @@
           "failure": "Impossible de supprimer"
         }
       },
+      "vehiclePlaque": {
+        "failure": "La plaque n'a pas pu être enregistrée"
+      },
       "vehicleOverview": {
         "image": {
           "success": "Image enregistrée",

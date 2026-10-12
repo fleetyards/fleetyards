@@ -563,6 +563,10 @@
       "supporterNomination": {
         "change": "Changer de flotte"
       },
+      "vehiclePlaque": {
+        "edit": "Modifier la plaque",
+        "show": "Afficher la plaque de dédicace"
+      },
       "vehicleOverview": {
         "open": "Aperçu",
         "uploadPicture": "Téléverser une image",
