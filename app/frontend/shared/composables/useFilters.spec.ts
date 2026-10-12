@@ -51,6 +51,19 @@ describe("useFilters#getQuery", () => {
     expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
   });
 
+  it("reads a single value of a list filter as a list", () => {
+    query.value = { roleIn: "officer", hangarGroupsNotIn: "cargo" };
+
+    expect(useFilters().getQuery()).toEqual({
+      roleIn: ["officer"],
+      hangarGroupsNotIn: ["cargo"],
+    });
+    expect(useFilters().filters.value).toEqual({
+      roleIn: ["officer"],
+      hangarGroupsNotIn: ["cargo"],
+    });
+  });
+
   it("drops the flag that opens the fleetchart", () => {
     query.value = { nameCont: "titanium", fleetchart: "true" };
 
