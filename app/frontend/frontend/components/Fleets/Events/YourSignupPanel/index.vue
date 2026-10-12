@@ -227,7 +227,6 @@ const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
 </template>
 
 <style lang="scss" scoped>
-@import "@/shared/components/rowLabel";
 .your-signup {
   display: flex;
   flex-direction: column;
@@ -248,7 +247,8 @@ const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  @include row-label;
+  font-weight: 600;
+  font-size: 15px;
 
   i {
     color: var(--color-primary, #428bca);

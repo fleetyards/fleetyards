@@ -119,7 +119,6 @@ const remove = (signup: FleetEventSignup) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/shared/components/rowLabel";
 .unassigned-signups {
   background: rgba(255, 152, 0, 0.06);
   border: 1px solid rgba(255, 152, 0, 0.35);
@@ -133,7 +132,7 @@ const remove = (signup: FleetEventSignup) => {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  @include row-label;
+  font-weight: 600;
 
   i {
     color: var(--color-warning, #fa6800);
