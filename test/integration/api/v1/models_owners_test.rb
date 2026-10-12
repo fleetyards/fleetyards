@@ -237,6 +237,16 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/owners redirects a model's former slug to its current one" do
+    @model.update_columns(legacy_slug: "old-#{@model.slug}")
+    sign_in @user
+
+    get "/api/v1/models/old-#{@model.slug}/owners"
+
+    assert_response :moved_permanently
+    assert_match %r{/models/#{@model.slug}/owners}, response.location
+  end
+
   test "GET /models/:slug/owners returns 404 for an unknown model" do
     sign_in @user
 
