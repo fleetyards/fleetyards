@@ -375,7 +375,7 @@
           "FleetContract": "合約",
           "FleetEvent": "活動",
           "User": "使用者",
-          "FleetMember": "艦隊成員"
+          "FleetMember": "成員"
         },
         "open": {
           "Component": "開啟組件",

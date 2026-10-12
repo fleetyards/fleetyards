@@ -375,7 +375,7 @@
           "FleetContract": "合约",
           "FleetEvent": "活动",
           "User": "用户",
-          "FleetMember": "舰队成员"
+          "FleetMember": "成员"
         },
         "open": {
           "Component": "打开组件",

@@ -267,14 +267,10 @@ const hasBody = computed(
         >
           <span class="stats-card__label">{{ badge.label }}</span>
           <span class="stats-card__spec-value" :title="badge.value">
-            <!-- A card can draw a value its text only names: a member's
-                 squadrons as their emblems. -->
-            <slot :name="`badge-${badge.key}`" :badge="badge">
-              {{ badge.value }}
-              <span v-if="badge.unit" class="stats-card__unit">
-                {{ badge.unit }}
-              </span>
-            </slot>
+            {{ badge.value }}
+            <span v-if="badge.unit" class="stats-card__unit">
+              {{ badge.unit }}
+            </span>
           </span>
         </div>
       </div>

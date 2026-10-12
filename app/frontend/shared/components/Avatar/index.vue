@@ -10,7 +10,7 @@ import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 import AppIcon from "@/shared/components/AppIcon/index.vue";
 import { type Icon } from "@/shared/components/DuotoneGlyph/glyph";
 
-type AvatarSizes = "default" | "small" | "large";
+type AvatarSizes = "default" | "small" | "medium" | "large";
 
 type Props = {
   avatar?: string;

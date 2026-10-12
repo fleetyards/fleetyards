@@ -54,6 +54,16 @@
     }
   }
 
+  &.avatar-medium {
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
+
+    .no-avatar {
+      font-size: 24px;
+    }
+  }
+
   &.avatar-large {
     width: 160px;
     min-width: 160px;

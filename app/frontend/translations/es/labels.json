@@ -375,7 +375,7 @@
           "FleetContract": "Contrato",
           "FleetEvent": "Evento",
           "User": "Usuario",
-          "FleetMember": "Miembro de la flota"
+          "FleetMember": "Miembro"
         },
         "open": {
           "Component": "Abrir componente",

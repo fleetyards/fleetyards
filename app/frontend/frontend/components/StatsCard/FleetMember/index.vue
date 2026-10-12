@@ -8,7 +8,8 @@ export default {
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import ContactLinks from "@/frontend/components/StatsCard/ContactLinks/index.vue";
-import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
+import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type StatsCardBadge,
@@ -39,11 +40,16 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t, l, timeDistance } = useI18n();
 
+const { onlineFor } = useMemberPresence();
+
 const subtitle = computed(() => {
   const member = props.member;
   if (!member) return undefined;
 
+  // The role leads here rather than in the eyebrow, which the status pill
+  // beside it left too narrow to read.
   return [
+    member.fleetRole?.name,
     member.nickname,
     member.rsiHandle
       ? t("labels.statsCard.rsiHandle", { handle: member.rsiHandle })
@@ -67,13 +73,6 @@ const status = computed<StatsCardStatus | undefined>(() => {
       };
 });
 
-// Squadrons before teams, as the roster badges them.
-const squadrons = computed(() =>
-  [...(props.member?.squadrons ?? [])].sort(
-    (a, b) => Number(a.team) - Number(b.team),
-  ),
-);
-
 // The key facts as the card's badges; the location, which runs long, on a
 // line of its own below them.
 const badges = computed<StatsCardBadge[]>(() => {
@@ -92,13 +91,6 @@ const badges = computed<StatsCardBadge[]>(() => {
       value: member.lastActiveAt
         ? timeDistance(member.lastActiveAt)
         : t("labels.fleet.members.health.facts.neverActive"),
-    },
-    // Drawn as the squadrons' emblems; the names are the badge's text for its
-    // tooltip and for assistive tech.
-    squadrons.value.length && {
-      key: "squadrons",
-      label: t("labels.fleet.members.card.squadrons"),
-      value: squadrons.value.map((squadron) => squadron.name).join(", "),
     },
   ].filter(Boolean) as StatsCardBadge[];
 });
@@ -121,7 +113,6 @@ const stats = computed<HardpointStat[]>(() =>
     compact
     :title="member?.username || name || ''"
     kind="FleetMember"
-    :category="member?.fleetRole?.name"
     :subtitle="subtitle"
     :status="status"
     :badges="badges"
@@ -132,22 +123,15 @@ const stats = computed<HardpointStat[]>(() =>
     :unavailable="!loading && !member"
     @navigate="emit('navigate')"
   >
-    <!-- In the head, where the other cards draw their icon: as the card's
-         image an avatar was cropped to a strip of forehead. -->
-    <template v-if="member?.avatar?.mediumUrl" #icon>
-      <img :src="member.avatar.mediumUrl" alt="" class="member-card__avatar" />
-    </template>
-
-    <template #badge-squadrons>
-      <span class="member-card__squadrons">
-        <span
-          v-for="squadron in squadrons"
-          :key="squadron.id"
-          v-tooltip="squadron.name"
-        >
-          <SquadronEmblem :squadron="squadron" :size="22" />
-        </span>
-      </span>
+    <!-- The roster's own bubble, in the head where the other cards draw their
+         icon: the same squadron mark and presence dot, at a size to read. -->
+    <template v-if="member" #icon>
+      <MemberAvatar
+        :member="member"
+        :online="onlineFor(member)"
+        show-squadrons
+        size="medium"
+      />
     </template>
 
     <ContactLinks
@@ -156,19 +140,3 @@ const stats = computed<HardpointStat[]>(() =>
     />
   </StatsCard>
 </template>
-
-<style lang="scss" scoped>
-.member-card__avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.member-card__squadrons {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  vertical-align: middle;
-}
-</style>

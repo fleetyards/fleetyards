@@ -36,8 +36,8 @@ describe("FleetMemberStatsCard", () => {
     expect(text).toContain("kestrel");
     expect(text).toContain("Officer");
     expect(text).toContain("Kes");
-    // Drawn as its emblem; the name is the badge's title.
-    expect(wrapper.find("[title='Alpha Wing']").exists()).toBe(true);
+    // On the avatar, as on the roster.
+    expect(wrapper.find(".member-avatar__squadron").exists()).toBe(true);
     expect(text).toContain("Stanton");
     expect(text).toContain("Not verified");
   });

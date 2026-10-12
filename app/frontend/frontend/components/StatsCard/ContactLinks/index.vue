@@ -43,7 +43,7 @@ const spectrumDmUrl = computed(() =>
         rel="noopener"
         class="stats-card-contact__link"
       >
-        <i class="icon icon-rsi" aria-hidden="true" />
+        <i class="icon icon-rsi stats-card-contact__icon" aria-hidden="true" />
         {{ t("labels.fleet.members.spectrumDm") }}
       </a>
       <a
@@ -53,7 +53,10 @@ const spectrumDmUrl = computed(() =>
         rel="noopener"
         class="stats-card-contact__link"
       >
-        <i class="fa-brands fa-discord" aria-hidden="true" />
+        <i
+          class="fa-brands fa-discord stats-card-contact__icon"
+          aria-hidden="true"
+        />
         {{ t("labels.fleet.members.discordContact") }}
       </a>
     </span>
@@ -80,6 +83,22 @@ const spectrumDmUrl = computed(() =>
   display: flex;
   flex-wrap: wrap;
   gap: 6px 16px;
+}
+
+// One box for every mark, so the RSI wordmark -- an image three times the
+// width of a glyph at its own size -- sits level with Discord's.
+.stats-card-contact__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 14px;
+  font-size: 14px;
+}
+
+.stats-card-contact__icon.icon-rsi {
+  background-size: contain;
 }
 
 .stats-card-contact__link {
