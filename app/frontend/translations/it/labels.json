@@ -3990,9 +3990,26 @@
         "step": "Passo %{current} di %{total}"
       },
       "vehicleOverview": {
-        "saleNotify": "Avvisi di vendita",
         "picture": "Immagine",
-        "pictureInfo": "Mostrata al posto dell'immagine predefinita, anche nel tuo hangar pubblico e nelle flotte con cui condividi questa nave."
+        "pictureInfo": "Mostrata al posto dell'immagine predefinita, anche nel tuo hangar pubblico e nelle flotte con cui condividi questa nave.",
+        "ownPicture": "La tua immagine",
+        "serial": "Numero di serie %{serial}",
+        "since": "Nell'hangar dal %{date}",
+        "logSummary": "%{count} voci · %{public} pubbliche",
+        "cargoFill": "%{stowed} di %{capacity} SCU caricati",
+        "cargoStowed": "%{stowed} SCU caricati",
+        "cargoMeter": "Carico",
+        "configuration": "Configurazione",
+        "noPaint": "Verniciatura standard",
+        "ownedPaints": "Le tue verniciature %{model}",
+        "availablePaints": "Verniciature %{model}",
+        "paintApplied": "%{paint}, applicata",
+        "morePaints": "Altre %{count} per questa nave",
+        "visibility": "Visibilità",
+        "showPublic": "Mostra nel mio hangar pubblico",
+        "showName": "Mostra il nome",
+        "fleets": "In servizio con",
+        "status": "Stato"
       },
       "vehicleLog": {
         "entries": "voci del diario",

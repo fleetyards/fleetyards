@@ -549,7 +549,11 @@
       "vehicleOverview": {
         "open": "概览",
         "uploadPicture": "上传图片",
-        "changePicture": "更换图片"
+        "changePicture": "更换图片",
+        "edit": "编辑舰船",
+        "shipDatabase": "舰船数据库",
+        "openLog": "打开日志",
+        "applyPaint": "应用 %{paint}"
       },
       "vehicleLog": {
         "open": "舰长日志",

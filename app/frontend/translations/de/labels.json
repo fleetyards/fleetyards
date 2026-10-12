@@ -3990,9 +3990,26 @@
         "step": "Schritt %{current} von %{total}"
       },
       "vehicleOverview": {
-        "saleNotify": "Sale-Benachrichtigungen",
         "picture": "Bild",
-        "pictureInfo": "Wird anstelle des Standardbilds angezeigt, auch in deinem öffentlichen Hangar und in Flotten, mit denen du dieses Schiff teilst."
+        "pictureInfo": "Wird anstelle des Standardbilds angezeigt, auch in deinem öffentlichen Hangar und in Flotten, mit denen du dieses Schiff teilst.",
+        "ownPicture": "Dein Bild",
+        "serial": "Seriennummer %{serial}",
+        "since": "Im Hangar seit %{date}",
+        "logSummary": "%{count} Einträge · %{public} öffentlich",
+        "cargoFill": "%{stowed} von %{capacity} SCU geladen",
+        "cargoStowed": "%{stowed} SCU geladen",
+        "cargoMeter": "Ladung",
+        "configuration": "Konfiguration",
+        "noPaint": "Standardlackierung",
+        "ownedPaints": "Deine %{model}-Lackierungen",
+        "availablePaints": "%{model}-Lackierungen",
+        "paintApplied": "%{paint}, aktiv",
+        "morePaints": "%{count} weitere für dieses Schiff",
+        "visibility": "Sichtbarkeit",
+        "showPublic": "In meinem öffentlichen Hangar zeigen",
+        "showName": "Namen zeigen",
+        "fleets": "Im Dienst bei",
+        "status": "Status"
       },
       "vehicleLog": {
         "entries": "Logbucheinträge",

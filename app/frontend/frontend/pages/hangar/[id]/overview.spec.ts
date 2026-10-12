@@ -4,17 +4,50 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./overview.vue";
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
 
-vi.mock("@/shared/components/ViewImage/index.vue", () => ({
-  default: { name: "ViewImage", props: ["image", "alt"], template: "<div />" },
+const shipInventoriesEnabled = ref(false);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: () => shipInventoriesEnabled.value,
+  }),
 }));
+
+// The cards fetch their own data; this spec is about which of them the page
+// offers for a ship, so each one is a marker.
+const { stubCard } = vi.hoisted(() => ({
+  stubCard: (name: string) => ({
+    default: {
+      name,
+      props: ["vehicle", "fleets", "model"],
+      template: "<div />",
+    },
+  }),
+}));
+
+vi.mock("@/frontend/components/Vehicles/Overview/LogCard/index.vue", () =>
+  stubCard("LogCard"),
+);
+vi.mock("@/frontend/components/Vehicles/Overview/CargoCard/index.vue", () =>
+  stubCard("CargoCard"),
+);
+vi.mock("@/frontend/components/Vehicles/Overview/LoadoutsCard/index.vue", () =>
+  stubCard("LoadoutsCard"),
+);
+vi.mock("@/frontend/components/Vehicles/Overview/PaintsCard/index.vue", () =>
+  stubCard("PaintsCard"),
+);
+vi.mock(
+  "@/frontend/components/Vehicles/Overview/VisibilityCard/index.vue",
+  () => stubCard("VisibilityCard"),
+);
 
 const NOW = "2026-10-12T12:00:00Z";
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
     id: "vehicle-1",
-    name: "Pathfinder",
-    serial: "PF-01",
+    name: "Rust Bucket",
+    serial: "IC-021",
     boughtVia: BoughtViaEnum.PLEDGE_STORE,
     boughtViaLabel: "Pledge Store",
     wanted: false,
@@ -32,10 +65,14 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     logEntriesPublicByDefault: false,
     model: {
       id: "model-1",
-      name: "Carrack",
-      slug: "carrack",
+      name: "Ironclad",
+      slug: "ironclad",
+      inGame: true,
       media: {},
-      manufacturer: { id: "manufacturer-1", name: "Anvil", slug: "anvil" },
+      metrics: { length: 123, cargo: 1440 },
+      speeds: { scmSpeed: 115 },
+      crew: { value: 4, label: "2 - 6" },
+      manufacturer: { id: "manufacturer-1", name: "Drake", slug: "drake" },
     },
     createdAt: NOW,
     updatedAt: NOW,
@@ -47,70 +84,79 @@ const router = createRouter({
   routes: [
     { path: "/", name: "hangar", component: { template: "<div />" } },
     { path: "/ships/:slug", name: "ship", component: { template: "<div />" } },
+    {
+      path: "/fleets/:slug",
+      name: "fleet",
+      component: { template: "<div />" },
+    },
   ],
 });
 
 const mount = (props: { vehicle: Vehicle }) =>
   mountWithDefaults(Component, { props, plugins: [router] });
 
-const settingKeys = (wrapper: Awaited<ReturnType<typeof mount>>) =>
-  wrapper
-    .findAll('[data-test^="vehicle-setting-"]')
-    .map((setting) => setting.attributes("data-test"));
-
 describe("HangarVehicleOverviewPage", () => {
-  it("lists what the ship is", async () => {
+  it("offers loadouts for a ship in the game, and cargo once inventories are on", async () => {
+    shipInventoriesEnabled.value = true;
+
     const wrapper = await mount({ vehicle: vehicle() });
 
-    expect(wrapper.find('[data-test="vehicle-fact-name"]').text()).toContain(
-      "Pathfinder",
+    expect(wrapper.findComponent({ name: "LoadoutsCard" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(true);
+
+    shipInventoriesEnabled.value = false;
+  });
+
+  it("leaves cargo off a wishlist ship", async () => {
+    shipInventoriesEnabled.value = true;
+
+    const wrapper = await mount({ vehicle: vehicle({ wanted: true }) });
+
+    expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(false);
+
+    shipInventoriesEnabled.value = false;
+  });
+
+  it("offers neither for a ship not yet in the game", async () => {
+    const base = vehicle();
+    const wrapper = await mount({
+      vehicle: { ...base, model: { ...base.model, inGame: false } },
+    });
+
+    expect(wrapper.findComponent({ name: "LoadoutsCard" }).exists()).toBe(
+      false,
     );
-    expect(wrapper.find('[data-test="vehicle-fact-serial"]').text()).toContain(
-      "PF-01",
-    );
+    expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(false);
+  });
+
+  it("lists the fleets the ship serves in", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        fleets: [
+          { id: "fleet-1", fid: "DUSK", name: "Dusk Haulers", slug: "dusk" },
+        ],
+      }),
+    });
+
     expect(
-      wrapper.find('[data-test="vehicle-fact-boughtVia"]').text(),
-    ).toContain("Pledge Store");
-    expect(wrapper.find('[data-test="vehicle-fact-paint"]').exists()).toBe(
-      false,
-    );
+      wrapper.find('[data-test="vehicle-overview-fleets"]').text(),
+    ).toContain("Dusk Haulers");
   });
 
-  it("shows the switches the owner turned on", async () => {
+  it("names the applied paint", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ flagship: true, public: true }),
+      vehicle: vehicle({
+        paint: {
+          id: "paint-1",
+          name: "Rust Society",
+          slug: "rust-society",
+          media: {},
+        } as Vehicle["paint"],
+      }),
     });
 
-    expect(settingKeys(wrapper)).toEqual([
-      "vehicle-setting-flagship",
-      "vehicle-setting-public",
-    ]);
-  });
-
-  it("leaves sale alerts out for a ship already in the hangar", async () => {
-    const wrapper = await mount({
-      vehicle: vehicle({ saleNotify: true, wanted: false }),
-    });
-
-    expect(settingKeys(wrapper)).toEqual([]);
-  });
-
-  it("shows sale alerts for a ship on the wishlist", async () => {
-    const wrapper = await mount({
-      vehicle: vehicle({ saleNotify: true, wanted: true }),
-    });
-
-    expect(settingKeys(wrapper)).toEqual(["vehicle-setting-saleNotify"]);
-  });
-
-  it("offers no picture or edit for a loaner", async () => {
-    const wrapper = await mount({ vehicle: vehicle({ loaner: true }) });
-
-    expect(wrapper.find('[data-test="vehicle-image-edit"]').exists()).toBe(
-      false,
-    );
-    expect(wrapper.find('[data-test="vehicle-overview-edit"]').exists()).toBe(
-      false,
+    expect(wrapper.find('[data-test="vehicle-fact-paint"]').text()).toContain(
+      "Rust Society",
     );
   });
 });

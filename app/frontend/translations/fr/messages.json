@@ -1225,6 +1225,12 @@
         "image": {
           "success": "Image enregistrée",
           "failure": "L'image n'a pas pu être enregistrée"
+        },
+        "paint": {
+          "failure": "La peinture n'a pas pu être appliquée"
+        },
+        "setting": {
+          "failure": "Le réglage n'a pas pu être enregistré"
         }
       },
       "vehicleLog": {

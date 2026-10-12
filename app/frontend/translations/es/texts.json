@@ -338,6 +338,10 @@
         "visibilityHidden": "Esta nave no aparece en tu hangar público, así que allí no se muestra ninguna de sus entradas.",
         "empty": "Anota lo que le ha pasado a esta nave: solo tú ves una entrada hasta que la haces pública.",
         "publicEmpty": "El capitán de esta nave aún no ha compartido ninguna entrada."
+      },
+      "vehicleOverview": {
+        "noLoadouts": "Aún no hay loadouts. Enlaza uno de Erkul o SPViewer.",
+        "applyPaint": "Elige una pintura para aplicarla a esta nave."
       }
     }
   }

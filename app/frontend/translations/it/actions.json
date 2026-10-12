@@ -549,7 +549,11 @@
       "vehicleOverview": {
         "open": "Panoramica",
         "uploadPicture": "Carica un'immagine",
-        "changePicture": "Cambia immagine"
+        "changePicture": "Cambia immagine",
+        "edit": "Modifica nave",
+        "shipDatabase": "Database delle navi",
+        "openLog": "Apri il diario",
+        "applyPaint": "Applica %{paint}"
       },
       "vehicleLog": {
         "open": "Diario di bordo",

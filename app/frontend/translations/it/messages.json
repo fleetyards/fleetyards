@@ -1225,6 +1225,12 @@
         "image": {
           "success": "Immagine salvata",
           "failure": "Impossibile salvare l'immagine"
+        },
+        "paint": {
+          "failure": "Impossibile applicare la verniciatura"
+        },
+        "setting": {
+          "failure": "Impossibile salvare l'impostazione"
         }
       },
       "vehicleLog": {

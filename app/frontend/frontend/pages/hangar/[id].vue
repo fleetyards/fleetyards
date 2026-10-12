@@ -9,7 +9,8 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import { useShowVehicle } from "@/services/fyApi";
+import VehicleHero from "@/frontend/components/Vehicles/Hero/index.vue";
+import { FeatureFlagName, useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkFeatures } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -32,6 +33,12 @@ const tabs = computed(() =>
 );
 
 const route = useRoute();
+
+// The overview's header, carried across every tab so the ship stays in view
+// while its loadouts or cargo are open.
+const heroVisible = computed(() =>
+  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
 
 const sessionStore = useSessionStore();
 
@@ -67,10 +74,12 @@ const crumbs = computed<Crumb[]>(() => [
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
+      <VehicleHero v-if="vehicle && heroVisible" :vehicle="vehicle" />
       <TabNavView
         v-if="vehicle"
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
+        :horizontal="heroVisible"
       >
         <template #content>
           <router-view :vehicle="vehicle" />

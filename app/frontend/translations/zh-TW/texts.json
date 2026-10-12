@@ -338,6 +338,10 @@
         "visibilityHidden": "此艦船未列在你的公開機庫中，因此那裡不會顯示它的任何條目。",
         "empty": "記錄這艘艦船的經歷——在你將條目設為公開之前，只有你能看到它。",
         "publicEmpty": "這艘艦船的艦長還沒有分享任何日誌條目。"
+      },
+      "vehicleOverview": {
+        "noLoadouts": "還沒有配裝。從 Erkul 或 SPViewer 連結一個。",
+        "applyPaint": "選擇一款塗裝以套用到這艘艦船。"
       }
     }
   }

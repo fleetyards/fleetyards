@@ -1225,6 +1225,12 @@
         "image": {
           "success": "Bild gespeichert",
           "failure": "Das Bild konnte nicht gespeichert werden"
+        },
+        "paint": {
+          "failure": "Die Lackierung konnte nicht angewendet werden"
+        },
+        "setting": {
+          "failure": "Die Einstellung konnte nicht gespeichert werden"
         }
       },
       "vehicleLog": {

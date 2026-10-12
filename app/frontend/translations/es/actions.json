@@ -549,7 +549,11 @@
       "vehicleOverview": {
         "open": "Resumen",
         "uploadPicture": "Subir una imagen",
-        "changePicture": "Cambiar imagen"
+        "changePicture": "Cambiar imagen",
+        "edit": "Editar nave",
+        "shipDatabase": "Base de datos de naves",
+        "openLog": "Abrir el cuaderno",
+        "applyPaint": "Aplicar %{paint}"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

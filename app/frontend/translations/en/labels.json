@@ -4004,9 +4004,26 @@
         "step": "Step %{current} of %{total}"
       },
       "vehicleOverview": {
-        "saleNotify": "Sale notifications",
         "picture": "Picture",
-        "pictureInfo": "Shown instead of the stock render, also in your public hangar and in fleets you share this ship with."
+        "pictureInfo": "Shown instead of the stock render, also in your public hangar and in fleets you share this ship with.",
+        "ownPicture": "Your picture",
+        "serial": "Serial %{serial}",
+        "since": "In hangar since %{date}",
+        "logSummary": "%{count} entries · %{public} public",
+        "cargoFill": "%{stowed} of %{capacity} SCU stowed",
+        "cargoStowed": "%{stowed} SCU stowed",
+        "cargoMeter": "Hold fill",
+        "configuration": "Configuration",
+        "noPaint": "Standard livery",
+        "ownedPaints": "Your %{model} paints",
+        "availablePaints": "%{model} paints",
+        "paintApplied": "%{paint}, applied",
+        "morePaints": "%{count} more for this ship",
+        "visibility": "Visibility",
+        "showPublic": "Show in my public hangar",
+        "showName": "Show the name",
+        "fleets": "Serving with",
+        "status": "Status"
       },
       "vehicleLog": {
         "entries": "log entries",

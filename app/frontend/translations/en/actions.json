@@ -549,7 +549,11 @@
       "vehicleOverview": {
         "open": "Overview",
         "uploadPicture": "Upload a picture",
-        "changePicture": "Change picture"
+        "changePicture": "Change picture",
+        "edit": "Edit ship",
+        "shipDatabase": "Ship database",
+        "openLog": "Open the log",
+        "applyPaint": "Apply %{paint}"
       },
       "vehicleLog": {
         "open": "Captain's Log",

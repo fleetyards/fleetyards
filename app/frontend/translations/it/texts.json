@@ -338,6 +338,10 @@
         "visibilityHidden": "Questa nave non compare nel tuo hangar pubblico, quindi lì non viene mostrata nessuna delle sue voci.",
         "empty": "Annota cosa è successo a questa nave: solo tu vedi una voce finché non la rendi pubblica.",
         "publicEmpty": "Il capitano di questa nave non ha ancora condiviso nessuna voce."
+      },
+      "vehicleOverview": {
+        "noLoadouts": "Ancora nessun loadout. Collegane uno da Erkul o SPViewer.",
+        "applyPaint": "Scegli una verniciatura per applicarla a questa nave."
       }
     }
   }

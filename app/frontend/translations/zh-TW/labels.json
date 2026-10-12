@@ -3990,9 +3990,26 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehicleOverview": {
-        "saleNotify": "促銷通知",
         "picture": "圖片",
-        "pictureInfo": "取代預設渲染圖顯示，在你的公開機庫以及你分享此艦船的艦隊中也會顯示。"
+        "pictureInfo": "取代預設渲染圖顯示，在你的公開機庫以及你分享此艦船的艦隊中也會顯示。",
+        "ownPicture": "你的圖片",
+        "serial": "序號 %{serial}",
+        "since": "自 %{date} 起在機庫中",
+        "logSummary": "%{count} 則條目 · %{public} 則公開",
+        "cargoFill": "已裝載 %{stowed} / %{capacity} SCU",
+        "cargoStowed": "已裝載 %{stowed} SCU",
+        "cargoMeter": "貨艙裝載",
+        "configuration": "配置",
+        "noPaint": "標準塗裝",
+        "ownedPaints": "你的 %{model} 塗裝",
+        "availablePaints": "%{model} 塗裝",
+        "paintApplied": "%{paint}，已套用",
+        "morePaints": "此艦船還有 %{count} 款",
+        "visibility": "可見性",
+        "showPublic": "在我的公開機庫中顯示",
+        "showName": "顯示名稱",
+        "fleets": "服役於",
+        "status": "狀態"
       },
       "vehicleLog": {
         "entries": "日誌條目",

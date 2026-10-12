@@ -1225,6 +1225,12 @@
         "image": {
           "success": "Imagen guardada",
           "failure": "No se pudo guardar la imagen"
+        },
+        "paint": {
+          "failure": "No se pudo aplicar la pintura"
+        },
+        "setting": {
+          "failure": "No se pudo guardar el ajuste"
         }
       },
       "vehicleLog": {

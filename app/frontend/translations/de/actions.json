@@ -549,7 +549,11 @@
       "vehicleOverview": {
         "open": "Übersicht",
         "uploadPicture": "Bild hochladen",
-        "changePicture": "Bild ändern"
+        "changePicture": "Bild ändern",
+        "edit": "Schiff bearbeiten",
+        "shipDatabase": "Schiffsdatenbank",
+        "openLog": "Logbuch öffnen",
+        "applyPaint": "%{paint} anwenden"
       },
       "vehicleLog": {
         "open": "Logbuch",

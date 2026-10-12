@@ -1225,6 +1225,12 @@
         "image": {
           "success": "图片已保存",
           "failure": "无法保存图片"
+        },
+        "paint": {
+          "failure": "无法应用涂装"
+        },
+        "setting": {
+          "failure": "无法保存设置"
         }
       },
       "vehicleLog": {

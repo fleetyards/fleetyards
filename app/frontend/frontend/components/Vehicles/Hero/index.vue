@@ -1,0 +1,347 @@
+<script lang="ts">
+export default {
+  name: "VehicleHero",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
+import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { type Vehicle } from "@/services/fyApi";
+
+type Props = {
+  vehicle: Vehicle;
+};
+
+const props = defineProps<Props>();
+
+const { t, l } = useI18n();
+const comlink = useComlink();
+
+// The owner's picture first, then the render the ship is wearing, then the
+// model's own.
+const picture = computed(
+  () =>
+    props.vehicle.image ||
+    props.vehicle.paint?.media.storeImage ||
+    props.vehicle.upgrade?.media.storeImage ||
+    props.vehicle.model.media.storeImage,
+);
+
+const pictureUrl = computed(
+  () =>
+    picture.value?.xlargeUrl || picture.value?.largeUrl || picture.value?.url,
+);
+
+const title = computed(() => props.vehicle.name || props.vehicle.model.name);
+
+const holoAvailable = computed(() => !!props.vehicle.model.holo);
+
+const openEditModal = () => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+      wishlist: props.vehicle.wanted,
+    },
+  });
+};
+
+const openImageModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/ImageModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+    },
+  });
+};
+</script>
+
+<template>
+  <section class="vehicle-hero" :aria-label="title" data-test="vehicle-hero">
+    <div class="vehicle-hero__stage">
+      <img
+        v-if="pictureUrl"
+        :src="pictureUrl"
+        :alt="title"
+        class="vehicle-hero__image"
+      />
+
+      <div class="vehicle-hero__top">
+        <span v-if="vehicle.image" class="vehicle-hero__own-picture">
+          <i class="fa-duotone fa-camera" />
+          {{ t("labels.vehicleOverview.ownPicture") }}
+        </span>
+        <span v-else />
+        <div v-if="!vehicle.loaner" class="vehicle-hero__actions">
+          <Btn data-test="vehicle-image-edit" @click="openImageModal">
+            <i class="fa-duotone fa-camera" />
+            <span class="vehicle-hero__action-label">
+              {{
+                vehicle.image
+                  ? t("actions.vehicleOverview.changePicture")
+                  : t("actions.vehicleOverview.uploadPicture")
+              }}
+            </span>
+          </Btn>
+          <Btn data-test="vehicle-overview-edit" @click="openEditModal">
+            <i class="fa fa-pencil" />
+            <span class="vehicle-hero__action-label">
+              {{ t("actions.vehicleOverview.edit") }}
+            </span>
+          </Btn>
+          <VehicleContextMenu
+            :vehicle="vehicle"
+            :wishlist="vehicle.wanted"
+            editable
+            hide-edit
+          />
+        </div>
+      </div>
+
+      <div class="vehicle-hero__bottom">
+        <div class="vehicle-hero__identity">
+          <div class="vehicle-hero__badges">
+            <span
+              v-if="vehicle.flagship"
+              class="vehicle-hero__badge vehicle-hero__badge--flagship"
+              data-test="vehicle-badge-flagship"
+            >
+              <i class="fa-solid fa-star" />
+              {{ t("labels.vehicle.flagship") }}
+            </span>
+            <span
+              v-if="vehicle.public && !vehicle.wanted"
+              class="vehicle-hero__badge vehicle-hero__badge--public"
+              data-test="vehicle-badge-public"
+            >
+              {{ t("labels.vehicle.publicShort") }}
+            </span>
+            <span v-if="vehicle.wanted" class="vehicle-hero__badge">
+              {{ t("labels.vehicle.wanted") }}
+            </span>
+            <span v-if="vehicle.loaner" class="vehicle-hero__badge">
+              {{ t("labels.vehicle.loaner") }}
+            </span>
+            <span v-if="vehicle.boughtViaLabel" class="vehicle-hero__badge">
+              {{ vehicle.boughtViaLabel }}
+            </span>
+          </div>
+          <h1 class="vehicle-hero__title">{{ title }}</h1>
+          <p class="vehicle-hero__subline">
+            <router-link
+              v-if="vehicle.name"
+              :to="{ name: 'ship', params: { slug: vehicle.model.slug } }"
+              class="vehicle-hero__model"
+            >
+              {{ vehicle.model.manufacturer?.name }} {{ vehicle.model.name }}
+            </router-link>
+            <span v-if="vehicle.serial">
+              {{
+                t("labels.vehicleOverview.serial", { serial: vehicle.serial })
+              }}
+            </span>
+            <span>
+              {{
+                t("labels.vehicleOverview.since", {
+                  date: l(vehicle.createdAt, "datetime.formats.date"),
+                })
+              }}
+            </span>
+          </p>
+        </div>
+        <div class="vehicle-hero__links">
+          <Btn
+            v-if="holoAvailable"
+            :to="{ name: 'ship-viewer', params: { slug: vehicle.model.slug } }"
+          >
+            <i class="fa-duotone fa-cube" />
+            {{ t("labels.3dView") }}
+          </Btn>
+          <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">
+            {{ t("actions.vehicleOverview.shipDatabase") }}
+          </Btn>
+        </div>
+      </div>
+    </div>
+    <Specs :model="vehicle.model" overlay class="vehicle-hero__specs" />
+  </section>
+</template>
+
+<style lang="scss" scoped>
+.vehicle-hero {
+  // The strip's height on the picture, which the title block sits above.
+  --vehicle-hero-specs-h: 68px;
+
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 10px;
+  background: var(--color-gray-black);
+  margin-bottom: 20px;
+
+  &__stage {
+    position: relative;
+    height: clamp(300px, 42vw, 560px);
+  }
+
+  &__specs {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  // The scrim the title and actions read against; the picture is the owner's,
+  // so nothing about its brightness can be assumed.
+  &__stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.55) 0%,
+      rgb(0 0 0 / 0) 22%,
+      rgb(0 0 0 / 0) 48%,
+      rgb(0 0 0 / 0.88) 100%
+    );
+    pointer-events: none;
+  }
+
+  &__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__top,
+  &__bottom {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__top {
+    top: 16px;
+    align-items: center;
+  }
+
+  &__bottom {
+    bottom: calc(var(--vehicle-hero-specs-h) + 20px);
+    left: 24px;
+    right: 24px;
+    align-items: flex-end;
+  }
+
+  &__own-picture {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.55);
+    font-size: 0.75rem;
+  }
+
+  &__actions,
+  &__links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__identity {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgb(58 63 68 / 0.9);
+    color: #e6e6e6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &--flagship {
+      background: var(--color-gold);
+      color: var(--color-gray-black);
+    }
+
+    &--public {
+      background: rgb(66 139 202 / 0.85);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: Orbitron, sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1.1;
+    color: #fff;
+    overflow-wrap: anywhere;
+  }
+
+  &__subline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 0;
+    color: #d6d6d6;
+  }
+
+  &__model {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  // A phone's picture is too small to carry six figures, so the strip follows
+  // it instead.
+  @media (max-width: $desktop-breakpoint) {
+    --vehicle-hero-specs-h: 0px;
+
+    border-radius: 0;
+    border-inline: 0;
+    margin-inline: -15px;
+
+    &__specs {
+      position: static;
+    }
+
+    &__bottom {
+      left: 16px;
+      right: 16px;
+    }
+
+    &__action-label,
+    &__links {
+      display: none;
+    }
+  }
+}
+</style>

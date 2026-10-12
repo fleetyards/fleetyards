@@ -3990,9 +3990,26 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehicleOverview": {
-        "saleNotify": "促销通知",
         "picture": "图片",
-        "pictureInfo": "替代默认渲染图显示，在你的公开机库以及你共享此舰船的舰队中也会显示。"
+        "pictureInfo": "替代默认渲染图显示，在你的公开机库以及你共享此舰船的舰队中也会显示。",
+        "ownPicture": "你的图片",
+        "serial": "序列号 %{serial}",
+        "since": "自 %{date} 起在机库中",
+        "logSummary": "%{count} 条条目 · %{public} 条公开",
+        "cargoFill": "已装载 %{stowed} / %{capacity} SCU",
+        "cargoStowed": "已装载 %{stowed} SCU",
+        "cargoMeter": "货舱装载",
+        "configuration": "配置",
+        "noPaint": "标准涂装",
+        "ownedPaints": "你的 %{model} 涂装",
+        "availablePaints": "%{model} 涂装",
+        "paintApplied": "%{paint}，已应用",
+        "morePaints": "此舰船还有 %{count} 款",
+        "visibility": "可见性",
+        "showPublic": "在我的公开机库中显示",
+        "showName": "显示名称",
+        "fleets": "服役于",
+        "status": "状态"
       },
       "vehicleLog": {
         "entries": "日志条目",

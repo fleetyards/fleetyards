@@ -1,0 +1,36 @@
+// Content shared by the overview's cards. Imported into each card's scoped
+// style, because the cards render their own markup into MetricsCard's slot.
+
+.overview-card-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-weight: 600;
+}
+
+.overview-card-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  &__aside {
+    color: var(--color-text-dim);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+}
+
+.overview-card-muted {
+  margin: 0 0 8px;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+}

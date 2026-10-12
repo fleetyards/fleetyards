@@ -1225,6 +1225,12 @@
         "image": {
           "success": "圖片已儲存",
           "failure": "無法儲存圖片"
+        },
+        "paint": {
+          "failure": "無法套用塗裝"
+        },
+        "setting": {
+          "failure": "無法儲存設定"
         }
       },
       "vehicleLog": {

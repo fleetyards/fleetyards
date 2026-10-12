@@ -1235,6 +1235,12 @@
         "image": {
           "success": "Picture saved",
           "failure": "The picture could not be saved"
+        },
+        "paint": {
+          "failure": "The paint could not be applied"
+        },
+        "setting": {
+          "failure": "The setting could not be saved"
         }
       },
       "vehicleLog": {
