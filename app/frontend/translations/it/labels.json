@@ -4147,7 +4147,6 @@
         "step": "Passo %{current} di %{total}"
       },
       "vehiclePlaque": {
-        "supporterStyle": "Un vantaggio per chi sostiene",
         "style": "Stile",
         "styles": {
           "brass": "Ottone",

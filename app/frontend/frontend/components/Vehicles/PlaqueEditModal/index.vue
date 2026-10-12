@@ -114,6 +114,14 @@ const previewFor = (style: VehiclePlaqueStyleEnum): Vehicle => ({
 // one there sets the form, and the back button returns to it.
 const stylesOpen = ref(false);
 
+const freeStyleOptions = computed(() =>
+  plaqueStyleOptions.value.filter((option) => !option.locked),
+);
+
+const lockedStyleOptions = computed(() =>
+  plaqueStyleOptions.value.filter((option) => option.locked),
+);
+
 const pickStyle = (option: {
   value: VehiclePlaqueStyleEnum;
   locked: boolean;
@@ -183,28 +191,10 @@ const onSubmit = handleSubmit(async (values) => {
     <form id="vehicle-plaque-form" @submit.prevent="onSubmit">
       <transition name="fade" mode="out-in">
         <div v-if="stylesOpen" key="styles" data-test="vehicle-plaque-styles">
-          <p
-            v-if="!isSupporter"
-            class="plaque-edit__upsell"
-            data-test="vehicle-plaque-upsell"
-          >
-            {{ t("texts.vehiclePlaque.supporter") }}
-            <router-link
-              :to="{ name: 'support' }"
-              @click="comlink.emit('close-modal')"
-            >
-              {{ t("actions.supportUs") }}
-            </router-link>
-          </p>
           <div class="plaque-edit__styles" data-test="vehicle-plaque-style">
             <button
-              v-for="option in plaqueStyleOptions"
+              v-for="option in freeStyleOptions"
               :key="option.value"
-              v-tooltip="
-                option.locked
-                  ? t('labels.vehiclePlaque.supporterStyle')
-                  : undefined
-              "
               type="button"
               class="plaque-edit__style"
               :class="{
@@ -213,6 +203,7 @@ const onSubmit = handleSubmit(async (values) => {
               }"
               :aria-pressed="plaqueStyle === option.value"
               :aria-disabled="option.locked"
+              :tabindex="option.locked ? -1 : undefined"
               :data-test="`vehicle-plaque-style-${option.value}`"
               @click="pickStyle(option)"
             >
@@ -225,6 +216,49 @@ const onSubmit = handleSubmit(async (values) => {
                 {{ option.label }}
               </span>
             </button>
+          </div>
+          <!-- The styles a supporter unlocks, under one call to support: the
+               perk is shown where it would be used, not described elsewhere. -->
+          <div v-if="lockedStyleOptions.length" class="plaque-edit__locked">
+            <div class="plaque-edit__styles" aria-hidden="true">
+              <button
+                v-for="option in lockedStyleOptions"
+                :key="option.value"
+                type="button"
+                class="plaque-edit__style"
+                :class="{
+                  'plaque-edit__style--active': plaqueStyle === option.value,
+                  'plaque-edit__style--locked': option.locked,
+                }"
+                :aria-pressed="plaqueStyle === option.value"
+                :aria-disabled="option.locked"
+                :tabindex="option.locked ? -1 : undefined"
+                :data-test="`vehicle-plaque-style-${option.value}`"
+                @click="pickStyle(option)"
+              >
+                <VehiclePlaque
+                  :vehicle="previewFor(option.value)"
+                  :captain="currentUser?.username"
+                />
+                <span class="plaque-edit__style-label">
+                  <i v-if="option.locked" class="fa-light fa-lock" />
+                  {{ option.label }}
+                </span>
+              </button>
+            </div>
+            <div class="plaque-edit__upsell" data-test="vehicle-plaque-upsell">
+              <div class="plaque-edit__upsell-box">
+                <i class="fa-light fa-lock" />
+                <p>{{ t("texts.vehiclePlaque.supporter") }}</p>
+                <Btn
+                  :to="{ name: 'support' }"
+                  data-test="vehicle-plaque-support"
+                  @click="comlink.emit('close-modal')"
+                >
+                  {{ t("actions.supportUs") }}
+                </Btn>
+              </div>
+            </div>
           </div>
         </div>
         <div v-else key="details">
@@ -394,8 +428,47 @@ const onSubmit = handleSubmit(async (values) => {
   margin-right: auto;
 }
 
+.plaque-edit__locked {
+  position: relative;
+  margin-top: 14px;
+}
+
 .plaque-edit__upsell {
-  margin: 0 0 14px;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 48px;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+// Sticks to the top of the dialog while the styles scroll beneath it.
+.plaque-edit__upsell-box {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 380px;
+  padding: 20px 24px;
+  border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-surface-slim, 12px);
+  background: var(--color-surface, rgb(39 43 48 / 0.9));
+  text-align: center;
+
+  i {
+    font-size: 1.6rem;
+    color: var(--color-primary, #428bca);
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
 // A glance at the plaque, not the plaque itself: small and centred above the

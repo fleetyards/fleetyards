@@ -4147,7 +4147,6 @@
         "step": "Étape %{current} sur %{total}"
       },
       "vehiclePlaque": {
-        "supporterStyle": "Un avantage réservé aux soutiens",
         "style": "Style",
         "styles": {
           "brass": "Laiton",
