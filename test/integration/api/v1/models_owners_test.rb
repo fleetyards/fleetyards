@@ -170,13 +170,18 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
   test "GET /models/:slug/owners leaves out ships a member keeps from the fleet" do
     fleet = create(:fleet)
     create(:fleet_membership, :accepted, fleet:, user: @user)
-    member = create(:user)
-    create(:fleet_membership, :accepted, :hide_ships, fleet:, user: member)
-    create(:vehicle, user: member, model: @model)
+    shown = create(:user)
+    hidden = create(:user)
+    create(:vehicle, user: shown, model: @model)
+    create(:vehicle, user: hidden, model: @model)
+    create(:fleet_membership, :accepted, fleet:, user: shown).setup_fleet_vehicles
+    create(:fleet_membership, :accepted, :hide_ships, fleet:, user: hidden).setup_fleet_vehicles
     sign_in @user
 
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
-      assert_empty parsed_body["fleets"]
+      entry = parsed_body["fleets"].sole
+      assert_equal 1, entry["total"]
+      assert_equal [shown.username], entry["members"]
     end
   end
 
