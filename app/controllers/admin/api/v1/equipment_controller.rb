@@ -17,10 +17,9 @@ module Admin
           # column, which is the failure mode to want.
           #
           # The fallback join, not the fast one: the admin list has to show a
-          # retired record, and one an admin created by hand that no load has
-          # described yet.
+          # retired record.
           @q = authorized_scope(Equipment.with_facts(false))
-            .includes(:manufacturer, :item_prices)
+            .includes(:manufacturer, :item_prices, :build, :last_build)
             .ransack(equipment_query_params)
 
           @equipment = @q.result

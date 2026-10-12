@@ -80,7 +80,6 @@ module ScData
         loader.all
 
         assert Commodity.exists?(retired.id), "the row has to stay for existing references"
-        assert_nil retired.reload.version
         assert_not Commodity.current_version(true, fixture_source).exists?(retired.id)
       end
 

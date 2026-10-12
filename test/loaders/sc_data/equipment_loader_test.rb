@@ -152,7 +152,6 @@ module ScData
         curated.all
 
         assert Equipment.exists?(retired.id), "the row has to stay for existing references"
-        assert_nil retired.reload.version
         assert_not Equipment.current_version(true, fixture_source).exists?(retired.id)
       end
 

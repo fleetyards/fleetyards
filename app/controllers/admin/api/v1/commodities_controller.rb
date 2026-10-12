@@ -13,9 +13,9 @@ module Admin
           commodity_query_params["sorts"] = sorting_params(Commodity, commodity_query_params[:sorts])
 
           # The fallback join, not the current one: an admin list has to show a
-          # commodity the export dropped, and one no load has ever described.
+          # commodity the export dropped.
           @q = authorized_scope(Commodity.with_facts(false))
-            .includes(:item_prices, :refines_into)
+            .includes(:item_prices, :refines_into, :build, :last_build)
             .ransack(commodity_query_params)
 
           @commodities = @q.result

@@ -54,6 +54,6 @@ end
 # be able to tell a hand-made row from one the export owns.
 json.sc_key equipment.sc_key
 json.sc_ref equipment.sc_ref
-json.version equipment.version
+json.version equipment.facts&.version
 
 json.partial! "api/shared/dates", record: equipment
