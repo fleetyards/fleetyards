@@ -203,6 +203,12 @@ class PaintsImporter
   end
 
   private def paint_mapping(name)
+    self.class.paint_mapping(name)
+  end
+
+  # RSI's item name for a paint, as the catalogue names it. Shared with
+  # `HangarPledgeItems::OwnedPaints`, which reads the same names off pledges.
+  def self.paint_mapping(name)
     name = name.tr("–", "-")
 
     paint_map = {

@@ -39,6 +39,22 @@ class HangarPledgeItems::OwnedPaintsTest < ActiveSupport::TestCase
     assert_empty owned_ids
   end
 
+  test "matches an older pledge that runs ship and paint together" do
+    model = create(:model, name: "Constellation Andromeda")
+    paint = create(:model_paint, model:, name: "Invictus Blue and Gold")
+    create(:hangar_pledge_item, user: @user, name: "2950 Invictus Constellation Blue and Gold")
+
+    assert_equal [paint.id], HangarPledgeItems::OwnedPaints.new(@user, model).paint_ids([paint])
+  end
+
+  test "ignores an older pledge for another series" do
+    model = create(:model, name: "Retaliator Bomber")
+    paint = create(:model_paint, model:, name: "Invictus Blue and Gold")
+    create(:hangar_pledge_item, user: @user, name: "2950 Invictus Constellation Blue and Gold")
+
+    assert_empty HangarPledgeItems::OwnedPaints.new(@user, model).paint_ids([paint])
+  end
+
   test "ignores another user's pledges" do
     create(:hangar_pledge_item, name: "Spirit - IceBreak Paint")
 

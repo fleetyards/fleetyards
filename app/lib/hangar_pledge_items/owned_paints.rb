@@ -35,10 +35,25 @@ module HangarPledgeItems
     # other ships.
     private def pledged_paint(name)
       ships, separator, paint = name.rpartition(SHIP_SEPARATOR)
-      return if separator.blank?
+      return legacy_paint(name) if separator.blank?
       return unless ships.split(SHIP_LIST_SEPARATOR).any? { |ship| same_ship?(normalize(ship)) }
 
-      normalize(paint.sub(PAINT_SUFFIX, "")).presence
+      normalize(PaintsImporter.paint_mapping(paint.sub(PAINT_SUFFIX, "").strip)).presence
+    end
+
+    # Older pledges run ship and paint together -- "2950 Invictus Constellation
+    # Blue and Gold". The importer's name map knows those, and the ship is any
+    # word of the model's series in the name.
+    private def legacy_paint(name)
+      mapped = PaintsImporter.paint_mapping(name.sub(PAINT_SUFFIX, "").strip)
+      return if mapped == name
+      return unless normalize(name).include?(series_name)
+
+      normalize(mapped).presence
+    end
+
+    private def series_name
+      @series_name ||= normalize(model.name.split.first)
     end
 
     # "Spirit" names the C1 Spirit as much as "C1 Spirit" does, so either name
