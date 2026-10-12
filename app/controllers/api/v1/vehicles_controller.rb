@@ -47,6 +47,7 @@ module Api
       def show
         @fleets = current_resource_owner.fleets
           .where(id: @vehicle.fleet_vehicles.select(:fleet_id))
+          .with_attached_logo
           .order(:name)
       end
 

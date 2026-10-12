@@ -12,7 +12,8 @@ module V1
             id: {type: :string, format: :uuid},
             fid: {type: :string},
             name: {type: :string},
-            slug: {type: :string}
+            slug: {type: :string},
+            logo: ::Shared::V1::Schemas::MediaFile
           },
           additionalProperties: false,
           required: %w[id fid name slug]

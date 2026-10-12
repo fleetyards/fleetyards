@@ -7,4 +7,9 @@ json.fleets @fleets do |fleet|
   json.fid fleet.fid
   json.name fleet.name
   json.slug fleet.slug
+  if fleet.logo.attached?
+    json.logo do
+      json.partial! "api/v1/shared/file", record: fleet, attr: :logo
+    end
+  end
 end
