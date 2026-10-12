@@ -1783,6 +1783,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.string "icon_path"
     t.boolean "icon_overridden", default: false, null: false
     t.boolean "logo_overridden", default: false, null: false
+    t.string "shipyard"
+    t.uuid "shipyard_location_id"
+    t.index ["shipyard_location_id"], name: "index_manufacturers_on_shipyard_location_id"
     t.index ["slug"], name: "index_manufacturers_on_slug", unique: true
   end
 
@@ -2932,6 +2935,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
   add_foreign_key "locations", "locations", column: "map_parent_id", on_delete: :nullify
   add_foreign_key "locations", "locations", column: "parent_id", on_delete: :nullify
   add_foreign_key "locations", "locations", column: "system_id", on_delete: :nullify
+  add_foreign_key "manufacturers", "locations", column: "shipyard_location_id", on_delete: :nullify
   add_foreign_key "markdown_images", "users", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade

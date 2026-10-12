@@ -15,6 +15,8 @@ module Admin
               code: {type: :string},
               description: {type: :string},
               knownFor: {type: :string},
+              shipyard: {type: [:string, :null]},
+              shipyardLocationId: {type: [:string, :null], format: :uuid},
               # Nullable because clearing the field is how a picture is
               # removed -- the file input emits a null -- and a plain string
               # made that request a 400.

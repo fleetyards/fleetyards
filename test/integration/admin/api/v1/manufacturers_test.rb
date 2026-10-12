@@ -279,6 +279,17 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /manufacturers/:id links the shipyard to a starmap location" do
+    manufacturer = create(:manufacturer)
+    orison = create(:location, name: "Orison")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: manufacturer.id}, body: {shipyardLocationId: orison.id} do
+      assert_equal "Orison", parsed_body["shipyard"]
+      assert_equal orison.id, parsed_body.dig("shipyardLocation", "id")
+    end
+  end
+
   # The flag is derived from the upload rather than sent: it decides whether the
   # sc_data load may write over this picture.
   test "PUT /manufacturers/:id claims the icon when one is uploaded" do

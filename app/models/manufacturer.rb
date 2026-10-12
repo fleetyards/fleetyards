@@ -9,7 +9,7 @@ class Manufacturer < ApplicationRecord
   # the handful of real edits the way Fleet's touch versions already do.
   has_paper_trail on: %i[update],
     only: %i[
-      name long_name code description known_for sc_ref
+      name long_name code description known_for sc_ref shipyard shipyard_location_id
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -20,6 +20,7 @@ class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
   include ActiveStorageVariants
   include AttachmentRansackers
+  include LinkedLocations
 
   paginates_per 24
 
@@ -39,6 +40,9 @@ class Manufacturer < ApplicationRecord
     dependent: :nullify
   has_many :model_modules,
     dependent: :nullify
+
+  # Where its ships are built, by the lore; a dedication plaque names it.
+  links_location :shipyard, foreign_key: :shipyard_location_id, as: :shipyard_location
 
   before_save :update_slugs
 
