@@ -39749,6 +39749,12 @@ components:
           type:
           - string
           - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        manufacturerShortName:
+          type:
+          - string
+          - 'null'
         shipyard:
           type:
           - string
@@ -40245,6 +40251,12 @@ components:
           type:
           - string
           - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        manufacturerShortName:
+          type:
+          - string
+          - 'null'
         shipyard:
           type:
           - string
@@ -40473,6 +40485,8 @@ components:
           - string
           - 'null'
           maxLength: 100
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
         image:
           type:
           - string

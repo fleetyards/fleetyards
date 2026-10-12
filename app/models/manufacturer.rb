@@ -9,7 +9,7 @@ class Manufacturer < ApplicationRecord
   # the handful of real edits the way Fleet's touch versions already do.
   has_paper_trail on: %i[update],
     only: %i[
-      name long_name code description known_for sc_ref shipyard shipyard_location_id
+      name long_name short_name code description known_for sc_ref shipyard shipyard_location_id
     ],
     if: ->(record) { record.author_id.present? },
     meta: {

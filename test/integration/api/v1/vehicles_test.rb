@@ -404,31 +404,34 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   test "PUT /vehicles/:id sets the dedication plaque" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
-    vehicle.model.manufacturer.update!(shipyard: "Orison, Crusader (Stanton II)")
+    vehicle.model.manufacturer.update!(short_name: "Crusader", shipyard: "Orison, Crusader (Stanton II)")
     port = create(:location, name: "Port Olisar")
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {
-      dedication: "To boldly go", launchedOn: "2026-10-12", launchPortLocationId: port.id, affiliation: "United Empire of Earth"
+      dedication: "To boldly go", launchedOn: "2026-10-12", launchPortLocationId: port.id, affiliation: "Maru Inc.", alignment: "lawful"
     } do
       assert_equal "To boldly go", parsed_body["dedication"]
       assert_equal "2026-10-12", parsed_body["launchedOn"]
       assert_equal "Port Olisar", parsed_body["launchPort"]
       assert_equal port.id, parsed_body.dig("launchPortLocation", "id")
-      assert_equal "United Empire of Earth", parsed_body["affiliation"]
+      assert_equal "Maru Inc.", parsed_body["affiliation"]
+      assert_equal "lawful", parsed_body["alignment"]
       assert_equal "Orison, Crusader (Stanton II)", parsed_body["shipyard"]
+      assert_equal "Crusader", parsed_body["manufacturerShortName"]
     end
   end
 
   test "PUT /vehicles/:id clears the dedication plaque" do
     Flipper.enable("vehicle_overview")
-    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12), affiliation: "UEE")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12), affiliation: "Maru Inc.", alignment: "outlaw")
     sign_in @user
 
-    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "", launchedOn: nil, affiliation: ""} do
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "", launchedOn: nil, affiliation: "", alignment: nil} do
       assert_nil parsed_body["dedication"]
       assert_nil parsed_body["launchedOn"]
       assert_nil parsed_body["affiliation"]
+      assert_nil parsed_body["alignment"]
     end
   end
 
@@ -438,6 +441,14 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {dedication: "a" * (Vehicle::DEDICATION_LIMIT + 1)}
+  end
+
+  test "PUT /vehicles/:id rejects an alignment fleets do not know" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {alignment: "chaotic"}
   end
 
   test "PUT /vehicles/:id picks a picture from the model's gallery" do

@@ -94,7 +94,7 @@ module Admin
         private def manufacturer_params
           @manufacturer_params ||= params.permit(
             :name, :long_name, :code, :description, :known_for, :logo, :icon, :sc_ref,
-            :shipyard, :shipyard_location_id
+            :short_name, :shipyard, :shipyard_location_id
           )
         end
 

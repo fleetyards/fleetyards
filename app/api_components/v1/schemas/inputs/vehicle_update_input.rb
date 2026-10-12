@@ -23,6 +23,7 @@ module V1
             launchPort: {type: [:string, :null], maxLength: ::Vehicle::PLAQUE_LINE_LIMIT},
             launchPortLocationId: {type: [:string, :null], format: :uuid},
             affiliation: {type: [:string, :null], maxLength: ::Vehicle::PLAQUE_LINE_LIMIT},
+            alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
             image: {type: [:string, :null]},
             modelImageId: {type: [:string, :null], format: :uuid},
             flagship: {type: :boolean},

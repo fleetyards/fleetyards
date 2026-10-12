@@ -8,5 +8,6 @@ class AddDedicationPlaqueToVehicles < ActiveRecord::Migration[8.1]
     add_reference :vehicles, :launch_port_location, type: :uuid, index: true,
       foreign_key: {to_table: :locations, on_delete: :nullify}
     add_column :vehicles, :affiliation, :string
+    add_column :vehicles, :alignment, :string
   end
 end

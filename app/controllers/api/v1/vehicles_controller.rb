@@ -161,7 +161,7 @@ module Api
 
         %i[
           image model_image_id log_entries_public_by_default location location_id
-          dedication launched_on launch_port launch_port_location_id affiliation
+          dedication launched_on launch_port launch_port_location_id affiliation alignment
         ]
       end
 

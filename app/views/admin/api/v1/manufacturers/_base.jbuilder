@@ -13,6 +13,7 @@ json.icon do
 end
 json.icon_overridden manufacturer.icon_overridden
 json.logo_overridden manufacturer.logo_overridden
+json.short_name manufacturer.short_name
 json.shipyard manufacturer.shipyard
 json.partial! "api/v1/locations/linked", key: :shipyard_location, location: manufacturer.shipyard_location
 

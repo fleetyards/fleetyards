@@ -1783,6 +1783,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.string "icon_path"
     t.boolean "icon_overridden", default: false, null: false
     t.boolean "logo_overridden", default: false, null: false
+    t.string "short_name"
     t.string "shipyard"
     t.uuid "shipyard_location_id"
     t.index ["shipyard_location_id"], name: "index_manufacturers_on_shipyard_location_id"
@@ -2763,6 +2764,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.string "launch_port"
     t.uuid "launch_port_location_id"
     t.string "affiliation"
+    t.string "alignment"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"

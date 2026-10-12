@@ -23,6 +23,8 @@ module V1
             launchPort: {type: [:string, :null]},
             launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             affiliation: {type: [:string, :null]},
+            alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
+            manufacturerShortName: {type: [:string, :null]},
             shipyard: {type: [:string, :null]},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,
