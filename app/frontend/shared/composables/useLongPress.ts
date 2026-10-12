@@ -1,5 +1,5 @@
 import { useEventListener } from "@vueuse/core";
-import { canVibrateNow, hapticTick } from "@/shared/utils/Haptics";
+import { hapticTick } from "@/shared/utils/Haptics";
 
 // Long enough that a tap or the start of a scroll never trips it, short enough
 // that a held finger does not wonder whether anything is happening. The
@@ -64,11 +64,8 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
       pressedAt = Date.now();
 
       // The tick says the hold landed while the finger is still down, the way
-      // a native list answers a long press - where the device can buzz from a
-      // timer. Elsewhere it comes as the finger lifts.
-      if (canVibrateNow()) {
-        hapticTick();
-      }
+      // a native list answers a long press.
+      hapticTick();
 
       onLongPress();
     }, LONG_PRESS_MS);
@@ -111,15 +108,7 @@ export const useLongPress = ({ target, onLongPress }: UseLongPressOptions) => {
 
   useEventListener(target, "touchstart", onTouchStart, { passive: true });
   useEventListener(target, "touchmove", onTouchMove, { passive: true });
-  const onTouchEnd = () => {
-    cancel();
-
-    if (justHeld() && !canVibrateNow()) {
-      hapticTick();
-    }
-  };
-
-  useEventListener(target, "touchend", onTouchEnd);
+  useEventListener(target, "touchend", cancel);
   useEventListener(target, "touchcancel", cancel);
   useEventListener(target, "click", onClick, { capture: true });
   useEventListener(target, "contextmenu", onContextMenu);
