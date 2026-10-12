@@ -16,7 +16,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
-import { PLAQUE_MAKERS } from "@/frontend/components/Vehicles/Plaque/makers";
+import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -47,12 +47,7 @@ const vehicle = computed(() => props.vehicle);
 
 const { currentUser } = storeToRefs(useSessionStore());
 
-const maker = computed(() => {
-  const code =
-    props.vehicle.manufacturerCode ?? props.vehicle.model.manufacturer?.code;
-
-  return code ? PLAQUE_MAKERS[code] : undefined;
-});
+const maker = computed(() => plaqueMakerFor(props.vehicle));
 
 // A maker with a style of its own gets it by default: it is the plaque made
 // for that ship.
@@ -101,7 +96,7 @@ const plaqueStyleOptions = computed(() =>
 // The plaque as it will read once saved, so a style is picked by looking at it.
 const preview = computed<Vehicle>(() => ({
   ...props.vehicle,
-  dedication: dedication.value || props.vehicle.dedication,
+  dedication: dedication.value || null,
   launchedOn: launchedOn.value || null,
   launchPort: launchPort.value || null,
   affiliation: affiliation.value || null,
@@ -125,6 +120,11 @@ const fleetNames = computed(() =>
 const { useUpdateMutation } = useVehicleMutations();
 const updateMutation = useUpdateMutation(vehicle);
 
+// The payload carries the style the plaque is drawn in, not the stored choice,
+// so it is only sent once picked: otherwise saving any line would pin the
+// default as a choice of its own.
+const initialPlaqueStyle = plaqueStyle.value;
+
 const onSubmit = handleSubmit(async (values) => {
   await updateMutation
     .mutateAsync({
@@ -137,7 +137,9 @@ const onSubmit = handleSubmit(async (values) => {
         launchPortLocationId: values.launchPortLocationId ?? null,
         affiliation: values.affiliation || null,
         operationsGroup: values.operationsGroup || null,
-        plaqueStyle: values.plaqueStyle || null,
+        ...(values.plaqueStyle !== initialPlaqueStyle
+          ? { plaqueStyle: values.plaqueStyle || null }
+          : {}),
       },
     })
     .then(() => comlink.emit("close-modal"))
