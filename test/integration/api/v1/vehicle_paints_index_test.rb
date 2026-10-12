@@ -68,6 +68,16 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/paints keeps the applied paint once the catalogue hides it" do
+    @storm.update!(hidden: true)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      applied = parsed_body.find { |entry| entry["applied"] }
+      assert_equal "Stormbringer", applied&.dig("paint", "name")
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/paints returns 404 for another user's ship" do
     sign_in create(:user)
 

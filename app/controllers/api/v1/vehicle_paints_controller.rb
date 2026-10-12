@@ -15,7 +15,14 @@ module Api
       def index
         authorize! @vehicle, to: :show?
 
-        paints = @vehicle.model.paints.visible.active.order(name: :asc).to_a
+        # The paint the ship wears stays listed even once the catalogue hides it,
+        # or the card would show no paint as applied.
+        paints = @vehicle.model.paints
+          .visible.active
+          .or(@vehicle.model.paints.where(id: @vehicle.model_paint_id))
+          .includes(:item_prices, *ModelPaint.attachment_preloads)
+          .order(name: :asc)
+          .to_a
         @owned_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner, @vehicle.model).paint_ids(paints).to_set
         @paints = paints.sort_by { |paint| @owned_ids.include?(paint.id) ? 0 : 1 }
       end
