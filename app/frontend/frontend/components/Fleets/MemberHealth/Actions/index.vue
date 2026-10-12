@@ -13,6 +13,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
+import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
 import {
   useAcceptFleetMember,
   useCreateFleetSquadronMember,
@@ -20,15 +21,28 @@ import {
   useDemoteFleetMember,
   useDestroyFleetMember,
   usePromoteFleetMember,
+  useRemindFleetMemberVerification,
   type FleetMemberHealthMember,
   type FleetMembershipCapabilities,
   type FleetSquadron,
 } from "@/services/fyApi";
 
 // What resolves the row, and only that: a member in no squadron is added to
-// one, a stale invitation withdrawn, a candidate promoted into the gap.
+// one, a stale invitation withdrawn, a candidate promoted into the gap. Where
+// only the member can fix it, the row offers to ask them: a reminder, or a
+// way to reach them.
 export type MemberHealthAction =
-  "answer" | "revoke" | "demote" | "remove" | "promote" | "addToSquadron";
+  | "answer"
+  | "revoke"
+  | "demote"
+  | "remove"
+  | "promote"
+  | "addToSquadron"
+  | "remind"
+  | "contact";
+
+// Matches the API's cooldown, so the button is off when a send would be refused.
+const REMINDER_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 
 type Props = {
   fleetSlug: string;
@@ -46,7 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
   promoteTo: undefined,
 });
 
-const { t } = useI18n();
+const { t, timeDistance } = useI18n();
 
 const comlink = useComlink();
 
@@ -58,17 +72,32 @@ const isSelf = computed(
   () => props.member.username === currentUser?.value?.username,
 );
 
+const contact = computed(() => ({
+  username: props.member.username,
+  rsiHandle: props.member.rsiHandle ?? undefined,
+  discordProfileUrl: props.member.discordProfileUrl ?? undefined,
+}));
+
+const remindedRecently = computed(() => {
+  const at = props.member.verificationRemindedAt;
+
+  return !!at && Date.now() - new Date(at).getTime() < REMINDER_COOLDOWN_MS;
+});
+
 const allowed = computed(() => {
   const can = props.capabilities;
   const others = !isSelf.value;
 
   return {
     answer: !!can?.updateMembers,
-    revoke: !!can?.destroyMembers,
+    revoke: !!can?.updateMembers,
     demote: others && !!can?.updateMembers,
     remove: others && !!can?.destroyMembers,
     promote: others && !!can?.updateMembers,
     addToSquadron: !!can?.manageSquadronMembers && props.squadrons.length > 0,
+    remind: others && !!can?.updateMembers,
+    contact:
+      others && (!!props.member.rsiHandle || !!contact.value.discordProfileUrl),
   } satisfies Record<MemberHealthAction, boolean>;
 });
 
@@ -102,6 +131,7 @@ const promoteMutation = usePromoteFleetMember();
 const demoteMutation = useDemoteFleetMember();
 const destroyMutation = useDestroyFleetMember();
 const addToSquadronMutation = useCreateFleetSquadronMember();
+const remindMutation = useRemindFleetMemberVerification();
 
 const accept = () =>
   run("messages.fleet.members.accept", () =>
@@ -121,6 +151,17 @@ const promote = () =>
 const demote = () =>
   run("messages.fleet.members.demote", () =>
     demoteMutation.mutateAsync(variables.value),
+  );
+
+// Withdrawn rather than removed: the decline endpoint takes back an invitation.
+const revoke = () =>
+  run("messages.fleet.members.decline", () =>
+    declineMutation.mutateAsync(variables.value),
+  );
+
+const remind = () =>
+  run("labels.fleet.members.health.reminded", () =>
+    remindMutation.mutateAsync(variables.value),
   );
 
 const remove = () => {
@@ -210,16 +251,55 @@ const addToSquadron = (squadron: FleetSquadron) =>
     {{ t("actions.fleet.members.demote") }}
   </Btn>
   <Btn
-    v-if="shown('remove') || shown('revoke')"
+    v-if="shown('remind')"
+    v-tooltip="
+      remindedRecently && member.verificationRemindedAt
+        ? t('labels.fleet.members.health.remindedAt', {
+            distance: timeDistance(member.verificationRemindedAt),
+          })
+        : undefined
+    "
+    :size="BtnSizesEnum.SM"
+    :disabled="busy || remindedRecently"
+    data-test="health-remind"
+    @click="remind"
+  >
+    <i class="fa-light fa-bell" />
+    {{
+      remindedRecently
+        ? t("actions.fleet.members.health.reminded")
+        : t("actions.fleet.members.health.remind")
+    }}
+  </Btn>
+  <BtnDropdown
+    v-if="shown('contact')"
+    :size="BtnSizesEnum.SM"
+    expand-left
+    expand-bottom
+    data-test="health-contact"
+  >
+    <template #label>
+      <i class="fa-light fa-message" />
+      {{ t("labels.fleet.members.contact") }}
+    </template>
+    <MemberContactMenu :member="contact" />
+  </BtnDropdown>
+  <Btn
+    v-if="shown('revoke')"
+    :size="BtnSizesEnum.SM"
+    :disabled="busy"
+    data-test="health-revoke"
+    @click="revoke"
+  >
+    {{ t("actions.fleet.members.health.revoke") }}
+  </Btn>
+  <Btn
+    v-if="shown('remove')"
     :size="BtnSizesEnum.SM"
     :disabled="busy"
     data-test="health-remove"
     @click="remove"
   >
-    {{
-      shown("revoke")
-        ? t("actions.fleet.members.health.revoke")
-        : t("actions.fleet.members.health.remove")
-    }}
+    {{ t("actions.fleet.members.health.remove") }}
   </Btn>
 </template>

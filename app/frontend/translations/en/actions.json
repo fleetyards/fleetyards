@@ -305,7 +305,6 @@
           "health": {
             "open": "Member health",
             "showAll": "Show all %{count}",
-            "roleSettings": "Role settings",
             "inviteLinks": "Invite links",
             "discordSettings": "Discord settings",
             "verifyOrg": "Verify the RSI organisation",
@@ -315,7 +314,9 @@
             "promoteTo": "Promote to %{role}",
             "addToSquadron": "Add to squadron",
             "addMembers": "Add members",
-            "deleteSquadron": "Disband"
+            "deleteSquadron": "Disband",
+            "remind": "Remind to verify",
+            "reminded": "Reminded"
           }
         },
         "inviteUrls": {

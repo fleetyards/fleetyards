@@ -767,14 +767,7 @@
               "admins": {
                 "title": "Admins",
                 "overview": "Admins",
-                "description": "Admin ist die einzige Rolle, die alles verwalten kann. Mit nur einem Inhaber hängt die Flotte an einem Konto.",
                 "clear": "%{admins} Mitglieder sind Admin."
-              },
-              "emptyRoles": {
-                "title": "Rollen ohne Mitglieder",
-                "overview": "Leere Rollen",
-                "description": "Befördere jemanden in diese Rollen oder benenne sie um.",
-                "clear": "Jede Rolle hat mindestens ein Mitglied."
               },
               "unverified": {
                 "title": "Nicht gegen %{sid} verifiziert",
@@ -785,55 +778,46 @@
               "noHandle": {
                 "title": "Kein RSI-Handle",
                 "overview": "Kein RSI-Handle",
-                "description": "Ohne Handle gibt es kein RSI-Profil zum Verlinken und nichts zu verifizieren, sobald die Flotte ihre RSI-SID einträgt.",
                 "clear": "Alle Mitglieder haben ein RSI-Handle angegeben."
               },
               "inactive": {
                 "title": "Inaktive Mitglieder",
                 "overview": "Inaktiv seit %{count}+ Tagen",
-                "description": "Keine Aktivität auf FleetYards seit mindestens der gewählten Zeit. Offiziere stehen oben.",
                 "clear": "Alle waren in den letzten %{count} Tagen aktiv."
               },
               "joinRequests": {
                 "title": "Beitrittsanfragen, die über eine Woche warten",
                 "overview": "Alte Beitrittsanfragen",
-                "description": "Jemand möchte beitreten und wartet noch auf eine Antwort.",
                 "clear": "Keine Beitrittsanfrage wartet länger als eine Woche."
               },
               "invitations": {
                 "title": "Unbeantwortete Einladungen",
                 "overview": "Offene Einladungen",
-                "description": "Vor mehr als zwei Wochen eingeladen und weder angenommen noch abgelehnt.",
                 "clear": "Keine Einladung ist länger als zwei Wochen offen."
               },
               "inviteUrls": {
                 "title": "Einladungslinks zum Aufräumen",
                 "overview": "Einladungslinks",
-                "description": "Links, die nicht mehr funktionieren, sind Ballast. Ein Link ohne Ablaufdatum und ohne Nutzungslimit lässt jeden beitreten, der ihn findet.",
-                "clear": "Alle Einladungslinks sind aktuell und begrenzt."
+                "clear": "Alle Einladungslinks werden genutzt."
               },
               "discord": {
                 "title": "Nicht mit Discord verknüpft",
                 "overview": "Discord",
-                "description": "Die Flotte vergibt Discord-Rollen, aber diese Mitglieder haben kein Discord-Konto verknüpft und können sie daher nicht bekommen.",
                 "clear": "Alle Mitglieder haben Discord verknüpft."
               },
               "emptySquadrons": {
                 "title": "Staffeln ohne Mitglieder",
                 "overview": "Leere Staffeln",
-                "description": "Fülle sie oder lösche sie.",
                 "clear": "Jede Staffel hat Mitglieder."
               },
               "noSquadron": {
                 "title": "Mitglieder ohne Staffel",
                 "overview": "Ohne Staffel",
-                "description": "Aufgenommene Mitglieder, die in keiner Staffel und keinem Team sind.",
                 "clear": "Alle Mitglieder sind in einer Staffel."
               },
               "hiddenShips": {
                 "title": "Schiffe außerhalb der Flotte",
                 "overview": "Verborgene Hangars",
-                "description": "Das entscheiden die Mitglieder selbst. Schiffszahlen und Statistiken der Flotte lassen diese Schiffe aus.",
                 "clear": "Alle Mitglieder teilen ihre Schiffe mit der Flotte."
               }
             },
@@ -850,14 +834,14 @@
               "noHandle": "Kein Handle angegeben",
               "linkExpired": "Abgelaufen %{distance}",
               "linkUsedUp": "Keine Nutzungen übrig",
-              "linkUnlimited": "Läuft nie ab, kein Nutzungslimit",
               "createdBy": "Erstellt von %{name}",
               "used": {
                 "one": "Einmal genutzt",
                 "other": "%{count}-mal genutzt"
               },
               "team": "Team",
-              "created": "Erstellt am %{date}"
+              "created": "Erstellt am %{date}",
+              "linkUnused": "Nie genutzt, erstellt %{distance}"
             },
             "gaps": {
               "no_handle": "Kein RSI-Handle im Profil",
@@ -882,7 +866,12 @@
             "addedToSquadron": {
               "success": "Zur Staffel hinzugefügt.",
               "failure": "Konnte nicht zur Staffel hinzugefügt werden."
-            }
+            },
+            "reminded": {
+              "success": "Erinnerung gesendet.",
+              "failure": "Die Erinnerung konnte nicht gesendet werden."
+            },
+            "remindedAt": "Erinnert %{distance}. Eine Woche danach kannst du erneut erinnern."
           }
         },
         "squadrons": {

@@ -305,7 +305,6 @@
           "health": {
             "open": "Mitglieder-Zustand",
             "showAll": "Alle %{count} anzeigen",
-            "roleSettings": "Rolleneinstellungen",
             "inviteLinks": "Einladungslinks",
             "discordSettings": "Discord-Einstellungen",
             "verifyOrg": "RSI-Organisation verifizieren",
@@ -315,7 +314,9 @@
             "promoteTo": "Zu %{role} befördern",
             "addToSquadron": "Zur Staffel hinzufügen",
             "addMembers": "Mitglieder hinzufügen",
-            "deleteSquadron": "Auflösen"
+            "deleteSquadron": "Auflösen",
+            "remind": "An Verifizierung erinnern",
+            "reminded": "Erinnert"
           }
         },
         "inviteUrls": {

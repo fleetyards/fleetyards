@@ -56,7 +56,6 @@ const healthWith = (
   memberCount: 10,
   hiddenShipsCount: 0,
   admins: { totalCount: 2, items: [], candidates: [] },
-  emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: none,
   inactiveMembers: none,
@@ -119,7 +118,7 @@ describe("FleetDashboardActionQueuePanel", () => {
     health = healthWith({
       inactiveMembers: { totalCount: 4, items: [] },
       unverifiedMembers: { totalCount: 2, items: [] },
-      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
+      waitingJoinRequests: { totalCount: 1, items: [] },
     });
 
     const subject = await mount({ canCheckMemberHealth: true });
@@ -132,7 +131,7 @@ describe("FleetDashboardActionQueuePanel", () => {
 
   // Hidden hangars are worth knowing, not something to answer.
   it("stays quiet when nothing needs attention", async () => {
-    health = healthWith({ emptyRoles: [], hiddenShipsCount: 4 });
+    health = healthWith({ hiddenShipsCount: 4 });
 
     const subject = await mount({ canCheckMemberHealth: true });
 

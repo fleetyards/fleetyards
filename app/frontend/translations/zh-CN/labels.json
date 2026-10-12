@@ -767,14 +767,7 @@
               "admins": {
                 "title": "管理员",
                 "overview": "管理员",
-                "description": "管理员是唯一可以管理一切的角色。只有一人担任时，舰队依赖于一个账户。",
                 "clear": "%{admins} 名成员担任管理员。"
-              },
-              "emptyRoles": {
-                "title": "无人担任的角色",
-                "overview": "空角色",
-                "description": "提升某人担任这些角色，或为其重新命名。",
-                "clear": "每个角色至少有一名成员。"
               },
               "unverified": {
                 "title": "未通过 %{sid} 验证",
@@ -785,55 +778,46 @@
               "noHandle": {
                 "title": "没有 RSI 账号名",
                 "overview": "没有 RSI 账号名",
-                "description": "没有账号名就无法关联 RSI 个人资料，舰队添加 RSI SID 后也无从验证。",
                 "clear": "所有成员都填写了 RSI 账号名。"
               },
               "inactive": {
                 "title": "不活跃成员",
                 "overview": "%{count}+ 天不活跃",
-                "description": "在所选时间内未在 FleetYards 上活动。军官排在最前。",
                 "clear": "所有人在过去 %{count} 天内都有活动。"
               },
               "joinRequests": {
                 "title": "等待超过一周的入队申请",
                 "overview": "旧入队申请",
-                "description": "有人申请加入，仍在等待答复。",
                 "clear": "没有入队申请等待超过一周。"
               },
               "invitations": {
                 "title": "无人回应的邀请",
                 "overview": "未回应的邀请",
-                "description": "两周前发出的邀请，至今既未接受也未拒绝。",
                 "clear": "没有邀请超过两周未处理。"
               },
               "inviteUrls": {
                 "title": "需要整理的邀请链接",
                 "overview": "邀请链接",
-                "description": "失效的链接只是累赘。没有过期时间也没有使用次数限制的链接，任何人拿到都能加入。",
-                "clear": "所有邀请链接都有效且有限制。"
+                "clear": "所有邀请链接都在使用中。"
               },
               "discord": {
                 "title": "未关联 Discord",
                 "overview": "Discord",
-                "description": "舰队会分配 Discord 角色，但这些成员没有关联 Discord 账户，因此无法获得角色。",
                 "clear": "所有成员都已关联 Discord。"
               },
               "emptySquadrons": {
                 "title": "无人加入的中队",
                 "overview": "空中队",
-                "description": "为其补充成员或删除。",
                 "clear": "每个中队都有成员。"
               },
               "noSquadron": {
                 "title": "未加入中队的成员",
                 "overview": "无中队",
-                "description": "已加入舰队但不在任何中队或小组中的成员。",
                 "clear": "所有成员都在中队中。"
               },
               "hiddenShips": {
                 "title": "未纳入舰队的舰船",
                 "overview": "隐藏的机库",
-                "description": "这是成员自己的选择。舰队的舰船数量和统计不包含这些舰船。",
                 "clear": "所有成员都与舰队共享其舰船。"
               }
             },
@@ -850,14 +834,14 @@
               "noHandle": "未填写账号名",
               "linkExpired": "已于%{distance}过期",
               "linkUsedUp": "无剩余次数",
-              "linkUnlimited": "永不过期，无次数限制",
               "createdBy": "由 %{name} 创建",
               "used": {
                 "one": "已使用 1 次",
                 "other": "已使用 %{count} 次"
               },
               "team": "小组",
-              "created": "创建于 %{date}"
+              "created": "创建于 %{date}",
+              "linkUnused": "从未使用，创建于%{distance}"
             },
             "gaps": {
               "no_handle": "个人资料中没有 RSI 账号名",
@@ -882,7 +866,12 @@
             "addedToSquadron": {
               "success": "已加入中队。",
               "failure": "无法加入中队。"
-            }
+            },
+            "reminded": {
+              "success": "提醒已发送。",
+              "failure": "无法发送提醒。"
+            },
+            "remindedAt": "已于%{distance}提醒。一周后可再次提醒。"
           }
         },
         "squadrons": {

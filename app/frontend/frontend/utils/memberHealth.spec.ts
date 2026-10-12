@@ -13,7 +13,6 @@ const healthWith = (
   memberCount: 10,
   hiddenShipsCount: 0,
   admins: { totalCount: 2, items: [], candidates: [] },
-  emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: none,
   inactiveMembers: none,

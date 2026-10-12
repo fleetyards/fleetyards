@@ -72,7 +72,6 @@ const healthWith = (
   memberCount: 10,
   hiddenShipsCount: 0,
   admins: { ...section([member("aria", { leader: true })], 2), candidates: [] },
-  emptyRoles: null,
   unverifiedMembers: null,
   membersWithoutRsiHandle: section([]),
   inactiveMembers: section([]),
@@ -98,11 +97,6 @@ const mount = async (query: Record<string, string> = {}) => {
       {
         path: "/f/:slug/members/health",
         name: "fleet-members-health",
-        component: Stub,
-      },
-      {
-        path: "/f/:slug/settings/roles",
-        name: "fleet-settings-roles",
         component: Stub,
       },
       {
@@ -320,26 +314,10 @@ describe("FleetMembersHealthPage", () => {
     expect(row.find("[data-test='health-decline']").exists()).toBe(true);
   });
 
-  it("lists the empty roles by name and links to the role settings", async () => {
-    health = healthWith({
-      emptyRoles: [{ id: "r", name: "Officer", slug: "officer" }],
-    });
-
-    const subject = await mount();
-
-    expect(subject.find("[data-test='health-empty-role-officer']").text()).toBe(
-      "Officer",
-    );
-    expect(
-      subject.find("[data-test='health-roles-settings']").attributes("href"),
-    ).toBe("#/f/maru/settings/roles");
-  });
-
   it("leaves out checks that do not apply", async () => {
     const subject = await mount();
 
     [
-      "emptyRoles",
       "unverified",
       "inviteUrls",
       "discord",
@@ -438,5 +416,51 @@ describe("FleetMembersHealthPage", () => {
         .find("[data-test='health-inactive-gone'] [data-test='health-demote']")
         .exists(),
     ).toBe(false);
+  });
+
+  it("asks an unverified member to verify, once a week", async () => {
+    health = healthWith({
+      membersWithoutRsiHandle: null,
+      unverifiedMembers: section([
+        member("tal", {
+          verificationGap: "handle_unverified",
+          rsiHandle: "Tal",
+        }),
+        member("vesna", {
+          verificationGap: "handle_unverified",
+          verificationRemindedAt: new Date().toISOString(),
+        }),
+      ]),
+    });
+
+    const subject = await mount();
+    const remind = (username: string) =>
+      subject.find(
+        `[data-test='health-unverified-${username}'] [data-test='health-remind']`,
+      );
+
+    expect(remind("tal").attributes("disabled")).toBeUndefined();
+    expect(remind("vesna").attributes("disabled")).toBeDefined();
+    expect(
+      subject
+        .find(
+          "[data-test='health-unverified-tal'] [data-test='health-contact']",
+        )
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("withdraws an unanswered invitation rather than removing a member", async () => {
+    health = healthWith({
+      unansweredInvitations: section([
+        member("mira", { invitedAt: "2026-09-01T00:00:00Z" }),
+      ]),
+    });
+
+    const subject = await mount();
+    const row = subject.find("[data-test='health-invitations-mira']");
+
+    expect(row.find("[data-test='health-revoke']").exists()).toBe(true);
+    expect(row.find("[data-test='health-remove']").exists()).toBe(false);
   });
 });

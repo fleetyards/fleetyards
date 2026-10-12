@@ -24,13 +24,14 @@ import type { MemberHealthCheck } from "@/frontend/utils/memberHealth";
 type Props = {
   check: MemberHealthCheck;
   title: string;
-  description: string;
+  description?: string;
   clearLine: string;
   more?: RouteLocationRaw;
   moreLabel?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  description: undefined,
   more: undefined,
   moreLabel: undefined,
 });
@@ -95,7 +96,7 @@ const panelTone = computed(() =>
           {{ title }}
           <Pill :variant="pillVariant">{{ check.display }}</Pill>
         </span>
-        <template #subtitle>{{ description }}</template>
+        <template v-if="description" #subtitle>{{ description }}</template>
         <template v-if="$slots.actions" #actions>
           <slot name="actions" />
         </template>

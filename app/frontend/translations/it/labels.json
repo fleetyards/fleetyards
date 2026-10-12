@@ -767,14 +767,7 @@
               "admins": {
                 "title": "Admin",
                 "overview": "Admin",
-                "description": "Admin è l'unico ruolo che può gestire tutto. Con un solo titolare, la flotta dipende da un account.",
                 "clear": "%{admins} membri sono admin."
-              },
-              "emptyRoles": {
-                "title": "Ruoli senza membri",
-                "overview": "Ruoli vuoti",
-                "description": "Promuovi qualcuno a questi ruoli o rinominali.",
-                "clear": "Ogni ruolo ha almeno un membro."
               },
               "unverified": {
                 "title": "Non verificati con %{sid}",
@@ -785,55 +778,46 @@
               "noHandle": {
                 "title": "Nessun handle RSI",
                 "overview": "Nessun handle RSI",
-                "description": "Senza handle non c'è un profilo RSI da collegare né nulla da verificare quando la flotta aggiungerà il suo SID RSI.",
                 "clear": "Tutti i membri hanno indicato un handle RSI."
               },
               "inactive": {
                 "title": "Membri inattivi",
                 "overview": "Inattivi da %{count}+ giorni",
-                "description": "Nessuna attività su FleetYards per almeno il periodo scelto. Gli ufficiali sono elencati per primi.",
                 "clear": "Tutti sono stati attivi negli ultimi %{count} giorni."
               },
               "joinRequests": {
                 "title": "Richieste di adesione in attesa da oltre una settimana",
                 "overview": "Richieste vecchie",
-                "description": "Qualcuno ha chiesto di entrare e aspetta ancora una risposta.",
                 "clear": "Nessuna richiesta attende da più di una settimana."
               },
               "invitations": {
                 "title": "Inviti senza risposta",
                 "overview": "Inviti senza risposta",
-                "description": "Invitati più di due settimane fa e mai accettati o rifiutati.",
                 "clear": "Nessun invito è aperto da più di due settimane."
               },
               "inviteUrls": {
                 "title": "Link d'invito da sistemare",
                 "overview": "Link d'invito",
-                "description": "I link che non funzionano più sono solo ingombro. Un link senza scadenza né limite di utilizzi permette a chiunque lo trovi di entrare.",
-                "clear": "Tutti i link d'invito sono attuali e limitati."
+                "clear": "Tutti i link d'invito sono in uso."
               },
               "discord": {
                 "title": "Discord non collegato",
                 "overview": "Discord",
-                "description": "La flotta assegna ruoli Discord, ma questi membri non hanno collegato un account Discord e quindi non possono riceverli.",
                 "clear": "Tutti i membri hanno collegato Discord."
               },
               "emptySquadrons": {
                 "title": "Squadriglie senza membri",
                 "overview": "Squadriglie vuote",
-                "description": "Riempile o eliminale.",
                 "clear": "Ogni squadriglia ha dei membri."
               },
               "noSquadron": {
                 "title": "Membri senza squadriglia",
                 "overview": "Senza squadriglia",
-                "description": "Membri accettati che non sono in nessuna squadriglia o squadra.",
                 "clear": "Tutti i membri sono in una squadriglia."
               },
               "hiddenShips": {
                 "title": "Navi escluse dalla flotta",
                 "overview": "Hangar nascosti",
-                "description": "Lo scelgono i membri stessi. I conteggi e le statistiche delle navi della flotta escludono queste navi.",
                 "clear": "Tutti i membri condividono le loro navi con la flotta."
               }
             },
@@ -850,14 +834,14 @@
               "noHandle": "Nessun handle indicato",
               "linkExpired": "Scaduto %{distance}",
               "linkUsedUp": "Nessun utilizzo rimasto",
-              "linkUnlimited": "Non scade mai, nessun limite di utilizzi",
               "createdBy": "Creato da %{name}",
               "used": {
                 "one": "Usato una volta",
                 "other": "Usato %{count} volte"
               },
               "team": "Squadra",
-              "created": "Creata il %{date}"
+              "created": "Creata il %{date}",
+              "linkUnused": "Mai usato, creato %{distance}"
             },
             "gaps": {
               "no_handle": "Nessun handle RSI nel profilo",
@@ -882,7 +866,12 @@
             "addedToSquadron": {
               "success": "Aggiunto alla squadriglia.",
               "failure": "Impossibile aggiungere alla squadriglia."
-            }
+            },
+            "reminded": {
+              "success": "Promemoria inviato.",
+              "failure": "Non è stato possibile inviare il promemoria."
+            },
+            "remindedAt": "Promemoria inviato %{distance}. Potrai inviarne un altro una settimana dopo."
           }
         },
         "squadrons": {

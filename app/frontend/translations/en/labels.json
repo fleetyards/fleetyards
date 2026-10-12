@@ -767,14 +767,7 @@
               "admins": {
                 "title": "Admins",
                 "overview": "Admins",
-                "description": "Admin is the one role that can manage everything. With a single holder, the fleet depends on one account.",
                 "clear": "%{admins} members hold Admin."
-              },
-              "emptyRoles": {
-                "title": "Roles nobody holds",
-                "overview": "Empty roles",
-                "description": "Promote someone into them, or rename them.",
-                "clear": "Every role has at least one member."
               },
               "unverified": {
                 "title": "Not verified against %{sid}",
@@ -785,55 +778,46 @@
               "noHandle": {
                 "title": "No RSI handle",
                 "overview": "No RSI handle",
-                "description": "Without a handle there is no RSI profile to link, and nothing to verify once the fleet adds its RSI SID.",
                 "clear": "Every member has given an RSI handle."
               },
               "inactive": {
                 "title": "Inactive members",
                 "overview": "Inactive %{count}+ days",
-                "description": "No activity on FleetYards for at least the chosen time. Officers are listed first.",
                 "clear": "Everyone was active in the last %{count} days."
               },
               "joinRequests": {
                 "title": "Join requests waiting over a week",
                 "overview": "Old join requests",
-                "description": "Somebody asked to join and is still waiting for an answer.",
                 "clear": "No join request has waited more than a week."
               },
               "invitations": {
                 "title": "Invitations nobody answered",
                 "overview": "Unanswered invites",
-                "description": "Invited more than two weeks ago and never accepted or declined.",
                 "clear": "No invitation has been open for more than two weeks."
               },
               "inviteUrls": {
                 "title": "Invite links to tidy up",
                 "overview": "Invite links",
-                "description": "Links that no longer work are clutter. A link with no expiry and no use limit lets anyone who finds it join.",
-                "clear": "Every invite link is current and limited."
+                "clear": "Every invite link is in use."
               },
               "discord": {
                 "title": "Not linked to Discord",
                 "overview": "Discord",
-                "description": "The fleet hands out Discord roles, but these members have no Discord account linked, so they cannot get them.",
                 "clear": "Every member has Discord linked."
               },
               "emptySquadrons": {
                 "title": "Squadrons nobody is in",
                 "overview": "Empty squadrons",
-                "description": "Fill them or delete them.",
                 "clear": "Every squadron has members."
               },
               "noSquadron": {
                 "title": "Members in no squadron",
                 "overview": "No squadron",
-                "description": "Accepted members who are in no squadron or team.",
                 "clear": "Every member is in a squadron."
               },
               "hiddenShips": {
                 "title": "Ships kept out of the fleet",
                 "overview": "Hidden hangars",
-                "description": "Members choose this themselves. The fleet's ship counts and stats leave these ships out.",
                 "clear": "Every member shares their ships with the fleet."
               }
             },
@@ -850,14 +834,14 @@
               "noHandle": "No handle given",
               "linkExpired": "Expired %{distance}",
               "linkUsedUp": "No uses left",
-              "linkUnlimited": "Never expires, no use limit",
               "createdBy": "Created by %{name}",
               "used": {
                 "one": "Used once",
                 "other": "Used %{count} times"
               },
               "team": "Team",
-              "created": "Created %{date}"
+              "created": "Created %{date}",
+              "linkUnused": "Never used, created %{distance}"
             },
             "gaps": {
               "no_handle": "No RSI handle on profile",
@@ -882,7 +866,12 @@
             "addedToSquadron": {
               "success": "Added to the squadron.",
               "failure": "Could not be added to the squadron."
-            }
+            },
+            "reminded": {
+              "success": "Reminder sent.",
+              "failure": "The reminder could not be sent."
+            },
+            "remindedAt": "Reminded %{distance}. You can remind again a week later."
           }
         },
         "squadrons": {

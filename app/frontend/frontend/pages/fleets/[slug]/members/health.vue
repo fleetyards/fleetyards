@@ -155,6 +155,11 @@ const checkText = (check: MemberHealthCheck, part: string) =>
     admins: check.display,
   });
 
+// Only verification needs saying: what "verified" means is not obvious from
+// the title, and it was read as "not in the org" without it.
+const descriptionFor = (check: MemberHealthCheck) =>
+  check.key === "unverified" ? checkText(check, "description") : undefined;
+
 const membersLink = (query: Record<string, string>) => ({
   name: "fleet-members-index",
   params: { slug: props.fleet.slug },
@@ -323,11 +328,18 @@ const actionsFor = (
     case "invitations":
       return ["revoke"];
     case "inactive":
-      return member.leader ? ["demote", "remove"] : ["remove"];
-    // Only a member their own org list does not name is resolved here; the
-    // other gaps are theirs to close.
+      return member.leader
+        ? ["contact", "demote", "remove"]
+        : ["contact", "remove"];
+    // The member closes most gaps themselves, so the fleet asks them to. Only
+    // one their own org list does not name is also the fleet's to resolve.
     case "unverified":
-      return member.verificationGap === "org_not_listed" ? ["remove"] : [];
+      return member.verificationGap === "org_not_listed"
+        ? ["remind", "contact", "remove"]
+        : ["remind", "contact"];
+    case "noHandle":
+    case "discord":
+      return ["contact"];
     case "noSquadron":
       return ["addToSquadron"];
     default:
@@ -379,6 +391,7 @@ const deleteInviteUrl = async (token: string) => {
 const inviteUrlFact = (inviteUrl: {
   expiresAfter?: string | null;
   limit?: number | null;
+  createdAt: string;
 }) => {
   if (inviteUrl.expiresAfter && new Date(inviteUrl.expiresAfter) < new Date()) {
     return t("labels.fleet.members.health.facts.linkExpired", {
@@ -389,7 +402,9 @@ const inviteUrlFact = (inviteUrl: {
     return t("labels.fleet.members.health.facts.linkUsedUp");
   }
 
-  return t("labels.fleet.members.health.facts.linkUnlimited");
+  return t("labels.fleet.members.health.facts.linkUnused", {
+    distance: timeDistance(inviteUrl.createdAt),
+  });
 };
 
 const openInviteUrlModal = () => {
@@ -466,305 +481,286 @@ const crumbs = computed<Crumb[]>(() => [
           </a>
         </nav>
 
-        <div
-          v-for="entry in groups"
-          :key="entry.group"
-          class="member-health__group"
-        >
-          <h2 class="member-health__group-title">
-            {{ t(`labels.fleet.members.health.groups.${entry.group}`) }}
-          </h2>
-
-          <CheckPanel
-            v-for="check in entry.checks"
-            :key="check.key"
-            :check="check"
-            :title="checkText(check, 'title')"
-            :description="checkText(check, 'description')"
-            :clear-line="checkText(check, 'clear')"
-            :more="moreFor(check)"
-            :more-label="
-              t('actions.fleet.members.health.showAll', {
-                count: sections[check.key]?.totalCount ?? 0,
-              })
-            "
+        <div class="member-health__groups">
+          <div
+            v-for="entry in groups"
+            :key="entry.group"
+            class="member-health__group"
           >
-            <template v-if="check.key === 'emptyRoles'" #actions>
-              <Btn
-                :size="BtnSizesEnum.SM"
-                :to="{
-                  name: 'fleet-settings-roles',
-                  params: { slug: fleet.slug },
-                }"
-                data-test="health-roles-settings"
-              >
-                {{ t("actions.fleet.members.health.roleSettings") }}
-              </Btn>
-            </template>
-            <template v-else-if="check.key === 'inactive'" #actions>
-              <BtnGroup segmented>
-                <Btn
-                  v-for="step in DAY_STEPS"
-                  :key="step"
-                  :size="BtnSizesEnum.SM"
-                  :to="daysLink(step)"
-                  :active="days === step"
-                  :data-test="`health-days-${step}`"
-                >
-                  {{ t("labels.fleet.members.health.days", { count: step }) }}
-                </Btn>
-              </BtnGroup>
-            </template>
-            <template v-else-if="check.key === 'inviteUrls'" #actions>
-              <Btn :size="BtnSizesEnum.SM" @click="openInviteUrlModal">
-                {{ t("actions.fleet.members.health.inviteLinks") }}
-              </Btn>
-            </template>
-            <template v-else-if="check.key === 'discord'" #actions>
-              <Btn
-                :size="BtnSizesEnum.SM"
-                :to="{
-                  name: 'fleet-settings-discord',
-                  params: { slug: fleet.slug },
-                }"
-              >
-                {{ t("actions.fleet.members.health.discordSettings") }}
-              </Btn>
-            </template>
+            <h2 class="member-health__group-title">
+              {{ t(`labels.fleet.members.health.groups.${entry.group}`) }}
+            </h2>
 
-            <template #before>
-              <Alert
-                v-if="check.key === 'admins'"
-                variant="danger"
-                size="compact"
-                class="member-health__note"
-                data-test="health-single-admin"
-              >
-                {{
-                  singleAdmin
-                    ? t("labels.fleet.members.health.singleAdmin", {
-                        name: singleAdmin.username,
-                        fleet: fleet.name,
-                      })
-                    : t("labels.fleet.members.health.noAdmin", {
-                        fleet: fleet.name,
-                      })
-                }}
-              </Alert>
-              <template v-if="check.key === 'unverified'">
-                <dl
-                  v-if="health.rsiMemberCount != null"
-                  class="member-health__stats"
-                  data-test="health-org-stats"
+            <CheckPanel
+              v-for="check in entry.checks"
+              :key="check.key"
+              :check="check"
+              :title="checkText(check, 'title')"
+              :description="descriptionFor(check)"
+              :clear-line="checkText(check, 'clear')"
+              :more="moreFor(check)"
+              :more-label="
+                t('actions.fleet.members.health.showAll', {
+                  count: sections[check.key]?.totalCount ?? 0,
+                })
+              "
+            >
+              <template v-if="check.key === 'inactive'" #actions>
+                <BtnGroup segmented>
+                  <Btn
+                    v-for="step in DAY_STEPS"
+                    :key="step"
+                    :size="BtnSizesEnum.SM"
+                    :to="daysLink(step)"
+                    :active="days === step"
+                    :data-test="`health-days-${step}`"
+                  >
+                    {{ t("labels.fleet.members.health.days", { count: step }) }}
+                  </Btn>
+                </BtnGroup>
+              </template>
+              <template v-else-if="check.key === 'inviteUrls'" #actions>
+                <Btn :size="BtnSizesEnum.SM" @click="openInviteUrlModal">
+                  {{ t("actions.fleet.members.health.inviteLinks") }}
+                </Btn>
+              </template>
+              <template v-else-if="check.key === 'discord'" #actions>
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :to="{
+                    name: 'fleet-settings-discord',
+                    params: { slug: fleet.slug },
+                  }"
                 >
-                  <div>
-                    <dt>
-                      {{
-                        t("labels.fleet.members.health.orgStats.rsi", { sid })
-                      }}
-                    </dt>
-                    <dd>{{ health.rsiMemberCount }}</dd>
-                  </div>
-                  <div>
-                    <dt>
-                      {{ t("labels.fleet.members.health.orgStats.roster") }}
-                    </dt>
-                    <dd>{{ health.memberCount }}</dd>
-                  </div>
-                  <div>
-                    <dt>{{ t("labels.fleet.members.health.orgStats.gap") }}</dt>
-                    <dd class="member-health__stat--loud">{{ orgGap }}</dd>
-                  </div>
-                </dl>
+                  {{ t("actions.fleet.members.health.discordSettings") }}
+                </Btn>
+              </template>
+
+              <template #before>
                 <Alert
-                  v-if="!health.fleetRsiVerified"
-                  variant="warning"
+                  v-if="check.key === 'admins'"
+                  variant="danger"
                   size="compact"
                   class="member-health__note"
-                  data-test="health-fleet-unverified"
+                  data-test="health-single-admin"
                 >
                   {{
-                    t("labels.fleet.members.health.fleetNotVerified", { sid })
+                    singleAdmin
+                      ? t("labels.fleet.members.health.singleAdmin", {
+                          name: singleAdmin.username,
+                          fleet: fleet.name,
+                        })
+                      : t("labels.fleet.members.health.noAdmin", {
+                          fleet: fleet.name,
+                        })
                   }}
-                  <router-link
-                    :to="{
-                      name: 'fleet-settings-rsi',
-                      params: { slug: fleet.slug },
-                    }"
-                  >
-                    {{ t("actions.fleet.members.health.verifyOrg") }}
-                  </router-link>
                 </Alert>
+                <template v-if="check.key === 'unverified'">
+                  <dl
+                    v-if="health.rsiMemberCount != null"
+                    class="member-health__stats"
+                    data-test="health-org-stats"
+                  >
+                    <div>
+                      <dt>
+                        {{
+                          t("labels.fleet.members.health.orgStats.rsi", { sid })
+                        }}
+                      </dt>
+                      <dd>{{ health.rsiMemberCount }}</dd>
+                    </div>
+                    <div>
+                      <dt>
+                        {{ t("labels.fleet.members.health.orgStats.roster") }}
+                      </dt>
+                      <dd>{{ health.memberCount }}</dd>
+                    </div>
+                    <div>
+                      <dt>
+                        {{ t("labels.fleet.members.health.orgStats.gap") }}
+                      </dt>
+                      <dd class="member-health__stat--loud">{{ orgGap }}</dd>
+                    </div>
+                  </dl>
+                  <Alert
+                    v-if="!health.fleetRsiVerified"
+                    variant="warning"
+                    size="compact"
+                    class="member-health__note"
+                    data-test="health-fleet-unverified"
+                  >
+                    {{
+                      t("labels.fleet.members.health.fleetNotVerified", { sid })
+                    }}
+                    <router-link
+                      :to="{
+                        name: 'fleet-settings-rsi',
+                        params: { slug: fleet.slug },
+                      }"
+                    >
+                      {{ t("actions.fleet.members.health.verifyOrg") }}
+                    </router-link>
+                  </Alert>
+                </template>
               </template>
-            </template>
 
-            <ul v-if="check.key === 'emptyRoles'" class="member-health__chips">
-              <li
-                v-for="role in health.emptyRoles ?? []"
-                :key="role.id"
-                :data-test="`health-empty-role-${role.slug}`"
+              <p
+                v-if="check.key === 'hiddenShips'"
+                class="member-health__quiet"
               >
-                {{ role.name }}
-              </li>
-            </ul>
-
-            <p
-              v-else-if="check.key === 'hiddenShips'"
-              class="member-health__quiet"
-            >
-              {{
-                t("labels.fleet.members.health.hiddenShips", {
-                  count: health.hiddenShipsCount,
-                })
-              }}
-            </p>
-
-            <ul
-              v-else-if="check.key === 'inviteUrls'"
-              class="member-health__rows"
-            >
-              <HealthRow
-                v-for="inviteUrl in health.staleInviteUrls?.items ?? []"
-                :key="inviteUrl.token"
-                :title="inviteUrl.token"
-                mark="URL"
-                :subline="
-                  inviteUrl.createdBy
-                    ? t('labels.fleet.members.health.facts.createdBy', {
-                        name: inviteUrl.createdBy,
-                      })
-                    : undefined
-                "
-                :fact="inviteUrlFact(inviteUrl)"
-                :fact-sub="
-                  t('labels.fleet.members.health.facts.used', {
-                    count: inviteUrl.usageCount,
+                {{
+                  t("labels.fleet.members.health.hiddenShips", {
+                    count: health.hiddenShipsCount,
                   })
-                "
-                :fact-loud="!inviteUrl.expiresAfter && inviteUrl.limit == null"
-                :data-test="`health-invite-url-${inviteUrl.token}`"
-              >
-                <template v-if="capabilities?.destroyInvites" #actions>
-                  <Btn
-                    :size="BtnSizesEnum.SM"
-                    @click="deleteInviteUrl(inviteUrl.token)"
-                  >
-                    {{ t("actions.fleet.members.health.deleteLink") }}
-                  </Btn>
-                </template>
-              </HealthRow>
-            </ul>
+                }}
+              </p>
 
-            <ul
-              v-else-if="check.key === 'emptySquadrons'"
-              class="member-health__rows"
-            >
-              <HealthRow
-                v-for="squadron in health.emptySquadrons?.items ?? []"
-                :key="squadron.id"
-                :title="squadron.name"
-                :to="{
-                  name: 'fleet-squadron',
-                  params: { slug: fleet.slug, squadron: squadron.slug },
-                }"
-                :mark="squadron.name.slice(0, 2).toUpperCase()"
-                :subline="
-                  squadron.team
-                    ? t('labels.fleet.members.health.facts.team')
-                    : undefined
-                "
-                :fact="
-                  t('labels.fleet.members.health.facts.created', {
-                    date: l(squadron.createdAt, 'datetime.formats.date'),
-                  })
-                "
-                :data-test="`health-emptySquadrons-${squadron.slug}`"
+              <ul
+                v-else-if="check.key === 'inviteUrls'"
+                class="member-health__rows"
               >
-                <template #actions>
-                  <Btn
-                    v-if="capabilities?.manageSquadronMembers"
-                    :size="BtnSizesEnum.SM"
-                    :to="{
-                      name: 'fleet-squadron-members',
-                      params: { slug: fleet.slug, squadron: squadron.slug },
-                    }"
-                    data-test="health-squadron-add-members"
-                  >
-                    {{ t("actions.fleet.members.health.addMembers") }}
-                  </Btn>
-                  <Btn
-                    v-if="capabilities?.destroySquadrons"
-                    :size="BtnSizesEnum.SM"
-                    data-test="health-squadron-delete"
-                    @click="deleteSquadron(squadron)"
-                  >
-                    {{ t("actions.fleet.members.health.deleteSquadron") }}
-                  </Btn>
-                </template>
-              </HealthRow>
-            </ul>
-
-            <ul v-else class="member-health__rows">
-              <HealthRow
-                v-for="member in membersOf(check)"
-                :key="member.id"
-                :title="member.username"
-                :to="memberTo(check, member)"
-                :avatar="member.avatar?.smallUrl"
-                :subline="memberSubline(check, member)"
-                :chip="member.fleetRole?.name"
-                :chip-loud="check.key === 'inactive' && member.leader"
-                :fact="memberFact(check, member)"
-                :fact-sub="
-                  check.key === 'unverified' ? gapSub(member) : undefined
-                "
-                :fact-loud="check.key === 'inactive' && !member.lastActiveAt"
-                :data-test="`health-${check.key}-${member.username}`"
-              >
-                <template v-if="actionsFor(check, member).length" #actions>
-                  <MemberActions
-                    :fleet-slug="fleet.slug"
-                    :member="member"
-                    :actions="actionsFor(check, member)"
-                    :capabilities="capabilities"
-                    :squadrons="squadronOptions"
-                  />
-                </template>
-              </HealthRow>
-            </ul>
-
-            <div
-              v-if="check.key === 'admins' && health.admins.candidates.length"
-              class="member-health__role"
-            >
-              <h4 class="member-health__role-title">
-                {{ t("labels.fleet.members.health.adminCandidates") }}
-              </h4>
-              <ul class="member-health__rows">
                 <HealthRow
-                  v-for="member in health.admins.candidates"
+                  v-for="inviteUrl in health.staleInviteUrls?.items ?? []"
+                  :key="inviteUrl.token"
+                  :title="inviteUrl.token"
+                  mark="URL"
+                  :subline="
+                    inviteUrl.createdBy
+                      ? t('labels.fleet.members.health.facts.createdBy', {
+                          name: inviteUrl.createdBy,
+                        })
+                      : undefined
+                  "
+                  :fact="inviteUrlFact(inviteUrl)"
+                  :fact-sub="
+                    t('labels.fleet.members.health.facts.used', {
+                      count: inviteUrl.usageCount,
+                    })
+                  "
+                  :data-test="`health-invite-url-${inviteUrl.token}`"
+                >
+                  <template v-if="capabilities?.destroyInvites" #actions>
+                    <Btn
+                      :size="BtnSizesEnum.SM"
+                      @click="deleteInviteUrl(inviteUrl.token)"
+                    >
+                      {{ t("actions.fleet.members.health.deleteLink") }}
+                    </Btn>
+                  </template>
+                </HealthRow>
+              </ul>
+
+              <ul
+                v-else-if="check.key === 'emptySquadrons'"
+                class="member-health__rows"
+              >
+                <HealthRow
+                  v-for="squadron in health.emptySquadrons?.items ?? []"
+                  :key="squadron.id"
+                  :title="squadron.name"
+                  :to="{
+                    name: 'fleet-squadron',
+                    params: { slug: fleet.slug, squadron: squadron.slug },
+                  }"
+                  :mark="squadron.name.slice(0, 2).toUpperCase()"
+                  :subline="
+                    squadron.team
+                      ? t('labels.fleet.members.health.facts.team')
+                      : undefined
+                  "
+                  :fact="
+                    t('labels.fleet.members.health.facts.created', {
+                      date: l(squadron.createdAt, 'datetime.formats.date'),
+                    })
+                  "
+                  :data-test="`health-emptySquadrons-${squadron.slug}`"
+                >
+                  <template #actions>
+                    <Btn
+                      v-if="capabilities?.manageSquadronMembers"
+                      :size="BtnSizesEnum.SM"
+                      :to="{
+                        name: 'fleet-squadron-members',
+                        params: { slug: fleet.slug, squadron: squadron.slug },
+                      }"
+                      data-test="health-squadron-add-members"
+                    >
+                      {{ t("actions.fleet.members.health.addMembers") }}
+                    </Btn>
+                    <Btn
+                      v-if="capabilities?.destroySquadrons"
+                      :size="BtnSizesEnum.SM"
+                      data-test="health-squadron-delete"
+                      @click="deleteSquadron(squadron)"
+                    >
+                      {{ t("actions.fleet.members.health.deleteSquadron") }}
+                    </Btn>
+                  </template>
+                </HealthRow>
+              </ul>
+
+              <ul v-else class="member-health__rows">
+                <HealthRow
+                  v-for="member in membersOf(check)"
                   :key="member.id"
                   :title="member.username"
                   :to="memberTo(check, member)"
                   :avatar="member.avatar?.smallUrl"
-                  :subline="joinedLine(member)"
+                  :subline="memberSubline(check, member)"
                   :chip="member.fleetRole?.name"
-                  :fact="lastActive(member)"
-                  :data-test="`health-admin-candidate-${member.username}`"
+                  :chip-loud="check.key === 'inactive' && member.leader"
+                  :fact="memberFact(check, member)"
+                  :fact-sub="
+                    check.key === 'unverified' ? gapSub(member) : undefined
+                  "
+                  :fact-loud="check.key === 'inactive' && !member.lastActiveAt"
+                  :data-test="`health-${check.key}-${member.username}`"
                 >
-                  <template #actions>
+                  <template v-if="actionsFor(check, member).length" #actions>
                     <MemberActions
                       :fleet-slug="fleet.slug"
                       :member="member"
-                      :actions="['promote']"
+                      :actions="actionsFor(check, member)"
                       :capabilities="capabilities"
-                      :promote-to="adminRoleName"
+                      :squadrons="squadronOptions"
                     />
                   </template>
                 </HealthRow>
               </ul>
-            </div>
-          </CheckPanel>
+
+              <div
+                v-if="check.key === 'admins' && health.admins.candidates.length"
+                class="member-health__role"
+              >
+                <h4 class="member-health__role-title">
+                  {{ t("labels.fleet.members.health.adminCandidates") }}
+                </h4>
+                <ul class="member-health__rows">
+                  <HealthRow
+                    v-for="member in health.admins.candidates"
+                    :key="member.id"
+                    :title="member.username"
+                    :to="memberTo(check, member)"
+                    :avatar="member.avatar?.smallUrl"
+                    :subline="joinedLine(member)"
+                    :chip="member.fleetRole?.name"
+                    :fact="lastActive(member)"
+                    :data-test="`health-admin-candidate-${member.username}`"
+                  >
+                    <template #actions>
+                      <MemberActions
+                        :fleet-slug="fleet.slug"
+                        :member="member"
+                        :actions="['promote']"
+                        :capabilities="capabilities"
+                        :promote-to="adminRoleName"
+                      />
+                    </template>
+                  </HealthRow>
+                </ul>
+              </div>
+            </CheckPanel>
+          </div>
         </div>
       </div>
     </template>
@@ -836,14 +832,25 @@ const crumbs = computed<Crumb[]>(() => [
   font-weight: 700;
 }
 
+// Two columns once each can hold a row without wrapping it, one below. Columns
+// rather than a grid: groups differ a lot in height, and a grid would leave a
+// short group's row as tall as its neighbour.
+.member-health__groups {
+  column-width: 520px;
+  column-count: 2;
+  column-gap: 16px;
+}
+
 .member-health__group {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 16px;
+  break-inside: avoid;
 }
 
 .member-health__group-title {
-  margin: 16px 0 0;
+  margin: 8px 0 0;
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
   font-size: 15px;
@@ -856,22 +863,6 @@ const crumbs = computed<Crumb[]>(() => [
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.member-health__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 14px 20px 16px;
-  list-style: none;
-
-  li {
-    padding: 6px 12px;
-    border: 1px dashed rgb(122 130 136 / 0.5);
-    border-radius: 3px;
-    color: var(--color-lifted, #eee);
-  }
 }
 
 .member-health__rows + .member-health__role {

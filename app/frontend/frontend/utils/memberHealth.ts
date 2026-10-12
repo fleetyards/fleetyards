@@ -2,7 +2,6 @@ import type { FleetMemberHealth } from "@/services/fyApi";
 
 export type MemberHealthCheckKey =
   | "admins"
-  | "emptyRoles"
   | "unverified"
   | "noHandle"
   | "inactive"
@@ -57,12 +56,6 @@ const DEFINITIONS: Definition[] = [
     count: (health) => (health.admins.totalCount <= 1 ? 1 : 0),
     // The check is about having one; the number shown is how many there are.
     display: (health) => health.admins.totalCount,
-  },
-  {
-    key: "emptyRoles",
-    group: "leadership",
-    tone: "attention",
-    count: (health) => health.emptyRoles?.length ?? null,
   },
   {
     key: "unverified",

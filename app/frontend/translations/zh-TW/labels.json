@@ -767,14 +767,7 @@
               "admins": {
                 "title": "管理員",
                 "overview": "管理員",
-                "description": "管理員是唯一可以管理一切的角色。只有一人擔任時，艦隊仰賴單一帳號。",
                 "clear": "%{admins} 名成員擔任管理員。"
-              },
-              "emptyRoles": {
-                "title": "無人擔任的角色",
-                "overview": "空角色",
-                "description": "晉升某人擔任這些角色，或為其重新命名。",
-                "clear": "每個角色至少有一名成員。"
               },
               "unverified": {
                 "title": "未通過 %{sid} 驗證",
@@ -785,55 +778,46 @@
               "noHandle": {
                 "title": "沒有 RSI 帳號名",
                 "overview": "沒有 RSI 帳號名",
-                "description": "沒有帳號名就無法連結 RSI 個人檔案，艦隊加入 RSI SID 後也無從驗證。",
                 "clear": "所有成員都填寫了 RSI 帳號名。"
               },
               "inactive": {
                 "title": "不活躍成員",
                 "overview": "%{count}+ 天不活躍",
-                "description": "在所選時間內未在 FleetYards 上活動。軍官排在最前。",
                 "clear": "所有人在過去 %{count} 天內都有活動。"
               },
               "joinRequests": {
                 "title": "等待超過一週的入隊申請",
                 "overview": "舊入隊申請",
-                "description": "有人申請加入，仍在等待答覆。",
                 "clear": "沒有入隊申請等待超過一週。"
               },
               "invitations": {
                 "title": "無人回應的邀請",
                 "overview": "未回應的邀請",
-                "description": "兩週前發出的邀請，至今既未接受也未拒絕。",
                 "clear": "沒有邀請超過兩週未處理。"
               },
               "inviteUrls": {
                 "title": "需要整理的邀請連結",
                 "overview": "邀請連結",
-                "description": "失效的連結只是累贅。沒有到期時間也沒有使用次數限制的連結，任何人拿到都能加入。",
-                "clear": "所有邀請連結都有效且有限制。"
+                "clear": "所有邀請連結都在使用中。"
               },
               "discord": {
                 "title": "未連結 Discord",
                 "overview": "Discord",
-                "description": "艦隊會分配 Discord 角色，但這些成員沒有連結 Discord 帳號，因此無法取得角色。",
                 "clear": "所有成員都已連結 Discord。"
               },
               "emptySquadrons": {
                 "title": "無人加入的中隊",
                 "overview": "空中隊",
-                "description": "為其補充成員或刪除。",
                 "clear": "每個中隊都有成員。"
               },
               "noSquadron": {
                 "title": "未加入中隊的成員",
                 "overview": "無中隊",
-                "description": "已加入艦隊但不在任何中隊或小組中的成員。",
                 "clear": "所有成員都在中隊中。"
               },
               "hiddenShips": {
                 "title": "未納入艦隊的艦船",
                 "overview": "隱藏的機庫",
-                "description": "這是成員自己的選擇。艦隊的艦船數量和統計不包含這些艦船。",
                 "clear": "所有成員都與艦隊共享其艦船。"
               }
             },
@@ -850,14 +834,14 @@
               "noHandle": "未填寫帳號名",
               "linkExpired": "已於%{distance}到期",
               "linkUsedUp": "無剩餘次數",
-              "linkUnlimited": "永不到期，無次數限制",
               "createdBy": "由 %{name} 建立",
               "used": {
                 "one": "已使用 1 次",
                 "other": "已使用 %{count} 次"
               },
               "team": "小組",
-              "created": "建立於 %{date}"
+              "created": "建立於 %{date}",
+              "linkUnused": "從未使用，建立於%{distance}"
             },
             "gaps": {
               "no_handle": "個人檔案中沒有 RSI 帳號名",
@@ -882,7 +866,12 @@
             "addedToSquadron": {
               "success": "已加入中隊。",
               "failure": "無法加入中隊。"
-            }
+            },
+            "reminded": {
+              "success": "提醒已傳送。",
+              "failure": "無法傳送提醒。"
+            },
+            "remindedAt": "已於%{distance}提醒。一週後可再次提醒。"
           }
         },
         "squadrons": {
