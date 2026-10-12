@@ -10,7 +10,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import VehicleHero from "@/frontend/components/Vehicles/Hero/index.vue";
-import VehicleHeroBar from "@/frontend/components/Vehicles/HeroBar/index.vue";
 import { FeatureFlagName, useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkFeatures } from "@/shared/utils/Access";
@@ -79,10 +78,11 @@ const crumbs = computed<Crumb[]>(() => [
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
-      <template v-if="vehicle && heroVisible">
-        <VehicleHero v-if="onOverview" :vehicle="vehicle" />
-        <VehicleHeroBar v-else :vehicle="vehicle" class="vehicle-header-bar" />
-      </template>
+      <VehicleHero
+        v-if="vehicle && heroVisible"
+        :vehicle="vehicle"
+        :compact="!onOverview"
+      />
       <TabNavView
         v-if="vehicle"
         :routes="tabs"
@@ -96,13 +96,3 @@ const crumbs = computed<Crumb[]>(() => [
     </template>
   </AsyncData>
 </template>
-
-<style lang="scss" scoped>
-.vehicle-header-bar {
-  margin-bottom: 10px;
-  padding: 0 12px;
-  border: 1px solid var(--color-edge-soft);
-  border-radius: 10px;
-  background: var(--color-gray-black);
-}
-</style>

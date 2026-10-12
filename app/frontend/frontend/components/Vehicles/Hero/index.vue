@@ -20,9 +20,14 @@ import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
+  // The slim banner the other tabs show. The header animates between the two
+  // in place, so switching tabs shrinks the picture rather than swapping it.
+  compact?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  compact: false,
+});
 
 const { t, l } = useI18n();
 const comlink = useComlink();
@@ -59,6 +64,13 @@ const holoModel = computed(() => {
 
 const holoVisible = ref(false);
 
+watch(
+  () => props.compact,
+  (compact) => {
+    if (compact) holoVisible.value = false;
+  },
+);
+
 const openEditModal = () => {
   comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
@@ -81,7 +93,12 @@ const openImageModal = () => {
 </script>
 
 <template>
-  <section class="vehicle-hero" :aria-label="title" data-test="vehicle-hero">
+  <section
+    class="vehicle-hero"
+    :class="{ 'vehicle-hero--compact': compact }"
+    :aria-label="title"
+    data-test="vehicle-hero"
+  >
     <div class="vehicle-hero__stage">
       <HoloViewer
         v-if="holoVisible && holoModel"
@@ -222,6 +239,7 @@ const openImageModal = () => {
   &__stage {
     position: relative;
     height: clamp(300px, 42vw, 560px);
+    transition: height 0.35s ease;
   }
 
   &__specs {
@@ -230,6 +248,9 @@ const openImageModal = () => {
     bottom: 0;
     left: 0;
     z-index: 2;
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s ease;
   }
 
   // The scrim the title and actions read against; the picture is the owner's,
@@ -279,6 +300,9 @@ const openImageModal = () => {
   &__top {
     top: 16px;
     align-items: center;
+    transition:
+      top 0.35s ease,
+      transform 0.35s ease;
   }
 
   &__bottom {
@@ -286,6 +310,13 @@ const openImageModal = () => {
     left: 24px;
     right: 24px;
     align-items: flex-end;
+    transition: bottom 0.35s ease;
+  }
+
+  &__badges,
+  &__own-picture,
+  &__links {
+    transition: opacity 0.2s ease;
   }
 
   &__own-picture {
@@ -342,6 +373,7 @@ const openImageModal = () => {
   }
 
   &__title {
+    transition: font-size 0.35s ease;
     margin: 0;
     font-family: Orbitron, sans-serif;
     font-size: clamp(1.75rem, 4vw, 2.75rem);
@@ -361,6 +393,67 @@ const openImageModal = () => {
   &__model {
     color: #fff;
     font-weight: 600;
+  }
+
+  // The banner: the picture cropped to a strip, the name and the actions on
+  // it, everything else faded out of the way.
+  &--compact {
+    --vehicle-hero-specs-h: 0px;
+
+    .vehicle-hero__stage {
+      height: 96px;
+    }
+
+    .vehicle-hero__specs {
+      opacity: 0;
+      transform: translateY(100%);
+      pointer-events: none;
+    }
+
+    .vehicle-hero__top {
+      top: 50%;
+      left: auto;
+      transform: translateY(-50%);
+    }
+
+    .vehicle-hero__bottom {
+      bottom: 14px;
+      right: 220px;
+    }
+
+    .vehicle-hero__badges,
+    .vehicle-hero__own-picture,
+    .vehicle-hero__links {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .vehicle-hero__title {
+      font-size: 1.35rem;
+    }
+
+    .vehicle-hero__stage::after {
+      background: linear-gradient(
+        90deg,
+        rgb(0 0 0 / 0.85) 0%,
+        rgb(0 0 0 / 0.35) 60%,
+        rgb(0 0 0 / 0.6) 100%
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__stage,
+    &__specs,
+    &__top,
+    &__bottom,
+    &__title,
+    &__badges,
+    &__own-picture,
+    &__links {
+      transition: none;
+    }
   }
 
   // A phone's picture is too small to carry six figures, so the strip follows
@@ -384,6 +477,16 @@ const openImageModal = () => {
     &__action-label,
     &__links {
       display: none;
+    }
+
+    &--compact {
+      .vehicle-hero__specs {
+        display: none;
+      }
+
+      .vehicle-hero__bottom {
+        right: 150px;
+      }
     }
   }
 }
