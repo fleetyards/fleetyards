@@ -152,6 +152,7 @@ class Vehicle < ApplicationRecord
       {parent_vehicle: :model},
       {image_attachment: :blob},
       {model_image: {file_attachment: :blob}},
+      :user,
       :linked_location,
       :launch_port_location
     ]
