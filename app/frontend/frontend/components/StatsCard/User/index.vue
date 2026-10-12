@@ -82,8 +82,6 @@ const discordUrl = computed(() =>
           role="img"
           class="user-card__supporter"
         >
-          <!-- The tier's insignia alone: the recurring mark beside it does not
-               fit a corner, and the tooltip already says supporter. -->
           <SupporterBadge
             v-if="user.supporterTier"
             :tier="user.supporterTier"

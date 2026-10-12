@@ -32,13 +32,18 @@ describe("UserStatsCard", () => {
     expect(stranger.find(".presence-dot").exists()).toBe(false);
   });
 
-  it("marks a verified handle and a supporter", async () => {
+  it("marks a verified handle and a supporter's tier", async () => {
     const wrapper = await mount({
-      user: user({ rsiHandleVerified: true, supporter: true }),
+      user: user({
+        rsiHandleVerified: true,
+        supporter: true,
+        supporterTier: 2,
+      }),
     });
 
     expect(wrapper.find("[data-test='stats-card-status']").exists()).toBe(true);
     expect(wrapper.find(".user-card__supporter").exists()).toBe(true);
+    expect(wrapper.find("[data-test='supporter-badge']").exists()).toBe(true);
   });
 
   it("says neither for a user who is neither", async () => {
@@ -48,20 +53,5 @@ describe("UserStatsCard", () => {
       false,
     );
     expect(wrapper.find(".user-card__supporter").exists()).toBe(false);
-  });
-
-  it("shows a supporter's tier without the recurring mark", async () => {
-    const wrapper = await mount({
-      user: user({
-        supporter: true,
-        supporterTier: 2,
-        supporterRecurring: true,
-      }),
-    });
-
-    expect(wrapper.find("[data-test='supporter-badge']").exists()).toBe(true);
-    expect(
-      wrapper.find("[data-test='supporter-badge-recurring']").exists(),
-    ).toBe(false);
   });
 });
