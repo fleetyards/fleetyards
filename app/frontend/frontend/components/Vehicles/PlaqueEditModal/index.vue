@@ -16,11 +16,19 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
+import { PLAQUE_MAKERS } from "@/frontend/components/Vehicles/Plaque/makers";
+import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { type Vehicle } from "@/services/fyApi";
+import {
+  NullableVehiclePlaqueStyleEnum,
+  type Vehicle,
+  type VehiclePlaqueStyleEnum,
+} from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -37,6 +45,21 @@ const { displayAlert } = useAppNotifications();
 
 const vehicle = computed(() => props.vehicle);
 
+const { currentUser } = storeToRefs(useSessionStore());
+
+const maker = computed(() => {
+  const code =
+    props.vehicle.manufacturerCode ?? props.vehicle.model.manufacturer?.code;
+
+  return code ? PLAQUE_MAKERS[code] : undefined;
+});
+
+// A maker with a style of its own gets it by default: it is the plaque made
+// for that ship.
+const defaultStyle = computed<VehiclePlaqueStyleEnum>(() =>
+  maker.value ? "manufacturer" : "brass",
+);
+
 const validationSchema = {
   dedication: `max:${DEDICATION_LIMIT}`,
   launchPort: `max:${LINE_LIMIT}`,
@@ -51,6 +74,9 @@ const { defineField, handleSubmit } = useForm({
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
     affiliation: props.vehicle.affiliation ?? "",
     operationsGroup: props.vehicle.operationsGroup ?? null,
+    plaqueStyle: props.vehicle.dedication
+      ? (props.vehicle.plaqueStyle ?? defaultStyle.value)
+      : defaultStyle.value,
   },
 });
 
@@ -60,6 +86,28 @@ const [launchPort] = defineField("launchPort");
 const [launchPortLocationId] = defineField("launchPortLocationId");
 const [affiliation] = defineField("affiliation");
 const [operationsGroup] = defineField("operationsGroup");
+const [plaqueStyle] = defineField("plaqueStyle");
+
+const plaqueStyleOptions = computed(() =>
+  Object.values(NullableVehiclePlaqueStyleEnum)
+    .filter((style): style is VehiclePlaqueStyleEnum => !!style)
+    .filter((style) => style !== "manufacturer" || !!maker.value)
+    .map((style) => ({
+      value: style,
+      label: t(`labels.vehiclePlaque.styles.${style}`),
+    })),
+);
+
+// The plaque as it will read once saved, so a style is picked by looking at it.
+const preview = computed<Vehicle>(() => ({
+  ...props.vehicle,
+  dedication: dedication.value || props.vehicle.dedication,
+  launchedOn: launchedOn.value || null,
+  launchPort: launchPort.value || null,
+  affiliation: affiliation.value || null,
+  operationsGroup: operationsGroup.value || null,
+  plaqueStyle: plaqueStyle.value,
+}));
 
 // Grouped by side of the law, lawful first, as the select keeps this order.
 const operationsGroupOptions = computed(() =>
@@ -89,6 +137,7 @@ const onSubmit = handleSubmit(async (values) => {
         launchPortLocationId: values.launchPortLocationId ?? null,
         affiliation: values.affiliation || null,
         operationsGroup: values.operationsGroup || null,
+        plaqueStyle: values.plaqueStyle || null,
       },
     })
     .then(() => comlink.emit("close-modal"))
@@ -100,7 +149,23 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <Modal :title="t('headlines.vehiclePlaque.title')">
+    <VehiclePlaque
+      :vehicle="preview"
+      :captain="currentUser?.username"
+      class="plaque-edit__preview"
+      data-test="vehicle-plaque-preview"
+    />
     <form id="vehicle-plaque-form" @submit.prevent="onSubmit">
+      <BaseSelect
+        v-model="plaqueStyle"
+        :options="plaqueStyleOptions"
+        :label="t('labels.vehiclePlaque.style')"
+        name="plaqueStyle"
+        :searchable="false"
+        :nullable="false"
+        unsorted
+        data-test="vehicle-plaque-style"
+      />
       <FormTextarea
         v-model="dedication"
         name="dedication"
@@ -167,6 +232,10 @@ const onSubmit = handleSubmit(async (values) => {
 </template>
 
 <style lang="scss" scoped>
+.plaque-edit__preview {
+  margin-bottom: 20px;
+}
+
 .plaque-edit__fleets {
   display: flex;
   flex-wrap: wrap;

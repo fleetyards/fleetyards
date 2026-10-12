@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
-import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
+import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -28,7 +28,17 @@ const { t } = useI18n();
 const comlink = useComlink();
 const { currentUser } = storeToRefs(useSessionStore());
 
+// Making or changing a plaque is a supporter perk; anyone else is offered to
+// become one instead.
 const openEditModal = () => {
+  if (!currentUser?.value?.supporter) {
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Vehicles/PlaqueSupporterModal/index.vue"),
+    });
+    return;
+  }
+
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueEditModal/index.vue"),
@@ -55,8 +65,8 @@ const openEditModal = () => {
       >
         <i class="fa-light fa-pen" />
       </Btn>
-      <DownloadScreenshotBtn
-        :element="`#vehicle-plaque-${vehicle.id}`"
+      <PlaqueDownloadBtn
+        :element="`vehicle-plaque-${vehicle.id}`"
         :filename="`plaque-${vehicle.serial || vehicle.model.slug}`"
         :with-label="false"
         :size="BtnSizesEnum.SM"
