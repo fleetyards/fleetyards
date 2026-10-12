@@ -167,22 +167,31 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   @apply flex flex-none items-center;
 }
 
+/*
+ * The title gives up exactly the width its actions take. A fixed reserve fit one
+ * icon, and a second control - the public log beside add-to-hangar - sat on top
+ * of the name.
+ */
 .panel-heading__title--with-actions {
-  padding-right: 37px;
+  @apply w-auto min-w-0 flex-1;
 }
 
 /* A head can carry more than one control - the calendar's paginator sits beside
    its view switch - and they were separated by nothing but collapsed whitespace.
-   Same 12px the metric head puts between its title and this block. */
+   Same 12px the metric head puts between its title and this block. The negative
+   margins hold the controls 10px from the corner, closer in than the padding. */
 .panel-heading__actions {
-  @apply absolute right-0 top-0 flex items-center;
+  @apply flex flex-none items-center self-start;
   gap: 12px;
-  margin-right: 10px;
-  padding-top: 10px;
+  margin: -6px -8px 0 12px;
 }
 
 .panel-heading--compact {
   padding: 14px 16px;
+}
+
+.panel-heading--compact .panel-heading__actions {
+  margin: -4px -6px 0 12px;
 }
 
 .panel-heading--divider {
@@ -204,14 +213,12 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
 }
 
 /*
- * In flow, opposite the title. A document heading pins its actions to the
- * corner because the title runs the full width under them; a metric head is one
- * short label, so its actions sit beside it.
+ * Centred on the label rather than pinned to the top corner: a metric head is
+ * one short line, so there is no taller block for the actions to top-align to.
  */
 .panel-heading--metric .panel-heading__actions {
-  @apply static;
+  @apply self-auto;
   margin: 0;
-  padding: 0;
 }
 
 .panel-heading--compact .panel-heading__metric-title {
