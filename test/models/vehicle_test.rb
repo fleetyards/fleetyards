@@ -726,17 +726,17 @@ class VehicleModelImageTest < ActiveSupport::TestCase
   end
 
   test "stores a blank dedication plaque line as nil" do
-    vehicle = create(:vehicle, dedication: " ", affiliation: "", alignment: "", launch_port: "")
+    vehicle = create(:vehicle, dedication: " ", affiliation: "", operations_group: "", launch_port: "")
 
     assert_nil vehicle.dedication
     assert_nil vehicle.affiliation
-    assert_nil vehicle.alignment
+    assert_nil vehicle.operations_group
     assert_nil vehicle.launch_port
   end
 
-  test "accepts only a fleet's alignments" do
-    assert build(:vehicle, alignment: "outlaw").valid?
-    assert_not build(:vehicle, alignment: "chaotic").valid?
+  test "accepts only the lore's operations groups" do
+    assert build(:vehicle, operations_group: "nine_tails").valid?
+    assert_not build(:vehicle, operations_group: "vanduul_clan").valid?
   end
 
   test "names the launch port after the location it links" do

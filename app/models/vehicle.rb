@@ -106,9 +106,20 @@ class Vehicle < ApplicationRecord
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
-  # Which side of the law the captain flies on, in a fleet's terms; it names the
-  # plaque's captain and its operations crew.
-  validates :alignment, inclusion: {in: BlueprintSource::ALIGNMENTS}, allow_blank: true
+  # The lore group the plaque credits as the ship's operations crew, and which
+  # side of the law it stands on.
+  OPERATIONS_GROUPS = {
+    "uee" => "lawful",
+    "mercenary_guild" => "neutral",
+    "itg" => "neutral",
+    "cfp" => "neutral",
+    "shubin" => "neutral",
+    "nine_tails" => "outlaw",
+    "headhunters" => "outlaw",
+    "xenothreat" => "outlaw",
+    "rough_and_ready" => "outlaw"
+  }.freeze
+  validates :operations_group, inclusion: {in: OPERATIONS_GROUPS.keys}, allow_blank: true
 
   has_one :inventory, dependent: nil
 
@@ -149,7 +160,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial dedication launch_port affiliation alignment].freeze
+  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},

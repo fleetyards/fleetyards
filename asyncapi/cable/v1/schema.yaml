@@ -4781,6 +4781,32 @@ components:
       - ZA
       - ZU
       - 'NULL'
+    NullableVehicleOperationsGroupEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - uee
+      - mercenary_guild
+      - itg
+      - cfp
+      - shubin
+      - nine_tails
+      - headhunters
+      - xenothreat
+      - rough_and_ready
+      -
+      x-enumNames:
+      - UEE
+      - MERCENARY_GUILD
+      - ITG
+      - CFP
+      - SHUBIN
+      - NINE_TAILS
+      - HEADHUNTERS
+      - XENOTHREAT
+      - ROUGH_AND_READY
+      - 'NULL'
     PayoutLedger:
       type: object
       properties:
@@ -5069,8 +5095,8 @@ components:
           type:
           - string
           - 'null'
-        alignment:
-          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        operationsGroup:
+          "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         manufacturerShortName:
           type:
           - string
