@@ -46,6 +46,7 @@ zh-CN:
       destroy: 无法移除舰队成员。
       update: 无法更新舰队成员。
       demote: 无法降级该舰队成员。
+      remind_verification: "无法发送验证提醒。"
     fleet_memberships:
       create: 舰队邀请无法使用
       destroy: 无法离开舰队。
@@ -53,6 +54,8 @@ zh-CN:
       decline: 舰队邀请无法拒绝。
       demote_not_permitted: 您不能降级永久舰队角色的最后一个成员。
       update: 无法更新舰队成员资格。
+      nothing_to_verify: "该成员已无需再针对舰队的 RSI 组织进行验证。"
+      verification_recently_reminded: "该成员在一周内已收到过提醒。"
     markdown_image:
       create: "无法上传图片。"
     hangar_group:

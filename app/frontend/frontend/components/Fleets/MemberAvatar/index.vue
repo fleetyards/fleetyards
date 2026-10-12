@@ -17,12 +17,22 @@ type Props = {
   >;
   online?: boolean;
   showSquadrons?: boolean;
+  // A roster row's bubble, or a card's: the larger one draws a sharper image
+  // and a squadron mark that is still legible beside it.
+  size?: "small" | "medium";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   online: undefined,
   showSquadrons: false,
+  size: "small",
 });
+
+const avatarUrl = computed(() =>
+  props.size === "medium"
+    ? (props.member.avatar?.mediumUrl ?? props.member.avatar?.smallUrl)
+    : props.member.avatar?.smallUrl,
+);
 
 const verifiedOrgLabel = useVerifiedOrgLabel();
 
@@ -41,7 +51,7 @@ const squadronNames = computed(() =>
 
 <template>
   <span class="member-avatar">
-    <Avatar :avatar="member.avatar?.smallUrl" size="small" :online="online" />
+    <Avatar :avatar="avatarUrl" :size="size" :online="online" />
     <span
       v-if="orgBadgeLabel"
       v-tooltip="orgBadgeLabel"
@@ -55,7 +65,7 @@ const squadronNames = computed(() =>
       v-if="showSquadrons && member.squadrons?.length"
       v-tooltip="squadronNames"
       :squadron="member.squadrons[0]"
-      :size="14"
+      :size="size === 'medium' ? 20 : 14"
       class="member-avatar__squadron"
     />
   </span>

@@ -53,6 +53,7 @@ en:
       destroy: Fleet Member could not be removed.
       update: Fleet Member could not be updated.
       demote: Fleet member could not be demoted.
+      remind_verification: "Verification reminder could not be sent."
     fleet_memberships:
       create: Fleet Invitation could not be used
       destroy: Fleet could not be leaved.
@@ -60,6 +61,8 @@ en:
       decline: Fleet Invitation could not be declined.
       demote_not_permitted: You can't demote the last Member of a permanent Fleet Role.
       update: Fleet membership could not be updated.
+      nothing_to_verify: "This member has nothing left to verify against the fleet's RSI organisation."
+      verification_recently_reminded: "This member was reminded less than a week ago."
     fleet_events:
       create: Event could not be created.
       update: Event could not be updated.

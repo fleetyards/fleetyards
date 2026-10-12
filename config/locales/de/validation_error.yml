@@ -53,6 +53,7 @@ de:
       destroy: Flottenmitglied konnte nicht entfernt werden.
       update: Flottenmitglied konnte nicht aktualisiert werden.
       demote: Flottenmitglied konnte nicht herabgestuft werden.
+      remind_verification: "Die Erinnerung zur Verifizierung konnte nicht gesendet werden."
     fleet_memberships:
       create: Flotteneinladung konnte nicht verwendet werden
       destroy: Flotte konnte nicht verlassen werden.
@@ -61,6 +62,8 @@ de:
       demote_not_permitted: Sie können das letzte Mitglied einer permanenten Flottenrolle
         nicht degradieren.
       update: Flottenmitgliedschaft konnte nicht aktualisiert werden.
+      nothing_to_verify: "Dieses Mitglied hat gegenüber der RSI-Organisation der Flotte nichts mehr zu verifizieren."
+      verification_recently_reminded: "Dieses Mitglied wurde vor weniger als einer Woche erinnert."
     markdown_image:
       create: "Bild konnte nicht hochgeladen werden."
     hangar_group:

@@ -86,6 +86,12 @@ fr:
       claimant_admin:
         title: "Ta réclamation de %{fid} a été annulée"
         body: "Un administrateur a annulé la réclamation de %{fleet} sur l’ID de flotte %{fid}."
+    fleet_verification_requested:
+      title: "%{fleet} vous demande de vérifier votre appartenance RSI"
+      no_handle: "%{fleet} vérifie ses membres auprès de l'organisation RSI %{sid}, et votre profil n'a pas encore de handle RSI. Ajoutez votre handle dans les paramètres de votre profil et vérifiez-le, afin que la flotte puisse confirmer que vous faites partie de %{sid}."
+      handle_unverified: "%{fleet} vérifie ses membres auprès de l'organisation RSI %{sid}, mais votre handle RSI n'est pas encore vérifié. Vérifiez-le dans les paramètres de votre profil, afin que la flotte puisse confirmer que vous faites partie de %{sid}."
+      orgs_not_checked: "%{fleet} vérifie ses membres auprès de l'organisation RSI %{sid}, et votre liste d'organisations RSI n'a pas encore été lue. Actualisez-la dans les paramètres de votre profil, afin que la flotte puisse confirmer que vous faites partie de %{sid}."
+      org_not_listed: "%{fleet} vérifie ses membres auprès de l'organisation RSI %{sid}, et votre liste d'organisations RSI ne la contient pas. Si vous avez rejoint %{sid} sur RSI entre-temps, actualisez votre liste dans les paramètres de votre profil."
     rsi_handle_verification_lost:
       title: "Ton pseudo RSI %{handle} n’est plus vérifié"
       body: "Un autre compte Fleetyards a prouvé que le pseudo RSI %{handle} lui appartient, via Citizen iD ou avec son code de vérification dans la bio RSI. Ton profil n’affiche plus le pseudo comme vérifié. Si %{handle} est le tien, vérifie-le à nouveau depuis les paramètres de ton profil."

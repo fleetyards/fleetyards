@@ -41,6 +41,7 @@ const {
   showActionQueue,
   canAnswerJoinRequests,
   canAnswerTransfers,
+  canCheckMemberHealth,
   canCreateEvents,
   canCreateContracts,
   canReadMissions,
@@ -112,6 +113,7 @@ const postAnnouncement = () =>
         :fleet="fleet"
         :can-answer-join-requests="canAnswerJoinRequests"
         :can-answer-transfers="canAnswerTransfers"
+        :can-check-member-health="canCheckMemberHealth"
         class="fleet-dashboard__queue"
       />
       <OnlineMembersPanel

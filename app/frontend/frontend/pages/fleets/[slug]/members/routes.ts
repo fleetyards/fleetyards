@@ -35,6 +35,22 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "health/",
+    name: "fleet-members-health",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/members/health.vue"),
+    meta: {
+      title: "fleets.members.health",
+      needsAuthentication: true,
+      customTitle: true,
+      access: [
+        "fleet:memberships:update",
+        "fleet:memberships:manage",
+        "fleet:manage",
+      ],
+    },
+  },
+  {
     // Was a page of its own; the roster and the invites are one list asked two
     // questions, so the choice moved into the query. The path stays so shared
     // links resolve.

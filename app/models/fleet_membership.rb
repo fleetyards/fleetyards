@@ -33,6 +33,7 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
+  belongs_to :inviter, class_name: "User", foreign_key: :invited_by, optional: true, inverse_of: false
 
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadrons, through: :fleet_squadron_memberships
@@ -62,8 +63,18 @@ class FleetMembership < ApplicationRecord
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
       "blueprints_filter", "role", "squadron_slug", "squadron_membership_created_at",
-      "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
+      "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state", "verified"
     ]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["inactive_since", "without_rsi_handle", "without_discord", "without_squadron"]
+  end
+
+  # Ransack turns "1" or "true" into a boolean before a scope sees it; a date
+  # has to arrive as the text it was sent as.
+  def self.ransackable_scopes_skip_sanitize_args
+    ["inactive_since"]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -112,6 +123,29 @@ class FleetMembership < ApplicationRecord
   ransack_alias :squadron_membership_created_at, :fleet_squadron_memberships_created_at
   ransack_alias :state, :aasm_state
 
+  # Never active counts as inactive: an account that has not been used since
+  # tracking began is the longest gone of all.
+  # A value that is not a date filters nothing rather than reaching Postgres.
+  scope :inactive_since, ->(time) do
+    time = Date.iso8601(time) if time.is_a?(String)
+    where(user_id: User.where("users.last_active_at IS NULL OR users.last_active_at < ?", time).select(:id))
+  rescue Date::Error
+    all
+  end
+
+  scope :without_rsi_handle, -> {
+    where(user_id: User.where(rsi_handle: [nil, ""]).select(:id))
+  }
+
+  scope :without_discord, -> {
+    where.not(user_id: OmniauthConnection.discord.select(:user_id))
+  }
+
+  # Teams count: a member placed in one has been placed.
+  scope :without_squadron, -> {
+    where.not(id: FleetSquadronMembership.select(:fleet_membership_id))
+  }
+
   before_validation :set_default_ships_filter
   before_validation :set_default_blueprints_filter
   before_validation :normalize_nickname
@@ -154,6 +188,40 @@ class FleetMembership < ApplicationRecord
   # it.
   def rsi_verified?
     verified? && fleet.rsi_verified?
+  end
+
+  VERIFICATION_GAPS = %w[no_handle handle_unverified orgs_not_checked org_not_listed].freeze
+  VERIFICATION_REMINDER_COOLDOWN = 7.days
+
+  # Not read off the notification it sent: the member can delete that, and the
+  # limit with it. One conditional update, so two officers clicking at once
+  # cannot both pass it: the second waits on the row lock, then matches
+  # nothing.
+  def claim_verification_reminder
+    now = Time.current
+    claimed = self.class.where(id:)
+      .where("verification_reminded_at IS NULL OR verification_reminded_at <= ?", now - VERIFICATION_REMINDER_COOLDOWN)
+      .update_all(verification_reminded_at: now) == 1
+    self.verification_reminded_at = now if claimed
+    claimed
+  end
+
+  # Gives the claim back only while it is still this one: a later claim that
+  # went through keeps its week.
+  def release_verification_reminder(previously_reminded_at)
+    self.class.where(id:, verification_reminded_at:).update_all(verification_reminded_at: previously_reminded_at)
+    self.verification_reminded_at = previously_reminded_at
+  end
+
+  # Why the membership is not verified against the fleet's RSI org, in the
+  # order a member would have to fix it.
+  def verification_gap
+    return if verified?
+    return :no_handle if user.rsi_handle.blank?
+    return :handle_unverified unless user.rsi_handle_verified?
+    return :orgs_not_checked if user.rsi_organizations_checked_at.blank?
+
+    :org_not_listed
   end
 
   def has_access?(privileges)

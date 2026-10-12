@@ -301,7 +301,22 @@
           "decline": "Decline",
           "remove": "移除",
           "editRole": "編輯角色",
-          "editNickname": "編輯暱稱"
+          "editNickname": "編輯暱稱",
+          "health": {
+            "open": "成員健康檢查",
+            "showAll": "顯示全部 %{count} 個",
+            "inviteLinks": "邀請連結",
+            "discordSettings": "Discord 設定",
+            "verifyOrg": "驗證 RSI 組織",
+            "remove": "移出艦隊",
+            "revoke": "撤回邀請",
+            "deleteLink": "刪除連結",
+            "promoteTo": "晉升為 %{role}",
+            "addToSquadron": "加入中隊",
+            "addMembers": "新增成員",
+            "deleteSquadron": "解散",
+            "remind": "提醒驗證"
+          }
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

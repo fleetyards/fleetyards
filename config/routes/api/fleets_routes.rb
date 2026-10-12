@@ -15,12 +15,16 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  # Not under members/: there it would shadow a member named "health".
+  get "member-health", to: "fleet_member_health#show"
+
   resources :fleet_members, path: "members", param: :username, only: %i[index show create update destroy] do
     member do
       put :demote
       put :promote
       put :accept, to: "fleet_members#accept_request"
       put :decline, to: "fleet_members#decline_request"
+      post "verification-reminder", to: "fleet_members#remind_verification"
     end
   end
 

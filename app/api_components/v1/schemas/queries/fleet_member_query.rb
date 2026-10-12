@@ -23,7 +23,12 @@ module V1
           requestedAtGteq: {type: :string, format: :date},
           requestedAtLteq: {type: :string, format: :date},
           declinedAtGteq: {type: :string, format: :date},
-          declinedAtLteq: {type: :string, format: :date}
+          declinedAtLteq: {type: :string, format: :date},
+          inactiveSince: {type: :string, format: :date, description: "Members not active since this date, including those never active"},
+          verifiedEq: {type: :boolean, description: "Whether the member is verified against the fleet's RSI org"},
+          withoutRsiHandle: {type: :boolean, description: "Only members who have not given an RSI handle"},
+          withoutDiscord: {type: :boolean, description: "Only members without a linked Discord account"},
+          withoutSquadron: {type: :boolean, description: "Only members in no squadron or team"}
         }.freeze
 
         schema({

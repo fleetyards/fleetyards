@@ -52,6 +52,10 @@
         "empty": {
           "title": "Todo al día",
           "hint": "Aquí aparecen las solicitudes de ingreso y las transferencias entrantes que necesitan respuesta."
+        },
+        "memberHealth": {
+          "one": "%{count} comprobación de la plantilla requiere atención",
+          "other": "%{count} comprobaciones de la plantilla requieren atención"
         }
       },
       "contracts": {

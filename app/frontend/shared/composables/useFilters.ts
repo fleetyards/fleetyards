@@ -29,8 +29,25 @@ export const useFilters = <T>({
     ...viewStateKeys,
   ];
 
+  // A ransack `_in` / `_not_in` filter takes a list, but the URL hands a single
+  // value back as a bare string, which a multi-select cannot bind and the API
+  // drops -- the filter silently stops filtering.
+  const asLists = <Q extends Record<string, unknown>>(query: Q) => {
+    Object.keys(query)
+      .filter((key) => key.endsWith("In"))
+      .forEach((key) => {
+        const value = query[key];
+        // Left as it is, an empty value is dropped below like any unset filter.
+        if (value == null || value === "" || Array.isArray(value)) return;
+
+        (query as Record<string, unknown>)[key] = [value];
+      });
+
+    return query;
+  };
+
   const filters = computed<T>(() => {
-    const query = { ...(route.query || {}) };
+    const query = asLists({ ...(route.query || {}) });
 
     Object.keys(query)
       .filter((key) => excludeKeys.includes(key))
@@ -50,10 +67,10 @@ export const useFilters = <T>({
   );
 
   const getQuery = (formData?: T) => {
-    const query = {
+    const query = asLists({
       ...route.query,
       ...(formData || filters.value),
-    };
+    });
 
     Object.keys(query)
       .filter((key) => !query[key] || query[key]?.length === 0)

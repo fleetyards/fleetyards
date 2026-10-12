@@ -301,7 +301,22 @@
           "decline": "Rifiuta",
           "remove": "Rimuovi",
           "editRole": "Modifica ruolo",
-          "editNickname": "Modifica soprannome"
+          "editNickname": "Modifica soprannome",
+          "health": {
+            "open": "Stato dei membri",
+            "showAll": "Mostra tutti i %{count}",
+            "inviteLinks": "Link d'invito",
+            "discordSettings": "Impostazioni Discord",
+            "verifyOrg": "Verifica l'organizzazione RSI",
+            "remove": "Rimuovi dalla flotta",
+            "revoke": "Ritira invito",
+            "deleteLink": "Elimina link",
+            "promoteTo": "Promuovi a %{role}",
+            "addToSquadron": "Aggiungi a una squadriglia",
+            "addMembers": "Aggiungi membri",
+            "deleteSquadron": "Sciogli",
+            "remind": "Ricorda di verificare"
+          }
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"

@@ -14,15 +14,21 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  memberHealthChecks,
+  needsAttention,
+} from "@/frontend/utils/memberHealth";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   FleetInventoryTransfersDirection,
   InventoryTransferStateEnum,
   getFleetActivityQueryKey,
+  getFleetMemberHealthQueryKey,
   useAcceptFleetMember,
   useDeclineFleetMember,
   useFleetInventoryTransfers,
+  useFleetMemberHealth,
   useFleetMembers,
   type Fleet,
   type FleetMember,
@@ -32,9 +38,12 @@ type Props = {
   fleet: Fleet;
   canAnswerJoinRequests: boolean;
   canAnswerTransfers: boolean;
+  canCheckMemberHealth?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canCheckMemberHealth: false,
+});
 
 const { t } = useI18n();
 
@@ -84,6 +93,31 @@ const {
   },
 );
 
+// A number is all the panel shows, so it asks for no rows.
+const {
+  data: health,
+  isLoading: healthLoading,
+  isFetching: healthFetching,
+  isLoadingError: healthFailed,
+} = useFleetMemberHealth(
+  fleetSlug,
+  { sample: 0 },
+  {
+    query: {
+      ...liveQuery,
+      enabled: computed(() => props.canCheckMemberHealth),
+    },
+  },
+);
+
+// Checks, not members: one fleet with forty inactive members has one thing to
+// look at, not forty.
+const healthCount = computed(() => {
+  if (!props.canCheckMemberHealth || !health.value) return 0;
+
+  return memberHealthChecks(health.value).filter(needsAttention).length;
+});
+
 const requestItems = computed(() =>
   props.canAnswerJoinRequests ? (requests.value?.items ?? []) : [],
 );
@@ -104,12 +138,14 @@ const transferCount = computed(() =>
 const loading = computed(
   () =>
     (props.canAnswerJoinRequests && requestsLoading.value) ||
-    (props.canAnswerTransfers && transfersLoading.value),
+    (props.canAnswerTransfers && transfersLoading.value) ||
+    (props.canCheckMemberHealth && healthLoading.value),
 );
 
 // A disabled query never fetches, so these need no guard of their own.
 const fetching = computed(
-  () => requestsFetching.value || transfersFetching.value,
+  () =>
+    requestsFetching.value || transfersFetching.value || healthFetching.value,
 );
 
 // Guarded like `loading`: a query disabled after the reader lost the right
@@ -117,11 +153,13 @@ const fetching = computed(
 const failed = computed(
   () =>
     (props.canAnswerJoinRequests && requestsFailed.value) ||
-    (props.canAnswerTransfers && transfersFailed.value),
+    (props.canAnswerTransfers && transfersFailed.value) ||
+    (props.canCheckMemberHealth && healthFailed.value),
 );
 
 const empty = computed(
-  () => !requestItems.value.length && !transferCount.value,
+  () =>
+    !requestItems.value.length && !transferCount.value && !healthCount.value,
 );
 
 const acceptMutation = useAcceptFleetMember();
@@ -146,6 +184,10 @@ const answer = async (member: FleetMember, accept: boolean) => {
 
     comlink.emit("fleet-member-update");
     void refetchRequests();
+    // An answered request may have been the oldest one waiting.
+    void queryClient.invalidateQueries({
+      queryKey: getFleetMemberHealthQueryKey(fleetSlug.value),
+    });
     void queryClient.invalidateQueries({
       queryKey: getFleetActivityQueryKey(fleetSlug.value),
     });
@@ -231,6 +273,22 @@ const answer = async (member: FleetMember, accept: boolean) => {
           t("fleetDashboard.actionQueue.pendingTransfers", {
             count: transferCount,
           })
+        }}
+        <i class="fa-light fa-chevron-right" aria-hidden="true" />
+      </router-link>
+    </section>
+    <section v-if="healthCount" class="action-queue__group">
+      <router-link
+        :to="{
+          name: 'fleet-members-health',
+          params: { slug: fleet.slug },
+        }"
+        class="action-queue__headline"
+        data-test="fleet-dashboard-member-health"
+      >
+        <i class="fa-light fa-heart-pulse" aria-hidden="true" />
+        {{
+          t("fleetDashboard.actionQueue.memberHealth", { count: healthCount })
         }}
         <i class="fa-light fa-chevron-right" aria-hidden="true" />
       </router-link>

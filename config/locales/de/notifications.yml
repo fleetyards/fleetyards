@@ -86,6 +86,12 @@ de:
       claimant_admin:
         title: "Dein Anspruch auf %{fid} wurde abgebrochen"
         body: "Ein Administrator hat den Anspruch von %{fleet} auf die Flotten-ID %{fid} abgebrochen."
+    fleet_verification_requested:
+      title: "%{fleet} bittet dich, deine RSI-Mitgliedschaft zu verifizieren"
+      no_handle: "%{fleet} gleicht seine Mitglieder mit der RSI-Organisation %{sid} ab, und dein Profil hat noch kein RSI-Handle. Trage dein Handle in den Profileinstellungen ein und verifiziere es, damit die Flotte bestätigen kann, dass du zu %{sid} gehörst."
+      handle_unverified: "%{fleet} gleicht seine Mitglieder mit der RSI-Organisation %{sid} ab, aber dein RSI-Handle ist noch nicht verifiziert. Verifiziere es in den Profileinstellungen, damit die Flotte bestätigen kann, dass du zu %{sid} gehörst."
+      orgs_not_checked: "%{fleet} gleicht seine Mitglieder mit der RSI-Organisation %{sid} ab, und deine Liste der RSI-Organisationen wurde noch nicht gelesen. Aktualisiere sie in den Profileinstellungen, damit die Flotte bestätigen kann, dass du zu %{sid} gehörst."
+      org_not_listed: "%{fleet} gleicht seine Mitglieder mit der RSI-Organisation %{sid} ab, und deine Liste der RSI-Organisationen enthält sie nicht. Wenn du %{sid} inzwischen auf RSI beigetreten bist, aktualisiere deine Liste in den Profileinstellungen."
     rsi_handle_verification_lost:
       title: "Dein RSI-Handle %{handle} ist nicht mehr verifiziert"
       body: "Ein anderes Fleetyards-Konto hat gezeigt, dass ihm das RSI-Handle %{handle} gehört – über Citizen iD oder mit seinem Verifizierungscode in der RSI-Bio. Dein Profil zeigt das Handle nicht mehr als verifiziert. Wenn %{handle} deins ist, verifiziere es in deinen Profileinstellungen erneut."

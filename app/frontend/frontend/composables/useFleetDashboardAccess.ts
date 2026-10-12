@@ -62,6 +62,9 @@ export const useFleetDashboardAccess = (
       !!capabilities.value?.readMembers && !!capabilities.value?.updateMembers,
   );
 
+  // The roster's loose ends are listed and acted on, so they ask the same.
+  const canCheckMemberHealth = canAnswerJoinRequests;
+
   const canAnswerTransfers = computed(
     () => showInventory.value && !!capabilities.value?.updateInventories,
   );
@@ -95,6 +98,7 @@ export const useFleetDashboardAccess = (
     showActionQueue,
     canAnswerJoinRequests,
     canAnswerTransfers,
+    canCheckMemberHealth,
     canCreateEvents,
     canCreateContracts,
     canReadMissions,

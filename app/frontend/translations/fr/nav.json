@@ -53,7 +53,8 @@
           "index": "Members",
           "invites": "Invites",
           "worldmap": "Carte du monde",
-          "starmap": "Carte stellaire"
+          "starmap": "Carte stellaire",
+          "health": "État"
         },
         "squadrons": {
           "index": "Escadrons",

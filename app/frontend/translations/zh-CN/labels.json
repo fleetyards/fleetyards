@@ -155,9 +155,7 @@
         "until": "有效期至 %{date}",
         "expiring": "%{date} 到期",
         "ongoing": "定期支持，无结束日期",
-        "tierShort": "第 %{tier} 级",
-        "tierShortRecurring": "第 %{tier} 级，定期",
-        "recurringShort": "定期"
+        "tierShort": "第 %{tier} 级"
       },
       "destroyedFleets": {
         "discarded": "已丢弃",
@@ -374,7 +372,8 @@
           "Location": "地点",
           "FleetContract": "合约",
           "FleetEvent": "活动",
-          "User": "用户"
+          "User": "用户",
+          "FleetMember": "成员"
         },
         "open": {
           "Component": "打开组件",
@@ -386,7 +385,8 @@
           "Location": "打开地点",
           "FleetContract": "打开合约",
           "FleetEvent": "打开活动",
-          "User": "打开机库"
+          "User": "打开机库",
+          "FleetMember": "在成员列表中查看"
         }
       },
       "stats": {
@@ -742,6 +742,141 @@
           "views": {
             "members": "成员",
             "invites": "邀请"
+          },
+          "health": {
+            "overview": "检查项",
+            "summary": {
+              "attention": {
+                "one": "%{total} 项检查中有 %{count} 项需要处理",
+                "other": "%{total} 项检查中有 %{count} 项需要处理"
+              },
+              "clear": "全部 %{total} 项检查均正常"
+            },
+            "groups": {
+              "leadership": "领导层",
+              "rsi": "RSI 组织",
+              "activity": "活跃度",
+              "requests": "申请与邀请",
+              "integrations": "集成"
+            },
+            "days": {
+              "one": "%{count} 天",
+              "other": "%{count} 天"
+            },
+            "checks": {
+              "admins": {
+                "title": "管理员",
+                "overview": "管理员",
+                "clear": "%{admins} 名成员担任管理员。"
+              },
+              "unverified": {
+                "title": "未通过 %{sid} 验证",
+                "overview": "未验证",
+                "description": "当成员自己的 RSI 组织列表包含 %{sid} 时即视为已验证。每一行说明了无法确认的原因。",
+                "clear": "所有成员都已通过 %{sid} 验证。"
+              },
+              "noHandle": {
+                "title": "没有 RSI 账号名",
+                "overview": "没有 RSI 账号名",
+                "clear": "所有成员都填写了 RSI 账号名。"
+              },
+              "inactive": {
+                "title": "不活跃成员",
+                "overview": "%{count}+ 天不活跃",
+                "clear": "所有人在过去 %{count} 天内都有活动。"
+              },
+              "joinRequests": {
+                "title": "等待超过一周的入队申请",
+                "overview": "旧入队申请",
+                "clear": "没有入队申请等待超过一周。"
+              },
+              "invitations": {
+                "title": "无人回应的邀请",
+                "overview": "未回应的邀请",
+                "clear": "没有邀请超过两周未处理。"
+              },
+              "inviteUrls": {
+                "title": "需要整理的邀请链接",
+                "overview": "邀请链接",
+                "clear": "所有邀请链接都在使用中。"
+              },
+              "discord": {
+                "title": "未关联 Discord",
+                "overview": "Discord",
+                "clear": "所有成员都已关联 Discord。"
+              },
+              "emptySquadrons": {
+                "title": "无人加入的中队",
+                "overview": "空中队",
+                "clear": "每个中队都有成员。"
+              },
+              "noSquadron": {
+                "title": "未加入中队的成员",
+                "overview": "无中队",
+                "clear": "所有成员都在中队中。"
+              },
+              "hiddenShips": {
+                "title": "未纳入舰队的舰船",
+                "overview": "隐藏的机库",
+                "clear": "所有成员都与舰队共享其舰船。"
+              }
+            },
+            "facts": {
+              "joined": "于 %{date} 加入",
+              "lastActive": "最后活动于%{distance}",
+              "neverActive": "从未活动",
+              "checked": "检查于%{distance}",
+              "requested": "申请于%{distance}",
+              "invited": "邀请于%{distance}",
+              "invitedBy": "由 %{name} 邀请",
+              "noDiscord": "未关联 Discord 账户",
+              "noSquadron": "无中队",
+              "noHandle": "未填写账号名",
+              "linkExpired": "已于%{distance}过期",
+              "linkUsedUp": "无剩余次数",
+              "createdBy": "由 %{name} 创建",
+              "used": {
+                "one": "已使用 1 次",
+                "other": "已使用 %{count} 次"
+              },
+              "team": "小组",
+              "created": "创建于 %{date}",
+              "linkUnused": "从未使用，创建于%{distance}"
+            },
+            "gaps": {
+              "no_handle": "个人资料中没有 RSI 账号名",
+              "handle_unverified": "RSI 账号名未验证",
+              "orgs_not_checked": "尚未读取组织列表",
+              "org_not_listed": "其组织列表中没有 %{sid}"
+            },
+            "orgStats": {
+              "rsi": "%{sid} 在 RSI 上",
+              "roster": "在 FleetYards 上",
+              "gap": "从未在此加入"
+            },
+            "fleetNotVerified": "%{sid} 本身尚未验证，因此其他地方不会将任何成员显示为已验证。",
+            "singleAdmin": "如果 %{name} 离开或失去访问权限，将没有人能在 FleetYards 上管理 %{fleet}。",
+            "hiddenShips": {
+              "one": "%{count} 名成员未将机库纳入舰队舰船列表。",
+              "other": "%{count} 名成员未将机库纳入舰队舰船列表。"
+            },
+            "deleteLinkFailed": "无法删除该邀请链接。",
+            "noAdmin": "没有人担任管理员，因此没有人能在 FleetYards 上管理 %{fleet}。",
+            "adminCandidates": "提升为管理员",
+            "addedToSquadron": {
+              "success": "已加入中队。",
+              "failure": "无法加入中队。"
+            },
+            "reminded": {
+              "success": "提醒已发送。",
+              "failure": "无法发送提醒。"
+            },
+            "remindedAt": "已于%{distance}提醒。一周后可再次提醒。"
+          },
+          "card": {
+            "verified": "已验证",
+            "unverified": "未验证",
+            "squadrons": "中队"
           }
         },
         "squadrons": {
@@ -2349,7 +2484,14 @@
             "requestedAtGt": "Requested from",
             "requestedAtLt": "Requested until",
             "declinedAtGt": "Declined from",
-            "declinedAtLt": "Declined until"
+            "declinedAtLt": "Declined until",
+            "inactiveSince": "不活跃起始日期",
+            "verified": "RSI 组织",
+            "verifiedYes": "已验证",
+            "verifiedNo": "未验证",
+            "withoutRsiHandle": "没有 RSI 账号名",
+            "withoutDiscord": "未关联 Discord",
+            "withoutSquadron": "未加入中队"
           },
           "inviteUrls": {
             "expiresAfter": "Expire after",
@@ -3309,7 +3451,8 @@
         "fleet_contract_settled": "合同已结算",
         "payout_ledger_settled": "分账已结算",
         "payout_entry_pending_review": "支出待审核",
-        "payout_entry_declined": "支出已拒绝"
+        "payout_entry_declined": "支出已拒绝",
+        "fleet_verification_requested": "你的舰队请求验证"
       },
       "fleets": {
         "missions": {

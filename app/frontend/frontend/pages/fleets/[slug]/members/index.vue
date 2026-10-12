@@ -55,6 +55,12 @@ const canManageInvites = computed(
   () => props.membership?.capabilities?.readMembers ?? false,
 );
 
+const canCheckHealth = computed(
+  () =>
+    !!props.membership?.capabilities?.readMembers &&
+    !!props.membership?.capabilities?.updateMembers,
+);
+
 const canInvite = computed(
   () => props.membership?.capabilities?.createInvites ?? false,
 );
@@ -222,6 +228,14 @@ const crumbs = computed<Crumb[]>(() => {
     <Btn :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }">
       <i class="fa-duotone fa-planet-ringed" />
       {{ t("actions.fleet.starmap") }}
+    </Btn>
+    <Btn
+      v-if="canCheckHealth"
+      :to="{ name: 'fleet-members-health', params: { slug: fleet.slug } }"
+      data-test="fleet-members-health"
+    >
+      <i class="fa-duotone fa-heart-pulse" />
+      {{ t("actions.fleet.members.health.open") }}
     </Btn>
     <template v-if="canInvite">
       <Btn @click="openInviteUrlModal">

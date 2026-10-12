@@ -62,9 +62,9 @@ describe("HangarPublicHeading", () => {
     expect(pill.find(".fa-heart").exists()).toBe(true);
   });
 
-  // A standing pledge that converted below a euro still has something to say,
-  // so the mark shows even with no insignia to hang it on.
-  it("marks a sub-band standing pledge", () => {
+  // Below the first band there is no insignia, recurring or not: the pill
+  // carries the heart, as for any supporter without one.
+  it("shows the heart for a supporter below the first band", () => {
     const wrapper = mountWith({
       supporter: true,
       supporterTier: 0,
@@ -72,8 +72,7 @@ describe("HangarPublicHeading", () => {
     });
     const pill = wrapper.get('[data-test="pill"]');
 
-    expect(pill.find('[data-test="supporter-badge-recurring"]').exists()).toBe(
-      true,
-    );
+    expect(pill.find('[data-test="supporter-badge"]').exists()).toBe(false);
+    expect(pill.find(".fa-heart").exists()).toBe(true);
   });
 });

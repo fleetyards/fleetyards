@@ -269,7 +269,8 @@
         "members": {
           "index": "Members",
           "worldmap": "Member Worldmap",
-          "starmap": "Member Starmap"
+          "starmap": "Member Starmap",
+          "health": "Member Health"
         },
         "squadrons": {
           "index": "Squadrons",

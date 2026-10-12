@@ -449,6 +449,15 @@ class Fleet < ApplicationRecord
     fleet_roles.reload.find_by(new_member_default: true)
   end
 
+  # The roles ranked above the one new members get: whoever holds one runs some
+  # part of the fleet. Without a marked default, only the permanent Admin role.
+  def leader_roles
+    default_role = fleet_roles.find_by(new_member_default: true)
+    return fleet_roles.where(permanent: true) if default_role.nil?
+
+    fleet_roles.where("fleet_roles.rank < ?", default_role.rank)
+  end
+
   def setup_admin_user
     fleet_memberships.create(
       user_id: created_by,

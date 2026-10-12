@@ -86,6 +86,12 @@ zh-CN:
       claimant_admin:
         title: "你对 %{fid} 的申领已取消"
         body: "管理员取消了 %{fleet} 对舰队 ID %{fid} 的申领。"
+    fleet_verification_requested:
+      title: "%{fleet} 请你验证你的 RSI 组织成员身份"
+      no_handle: "%{fleet} 会根据 RSI 组织 %{sid} 核对成员，而你的个人资料还没有 RSI 账号名。请在个人资料设置中添加并验证你的账号名，以便舰队确认你属于 %{sid}。"
+      handle_unverified: "%{fleet} 会根据 RSI 组织 %{sid} 核对成员，但你的 RSI 账号名尚未验证。请在个人资料设置中完成验证，以便舰队确认你属于 %{sid}。"
+      orgs_not_checked: "%{fleet} 会根据 RSI 组织 %{sid} 核对成员，而你的 RSI 组织列表尚未读取。请在个人资料设置中刷新，以便舰队确认你属于 %{sid}。"
+      org_not_listed: "%{fleet} 会根据 RSI 组织 %{sid} 核对成员，而你的 RSI 组织列表中没有它。如果你之后已在 RSI 上加入 %{sid}，请在个人资料设置中刷新列表。"
     rsi_handle_verification_lost:
       title: "你的 RSI 用户名 %{handle} 不再是已验证状态"
       body: "另一个 Fleetyards 账户通过 Citizen iD 或将其验证码放入 RSI 个人简介，证明了 RSI 用户名 %{handle} 属于它。你的个人资料不再将该用户名显示为已验证。如果 %{handle} 是你的，请在个人资料设置中重新验证。"

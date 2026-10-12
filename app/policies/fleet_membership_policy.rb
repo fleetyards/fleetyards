@@ -30,6 +30,13 @@ class FleetMembershipPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
   end
 
+  alias_rule :remind_verification?, to: :health?
+
+  # Lists members as well as offering to act on them, so it takes both.
+  def health?
+    index? && accepted_fleet_membership.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
+  end
+
   # Distinct from `update?`, which is the self-service rule the membership
   # endpoint uses. A nickname is set on someone else, so it is gated on the
   # same privilege as promote/demote rather than on owning the record.

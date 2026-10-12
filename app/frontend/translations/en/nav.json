@@ -53,7 +53,8 @@
           "index": "Members",
           "invites": "Invites",
           "worldmap": "Worldmap",
-          "starmap": "Starmap"
+          "starmap": "Starmap",
+          "health": "Health"
         },
         "squadrons": {
           "index": "Squadrons",

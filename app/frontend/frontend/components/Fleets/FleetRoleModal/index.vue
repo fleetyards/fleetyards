@@ -20,6 +20,7 @@ import {
   type FleetRoleExtended,
   type FleetRoleUpdateInput,
   getFleetMembershipQueryKey,
+  getFleetMemberHealthQueryKey,
   getFleetMembersQueryKey,
   getFleetRolesQueryKey,
   useUpdateFleetRole,
@@ -61,6 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
       [
         getFleetRolesQueryKey(props.fleetSlug),
         getFleetMembersQueryKey(props.fleetSlug),
+        getFleetMemberHealthQueryKey(props.fleetSlug),
         getFleetMembershipQueryKey(props.fleetSlug),
       ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
     );

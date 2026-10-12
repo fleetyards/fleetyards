@@ -86,6 +86,12 @@ it:
       claimant_admin:
         title: "La tua rivendicazione di %{fid} è stata annullata"
         body: "Un amministratore ha annullato la rivendicazione di %{fleet} sull’ID flotta %{fid}."
+    fleet_verification_requested:
+      title: "%{fleet} ti chiede di verificare la tua appartenenza RSI"
+      no_handle: "%{fleet} verifica i suoi membri con l'organizzazione RSI %{sid}, e il tuo profilo non ha ancora un handle RSI. Aggiungi il tuo handle nelle impostazioni del profilo e verificalo, così la flotta potrà confermare che fai parte di %{sid}."
+      handle_unverified: "%{fleet} verifica i suoi membri con l'organizzazione RSI %{sid}, ma il tuo handle RSI non è ancora verificato. Verificalo nelle impostazioni del profilo, così la flotta potrà confermare che fai parte di %{sid}."
+      orgs_not_checked: "%{fleet} verifica i suoi membri con l'organizzazione RSI %{sid}, e il tuo elenco di organizzazioni RSI non è ancora stato letto. Aggiornalo nelle impostazioni del profilo, così la flotta potrà confermare che fai parte di %{sid}."
+      org_not_listed: "%{fleet} verifica i suoi membri con l'organizzazione RSI %{sid}, e il tuo elenco di organizzazioni RSI non la include. Se nel frattempo sei entrato in %{sid} su RSI, aggiorna il tuo elenco nelle impostazioni del profilo."
     rsi_handle_verification_lost:
       title: "Il tuo handle RSI %{handle} non è più verificato"
       body: "Un altro account Fleetyards ha dimostrato di possedere l’handle RSI %{handle}, tramite Citizen iD o con il proprio codice di verifica nella bio RSI. Il tuo profilo non mostra più l’handle come verificato. Se %{handle} è tuo, verificalo di nuovo dalle impostazioni del profilo."
