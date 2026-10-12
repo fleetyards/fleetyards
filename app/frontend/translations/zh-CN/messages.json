@@ -239,6 +239,7 @@
         "serialTaken": "序列号已被占用。",
         "textInvalid": "%{field} 无效",
         "fleetNameInvalid": "%{field} 只能包含字母、数字、空格、点、连字符和下划线",
+        "vehicleSerialInvalid": "%{field} 必须符合游戏中显示的注册编号格式，例如 L8-4261-HA",
         "hangar": {
           "accountRequired": {
             "noHtml": "您需要注册或登录以向机库添加飞船。",
