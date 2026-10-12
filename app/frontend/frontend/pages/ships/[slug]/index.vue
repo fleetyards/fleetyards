@@ -14,6 +14,7 @@ import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import CrewPositions from "@/frontend/components/Models/CrewPositions/index.vue";
 import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
 import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
+import OwnersList from "@/frontend/components/Models/OwnersList/index.vue";
 import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
 import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
 import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
@@ -46,7 +47,9 @@ import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { type ModelExtended } from "@/services/fyApi";
+import { FeatureFlagName, type ModelExtended } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -96,6 +99,17 @@ const combinedCargoHolds = computed(() => [
 ]);
 
 const route = useRoute();
+
+const sessionStore = useSessionStore();
+const { isFeatureEnabled } = useFeatures();
+
+// Who in the reader's circle flies this ship: there is no circle without an
+// account, and it links into the vehicle overview the flag rolls out.
+const ownersVisible = computed(
+  () =>
+    sessionStore.isAuthenticated &&
+    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
 
 watch(
   () => props.model,
@@ -418,6 +432,7 @@ const adiMap = computed(() => {
             />
           </template>
           <ModelBaseMetrics :model="model" :state="activeState" />
+          <OwnersList v-if="ownersVisible" :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"
