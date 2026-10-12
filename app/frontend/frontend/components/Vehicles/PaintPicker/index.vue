@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelPaint, useModelPaints } from "@/services/fyApi";
 
@@ -55,18 +56,18 @@ const searchable = computed(
   () => (paints.value?.length || 0) > SEARCH_THRESHOLD,
 );
 
-const search = ref("");
+const search = ref<string | number | null>("");
 
 const visibleChoices = computed(() => {
-  const term = search.value.trim().toLowerCase();
+  const term = String(search.value ?? "")
+    .trim()
+    .toLowerCase();
   if (!term) return choices.value;
 
   return choices.value.filter((choice) =>
     choice.name.toLowerCase().includes(term),
   );
 });
-
-const searchId = `paint-picker-search-${Math.random().toString(36).slice(2)}`;
 
 const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
 </script>
@@ -76,21 +77,21 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
     <legend class="paint-picker__legend">
       {{ t("labels.vehicle.modelPaintSelect.label") }}
     </legend>
-    <!-- A plain input, not FormInput: inside the vehicle form a registered
-         field would be submitted with the vehicle. -->
-    <div v-if="searchable" class="paint-picker__search">
-      <label :for="searchId" class="sr-only">
-        {{ t("labels.vehicleOverview.searchPaints") }}
-      </label>
-      <input
-        :id="searchId"
-        v-model="search"
-        type="search"
-        class="form-control"
-        :placeholder="t('labels.vehicleOverview.searchPaints')"
-        data-test="paint-picker-search"
-      />
-    </div>
+    <!-- Standalone, so inside the vehicle form the search is not submitted
+         with the vehicle. -->
+    <FormInput
+      v-if="searchable"
+      v-model="search"
+      name="paint-picker-search"
+      class="paint-picker__search"
+      :label="t('labels.vehicleOverview.searchPaints')"
+      :placeholder="t('labels.vehicleOverview.searchPaints')"
+      icon="fa-light fa-magnifying-glass"
+      data-test="paint-picker-search"
+      standalone
+      no-label
+      clearable
+    />
     <div class="paint-picker__grid">
       <button
         v-for="choice in visibleChoices"
