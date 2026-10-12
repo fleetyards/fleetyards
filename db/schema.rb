@@ -2610,7 +2610,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.datetime "locked_at", precision: nil
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.boolean "sale_notify", default: false
     t.boolean "tracking", default: true
     t.boolean "public_hangar", default: true
     t.string "twitch"
