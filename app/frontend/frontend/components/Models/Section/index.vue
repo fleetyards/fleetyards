@@ -88,28 +88,17 @@ const bodyId = computed(() => `${props.anchor}-section-body`);
 
     &:hover .model-section__chevron,
     &:focus-visible .model-section__chevron {
-      border-color: var(--color-primary);
-      color: var(--color-lifted);
+      opacity: 1;
     }
   }
 
-  // A round button beside the title rather than a bare glyph: on a hero
-  // heading a thin chevron read as decoration, not as something to press.
+  // Solid and at a size the eye finds next to a hero title; the light glyph
+  // at half that read as decoration.
   &__chevron {
     display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid var(--color-edge);
-    border-radius: 50%;
-    background: rgb(0 0 0 / 0.35);
-    color: var(--color-text);
-    font-size: 14px;
-    transition:
-      border-color 0.2s ease,
-      color 0.2s ease;
+    font-size: 0.5em;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
 
     i {
       transition: transform 0.2s ease;
