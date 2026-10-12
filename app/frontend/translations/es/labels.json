@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Pega la URL de una configuración de erkul.games o spviewer.eu...",
         "empty": "Aún no hay configuraciones. Crea una para empezar.",
         "active": "Activa",
-        "activate": "Marcar como activa",
-        "planOn": "Planifica tu configuración en"
+        "activate": "Marcar como activa"
       },
       "model": {
         "hidden": "¿Oculto?",
@@ -4155,7 +4154,8 @@
         "searchPaints": "Buscar pinturas",
         "location": "Ubicación",
         "noLocation": "Sin indicar",
-        "noGroups": "Sin grupos"
+        "noGroups": "Sin grupos",
+        "planLoadout": "Planificar un loadout"
       },
       "vehicleLog": {
         "entries": "entradas de bitácora",

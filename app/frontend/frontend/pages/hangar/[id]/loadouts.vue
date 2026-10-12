@@ -6,10 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -139,38 +140,7 @@ const onActivate = async (record: VehicleLoadout) => {
 </script>
 
 <template>
-  <div class="loadouts-page">
-    <div
-      v-if="erkulShipUrl || spviewerShipUrl"
-      class="loadouts-page__ship-links"
-    >
-      <span>{{ t("labels.loadout.planOn") }}</span>
-      <BtnGroup>
-        <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
-          <i />
-          {{ t("labels.hardpoints.erkul") }}
-        </Btn>
-        <Btn
-          v-if="spviewerShipUrl"
-          :href="spviewerShipUrl"
-          class="spviewer-link"
-        >
-          <i />
-          {{ t("labels.hardpoints.spviewer") }}
-        </Btn>
-      </BtnGroup>
-    </div>
-
-    <div class="flex items-center justify-between loadouts-page__toolbar">
-      <Btn
-        :disabled="editableList?.creating"
-        @click="editableList?.startCreate()"
-      >
-        <i class="fa-duotone fa-plus" />
-        {{ t("actions.add") }}
-      </Btn>
-    </div>
-
+  <VehicleTabLayout class="loadouts-page">
     <InlineEditableList
       ref="editableList"
       empty-name="loadouts"
@@ -242,40 +212,55 @@ const onActivate = async (record: VehicleLoadout) => {
         />
       </template>
     </InlineEditableList>
-  </div>
+
+    <template #side>
+      <Btn
+        class="loadouts-page__add"
+        :disabled="editableList?.creating"
+        @click="editableList?.startCreate()"
+      >
+        <i class="fa-duotone fa-plus" />
+        {{ t("actions.add") }}
+      </Btn>
+
+      <MetricsCard
+        v-if="erkulShipUrl || spviewerShipUrl"
+        :title="t('labels.vehicleOverview.planLoadout')"
+        variant="slim"
+      >
+        <div class="loadouts-page__ship-links">
+          <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
+            <i />
+            {{ t("labels.hardpoints.erkul") }}
+          </Btn>
+          <Btn
+            v-if="spviewerShipUrl"
+            :href="spviewerShipUrl"
+            class="spviewer-link"
+          >
+            <i />
+            {{ t("labels.hardpoints.spviewer") }}
+          </Btn>
+        </div>
+      </MetricsCard>
+    </template>
+  </VehicleTabLayout>
 </template>
 
 <style lang="scss" scoped>
 .loadouts-page {
-  &__ship-links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    > span {
-      opacity: 0.6;
-      white-space: nowrap;
-    }
-
-    @media (max-width: $desktop-breakpoint) {
-      flex-direction: column;
-      width: 100%;
-      justify-content: center;
-
-      > * {
-        flex: 1;
-        width: 100%;
-      }
-
-      > span {
-        width: auto;
-      }
-    }
+  &__add {
+    width: 100%;
   }
 
-  &__toolbar {
-    margin-bottom: 10px;
+  &__ship-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > * {
+      width: 100%;
+    }
   }
 
   &__item-display {

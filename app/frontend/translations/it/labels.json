@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Incolla l'URL della configurazione di erkul.games o spviewer.eu...",
         "empty": "Ancora nessuna configurazione. Creane una per iniziare.",
         "active": "Attiva",
-        "activate": "Rendi attiva",
-        "planOn": "Pianifica la tua configurazione su"
+        "activate": "Rendi attiva"
       },
       "model": {
         "hidden": "Nascosto?",
@@ -4155,7 +4154,8 @@
         "searchPaints": "Cerca verniciature",
         "location": "Posizione",
         "noLocation": "Non impostata",
-        "noGroups": "Nessun gruppo"
+        "noGroups": "Nessun gruppo",
+        "planLoadout": "Pianifica un loadout"
       },
       "vehicleLog": {
         "entries": "voci del diario",

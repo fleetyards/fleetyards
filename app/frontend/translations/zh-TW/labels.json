@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
         "empty": "尚無配置。建立一個開始使用。",
         "active": "使用中",
-        "activate": "設為使用中",
-        "planOn": "規劃你的配置於"
+        "activate": "設為使用中"
       },
       "model": {
         "hidden": "隱藏?",
@@ -4155,7 +4154,8 @@
         "searchPaints": "搜尋塗裝",
         "location": "位置",
         "noLocation": "未設定",
-        "noGroups": "無分組"
+        "noGroups": "無分組",
+        "planLoadout": "規劃配裝"
       },
       "vehicleLog": {
         "entries": "日誌條目",

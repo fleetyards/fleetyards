@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
-        "activate": "Set Active",
-        "planOn": "Plan your loadout on"
+        "activate": "Set Active"
       },
       "model": {
         "hidden": "Hidden?",
@@ -4169,7 +4168,8 @@
         "searchPaints": "Search paints",
         "location": "Location",
         "noLocation": "Not set",
-        "noGroups": "No groups"
+        "noGroups": "No groups",
+        "planLoadout": "Plan a loadout"
       },
       "vehicleLog": {
         "entries": "log entries",

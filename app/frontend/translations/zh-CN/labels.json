@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
         "empty": "暂无配置。创建一个以开始使用。",
         "active": "使用中",
-        "activate": "设为使用中",
-        "planOn": "在此规划您的配置"
+        "activate": "设为使用中"
       },
       "model": {
         "hidden": "隐藏?",
@@ -4155,7 +4154,8 @@
         "searchPaints": "搜索涂装",
         "location": "位置",
         "noLocation": "未设置",
-        "noGroups": "无分组"
+        "noGroups": "无分组",
+        "planLoadout": "规划配装"
       },
       "vehicleLog": {
         "entries": "日志条目",
