@@ -33,6 +33,7 @@ import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import CarriedByList from "@/frontend/components/Models/CarriedByList/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import { useScrollToHash } from "@/shared/composables/useScrollToHash";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
 import {
@@ -235,28 +236,9 @@ onMounted(() => {
   if (route.query.holoviewer) {
     modelsStore.holoviewerVisible = true;
   }
-
-  setTimeout(() => {
-    scrollToHash();
-  }, 500);
 });
 
-const scrollToHash = () => {
-  if (!route.hash) {
-    return;
-  }
-
-  const el = document.querySelector(route.hash);
-
-  if (!el) {
-    return;
-  }
-
-  el.scrollIntoView({
-    behavior: "instant",
-    block: "start",
-  });
-};
+useScrollToHash();
 
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
