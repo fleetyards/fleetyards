@@ -154,6 +154,19 @@ describe("AppModal", () => {
       expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
     });
 
+    it("stays open while the address still asks for it", async () => {
+      const { router, modal } = await mountOnRouter();
+
+      await router.push("/one/?modal=support");
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      await router.push("/two/?modal=support");
+      await settle();
+
+      expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
+
     it("stays open when only the query changes", async () => {
       const { router, modal } = await mountOnRouter();
 

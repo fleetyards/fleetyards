@@ -103,10 +103,13 @@ const { t } = useI18n();
 // the page, so it leaves the modal open.
 const route = useRoute();
 
+//
+// A modal the address asks for (`?modal=support`) belongs to the address
+// instead, and stays as long as the address keeps asking for it.
 watch(
   () => route.path,
   () => {
-    if (isShow.value) void internalHide();
+    if (isShow.value && !route.query.modal) void internalHide();
   },
 );
 
