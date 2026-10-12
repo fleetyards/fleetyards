@@ -260,6 +260,52 @@ $nav-transition-speed: 0.3s;
   }
 }
 
+/*
+ * The horizontal strip borrows the column's rail and turns it on its side: the
+ * same primary mark, under the tab instead of beside it. Qualified twice so it
+ * outranks the column's `div:first-child > .tabs` rules, which would otherwise
+ * right-align the labels and pin the rail to one edge.
+ */
+.tab-nav-horizontal > .tabs.tabs--horizontal {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 20px;
+  padding: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-edge-soft);
+  scrollbar-width: none;
+
+  &::before {
+    display: none;
+  }
+
+  :deep(li) {
+    flex: none;
+
+    > a {
+      margin: 0;
+      padding: 12px 16px;
+      text-align: center;
+
+      &::before {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform: none;
+        border-radius: 0;
+      }
+    }
+
+    &.active > a::before {
+      height: 2px;
+      animation: none;
+    }
+  }
+}
+
 @media (max-width: $desktop-breakpoint) {
   .tabs-wrapper {
     margin-bottom: 20px;
