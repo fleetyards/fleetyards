@@ -30,7 +30,10 @@ jobs:
 
     services:
       postgres:
-        image: public.ecr.aws/docker/library/postgres:16
+        image: ghcr.io/fleetyards/postgres:16
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
@@ -41,7 +44,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       redis:
-        image: public.ecr.aws/docker/library/redis:8.2.9-alpine
+        image: ghcr.io/fleetyards/redis:8.2.9-alpine
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
