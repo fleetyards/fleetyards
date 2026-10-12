@@ -374,7 +374,8 @@
           "Location": "地点",
           "FleetContract": "合约",
           "FleetEvent": "活动",
-          "User": "用户"
+          "User": "用户",
+          "FleetMember": "舰队成员"
         },
         "open": {
           "Component": "打开组件",
@@ -386,7 +387,8 @@
           "Location": "打开地点",
           "FleetContract": "打开合约",
           "FleetEvent": "打开活动",
-          "User": "打开机库"
+          "User": "打开机库",
+          "FleetMember": "在成员列表中查看"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "无法发送提醒。"
             },
             "remindedAt": "已于%{distance}提醒。一周后可再次提醒。"
+          },
+          "card": {
+            "verified": "已在 %{sid} 验证",
+            "unverified": "未在 %{sid} 验证",
+            "squadron": "中队"
           }
         },
         "squadrons": {

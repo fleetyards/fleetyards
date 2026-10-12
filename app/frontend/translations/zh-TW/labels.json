@@ -374,7 +374,8 @@
           "Location": "地點",
           "FleetContract": "合約",
           "FleetEvent": "活動",
-          "User": "使用者"
+          "User": "使用者",
+          "FleetMember": "艦隊成員"
         },
         "open": {
           "Component": "開啟組件",
@@ -386,7 +387,8 @@
           "Location": "開啟地點",
           "FleetContract": "開啟合約",
           "FleetEvent": "開啟活動",
-          "User": "開啟機庫"
+          "User": "開啟機庫",
+          "FleetMember": "在成員列表中查看"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "無法傳送提醒。"
             },
             "remindedAt": "已於%{distance}提醒。一週後可再次提醒。"
+          },
+          "card": {
+            "verified": "已在 %{sid} 驗證",
+            "unverified": "未在 %{sid} 驗證",
+            "squadron": "中隊"
           }
         },
         "squadrons": {

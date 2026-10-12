@@ -374,7 +374,8 @@
           "Location": "Lugar",
           "FleetContract": "Contrato",
           "FleetEvent": "Evento",
-          "User": "Usuario"
+          "User": "Usuario",
+          "FleetMember": "Miembro de la flota"
         },
         "open": {
           "Component": "Abrir componente",
@@ -386,7 +387,8 @@
           "Location": "Abrir lugar",
           "FleetContract": "Abrir contrato",
           "FleetEvent": "Abrir evento",
-          "User": "Abrir hangar"
+          "User": "Abrir hangar",
+          "FleetMember": "Ver en la lista de miembros"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "No se pudo enviar el recordatorio."
             },
             "remindedAt": "Recordado %{distance}. Puedes volver a recordar una semana después."
+          },
+          "card": {
+            "verified": "Verificado en %{sid}",
+            "unverified": "No verificado en %{sid}",
+            "squadron": "Escuadrón"
           }
         },
         "squadrons": {

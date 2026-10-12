@@ -374,7 +374,8 @@
           "Location": "Lieu",
           "FleetContract": "Contrat",
           "FleetEvent": "Événement",
-          "User": "Utilisateur"
+          "User": "Utilisateur",
+          "FleetMember": "Membre de la flotte"
         },
         "open": {
           "Component": "Ouvrir le composant",
@@ -386,7 +387,8 @@
           "Location": "Ouvrir le lieu",
           "FleetContract": "Ouvrir le contrat",
           "FleetEvent": "Ouvrir l’événement",
-          "User": "Ouvrir le hangar"
+          "User": "Ouvrir le hangar",
+          "FleetMember": "Voir dans la liste des membres"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "Le rappel n'a pas pu être envoyé."
             },
             "remindedAt": "Rappel envoyé %{distance}. Vous pourrez relancer une semaine plus tard."
+          },
+          "card": {
+            "verified": "Vérifié dans %{sid}",
+            "unverified": "Non vérifié dans %{sid}",
+            "squadron": "Escadron"
           }
         },
         "squadrons": {

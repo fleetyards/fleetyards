@@ -234,6 +234,12 @@ const memberTo = (check: MemberHealthCheck, member: FleetMemberHealthMember) =>
       : { searchCont: member.username },
   );
 
+const memberCard = (member: FleetMemberHealthMember) => ({
+  fleetSlug: props.fleet.slug,
+  username: member.username,
+  fleetSid: props.fleet.rsiSid,
+});
+
 const joinedLine = (member: FleetMemberHealthMember) =>
   member.acceptedAt
     ? t("labels.fleet.members.health.facts.joined", {
@@ -711,6 +717,7 @@ const crumbs = computed<Crumb[]>(() => [
                   :key="member.id"
                   :title="member.username"
                   :to="memberTo(check, member)"
+                  :member="memberCard(member)"
                   :avatar="member.avatar?.smallUrl"
                   :subline="memberSubline(check, member)"
                   :chip="member.fleetRole?.name"
@@ -747,6 +754,7 @@ const crumbs = computed<Crumb[]>(() => [
                     :key="member.id"
                     :title="member.username"
                     :to="memberTo(check, member)"
+                    :member="memberCard(member)"
                     :avatar="member.avatar?.smallUrl"
                     :subline="joinedLine(member)"
                     :chip="member.fleetRole?.name"

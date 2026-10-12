@@ -374,7 +374,8 @@
           "Location": "Place",
           "FleetContract": "Contract",
           "FleetEvent": "Event",
-          "User": "User"
+          "User": "User",
+          "FleetMember": "Fleet member"
         },
         "open": {
           "Component": "Open component",
@@ -386,7 +387,8 @@
           "Location": "Open place",
           "FleetContract": "Open contract",
           "FleetEvent": "Open event",
-          "User": "Open hangar"
+          "User": "Open hangar",
+          "FleetMember": "Show in member list"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "The reminder could not be sent."
             },
             "remindedAt": "Reminded %{distance}. You can remind again a week later."
+          },
+          "card": {
+            "verified": "Verified in %{sid}",
+            "unverified": "Not verified in %{sid}",
+            "squadron": "Squadron"
           }
         },
         "squadrons": {

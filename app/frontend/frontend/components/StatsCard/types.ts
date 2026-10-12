@@ -17,7 +17,8 @@ export type StatsCardKind =
   | "Location"
   | "FleetContract"
   | "FleetEvent"
-  | "User";
+  | "User"
+  | "FleetMember";
 
 export type StatsCardStatusTone = "success" | "warning" | "danger" | "neutral";
 

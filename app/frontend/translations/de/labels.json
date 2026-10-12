@@ -374,7 +374,8 @@
           "Location": "Ort",
           "FleetContract": "Auftrag",
           "FleetEvent": "Event",
-          "User": "Benutzer"
+          "User": "Benutzer",
+          "FleetMember": "Flottenmitglied"
         },
         "open": {
           "Component": "Komponente öffnen",
@@ -386,7 +387,8 @@
           "Location": "Ort öffnen",
           "FleetContract": "Auftrag öffnen",
           "FleetEvent": "Event öffnen",
-          "User": "Hangar öffnen"
+          "User": "Hangar öffnen",
+          "FleetMember": "In der Mitgliederliste zeigen"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "Die Erinnerung konnte nicht gesendet werden."
             },
             "remindedAt": "Erinnert %{distance}. Eine Woche danach kannst du erneut erinnern."
+          },
+          "card": {
+            "verified": "In %{sid} verifiziert",
+            "unverified": "Nicht in %{sid} verifiziert",
+            "squadron": "Staffel"
           }
         },
         "squadrons": {

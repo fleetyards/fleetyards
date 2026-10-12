@@ -374,7 +374,8 @@
           "Location": "Luogo",
           "FleetContract": "Contratto",
           "FleetEvent": "Evento",
-          "User": "Utente"
+          "User": "Utente",
+          "FleetMember": "Membro della flotta"
         },
         "open": {
           "Component": "Apri componente",
@@ -386,7 +387,8 @@
           "Location": "Apri luogo",
           "FleetContract": "Apri contratto",
           "FleetEvent": "Apri evento",
-          "User": "Apri hangar"
+          "User": "Apri hangar",
+          "FleetMember": "Mostra nell'elenco membri"
         }
       },
       "stats": {
@@ -872,6 +874,11 @@
               "failure": "Non è stato possibile inviare il promemoria."
             },
             "remindedAt": "Promemoria inviato %{distance}. Potrai inviarne un altro una settimana dopo."
+          },
+          "card": {
+            "verified": "Verificato in %{sid}",
+            "unverified": "Non verificato in %{sid}",
+            "squadron": "Squadriglia"
           }
         },
         "squadrons": {

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import MemberPopover from "@/frontend/components/Fleets/MemberPopover/index.vue";
 
 type Props = {
   title: string;
@@ -21,6 +22,8 @@ type Props = {
   fact?: string;
   factSub?: string;
   factLoud?: boolean;
+  // A member's name opens their card, for everything the row leaves out.
+  member?: { fleetSlug: string; username: string; fleetSid?: string };
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   fact: undefined,
   factSub: undefined,
   factLoud: false,
+  member: undefined,
 });
 
 // The fact the check is about leads; the rest follows it on the same line.
@@ -49,7 +53,12 @@ const details = computed(() =>
     <Avatar v-else :avatar="avatar" size="small" />
     <span class="health-row__main">
       <span class="health-row__head">
-        <router-link v-if="to" :to="to" class="health-row__title">
+        <MemberPopover v-if="member && to" v-bind="member">
+          <router-link :to="to" class="health-row__title">
+            {{ title }}
+          </router-link>
+        </MemberPopover>
+        <router-link v-else-if="to" :to="to" class="health-row__title">
           {{ title }}
         </router-link>
         <span v-else class="health-row__title">{{ title }}</span>
