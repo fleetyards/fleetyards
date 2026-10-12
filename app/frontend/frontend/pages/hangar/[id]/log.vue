@@ -11,6 +11,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -145,6 +146,7 @@ const updatePublicByDefault = async (value: boolean) => {
 
     <Empty
       v-else-if="!entries.length"
+      :variant="EmptyVariantsEnum.BOX"
       :name="t('labels.vehicleLog.entries')"
       hide-actions
     >
