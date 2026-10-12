@@ -39,24 +39,41 @@ class MapApolloModulesToGameFilesTest < ActiveSupport::TestCase
     MapApolloModulesToGameFiles.new.up
 
     assert_equal "Something_Else", mapped.reload.sc_key
-    assert_empty mapped.builds
   end
 
   # Once keyed, a module is only offered for a build it has a row for, and other
-  # modules already hold rows -- so without these the beds vanish until a load.
-  test "a mapped module gets a row for every build the table holds, and stays offered" do
-    create(:model_module_build, environment: "live", version: "4.3.0-live.1")
-    create(:model_module_build, environment: "ptu", version: "4.4.0-ptu.2")
-    bed = module_on(ship("Apollo Medivac"), "Tier 1 Module Left", description: "Two beds.")
+  # modules already hold rows -- so without one the beds vanish until a load.
+  test "a mapped module gets a row for the build each environment serves, and stays offered" do
+    live = ScData::Source.find("live")
+    create(:model_module_build, environment: "live", version: "4.0.0-live.1")
+    create(:model_module_build, environment: "live", version: live.version)
+    bed = module_on(ship("Apollo Medivac"), "Tier 1 Module Left")
 
     MapApolloModulesToGameFiles.new.up
 
-    assert_equal [["live", "4.3.0-live.1"], ["ptu", "4.4.0-ptu.2"]],
-      bed.builds.order(:environment).pluck(:environment, :version)
-    assert_equal ["Two beds."], bed.builds.distinct.pluck(:description)
+    assert_equal [["live", live.version]], bed.builds.pluck(:environment, :version)
+    assert_nil bed.builds.sole.description
+    assert_includes ModelModule.in_build(live.served_for(ModelModuleBuild)), bed
+  end
 
-    live = ScData::Source.new(environment: "live", version: "4.3.0-live.1")
+  # An environment with no module builds offers every module; a row there would
+  # hide all the others.
+  test "an environment with no module builds gets no row" do
+    bed = module_on(ship("Apollo Triage"), "Tier 2 Module Right")
+    other = create(:model_module, sc_key: "Something_Else")
 
-    assert_includes ModelModule.in_build(live), bed
+    MapApolloModulesToGameFiles.new.up
+
+    assert_empty bed.builds
+    assert_includes ModelModule.in_build(ScData::Source.find("live")), other
+  end
+
+  test "a bed an admin had already keyed gets its row too" do
+    create(:model_module_build, environment: "live", version: ScData::Source.find("live").version)
+    keyed = module_on(ship("Apollo Medivac"), "Tier 3 Module Left", sc_key: "RSI_Apollo_Module_Left_Tier_3")
+
+    MapApolloModulesToGameFiles.new.up
+
+    assert_equal 1, keyed.builds.count
   end
 end
