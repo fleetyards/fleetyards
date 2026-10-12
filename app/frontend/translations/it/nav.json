@@ -27,7 +27,9 @@
         "flair": "Decorazioni per l'hangar",
         "equipment": "Equipaggiamento FPS",
         "imports": "Importazioni",
-        "transfers": "Trasferimenti"
+        "transfers": "Trasferimenti",
+        "vehicleOverview": "Panoramica",
+        "vehicleLog": "Diario di bordo"
       },
       "login": "Accedi",
       "installApp": "Installa app",

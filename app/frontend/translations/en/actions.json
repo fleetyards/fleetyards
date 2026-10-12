@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "Change fleet"
+      },
+      "vehicleOverview": {
+        "open": "Overview",
+        "uploadPicture": "Upload a picture",
+        "changePicture": "Change picture"
+      },
+      "vehicleLog": {
+        "open": "Captain's Log",
+        "add": "New entry",
+        "showPublic": "Captain's Log"
       }
     }
   }

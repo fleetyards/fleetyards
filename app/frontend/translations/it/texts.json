@@ -332,6 +332,12 @@
       },
       "fleet": {
         "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto."
+      },
+      "vehicleLog": {
+        "visibility": "Le voci pubbliche sono mostrate con questa nave nel tuo hangar pubblico.",
+        "visibilityHidden": "Questa nave è nascosta nel tuo hangar pubblico, quindi lì non viene mostrata nessuna delle sue voci.",
+        "empty": "Annota cosa è successo a questa nave: solo tu vedi una voce finché non la rendi pubblica.",
+        "publicEmpty": "Il capitano di questa nave non ha ancora condiviso nessuna voce."
       }
     }
   }

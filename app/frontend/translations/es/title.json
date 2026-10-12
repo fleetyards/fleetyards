@@ -51,7 +51,9 @@
         "flair": "Decoración de hangar",
         "equipment": "Equipo FPS",
         "imports": "Importaciones",
-        "transfers": "Transferencias"
+        "transfers": "Transferencias",
+        "vehicleOverview": "Resumen de la nave",
+        "vehicleLog": "Cuaderno de bitácora"
       },
       "requestPassword": "Solicitar contraseña",
       "changePassword": "Cambiar contraseña",

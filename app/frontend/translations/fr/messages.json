@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "Retirer ces marchandises du contrat ?"
           }
+        },
+        "vehicleLog": {
+          "destroy": "Veux-tu vraiment supprimer cette entrée du journal ?"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,28 @@
         "remove": {
           "success": "Supprimé",
           "failure": "Impossible de supprimer"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "Image enregistrée",
+          "failure": "L'image n'a pas pu être enregistrée"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "Entrée ajoutée",
+          "failure": "L'entrée n'a pas pu être ajoutée"
+        },
+        "update": {
+          "success": "Entrée enregistrée",
+          "failure": "L'entrée n'a pas pu être enregistrée"
+        },
+        "destroy": {
+          "failure": "L'entrée n'a pas pu être supprimée"
+        },
+        "defaultUpdate": {
+          "failure": "Le réglage n'a pas pu être enregistré"
         }
       }
     }

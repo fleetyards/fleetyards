@@ -3,6 +3,18 @@ import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
+    path: "overview/",
+    name: "hangar-vehicle-overview",
+    component: () => import("@/frontend/pages/hangar/[id]/overview.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleOverview",
+      backgroundImage: "bg-5",
+      customTitle: true,
+      feature: FeatureFlagName.VEHICLE_OVERVIEW,
+    },
+  },
+  {
     path: "loadouts/",
     name: "hangar-vehicle-loadouts",
     component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
@@ -11,6 +23,18 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleLoadouts",
       backgroundImage: "bg-5",
       customTitle: true,
+    },
+  },
+  {
+    path: "log/",
+    name: "hangar-vehicle-log",
+    component: () => import("@/frontend/pages/hangar/[id]/log.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleLog",
+      backgroundImage: "bg-5",
+      customTitle: true,
+      feature: FeatureFlagName.VEHICLE_OVERVIEW,
     },
   },
   {

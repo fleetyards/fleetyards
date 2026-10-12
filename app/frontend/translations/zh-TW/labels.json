@@ -3988,6 +3988,21 @@
       },
       "tour": {
         "step": "第 %{current} 步，共 %{total} 步"
+      },
+      "vehicleOverview": {
+        "saleNotify": "促銷通知",
+        "picture": "圖片",
+        "pictureInfo": "取代預設渲染圖顯示，在你的公開機庫以及你分享此艦船的艦隊中也會顯示。"
+      },
+      "vehicleLog": {
+        "entries": "日誌條目",
+        "title": "標題",
+        "loggedAt": "日期",
+        "loggedAtPlaceholder": "現在",
+        "body": "內容",
+        "public": "在我的公開機庫中顯示",
+        "publicShort": "公開",
+        "publicByDefault": "新條目預設公開"
       }
     }
   }

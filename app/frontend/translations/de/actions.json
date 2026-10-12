@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "Flotte ändern"
+      },
+      "vehicleOverview": {
+        "open": "Übersicht",
+        "uploadPicture": "Bild hochladen",
+        "changePicture": "Bild ändern"
+      },
+      "vehicleLog": {
+        "open": "Logbuch",
+        "add": "Neuer Eintrag",
+        "showPublic": "Logbuch"
       }
     }
   }

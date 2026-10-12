@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "變更艦隊"
+      },
+      "vehicleOverview": {
+        "open": "概覽",
+        "uploadPicture": "上傳圖片",
+        "changePicture": "更換圖片"
+      },
+      "vehicleLog": {
+        "open": "艦長日誌",
+        "add": "新條目",
+        "showPublic": "艦長日誌"
       }
     }
   }

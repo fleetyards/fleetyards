@@ -4002,6 +4002,21 @@
       },
       "tour": {
         "step": "Step %{current} of %{total}"
+      },
+      "vehicleOverview": {
+        "saleNotify": "Sale notifications",
+        "picture": "Picture",
+        "pictureInfo": "Shown instead of the stock render, also in your public hangar and in fleets you share this ship with."
+      },
+      "vehicleLog": {
+        "entries": "log entries",
+        "title": "Title",
+        "loggedAt": "Date",
+        "loggedAtPlaceholder": "Now",
+        "body": "Entry",
+        "public": "Show in my public hangar",
+        "publicShort": "Public",
+        "publicByDefault": "New entries are public"
       }
     }
   }

@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "Cambiar de flota"
+      },
+      "vehicleOverview": {
+        "open": "Resumen",
+        "uploadPicture": "Subir una imagen",
+        "changePicture": "Cambiar imagen"
+      },
+      "vehicleLog": {
+        "open": "Cuaderno de bitácora",
+        "add": "Nueva entrada",
+        "showPublic": "Cuaderno de bitácora"
       }
     }
   }

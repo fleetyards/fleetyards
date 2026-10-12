@@ -57,7 +57,7 @@ const crumbs = computed<Crumb[]>(() => [
     label: t("nav.hangar.index"),
   },
   {
-    to: { name: "hangar-vehicle-loadouts", params: { id: route.params.id } },
+    to: { name: "hangar-vehicle", params: { id: route.params.id } },
     label: vehicleName.value,
   },
 ]);

@@ -1,6 +1,14 @@
 {
   "es": {
     "headlines": {
+      "vehicleOverview": {
+        "picture": "Imagen de la nave"
+      },
+      "vehicleLog": {
+        "create": "Nueva entrada de bitácora",
+        "edit": "Editar entrada de bitácora",
+        "public": "Cuaderno de bitácora: %{vehicle}"
+      },
       "hangarShare": "Enlace para compartir",
       "locations": {
         "index": "Ubicaciones",

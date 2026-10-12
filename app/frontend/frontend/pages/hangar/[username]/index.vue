@@ -368,6 +368,7 @@ useSubscription({
             :editable="false"
             :highlight="record.hangarGroupIds.includes(highlightedGroup)"
             :loaners-hint-visible="user.publicHangarLoaners"
+            :public-log-username="username"
           />
         </template>
       </Grid>

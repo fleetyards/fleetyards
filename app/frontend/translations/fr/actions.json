@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "Changer de flotte"
+      },
+      "vehicleOverview": {
+        "open": "Aperçu",
+        "uploadPicture": "Téléverser une image",
+        "changePicture": "Changer l'image"
+      },
+      "vehicleLog": {
+        "open": "Journal de bord",
+        "add": "Nouvelle entrée",
+        "showPublic": "Journal de bord"
       }
     }
   }

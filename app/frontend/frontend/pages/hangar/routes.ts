@@ -1,7 +1,28 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { RouteLocationNormalized, RouteRecordRaw } from "vue-router";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
 import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
 import { FeatureFlagName } from "@/services/fyApi";
+import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
+import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
+
+// The overview is the ship's front page once it is rolled out; until then the
+// loadouts are. A redirect cannot wait for the flags, so the index decides
+// before it is entered.
+const vehicleIndexGuard = async (to: RouteLocationNormalized) => {
+  let name = "hangar-vehicle-loadouts";
+
+  try {
+    const features = await ensureQueryData(featuresQueryOptions());
+
+    if (features?.includes(FeatureFlagName.VEHICLE_OVERVIEW)) {
+      name = "hangar-vehicle-overview";
+    }
+  } catch {
+    // Fall through to the tab the page opened on before the overview.
+  }
+
+  return { name, params: to.params, query: to.query, replace: true };
+};
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -207,8 +228,15 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":id/",
     component: () => import("@/frontend/pages/hangar/[id].vue"),
-    children: vehicleRoutes,
-    redirect: { name: vehicleRoutes[0].name },
+    children: [
+      {
+        path: "",
+        name: "hangar-vehicle",
+        component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
+        beforeEnter: vehicleIndexGuard,
+      },
+      ...vehicleRoutes,
+    ],
     meta: {
       needsAuthentication: true,
     },

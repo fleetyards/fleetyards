@@ -3988,6 +3988,21 @@
       },
       "tour": {
         "step": "Paso %{current} de %{total}"
+      },
+      "vehicleOverview": {
+        "saleNotify": "Avisos de rebajas",
+        "picture": "Imagen",
+        "pictureInfo": "Se muestra en lugar de la imagen por defecto, también en tu hangar público y en las flotas con las que compartes esta nave."
+      },
+      "vehicleLog": {
+        "entries": "entradas de bitácora",
+        "title": "Título",
+        "loggedAt": "Fecha",
+        "loggedAtPlaceholder": "Ahora",
+        "body": "Entrada",
+        "public": "Mostrar en mi hangar público",
+        "publicShort": "Pública",
+        "publicByDefault": "Las entradas nuevas son públicas"
       }
     }
   }

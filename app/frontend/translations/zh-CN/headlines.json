@@ -1,6 +1,14 @@
 {
   "zh-CN": {
     "headlines": {
+      "vehicleOverview": {
+        "picture": "舰船图片"
+      },
+      "vehicleLog": {
+        "create": "新日志条目",
+        "edit": "编辑日志条目",
+        "public": "舰长日志：%{vehicle}"
+      },
       "hangarShare": "分享链接",
       "locations": {
         "index": "地点",

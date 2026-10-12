@@ -3988,6 +3988,21 @@
       },
       "tour": {
         "step": "Passo %{current} di %{total}"
+      },
+      "vehicleOverview": {
+        "saleNotify": "Avvisi di vendita",
+        "picture": "Immagine",
+        "pictureInfo": "Mostrata al posto dell'immagine predefinita, anche nel tuo hangar pubblico e nelle flotte con cui condividi questa nave."
+      },
+      "vehicleLog": {
+        "entries": "voci del diario",
+        "title": "Titolo",
+        "loggedAt": "Data",
+        "loggedAtPlaceholder": "Adesso",
+        "body": "Voce",
+        "public": "Mostra nel mio hangar pubblico",
+        "publicShort": "Pubblica",
+        "publicByDefault": "Le nuove voci sono pubbliche"
       }
     }
   }

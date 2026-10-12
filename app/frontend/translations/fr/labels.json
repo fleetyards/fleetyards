@@ -3988,6 +3988,21 @@
       },
       "tour": {
         "step": "Étape %{current} sur %{total}"
+      },
+      "vehicleOverview": {
+        "saleNotify": "Alertes de vente",
+        "picture": "Image",
+        "pictureInfo": "Affichée à la place de l'image par défaut, y compris dans ton hangar public et dans les flottes avec lesquelles tu partages ce vaisseau."
+      },
+      "vehicleLog": {
+        "entries": "entrées du journal",
+        "title": "Titre",
+        "loggedAt": "Date",
+        "loggedAtPlaceholder": "Maintenant",
+        "body": "Entrée",
+        "public": "Afficher dans mon hangar public",
+        "publicShort": "Public",
+        "publicByDefault": "Les nouvelles entrées sont publiques"
       }
     }
   }

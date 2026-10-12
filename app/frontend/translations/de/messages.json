@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "Diese Waren vom Auftrag entfernen?"
           }
+        },
+        "vehicleLog": {
+          "destroy": "Möchtest du diesen Logbucheintrag wirklich entfernen?"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,28 @@
         "remove": {
           "success": "Entfernt",
           "failure": "Konnte nicht entfernt werden"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "Bild gespeichert",
+          "failure": "Das Bild konnte nicht gespeichert werden"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "Logbucheintrag hinzugefügt",
+          "failure": "Der Logbucheintrag konnte nicht hinzugefügt werden"
+        },
+        "update": {
+          "success": "Logbucheintrag gespeichert",
+          "failure": "Der Logbucheintrag konnte nicht gespeichert werden"
+        },
+        "destroy": {
+          "failure": "Der Logbucheintrag konnte nicht entfernt werden"
+        },
+        "defaultUpdate": {
+          "failure": "Die Einstellung konnte nicht gespeichert werden"
         }
       }
     }

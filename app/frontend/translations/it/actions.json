@@ -545,6 +545,16 @@
       },
       "supporterNomination": {
         "change": "Cambia flotta"
+      },
+      "vehicleOverview": {
+        "open": "Panoramica",
+        "uploadPicture": "Carica un'immagine",
+        "changePicture": "Cambia immagine"
+      },
+      "vehicleLog": {
+        "open": "Diario di bordo",
+        "add": "Nuova voce",
+        "showPublic": "Diario di bordo"
       }
     }
   }

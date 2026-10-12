@@ -1,6 +1,14 @@
 {
   "it": {
     "headlines": {
+      "vehicleOverview": {
+        "picture": "Immagine della nave"
+      },
+      "vehicleLog": {
+        "create": "Nuova voce del diario",
+        "edit": "Modifica voce del diario",
+        "public": "Diario di bordo: %{vehicle}"
+      },
       "hangarShare": "Link di condivisione",
       "locations": {
         "index": "Luoghi",

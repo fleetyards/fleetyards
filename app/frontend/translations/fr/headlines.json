@@ -1,6 +1,14 @@
 {
   "fr": {
     "headlines": {
+      "vehicleOverview": {
+        "picture": "Image du vaisseau"
+      },
+      "vehicleLog": {
+        "create": "Nouvelle entrée du journal",
+        "edit": "Modifier l'entrée du journal",
+        "public": "Journal de bord : %{vehicle}"
+      },
       "hangarShare": "Lien de partage",
       "locations": {
         "index": "Lieux",

@@ -3988,6 +3988,21 @@
       },
       "tour": {
         "step": "Schritt %{current} von %{total}"
+      },
+      "vehicleOverview": {
+        "saleNotify": "Sale-Benachrichtigungen",
+        "picture": "Bild",
+        "pictureInfo": "Wird anstelle des Standardbilds angezeigt, auch in deinem öffentlichen Hangar und in Flotten, mit denen du dieses Schiff teilst."
+      },
+      "vehicleLog": {
+        "entries": "Logbucheinträge",
+        "title": "Titel",
+        "loggedAt": "Datum",
+        "loggedAtPlaceholder": "Jetzt",
+        "body": "Eintrag",
+        "public": "In meinem öffentlichen Hangar zeigen",
+        "publicShort": "Öffentlich",
+        "publicByDefault": "Neue Einträge sind öffentlich"
       }
     }
   }

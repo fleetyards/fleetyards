@@ -51,7 +51,9 @@
         "flair": "Hangar Flair",
         "equipment": "FPS Gear",
         "imports": "Imports",
-        "transfers": "Transfers"
+        "transfers": "Transfers",
+        "vehicleOverview": "Vehicle Overview",
+        "vehicleLog": "Captain's Log"
       },
       "requestPassword": "Request Password",
       "changePassword": "Change Password",

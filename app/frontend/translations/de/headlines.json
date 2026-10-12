@@ -1,6 +1,14 @@
 {
   "de": {
     "headlines": {
+      "vehicleOverview": {
+        "picture": "Schiffsbild"
+      },
+      "vehicleLog": {
+        "create": "Neuer Logbucheintrag",
+        "edit": "Logbucheintrag bearbeiten",
+        "public": "Logbuch: %{vehicle}"
+      },
       "hangarShare": "Freigabelink",
       "locations": {
         "index": "Orte",
