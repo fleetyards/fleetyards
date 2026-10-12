@@ -267,13 +267,7 @@ $nav-transition-speed: 0.3s;
  * right-align the labels and pin the rail to one edge.
  */
 .tab-nav-horizontal > .tabs.tabs--horizontal {
-  // Pinned only where the page names an offset: without one `top` is invalid,
-  // falls back to auto, and the strip scrolls away like any other.
-  position: sticky;
-  top: var(--tab-nav-sticky-top);
-  z-index: 900;
   display: flex;
-  background: var(--tab-nav-sticky-bg, transparent);
   gap: 4px;
   margin: 0 0 20px;
   padding: 0;

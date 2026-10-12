@@ -61,17 +61,6 @@ const barVisible = computed(
   () => heroVisible.value && (!onOverview.value || !heroInView.value),
 );
 
-const tabsStickyStyle = computed(() =>
-  heroVisible.value
-    ? {
-        "--tab-nav-sticky-top": barVisible.value
-          ? "var(--vehicle-hero-bar-h, 64px)"
-          : "0px",
-        "--tab-nav-sticky-bg": "rgb(10 12 14 / 0.92)",
-      }
-    : undefined,
-);
-
 const sessionStore = useSessionStore();
 
 const id = computed(() => route.params.id as string);
@@ -114,14 +103,18 @@ const crumbs = computed<Crumb[]>(() => [
       <div
         v-if="vehicle && heroVisible"
         class="vehicle-sticky-bar"
-        :class="{ 'vehicle-sticky-bar--visible': barVisible }"
+        :class="{
+          'vehicle-sticky-bar--overlay': onOverview,
+          'vehicle-sticky-bar--visible': barVisible,
+        }"
         :aria-hidden="!barVisible"
         :inert="!barVisible"
       >
-        <VehicleHeroBar :vehicle="vehicle" />
+        <div class="vehicle-sticky-bar__inner">
+          <VehicleHeroBar :vehicle="vehicle" />
+        </div>
       </div>
       <TabNavView
-        :style="tabsStickyStyle"
         v-if="vehicle"
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
@@ -136,31 +129,50 @@ const crumbs = computed<Crumb[]>(() => [
 </template>
 
 <style lang="scss" scoped>
-// The bar and the tab strip pin together: the strip's offset is the bar's
-// height while the bar shows, and the top of the page when it does not.
+/*
+ * Pinned to the top of the page. On the other tabs it is the header, so it
+ * takes its own height in the flow. On the overview the full header is the
+ * header, and the bar floats over the page instead -- no height of its own, so
+ * sliding it in moves nothing underneath and cannot flip the observer that
+ * shows it.
+ */
 .vehicle-sticky-bar {
   position: sticky;
   top: 0;
-  z-index: 901;
-  height: 0;
-  overflow: hidden;
-  margin: 0 -15px;
-  padding: 0 15px;
-  background: rgb(10 12 14 / 0.92);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  transition:
-    height 0.2s ease,
-    opacity 0.2s ease;
+  z-index: 900;
+  height: var(--vehicle-hero-bar-h, 64px);
+  margin: 0 -15px 20px;
 
-  &--visible {
+  &__inner {
     height: var(--vehicle-hero-bar-h, 64px);
+    padding: 0 15px;
     border-bottom: 1px solid var(--color-edge-soft);
+    background: rgb(10 12 14 / 0.92);
+    backdrop-filter: blur(8px);
+  }
+
+  &--overlay {
+    height: 0;
+    margin-bottom: 0;
+
+    .vehicle-sticky-bar__inner {
+      opacity: 0;
+      transform: translateY(-100%);
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+  }
+
+  &--overlay.vehicle-sticky-bar--visible .vehicle-sticky-bar__inner {
     opacity: 1;
+    transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    &--overlay .vehicle-sticky-bar__inner {
+      transition: none;
+    }
   }
 }
 </style>
