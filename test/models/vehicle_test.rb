@@ -648,4 +648,31 @@ class LexorankValueBetweenTest < ActiveSupport::TestCase
     assert_operator ranking.value_between("yyyy", nil), :>, "yyyy"
     assert_operator ranking.value_between(nil, "02"), :<, "02"
   end
+
+  test "finds a vehicle by its id" do
+    vehicle = create(:vehicle)
+
+    assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!(vehicle.id)
+  end
+
+  test "finds a vehicle by its serial, in any case" do
+    vehicle = create(:vehicle, serial: "IC-021")
+
+    assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!("ic-021")
+  end
+
+  test "finds a vehicle whose serial looks like an id" do
+    serial = SecureRandom.uuid.upcase
+    vehicle = create(:vehicle, serial:)
+
+    assert_equal vehicle, vehicle.user.vehicles.find_by_id_or_serial!(serial.downcase)
+  end
+
+  test "raises for a vehicle outside the scope" do
+    vehicle = create(:vehicle)
+
+    assert_raises(ActiveRecord::RecordNotFound) do
+      create(:user).vehicles.find_by_id_or_serial!(vehicle.id)
+    end
+  end
 end

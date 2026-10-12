@@ -239,6 +239,17 @@ class Vehicle < ApplicationRecord
   # Wraps itself rather than leaving it to the caller: it is a dozen statements
   # that only make sense together, and a caller already inside a transaction
   # joins this one rather than opening a second.
+  UUID_FORMAT = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
+
+  # A vehicle's pages are addressed by id or by serial. A serial may look like
+  # an id, so an id that names no vehicle in scope is tried as a serial too.
+  def self.find_by_id_or_serial!(identifier)
+    identifier = identifier.to_s
+    vehicle = find_by(id: identifier) if identifier.match?(UUID_FORMAT)
+
+    vehicle || find_by!(serial: identifier.upcase)
+  end
+
   def self.delete_with_dependents(vehicle_ids)
     return 0 if vehicle_ids.blank?
 

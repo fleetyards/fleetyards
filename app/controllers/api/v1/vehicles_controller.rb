@@ -144,11 +144,7 @@ module Api
       end
 
       private def find_vehicle(identifier)
-        if identifier.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-/i)
-          current_resource_owner.vehicles.find(identifier)
-        else
-          current_resource_owner.vehicles.find_by!(serial: identifier.upcase)
-        end
+        current_resource_owner.vehicles.find_by_id_or_serial!(identifier)
       end
 
       private def vehicle_params
