@@ -27,7 +27,9 @@ const PREVIEW_COUNT = 3;
 const { t, l } = useI18n();
 const comlink = useComlink();
 
-const { data: logEntries } = useVehicleLogEntries(() => props.vehicle.id);
+const { data: logEntries, isLoading } = useVehicleLogEntries(
+  () => props.vehicle.id,
+);
 
 const entries = computed<VehicleLogEntry[]>(() => logEntries.value || []);
 
@@ -37,8 +39,6 @@ const publicCount = computed(
   () => entries.value.filter((entry) => entry.public).length,
 );
 
-// Shown only once the log has an entry: an empty card on every ship would be a
-// prompt nobody asked for, and the log tab is where the first one is written.
 // The preview is a teaser for the log tab, so the body loses its formatting
 // rather than rendering a markdown block per line.
 const excerpt = (body?: string | null) =>
@@ -65,8 +65,8 @@ const logRoute = computed(() => ({
 
 <template>
   <MetricsCard
-    v-if="entries.length"
     :title="t('nav.hangar.vehicleLog')"
+    :loading="isLoading"
     variant="slim"
     data-test="vehicle-overview-log"
   >
@@ -81,7 +81,11 @@ const logRoute = computed(() => ({
       </Btn>
     </template>
 
-    <p class="overview-log__summary">
+    <p v-if="!isLoading && !entries.length" class="overview-log__summary">
+      {{ t("texts.vehicleLog.empty") }}
+    </p>
+
+    <p v-else-if="entries.length" class="overview-log__summary">
       {{
         t("labels.vehicleOverview.logSummary", {
           count: entries.length,
@@ -90,7 +94,7 @@ const logRoute = computed(() => ({
       }}
     </p>
 
-    <ol class="overview-log__entries">
+    <ol v-if="entries.length" class="overview-log__entries">
       <li
         v-for="entry in preview"
         :key="entry.id"
@@ -114,7 +118,11 @@ const logRoute = computed(() => ({
       </li>
     </ol>
 
-    <router-link :to="logRoute" class="overview-card-link">
+    <router-link
+      v-if="entries.length"
+      :to="logRoute"
+      class="overview-card-link"
+    >
       {{ t("actions.vehicleOverview.openLog") }}
     </router-link>
   </MetricsCard>

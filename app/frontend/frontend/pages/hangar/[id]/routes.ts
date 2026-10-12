@@ -15,17 +15,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "loadouts/",
-    name: "hangar-vehicle-loadouts",
-    component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
-    meta: {
-      needsAuthentication: true,
-      title: "hangar.vehicleLoadouts",
-      backgroundImage: "bg-5",
-      customTitle: true,
-    },
-  },
-  {
     path: "log/",
     name: "hangar-vehicle-log",
     component: () => import("@/frontend/pages/hangar/[id]/log.vue"),
@@ -35,6 +24,17 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-5",
       customTitle: true,
       feature: FeatureFlagName.VEHICLE_OVERVIEW,
+    },
+  },
+  {
+    path: "loadouts/",
+    name: "hangar-vehicle-loadouts",
+    component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleLoadouts",
+      backgroundImage: "bg-5",
+      customTitle: true,
     },
   },
   {
