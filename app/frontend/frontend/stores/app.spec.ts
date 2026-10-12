@@ -3,6 +3,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { me } from "@/services/fyApi";
 import { useAppStore } from "./app";
 import { useSessionStore } from "./session";
+import { useVehicleViewStore } from "./vehicleView";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -35,5 +36,14 @@ describe("app store", () => {
 
     expect(sessionStore.authenticated).toBe(false);
     expect(sessionStore.currentUser).toBeUndefined();
+  });
+
+  it("forgets which vehicles were left in 3D", () => {
+    const vehicleViewStore = useVehicleViewStore();
+    vehicleViewStore.toggleHolo("vehicle-1");
+
+    useAppStore().resetAll();
+
+    expect(vehicleViewStore.holoVisible("vehicle-1")).toBe(false);
   });
 });
