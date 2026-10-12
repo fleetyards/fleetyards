@@ -14,7 +14,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
-import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
 import {
   useAcceptFleetMember,
   useCreateFleetSquadronMember,
@@ -78,6 +77,14 @@ const contact = computed(() => ({
   rsiHandle: props.member.rsiHandle ?? undefined,
   discordProfileUrl: props.member.discordProfileUrl ?? undefined,
 }));
+
+// Entries of this menu like any other's, rather than the contact menu's own
+// header and links, which are laid out for a different container.
+const spectrumDmUrl = computed(() =>
+  props.member.rsiHandle
+    ? `https://robertsspaceindustries.com/spectrum/messages/member/${props.member.rsiHandle}`
+    : undefined,
+);
 
 const remindedRecently = computed(() => {
   const at = props.member.verificationRemindedAt;
@@ -300,7 +307,26 @@ const addToSquadron = (squadron: FleetSquadron) =>
           <i class="fa-light fa-message" />
         </Btn>
       </template>
-      <MemberContactMenu :member="contact" />
+      <Btn
+        v-if="spectrumDmUrl"
+        :size="BtnSizesEnum.SM"
+        :href="spectrumDmUrl"
+        target="_blank"
+        data-test="health-contact-spectrum"
+      >
+        <i class="icon icon-rsi" />
+        <span>{{ t("labels.fleet.members.spectrumDm") }}</span>
+      </Btn>
+      <Btn
+        v-if="contact.discordProfileUrl"
+        :size="BtnSizesEnum.SM"
+        :href="contact.discordProfileUrl"
+        target="_blank"
+        data-test="health-contact-discord"
+      >
+        <i class="fa-brands fa-discord" />
+        <span>{{ t("labels.fleet.members.discordContact") }}</span>
+      </Btn>
     </BtnDropdown>
     <Btn
       v-if="shown('demote')"
