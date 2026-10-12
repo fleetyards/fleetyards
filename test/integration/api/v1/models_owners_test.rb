@@ -258,6 +258,20 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/owners does not resolve a hidden model by its former slug" do
+    create(:model, hidden: true, legacy_slug: "ghost-ship")
+    sign_in @user
+
+    assert_api_response :get, 404, path_params: {slug: "ghost-ship"}
+  end
+
+  test "GET /models/:slug/owners prefers a model's current slug over another's former one" do
+    create(:model, legacy_slug: @model.slug)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug}
+  end
+
   test "GET /models/:slug/owners returns 404 for an unknown model" do
     sign_in @user
 
