@@ -4,8 +4,15 @@ module Loaders
   module ScData
     class AllJob < ::Loaders::BaseJob
       include FetchesParsedTree
+      include OneLoadAtATime
 
       def perform(version = nil, admin_user_id = nil, environment = nil)
+        one_load_at_a_time(version, admin_user_id, environment) do
+          load_source(version, admin_user_id, environment)
+        end
+      end
+
+      private def load_source(version, admin_user_id, environment)
         source = source_for(version, environment)
 
         import = Imports::ScData::AllImport.create(version: source.version, admin_user_id:)
