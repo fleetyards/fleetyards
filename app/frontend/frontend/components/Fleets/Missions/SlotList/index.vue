@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -28,16 +29,9 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), { editable: false });
 
-const { t, tExists } = useI18n();
+const { t } = useI18n();
 
-// The API sends the enum value, so "turret_gunner" reached the badge as
-// TURRET_GUNNER once uppercased. Unmapped values still read as words rather
-// than as identifiers.
-const positionTypeLabel = (type: string) => {
-  const key = `labels.modelPosition.types.${type}`;
-
-  return tExists(key) ? t(key) : type.replace(/_/g, " ");
-};
+const positionTypeLabel = usePositionTypeLabel();
 const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -248,6 +242,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 .slot-list {
   display: flex;
   flex-direction: column;
@@ -285,14 +280,9 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 .slot-type-badge {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--color-muted, #7a8288);
   flex-shrink: 0;
-  padding: 0 4px;
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 2px;
-  letter-spacing: 0.04em;
+  white-space: nowrap;
+  @include row-label;
 }
 .slot-title {
   flex: 1;

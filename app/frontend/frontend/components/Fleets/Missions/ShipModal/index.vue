@@ -16,6 +16,7 @@ import BaseSelect, {
   type BaseSelectParams,
 } from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -43,6 +44,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const positionTypeLabel = usePositionTypeLabel();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -343,7 +345,9 @@ const onSubmit = handleSubmit(async (values) => {
               @change="togglePosition(position.id)"
             />
             <span class="seat-name">{{ position.name }}</span>
-            <span class="seat-type">{{ position.positionType }}</span>
+            <span class="seat-type">{{
+              positionTypeLabel(position.positionType)
+            }}</span>
           </label>
         </div>
 
@@ -442,6 +446,7 @@ const onSubmit = handleSubmit(async (values) => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 .seat-checklist {
   display: flex;
   flex-direction: column;
@@ -468,9 +473,8 @@ const onSubmit = handleSubmit(async (values) => {
   flex: 1;
 }
 .seat-type {
-  font-size: 12px;
-  color: var(--color-muted, #7a8288);
-  text-transform: uppercase;
+  white-space: nowrap;
+  @include row-label;
 }
 .min-crew-override {
   margin-top: 8px;
