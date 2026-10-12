@@ -144,6 +144,10 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Vehicles::Vehicle
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -326,5 +330,58 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
       path_params: {id: vehicle.id},
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
       body: {name: "Enterprise A"}
+  end
+  test "PUT /vehicles/:id attaches an uploaded image" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {image: upload_blob("ship.jpg", "image/jpeg").signed_id} do
+      assert_equal "ship.jpg", parsed_body.dig("image", "name")
+    end
+
+    assert vehicle.reload.image.attached?
+  end
+
+  test "PUT /vehicles/:id removes the image when sent null" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    vehicle.update!(image: upload_blob("ship.jpg", "image/jpeg").signed_id)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {image: nil} do
+      assert_nil parsed_body["image"]
+    end
+
+    assert_not vehicle.reload.image.attached?
+  end
+
+  test "PUT /vehicles/:id rejects an SVG image" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {image: upload_blob("vector.svg", "image/svg+xml").signed_id}
+
+    assert_not vehicle.reload.image.attached?
+  end
+
+  test "PUT /vehicles/:id ignores the image and log default while the feature is off" do
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: vehicle.id},
+      body: {image: upload_blob("ship.jpg", "image/jpeg").signed_id, logEntriesPublicByDefault: true}
+
+    vehicle.reload
+    assert_not vehicle.image.attached?
+    assert_not vehicle.log_entries_public_by_default
+  end
+
+  private def upload_blob(filename, content_type)
+    ActiveStorage::Blob.create_and_upload!(
+      io: file_fixture(filename).open, filename:, content_type:
+    )
   end
 end

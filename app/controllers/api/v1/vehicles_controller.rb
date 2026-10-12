@@ -151,9 +151,15 @@ module Api
         @vehicle_params ||= params.transform_keys(&:underscore)
           .permit(
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
-            :model_paint_id, :bought_via,
+            :model_paint_id, :bought_via, *vehicle_overview_params,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
           ).merge(user_id: current_resource_owner.id)
+      end
+
+      private def vehicle_overview_params
+        return [] unless feature_enabled?("vehicle_overview")
+
+        %i[image log_entries_public_by_default]
       end
 
       private def vehicle_move_params

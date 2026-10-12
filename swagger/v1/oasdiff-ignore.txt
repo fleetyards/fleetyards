@@ -2402,3 +2402,5 @@ POST /users/signup removed the required property `saleNotify` from the response 
 PUT /users/account removed the required property `saleNotify` from the response with the `200` status
 PUT /users/me removed the request property `saleNotify`
 PUT /users/me removed the required property `saleNotify` from the response with the `200` status
+PUT /vehicles/{id} removed the required property `details` from the response with the `400` status
+PUT /vehicles/{id} removed the required property `error` from the response with the `400` status

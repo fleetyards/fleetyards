@@ -22,7 +22,8 @@ module Api
         {model: [:manufacturer]},
         {vehicle_modules: :model_module},
         {vehicle_upgrades: :model_upgrade},
-        {task_forces: :hangar_group}
+        {task_forces: :hangar_group},
+        {image_attachment: :blob}
       ].freeze
 
       def index

@@ -39,6 +39,12 @@ if vehicle.module_package.present?
   end
 end
 
+if vehicle.image.attached?
+  json.image do
+    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
+  end
+end
+
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do
   json.partial! "api/v1/vehicle_loadouts/base", vehicle_loadout: active_loadout if active_loadout.present?

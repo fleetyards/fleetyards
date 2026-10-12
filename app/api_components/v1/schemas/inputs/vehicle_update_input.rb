@@ -15,6 +15,8 @@ module V1
             nameVisible: {type: :boolean},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
+            logEntriesPublicByDefault: {type: :boolean},
+            image: {type: [:string, :null]},
             flagship: {type: :boolean},
             modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,

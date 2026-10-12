@@ -30,6 +30,8 @@ module V1
             paint: {"$ref": "#/components/schemas/ModelPaint"},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
+            logEntriesPublicByDefault: {type: :boolean},
+            image: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
@@ -38,7 +40,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model wanted loaner bundled flagship public nameVisible saleNotify alternativeNames
+            id model wanted loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
             modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
           ]
         })

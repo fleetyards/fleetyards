@@ -31,6 +31,7 @@ module V1
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             paint: {"$ref": "#/components/schemas/ModelPaint"},
+            image: ::Shared::V1::Schemas::MediaFile,
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

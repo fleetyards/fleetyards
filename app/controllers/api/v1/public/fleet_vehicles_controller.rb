@@ -17,7 +17,8 @@ module Api
           {model: [:manufacturer]},
           {vehicle_modules: :model_module},
           {vehicle_upgrades: :model_upgrade},
-          {user: {avatar_attachment: :blob}}
+          {user: {avatar_attachment: :blob}},
+          {image_attachment: :blob}
         ].freeze
 
         rescue_from ActiveRecord::RecordNotFound, ActionPolicy::Unauthorized do |_exception|

@@ -7,6 +7,7 @@ class Vehicle < ApplicationRecord
   # `name` and `serial` are whatever the owner typed, and a user's vehicles are
   # destroyed along with the account.
   include ErasableVersionsConcern
+  include ActiveStorageVariants
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -80,6 +81,9 @@ class Vehicle < ApplicationRecord
   has_many :log_entries, class_name: "VehicleLogEntry", dependent: :delete_all
   has_many :public_log_entries, -> { public_entries }, class_name: "VehicleLogEntry"
 
+  has_one_attached :image
+  validates :image, no_vector_image: true
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy
@@ -101,7 +105,8 @@ class Vehicle < ApplicationRecord
       :task_forces, :hangar_groups, :module_package, :vehicle_loadouts,
       {model: Model.rendered_associations},
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
-      {parent_vehicle: :model}
+      {parent_vehicle: :model},
+      {image_attachment: :blob}
     ]
   end
 
@@ -240,6 +245,7 @@ class Vehicle < ApplicationRecord
       VehicleLoadout.where(id: loadout_ids).delete_all
 
       VehicleLogEntry.where(vehicle_id: vehicle_ids).delete_all
+      ActiveStorage::Attachment.where(record_type: name, record_id: vehicle_ids).find_each(&:purge_later)
 
       VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
       VehicleModule.where(vehicle_id: vehicle_ids).delete_all
