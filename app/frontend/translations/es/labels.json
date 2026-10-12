@@ -2217,6 +2217,7 @@
         "location": "Ubicación",
         "currentSystem": "Ubicación actual en el juego",
         "tester": "¿Tester?",
+        "maintainer": "¿Mantenedor?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Correo electrónico no confirmado",
         "saleNotify": "Deseo recibir notificaciones de ventas",

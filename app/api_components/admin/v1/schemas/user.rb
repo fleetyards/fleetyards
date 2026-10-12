@@ -30,6 +30,7 @@ module Admin
             publicWishlist: {type: :boolean},
             publicWishlistUrl: {type: :string},
             hideOwner: {type: :boolean},
+            maintainer: {type: :boolean},
             supporter: {type: :boolean},
             supporterTier: {type: :integer},
             supporterRecurring: {type: :boolean},
@@ -49,7 +50,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             username email publicHangar publicHangarLoaners publicWishlist hideOwner
-            supporter supporterTier supporterRecurring fleetTierOngoing twoFactorRequired createdAt updatedAt
+            maintainer supporter supporterTier supporterRecurring fleetTierOngoing twoFactorRequired createdAt updatedAt
           ]
         })
       end

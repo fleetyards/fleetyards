@@ -30,6 +30,7 @@ json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
 json.hide_owner user.hide_owner
 
+json.maintainer user.maintainer
 json.supporter user.supporter?
 json.supporter_tier user.supporter_tier
 json.supporter_recurring user.supporter_recurring?

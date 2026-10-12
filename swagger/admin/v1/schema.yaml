@@ -20891,6 +20891,8 @@ components:
           type: string
         hideOwner:
           type: boolean
+        maintainer:
+          type: boolean
         supporter:
           type: boolean
         supporterTier:
@@ -20936,6 +20938,7 @@ components:
       - publicHangarLoaners
       - publicWishlist
       - hideOwner
+      - maintainer
       - supporter
       - supporterTier
       - supporterRecurring
@@ -20962,6 +20965,8 @@ components:
         hideOwner:
           type: boolean
         tester:
+          type: boolean
+        maintainer:
           type: boolean
         avatar:
           type:

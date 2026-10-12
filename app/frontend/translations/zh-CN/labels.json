@@ -2217,6 +2217,7 @@
         "location": "位置",
         "currentSystem": "当前游戏内位置",
         "tester": "测试者?",
+        "maintainer": "维护者？",
         "avatar": "头像",
         "unconfirmedEmail": "未确认的邮件",
         "saleNotify": "我希望收到销售通知",

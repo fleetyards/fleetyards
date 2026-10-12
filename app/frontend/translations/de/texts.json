@@ -1,6 +1,9 @@
 {
   "de": {
     "texts": {
+      "user": {
+        "maintainer": "Zählt als Unterstützer der höchsten Stufe: dasselbe Abzeichen und alle Vorteile für Unterstützer."
+      },
       "index": "Deine Datenbank für alle Informationen rund um Schiffe und Stationen in Star Citizen.",
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Autor unbekannt, Quelle:",

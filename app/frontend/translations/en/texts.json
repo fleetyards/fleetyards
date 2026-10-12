@@ -1,6 +1,9 @@
 {
   "en": {
     "texts": {
+      "user": {
+        "maintainer": "Counts as a supporter at the highest tier: the same badge and every supporter perk."
+      },
       "index": "Your database for all information around Ships and Stations in Star Citizen.",
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Author Unknown, Source:",
