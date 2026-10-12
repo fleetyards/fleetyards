@@ -15,6 +15,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDefaultSortOptions";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useMobile } from "@/shared/composables/useMobile";
 import {
   useUpdateProfile,
   type NullableVehicleSortEnum,
@@ -45,6 +46,8 @@ onMounted(() => {
 });
 
 const hangarStore = useHangarStore();
+
+const mobile = useMobile();
 
 const tableViewCols = ref(hangarStore.tableViewCols);
 
@@ -201,6 +204,23 @@ const displayAsList = () => {
         <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
       </div>
     </div>
+    <template v-if="!mobile">
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <FormToggle
+            v-model="hangarStore.money"
+            name="money"
+            :label="t('actions.showPledgeValue')"
+          />
+          <FormToggle
+            v-model="hangarStore.credits"
+            name="credits"
+            :label="t('actions.showInGameBoughtValue')"
+          />
+        </div>
+      </div>
+    </template>
     <hr />
     <div v-if="hangarStore.gridView" class="row">
       <div class="col-12">

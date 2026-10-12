@@ -69,6 +69,8 @@
       "showDetailPage": "Pagina dei dettagli",
       "showDetails": "Mostra i dettagli",
       "hideDetails": "Nascondi i dettagli",
+      "showPledgeValue": "Mostra il valore dei pledge",
+      "showInGameBoughtValue": "Mostra il valore acquistato in gioco",
       "readMore": "Leggi di più",
       "readLess": "Mostra meno",
       "showGuide": "Mostra il tour",

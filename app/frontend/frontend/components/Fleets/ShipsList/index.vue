@@ -71,6 +71,7 @@ const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Fleets/DisplayOptionsModal/index.vue"),
+    props: { metrics: Boolean(fleetStats.value?.metrics) && !mobile.value },
   });
 };
 
@@ -78,7 +79,8 @@ const mobile = useMobile();
 
 const fleetStore = useFleetStore();
 
-const { grouped, money, detailsVisible, gridView } = storeToRefs(fleetStore);
+const { grouped, money, credits, detailsVisible, gridView } =
+  storeToRefs(fleetStore);
 
 const fleetchartStore = useFleetchartStore();
 
@@ -226,10 +228,7 @@ useSubscription({
       </div>
 
       <div v-if="fleetStats && fleetStats.metrics && !mobile" class="row">
-        <div
-          class="col-12 fleet-metrics metrics-block"
-          @click="fleetStore.toggleMoney"
-        >
+        <div class="col-12 fleet-metrics metrics-block">
           <div v-if="money" class="metrics-item">
             <div class="metrics-label">
               {{ t("labels.hangarMetrics.totalMoney") }}:
@@ -238,7 +237,7 @@ useSubscription({
               {{ toDollar(fleetStats.metrics.totalMoney) }}
             </div>
           </div>
-          <div v-if="money" class="metrics-item">
+          <div v-if="credits" class="metrics-item">
             <div class="metrics-label">
               {{ t("labels.hangarMetrics.totalCredits") }}:
             </div>

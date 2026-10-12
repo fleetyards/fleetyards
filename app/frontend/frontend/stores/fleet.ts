@@ -1,5 +1,6 @@
 import type { ShipListState } from "@/frontend/types";
 import { renameTableCols } from "@/frontend/utils/renamedTableCols";
+import { creditsFromLegacyMoney } from "@/frontend/utils/legacyMoneyToggle";
 import { defineStore } from "pinia";
 
 export enum FleetTableViewImageColsEnum {
@@ -52,6 +53,7 @@ interface FleetState extends ShipListState {
   preview: boolean;
   inviteToken?: string;
   money: boolean;
+  credits: boolean;
   tableViewImageCols: FleetTableViewImageColsEnum[];
   tableViewCols: FleetTableViewColsEnum[];
   sortFields: FleetSortFieldsEnum[];
@@ -78,6 +80,7 @@ export const useFleetStore = defineStore("fleet", {
     detailsVisible: false,
     filterVisible: true,
     money: true,
+    credits: true,
     grouped: true,
     preview: true,
     inviteToken: undefined,
@@ -117,9 +120,6 @@ export const useFleetStore = defineStore("fleet", {
     },
     toggleFilter() {
       this.filterVisible = !this.filterVisible;
-    },
-    toggleMoney() {
-      this.money = !this.money;
     },
     toggleGrouped() {
       this.grouped = !this.grouped;
@@ -178,6 +178,7 @@ export const useFleetStore = defineStore("fleet", {
       "detailsVisible",
       "grouped",
       "money",
+      "credits",
       "preview",
       "inviteToken",
       "gridView",
@@ -195,6 +196,7 @@ export const useFleetStore = defineStore("fleet", {
           modelMaxCrew: FleetTableViewColsEnum.CREW,
         },
       );
+      store.credits = creditsFromLegacyMoney(store.$id, store.credits);
     },
   },
 });

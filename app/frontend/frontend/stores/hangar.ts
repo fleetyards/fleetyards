@@ -1,5 +1,6 @@
 import { type ShipListState } from "@/frontend/types";
 import { renameTableCols } from "@/frontend/utils/renamedTableCols";
+import { creditsFromLegacyMoney } from "@/frontend/utils/legacyMoneyToggle";
 // Type-only: a value import would put `@/services/fyApi` in the runtime graph of
 // every store that reaches this one, and the specs that mock that module
 // without `importOriginal` would lose whichever export they do not name.
@@ -56,6 +57,7 @@ interface HangarState extends ShipListState {
   // Per account, so a second person signing in on this browser still gets it.
   tourSeenBy: string[];
   money: boolean;
+  credits: boolean;
   extensionReady: boolean;
   extensionVersion?: string;
   // The sync modal shows the run, so the progress card stays out of its way.
@@ -80,6 +82,7 @@ export const useHangarStore = defineStore("hangar", {
     detailsVisible: false,
     filterVisible: true,
     money: true,
+    credits: true,
     ships: [],
     preview: true,
     tourSeenBy: [],
@@ -122,9 +125,6 @@ export const useHangarStore = defineStore("hangar", {
     toggleFilter() {
       this.filterVisible = !this.filterVisible;
     },
-    toggleMoney() {
-      this.money = !this.money;
-    },
     hidePreview() {
       this.preview = false;
     },
@@ -159,6 +159,7 @@ export const useHangarStore = defineStore("hangar", {
       "detailsVisible",
       "preview",
       "money",
+      "credits",
       "tourSeenBy",
       "gridView",
       "tableViewImageCols",
@@ -179,6 +180,7 @@ export const useHangarStore = defineStore("hangar", {
           modelMaxCrew: HangarTableViewColsEnum.CREW,
         },
       );
+      store.credits = creditsFromLegacyMoney(store.$id, store.credits);
     },
   },
 });

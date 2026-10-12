@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { flushPromises } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 const update = vi.fn((_variables: unknown) => Promise.resolve());
 const displayAlert = vi.fn();
@@ -19,6 +20,20 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({ displayAlert }),
 }));
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
+const moneyToggle = (wrapper: VueWrapper, name: string) =>
+  wrapper
+    .findAllComponents({ name: "FormToggle" })
+    .find((component) => component.props("name") === name);
+
 const defaultSortSelect = async () =>
   (await mountWithDefaults(Component))
     .findAllComponents({ name: "BaseSelect" })
@@ -26,6 +41,7 @@ const defaultSortSelect = async () =>
 
 describe("HangarDisplayOptionsModal", () => {
   beforeEach(() => {
+    setViewport(false);
     update.mockReset();
     update.mockImplementation(() => Promise.resolve());
     displayAlert.mockClear();
@@ -77,5 +93,32 @@ describe("HangarDisplayOptionsModal", () => {
       { data: { hangarDefaultSort: "modelPrice desc" } },
     ]);
     expect(select.props("modelValue")).toBe("modelPrice desc");
+  });
+
+  it("hides the pledge value without hiding the in-game value", async () => {
+    const wrapper = await mountWithDefaults(Component);
+    const hangarStore = useHangarStore();
+
+    moneyToggle(wrapper, "money")!.vm.$emit("update:modelValue", false);
+    await flushPromises();
+
+    expect(hangarStore.money).toBe(false);
+    expect(hangarStore.credits).toBe(true);
+
+    moneyToggle(wrapper, "credits")!.vm.$emit("update:modelValue", false);
+    moneyToggle(wrapper, "money")!.vm.$emit("update:modelValue", true);
+    await flushPromises();
+
+    expect(hangarStore.money).toBe(true);
+    expect(hangarStore.credits).toBe(false);
+  });
+
+  // The metrics bar is desktop-only, so the switches would change nothing.
+  it("leaves the metric switches out on a phone", async () => {
+    setViewport(true);
+    const wrapper = await mountWithDefaults(Component);
+
+    expect(moneyToggle(wrapper, "money")).toBeUndefined();
+    expect(moneyToggle(wrapper, "credits")).toBeUndefined();
   });
 });
