@@ -116,4 +116,31 @@ class ModelPositionTest < ActiveSupport::TestCase
 
     assert_predicate model.reload, :positions_need_curation?
   end
+
+  # Deleting a seat nullifies its position's port; the old destroy-and-recreate
+  # swept those up, and in place they would show in every build.
+  test ".generate_for_model! removes a position whose seat was deleted" do
+    model = create(:model, crew: 2)
+    create(:hardpoint, parent: model, source: :game_files, component: create(:component, category: "cargogrid"))
+    orphan = create(:model_position, model:, hardpoint: nil, position_type: :pilot)
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_not ModelPosition.exists?(orphan.id)
+  end
+
+  # An older build of the same environment keeps its rows until pruned; that is
+  # not another build still carrying the seat.
+  test ".generate_for_model! drops a seat only an older build of this environment has" do
+    model = create(:model)
+    older = ScData::Source.new(version: "3.23.0", environment: ScData::Source.environment)
+    gunner = seat_in(model, "hardpoint_seat_gunner", older, ScData::Source.current)
+    ModelPosition.generate_for_model!(model)
+    HardpointBuild.where(hardpoint: gunner, version: ScData::Source.version).delete_all
+    seat_in(model, "hardpoint_seat_pilot", ScData::Source.current)
+
+    ModelPosition.generate_for_model!(model)
+
+    assert_equal ["hardpoint_seat_pilot"], model.model_positions.reload.map { |position| position.hardpoint.sc_name }
+  end
 end

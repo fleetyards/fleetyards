@@ -40,7 +40,14 @@ class ModelPosition < ApplicationRecord
   # Writes what the build in force says. A position only another build still
   # carries is that build's to keep, so a load adds and updates but never
   # removes on another environment's behalf.
+  #
+  # Under the model's row lock: a load and the admin regenerate both write
+  # here, and two writers would both pass the uniqueness validation.
   def self.generate_for_model!(model)
+    model.with_lock { generate!(model) }
+  end
+
+  def self.generate!(model)
     positions = []
     sort_order = 0
 
@@ -90,7 +97,19 @@ class ModelPosition < ApplicationRecord
     # Updated in place rather than recreated: slots reference these ids, and a
     # seat an admin already curated is theirs.
     curated_hardpoint_ids = model.model_positions.curated.where.not(hardpoint_id: nil).pluck(:hardpoint_id)
-    existing = model.model_positions.sc_data.index_by { |position| generated_key(position) }
+
+    # A seat deleted outright nullifies its position's port, and only the
+    # loadmaster is meant to have none.
+    existing = {}
+    model.model_positions.sc_data.order(:created_at).each do |position|
+      key = generated_key(position)
+
+      if existing.key?(key) || (position.hardpoint_id.nil? && !position.loadmaster?)
+        position.destroy!
+      else
+        existing[key] = position
+      end
+    end
 
     positions.uniq { |attrs| generated_key(attrs) }.each do |attrs|
       next if curated_hardpoint_ids.include?(attrs[:hardpoint_id])
@@ -113,18 +132,30 @@ class ModelPosition < ApplicationRecord
     position[:hardpoint_id] || position[:position_type].to_s
   end
 
-  # A seat this build has and did not make a position of, or one no build
-  # carries any more. A seat only another build has stays for that build.
+  # This build declined it: a seat it has and made no position of, or a
+  # loadmaster on a ship that no longer needs one. Otherwise it stays only while
+  # another environment's current build still carries it -- not an older build
+  # of this one, which keeps its rows until pruned.
   def self.stale?(model, position)
-    if position.hardpoint_id.nil?
-      return model.crew.to_i <= 1 ||
-          !model.hardpoints.where(category: :cargogrid).where(id: HardpointBuild.select(:hardpoint_id)).exists?
+    if position.loadmaster?
+      return true if model.crew.to_i <= 1
+
+      return !carried_elsewhere?(model.hardpoints.where(category: :cargogrid).ids)
     end
 
-    Hardpoint.in_build.exists?(position.hardpoint_id) ||
-      !HardpointBuild.exists?(hardpoint_id: position.hardpoint_id)
+    Hardpoint.in_build.exists?(position.hardpoint_id) || !carried_elsewhere?([position.hardpoint_id])
   end
-  private_class_method :generated_key, :stale?
+
+  def self.carried_elsewhere?(hardpoint_ids)
+    environment = ::ScData::Source.current.environment
+
+    ::ScData::Source.configured.reject { |source| source.environment == environment }.any? do |source|
+      served = source.served_for(HardpointBuild)
+
+      HardpointBuild.exists?(hardpoint_id: hardpoint_ids, environment: served.environment, version: served.version)
+    end
+  end
+  private_class_method :generate!, :generated_key, :stale?, :carried_elsewhere?
 
   # `in_build` on all three collectors: a slot the build dropped keeps its row
   # now that the loadout is retired rather than destroyed, and its columns still
