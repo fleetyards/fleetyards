@@ -26,6 +26,8 @@ type Props = {
   editable?: boolean;
   hideEdit?: boolean;
   onVehiclePage?: boolean;
+  // Where the page edits the groups itself, as the overview's card does.
+  hideGroups?: boolean;
   wishlist?: boolean;
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
@@ -36,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   onVehiclePage: false,
+  hideGroups: false,
   wishlist: false,
   variant: undefined,
   size: undefined,
@@ -306,7 +309,7 @@ const cargoVisible = computed(
       <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
     <Btn
-      v-if="editable && !hideEdit"
+      v-if="editable && !hideEdit && !onVehiclePage"
       :aria-label="t('actions.edit')"
       data-test="vehicle-edit"
       @click="openEditModal"
@@ -343,7 +346,7 @@ const cargoVisible = computed(
       </span>
     </Btn>
     <Btn
-      v-if="editable && !wishlist && !onVehiclePage"
+      v-if="editable && !wishlist && !hideGroups"
       :aria-label="t('actions.hangar.editGroups')"
       data-test="vehicle-edit-groups"
       @click="openEditGroupsModal"

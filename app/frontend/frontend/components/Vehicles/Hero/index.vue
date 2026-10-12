@@ -160,8 +160,8 @@ const openImageModal = () => {
             :vehicle="vehicle"
             :wishlist="vehicle.wanted"
             editable
-            hide-edit
             on-vehicle-page
+            :hide-groups="!compact"
           />
         </div>
       </div>
