@@ -345,6 +345,13 @@
         "unavailable": "Questo diario non è disponibile al momento."
       },
       "vehiclePlaque": {
+        "credits": {
+          "founders": "Fondatori",
+          "shipwrights": "Costruttori",
+          "designers": "Progettisti",
+          "directors": "Direzione",
+          "operations": "Operazioni"
+        },
         "classLine": "%{model} di %{manufacturer}",
         "registry": "Matricola %{serial}",
         "commissioned": "Commissionata a %{shipyard}",

@@ -345,6 +345,13 @@
         "unavailable": "Ce journal n'est pas disponible pour le moment."
       },
       "vehiclePlaque": {
+        "credits": {
+          "founders": "Fondateurs",
+          "shipwrights": "Constructeurs",
+          "designers": "Concepteurs",
+          "directors": "Direction",
+          "operations": "Opérations"
+        },
         "classLine": "%{model} par %{manufacturer}",
         "registry": "Immatriculation %{serial}",
         "commissioned": "Commandé aux %{shipyard}",

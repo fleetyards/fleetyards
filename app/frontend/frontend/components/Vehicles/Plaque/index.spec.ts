@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import { inUniverseLaunchDate } from "./launchDate";
+import { PLAQUE_CREDITS } from "./credits";
 import { type Vehicle } from "@/services/fyApi";
 
 const NOW = "2026-10-12T12:00:00Z";
@@ -109,5 +110,25 @@ describe("VehiclePlaque", () => {
     });
 
     expect(line(wrapper, "launch")).toBe("Launched from Port Olisar");
+  });
+
+  it("credits the people who make the game", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+    const credits = wrapper.find('[data-test="vehicle-plaque-credits"]');
+
+    expect(credits.findAll("section")).toHaveLength(5);
+    expect(credits.find("h4").text()).toBe("Founders");
+    expect(credits.text()).toContain("Chris Roberts");
+  });
+});
+
+describe("PLAQUE_CREDITS", () => {
+  it("fills five columns with the same number of distinct names", () => {
+    const counts = PLAQUE_CREDITS.map((group) => group.names.length);
+    const names = PLAQUE_CREDITS.flatMap((group) => group.names);
+
+    expect(PLAQUE_CREDITS).toHaveLength(5);
+    expect(new Set(counts).size).toBe(1);
+    expect(new Set(names).size).toBe(names.length);
   });
 });

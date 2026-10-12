@@ -345,6 +345,13 @@
         "unavailable": "此日誌暫時無法使用。"
       },
       "vehiclePlaque": {
+        "credits": {
+          "founders": "創辦人",
+          "shipwrights": "造船師",
+          "designers": "設計師",
+          "directors": "總監",
+          "operations": "營運"
+        },
         "classLine": "%{manufacturer} 出品的 %{model}",
         "registry": "註冊編號 %{serial}",
         "commissioned": "建造於 %{shipyard}",

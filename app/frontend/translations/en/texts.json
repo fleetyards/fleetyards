@@ -345,6 +345,13 @@
         "unavailable": "This log is not available right now."
       },
       "vehiclePlaque": {
+        "credits": {
+          "founders": "Founders",
+          "shipwrights": "Shipwrights",
+          "designers": "Designers",
+          "directors": "Directors",
+          "operations": "Operations"
+        },
         "classLine": "%{model} by %{manufacturer}",
         "registry": "Registry %{serial}",
         "commissioned": "Commissioned from %{shipyard}",

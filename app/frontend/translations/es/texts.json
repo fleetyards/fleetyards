@@ -345,6 +345,13 @@
         "unavailable": "Este cuaderno no está disponible ahora mismo."
       },
       "vehiclePlaque": {
+        "credits": {
+          "founders": "Fundadores",
+          "shipwrights": "Constructores",
+          "designers": "Diseñadores",
+          "directors": "Dirección",
+          "operations": "Operaciones"
+        },
         "classLine": "%{model} de %{manufacturer}",
         "registry": "Matrícula %{serial}",
         "commissioned": "Encargada a %{shipyard}",
