@@ -30,12 +30,13 @@ module Api
       end
 
       # Friends only as far as their hangar is open to the reader, and only the
-      # ships that hangar shows: bought, public and not hidden.
+      # ships that hangar shows: bought, public and not hidden. Loaners are left
+      # out, as the fleet counts leave them out.
       private def load_friends
         friends = current_resource_owner.friends.with_hangar_readable_by(current_resource_owner)
 
         counts = Vehicle.visible.purchased.public
-          .where(model: @model, user_id: friends.select(:id))
+          .where(model: @model, user_id: friends.select(:id), loaner: false)
           .group(:user_id)
           .count
 

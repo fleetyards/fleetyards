@@ -96,6 +96,7 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     friend = create(:user, public_hangar: true)
     create(:vehicle, user: friend, model: @model, public: false)
     create(:vehicle, user: friend, model: @model, public: true, wanted: true)
+    create(:vehicle, user: friend, model: @model, public: true, loaner: true)
     befriend(friend)
     sign_in @user
 
