@@ -63,6 +63,7 @@ if vehicle.image.attached?
   end
 end
 
+json.model_image_id vehicle.model_image_id
 if vehicle.model_image&.file&.attached?
   json.model_image do
     json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
