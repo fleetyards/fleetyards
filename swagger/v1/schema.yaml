@@ -34909,8 +34909,7 @@ components:
         username:
           type: string
         avatar:
-          type: string
-          format: uri
+          "$ref": "#/components/schemas/MediaFile"
         count:
           type: integer
       additionalProperties: false

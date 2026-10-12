@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               username: {type: :string},
-              avatar: {type: :string, format: :uri},
+              avatar: ::Shared::V1::Schemas::MediaFile,
               count: {type: :integer}
             },
             additionalProperties: false,

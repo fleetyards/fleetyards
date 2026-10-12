@@ -144,7 +144,7 @@ const fleetShipsRoute = (slug: string) => ({
             :aria-label="friend.username"
             class="model-owners__face"
           >
-            <Avatar :avatar="friend.avatar" size="small" round />
+            <Avatar :avatar="friend.avatar?.smallUrl" size="small" round />
           </router-link>
           <span v-if="friendsStackMore > 0" class="model-owners__muted">
             +{{ friendsStackMore }}

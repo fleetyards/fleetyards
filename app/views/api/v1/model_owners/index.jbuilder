@@ -21,7 +21,11 @@ json.friends do
   json.total @friends_total
   json.items @friends do |(user, count)|
     json.username user.username
-    json.avatar(user.avatar.attached? ? rails_representation_url(user.avatar.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small])) : nil)
+    if user.avatar.attached?
+      json.avatar do
+        json.partial! "api/v1/shared/file", record: user, attr: :avatar
+      end
+    end
     json.count count
   end
 end
