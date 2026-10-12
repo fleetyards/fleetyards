@@ -225,8 +225,8 @@ importers:
         specifier: 1.4.1
         version: 1.4.1
       i18n-js:
-        specifier: ^4.5.3
-        version: 4.5.3
+        specifier: ^4.5.4
+        version: 4.5.4
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -5007,8 +5007,8 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  i18n-js@4.5.3:
-    resolution: {integrity: sha512-5/tT6R9t9qlYqGhxGq9I9Ap3WKUaAMq5aRuO1gqAcUqm6xGbL0jwTAjSFjgbx935BAV8QbEzvQOzE796dUlEfA==}
+  i18n-js@4.5.4:
+    resolution: {integrity: sha512-ALYO2ZAgayAbXy/MpHmPOd7DdjUh1guowJOO0nwAVLIoGACNBxBSwjzJHEbMoLQs91ytJgykgyAjQg4gTyRRAA==}
 
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
@@ -12288,7 +12288,7 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  i18n-js@4.5.3:
+  i18n-js@4.5.4:
     dependencies:
       bignumber.js: 10.0.2
       lodash: 4.18.1
