@@ -34,6 +34,7 @@ module V1
             location: {type: [:string, :null]},
             linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             image: ::Shared::V1::Schemas::MediaFile,
+            modelImage: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,

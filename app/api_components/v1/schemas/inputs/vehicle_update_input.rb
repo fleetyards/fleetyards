@@ -19,6 +19,7 @@ module V1
             location: {type: [:string, :null]},
             locationId: {type: [:string, :null], format: :uuid},
             image: {type: [:string, :null]},
+            modelImageId: {type: [:string, :null], format: :uuid},
             flagship: {type: :boolean},
             modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,

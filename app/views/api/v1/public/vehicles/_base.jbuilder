@@ -46,6 +46,12 @@ if vehicle.image.attached?
   end
 end
 
+if vehicle.model_image&.file&.attached?
+  json.model_image do
+    json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
+  end
+end
+
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do
   json.partial! "api/v1/vehicle_loadouts/base", vehicle_loadout: active_loadout if active_loadout.present?

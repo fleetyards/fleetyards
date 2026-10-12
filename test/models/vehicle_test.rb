@@ -675,4 +675,13 @@ class LexorankValueBetweenTest < ActiveSupport::TestCase
       create(:user).vehicles.find_by_id_or_serial!(vehicle.id)
     end
   end
+
+  test "drops a gallery picture of the old model when the model changes" do
+    vehicle = create(:vehicle)
+    vehicle.update!(model_image: create(:image, gallery: vehicle.model))
+
+    vehicle.update!(model: create(:model))
+
+    assert_nil vehicle.reload.model_image_id
+  end
 end

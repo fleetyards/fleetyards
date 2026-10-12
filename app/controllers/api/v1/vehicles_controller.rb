@@ -159,7 +159,7 @@ module Api
       private def vehicle_overview_params
         return [] unless feature_enabled?("vehicle_overview")
 
-        %i[image log_entries_public_by_default location location_id]
+        %i[image model_image_id log_entries_public_by_default location location_id]
       end
 
       private def vehicle_move_params

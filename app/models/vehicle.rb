@@ -85,6 +85,11 @@ class Vehicle < ApplicationRecord
 
   has_one_attached :image
 
+  # One of the model's own gallery pictures, picked rather than uploaded.
+  belongs_to :model_image, class_name: "Image", optional: true
+  validate :model_image_from_own_model, if: :model_image_id?
+  before_validation :drop_model_image_of_another_model, if: :will_save_change_to_model_id?
+
   # Where the owner left the ship. Only ever shown to the owner: a public
   # hangar saying where a ship is parked is an invitation.
   links_location :location
@@ -114,6 +119,7 @@ class Vehicle < ApplicationRecord
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
       {parent_vehicle: :model},
       {image_attachment: :blob},
+      {model_image: {file_attachment: :blob}},
       :linked_location
     ]
   end
@@ -810,5 +816,17 @@ class Vehicle < ApplicationRecord
     return if model.player_ownable?
 
     errors.add(:model, :not_player_ownable)
+  end
+
+  private def model_image_from_own_model
+    return if model_image.present? && model_image.enabled? &&
+      model_image.gallery_type == "Model" && model_image.gallery_id == model_id
+
+    errors.add(:model_image, :invalid)
+  end
+
+  # A picture of the old model would show the wrong ship.
+  private def drop_model_image_of_another_model
+    self.model_image_id = nil if model_image.present? && model_image.gallery_id != model_id
   end
 end
