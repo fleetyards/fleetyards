@@ -24,8 +24,6 @@ import {
   type HangarSyncData,
 } from "@/services/fyCable/channels/HangarSyncChannel";
 import { NotificationsChannel } from "@/services/fyCable/channels/NotificationsChannel";
-import { OnSaleChannel } from "@/services/fyCable/channels/OnSaleChannel";
-import { OnSaleHangarChannel } from "@/services/fyCable/channels/OnSaleHangarChannel";
 import {
   UserNotificationsChannel,
   type UserNotificationsData,
@@ -35,13 +33,8 @@ import { WishlistDestroyChannel } from "@/services/fyCable/channels/WishlistDest
 import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
 import { type AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
-import { type Model } from "@/services/fyCable/models/Model";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
-import {
-  NotificationTypeEnum,
-  useNotificationPreferences,
-  useSyncRsiHangarStatus,
-} from "@/services/fyApi";
+import { useSyncRsiHangarStatus } from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
@@ -110,40 +103,6 @@ export const useUpdates = () => {
 
   const { isAuthenticated } = storeToRefs(sessionStore);
 
-  const { data: notificationPreferences } = useNotificationPreferences({
-    query: { enabled: isAuthenticated },
-  });
-
-  const saleAlertsEnabled = computed(
-    () =>
-      isAuthenticated.value &&
-      (notificationPreferences.value?.find(
-        (preference) =>
-          preference.notificationType === NotificationTypeEnum.MODEL_ON_SALE,
-      )?.app ??
-        false),
-  );
-
-  const notifyVehicleOnSale = (vehicle: Vehicle) => {
-    if (!vehicle.saleNotify) {
-      return;
-    }
-
-    displayInfo({
-      text: t("messages.model.onSale", {
-        model: vehicle.model?.name,
-      }),
-      icon: vehicle.model?.media?.storeImage?.smallUrl,
-    });
-  };
-
-  const notifyOnSale = (model: Model) => {
-    displayInfo({
-      text: t("messages.model.onSale", { model: model.name }),
-      icon: model.media?.storeImage?.smallUrl,
-    });
-  };
-
   // A server-wide announcement is already shaped like the toast it becomes —
   // it has no counterpart resource in the REST API, so nothing is derived here.
   // The map is exhaustive over the generated enum, so a severity added to the
@@ -195,18 +154,6 @@ export const useUpdates = () => {
   useSubscription({
     channel: AppVersionChannel,
     received: updateAppVersion,
-  });
-
-  useSubscription({
-    channel: OnSaleHangarChannel,
-    received: notifyVehicleOnSale,
-    enabled: saleAlertsEnabled,
-  });
-
-  useSubscription({
-    channel: OnSaleChannel,
-    received: notifyOnSale,
-    enabled: saleAlertsEnabled,
   });
 
   useSubscription({

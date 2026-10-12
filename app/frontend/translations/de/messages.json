@@ -170,7 +170,6 @@
         }
       },
       "model": {
-        "onSale": "%{model} jetzt im Verkauf!",
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "importPaintsStarted": "Lackierungs-Import gestartet. Du wirst benachrichtigt, sobald er abgeschlossen ist.",

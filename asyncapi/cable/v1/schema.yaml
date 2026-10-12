@@ -111,22 +111,6 @@ channels:
     messages:
       AnnouncementMessage:
         "$ref": "#/components/messages/AnnouncementMessage"
-  OnSale:
-    address: on_sale
-    x-actioncable-channel: OnSaleChannel
-    messages:
-      Model:
-        "$ref": "#/components/messages/Model"
-  OnSaleHangar:
-    address: on_sale_hangar:{user_gid}
-    x-actioncable-channel: OnSaleHangarChannel
-    parameters:
-      user_gid:
-        description: GlobalID param of the subscribed user, derived from the connection
-        x-client-supplied: false
-    messages:
-      Vehicle:
-        "$ref": "#/components/messages/Vehicle"
   PayoutLedger:
     address: payout_ledger:{user_gid}
     x-actioncable-channel: PayoutLedgerChannel
@@ -272,20 +256,6 @@ operations:
     messages:
     - "$ref": "#/channels/Models/messages/Model"
     summary: A ship model changed
-  receiveOnSale:
-    action: receive
-    channel:
-      "$ref": "#/channels/OnSale"
-    messages:
-    - "$ref": "#/channels/OnSale/messages/Model"
-    summary: A ship model went on sale
-  receiveOnSaleHangar:
-    action: receive
-    channel:
-      "$ref": "#/channels/OnSaleHangar"
-    messages:
-    - "$ref": "#/channels/OnSaleHangar/messages/Vehicle"
-    summary: A vehicle the user owns went on sale
   receivePayoutLedgerUpdate:
     action: receive
     channel:

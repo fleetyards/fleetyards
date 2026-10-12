@@ -20586,8 +20586,6 @@ components:
       - ImportsChannel
       - ModelsChannel
       - NotificationsChannel
-      - OnSaleChannel
-      - OnSaleHangarChannel
       - PayoutLedgerChannel
       - UserNotificationsChannel
       - UserPresenceChannel
@@ -20610,8 +20608,6 @@ components:
       - IMPORTS_CHANNEL
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL
-      - ON_SALE_CHANNEL
-      - ON_SALE_HANGAR_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - USER_PRESENCE_CHANNEL

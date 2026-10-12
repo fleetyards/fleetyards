@@ -180,7 +180,6 @@
         }
       },
       "model": {
-        "onSale": "%{model} now on Sale!",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Paint import started. You will be notified when it completes.",

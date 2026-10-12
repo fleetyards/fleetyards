@@ -170,7 +170,6 @@
         }
       },
       "model": {
-        "onSale": "%{model} 现在特价销售！",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "涂装导入已开始。完成后将通知您。",

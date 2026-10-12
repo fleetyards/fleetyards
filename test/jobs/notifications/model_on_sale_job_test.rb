@@ -27,7 +27,6 @@ module Notifications
       vehicle = create(:vehicle, model: @model, user: user, sale_notify: true, wanted: true, loaner: false, notify: true)
 
       ::Discord::ShipOnSale.stubs(:new).returns(stub(run: true))
-      OnSaleHangarChannel.expects(:broadcast_to).at_least_once
       VehicleMailer.expects(:on_sale).with(vehicle).returns(stub(deliver_later: true))
 
       ::Notifications::ModelOnSaleJob.new.perform(@model.id)
