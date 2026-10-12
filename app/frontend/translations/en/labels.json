@@ -3471,7 +3471,8 @@
         "fleet_contract_settled": "Contract paid out",
         "payout_ledger_settled": "Payouts settled",
         "payout_entry_pending_review": "Expense waiting for review",
-        "payout_entry_declined": "Expense declined"
+        "payout_entry_declined": "Expense declined",
+        "fleet_verification_requested": "Verification requested by your fleet"
       },
       "fleets": {
         "missions": {

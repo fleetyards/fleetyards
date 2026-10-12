@@ -3457,7 +3457,8 @@
         "fleet_contract_settled": "Contrat payé",
         "payout_ledger_settled": "Paiements arrêtés",
         "payout_entry_pending_review": "Dépense en attente de validation",
-        "payout_entry_declined": "Dépense refusée"
+        "payout_entry_declined": "Dépense refusée",
+        "fleet_verification_requested": "Vérification demandée par votre flotte"
       },
       "fleets": {
         "missions": {

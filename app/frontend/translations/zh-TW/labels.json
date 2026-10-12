@@ -3457,7 +3457,8 @@
         "fleet_contract_settled": "合約已結算",
         "payout_ledger_settled": "分帳已結算",
         "payout_entry_pending_review": "支出待審核",
-        "payout_entry_declined": "支出已拒絕"
+        "payout_entry_declined": "支出已拒絕",
+        "fleet_verification_requested": "你的艦隊請求驗證"
       },
       "fleets": {
         "missions": {
