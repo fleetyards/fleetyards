@@ -122,8 +122,8 @@ class Vehicle < ApplicationRecord
   validates :operations_group, inclusion: {in: OPERATIONS_GROUPS.keys}, allow_blank: true
 
   # How the plaque is drawn. `manufacturer` is the style of the company that built
-  # the ship. Styles are a supporter perk: once the owner stops supporting, the
-  # plaque stays but is drawn in the default style.
+  # the ship. Every style but the default is a supporter perk: once the owner
+  # stops supporting, the plaque stays but is drawn in the default style.
   PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true

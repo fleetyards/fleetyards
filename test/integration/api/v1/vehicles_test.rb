@@ -427,12 +427,23 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT /vehicles/:id refuses a plaque to a user who is not a supporter" do
+  test "PUT /vehicles/:id lets anyone put a plaque on their ship in the default style" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
-    assert_api_response :put, 403, path_params: {id: vehicle.id}, body: {dedication: "To boldly go"} do
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", plaqueStyle: "brass"} do
+      assert_equal "To boldly go", parsed_body["dedication"]
+      assert_equal "brass", parsed_body["plaqueStyle"]
+    end
+  end
+
+  test "PUT /vehicles/:id keeps the other plaque styles for supporters" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 403, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", plaqueStyle: "neon"} do
       assert_equal "supporter_required", parsed_body["code"]
     end
 

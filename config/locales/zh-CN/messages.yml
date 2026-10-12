@@ -33,7 +33,7 @@ zh-CN:
     fleet_subscriptions:
       already_open: "该舰队已有一个开通中的订阅。"
     subscription_required: "该舰队没有此功能的订阅。"
-    supporter_required: "命名铭牌是支持者专属福利。"
+    supporter_required: "其他铭牌样式是支持者专属福利。"
     record_not_found:
       fleet_subscription: 未找到舰队订阅
       announcement: 未找到公告

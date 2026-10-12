@@ -36,7 +36,7 @@ en:
     fleet_subscriptions:
       already_open: "This fleet already has an open subscription."
     subscription_required: "This fleet does not have a subscription for this feature."
-    supporter_required: "Dedication plaques are a supporter perk."
+    supporter_required: "The other plaque styles are a supporter perk."
     record_not_found:
       fleet_subscription: No Fleet Subscription found
       announcement: No Announcement found
