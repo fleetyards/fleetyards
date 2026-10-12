@@ -87,7 +87,9 @@ class Vehicle < ApplicationRecord
 
   # One of the model's own gallery pictures, picked rather than uploaded.
   belongs_to :model_image, class_name: "Image", optional: true
-  validate :model_image_from_own_model, if: :model_image_id?
+  # Only a new pick is checked: an image disabled later must not block every
+  # other save of the vehicle, the hangar sync's among them.
+  validate :model_image_from_own_model, if: -> { model_image_id? && will_save_change_to_model_image_id? }
   before_validation :drop_model_image_of_another_model, if: :will_save_change_to_model_id?
 
   # Where the owner left the ship. Only ever shown to the owner: a public
