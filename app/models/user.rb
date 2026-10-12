@@ -729,7 +729,12 @@ class User < ApplicationRecord
   # Below the rate it funds nothing, the same as a donation under five euros:
   # two euros a month does not buy a five euro month. One dated in the future
   # funds nothing yet either -- `started_at` is free to be ahead of today.
+  #
+  # A maintainer holds it the way they hold the top supporter tier: ongoing, so
+  # a donation from before the flag cannot name a past run-out day beside it.
   def fleet_tier_ongoing?
+    return true if maintainer?
+
     supporter_contributions.any? do |contribution|
       contribution.recurring? &&
         contribution.ended_at.nil? &&

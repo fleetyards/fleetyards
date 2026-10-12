@@ -312,6 +312,15 @@ class UserTest < ActiveSupport::TestCase
       assert @user.reload.fleet_tier_ongoing?
     end
 
+    test "a maintainer holds the fleet tier with no run-out date" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: 1.year.ago.to_date)
+      @user.update!(maintainer: true)
+
+      assert @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
     # Two euros a month does not buy a five euro month, so it funds nothing --
     # the same answer a four euro donation gets.
     test "a standing pledge under the rate funds nothing" do
