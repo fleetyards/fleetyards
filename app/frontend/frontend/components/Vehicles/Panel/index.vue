@@ -23,6 +23,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
@@ -103,6 +104,8 @@ const { isFeatureEnabled } = useFeatures();
 
 // The owner's own ship opens on its overview once there is one; anyone else's,
 // and a loaner, which has no page of its own to edit, still opens the model.
+const toVehicle = useVehicleRoute();
+
 const titleRoute = computed(() => {
   if (
     props.editable &&
@@ -111,10 +114,7 @@ const titleRoute = computed(() => {
   ) {
     const vehicle = props.vehicle as Vehicle;
 
-    return {
-      name: "hangar-vehicle-overview",
-      params: { id: vehicle.serial || vehicle.id },
-    };
+    return toVehicle("hangar-vehicle-overview", vehicle);
   }
 
   return { name: "ship", params: { slug: props.vehicle.model.slug } };

@@ -26,7 +26,11 @@ const router = createRouter({
   stringifyQuery: (query) => qs.stringify(query, { arrayFormat: "brackets" }),
   routes: [
     { path: "/ships/:slug/", name: "ship", component: stub },
-    { path: "/hangar/:id/", name: "hangar-vehicle-overview", component: stub },
+    {
+      path: "/hangar/:username/:segment/",
+      name: "hangar-vehicle-overview",
+      component: stub,
+    },
     { path: "/hangar/:username/", name: "hangar-public", component: stub },
     { path: "/fleets/:slug/ships/", name: "fleet-ships", component: stub },
   ],
@@ -50,6 +54,7 @@ const mount = async (data: ModelOwners) => {
   await router.isReady();
 
   return mountWithDefaults<typeof Component>(Component, {
+    initialState: { session: { currentUser: { username: "me" } } },
     props: { model },
     plugins: [router],
   });
@@ -68,13 +73,15 @@ describe("ModelOwnersList", () => {
   it("links the reader's own ship by its serial", async () => {
     const wrapper = await mount({
       ...emptyOwners(),
-      vehicles: [{ id: "v-1", serial: "ANDR-1", flagship: true }],
+      vehicles: [{ id: "v-1", serial: "AN-0001-DR", flagship: true }],
     });
 
     const block = wrapper.find('[data-test="model-owners-vehicles"]');
 
     expect(block.text()).toContain("Constellation Andromeda");
-    expect(block.find("a").attributes("href")).toBe("/hangar/ANDR-1/");
+    expect(block.find("a").attributes("href")).toBe(
+      "/hangar/me/an-0001-dr-v-1/",
+    );
   });
 
   it("shows the ship's own picture before the model's", async () => {

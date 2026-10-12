@@ -27,7 +27,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/hangar/:id/",
+      path: "/hangar/:username/:segment/",
       component,
       children: [
         {
@@ -87,8 +87,10 @@ describe("pageKey", () => {
   });
 
   it("gives every tab of a tabbed page the same key", () => {
-    expect(keyOf("/hangar/IC-021/overview/")).toBe("/hangar/IC-021");
-    expect(keyOf("/hangar/IC-021/log/")).toBe("/hangar/IC-021");
+    expect(keyOf("/hangar/me/ic-0210-ab/overview/")).toBe(
+      "/hangar/me/ic-0210-ab",
+    );
+    expect(keyOf("/hangar/me/ic-0210-ab/log/")).toBe("/hangar/me/ic-0210-ab");
   });
 
   it("keeps child pages that are not editor tabs apart", () => {

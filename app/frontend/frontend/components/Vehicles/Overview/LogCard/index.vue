@@ -15,6 +15,7 @@ import {
   type VehicleLogEntry,
   useVehicleLogEntries,
 } from "@/services/fyApi";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
@@ -57,10 +58,9 @@ const openEntryModal = () => {
   });
 };
 
-const logRoute = computed(() => ({
-  name: "hangar-vehicle-log",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const toVehicle = useVehicleRoute();
+
+const logRoute = computed(() => toVehicle("hangar-vehicle-log", props.vehicle));
 </script>
 
 <template>

@@ -7,12 +7,12 @@ test.describe("Hangar Inventories", () => {
     await appScenario("hangar_inventories");
 
     await appFactories([
-      ["create", "user", { username: "inventories", password: "password" }],
+      ["create", "user", { username: "quartermaster", password: "password" }],
     ]);
 
     await page.goto("/login/");
 
-    await page.locator("input[name='login']").fill("inventories");
+    await page.locator("input[name='login']").fill("quartermaster");
     await page.locator("input[name='password']").fill("password");
 
     const sessionCreated = page.waitForResponse(

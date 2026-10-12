@@ -782,4 +782,34 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     assert_nil user.current_location_id
     assert_equal "PYRO", user.current_system_code
   end
+
+  test "rejects a username that names a hangar page, in any case" do
+    user = build(:user, username: "Stats")
+
+    assert_not user.valid?
+    assert user.errors.added?(:username, :route_name)
+  end
+
+  test "rejects renaming to a username that names a hangar page" do
+    user = create(:user)
+
+    assert_not user.update(username: "wishlist")
+  end
+
+  test "keeps a reserved username it already had when other fields change" do
+    user = create(:user)
+    user.update_column(:username, "preview")
+
+    assert user.update(rsi_handle: "someone")
+  end
+
+  # A page added under /hangar/ without reserving its name would quietly shadow
+  # the public hangar of a user who already holds that name.
+  test "reserves every static page under /hangar/" do
+    routes = Rails.root.join("app/frontend/frontend/pages/hangar/routes.ts").read
+    pages = routes.scan(%r{path: "([a-z-]+)/"}).flatten.uniq
+
+    assert_not_empty pages
+    assert_empty pages - User::RESERVED_USERNAMES
+  end
 end

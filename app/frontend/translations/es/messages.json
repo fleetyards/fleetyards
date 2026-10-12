@@ -239,6 +239,7 @@
         "serialTaken": "El número de serie ya está tomado.",
         "textInvalid": "%{field} es inválido",
         "fleetNameInvalid": "El campo %{field} solo puede contener caracteres alfanuméricos, espacios, puntos, guiones y guiones bajos",
+        "vehicleSerialInvalid": "El campo %{field} debe tener el formato del registro que muestra el juego, por ejemplo L8-4261-HA",
         "hangar": {
           "accountRequired": {
             "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",

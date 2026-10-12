@@ -207,6 +207,15 @@ class User < ApplicationRecord
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/},
     on: :create
 
+  # The pages under /hangar/ that are not a user's hangar: a user given one of
+  # these names would have their public hangar shadowed by the page.
+  RESERVED_USERNAMES = %w[
+    buybacks equipment fleetchart flair imports inventories paints preview
+    stats transactions transfers wishlist
+  ].freeze
+
+  validate :username_not_a_route_name, if: :username_changed?
+
   validates :email,
     uniqueness: {case_sensitive: false},
     presence: true
@@ -913,6 +922,10 @@ class User < ApplicationRecord
   # membership it sits on being discarded.
   private def primary_accepted_fleet_id
     fleet_memberships.kept.accepted.find_by(primary: true)&.fleet_id
+  end
+
+  private def username_not_a_route_name
+    errors.add(:username, :route_name) if RESERVED_USERNAMES.include?(username.to_s.downcase)
   end
 
   # Same rule the nomination on a contribution answers to, and checked only

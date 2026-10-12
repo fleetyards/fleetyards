@@ -455,7 +455,10 @@ zh-CN:
               cannot_destroy_from_permanent_role: 无法将成员从永久角色中移除
             user_id:
               taken: 已经存在或有一个待处理的邀请
+        vehicle:
+          serial_format: "必须符合游戏中显示的注册编号格式，例如 L8-4261-HA"
         user:
+          route_name: "是 Fleetyards 上某个页面的名称，不能用作用户名"
           attributes:
             base:
               has_permanent_fleet_memberships: 'Cannot delete account while you are

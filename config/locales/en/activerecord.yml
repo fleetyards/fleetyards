@@ -487,10 +487,12 @@ en:
             user_id:
               taken: already present or has a pending invite
         vehicle:
+          serial_format: "must look like the registration the game shows, such as L8-4261-HA"
           attributes:
             model:
               not_player_ownable: cannot be added to a hangar (not player ownable)
         user:
+          route_name: "is the name of a page on Fleetyards and cannot be a username"
           attributes:
             base:
               has_permanent_fleet_memberships: "Cannot delete account while you are an admin of the following fleets: %{fleets}. Please transfer ownership first."

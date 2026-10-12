@@ -75,14 +75,14 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
     vehicle = create(:vehicle)
 
     assert_difference -> { PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count }, 1 do
-      vehicle.update!(serial: "SN-OWNER-1")
+      vehicle.update!(serial: "OW-0001-NR")
     end
 
     assert_nil PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
       .order(created_at: :desc).first.author_id
 
     vehicle.author_id = @admin.id
-    vehicle.update!(serial: "SN-ADMIN-1")
+    vehicle.update!(serial: "AD-0001-MN")
 
     assert_equal @admin.id,
       PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
@@ -124,7 +124,7 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
     vehicle = create(:vehicle)
 
     vehicle.author_id = @admin.id
-    vehicle.update!(serial: "SN-ADMIN-2")
+    vehicle.update!(serial: "AD-0002-MN")
 
     # The create is recorded too, so the ship starts its history rather than
     # having its first version be an edit to a state nothing filed.

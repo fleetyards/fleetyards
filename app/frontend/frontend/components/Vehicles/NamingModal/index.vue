@@ -18,6 +18,7 @@ import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations"
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import AlternativeNamesInput from "./AlternativeNamesInput/index.vue";
+import { useRule as useVehicleSerialRule } from "@/frontend/validations/rules/vehicleSerial";
 
 type Props = {
   vehicle: Vehicle;
@@ -40,6 +41,24 @@ const { defineField, handleSubmit, setErrors } = useForm({
 
 const [name] = defineField("name");
 const [serial] = defineField("serial");
+
+const validateSerial = useVehicleSerialRule();
+
+// Saving strips and upcases a serial before it compares it with the stored
+// one, so `sub flagship` retyped over `SUB FLAGSHIP` is no change either.
+function sameSerial(value?: string | null, saved?: string | null) {
+  return (value ?? "").trim().toUpperCase() === (saved ?? "");
+}
+
+// The server only checks a serial that changed, so one from before the game
+// format can stay while the name is edited.
+const serialRules = (
+  value: string | number | null,
+  ctx: FieldValidationMetaInfo,
+) =>
+  sameSerial(value?.toString(), props.vehicle.serial) ||
+  validateSerial(value?.toString(), [undefined], ctx);
+
 const [nameVisible] = defineField("nameVisible");
 const [alternativeNames] = defineField("alternativeNames");
 
@@ -129,6 +148,7 @@ const useName = (newName: string) => {
             <FormInput
               v-model="serial"
               name="serial"
+              :rules="serialRules"
               :placeholder="t('placeholders.vehicle.serial')"
               translation-key="vehicle.serial"
               :no-label="true"

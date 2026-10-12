@@ -13,6 +13,7 @@ import {
   useVehicleInventory,
   useVehicleInventoryStock,
 } from "@/services/fyApi";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
@@ -54,10 +55,11 @@ const topStock = computed(() =>
     .slice(0, TOP_COUNT),
 );
 
-const cargoRoute = computed(() => ({
-  name: "hangar-vehicle-cargo",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const toVehicle = useVehicleRoute();
+
+const cargoRoute = computed(() =>
+  toVehicle("hangar-vehicle-cargo", props.vehicle),
+);
 </script>
 
 <template>

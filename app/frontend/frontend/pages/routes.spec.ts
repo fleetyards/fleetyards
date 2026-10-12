@@ -1,5 +1,8 @@
 import { createRouter, createMemoryHistory } from "vue-router";
+import { createPinia, setActivePinia } from "pinia";
 import { describe, expect, it } from "vitest";
+import { useSessionStore } from "@/frontend/stores/session";
+import type { User } from "@/services/fyApi";
 import { routes } from "./routes";
 import { CATALOGUE_TENANTS, isTenantActive } from "./catalogue/tenants";
 
@@ -11,6 +14,12 @@ import { CATALOGUE_TENANTS, isTenantActive } from "./catalogue/tenants";
  */
 describe("frontend routes", () => {
   const router = createRouter({ history: createMemoryHistory(), routes });
+
+  // Vehicle pages answer only their owner.
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    useSessionStore().currentUser = { username: "me" } as User;
+  });
 
   // `resolve` stops at the record that matched; only a navigation follows the
   // redirect it holds, which is the thing under test.
@@ -65,7 +74,7 @@ describe("frontend routes", () => {
       { tab: "log" },
     ],
     [
-      "/hangar/my-vehicle/cargo/transactions/",
+      "/hangar/me/l8-4261-ha-titan/cargo/transactions/",
       "hangar-vehicle-cargo",
       { tab: "log" },
     ],

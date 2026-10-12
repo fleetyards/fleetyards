@@ -12,6 +12,7 @@ import {
   type VehicleLoadout,
   useVehicleLoadouts,
 } from "@/services/fyApi";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
@@ -35,10 +36,11 @@ const others = computed(() =>
   all.value.filter((loadout) => !loadout.active).slice(0, OTHERS_COUNT),
 );
 
-const loadoutsRoute = computed(() => ({
-  name: "hangar-vehicle-loadouts",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const toVehicle = useVehicleRoute();
+
+const loadoutsRoute = computed(() =>
+  toVehicle("hangar-vehicle-loadouts", props.vehicle),
+);
 </script>
 
 <template>

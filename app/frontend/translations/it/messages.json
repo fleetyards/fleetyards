@@ -239,6 +239,7 @@
         "serialTaken": "Seriale già in uso.",
         "textInvalid": "%{field} non è valido",
         "fleetNameInvalid": "Il campo %{field} può contenere solo caratteri alfanumerici, spazi, punti, trattini e trattini bassi",
+        "vehicleSerialInvalid": "Il campo %{field} deve avere il formato della registrazione mostrata nel gioco, ad esempio L8-4261-HA",
         "hangar": {
           "accountRequired": {
             "noHtml": "Devi registrarti o effettuare il login per aggiungere navi al tuo Hangar.",

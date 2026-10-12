@@ -456,7 +456,10 @@ fr:
                 de la flotte d'un rôle permanent
             user_id:
               taken: déjà présent ou a une invitation en attente
+        vehicle:
+          serial_format: "doit avoir le format de l’immatriculation affichée dans le jeu, par exemple L8-4261-HA"
         user:
+          route_name: "est le nom d’une page de Fleetyards et ne peut pas être un nom d’utilisateur"
           attributes:
             base:
               has_permanent_fleet_memberships: 'Cannot delete account while you are
