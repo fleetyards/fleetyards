@@ -1,0 +1,50 @@
+# The test jobs' Postgres and Redis service containers, copied to GHCR. Pulls
+# from Docker Hub and ECR Public are rate limited per runner IP, which the
+# shared runners exhaust; GHCR pulls inside Actions are not. A tag added to the
+# service containers has to be added here and mirrored before a job uses it.
+name: Mirror Service Images
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 4 * * 1"
+  push:
+    paths:
+      - ".github/workflows/mirror-service-images.yml"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - postgres:16
+          - redis:8.2.9-alpine
+    steps:
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy ${{ matrix.image }}
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          for attempt in 1 2 3; do
+            for source in "public.ecr.aws/docker/library/$IMAGE" "docker.io/library/$IMAGE"; do
+              if docker buildx imagetools create --tag "ghcr.io/fleetyards/$IMAGE" "$source"; then
+                exit 0
+              fi
+            done
+            sleep $((attempt * 60))
+          done
+          exit 1
