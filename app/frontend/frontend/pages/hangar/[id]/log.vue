@@ -14,6 +14,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -170,137 +171,135 @@ const since = computed(() => {
 </script>
 
 <template>
-  <div class="vehicle-log">
-    <div class="vehicle-log__main">
-      <BtnGroup
-        v-if="entries.length"
-        segmented
-        class="vehicle-log__filters"
-        data-test="vehicle-log-filters"
+  <VehicleTabLayout class="vehicle-log">
+    <BtnGroup
+      v-if="entries.length"
+      segmented
+      class="vehicle-log__filters"
+      data-test="vehicle-log-filters"
+    >
+      <Btn
+        v-for="filter in filters"
+        :key="filter.key"
+        :active="visibility === filter.key"
+        :aria-pressed="visibility === filter.key"
+        :data-test="`vehicle-log-filter-${filter.key}`"
+        @click="visibility = filter.key"
       >
-        <Btn
-          v-for="filter in filters"
-          :key="filter.key"
-          :active="visibility === filter.key"
-          :aria-pressed="visibility === filter.key"
-          :data-test="`vehicle-log-filter-${filter.key}`"
-          @click="visibility = filter.key"
+        {{ t(`labels.vehicleLog.filters.${filter.key}`) }}
+        <span class="vehicle-log__filter-count">{{ filter.count }}</span>
+      </Btn>
+    </BtnGroup>
+
+    <ListSkeleton v-if="isLoading" />
+
+    <Empty
+      v-else-if="!entries.length"
+      :variant="EmptyVariantsEnum.BOX"
+      :name="t('labels.vehicleLog.entries')"
+      hide-actions
+    >
+      <template #info>
+        <p>{{ t("texts.vehicleLog.empty") }}</p>
+      </template>
+    </Empty>
+
+    <p v-else-if="!visibleEntries.length" class="vehicle-log__none">
+      {{ t("texts.vehicleLog.noneForFilter") }}
+    </p>
+
+    <section
+      v-for="group in years"
+      :key="group.year"
+      class="vehicle-log__year"
+      :aria-label="group.year"
+    >
+      <div class="vehicle-log__year-head">
+        <h2 class="vehicle-log__year-title">{{ group.year }}</h2>
+        <span class="vehicle-log__year-rule" />
+        <span class="vehicle-log__year-count">
+          {{
+            t("labels.vehicleLog.entryCount", {
+              count: group.entries.length,
+            })
+          }}
+        </span>
+      </div>
+
+      <ol class="vehicle-log__entries">
+        <li
+          v-for="entry in group.entries"
+          :key="entry.id"
+          class="vehicle-log__entry"
+          :class="{ 'vehicle-log__entry--public': entry.public }"
+          data-test="vehicle-log-entry"
         >
-          {{ t(`labels.vehicleLog.filters.${filter.key}`) }}
-          <span class="vehicle-log__filter-count">{{ filter.count }}</span>
-        </Btn>
-      </BtnGroup>
-
-      <ListSkeleton v-if="isLoading" />
-
-      <Empty
-        v-else-if="!entries.length"
-        :variant="EmptyVariantsEnum.BOX"
-        :name="t('labels.vehicleLog.entries')"
-        hide-actions
-      >
-        <template #info>
-          <p>{{ t("texts.vehicleLog.empty") }}</p>
-        </template>
-      </Empty>
-
-      <p v-else-if="!visibleEntries.length" class="vehicle-log__none">
-        {{ t("texts.vehicleLog.noneForFilter") }}
-      </p>
-
-      <section
-        v-for="group in years"
-        :key="group.year"
-        class="vehicle-log__year"
-        :aria-label="group.year"
-      >
-        <div class="vehicle-log__year-head">
-          <h2 class="vehicle-log__year-title">{{ group.year }}</h2>
-          <span class="vehicle-log__year-rule" />
-          <span class="vehicle-log__year-count">
-            {{
-              t("labels.vehicleLog.entryCount", {
-                count: group.entries.length,
-              })
-            }}
-          </span>
-        </div>
-
-        <ol class="vehicle-log__entries">
-          <li
-            v-for="entry in group.entries"
-            :key="entry.id"
-            class="vehicle-log__entry"
-            :class="{ 'vehicle-log__entry--public': entry.public }"
-            data-test="vehicle-log-entry"
-          >
-            <time :datetime="entry.loggedAt" class="vehicle-log__date">
-              <span class="vehicle-log__day">
-                {{ l(entry.loggedAt, "datetime.formats.day") }}
-              </span>
-              <span class="vehicle-log__month">
-                {{ l(entry.loggedAt, "datetime.formats.monthShort") }}
-              </span>
-              <span class="vehicle-log__time">
-                {{ l(entry.loggedAt, "datetime.formats.time") }}
-              </span>
-            </time>
-
-            <span class="vehicle-log__rail" aria-hidden="true">
-              <span class="vehicle-log__dot" />
+          <time :datetime="entry.loggedAt" class="vehicle-log__date">
+            <span class="vehicle-log__day">
+              {{ l(entry.loggedAt, "datetime.formats.day") }}
             </span>
+            <span class="vehicle-log__month">
+              {{ l(entry.loggedAt, "datetime.formats.monthShort") }}
+            </span>
+            <span class="vehicle-log__time">
+              {{ l(entry.loggedAt, "datetime.formats.time") }}
+            </span>
+          </time>
 
-            <article class="vehicle-log__card">
-              <header class="vehicle-log__card-head">
-                <h3 class="vehicle-log__title">{{ entry.title }}</h3>
-                <span
-                  class="vehicle-log__badge"
-                  :data-test="
-                    entry.public
-                      ? 'vehicle-log-entry-public'
-                      : 'vehicle-log-entry-private'
-                  "
+          <span class="vehicle-log__rail" aria-hidden="true">
+            <span class="vehicle-log__dot" />
+          </span>
+
+          <article class="vehicle-log__card">
+            <header class="vehicle-log__card-head">
+              <h3 class="vehicle-log__title">{{ entry.title }}</h3>
+              <span
+                class="vehicle-log__badge"
+                :data-test="
+                  entry.public
+                    ? 'vehicle-log-entry-public'
+                    : 'vehicle-log-entry-private'
+                "
+              >
+                {{
+                  entry.public
+                    ? t("labels.vehicleLog.publicShort")
+                    : t("labels.vehicleLog.privateShort")
+                }}
+              </span>
+              <span class="vehicle-log__actions">
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.BARE"
+                  :aria-label="t('actions.edit')"
+                  data-test="vehicle-log-entry-edit"
+                  @click="openEntryModal(entry)"
                 >
-                  {{
-                    entry.public
-                      ? t("labels.vehicleLog.publicShort")
-                      : t("labels.vehicleLog.privateShort")
-                  }}
-                </span>
-                <span class="vehicle-log__actions">
-                  <Btn
-                    :size="BtnSizesEnum.SM"
-                    :variant="BtnVariantsEnum.BARE"
-                    :aria-label="t('actions.edit')"
-                    data-test="vehicle-log-entry-edit"
-                    @click="openEntryModal(entry)"
-                  >
-                    <i class="fa-light fa-pen" />
-                  </Btn>
-                  <Btn
-                    :size="BtnSizesEnum.SM"
-                    :variant="BtnVariantsEnum.BARE"
-                    :tone="BtnTonesEnum.DANGER"
-                    :aria-label="t('actions.remove')"
-                    data-test="vehicle-log-entry-remove"
-                    @click="destroy(entry)"
-                  >
-                    <i class="fa-light fa-trash" />
-                  </Btn>
-                </span>
-              </header>
-              <Markdown
-                v-if="entry.body"
-                :source="entry.body"
-                class="vehicle-log__body"
-              />
-            </article>
-          </li>
-        </ol>
-      </section>
-    </div>
+                  <i class="fa-light fa-pen" />
+                </Btn>
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.BARE"
+                  :tone="BtnTonesEnum.DANGER"
+                  :aria-label="t('actions.remove')"
+                  data-test="vehicle-log-entry-remove"
+                  @click="destroy(entry)"
+                >
+                  <i class="fa-light fa-trash" />
+                </Btn>
+              </span>
+            </header>
+            <Markdown
+              v-if="entry.body"
+              :source="entry.body"
+              class="vehicle-log__body"
+            />
+          </article>
+        </li>
+      </ol>
+    </section>
 
-    <aside class="vehicle-log__side">
+    <template #side>
       <Btn
         class="vehicle-log__add"
         data-test="vehicle-log-add"
@@ -351,25 +350,12 @@ const since = computed(() => {
           }}
         </p>
       </MetricsCard>
-    </aside>
-  </div>
+    </template>
+  </VehicleTabLayout>
 </template>
 
 <style lang="scss" scoped>
 .vehicle-log {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 28px;
-  align-items: start;
-
-  @media (max-width: $desktop-breakpoint) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  &__main {
-    min-width: 0;
-  }
-
   &__filters {
     margin-bottom: 16px;
   }
@@ -381,25 +367,6 @@ const since = computed(() => {
 
   &__none {
     color: var(--color-text-dim);
-  }
-
-  // The side column comes first on a phone: the button to write an entry
-  // should not sit under the whole log.
-  &__side {
-    position: sticky;
-    top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    @media (max-width: $desktop-breakpoint) {
-      position: static;
-      order: -1;
-    }
-
-    :deep(.metrics-card__body--slim) {
-      padding-top: 15px;
-    }
   }
 
   &__add {
