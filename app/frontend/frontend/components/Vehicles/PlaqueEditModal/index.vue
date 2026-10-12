@@ -122,13 +122,20 @@ const lockedStyleOptions = computed(() =>
   plaqueStyleOptions.value.filter((option) => option.locked),
 );
 
+// The perk styles show in full; the call to support covers them only on hover,
+// keyboard focus, or -- where nothing hovers -- a tap on one of them.
+const upsellShown = ref(false);
+
 const pickStyle = (option: {
   value: VehiclePlaqueStyleEnum;
   locked: boolean;
 }) => {
-  if (!option.locked) {
-    plaqueStyle.value = option.value;
+  if (option.locked) {
+    upsellShown.value = true;
+    return;
   }
+
+  plaqueStyle.value = option.value;
 };
 
 const preview = computed<Vehicle>(() => ({
@@ -203,7 +210,6 @@ const onSubmit = handleSubmit(async (values) => {
               }"
               :aria-pressed="plaqueStyle === option.value"
               :aria-disabled="option.locked"
-              :tabindex="option.locked ? -1 : undefined"
               :data-test="`vehicle-plaque-style-${option.value}`"
               @click="pickStyle(option)"
             >
@@ -219,8 +225,13 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
           <!-- The styles a supporter unlocks, under one call to support: the
                perk is shown where it would be used, not described elsewhere. -->
-          <div v-if="lockedStyleOptions.length" class="plaque-edit__locked">
-            <div class="plaque-edit__styles" aria-hidden="true">
+          <div
+            v-if="lockedStyleOptions.length"
+            class="plaque-edit__locked"
+            :class="{ 'plaque-edit__locked--open': upsellShown }"
+            @mouseleave="upsellShown = false"
+          >
+            <div class="plaque-edit__styles">
               <button
                 v-for="option in lockedStyleOptions"
                 :key="option.value"
@@ -232,7 +243,6 @@ const onSubmit = handleSubmit(async (values) => {
                 }"
                 :aria-pressed="plaqueStyle === option.value"
                 :aria-disabled="option.locked"
-                :tabindex="option.locked ? -1 : undefined"
                 :data-test="`vehicle-plaque-style-${option.value}`"
                 @click="pickStyle(option)"
               >
@@ -396,13 +406,9 @@ const onSubmit = handleSubmit(async (values) => {
     border-color: var(--color-primary, #428bca);
   }
 
-  &--locked {
-    cursor: not-allowed;
-
-    :deep(.vehicle-plaque-frame) {
-      opacity: 0.45;
-      filter: grayscale(0.6);
-    }
+  &--locked:hover,
+  &--locked:focus-visible {
+    border-color: transparent;
   }
 }
 
@@ -437,6 +443,9 @@ const onSubmit = handleSubmit(async (values) => {
   position: absolute;
   inset: 0;
   z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -444,6 +453,13 @@ const onSubmit = handleSubmit(async (values) => {
   border-radius: 10px;
   background: rgb(0 0 0 / 0.45);
   backdrop-filter: blur(2px);
+}
+
+.plaque-edit__locked:hover .plaque-edit__upsell,
+.plaque-edit__locked:focus-within .plaque-edit__upsell,
+.plaque-edit__locked--open .plaque-edit__upsell {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 // Sticks to the top of the dialog while the styles scroll beneath it.
