@@ -35,7 +35,7 @@ const router = createRouter({
 const model = {
   slug: "andromeda",
   name: "Constellation Andromeda",
-  media: {},
+  media: { storeImage: { smallUrl: "/store.jpg" } },
 } as Model;
 
 const emptyOwners = (): ModelOwners => ({
@@ -75,6 +75,22 @@ describe("ModelOwnersList", () => {
 
     expect(block.text()).toContain("Constellation Andromeda");
     expect(block.find("a").attributes("href")).toBe("/hangar/ANDR-1/");
+  });
+
+  it("shows the ship's own picture before the model's", async () => {
+    const wrapper = await mount({
+      ...emptyOwners(),
+      vehicles: [
+        { id: "v-1", flagship: false, image: { smallUrl: "/own.jpg" } },
+        { id: "v-2", flagship: false },
+      ] as ModelOwners["vehicles"],
+    });
+
+    const thumbs = wrapper
+      .findAll('[data-test="model-owners-vehicles"] img')
+      .map((img) => img.attributes("src"));
+
+    expect(thumbs).toEqual(["/own.jpg", "/store.jpg"]);
   });
 
   it("counts the friends it could not list", async () => {
