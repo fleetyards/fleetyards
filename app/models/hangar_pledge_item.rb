@@ -12,6 +12,9 @@ class HangarPledgeItem < ApplicationRecord
 
   belongs_to :user
 
+  has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
+  has_many :model_paints, through: :model_paint_links
+
   validates :rsi_pledge_id, :name, presence: true
   validates :kind, inclusion: {in: KINDS}
   validates :quantity, numericality: {only_integer: true, greater_than: 0}
