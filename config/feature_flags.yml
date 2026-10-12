@@ -97,3 +97,6 @@ holo_ar:
 
 fleet_directory:
   description: "Fleet directory — a public list of verified fleets, searchable by name, SID, activity and language"
+
+vehicle_overview:
+  description: "Vehicle overview — an overview tab, a captain's log and an uploaded picture for each ship in the hangar"
