@@ -82,10 +82,11 @@ const discordUrl = computed(() =>
           role="img"
           class="user-card__supporter"
         >
+          <!-- The tier's insignia alone: the recurring mark beside it does not
+               fit a corner, and the tooltip already says supporter. -->
           <SupporterBadge
-            v-if="user.supporterTier || user.supporterRecurring"
+            v-if="user.supporterTier"
             :tier="user.supporterTier"
-            :recurring="user.supporterRecurring"
             :size="20"
           />
           <i v-else class="fa-duotone fa-heart" aria-hidden="true" />

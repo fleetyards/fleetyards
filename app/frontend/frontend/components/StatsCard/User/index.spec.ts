@@ -49,4 +49,19 @@ describe("UserStatsCard", () => {
     );
     expect(wrapper.find(".user-card__supporter").exists()).toBe(false);
   });
+
+  it("shows a supporter's tier without the recurring mark", async () => {
+    const wrapper = await mount({
+      user: user({
+        supporter: true,
+        supporterTier: 2,
+        supporterRecurring: true,
+      }),
+    });
+
+    expect(wrapper.find("[data-test='supporter-badge']").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test='supporter-badge-recurring']").exists(),
+    ).toBe(false);
+  });
 });
