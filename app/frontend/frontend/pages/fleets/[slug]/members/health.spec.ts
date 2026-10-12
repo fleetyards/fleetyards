@@ -448,6 +448,14 @@ describe("FleetMembersHealthPage", () => {
         )
         .exists(),
     ).toBe(true);
+    // The icon-only trigger names itself, on the button that takes focus.
+    expect(
+      subject
+        .find(
+          "[data-test='health-unverified-tal'] [data-test='health-contact'] button",
+        )
+        .attributes("aria-label"),
+    ).toBe("Contact");
   });
 
   it("withdraws an unanswered invitation rather than removing a member", async () => {

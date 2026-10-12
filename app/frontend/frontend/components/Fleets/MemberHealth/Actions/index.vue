@@ -240,15 +240,23 @@ const addToSquadron = (squadron: FleetSquadron) =>
     </Btn>
     <BtnDropdown
       v-if="shown('addToSquadron')"
-      v-tooltip="t('actions.fleet.members.health.addToSquadron')"
-      :aria-label="t('actions.fleet.members.health.addToSquadron')"
       :size="BtnSizesEnum.SM"
       expand-left
       expand-bottom
       data-test="health-add-to-squadron"
     >
-      <template #label>
-        <i class="fa-light fa-users-medical" />
+      <template #trigger="{ toggle, visible }">
+        <Btn
+          v-tooltip="t('actions.fleet.members.health.addToSquadron')"
+          :aria-label="t('actions.fleet.members.health.addToSquadron')"
+          :size="BtnSizesEnum.SM"
+          :active="visible"
+          aria-haspopup="menu"
+          :aria-expanded="visible"
+          @click="toggle"
+        >
+          <i class="fa-light fa-users-medical" />
+        </Btn>
       </template>
       <Btn
         v-for="squadron in squadrons"
@@ -274,15 +282,23 @@ const addToSquadron = (squadron: FleetSquadron) =>
     </Btn>
     <BtnDropdown
       v-if="shown('contact')"
-      v-tooltip="t('labels.fleet.members.contact')"
-      :aria-label="t('labels.fleet.members.contact')"
       :size="BtnSizesEnum.SM"
       expand-left
       expand-bottom
       data-test="health-contact"
     >
-      <template #label>
-        <i class="fa-light fa-message" />
+      <template #trigger="{ toggle, visible }">
+        <Btn
+          v-tooltip="t('labels.fleet.members.contact')"
+          :aria-label="t('labels.fleet.members.contact')"
+          :size="BtnSizesEnum.SM"
+          :active="visible"
+          aria-haspopup="menu"
+          :aria-expanded="visible"
+          @click="toggle"
+        >
+          <i class="fa-light fa-message" />
+        </Btn>
       </template>
       <MemberContactMenu :member="contact" />
     </BtnDropdown>
