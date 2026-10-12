@@ -5050,6 +5050,8 @@ components:
           - type: 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
+        modelImage:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:

@@ -39583,6 +39583,8 @@ components:
           - type: 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
+        modelImage:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
@@ -40082,6 +40084,8 @@ components:
           "$ref": "#/components/schemas/ModelPaint"
         image:
           "$ref": "#/components/schemas/MediaFile"
+        modelImage:
+          "$ref": "#/components/schemas/MediaFile"
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
@@ -40246,6 +40250,11 @@ components:
           type:
           - string
           - 'null'
+        modelImageId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         flagship:
           type: boolean
         modelPaintId:
