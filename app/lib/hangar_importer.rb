@@ -76,7 +76,10 @@ class HangarImporter
           notify: false,
           user_id: @import.user_id,
           name: item[:ship_name] || item[:custom_name],
-          serial: item[:ship_serial],
+          # An export carries whatever serial the ship had, including ones from
+          # before the game format; one of those would fail validation and lose
+          # the whole ship rather than just its serial.
+          serial: Vehicle.game_serial(item[:ship_serial]),
           flagship: item[:flagship] || false,
           wanted: item[:wanted] || false,
           bought_via: item[:bought_via] || :pledge_store,

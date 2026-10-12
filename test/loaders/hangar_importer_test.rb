@@ -137,6 +137,23 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal [@model.name], result[:imported]
   end
 
+  test "imports a ship whose serial predates the game format, without it" do
+    import = import_for([{slug: @model.slug, ship_serial: "SUB FLAGSHIP"}])
+
+    ::HangarImporter.new(import).run
+
+    vehicle = Vehicle.find_by!(user_id: @user.id)
+    assert_nil vehicle.serial
+  end
+
+  test "imports a serial in the game format" do
+    import = import_for([{slug: @model.slug, ship_serial: "l84261ha"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "L8-4261-HA", Vehicle.find_by!(user_id: @user.id).serial
+  end
+
   test "reports an unmatched slug-only item under its slug" do
     import = import_for([{slug: "no-such-ship"}])
 
