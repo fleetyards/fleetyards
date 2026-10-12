@@ -30,16 +30,6 @@ module Admin
         def show
         end
 
-        def create
-          @equipment = Equipment.new(equipment_params)
-
-          authorize! @equipment, with: ::Admin::EquipmentPolicy
-
-          return if @equipment.save
-
-          render json: ValidationError.new("equipment.create", errors: @equipment.errors), status: :bad_request
-        end
-
         def update
           return if @equipment.update_with_facts(equipment_params.merge(author_id: current_user.id))
 

@@ -26,16 +26,6 @@ module Admin
         def show
         end
 
-        def create
-          @commodity = Commodity.new(commodity_params)
-
-          authorize! @commodity, with: ::Admin::CommodityPolicy
-
-          return if @commodity.save
-
-          render json: ValidationError.new("commodity.create", errors: @commodity.errors), status: :bad_request
-        end
-
         def update
           return if @commodity.update_with_facts(commodity_params.merge(author_id: current_user.id))
 

@@ -118,14 +118,14 @@ v1_admin_api_routes = lambda do
     get :category_filters, on: :collection
   end
 
-  resources :equipment, only: %i[index show create update destroy] do
+  resources :equipment, only: %i[index show update destroy] do
     get :type_filters, on: :collection
     get :item_type_filters, on: :collection
     get :weapon_class_filters, on: :collection
     get "slots", to: "equipment#slot_filters", on: :collection
   end
 
-  resources :commodities, only: %i[index show create update destroy] do
+  resources :commodities, only: %i[index show update destroy] do
     get :type_filters, on: :collection
   end
 
