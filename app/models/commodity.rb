@@ -51,7 +51,7 @@ class Commodity < ApplicationRecord
   # commodity would read as nameless, and an inventory item pointing at one has
   # to resolve to something.
   has_one :last_build,
-    -> { for_source.order(created_at: :desc) },
+    -> { newest },
     class_name: "CommodityBuild", inverse_of: :commodity
 
   # Whether the build we are on describes this commodity, rather than whether the

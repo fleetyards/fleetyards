@@ -119,7 +119,7 @@ class Equipment < ApplicationRecord
   # would read as nameless, and an inventory entry pointing at one has to
   # resolve to something.
   has_one :last_build,
-    -> { for_source.order(created_at: :desc) },
+    -> { newest },
     class_name: "EquipmentBuild", inverse_of: :equipment
 
   # Not in the build we are on. Said out loud in the API, which until now offered
