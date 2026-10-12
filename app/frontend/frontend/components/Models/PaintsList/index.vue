@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Empty from "@/shared/components/Empty/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -52,16 +54,24 @@ const storeImage = (paint: ModelPaint) => {
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error>
-    <template #resolved>
-      <hr v-if="paints?.length" />
-      <div v-if="paints?.length" id="paints" class="row">
-        <div class="col-12">
-          <Heading v-if="paints?.length" :level="HeadingLevelEnum.H2" hero>
-            {{ t("labels.model.paints") }}
-          </Heading>
-
-          <transition-group name="fade-list" class="row" tag="div" appear>
+  <!-- Always drawn, so the ship page's sections stand in the same place for
+       every ship and a link to one has an anchor to land on before the
+       request is back. -->
+  <hr />
+  <section id="paints" class="row">
+    <div class="col-12">
+      <Heading :level="HeadingLevelEnum.H2" hero>
+        {{ t("labels.model.paints") }}
+      </Heading>
+      <AsyncData :async-status="asyncStatus" hide-error>
+        <template #resolved>
+          <transition-group
+            v-if="paints?.length"
+            name="fade-list"
+            class="row"
+            tag="div"
+            appear
+          >
             <div
               v-for="item in paints"
               :key="`paints-${item.id}`"
@@ -80,8 +90,14 @@ const storeImage = (paint: ModelPaint) => {
               </Panel>
             </div>
           </transition-group>
-        </div>
-      </div>
-    </template>
-  </AsyncData>
+          <Empty
+            v-else
+            :variant="EmptyVariantsEnum.BOX"
+            :name="t('labels.model.paints')"
+            hide-actions
+          />
+        </template>
+      </AsyncData>
+    </div>
+  </section>
 </template>

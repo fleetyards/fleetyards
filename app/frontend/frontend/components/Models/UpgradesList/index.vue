@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Empty from "@/shared/components/Empty/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -26,15 +28,24 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error>
-    <template v-if="upgrades?.length" #resolved>
-      <hr />
-      <div id="upgrades" class="row">
-        <div class="col-12">
-          <Heading :level="HeadingLevelEnum.H2" hero>
-            {{ t(`labels.model.upgrades`) }}
-          </Heading>
-          <transition-group name="fade-list" class="row" tag="div" appear>
+  <!-- Always drawn, so the ship page's sections stand in the same place for
+       every ship and a link to one has an anchor to land on before the
+       request is back. -->
+  <hr />
+  <section id="upgrades" class="row">
+    <div class="col-12">
+      <Heading :level="HeadingLevelEnum.H2" hero>
+        {{ t("labels.model.upgrades") }}
+      </Heading>
+      <AsyncData :async-status="asyncStatus" hide-error>
+        <template #resolved>
+          <transition-group
+            v-if="upgrades?.length"
+            name="fade-list"
+            class="row"
+            tag="div"
+            appear
+          >
             <div
               v-for="item in upgrades"
               :key="`upgrades-${item.id}`"
@@ -43,8 +54,14 @@ const { t } = useI18n();
               <TeaserPanel :item="item" level="h3" />
             </div>
           </transition-group>
-        </div>
-      </div>
-    </template>
-  </AsyncData>
+          <Empty
+            v-else
+            :variant="EmptyVariantsEnum.BOX"
+            :name="t('labels.model.upgrades')"
+            hide-actions
+          />
+        </template>
+      </AsyncData>
+    </div>
+  </section>
 </template>
