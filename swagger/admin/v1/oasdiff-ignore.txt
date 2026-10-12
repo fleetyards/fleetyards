@@ -225,3 +225,4 @@ PUT /users/{id} removed the required property `saleNotify` from the response wit
 PUT /vehicles/{id} removed the required property `user/saleNotify` from the response with the `200` status
 POST /commodities api removed without deprecation
 POST /equipment api removed without deprecation
+GET /model-modules for the `query` request parameter `q`, the type/format of property `nameIn` was specialized from `string`/`` to `array`/``

@@ -37,7 +37,8 @@ export const useFilters = <T>({
       .filter((key) => key.endsWith("In"))
       .forEach((key) => {
         const value = query[key];
-        if (value == null || Array.isArray(value)) return;
+        // Left as it is, an empty value is dropped below like any unset filter.
+        if (value == null || value === "" || Array.isArray(value)) return;
 
         (query as Record<string, unknown>)[key] = [value];
       });

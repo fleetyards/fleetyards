@@ -18609,7 +18609,9 @@ components:
       type: object
       properties:
         nameIn:
-          type: string
+          type: array
+          items:
+            type: string
         idEq:
           type: string
           format: uuid

@@ -64,6 +64,12 @@ describe("useFilters#getQuery", () => {
     });
   });
 
+  it("drops an empty list filter like any unset one", () => {
+    query.value = { roleIn: "", nameCont: "titanium" };
+
+    expect(useFilters().getQuery()).toEqual({ nameCont: "titanium" });
+  });
+
   it("drops the flag that opens the fleetchart", () => {
     query.value = { nameCont: "titanium", fleetchart: "true" };
 
