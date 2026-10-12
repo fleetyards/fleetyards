@@ -74,6 +74,18 @@ const holoVisible = computed(
   () => holoviewerVisible.value && !!holoModel.value && !props.compact,
 );
 
+// Over this page rather than on the ship's viewer page, so closing it lands
+// back on the vehicle.
+const openFullscreenHolo = () => {
+  if (!holoModel.value) return;
+
+  comlink.emit("open-modal", {
+    component: () => import("@/shared/components/HoloViewer/Modal/index.vue"),
+    fullscreen: true,
+    props: { models: [holoModel.value] },
+  });
+};
+
 const openEditModal = () => {
   comlink.emit("open-modal", {
     component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
@@ -205,19 +217,16 @@ const openImageModal = () => {
         </div>
         <div class="vehicle-hero__links">
           <!-- The ship page's pair: the switch, and beside it while the model
-               shows, the way out to the full-window viewer. -->
+               shows, the full-screen viewer. -->
           <BtnGroup v-if="holoModel">
             <Btn
               v-if="holoVisible"
-              v-tooltip="t('labels.openInNewWindow')"
-              :aria-label="t('labels.openInNewWindow')"
-              :to="{
-                name: 'ship-viewer',
-                params: { slug: vehicle.model.slug },
-              }"
+              v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+              :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
               data-test="vehicle-hero-holo-viewer"
+              @click="openFullscreenHolo"
             >
-              <i class="fa-light fa-external-link-alt" />
+              <i class="fa-light fa-expand" />
             </Btn>
             <Btn
               :active="holoVisible"

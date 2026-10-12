@@ -556,7 +556,8 @@
         "applyPaint": "%{paint} anwenden",
         "choosePaint": "Lackierung wählen",
         "editLocation": "Standort ändern",
-        "allPaints": "Alle %{count} Lackierungen"
+        "allPaints": "Alle %{count} Lackierungen",
+        "fullscreenHolo": "Vollbild"
       },
       "vehicleLog": {
         "open": "Logbuch",

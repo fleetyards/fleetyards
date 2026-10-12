@@ -556,7 +556,8 @@
         "applyPaint": "Aplicar %{paint}",
         "choosePaint": "Elegir pintura",
         "editLocation": "Cambiar ubicación",
-        "allPaints": "Las %{count} pinturas"
+        "allPaints": "Las %{count} pinturas",
+        "fullscreenHolo": "Pantalla completa"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

@@ -556,7 +556,8 @@
         "applyPaint": "Apply %{paint}",
         "choosePaint": "Choose paint",
         "editLocation": "Change location",
-        "allPaints": "All %{count} paints"
+        "allPaints": "All %{count} paints",
+        "fullscreenHolo": "Full screen"
       },
       "vehicleLog": {
         "open": "Captain's Log",

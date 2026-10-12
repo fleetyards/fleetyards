@@ -556,7 +556,8 @@
         "applyPaint": "Appliquer %{paint}",
         "choosePaint": "Choisir une peinture",
         "editLocation": "Changer l'emplacement",
-        "allPaints": "Les %{count} peintures"
+        "allPaints": "Les %{count} peintures",
+        "fullscreenHolo": "Plein écran"
       },
       "vehicleLog": {
         "open": "Journal de bord",

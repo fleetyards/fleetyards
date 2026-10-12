@@ -556,7 +556,8 @@
         "applyPaint": "套用 %{paint}",
         "choosePaint": "選擇塗裝",
         "editLocation": "變更位置",
-        "allPaints": "全部 %{count} 款塗裝"
+        "allPaints": "全部 %{count} 款塗裝",
+        "fullscreenHolo": "全螢幕"
       },
       "vehicleLog": {
         "open": "艦長日誌",
