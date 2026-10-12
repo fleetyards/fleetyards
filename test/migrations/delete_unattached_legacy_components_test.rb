@@ -9,7 +9,7 @@ class DeleteUnattachedLegacyComponentsTest < ActiveSupport::TestCase
   end
 
   def run_migration
-    DeleteUnattachedLegacyComponents.new.up
+    ActiveRecord::Migration.suppress_messages { DeleteUnattachedLegacyComponents.new.up }
   end
 
   test "a component no build describes and nothing points at is deleted" do
@@ -18,6 +18,14 @@ class DeleteUnattachedLegacyComponentsTest < ActiveSupport::TestCase
     run_migration
 
     assert_not Component.exists?(gone.id)
+  end
+
+  test "a component from the game files is kept even without a build" do
+    loaded = create(:component, :without_build, sc_ref: "e1f0a1b2-0000-4000-8000-000000000001")
+
+    run_migration
+
+    assert Component.exists?(loaded.id)
   end
 
   test "a component a build describes is kept" do
@@ -54,5 +62,35 @@ class DeleteUnattachedLegacyComponentsTest < ActiveSupport::TestCase
     run_migration
 
     assert Component.exists?(priced.id)
+  end
+
+  test "a component's own history does not keep it" do
+    edited = legacy
+    PaperTrail::Version.create!(item: edited, event: "update")
+
+    run_migration
+
+    assert_not Component.exists?(edited.id)
+  end
+
+  test "a notification about a component does not keep it" do
+    mentioned = legacy
+    create(:notification, record: mentioned)
+
+    run_migration
+
+    assert_not Component.exists?(mentioned.id)
+  end
+
+  test "a component with only build changes left is deleted" do
+    changed = legacy
+    ComponentBuildChange.create!(
+      component: changed, environment: "live", from_version: "4.0.0", to_version: "4.1.0",
+      field: "name", recorded_at: Time.current
+    )
+
+    run_migration
+
+    assert_not Component.exists?(changed.id)
   end
 end
