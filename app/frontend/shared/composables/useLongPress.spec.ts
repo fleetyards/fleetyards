@@ -3,12 +3,10 @@ import { flushPromises, mount } from "@vue/test-utils";
 import { LONG_PRESS_MS, useLongPress } from "./useLongPress";
 
 const haptics = vi.hoisted(() => ({
-  canVibrate: true,
   tick: vi.fn(),
 }));
 
 vi.mock("@/shared/utils/Haptics", () => ({
-  canVibrateNow: () => haptics.canVibrate,
   hapticTick: haptics.tick,
 }));
 
@@ -18,7 +16,6 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.useRealTimers();
-  haptics.canVibrate = true;
   haptics.tick.mockReset();
 });
 
@@ -153,25 +150,11 @@ describe("useLongPress", () => {
     expect(menu.defaultPrevented).toBe(true);
   });
 
-  it("ticks when the hold lands where the device can buzz from a timer", async () => {
+  it("ticks when the hold lands", async () => {
     const { row } = await render();
 
     row.dispatchEvent(touch("touchstart", 100, 100));
     vi.advanceTimersByTime(LONG_PRESS_MS);
-
-    expect(haptics.tick).toHaveBeenCalledTimes(1);
-  });
-
-  it("ticks as the finger lifts instead where it cannot, as on iOS", async () => {
-    haptics.canVibrate = false;
-    const { row } = await render();
-
-    row.dispatchEvent(touch("touchstart", 100, 100));
-    vi.advanceTimersByTime(LONG_PRESS_MS);
-
-    expect(haptics.tick).not.toHaveBeenCalled();
-
-    row.dispatchEvent(touch("touchend"));
 
     expect(haptics.tick).toHaveBeenCalledTimes(1);
   });

@@ -8,18 +8,15 @@ import {
 } from "./useSwipeActions";
 
 const haptics = vi.hoisted(() => ({
-  canVibrate: true,
   tick: vi.fn(),
 }));
 
 vi.mock("@/shared/utils/Haptics", () => ({
-  canVibrateNow: () => haptics.canVibrate,
   hapticTick: haptics.tick,
 }));
 
 afterEach(() => {
   vi.useRealTimers();
-  haptics.canVibrate = true;
   haptics.tick.mockReset();
 });
 
@@ -192,25 +189,12 @@ describe("useSwipeActions", () => {
     expect(clicks).toHaveBeenCalledOnce();
   });
 
-  it("ticks as the row arms where the device can buzz mid-move", async () => {
+  it("ticks as the row arms, and not again on the release", async () => {
     const { drag, release } = await render();
 
     await drag(-(SWIPE_THRESHOLD_PX + 10));
 
     expect(haptics.tick).toHaveBeenCalledTimes(1);
-
-    await release();
-
-    expect(haptics.tick).toHaveBeenCalledTimes(1);
-  });
-
-  it("ticks on the release instead where it cannot, as on iOS", async () => {
-    haptics.canVibrate = false;
-    const { drag, release } = await render();
-
-    await drag(-(SWIPE_THRESHOLD_PX + 10));
-
-    expect(haptics.tick).not.toHaveBeenCalled();
 
     await release();
 
