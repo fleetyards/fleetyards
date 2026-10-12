@@ -1,4 +1,7 @@
-import type { FleetEventStatusEnum } from "@/services/fyApi";
+import {
+  type FleetEventStatusEnum,
+  FleetEventSignupStatusEnum,
+} from "@/services/fyApi";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
@@ -42,6 +45,19 @@ const PILL_VARIANT_BY_STATUS: Record<string, `${PillVariantsEnum}`> = {
   cancelled: PillVariantsEnum.DANGER,
 };
 
+// A signup's own badge. Only a commitment either way earns a colour: interested,
+// pending and withdrawn all leave the seat open.
+const PILL_VARIANT_BY_SIGNUP_STATUS: Record<
+  `${FleetEventSignupStatusEnum}`,
+  `${PillVariantsEnum}`
+> = {
+  [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,
+  [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
+  [FleetEventSignupStatusEnum.INTERESTED]: PillVariantsEnum.NEUTRAL,
+  [FleetEventSignupStatusEnum.PENDING]: PillVariantsEnum.NEUTRAL,
+  [FleetEventSignupStatusEnum.WITHDRAWN]: PillVariantsEnum.NEUTRAL,
+};
+
 export const useEventStatus = () => {
   const effectiveStatus = (
     status: FleetEventStatusEnum,
@@ -59,5 +75,15 @@ export const useEventStatus = () => {
     PILL_VARIANT_BY_STATUS[effectiveStatus(status, past)] ??
     PillVariantsEnum.NEUTRAL;
 
-  return { effectiveStatus, toneFor, labelKeyFor, pillVariantFor };
+  const signupPillVariantFor = (status?: string | null) =>
+    PILL_VARIANT_BY_SIGNUP_STATUS[status as `${FleetEventSignupStatusEnum}`] ??
+    PillVariantsEnum.NEUTRAL;
+
+  return {
+    effectiveStatus,
+    toneFor,
+    labelKeyFor,
+    pillVariantFor,
+    signupPillVariantFor,
+  };
 };

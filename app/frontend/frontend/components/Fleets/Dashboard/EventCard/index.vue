@@ -6,15 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
+import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
-import {
-  FleetEventSignupStatusEnum,
-  type Fleet,
-  type FleetEvent,
-} from "@/services/fyApi";
+import type { Fleet, FleetEvent } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -40,12 +36,7 @@ const link = computed(() => ({
 
 const cover = computed(() => coverStyle(resolveCover(props.event)));
 
-const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
-  [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,
-  [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
-  [FleetEventSignupStatusEnum.INTERESTED]: PillVariantsEnum.NEUTRAL,
-  [FleetEventSignupStatusEnum.PENDING]: PillVariantsEnum.NEUTRAL,
-};
+const { signupPillVariantFor } = useEventStatus();
 </script>
 
 <template>
@@ -71,7 +62,7 @@ const SIGNUP_VARIANTS: Record<string, `${PillVariantsEnum}`> = {
     </div>
     <Pill
       v-if="event.viewerSignup"
-      :variant="SIGNUP_VARIANTS[event.viewerSignup.status]"
+      :variant="signupPillVariantFor(event.viewerSignup.status)"
       data-test="fleet-dashboard-event-signup"
     >
       {{

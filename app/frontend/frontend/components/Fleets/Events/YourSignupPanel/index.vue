@@ -8,7 +8,6 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
@@ -23,6 +22,7 @@ import {
   signupFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -149,16 +149,8 @@ const statusLabel = computed(() =>
   t(`labels.fleets.events.signupStatuses.${props.signup.status}`),
 );
 
-// Interested, pending and withdrawn all leave the seat open, so only a
-// commitment either way earns a colour.
-const STATUS_VARIANTS: Partial<Record<string, `${PillVariantsEnum}`>> = {
-  [FleetEventSignupStatusEnum.CONFIRMED]: PillVariantsEnum.SUCCESS,
-  [FleetEventSignupStatusEnum.TENTATIVE]: PillVariantsEnum.WARNING,
-};
-
-const statusVariant = computed(
-  () => STATUS_VARIANTS[props.signup.status] ?? PillVariantsEnum.NEUTRAL,
-);
+const { signupPillVariantFor } = useEventStatus();
+const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
 </script>
 
 <template>
@@ -168,7 +160,7 @@ const statusVariant = computed(
         <i class="fa-light fa-user-check" />
         <span>{{ t("headlines.fleets.events.yourSignup") }}</span>
       </div>
-      <Pill :variant="statusVariant" data-test="your-signup-status">
+      <Pill :variant="statusVariant">
         {{ statusLabel }}
       </Pill>
     </header>
