@@ -131,6 +131,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="loggedAt"
         v-bind="loggedAtProps"
         name="loggedAt"
+        :clearable="!isEdit"
         :label="t('labels.vehicleLog.loggedAt')"
         :placeholder="t('labels.vehicleLog.loggedAtPlaceholder')"
       />

@@ -335,7 +335,7 @@
       },
       "vehicleLog": {
         "visibility": "Le voci pubbliche sono mostrate con questa nave nel tuo hangar pubblico.",
-        "visibilityHidden": "Questa nave è nascosta nel tuo hangar pubblico, quindi lì non viene mostrata nessuna delle sue voci.",
+        "visibilityHidden": "Questa nave non compare nel tuo hangar pubblico, quindi lì non viene mostrata nessuna delle sue voci.",
         "empty": "Annota cosa è successo a questa nave: solo tu vedi una voce finché non la rendi pubblica.",
         "publicEmpty": "Il capitano di questa nave non ha ancora condiviso nessuna voce."
       }

@@ -15,7 +15,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { type Vehicle, useUpdateVehicle } from "@/services/fyApi";
+import {
+  type FieldError,
+  type Vehicle,
+  useUpdateVehicle,
+} from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -70,8 +74,18 @@ const onSubmit = handleSubmit(async (values) => {
       displaySuccess({ text: t("messages.vehicleOverview.image.success") });
       comlink.emit("close-modal");
     })
-    .catch(() => {
-      displayAlert({ text: t("messages.vehicleOverview.image.failure") });
+    .catch((error: { response?: { data?: { errors?: FieldError[] } } }) => {
+      // The attachment's own reason -- an SVG, say -- is what tells the owner
+      // which file would work instead.
+      const reason = error.response?.data?.errors?.find(
+        (fieldError) => fieldError.attribute === "image",
+      )?.messages[0]?.message;
+
+      displayAlert({
+        text: [t("messages.vehicleOverview.image.failure"), reason]
+          .filter(Boolean)
+          .join(": "),
+      });
     });
 });
 </script>

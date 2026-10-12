@@ -49,7 +49,12 @@ const openEntryModal = (logEntry?: VehicleLogEntry) => {
     component: () =>
       import("@/frontend/components/Vehicles/LogEntryModal/index.vue"),
     props: {
-      vehicle: props.vehicle,
+      // The switch below saves on its own, so the page's vehicle can still
+      // carry the old default when a new entry is started.
+      vehicle: {
+        ...props.vehicle,
+        logEntriesPublicByDefault: publicByDefault.value,
+      },
       logEntry,
     },
   });
@@ -76,6 +81,12 @@ const destroy = (logEntry: VehicleLogEntry) => {
     },
   });
 };
+
+// The public hangar lists only bought ships, so a wishlist ship's entries are
+// never shown there, public or not.
+const publiclyListed = computed(
+  () => props.vehicle.public && !props.vehicle.wanted,
+);
 
 // Only new entries follow it; the ones already written keep their own switch.
 const publicByDefault = ref(props.vehicle.logEntriesPublicByDefault);
@@ -124,7 +135,7 @@ const updatePublicByDefault = async (value: boolean) => {
 
     <p class="vehicle-log__hint">
       {{
-        vehicle.public
+        publiclyListed
           ? t("texts.vehicleLog.visibility")
           : t("texts.vehicleLog.visibilityHidden")
       }}

@@ -335,7 +335,7 @@
       },
       "vehicleLog": {
         "visibility": "Les entrées publiques sont affichées avec ce vaisseau dans ton hangar public.",
-        "visibilityHidden": "Ce vaisseau est masqué dans ton hangar public, aucune de ses entrées n'y est donc affichée.",
+        "visibilityHidden": "Ce vaisseau n'apparaît pas dans ton hangar public, aucune de ses entrées n'y est donc affichée.",
         "empty": "Note ce qui est arrivé à ce vaisseau : toi seul vois une entrée tant que tu ne la rends pas publique.",
         "publicEmpty": "Le capitaine de ce vaisseau n'a encore partagé aucune entrée."
       }
