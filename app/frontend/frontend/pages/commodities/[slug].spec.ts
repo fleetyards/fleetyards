@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory, type Router } from "vue-router";
-import type { Commodity } from "@/services/fyApi";
+import type { CommodityDetail } from "@/services/fyApi";
 
 const commodity = vi.hoisted(() => ({
-  value: undefined as Commodity | undefined,
+  value: undefined as CommodityDetail | undefined,
 }));
 
 vi.mock("@/services/fyApi", () => ({
@@ -33,7 +33,7 @@ vi.mock("@/shared/composables/useMetaInfo", () => ({
 
 import CommodityPage from "./[slug].vue";
 
-const record = (overrides: Partial<Commodity> = {}): Commodity => ({
+const record = (overrides: Partial<CommodityDetail> = {}): CommodityDetail => ({
   id: "c0000000-0000-0000-0000-000000000001",
   name: "Construction Materials",
   slug: "construction-materials",

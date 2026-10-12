@@ -37,34 +37,24 @@ module V1
           # The refined good an ore or raw form becomes, where it becomes one.
           refinesInto: ::Shared::V1::Schemas::NullableCommodityRef,
 
-          # The raw forms that refine into this one, still in the build we are
-          # on. Only the detail payload carries it: the list's cache fragment is
-          # keyed on the commodity row, and these are other rows pointing at it.
-          refinedFrom: {type: :array, items: ::Shared::V1::Schemas::CommodityRef},
-
           # Whether the build we are on still describes this commodity. Until now
           # the API served one the export had dropped as though it were current.
           retired: {type: :boolean},
           storeImage: ::Shared::V1::Schemas::MediaFile,
 
-          # The best of each direction across every terminal in `availability`
-          # -- the cheapest sale, the best-paid buy-back -- so a row can state
+          # The best of each direction across every terminal in the detail's
+          # `availability` -- the cheapest sale, the best-paid buy-back -- so a row can state
           # both without reducing the arrays itself, and the list can be ordered
           # by either. Null where nothing trades it -- half the catalogue --
           # which is a different answer from zero.
           buyPrice: {type: [:number, :null]},
           sellPrice: {type: [:number, :null]},
 
-          # The UEX snapshot prices commodities at every terminal that trades
-          # them, which is the whole point of syncing it -- the same shape the
-          # component and equipment payloads carry.
-          availability: Shared::V1::Schemas::ItemAvailability,
-
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id name slug counted consumable containerSizes retired availability createdAt updatedAt]
+        required: %w[id name slug counted consumable containerSizes retired createdAt updatedAt]
       })
     end
   end

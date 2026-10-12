@@ -40,7 +40,6 @@ const commodity = (attrs: Partial<Commodity> = {}) =>
     consumable: false,
     containerSizes: [],
     retired: false,
-    availability: { boughtAt: [], soldAt: [] },
     createdAt: "2026-01-01",
     updatedAt: "2026-01-01",
     ...attrs,

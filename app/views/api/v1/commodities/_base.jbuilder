@@ -26,19 +26,9 @@ json.store_image do
 end
 
 # The cheapest of each direction across every terminal, which is what the row
-# and the price sorts both read. Without them a list would have to reduce the
-# `availability` arrays itself -- 539 price rows on a page of 60 -- to show two
-# numbers, and could not ask the API to order by either.
+# and the price sorts both read. The per-terminal rows behind them -- 539 on a
+# page of 60 -- are only on the detail.
 json.buy_price commodity.buy_price&.to_f
 json.sell_price commodity.sell_price&.to_f
-
-json.availability do
-  json.bought_at do
-    json.array! commodity.bought_at, partial: "api/v1/item_prices/base", as: :item_price
-  end
-  json.sold_at do
-    json.array! commodity.sold_at, partial: "api/v1/item_prices/base", as: :item_price
-  end
-end
 
 json.partial! "api/shared/dates", record: commodity

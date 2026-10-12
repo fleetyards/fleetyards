@@ -234,7 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Commodity"
+                "$ref": "#/components/schemas/CommodityDetail"
         '404':
           description: not found
           content:
@@ -20683,10 +20683,6 @@ components:
             type: number
         refinesInto:
           "$ref": "#/components/schemas/NullableCommodityRef"
-        refinedFrom:
-          type: array
-          items:
-            "$ref": "#/components/schemas/CommodityRef"
         retired:
           type: boolean
         storeImage:
@@ -20699,8 +20695,6 @@ components:
           type:
           - number
           - 'null'
-        availability:
-          "$ref": "#/components/schemas/ItemAvailability"
         createdAt:
           type: string
           format: date-time
@@ -20716,10 +20710,79 @@ components:
       - consumable
       - containerSizes
       - retired
-      - availability
       - createdAt
       - updatedAt
       title: Commodity
+    CommodityDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        commodityType:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        counted:
+          type: boolean
+        pieceVolume:
+          type:
+          - number
+          - 'null'
+        consumable:
+          type: boolean
+        containerSizes:
+          type: array
+          items:
+            type: number
+        refinesInto:
+          "$ref": "#/components/schemas/NullableCommodityRef"
+        retired:
+          type: boolean
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        refinedFrom:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommodityRef"
+        availability:
+          "$ref": "#/components/schemas/ItemAvailability"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - counted
+      - consumable
+      - containerSizes
+      - retired
+      - createdAt
+      - updatedAt
+      - refinedFrom
+      - availability
+      title: CommodityDetail
     CommodityPricePoint:
       type: object
       properties:
