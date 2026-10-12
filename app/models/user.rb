@@ -924,13 +924,13 @@ class User < ApplicationRecord
     fleet_memberships.kept.accepted.find_by(primary: true)&.fleet_id
   end
 
-  # Same rule the nomination on a contribution answers to, and checked only
-  # while it is changing: somebody who later leaves the fleet must not have
-  # every subsequent write to their account fail.
   private def username_not_a_route_name
     errors.add(:username, :route_name) if RESERVED_USERNAMES.include?(username.to_s.downcase)
   end
 
+  # Same rule the nomination on a contribution answers to, and checked only
+  # while it is changing: somebody who later leaves the fleet must not have
+  # every subsequent write to their account fail.
   private def supported_fleet_is_one_of_mine
     return if supported_fleet_id.blank?
     return unless will_save_change_to_supported_fleet_id?
