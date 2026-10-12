@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -22,6 +24,7 @@ import {
 } from "@/services/fyApi";
 import { vehicleMatchesShip } from "@/frontend/composables/useShipMatch";
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -37,6 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const positionTypeLabel = usePositionTypeLabel();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -121,28 +125,26 @@ const teams = computed<FleetEventTeam[]>(
               @click="submit(slot)"
             >
               <span class="slot-picker__slot-label">{{ slot.title }}</span>
-              <span
-                v-if="slot.positionType"
-                class="slot-picker__slot-type text-muted"
-              >
-                {{ slot.positionType }}
+              <span v-if="slot.positionType" class="slot-picker__slot-type">
+                {{ positionTypeLabel(slot.positionType) }}
               </span>
-              <span
+              <Pill
                 v-if="slot.id === currentSlotId"
-                class="slot-picker__slot-badge slot-picker__slot-badge--current"
+                class="slot-picker__slot-badge"
               >
                 {{ t("labels.fleets.events.currentSlot") }}
-              </span>
-              <span
+              </Pill>
+              <Pill
                 v-else-if="slotTakenBy(slot)"
-                class="slot-picker__slot-badge slot-picker__slot-badge--taken"
+                class="slot-picker__slot-badge"
+                :variant="PillVariantsEnum.NEUTRAL"
               >
                 {{
                   t("labels.fleets.events.takenBy", {
                     username: slotTakenBy(slot)?.user?.username || "?",
                   })
                 }}
-              </span>
+              </Pill>
             </Btn>
           </li>
         </ul>
@@ -191,28 +193,26 @@ const teams = computed<FleetEventTeam[]>(
                 @click="submit(slot)"
               >
                 <span class="slot-picker__slot-label">{{ slot.title }}</span>
-                <span
-                  v-if="slot.positionType"
-                  class="slot-picker__slot-type text-muted"
-                >
-                  {{ slot.positionType }}
+                <span v-if="slot.positionType" class="slot-picker__slot-type">
+                  {{ positionTypeLabel(slot.positionType) }}
                 </span>
-                <span
+                <Pill
                   v-if="slot.id === currentSlotId"
-                  class="slot-picker__slot-badge slot-picker__slot-badge--current"
+                  class="slot-picker__slot-badge"
                 >
                   {{ t("labels.fleets.events.currentSlot") }}
-                </span>
-                <span
+                </Pill>
+                <Pill
                   v-else-if="slotTakenBy(slot)"
-                  class="slot-picker__slot-badge slot-picker__slot-badge--taken"
+                  class="slot-picker__slot-badge"
+                  :variant="PillVariantsEnum.NEUTRAL"
                 >
                   {{
                     t("labels.fleets.events.takenBy", {
                       username: slotTakenBy(slot)?.user?.username || "?",
                     })
                   }}
-                </span>
+                </Pill>
               </Btn>
             </li>
           </ul>
@@ -233,6 +233,7 @@ const teams = computed<FleetEventTeam[]>(
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 .slot-picker {
   display: flex;
   flex-direction: column;
@@ -301,24 +302,12 @@ const teams = computed<FleetEventTeam[]>(
   flex: 1;
 }
 .slot-picker__slot-type {
-  font-size: 11.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   margin-left: 6px;
+  white-space: nowrap;
+  @include row-label;
 }
 .slot-picker__slot-badge {
   margin-left: 8px;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: var(--radius-control-bare, 6px);
-}
-.slot-picker__slot-badge--current {
-  background: rgba(74, 170, 170, 0.18);
-  color: var(--color-primary, #428bca);
-}
-.slot-picker__slot-badge--taken {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-muted, #7a8288);
 }
 .small {
   font-size: 12px;
