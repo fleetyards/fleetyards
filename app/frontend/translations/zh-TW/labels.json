@@ -4022,7 +4022,21 @@
         "body": "內容",
         "public": "在我的公開機庫中顯示",
         "publicShort": "公開",
-        "publicByDefault": "新條目預設公開"
+        "publicByDefault": "新條目預設公開",
+        "filters": {
+          "all": "全部",
+          "public": "公開",
+          "private": "私密"
+        },
+        "entryCount": {
+          "one": "%{count} 則條目",
+          "other": "%{count} 則條目"
+        },
+        "privateShort": "私密",
+        "stats": "日誌",
+        "statsEntries": "條目",
+        "statsPublic": "公開",
+        "statsSince": "始於"
       }
     }
   }

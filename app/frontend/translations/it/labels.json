@@ -4022,7 +4022,21 @@
         "body": "Voce",
         "public": "Mostra nel mio hangar pubblico",
         "publicShort": "Pubblica",
-        "publicByDefault": "Le nuove voci sono pubbliche"
+        "publicByDefault": "Le nuove voci sono pubbliche",
+        "filters": {
+          "all": "Tutte",
+          "public": "Pubbliche",
+          "private": "Private"
+        },
+        "entryCount": {
+          "one": "%{count} voce",
+          "other": "%{count} voci"
+        },
+        "privateShort": "Privata",
+        "stats": "Il diario",
+        "statsEntries": "Voci",
+        "statsPublic": "Pubbliche",
+        "statsSince": "Dal"
       }
     }
   }

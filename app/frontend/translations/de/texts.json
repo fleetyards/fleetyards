@@ -337,7 +337,8 @@
         "visibility": "Öffentliche Einträge werden bei diesem Schiff in deinem öffentlichen Hangar angezeigt.",
         "visibilityHidden": "Dieses Schiff steht nicht in deinem öffentlichen Hangar, daher wird dort keiner seiner Einträge angezeigt.",
         "empty": "Halte fest, was diesem Schiff passiert ist — nur du siehst einen Eintrag, bis du ihn öffentlich machst.",
-        "publicEmpty": "Der Kapitän dieses Schiffs hat noch keine Logbucheinträge geteilt."
+        "publicEmpty": "Der Kapitän dieses Schiffs hat noch keine Logbucheinträge geteilt.",
+        "noneForFilter": "Keine Einträge für diesen Filter."
       },
       "vehicleOverview": {
         "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",

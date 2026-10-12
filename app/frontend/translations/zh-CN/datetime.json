@@ -7,7 +7,11 @@
         "dateTime": "y 年 M 月 d 日 HH:mm",
         "dateTimeZone": "y 年 M 月 d 日 HH:mm z",
         "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-        "date": "y 年 M 月 d 日"
+        "date": "y 年 M 月 d 日",
+        "day": "dd",
+        "monthShort": "MMM",
+        "time": "HH:mm",
+        "year": "yyyy"
       }
     }
   }

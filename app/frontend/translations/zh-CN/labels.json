@@ -4022,7 +4022,21 @@
         "body": "内容",
         "public": "在我的公开机库中显示",
         "publicShort": "公开",
-        "publicByDefault": "新条目默认公开"
+        "publicByDefault": "新条目默认公开",
+        "filters": {
+          "all": "全部",
+          "public": "公开",
+          "private": "私密"
+        },
+        "entryCount": {
+          "one": "%{count} 条条目",
+          "other": "%{count} 条条目"
+        },
+        "privateShort": "私密",
+        "stats": "日志",
+        "statsEntries": "条目",
+        "statsPublic": "公开",
+        "statsSince": "始于"
       }
     }
   }

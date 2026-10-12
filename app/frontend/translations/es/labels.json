@@ -4022,7 +4022,21 @@
         "body": "Entrada",
         "public": "Mostrar en mi hangar público",
         "publicShort": "Pública",
-        "publicByDefault": "Las entradas nuevas son públicas"
+        "publicByDefault": "Las entradas nuevas son públicas",
+        "filters": {
+          "all": "Todas",
+          "public": "Públicas",
+          "private": "Privadas"
+        },
+        "entryCount": {
+          "one": "%{count} entrada",
+          "other": "%{count} entradas"
+        },
+        "privateShort": "Privada",
+        "stats": "El cuaderno",
+        "statsEntries": "Entradas",
+        "statsPublic": "Públicas",
+        "statsSince": "Desde"
       }
     }
   }

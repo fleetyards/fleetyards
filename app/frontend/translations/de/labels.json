@@ -4022,7 +4022,21 @@
         "body": "Eintrag",
         "public": "In meinem öffentlichen Hangar zeigen",
         "publicShort": "Öffentlich",
-        "publicByDefault": "Neue Einträge sind öffentlich"
+        "publicByDefault": "Neue Einträge sind öffentlich",
+        "filters": {
+          "all": "Alle",
+          "public": "Öffentlich",
+          "private": "Privat"
+        },
+        "entryCount": {
+          "one": "%{count} Eintrag",
+          "other": "%{count} Einträge"
+        },
+        "privateShort": "Privat",
+        "stats": "Das Logbuch",
+        "statsEntries": "Einträge",
+        "statsPublic": "Öffentlich",
+        "statsSince": "Seit"
       }
     }
   }

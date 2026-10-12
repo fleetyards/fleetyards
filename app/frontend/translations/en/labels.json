@@ -4036,7 +4036,21 @@
         "body": "Entry",
         "public": "Show in my public hangar",
         "publicShort": "Public",
-        "publicByDefault": "New entries are public"
+        "publicByDefault": "New entries are public",
+        "filters": {
+          "all": "All",
+          "public": "Public",
+          "private": "Private"
+        },
+        "entryCount": {
+          "one": "%{count} entry",
+          "other": "%{count} entries"
+        },
+        "privateShort": "Private",
+        "stats": "The log",
+        "statsEntries": "Entries",
+        "statsPublic": "Public",
+        "statsSince": "Since"
       }
     }
   }

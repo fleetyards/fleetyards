@@ -4022,7 +4022,21 @@
         "body": "Entrée",
         "public": "Afficher dans mon hangar public",
         "publicShort": "Public",
-        "publicByDefault": "Les nouvelles entrées sont publiques"
+        "publicByDefault": "Les nouvelles entrées sont publiques",
+        "filters": {
+          "all": "Toutes",
+          "public": "Publiques",
+          "private": "Privées"
+        },
+        "entryCount": {
+          "one": "%{count} entrée",
+          "other": "%{count} entrées"
+        },
+        "privateShort": "Privée",
+        "stats": "Le journal",
+        "statsEntries": "Entrées",
+        "statsPublic": "Publiques",
+        "statsSince": "Depuis"
       }
     }
   }
