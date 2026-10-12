@@ -345,6 +345,7 @@
         "unavailable": "Dieses Logbuch ist gerade nicht verfügbar."
       },
       "vehiclePlaque": {
+        "supporter": "Widmungstafeln und ihre Stile sind ein Dankeschön an alle, die Fleetyards am Laufen halten. Unterstütze das Projekt und gib deinem Schiff seine Tafel.",
         "credits": {
           "founders": "%{manufacturer}-Gründer",
           "shipwrights": "%{manufacturer}-Schiffbauer",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "Aus einer Flotte",
         "classLine": "%{model} von %{manufacturer}",
-        "registry": "Registernummer %{serial}",
         "commissioned": "In Auftrag gegeben bei %{shipyard}",
         "launched": "Vom Stapel gelaufen im %{date}",
         "launchedAt": "Vom Stapel gelaufen im %{date}, %{port}",

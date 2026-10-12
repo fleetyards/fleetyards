@@ -2,6 +2,7 @@
   "fr": {
     "headlines": {
       "vehiclePlaque": {
+        "supporter": "Un avantage réservé aux soutiens",
         "title": "Plaque de dédicace"
       },
       "vehicleOverview": {
@@ -469,6 +470,7 @@
         "metrics": "Métriques",
         "states": "États",
         "notifications": "Notifications",
+        "dedicationPlaques": "Plaques de dédicace",
         "syncModal": "Modale Sync",
         "buybackSyncModal": "Modale Sync des rachats",
         "rsiVerificationModal": "Modale de vérification RSI",

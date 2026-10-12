@@ -2,6 +2,7 @@
   "es": {
     "headlines": {
       "vehiclePlaque": {
+        "supporter": "Una ventaja para quienes apoyan",
         "title": "Placa de dedicatoria"
       },
       "vehicleOverview": {
@@ -469,6 +470,7 @@
         "metrics": "Métricas",
         "states": "Estados",
         "notifications": "Notificaciones",
+        "dedicationPlaques": "Placas de dedicatoria",
         "syncModal": "Modal de sincronización",
         "buybackSyncModal": "Modal de sincronización de recompras",
         "rsiVerificationModal": "Modal de verificación de RSI",

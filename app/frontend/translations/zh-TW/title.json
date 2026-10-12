@@ -199,6 +199,7 @@
         "metrics": "指標 - 視覺測試",
         "states": "狀態 - 視覺測試",
         "notifications": "通知 - 視覺測試",
+        "dedicationPlaques": "命名銘牌 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
         "buybackSyncModal": "回購同步彈窗 - 視覺測試",
         "rsiVerificationModal": "RSI 驗證彈窗 - 視覺測試",

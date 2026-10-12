@@ -345,6 +345,7 @@
         "unavailable": "Questo diario non è disponibile al momento."
       },
       "vehiclePlaque": {
+        "supporter": "Le targhe di dedica, e gli stili per vestirle, sono un grazie a chi tiene in vita Fleetyards. Sostieni il progetto e dai alla tua nave la sua targa.",
         "credits": {
           "founders": "Fondatori di %{manufacturer}",
           "shipwrights": "Costruttori di %{manufacturer}",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "Da una flotta",
         "classLine": "%{model} di %{manufacturer}",
-        "registry": "Matricola %{serial}",
         "commissioned": "Commissionata a %{shipyard}",
         "launched": "Varata a %{date}",
         "launchedAt": "Varata a %{date}, %{port}",

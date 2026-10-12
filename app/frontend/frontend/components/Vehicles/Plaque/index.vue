@@ -13,6 +13,8 @@ import {
   DEFAULT_OPERATIONS_GROUP,
   OPERATIONS_GROUPS,
 } from "./operationsGroups";
+import { PLAQUE_MAKERS, emblemSize } from "./makers";
+import miscPattern from "@/images/plaque/misc-pattern.webp";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
@@ -29,9 +31,43 @@ const { t, currentLocale } = useI18n();
 
 const manufacturer = computed(() => props.vehicle.model.manufacturer);
 
+const maker = computed(() => {
+  const code = props.vehicle.manufacturerCode ?? manufacturer.value?.code;
+
+  return code ? PLAQUE_MAKERS[code] : undefined;
+});
+
+// The uploaded logo, for a maker the plaque has no emblem of its own for.
 const logo = computed(
   () => manufacturer.value?.logo?.smallUrl || manufacturer.value?.logo?.url,
 );
+
+const emblemStyle = computed(() => {
+  if (!maker.value) {
+    return undefined;
+  }
+
+  return {
+    ...emblemSize(maker.value),
+    ...(maker.value.tint ? { "--icon": `url(${maker.value.emblem})` } : {}),
+  };
+});
+
+const styleClasses = computed(() => {
+  const style = props.vehicle.plaqueStyle ?? "brass";
+
+  if (style !== "manufacturer") {
+    return [`vehicle-plaque--${style}`];
+  }
+  if (!maker.value) {
+    return ["vehicle-plaque--brass"];
+  }
+
+  return [
+    "vehicle-plaque--maker",
+    `vehicle-plaque--maker-${maker.value.theme}`,
+  ];
+});
 
 // The columns carry the maker's everyday name, "Drake Shipwrights", and the
 // operations crew is the lore group the captain picked.
@@ -112,13 +148,6 @@ const captainLine = computed(() => {
 
 const lines = computed(() =>
   [
-    { key: "class", text: classLine.value },
-    {
-      key: "registry",
-      text:
-        props.vehicle.serial &&
-        t("texts.vehiclePlaque.registry", { serial: props.vehicle.serial }),
-    },
     {
       key: "shipyard",
       text:
@@ -135,12 +164,60 @@ const lines = computed(() =>
 
 <template>
   <div class="vehicle-plaque-frame">
-    <figure :id="elementId" class="vehicle-plaque" data-test="vehicle-plaque">
-      <img v-if="logo" :src="logo" alt="" class="vehicle-plaque__logo" />
+    <figure
+      :id="elementId"
+      class="vehicle-plaque"
+      :class="styleClasses"
+      :style="{ '--mark': `url(${miscPattern})` }"
+      data-test="vehicle-plaque"
+    >
+      <span
+        v-for="corner in ['tl', 'tr', 'bl', 'br']"
+        :key="corner"
+        class="vehicle-plaque__corner"
+        :class="`vehicle-plaque__corner--${corner}`"
+      />
+      <span
+        v-for="index in 8"
+        :key="index"
+        class="vehicle-plaque__deco"
+        :class="`vehicle-plaque__deco--${index}`"
+      />
+      <span
+        v-if="maker?.tint"
+        class="vehicle-plaque__emblem"
+        :style="emblemStyle"
+        data-test="vehicle-plaque-emblem"
+      />
+      <img
+        v-else-if="maker"
+        :src="maker.emblem"
+        :style="emblemStyle"
+        alt=""
+        class="vehicle-plaque__logo"
+        data-test="vehicle-plaque-emblem"
+      />
+      <img
+        v-else-if="logo"
+        :src="logo"
+        alt=""
+        class="vehicle-plaque__logo vehicle-plaque__logo--uploaded"
+      />
       <h3 class="vehicle-plaque__name" data-test="vehicle-plaque-name">
         {{ shipName }}
       </h3>
-      <ul class="vehicle-plaque__lines">
+      <p class="vehicle-plaque__class" data-test="vehicle-plaque-class">
+        {{ classLine }}
+      </p>
+      <p
+        v-if="vehicle.serial"
+        class="vehicle-plaque__registry"
+        data-test="vehicle-plaque-registry"
+      >
+        <span>{{ t("labels.vehiclePlaque.registry") }}</span>
+        {{ vehicle.serial }}
+      </p>
+      <ul v-if="lines.length" class="vehicle-plaque__lines">
         <li
           v-for="line in lines"
           :key="line.key"
@@ -157,7 +234,7 @@ const lines = computed(() =>
         <section
           v-for="group in credits"
           :key="group.role"
-          class="vehicle-plaque__credit-group"
+          class="vehicle-plaque__group"
         >
           <h4>{{ group.heading }}</h4>
           <ul>
@@ -167,7 +244,7 @@ const lines = computed(() =>
       </div>
       <blockquote
         v-if="vehicle.dedication"
-        class="vehicle-plaque__dedication"
+        class="vehicle-plaque__quote"
         data-test="vehicle-plaque-dedication"
       >
         “{{ vehicle.dedication }}”
@@ -178,57 +255,77 @@ const lines = computed(() =>
 
 <style lang="scss" scoped>
 // One layout at every width: the frame is the size container and every
-// measure below is a share of its width, so a phone shows the desktop plaque
-// scaled down, line breaks and all. The numbers are px on a 720px plaque.
+// measure is a share of its width, so a phone shows the desktop plaque scaled
+// down, line breaks and all. The numbers are px on a 720px plaque.
 .vehicle-plaque-frame {
   container-type: inline-size;
 }
 
-// A brass plate whatever the theme: it is an object on a bulkhead, not page
-// chrome, so it keeps its own colours.
+// The layout every style shares; the styles themselves are in `styles/`.
 .vehicle-plaque {
-  --plaque-metal: #c9924a;
-  --plaque-metal-light: #e8b874;
-  --plaque-metal-dark: #8a5a24;
-  --plaque-ink: #2b2420;
+  --bg: #222;
+  --ink: #ddd;
+  --sub: #aaa;
+  --accent: #428bca;
+  --rule: rgb(255 255 255 / 0.2);
+  --logo: none;
 
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.4cqw;
+  gap: 1.2cqw;
   margin: 0;
-  padding: 4.4cqw 5cqw;
-  border: 1px solid var(--plaque-metal-dark);
-  border-radius: 0.8cqw;
-  outline: 1px solid var(--plaque-ink);
-  outline-offset: -1.6cqw;
-  background: linear-gradient(
-    160deg,
-    var(--plaque-metal-light) 0%,
-    var(--plaque-metal) 45%,
-    var(--plaque-metal-dark) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.35),
-    0 6px 18px rgb(0 0 0 / 0.45);
-  color: var(--plaque-ink);
+  padding: 5cqw 5.5cqw 4.6cqw;
   text-align: center;
 
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__deco {
+    display: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  &__corner {
+    display: none;
+  }
+
   &__logo {
-    max-width: 16cqw;
-    max-height: 7.8cqw;
     object-fit: contain;
-    filter: brightness(0.2);
+    filter: var(--logo);
+
+    &--uploaded {
+      max-width: 22cqw;
+      max-height: 7cqw;
+    }
+  }
+
+  &__emblem {
+    display: block;
+    background: var(--emblem, var(--accent));
+    mask: var(--icon) center / contain no-repeat;
   }
 
   &__name {
     margin: 0;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 4.6cqw;
+    font:
+      700 5.6cqw/1.1 Orbitron,
+      sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__class,
+  &__registry {
+    margin: 0;
+    font-size: 1.9cqw;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1.15;
-    overflow-wrap: anywhere;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
@@ -239,31 +336,28 @@ const lines = computed(() =>
     margin: 0;
     padding: 0;
     list-style: none;
-    font-size: 1.8cqw;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    line-height: 1.35;
+    font-size: 1.7cqw;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
     text-transform: uppercase;
   }
 
-  // Always five columns, as on the reference plaques.
   &__credits {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1.4cqw;
     align-self: stretch;
-    margin-top: 0.8cqw;
+    margin-top: 1.2cqw;
   }
 
-  &__credit-group {
+  &__group {
     h4 {
-      margin: 0 0 0.5cqw;
-      color: inherit;
+      margin: 0 0 0.6cqw;
       font-size: 1.15cqw;
       font-weight: 800;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       line-height: 1.3;
-      text-decoration: underline;
       text-transform: uppercase;
     }
 
@@ -273,20 +367,79 @@ const lines = computed(() =>
       list-style: none;
       font-size: 1.3cqw;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.45;
     }
   }
 
-  &__dedication {
+  &__quote {
     max-width: 80cqw;
-    margin: 0.8cqw 0 0;
+    margin: 1cqw 0 0;
     padding: 0;
     border: 0;
     font-size: 2.1cqw;
     font-style: italic;
     font-weight: 600;
     line-height: 1.4;
-    overflow-wrap: anywhere;
   }
 }
+
+// A maker style paints with the colours it sets on the plate.
+.vehicle-plaque--maker {
+  background: var(--bg);
+  color: var(--ink);
+
+  .vehicle-plaque__name,
+  .vehicle-plaque__quote {
+    color: var(--name, var(--ink));
+  }
+
+  .vehicle-plaque__class,
+  .vehicle-plaque__group h4 {
+    color: var(--accent);
+  }
+
+  .vehicle-plaque__registry,
+  .vehicle-plaque__lines,
+  .vehicle-plaque__group ul {
+    color: var(--sub);
+  }
+
+  .vehicle-plaque__credits {
+    padding-top: 1.8cqw;
+    border-top: 1px solid var(--rule);
+  }
+}
+
+// The general styles were drawn around an uploaded logo; the emblem takes the
+// colour that logo was filtered to.
+.vehicle-plaque--brass,
+.vehicle-plaque--walnut {
+  --emblem: rgb(43 36 32 / 0.8);
+}
+
+.vehicle-plaque--hud,
+.vehicle-plaque--glass {
+  --emblem: rgb(255 255 255 / 0.85);
+}
+
+.vehicle-plaque--gunmetal,
+.vehicle-plaque--salvage,
+.vehicle-plaque--carbon {
+  --emblem: #e2e2e2;
+}
+
+.vehicle-plaque--blueprint {
+  --emblem: rgb(255 255 255 / 0.9);
+}
+
+.vehicle-plaque--neon {
+  --emblem: #fff;
+
+  .vehicle-plaque__emblem {
+    filter: drop-shadow(0 0 0.8cqw rgb(255 63 180 / 0.9));
+  }
+}
+
+@import "./styles/general";
+@import "./styles/makers";
 </style>

@@ -2,6 +2,7 @@
   "zh-TW": {
     "headlines": {
       "vehiclePlaque": {
+        "supporter": "支持者專屬福利",
         "title": "命名銘牌"
       },
       "vehicleOverview": {
@@ -469,6 +470,7 @@
         "metrics": "指標",
         "states": "狀態",
         "notifications": "通知",
+        "dedicationPlaques": "命名銘牌",
         "syncModal": "同步彈窗",
         "buybackSyncModal": "回購同步彈窗",
         "rsiVerificationModal": "RSI 驗證彈窗",

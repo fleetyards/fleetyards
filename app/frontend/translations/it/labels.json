@@ -4147,6 +4147,20 @@
         "step": "Passo %{current} di %{total}"
       },
       "vehiclePlaque": {
+        "style": "Stile",
+        "styles": {
+          "brass": "Ottone",
+          "hud": "HUD Fleetyards",
+          "gunmetal": "Canna di fucile",
+          "blueprint": "Progetto di cantiere",
+          "salvage": "Rottame rivettato",
+          "glass": "Vetro smerigliato",
+          "carbon": "Carbonio e rosso segnale",
+          "walnut": "Noce e ottone",
+          "neon": "Neon di Pyro",
+          "manufacturer": "Stile del costruttore"
+        },
+        "registry": "Matricola",
         "operationsGroup": "Squadra operativa",
         "title": "Targa di dedica",
         "dedication": "Dedica",

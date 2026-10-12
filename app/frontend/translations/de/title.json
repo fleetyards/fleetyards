@@ -199,6 +199,7 @@
         "metrics": "Metriken - Visuelle Tests",
         "states": "Zustände - Visuelle Tests",
         "notifications": "Benachrichtigungen - Visuelle Tests",
+        "dedicationPlaques": "Widmungstafeln - Visuelle Tests",
         "syncModal": "Sync-Modal - Visuelle Tests",
         "buybackSyncModal": "Rückkauf-Sync-Modal - Visuelle Tests",
         "rsiVerificationModal": "RSI-Verifizierungs-Modal - Visuelle Tests",

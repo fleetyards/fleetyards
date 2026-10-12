@@ -1223,6 +1223,7 @@
         }
       },
       "vehiclePlaque": {
+        "downloadFailure": "No se pudo guardar la placa como imagen",
         "failure": "No se pudo guardar la placa"
       },
       "vehicleOverview": {

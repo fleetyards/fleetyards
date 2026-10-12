@@ -4147,6 +4147,20 @@
         "step": "Étape %{current} sur %{total}"
       },
       "vehiclePlaque": {
+        "style": "Style",
+        "styles": {
+          "brass": "Laiton",
+          "hud": "HUD Fleetyards",
+          "gunmetal": "Métal canon de fusil",
+          "blueprint": "Plan de chantier naval",
+          "salvage": "Ferraille rivetée",
+          "glass": "Verre dépoli",
+          "carbon": "Carbone et rouge signal",
+          "walnut": "Noyer et laiton",
+          "neon": "Néon de Pyro",
+          "manufacturer": "Style du constructeur"
+        },
+        "registry": "Immatriculation",
         "operationsGroup": "Équipe des opérations",
         "title": "Plaque de dédicace",
         "dedication": "Dédicace",

@@ -345,6 +345,7 @@
         "unavailable": "This log is not available right now."
       },
       "vehiclePlaque": {
+        "supporter": "Dedication plaques, and the styles to dress them in, are a thank-you to the people who keep Fleetyards running. Support the project and give your ship its plaque.",
         "credits": {
           "founders": "%{manufacturer} Founders",
           "shipwrights": "%{manufacturer} Shipwrights",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "From a fleet",
         "classLine": "%{model} by %{manufacturer}",
-        "registry": "Registry %{serial}",
         "commissioned": "Commissioned from %{shipyard}",
         "launched": "Launched %{date}",
         "launchedAt": "Launched %{date}, %{port}",

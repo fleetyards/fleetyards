@@ -2,6 +2,7 @@
   "it": {
     "headlines": {
       "vehiclePlaque": {
+        "supporter": "Un vantaggio per chi sostiene",
         "title": "Targa di dedica"
       },
       "vehicleOverview": {
@@ -469,6 +470,7 @@
         "metrics": "Metriche",
         "states": "Stati",
         "notifications": "Notifiche",
+        "dedicationPlaques": "Targhe di dedica",
         "syncModal": "Modal sincronizzazione",
         "buybackSyncModal": "Modale sincronizzazione riacquisti",
         "rsiVerificationModal": "Modale verifica RSI",

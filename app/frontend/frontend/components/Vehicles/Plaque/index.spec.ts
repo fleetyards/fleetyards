@@ -145,6 +145,39 @@ describe("VehiclePlaque operations crew", () => {
   });
 });
 
+describe("VehiclePlaque styles", () => {
+  const plaque = async (overrides: Partial<Vehicle>) =>
+    (await mount({ vehicle: vehicle({ dedication: "x", ...overrides }) })).find(
+      '[data-test="vehicle-plaque"]',
+    );
+
+  it("draws a general style by its name", async () => {
+    expect((await plaque({ plaqueStyle: "neon" })).classes()).toContain(
+      "vehicle-plaque--neon",
+    );
+  });
+
+  it("draws the manufacturer style of a maker that has one", async () => {
+    const classes = (
+      await plaque({ plaqueStyle: "manufacturer", manufacturerCode: "DRAK" })
+    ).classes();
+
+    expect(classes).toContain("vehicle-plaque--maker-drake");
+  });
+
+  it("falls back to brass for a maker without a style of its own", async () => {
+    expect(
+      (
+        await plaque({ plaqueStyle: "manufacturer", manufacturerCode: "NOPE" })
+      ).classes(),
+    ).toContain("vehicle-plaque--brass");
+  });
+
+  it("draws brass when no style is sent", async () => {
+    expect((await plaque({})).classes()).toContain("vehicle-plaque--brass");
+  });
+});
+
 describe("PLAQUE_CREDITS", () => {
   it("fills five columns with the same number of distinct names", () => {
     const counts = PLAQUE_CREDITS.map((group) => group.names.length);

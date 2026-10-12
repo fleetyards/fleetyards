@@ -199,6 +199,7 @@
         "metrics": "Metrics - Visual Tests",
         "states": "States - Visual Tests",
         "notifications": "Notifications - Visual Tests",
+        "dedicationPlaques": "Dedication Plaques - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
         "buybackSyncModal": "Buy-back Sync Modal - Visual Tests",
         "rsiVerificationModal": "RSI Verification Modal - Visual Tests",

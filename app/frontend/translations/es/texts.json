@@ -345,6 +345,7 @@
         "unavailable": "Este cuaderno no está disponible ahora mismo."
       },
       "vehiclePlaque": {
+        "supporter": "Las placas de dedicatoria, y los estilos para vestirlas, son un agradecimiento a quienes mantienen Fleetyards en marcha. Apoya el proyecto y dale a tu nave su placa.",
         "credits": {
           "founders": "Fundadores de %{manufacturer}",
           "shipwrights": "Constructores de %{manufacturer}",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "De una flota",
         "classLine": "%{model} de %{manufacturer}",
-        "registry": "Matrícula %{serial}",
         "commissioned": "Encargada a %{shipyard}",
         "launched": "Botada en %{date}",
         "launchedAt": "Botada en %{date}, %{port}",

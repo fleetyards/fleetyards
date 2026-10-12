@@ -345,6 +345,7 @@
         "unavailable": "Ce journal n'est pas disponible pour le moment."
       },
       "vehiclePlaque": {
+        "supporter": "Les plaques de dédicace, et les styles pour les habiller, sont un merci à celles et ceux qui font vivre Fleetyards. Soutenez le projet et offrez sa plaque à votre vaisseau.",
         "credits": {
           "founders": "Fondateurs de %{manufacturer}",
           "shipwrights": "Constructeurs de %{manufacturer}",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "Depuis une flotte",
         "classLine": "%{model} par %{manufacturer}",
-        "registry": "Immatriculation %{serial}",
         "commissioned": "Commandé aux %{shipyard}",
         "launched": "Lancé en %{date}",
         "launchedAt": "Lancé en %{date}, %{port}",

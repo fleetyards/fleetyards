@@ -199,6 +199,7 @@
         "metrics": "指标 - 视觉测试",
         "states": "状态 - 视觉测试",
         "notifications": "通知 - 视觉测试",
+        "dedicationPlaques": "命名铭牌 - 视觉测试",
         "syncModal": "同步弹窗 - 视觉测试",
         "buybackSyncModal": "回购同步弹窗 - 视觉测试",
         "rsiVerificationModal": "RSI 验证弹窗 - 视觉测试",

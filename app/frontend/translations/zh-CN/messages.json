@@ -1223,6 +1223,7 @@
         }
       },
       "vehiclePlaque": {
+        "downloadFailure": "铭牌未能保存为图片",
         "failure": "铭牌未能保存"
       },
       "vehicleOverview": {
