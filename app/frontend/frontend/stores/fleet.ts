@@ -1,5 +1,6 @@
 import type { ShipListState } from "@/frontend/types";
 import { renameTableCols } from "@/frontend/utils/renamedTableCols";
+import { creditsFromLegacyMoney } from "@/frontend/utils/legacyMoneyToggle";
 import { defineStore } from "pinia";
 
 export enum FleetTableViewImageColsEnum {
@@ -195,6 +196,7 @@ export const useFleetStore = defineStore("fleet", {
           modelMaxCrew: FleetTableViewColsEnum.CREW,
         },
       );
+      store.credits = creditsFromLegacyMoney(store.$id, store.credits);
     },
   },
 });

@@ -1,5 +1,6 @@
 import { type ShipListState } from "@/frontend/types";
 import { renameTableCols } from "@/frontend/utils/renamedTableCols";
+import { creditsFromLegacyMoney } from "@/frontend/utils/legacyMoneyToggle";
 // Type-only: a value import would put `@/services/fyApi` in the runtime graph of
 // every store that reaches this one, and the specs that mock that module
 // without `importOriginal` would lose whichever export they do not name.
@@ -179,6 +180,7 @@ export const useHangarStore = defineStore("hangar", {
           modelMaxCrew: HangarTableViewColsEnum.CREW,
         },
       );
+      store.credits = creditsFromLegacyMoney(store.$id, store.credits);
     },
   },
 });

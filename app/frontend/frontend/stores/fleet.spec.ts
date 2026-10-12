@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createApp } from "vue";
 import { createPinia, setActivePinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { useFleetStore } from "./fleet";
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -59,5 +61,38 @@ describe("fleet store tours", () => {
     store.clearTour("user-a", "fleet-3");
 
     expect(store.pendingTours).toEqual({});
+  });
+});
+
+describe("fleet store persisted money toggles", () => {
+  const activatePersistence = () => {
+    const pinia = createPinia();
+    pinia.use(piniaPluginPersistedstate);
+    createApp({}).use(pinia);
+    setActivePinia(pinia);
+  };
+
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("keeps the in-game total hidden for a visitor who hid both before", () => {
+    localStorage.setItem("fleet", JSON.stringify({ money: false }));
+
+    activatePersistence();
+
+    expect(useFleetStore().money).toBe(false);
+    expect(useFleetStore().credits).toBe(false);
+  });
+
+  it("keeps a stored in-game choice", () => {
+    localStorage.setItem(
+      "fleet",
+      JSON.stringify({ money: false, credits: true }),
+    );
+
+    activatePersistence();
+
+    expect(useFleetStore().credits).toBe(true);
   });
 });
