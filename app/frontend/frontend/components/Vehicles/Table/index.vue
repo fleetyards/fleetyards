@@ -13,8 +13,9 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Vehicle } from "@/services/fyApi";
+import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 import {
   type BaseTableCol,
@@ -65,6 +66,25 @@ const selected = defineModel<string[]>("selected", { default: () => [] });
 
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
+
+const { isFeatureEnabled } = useFeatures();
+
+// Like the panel's title: the owner's own ship opens on its overview, a loaner
+// and anyone else's ship on the model.
+const nameRoute = (record: Vehicle) => {
+  if (
+    props.editable &&
+    !record.loaner &&
+    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
+  ) {
+    return {
+      name: "hangar-vehicle-overview",
+      params: { id: record.serial || record.id },
+    };
+  }
+
+  return { name: "ship", params: { slug: record.model.slug } };
+};
 
 const extraColumns = computed(() => {
   if (props.wishlist) {
@@ -291,14 +311,7 @@ const resetSelected = () => {
       </template>
       <template #col-name="{ record }">
         <div class="name">
-          <router-link
-            :to="{
-              name: 'ship',
-              params: {
-                slug: record.model.slug,
-              },
-            }"
-          >
+          <router-link :to="nameRoute(record)" data-test="vehicle-table-name">
             <span v-if="record.name">
               {{ record.name }}
             </span>

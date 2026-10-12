@@ -25,6 +25,9 @@ type Props = {
   vehicle: Vehicle;
   editable?: boolean;
   hideEdit?: boolean;
+  onVehiclePage?: boolean;
+  // Where the page edits the groups itself, as the overview's card does.
+  hideGroups?: boolean;
   wishlist?: boolean;
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
@@ -34,6 +37,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
+  onVehiclePage: false,
+  hideGroups: false,
   wishlist: false,
   variant: undefined,
   size: undefined,
@@ -64,7 +69,7 @@ const upgradable = computed(() => {
   }
 
   return (
-    (props.editable || hasAddons) &&
+    (props.editable || hasAddons.value) &&
     (props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades)
   );
 });
@@ -206,14 +211,24 @@ const openAddonsModal = () => {
   });
 };
 
+const openImageModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/ImageModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+    },
+  });
+};
+
 const vehicleOverviewVisible = computed(
   () => props.editable && isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
 );
 
-const overviewRoute = computed(() => ({
-  name: "hangar-vehicle-overview",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+// The vehicle page carries these as tabs and header buttons already.
+const pageShortcutsVisible = computed(
+  () => vehicleOverviewVisible.value && !props.onVehiclePage,
+);
 
 const logRoute = computed(() => ({
   name: "hangar-vehicle-log",
@@ -230,9 +245,14 @@ const cargoRoute = computed(() => ({
   params: { id: props.vehicle.serial || props.vehicle.id },
 }));
 
+const loadoutsVisible = computed(
+  () => props.editable && !props.onVehiclePage && props.vehicle.model?.inGame,
+);
+
 const cargoVisible = computed(
   () =>
     props.editable &&
+    !props.onVehiclePage &&
     !props.wishlist &&
     props.vehicle.model?.inGame &&
     isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
@@ -249,25 +269,7 @@ const cargoVisible = computed(
     expand-bottom
   >
     <Btn
-      v-if="editable && !hideEdit"
-      :aria-label="t('actions.edit')"
-      data-test="vehicle-edit"
-      @click="openEditModal"
-    >
-      <i class="fa fa-pencil" />
-      <span>{{ t("actions.edit") }}</span>
-    </Btn>
-    <Btn
-      v-if="vehicleOverviewVisible"
-      :aria-label="t('actions.vehicleOverview.open')"
-      data-test="vehicle-overview"
-      :to="overviewRoute"
-    >
-      <i class="fa-duotone fa-rocket-launch" />
-      <span>{{ t("actions.vehicleOverview.open") }}</span>
-    </Btn>
-    <Btn
-      v-if="vehicleOverviewVisible"
+      v-if="pageShortcutsVisible"
       :aria-label="t('actions.vehicleLog.open')"
       data-test="vehicle-log"
       :to="logRoute"
@@ -276,7 +278,26 @@ const cargoVisible = computed(
       <span>{{ t("actions.vehicleLog.open") }}</span>
     </Btn>
     <Btn
+      v-if="loadoutsVisible"
+      :aria-label="t('actions.hangar.manageLoadouts')"
+      data-test="vehicle-manage-loadouts"
+      :to="loadoutsRoute"
+    >
+      <i class="fa-duotone fa-crosshairs" />
+      <span>{{ t("actions.hangar.manageLoadouts") }}</span>
+    </Btn>
+    <Btn
+      v-if="cargoVisible"
+      :aria-label="t('actions.hangar.manageCargo')"
+      data-test="vehicle-manage-cargo"
+      :to="cargoRoute"
+    >
+      <i class="fa-duotone fa-boxes-stacked" />
+      <span>{{ t("actions.hangar.manageCargo") }}</span>
+    </Btn>
+    <Btn
       v-if="vehicle.model"
+      data-test="vehicle-ship-page"
       :to="{
         name: 'ship',
         params: {
@@ -286,6 +307,61 @@ const cargoVisible = computed(
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />
       <span>{{ t("actions.showDetailPage") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && !hideEdit && !onVehiclePage"
+      :aria-label="t('actions.edit')"
+      data-test="vehicle-edit"
+      @click="openEditModal"
+    >
+      <i class="fa fa-pencil" />
+      <span>{{ t("actions.edit") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable"
+      :aria-label="t('actions.hangar.editName')"
+      data-test="vehicle-edit-name"
+      @click="openNamingModal"
+    >
+      <i class="fa fa-signature" />
+      <span>{{ t("actions.hangar.editName") }}</span>
+    </Btn>
+    <Btn
+      v-if="pageShortcutsVisible"
+      :aria-label="
+        vehicle.image
+          ? t('actions.vehicleOverview.changePicture')
+          : t('actions.vehicleOverview.uploadPicture')
+      "
+      data-test="vehicle-change-picture"
+      @click="openImageModal"
+    >
+      <i class="fa-duotone fa-camera" />
+      <span>
+        {{
+          vehicle.image
+            ? t("actions.vehicleOverview.changePicture")
+            : t("actions.vehicleOverview.uploadPicture")
+        }}
+      </span>
+    </Btn>
+    <Btn
+      v-if="editable && !wishlist && !hideGroups"
+      :aria-label="t('actions.hangar.editGroups')"
+      data-test="vehicle-edit-groups"
+      @click="openEditGroupsModal"
+    >
+      <i class="fa-duotone fa-object-group" />
+      <span>{{ t("actions.hangar.editGroups") }}</span>
+    </Btn>
+    <Btn
+      v-if="upgradable"
+      :aria-label="t('labels.model.addons')"
+      data-test="vehicle-addons"
+      @click="openAddonsModal"
+    >
+      <i class="fa fa-plus-octagon" />
+      <span>{{ t("labels.model.addons") }}</span>
     </Btn>
     <Btn
       v-if="editable && !wishlist"
@@ -306,49 +382,6 @@ const cargoVisible = computed(
     >
       <i class="fa-duotone fa-garage" />
       <span>{{ t("actions.addToHangar") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable"
-      :aria-label="t('actions.hangar.editName')"
-      data-test="vehicle-edit-name"
-      @click="openNamingModal"
-    >
-      <i class="fa fa-signature" />
-      <span>{{ t("actions.hangar.editName") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && !wishlist"
-      :aria-label="t('actions.hangar.editGroups')"
-      data-test="vehicle-edit-groups"
-      @click="openEditGroupsModal"
-    >
-      <i class="fa-duotone fa-object-group" />
-      <span>{{ t("actions.hangar.editGroups") }}</span>
-    </Btn>
-    <Btn
-      v-if="upgradable"
-      :aria-label="t('labels.model.addons')"
-      @click="openAddonsModal"
-    >
-      <i class="fa fa-plus-octagon" />
-      <span>{{ t("labels.model.addons") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && vehicle.model?.inGame"
-      :aria-label="t('actions.hangar.manageLoadouts')"
-      :to="loadoutsRoute"
-    >
-      <i class="fa-duotone fa-crosshairs" />
-      <span>{{ t("actions.hangar.manageLoadouts") }}</span>
-    </Btn>
-    <Btn
-      v-if="cargoVisible"
-      :aria-label="t('actions.hangar.manageCargo')"
-      data-test="vehicle-manage-cargo"
-      :to="cargoRoute"
-    >
-      <i class="fa-duotone fa-boxes-stacked" />
-      <span>{{ t("actions.hangar.manageCargo") }}</span>
     </Btn>
     <Btn
       :tone="BtnTonesEnum.DANGER"
