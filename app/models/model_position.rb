@@ -6,6 +6,9 @@ class ModelPosition < ApplicationRecord
   belongs_to :model
   belongs_to :hardpoint, optional: true
 
+  has_many :mission_slots, dependent: :nullify
+  has_many :fleet_event_slots, dependent: :nullify
+
   enum :position_type, {
     pilot: 0, copilot: 1, turret_gunner: 2, engineer: 3,
     gunner: 4, loadmaster: 5, passenger: 6, operator: 7, custom: 99
@@ -26,10 +29,25 @@ class ModelPosition < ApplicationRecord
     %w[model hardpoint]
   end
 
-  def self.generate_for_model!(model)
-    # Remove old auto-generated positions, keep curated ones
-    model.model_positions.sc_data.destroy_all
+  # The positions a build carries. A generated position is in the build its seat
+  # is in, the way the seat itself is -- so live and ptu each see their own,
+  # while the rows, which slots point at, are shared. The loadmaster has no
+  # seat and shows wherever it exists.
+  scope :in_build, ->(source = ::ScData::Source.current.served_for(HardpointBuild)) {
+    where(hardpoint_id: nil).or(where(hardpoint_id: Hardpoint.in_build(source).select(:id)))
+  }
 
+  # Writes what the build in force says. A position only another build still
+  # carries is that build's to keep, so a load adds and updates but never
+  # removes on another environment's behalf.
+  #
+  # Under the model's row lock: a load and the admin regenerate both write
+  # here, and two writers would both pass the uniqueness validation.
+  def self.generate_for_model!(model)
+    model.with_lock { generate!(model) }
+  end
+
+  def self.generate!(model)
     positions = []
     sort_order = 0
 
@@ -76,19 +94,68 @@ class ModelPosition < ApplicationRecord
       sort_order += 1
     end
 
-    # Bulk create
-    positions.each do |attrs|
-      model.model_positions.create!(attrs)
+    # Updated in place rather than recreated: slots reference these ids, and a
+    # seat an admin already curated is theirs.
+    curated_hardpoint_ids = model.model_positions.curated.where.not(hardpoint_id: nil).pluck(:hardpoint_id)
+
+    # A seat deleted outright nullifies its position's port, and only the
+    # loadmaster is meant to have none.
+    existing = {}
+    model.model_positions.sc_data.order(:created_at).each do |position|
+      key = generated_key(position)
+
+      if existing.key?(key) || (position.hardpoint_id.nil? && !position.loadmaster?)
+        position.destroy!
+      else
+        existing[key] = position
+      end
     end
 
-    # 4. Gap detection
-    auto_count = model.model_positions.sc_data.count
-    curated_count = model.model_positions.curated.count
-    total = auto_count + curated_count
+    positions.uniq { |attrs| generated_key(attrs) }.each do |attrs|
+      next if curated_hardpoint_ids.include?(attrs[:hardpoint_id])
+
+      position = existing.delete(generated_key(attrs)) || model.model_positions.new
+      position.update!(attrs)
+    end
+
+    existing.each_value { |position| position.destroy! if stale?(model, position) }
+
+    # 4. Gap detection, against what readers get by default.
+    total = model.model_positions.in_build(::ScData::Source.default.served_for(HardpointBuild)).count
     needs_curation = total < model.crew.to_i
 
     model.update_column(:positions_need_curation, needs_curation) if model.positions_need_curation != needs_curation
   end
+
+  # A seat by its port; the loadmaster, which has none, by its type.
+  def self.generated_key(position)
+    position[:hardpoint_id] || position[:position_type].to_s
+  end
+
+  # This build declined it: a seat it has and made no position of, or a
+  # loadmaster on a ship that no longer needs one. Otherwise it stays only while
+  # another environment's current build still carries it -- not an older build
+  # of this one, which keeps its rows until pruned.
+  def self.stale?(model, position)
+    if position.loadmaster?
+      return true if model.crew.to_i <= 1
+
+      return !carried_elsewhere?(model.hardpoints.where(category: :cargogrid).ids)
+    end
+
+    Hardpoint.in_build.exists?(position.hardpoint_id) || !carried_elsewhere?([position.hardpoint_id])
+  end
+
+  def self.carried_elsewhere?(hardpoint_ids)
+    environment = ::ScData::Source.current.environment
+
+    ::ScData::Source.configured.reject { |source| source.environment == environment }.any? do |source|
+      served = source.served_for(HardpointBuild)
+
+      HardpointBuild.exists?(hardpoint_id: hardpoint_ids, environment: served.environment, version: served.version)
+    end
+  end
+  private_class_method :generate!, :generated_key, :stale?, :carried_elsewhere?
 
   # `in_build` on all three collectors: a slot the build dropped keeps its row
   # now that the loadout is retired rather than destroyed, and its columns still

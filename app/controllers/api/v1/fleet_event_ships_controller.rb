@@ -71,7 +71,7 @@ module Api
         model = Model.find(params[:model_id])
 
         existing_position_ids = @ship.fleet_event_slots.where.not(model_position_id: nil).pluck(:model_position_id)
-        positions = model.model_positions.where.not(id: existing_position_ids)
+        positions = model.model_positions.in_build.where.not(id: existing_position_ids)
 
         if (requested = position_ids_param).present?
           positions = positions.where(id: requested)
@@ -158,7 +158,7 @@ module Api
         return if position_ids.blank?
         return if ship.model_id.blank?
 
-        positions = ship.model.model_positions.where(id: position_ids).order(:position)
+        positions = ship.model.model_positions.in_build.where(id: position_ids).order(:position)
         next_slot_position = -1
         positions.each do |mp|
           next_slot_position += 1

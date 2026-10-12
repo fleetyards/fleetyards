@@ -223,6 +223,22 @@ module Loaders
         assert_equal "3.24.1-ptu.2 (ptu)", seen
       end
 
+      # `CheckJob` enqueues the live and the ptu load together. Run side by
+      # side, both rewrite the same models' crew positions in the same order
+      # and the second insert dies on the unique index.
+      test "#perform goes back on the queue while another load holds the lock" do
+        ActiveRecord::Base.stubs(:with_advisory_lock_result)
+          .returns(WithAdvisoryLock::Result.new(lock_was_acquired: false))
+        ::ScData::Loader::BaseLoader.expects(:all).never
+
+        ::Loaders::ScData::AllJob.jobs.clear
+        ::Loaders::ScData::AllJob.new.perform("3.24.1-ptu.2", nil, "ptu")
+
+        assert_nil Imports::ScData::AllImport.last
+        assert_equal [["3.24.1-ptu.2", nil, "ptu"]], ::Loaders::ScData::AllJob.jobs.map { |job| job["args"] }
+        assert ::Loaders::ScData::AllJob.jobs.first["at"] > Time.current.to_f
+      end
+
       test "#perform marks import as failed on error" do
         ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
 

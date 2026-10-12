@@ -33,6 +33,19 @@ module Loaders
         assert_equal "failed", import.aasm_state
         assert_equal "sc data error", import.info
       end
+
+      test "#perform goes back on the queue while a full load holds the lock" do
+        model = create(:model)
+        ActiveRecord::Base.stubs(:with_advisory_lock_result)
+          .returns(WithAdvisoryLock::Result.new(lock_was_acquired: false))
+        ::ScData::Loader::ModelsLoader.expects(:new).never
+
+        ::Loaders::ScData::ModelJob.jobs.clear
+        ::Loaders::ScData::ModelJob.new.perform(model.id)
+
+        assert_nil Imports::ScData::ModelImport.last
+        assert_equal [[model.id]], ::Loaders::ScData::ModelJob.jobs.map { |job| job["args"] }
+      end
     end
   end
 end
