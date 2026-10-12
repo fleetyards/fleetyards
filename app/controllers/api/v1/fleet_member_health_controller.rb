@@ -11,6 +11,7 @@ module Api
       DEFAULT_INACTIVE_DAYS = 30
       JOIN_REQUEST_WAIT = 7.days
       INVITATION_WAIT = 14.days
+      UNUSED_INVITE_AFTER = 30.days
       SAMPLE = 5
 
       before_action :authenticate_user!, only: []
@@ -32,7 +33,6 @@ module Api
         # Who a promotion would make the second admin: promoting moves a member
         # one rank up, so only the rank right below can get there in one step.
         @admin_candidates = promotion_candidates(admin_role) if admin_role && @admins[:total_count] <= 1
-        @empty_roles = empty_roles if can?(:read_roles)
 
         if @fleet.rsi_sid.present?
           @unverified = check(@members.where(verified: false), order: :accepted_at)
@@ -99,18 +99,15 @@ module Api
           .limit(sample)
       end
 
-      private def empty_roles
-        @fleet.fleet_roles.ranked.where.not(id: @members.where.not(fleet_role_id: nil).select(:fleet_role_id))
-      end
-
-      # Links that no longer let anyone in are clutter; one without an expiry or
-      # a limit lets in whoever finds it.
+      # Links nobody uses: those that no longer let anyone in, and those nobody
+      # has followed in the month since they were made. A link in use stays,
+      # limited or not.
       private def invite_urls
-        now = Time.current
         scope = @fleet.fleet_invite_urls.where(
           "fleet_invite_urls.expires_after < :now OR fleet_invite_urls.limit <= 0 " \
-          "OR (fleet_invite_urls.expires_after IS NULL AND fleet_invite_urls.limit IS NULL)",
-          now:
+          "OR (fleet_invite_urls.usage_count = 0 AND fleet_invite_urls.created_at < :unused_since)",
+          now: Time.current,
+          unused_since: UNUSED_INVITE_AFTER.ago
         )
 
         {total_count: scope.count, items: scope.includes(:user).order(:created_at, :id).limit(sample)}

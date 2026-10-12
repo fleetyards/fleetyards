@@ -27353,13 +27353,6 @@ components:
           description: Members who keep their ships out of the fleet
         admins:
           "$ref": "#/components/schemas/FleetMemberHealthAdmins"
-        emptyRoles:
-          anyOf:
-          - type: array
-            items:
-              "$ref": "#/components/schemas/FleetRole"
-          - type: 'null'
-          description: Null when the reader cannot read roles
         unverifiedMembers:
           anyOf:
           - "$ref": "#/components/schemas/FleetMemberHealthSection"
@@ -27403,7 +27396,6 @@ components:
       - memberCount
       - hiddenShipsCount
       - admins
-      - emptyRoles
       - unverifiedMembers
       - membersWithoutRsiHandle
       - inactiveMembers

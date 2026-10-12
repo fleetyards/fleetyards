@@ -148,15 +148,6 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET health lists roles nobody holds" do
-    @fleet.fleet_memberships.find_by(user: @officer).update_columns(fleet_role_id: @fleet.fleet_roles.find_by(slug: "member").id)
-    sign_in @admin
-
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal ["officer"], health["emptyRoles"].pluck("slug")
-    end
-  end
-
   test "GET health lists join requests and invitations left waiting" do
     old_request = create(:fleet_membership, :requested, fleet: @fleet, requested_at: 10.days.ago)
     create(:fleet_membership, :requested, fleet: @fleet, requested_at: 2.days.ago)
@@ -172,15 +163,17 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET health lists invite links that are expired, used up or unlimited" do
+  test "GET health lists invite links nobody can or does use" do
     expired = create(:fleet_invite_url, :expired, fleet: @fleet, user: @admin, limit: 5)
     used_up = create(:fleet_invite_url, fleet: @fleet, user: @admin, limit: 0, expires_after: 3.days.from_now)
-    unlimited = create(:fleet_invite_url, :unlimited, fleet: @fleet, user: @admin)
-    create(:fleet_invite_url, fleet: @fleet, user: @admin, limit: 5, expires_after: 3.days.from_now)
+    never_used = create(:fleet_invite_url, :unlimited, fleet: @fleet, user: @admin, created_at: 40.days.ago)
+    # In use, unlimited or not, and new enough to have had no chance yet.
+    create(:fleet_invite_url, :unlimited, fleet: @fleet, user: @admin, created_at: 40.days.ago, usage_count: 12)
+    create(:fleet_invite_url, :unlimited, fleet: @fleet, user: @admin, created_at: 2.days.ago)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal [expired, used_up, unlimited].map(&:token).sort, health["staleInviteUrls"]["items"].pluck("token").sort
+      assert_equal [expired, used_up, never_used].map(&:token).sort, health["staleInviteUrls"]["items"].pluck("token").sort
     end
   end
 
@@ -238,7 +231,6 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     sign_in recruiter
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_nil health["emptyRoles"]
       assert_nil health["staleInviteUrls"]
       assert_nil health["emptySquadrons"]
     end

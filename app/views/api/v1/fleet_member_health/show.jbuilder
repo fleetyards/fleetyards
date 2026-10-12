@@ -32,12 +32,6 @@ json.admins do
   json.candidates (@admin_candidates || []), partial: "api/v1/fleet_member_health/member", as: :membership, leader_role_ids: @leader_role_ids
 end
 
-if @empty_roles
-  json.empty_roles @empty_roles, partial: "api/v1/fleet_roles/base", as: :fleet_role
-else
-  json.empty_roles nil
-end
-
 if @invite_urls
   json.stale_invite_urls do
     json.total_count @invite_urls[:total_count]

@@ -20,7 +20,6 @@ module V1
             memberCount: {type: :integer},
             hiddenShipsCount: {type: :integer, description: "Members who keep their ships out of the fleet"},
             admins: ::V1::Schemas::Fleets::FleetMemberHealthAdmins,
-            emptyRoles: nullable.call({type: :array, items: ::V1::Schemas::Fleets::FleetRole}, "Null when the reader cannot read roles"),
             unverifiedMembers: nullable.call(section, "Null when the fleet has no RSI SID"),
             membersWithoutRsiHandle: nullable.call(section, "Null when the fleet has an RSI SID"),
             inactiveMembers: section,
@@ -31,7 +30,7 @@ module V1
             membersWithoutSquadron: nullable.call(section, "Null unless squadrons are on and the reader can read them"),
             emptySquadrons: nullable.call(::V1::Schemas::Fleets::FleetMemberHealthSquadrons, "Null unless squadrons are on and the reader can read them")
           },
-          required: %w[inactiveDays fleetRsiVerified rsiMemberCount memberCount hiddenShipsCount admins emptyRoles
+          required: %w[inactiveDays fleetRsiVerified rsiMemberCount memberCount hiddenShipsCount admins
             unverifiedMembers membersWithoutRsiHandle inactiveMembers waitingJoinRequests unansweredInvitations
             staleInviteUrls membersWithoutDiscord membersWithoutSquadron emptySquadrons],
           additionalProperties: false
