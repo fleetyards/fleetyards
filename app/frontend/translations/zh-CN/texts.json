@@ -344,6 +344,9 @@
       "vehicleOverview": {
         "noLoadouts": "还没有配装。从 Erkul 或 SPViewer 链接一个。",
         "locationPrivate": "只有你能看到你的舰船在哪里。"
+      },
+      "model": {
+        "sectionEmpty": "%{model} 没有任何%{section}。"
       }
     }
   }

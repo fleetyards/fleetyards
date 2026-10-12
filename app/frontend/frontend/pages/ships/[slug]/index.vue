@@ -527,9 +527,13 @@ const adiMap = computed(() => {
     </div>
   </div>
 
-  <PaintsList :model-slug="model.slug" />
-  <ModulesList :model-slug="model.slug" :modules="modelModules" />
-  <UpgradesList :model-slug="model.slug" />
+  <PaintsList :model-slug="model.slug" :model-name="model.name" />
+  <ModulesList
+    :model-slug="model.slug"
+    :model-name="model.name"
+    :modules="modelModules"
+  />
+  <UpgradesList :model-slug="model.slug" :model-name="model.name" />
   <CarriedByList :carried-by="model.carriedBy" />
   <LoanersList :model-slug="model.slug" />
   <VariantsList :model-slug="model.slug" />

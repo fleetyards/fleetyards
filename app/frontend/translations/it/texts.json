@@ -344,6 +344,9 @@
       "vehicleOverview": {
         "noLoadouts": "Ancora nessun loadout. Collegane uno da Erkul o SPViewer.",
         "locationPrivate": "Solo tu puoi vedere dove si trova la tua nave."
+      },
+      "model": {
+        "sectionEmpty": "%{model} non ha %{section}."
       }
     }
   }

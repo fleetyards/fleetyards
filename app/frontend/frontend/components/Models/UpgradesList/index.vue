@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Empty from "@/shared/components/Empty/index.vue";
-import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -16,6 +15,7 @@ import { useModelUpgrades as useModelUpgradesQuery } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
+  modelName: string;
 };
 
 const props = defineProps<Props>();
@@ -54,11 +54,10 @@ const { t } = useI18n();
               <TeaserPanel :item="item" level="h3" />
             </div>
           </transition-group>
-          <Empty
+          <SectionEmpty
             v-else
-            :variant="EmptyVariantsEnum.BOX"
-            :name="t('labels.model.upgrades')"
-            hide-actions
+            :model-name="modelName"
+            :section="t('labels.model.upgrades')"
           />
         </template>
       </AsyncData>

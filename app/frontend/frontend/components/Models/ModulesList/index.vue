@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Empty from "@/shared/components/Empty/index.vue";
-import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
+import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -19,6 +18,7 @@ import {
 
 type Props = {
   modelSlug: string;
+  modelName: string;
   modules?: ModelModule[];
 };
 
@@ -64,11 +64,10 @@ const { t } = useI18n();
               <ModulePanel :module="item" />
             </div>
           </transition-group>
-          <Empty
+          <SectionEmpty
             v-else
-            :variant="EmptyVariantsEnum.BOX"
-            :name="t('labels.model.modules')"
-            hide-actions
+            :model-name="modelName"
+            :section="t('labels.model.modules')"
           />
         </template>
       </AsyncData>

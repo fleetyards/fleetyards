@@ -344,6 +344,9 @@
       "vehicleOverview": {
         "noLoadouts": "No loadouts yet. Link one from Erkul or SPViewer.",
         "locationPrivate": "Only you can see where your ship is."
+      },
+      "model": {
+        "sectionEmpty": "The %{model} does not have any %{section}."
       }
     }
   }

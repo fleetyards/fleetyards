@@ -344,6 +344,9 @@
       "vehicleOverview": {
         "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",
         "locationPrivate": "Nur du siehst, wo dein Schiff steht."
+      },
+      "model": {
+        "sectionEmpty": "%{model} hat keine %{section}."
       }
     }
   }
