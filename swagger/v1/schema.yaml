@@ -39121,6 +39121,14 @@ components:
           type: boolean
         logEntriesPublicByDefault:
           type: boolean
+        location:
+          type:
+          - string
+          - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         upgrade:
@@ -39343,6 +39351,8 @@ components:
           type: string
         slug:
           type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - id
@@ -39771,6 +39781,15 @@ components:
           type: boolean
         logEntriesPublicByDefault:
           type: boolean
+        location:
+          type:
+          - string
+          - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
