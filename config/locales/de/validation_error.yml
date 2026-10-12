@@ -42,6 +42,10 @@ de:
       create: Loadout konnte nicht erstellt werden.
       destroy: Loadout konnte nicht entfernt werden.
       update: Loadout konnte nicht aktualisiert werden.
+    vehicle_log_entry:
+      create: Logbucheintrag konnte nicht erstellt werden.
+      destroy: Logbucheintrag konnte nicht entfernt werden.
+      update: Logbucheintrag konnte nicht aktualisiert werden.
     fleet:
       create: Flotte konnte nicht erstellt werden.
       destroy: Flotte konnte nicht gelöscht werden.

@@ -42,6 +42,10 @@ en:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
       update: Loadout could not be updated.
+    vehicle_log_entry:
+      create: Log entry could not be created.
+      destroy: Log entry could not be removed.
+      update: Log entry could not be updated.
     fleet:
       create: Fleet could not be created.
       destroy: Fleet could not be destroyed.

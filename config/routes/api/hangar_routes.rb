@@ -70,6 +70,9 @@ namespace :public do
       get "models-by-classification", to: "hangar_stats#models_by_classification"
     end
     resources :hangar_groups, path: "groups", only: %i[index]
+    resources :vehicles, only: [] do
+      resources :log_entries, path: "log-entries", controller: "vehicle_log_entries", only: %i[index]
+    end
   end
 
   resources :wishlists, param: :username, only: %i[show]

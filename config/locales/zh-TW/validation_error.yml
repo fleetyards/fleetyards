@@ -35,6 +35,10 @@ zh-TW:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
       update: Loadout could not be updated.
+    vehicle_log_entry:
+      create: 無法建立航行日誌條目。
+      destroy: 無法刪除航行日誌條目。
+      update: 無法更新航行日誌條目。
     fleet:
       create: 無法建立艦隊。
       destroy: 無法刪除艦隊。

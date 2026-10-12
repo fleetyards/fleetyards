@@ -77,6 +77,9 @@ class Vehicle < ApplicationRecord
 
   has_many :vehicle_loadouts, dependent: :destroy
 
+  has_many :log_entries, class_name: "VehicleLogEntry", dependent: :delete_all
+  has_many :public_log_entries, -> { public_entries }, class_name: "VehicleLogEntry"
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy
@@ -235,6 +238,8 @@ class Vehicle < ApplicationRecord
       loadout_ids = VehicleLoadout.where(vehicle_id: vehicle_ids).pluck(:id)
       erase_versions("VehicleLoadout", loadout_ids)
       VehicleLoadout.where(id: loadout_ids).delete_all
+
+      VehicleLogEntry.where(vehicle_id: vehicle_ids).delete_all
 
       VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
       VehicleModule.where(vehicle_id: vehicle_ids).delete_all

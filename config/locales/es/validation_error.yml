@@ -38,6 +38,10 @@ es:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
       update: Loadout could not be updated.
+    vehicle_log_entry:
+      create: No se pudo crear la entrada del cuaderno de bitácora.
+      destroy: No se pudo eliminar la entrada del cuaderno de bitácora.
+      update: No se pudo actualizar la entrada del cuaderno de bitácora.
     fleet:
       create: No se pudo crear la flota.
       destroy: No se pudo destruir la flota.
