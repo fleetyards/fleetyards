@@ -5046,6 +5046,10 @@ components:
           type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
+        fleets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleFleet"
         createdAt:
           type: string
           format: date-time
@@ -5083,6 +5087,24 @@ components:
           type: string
         customName:
           type: string
+    VehicleFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
     VehicleLoadoutMinimal:
       type: object
       properties:

@@ -19850,6 +19850,54 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/paints":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    get:
+      summary: List Vehicle Paints
+      tags:
+      - VehiclePaints
+      operationId: vehiclePaints
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehiclePaintsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/version":
     get:
       summary: Version of Fleetyards
@@ -39081,6 +39129,10 @@ components:
           type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
+        fleets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleFleet"
         createdAt:
           type: string
           format: date-time
@@ -39279,6 +39331,25 @@ components:
       items:
         "$ref": "#/components/schemas/VehicleExport"
       title: VehicleExportsList
+    VehicleFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      title: VehicleFleet
     VehicleLoadout:
       type: object
       properties:
@@ -39467,6 +39538,26 @@ components:
       description: Exactly one of afterId and beforeId
       additionalProperties: false
       title: VehicleMoveInput
+    VehiclePaint:
+      type: object
+      properties:
+        owned:
+          type: boolean
+        applied:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+      additionalProperties: false
+      required:
+      - owned
+      - applied
+      - paint
+      title: VehiclePaint
+    VehiclePaintsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehiclePaint"
+      title: VehiclePaintsList
     VehiclePublic:
       type: object
       properties:
