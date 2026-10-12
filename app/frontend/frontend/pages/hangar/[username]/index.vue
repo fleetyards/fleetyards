@@ -37,6 +37,8 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
+import { useComlink } from "@/shared/composables/useComlink";
+import { usePublicHangarVehicle } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -87,6 +89,33 @@ const usernamePlural = computed(() => possessiveUsername(username.value));
 const highlightedGroup = ref<string>("");
 
 const { share, shareQuery } = usePublicHangarShare();
+
+// A shared plaque link opens the hangar with that ship's plaque on top. The
+// ship is fetched on its own: it need not be on the page the list shows.
+const plaqueId = computed(() =>
+  typeof route.query.plaque === "string" ? route.query.plaque : "",
+);
+
+const { data: plaqueVehicle } = usePublicHangarVehicle(
+  username,
+  plaqueId,
+  shareQuery,
+  { query: { enabled: computed(() => !!plaqueId.value) } },
+);
+
+const comlink = useComlink();
+
+watch(plaqueVehicle, (vehicle) => {
+  if (!vehicle?.dedication) {
+    return;
+  }
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/PlaqueModal/index.vue"),
+    props: { vehicle, username: username.value },
+  });
+});
 
 const statsVisible = computed(
   () => props.user.publicHangarStats || !!share.value,

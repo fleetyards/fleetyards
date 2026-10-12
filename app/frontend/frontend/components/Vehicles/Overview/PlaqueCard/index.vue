@@ -8,6 +8,8 @@ export default {
 import { storeToRefs } from "pinia";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { plaqueShareUrl } from "@/frontend/components/Vehicles/Plaque/shareUrl";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -27,6 +29,14 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const { currentUser } = storeToRefs(useSessionStore());
+
+// Shared only where anyone could see it anyway: a public ship in a public
+// hangar.
+const shareUrl = computed(() =>
+  props.vehicle.public && currentUser?.value?.publicHangar
+    ? plaqueShareUrl(currentUser.value.username, props.vehicle.id)
+    : undefined,
+);
 
 const openEditModal = () => {
   comlink.emit("open-modal", {
@@ -63,6 +73,15 @@ const openEditModal = () => {
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
         data-test="vehicle-plaque-download"
+      />
+      <ShareBtn
+        v-if="shareUrl"
+        :url="shareUrl"
+        :title="t('headlines.vehiclePlaque.title')"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.BARE"
+        no-label
+        data-test="vehicle-plaque-share"
       />
     </div>
   </div>

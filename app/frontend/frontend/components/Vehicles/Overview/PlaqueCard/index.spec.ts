@@ -86,4 +86,34 @@ describe("VehicleOverviewPlaqueCard", () => {
       true,
     );
   });
+
+  it("offers to share the plaque of a public ship in a public hangar", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle({ dedication: "x", public: true }) },
+      initialState: {
+        session: {
+          currentUser: { username: "TorlekMaru", publicHangar: true },
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-share"]').exists()).toBe(
+      true,
+    );
+  });
+
+  it("keeps a hidden ship's plaque unshared", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle({ dedication: "x", public: false }) },
+      initialState: {
+        session: {
+          currentUser: { username: "TorlekMaru", publicHangar: true },
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-share"]').exists()).toBe(
+      false,
+    );
+  });
 });

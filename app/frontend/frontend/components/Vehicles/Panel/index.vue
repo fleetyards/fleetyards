@@ -76,7 +76,7 @@ const openPlaque = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueModal/index.vue"),
-    props: { vehicle: props.vehicle },
+    props: { vehicle: props.vehicle, username: props.publicLogUsername },
   });
 };
 

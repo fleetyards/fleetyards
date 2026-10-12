@@ -21,6 +21,8 @@ import {
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
+import { plaqueSocialImage } from "@/frontend/components/Vehicles/Plaque/download";
+import { useDirectUpload } from "@/shared/composables/useDirectUpload";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -169,6 +171,44 @@ const updateMutation = useUpdateMutation(vehicle);
 // default as a choice of its own.
 const initialPlaqueStyle = plaqueStyle.value;
 
+const { uploadFile } = useDirectUpload();
+
+// An off-screen copy at a fixed width, so the picture is the same whatever the
+// screen the plaque was saved on.
+const capture = ref<HTMLElement>();
+const capturing = ref(false);
+
+const captureVehicle = computed<Vehicle>(() => ({
+  ...preview.value,
+  id: `${props.vehicle.id}-capture`,
+}));
+
+// The plaque as a picture, for the preview of a shared link. Rendered here
+// because only the browser can draw it; a failure leaves the plaque saved and
+// only its preview behind.
+const uploadPlaqueImage = async () => {
+  const element = capture.value?.querySelector<HTMLElement>(".vehicle-plaque");
+  if (!element) {
+    return;
+  }
+
+  capturing.value = true;
+
+  try {
+    const file = await plaqueSocialImage(element);
+    const blob = await uploadFile(file, { progressHandler: () => undefined });
+
+    await updateMutation.mutateAsync({
+      id: props.vehicle.id,
+      data: { plaqueImage: blob.signed_id },
+    });
+  } catch {
+    // The link preview falls back to the hangar's own until the next save.
+  } finally {
+    capturing.value = false;
+  }
+};
+
 const onSubmit = handleSubmit(async (values) => {
   await updateMutation
     .mutateAsync({
@@ -186,7 +226,12 @@ const onSubmit = handleSubmit(async (values) => {
           : {}),
       },
     })
-    .then(() => comlink.emit("close-modal"))
+    .then(async () => {
+      if (values.dedication) {
+        await uploadPlaqueImage();
+      }
+      comlink.emit("close-modal");
+    })
     .catch(() => {
       displayAlert({ text: t("messages.vehiclePlaque.failure") });
     });
@@ -340,6 +385,13 @@ const onSubmit = handleSubmit(async (values) => {
       </transition>
     </form>
 
+    <div ref="capture" class="plaque-edit__capture" aria-hidden="true">
+      <VehiclePlaque
+        :vehicle="captureVehicle"
+        :captain="currentUser?.username"
+      />
+    </div>
+
     <template #footer>
       <Btn
         v-if="stylesOpen"
@@ -366,7 +418,7 @@ const onSubmit = handleSubmit(async (values) => {
         <Btn
           :type="BtnTypesEnum.SUBMIT"
           form="vehicle-plaque-form"
-          :loading="updateMutation.isPending.value"
+          :loading="updateMutation.isPending.value || capturing"
           data-test="vehicle-plaque-save"
         >
           {{ t("actions.save") }}
@@ -417,6 +469,14 @@ const onSubmit = handleSubmit(async (values) => {
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
+}
+
+.plaque-edit__capture {
+  position: fixed;
+  top: 0;
+  left: -10000px;
+  width: 800px;
+  pointer-events: none;
 }
 
 // Two columns of fields under the full-width preview; one on a narrow screen.

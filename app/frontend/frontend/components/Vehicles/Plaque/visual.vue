@@ -8,6 +8,7 @@ export default {
 import VehiclePlaque from "./index.vue";
 import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
 import { PLAQUE_MAKERS } from "./makers";
+import { plaqueSocialImage } from "./download";
 import {
   NullableVehiclePlaqueStyleEnum,
   type VehiclePublic,
@@ -64,6 +65,21 @@ const generalStyles = Object.values(NullableVehiclePlaqueStyleEnum).filter(
 );
 
 const makerCodes = Object.keys(PLAQUE_MAKERS);
+
+// The picture a shared plaque's link preview shows, drawn the way a save draws
+// it, so its framing can be checked without signing in.
+const socialPreview = ref<string>();
+
+const drawSocialPreview = async () => {
+  const element = document.getElementById(
+    "vehicle-plaque-plaque-DRAK-manufacturer",
+  );
+  if (!element) {
+    return;
+  }
+
+  socialPreview.value = URL.createObjectURL(await plaqueSocialImage(element));
+};
 </script>
 
 <template>
@@ -80,6 +96,22 @@ const makerCodes = Object.keys(PLAQUE_MAKERS);
         />
       </div>
     </div>
+
+    <h2>Link preview</h2>
+    <button
+      type="button"
+      data-test="draw-social-preview"
+      @click="drawSocialPreview"
+    >
+      Draw the link preview of the Drake plaque
+    </button>
+    <img
+      v-if="socialPreview"
+      :src="socialPreview"
+      alt=""
+      class="plaque-visual__social"
+      data-test="plaque-social-preview"
+    />
 
     <h2>Manufacturer styles</h2>
     <div class="plaque-visual__grid">
@@ -101,6 +133,12 @@ const makerCodes = Object.keys(PLAQUE_MAKERS);
 
 <style lang="scss" scoped>
 .plaque-visual {
+  &__social {
+    display: block;
+    width: 600px;
+    margin: 16px 0 40px;
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
