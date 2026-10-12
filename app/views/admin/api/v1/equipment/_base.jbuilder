@@ -52,8 +52,8 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
 end
 
-# Carried on the admin payload only: the loader writes these and an admin has to
-# be able to tell a hand-made row from one the export owns.
+# Carried on the admin payload only. `version` is the build the facts come from,
+# which for a retired row is the last one that described it.
 json.sc_key equipment.sc_key
 json.sc_ref equipment.sc_ref
 json.version equipment.facts&.version

@@ -173,8 +173,8 @@ class CommodityTest < ActiveSupport::TestCase
     assert_equal "Current Build Name", commodity.reload.name
   end
 
-  # The UEX importer creates commodities the export has never named, and an admin
-  # can create one by hand. Neither has a build, and both have to read.
+  # A commodity every retained build has dropped lost its last build to
+  # `prune_builds`, and still has to read.
   test "a commodity with no build at all falls back to its own columns" do
     commodity = create(:commodity, :without_build, name: "Column Name", commodity_type: "metal", version: nil)
 

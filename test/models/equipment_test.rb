@@ -95,6 +95,8 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal "4", equipment.reload.size
   end
 
+  # A record every retained build has dropped lost its last build to
+  # `prune_builds`, and still has to read.
   # Preloaded for a whole page of rows, so it has to come back as one build per
   # record rather than every build the environment retains.
   test "#last_build preloads only the newest build of each record" do
@@ -110,7 +112,6 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal 2, EquipmentBuild.newest.where(equipment_id: [equipment.id, other.id]).count
   end
 
-  # An admin can create a record by hand, and no load has given it a build yet.
   test "a record with no build at all falls back to its own columns" do
     equipment = create(:equipment, :without_build, name: "Hand Made", size: "2")
 
