@@ -87,7 +87,9 @@ describe("pageKey", () => {
   });
 
   it("gives every tab of a tabbed page the same key", () => {
-    expect(keyOf("/hangar/me/ic-0210-ab/overview/")).toBe("/hangar/me/ic-0210-ab");
+    expect(keyOf("/hangar/me/ic-0210-ab/overview/")).toBe(
+      "/hangar/me/ic-0210-ab",
+    );
     expect(keyOf("/hangar/me/ic-0210-ab/log/")).toBe("/hangar/me/ic-0210-ab");
   });
 
