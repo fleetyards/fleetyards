@@ -27,8 +27,9 @@ module Api
         # `visible` takes the flag rather than a separate `current_version`: for
         # the default it joins the build we are on, and an inner join to it
         # already leaves out what that build does not describe.
-        @q = Equipment.visible(current_version)
-          .includes(:manufacturer, :build, :last_build, item_prices: ItemPrice::SHOP_LINK)
+        current_only = current_version
+        @q = Equipment.visible(current_only)
+          .includes(:manufacturer, *fact_builds(current_only), item_prices: ItemPrice::SHOP_LINK)
           .ransack(equipment_query_params)
 
         @equipment = @q.result
@@ -51,6 +52,12 @@ module Api
       # not a column, and ransack would try to match a `current_version` field.
       private def current_version
         equipment_query_params.delete(:current_version) { true }
+      end
+
+      # Every row the default list shows has a build we are on, so `facts` never
+      # reaches `last_build` there and preloading it would be a wasted query.
+      private def fact_builds(current_only)
+        ActiveModel::Type::Boolean.new.cast(current_only) ? [:build] : %i[build last_build]
       end
 
       # `nameCont` matched the slug as well while `name` was aliased to
