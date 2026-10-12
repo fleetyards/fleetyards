@@ -162,15 +162,22 @@ module Api
       end
 
       # The dedication plaque is a supporter perk: making or changing one needs
-      # support now, while a plaque made earlier stays where it is.
+      # support now. A plaque made earlier stays where it is, and its owner can
+      # still clear it or send it back unchanged.
       private def require_supporter_for_plaque
-        return if (vehicle_params.keys & PLAQUE_PARAMS).empty?
+        return if plaque_changes.empty?
         return if current_resource_owner.supporter?
 
         render json: {
           code: "supporter_required",
           message: I18n.t("messages.supporter_required")
         }, status: :forbidden
+      end
+
+      private def plaque_changes
+        vehicle_params.slice(*PLAQUE_PARAMS).to_h.select do |key, value|
+          value.present? && value.to_s != @vehicle&.public_send(key).to_s
+        end
       end
 
       private def vehicle_overview_params

@@ -439,6 +439,24 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_nil vehicle.reload.dedication
   end
 
+  test "PUT /vehicles/:id lets a lapsed supporter clear their plaque" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", plaque_style: "neon")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: nil, plaqueStyle: nil} do
+      assert_nil parsed_body["dedication"]
+    end
+  end
+
+  test "PUT /vehicles/:id accepts an unchanged plaque from a lapsed supporter" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", name: "Contorta"}
+  end
+
   test "PUT /vehicles/:id lets a supporter pick a plaque style" do
     Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
