@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import { storeToRefs } from "pinia";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -13,7 +13,6 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { storeToRefs } from "pinia";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -39,58 +38,93 @@ const openEditModal = () => {
 </script>
 
 <template>
-  <MetricsCard
-    :title="t('labels.vehiclePlaque.title')"
-    variant="slim"
+  <div
+    v-if="vehicle.dedication"
+    class="overview-plaque"
     data-test="vehicle-overview-plaque"
   >
-    <div class="overview-plaque">
-      <VehiclePlaque
-        v-if="vehicle.dedication"
-        :vehicle="vehicle"
-        :captain="currentUser?.username"
+    <VehiclePlaque :vehicle="vehicle" :captain="currentUser?.username" />
+    <div class="overview-plaque__actions">
+      <Btn
+        v-tooltip="t('actions.vehiclePlaque.edit')"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.BARE"
+        :aria-label="t('actions.vehiclePlaque.edit')"
+        data-test="vehicle-plaque-edit"
+        @click="openEditModal"
+      >
+        <i class="fa-light fa-pen" />
+      </Btn>
+      <DownloadScreenshotBtn
+        :element="`#vehicle-plaque-${vehicle.id}`"
+        :filename="`plaque-${vehicle.serial || vehicle.model.slug}`"
+        :with-label="false"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="vehicle-plaque-download"
       />
-      <p v-else class="text-muted" data-test="vehicle-plaque-empty">
-        {{ t("texts.vehiclePlaque.empty") }}
-      </p>
-      <div class="overview-plaque__actions">
-        <Btn
-          :size="BtnSizesEnum.SM"
-          :variant="BtnVariantsEnum.GHOST"
-          data-test="vehicle-plaque-edit"
-          @click="openEditModal"
-        >
-          <i class="fa-light fa-pen" />
-          {{ t("actions.vehiclePlaque.edit") }}
-        </Btn>
-        <DownloadScreenshotBtn
-          v-if="vehicle.dedication"
-          :element="`#vehicle-plaque-${vehicle.id}`"
-          :filename="`plaque-${vehicle.serial || vehicle.model.slug}`"
-          :size="BtnSizesEnum.SM"
-          :variant="BtnVariantsEnum.GHOST"
-          data-test="vehicle-plaque-download"
-        />
-      </div>
     </div>
-  </MetricsCard>
+  </div>
+  <div
+    v-else
+    class="overview-plaque-invite"
+    data-test="vehicle-overview-plaque"
+  >
+    <p class="text-muted" data-test="vehicle-plaque-empty">
+      {{ t("texts.vehiclePlaque.empty") }}
+    </p>
+    <Btn
+      :size="BtnSizesEnum.SM"
+      :variant="BtnVariantsEnum.BARE"
+      data-test="vehicle-plaque-edit"
+      @click="openEditModal"
+    >
+      <i class="fa-light fa-pen" />
+      {{ t("actions.vehiclePlaque.edit") }}
+    </Btn>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .overview-plaque {
+  position: relative;
+
+  &__actions {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    gap: 2px;
+    border-radius: 6px;
+    background: rgb(0 0 0 / 0.55);
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  &:hover &__actions,
+  &:focus-within &__actions {
+    opacity: 1;
+  }
+
+  // Nothing hovers on a touch screen, so the buttons stay put there.
+  @media (hover: none) {
+    &__actions {
+      opacity: 1;
+    }
+  }
+}
+
+.overview-plaque-invite {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed var(--color-edge-soft);
+  border-radius: 6px;
 
-  > :first-child {
-    align-self: stretch;
-  }
-
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  p {
+    margin: 0;
   }
 }
 </style>
