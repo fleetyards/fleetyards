@@ -20,14 +20,18 @@ class VehicleLogEntry < ApplicationRecord
   end
 
   # Written without callbacks for the reason `touch` is left off above; the
-  # timestamp still moves so the cached public payloads pick the count up.
+  # timestamp still moves so the cached public payloads pick the count up. The
+  # row lock makes two writes to one log count one after the other, so the
+  # earlier count can never land last.
   private def refresh_public_count
     vehicle = Vehicle.find_by(id: vehicle_id)
     return if vehicle.blank?
 
-    vehicle.update_columns(
-      public_log_entries_count: vehicle.public_log_entries.count,
-      updated_at: Time.current
-    )
+    vehicle.with_lock do
+      vehicle.update_columns(
+        public_log_entries_count: vehicle.public_log_entries.count,
+        updated_at: Time.current
+      )
+    end
   end
 end
