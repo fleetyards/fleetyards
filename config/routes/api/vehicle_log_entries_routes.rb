@@ -2,4 +2,5 @@
 
 resources :vehicles, only: [] do
   resources :log_entries, path: "log-entries", controller: "vehicle_log_entries", only: %i[index create update destroy]
+  resources :paints, controller: "vehicle_paints", only: %i[index]
 end
