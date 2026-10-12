@@ -5,8 +5,8 @@ import {
   type RouteRecordRaw,
   type RouterHistory,
   type RouteLocationNormalized,
+  type RouterOptions,
 } from "vue-router";
-import { type LocationQuery } from "vue-router";
 import qs from "qs";
 import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
 
@@ -67,8 +67,12 @@ export const setupRouter = (options: FyRouterOptions) => {
         }
       }),
 
+    // vue-router 5.4 types this option against the experimental array-only
+    // query shape; the classic router still accepts the mixed shape at runtime.
     parseQuery(query) {
-      return qs.parse(query) as LocationQuery;
+      return qs.parse(query) as unknown as ReturnType<
+        NonNullable<RouterOptions["parseQuery"]>
+      >;
     },
 
     stringifyQuery(query) {
