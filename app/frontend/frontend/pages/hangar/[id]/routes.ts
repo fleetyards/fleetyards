@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { FeatureFlagName } from "@/services/fyApi";
 
-// The tabs are one page (`nav: "editTabs"`), so the vehicle's header stays
+// The tabs are one page (`nav: "pageTabs"`), so the vehicle's header stays
 // mounted across them and shrinks or grows in place on a tab switch.
 export const routes: RouteRecordRaw[] = [
   {
@@ -13,7 +13,7 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleOverview",
       backgroundImage: "bg-5",
       customTitle: true,
-      nav: "editTabs",
+      nav: "pageTabs",
       feature: FeatureFlagName.VEHICLE_OVERVIEW,
     },
   },
@@ -26,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleLog",
       backgroundImage: "bg-5",
       customTitle: true,
-      nav: "editTabs",
+      nav: "pageTabs",
       feature: FeatureFlagName.VEHICLE_OVERVIEW,
     },
   },
@@ -39,7 +39,7 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleLoadouts",
       backgroundImage: "bg-5",
       customTitle: true,
-      nav: "editTabs",
+      nav: "pageTabs",
     },
   },
   {
@@ -52,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleCargo",
       backgroundImage: "bg-5",
       customTitle: true,
-      nav: "editTabs",
+      nav: "pageTabs",
       feature: FeatureFlagName.SHIP_INVENTORIES,
     },
   },

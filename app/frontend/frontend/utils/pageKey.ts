@@ -1,5 +1,7 @@
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 
+const SHARED_TABS = new Set(["editTabs", "pageTabs"]);
+
 const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
 
 /*
@@ -12,7 +14,8 @@ const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
  *
  * The tabs of an editor are one page too. Keyed on the tab's own path, a tab
  * switch rebuilt the editor around it, and a form spanning its tabs lost
- * everything typed on the others.
+ * everything typed on the others. `pageTabs` is the same for a page that is no
+ * editor -- a vehicle's tabs, whose header shrinks and grows across them.
  */
 export const pageKey = (
   route: Pick<RouteLocationNormalizedLoaded, "path" | "matched">,
@@ -21,7 +24,7 @@ export const pageKey = (
   const tab = route.matched[route.matched.length - 1];
   const editor = route.matched[route.matched.length - 2];
 
-  if (tab?.meta.nav !== "editTabs" || !editor) {
+  if (!SHARED_TABS.has(tab?.meta.nav ?? "") || !editor) {
     return path;
   }
 
