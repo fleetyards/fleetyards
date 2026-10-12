@@ -28,6 +28,9 @@ const logo = computed(
   () => manufacturer.value?.logo?.smallUrl || manufacturer.value?.logo?.url,
 );
 
+// What the download button captures.
+const elementId = computed(() => `vehicle-plaque-${props.vehicle.id}`);
+
 const shipName = computed(() => props.vehicle.name || props.vehicle.model.name);
 
 const classLine = computed(() =>
@@ -106,7 +109,7 @@ const lines = computed(() =>
 </script>
 
 <template>
-  <figure class="vehicle-plaque" data-test="vehicle-plaque">
+  <figure :id="elementId" class="vehicle-plaque" data-test="vehicle-plaque">
     <img v-if="logo" :src="logo" alt="" class="vehicle-plaque__logo" />
     <h3 class="vehicle-plaque__name" data-test="vehicle-plaque-name">
       {{ shipName }}

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
+import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -52,15 +53,25 @@ const openEditModal = () => {
       <p v-else class="text-muted" data-test="vehicle-plaque-empty">
         {{ t("texts.vehiclePlaque.empty") }}
       </p>
-      <Btn
-        :size="BtnSizesEnum.SM"
-        :variant="BtnVariantsEnum.GHOST"
-        data-test="vehicle-plaque-edit"
-        @click="openEditModal"
-      >
-        <i class="fa-light fa-pen" />
-        {{ t("actions.vehiclePlaque.edit") }}
-      </Btn>
+      <div class="overview-plaque__actions">
+        <Btn
+          :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.GHOST"
+          data-test="vehicle-plaque-edit"
+          @click="openEditModal"
+        >
+          <i class="fa-light fa-pen" />
+          {{ t("actions.vehiclePlaque.edit") }}
+        </Btn>
+        <DownloadScreenshotBtn
+          v-if="vehicle.dedication"
+          :element="`#vehicle-plaque-${vehicle.id}`"
+          :filename="`plaque-${vehicle.serial || vehicle.model.slug}`"
+          :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.GHOST"
+          data-test="vehicle-plaque-download"
+        />
+      </div>
     </div>
   </MetricsCard>
 </template>
@@ -74,6 +85,12 @@ const openEditModal = () => {
 
   > :first-child {
     align-self: stretch;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
 </style>

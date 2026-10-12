@@ -40,6 +40,9 @@ describe("VehicleOverviewPlaqueCard", () => {
       true,
     );
     expect(wrapper.find('[data-test="vehicle-plaque"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="vehicle-plaque-download"]').exists()).toBe(
+      false,
+    );
     expect(wrapper.find('[data-test="vehicle-plaque-edit"]').exists()).toBe(
       true,
     );
@@ -53,6 +56,9 @@ describe("VehicleOverviewPlaqueCard", () => {
     expect(wrapper.find('[data-test="vehicle-plaque"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="vehicle-plaque-empty"]').exists()).toBe(
       false,
+    );
+    expect(wrapper.find('[data-test="vehicle-plaque-download"]').exists()).toBe(
+      true,
     );
   });
 });
