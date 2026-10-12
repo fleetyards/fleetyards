@@ -63,8 +63,12 @@ Working plan for #4846. Decisions live in the issue body. Deleted before the PR 
 
 - **2026-10-12** Initial research and plan creation. `Vehicle#sale_notify` is live: `ModelOnSaleJob` filters on it with `wanted: true`. Only `User#sale_notify` was retired in #5605. The issue's "first user-uploaded image" claim is wrong: avatars, fleet logos, inventory and markdown images are user uploads, all with `no_vector_image`.
 
+- **2026-10-12** The public hangar has no vehicle page, so public entries open in a modal from the ship's panel. The log is gated on the viewer's flag, so anonymous visitors see nothing until the flag is on for everyone.
+- **2026-10-12** The vehicle edit modal only refreshed the hangar lists, so `hangar/[id]` went stale after an edit. A successful vehicle update now also invalidates the vehicle page's query, under both its id and its serial.
+- **2026-10-12** The bulk delete removes log entries and purges the image along with the vehicle, since it bypasses `Vehicle#destroy`.
+
 ## Progress
-- [ ] Phase 0 — Feature flag
-- [ ] Phase 1 — Overview tab
-- [ ] Phase 2 — Captain's log
-- [ ] Phase 3 — Uploaded image
+- [x] Phase 0 — Feature flag
+- [x] Phase 1 — Overview tab
+- [x] Phase 2 — Captain's log
+- [x] Phase 3 — Uploaded image
