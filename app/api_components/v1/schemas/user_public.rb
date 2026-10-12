@@ -25,7 +25,8 @@ module V1
           publicWishlist: {type: :boolean},
           supporter: {type: :boolean},
           supporterTier: {type: :integer},
-          supporterRecurring: {type: :boolean}
+          supporterRecurring: {type: :boolean},
+          online: {type: :boolean, description: "Only for the user's friends and fleet mates"}
         },
         additionalProperties: false,
         required: %w[username publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist supporter supporterTier supporterRecurring]

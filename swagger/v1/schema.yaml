@@ -39000,6 +39000,9 @@ components:
           type: integer
         supporterRecurring:
           type: boolean
+        online:
+          type: boolean
+          description: Only for the user's friends and fleet mates
       additionalProperties: false
       required:
       - username
