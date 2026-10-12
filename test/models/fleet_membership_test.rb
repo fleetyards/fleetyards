@@ -237,4 +237,24 @@ class FleetMembershipTest < ActiveSupport::TestCase
     assert create(:fleet_membership, :invited, fleet: create(:fleet, rsi_sid: "MAIN"), user:).verified?
     assert_not create(:fleet_membership, :invited, fleet: create(:fleet, rsi_sid: "OTHER"), user:).verified?
   end
+
+  test "#release_verification_reminder gives back its own claim" do
+    earlier = 10.days.ago.change(usec: 0)
+    @member_membership.update_columns(verification_reminded_at: earlier)
+
+    assert @member_membership.claim_verification_reminder
+    @member_membership.release_verification_reminder(earlier)
+
+    assert_equal earlier, @member_membership.reload.verification_reminded_at
+  end
+
+  test "#release_verification_reminder keeps a later claim" do
+    assert @member_membership.claim_verification_reminder
+    later = 1.minute.from_now.change(usec: 0)
+    FleetMembership.where(id: @member_membership.id).update_all(verification_reminded_at: later)
+
+    @member_membership.release_verification_reminder(nil)
+
+    assert_equal later, @member_membership.reload.verification_reminded_at
+  end
 end

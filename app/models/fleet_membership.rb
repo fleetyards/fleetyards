@@ -206,6 +206,13 @@ class FleetMembership < ApplicationRecord
     claimed
   end
 
+  # Gives the claim back only while it is still this one: a later claim that
+  # went through keeps its week.
+  def release_verification_reminder(previously_reminded_at)
+    self.class.where(id:, verification_reminded_at:).update_all(verification_reminded_at: previously_reminded_at)
+    self.verification_reminded_at = previously_reminded_at
+  end
+
   # Why the membership is not verified against the fleet's RSI org, in the
   # order a member would have to fix it.
   def verification_gap

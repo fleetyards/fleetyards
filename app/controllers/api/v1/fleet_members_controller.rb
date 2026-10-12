@@ -134,7 +134,7 @@ module Api
           # not use up the week's reminder. A channel that fails is already
           # swallowed inside notify!, with the reminder still in the inbox.
           begin
-            @member.update_columns(verification_reminded_at: previously_reminded_at)
+            @member.release_verification_reminder(previously_reminded_at)
           rescue => restore_error
             Rails.logger.error("Could not release the verification reminder of #{@member.id}: #{restore_error.message}")
           end
