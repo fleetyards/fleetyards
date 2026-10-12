@@ -45,6 +45,9 @@ module Api
       end
 
       def show
+        @fleets = current_resource_owner.fleets
+          .where(id: @vehicle.fleet_vehicles.select(:fleet_id))
+          .order(:name)
       end
 
       def update

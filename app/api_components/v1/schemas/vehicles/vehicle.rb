@@ -35,6 +35,9 @@ module V1
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
+            # Only the single-vehicle endpoint sends these: the fleets the ship
+            # is listed in, as far as its owner is still a member.
+            fleets: {type: :array, items: ::V1::Schemas::Vehicles::VehicleFleet},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

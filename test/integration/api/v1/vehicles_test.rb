@@ -264,6 +264,20 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: vehicle.id}
   end
 
+  test "GET /vehicles/:id names the fleets the ship is listed in" do
+    vehicle = create(:vehicle, user: @user)
+    fleet = create(:fleet, name: "Dusk Haulers")
+    create(:fleet_membership, :accepted, fleet:, user: @user)
+    FleetVehicle.find_or_create_by!(fleet:, vehicle:)
+    left = create(:fleet)
+    FleetVehicle.create!(fleet: left, vehicle:)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: vehicle.id} do
+      assert_equal ["Dusk Haulers"], parsed_body["fleets"].pluck("name")
+    end
+  end
+
   test "GET /vehicles/:id returns 404 for missing id" do
     sign_in @user
 
