@@ -22,7 +22,11 @@ const { t } = useI18n();
 <template>
   <!-- A slim note rather than the boxed empty state: a ship without modules is
        a fact about the ship, not a search that came back empty. -->
-  <Panel :variant="PanelVariantsEnum.SLIM" :outer-spacing="false">
+  <Panel
+    :variant="PanelVariantsEnum.SLIM"
+    :outer-spacing="false"
+    class="model-section-empty-panel"
+  >
     <p class="model-section-empty">
       <i class="fa-light fa-circle-info" aria-hidden="true" />
       {{ t("texts.model.sectionEmpty", { model: modelName, section }) }}
@@ -31,6 +35,13 @@ const { t } = useI18n();
 </template>
 
 <style lang="scss" scoped>
+// As wide as its sentence and centred under the heading: a note, not a list.
+.model-section-empty-panel {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .model-section-empty {
   display: flex;
   align-items: center;

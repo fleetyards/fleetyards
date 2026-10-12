@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Heading from "@/shared/components/base/Heading/index.vue";
+import ModelSection from "@/frontend/components/Models/Section/index.vue";
+import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -14,6 +15,7 @@ import { useModelLoaners as useModelLoanersQuery } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
+  modelName: string;
 };
 
 const props = defineProps<Props>();
@@ -24,29 +26,38 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error>
-    <template v-if="loaners?.items.length" #resolved>
-      <hr />
-      <div id="loaners" class="row">
-        <div class="col-12 variants">
-          <Heading :level="HeadingLevelEnum.H2" hero>
-            {{ t(`labels.model.loaners`) }}
-          </Heading>
-          <transition-group name="fade-list" class="row" tag="div" appear>
-            <div
-              v-for="item in loaners.items"
-              :key="`loaners-${item.slug}`"
-              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-            >
-              <ModelPanel
-                :model="item"
-                :details="true"
-                :level="HeadingLevelEnum.H3"
-              />
-            </div>
-          </transition-group>
-        </div>
-      </div>
-    </template>
-  </AsyncData>
+  <ModelSection
+    anchor="loaners"
+    :model-slug="modelSlug"
+    :title="t('labels.model.loaners')"
+  >
+    <AsyncData :async-status="asyncStatus" hide-error>
+      <template #resolved>
+        <transition-group
+          v-if="loaners?.items.length"
+          name="fade-list"
+          class="row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="item in loaners.items"
+            :key="`loaners-${item.slug}`"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+          >
+            <ModelPanel
+              :model="item"
+              :details="true"
+              :level="HeadingLevelEnum.H3"
+            />
+          </div>
+        </transition-group>
+        <SectionEmpty
+          v-else
+          :model-name="modelName"
+          :section="t('labels.model.loaners')"
+        />
+      </template>
+    </AsyncData>
+  </ModelSection>
 </template>

@@ -535,8 +535,8 @@ const adiMap = computed(() => {
   />
   <UpgradesList :model-slug="model.slug" :model-name="model.name" />
   <CarriedByList :carried-by="model.carriedBy" />
-  <LoanersList :model-slug="model.slug" />
-  <VariantsList :model-slug="model.slug" />
+  <LoanersList :model-slug="model.slug" :model-name="model.name" />
+  <VariantsList :model-slug="model.slug" :model-name="model.name" />
 </template>
 
 <style lang="scss" scoped>
