@@ -24,10 +24,12 @@ class VehicleLogEntry < ApplicationRecord
   # row lock makes two writes to one log count one after the other, so the
   # earlier count can never land last.
   private def refresh_public_count
-    vehicle = Vehicle.find_by(id: vehicle_id)
-    return if vehicle.blank?
+    Vehicle.transaction do
+      # Locked as it is found, so a vehicle deleted meanwhile is simply gone
+      # rather than an error on a write that already committed.
+      vehicle = Vehicle.lock.find_by(id: vehicle_id)
+      next if vehicle.blank?
 
-    vehicle.with_lock do
       vehicle.update_columns(
         public_log_entries_count: vehicle.public_log_entries.count,
         updated_at: Time.current
