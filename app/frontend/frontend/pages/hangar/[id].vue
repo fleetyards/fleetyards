@@ -62,15 +62,20 @@ const vehicleName = computed(() => {
   return nameParts.join(" ");
 });
 
+// The hero names the ship, so the trail only leads back to the hangar.
 const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "hangar" },
     label: t("nav.hangar.index"),
   },
-  {
-    to: { name: "hangar-vehicle", params: { id: route.params.id } },
-    label: vehicleName.value,
-  },
+  ...(heroVisible.value
+    ? []
+    : [
+        {
+          to: { name: "hangar-vehicle", params: { id: route.params.id } },
+          label: vehicleName.value,
+        },
+      ]),
 ]);
 </script>
 
