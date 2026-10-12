@@ -1,0 +1,77 @@
+# frozen_string_literal: true
+
+module Api
+  module V1
+    # Who in the reader's circle flies a model: their own ships of it, the
+    # friends whose hangars show one, and per fleet how many are listed there.
+    class ModelOwnersController < ::Api::BaseController
+      include VehicleOverviewFeatureConcern
+
+      FRIENDS_LIMIT = 12
+      FLEET_MEMBERS_LIMIT = 8
+
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: -> { warden.authenticate?(scope: :user) }
+      before_action :check_vehicle_overview_feature
+
+      def index
+        authorize! with: ModelOwnersPolicy
+
+        @model = Model.visible.active.find_by!(slug: params[:slug].to_s.downcase)
+
+        @vehicles = current_resource_owner.vehicles.visible.purchased
+          .where(model: @model)
+          .includes({image_attachment: :blob}, model_paint: ModelPaint.attachment_preloads)
+          .order(:rank)
+
+        load_friends
+        load_fleets
+      end
+
+      # Friends only as far as their hangar is open to the reader, and only the
+      # ships that hangar shows: bought, public and not hidden.
+      private def load_friends
+        friends = current_resource_owner.friends.with_hangar_readable_by(current_resource_owner)
+
+        counts = Vehicle.visible.purchased.public
+          .where(model: @model, user_id: friends.select(:id))
+          .group(:user_id)
+          .count
+
+        @friends_total = counts.size
+
+        users = ::User.where(id: counts.keys).with_attached_avatar.index_by(&:id)
+        @friends = counts
+          .sort_by { |user_id, count| [-count, users[user_id].username.downcase] }
+          .first(FRIENDS_LIMIT)
+          .map { |user_id, count| [users[user_id], count] }
+      end
+
+      # What each fleet's own ship list shows of the model: its listed ships,
+      # loaners left out as that list does. Members who hide themselves as
+      # owners are counted but not named.
+      private def load_fleets
+        fleets = Fleet.where(id: current_resource_owner.kept_fleet_memberships.accepted.select(:fleet_id))
+          .with_attached_logo
+          .order(:name)
+
+        @fleets = fleets.filter_map do |fleet|
+          scope = fleet.vehicles.where(model: @model, loaner: false)
+          total = scope.count
+          next if total.zero?
+
+          owners = ::User.where(id: scope.select(:user_id))
+          named = owners.where(hide_owner: false).order(Arel.sql("lower(users.username)"))
+
+          {
+            fleet:,
+            total:,
+            owners_total: owners.count,
+            members: named.limit(FLEET_MEMBERS_LIMIT).pluck(:username)
+          }
+        end
+      end
+    end
+  end
+end

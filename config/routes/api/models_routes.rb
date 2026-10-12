@@ -27,6 +27,7 @@ resources :models, param: :slug, only: %i[index show] do
     get :changes
     get :store_image, path: "store-image"
     get :fleetchart_image, path: "fleetchart-image"
+    get :owners, to: "model_owners#index"
   end
 end
 
