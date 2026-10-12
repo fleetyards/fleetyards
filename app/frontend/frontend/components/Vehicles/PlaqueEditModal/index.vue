@@ -102,6 +102,7 @@ const onSubmit = handleSubmit(async (values) => {
         :linked="vehicle.launchPortLocation"
         name="launchPort"
         :label="t('labels.vehiclePlaque.launchPort')"
+        :rules="validationSchema.launchPort"
       />
       <FormInput
         v-model="affiliation"
