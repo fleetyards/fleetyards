@@ -34,6 +34,28 @@ class HangarPledgeItems::PaintLinkerTest < ActiveSupport::TestCase
     assert_empty item.reload.model_paints
   end
 
+  test "skips a pledge that went away after it was read" do
+    item = create(:hangar_pledge_item, name: "Nomad IceBreak Livery")
+    melted = create(:hangar_pledge_item, name: "Nomad IceBreak Livery")
+    melted.delete
+
+    HangarPledgeItems::PaintLinker.new.link([item, melted])
+
+    assert_equal [@paint], item.reload.model_paints.to_a
+    assert_equal 1, HangarPledgeItemModelPaint.count
+  end
+
+  test "skips a paint deleted after the catalogue was read" do
+    item = create(:hangar_pledge_item, name: "Nomad IceBreak Livery")
+    resolver = HangarPledgeItems::PaintResolver.new
+    resolver.model_paint_ids(item.name)
+    @paint.delete
+
+    HangarPledgeItems::PaintLinker.new(resolver:).link([item])
+
+    assert_empty item.reload.model_paints
+  end
+
   test "links every stored paint pledge" do
     items = create_list(:hangar_pledge_item, 2, name: "Nomad IceBreak Livery")
 
