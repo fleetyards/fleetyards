@@ -4,6 +4,7 @@ import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineComponent, h } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
+import { createMemoryHistory, createRouter } from "vue-router";
 
 const DirtyForm = defineComponent({
   setup(_, { expose }) {
@@ -90,5 +91,92 @@ describe("AppModal", () => {
     await flushPromises();
 
     expect(order).toEqual(["unmounted", "closed"]);
+  });
+
+  describe("on a page change", () => {
+    const Page = { template: "<div />" };
+
+    const mountOnRouter = async () => {
+      vi.useFakeTimers();
+
+      const router = createRouter({
+        history: createMemoryHistory(),
+        routes: [
+          { path: "/one/", component: Page },
+          { path: "/two/", component: Page },
+        ],
+      });
+      await router.push("/one/");
+
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        plugins: [router],
+      });
+
+      const modal = wrapper.vm as unknown as {
+        open: (options: object) => Promise<void>;
+      };
+
+      return { router, modal };
+    };
+
+    const settle = async () => {
+      await flushPromises();
+      vi.runAllTimers();
+      await flushPromises();
+    };
+
+    it("closes, unsaved input or not", async () => {
+      const { router, modal } = await mountOnRouter();
+      const confirm = vi.fn();
+      stopListening = useComlink().on("show-confirm", confirm);
+
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      await router.push("/two/");
+      await settle();
+
+      expect(confirm).not.toHaveBeenCalled();
+      expect(wrapper?.find('[data-test="modal"]').exists()).toBe(false);
+    });
+
+    it("keeps a modal the new page opens on arrival", async () => {
+      const { router, modal } = await mountOnRouter();
+
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      await router.push("/two/");
+      await flushPromises();
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
+
+    it("stays open while the address still asks for it", async () => {
+      const { router, modal } = await mountOnRouter();
+
+      await router.push("/one/?modal=support");
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      await router.push("/two/?modal=support");
+      await settle();
+
+      expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
+
+    it("stays open when only the query changes", async () => {
+      const { router, modal } = await mountOnRouter();
+
+      await modal.open({ component: () => Promise.resolve(DirtyForm) });
+      await settle();
+
+      await router.push("/one/?tab=log");
+      await settle();
+
+      expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
   });
 });

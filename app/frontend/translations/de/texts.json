@@ -332,6 +332,21 @@
       },
       "fleet": {
         "contractCovers": "Das Bild, das die Auftragstafel je Auftragsart zeigt. Bleibt eines leer, wird das eingebaute Bild darunter verwendet."
+      },
+      "vehicleLog": {
+        "visibility": "Öffentliche Einträge werden bei diesem Schiff in deinem öffentlichen Hangar angezeigt.",
+        "visibilityHidden": "Dieses Schiff steht nicht in deinem öffentlichen Hangar, daher wird dort keiner seiner Einträge angezeigt.",
+        "empty": "Halte fest, was diesem Schiff passiert ist — nur du siehst einen Eintrag, bis du ihn öffentlich machst.",
+        "publicEmpty": "Der Kapitän dieses Schiffs hat noch keine Logbucheinträge geteilt.",
+        "noneForFilter": "Keine Einträge für diesen Filter.",
+        "unavailable": "Dieses Logbuch ist gerade nicht verfügbar."
+      },
+      "vehicleOverview": {
+        "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",
+        "locationPrivate": "Nur du siehst, wo dein Schiff steht."
+      },
+      "model": {
+        "sectionEmpty": "%{model} hat keine %{section}."
       }
     }
   }

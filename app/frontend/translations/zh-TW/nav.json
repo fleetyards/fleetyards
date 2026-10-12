@@ -27,7 +27,9 @@
         "flair": "機庫裝飾",
         "equipment": "FPS 裝備",
         "imports": "匯入記錄",
-        "transfers": "轉移"
+        "transfers": "轉移",
+        "vehicleOverview": "概覽",
+        "vehicleLog": "艦長日誌"
       },
       "login": "登入",
       "installApp": "安裝應用程式",

@@ -7,8 +7,6 @@ module VehicleInventoryScoped
   extend ActiveSupport::Concern
   include InventoryScoped
 
-  UUID_PREFIX = /\A[0-9a-f]{8}-[0-9a-f]{4}-/i
-
   # Reads see the ship's inventory as it would be — named after the ship, empty
   # and unsaved — until a first deposit brings it into existence.
   private def inventory
@@ -41,11 +39,7 @@ module VehicleInventoryScoped
       {fleetchart_image_attachment: :blob}
     ])
 
-    @vehicle = if vehicle_id.match?(UUID_PREFIX)
-      scope.find(vehicle_id)
-    else
-      scope.find_by!(serial: vehicle_id.upcase)
-    end
+    @vehicle = scope.find_by_id_or_serial!(vehicle_id)
   end
 
   private def inventory_policy

@@ -560,6 +560,24 @@
       },
       "supporterNomination": {
         "change": "Flotte ändern"
+      },
+      "vehicleOverview": {
+        "open": "Übersicht",
+        "uploadPicture": "Bild hochladen",
+        "changePicture": "Bild ändern",
+        "edit": "Schiff bearbeiten",
+        "shipDatabase": "Schiffsdatenbank",
+        "openLog": "Logbuch öffnen",
+        "applyPaint": "%{paint} anwenden",
+        "choosePaint": "Lackierung wählen",
+        "editLocation": "Standort ändern",
+        "allPaints": "Alle %{count} Lackierungen",
+        "fullscreenHolo": "Vollbild"
+      },
+      "vehicleLog": {
+        "open": "Logbuch",
+        "add": "Neuer Eintrag",
+        "showPublic": "Logbuch"
       }
     }
   }

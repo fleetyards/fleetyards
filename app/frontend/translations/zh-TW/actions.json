@@ -560,6 +560,24 @@
       },
       "supporterNomination": {
         "change": "變更艦隊"
+      },
+      "vehicleOverview": {
+        "open": "概覽",
+        "uploadPicture": "上傳圖片",
+        "changePicture": "更換圖片",
+        "edit": "編輯艦船",
+        "shipDatabase": "艦船資料庫",
+        "openLog": "開啟日誌",
+        "applyPaint": "套用 %{paint}",
+        "choosePaint": "選擇塗裝",
+        "editLocation": "變更位置",
+        "allPaints": "全部 %{count} 款塗裝",
+        "fullscreenHolo": "全螢幕"
+      },
+      "vehicleLog": {
+        "open": "艦長日誌",
+        "add": "新條目",
+        "showPublic": "艦長日誌"
       }
     }
   }

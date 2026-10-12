@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Incolla l'URL della configurazione di erkul.games o spviewer.eu...",
         "empty": "Ancora nessuna configurazione. Creane una per iniziare.",
         "active": "Attiva",
-        "activate": "Rendi attiva",
-        "planOn": "Pianifica la tua configurazione su"
+        "activate": "Rendi attiva"
       },
       "model": {
         "hidden": "Nascosto?",
@@ -4131,6 +4130,56 @@
       },
       "tour": {
         "step": "Passo %{current} di %{total}"
+      },
+      "vehicleOverview": {
+        "picture": "Immagine",
+        "pictureInfo": "Mostrata al posto dell'immagine predefinita, anche nel tuo hangar pubblico e nelle flotte con cui condividi questa nave.",
+        "ownPicture": "La tua immagine",
+        "serial": "Numero di serie %{serial}",
+        "since": "Nell'hangar dal %{date}",
+        "logSummary": "%{count} voci · %{public} pubbliche",
+        "cargoFill": "%{stowed} di %{capacity} SCU caricati",
+        "cargoStowed": "%{stowed} SCU caricati",
+        "cargoMeter": "Carico",
+        "configuration": "Configurazione",
+        "noPaint": "Verniciatura standard",
+        "ownedPaints": "Le tue verniciature",
+        "availablePaints": "Verniciature",
+        "paintApplied": "%{paint}, applicata",
+        "visibility": "Visibilità",
+        "showPublic": "Mostra nel mio hangar pubblico",
+        "showName": "Mostra il nome",
+        "fleets": "In servizio con",
+        "status": "Stato",
+        "searchPaints": "Cerca verniciature",
+        "location": "Posizione",
+        "noLocation": "Non impostata",
+        "noGroups": "Nessun gruppo",
+        "planLoadout": "Pianifica un loadout"
+      },
+      "vehicleLog": {
+        "entries": "voci del diario",
+        "title": "Titolo",
+        "loggedAt": "Data",
+        "loggedAtPlaceholder": "Adesso",
+        "body": "Voce",
+        "public": "Mostra nel mio hangar pubblico",
+        "publicShort": "Pubblica",
+        "publicByDefault": "Le nuove voci sono pubbliche",
+        "filters": {
+          "all": "Tutte",
+          "public": "Pubbliche",
+          "private": "Private"
+        },
+        "entryCount": {
+          "one": "%{count} voce",
+          "other": "%{count} voci"
+        },
+        "privateShort": "Privata",
+        "stats": "Il diario",
+        "statsEntries": "Voci",
+        "statsPublic": "Pubbliche",
+        "statsSince": "Dal"
       }
     }
   }

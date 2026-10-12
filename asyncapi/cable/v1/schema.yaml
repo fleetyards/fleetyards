@@ -5038,12 +5038,28 @@ components:
           type: boolean
         saleNotify:
           type: boolean
+        logEntriesPublicByDefault:
+          type: boolean
+        location:
+          type:
+          - string
+          - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
+        fleets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleFleet"
         createdAt:
           type: string
           format: date-time
@@ -5061,6 +5077,7 @@ components:
       - public
       - nameVisible
       - saleNotify
+      - logEntriesPublicByDefault
       - alternativeNames
       - modelUpgradeIds
       - hangarGroupIds
@@ -5080,6 +5097,26 @@ components:
           type: string
         customName:
           type: string
+    VehicleFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
     VehicleLoadoutMinimal:
       type: object
       properties:

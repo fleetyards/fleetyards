@@ -11,7 +11,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       { label: "In-Game", value: "ingame", category: "boughtVia" },
     ]),
   }),
-  modelPaints: vi.fn(),
+  useModelPaints: () => ({ data: ref([]), isLoading: ref(false) }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({

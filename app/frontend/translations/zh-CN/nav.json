@@ -27,7 +27,9 @@
         "flair": "机库装饰",
         "equipment": "FPS 装备",
         "imports": "导入记录",
-        "transfers": "转移"
+        "transfers": "转移",
+        "vehicleOverview": "概览",
+        "vehicleLog": "舰长日志"
       },
       "login": "登录",
       "installApp": "安装应用",

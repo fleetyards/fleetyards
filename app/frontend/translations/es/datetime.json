@@ -7,7 +7,11 @@
         "dateTime": "d MMM y, HH:mm",
         "dateTimeZone": "d MMM y, HH:mm z",
         "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
-        "date": "d MMM y"
+        "date": "d MMM y",
+        "day": "dd",
+        "monthShort": "MMM",
+        "time": "HH:mm z",
+        "year": "yyyy"
       }
     }
   }

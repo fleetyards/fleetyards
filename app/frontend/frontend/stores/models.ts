@@ -50,6 +50,8 @@ export enum ModelSortFieldsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
+  // The ship page's sections a reader closed, by model slug and then anchor.
+  collapsedSections: Record<string, string[]>;
   modelState: ModelStateEnum;
   tableViewCols: ModelTableViewColsEnum[];
   tableViewImageCols: ModelTableViewImageColsEnum[];
@@ -59,6 +61,7 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
+    collapsedSections: {},
     modelState: ModelStateEnum.FLIGHT,
     detailsVisible: false,
     filterVisible: true,
@@ -84,9 +87,38 @@ export const useModelsStore = defineStore("models", {
       ModelSortFieldsEnum.PRODUCTION_STATUS,
     ],
   }),
+  getters: {
+    sectionCollapsed(state) {
+      return (modelSlug: string, section: string) =>
+        !!state.collapsedSections[modelSlug]?.includes(section);
+    },
+  },
   actions: {
     toggleHoloviewer() {
       this.holoviewerVisible = !this.holoviewerVisible;
+    },
+    toggleSection(modelSlug: string, section: string) {
+      if (this.sectionCollapsed(modelSlug, section)) {
+        this.expandSection(modelSlug, section);
+        return;
+      }
+
+      this.collapsedSections = {
+        ...this.collapsedSections,
+        [modelSlug]: [...(this.collapsedSections[modelSlug] || []), section],
+      };
+    },
+    expandSection(modelSlug: string, section: string) {
+      const remaining = (this.collapsedSections[modelSlug] || []).filter(
+        (name) => name !== section,
+      );
+      const { [modelSlug]: _removed, ...others } = this.collapsedSections;
+
+      // A model with every section open drops out of the map, so it does not
+      // grow by a key for each ship a reader has ever opened.
+      this.collapsedSections = remaining.length
+        ? { ...others, [modelSlug]: remaining }
+        : others;
     },
     // One selection for the whole session: a visitor who wants ships landed
     // wants the next ship landed too, where it has the images for it.
@@ -115,6 +147,7 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
+      "collapsedSections",
       "modelState",
       "detailsVisible",
       "gridView",

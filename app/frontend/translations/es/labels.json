@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Pega la URL de una configuración de erkul.games o spviewer.eu...",
         "empty": "Aún no hay configuraciones. Crea una para empezar.",
         "active": "Activa",
-        "activate": "Marcar como activa",
-        "planOn": "Planifica tu configuración en"
+        "activate": "Marcar como activa"
       },
       "model": {
         "hidden": "¿Oculto?",
@@ -4131,6 +4130,56 @@
       },
       "tour": {
         "step": "Paso %{current} de %{total}"
+      },
+      "vehicleOverview": {
+        "picture": "Imagen",
+        "pictureInfo": "Se muestra en lugar de la imagen por defecto, también en tu hangar público y en las flotas con las que compartes esta nave.",
+        "ownPicture": "Tu imagen",
+        "serial": "Número de serie %{serial}",
+        "since": "En el hangar desde %{date}",
+        "logSummary": "%{count} entradas · %{public} públicas",
+        "cargoFill": "%{stowed} de %{capacity} SCU cargados",
+        "cargoStowed": "%{stowed} SCU cargados",
+        "cargoMeter": "Carga",
+        "configuration": "Configuración",
+        "noPaint": "Pintura estándar",
+        "ownedPaints": "Tus pinturas",
+        "availablePaints": "Pinturas",
+        "paintApplied": "%{paint}, aplicada",
+        "visibility": "Visibilidad",
+        "showPublic": "Mostrar en mi hangar público",
+        "showName": "Mostrar el nombre",
+        "fleets": "Al servicio de",
+        "status": "Estado",
+        "searchPaints": "Buscar pinturas",
+        "location": "Ubicación",
+        "noLocation": "Sin indicar",
+        "noGroups": "Sin grupos",
+        "planLoadout": "Planificar un loadout"
+      },
+      "vehicleLog": {
+        "entries": "entradas de bitácora",
+        "title": "Título",
+        "loggedAt": "Fecha",
+        "loggedAtPlaceholder": "Ahora",
+        "body": "Entrada",
+        "public": "Mostrar en mi hangar público",
+        "publicShort": "Pública",
+        "publicByDefault": "Las entradas nuevas son públicas",
+        "filters": {
+          "all": "Todas",
+          "public": "Públicas",
+          "private": "Privadas"
+        },
+        "entryCount": {
+          "one": "%{count} entrada",
+          "other": "%{count} entradas"
+        },
+        "privateShort": "Privada",
+        "stats": "El cuaderno",
+        "statsEntries": "Entradas",
+        "statsPublic": "Públicas",
+        "statsSince": "Desde"
       }
     }
   }

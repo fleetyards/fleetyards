@@ -560,6 +560,24 @@
       },
       "supporterNomination": {
         "change": "Change fleet"
+      },
+      "vehicleOverview": {
+        "open": "Overview",
+        "uploadPicture": "Upload a picture",
+        "changePicture": "Change picture",
+        "edit": "Edit ship",
+        "shipDatabase": "Ship database",
+        "openLog": "Open the log",
+        "applyPaint": "Apply %{paint}",
+        "choosePaint": "Choose paint",
+        "editLocation": "Change location",
+        "allPaints": "All %{count} paints",
+        "fullscreenHolo": "Full screen"
+      },
+      "vehicleLog": {
+        "open": "Captain's Log",
+        "add": "New entry",
+        "showPublic": "Captain's Log"
       }
     }
   }

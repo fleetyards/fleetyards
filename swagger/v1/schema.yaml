@@ -16895,6 +16895,54 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{vehicle_id}/log-entries":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: vehicle_id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Vehicle id
+      required: true
+    get:
+      summary: Public Vehicle Log Entries
+      tags:
+      - PublicVehicleLogEntries
+      operationId: publicVehicleLogEntries
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLogEntriesPublicList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/users/{username}":
     parameters:
     - name: username
@@ -18962,6 +19010,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -18974,8 +19028,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/{id}/move":
     parameters:
     - name: id
@@ -19692,6 +19744,257 @@ paths:
                 "$ref": "#/components/schemas/VehicleLoadout"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/log-entries":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Vehicle Log Entry
+      tags:
+      - VehicleLogEntries
+      operationId: createVehicleLogEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLogEntryCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLogEntry"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List Vehicle Log Entries
+      tags:
+      - VehicleLogEntries
+      operationId: vehicleLogEntries
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLogEntriesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/log-entries/{id}":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Log entry id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Vehicle Log Entry
+      tags:
+      - VehicleLogEntries
+      operationId: destroyVehicleLogEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLogEntry"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Vehicle Log Entry
+      tags:
+      - VehicleLogEntries
+      operationId: updateVehicleLogEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLogEntryUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLogEntry"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/paints":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    get:
+      summary: List Vehicle Paints
+      tags:
+      - VehiclePaints
+      operationId: vehiclePaints
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehiclePaintsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -23404,6 +23707,7 @@ components:
       - push_notifications
       - ship_inventories
       - trade_routes
+      - vehicle_overview
       x-enumNames:
       - FLEET_CONTRACTS
       - FLEET_DIRECTORY
@@ -23424,6 +23728,7 @@ components:
       - PUSH_NOTIFICATIONS
       - SHIP_INVENTORIES
       - TRADE_ROUTES
+      - VEHICLE_OVERVIEW
       title: FeatureFlagName
     FeatureNamesList:
       type: array
@@ -39266,12 +39571,28 @@ components:
           type: boolean
         saleNotify:
           type: boolean
+        logEntriesPublicByDefault:
+          type: boolean
+        location:
+          type:
+          - string
+          - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
+        fleets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleFleet"
         createdAt:
           type: string
           format: date-time
@@ -39289,6 +39610,7 @@ components:
       - public
       - nameVisible
       - saleNotify
+      - logEntriesPublicByDefault
       - alternativeNames
       - modelUpgradeIds
       - hangarGroupIds
@@ -39469,6 +39791,27 @@ components:
       items:
         "$ref": "#/components/schemas/VehicleExport"
       title: VehicleExportsList
+    VehicleFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      title: VehicleFleet
     VehicleLoadout:
       type: object
       properties:
@@ -39542,6 +39885,107 @@ components:
       items:
         "$ref": "#/components/schemas/VehicleLoadout"
       title: VehicleLoadoutsList
+    VehicleLogEntriesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehicleLogEntry"
+      title: VehicleLogEntriesList
+    VehicleLogEntriesPublicList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehicleLogEntryPublic"
+      title: VehicleLogEntriesPublicList
+    VehicleLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        loggedAt:
+          type: string
+          format: date-time
+        public:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - body
+      - loggedAt
+      - public
+      - createdAt
+      - updatedAt
+      title: VehicleLogEntry
+    VehicleLogEntryCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        loggedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        public:
+          type: boolean
+      additionalProperties: false
+      required:
+      - title
+      title: VehicleLogEntryCreateInput
+    VehicleLogEntryPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        loggedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - body
+      - loggedAt
+      title: VehicleLogEntryPublic
+    VehicleLogEntryUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        loggedAt:
+          type: string
+          format: date-time
+        public:
+          type: boolean
+      additionalProperties: false
+      title: VehicleLogEntryUpdateInput
     VehicleMoveInput:
       type: object
       properties:
@@ -39556,6 +40000,26 @@ components:
       description: Exactly one of afterId and beforeId
       additionalProperties: false
       title: VehicleMoveInput
+    VehiclePaint:
+      type: object
+      properties:
+        owned:
+          type: boolean
+        applied:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+      additionalProperties: false
+      required:
+      - owned
+      - applied
+      - paint
+      title: VehiclePaint
+    VehiclePaintsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehiclePaint"
+      title: VehiclePaintsList
     VehiclePublic:
       type: object
       properties:
@@ -39579,6 +40043,8 @@ components:
             "$ref": "#/components/schemas/HangarGroupPublic"
         loaner:
           type: boolean
+        publicLogEntriesCount:
+          type: integer
         bundled:
           type: boolean
         bundledParent:
@@ -39614,6 +40080,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         paint:
           "$ref": "#/components/schemas/ModelPaint"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
@@ -39628,6 +40096,7 @@ components:
       - model
       - loaner
       - bundled
+      - publicLogEntriesCount
       - modelUpgradeIds
       - hangarGroupIds
       - hangarGroups
@@ -39762,6 +40231,21 @@ components:
           type: boolean
         saleNotify:
           type: boolean
+        logEntriesPublicByDefault:
+          type: boolean
+        location:
+          type:
+          - string
+          - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        image:
+          type:
+          - string
+          - 'null'
         flagship:
           type: boolean
         modelPaintId:

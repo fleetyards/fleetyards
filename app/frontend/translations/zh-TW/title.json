@@ -51,7 +51,9 @@
         "flair": "機庫裝飾",
         "equipment": "FPS 裝備",
         "imports": "匯入記錄",
-        "transfers": "轉移"
+        "transfers": "轉移",
+        "vehicleOverview": "艦船概覽",
+        "vehicleLog": "艦長日誌"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",

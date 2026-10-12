@@ -6,6 +6,7 @@ import { useNavStore } from "@/shared/stores/nav";
 import { useFleetStore } from "./fleet";
 import { useHangarStore } from "./hangar";
 import { useModelsStore } from "./models";
+import { useVehicleViewStore } from "./vehicleView";
 import { usePublicFleetStore } from "./publicFleet";
 import { usePublicHangarStore } from "./publicHangar";
 import { usePublicWishlistStore } from "./publicWishlist";
@@ -42,6 +43,7 @@ export const useAppStore = defineStore("app", {
       const hangarStore = useHangarStore();
       const publicHangarStore = usePublicHangarStore();
       const modelsStore = useModelsStore();
+      const vehicleViewStore = useVehicleViewStore();
       const wishlistStore = useWishlistStore();
       const publicWishlistStore = usePublicWishlistStore();
       const filtersStore = useFiltersStore();
@@ -62,6 +64,7 @@ export const useAppStore = defineStore("app", {
       hangarStore.$reset();
       publicHangarStore.$reset();
       modelsStore.$reset();
+      vehicleViewStore.$reset();
       wishlistStore.$reset();
       publicWishlistStore.$reset();
       filtersStore.$reset();

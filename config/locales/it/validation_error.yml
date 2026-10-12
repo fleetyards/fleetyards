@@ -35,6 +35,10 @@ it:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
       update: Loadout could not be updated.
+    vehicle_log_entry:
+      create: Impossibile creare la voce del diario di bordo.
+      destroy: Impossibile rimuovere la voce del diario di bordo.
+      update: Impossibile aggiornare la voce del diario di bordo.
     fleet:
       create: Impossibile creare la flotta.
       destroy: Impossibile eliminare la flotta.

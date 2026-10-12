@@ -1,6 +1,16 @@
 {
   "en": {
     "headlines": {
+      "vehicleOverview": {
+        "paints": "%{model} paints",
+        "location": "Where is the ship?",
+        "picture": "Ship picture"
+      },
+      "vehicleLog": {
+        "create": "New log entry",
+        "edit": "Edit log entry",
+        "public": "Captain's Log: %{vehicle}"
+      },
       "hangarShare": "Share link",
       "locations": {
         "index": "Locations",

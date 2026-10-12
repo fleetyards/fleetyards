@@ -16,6 +16,7 @@ module V1
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             hangarGroups: {type: :array, items: ::V1::Schemas::Hangar::Groups::HangarGroupPublic},
             loaner: {type: :boolean},
+            publicLogEntriesCount: {type: :integer},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,
             model: {"$ref": "#/components/schemas/Model"},
@@ -31,13 +32,14 @@ module V1
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             paint: {"$ref": "#/components/schemas/ModelPaint"},
+            image: ::Shared::V1::Schemas::MediaFile,
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[
-            id model loaner bundled modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
+            id model loaner bundled publicLogEntriesCount modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
             createdAt updatedAt
           ]
         })

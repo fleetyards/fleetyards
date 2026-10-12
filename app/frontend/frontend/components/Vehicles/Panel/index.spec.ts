@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
 
 // The card carries a store image, and jsdom has no IntersectionObserver for
@@ -16,6 +17,14 @@ beforeEach(() => {
     },
   );
 });
+
+const vehicleOverviewEnabled = ref(false);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: () => vehicleOverviewEnabled.value,
+  }),
+}));
 
 const NOW = "2026-08-24T12:00:00Z";
 
@@ -35,6 +44,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     nameVisible: false,
     public: false,
     saleNotify: false,
+    logEntriesPublicByDefault: false,
     model: {
       id: "model-1",
       name: "Odyssey",
@@ -77,6 +87,27 @@ const router = createRouter({
       name: "ship",
       component: { template: "<div />" },
     },
+    // An editable panel carries the ship's menu, which links to every tab.
+    {
+      path: "/hangar/:id/overview",
+      name: "hangar-vehicle-overview",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/log",
+      name: "hangar-vehicle-log",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/loadouts",
+      name: "hangar-vehicle-loadouts",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/cargo",
+      name: "hangar-vehicle-cargo",
+      component: { template: "<div />" },
+    },
   ],
 });
 
@@ -84,6 +115,8 @@ const mount = async (props: {
   vehicle: Vehicle;
   highlight?: boolean;
   sortable?: boolean;
+  publicLogUsername?: string;
+  editable?: boolean;
 }) => {
   await router.push({ name: "hangar" });
   await router.isReady();
@@ -95,6 +128,92 @@ const mount = async (props: {
 };
 
 describe("VehiclesPanel", () => {
+  beforeEach(() => {
+    vehicleOverviewEnabled.value = false;
+  });
+
+  const titleHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+    wrapper.find('[data-test="vehicle-panel-title"]').attributes("href");
+
+  it("opens the owner's ship on its overview once there is one", async () => {
+    vehicleOverviewEnabled.value = true;
+
+    const wrapper = await mount({
+      vehicle: vehicle({ serial: "IC-021" }),
+      editable: true,
+    });
+
+    expect(titleHref(wrapper)).toContain("/hangar/IC-021/overview");
+  });
+
+  it("opens the model while the overview is not rolled out", async () => {
+    const wrapper = await mount({ vehicle: vehicle(), editable: true });
+
+    expect(titleHref(wrapper)).toContain("/ships/odyssey");
+  });
+
+  it("opens the model for someone else's ship", async () => {
+    vehicleOverviewEnabled.value = true;
+
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(titleHref(wrapper)).toContain("/ships/odyssey");
+  });
+
+  const withPicture = () =>
+    vehicle({
+      image: {
+        name: "ship.jpg",
+        contentType: "image/jpeg",
+        size: 1024,
+        url: "https://example.test/own.jpg",
+        mediumUrl: "https://example.test/own.webp",
+      },
+      paint: {
+        id: "paint-1",
+        name: "Ghoulish Green",
+        slug: "ghoulish-green",
+        media: {
+          storeImage: {
+            name: "paint",
+            mediumUrl: "https://example.test/paint.webp",
+          },
+        },
+      } as Vehicle["paint"],
+    });
+
+  it("draws the owner's picture before the paint's render", async () => {
+    const wrapper = await mount({ vehicle: withPicture() });
+
+    expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
+      "https://example.test/own.webp",
+    );
+  });
+
+  it("offers the public log only for a ship with shared entries", async () => {
+    const shared = await mount({
+      vehicle: { ...vehicle(), publicLogEntriesCount: 2 } as Vehicle,
+      publicLogUsername: "captain",
+    });
+    const empty = await mount({
+      vehicle: { ...vehicle(), publicLogEntriesCount: 0 } as Vehicle,
+      publicLogUsername: "captain",
+    });
+
+    expect(shared.find('[data-test="vehicle-public-log"]').exists()).toBe(true);
+    expect(empty.find('[data-test="vehicle-public-log"]').exists()).toBe(false);
+  });
+
+  it("draws the paint's render when the owner set no picture", async () => {
+    const wrapper = await mount({
+      vehicle: { ...withPicture(), image: undefined },
+    });
+
+    expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
+      "https://example.test/paint.webp",
+    );
+  });
+
   it("leaves an ordinary ship untoned", async () => {
     const wrapper = await mount({ vehicle: vehicle() });
 

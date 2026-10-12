@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "要從合約中移除這些貨物嗎？"
           }
+        },
+        "vehicleLog": {
+          "destroy": "確定要刪除這則日誌條目嗎？"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,37 @@
         "remove": {
           "success": "已移除",
           "failure": "無法移除"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "圖片已儲存",
+          "failure": "無法儲存圖片"
+        },
+        "paint": {
+          "failure": "無法套用塗裝"
+        },
+        "setting": {
+          "failure": "無法儲存設定"
+        },
+        "location": {
+          "failure": "無法儲存位置"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "日誌條目已新增",
+          "failure": "無法新增日誌條目"
+        },
+        "update": {
+          "success": "日誌條目已儲存",
+          "failure": "無法儲存日誌條目"
+        },
+        "destroy": {
+          "failure": "無法刪除日誌條目"
+        },
+        "defaultUpdate": {
+          "failure": "無法儲存設定"
         }
       }
     }

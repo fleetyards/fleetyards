@@ -30,15 +30,22 @@ module V1
             paint: {"$ref": "#/components/schemas/ModelPaint"},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
+            logEntriesPublicByDefault: {type: :boolean},
+            location: {type: [:string, :null]},
+            linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
+            image: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
+            # Only the single-vehicle endpoint sends these: the fleets the ship
+            # is listed in, as far as its owner is still a member.
+            fleets: {type: :array, items: ::V1::Schemas::Vehicles::VehicleFleet},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
           required: %w[
-            id model wanted loaner bundled flagship public nameVisible saleNotify alternativeNames
+            id model wanted loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
             modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
           ]
         })

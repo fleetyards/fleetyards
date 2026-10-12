@@ -7,6 +7,8 @@ class Vehicle < ApplicationRecord
   # `name` and `serial` are whatever the owner typed, and a user's vehicles are
   # destroyed along with the account.
   include ErasableVersionsConcern
+  include ActiveStorageVariants
+  include LinkedLocations
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -77,6 +79,18 @@ class Vehicle < ApplicationRecord
 
   has_many :vehicle_loadouts, dependent: :destroy
 
+  # Removed by the foreign key's cascade, which also covers the bulk delete.
+  has_many :log_entries, class_name: "VehicleLogEntry", dependent: nil
+  has_many :public_log_entries, -> { public_entries }, class_name: "VehicleLogEntry"
+
+  has_one_attached :image
+
+  # Where the owner left the ship. Only ever shown to the owner: a public
+  # hangar saying where a ship is parked is an invitation.
+  links_location :location
+  validates :linked_location, presence: true, if: :location_id?
+  validates :image, no_vector_image: true
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy
@@ -98,7 +112,9 @@ class Vehicle < ApplicationRecord
       :task_forces, :hangar_groups, :module_package, :vehicle_loadouts,
       {model: Model.rendered_associations},
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
-      {parent_vehicle: :model}
+      {parent_vehicle: :model},
+      {image_attachment: :blob},
+      :linked_location
     ]
   end
 
@@ -223,6 +239,17 @@ class Vehicle < ApplicationRecord
   # Wraps itself rather than leaving it to the caller: it is a dozen statements
   # that only make sense together, and a caller already inside a transaction
   # joins this one rather than opening a second.
+  UUID_FORMAT = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
+
+  # A vehicle's pages are addressed by id or by serial. A serial may look like
+  # an id, so an id that names no vehicle in scope is tried as a serial too.
+  def self.find_by_id_or_serial!(identifier)
+    identifier = identifier.to_s
+    vehicle = find_by(id: identifier) if identifier.match?(UUID_FORMAT)
+
+    vehicle || find_by!(serial: identifier.upcase)
+  end
+
   def self.delete_with_dependents(vehicle_ids)
     return 0 if vehicle_ids.blank?
 
@@ -236,6 +263,8 @@ class Vehicle < ApplicationRecord
       erase_versions("VehicleLoadout", loadout_ids)
       VehicleLoadout.where(id: loadout_ids).delete_all
 
+      delete_images(vehicle_ids)
+
       VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
       VehicleModule.where(vehicle_id: vehicle_ids).delete_all
       TaskForce.where(vehicle_id: vehicle_ids).delete_all
@@ -248,6 +277,21 @@ class Vehicle < ApplicationRecord
       revisit_loaner_visibility(loaner_groups)
 
       deleted
+    end
+  end
+
+  # `Attachment#purge_later` touches its record, which would load every vehicle
+  # being deleted and run the broadcasts this path exists to skip. The rows go
+  # now and the files once nothing can roll the delete back.
+  private_class_method def self.delete_images(vehicle_ids)
+    attachments = ActiveStorage::Attachment.where(record_type: name, name: "image", record_id: vehicle_ids)
+    blob_ids = attachments.pluck(:blob_id)
+    return if blob_ids.empty?
+
+    attachments.delete_all
+
+    ActiveRecord.after_all_transactions_commit do
+      ActiveStorage::Blob.where(id: blob_ids).find_each(&:purge_later)
     end
   end
 

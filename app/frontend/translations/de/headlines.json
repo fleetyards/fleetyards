@@ -1,6 +1,16 @@
 {
   "de": {
     "headlines": {
+      "vehicleOverview": {
+        "paints": "%{model}-Lackierungen",
+        "location": "Wo steht das Schiff?",
+        "picture": "Schiffsbild"
+      },
+      "vehicleLog": {
+        "create": "Neuer Logbucheintrag",
+        "edit": "Logbucheintrag bearbeiten",
+        "public": "Logbuch: %{vehicle}"
+      },
       "hangarShare": "Freigabelink",
       "locations": {
         "index": "Orte",

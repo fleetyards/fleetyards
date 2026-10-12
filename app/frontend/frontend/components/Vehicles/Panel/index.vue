@@ -12,12 +12,15 @@ import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import {
+  FeatureFlagName,
   type Vehicle,
   type VehiclePublic,
   type Manufacturer,
 } from "@/services/fyApi";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
@@ -31,6 +34,10 @@ type Props = {
   // Draws the grip the grid drags by. The card stays a link: a whole card that
   // is also a drag target cannot be clicked without moving it a little first.
   sortable?: boolean;
+  // The public hangar's owner, which offers the ship's public log. The vehicle
+  // payload names its owner only when the owner allows it, so the page passes
+  // the name it was opened with.
+  publicLogUsername?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,13 +47,39 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: false,
   loanersHintVisible: false,
   sortable: false,
+  publicLogUsername: undefined,
 });
 
 const emit = defineEmits<{ move: [offset: number] }>();
 
 const { t } = useI18n();
 
+// Only a ship with something shared gets the button; the count is already in
+// the payload, so empty logs cost no request.
+const publicLogVisible = computed(
+  () =>
+    !!props.publicLogUsername &&
+    !!(props.vehicle as VehiclePublic).publicLogEntriesCount,
+);
+
+const openPublicLog = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/PublicLogModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+      username: props.publicLogUsername,
+    },
+  });
+};
+
+// A picture the owner uploaded comes before every stock render, the paint's
+// included.
 const image = computed(() => {
+  if (props.vehicle.image) {
+    return props.vehicle.image.mediumUrl || props.vehicle.image.url;
+  }
+
   if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {
     return props.vehicle.paint.media.storeImage.mediumUrl;
   }
@@ -63,6 +96,27 @@ const image = computed(() => {
 });
 
 const modelName = computed(() => model.value?.name);
+
+const { isFeatureEnabled } = useFeatures();
+
+// The owner's own ship opens on its overview once there is one; anyone else's,
+// and a loaner, which has no page of its own to edit, still opens the model.
+const titleRoute = computed(() => {
+  if (
+    props.editable &&
+    !props.vehicle.loaner &&
+    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
+  ) {
+    const vehicle = props.vehicle as Vehicle;
+
+    return {
+      name: "hangar-vehicle-overview",
+      params: { id: vehicle.serial || vehicle.id },
+    };
+  }
+
+  return { name: "ship", params: { slug: props.vehicle.model.slug } };
+});
 
 const model = computed(() => props.vehicle.model);
 
@@ -175,13 +229,9 @@ const tone = computed(() => {
       <span class="flex items-baseline gap-1 max-w-full">
         <router-link
           v-tooltip="name"
-          :to="{
-            name: 'ship',
-            params: {
-              slug: model.slug,
-            },
-          }"
+          :to="titleRoute"
           class="truncate"
+          data-test="vehicle-panel-title"
         >
           <span>{{ name }}</span>
         </router-link>
@@ -251,8 +301,19 @@ const tone = computed(() => {
         data-tour="vehicle-menu"
       />
 
+      <Btn
+        v-if="publicLogVisible"
+        v-tooltip="t('actions.vehicleLog.showPublic')"
+        :variant="BtnVariantsEnum.BARE"
+        :aria-label="t('actions.vehicleLog.showPublic')"
+        class="vehicle-panel--public-log-button"
+        data-test="vehicle-public-log"
+        @click="openPublicLog"
+      >
+        <i class="fa-duotone fa-book" />
+      </Btn>
       <AddToHangar
-        v-else-if="!editable"
+        v-if="!editable"
         :model="model"
         class="vehicle-panel--add-to-hangar-button"
         variant="panel"

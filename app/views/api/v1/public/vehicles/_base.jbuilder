@@ -11,6 +11,7 @@ if vehicle.name_visible?
   json.serial vehicle.serial
 end
 json.loaner vehicle.loaner
+json.public_log_entries_count vehicle.public_log_entries_count
 json.model do
   json.partial! "api/v1/models/model", model: vehicle.model if vehicle.model.present?
 end
@@ -36,6 +37,12 @@ end
 if vehicle.module_package.present?
   json.module_package do
     json.partial! "api/v1/model_module_packages/base", module_package: vehicle.module_package if vehicle.module_package.present?
+  end
+end
+
+if vehicle.image.attached?
+  json.image do
+    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
   end
 end
 

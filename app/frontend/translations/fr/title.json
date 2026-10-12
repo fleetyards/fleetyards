@@ -51,7 +51,9 @@
         "flair": "Décorations de hangar",
         "equipment": "Équipement FPS",
         "imports": "Imports",
-        "transfers": "Transferts"
+        "transfers": "Transferts",
+        "vehicleOverview": "Aperçu du vaisseau",
+        "vehicleLog": "Journal de bord"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",

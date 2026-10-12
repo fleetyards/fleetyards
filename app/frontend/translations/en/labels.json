@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
-        "activate": "Set Active",
-        "planOn": "Plan your loadout on"
+        "activate": "Set Active"
       },
       "model": {
         "hidden": "Hidden?",
@@ -4145,6 +4144,56 @@
       },
       "tour": {
         "step": "Step %{current} of %{total}"
+      },
+      "vehicleOverview": {
+        "picture": "Picture",
+        "pictureInfo": "Shown instead of the stock render, also in your public hangar and in fleets you share this ship with.",
+        "ownPicture": "Your picture",
+        "serial": "Serial %{serial}",
+        "since": "In hangar since %{date}",
+        "logSummary": "%{count} entries · %{public} public",
+        "cargoFill": "%{stowed} of %{capacity} SCU stowed",
+        "cargoStowed": "%{stowed} SCU stowed",
+        "cargoMeter": "Hold fill",
+        "configuration": "Configuration",
+        "noPaint": "Standard livery",
+        "ownedPaints": "Your paints",
+        "availablePaints": "Paints",
+        "paintApplied": "%{paint}, applied",
+        "visibility": "Visibility",
+        "showPublic": "Show in my public hangar",
+        "showName": "Show the name",
+        "fleets": "Serving with",
+        "status": "Status",
+        "searchPaints": "Search paints",
+        "location": "Location",
+        "noLocation": "Not set",
+        "noGroups": "No groups",
+        "planLoadout": "Plan a loadout"
+      },
+      "vehicleLog": {
+        "entries": "log entries",
+        "title": "Title",
+        "loggedAt": "Date",
+        "loggedAtPlaceholder": "Now",
+        "body": "Entry",
+        "public": "Show in my public hangar",
+        "publicShort": "Public",
+        "publicByDefault": "New entries are public",
+        "filters": {
+          "all": "All",
+          "public": "Public",
+          "private": "Private"
+        },
+        "entryCount": {
+          "one": "%{count} entry",
+          "other": "%{count} entries"
+        },
+        "privateShort": "Private",
+        "stats": "The log",
+        "statsEntries": "Entries",
+        "statsPublic": "Public",
+        "statsSince": "Since"
       }
     }
   }

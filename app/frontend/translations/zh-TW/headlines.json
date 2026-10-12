@@ -1,6 +1,16 @@
 {
   "zh-TW": {
     "headlines": {
+      "vehicleOverview": {
+        "paints": "%{model} 塗裝",
+        "location": "艦船在哪裡？",
+        "picture": "艦船圖片"
+      },
+      "vehicleLog": {
+        "create": "新日誌條目",
+        "edit": "編輯日誌條目",
+        "public": "艦長日誌：%{vehicle}"
+      },
       "hangarShare": "分享連結",
       "locations": {
         "index": "地點",

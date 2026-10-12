@@ -51,7 +51,9 @@
         "flair": "Hangar-Flair",
         "equipment": "FPS-Ausrüstung",
         "imports": "Importe",
-        "transfers": "Transfers"
+        "transfers": "Transfers",
+        "vehicleOverview": "Schiffsübersicht",
+        "vehicleLog": "Logbuch"
       },
       "requestPassword": "Passwort anfordern",
       "changePassword": "Passwort ändern",

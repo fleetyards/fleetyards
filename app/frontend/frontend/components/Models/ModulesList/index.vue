@@ -5,8 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Heading from "@/shared/components/base/Heading/index.vue";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
+import ModelSection from "@/frontend/components/Models/Section/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModulePanel from "@/frontend/components/Modules/Panel/index.vue";
@@ -17,6 +17,7 @@ import {
 
 type Props = {
   modelSlug: string;
+  modelName: string;
   modules?: ModelModule[];
 };
 
@@ -36,25 +37,37 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error>
-    <template v-if="modules.length" #resolved>
-      <hr />
-      <div id="modules" class="row">
-        <div class="col-12">
-          <Heading :level="HeadingLevelEnum.H2" hero>
-            {{ t(`labels.model.modules`) }}
-          </Heading>
-          <transition-group name="fade-list" class="row" tag="div" appear>
-            <div
-              v-for="item in modules"
-              :key="`modules-${item.id}`"
-              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-            >
-              <ModulePanel :module="item" />
-            </div>
-          </transition-group>
-        </div>
-      </div>
-    </template>
-  </AsyncData>
+  <!-- Always drawn, so the ship page's sections stand in the same place for
+       every ship and a link to one has an anchor to land on before the
+       request is back. -->
+  <ModelSection
+    anchor="modules"
+    :model-slug="modelSlug"
+    :title="t('labels.model.modules')"
+  >
+    <AsyncData :async-status="asyncStatus" hide-error>
+      <template #resolved>
+        <transition-group
+          v-if="modules.length"
+          name="fade-list"
+          class="row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="item in modules"
+            :key="`modules-${item.id}`"
+            class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+          >
+            <ModulePanel :module="item" />
+          </div>
+        </transition-group>
+        <SectionEmpty
+          v-else
+          :model-name="modelName"
+          :section="t('labels.model.modules')"
+        />
+      </template>
+    </AsyncData>
+  </ModelSection>
 </template>

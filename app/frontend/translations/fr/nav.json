@@ -27,7 +27,9 @@
         "flair": "Décorations de hangar",
         "equipment": "Équipement FPS",
         "imports": "Imports",
-        "transfers": "Transferts"
+        "transfers": "Transferts",
+        "vehicleOverview": "Aperçu",
+        "vehicleLog": "Journal de bord"
       },
       "login": "Connexion",
       "installApp": "Installer l'app",

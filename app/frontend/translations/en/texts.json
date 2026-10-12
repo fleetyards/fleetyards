@@ -332,6 +332,21 @@
       },
       "fleet": {
         "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used."
+      },
+      "vehicleLog": {
+        "visibility": "Public entries are shown with this ship in your public hangar.",
+        "visibilityHidden": "This ship is not listed in your public hangar, so none of its entries are shown there.",
+        "empty": "Write down what happened to this ship — only you can see an entry until you make it public.",
+        "publicEmpty": "This ship's captain has not shared any log entries yet.",
+        "noneForFilter": "No entries match this filter.",
+        "unavailable": "This log is not available right now."
+      },
+      "vehicleOverview": {
+        "noLoadouts": "No loadouts yet. Link one from Erkul or SPViewer.",
+        "locationPrivate": "Only you can see where your ship is."
+      },
+      "model": {
+        "sectionEmpty": "The %{model} does not have any %{section}."
       }
     }
   }

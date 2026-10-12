@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Heading from "@/shared/components/base/Heading/index.vue";
+import SectionEmpty from "@/frontend/components/Models/SectionEmpty/index.vue";
+import ModelSection from "@/frontend/components/Models/Section/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
@@ -22,6 +23,7 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
 type Props = {
   modelSlug: string;
+  modelName: string;
 };
 
 const props = defineProps<Props>();
@@ -52,36 +54,47 @@ const storeImage = (paint: ModelPaint) => {
 </script>
 
 <template>
-  <AsyncData :async-status="asyncStatus" hide-error>
-    <template #resolved>
-      <hr v-if="paints?.length" />
-      <div v-if="paints?.length" id="paints" class="row">
-        <div class="col-12">
-          <Heading v-if="paints?.length" :level="HeadingLevelEnum.H2" hero>
-            {{ t("labels.model.paints") }}
-          </Heading>
-
-          <transition-group name="fade-list" class="row" tag="div" appear>
-            <div
-              v-for="item in paints"
-              :key="`paints-${item.id}`"
-              class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
+  <!-- Always drawn, so the ship page's sections stand in the same place for
+       every ship and a link to one has an anchor to land on before the
+       request is back. -->
+  <ModelSection
+    anchor="paints"
+    :model-slug="modelSlug"
+    :title="t('labels.model.paints')"
+  >
+    <AsyncData :async-status="asyncStatus" hide-error>
+      <template #resolved>
+        <transition-group
+          v-if="paints?.length"
+          name="fade-list"
+          class="row"
+          tag="div"
+          appear
+        >
+          <div
+            v-for="item in paints"
+            :key="`paints-${item.id}`"
+            class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
+          >
+            <Panel
+              :bg-image="storeImage(item)"
+              :variant="PanelVariantsEnum.SLIM"
             >
-              <Panel
-                :bg-image="storeImage(item)"
-                :variant="PanelVariantsEnum.SLIM"
+              <PanelHeading
+                :shadow="PanelHeadingShadowEnum.TOP"
+                :level="HeadingLevelEnum.H3"
               >
-                <PanelHeading
-                  :shadow="PanelHeadingShadowEnum.TOP"
-                  :level="HeadingLevelEnum.H3"
-                >
-                  {{ item.name }}
-                </PanelHeading>
-              </Panel>
-            </div>
-          </transition-group>
-        </div>
-      </div>
-    </template>
-  </AsyncData>
+                {{ item.name }}
+              </PanelHeading>
+            </Panel>
+          </div>
+        </transition-group>
+        <SectionEmpty
+          v-else
+          :model-name="modelName"
+          :section="t('labels.model.paints')"
+        />
+      </template>
+    </AsyncData>
+  </ModelSection>
 </template>

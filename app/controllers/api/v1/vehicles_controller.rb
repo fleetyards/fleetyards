@@ -45,6 +45,10 @@ module Api
       end
 
       def show
+        @fleets = current_resource_owner.fleets
+          .where(id: @vehicle.fleet_vehicles.select(:fleet_id))
+          .with_attached_logo
+          .order(:name)
       end
 
       def update
@@ -140,20 +144,22 @@ module Api
       end
 
       private def find_vehicle(identifier)
-        if identifier.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-/i)
-          current_resource_owner.vehicles.find(identifier)
-        else
-          current_resource_owner.vehicles.find_by!(serial: identifier.upcase)
-        end
+        current_resource_owner.vehicles.find_by_id_or_serial!(identifier)
       end
 
       private def vehicle_params
         @vehicle_params ||= params.transform_keys(&:underscore)
           .permit(
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
-            :model_paint_id, :bought_via,
+            :model_paint_id, :bought_via, *vehicle_overview_params,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
           ).merge(user_id: current_resource_owner.id)
+      end
+
+      private def vehicle_overview_params
+        return [] unless feature_enabled?("vehicle_overview")
+
+        %i[image log_entries_public_by_default location location_id]
       end
 
       private def vehicle_move_params

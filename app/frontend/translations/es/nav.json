@@ -27,7 +27,9 @@
         "flair": "Decoración de hangar",
         "equipment": "Equipo FPS",
         "imports": "Importaciones",
-        "transfers": "Transferencias"
+        "transfers": "Transferencias",
+        "vehicleOverview": "Resumen",
+        "vehicleLog": "Cuaderno de bitácora"
       },
       "login": "Iniciar sesión",
       "installApp": "Instalar app",

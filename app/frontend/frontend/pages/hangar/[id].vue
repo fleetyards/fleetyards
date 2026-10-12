@@ -9,7 +9,8 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import { useShowVehicle } from "@/services/fyApi";
+import VehicleHero from "@/frontend/components/Vehicles/Hero/index.vue";
+import { FeatureFlagName, useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkFeatures } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -32,6 +33,16 @@ const tabs = computed(() =>
 );
 
 const route = useRoute();
+
+// The ship's header: the full one on the overview, the compact one on every
+// other tab, so the ship stays named while its loadouts or cargo are open.
+const heroVisible = computed(() =>
+  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
+
+// The full header belongs to the overview; the other tabs open on the compact
+// one, so their own content starts higher.
+const onOverview = computed(() => route.name === "hangar-vehicle-overview");
 
 const sessionStore = useSessionStore();
 
@@ -57,7 +68,7 @@ const crumbs = computed<Crumb[]>(() => [
     label: t("nav.hangar.index"),
   },
   {
-    to: { name: "hangar-vehicle-loadouts", params: { id: route.params.id } },
+    to: { name: "hangar-vehicle", params: { id: route.params.id } },
     label: vehicleName.value,
   },
 ]);
@@ -67,10 +78,16 @@ const crumbs = computed<Crumb[]>(() => [
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
+      <VehicleHero
+        v-if="vehicle && heroVisible"
+        :vehicle="vehicle"
+        :compact="!onOverview"
+      />
       <TabNavView
         v-if="vehicle"
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
+        :horizontal="heroVisible"
       >
         <template #content>
           <router-view :vehicle="vehicle" />

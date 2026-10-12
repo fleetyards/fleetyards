@@ -8,16 +8,15 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import VehiclePaintPicker from "@/frontend/components/Vehicles/PaintPicker/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  modelPaints as fetchModelPaints,
   useVehicleBoughtViaFilters as useVehicleBoughtViaFiltersQuery,
   type VehicleUpdateInput,
   type Vehicle,
-  type ModelPaint,
 } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
@@ -48,7 +47,7 @@ const { defineField, handleSubmit } = useForm({
 const [flagship, flagshipProps] = defineField("flagship");
 const [publicVisible, publicVisibleProps] = defineField("public");
 const [saleNotify, saleNotifyProps] = defineField("saleNotify");
-const [modelPaintId, modelPaintIdProps] = defineField("modelPaintId");
+const [modelPaintId] = defineField("modelPaintId");
 const [boughtVia, boughtViaProps] = defineField("boughtVia");
 
 const vehicleName = computed(() => {
@@ -112,17 +111,6 @@ const boughtViaOptions = computed(() => {
     (option) => option.value === "ingame",
   );
 });
-
-const paintsFilterQuery = () => {
-  return fetchModelPaints(props.vehicle?.model?.slug);
-};
-
-const paintsFilterFormatter = (paints: ModelPaint[]) => {
-  return paints.map((paint) => ({
-    label: paint.name,
-    value: paint.id,
-  }));
-};
 </script>
 
 <template>
@@ -142,6 +130,12 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
     </template>
 
     <form :id="`vehicle-edit-${vehicle.id}`" @submit.prevent="onSubmit">
+      <VehiclePaintPicker
+        v-if="vehicle?.model?.hasPaints"
+        v-model="modelPaintId"
+        :model-slug="vehicle.model.slug"
+        :default-image="vehicle.model.media.storeImage?.smallUrl"
+      />
       <div class="row">
         <div class="col-12 col-md-6">
           <FormToggle
@@ -150,23 +144,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             v-bind="flagshipProps"
             name="flagship"
             :label="t('labels.vehicle.flagship')"
-            :align-with-fields="!!vehicle?.model?.hasPaints"
           />
-        </div>
-        <div v-if="vehicle?.model?.hasPaints" class="col-12 col-md-6">
-          <div class="form-group">
-            <BaseSelect
-              :key="`paints-new-${vehicle.model?.id}`"
-              v-model="modelPaintId"
-              v-bind="modelPaintIdProps"
-              :label="t('labels.findModel')"
-              :query-fn="paintsFilterQuery"
-              :query-response-formatter="paintsFilterFormatter"
-              name="modelPaintId"
-              :big-icon="true"
-              :nullable="true"
-            />
-          </div>
         </div>
       </div>
       <!--

@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "¿Quitar estas mercancías del contrato?"
           }
+        },
+        "vehicleLog": {
+          "destroy": "¿Seguro que quieres eliminar esta entrada de bitácora?"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,37 @@
         "remove": {
           "success": "Eliminado",
           "failure": "No se ha podido eliminar"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "Imagen guardada",
+          "failure": "No se pudo guardar la imagen"
+        },
+        "paint": {
+          "failure": "No se pudo aplicar la pintura"
+        },
+        "setting": {
+          "failure": "No se pudo guardar el ajuste"
+        },
+        "location": {
+          "failure": "No se pudo guardar la ubicación"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "Entrada añadida",
+          "failure": "No se pudo añadir la entrada"
+        },
+        "update": {
+          "success": "Entrada guardada",
+          "failure": "No se pudo guardar la entrada"
+        },
+        "destroy": {
+          "failure": "No se pudo eliminar la entrada"
+        },
+        "defaultUpdate": {
+          "failure": "No se pudo guardar el ajuste"
         }
       }
     }

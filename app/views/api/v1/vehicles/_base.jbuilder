@@ -25,6 +25,9 @@ json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible
 json.sale_notify vehicle.sale_notify
+json.log_entries_public_by_default vehicle.log_entries_public_by_default
+json.location vehicle.location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: vehicle.linked_location
 json.alternative_names vehicle.alternative_names
 
 json.model do
@@ -53,6 +56,12 @@ json.module_package do
   json.partial! "api/v1/model_module_packages/base", module_package: vehicle.module_package if vehicle.module_package.present?
 end
 json.module_package nil if vehicle.module_package.blank?
+
+if vehicle.image.attached?
+  json.image do
+    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
+  end
+end
 
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do

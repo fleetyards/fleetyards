@@ -560,6 +560,24 @@
       },
       "supporterNomination": {
         "change": "Cambia flotta"
+      },
+      "vehicleOverview": {
+        "open": "Panoramica",
+        "uploadPicture": "Carica un'immagine",
+        "changePicture": "Cambia immagine",
+        "edit": "Modifica nave",
+        "shipDatabase": "Database delle navi",
+        "openLog": "Apri il diario",
+        "applyPaint": "Applica %{paint}",
+        "choosePaint": "Scegli verniciatura",
+        "editLocation": "Cambia posizione",
+        "allPaints": "Tutte le %{count} verniciature",
+        "fullscreenHolo": "Schermo intero"
+      },
+      "vehicleLog": {
+        "open": "Diario di bordo",
+        "add": "Nuova voce",
+        "showPublic": "Diario di bordo"
       }
     }
   }

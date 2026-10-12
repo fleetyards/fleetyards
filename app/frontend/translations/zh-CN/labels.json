@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
         "empty": "暂无配置。创建一个以开始使用。",
         "active": "使用中",
-        "activate": "设为使用中",
-        "planOn": "在此规划您的配置"
+        "activate": "设为使用中"
       },
       "model": {
         "hidden": "隐藏?",
@@ -4131,6 +4130,56 @@
       },
       "tour": {
         "step": "第 %{current} 步，共 %{total} 步"
+      },
+      "vehicleOverview": {
+        "picture": "图片",
+        "pictureInfo": "替代默认渲染图显示，在你的公开机库以及你共享此舰船的舰队中也会显示。",
+        "ownPicture": "你的图片",
+        "serial": "序列号 %{serial}",
+        "since": "自 %{date} 起在机库中",
+        "logSummary": "%{count} 条条目 · %{public} 条公开",
+        "cargoFill": "已装载 %{stowed} / %{capacity} SCU",
+        "cargoStowed": "已装载 %{stowed} SCU",
+        "cargoMeter": "货舱装载",
+        "configuration": "配置",
+        "noPaint": "标准涂装",
+        "ownedPaints": "你的涂装",
+        "availablePaints": "涂装",
+        "paintApplied": "%{paint}，已应用",
+        "visibility": "可见性",
+        "showPublic": "在我的公开机库中显示",
+        "showName": "显示名称",
+        "fleets": "服役于",
+        "status": "状态",
+        "searchPaints": "搜索涂装",
+        "location": "位置",
+        "noLocation": "未设置",
+        "noGroups": "无分组",
+        "planLoadout": "规划配装"
+      },
+      "vehicleLog": {
+        "entries": "日志条目",
+        "title": "标题",
+        "loggedAt": "日期",
+        "loggedAtPlaceholder": "现在",
+        "body": "内容",
+        "public": "在我的公开机库中显示",
+        "publicShort": "公开",
+        "publicByDefault": "新条目默认公开",
+        "filters": {
+          "all": "全部",
+          "public": "公开",
+          "private": "私密"
+        },
+        "entryCount": {
+          "one": "%{count} 条条目",
+          "other": "%{count} 条条目"
+        },
+        "privateShort": "私密",
+        "stats": "日志",
+        "statsEntries": "条目",
+        "statsPublic": "公开",
+        "statsSince": "始于"
       }
     }
   }

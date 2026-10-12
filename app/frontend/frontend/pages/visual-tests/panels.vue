@@ -187,6 +187,7 @@ const vehicle = computed<Vehicle | undefined>(() => {
     nameVisible: false,
     public: false,
     saleNotify: false,
+    logEntriesPublicByDefault: false,
     model: {
       ...model.value,
       onSale: vehiclePanelModelOnSale.value,

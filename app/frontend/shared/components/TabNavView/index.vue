@@ -25,6 +25,9 @@ type Props = {
   // Set when the nav slot holds AnchorItems, whose role="tab" items need a
   // tablist around them.
   tablist?: boolean;
+  // A strip above the content instead of the column beside it, for a page
+  // whose header already spans the full width.
+  horizontal?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   superAdmin: false,
   activeKey: undefined,
   badges: undefined,
+  horizontal: false,
 });
 
 const mobile = useMobile();
@@ -42,7 +46,7 @@ const tabsEl = ref<HTMLElement | null>(null);
 const route = useRoute();
 
 const scrollToActive = (smooth = true) => {
-  if (!mobile.value) return;
+  if (!mobile.value && !props.horizontal) return;
 
   const container = tabsEl.value;
   if (!container) return;
@@ -75,7 +79,30 @@ watch(
 </script>
 
 <template>
-  <div class="row">
+  <div v-if="props.horizontal" class="tab-nav-horizontal">
+    <ul
+      ref="tabsEl"
+      class="tabs tabs--horizontal"
+      :role="props.tablist ? 'tablist' : undefined"
+      :aria-orientation="props.tablist ? 'horizontal' : undefined"
+    >
+      <slot name="nav">
+        <TabNavViewItems
+          v-if="props.routes"
+          :routes="props.routes"
+          :links="props.links"
+          :authenticated="props.authenticated"
+          :resource-access="props.resourceAccess"
+          :super-admin="props.superAdmin"
+          :badges="props.badges"
+        />
+      </slot>
+    </ul>
+    <slot name="content">
+      <router-view />
+    </slot>
+  </div>
+  <div v-else class="row">
     <div class="col-12 col-md-9">
       <slot name="content">
         <router-view />

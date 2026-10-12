@@ -1,6 +1,16 @@
 {
   "it": {
     "headlines": {
+      "vehicleOverview": {
+        "paints": "Verniciature %{model}",
+        "location": "Dov'è la nave?",
+        "picture": "Immagine della nave"
+      },
+      "vehicleLog": {
+        "create": "Nuova voce del diario",
+        "edit": "Modifica voce del diario",
+        "public": "Diario di bordo: %{vehicle}"
+      },
       "hangarShare": "Link di condivisione",
       "locations": {
         "index": "Luoghi",

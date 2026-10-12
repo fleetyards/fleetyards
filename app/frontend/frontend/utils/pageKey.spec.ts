@@ -27,6 +27,24 @@ const router = createRouter({
       ],
     },
     {
+      path: "/hangar/:id/",
+      component,
+      children: [
+        {
+          path: "overview/",
+          name: "vehicle-overview",
+          component,
+          meta: { nav: "pageTabs" },
+        },
+        {
+          path: "log/",
+          name: "vehicle-log",
+          component,
+          meta: { nav: "pageTabs" },
+        },
+      ],
+    },
+    {
       path: "/fleets/:slug/",
       component,
       children: [
@@ -66,6 +84,11 @@ describe("pageKey", () => {
     expect(keyOf("/fleets/black-sun/squadrons/new/appearance/")).not.toBe(
       keyOf("/fleets/red-moon/squadrons/new/appearance/"),
     );
+  });
+
+  it("gives every tab of a tabbed page the same key", () => {
+    expect(keyOf("/hangar/IC-021/overview/")).toBe("/hangar/IC-021");
+    expect(keyOf("/hangar/IC-021/log/")).toBe("/hangar/IC-021");
   });
 
   it("keeps child pages that are not editor tabs apart", () => {

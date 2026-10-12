@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "要从合约中移除这些货物吗？"
           }
+        },
+        "vehicleLog": {
+          "destroy": "确定要删除这条日志条目吗？"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,37 @@
         "remove": {
           "success": "已移除",
           "failure": "无法移除"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "图片已保存",
+          "failure": "无法保存图片"
+        },
+        "paint": {
+          "failure": "无法应用涂装"
+        },
+        "setting": {
+          "failure": "无法保存设置"
+        },
+        "location": {
+          "failure": "无法保存位置"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "日志条目已添加",
+          "failure": "无法添加日志条目"
+        },
+        "update": {
+          "success": "日志条目已保存",
+          "failure": "无法保存日志条目"
+        },
+        "destroy": {
+          "failure": "无法删除日志条目"
+        },
+        "defaultUpdate": {
+          "failure": "无法保存设置"
         }
       }
     }

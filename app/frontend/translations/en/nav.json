@@ -27,7 +27,9 @@
         "flair": "Hangar Flair",
         "equipment": "FPS Gear",
         "imports": "Imports",
-        "transfers": "Transfers"
+        "transfers": "Transfers",
+        "vehicleOverview": "Overview",
+        "vehicleLog": "Captain's Log"
       },
       "login": "Login",
       "installApp": "Install app",

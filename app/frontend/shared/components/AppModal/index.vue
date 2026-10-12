@@ -64,7 +64,13 @@ const emit = defineEmits(["modal-opened", "modal-closed"]);
 
 const overlayStore = useOverlayStore();
 
+// Counts the opens, so a hide that finishes after the next modal opened leaves
+// that one alone: a page that opens a modal on arrival does so while the
+// route change is still closing the last one.
+let openCount = 0;
+
 const open = async (options: AppModalOptions) => {
+  openCount += 1;
   componentProps.value = options.props;
   wide.value = !!options.wide;
   fixed.value = !!options.fixed;
@@ -91,6 +97,22 @@ const open = async (options: AppModalOptions) => {
 
 const { t } = useI18n();
 
+// A modal belongs to the page it was opened on. Leaving the page -- a link
+// inside the modal, the browser's back button -- takes it along, without
+// asking: the page it was editing is gone either way. A query change stays on
+// the page, so it leaves the modal open.
+const route = useRoute();
+
+//
+// A modal the address asks for (`?modal=support`) belongs to the address
+// instead, and stays as long as the address keeps asking for it.
+watch(
+  () => route.path,
+  () => {
+    if (isShow.value && !route.query.modal) void internalHide();
+  },
+);
+
 const { displayConfirm } = useAppNotifications();
 
 const close = async (force = false) => {
@@ -114,12 +136,16 @@ const close = async (force = false) => {
 };
 
 const internalHide = async () => {
+  const closing = openCount;
+
   isOpen.value = false;
 
   overlayStore.hide();
 
   await nextTick(function onHide() {
     setTimeout(() => {
+      if (closing !== openCount) return;
+
       isShow.value = false;
       component.value = undefined;
       componentProps.value = {};

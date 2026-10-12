@@ -655,6 +655,9 @@
           "contractItem": {
             "destroy": "Remove these goods from the contract?"
           }
+        },
+        "vehicleLog": {
+          "destroy": "Do you really want to remove this log entry?"
         }
       },
       "oauthAuthorize": {
@@ -1226,6 +1229,37 @@
         "remove": {
           "success": "Removed",
           "failure": "Could not remove it"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "Picture saved",
+          "failure": "The picture could not be saved"
+        },
+        "paint": {
+          "failure": "The paint could not be applied"
+        },
+        "setting": {
+          "failure": "The setting could not be saved"
+        },
+        "location": {
+          "failure": "The location could not be saved"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "Log entry added",
+          "failure": "The log entry could not be added"
+        },
+        "update": {
+          "success": "Log entry saved",
+          "failure": "The log entry could not be saved"
+        },
+        "destroy": {
+          "failure": "The log entry could not be removed"
+        },
+        "defaultUpdate": {
+          "failure": "The setting could not be saved"
         }
       }
     }

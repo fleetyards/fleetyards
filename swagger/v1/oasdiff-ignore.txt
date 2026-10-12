@@ -2402,6 +2402,8 @@ POST /users/signup removed the required property `saleNotify` from the response 
 PUT /users/account removed the required property `saleNotify` from the response with the `200` status
 PUT /users/me removed the request property `saleNotify`
 PUT /users/me removed the required property `saleNotify` from the response with the `200` status
+PUT /vehicles/{id} removed the required property `details` from the response with the `400` status
+PUT /vehicles/{id} removed the required property `error` from the response with the `400` status
 GET /notification-preferences added the new `fleet_verification_requested` enum value to the `items/notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_verification_requested` enum value to the `notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_verification_requested` enum value to the `items/items/notificationType` response property for the response status `200`

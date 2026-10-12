@@ -6,6 +6,7 @@ import {
   useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
   useDestroyBulkVehicle as useDestroyBulkVehicleMutation,
   getHangarQueryKey,
+  getShowVehicleQueryKey,
   getWishlistQueryKey,
 } from "@/services/fyApi";
 import { type Hangar, type Vehicle } from "@/services/fyApi";
@@ -83,6 +84,8 @@ export const useVehicleMutations = () => {
           return { queryData, needsInvalidation };
         },
         onSuccess: (updatedVehicle, _variables, context) => {
+          void invalidateVehiclePage(updatedVehicle);
+
           if (context?.needsInvalidation) {
             void invalidateHangarQueries();
             return;
@@ -204,6 +207,20 @@ export const useVehicleMutations = () => {
     });
   };
 
+  // The vehicle page is addressed by id or by serial, so its query is cached
+  // under whichever of the two the link carried.
+  const invalidateVehiclePage = async (vehicle: Vehicle) => {
+    await Promise.all(
+      [vehicle.id, vehicle.serial]
+        .filter((identifier): identifier is string => !!identifier)
+        .map((identifier) =>
+          queryClient.invalidateQueries({
+            queryKey: getShowVehicleQueryKey(identifier),
+          }),
+        ),
+    );
+  };
+
   const invalidateHangarQueries = async () => {
     await Promise.all([
       queryClient.invalidateQueries({
@@ -238,5 +255,7 @@ export const useVehicleMutations = () => {
     useDestroyMutation,
     useUpdateBulkMutation,
     useDestroyBulkMutation,
+    invalidateVehiclePage,
+    invalidateHangarQueries,
   };
 };

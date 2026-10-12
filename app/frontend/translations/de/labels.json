@@ -1132,8 +1132,7 @@
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
         "active": "Aktiv",
-        "activate": "Als aktiv setzen",
-        "planOn": "Plane dein Loadout auf"
+        "activate": "Als aktiv setzen"
       },
       "model": {
         "hidden": "Versteckt?",
@@ -4131,6 +4130,56 @@
       },
       "tour": {
         "step": "Schritt %{current} von %{total}"
+      },
+      "vehicleOverview": {
+        "picture": "Bild",
+        "pictureInfo": "Wird anstelle des Standardbilds angezeigt, auch in deinem öffentlichen Hangar und in Flotten, mit denen du dieses Schiff teilst.",
+        "ownPicture": "Dein Bild",
+        "serial": "Seriennummer %{serial}",
+        "since": "Im Hangar seit %{date}",
+        "logSummary": "%{count} Einträge · %{public} öffentlich",
+        "cargoFill": "%{stowed} von %{capacity} SCU geladen",
+        "cargoStowed": "%{stowed} SCU geladen",
+        "cargoMeter": "Ladung",
+        "configuration": "Konfiguration",
+        "noPaint": "Standardlackierung",
+        "ownedPaints": "Deine Lackierungen",
+        "availablePaints": "Lackierungen",
+        "paintApplied": "%{paint}, aktiv",
+        "visibility": "Sichtbarkeit",
+        "showPublic": "In meinem öffentlichen Hangar zeigen",
+        "showName": "Namen zeigen",
+        "fleets": "Im Dienst bei",
+        "status": "Status",
+        "searchPaints": "Lackierungen durchsuchen",
+        "location": "Standort",
+        "noLocation": "Nicht gesetzt",
+        "noGroups": "Keine Gruppen",
+        "planLoadout": "Loadout planen"
+      },
+      "vehicleLog": {
+        "entries": "Logbucheinträge",
+        "title": "Titel",
+        "loggedAt": "Datum",
+        "loggedAtPlaceholder": "Jetzt",
+        "body": "Eintrag",
+        "public": "In meinem öffentlichen Hangar zeigen",
+        "publicShort": "Öffentlich",
+        "publicByDefault": "Neue Einträge sind öffentlich",
+        "filters": {
+          "all": "Alle",
+          "public": "Öffentlich",
+          "private": "Privat"
+        },
+        "entryCount": {
+          "one": "%{count} Eintrag",
+          "other": "%{count} Einträge"
+        },
+        "privateShort": "Privat",
+        "stats": "Das Logbuch",
+        "statsEntries": "Einträge",
+        "statsPublic": "Öffentlich",
+        "statsSince": "Seit"
       }
     }
   }

@@ -19,7 +19,7 @@ declare module "vue-router" {
      */
     activeTab?: string;
     access?: string[];
-    nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
+    nav?: "main" | "sub" | "footer" | "editTabs" | "pageTabs" | "hidden";
     mobileNav?: number;
     href?: string;
     feature?: FeatureFlagName | FeatureFlagName[];

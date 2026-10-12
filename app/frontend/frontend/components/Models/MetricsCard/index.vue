@@ -69,6 +69,10 @@ const isSlim = computed(() => props.variant === "slim");
     <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
       <slot />
     </PanelBody>
+
+    <template v-if="$slots.footer" #footer>
+      <slot name="footer" />
+    </template>
   </Panel>
 </template>
 

@@ -560,6 +560,24 @@
       },
       "supporterNomination": {
         "change": "Cambiar de flota"
+      },
+      "vehicleOverview": {
+        "open": "Resumen",
+        "uploadPicture": "Subir una imagen",
+        "changePicture": "Cambiar imagen",
+        "edit": "Editar nave",
+        "shipDatabase": "Base de datos de naves",
+        "openLog": "Abrir el cuaderno",
+        "applyPaint": "Aplicar %{paint}",
+        "choosePaint": "Elegir pintura",
+        "editLocation": "Cambiar ubicación",
+        "allPaints": "Las %{count} pinturas",
+        "fullscreenHolo": "Pantalla completa"
+      },
+      "vehicleLog": {
+        "open": "Cuaderno de bitácora",
+        "add": "Nueva entrada",
+        "showPublic": "Cuaderno de bitácora"
       }
     }
   }

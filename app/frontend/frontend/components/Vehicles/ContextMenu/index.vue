@@ -206,6 +206,20 @@ const openAddonsModal = () => {
   });
 };
 
+const vehicleOverviewVisible = computed(
+  () => props.editable && isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
+
+const overviewRoute = computed(() => ({
+  name: "hangar-vehicle-overview",
+  params: { id: props.vehicle.serial || props.vehicle.id },
+}));
+
+const logRoute = computed(() => ({
+  name: "hangar-vehicle-log",
+  params: { id: props.vehicle.serial || props.vehicle.id },
+}));
+
 const loadoutsRoute = computed(() => ({
   name: "hangar-vehicle-loadouts",
   params: { id: props.vehicle.serial || props.vehicle.id },
@@ -242,6 +256,24 @@ const cargoVisible = computed(
     >
       <i class="fa fa-pencil" />
       <span>{{ t("actions.edit") }}</span>
+    </Btn>
+    <Btn
+      v-if="vehicleOverviewVisible"
+      :aria-label="t('actions.vehicleOverview.open')"
+      data-test="vehicle-overview"
+      :to="overviewRoute"
+    >
+      <i class="fa-duotone fa-rocket-launch" />
+      <span>{{ t("actions.vehicleOverview.open") }}</span>
+    </Btn>
+    <Btn
+      v-if="vehicleOverviewVisible"
+      :aria-label="t('actions.vehicleLog.open')"
+      data-test="vehicle-log"
+      :to="logRoute"
+    >
+      <i class="fa-duotone fa-book" />
+      <span>{{ t("actions.vehicleLog.open") }}</span>
     </Btn>
     <Btn
       v-if="vehicle.model"

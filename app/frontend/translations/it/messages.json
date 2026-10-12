@@ -645,6 +645,9 @@
           "contractItem": {
             "destroy": "Rimuovere queste merci dal contratto?"
           }
+        },
+        "vehicleLog": {
+          "destroy": "Vuoi davvero rimuovere questa voce del diario?"
         }
       },
       "oauthAuthorize": {
@@ -1216,6 +1219,37 @@
         "remove": {
           "success": "Rimosso",
           "failure": "Impossibile rimuovere"
+        }
+      },
+      "vehicleOverview": {
+        "image": {
+          "success": "Immagine salvata",
+          "failure": "Impossibile salvare l'immagine"
+        },
+        "paint": {
+          "failure": "Impossibile applicare la verniciatura"
+        },
+        "setting": {
+          "failure": "Impossibile salvare l'impostazione"
+        },
+        "location": {
+          "failure": "Impossibile salvare la posizione"
+        }
+      },
+      "vehicleLog": {
+        "create": {
+          "success": "Voce aggiunta",
+          "failure": "Impossibile aggiungere la voce"
+        },
+        "update": {
+          "success": "Voce salvata",
+          "failure": "Impossibile salvare la voce"
+        },
+        "destroy": {
+          "failure": "Impossibile rimuovere la voce"
+        },
+        "defaultUpdate": {
+          "failure": "Impossibile salvare l'impostazione"
         }
       }
     }

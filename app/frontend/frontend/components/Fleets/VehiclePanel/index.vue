@@ -48,8 +48,13 @@ const id = computed(() => {
   return model.value.slug;
 });
 
+// Grouped rows are models and carry no `image`, so they keep the stock render.
 const storeImage = computed(() => {
   const vehicle = props.fleetVehicle as VehiclePublic;
+
+  if (vehicle.image) {
+    return vehicle.image.mediumUrl || vehicle.image.url;
+  }
 
   if (vehicle.paint?.media.storeImage) {
     return vehicle.paint.media.storeImage.mediumUrl;
