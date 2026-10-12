@@ -109,7 +109,6 @@ const panelTone = computed(() =>
           :data-test="`health-${check.key}-all`"
         >
           {{ moreLabel }}
-          <i class="fa-light fa-arrow-right" aria-hidden="true" />
         </router-link>
       </template>
     </Panel>
@@ -160,7 +159,6 @@ const panelTone = computed(() =>
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   min-height: 44px;
   padding: 0 16px;
   border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
