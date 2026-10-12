@@ -42,18 +42,23 @@ module HangarPledgeItems
     end
 
     # Older pledges run ship and paint together -- "2950 Invictus Constellation
-    # Blue and Gold". The importer's name map knows those, and the ship is any
-    # word of the model's series in the name.
+    # Blue and Gold", "Spirit Citizens for Prosperity Liberation". The
+    # importer's name map knows those; the ship is any word of the model's name
+    # in it, so "C1 Spirit" is found by "Spirit" though it starts with "C1".
     private def legacy_paint(name)
       mapped = PaintsImporter.paint_mapping(name.sub(PAINT_SUFFIX, "").strip)
       return if mapped == name
-      return unless normalize(name).include?(series_name)
+
+      pledge = normalize(name)
+      return unless model_words.any? { |word| pledge.include?(word) }
 
       normalize(mapped).presence
     end
 
-    private def series_name
-      @series_name ||= normalize(model.name.split.first)
+    # Words long enough to name a ship: a variant code ("C1", "M2", "Mk")
+    # would match far too much.
+    private def model_words
+      @model_words ||= model.name.split.map { |word| normalize(word) }.select { |word| word.length >= 4 }
     end
 
     # "Spirit" names the C1 Spirit as much as "C1 Spirit" does, so either name
