@@ -55,7 +55,8 @@
           "index": "Members",
           "invites": "Invites",
           "worldmap": "Mapa mundial",
-          "starmap": "Mapa estelar"
+          "starmap": "Mapa estelar",
+          "health": "Estado"
         },
         "squadrons": {
           "index": "Escuadrones",

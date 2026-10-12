@@ -65,7 +65,8 @@
           "index": "%{fleet} Members",
           "invites": "%{fleet} Invites",
           "worldmap": "%{fleet} Member Worldmap",
-          "starmap": "%{fleet} Member Starmap"
+          "starmap": "%{fleet} Member Starmap",
+          "health": "%{fleet} Member Health"
         },
         "squadrons": {
           "index": "%{fleet} Squadrons",

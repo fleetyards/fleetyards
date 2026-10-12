@@ -58,6 +58,20 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     refute membership_with(["fleet:squadrons:manage"]).capabilities[:enable_squadrons]
   end
 
+  # The health page is gated on reading and updating members, so the endpoint
+  # behind it must answer the same readers.
+  test "the member health check follows reading and updating members" do
+    [["fleet:memberships:read", "fleet:memberships:update"], ["fleet:memberships:update"], ["fleet:memberships:manage"], ["fleet:memberships:read"], []].each do |access|
+      membership = membership_with(access)
+      membership.update!(aasm_state: :accepted)
+      allowed = FleetMembershipPolicy.new(user: membership.user, fleet: @fleet).apply(:health?)
+
+      expected = membership.capabilities[:read_members] && membership.capabilities[:update_members]
+
+      assert_equal expected, allowed, "for #{access.inspect}"
+    end
+  end
+
   test "renaming roles follows FleetRolePolicy" do
     assert membership_with(["fleet:roles:update"]).capabilities[:update_roles]
     refute membership_with(["fleet:roles:read"]).capabilities[:update_roles]

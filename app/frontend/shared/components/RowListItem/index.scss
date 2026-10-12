@@ -1,4 +1,5 @@
 @import "@/stylesheets/variables.scss";
+@import "@/shared/components/rowLabel";
 
 // One row of `RowList`, shared by every catalogue tenant -- components,
 // blueprints, missions, commodities. The four used to be four hand-written
@@ -245,15 +246,8 @@
     }
   }
 
-  // The micro-label the metrics cards, their tiles and the hardpoint rows all
-  // share: Orbitron 10px at .16em. This was 9px at .14em, a scale nothing else
-  // in the app uses.
   &__badge-label {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-text-dim, #959595);
+    @include row-label;
   }
 
   &__badge-value {

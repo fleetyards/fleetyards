@@ -192,14 +192,12 @@
         },
         "commodities": {
           "index": "Commodities",
-          "new": "New Commodity",
           "edit": {
             "index": "Edit Commodity"
           }
         },
         "equipment": {
           "index": "Equipment",
-          "new": "New Equipment",
           "edit": {
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
@@ -281,7 +279,8 @@
         "members": {
           "index": "Members",
           "worldmap": "Member Worldmap",
-          "starmap": "Member Starmap"
+          "starmap": "Member Starmap",
+          "health": "Member Health"
         },
         "squadrons": {
           "index": "Squadrons",

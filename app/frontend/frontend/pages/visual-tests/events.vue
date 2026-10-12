@@ -14,9 +14,12 @@ import EventShipCard from "@/frontend/components/Fleets/Events/EventShipCard/ind
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import MissionPanel from "@/frontend/components/Fleets/Missions/MissionPanel/index.vue";
+import YourSignupPanel from "@/frontend/components/Fleets/Events/YourSignupPanel/index.vue";
+import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
 import {
   type Fleet,
   type FleetEvent,
+  type FleetEventExtended,
   type FleetEventShip,
   type FleetEventSignup,
   type FleetEventSlot,
@@ -291,6 +294,23 @@ const archivedMission: Mission = {
 };
 
 const CURRENT_USER = "user-ThalosVex";
+
+// Every signup status, since the badge colours only the two that commit.
+const ownSignups = Object.values(FleetEventSignupStatusEnum).map((status) =>
+  signup("ThalosVex", status, {
+    id: `own-${status}`,
+    notes:
+      status === FleetEventSignupStatusEnum.CONFIRMED
+        ? "Bringing my own medgun."
+        : undefined,
+  }),
+);
+
+const unassigned = [
+  signup("Kaelith", FleetEventSignupStatusEnum.CONFIRMED),
+  signup("Marrow", FleetEventSignupStatusEnum.TENTATIVE),
+  signup("Oskari", FleetEventSignupStatusEnum.INTERESTED),
+];
 </script>
 
 <template>
@@ -368,6 +388,34 @@ const CURRENT_USER = "user-ThalosVex";
       </div>
     </div>
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Your signup</Heading>
+  <p>
+    The status is a pill: confirmed and tentative take a colour, the states that
+    leave the seat open stay neutral.
+  </p>
+  <div class="row">
+    <div
+      v-for="entry in ownSignups"
+      :key="entry.id"
+      class="col-12 col-lg-6 vt-stack"
+    >
+      <YourSignupPanel
+        :signup="entry"
+        slot-title="Hull-C — Pilot"
+        context-label="Convoy"
+        :fleet-slug="fleet.slug"
+        :event-slug="openEvent.slug"
+      />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Unassigned signups</Heading>
+  <UnassignedSignups
+    :fleet="fleet"
+    :event="openEvent as FleetEventExtended"
+    :signups="unassigned"
+  />
 
   <Heading :level="HeadingLevelEnum.H2">Ship card</Heading>
   <p>
@@ -456,6 +504,10 @@ const CURRENT_USER = "user-ThalosVex";
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 20px;
+  margin-bottom: 20px;
+}
+
+.vt-stack {
   margin-bottom: 20px;
 }
 

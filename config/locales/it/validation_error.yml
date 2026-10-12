@@ -50,6 +50,7 @@ it:
       destroy: Impossibile rimuovere il membro della flotta.
       update: Impossibile aggiornare il membro della flotta.
       demote: Impossibile retrocedere il membro della flotta.
+      remind_verification: "Non è stato possibile inviare il promemoria di verifica."
     fleet_memberships:
       create: L'invito alla flotta non è stato utilizzato
       destroy: Impossibile lasciare la flotta.
@@ -58,6 +59,8 @@ it:
       demote_not_permitted: Non puoi degradare l'ultimo membro di un ruolo flotta
         permanente.
       update: Impossibile aggiornare l'iscrizione alla flotta.
+      nothing_to_verify: "Questo membro non ha più nulla da verificare con l'organizzazione RSI della flotta."
+      verification_recently_reminded: "Questo membro ha ricevuto un promemoria meno di una settimana fa."
     markdown_image:
       create: "Impossibile caricare l'immagine."
     hangar_group:
@@ -261,11 +264,9 @@ it:
     location:
       update: Impossibile aggiornare il luogo.
     commodity:
-      create: Impossibile creare il prodotto.
       destroy: Impossibile eliminare il prodotto.
       update: Impossibile aggiornare il prodotto.
     equipment:
-      create: Impossibile creare l'equipaggiamento.
       destroy: Impossibile eliminare l'equipaggiamento.
       update: Impossibile aggiornare l'equipaggiamento.
     fleet_event_admins:

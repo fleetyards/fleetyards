@@ -55,7 +55,8 @@
           "index": "Mitglieder",
           "invites": "Einladungen",
           "worldmap": "Weltkarte",
-          "starmap": "Sternenkarte"
+          "starmap": "Sternenkarte",
+          "health": "Zustand"
         },
         "squadrons": {
           "index": "Staffeln",

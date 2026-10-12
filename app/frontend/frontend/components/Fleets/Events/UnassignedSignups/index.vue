@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
@@ -67,7 +69,7 @@ const remove = (signup: FleetEventSignup) => {
     <header class="unassigned-signups__head">
       <i class="fa-light fa-people-arrows" />
       <span>{{ t("headlines.fleets.events.unassignedSignups") }}</span>
-      <span class="unassigned-signups__count">{{ signups.length }}</span>
+      <Pill :variant="PillVariantsEnum.WARNING">{{ signups.length }}</Pill>
     </header>
     <p class="text-muted small">
       {{ t("labels.fleets.events.unassignedSignupsHint") }}
@@ -131,19 +133,10 @@ const remove = (signup: FleetEventSignup) => {
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 
   i {
     color: var(--color-warning, #fa6800);
   }
-}
-.unassigned-signups__count {
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: var(--radius-control-bare, 6px);
-  background: var(--color-warning, #fa6800);
-  color: #000;
 }
 .unassigned-signups__list {
   list-style: none;

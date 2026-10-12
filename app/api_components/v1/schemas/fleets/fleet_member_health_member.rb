@@ -1,0 +1,38 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Fleets
+      # A member as a health check lists them: who they are and the facts the
+      # checks are about, without the roster's links and locations.
+      class FleetMemberHealthMember
+        include OpenapiRuby::Components::Base
+
+        schema({
+          type: :object,
+          properties: {
+            id: {type: :string, format: :uuid},
+            username: {type: :string},
+            nickname: {type: [:string, :null]},
+            avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
+            fleetRole: {anyOf: [::V1::Schemas::Fleets::FleetRole, {type: :null}]},
+            leader: {type: :boolean, description: "Holds a role ranked above the one new members get"},
+            admin: {type: :boolean, description: "Holds the fleet's permanent role, which cannot be removed"},
+            lastActiveAt: {type: [:string, :null], format: "date-time"},
+            acceptedAt: {type: [:string, :null], format: "date-time"},
+            requestedAt: {type: [:string, :null], format: "date-time"},
+            invitedAt: {type: [:string, :null], format: "date-time"},
+            invitedBy: {type: [:string, :null], description: "Username of whoever sent the invitation"},
+            rsiHandle: {type: [:string, :null]},
+            discordProfileUrl: {type: [:string, :null]},
+            verificationGap: ::V1::Schemas::Enums::NullableFleetMemberVerificationGapEnum,
+            rsiOrganizationsCheckedAt: {type: [:string, :null], format: "date-time"},
+            verificationRemindedAt: {type: [:string, :null], format: "date-time", description: "When the fleet last reminded the member to verify"}
+          },
+          required: %w[id username leader admin verificationGap],
+          additionalProperties: false
+        })
+      end
+    end
+  end
+end

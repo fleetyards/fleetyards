@@ -8,27 +8,6 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
   openapi_schema :"admin/v1/schema"
 
   api_path "/commodities" do
-    post("Create Commodity") do
-      operationId "createCommodity"
-      tags "Commodities"
-      consumes "application/json"
-      produces "application/json"
-
-      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::CommodityInput
-
-      response(200, "successful") do
-        schema ::Admin::V1::Schemas::Commodity
-      end
-
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-
-      response(401, "unauthorized") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-    end
-
     get("Commodities list") do
       operationId "commodities"
       tags "Commodities"
@@ -135,49 +114,6 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     @user = create(:admin_user, resource_access: [:commodities])
   end
 
-  # POST /commodities
-  test "POST /commodities creates a commodity" do
-    sign_in @user
-
-    assert_api_response :post, 200, api_path: "/commodities", body: {name: "Laranite"} do
-      assert_equal "Laranite", parsed_body["name"]
-    end
-  end
-
-  # See the equipment test: the request contract is camelCase, the permit list is
-  # snake_case, and Middleware::TransformParameters is what joins them. Only a
-  # multi-word field exercises it.
-  test "POST /commodities accepts the camelCase fields the schema declares" do
-    sign_in @user
-
-    body = {
-      name: "Laranite",
-      commodityType: "mineral",
-      uexId: 42,
-      uexCode: "LARA",
-      scKey: "test_commodity_laranite"
-    }
-
-    assert_api_response :post, 200, api_path: "/commodities", body: body do
-      assert_equal "mineral", parsed_body["commodityType"]
-      assert_equal 42, parsed_body["uexId"]
-      assert_equal "LARA", parsed_body["uexCode"]
-
-      created = Commodity.find(parsed_body["id"])
-      assert_equal "test_commodity_laranite", created.sc_key
-    end
-  end
-
-  test "POST /commodities returns 401 when not signed in" do
-    assert_api_response :post, 401, api_path: "/commodities", body: {name: "x"}
-  end
-
-  test "POST /commodities returns 403 for admin without access" do
-    sign_in create(:admin_user, resource_access: [])
-
-    assert_api_response :post, 403, api_path: "/commodities", body: {name: "x"}
-  end
-
   # GET /commodities
   test "GET /commodities lists commodities" do
     create_list(:commodity, 2)
@@ -197,6 +133,23 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, api_path: "/commodities" do
       assert_equal ["Retired Ore"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # The version comes off the build the facts are read from, which for a retired
+  # commodity is the last one that described it.
+  test "GET /commodities shows a retired commodity with its last build" do
+    create(:commodity, name: "Retired Ore", version: "3.0.0")
+    current = create(:commodity, name: "Current Ore")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/commodities" do
+      items = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert items["Retired Ore"]["retired"]
+      assert_equal "3.0.0", items["Retired Ore"]["version"]
+      assert_not items["Current Ore"]["retired"]
+      assert_equal current.version, items["Current Ore"]["version"]
     end
   end
 
@@ -325,7 +278,12 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     commodity = create(:commodity)
     sign_in @user
 
-    assert_api_response :delete, 200, path_params: {id: commodity.id}
+    assert_api_response :delete, 200, path_params: {id: commodity.id} do
+      assert_equal commodity.version, parsed_body["version"], "the builds are gone, but the response renders them"
+      assert_equal commodity.name, parsed_body["name"]
+    end
+
+    assert_not Commodity.exists?(commodity.id)
   end
 
   test "DELETE /commodities/:id returns 404 for missing id" do

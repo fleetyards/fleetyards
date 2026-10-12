@@ -65,6 +65,7 @@ const ICONS: Record<string, Icon> = {
   FleetContract: "fa-duotone fa-clipboard-list",
   FleetEvent: "fa-duotone fa-calendar-day",
   User: "fa-duotone fa-user",
+  FleetMember: "fa-duotone fa-user",
 };
 
 export const catalogueTokenIcon = (typeOrPrefix?: string | null): Icon =>

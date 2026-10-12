@@ -1,0 +1,9 @@
+// The small tracked label for a row's type or a section's head: Orbitron 11px
+// at .16em, in the dim text grey.
+@mixin row-label {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+}

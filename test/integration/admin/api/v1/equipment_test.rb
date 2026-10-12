@@ -8,27 +8,6 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
   openapi_schema :"admin/v1/schema"
 
   api_path "/equipment" do
-    post("Create Equipment") do
-      operationId "createEquipment"
-      tags "Equipment"
-      consumes "application/json"
-      produces "application/json"
-
-      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::EquipmentInput
-
-      response(200, "successful") do
-        schema ::Admin::V1::Schemas::Equipment
-      end
-
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-
-      response(401, "unauthorized") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-    end
-
     get("Equipment list") do
       operationId "equipment"
       tags "Equipment"
@@ -135,56 +114,6 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     @user = create(:admin_user, resource_access: [:equipment])
   end
 
-  # POST /equipment
-  test "POST /equipment creates equipment" do
-    sign_in @user
-
-    assert_api_response :post, 200, api_path: "/equipment", body: {name: "P4-AR Rifle"} do
-      assert_equal "P4-AR Rifle", parsed_body["name"]
-    end
-  end
-
-  # The schema declares the request body in camelCase and the generated client
-  # sends it that way, while the controller permits snake_case. What bridges the
-  # two is Middleware::TransformParameters, which decamelizes every request key
-  # app-wide -- so multi-word fields have to be asserted, not just `name`, which
-  # reads the same in both.
-  test "POST /equipment accepts the camelCase fields the schema declares" do
-    manufacturer = create(:manufacturer)
-    sign_in @user
-
-    body = {
-      name: "P4-AR Rifle",
-      equipmentType: "weapon",
-      itemType: "assault_rifle",
-      subType: "Medium",
-      weaponClass: "ballistic",
-      manufacturerId: manufacturer.id,
-      scKey: "test_p4ar_rifle"
-    }
-
-    assert_api_response :post, 200, api_path: "/equipment", body: body do
-      assert_equal "weapon", parsed_body["equipmentType"]
-      assert_equal "assault_rifle", parsed_body["itemType"]
-      assert_equal "Medium", parsed_body["subType"]
-      assert_equal "ballistic", parsed_body["weaponClass"]
-      assert_equal manufacturer.id, parsed_body["manufacturer"]["id"]
-
-      created = Equipment.find(parsed_body["id"])
-      assert_equal "test_p4ar_rifle", created.sc_key
-    end
-  end
-
-  test "POST /equipment returns 401 when not signed in" do
-    assert_api_response :post, 401, api_path: "/equipment", body: {name: "x"}
-  end
-
-  test "POST /equipment returns 403 for admin without access" do
-    sign_in create(:admin_user, resource_access: [])
-
-    assert_api_response :post, 403, api_path: "/equipment", body: {name: "x"}
-  end
-
   # GET /equipment
   test "GET /equipment lists equipment" do
     create_list(:equipment, 2)
@@ -204,6 +133,24 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
       items = parsed_body["items"]
       assert_equal 1, items.count
       assert items.first["hidden"]
+    end
+  end
+
+  # The version comes off the build the facts are read from, which for a retired
+  # item is the last one that described it -- so `retired` is what tells the two
+  # apart.
+  test "GET /equipment shows a retired item with its last build" do
+    create(:equipment, name: "Retired Rifle", version: "3.0.0")
+    current = create(:equipment, name: "Current Rifle")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/equipment" do
+      items = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert items["Retired Rifle"]["retired"]
+      assert_equal "3.0.0", items["Retired Rifle"]["version"]
+      assert_not items["Current Rifle"]["retired"]
+      assert_equal current.version, items["Current Rifle"]["version"]
     end
   end
 
@@ -343,7 +290,12 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     equipment = create(:equipment)
     sign_in @user
 
-    assert_api_response :delete, 200, path_params: {id: equipment.id}
+    assert_api_response :delete, 200, path_params: {id: equipment.id} do
+      assert_equal equipment.version, parsed_body["version"], "the builds are gone, but the response renders them"
+      assert_equal equipment.name, parsed_body["name"]
+    end
+
+    assert_not Equipment.exists?(equipment.id)
   end
 
   test "DELETE /equipment/:id returns 404 for missing id" do
@@ -447,18 +399,6 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
     assert_equal "torso", equipment.reload.slot
-  end
-
-  test "POST /equipment rejects an unknown coreCompatibility instead of erroring" do
-    sign_in @user
-
-    assert_no_difference -> { Equipment.count } do
-      post "/admin/api/v1/equipment",
-        params: {name: "Rifle", coreCompatibility: "nonsense"}.to_json,
-        headers: {"Content-Type" => "application/json", "Accept" => "application/json"}
-    end
-
-    assert_response :bad_request
   end
 
   test "PUT /equipment/:id attaches a store image" do

@@ -58,6 +58,10 @@ module ScData
       # tell a row it rewrote from a row it left alone, so a load that changed
       # nothing and a load that rewrote the catalogue look identical in the logs
       # -- which is exactly what you want to know when a build lands badly.
+      #
+      # Whether a new build landed is read off the `*Build` classes, which count
+      # it as created. The rows of a catalogue that no longer stores the version
+      # on them -- Commodity, Equipment -- read unchanged unless a fact changed.
       def stats
         @stats ||= Hash.new { |all, name| all[name] = {created: 0, updated: 0, unchanged: 0} }
       end

@@ -28,22 +28,20 @@ module ScData
 
         module_data = load_module_data(model_module.sc_key)
 
-        # A build that stopped shipping this module's item file leaves the module
-        # alone rather than crashing the load. `load_item` answers nil for a path
-        # the tree does not carry and `resolve_loadout` indexes it straight away,
-        # so this used to be a NoMethodError on nil -- and since the whole of
-        # `BaseLoader.all` runs in one job, it took every loader after this one
-        # with it. Guarded the way `ModelsLoader#load_model` guards, rather than
-        # by making `resolve_loadout` tolerant: it raises on a payload carrying
-        # no loadout on purpose, and that is pinned.
-        #
-        # The module keeps the loadout the last build gave it, which is the only
-        # answer available while `ModelModule` has no build table of its own --
-        # once it has one, this is where the module would be retired from the
-        # build instead.
+        # A build that stopped shipping this module's item file writes no build
+        # row for it, so `all` retires the module from that build. Returning
+        # rather than resolving nil matters: the whole of `BaseLoader.all` runs
+        # in one job, and a raise here takes every loader after this one with it.
         return if module_data.blank?
 
-        update_loadout(model_module, module_data)
+        # Some module items ship with no ports at all. `resolve_loadout` raises on
+        # that on purpose, because for a ship it means the file is broken; for a
+        # module it is an empty loadout, which retires whatever slots it had.
+        if module_data["loadout"] || module_data["default_loadout"]
+          update_loadout(model_module, module_data)
+        else
+          persist_loadout(model_module, [])
+        end
 
         # Curated until the live game ships it, automatic afterwards.
         #

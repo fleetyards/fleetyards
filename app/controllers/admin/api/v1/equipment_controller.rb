@@ -17,10 +17,9 @@ module Admin
           # column, which is the failure mode to want.
           #
           # The fallback join, not the fast one: the admin list has to show a
-          # retired record, and one an admin created by hand that no load has
-          # described yet.
+          # retired record.
           @q = authorized_scope(Equipment.with_facts(false))
-            .includes(:manufacturer, :item_prices)
+            .includes(:manufacturer, :item_prices, :build, :last_build)
             .ransack(equipment_query_params)
 
           @equipment = @q.result
@@ -29,16 +28,6 @@ module Admin
         end
 
         def show
-        end
-
-        def create
-          @equipment = Equipment.new(equipment_params)
-
-          authorize! @equipment, with: ::Admin::EquipmentPolicy
-
-          return if @equipment.save
-
-          render json: ValidationError.new("equipment.create", errors: @equipment.errors), status: :bad_request
         end
 
         def update
@@ -89,7 +78,9 @@ module Admin
         end
 
         private def set_equipment
-          @equipment = Equipment.find(params[:id])
+          # The builds up front: `destroy` deletes them, and its response still
+          # renders their facts.
+          @equipment = Equipment.includes(:build, :last_build).find(params[:id])
 
           authorize! @equipment, with: ::Admin::EquipmentPolicy
         end

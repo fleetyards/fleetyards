@@ -42,6 +42,9 @@ type Props = {
   image?: string;
   description?: string;
   badges?: StatsCardBadge[];
+  // For an icon slot holding a picture of its own, such as a person's avatar,
+  // which at the glyph's size is too small to recognise anyone by.
+  largeIcon?: boolean;
   // Badges that are the figures worth reading, such as a commodity's prices,
   // set as equal tiles rather than a strip of specs.
   prominentBadges?: boolean;
@@ -63,6 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   description: undefined,
   badges: () => [],
+  largeIcon: false,
   prominentBadges: false,
   to: undefined,
   maxStats: 10,
@@ -172,7 +176,11 @@ const hasBody = computed(
 
     <div class="stats-card__head">
       <!-- A card can draw its own: a planet as its globe, a star as its sun. -->
-      <span v-if="$slots.icon" class="stats-card__icon stats-card__icon--drawn">
+      <span
+        v-if="$slots.icon"
+        class="stats-card__icon stats-card__icon--drawn"
+        :class="{ 'stats-card__icon--large': largeIcon }"
+      >
         <slot name="icon" />
       </span>
       <span v-else-if="kind || $slots.glyph" class="stats-card__icon">

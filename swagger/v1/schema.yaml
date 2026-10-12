@@ -5992,6 +5992,65 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/member-health":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Member Health
+      tags:
+      - FleetMembers
+      operationId: fleetMemberHealth
+      parameters:
+      - name: inactiveDays
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 30
+        required: false
+        description: Days without activity after which a member counts as inactive
+      - name: sample
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 5
+          default: 5
+        required: false
+        description: Rows returned per check; 0 for counts only
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMemberHealth"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members":
     parameters:
     - name: fleetSlug
@@ -6484,6 +6543,56 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/members/{username}/verification-reminder":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    post:
+      summary: Remind Member to Verify
+      tags:
+      - FleetMembers
+      operationId: remindFleetMemberVerification
+      description: Notifies the member what keeps them from being verified against
+        the fleet's RSI org. Once a week at most.
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: reminder sent
+        '400':
+          description: nothing to verify, or reminded within the week
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/membership":
     parameters:
     - name: fleetSlug
@@ -27529,6 +27638,295 @@ components:
           type: string
       additionalProperties: false
       title: FleetMemberCreateInput
+    FleetMemberHealth:
+      type: object
+      properties:
+        inactiveDays:
+          type: integer
+        inactiveSince:
+          type: string
+          format: date
+          description: The day inactiveMembers counts from, for the members list's
+            inactiveSince filter
+        requestedBefore:
+          type: string
+          format: date
+          description: The day waitingJoinRequests counts up to, for the members list's
+            requestedAtLteq filter
+        invitedBefore:
+          type: string
+          format: date
+          description: The day unansweredInvitations counts up to, for the members
+            list's invitedAtLteq filter
+        fleetRsiVerified:
+          type: boolean
+        rsiMemberCount:
+          type:
+          - integer
+          - 'null'
+          description: Members of the fleet's RSI org on RSI; null without an RSI
+            SID
+        memberCount:
+          type: integer
+        hiddenShipsCount:
+          type: integer
+          description: Members who keep their ships out of the fleet
+        admins:
+          "$ref": "#/components/schemas/FleetMemberHealthAdmins"
+        unverifiedMembers:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSection"
+          - type: 'null'
+          description: Null when the fleet has no RSI SID
+        membersWithoutRsiHandle:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSection"
+          - type: 'null'
+          description: Null when the fleet has an RSI SID
+        inactiveMembers:
+          "$ref": "#/components/schemas/FleetMemberHealthSection"
+        waitingJoinRequests:
+          "$ref": "#/components/schemas/FleetMemberHealthSection"
+        unansweredInvitations:
+          "$ref": "#/components/schemas/FleetMemberHealthSection"
+        staleInviteUrls:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthInviteUrls"
+          - type: 'null'
+          description: Null when the reader cannot read invites
+        membersWithoutDiscord:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSection"
+          - type: 'null'
+          description: Null unless the fleet hands out Discord roles
+        membersWithoutSquadron:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSection"
+          - type: 'null'
+          description: Null unless squadrons are on and the reader can read them
+        emptySquadrons:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetMemberHealthSquadrons"
+          - type: 'null'
+          description: Null unless squadrons are on and the reader can read them
+      required:
+      - inactiveDays
+      - inactiveSince
+      - requestedBefore
+      - invitedBefore
+      - fleetRsiVerified
+      - rsiMemberCount
+      - memberCount
+      - hiddenShipsCount
+      - admins
+      - unverifiedMembers
+      - membersWithoutRsiHandle
+      - inactiveMembers
+      - waitingJoinRequests
+      - unansweredInvitations
+      - staleInviteUrls
+      - membersWithoutDiscord
+      - membersWithoutSquadron
+      - emptySquadrons
+      additionalProperties: false
+      title: FleetMemberHealth
+    FleetMemberHealthAdmins:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMemberHealthMember"
+        candidates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMemberHealthMember"
+      required:
+      - totalCount
+      - items
+      - candidates
+      additionalProperties: false
+      title: FleetMemberHealthAdmins
+    FleetMemberHealthInviteUrl:
+      type: object
+      properties:
+        token:
+          type: string
+        url:
+          type: string
+        createdBy:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        expiresAfter:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        limit:
+          type:
+          - integer
+          - 'null'
+          description: Uses left; null for no limit
+        usageCount:
+          type: integer
+      required:
+      - token
+      - url
+      - createdAt
+      - usageCount
+      additionalProperties: false
+      title: FleetMemberHealthInviteUrl
+    FleetMemberHealthInviteUrls:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMemberHealthInviteUrl"
+      required:
+      - totalCount
+      - items
+      additionalProperties: false
+      title: FleetMemberHealthInviteUrls
+    FleetMemberHealthMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+        avatar:
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        fleetRole:
+          anyOf:
+          - "$ref": "#/components/schemas/FleetRole"
+          - type: 'null'
+        leader:
+          type: boolean
+          description: Holds a role ranked above the one new members get
+        admin:
+          type: boolean
+          description: Holds the fleet's permanent role, which cannot be removed
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        acceptedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        requestedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invitedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        invitedBy:
+          type:
+          - string
+          - 'null'
+          description: Username of whoever sent the invitation
+        rsiHandle:
+          type:
+          - string
+          - 'null'
+        discordProfileUrl:
+          type:
+          - string
+          - 'null'
+        verificationGap:
+          "$ref": "#/components/schemas/NullableFleetMemberVerificationGapEnum"
+        rsiOrganizationsCheckedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        verificationRemindedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the fleet last reminded the member to verify
+      required:
+      - id
+      - username
+      - leader
+      - admin
+      - verificationGap
+      additionalProperties: false
+      title: FleetMemberHealthMember
+    FleetMemberHealthSection:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMemberHealthMember"
+      required:
+      - totalCount
+      - items
+      additionalProperties: false
+      title: FleetMemberHealthSection
+    FleetMemberHealthSquadron:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        team:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - team
+      - createdAt
+      additionalProperties: false
+      title: FleetMemberHealthSquadron
+    FleetMemberHealthSquadrons:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetMemberHealthSquadron"
+      required:
+      - totalCount
+      - items
+      additionalProperties: false
+      title: FleetMemberHealthSquadrons
     FleetMemberQuery:
       type: object
       properties:
@@ -27579,6 +27977,22 @@ components:
         declinedAtLteq:
           type: string
           format: date
+        inactiveSince:
+          type: string
+          format: date
+          description: Members not active since this date, including those never active
+        verifiedEq:
+          type: boolean
+          description: Whether the member is verified against the fleet's RSI org
+        withoutRsiHandle:
+          type: boolean
+          description: Only members who have not given an RSI handle
+        withoutDiscord:
+          type: boolean
+          description: Only members without a linked Discord account
+        withoutSquadron:
+          type: boolean
+          description: Only members in no squadron or team
         s:
           anyOf:
           - type: array
@@ -28499,6 +28913,22 @@ components:
         declinedAtLteq:
           type: string
           format: date
+        inactiveSince:
+          type: string
+          format: date
+          description: Members not active since this date, including those never active
+        verifiedEq:
+          type: boolean
+          description: Whether the member is verified against the fleet's RSI org
+        withoutRsiHandle:
+          type: boolean
+          description: Only members who have not given an RSI handle
+        withoutDiscord:
+          type: boolean
+          description: Only members without a linked Discord account
+        withoutSquadron:
+          type: boolean
+          description: Only members in no squadron or team
         squadronMembershipCreatedAtGteq:
           type: string
           format: date
@@ -35349,6 +35779,7 @@ components:
       - fleet_fid_claim_completed
       - fleet_fid_claim_cancelled
       - rsi_handle_verification_lost
+      - fleet_verification_requested
       - announcement
       x-enumNames:
       - MODEL_ON_SALE
@@ -35399,6 +35830,7 @@ components:
       - FLEET_FID_CLAIM_COMPLETED
       - FLEET_FID_CLAIM_CANCELLED
       - RSI_HANDLE_VERIFICATION_LOST
+      - FLEET_VERIFICATION_REQUESTED
       - ANNOUNCEMENT
       title: NotificationTypeEnum
     NotificationUnreadCount:
@@ -35948,6 +36380,23 @@ components:
       - ZU
       - 'NULL'
       title: NullableFleetLanguageEnum
+    NullableFleetMemberVerificationGapEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - no_handle
+      - handle_unverified
+      - orgs_not_checked
+      - org_not_listed
+      -
+      x-enumNames:
+      - NO_HANDLE
+      - HANDLE_UNVERIFIED
+      - ORGS_NOT_CHECKED
+      - ORG_NOT_LISTED
+      - 'NULL'
+      title: NullableFleetMemberVerificationGapEnum
     NullableFleetRsiVerificationStatusEnum:
       type:
       - string
@@ -38884,6 +39333,9 @@ components:
           type: integer
         supporterRecurring:
           type: boolean
+        online:
+          type: boolean
+          description: Only for the user's friends and fleet mates
       additionalProperties: false
       required:
       - username

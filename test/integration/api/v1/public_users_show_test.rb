@@ -96,4 +96,39 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 404, path_params: {username: user.username}, params: {share: other_token}
   end
+
+  test "GET /public/users/:username tells a friend whether the user is online" do
+    UserPresence.reset!
+    user = create(:user, :public_hangar)
+    friend = create(:user)
+    create(:friendship, :accepted, requester: friend, addressee: user)
+    UserPresence.connect(user.id, "tab-1")
+    sign_in friend
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal true, parsed_body["online"]
+    end
+  ensure
+    UserPresence.reset!
+  end
+
+  test "GET /public/users/:username tells a fleet mate whether the user is online" do
+    user = create(:user, :public_hangar)
+    mate = create(:user)
+    create(:fleet, members: [user, mate])
+    sign_in mate
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal false, parsed_body["online"]
+    end
+  end
+
+  test "GET /public/users/:username says nothing about presence to anyone else" do
+    user = create(:user, :public_hangar)
+    sign_in create(:user)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_not parsed_body.key?("online")
+    end
+  end
 end

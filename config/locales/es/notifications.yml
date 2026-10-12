@@ -86,6 +86,12 @@ es:
       claimant_admin:
         title: "Se ha cancelado tu reclamación de %{fid}"
         body: "Un administrador canceló la reclamación de %{fleet} sobre el ID de flota %{fid}."
+    fleet_verification_requested:
+      title: "%{fleet} te pide verificar tu pertenencia en RSI"
+      no_handle: "%{fleet} comprueba a sus miembros con la organización de RSI %{sid}, y tu perfil aún no tiene un handle de RSI. Añádelo en los ajustes de tu perfil y verifícalo para que la flota pueda confirmar que formas parte de %{sid}."
+      handle_unverified: "%{fleet} comprueba a sus miembros con la organización de RSI %{sid}, pero tu handle de RSI aún no está verificado. Verifícalo en los ajustes de tu perfil para que la flota pueda confirmar que formas parte de %{sid}."
+      orgs_not_checked: "%{fleet} comprueba a sus miembros con la organización de RSI %{sid}, y tu lista de organizaciones de RSI aún no se ha leído. Actualízala en los ajustes de tu perfil para que la flota pueda confirmar que formas parte de %{sid}."
+      org_not_listed: "%{fleet} comprueba a sus miembros con la organización de RSI %{sid}, y tu lista de organizaciones de RSI no la incluye. Si te has unido a %{sid} en RSI desde entonces, actualiza tu lista en los ajustes de tu perfil."
     rsi_handle_verification_lost:
       title: "Tu handle de RSI %{handle} ya no está verificado"
       body: "Otra cuenta de Fleetyards demostró que el handle de RSI %{handle} le pertenece, mediante Citizen iD o con su código de verificación en la biografía de RSI. Tu perfil ya no muestra el handle como verificado. Si %{handle} es tuyo, vuelve a verificarlo desde los ajustes de tu perfil."

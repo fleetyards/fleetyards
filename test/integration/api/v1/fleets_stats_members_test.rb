@@ -89,4 +89,16 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
       assert_equal [1], parsed_body.dig("metrics", "membersByRole").values
     end
   end
+
+  # The roster's own filters stay on the roster: here they would count who is
+  # inactive, unverified or unlinked for anyone who may read the stats.
+  test "GET /fleets/:slug/stats/members ignores the roster-only filters" do
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"verifiedEq" => true}} do
+      assert_equal 1, parsed_body["total"]
+    end
+  end
 end

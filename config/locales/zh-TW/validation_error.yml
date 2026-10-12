@@ -50,6 +50,7 @@ zh-TW:
       destroy: 無法移除艦隊成員。
       update: 無法更新艦隊成員。
       demote: 無法降級該艦隊成員。
+      remind_verification: "無法傳送驗證提醒。"
     fleet_memberships:
       create: 艦隊邀請無法使用
       destroy: 無法離開艦隊。
@@ -57,6 +58,8 @@ zh-TW:
       decline: 艦隊邀請無法拒絕。
       demote_not_permitted: 您不能降級永久艦隊角色的最後一個成員。
       update: 無法更新艦隊成員資格。
+      nothing_to_verify: "該成員已無需再針對艦隊的 RSI 組織進行驗證。"
+      verification_recently_reminded: "該成員在一週內已收到過提醒。"
     markdown_image:
       create: "無法上傳圖片。"
     hangar_group:
@@ -260,11 +263,9 @@ zh-TW:
     location:
       update: 無法更新地點。
     commodity:
-      create: 無法建立商品。
       destroy: 無法刪除商品。
       update: 無法更新商品。
     equipment:
-      create: 無法建立裝備。
       destroy: 無法刪除裝備。
       update: 無法更新裝備。
     fleet_event_admins:

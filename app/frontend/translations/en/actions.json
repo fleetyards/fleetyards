@@ -301,7 +301,22 @@
           "decline": "Decline",
           "remove": "Remove",
           "editRole": "Edit Role",
-          "editNickname": "Edit Nickname"
+          "editNickname": "Edit Nickname",
+          "health": {
+            "open": "Member health",
+            "showAll": "Show all %{count}",
+            "inviteLinks": "Invite links",
+            "discordSettings": "Discord settings",
+            "verifyOrg": "Verify the RSI organisation",
+            "remove": "Remove from fleet",
+            "revoke": "Revoke invitation",
+            "deleteLink": "Delete link",
+            "promoteTo": "Promote to %{role}",
+            "addToSquadron": "Add to squadron",
+            "addMembers": "Add members",
+            "deleteSquadron": "Disband",
+            "remind": "Remind to verify"
+          }
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

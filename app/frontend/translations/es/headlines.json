@@ -190,14 +190,12 @@
         },
         "commodities": {
           "index": "Commodities",
-          "new": "New Commodity",
           "edit": {
             "index": "Edit Commodity"
           }
         },
         "equipment": {
           "index": "Equipment",
-          "new": "New Equipment",
           "edit": {
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
@@ -279,7 +277,8 @@
         "members": {
           "index": "Members",
           "worldmap": "Mapa mundial de miembros",
-          "starmap": "Mapa estelar de miembros"
+          "starmap": "Mapa estelar de miembros",
+          "health": "Estado de los miembros"
         },
         "squadrons": {
           "index": "Escuadrones",

@@ -65,6 +65,21 @@ class EquipmentBuild < ApplicationRecord
     where(environment: source.environment)
   }
 
+  # Only the newest of those per record. A correlated subquery rather than an
+  # ORDER BY, so preloading it for a page of rows fetches one build each instead
+  # of every retained one.
+  scope :newest, ->(source = ::ScData::Source.current) {
+    for_source(source).where(<<~SQL.squish)
+      equipment_builds.id = (
+        SELECT newest.id FROM equipment_builds newest
+        WHERE newest.equipment_id = equipment_builds.equipment_id
+          AND newest.environment = equipment_builds.environment
+        ORDER BY newest.created_at DESC, newest.id DESC
+        LIMIT 1
+      )
+    SQL
+  }
+
   # The one build the environment is on. `ScData::Source` names the version
   # exactly, so this needs no ordering or subselect.
   scope :current, ->(source = ::ScData::Source.current) {

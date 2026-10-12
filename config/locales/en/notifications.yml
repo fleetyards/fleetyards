@@ -81,6 +81,12 @@ en:
       claimant_admin:
         title: "Your claim on %{fid} was cancelled"
         body: "An administrator cancelled the claim by %{fleet} on the fleet ID %{fid}."
+    fleet_verification_requested:
+      title: "%{fleet} asks you to verify your RSI membership"
+      no_handle: "%{fleet} checks its members against the RSI organisation %{sid}, and your profile has no RSI handle yet. Add your handle in your profile settings and verify it, so the fleet can confirm you are part of %{sid}."
+      handle_unverified: "%{fleet} checks its members against the RSI organisation %{sid}, but your RSI handle is not verified yet. Verify it in your profile settings, so the fleet can confirm you are part of %{sid}."
+      orgs_not_checked: "%{fleet} checks its members against the RSI organisation %{sid}, and your RSI organisation list has not been read yet. Refresh it in your profile settings, so the fleet can confirm you are part of %{sid}."
+      org_not_listed: "%{fleet} checks its members against the RSI organisation %{sid}, and your RSI organisation list does not include it. If you have joined %{sid} on RSI since, refresh your list in your profile settings."
     rsi_handle_verification_lost:
       title: "Your RSI handle %{handle} is no longer verified"
       body: "Another Fleetyards account proved it owns the RSI handle %{handle}, either through Citizen iD or with its verification token in the RSI bio. Your profile no longer shows the handle as verified. If %{handle} is yours, verify it again from your profile settings."

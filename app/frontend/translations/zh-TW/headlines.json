@@ -190,14 +190,12 @@
         },
         "commodities": {
           "index": "Commodities",
-          "new": "New Commodity",
           "edit": {
             "index": "Edit Commodity"
           }
         },
         "equipment": {
           "index": "Equipment",
-          "new": "New Equipment",
           "edit": {
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
@@ -279,7 +277,8 @@
         "members": {
           "index": "Members",
           "worldmap": "成員世界地圖",
-          "starmap": "成員星圖"
+          "starmap": "成員星圖",
+          "health": "成員健康檢查"
         },
         "squadrons": {
           "index": "中隊",

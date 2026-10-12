@@ -391,6 +391,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 /*
  * The library is driven through its own custom properties, which is the seam it
  * gives us, and those are fed from the app's tokens rather than from values
@@ -503,11 +504,7 @@ onUnmounted(() => {
     padding: 9px 10px;
     background: rgb(0 0 0 / 0.28);
     border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-gray-light, #7a8288);
+    @include row-label;
   }
 
   :deep(.ec-day-head time),

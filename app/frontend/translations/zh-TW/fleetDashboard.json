@@ -52,6 +52,10 @@
         "empty": {
           "title": "全部處理完畢",
           "hint": "需要回應的入隊申請和傳入轉移會顯示在這裡。"
+        },
+        "memberHealth": {
+          "one": "%{count} 項成員檢查需要處理",
+          "other": "%{count} 項成員檢查需要處理"
         }
       },
       "contracts": {

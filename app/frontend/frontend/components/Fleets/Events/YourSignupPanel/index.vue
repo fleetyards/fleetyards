@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
@@ -21,6 +22,7 @@ import {
   signupFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -146,6 +148,9 @@ const withdraw = () => {
 const statusLabel = computed(() =>
   t(`labels.fleets.events.signupStatuses.${props.signup.status}`),
 );
+
+const { signupPillVariantFor } = useEventStatus();
+const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
 </script>
 
 <template>
@@ -155,12 +160,9 @@ const statusLabel = computed(() =>
         <i class="fa-light fa-user-check" />
         <span>{{ t("headlines.fleets.events.yourSignup") }}</span>
       </div>
-      <span
-        class="your-signup__status"
-        :class="`your-signup__status--${signup.status}`"
-      >
+      <Pill :variant="statusVariant">
         {{ statusLabel }}
-      </span>
+      </Pill>
     </header>
 
     <div class="your-signup__location">
@@ -247,26 +249,10 @@ const statusLabel = computed(() =>
   gap: 8px;
   font-weight: 600;
   font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 
   i {
     color: var(--color-primary, #428bca);
   }
-}
-.your-signup__status {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: var(--radius-control-bare, 6px);
-  border: 1px solid currentColor;
-}
-.your-signup__status--confirmed {
-  color: var(--color-success, #5cb85c);
-}
-.your-signup__status--tentative {
-  color: var(--color-warning, #fa6800);
 }
 .your-signup__location {
   display: flex;

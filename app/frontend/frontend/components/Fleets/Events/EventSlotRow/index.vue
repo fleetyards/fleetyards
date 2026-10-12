@@ -29,6 +29,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
+import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 
 type Props = {
   slotData: FleetEventSlot;
@@ -61,18 +62,12 @@ const signupsAllowed = computed(() =>
   props.signupsOpen === undefined ? !props.signupsLocked : props.signupsOpen,
 );
 
-const { t, tExists } = useI18n();
+const { t } = useI18n();
 
-// The API sends the enum value, so a turret seat read TURRET_GUNNER once the
-// label uppercased it. Unmapped values still read as words.
-const positionTypeLabel = computed(() => {
-  const type = props.slotData.positionType;
-  if (!type) return null;
-
-  const key = `labels.modelPosition.types.${type}`;
-
-  return tExists(key) ? t(key) : type.replace(/_/g, " ");
-});
+const toPositionTypeLabel = usePositionTypeLabel();
+const positionTypeLabel = computed(() =>
+  toPositionTypeLabel(props.slotData.positionType),
+);
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const installPrompt = useInstallPrompt();
@@ -313,6 +308,7 @@ const submitSignup = async () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 /*
  * A list row, not a card. Six slots on a ship used to stack six bordered boxes
  * inside a bordered card inside a panel; one hairline per row is what the rest
@@ -380,11 +376,7 @@ const submitSignup = async () => {
      break a seat called "Turret Side Back Left" over four lines. */
   flex: none;
   white-space: nowrap;
-  font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-gray-light, #7a8288);
+  @include row-label;
 }
 
 .event-slot-row__action {

@@ -53,6 +53,7 @@ class Notification < ApplicationRecord
     fleet_fid_claim_completed: "fleet_fid_claim_completed",
     fleet_fid_claim_cancelled: "fleet_fid_claim_cancelled",
     rsi_handle_verification_lost: "rsi_handle_verification_lost",
+    fleet_verification_requested: "fleet_verification_requested",
     announcement: "announcement"
   }
 
@@ -365,6 +366,14 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    # An officer asking one member to do something only they can, so it goes by
+    # mail as well: the member is often one who stopped signing in.
+    fleet_verification_requested: {
+      retention: 90.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

@@ -155,9 +155,7 @@
         "until": "Active until %{date}",
         "expiring": "Expires %{date}",
         "ongoing": "Recurring, no end date",
-        "tierShort": "Tier %{tier}",
-        "tierShortRecurring": "Tier %{tier}, recurring",
-        "recurringShort": "Recurring"
+        "tierShort": "Tier %{tier}"
       },
       "destroyedFleets": {
         "discarded": "Discarded",
@@ -374,7 +372,8 @@
           "Location": "Place",
           "FleetContract": "Contract",
           "FleetEvent": "Event",
-          "User": "User"
+          "User": "User",
+          "FleetMember": "Member"
         },
         "open": {
           "Component": "Open component",
@@ -386,7 +385,8 @@
           "Location": "Open place",
           "FleetContract": "Open contract",
           "FleetEvent": "Open event",
-          "User": "Open hangar"
+          "User": "Open hangar",
+          "FleetMember": "Show in member list"
         }
       },
       "stats": {
@@ -742,6 +742,141 @@
           "views": {
             "members": "Members",
             "invites": "Invites"
+          },
+          "health": {
+            "overview": "Checks",
+            "summary": {
+              "attention": {
+                "one": "%{count} of %{total} checks needs attention",
+                "other": "%{count} of %{total} checks need attention"
+              },
+              "clear": "All %{total} checks are clear"
+            },
+            "groups": {
+              "leadership": "Leadership",
+              "rsi": "RSI organisation",
+              "activity": "Activity",
+              "requests": "Requests and invites",
+              "integrations": "Integrations"
+            },
+            "days": {
+              "one": "%{count} day",
+              "other": "%{count} days"
+            },
+            "checks": {
+              "admins": {
+                "title": "Admins",
+                "overview": "Admins",
+                "clear": "%{admins} members hold Admin."
+              },
+              "unverified": {
+                "title": "Not verified against %{sid}",
+                "overview": "Not verified",
+                "description": "A member is verified when their own RSI organisation list names %{sid}. Each row says why that could not be confirmed.",
+                "clear": "Every member is verified against %{sid}."
+              },
+              "noHandle": {
+                "title": "No RSI handle",
+                "overview": "No RSI handle",
+                "clear": "Every member has given an RSI handle."
+              },
+              "inactive": {
+                "title": "Inactive members",
+                "overview": "Inactive %{count}+ days",
+                "clear": "Everyone was active in the last %{count} days."
+              },
+              "joinRequests": {
+                "title": "Join requests waiting over a week",
+                "overview": "Old join requests",
+                "clear": "No join request has waited more than a week."
+              },
+              "invitations": {
+                "title": "Invitations nobody answered",
+                "overview": "Unanswered invites",
+                "clear": "No invitation has been open for more than two weeks."
+              },
+              "inviteUrls": {
+                "title": "Invite links to tidy up",
+                "overview": "Invite links",
+                "clear": "Every invite link is in use."
+              },
+              "discord": {
+                "title": "Not linked to Discord",
+                "overview": "Discord",
+                "clear": "Every member has Discord linked."
+              },
+              "emptySquadrons": {
+                "title": "Squadrons nobody is in",
+                "overview": "Empty squadrons",
+                "clear": "Every squadron has members."
+              },
+              "noSquadron": {
+                "title": "Members in no squadron",
+                "overview": "No squadron",
+                "clear": "Every member is in a squadron."
+              },
+              "hiddenShips": {
+                "title": "Ships kept out of the fleet",
+                "overview": "Hidden hangars",
+                "clear": "Every member shares their ships with the fleet."
+              }
+            },
+            "facts": {
+              "joined": "Joined %{date}",
+              "lastActive": "Last active %{distance}",
+              "neverActive": "Never active",
+              "checked": "Checked %{distance}",
+              "requested": "Requested %{distance}",
+              "invited": "Invited %{distance}",
+              "invitedBy": "Invited by %{name}",
+              "noDiscord": "No Discord account linked",
+              "noSquadron": "No squadron",
+              "noHandle": "No handle given",
+              "linkExpired": "Expired %{distance}",
+              "linkUsedUp": "No uses left",
+              "createdBy": "Created by %{name}",
+              "used": {
+                "one": "Used once",
+                "other": "Used %{count} times"
+              },
+              "team": "Team",
+              "created": "Created %{date}",
+              "linkUnused": "Never used, created %{distance}"
+            },
+            "gaps": {
+              "no_handle": "No RSI handle on profile",
+              "handle_unverified": "RSI handle not verified",
+              "orgs_not_checked": "Org list not read yet",
+              "org_not_listed": "%{sid} not on their org list"
+            },
+            "orgStats": {
+              "rsi": "%{sid} on RSI",
+              "roster": "On FleetYards",
+              "gap": "Never joined here"
+            },
+            "fleetNotVerified": "%{sid} itself is not verified yet, so no member shows as verified anywhere else.",
+            "singleAdmin": "If %{name} leaves or loses access, nobody can manage %{fleet} on FleetYards.",
+            "hiddenShips": {
+              "one": "%{count} member keeps their hangar out of the fleet's ship list.",
+              "other": "%{count} members keep their hangar out of the fleet's ship list."
+            },
+            "deleteLinkFailed": "The invite link could not be deleted.",
+            "noAdmin": "Nobody holds Admin, so nobody can manage %{fleet} on FleetYards.",
+            "adminCandidates": "Promote to Admin",
+            "addedToSquadron": {
+              "success": "Added to the squadron.",
+              "failure": "Could not be added to the squadron."
+            },
+            "reminded": {
+              "success": "Reminder sent.",
+              "failure": "The reminder could not be sent."
+            },
+            "remindedAt": "Reminded %{distance}. You can remind again a week later."
+          },
+          "card": {
+            "verified": "Verified",
+            "unverified": "Not verified",
+            "squadrons": "Squadrons"
           }
         },
         "squadrons": {
@@ -2349,7 +2484,14 @@
             "requestedAtGt": "Requested from",
             "requestedAtLt": "Requested until",
             "declinedAtGt": "Declined from",
-            "declinedAtLt": "Declined until"
+            "declinedAtLt": "Declined until",
+            "inactiveSince": "Inactive since",
+            "verified": "RSI organisation",
+            "verifiedYes": "Verified",
+            "verifiedNo": "Not verified",
+            "withoutRsiHandle": "No RSI handle",
+            "withoutDiscord": "No Discord linked",
+            "withoutSquadron": "In no squadron"
           },
           "inviteUrls": {
             "expiresAfter": "Expire after",
@@ -3323,7 +3465,8 @@
         "fleet_contract_settled": "Contract paid out",
         "payout_ledger_settled": "Payouts settled",
         "payout_entry_pending_review": "Expense waiting for review",
-        "payout_entry_declined": "Expense declined"
+        "payout_entry_declined": "Expense declined",
+        "fleet_verification_requested": "Verification requested by your fleet"
       },
       "fleets": {
         "missions": {

@@ -65,7 +65,8 @@
           "index": "%{fleet} Mitglieder",
           "invites": "%{fleet} Einladungen",
           "worldmap": "%{fleet} Mitglieder-Weltkarte",
-          "starmap": "%{fleet} Mitglieder-Sternenkarte"
+          "starmap": "%{fleet} Mitglieder-Sternenkarte",
+          "health": "%{fleet} Mitglieder-Zustand"
         },
         "squadrons": {
           "index": "%{fleet} Staffeln",

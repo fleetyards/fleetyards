@@ -21,6 +21,7 @@ import BasePopover from "@/shared/components/Popover/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
+import FleetMemberStatsCard from "@/frontend/components/StatsCard/FleetMember/index.vue";
 import storeImage from "@/images/fallback/store_image.webp";
 import {
   EquipmentTypeEnum,
@@ -28,10 +29,12 @@ import {
   type Commodity,
   type Component,
   type Equipment,
+  type FleetMember,
   type GameMission,
   type Location,
   LocationKindEnum,
   type Model,
+  type UserPublic,
 } from "@/services/fyApi";
 
 /*
@@ -259,6 +262,68 @@ const demoLocation = {
   ],
 } as unknown as Location;
 
+// A public user, as a `[*user:name*]` token in any markdown opens one.
+const demoUser = {
+  username: "TorlekMaru",
+  rsiHandle: "TorlekMaru",
+  rsiHandleVerified: true,
+  discord: "discord.gg/fleetyards",
+  avatar: { smallUrl: storeImage, mediumUrl: storeImage },
+  // Present because this reader is a friend or fleet mate.
+  online: true,
+  supporter: true,
+  supporterTier: 2,
+  supporterRecurring: true,
+} as unknown as UserPublic;
+
+// A fleet member as the health page's lists open them: everything a row leaves
+// out. One verified, online and in two squadrons; one unverified, without an
+// avatar or a Discord account, to show what the card says in their absence.
+const demoMember = {
+  id: "demo-member",
+  userId: "demo-member-user",
+  username: "Gertau",
+  nickname: "Gert",
+  rsiHandle: "Gertau",
+  discordProfileUrl: "https://discord.com/users/1",
+  verified: true,
+  online: true,
+  fleetRole: { id: "demo-admin", name: "Admin", slug: "admin" },
+  acceptedAt: "2022-11-27T12:00:00Z",
+  lastActiveAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+  currentSystem: "Lorville, Hurston",
+  avatar: { smallUrl: storeImage, mediumUrl: storeImage },
+  squadrons: [
+    {
+      id: "demo-alpha",
+      name: "Alpha Wing",
+      slug: "alpha-wing",
+      color: "#ff8800",
+      team: false,
+    },
+    {
+      id: "demo-salvage",
+      name: "Salvage Team",
+      slug: "salvage-team",
+      color: "#428bca",
+      team: true,
+    },
+  ],
+} as unknown as FleetMember;
+
+const demoUnverifiedMember = {
+  id: "demo-member-unverified",
+  userId: "demo-member-unverified-user",
+  username: "Knusper",
+  rsiHandle: "Knusper",
+  verified: false,
+  online: false,
+  fleetRole: { id: "demo-member-role", name: "Member", slug: "member" },
+  acceptedAt: "2024-05-02T12:00:00Z",
+  lastActiveAt: null,
+  squadrons: [],
+} as unknown as FleetMember;
+
 // A planet is drawn as its turning globe, a star as its sun.
 const demoPlanet = {
   ...demoLocation,
@@ -451,6 +516,35 @@ const demoStar = {
           :record="demoStar"
         />
       </span>
+      <span data-test="popover-demo-user">
+        <CatalogueItemPopover
+          :item="{ type: 'User', slug: 'torlekmaru', name: 'TorlekMaru' }"
+          :record="demoUser"
+        />
+      </span>
+      <BasePopover label="Gertau" data-test="popover-demo-fleet-member">
+        <a href="#popover">Gertau</a>
+        <template #content>
+          <FleetMemberStatsCard
+            :member="demoMember"
+            fleet-sid="MARU"
+            :to="{ name: 'visual-tests-overlays' }"
+          />
+        </template>
+      </BasePopover>
+      <BasePopover
+        label="Knusper"
+        data-test="popover-demo-fleet-member-unverified"
+      >
+        <a href="#popover">Knusper</a>
+        <template #content>
+          <FleetMemberStatsCard
+            :member="demoUnverifiedMember"
+            fleet-sid="MARU"
+            :to="{ name: 'visual-tests-overlays' }"
+          />
+        </template>
+      </BasePopover>
       <BasePopover label="Loading" data-test="popover-demo-loading">
         <a href="#popover">Still loading</a>
         <template #content>

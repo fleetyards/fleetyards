@@ -12,8 +12,9 @@ class Commodity < ApplicationRecord
       name description commodity_type uex_id uex_code sc_key sc_ref
     ],
     if: ->(record) { record.author_id.present? },
-    # `version` here is the sc_data build the row was last loaded from, and
-    # paper_trail claims that name for its own accessor unless told otherwise.
+    # `version` is a column here that nothing maintains -- the builds answer for
+    # the version -- and paper_trail claims that name for its own accessor unless
+    # told otherwise.
     # Component already carries this rename for the same reason.
     version: :paper_trail_version,
     versions: {name: :paper_trail_versions},
@@ -51,7 +52,7 @@ class Commodity < ApplicationRecord
   # commodity would read as nameless, and an inventory item pointing at one has
   # to resolve to something.
   has_one :last_build,
-    -> { for_source.order(created_at: :desc) },
+    -> { newest },
     class_name: "CommodityBuild", inverse_of: :commodity
 
   # Whether the build we are on describes this commodity, rather than whether the
@@ -144,8 +145,8 @@ class Commodity < ApplicationRecord
   end
 
   # Read through the build, falling back to the column. The column still answers
-  # for a commodity no load has given a build -- an admin can create one by hand,
-  # and the UEX importer creates them too.
+  # for a commodity no retained build describes any more -- `prune_builds` takes
+  # the last one with it, and the row stays for the references that point at it.
   CommodityBuild::READ_THROUGH.each do |fact|
     define_method(fact) do
       value = facts&.public_send(fact)

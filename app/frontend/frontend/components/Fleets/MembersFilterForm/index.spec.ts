@@ -81,4 +81,16 @@ describe("FleetMembersFilterForm", () => {
     expect(query.searchCont).toBe("wingman");
     expect(query).not.toHaveProperty("usernameCont");
   });
+
+  // The health page links here with these, so the form has to show them or the
+  // list stays narrowed by a filter nobody can see to clear.
+  it("shows the inactivity and verification filters from a health link", async () => {
+    route.query = { inactiveSince: "2026-09-12", verifiedEq: "false" };
+    const wrapper = mountForm();
+    await flushPromises();
+
+    const checked = wrapper.find("input[name='verifiedEq']:checked");
+    expect((checked.element as HTMLInputElement).value).toBe("false");
+    expect(wrapper.find("[name='inactive-since']").exists()).toBe(true);
+  });
 });

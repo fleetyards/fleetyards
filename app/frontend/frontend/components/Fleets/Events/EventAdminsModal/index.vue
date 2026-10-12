@@ -11,6 +11,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type Fleet,
@@ -125,7 +126,7 @@ const revoke = (admin: FleetEventAdmin) => {
 
     <section class="event-admins">
       <header class="event-admins__head">
-        <strong>{{ t("labels.fleets.events.creator") }}</strong>
+        {{ t("labels.fleets.events.creator") }}
       </header>
       <div class="event-admins__creator">
         <i class="fa-light fa-crown" />
@@ -138,7 +139,7 @@ const revoke = (admin: FleetEventAdmin) => {
 
     <section class="event-admins">
       <header class="event-admins__head">
-        <strong>{{ t("labels.fleets.events.grantedRoles") }}</strong>
+        {{ t("labels.fleets.events.grantedRoles") }}
       </header>
       <ul v-if="adminsList.length" class="event-admins__list">
         <li
@@ -153,9 +154,9 @@ const revoke = (admin: FleetEventAdmin) => {
             "
           />
           <strong>{{ entry.user.username }}</strong>
-          <span class="event-admins__role">
+          <Pill class="event-admins__role">
             {{ t(`labels.fleets.events.eventRoles.${entry.role}`) }}
-          </span>
+          </Pill>
           <Btn
             :size="BtnSizesEnum.SM"
             :variant="BtnVariantsEnum.BARE"
@@ -173,7 +174,7 @@ const revoke = (admin: FleetEventAdmin) => {
 
     <section class="event-admins event-admins--grant">
       <header class="event-admins__head">
-        <strong>{{ t("headlines.fleets.events.grantRole") }}</strong>
+        {{ t("headlines.fleets.events.grantRole") }}
       </header>
       <div class="event-admins__form">
         <BaseSelect
@@ -214,6 +215,7 @@ const revoke = (admin: FleetEventAdmin) => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 .event-admins {
   display: flex;
   flex-direction: column;
@@ -221,10 +223,7 @@ const revoke = (admin: FleetEventAdmin) => {
   margin-top: 14px;
 }
 .event-admins__head {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-muted, #7a8288);
+  @include row-label;
 }
 .event-admins__creator {
   display: inline-flex;
@@ -256,13 +255,6 @@ const revoke = (admin: FleetEventAdmin) => {
   }
 }
 .event-admins__role {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  border-radius: var(--radius-control-bare, 6px);
-  background: rgba(74, 170, 170, 0.18);
-  color: var(--color-primary, #428bca);
   margin-right: auto;
 }
 .event-admins__form {

@@ -301,7 +301,22 @@
           "decline": "Ablehnen",
           "remove": "Entfernen",
           "editRole": "Rolle bearbeiten",
-          "editNickname": "Spitzname bearbeiten"
+          "editNickname": "Spitzname bearbeiten",
+          "health": {
+            "open": "Mitglieder-Zustand",
+            "showAll": "Alle %{count} anzeigen",
+            "inviteLinks": "Einladungslinks",
+            "discordSettings": "Discord-Einstellungen",
+            "verifyOrg": "RSI-Organisation verifizieren",
+            "remove": "Aus der Flotte entfernen",
+            "revoke": "Einladung zurückziehen",
+            "deleteLink": "Link löschen",
+            "promoteTo": "Zu %{role} befördern",
+            "addToSquadron": "Zur Staffel hinzufügen",
+            "addMembers": "Mitglieder hinzufügen",
+            "deleteSquadron": "Auflösen",
+            "remind": "An Verifizierung erinnern"
+          }
         },
         "inviteUrls": {
           "create": "Neue Einladungs-URL erstellen"

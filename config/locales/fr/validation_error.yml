@@ -50,6 +50,7 @@ fr:
       destroy: Impossible de retirer le membre de la flotte.
       update: Impossible de mettre à jour le membre de la flotte.
       demote: Impossible de rétrograder le membre de la flotte.
+      remind_verification: "Le rappel de vérification n'a pas pu être envoyé."
     fleet_memberships:
       create: L'invitation à la flotte n'a pas pu être utilisée
       destroy: Impossible de quitter la flotte.
@@ -58,6 +59,8 @@ fr:
       demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
         rôle de flotte permanent.
       update: Impossible de mettre à jour l'adhésion à la flotte.
+      nothing_to_verify: "Ce membre n'a plus rien à vérifier auprès de l'organisation RSI de la flotte."
+      verification_recently_reminded: "Ce membre a reçu un rappel il y a moins d'une semaine."
     markdown_image:
       create: "L'image n'a pas pu être téléversée."
     hangar_group:
@@ -261,11 +264,9 @@ fr:
     location:
       update: Impossible de mettre à jour le lieu.
     commodity:
-      create: Impossible de créer la marchandise.
       destroy: Impossible de supprimer la marchandise.
       update: Impossible de mettre à jour la marchandise.
     equipment:
-      create: Impossible de créer l'équipement.
       destroy: Impossible de supprimer l'équipement.
       update: Impossible de mettre à jour l'équipement.
     fleet_event_admins:
