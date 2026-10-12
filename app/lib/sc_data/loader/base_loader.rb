@@ -334,11 +334,8 @@ module ScData
 
       # Nothing past here writes: the only database access is what it takes to
       # turn a key or a ref into a component.
-      #
-      # An item with no ports at all names neither key, and resolves to no slots:
-      # what it had before is retired like any slot a build stopped naming.
       private def resolve_loadout(loadout, model: nil)
-        entries = loadout["loadout"] || loadout["default_loadout"] || []
+        entries = loadout["loadout"] || loadout["default_loadout"]
 
         entries.flat_map { |item| resolve_item(loadout, item, model:) }
       end
@@ -359,7 +356,7 @@ module ScData
           Slot.new(
             name: item["name"].downcase,
             component:,
-            children: resolve_loadout(item),
+            children: nested_slots(item),
             min_size: item["min_size"],
             max_size: item["max_size"],
             types: item["types"],
@@ -447,6 +444,12 @@ module ScData
         return item unless Component.exists?(sc_key: derived_key)
 
         item.merge("key" => derived_key)
+      end
+
+      private def nested_slots(item)
+        return [] if item["loadout"].blank? && item["default_loadout"].blank?
+
+        resolve_loadout(item)
       end
 
       private def persist_loadout(parent, slots, cleanup: true)

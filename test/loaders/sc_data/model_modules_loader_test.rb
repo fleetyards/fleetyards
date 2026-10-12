@@ -62,6 +62,19 @@ module ScData
         assert_not_nil model_module.builds.sole
       end
 
+      # No ports is an empty loadout, not a skipped one: what an earlier load of
+      # the same build gave the module is retired.
+      test "#load_model_module retires the slots of a module whose item has no loadout" do
+        model_module = create(:model_module, sc_key: "RSI_Apollo_Module_Left_Tier_2")
+        stale = create(:hardpoint, parent: model_module, sc_name: "stale", source: :game_files, with_build: false)
+        stale.builds.create!(environment: fixture_source.environment, version: fixture_source.version)
+
+        fixture_loader(::ScData::Loader::ModelModulesLoader).load_model_module(model_module)
+
+        assert Hardpoint.exists?(stale.id)
+        assert_empty HardpointBuild.current(fixture_source).where(hardpoint: stale)
+      end
+
       # --- Builds -------------------------------------------------------------
 
       test "#load_model_module writes a build row for the source it is loading" do
