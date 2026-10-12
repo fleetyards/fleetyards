@@ -51,6 +51,9 @@ const healthWith = (
   overrides: Partial<FleetMemberHealth> = {},
 ): FleetMemberHealth => ({
   inactiveDays: 30,
+  inactiveSince: "2026-09-12",
+  requestedBefore: "2026-10-05",
+  invitedBefore: "2026-09-28",
   fleetRsiVerified: true,
   rsiMemberCount: null,
   memberCount: 10,

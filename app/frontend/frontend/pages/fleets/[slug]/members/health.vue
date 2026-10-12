@@ -80,7 +80,7 @@ const canCheckHealth = computed(
 );
 
 const { data: health, ...asyncStatus } = useFleetMemberHealth(
-  props.fleet.slug,
+  () => props.fleet.slug,
   params,
   {
     query: {
@@ -160,26 +160,37 @@ const checkText = (check: MemberHealthCheck, part: string) =>
 const descriptionFor = (check: MemberHealthCheck) =>
   check.key === "unverified" ? checkText(check, "description") : undefined;
 
-const membersLink = (query: Record<string, string>) => ({
+const membersLink = (query: Record<string, string | string[]>) => ({
   name: "fleet-members-index",
   params: { slug: props.fleet.slug },
   query,
 });
 
-// The full lists live on the members page, filtered the same way.
+// The full lists live on the members page, filtered the same way. The days
+// come from the API, so the list asks for the same ones the count did.
 const moreLinks = computed<Partial<Record<MemberHealthCheckKey, object>>>(
   () => ({
     unverified: membersLink({ verifiedEq: "false" }),
     noHandle: membersLink({ withoutRsiHandle: "true" }),
-    // The UTC day the API counted from, so the list matches the count.
-    inactive: membersLink({
-      inactiveSince: new Date(Date.now() - days.value * 86_400_000)
-        .toISOString()
-        .slice(0, 10),
-      s: "lastActiveAt asc",
+    // Not while a new threshold loads: the answer on screen is the old one.
+    ...(health.value?.inactiveDays === days.value && {
+      inactive: membersLink({
+        inactiveSince: health.value.inactiveSince,
+        s: "lastActiveAt asc",
+      }),
     }),
-    joinRequests: membersLink({ view: "invites" }),
-    invitations: membersLink({ view: "invites" }),
+    ...(health.value && {
+      joinRequests: membersLink({
+        view: "invites",
+        stateIn: ["requested"],
+        requestedAtLteq: health.value.requestedBefore,
+      }),
+      invitations: membersLink({
+        view: "invites",
+        stateIn: ["invited"],
+        invitedAtLteq: health.value.invitedBefore,
+      }),
+    }),
     discord: membersLink({ withoutDiscord: "true" }),
     noSquadron: membersLink({ withoutSquadron: "true" }),
   }),
@@ -324,7 +335,7 @@ const orgGap = computed(() => {
 });
 
 // What resolves each row: see MemberActions.
-const actionsFor = (
+const checkActions = (
   check: MemberHealthCheck,
   member: FleetMemberHealthMember,
 ): MemberHealthAction[] => {
@@ -351,6 +362,22 @@ const actionsFor = (
     default:
       return [];
   }
+};
+
+// The permanent role cannot be removed, and its last holder cannot be demoted
+// either.
+const actionsFor = (
+  check: MemberHealthCheck,
+  member: FleetMemberHealthMember,
+): MemberHealthAction[] => {
+  const actions = checkActions(check, member);
+  if (!member.admin) return actions;
+
+  const lastAdmin = (health.value?.admins.totalCount ?? 0) <= 1;
+
+  return actions.filter(
+    (action) => action !== "remove" && !(action === "demote" && lastAdmin),
+  );
 };
 
 const adminRoleName = computed(

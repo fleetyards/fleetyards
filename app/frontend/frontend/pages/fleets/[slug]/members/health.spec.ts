@@ -50,6 +50,7 @@ const member = (
   id: username,
   username,
   leader: false,
+  admin: false,
   verificationGap: null,
   fleetRole: { id: "r", name: "Member", slug: "member" },
   ...overrides,
@@ -67,6 +68,9 @@ const healthWith = (
   overrides: Partial<FleetMemberHealth> = {},
 ): FleetMemberHealth => ({
   inactiveDays: 30,
+  inactiveSince: "2026-09-12",
+  requestedBefore: "2026-10-05",
+  invitedBefore: "2026-09-28",
   fleetRsiVerified: true,
   rsiMemberCount: null,
   memberCount: 10,
@@ -255,8 +259,29 @@ describe("FleetMembersHealthPage", () => {
     const href = subject
       .find("[data-test='health-inactive-all']")
       .attributes("href");
-    expect(href).toContain("inactiveSince=");
+    expect(href).toContain("inactiveSince=2026-09-12");
     expect(href).toContain("lastActiveAt+asc");
+  });
+
+  it("links waiting requests and invitations to just those", async () => {
+    health = healthWith({
+      waitingJoinRequests: section([member("asker")], 8),
+      unansweredInvitations: section([member("invitee")], 6),
+    });
+
+    const subject = await mount();
+
+    const requests = subject
+      .find("[data-test='health-joinRequests-all']")
+      .attributes("href");
+    expect(requests).toContain("stateIn=requested");
+    expect(requests).toContain("requestedAtLteq=2026-10-05");
+
+    const invitations = subject
+      .find("[data-test='health-invitations-all']")
+      .attributes("href");
+    expect(invitations).toContain("stateIn=invited");
+    expect(invitations).toContain("invitedAtLteq=2026-09-28");
   });
 
   it("says why each member is not verified", async () => {
@@ -416,6 +441,50 @@ describe("FleetMembersHealthPage", () => {
         .find("[data-test='health-inactive-gone'] [data-test='health-demote']")
         .exists(),
     ).toBe(false);
+  });
+
+  // The permanent role cannot be removed, and its last holder not demoted.
+  it("offers an inactive admin neither removal nor a last-admin demotion", async () => {
+    health = healthWith({
+      admins: {
+        ...section([member("aria", { leader: true, admin: true })]),
+        candidates: [],
+      },
+      inactiveMembers: section([member("aria", { leader: true, admin: true })]),
+    });
+
+    const subject = await mount();
+    const row = subject.find("[data-test='health-inactive-aria']");
+
+    expect(row.find("[data-test='health-remove']").exists()).toBe(false);
+    expect(row.find("[data-test='health-demote']").exists()).toBe(false);
+  });
+
+  it("offers no removal to an admin missing from the RSI org", async () => {
+    health = healthWith({
+      membersWithoutRsiHandle: null,
+      unverifiedMembers: section([
+        member("aria", { admin: true, verificationGap: "org_not_listed" }),
+      ]),
+    });
+
+    const subject = await mount();
+    const row = subject.find("[data-test='health-unverified-aria']");
+
+    expect(row.find("[data-test='health-remind']").exists()).toBe(true);
+    expect(row.find("[data-test='health-remove']").exists()).toBe(false);
+  });
+
+  it("offers an inactive admin demotion while another admin is left", async () => {
+    health = healthWith({
+      inactiveMembers: section([member("aria", { leader: true, admin: true })]),
+    });
+
+    const subject = await mount();
+    const row = subject.find("[data-test='health-inactive-aria']");
+
+    expect(row.find("[data-test='health-remove']").exists()).toBe(false);
+    expect(row.find("[data-test='health-demote']").exists()).toBe(true);
   });
 
   it("asks an unverified member to verify, once a week", async () => {
