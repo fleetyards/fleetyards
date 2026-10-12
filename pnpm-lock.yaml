@@ -135,8 +135,8 @@ importers:
         specifier: ^1.1.7
         version: 1.1.7(vue@3.5.43(typescript@6.0.3))
       '@event-calendar/core':
-        specifier: ^5.16.0
-        version: 5.16.0(@typescript-eslint/types@8.70.0)
+        specifier: ^5.17.0
+        version: 5.17.0(@typescript-eslint/types@8.70.0)
       '@floating-ui/dom':
         specifier: ^1.8.0
         version: 1.8.0
@@ -1503,8 +1503,8 @@ packages:
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@event-calendar/core@5.16.0':
-    resolution: {integrity: sha512-SibWiN0OXizSpn3QJxRD0E1ozDe+/z5MmiMk7SzeMmO+Li/xcBUsDXiSD/rfw0s0dfCHqW/RRTI8SJP/l44pQg==}
+  '@event-calendar/core@5.17.0':
+    resolution: {integrity: sha512-FeNSnK5et1jkpGQMWxEev6W94fv24WAw/zDuE0E8vqQ7gVdCgWJmIn3w94Mee3G42sEG1iKgoxDHoXj7X0uoHg==}
 
   '@exodus/bytes@1.15.1':
     resolution: {integrity: sha512-S6mL0yNB/Abt9Ei4tq8gDhcczc4S3+vQ4ra7vxnAf+YHC02srtqxKKZghx2Dq6p0e66THKwR6r8N6P95wEty7Q==}
@@ -6676,6 +6676,10 @@ packages:
     resolution: {integrity: sha512-NdbDn7fl4be1ViUG0oq/lvG6OZy3oENolV2ONjiqqsfVoeAfzaQAKUcEX3MrQod/Bebv1PgwET9rfXhgn9s4Kg==}
     engines: {node: '>=18'}
 
+  svelte@5.57.2:
+    resolution: {integrity: sha512-1YiPCAXT0Ct6g1vOMmSLa0Nsc3QRMvtDF32ihgglGVrugIuIK38RyDiFNXVDhtQ81TJjSO57NdMw6DyYLqSGDQ==}
+    engines: {node: '>=18'}
+
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
@@ -8698,9 +8702,9 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@event-calendar/core@5.16.0(@typescript-eslint/types@8.70.0)':
+  '@event-calendar/core@5.17.0(@typescript-eslint/types@8.70.0)':
     dependencies:
-      svelte: 5.57.0(@typescript-eslint/types@8.70.0)
+      svelte: 5.57.2(@typescript-eslint/types@8.70.0)
     transitivePeerDependencies:
       - '@typescript-eslint/types'
 
@@ -14097,6 +14101,27 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svelte@5.57.0(@typescript-eslint/types@8.70.0):
+    dependencies:
+      '@jridgewell/remapping': 2.3.5
+      '@jridgewell/sourcemap-codec': 1.6.0
+      '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
+      '@types/estree': 1.0.9
+      acorn: 8.18.0
+      aria-query: 5.3.1
+      axobject-query: 4.1.0
+      clsx: 2.1.1
+      devalue: 5.9.2
+      esm-env: 1.2.2
+      esrap: 2.3.7(@typescript-eslint/types@8.70.0)
+      is-reference: 3.0.3
+      locate-character: 3.0.0
+      magic-string: 0.30.21
+      zimmerframe: 1.1.5
+    transitivePeerDependencies:
+      - '@typescript-eslint/types'
+    optional: true
+
+  svelte@5.57.2(@typescript-eslint/types@8.70.0):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
