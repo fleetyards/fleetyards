@@ -7,12 +7,10 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
-import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
+import ContactLinks from "@/frontend/components/StatsCard/ContactLinks/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type StatsCardBadge,
-  type StatsCardStatus,
-} from "@/frontend/components/StatsCard/types";
+import { type StatsCardStatus } from "@/frontend/components/StatsCard/types";
+import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 import { type FleetMember } from "@/services/fyApi";
 
 type Props = {
@@ -67,7 +65,9 @@ const status = computed<StatsCardStatus | undefined>(() => {
       };
 });
 
-const badges = computed<StatsCardBadge[]>(() => {
+// The card's two-column rows, label above value: as a strip of equal badges
+// four facts left a long location one letter wide.
+const stats = computed<HardpointStat[]>(() => {
   const member = props.member;
   if (!member) return [];
 
@@ -75,33 +75,26 @@ const badges = computed<StatsCardBadge[]>(() => {
 
   return [
     member.acceptedAt && {
-      key: "joined",
       label: t("labels.fleet.members.joined"),
       value: l(member.acceptedAt, "datetime.formats.date"),
     },
     {
-      key: "lastActive",
       label: t("labels.user.lastActiveAt"),
       value: member.lastActiveAt
         ? timeDistance(member.lastActiveAt)
         : t("labels.fleet.members.health.facts.neverActive"),
     },
     squadron && {
-      key: "squadron",
       label: t("labels.fleet.members.card.squadron"),
       value: squadron.name,
     },
     member.currentSystem && {
-      key: "location",
       label: t("labels.user.currentSystem"),
       value: member.currentSystem,
+      wide: true,
     },
-  ].filter(Boolean) as StatsCardBadge[];
+  ].filter(Boolean) as HardpointStat[];
 });
-
-const contactable = computed(
-  () => !!props.member?.rsiHandle || !!props.member?.discordProfileUrl,
-);
 </script>
 
 <template>
@@ -112,15 +105,15 @@ const contactable = computed(
     :category="member?.fleetRole?.name"
     :subtitle="subtitle"
     :status="status"
-    :image="member?.avatar?.mediumUrl"
-    :badges="badges"
+    :stats="stats"
     :to="to === false ? undefined : to"
     :loading="loading"
     :unavailable="!loading && !member"
     @navigate="emit('navigate')"
   >
-    <template v-if="contactable && member" #rows>
-      <MemberContactMenu :member="member" />
-    </template>
+    <ContactLinks
+      :rsi-handle="member?.rsiHandle"
+      :discord-url="member?.discordProfileUrl"
+    />
   </StatsCard>
 </template>
