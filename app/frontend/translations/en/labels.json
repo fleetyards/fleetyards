@@ -1248,7 +1248,19 @@
         "landedBeam": "Landed beam",
         "landedHeight": "Landed height",
         "landedFleetchartOffsetLength": "Landed Fleetchart Offset Length",
-        "landedFleetchartOffsetBeam": "Landed Fleetchart Offset Beam"
+        "landedFleetchartOffsetBeam": "Landed Fleetchart Offset Beam",
+        "owners": {
+          "title": "In your circle",
+          "yourShips": "Your ships",
+          "friends": "Friends",
+          "fleets": "Your fleets",
+          "more": "+%{count} more",
+          "empty": "Nobody you know has one yet.",
+          "fleetShips": {
+            "one": "%{count} ship",
+            "other": "%{count} ships"
+          }
+        }
       },
       "models": {
         "extraColumns": "Columns",

@@ -1248,7 +1248,19 @@
         "landedBeam": "Larghezza a terra",
         "landedHeight": "Altezza a terra",
         "landedFleetchartOffsetLength": "Scostamento lunghezza atterrato",
-        "landedFleetchartOffsetBeam": "Scostamento larghezza atterrato"
+        "landedFleetchartOffsetBeam": "Scostamento larghezza atterrato",
+        "owners": {
+          "title": "Nella tua cerchia",
+          "yourShips": "Le tue navi",
+          "friends": "Amici",
+          "fleets": "Le tue flotte",
+          "more": "+%{count} altri",
+          "empty": "Nessuno che conosci ne ha ancora uno.",
+          "fleetShips": {
+            "one": "%{count} nave",
+            "other": "%{count} navi"
+          }
+        }
       },
       "models": {
         "extraColumns": "Colonne",
