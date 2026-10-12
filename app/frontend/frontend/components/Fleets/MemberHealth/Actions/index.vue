@@ -8,7 +8,8 @@ export default {
 import { storeToRefs } from "pinia";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -159,6 +160,21 @@ const revoke = () =>
     declineMutation.mutateAsync(variables.value),
   );
 
+const promoteLabel = computed(() =>
+  props.promoteTo
+    ? t("actions.fleet.members.health.promoteTo", { role: props.promoteTo })
+    : t("actions.fleet.members.promote"),
+);
+
+// Says when, once sent: the button stays off for the week.
+const remindLabel = computed(() =>
+  remindedRecently.value && props.member.verificationRemindedAt
+    ? t("labels.fleet.members.health.remindedAt", {
+        distance: timeDistance(props.member.verificationRemindedAt),
+      })
+    : t("actions.fleet.members.health.remind"),
+);
+
 const remind = () =>
   run("labels.fleet.members.health.reminded", () =>
     remindMutation.mutateAsync(variables.value),
@@ -185,121 +201,124 @@ const addToSquadron = (squadron: FleetSquadron) =>
 </script>
 
 <template>
-  <template v-if="shown('answer')">
-    <Btn
-      :size="BtnSizesEnum.SM"
-      :loading="busy"
-      :disabled="busy"
-      data-test="health-accept"
-      @click="accept"
-    >
-      {{ t("actions.fleet.members.accept") }}
-    </Btn>
-    <Btn
-      :size="BtnSizesEnum.SM"
-      :disabled="busy"
-      data-test="health-decline"
-      @click="decline"
-    >
-      {{ t("actions.fleet.members.decline") }}
-    </Btn>
-  </template>
-  <Btn
-    v-if="shown('promote')"
-    :size="BtnSizesEnum.SM"
-    :disabled="busy"
-    data-test="health-promote"
-    @click="promote"
-  >
-    <i class="fa-light fa-chevron-up" />
-    {{
-      promoteTo
-        ? t("actions.fleet.members.health.promoteTo", { role: promoteTo })
-        : t("actions.fleet.members.promote")
-    }}
-  </Btn>
-  <BtnDropdown
-    v-if="shown('addToSquadron')"
-    :size="BtnSizesEnum.SM"
-    expand-left
-    expand-bottom
-    data-test="health-add-to-squadron"
-  >
-    <template #label>
-      <i class="fa-light fa-users-medical" />
-      {{ t("actions.fleet.members.health.addToSquadron") }}
+  <!-- Icons with their names as tooltips: a row keeps its actions on its own
+       line in a half-width column, where labelled buttons wrapped under it. -->
+  <BtnGroup>
+    <template v-if="shown('answer')">
+      <Btn
+        v-tooltip="t('actions.fleet.members.accept')"
+        :aria-label="t('actions.fleet.members.accept')"
+        :size="BtnSizesEnum.SM"
+        :loading="busy"
+        :disabled="busy"
+        data-test="health-accept"
+        @click="accept"
+      >
+        <i class="fa-light fa-check" />
+      </Btn>
+      <Btn
+        v-tooltip="t('actions.fleet.members.decline')"
+        :aria-label="t('actions.fleet.members.decline')"
+        :size="BtnSizesEnum.SM"
+        :disabled="busy"
+        data-test="health-decline"
+        @click="decline"
+      >
+        <i class="fa-light fa-xmark" />
+      </Btn>
     </template>
     <Btn
-      v-for="squadron in squadrons"
-      :key="squadron.id"
+      v-if="shown('promote')"
+      v-tooltip="promoteLabel"
+      :aria-label="promoteLabel"
       :size="BtnSizesEnum.SM"
       :disabled="busy"
-      :data-test="`health-add-to-squadron-${squadron.slug}`"
-      @click="addToSquadron(squadron)"
+      data-test="health-promote"
+      @click="promote"
     >
-      {{ squadron.name }}
+      <i class="fa-light fa-chevron-up" />
     </Btn>
-  </BtnDropdown>
-  <Btn
-    v-if="shown('demote')"
-    :size="BtnSizesEnum.SM"
-    :disabled="busy"
-    data-test="health-demote"
-    @click="demote"
-  >
-    <i class="fa-light fa-chevron-down" />
-    {{ t("actions.fleet.members.demote") }}
-  </Btn>
-  <Btn
-    v-if="shown('remind')"
-    v-tooltip="
-      remindedRecently && member.verificationRemindedAt
-        ? t('labels.fleet.members.health.remindedAt', {
-            distance: timeDistance(member.verificationRemindedAt),
-          })
-        : undefined
-    "
-    :size="BtnSizesEnum.SM"
-    :disabled="busy || remindedRecently"
-    data-test="health-remind"
-    @click="remind"
-  >
-    <i class="fa-light fa-bell" />
-    {{
-      remindedRecently
-        ? t("actions.fleet.members.health.reminded")
-        : t("actions.fleet.members.health.remind")
-    }}
-  </Btn>
-  <BtnDropdown
-    v-if="shown('contact')"
-    :size="BtnSizesEnum.SM"
-    expand-left
-    expand-bottom
-    data-test="health-contact"
-  >
-    <template #label>
-      <i class="fa-light fa-message" />
-      {{ t("labels.fleet.members.contact") }}
-    </template>
-    <MemberContactMenu :member="contact" />
-  </BtnDropdown>
-  <Btn
-    v-if="shown('revoke')"
-    :size="BtnSizesEnum.SM"
-    :disabled="busy"
-    data-test="health-revoke"
-    @click="revoke"
-  >
-    {{ t("actions.fleet.members.health.revoke") }}
-  </Btn>
-  <Btn
-    v-if="shown('remove')"
-    :size="BtnSizesEnum.SM"
-    :disabled="busy"
-    data-test="health-remove"
-    @click="remove"
-  >
-    {{ t("actions.fleet.members.health.remove") }}
-  </Btn>
+    <BtnDropdown
+      v-if="shown('addToSquadron')"
+      v-tooltip="t('actions.fleet.members.health.addToSquadron')"
+      :aria-label="t('actions.fleet.members.health.addToSquadron')"
+      :size="BtnSizesEnum.SM"
+      expand-left
+      expand-bottom
+      data-test="health-add-to-squadron"
+    >
+      <template #label>
+        <i class="fa-light fa-users-medical" />
+      </template>
+      <Btn
+        v-for="squadron in squadrons"
+        :key="squadron.id"
+        :size="BtnSizesEnum.SM"
+        :disabled="busy"
+        :data-test="`health-add-to-squadron-${squadron.slug}`"
+        @click="addToSquadron(squadron)"
+      >
+        {{ squadron.name }}
+      </Btn>
+    </BtnDropdown>
+    <Btn
+      v-if="shown('remind')"
+      v-tooltip="remindLabel"
+      :aria-label="remindLabel"
+      :size="BtnSizesEnum.SM"
+      :disabled="busy || remindedRecently"
+      data-test="health-remind"
+      @click="remind"
+    >
+      <i class="fa-light fa-bell" />
+    </Btn>
+    <BtnDropdown
+      v-if="shown('contact')"
+      v-tooltip="t('labels.fleet.members.contact')"
+      :aria-label="t('labels.fleet.members.contact')"
+      :size="BtnSizesEnum.SM"
+      expand-left
+      expand-bottom
+      data-test="health-contact"
+    >
+      <template #label>
+        <i class="fa-light fa-message" />
+      </template>
+      <MemberContactMenu :member="contact" />
+    </BtnDropdown>
+    <Btn
+      v-if="shown('demote')"
+      v-tooltip="t('actions.fleet.members.demote')"
+      :aria-label="t('actions.fleet.members.demote')"
+      :size="BtnSizesEnum.SM"
+      :disabled="busy"
+      data-test="health-demote"
+      @click="demote"
+    >
+      <i class="fa-light fa-chevron-down" />
+    </Btn>
+    <Btn
+      v-if="shown('revoke')"
+      v-tooltip="t('actions.fleet.members.health.revoke')"
+      :aria-label="t('actions.fleet.members.health.revoke')"
+      :size="BtnSizesEnum.SM"
+      :disabled="busy"
+      data-test="health-revoke"
+      @click="revoke"
+    >
+      <i class="fa-light fa-user-xmark" />
+    </Btn>
+    <Btn
+      v-if="shown('remove')"
+      v-tooltip="t('actions.fleet.members.health.remove')"
+      :aria-label="t('actions.fleet.members.health.remove')"
+      :size="BtnSizesEnum.SM"
+      :tone="BtnTonesEnum.DANGER"
+      :disabled="busy"
+      data-test="health-remove"
+      @click="remove"
+    >
+      <i class="fa-light fa-user-minus" />
+    </Btn>
+  </BtnGroup>
 </template>

@@ -315,8 +315,7 @@
             "addToSquadron": "Añadir a un escuadrón",
             "addMembers": "Añadir miembros",
             "deleteSquadron": "Disolver",
-            "remind": "Recordar verificar",
-            "reminded": "Recordado"
+            "remind": "Recordar verificar"
           }
         },
         "inviteUrls": {

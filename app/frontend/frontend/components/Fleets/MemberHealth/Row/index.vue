@@ -23,7 +23,7 @@ type Props = {
   factLoud?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   avatar: undefined,
   mark: undefined,
@@ -34,6 +34,11 @@ withDefaults(defineProps<Props>(), {
   factSub: undefined,
   factLoud: false,
 });
+
+// The fact the check is about leads; the rest follows it on the same line.
+const details = computed(() =>
+  [props.factSub, props.subline].filter(Boolean).join(" · "),
+);
 </script>
 
 <template>
@@ -42,23 +47,31 @@ withDefaults(defineProps<Props>(), {
       {{ mark }}
     </span>
     <Avatar v-else :avatar="avatar" size="small" />
-    <span class="health-row__name">
-      <router-link v-if="to" :to="to" class="health-row__title">
-        {{ title }}
-      </router-link>
-      <span v-else class="health-row__title">{{ title }}</span>
-      <span v-if="subline" class="health-row__subline">{{ subline }}</span>
-    </span>
-    <span
-      v-if="chip"
-      class="health-row__chip"
-      :class="{ 'health-row__chip--loud': chipLoud }"
-    >
-      {{ chip }}
-    </span>
-    <span v-if="fact" class="health-row__fact">
-      <span :class="{ 'health-row__fact--loud': factLoud }">{{ fact }}</span>
-      <span v-if="factSub" class="health-row__fact-sub">{{ factSub }}</span>
+    <span class="health-row__main">
+      <span class="health-row__head">
+        <router-link v-if="to" :to="to" class="health-row__title">
+          {{ title }}
+        </router-link>
+        <span v-else class="health-row__title">{{ title }}</span>
+        <span
+          v-if="chip"
+          class="health-row__chip"
+          :class="{ 'health-row__chip--loud': chipLoud }"
+        >
+          {{ chip }}
+        </span>
+      </span>
+      <span v-if="fact || details" class="health-row__meta">
+        <span
+          v-if="fact"
+          class="health-row__fact"
+          :class="{ 'health-row__fact--loud': factLoud }"
+        >
+          {{ fact }}
+        </span>
+        <span v-if="fact && details" aria-hidden="true"> · </span>
+        <span v-if="details">{{ details }}</span>
+      </span>
     </span>
     <span v-if="$slots.actions" class="health-row__actions">
       <slot name="actions" />
@@ -67,11 +80,12 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
+// One line per member however narrow the column: the text gives way and
+// truncates, the actions never wrap under it.
 .health-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 8px 14px;
+  gap: 12px;
   padding: 10px 20px;
   border-bottom: 1px solid rgb(122 130 136 / 0.15);
 
@@ -94,10 +108,18 @@ withDefaults(defineProps<Props>(), {
   font-weight: 700;
 }
 
-.health-row__name {
+.health-row__main {
   display: flex;
-  flex: 1 1 180px;
+  flex: 1 1 auto;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.health-row__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -109,15 +131,9 @@ withDefaults(defineProps<Props>(), {
   white-space: nowrap;
 }
 
-.health-row__subline,
-.health-row__fact-sub {
-  color: var(--color-text-dim, #959595);
-  font-size: 12px;
-}
-
 .health-row__chip {
   flex: 0 0 auto;
-  padding: 2px 8px;
+  padding: 0 6px;
   border: 1px solid rgb(122 130 136 / 0.4);
   border-radius: 3px;
   font-size: 12px;
@@ -129,12 +145,16 @@ withDefaults(defineProps<Props>(), {
   font-weight: 700;
 }
 
+.health-row__meta {
+  overflow: hidden;
+  color: var(--color-text-dim, #959595);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .health-row__fact {
-  display: flex;
-  flex: 0 1 240px;
-  flex-direction: column;
-  font-size: 13px;
-  text-align: right;
+  color: var(--color-text, #c8c8c8);
 }
 
 .health-row__fact--loud {

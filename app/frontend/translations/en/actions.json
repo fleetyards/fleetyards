@@ -315,8 +315,7 @@
             "addToSquadron": "Add to squadron",
             "addMembers": "Add members",
             "deleteSquadron": "Disband",
-            "remind": "Remind to verify",
-            "reminded": "Reminded"
+            "remind": "Remind to verify"
           }
         },
         "inviteUrls": {

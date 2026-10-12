@@ -510,12 +510,18 @@ const crumbs = computed<Crumb[]>(() => [
                   <Btn
                     v-for="step in DAY_STEPS"
                     :key="step"
+                    v-tooltip="
+                      t('labels.fleet.members.health.days', { count: step })
+                    "
+                    :aria-label="
+                      t('labels.fleet.members.health.days', { count: step })
+                    "
                     :size="BtnSizesEnum.SM"
                     :to="daysLink(step)"
                     :active="days === step"
                     :data-test="`health-days-${step}`"
                   >
-                    {{ t("labels.fleet.members.health.days", { count: step }) }}
+                    {{ step }}
                   </Btn>
                 </BtnGroup>
               </template>

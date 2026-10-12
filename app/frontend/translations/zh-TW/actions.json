@@ -315,8 +315,7 @@
             "addToSquadron": "加入中隊",
             "addMembers": "新增成員",
             "deleteSquadron": "解散",
-            "remind": "提醒驗證",
-            "reminded": "已提醒"
+            "remind": "提醒驗證"
           }
         },
         "inviteUrls": {
