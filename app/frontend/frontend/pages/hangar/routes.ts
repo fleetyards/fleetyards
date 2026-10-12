@@ -1,9 +1,15 @@
 import type { RouteLocationNormalized, RouteRecordRaw } from "vue-router";
-import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
+import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[username]/[segment]/routes";
 import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
-import { FeatureFlagName } from "@/services/fyApi";
+import { FeatureFlagName, getShowVehicleQueryOptions } from "@/services/fyApi";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
+import { useSessionStore } from "@/frontend/stores/session";
+import {
+  VEHICLE_SEGMENT_PATTERN,
+  type VehicleRouteName,
+  vehicleRoute,
+} from "@/frontend/utils/vehicleSegment";
 
 // The overview is the ship's front page once it is rolled out; until then the
 // loadouts are. A redirect cannot wait for the flags, so the index decides
@@ -23,6 +29,43 @@ const vehicleIndexGuard = async (to: RouteLocationNormalized) => {
 
   return { name, params: to.params, query: to.query, replace: true };
 };
+
+// Vehicle pages are their owner's alone. Signed out, the session guard sends
+// the visitor to log in first, so only a signed-in reader is turned away here.
+const vehicleOwnerGuard = (to: RouteLocationNormalized) => {
+  const username = useSessionStore().currentUser?.username;
+  const owner = String(to.params.username);
+
+  if (!username || owner.toLowerCase() === username.toLowerCase()) return;
+
+  return { name: "hangar-public", params: { username: owner } };
+};
+
+// Never rendered: the guard always leaves for the vehicle's current address.
+const legacyVehicleShell = () => import("@/frontend/pages/404.vue");
+
+const legacyVehicleGuard =
+  (name: VehicleRouteName, query: Record<string, string> = {}) =>
+  async (to: RouteLocationNormalized) => {
+    const username = useSessionStore().currentUser?.username;
+    if (!username) return;
+
+    try {
+      const vehicle = await ensureQueryData(
+        getShowVehicleQueryOptions(String(to.params.id)),
+      );
+      const { id: _id, ...params } = to.params as Record<string, string>;
+
+      return {
+        ...vehicleRoute(name, vehicle, username, params),
+        query: { ...to.query, ...query },
+        hash: to.hash,
+        replace: true,
+      };
+    } catch {
+      return { name: "404" };
+    }
+  };
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -214,9 +257,11 @@ export const routes: RouteRecordRaw[] = [
   // tab, and a single cargo position is a page you drill into rather than a
   // fifth place to stand. Same shape as /hangar/inventories/:inventory/:item.
   {
-    path: ":id/cargo/:item/",
+    path: `:username/:segment(${VEHICLE_SEGMENT_PATTERN})/cargo/:item/`,
     name: "hangar-vehicle-cargo-item",
-    component: () => import("@/frontend/pages/hangar/[id]/cargo/[item].vue"),
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/cargo/[item].vue"),
+    beforeEnter: vehicleOwnerGuard,
     meta: {
       needsAuthentication: true,
       title: "hangar.vehicleCargo",
@@ -226,13 +271,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: ":id/",
-    component: () => import("@/frontend/pages/hangar/[id].vue"),
+    path: `:username/:segment(${VEHICLE_SEGMENT_PATTERN})/`,
+    component: () => import("@/frontend/pages/hangar/[username]/[segment].vue"),
+    beforeEnter: vehicleOwnerGuard,
     children: [
       {
         path: "",
         name: "hangar-vehicle",
-        component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
+        component: () =>
+          import("@/frontend/pages/hangar/[username]/[segment]/loadouts.vue"),
         beforeEnter: vehicleIndexGuard,
       },
       ...vehicleRoutes,
@@ -240,5 +287,27 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
     },
+  },
+  // Where a vehicle lived before its address carried the owner: by id, or by a
+  // serial of any shape. Kept so bookmarks and shared links still arrive.
+  {
+    path: ":id/cargo/:item/",
+    component: legacyVehicleShell,
+    beforeEnter: legacyVehicleGuard("hangar-vehicle-cargo-item"),
+    meta: { needsAuthentication: true },
+  },
+  ...vehicleRoutes
+    .filter((tab) => tab.name)
+    .map((tab) => ({
+      path: `:id/${tab.path}`,
+      component: legacyVehicleShell,
+      beforeEnter: legacyVehicleGuard(tab.name as VehicleRouteName),
+      meta: { needsAuthentication: true },
+    })),
+  {
+    path: ":id/cargo/transactions/",
+    component: legacyVehicleShell,
+    beforeEnter: legacyVehicleGuard("hangar-vehicle-cargo", { tab: "log" }),
+    meta: { needsAuthentication: true },
   },
 ];

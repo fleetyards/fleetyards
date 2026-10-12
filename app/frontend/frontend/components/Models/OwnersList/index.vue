@@ -14,6 +14,7 @@ import {
   type ModelOwnerVehicle,
   useModelOwners,
 } from "@/services/fyApi";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   model: Model;
@@ -56,10 +57,10 @@ const empty = computed(
     !owners.value.fleets.length,
 );
 
-const vehicleRoute = (vehicle: ModelOwnerVehicle) => ({
-  name: "hangar-vehicle-overview",
-  params: { id: vehicle.serial || vehicle.id },
-});
+const toVehicle = useVehicleRoute();
+
+const vehicleRoute = (vehicle: ModelOwnerVehicle) =>
+  toVehicle("hangar-vehicle-overview", vehicle);
 
 // The router writes queries with qs, so a nested `q` filter survives the trip;
 // Vue Router's own query type only knows flat values.

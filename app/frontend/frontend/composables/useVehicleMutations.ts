@@ -210,6 +210,19 @@ export const useVehicleMutations = () => {
   // The vehicle page is addressed by id or by serial, so its query is cached
   // under whichever of the two the link carried.
   const invalidateVehiclePage = async (vehicle: Vehicle) => {
+    // A page still open under a serial the edit just replaced would refetch
+    // into a 404. It takes the answer instead, and the page then moves its
+    // address to the vehicle's new one.
+    queryClient.setQueriesData<Vehicle>(
+      {
+        queryKey: getShowVehicleQueryKey(vehicle.id).slice(0, 1),
+        predicate: (query) =>
+          query.queryKey.length === 2 &&
+          (query.state.data as Vehicle | undefined)?.id === vehicle.id,
+      },
+      (current) => (current ? { ...current, ...vehicle } : current),
+    );
+
     await Promise.all(
       [vehicle.id, vehicle.serial]
         .filter((identifier): identifier is string => !!identifier)

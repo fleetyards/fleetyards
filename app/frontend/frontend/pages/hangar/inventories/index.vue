@@ -33,6 +33,7 @@ import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -112,11 +113,13 @@ const stockItemRoute = (inventorySlug?: string, itemSlug?: string) => ({
   params: { inventory: inventorySlug, item: itemSlug },
 });
 
+const toVehicle = useVehicleRoute();
+
 // A ship inventory shares its slug with every other ship of that model, so it is
 // reached through the ship rather than through /hangar/inventories/:slug.
 const inventoryRoute = (inventory: HangarInventory) =>
   inventory.vehicle
-    ? { name: "hangar-vehicle-cargo", params: { id: inventory.vehicle.id } }
+    ? toVehicle("hangar-vehicle-cargo", inventory.vehicle)
     : { name: "hangar-inventory", params: { inventory: inventory.slug } };
 
 const openInventoryModal = (inventory?: HangarInventory) => {

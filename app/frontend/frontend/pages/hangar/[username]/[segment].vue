@@ -15,7 +15,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { checkFeatures } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
-import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
+import {
+  vehicleIdentifierFromSegment,
+  vehicleSegment,
+} from "@/frontend/utils/vehicleSegment";
+import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[username]/[segment]/routes";
 
 const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
@@ -46,9 +50,42 @@ const onOverview = computed(() => route.name === "hangar-vehicle-overview");
 
 const sessionStore = useSessionStore();
 
-const id = computed(() => route.params.id as string);
+const router = useRouter();
 
-const { data: vehicle, ...asyncStatus } = useShowVehicle(id);
+const segment = computed(() => String(route.params.segment ?? ""));
+
+// The route only matches a segment that leads with a serial or an id, so there
+// is always one to look up.
+const identifier = computed(
+  () => vehicleIdentifierFromSegment(segment.value) ?? segment.value,
+);
+
+const { data: vehicle, ...asyncStatus } = useShowVehicle(identifier);
+
+// A renamed ship, a serial added later or a hand-typed address all land here;
+// the address bar is put right once the vehicle is known.
+watch(
+  vehicle,
+  (current) => {
+    if (!current || !route.params.segment) return;
+
+    const username =
+      sessionStore.currentUser?.username ?? String(route.params.username);
+    const canonical = vehicleSegment(current);
+
+    if (canonical === segment.value && username === route.params.username) {
+      return;
+    }
+
+    void router.replace({
+      name: route.name,
+      params: { ...route.params, username, segment: canonical },
+      query: route.query,
+      hash: route.hash,
+    });
+  },
+  { immediate: true },
+);
 
 const vehicleName = computed(() => {
   if (!vehicle.value) return "";
@@ -72,7 +109,13 @@ const crumbs = computed<Crumb[]>(() => [
     ? []
     : [
         {
-          to: { name: "hangar-vehicle", params: { id: route.params.id } },
+          to: {
+            name: "hangar-vehicle",
+            params: {
+              username: route.params.username,
+              segment: route.params.segment,
+            },
+          },
           label: vehicleName.value,
         },
       ]),

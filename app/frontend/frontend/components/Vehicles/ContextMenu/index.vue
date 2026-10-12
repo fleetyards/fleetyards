@@ -20,6 +20,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
@@ -230,20 +231,17 @@ const pageShortcutsVisible = computed(
   () => vehicleOverviewVisible.value && !props.onVehiclePage,
 );
 
-const logRoute = computed(() => ({
-  name: "hangar-vehicle-log",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const toVehicle = useVehicleRoute();
 
-const loadoutsRoute = computed(() => ({
-  name: "hangar-vehicle-loadouts",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const logRoute = computed(() => toVehicle("hangar-vehicle-log", props.vehicle));
 
-const cargoRoute = computed(() => ({
-  name: "hangar-vehicle-cargo",
-  params: { id: props.vehicle.serial || props.vehicle.id },
-}));
+const loadoutsRoute = computed(() =>
+  toVehicle("hangar-vehicle-loadouts", props.vehicle),
+);
+
+const cargoRoute = computed(() =>
+  toVehicle("hangar-vehicle-cargo", props.vehicle),
+);
 
 const loadoutsVisible = computed(
   () => props.editable && !props.onVehiclePage && props.vehicle.model?.inGame,

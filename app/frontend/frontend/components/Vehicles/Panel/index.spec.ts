@@ -89,22 +89,22 @@ const router = createRouter({
     },
     // An editable panel carries the ship's menu, which links to every tab.
     {
-      path: "/hangar/:id/overview",
+      path: "/hangar/:username/:segment/overview",
       name: "hangar-vehicle-overview",
       component: { template: "<div />" },
     },
     {
-      path: "/hangar/:id/log",
+      path: "/hangar/:username/:segment/log",
       name: "hangar-vehicle-log",
       component: { template: "<div />" },
     },
     {
-      path: "/hangar/:id/loadouts",
+      path: "/hangar/:username/:segment/loadouts",
       name: "hangar-vehicle-loadouts",
       component: { template: "<div />" },
     },
     {
-      path: "/hangar/:id/cargo",
+      path: "/hangar/:username/:segment/cargo",
       name: "hangar-vehicle-cargo",
       component: { template: "<div />" },
     },
@@ -122,6 +122,7 @@ const mount = async (props: {
   await router.isReady();
 
   return mountWithDefaults<typeof Component>(Component, {
+    initialState: { session: { currentUser: { username: "me" } } },
     props,
     plugins: [router],
   });
@@ -139,11 +140,13 @@ describe("VehiclesPanel", () => {
     vehicleOverviewEnabled.value = true;
 
     const wrapper = await mount({
-      vehicle: vehicle({ serial: "IC-021" }),
+      vehicle: vehicle({ serial: "IC-0210-AB" }),
       editable: true,
     });
 
-    expect(titleHref(wrapper)).toContain("/hangar/IC-021/overview");
+    expect(titleHref(wrapper)).toContain(
+      "/hangar/me/ic-0210-ab-vehicle-1/overview",
+    );
   });
 
   it("opens the model while the overview is not rolled out", async () => {

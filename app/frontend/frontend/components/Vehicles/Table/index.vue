@@ -33,6 +33,7 @@ import {
   WishlistTableViewColsEnum,
   WishlistTableViewImageColsEnum,
 } from "@/frontend/stores/wishlist";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicles: Vehicle[];
@@ -71,16 +72,15 @@ const { isFeatureEnabled } = useFeatures();
 
 // Like the panel's title: the owner's own ship opens on its overview, a loaner
 // and anyone else's ship on the model.
+const toVehicle = useVehicleRoute();
+
 const nameRoute = (record: Vehicle) => {
   if (
     props.editable &&
     !record.loaner &&
     isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
   ) {
-    return {
-      name: "hangar-vehicle-overview",
-      params: { id: record.serial || record.id },
-    };
+    return toVehicle("hangar-vehicle-overview", record);
   }
 
   return { name: "ship", params: { slug: record.model.slug } };

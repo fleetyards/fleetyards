@@ -39,6 +39,7 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
@@ -102,10 +103,10 @@ const refetch = async () => {
 
 const hasCargo = computed(() => (inventory.value?.entriesCount ?? 0) > 0);
 
-const stockItemRoute = (slug?: string) => ({
-  name: "hangar-vehicle-cargo-item",
-  params: { id: vehicleId.value, item: slug },
-});
+const toVehicle = useVehicleRoute();
+
+const stockItemRoute = (slug?: string) =>
+  toVehicle("hangar-vehicle-cargo-item", props.vehicle, { item: slug ?? "" });
 
 // Players stash cargo outside the grid and personal inventory is not cargo, so
 // the capacity is reported rather than enforced.

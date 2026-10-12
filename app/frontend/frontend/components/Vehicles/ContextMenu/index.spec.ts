@@ -16,7 +16,7 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
     id: "vehicle-1",
-    serial: "ODY-1",
+    serial: "OD-0001-YS",
     boughtVia: BoughtViaEnum.PLEDGE_STORE,
     wanted: false,
     loaner: false,
@@ -41,14 +41,18 @@ const router = createRouter({
   routes: [
     { path: "/", name: "hangar", component: stub },
     { path: "/ships/:slug", name: "ship", component: stub },
-    { path: "/hangar/:id/log", name: "hangar-vehicle-log", component: stub },
     {
-      path: "/hangar/:id/loadouts",
+      path: "/hangar/:username/:segment/log",
+      name: "hangar-vehicle-log",
+      component: stub,
+    },
+    {
+      path: "/hangar/:username/:segment/loadouts",
       name: "hangar-vehicle-loadouts",
       component: stub,
     },
     {
-      path: "/hangar/:id/cargo",
+      path: "/hangar/:username/:segment/cargo",
       name: "hangar-vehicle-cargo",
       component: stub,
     },
@@ -70,6 +74,7 @@ const mount = async (props: MountProps = {}) => {
   await router.isReady();
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
+    initialState: { session: { currentUser: { username: "me" } } },
     props: { vehicle: vehicle(), editable: true, ...props },
     plugins: [router],
     attachTo: document.body,

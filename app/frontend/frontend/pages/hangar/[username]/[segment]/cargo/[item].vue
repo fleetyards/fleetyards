@@ -27,6 +27,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { vehicleIdentifierFromSegment } from "@/frontend/utils/vehicleSegment";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -34,7 +35,11 @@ const router = useRouter();
 const comlink = useComlink();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
-const vehicleId = computed(() => route.params.id as string);
+const vehicleId = computed(() => {
+  const segment = String(route.params.segment ?? "");
+
+  return vehicleIdentifierFromSegment(segment) ?? segment;
+});
 const itemSlug = computed(() => route.params.item as string);
 
 const { data: vehicle } = useShowVehicle(vehicleId);
@@ -66,7 +71,10 @@ const historyRecords = computed<InventoryItem[]>(
 
 const cargoRoute = computed(() => ({
   name: "hangar-vehicle-cargo",
-  params: { id: vehicleId.value },
+  params: {
+    username: route.params.username,
+    segment: route.params.segment,
+  },
 }));
 
 const vehicleName = computed(() => {
@@ -128,7 +136,7 @@ const openEditModal = () => {
         if (updated.slug !== itemSlug.value) {
           await router.replace({
             name: "hangar-vehicle-cargo-item",
-            params: { id: vehicleId.value, item: updated.slug },
+            params: { ...route.params, item: updated.slug },
           });
         } else {
           await Promise.all([refetchStockItem(), refetchHistory()]);

@@ -7,7 +7,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "overview/",
     name: "hangar-vehicle-overview",
-    component: () => import("@/frontend/pages/hangar/[id]/overview.vue"),
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/overview.vue"),
     meta: {
       needsAuthentication: true,
       title: "hangar.vehicleOverview",
@@ -20,7 +21,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "log/",
     name: "hangar-vehicle-log",
-    component: () => import("@/frontend/pages/hangar/[id]/log.vue"),
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/log.vue"),
     meta: {
       needsAuthentication: true,
       title: "hangar.vehicleLog",
@@ -33,7 +35,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "loadouts/",
     name: "hangar-vehicle-loadouts",
-    component: () => import("@/frontend/pages/hangar/[id]/loadouts.vue"),
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/loadouts.vue"),
     meta: {
       needsAuthentication: true,
       title: "hangar.vehicleLoadouts",
@@ -45,7 +48,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "cargo/",
     name: "hangar-vehicle-cargo",
-    component: () => import("@/frontend/pages/hangar/[id]/cargo.vue"),
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/cargo.vue"),
     meta: {
       mobileBack: true,
       needsAuthentication: true,
