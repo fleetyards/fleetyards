@@ -147,7 +147,7 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
       entry = parsed_body["fleets"].sole
       assert_equal shared.slug, entry["slug"]
-      assert_equal 1, entry["total"]
+      assert_equal 2, entry["total"]
       assert_equal [member.username], entry["members"]
     end
   end

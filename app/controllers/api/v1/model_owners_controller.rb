@@ -69,23 +69,25 @@ module Api
           .select { |membership| membership.has_access?(FLEET_VEHICLES_PRIVILEGES) }
           .map(&:fleet_id)
 
-        fleets = Fleet.kept.where(id: fleet_ids)
-          .with_attached_logo
-          .order(:name)
+        listed = FleetVehicle.joins(:vehicle)
+          .where(fleet_id: fleet_ids, vehicles: {model_id: @model.id, loaner: false})
+        totals = listed.group(:fleet_id).count
 
-        @fleets = fleets.filter_map do |fleet|
-          scope = fleet.vehicles.where(model: @model, loaner: false).where.not(user: current_resource_owner)
-          total = scope.count
-          next if total.zero?
+        owners = listed.joins(vehicle: :user)
+          .where.not(vehicles: {user_id: current_resource_owner.id})
+          .distinct
+          .pluck(:fleet_id, "users.username", "users.hide_owner")
+          .group_by(&:first)
 
-          owners = ::User.where(id: scope.select(:user_id))
-          named = owners.where(hide_owner: false).order(Arel.sql("lower(users.username)"))
+        @fleets = Fleet.kept.where(id: owners.keys).with_attached_logo.order(:name).map do |fleet|
+          fleet_owners = owners[fleet.id]
+          named = fleet_owners.reject(&:third).map(&:second).sort_by(&:downcase)
 
           {
             fleet:,
-            total:,
-            owners_total: owners.count,
-            members: named.limit(FLEET_MEMBERS_LIMIT).pluck(:username)
+            total: totals[fleet.id],
+            owners_total: fleet_owners.size,
+            members: named.first(FLEET_MEMBERS_LIMIT)
           }
         end
       end
