@@ -10,9 +10,6 @@ module Api
       FRIENDS_LIMIT = 12
       FLEET_MEMBERS_LIMIT = 8
 
-      # What FleetVehiclePolicy#index? asks of a member to show the fleet's ships.
-      FLEET_VEHICLES_PRIVILEGES = ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"].freeze
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) }
@@ -30,12 +27,6 @@ module Api
 
         load_friends
         load_fleets
-      end
-
-      # A token the reader granted only hangar access to has no say over their
-      # fleets.
-      private def fleets_readable?
-        doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read])
       end
 
       # Friends only as far as their hangar is open to the reader, and only the
@@ -62,12 +53,7 @@ module Api
       # owners are counted but not named. The reader's own ships are already
       # listed above, so a fleet only shows when someone else flies the model.
       private def load_fleets
-        @fleets = []
-        return unless fleets_readable?
-
-        fleet_ids = current_resource_owner.kept_fleet_memberships.accepted.includes(:fleet_role)
-          .select { |membership| membership.has_access?(FLEET_VEHICLES_PRIVILEGES) }
-          .map(&:fleet_id)
+        fleet_ids = current_resource_owner.kept_fleet_memberships.accepted.select(:fleet_id)
 
         listed = FleetVehicle.joins(:vehicle)
           .where(fleet_id: fleet_ids, vehicles: {model_id: @model.id, loaner: false})

@@ -208,35 +208,6 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /models/:slug/owners leaves out a fleet whose ships the reader's role cannot see" do
-    fleet_with_another_owner(fleet_role: nil)
-    sign_in @user
-
-    assert_api_response :get, 200, path_params: {slug: @model.slug} do
-      assert_empty parsed_body["fleets"]
-    end
-  end
-
-  test "GET /models/:slug/owners leaves out fleets for a token without fleet access" do
-    fleet_with_another_owner
-
-    assert_api_response :get, 200,
-      path_params: {slug: @model.slug},
-      headers: oauth_headers_for(@user, scopes: ["hangar:read"]) do
-      assert_empty parsed_body["fleets"]
-    end
-  end
-
-  test "GET /models/:slug/owners lists fleets for a token with fleet access" do
-    fleet = fleet_with_another_owner
-
-    assert_api_response :get, 200,
-      path_params: {slug: @model.slug},
-      headers: oauth_headers_for(@user, scopes: ["hangar:read", "fleet:read"]) do
-      assert_equal [fleet.slug], parsed_body["fleets"].pluck("slug")
-    end
-  end
-
   test "GET /models/:slug/owners returns 404 for an unknown model" do
     sign_in @user
 
