@@ -1,101 +1,22 @@
 # frozen_string_literal: true
 
 module HangarPledgeItems
-  # Which of a model's catalogue paints a user owns, read from the paint pledges
-  # the hangar sync stored. A pledge keeps only RSI's item name --
-  # "Archimedes & Merlin - IceBreak Paint" -- with no link to a catalogue paint,
-  # so both halves are matched by name: the ships before " - " against the model,
-  # the rest against the paint. Paint names alone are not enough; IceBreak exists
-  # for dozens of ships.
+  # Which of the given catalogue paints a user owns: the ones their synced paint
+  # pledges resolved to (`PaintLinker`).
   class OwnedPaints
-    SHIP_SEPARATOR = " - "
-    SHIP_LIST_SEPARATOR = /\s*(?:&|,|\/|\band\b)\s*/i
-    PAINT_SUFFIX = /\s+(?:paint|livery)\z/i
+    attr_reader :user
 
-    attr_reader :user, :model
-
-    def initialize(user, model)
+    def initialize(user)
       @user = user
-      @model = model
     end
 
     def paint_ids(paints)
-      pledged = user.hangar_pledge_items.paints.pluck(:name).filter_map { |name| pledged_paint(name) }
-      return [] if pledged.empty?
-
-      paints.select do |paint|
-        paint_name = normalize(paint.name)
-        next false if paint_name.blank?
-
-        pledged.any? { |name| paint_name.include?(name) || name.include?(paint_name) }
-      end.map(&:id)
-    end
-
-    # The paint half of a pledge for this model, or nil when the pledge is for
-    # other ships.
-    private def pledged_paint(name)
-      ships, separator, paint = name.rpartition(SHIP_SEPARATOR)
-      return legacy_paint(name) if separator.blank?
-      return unless ships.split(SHIP_LIST_SEPARATOR).any? { |ship| same_ship?(normalize(ship)) }
-
-      normalize(PaintsImporter.paint_mapping(paint.sub(PAINT_SUFFIX, "").strip)).presence
-    end
-
-    # Older pledges run ship and paint together -- "2950 Invictus Constellation
-    # Blue and Gold", "Spirit Citizens for Prosperity Liberation". The
-    # importer's name map knows those. The ship comes first: it is the words
-    # before the paint ends, less the paint's own, and it has to share a word
-    # with the model. "C1 Spirit" is found by "Spirit"; a Cutlass Black is found
-    # neither by "2950 Invictus Starfarer Black", whose "Black" is the paint, nor
-    # by "Scorpius Stinger Black Orange", whose "Black" comes after it.
-    private def legacy_paint(name)
-      mapped = PaintsImporter.paint_mapping(name.sub(PAINT_SUFFIX, "").strip)
-      return if mapped == name
-
-      pledge_words = words(name)
-      paint_words = words(mapped)
-      paint_end = pledge_words.rindex { |word| paint_words.include?(word) }
-
-      # A map entry that renames the paint outright -- "Nomad IceBreak" to
-      # "Ice Break" -- leaves no word of the paint in the pledge to stop at, so
-      # the whole name stands for the ship.
-      ship_words = (paint_end ? pledge_words.first(paint_end) : pledge_words) - paint_words
-      return unless model_words.intersect?(ship_words)
-
-      normalize(mapped).presence
-    end
-
-    private def words(name)
-      name.split.map { |word| normalize(word) }.compact_blank
-    end
-
-    # Words long enough to name a ship: a variant code ("C1", "M2", "Mk")
-    # would match far too much.
-    private def model_words
-      @model_words ||= words(model.name).select { |word| word.length >= 4 }
-    end
-
-    # "Spirit" names the C1 Spirit as much as "C1 Spirit" does, so either name
-    # may hold the other -- unless the pledge names another model outright: a
-    # "Nova" pledge is the Nova's, not the Nova Tank's.
-    private def same_ship?(ship)
-      return false if ship.blank?
-      return true if ship == model_name
-      return false if model_names.include?(ship)
-
-      model_name.include?(ship) || ship.include?(model_name)
-    end
-
-    private def model_names
-      @model_names ||= Model.pluck(:name).map { |name| normalize(name) }.to_set
-    end
-
-    private def model_name
-      @model_name ||= normalize(model.name)
-    end
-
-    private def normalize(value)
-      value.to_s.downcase.gsub(/[^a-z0-9]/, "")
+      HangarPledgeItemModelPaint
+        .joins(:hangar_pledge_item)
+        .where(hangar_pledge_items: {user_id: user.id})
+        .where(model_paint_id: paints.map(&:id))
+        .distinct
+        .pluck(:model_paint_id)
     end
   end
 end
