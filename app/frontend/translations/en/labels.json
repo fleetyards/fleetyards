@@ -4161,6 +4161,7 @@
         "step": "Step %{current} of %{total}"
       },
       "vehiclePlaque": {
+        "supporterStyle": "A supporter perk",
         "style": "Style",
         "styles": {
           "brass": "Brass",

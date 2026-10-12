@@ -4147,6 +4147,7 @@
         "step": "Paso %{current} de %{total}"
       },
       "vehiclePlaque": {
+        "supporterStyle": "Una ventaja para quienes apoyan",
         "style": "Estilo",
         "styles": {
           "brass": "Latón",

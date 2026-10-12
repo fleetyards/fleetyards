@@ -4147,6 +4147,7 @@
         "step": "Schritt %{current} von %{total}"
       },
       "vehiclePlaque": {
+        "supporterStyle": "Ein Vorteil für Unterstützer",
         "style": "Stil",
         "styles": {
           "brass": "Messing",

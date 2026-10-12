@@ -28,21 +28,12 @@ const { t } = useI18n();
 const comlink = useComlink();
 const { currentUser } = storeToRefs(useSessionStore());
 
-// Making or changing a plaque is a supporter perk; anyone else is offered to
-// become one instead.
 const openEditModal = () => {
-  if (!currentUser?.value?.supporter) {
-    comlink.emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/PlaqueSupporterModal/index.vue"),
-    });
-    return;
-  }
-
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueEditModal/index.vue"),
     props: { vehicle: props.vehicle },
+    wide: true,
   });
 };
 </script>

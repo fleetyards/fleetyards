@@ -345,7 +345,7 @@
         "unavailable": "Dieses Logbuch ist gerade nicht verfügbar."
       },
       "vehiclePlaque": {
-        "supporter": "Widmungstafeln und ihre Stile sind ein Dankeschön an alle, die Fleetyards am Laufen halten. Unterstütze das Projekt und gib deinem Schiff seine Tafel.",
+        "supporter": "Alle weiteren Stile sind ein Dankeschön an alle, die Fleetyards am Laufen halten.",
         "credits": {
           "founders": "%{manufacturer}-Gründer",
           "shipwrights": "%{manufacturer}-Schiffbauer",

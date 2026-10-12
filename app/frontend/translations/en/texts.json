@@ -345,7 +345,7 @@
         "unavailable": "This log is not available right now."
       },
       "vehiclePlaque": {
-        "supporter": "Dedication plaques, and the styles to dress them in, are a thank-you to the people who keep Fleetyards running. Support the project and give your ship its plaque.",
+        "supporter": "Every other style is a thank-you to the people who keep Fleetyards running.",
         "credits": {
           "founders": "%{manufacturer} Founders",
           "shipwrights": "%{manufacturer} Shipwrights",

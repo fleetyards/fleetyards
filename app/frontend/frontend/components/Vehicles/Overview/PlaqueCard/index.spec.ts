@@ -44,22 +44,10 @@ describe("VehicleOverviewPlaqueCard", () => {
     emit.mockClear();
   });
 
-  it("offers a non-supporter the supporter modal instead of the editor", async () => {
+  it("opens the editor for anyone: the default style is free", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { vehicle: vehicle() },
       initialState: { session: { currentUser: { supporter: false } } },
-    });
-
-    await wrapper.find('[data-test="vehicle-plaque-edit"]').trigger("click");
-
-    expect(openedModal()?.props).toBeUndefined();
-    expect(String(openedModal()?.component)).toContain("PlaqueSupporterModal");
-  });
-
-  it("opens the editor for a supporter", async () => {
-    const wrapper = await mountWithDefaults<typeof Component>(Component, {
-      props: { vehicle: vehicle() },
-      initialState: { session: { currentUser: { supporter: true } } },
     });
 
     await wrapper.find('[data-test="vehicle-plaque-edit"]').trigger("click");

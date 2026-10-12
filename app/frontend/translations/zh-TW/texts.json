@@ -345,7 +345,7 @@
         "unavailable": "此日誌暫時無法使用。"
       },
       "vehiclePlaque": {
-        "supporter": "命名銘牌及其各種樣式，是獻給讓 Fleetyards 持續運作的支持者們的謝禮。支持這個專案，為你的船掛上銘牌。",
+        "supporter": "其他所有樣式，都是獻給讓 Fleetyards 持續運作的支持者們的謝禮。",
         "credits": {
           "founders": "%{manufacturer}創辦人",
           "shipwrights": "%{manufacturer}造船師",

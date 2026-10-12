@@ -345,7 +345,7 @@
         "unavailable": "Ce journal n'est pas disponible pour le moment."
       },
       "vehiclePlaque": {
-        "supporter": "Les plaques de dédicace, et les styles pour les habiller, sont un merci à celles et ceux qui font vivre Fleetyards. Soutenez le projet et offrez sa plaque à votre vaisseau.",
+        "supporter": "Tous les autres styles sont un merci à celles et ceux qui font vivre Fleetyards.",
         "credits": {
           "founders": "Fondateurs de %{manufacturer}",
           "shipwrights": "Constructeurs de %{manufacturer}",

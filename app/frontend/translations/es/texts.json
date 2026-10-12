@@ -345,7 +345,7 @@
         "unavailable": "Este cuaderno no está disponible ahora mismo."
       },
       "vehiclePlaque": {
-        "supporter": "Las placas de dedicatoria, y los estilos para vestirlas, son un agradecimiento a quienes mantienen Fleetyards en marcha. Apoya el proyecto y dale a tu nave su placa.",
+        "supporter": "Los demás estilos son un agradecimiento a quienes mantienen Fleetyards en marcha.",
         "credits": {
           "founders": "Fundadores de %{manufacturer}",
           "shipwrights": "Constructores de %{manufacturer}",

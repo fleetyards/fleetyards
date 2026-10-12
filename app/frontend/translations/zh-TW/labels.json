@@ -4147,6 +4147,7 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehiclePlaque": {
+        "supporterStyle": "支持者專屬福利",
         "style": "樣式",
         "styles": {
           "brass": "黃銅",

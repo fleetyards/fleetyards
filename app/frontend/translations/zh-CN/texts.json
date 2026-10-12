@@ -345,7 +345,7 @@
         "unavailable": "此日志暂时不可用。"
       },
       "vehiclePlaque": {
-        "supporter": "命名铭牌及其各种样式，是献给让 Fleetyards 持续运行的支持者们的谢礼。支持这个项目，为你的船挂上铭牌。",
+        "supporter": "其他所有样式，都是献给让 Fleetyards 持续运行的支持者们的谢礼。",
         "credits": {
           "founders": "%{manufacturer}创始人",
           "shipwrights": "%{manufacturer}造船师",
