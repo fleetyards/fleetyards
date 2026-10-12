@@ -136,6 +136,23 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The version comes off the build the facts are read from, which for a retired
+  # commodity is the last one that described it.
+  test "GET /commodities shows a retired commodity with its last build" do
+    create(:commodity, name: "Retired Ore", version: "3.0.0")
+    current = create(:commodity, name: "Current Ore")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/commodities" do
+      items = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert items["Retired Ore"]["retired"]
+      assert_equal "3.0.0", items["Retired Ore"]["version"]
+      assert_not items["Current Ore"]["retired"]
+      assert_equal current.version, items["Current Ore"]["version"]
+    end
+  end
+
   test "GET /commodities filters by nameCont query" do
     create_list(:commodity, 2)
     create(:commodity, name: "Laranite")
@@ -261,7 +278,12 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     commodity = create(:commodity)
     sign_in @user
 
-    assert_api_response :delete, 200, path_params: {id: commodity.id}
+    assert_api_response :delete, 200, path_params: {id: commodity.id} do
+      assert_equal commodity.version, parsed_body["version"], "the builds are gone, but the response renders them"
+      assert_equal commodity.name, parsed_body["name"]
+    end
+
+    assert_not Commodity.exists?(commodity.id)
   end
 
   test "DELETE /commodities/:id returns 404 for missing id" do

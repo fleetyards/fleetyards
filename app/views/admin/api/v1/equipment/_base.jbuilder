@@ -46,6 +46,8 @@ end
 json.buy_price equipment.buy_price&.to_f
 json.sell_price equipment.sell_price&.to_f
 
+json.retired equipment.retired?
+
 json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
 end

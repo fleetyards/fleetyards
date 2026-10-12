@@ -78,7 +78,9 @@ module Admin
         end
 
         private def set_equipment
-          @equipment = Equipment.find(params[:id])
+          # The builds up front: `destroy` deletes them, and its response still
+          # renders their facts.
+          @equipment = Equipment.includes(:build, :last_build).find(params[:id])
 
           authorize! @equipment, with: ::Admin::EquipmentPolicy
         end

@@ -136,6 +136,24 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The version comes off the build the facts are read from, which for a retired
+  # item is the last one that described it -- so `retired` is what tells the two
+  # apart.
+  test "GET /equipment shows a retired item with its last build" do
+    create(:equipment, name: "Retired Rifle", version: "3.0.0")
+    current = create(:equipment, name: "Current Rifle")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/equipment" do
+      items = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert items["Retired Rifle"]["retired"]
+      assert_equal "3.0.0", items["Retired Rifle"]["version"]
+      assert_not items["Current Rifle"]["retired"]
+      assert_equal current.version, items["Current Rifle"]["version"]
+    end
+  end
+
   test "GET /equipment filters by nameCont query" do
     create_list(:equipment, 2)
     create(:equipment, name: "Custodian SMG")
@@ -272,7 +290,12 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     equipment = create(:equipment)
     sign_in @user
 
-    assert_api_response :delete, 200, path_params: {id: equipment.id}
+    assert_api_response :delete, 200, path_params: {id: equipment.id} do
+      assert_equal equipment.version, parsed_body["version"], "the builds are gone, but the response renders them"
+      assert_equal equipment.name, parsed_body["name"]
+    end
+
+    assert_not Equipment.exists?(equipment.id)
   end
 
   test "DELETE /equipment/:id returns 404 for missing id" do

@@ -50,7 +50,9 @@ module Admin
         end
 
         private def set_commodity
-          @commodity = Commodity.find(params[:id])
+          # The builds up front: `destroy` deletes them, and its response still
+          # renders their facts.
+          @commodity = Commodity.includes(:build, :last_build).find(params[:id])
 
           authorize! @commodity, with: ::Admin::CommodityPolicy
         end
