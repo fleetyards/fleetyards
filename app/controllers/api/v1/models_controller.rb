@@ -6,7 +6,6 @@ module Api
       include WillItFitConcern
       include ViteRails::TagHelpers
       include ModelCargoFiltersConcern
-      include ModelSlugLookup
 
       skip_verify_authorized
 
@@ -431,6 +430,26 @@ module Api
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         scope.ransack(model_query_params)
+      end
+
+      private def find_model_by_slug!(*includes, joins: nil)
+        slug = params[:slug].downcase
+
+        scope = Model.visible.active
+        scope = scope.includes(*includes) if includes.any?
+        scope = scope.joins(joins) if joins
+        model = scope
+          .where(slug:)
+          .or(Model.where(rsi_slug: slug))
+          .or(Model.where(legacy_slug: slug))
+          .first!
+
+        if model.slug != slug
+          redirect_to url_for(slug: model.slug), status: :moved_permanently
+          return model
+        end
+
+        model
       end
 
       private def find_model_by_slug(scope)

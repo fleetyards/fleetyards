@@ -6,7 +6,6 @@ module Api
     # friends whose hangars show one, and per fleet how many are listed there.
     class ModelOwnersController < ::Api::BaseController
       include VehicleOverviewFeatureConcern
-      include ModelSlugLookup
 
       FRIENDS_LIMIT = 12
       FLEET_MEMBERS_LIMIT = 8
@@ -22,8 +21,7 @@ module Api
       def index
         authorize! with: ModelOwnersPolicy
 
-        @model = find_model_by_slug!
-        return if performed?
+        @model = Model.visible.active.find_by!(slug: params[:slug].to_s.downcase)
 
         @vehicles = current_resource_owner.vehicles.visible.purchased
           .where(model: @model)
