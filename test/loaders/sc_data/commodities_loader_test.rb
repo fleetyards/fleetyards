@@ -69,9 +69,9 @@ module ScData
         assert_equal count, Commodity.count
       end
 
-      # A new build leaves a dropped record on its old version, so
+      # A new build never writes a build row for a dropped record, so
       # current_version filters it out. Re-importing the build we are already on
-      # does not: the row keeps claiming it, and the picker keeps offering it.
+      # finds the row from the first import, which has to go.
       test "#all stops a dropped commodity claiming the build it is no longer in" do
         loader.all
 
@@ -81,6 +81,20 @@ module ScData
 
         assert Commodity.exists?(retired.id), "the row has to stay for existing references"
         assert_not Commodity.current_version(true, fixture_source).exists?(retired.id)
+      end
+
+      # The build carries the version. Writing it onto the row as well rewrote
+      # every row on every new build, whether or not a fact on it had changed.
+      test "#all leaves the version on the row alone" do
+        loader.all
+
+        gold = Commodity.find_by!(sc_key: "items_commodities_gold")
+        gold.update_columns(version: "3.0.0")
+
+        loader.all
+
+        assert_equal "3.0.0", gold.reload.version
+        assert gold.builds.current(fixture_source).exists?
       end
 
       test "#all leaves the commodities still in the export on the current build" do

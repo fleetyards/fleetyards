@@ -141,9 +141,9 @@ module ScData
         assert_equal "Behring", Equipment.find_by(sc_key: "behr_rifle_ballistic_01").manufacturer&.name
       end
 
-      # A new build leaves a dropped record on its old version, so current_version
-      # filters it out. Re-importing the build we are already on does not: the
-      # row keeps claiming it, and the picker keeps offering it.
+      # A new build never writes a build row for a dropped record, so
+      # current_version filters it out. Re-importing the build we are already on
+      # finds the row from the first import, which has to go.
       test "#all stops a dropped record claiming the build it is no longer in" do
         curated.all
 
@@ -153,6 +153,20 @@ module ScData
 
         assert Equipment.exists?(retired.id), "the row has to stay for existing references"
         assert_not Equipment.current_version(true, fixture_source).exists?(retired.id)
+      end
+
+      # The build carries the version. Writing it onto the row as well rewrote
+      # every row on every new build, whether or not a fact on it had changed.
+      test "#all leaves the version on the row alone" do
+        curated.all
+
+        rifle = Equipment.find_by!(sc_key: "behr_rifle_ballistic_01")
+        rifle.update_columns(version: "3.0.0")
+
+        curated.all
+
+        assert_equal "3.0.0", rifle.reload.version
+        assert rifle.builds.current(fixture_source).exists?
       end
 
       test "#all leaves the records still in the export on the current build" do
