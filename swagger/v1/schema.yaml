@@ -39490,6 +39490,8 @@ components:
             "$ref": "#/components/schemas/HangarGroupPublic"
         loaner:
           type: boolean
+        publicLogEntriesCount:
+          type: integer
         bundled:
           type: boolean
         bundledParent:
@@ -39541,6 +39543,7 @@ components:
       - model
       - loaner
       - bundled
+      - publicLogEntriesCount
       - modelUpgradeIds
       - hangarGroupIds
       - hangarGroups

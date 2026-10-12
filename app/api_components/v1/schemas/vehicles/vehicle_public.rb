@@ -16,6 +16,7 @@ module V1
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             hangarGroups: {type: :array, items: ::V1::Schemas::Hangar::Groups::HangarGroupPublic},
             loaner: {type: :boolean},
+            publicLogEntriesCount: {type: :integer},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,
             model: {"$ref": "#/components/schemas/Model"},
@@ -38,7 +39,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model loaner bundled modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
+            id model loaner bundled publicLogEntriesCount modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
             createdAt updatedAt
           ]
         })
