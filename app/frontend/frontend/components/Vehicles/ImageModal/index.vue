@@ -65,12 +65,39 @@ const source = ref<Source>(
 
 const GALLERY_PAGE_SIZE = "48";
 
+const galleryPage = ref(1);
+
 const { data: gallery, isLoading: galleryLoading } = useModelImages(
   () => props.vehicle.model.slug,
-  { perPage: GALLERY_PAGE_SIZE },
+  () => ({ perPage: GALLERY_PAGE_SIZE, page: String(galleryPage.value) }),
 );
 
-const galleryImages = computed<Image[]>(() => gallery.value?.items || []);
+// Pages add up, so a big gallery stays scrollable from its first picture.
+const galleryImages = ref<Image[]>([]);
+
+watch(
+  gallery,
+  (data) => {
+    if (!data) return;
+
+    const known = new Set(galleryImages.value.map((item) => item.id));
+    galleryImages.value = [
+      ...galleryImages.value,
+      ...data.items.filter((item) => !known.has(item.id)),
+    ];
+  },
+  { immediate: true },
+);
+
+const galleryHasMore = computed(() => {
+  const pagination = gallery.value?.meta.pagination;
+
+  return !!pagination && pagination.currentPage < pagination.totalPages;
+});
+
+const loadMoreGallery = () => {
+  galleryPage.value += 1;
+};
 
 const pickedImageId = ref<string | null>(props.vehicle.modelImageId ?? null);
 
@@ -190,7 +217,7 @@ const onSubmit = handleSubmit(async (values) => {
         >
           {{ t("texts.vehicleOverview.galleryEmpty") }}
         </p>
-        <div v-else class="vehicle-image-modal__gallery">
+        <div class="vehicle-image-modal__gallery">
           <button
             type="button"
             class="vehicle-image-modal__choice"
@@ -232,6 +259,16 @@ const onSubmit = handleSubmit(async (values) => {
             />
           </button>
         </div>
+        <Btn
+          v-if="galleryHasMore"
+          :loading="galleryLoading"
+          block
+          class="vehicle-image-modal__more"
+          data-test="vehicle-image-gallery-more"
+          @click="loadMoreGallery"
+        >
+          {{ t("actions.loadMore") }}
+        </Btn>
       </template>
     </form>
 
@@ -286,6 +323,10 @@ const onSubmit = handleSubmit(async (values) => {
     &--picked:hover {
       border-color: var(--color-gold);
     }
+  }
+
+  &__more {
+    margin-top: 8px;
   }
 
   &__thumb {

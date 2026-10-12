@@ -131,4 +131,22 @@ describe("VehicleImageModal", () => {
       data: { modelImageId: null, image: null },
     });
   });
+
+  it("can still go back to the standard picture with an empty gallery", async () => {
+    gallery.items = [];
+
+    const wrapper = await mount({
+      vehicle: vehicle({ modelImageId: "image-gone" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-gallery-none"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { modelImageId: null, image: null },
+    });
+  });
 });
