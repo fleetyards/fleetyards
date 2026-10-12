@@ -8,9 +8,7 @@ export default {
 import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   PanelTonesEnum,
   PanelVariantsEnum,
@@ -104,12 +102,17 @@ const panelTone = computed(() =>
       </PanelHeading>
       <slot name="before" />
       <slot />
-      <PanelBody v-if="more" class="health-check__footer">
-        <Btn :to="more" block :data-test="`health-${check.key}-all`">
-          {{ moreLabel }}
-          <i class="fa-light fa-arrow-right" aria-hidden="true" />
-        </Btn>
-      </PanelBody>
+      <!-- Flush with the panel's edges: the footer is the panel's own way on,
+           not a button sitting in it. -->
+      <router-link
+        v-if="more"
+        :to="more"
+        class="health-check__more"
+        :data-test="`health-${check.key}-all`"
+      >
+        {{ moreLabel }}
+        <i class="fa-light fa-arrow-right" aria-hidden="true" />
+      </router-link>
     </Panel>
   </section>
 </template>
@@ -152,7 +155,23 @@ const panelTone = computed(() =>
   margin-left: auto;
 }
 
-.health-check__footer {
-  padding-top: 12px;
+.health-check__more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border-top: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: 0 0 var(--radius-surface-slim, 12px)
+    var(--radius-surface-slim, 12px);
+  color: var(--color-text, #c8c8c8);
+  font-weight: 600;
+  transition: background-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgb(122 130 136 / 0.15);
+    color: var(--color-lifted, #eee);
+  }
 }
 </style>
