@@ -74,6 +74,30 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A load retires a commodity by deleting its build, and leaves the row alone.
+  test "GET /hangar/inventories/:slug/items picks up an item a load dropped after it was cached" do
+    kept = create(:commodity)
+    dropped = create(:commodity)
+    create(:inventory_item, inventory: @inventory, name: "Kept", item: kept)
+    create(:inventory_item, inventory: @inventory, name: "Dropped", item: dropped)
+    sign_in @user
+
+    with_fragment_caching do
+      assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+        assert(parsed_body["items"].all? { |item| item.dig("item", "available") })
+      end
+
+      CommodityBuild.where(commodity: dropped).delete_all
+
+      assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+        available = parsed_body["items"].to_h { |item| [item["name"], item.dig("item", "available")] }
+
+        assert available["Kept"]
+        assert_not available["Dropped"]
+      end
+    end
+  end
+
   test "GET /hangar/inventories/:slug/items filters by category" do
     create(:inventory_item, inventory: @inventory, category: :commodity)
     create(:inventory_item, :component, inventory: @inventory)
