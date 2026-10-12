@@ -55,9 +55,11 @@ module HangarPledgeItems
       pledge_words = words(name)
       paint_words = words(mapped)
       paint_end = pledge_words.rindex { |word| paint_words.include?(word) }
-      return if paint_end.nil?
 
-      ship_words = pledge_words.first(paint_end) - paint_words
+      # A map entry that renames the paint outright -- "Nomad IceBreak" to
+      # "Ice Break" -- leaves no word of the paint in the pledge to stop at, so
+      # the whole name stands for the ship.
+      ship_words = (paint_end ? pledge_words.first(paint_end) : pledge_words) - paint_words
       return unless model_words.intersect?(ship_words)
 
       normalize(mapped).presence
