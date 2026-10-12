@@ -35,6 +35,15 @@ describe("vehicleSegment", () => {
     ).toBe(`${id}-polaris`);
   });
 
+  it("leaves out a serial saved before the format was enforced", () => {
+    expect(vehicleSegment({ id, serial: "L84261HA", name: "Polaris" })).toBe(
+      `${id}-polaris`,
+    );
+    expect(vehicleSegment({ id, serial: " L8-4261-HA", name: "Polaris" })).toBe(
+      `${id}-polaris`,
+    );
+  });
+
   it("drops a name with nothing left to put in a URL", () => {
     expect(vehicleSegment({ id, name: "铁锤号" })).toBe(id);
   });

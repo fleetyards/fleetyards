@@ -14,21 +14,30 @@ type SegmentVehicle = {
   serial?: string | null;
 };
 
-// Mirrors `Vehicle::SERIAL_FORMAT`. Serials from before the format stay on the
-// record but are left out of the address: free text cannot be told apart from
-// the name that follows it.
-const SERIAL_FORMAT = /^[A-Z0-9]{2}-[A-Z0-9]{4}-[A-Z0-9]{2}$/i;
+const SERIAL_SOURCE = "[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}";
 
-const LEADING_SERIAL = /^([0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2})(?:-|$)/i;
+const UUID_SOURCE =
+  "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
-const LEADING_UUID =
-  /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)/i;
+// Mirrors `Vehicle::SERIAL_FORMAT`.
+const SERIAL_FORMAT = new RegExp(`^${SERIAL_SOURCE}$`, "i");
+
+const LEADING_SERIAL = new RegExp(`^(${SERIAL_SOURCE})(?:-|$)`, "i");
+
+const LEADING_UUID = new RegExp(`^(${UUID_SOURCE})(?:-|$)`, "i");
 
 // For the route record. vue-router rejects groups inside a param's pattern, so
 // the tail is left loose; the page canonicalises whatever follows the serial or
 // the id.
-export const VEHICLE_SEGMENT_PATTERN =
-  "[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}[^/]*|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[^/]*";
+export const VEHICLE_SEGMENT_PATTERN = `${SERIAL_SOURCE}[^/]*|${UUID_SOURCE}[^/]*`;
+
+// The serial as the record holds it, when that is already in the game format.
+// The address has to read back to the stored value exactly: a serial saved
+// before the format -- free text, or `L84261HA` without its dashes -- would
+// look up as something the record does not hold, so it is left out.
+function addressSerial(serial?: string | null): string | undefined {
+  return serial && SERIAL_FORMAT.test(serial) ? serial : undefined;
+}
 
 // Mirrors `Vehicle.game_serial`: a serial typed without its dashes still counts.
 export function gameSerial(serial?: string | null): string | undefined {
@@ -44,14 +53,14 @@ export function gameSerial(serial?: string | null): string | undefined {
 function parameterize(name?: string | null): string {
   return (name ?? "")
     .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
 
 export function vehicleSegment(vehicle: SegmentVehicle): string {
-  const serial = gameSerial(vehicle.serial)?.toLowerCase();
+  const serial = addressSerial(vehicle.serial)?.toLowerCase();
   const name = parameterize(vehicle.name);
 
   if (serial) {
