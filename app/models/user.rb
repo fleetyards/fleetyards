@@ -36,7 +36,7 @@ class User < ApplicationRecord
   has_paper_trail on: %i[update],
     only: %i[
       username email unconfirmed_email rsi_handle public_hangar
-      public_hangar_loaners public_wishlist hide_owner tester
+      public_hangar_loaners public_wishlist hide_owner tester maintainer
       friends_hangar friends_hangar_stats friends_wishlist show_online_status
     ],
     if: ->(record) { record.author_id.present? },
@@ -621,8 +621,11 @@ class User < ApplicationRecord
     super
   end
 
+  # A maintainer counts as an ongoing supporter at the highest tier, so every
+  # perk and badge that asks these questions includes them without a branch of
+  # its own -- the ones added later too.
   def supporter?
-    active_supporter_contributions.any?
+    maintainer? || active_supporter_contributions.any?
   end
 
   # 0 for everybody else, so callers can compare rather than branch on nil.
@@ -631,6 +634,8 @@ class User < ApplicationRecord
   # would otherwise need recalculating every time one is added, edited, ended
   # or linked -- with nothing to notice when a recalculation was missed.
   def supporter_tier
+    return SUPPORTER_TIERS.keys.max if maintainer?
+
     total = active_supporter_contributions.sum(&:amount_cents)
 
     SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
@@ -645,7 +650,7 @@ class User < ApplicationRecord
   # Source-blind, where the old rule looked only at Patreon: a standing pledge
   # is one whatever it was set up on.
   def supporter_recurring?
-    active_supporter_contributions.any?(&:recurring?)
+    maintainer? || active_supporter_contributions.any?(&:recurring?)
   end
 
   # The day the current run of support lapses, or nil when it does not lapse on
@@ -656,6 +661,8 @@ class User < ApplicationRecord
   # The latest date across the active contributions rather than the earliest:
   # support ends when the last of them does, not when the first one runs out.
   def supporter_until
+    return if maintainer?
+
     dates = active_supporter_contributions.map(&:active_until)
     return if dates.empty? || dates.any?(&:nil?)
 
