@@ -4169,7 +4169,10 @@
         "location": "Location",
         "noLocation": "Not set",
         "noGroups": "No groups",
-        "planLoadout": "Plan a loadout"
+        "planLoadout": "Plan a loadout",
+        "pictureUpload": "Upload",
+        "pictureGallery": "Gallery",
+        "stockPicture": "Standard picture"
       },
       "vehicleLog": {
         "entries": "log entries",

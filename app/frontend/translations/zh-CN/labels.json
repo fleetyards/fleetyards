@@ -4155,7 +4155,10 @@
         "location": "位置",
         "noLocation": "未设置",
         "noGroups": "无分组",
-        "planLoadout": "规划配装"
+        "planLoadout": "规划配装",
+        "pictureUpload": "上传",
+        "pictureGallery": "图库",
+        "stockPicture": "标准图片"
       },
       "vehicleLog": {
         "entries": "日志条目",

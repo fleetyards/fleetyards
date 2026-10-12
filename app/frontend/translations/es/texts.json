@@ -343,7 +343,9 @@
       },
       "vehicleOverview": {
         "noLoadouts": "Aún no hay loadouts. Enlaza uno de Erkul o SPViewer.",
-        "locationPrivate": "Solo tú puedes ver dónde está tu nave."
+        "locationPrivate": "Solo tú puedes ver dónde está tu nave.",
+        "galleryReplacesUpload": "Elegir una imagen de la galería sustituye la que subiste.",
+        "galleryEmpty": "Esta nave aún no tiene imágenes en la galería."
       },
       "model": {
         "sectionEmpty": "%{model} no tiene %{section}."

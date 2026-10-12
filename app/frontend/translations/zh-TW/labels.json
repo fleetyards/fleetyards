@@ -4155,7 +4155,10 @@
         "location": "位置",
         "noLocation": "未設定",
         "noGroups": "無分組",
-        "planLoadout": "規劃配裝"
+        "planLoadout": "規劃配裝",
+        "pictureUpload": "上傳",
+        "pictureGallery": "圖庫",
+        "stockPicture": "標準圖片"
       },
       "vehicleLog": {
         "entries": "日誌條目",
