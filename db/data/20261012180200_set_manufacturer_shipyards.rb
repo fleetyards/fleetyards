@@ -32,7 +32,7 @@ class SetManufacturerShipyards < ActiveRecord::Migration[8.1]
     SHIPYARDS.each do |code, shipyard|
       Manufacturer.where(code:, shipyard: nil).update_all(
         shipyard:,
-        shipyard_location_id: Location.where(slug: LINKED_LOCATIONS[code]).pick(:id),
+        shipyard_location_id: LINKED_LOCATIONS[code]&.then { |slug| Location.where(slug:).pick(:id) },
         updated_at: Time.current
       )
     end
