@@ -137,10 +137,6 @@ const thumb = (entry: VehiclePaint) =>
       </button>
     </div>
 
-    <p class="overview-card-muted">
-      {{ t("texts.vehicleOverview.applyPaint") }}
-    </p>
-
     <template #footer>
       <router-link
         :to="{

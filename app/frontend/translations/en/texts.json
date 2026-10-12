@@ -341,7 +341,6 @@
       },
       "vehicleOverview": {
         "noLoadouts": "No loadouts yet. Link one from Erkul or SPViewer.",
-        "applyPaint": "Pick a paint to apply it to this ship.",
         "locationPrivate": "Only you can see where your ship is."
       }
     }
