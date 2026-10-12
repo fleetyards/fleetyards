@@ -30,6 +30,16 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal ["Dread Pirate"], aurora_es.paints.pluck(:name)
   end
 
+  test "#run links a pledge synced before its paint was in the catalogue" do
+    nomad = create(:model, name: "Nomad")
+    item = create(:hangar_pledge_item, name: "Nomad IceBreak Livery")
+    hangar_sync("Nomad IceBreak Livery")
+
+    PaintsImporter.new.run
+
+    assert_equal nomad.paints.pluck(:id), item.reload.model_paints.pluck(:id)
+  end
+
   test "#run skips syncs without a list and items that are not skins with an image" do
     arrow = create(:model, name: "Arrow")
     create(:import, :hangar_sync, input: {"error" => "unreadable"})

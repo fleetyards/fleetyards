@@ -18,6 +18,9 @@ class PaintsImporter
 
     results.flatten!
 
+    # A pledge for a paint the catalogue only now has was synced unlinked.
+    HangarPledgeItems::PaintLinker.new.link_all if results.any? { |paint| paint[:new] && !paint[:error] }
+
     {
       new: {
         count: results.count { |paint| paint[:new] && !paint[:error] },

@@ -163,6 +163,8 @@ module HangarPledgeItems
 
         user.hangar_pledge_items.where(kind: kinds).where.not(id: kept.pluck("id")).delete_all unless keep_unlisted
 
+        PaintLinker.new.link(user.hangar_pledge_items.paints.where(id: kept.pluck("id")).to_a)
+
         kinds.index_with { |kind| kept.select { |row| row["kind"] == kind }.pluck("id") }
       end
     end
