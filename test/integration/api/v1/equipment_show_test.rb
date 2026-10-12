@@ -37,6 +37,27 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A load writes the build and leaves the row alone when no fact on it changed,
+  # so the row alone cannot key the fragment.
+  test "GET /equipment/{slug} picks up a build a load wrote after it was cached" do
+    dropped = create(:equipment, name: "Old Rifle", version: "0.0.1-live.1")
+
+    with_fragment_caching do
+      assert_api_response :get, 200, params: {slug: dropped.slug} do
+        assert parsed_body["retired"]
+      end
+
+      travel 1.second do
+        create(:equipment_build, equipment: dropped, name: "New Rifle")
+      end
+
+      assert_api_response :get, 200, params: {slug: dropped.slug} do
+        assert_not parsed_body["retired"]
+        assert_equal "New Rifle", parsed_body["name"]
+      end
+    end
+  end
+
   test "GET /equipment/{slug} labels the facts it carries in the caller's locale" do
     suit = create(:equipment, :armor, name: "Novikov Exploration Suit", sub_type: "LightArmor")
 

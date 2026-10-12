@@ -37,7 +37,7 @@ module Api
         # `item_prices` without their shops: the row states only the two price
         # figures, and the terminals behind them are on the detail.
         @q = Commodity.with_facts(current_version)
-          .includes(:item_prices, :refines_into)
+          .includes(:item_prices, :refines_into, :build, :last_build)
           .ransack(commodities_query_params)
 
         @commodities = @q.result

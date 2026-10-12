@@ -28,7 +28,7 @@ module Api
         # the default it joins the build we are on, and an inner join to it
         # already leaves out what that build does not describe.
         @q = Equipment.visible(current_version)
-          .includes(:manufacturer, item_prices: ItemPrice::SHOP_LINK)
+          .includes(:manufacturer, :build, :last_build, item_prices: ItemPrice::SHOP_LINK)
           .ransack(equipment_query_params)
 
         @equipment = @q.result
