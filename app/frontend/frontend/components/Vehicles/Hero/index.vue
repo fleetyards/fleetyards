@@ -10,8 +10,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
-import { useModelsStore } from "@/frontend/stores/models";
-import { storeToRefs } from "pinia";
+import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
 import {
   ModelStateEnum,
   modelStateHolo,
@@ -65,13 +64,14 @@ const holoModel = computed(() => {
   return { path, length };
 });
 
-// The ship page's own switch, remembered across ships and visits: whoever
-// looks at ships in 3D there sees this one in 3D too.
-const modelsStore = useModelsStore();
-const { holoviewerVisible } = storeToRefs(modelsStore);
+// Remembered per vehicle, apart from the ship page's switch.
+const vehicleViewStore = useVehicleViewStore();
 
 const holoVisible = computed(
-  () => holoviewerVisible.value && !!holoModel.value && !props.compact,
+  () =>
+    vehicleViewStore.holoVisible(props.vehicle.id) &&
+    !!holoModel.value &&
+    !props.compact,
 );
 
 // Over this page rather than on the ship's viewer page, so closing it lands
@@ -232,7 +232,7 @@ const openImageModal = () => {
               :active="holoVisible"
               :aria-pressed="holoVisible"
               data-test="vehicle-hero-holo"
-              @click="modelsStore.toggleHoloviewer()"
+              @click="vehicleViewStore.toggleHolo(vehicle.id)"
             >
               <i class="fa-duotone fa-cube" />
               {{ t("labels.3dView") }}
