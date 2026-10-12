@@ -82,10 +82,13 @@ const cargoVisible = computed(
     padding-top: 15px;
   }
 
+  // Each card keeps its own height: stretched to its neighbour's, a short one
+  // grew an empty band above its link row.
   &__pair {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
+    align-items: start;
   }
 }
 </style>
