@@ -553,7 +553,10 @@
         "edit": "Modifier le vaisseau",
         "shipDatabase": "Base de données des vaisseaux",
         "openLog": "Ouvrir le journal",
-        "applyPaint": "Appliquer %{paint}"
+        "applyPaint": "Appliquer %{paint}",
+        "choosePaint": "Choisir une peinture",
+        "editLocation": "Changer l'emplacement",
+        "showPicture": "Image"
       },
       "vehicleLog": {
         "open": "Journal de bord",

@@ -553,7 +553,10 @@
         "edit": "Modifica nave",
         "shipDatabase": "Database delle navi",
         "openLog": "Apri il diario",
-        "applyPaint": "Applica %{paint}"
+        "applyPaint": "Applica %{paint}",
+        "choosePaint": "Scegli verniciatura",
+        "editLocation": "Cambia posizione",
+        "showPicture": "Immagine"
       },
       "vehicleLog": {
         "open": "Diario di bordo",

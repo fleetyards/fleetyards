@@ -553,7 +553,10 @@
         "edit": "Editar nave",
         "shipDatabase": "Base de datos de naves",
         "openLog": "Abrir el cuaderno",
-        "applyPaint": "Aplicar %{paint}"
+        "applyPaint": "Aplicar %{paint}",
+        "choosePaint": "Elegir pintura",
+        "editLocation": "Cambiar ubicación",
+        "showPicture": "Imagen"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

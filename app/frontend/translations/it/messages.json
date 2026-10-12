@@ -1231,6 +1231,9 @@
         },
         "setting": {
           "failure": "Impossibile salvare l'impostazione"
+        },
+        "location": {
+          "failure": "Impossibile salvare la posizione"
         }
       },
       "vehicleLog": {

@@ -2,6 +2,8 @@
   "en": {
     "headlines": {
       "vehicleOverview": {
+        "paints": "%{model} paints",
+        "location": "Where is the ship?",
         "picture": "Ship picture"
       },
       "vehicleLog": {

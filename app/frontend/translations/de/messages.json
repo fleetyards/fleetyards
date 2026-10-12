@@ -1231,6 +1231,9 @@
         },
         "setting": {
           "failure": "Die Einstellung konnte nicht gespeichert werden"
+        },
+        "location": {
+          "failure": "Der Standort konnte nicht gespeichert werden"
         }
       },
       "vehicleLog": {

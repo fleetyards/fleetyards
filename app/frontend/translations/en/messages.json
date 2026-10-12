@@ -1241,6 +1241,9 @@
         },
         "setting": {
           "failure": "The setting could not be saved"
+        },
+        "location": {
+          "failure": "The location could not be saved"
         }
       },
       "vehicleLog": {

@@ -2,6 +2,8 @@
   "zh-TW": {
     "headlines": {
       "vehicleOverview": {
+        "paints": "%{model} 塗裝",
+        "location": "艦船在哪裡？",
         "picture": "艦船圖片"
       },
       "vehicleLog": {

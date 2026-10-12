@@ -553,7 +553,10 @@
         "edit": "編輯艦船",
         "shipDatabase": "艦船資料庫",
         "openLog": "開啟日誌",
-        "applyPaint": "套用 %{paint}"
+        "applyPaint": "套用 %{paint}",
+        "choosePaint": "選擇塗裝",
+        "editLocation": "變更位置",
+        "showPicture": "圖片"
       },
       "vehicleLog": {
         "open": "艦長日誌",

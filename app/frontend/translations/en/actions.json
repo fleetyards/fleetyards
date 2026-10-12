@@ -553,7 +553,10 @@
         "edit": "Edit ship",
         "shipDatabase": "Ship database",
         "openLog": "Open the log",
-        "applyPaint": "Apply %{paint}"
+        "applyPaint": "Apply %{paint}",
+        "choosePaint": "Choose paint",
+        "editLocation": "Change location",
+        "showPicture": "Picture"
       },
       "vehicleLog": {
         "open": "Captain's Log",

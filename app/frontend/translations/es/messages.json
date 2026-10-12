@@ -1231,6 +1231,9 @@
         },
         "setting": {
           "failure": "No se pudo guardar el ajuste"
+        },
+        "location": {
+          "failure": "No se pudo guardar la ubicación"
         }
       },
       "vehicleLog": {

@@ -553,7 +553,10 @@
         "edit": "Schiff bearbeiten",
         "shipDatabase": "Schiffsdatenbank",
         "openLog": "Logbuch öffnen",
-        "applyPaint": "%{paint} anwenden"
+        "applyPaint": "%{paint} anwenden",
+        "choosePaint": "Lackierung wählen",
+        "editLocation": "Standort ändern",
+        "showPicture": "Bild"
       },
       "vehicleLog": {
         "open": "Logbuch",

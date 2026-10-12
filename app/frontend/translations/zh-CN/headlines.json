@@ -2,6 +2,8 @@
   "zh-CN": {
     "headlines": {
       "vehicleOverview": {
+        "paints": "%{model} 涂装",
+        "location": "舰船在哪里？",
         "picture": "舰船图片"
       },
       "vehicleLog": {

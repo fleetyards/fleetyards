@@ -4001,15 +4001,19 @@
         "cargoMeter": "货舱装载",
         "configuration": "配置",
         "noPaint": "标准涂装",
-        "ownedPaints": "你的 %{model} 涂装",
-        "availablePaints": "%{model} 涂装",
+        "ownedPaints": "你的涂装",
+        "availablePaints": "涂装",
         "paintApplied": "%{paint}，已应用",
         "morePaints": "此舰船还有 %{count} 款",
         "visibility": "可见性",
         "showPublic": "在我的公开机库中显示",
         "showName": "显示名称",
         "fleets": "服役于",
-        "status": "状态"
+        "status": "状态",
+        "searchPaints": "搜索涂装",
+        "location": "位置",
+        "noLocation": "未设置",
+        "noGroups": "无分组"
       },
       "vehicleLog": {
         "entries": "日志条目",

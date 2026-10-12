@@ -4015,15 +4015,19 @@
         "cargoMeter": "Hold fill",
         "configuration": "Configuration",
         "noPaint": "Standard livery",
-        "ownedPaints": "Your %{model} paints",
-        "availablePaints": "%{model} paints",
+        "ownedPaints": "Your paints",
+        "availablePaints": "Paints",
         "paintApplied": "%{paint}, applied",
         "morePaints": "%{count} more for this ship",
         "visibility": "Visibility",
         "showPublic": "Show in my public hangar",
         "showName": "Show the name",
         "fleets": "Serving with",
-        "status": "Status"
+        "status": "Status",
+        "searchPaints": "Search paints",
+        "location": "Location",
+        "noLocation": "Not set",
+        "noGroups": "No groups"
       },
       "vehicleLog": {
         "entries": "log entries",

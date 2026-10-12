@@ -341,7 +341,8 @@
       },
       "vehicleOverview": {
         "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",
-        "applyPaint": "Wähle eine Lackierung, um sie auf dieses Schiff anzuwenden."
+        "applyPaint": "Wähle eine Lackierung, um sie auf dieses Schiff anzuwenden.",
+        "locationPrivate": "Nur du siehst, wo dein Schiff steht."
       }
     }
   }

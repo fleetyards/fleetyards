@@ -341,7 +341,8 @@
       },
       "vehicleOverview": {
         "noLoadouts": "Aún no hay loadouts. Enlaza uno de Erkul o SPViewer.",
-        "applyPaint": "Elige una pintura para aplicarla a esta nave."
+        "applyPaint": "Elige una pintura para aplicarla a esta nave.",
+        "locationPrivate": "Solo tú puedes ver dónde está tu nave."
       }
     }
   }

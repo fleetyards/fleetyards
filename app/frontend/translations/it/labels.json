@@ -4001,15 +4001,19 @@
         "cargoMeter": "Carico",
         "configuration": "Configurazione",
         "noPaint": "Verniciatura standard",
-        "ownedPaints": "Le tue verniciature %{model}",
-        "availablePaints": "Verniciature %{model}",
+        "ownedPaints": "Le tue verniciature",
+        "availablePaints": "Verniciature",
         "paintApplied": "%{paint}, applicata",
         "morePaints": "Altre %{count} per questa nave",
         "visibility": "Visibilità",
         "showPublic": "Mostra nel mio hangar pubblico",
         "showName": "Mostra il nome",
         "fleets": "In servizio con",
-        "status": "Stato"
+        "status": "Stato",
+        "searchPaints": "Cerca verniciature",
+        "location": "Posizione",
+        "noLocation": "Non impostata",
+        "noGroups": "Nessun gruppo"
       },
       "vehicleLog": {
         "entries": "voci del diario",

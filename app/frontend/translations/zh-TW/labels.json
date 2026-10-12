@@ -4001,15 +4001,19 @@
         "cargoMeter": "貨艙裝載",
         "configuration": "配置",
         "noPaint": "標準塗裝",
-        "ownedPaints": "你的 %{model} 塗裝",
-        "availablePaints": "%{model} 塗裝",
+        "ownedPaints": "你的塗裝",
+        "availablePaints": "塗裝",
         "paintApplied": "%{paint}，已套用",
         "morePaints": "此艦船還有 %{count} 款",
         "visibility": "可見性",
         "showPublic": "在我的公開機庫中顯示",
         "showName": "顯示名稱",
         "fleets": "服役於",
-        "status": "狀態"
+        "status": "狀態",
+        "searchPaints": "搜尋塗裝",
+        "location": "位置",
+        "noLocation": "未設定",
+        "noGroups": "無分組"
       },
       "vehicleLog": {
         "entries": "日誌條目",

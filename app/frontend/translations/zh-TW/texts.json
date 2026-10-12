@@ -341,7 +341,8 @@
       },
       "vehicleOverview": {
         "noLoadouts": "還沒有配裝。從 Erkul 或 SPViewer 連結一個。",
-        "applyPaint": "選擇一款塗裝以套用到這艘艦船。"
+        "applyPaint": "選擇一款塗裝以套用到這艘艦船。",
+        "locationPrivate": "只有你能看到你的艦船在哪裡。"
       }
     }
   }

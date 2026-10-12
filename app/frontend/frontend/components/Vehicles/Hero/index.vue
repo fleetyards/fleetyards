@@ -8,6 +8,12 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
+import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import {
+  ModelStateEnum,
+  modelStateHolo,
+  modelStateMetrics,
+} from "@/frontend/composables/useModelStates";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { type Vehicle } from "@/services/fyApi";
@@ -38,7 +44,20 @@ const pictureUrl = computed(
 
 const title = computed(() => props.vehicle.name || props.vehicle.model.name);
 
-const holoAvailable = computed(() => !!props.vehicle.model.holo);
+// The ship in flight, the way the ship page opens it.
+const holoModel = computed(() => {
+  const path = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT)?.url;
+  const length = modelStateMetrics(
+    props.vehicle.model,
+    ModelStateEnum.FLIGHT,
+  ).fleetchartLength;
+
+  if (!path || !length) return undefined;
+
+  return { path, length };
+});
+
+const holoVisible = ref(false);
 
 const openEditModal = () => {
   comlink.emit("open-modal", {
@@ -64,8 +83,13 @@ const openImageModal = () => {
 <template>
   <section class="vehicle-hero" :aria-label="title" data-test="vehicle-hero">
     <div class="vehicle-hero__stage">
+      <HoloViewer
+        v-if="holoVisible && holoModel"
+        :models="[holoModel]"
+        class="vehicle-hero__holo"
+      />
       <img
-        v-if="pictureUrl"
+        v-else-if="pictureUrl"
         :src="pictureUrl"
         :alt="title"
         class="vehicle-hero__image"
@@ -140,6 +164,10 @@ const openImageModal = () => {
             >
               {{ vehicle.model.manufacturer?.name }} {{ vehicle.model.name }}
             </router-link>
+            <span v-if="vehicle.location" data-test="vehicle-hero-location">
+              <i class="fa-duotone fa-location-dot" />
+              {{ vehicle.location }}
+            </span>
             <span v-if="vehicle.serial">
               {{
                 t("labels.vehicleOverview.serial", { serial: vehicle.serial })
@@ -156,11 +184,18 @@ const openImageModal = () => {
         </div>
         <div class="vehicle-hero__links">
           <Btn
-            v-if="holoAvailable"
-            :to="{ name: 'ship-viewer', params: { slug: vehicle.model.slug } }"
+            v-if="holoModel"
+            :active="holoVisible"
+            :aria-pressed="holoVisible"
+            data-test="vehicle-hero-holo"
+            @click="holoVisible = !holoVisible"
           >
             <i class="fa-duotone fa-cube" />
-            {{ t("labels.3dView") }}
+            {{
+              holoVisible
+                ? t("actions.vehicleOverview.showPicture")
+                : t("labels.3dView")
+            }}
           </Btn>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">
             {{ t("actions.vehicleOverview.shipDatabase") }}
@@ -213,6 +248,14 @@ const openImageModal = () => {
     pointer-events: none;
   }
 
+  // Above the scrim, so the model can be turned; the title and actions sit
+  // above it again.
+  &__holo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
   &__image {
     position: absolute;
     inset: 0;
@@ -226,7 +269,7 @@ const openImageModal = () => {
     position: absolute;
     left: 16px;
     right: 16px;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     gap: 12px;

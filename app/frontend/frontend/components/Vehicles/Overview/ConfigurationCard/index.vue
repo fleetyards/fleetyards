@@ -6,7 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 
@@ -22,6 +27,24 @@ type Fact = {
   key: string;
   label: string;
   value?: string;
+};
+
+const comlink = useComlink();
+
+const openLocationModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/LocationModal/index.vue"),
+    props: { vehicle: props.vehicle },
+  });
+};
+
+const openGroupsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/GroupsModal/index.vue"),
+    props: { vehicle: props.vehicle },
+  });
 };
 
 const paintThumb = computed(
@@ -84,6 +107,24 @@ const facts = computed(() =>
           </dd>
         </div>
       </div>
+      <div class="overview-config__fact" data-test="vehicle-fact-location">
+        <dt>{{ t("labels.vehicleOverview.location") }}</dt>
+        <dd class="overview-config__editable">
+          <span>
+            {{ vehicle.location || t("labels.vehicleOverview.noLocation") }}
+          </span>
+          <Btn
+            v-if="!vehicle.loaner"
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="t('actions.vehicleOverview.editLocation')"
+            data-test="vehicle-location-edit"
+            @click="openLocationModal"
+          >
+            <i class="fa-light fa-pen" />
+          </Btn>
+        </dd>
+      </div>
       <div
         v-for="fact in facts"
         :key="fact.key"
@@ -94,12 +135,40 @@ const facts = computed(() =>
         <dd>{{ fact.value }}</dd>
       </div>
       <div
-        v-if="vehicle.hangarGroups.length"
+        v-if="!vehicle.wanted"
         class="overview-config__fact"
         data-test="vehicle-fact-hangarGroups"
       >
         <dt>{{ t("labels.vehicle.hangarGroups") }}</dt>
-        <dd><HangarGroups :groups="vehicle.hangarGroups" /></dd>
+        <dd class="overview-config__editable">
+          <span
+            v-if="vehicle.hangarGroups.length"
+            class="overview-config__groups"
+          >
+            <span
+              v-for="group in vehicle.hangarGroups"
+              :key="group.id"
+              class="overview-config__group"
+            >
+              <span
+                class="overview-config__group-dot"
+                :style="{ backgroundColor: group.color }"
+              />
+              {{ group.name }}
+            </span>
+          </span>
+          <span v-else>{{ t("labels.vehicleOverview.noGroups") }}</span>
+          <Btn
+            v-if="!vehicle.loaner"
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="t('actions.hangar.editGroups')"
+            data-test="vehicle-groups-edit"
+            @click="openGroupsModal"
+          >
+            <i class="fa-light fa-pen" />
+          </Btn>
+        </dd>
       </div>
     </dl>
   </MetricsCard>
@@ -134,6 +203,35 @@ const facts = computed(() =>
     height: 40px;
     border-radius: 4px;
     object-fit: cover;
+  }
+
+  &__editable {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--color-gray-black);
+    font-size: 0.85rem;
+  }
+
+  &__group-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
   }
 
   &__fact {

@@ -553,7 +553,10 @@
         "edit": "编辑舰船",
         "shipDatabase": "舰船数据库",
         "openLog": "打开日志",
-        "applyPaint": "应用 %{paint}"
+        "applyPaint": "应用 %{paint}",
+        "choosePaint": "选择涂装",
+        "editLocation": "更改位置",
+        "showPicture": "图片"
       },
       "vehicleLog": {
         "open": "舰长日志",

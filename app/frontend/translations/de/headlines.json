@@ -2,6 +2,8 @@
   "de": {
     "headlines": {
       "vehicleOverview": {
+        "paints": "%{model}-Lackierungen",
+        "location": "Wo steht das Schiff?",
         "picture": "Schiffsbild"
       },
       "vehicleLog": {
