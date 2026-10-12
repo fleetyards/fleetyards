@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -29,6 +30,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), { editable: false });
 
 const { t } = useI18n();
+const positionTypeLabel = usePositionTypeLabel();
 const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -191,7 +193,7 @@ onUnmounted(() => {
           <i class="fa-light fa-grip-vertical" />
         </span>
         <span v-if="slot.positionType" class="slot-type-badge">
-          {{ slot.positionType }}
+          {{ positionTypeLabel(slot.positionType) }}
         </span>
         <input
           v-if="editable && editingId === slot.id"
@@ -240,6 +242,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/rowLabel";
 .slot-list {
   display: flex;
   flex-direction: column;
@@ -277,14 +280,9 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 .slot-type-badge {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--color-muted, #7a8288);
   flex-shrink: 0;
-  padding: 0 4px;
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 2px;
-  letter-spacing: 0.04em;
+  white-space: nowrap;
+  @include row-label;
 }
 .slot-title {
   flex: 1;
