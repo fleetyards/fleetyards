@@ -213,3 +213,13 @@ POST /commodities removed the optional property `refinedFrom` from the response 
 POST /commodities removed the required property `availability` from the response with the `200` status
 PUT /commodities/{id} removed the optional property `refinedFrom` from the response with the `200` status
 PUT /commodities/{id} removed the required property `availability` from the response with the `200` status
+DELETE /users/{id} removed the required property `saleNotify` from the response with the `200` status
+DELETE /users/{id}/rsi-verification removed the required property `saleNotify` from the response with the `200` status
+DELETE /vehicles/{id} removed the required property `user/saleNotify` from the response with the `200` status
+GET /users removed the required property `items/items/saleNotify` from the response with the `200` status
+GET /users/{id} removed the required property `saleNotify` from the response with the `200` status
+GET /vehicles removed the required property `items/items/user/saleNotify` from the response with the `200` status
+GET /vehicles/{id} removed the required property `user/saleNotify` from the response with the `200` status
+PUT /users/{id} removed the request property `saleNotify`
+PUT /users/{id} removed the required property `saleNotify` from the response with the `200` status
+PUT /vehicles/{id} removed the required property `user/saleNotify` from the response with the `200` status

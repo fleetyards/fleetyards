@@ -27,7 +27,6 @@ module Notifications
       vehicle = create(:vehicle, model: @model, user: user, sale_notify: true, wanted: true, loaner: false, notify: true)
 
       ::Discord::ShipOnSale.stubs(:new).returns(stub(run: true))
-      OnSaleHangarChannel.expects(:broadcast_to).at_least_once
       VehicleMailer.expects(:on_sale).with(vehicle).returns(stub(deliver_later: true))
 
       ::Notifications::ModelOnSaleJob.new.perform(@model.id)
@@ -35,6 +34,23 @@ module Notifications
       notification = Notification.find_by(user: user, notification_type: "model_on_sale")
       assert notification.present?
       assert_equal vehicle, notification.record
+    end
+
+    test "#perform follows the on-sale preference, not the signup opt-in" do
+      opted_in = create(:user, sale_notify: true)
+      opted_in.notification_preferences.find_by!(notification_type: "model_on_sale")
+        .update!(app: false, mail: false, push: false, discord: false)
+      turned_on_later = create(:user, sale_notify: false)
+      turned_on_later.notification_preferences.find_by!(notification_type: "model_on_sale").update!(push: true)
+      [opted_in, turned_on_later].each do |user|
+        create(:vehicle, model: @model, user:, sale_notify: true, wanted: true, loaner: false, notify: true)
+      end
+
+      ::Discord::ShipOnSale.stubs(:new).returns(stub(run: true))
+
+      ::Notifications::ModelOnSaleJob.new.perform(@model.id)
+
+      assert_equal [turned_on_later.id], Notification.where(notification_type: "model_on_sale").pluck(:user_id)
     end
   end
 end

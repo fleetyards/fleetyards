@@ -24,7 +24,6 @@ module Admin
             twitch: {type: :string},
             guilded: {type: :string},
             homepage: {type: :string},
-            saleNotify: {type: :boolean},
             publicHangar: {type: :boolean},
             publicHangarUrl: {type: :string},
             publicHangarLoaners: {type: :boolean},
@@ -49,7 +48,7 @@ module Admin
           },
           additionalProperties: false,
           required: %w[
-            username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
+            username email publicHangar publicHangarLoaners publicWishlist hideOwner
             supporter supporterTier supporterRecurring fleetTierOngoing twoFactorRequired createdAt updatedAt
           ]
         })

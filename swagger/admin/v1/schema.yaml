@@ -11764,8 +11764,6 @@ components:
       - ImportsChannel
       - ModelsChannel
       - NotificationsChannel
-      - OnSaleChannel
-      - OnSaleHangarChannel
       - PayoutLedgerChannel
       - UserNotificationsChannel
       - UserPresenceChannel
@@ -11788,8 +11786,6 @@ components:
       - IMPORTS_CHANNEL
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL
-      - ON_SALE_CHANNEL
-      - ON_SALE_HANGAR_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - USER_PRESENCE_CHANNEL
@@ -20945,8 +20941,6 @@ components:
           type: string
         homepage:
           type: string
-        saleNotify:
-          type: boolean
         publicHangar:
           type: boolean
         publicHangarUrl:
@@ -21000,7 +20994,6 @@ components:
       required:
       - username
       - email
-      - saleNotify
       - publicHangar
       - publicHangarLoaners
       - publicWishlist
@@ -21022,8 +21015,6 @@ components:
           type: string
         rsiHandle:
           type: string
-        saleNotify:
-          type: boolean
         publicHangar:
           type: boolean
         publicHangarLoaners:

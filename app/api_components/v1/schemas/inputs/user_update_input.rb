@@ -17,7 +17,6 @@ module V1
             youtube: {type: [:string, :null]},
             guilded: {type: [:string, :null]},
             twitch: {type: [:string, :null]},
-            saleNotify: {type: :boolean},
             dateFormat: ::V1::Schemas::Enums::UserDateFormatEnum,
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},

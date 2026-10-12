@@ -60,7 +60,6 @@ const initialValues = ref<UserInput>({
   username: props.user.username,
   email: props.user.email,
   rsiHandle: props.user.rsiHandle,
-  saleNotify: props.user.saleNotify,
   publicHangar: props.user.publicHangar,
   publicHangarLoaners: props.user.publicHangarLoaners,
   publicWishlist: props.user.publicWishlist,
@@ -81,7 +80,6 @@ const { defineField, handleSubmit, meta, setErrors } = useForm<UserInput>({
 const [username, usernameProps] = defineField("username");
 const [email, emailProps] = defineField("email");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
-const [saleNotify, saleNotifyProps] = defineField("saleNotify");
 const [publicHangar, publicHangarProps] = defineField("publicHangar");
 const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
   "publicHangarLoaners",
@@ -189,15 +187,6 @@ const handleCancel = async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormToggle
-          v-model="saleNotify"
-          translation-key="user.saleNotify"
-          v-bind="saleNotifyProps"
-          name="saleNotify"
-          align-with-fields
-        />
       </div>
     </div>
     <div class="row">

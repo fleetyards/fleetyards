@@ -9,11 +9,11 @@ module Notifications
 
       ::Discord::ShipOnSale.new(model:).run if model.pledge_price.present?
 
-      user_ids = User.confirmed.where(sale_notify: true).pluck(&:id)
+      user_ids = User.confirmed
+        .where(id: NotificationPreference.model_on_sale.on_any_channel.select(:user_id))
+        .select(:id)
 
-      Vehicle.where(model_id:, sale_notify: true, wanted: true, loaner: false, user_id: user_ids, notify: true).find_each do |vehicle|
-        OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_jbuilder_hash)
-
+      Vehicle.where(model_id:, sale_notify: true, wanted: true, loaner: false, user_id: user_ids, notify: true).includes(:user).find_each do |vehicle|
         I18n.with_locale(vehicle.user.notification_locale) do
           Notification.notify!(
             user: vehicle.user,

@@ -13,6 +13,8 @@ class NotificationPreference < ApplicationRecord
 
   validates :notification_type, presence: true, uniqueness: {scope: :user_id}
 
+  scope :on_any_channel, -> { CHANNEL_DEFAULTS.keys.map { |channel| where(channel => true) }.reduce(:or) }
+
   def self.for(user:, type:)
     find_by(user:, notification_type: type) || new(user:, notification_type: type, **defaults_for(type))
   end

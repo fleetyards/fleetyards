@@ -23,7 +23,6 @@ json.twitch user.twitch if user.twitch.present?
 json.guilded user.guilded if user.guilded.present?
 json.homepage user.homepage if user.homepage.present?
 
-json.sale_notify user.sale_notify
 json.public_hangar user.public_hangar
 json.public_hangar_url user.public_hangar_url
 json.public_hangar_loaners user.public_hangar_loaners

@@ -24,8 +24,6 @@ import {
   type HangarSyncData,
 } from "@/services/fyCable/channels/HangarSyncChannel";
 import { NotificationsChannel } from "@/services/fyCable/channels/NotificationsChannel";
-import { OnSaleChannel } from "@/services/fyCable/channels/OnSaleChannel";
-import { OnSaleHangarChannel } from "@/services/fyCable/channels/OnSaleHangarChannel";
 import {
   UserNotificationsChannel,
   type UserNotificationsData,
@@ -35,7 +33,6 @@ import { WishlistDestroyChannel } from "@/services/fyCable/channels/WishlistDest
 import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
 import { type AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
-import { type Model } from "@/services/fyCable/models/Model";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
 import { useSyncRsiHangarStatus } from "@/services/fyApi";
 import { useHangarSync } from "@/frontend/composables/useHangarSync";
@@ -104,35 +101,7 @@ export const useUpdates = () => {
 
   const sessionStore = useSessionStore();
 
-  const { currentUser, isAuthenticated } = storeToRefs(sessionStore);
-
-  const notifyVehicleOnSale = (vehicle: Vehicle) => {
-    if (!currentUser?.value?.saleNotify) {
-      return;
-    }
-
-    if (!vehicle.saleNotify) {
-      return;
-    }
-
-    displayInfo({
-      text: t("messages.model.onSale", {
-        model: vehicle.model?.name,
-      }),
-      icon: vehicle.model?.media?.storeImage?.smallUrl,
-    });
-  };
-
-  const notifyOnSale = (model: Model) => {
-    if (!currentUser?.value?.saleNotify) {
-      return;
-    }
-
-    displayInfo({
-      text: t("messages.model.onSale", { model: model.name }),
-      icon: model.media?.storeImage?.smallUrl,
-    });
-  };
+  const { isAuthenticated } = storeToRefs(sessionStore);
 
   // A server-wide announcement is already shaped like the toast it becomes —
   // it has no counterpart resource in the REST API, so nothing is derived here.
@@ -185,18 +154,6 @@ export const useUpdates = () => {
   useSubscription({
     channel: AppVersionChannel,
     received: updateAppVersion,
-  });
-
-  useSubscription({
-    channel: OnSaleHangarChannel,
-    received: notifyVehicleOnSale,
-    enabled: isAuthenticated,
-  });
-
-  useSubscription({
-    channel: OnSaleChannel,
-    received: notifyOnSale,
-    enabled: isAuthenticated,
   });
 
   useSubscription({

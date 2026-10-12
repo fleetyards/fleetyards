@@ -170,7 +170,6 @@
         }
       },
       "model": {
-        "onSale": "¡%{model} ahora en oferta!",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Importación de pinturas iniciada. Se te avisará cuando termine.",

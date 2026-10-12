@@ -2395,3 +2395,10 @@ PUT /users/me added the new `patreon` enum value to the `authConnections/items/`
 PUT /users/me added the new `twitch` enum value to the `authConnections/items/` response property for the response status `200`
 GET /commodities removed the optional property `items/items/refinedFrom` from the response with the `200` status
 GET /commodities removed the required property `items/items/availability` from the response with the `200` status
+DELETE /omniauth-connections/{provider} removed the required property `saleNotify` from the response with the `200` status
+GET /users/me removed the required property `saleNotify` from the response with the `200` status
+POST /sessions removed the required property `saleNotify` from the response with the `200` status
+POST /users/signup removed the required property `saleNotify` from the response with the `201` status
+PUT /users/account removed the required property `saleNotify` from the response with the `200` status
+PUT /users/me removed the request property `saleNotify`
+PUT /users/me removed the required property `saleNotify` from the response with the `200` status

@@ -13,7 +13,6 @@ module Admin
               username: {type: :string},
               email: {type: :string},
               rsiHandle: {type: :string},
-              saleNotify: {type: :boolean},
               publicHangar: {type: :boolean},
               publicHangarLoaners: {type: :boolean},
               publicWishlist: {type: :boolean},
