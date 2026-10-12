@@ -458,6 +458,7 @@ zh-CN:
         vehicle:
           serial_format: "必须符合游戏中显示的注册编号格式，例如 L8-4261-HA"
         user:
+          route_name: "是 Fleetyards 上某个页面的名称，不能用作用户名"
           attributes:
             base:
               has_permanent_fleet_memberships: 'Cannot delete account while you are

@@ -459,6 +459,7 @@ fr:
         vehicle:
           serial_format: "doit avoir le format de l’immatriculation affichée dans le jeu, par exemple L8-4261-HA"
         user:
+          route_name: "est le nom d’une page de Fleetyards et ne peut pas être un nom d’utilisateur"
           attributes:
             base:
               has_permanent_fleet_memberships: 'Cannot delete account while you are

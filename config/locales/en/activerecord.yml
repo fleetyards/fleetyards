@@ -492,6 +492,7 @@ en:
             model:
               not_player_ownable: cannot be added to a hangar (not player ownable)
         user:
+          route_name: "is the name of a page on Fleetyards and cannot be a username"
           attributes:
             base:
               has_permanent_fleet_memberships: "Cannot delete account while you are an admin of the following fleets: %{fleets}. Please transfer ownership first."
