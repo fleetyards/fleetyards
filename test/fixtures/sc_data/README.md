@@ -28,6 +28,7 @@ real shape. Each one is present for a reason:
 | `items/aegs_avenger_cargogrid_stalker.json` | carries an `inventory_ref` |
 | `items/inventory_aegs_avenger_cargogrid_stalker.json` | the `category: inventory` row that ref resolves to, which a load itself skips |
 | `items/aegs_avenger_nose_s3.json` | carries a `loadout`, so the hardpoint pass runs |
+| `items/rsi_apollo_module_left_tier_2.json` | a module item with no `loadout` at all, which the module load must not resolve |
 | `equipment/behr_rifle_ballistic_01.json` | names a manufacturer_ref the manufacturers tree carries |
 | `equipment/gys_helmet_03_01_01.json` | carries a volume and the box it fills |
 | `manufacturers/beh.json` | Behring, the maker the rifle points at, and it names a logo |

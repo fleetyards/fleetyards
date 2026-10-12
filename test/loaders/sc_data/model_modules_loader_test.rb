@@ -49,6 +49,20 @@ module ScData
         assert_not_nil model_module.builds.sole
       end
 
+      # The Apollo's bed modules ship as items with no ports at all, and
+      # `resolve_loadout` raises on that on purpose -- inside the one job that
+      # runs every loader.
+      test "#load_model_module loads a module whose item has no loadout" do
+        model_module = create(:model_module, sc_key: "RSI_Apollo_Module_Left_Tier_2", description: nil)
+
+        assert_nothing_raised do
+          fixture_loader(::ScData::Loader::ModelModulesLoader).load_model_module(model_module)
+        end
+
+        assert_equal "This module contains 2x Tier 2 medical beds.", model_module.reload.description
+        assert_not_nil model_module.builds.sole
+      end
+
       # --- Builds -------------------------------------------------------------
 
       test "#load_model_module writes a build row for the source it is loading" do

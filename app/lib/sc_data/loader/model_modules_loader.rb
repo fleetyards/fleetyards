@@ -43,7 +43,10 @@ module ScData
         # build instead.
         return if module_data.blank?
 
-        update_loadout(model_module, module_data)
+        # Some module items carry no ports at all -- the Apollo's bed modules
+        # are one -- and `resolve_loadout` raises on that on purpose. Such a
+        # module still has a name and a description to load.
+        update_loadout(model_module, module_data) if module_data["loadout"] || module_data["default_loadout"]
 
         # Curated until the live game ships it, automatic afterwards.
         #
