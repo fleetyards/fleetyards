@@ -18,6 +18,7 @@ else
   json.fleet_role nil
 end
 json.leader leader_role_ids.include?(membership.fleet_role_id)
+json.admin membership.fleet_role&.permanent? || false
 json.last_active_at membership.user.last_active_at&.utc&.iso8601
 json.accepted_at membership.accepted_at&.utc&.iso8601
 json.requested_at membership.requested_at&.utc&.iso8601
@@ -27,4 +28,4 @@ json.rsi_handle membership.user.rsi_handle.presence
 json.discord_profile_url membership.user.discord_profile_url
 json.verification_gap membership.verification_gap
 json.rsi_organizations_checked_at membership.user.rsi_organizations_checked_at&.utc&.iso8601
-json.verification_reminded_at local_assigns.fetch(:reminders, {})[membership.id]&.utc&.iso8601
+json.verification_reminded_at membership.verification_reminded_at&.utc&.iso8601

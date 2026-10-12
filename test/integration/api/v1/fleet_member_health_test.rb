@@ -7,7 +7,7 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
 
   openapi_schema :"v1/schema"
 
-  api_path "/fleets/{fleetSlug}/members/health" do
+  api_path "/fleets/{fleetSlug}/member-health" do
     parameter name: "fleetSlug", in: :path, schema: {type: :string}
 
     get("Fleet Member Health") do
@@ -105,6 +105,17 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET health counts no admins in a fleet without a permanent role" do
+    @fleet.fleet_roles.update_all(permanent: false)
+    @fleet.fleet_memberships.find_by(user: @recent).update_columns(fleet_role_id: nil)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 0, health["admins"]["totalCount"]
+      assert_empty health["admins"]["items"]
+    end
+  end
+
   test "GET health offers no admin candidates once there are two admins" do
     @fleet.fleet_memberships.find_by(user: @officer).update_columns(fleet_role_id: @fleet.fleet_roles.find_by(permanent: true).id)
     sign_in @admin
@@ -132,8 +143,7 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     @away.update_columns(rsi_handle: "AwayHandle", rsi_handle_verified: true, rsi_organizations_checked_at: 3.days.ago)
     @recent.update_columns(rsi_handle: "RecentHandle", rsi_handle_verified: false)
     reminded_at = 2.days.ago.change(usec: 0)
-    create(:notification, user: @gone, notification_type: "fleet_verification_requested",
-      record: @fleet.fleet_memberships.find_by(user: @gone), created_at: reminded_at)
+    @fleet.fleet_memberships.find_by(user: @gone).update_columns(verification_reminded_at: reminded_at)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
@@ -156,6 +166,8 @@ class Api::V1::FleetMemberHealthTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 7.days.ago.to_date.iso8601, health["requestedBefore"]
+      assert_equal 14.days.ago.to_date.iso8601, health["invitedBefore"]
       assert_equal [old_request.user.username], health["waitingJoinRequests"]["items"].pluck("username")
       invitations = health["unansweredInvitations"]["items"]
       assert_equal [old_invite.user.username], invitations.pluck("username")

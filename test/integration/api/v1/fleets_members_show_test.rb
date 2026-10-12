@@ -57,6 +57,15 @@ class Api::V1::FleetsMembersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members/:username returns a member named health" do
+    @member.update_columns(username: "health", normalized_username: "health")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, username: "health"} do
+      assert_equal "health", parsed_body["username"]
+    end
+  end
+
   test "GET /fleets/:slug/members/:username reports a request that is still open" do
     requester = create(:user)
     membership = @fleet.fleet_memberships.create!(user: requester, fleet_role: @fleet.default_member_role)

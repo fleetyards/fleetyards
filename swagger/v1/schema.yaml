@@ -5992,6 +5992,65 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/member-health":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Member Health
+      tags:
+      - FleetMembers
+      operationId: fleetMemberHealth
+      parameters:
+      - name: inactiveDays
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 30
+        required: false
+        description: Days without activity after which a member counts as inactive
+      - name: sample
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 5
+          default: 5
+        required: false
+        description: Rows returned per check; 0 for counts only
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMemberHealth"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members":
     parameters:
     - name: fleetSlug
@@ -6104,65 +6163,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/members/health":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      required: true
-    get:
-      summary: Fleet Member Health
-      tags:
-      - FleetMembers
-      operationId: fleetMemberHealth
-      parameters:
-      - name: inactiveDays
-        in: query
-        schema:
-          type: integer
-          minimum: 1
-          default: 30
-        required: false
-        description: Days without activity after which a member counts as inactive
-      - name: sample
-        in: query
-        schema:
-          type: integer
-          minimum: 0
-          maximum: 5
-          default: 5
-        required: false
-        description: Rows returned per check; 0 for counts only
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetMemberHealth"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
           content:
             application/json:
               schema:
@@ -27338,6 +27338,21 @@ components:
       properties:
         inactiveDays:
           type: integer
+        inactiveSince:
+          type: string
+          format: date
+          description: The day inactiveMembers counts from, for the members list's
+            inactiveSince filter
+        requestedBefore:
+          type: string
+          format: date
+          description: The day waitingJoinRequests counts up to, for the members list's
+            requestedAtLteq filter
+        invitedBefore:
+          type: string
+          format: date
+          description: The day unansweredInvitations counts up to, for the members
+            list's invitedAtLteq filter
         fleetRsiVerified:
           type: boolean
         rsiMemberCount:
@@ -27391,6 +27406,9 @@ components:
           description: Null unless squadrons are on and the reader can read them
       required:
       - inactiveDays
+      - inactiveSince
+      - requestedBefore
+      - invitedBefore
       - fleetRsiVerified
       - rsiMemberCount
       - memberCount
@@ -27493,6 +27511,9 @@ components:
         leader:
           type: boolean
           description: Holds a role ranked above the one new members get
+        admin:
+          type: boolean
+          description: Holds the fleet's permanent role, which cannot be removed
         lastActiveAt:
           type:
           - string
@@ -27547,6 +27568,7 @@ components:
       - id
       - username
       - leader
+      - admin
       - verificationGap
       additionalProperties: false
       title: FleetMemberHealthMember

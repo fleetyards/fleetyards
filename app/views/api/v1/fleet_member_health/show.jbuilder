@@ -11,6 +11,9 @@ checks = {
 }
 
 json.inactive_days @inactive_days
+json.inactive_since @inactive_since.iso8601
+json.requested_before @requested_before.iso8601
+json.invited_before @invited_before.iso8601
 json.fleet_rsi_verified @fleet.rsi_verified?
 # Only an org the fleet proved is its own: anyone can type any SID.
 json.rsi_member_count @fleet.verified_rsi_member_count

@@ -17,6 +17,7 @@ module V1
             avatar: {anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]},
             fleetRole: {anyOf: [::V1::Schemas::Fleets::FleetRole, {type: :null}]},
             leader: {type: :boolean, description: "Holds a role ranked above the one new members get"},
+            admin: {type: :boolean, description: "Holds the fleet's permanent role, which cannot be removed"},
             lastActiveAt: {type: [:string, :null], format: "date-time"},
             acceptedAt: {type: [:string, :null], format: "date-time"},
             requestedAt: {type: [:string, :null], format: "date-time"},
@@ -31,7 +32,7 @@ module V1
             rsiOrganizationsCheckedAt: {type: [:string, :null], format: "date-time"},
             verificationRemindedAt: {type: [:string, :null], format: "date-time", description: "When the fleet last reminded the member to verify"}
           },
-          required: %w[id username leader verificationGap],
+          required: %w[id username leader admin verificationGap],
           additionalProperties: false
         })
       end

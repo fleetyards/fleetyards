@@ -15,6 +15,9 @@ module V1
           type: :object,
           properties: {
             inactiveDays: {type: :integer},
+            inactiveSince: {type: :string, format: :date, description: "The day inactiveMembers counts from, for the members list's inactiveSince filter"},
+            requestedBefore: {type: :string, format: :date, description: "The day waitingJoinRequests counts up to, for the members list's requestedAtLteq filter"},
+            invitedBefore: {type: :string, format: :date, description: "The day unansweredInvitations counts up to, for the members list's invitedAtLteq filter"},
             fleetRsiVerified: {type: :boolean},
             rsiMemberCount: {type: [:integer, :null], description: "Members of the fleet's RSI org on RSI; null without an RSI SID"},
             memberCount: {type: :integer},
@@ -30,7 +33,7 @@ module V1
             membersWithoutSquadron: nullable.call(section, "Null unless squadrons are on and the reader can read them"),
             emptySquadrons: nullable.call(::V1::Schemas::Fleets::FleetMemberHealthSquadrons, "Null unless squadrons are on and the reader can read them")
           },
-          required: %w[inactiveDays fleetRsiVerified rsiMemberCount memberCount hiddenShipsCount admins
+          required: %w[inactiveDays inactiveSince requestedBefore invitedBefore fleetRsiVerified rsiMemberCount memberCount hiddenShipsCount admins
             unverifiedMembers membersWithoutRsiHandle inactiveMembers waitingJoinRequests unansweredInvitations
             staleInviteUrls membersWithoutDiscord membersWithoutSquadron emptySquadrons],
           additionalProperties: false
