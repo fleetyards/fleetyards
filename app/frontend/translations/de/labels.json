@@ -155,9 +155,7 @@
         "until": "Aktiv bis %{date}",
         "expiring": "Läuft am %{date} ab",
         "ongoing": "Wiederkehrend, ohne Enddatum",
-        "tierShort": "Stufe %{tier}",
-        "tierShortRecurring": "Stufe %{tier}, wiederkehrend",
-        "recurringShort": "Wiederkehrend"
+        "tierShort": "Stufe %{tier}"
       },
       "destroyedFleets": {
         "discarded": "Verworfen",

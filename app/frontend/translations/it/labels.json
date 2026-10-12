@@ -155,9 +155,7 @@
         "until": "Attivo fino al %{date}",
         "expiring": "Scade il %{date}",
         "ongoing": "Ricorrente, senza data di fine",
-        "tierShort": "Livello %{tier}",
-        "tierShortRecurring": "Livello %{tier}, ricorrente",
-        "recurringShort": "Ricorrente"
+        "tierShort": "Livello %{tier}"
       },
       "destroyedFleets": {
         "discarded": "Scartata",
