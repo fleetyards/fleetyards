@@ -71,7 +71,7 @@ const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Fleets/DisplayOptionsModal/index.vue"),
-    props: { metrics: true },
+    props: { metrics: Boolean(fleetStats.value?.metrics) && !mobile.value },
   });
 };
 
