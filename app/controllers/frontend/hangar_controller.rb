@@ -17,6 +17,7 @@ module Frontend
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
         @og_type = "article"
         @og_image = (vehicle.model.store_image.attached? ? rails_blob_url(vehicle.model.store_image) : nil) if vehicle.present?
+        preview_plaque if params[:plaque].present?
       end
 
       render_frontend
@@ -32,6 +33,28 @@ module Frontend
       end
 
       render_frontend
+    end
+
+    # A shared plaque previews as itself: the owner's rendering of it, the ship's
+    # name and its dedication. Only a ship the public hangar shows, and only
+    # once its plaque has been drawn.
+    private def preview_plaque
+      return unless Flipper.enabled?(:vehicle_overview, @user)
+
+      vehicle = @user.vehicles.public.purchased.find_by(id: params[:plaque])
+      return if vehicle&.dedication.blank? || !vehicle.plaque_image.attached?
+
+      @title = I18n.t("title.frontend.public_plaque", vehicle: public_vehicle_name(vehicle))
+      @description = vehicle.dedication
+      @og_image = rails_blob_url(vehicle.plaque_image)
+      @twitter_card = "summary_large_image"
+    end
+
+    # The name the public hangar shows: the owner's own only where they show it.
+    private def public_vehicle_name(vehicle)
+      return vehicle.name if vehicle.name_visible? && vehicle.name.present?
+
+      vehicle.model.name
     end
 
     private def public_user_readable?(rule)

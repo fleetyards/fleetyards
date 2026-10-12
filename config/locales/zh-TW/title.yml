@@ -43,6 +43,7 @@ zh-TW:
       password_request: 請求密碼
       privacy-policy: 隱私政策
       public_hangar: "%{user} 的機庫"
+      public_plaque: "%{vehicle} 的命名銘牌"
       public_wishlist: "%{user} 的願望清單"
       roadmap: 路線圖
       roadmap_changes: 路線圖變更

@@ -43,6 +43,7 @@ it:
       password_request: Richiedi password
       privacy-policy: Informativa sulla privacy
       public_hangar: Hangar di %{user}
+      public_plaque: "Targa di dedica di %{vehicle}"
       public_wishlist: Lista dei desideri di %{user}
       roadmap: Roadmap
       roadmap_changes: Modifiche roadmap
