@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_150300) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1402,6 +1402,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150300) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
+  end
+
+  create_table "hangar_pledge_item_model_paints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_pledge_item_id", null: false
+    t.uuid "model_paint_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hangar_pledge_item_id", "model_paint_id"], name: "index_hangar_pledge_item_model_paints_on_item_and_paint", unique: true
+    t.index ["model_paint_id"], name: "index_hangar_pledge_item_model_paints_on_model_paint_id"
   end
 
   create_table "hangar_pledge_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2881,6 +2890,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_150300) do
   add_foreign_key "game_mission_locations", "game_missions", on_delete: :cascade
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
+  add_foreign_key "hangar_pledge_item_model_paints", "hangar_pledge_items", on_delete: :cascade
+  add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
   add_foreign_key "hangar_pledge_items", "users", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"

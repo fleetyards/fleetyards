@@ -18,6 +18,9 @@ class PaintsImporter
 
     results.flatten!
 
+    # A pledge for a paint the catalogue only now has was synced unlinked.
+    HangarPledgeItems::PaintLinker.new.link_all if results.any? { |paint| paint[:new] && !paint[:error] }
+
     {
       new: {
         count: results.count { |paint| paint[:new] && !paint[:error] },
@@ -122,6 +125,13 @@ class PaintsImporter
   end
 
   private def extract_paint(name, image)
+    self.class.extract_paint(name, image)
+  end
+
+  # RSI's skin name split into the ship it names and the paint, both cleaned
+  # of "Paint"/"Livery". Shared with `HangarPledgeItems::PaintResolver`, which
+  # reads the same names off a user's pledges.
+  def self.extract_paint(name, image = nil)
     name = name.tr("–", "-")
     name = name.tr(" ", " ").strip
     name_parts = name.split(" - ")
@@ -207,7 +217,7 @@ class PaintsImporter
   end
 
   # RSI's item name for a paint, as the catalogue names it. Shared with
-  # `HangarPledgeItems::OwnedPaints`, which reads the same names off pledges.
+  # `HangarPledgeItems::PaintResolver`, which reads the same names off pledges.
   def self.paint_mapping(name)
     name = name.tr("–", "-")
 
@@ -366,6 +376,11 @@ class PaintsImporter
   end
 
   private def models_mapping(name)
+    self.class.models_mapping(name)
+  end
+
+  # The catalogue models an RSI ship name stands for: one, or a whole series.
+  def self.models_mapping(name)
     aurora = ["Aurora Mk I CL", "Aurora Mk I ES", "Aurora Mk I LN", "Aurora Mk I LX", "Aurora Mk I MR"]
     aurora_mk2 = ["Aurora Mk II"]
     avenger = ["Avenger Stalker", "Avenger Titan", "Avenger Titan Renegade", "Avenger Warlock"]
@@ -651,7 +666,7 @@ class PaintsImporter
     name
   end
 
-  private def cleanup_name(text)
+  def self.cleanup_name(text)
     text.gsub(/paint|Paint|livery|Livery|skin|Skin/, "").strip
   end
 end

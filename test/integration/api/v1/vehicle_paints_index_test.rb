@@ -49,7 +49,8 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /vehicles/:vehicle_id/paints lists the owned paints first and marks the applied one" do
-    create(:hangar_pledge_item, user: @user, name: "Ironclad - Rust Society Paint")
+    item = create(:hangar_pledge_item, user: @user, name: "Ironclad - Rust Society Paint")
+    HangarPledgeItems::PaintLinker.new.link([item])
     sign_in @user
 
     assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do

@@ -23,7 +23,7 @@ module Api
           .includes(:item_prices, *ModelPaint.attachment_preloads)
           .order(name: :asc)
           .to_a
-        @owned_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner, @vehicle.model).paint_ids(paints).to_set
+        @owned_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner).paint_ids(paints).to_set
         @paints = paints.sort_by { |paint| @owned_ids.include?(paint.id) ? 0 : 1 }
       end
 
