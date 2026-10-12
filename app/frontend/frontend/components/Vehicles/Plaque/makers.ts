@@ -23,7 +23,8 @@ export type PlaqueMaker = {
   theme: string;
   emblem: string;
   // A single-colour emblem is drawn through a mask in the style's colour; a
-  // multi-colour logo is shown as it is.
+  // multi-colour logo is shown as it is in its maker style, and filtered like
+  // any logo in the general ones.
   tint: boolean;
   // The emblem's own aspect ratio, which its size is worked out from.
   aspect: number;
@@ -86,6 +87,16 @@ export const PLAQUE_MAKERS: Record<string, PlaqueMaker> = {
     aspect: 96 / 49,
     optical: 1.15,
   },
+};
+
+// The maker a vehicle's plaque is styled after, if it has a style of its own.
+export const plaqueMakerFor = (vehicle: {
+  manufacturerCode?: string | null;
+  model: { manufacturer?: { code?: string | null } | null };
+}): PlaqueMaker | undefined => {
+  const code = vehicle.manufacturerCode ?? vehicle.model.manufacturer?.code;
+
+  return code ? PLAQUE_MAKERS[code] : undefined;
 };
 
 const BASE_HEIGHT = 11.5;

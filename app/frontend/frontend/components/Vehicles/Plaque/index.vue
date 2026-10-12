@@ -13,7 +13,7 @@ import {
   DEFAULT_OPERATIONS_GROUP,
   OPERATIONS_GROUPS,
 } from "./operationsGroups";
-import { PLAQUE_MAKERS, emblemSize } from "./makers";
+import { emblemSize, plaqueMakerFor } from "./makers";
 import miscPattern from "@/images/plaque/misc-pattern.webp";
 
 type Props = {
@@ -31,11 +31,7 @@ const { t, currentLocale } = useI18n();
 
 const manufacturer = computed(() => props.vehicle.model.manufacturer);
 
-const maker = computed(() => {
-  const code = props.vehicle.manufacturerCode ?? manufacturer.value?.code;
-
-  return code ? PLAQUE_MAKERS[code] : undefined;
-});
+const maker = computed(() => plaqueMakerFor(props.vehicle));
 
 // The uploaded logo, for a maker the plaque has no emblem of its own for.
 const logo = computed(
@@ -317,6 +313,7 @@ const lines = computed(() =>
       700 5.6cqw/1.1 Orbitron,
       sans-serif;
     letter-spacing: 0.06em;
+    overflow-wrap: anywhere;
     text-transform: uppercase;
   }
 
@@ -380,6 +377,7 @@ const lines = computed(() =>
     font-style: italic;
     font-weight: 600;
     line-height: 1.4;
+    overflow-wrap: anywhere;
   }
 }
 
