@@ -4,8 +4,13 @@ module Loaders
   module ScData
     class ModelsJob < ::Loaders::BaseJob
       include FetchesParsedTree
+      include OneLoadAtATime
 
       def perform
+        one_load_at_a_time { load_models }
+      end
+
+      private def load_models
         version = ::ScData::Source.version
 
         import = Imports::ScData::ModelsImport.create(version:)

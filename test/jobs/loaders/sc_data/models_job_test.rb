@@ -29,6 +29,18 @@ module Loaders
           before_perform: SC_DATA_STUB
         )
       end
+
+      test "#perform goes back on the queue while another load holds the lock" do
+        ActiveRecord::Base.stubs(:with_advisory_lock_result)
+          .returns(WithAdvisoryLock::Result.new(lock_was_acquired: false))
+        ::ScData::Loader::ModelsLoader.expects(:new).never
+
+        ::Loaders::ScData::ModelsJob.jobs.clear
+        ::Loaders::ScData::ModelsJob.new.perform
+
+        assert_nil Imports::ScData::ModelsImport.last
+        assert_equal [[]], ::Loaders::ScData::ModelsJob.jobs.map { |job| job["args"] }
+      end
     end
   end
 end
