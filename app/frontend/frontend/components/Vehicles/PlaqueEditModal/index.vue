@@ -7,12 +7,15 @@ export default {
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import LocationInput from "@/shared/components/LocationInput/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -47,6 +50,7 @@ const { defineField, handleSubmit } = useForm({
     launchPort: props.vehicle.launchPort ?? "",
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
     affiliation: props.vehicle.affiliation ?? "",
+    alignment: props.vehicle.alignment ?? null,
   },
 });
 
@@ -55,6 +59,14 @@ const [launchedOn] = defineField("launchedOn");
 const [launchPort] = defineField("launchPort");
 const [launchPortLocationId] = defineField("launchPortLocationId");
 const [affiliation] = defineField("affiliation");
+const [alignment] = defineField("alignment");
+
+const { alignmentOptions } = useFleetProfileLabels();
+
+// The fleets the ship is listed in, offered as the organization it serves.
+const fleetNames = computed(() =>
+  (props.vehicle.fleets ?? []).map((fleet) => fleet.name),
+);
 
 const { useUpdateMutation } = useVehicleMutations();
 const updateMutation = useUpdateMutation(vehicle);
@@ -70,6 +82,7 @@ const onSubmit = handleSubmit(async (values) => {
         launchPort: values.launchPort || null,
         launchPortLocationId: values.launchPortLocationId ?? null,
         affiliation: values.affiliation || null,
+        alignment: values.alignment || null,
       },
     })
     .then(() => comlink.emit("close-modal"))
@@ -110,6 +123,27 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.vehiclePlaque.affiliation')"
         :rules="validationSchema.affiliation"
       />
+      <div v-if="fleetNames.length" class="plaque-edit__fleets">
+        <span class="text-muted">{{ t("texts.vehiclePlaque.fromFleet") }}</span>
+        <Btn
+          v-for="fleetName in fleetNames"
+          :key="fleetName"
+          :size="BtnSizesEnum.XS"
+          data-test="vehicle-plaque-fleet"
+          @click="affiliation = fleetName"
+        >
+          {{ fleetName }}
+        </Btn>
+      </div>
+      <BaseSelect
+        v-model="alignment"
+        :options="alignmentOptions"
+        :label="t('labels.vehiclePlaque.alignment')"
+        name="alignment"
+        :searchable="false"
+        unsorted
+        nullable
+      />
       <p class="text-muted">{{ t("texts.vehiclePlaque.visibility") }}</p>
     </form>
 
@@ -125,3 +159,13 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.plaque-edit__fleets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: -8px 0 16px;
+}
+</style>

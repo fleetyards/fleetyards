@@ -44,6 +44,7 @@ const initialValues = ref<ManufacturerInput>({
   logo: undefined,
   icon: undefined,
   scRef: props.manufacturer.scRef,
+  shortName: props.manufacturer.shortName ?? "",
   shipyard: props.manufacturer.shipyard ?? "",
   shipyardLocationId: props.manufacturer.shipyardLocation?.id ?? null,
 });
@@ -64,6 +65,7 @@ const [code, codeProps] = defineField("code");
 const [scRef, scRefProps] = defineField("scRef");
 const [logo, logoProps] = defineField("logo");
 const [icon, iconProps] = defineField("icon");
+const [shortName, shortNameProps] = defineField("shortName");
 const [shipyard] = defineField("shipyard");
 const [shipyardLocationId] = defineField("shipyardLocationId");
 
@@ -108,7 +110,11 @@ const onSubmit = handleSubmit(async (values) => {
   await updateMutation
     .mutateAsync({
       id: props.manufacturer.id,
-      data: { ...values, shipyard: values.shipyard || null },
+      data: {
+        ...values,
+        shortName: values.shortName || null,
+        shipyard: values.shipyard || null,
+      },
     })
     .then(updated)
     .catch((error) => {
@@ -146,6 +152,12 @@ const handleCancel = async () => {
           v-bind="codeProps"
           translation-key="manufacturer.code"
           name="code"
+        />
+        <FormInput
+          v-model="shortName"
+          v-bind="shortNameProps"
+          translation-key="manufacturer.shortName"
+          name="shortName"
         />
         <LocationInput
           v-model="shipyard"

@@ -113,12 +113,33 @@ describe("VehiclePlaque", () => {
   });
 
   it("credits the people who make the game", async () => {
-    const wrapper = await mount({ vehicle: vehicle() });
+    const wrapper = await mount({
+      vehicle: vehicle({ manufacturerShortName: "RSI" }),
+    });
     const credits = wrapper.find('[data-test="vehicle-plaque-credits"]');
 
     expect(credits.findAll("section")).toHaveLength(5);
-    expect(credits.find("h4").text()).toBe("Founders");
+    expect(credits.find("h4").text()).toBe("RSI Founders");
+    expect(credits.findAll("h4")[4].text()).toBe("Civilian Operations");
     expect(credits.text()).toContain("Chris Roberts");
+  });
+});
+
+describe("VehiclePlaque operations crew", () => {
+  it("follows the captain's side of the law", async () => {
+    const wrapper = await mount({ vehicle: vehicle({ alignment: "outlaw" }) });
+
+    expect(
+      wrapper.findAll('[data-test="vehicle-plaque-credits"] h4')[4].text(),
+    ).toBe("Outlaw Operations");
+  });
+
+  it("falls back to the maker's name without a short name", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-credits"] h4').text()).toBe(
+      "RSI Founders",
+    );
   });
 });
 

@@ -1542,6 +1542,7 @@
         "totalHp": "Gesamte Rumpf-HP"
       },
       "manufacturer": {
+        "shortName": "Kurzname",
         "shipyard": "Werft",
         "longName": "Vollständiger Name",
         "code": "Code",
@@ -4146,6 +4147,7 @@
         "step": "Schritt %{current} von %{total}"
       },
       "vehiclePlaque": {
+        "alignment": "Gesinnung",
         "title": "Widmungstafel",
         "dedication": "Widmung",
         "launchedOn": "Stapellauf",

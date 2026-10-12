@@ -1542,6 +1542,7 @@
         "totalHp": "船体总 HP"
       },
       "manufacturer": {
+        "shortName": "简称",
         "shipyard": "船坞",
         "longName": "全名",
         "code": "代码",
@@ -4146,6 +4147,7 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehiclePlaque": {
+        "alignment": "阵营",
         "title": "命名铭牌",
         "dedication": "献词",
         "launchedOn": "下水日期",

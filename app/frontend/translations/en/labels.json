@@ -1542,6 +1542,7 @@
         "totalHp": "Total Hull HP"
       },
       "manufacturer": {
+        "shortName": "Short name",
         "shipyard": "Shipyard",
         "longName": "Long Name",
         "code": "Code",
@@ -4160,6 +4161,7 @@
         "step": "Step %{current} of %{total}"
       },
       "vehiclePlaque": {
+        "alignment": "Alignment",
         "title": "Dedication plaque",
         "dedication": "Dedication",
         "launchedOn": "Launch date",

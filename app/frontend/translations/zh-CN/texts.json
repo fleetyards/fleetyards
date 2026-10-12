@@ -346,12 +346,17 @@
       },
       "vehiclePlaque": {
         "credits": {
-          "founders": "创始人",
-          "shipwrights": "造船师",
-          "designers": "设计师",
-          "directors": "总监",
-          "operations": "运营"
+          "founders": "%{manufacturer}创始人",
+          "shipwrights": "%{manufacturer}造船师",
+          "designers": "%{manufacturer}设计师",
+          "directors": "%{manufacturer}总监",
+          "operations": {
+            "lawful": "UEE行动组",
+            "neutral": "民间行动组",
+            "outlaw": "法外行动组"
+          }
         },
+        "fromFleet": "来自舰队",
         "classLine": "%{manufacturer} 出品的 %{model}",
         "registry": "注册编号 %{serial}",
         "commissioned": "建造于 %{shipyard}",

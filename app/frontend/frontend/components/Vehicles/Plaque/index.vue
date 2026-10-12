@@ -29,10 +29,23 @@ const logo = computed(
   () => manufacturer.value?.logo?.smallUrl || manufacturer.value?.logo?.url,
 );
 
+// The columns carry the maker's everyday name, "Drake Shipwrights", and the
+// operations crew follows the side of the law the captain flies on.
+const builder = computed(
+  () => props.vehicle.manufacturerShortName || manufacturer.value?.name || "",
+);
+
 const credits = computed(() =>
   PLAQUE_CREDITS.map((group) => ({
     ...group,
-    heading: t(`texts.vehiclePlaque.credits.${group.role}`),
+    heading:
+      group.role === "operations"
+        ? t(
+            `texts.vehiclePlaque.credits.operations.${props.vehicle.alignment || "neutral"}`,
+          )
+        : t(`texts.vehiclePlaque.credits.${group.role}`, {
+            manufacturer: builder.value,
+          }),
   })),
 );
 

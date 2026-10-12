@@ -346,12 +346,17 @@
       },
       "vehiclePlaque": {
         "credits": {
-          "founders": "Fondatori",
-          "shipwrights": "Costruttori",
-          "designers": "Progettisti",
-          "directors": "Direzione",
-          "operations": "Operazioni"
+          "founders": "Fondatori di %{manufacturer}",
+          "shipwrights": "Costruttori di %{manufacturer}",
+          "designers": "Progettisti di %{manufacturer}",
+          "directors": "Direzione di %{manufacturer}",
+          "operations": {
+            "lawful": "Operazioni UEE",
+            "neutral": "Operazioni civili",
+            "outlaw": "Operazioni illegali"
+          }
         },
+        "fromFleet": "Da una flotta",
         "classLine": "%{model} di %{manufacturer}",
         "registry": "Matricola %{serial}",
         "commissioned": "Commissionata a %{shipyard}",

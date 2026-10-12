@@ -1542,6 +1542,7 @@
         "totalHp": "HP total del casco"
       },
       "manufacturer": {
+        "shortName": "Nombre corto",
         "shipyard": "Astillero",
         "longName": "Nombre completo",
         "code": "Código",
@@ -4146,6 +4147,7 @@
         "step": "Paso %{current} de %{total}"
       },
       "vehiclePlaque": {
+        "alignment": "Alineación",
         "title": "Placa de dedicatoria",
         "dedication": "Dedicatoria",
         "launchedOn": "Fecha de botadura",
