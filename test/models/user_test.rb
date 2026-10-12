@@ -94,6 +94,30 @@ class UserTest < ActiveSupport::TestCase
       assert @user.supporter?
     end
 
+    test "a maintainer is an ongoing supporter at the highest tier" do
+      @user.update!(maintainer: true)
+
+      assert @user.supporter?
+      assert_equal User::SUPPORTER_TIERS.keys.max, @user.supporter_tier
+      assert @user.supporter_recurring?
+      assert_nil @user.supporter_until
+    end
+
+    test "a maintainer keeps the highest tier above a smaller contribution" do
+      create(:supporter_contribution, user: @user, amount_cents: 100, started_at: Date.current)
+      @user.update!(maintainer: true)
+
+      assert_equal User::SUPPORTER_TIERS.keys.max, @user.reload.supporter_tier
+    end
+
+    test "losing the maintainer flag leaves only what was contributed" do
+      @user.update!(maintainer: true)
+      @user.update!(maintainer: false)
+
+      assert_not @user.reload.supporter?
+      assert_equal 0, @user.supporter_tier
+    end
+
     # Anonymity decides whether the contribution is named on the supporters
     # page, and nothing else. Both halves are asserted here because the rule is
     # only meaningful as a pair.
@@ -286,6 +310,15 @@ class UserTest < ActiveSupport::TestCase
         amount_cents: 500, started_at: Date.new(2026, 1, 10), ended_at: nil)
 
       assert @user.reload.fleet_tier_ongoing?
+    end
+
+    test "a maintainer holds the fleet tier with no run-out date" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: 1.year.ago.to_date)
+      @user.update!(maintainer: true)
+
+      assert @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
     end
 
     # Two euros a month does not buy a five euro month, so it funds nothing --

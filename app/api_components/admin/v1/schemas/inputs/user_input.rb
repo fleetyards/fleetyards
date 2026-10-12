@@ -18,6 +18,7 @@ module Admin
               publicWishlist: {type: :boolean},
               hideOwner: {type: :boolean},
               tester: {type: :boolean},
+              maintainer: {type: :boolean},
               avatar: {type: [:string, :null]}
             },
             additionalProperties: false

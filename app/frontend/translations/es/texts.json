@@ -1,6 +1,9 @@
 {
   "es": {
     "texts": {
+      "user": {
+        "maintainer": "Cuenta como quien apoya en el nivel más alto: la misma insignia y todas las ventajas."
+      },
       "index": "Your database for all information around Ships and Stations in Star Citizen.",
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Author Unknown, Source:",

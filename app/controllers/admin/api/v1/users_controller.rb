@@ -89,7 +89,7 @@ module Admin
         private def user_params
           @user_params ||= params.permit(
             :username, :email, :rsi_handle, :public_hangar,
-            :public_hangar_loaners, :public_wishlist, :hide_owner, :tester, :avatar
+            :public_hangar_loaners, :public_wishlist, :hide_owner, :tester, :maintainer, :avatar
           )
         end
 

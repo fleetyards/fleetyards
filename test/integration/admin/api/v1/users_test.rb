@@ -261,6 +261,17 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /users/:id makes the user a maintainer" do
+    user = create(:user)
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: user.id}, body: {maintainer: true} do
+      assert parsed_body["maintainer"]
+      assert parsed_body["supporter"]
+      assert_equal User::SUPPORTER_TIERS.keys.max, parsed_body["supporterTier"]
+    end
+  end
+
   # Clearing sends a null -- that is what the file input emits -- so the request
   # schema has to accept one, or the admin UI cannot remove a picture at all.
   test "PUT /users/:id clears the avatar" do

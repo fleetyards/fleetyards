@@ -65,6 +65,7 @@ const initialValues = ref<UserInput>({
   publicWishlist: props.user.publicWishlist,
   hideOwner: props.user.hideOwner,
   tester: undefined,
+  maintainer: props.user.maintainer,
 });
 
 const validationSchema = {
@@ -87,6 +88,7 @@ const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
 const [publicWishlist, publicWishlistProps] = defineField("publicWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
 const [tester, testerProps] = defineField("tester");
+const [maintainer, maintainerProps] = defineField("maintainer");
 const [avatar, avatarProps] = defineField("avatar");
 
 const submitting = ref(false);
@@ -200,6 +202,13 @@ const handleCancel = async () => {
           v-bind="testerProps"
           name="tester"
           align-with-fields
+        />
+        <FormToggle
+          v-model="maintainer"
+          translation-key="user.maintainer"
+          v-bind="maintainerProps"
+          name="maintainer"
+          :info="t('texts.user.maintainer')"
         />
       </div>
     </div>
