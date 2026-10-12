@@ -64,6 +64,18 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles leaves out the dedication plaque of a vehicle that is not public" do
+    private_vehicle = create(:vehicle, user: @member, public: false, dedication: "Private")
+    public_vehicle = create(:vehicle, :public, user: @member, dedication: "Public")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      items = parsed_body["items"].index_by { |item| item["id"] }
+      assert_not items[private_vehicle.id].key?("dedication")
+      assert_equal "Public", items[public_vehicle.id]["dedication"]
+    end
+  end
+
   test "GET /fleets/:slug/vehicles filters by modelNameCont" do
     sign_in @admin
 

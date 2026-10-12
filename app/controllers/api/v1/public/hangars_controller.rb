@@ -30,7 +30,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model, :vehicle_loadouts)
+            .includes({model: :manufacturer}, :vehicle_loadouts, :launch_port_location)
             # What the vehicle partial reads per vehicle, which ran a handful of
             # queries each on every vehicle whose fragment was not cached yet.
             .preload(:model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob}, {model_image: {file_attachment: :blob}}, user: {avatar_attachment: :blob})
@@ -60,7 +60,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model, :vehicle_loadouts)
+            .includes({model: :manufacturer}, :vehicle_loadouts, :launch_port_location)
             .preload(:model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob}, {model_image: {file_attachment: :blob}}, user: {avatar_attachment: :blob})
             .joins(model: :manufacturer)
         end

@@ -39728,6 +39728,31 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
           - type: 'null'
+        dedication:
+          type:
+          - string
+          - 'null'
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+        launchPortLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        affiliation:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         modelImageId:
@@ -40199,6 +40224,31 @@ components:
           type: boolean
         publicLogEntriesCount:
           type: integer
+        dedication:
+          type:
+          - string
+          - 'null'
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+        launchPortLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        affiliation:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
         bundled:
           type: boolean
         bundledParent:
@@ -40398,6 +40448,31 @@ components:
           - string
           - 'null'
           format: uuid
+        dedication:
+          type:
+          - string
+          - 'null'
+          maxLength: 280
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        launchPortLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        affiliation:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
         image:
           type:
           - string

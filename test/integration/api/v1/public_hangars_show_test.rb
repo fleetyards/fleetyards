@@ -45,6 +45,16 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username shows a public vehicle's dedication plaque" do
+    user = create(:user, :public_hangar)
+    create(:vehicle, :public, user:, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12))
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "To boldly go", parsed_body.dig("items", 0, "dedication")
+      assert_equal "2026-10-12", parsed_body.dig("items", 0, "launchedOn")
+    end
+  end
+
   test "GET /public/hangars/:username filters by query" do
     user = create(:user, :public_hangar)
     vehicles = [create(:vehicle, :public, user: user), create(:vehicle, :public, user: user)]

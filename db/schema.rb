@@ -2758,7 +2758,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.string "location"
     t.uuid "location_id"
     t.uuid "model_image_id"
+    t.text "dedication"
+    t.date "launched_on"
+    t.string "launch_port"
+    t.uuid "launch_port_location_id"
+    t.string "affiliation"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
+    t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_image_id"], name: "index_vehicles_on_model_image_id"
@@ -2996,5 +3002,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade
   add_foreign_key "vehicles", "images", column: "model_image_id", on_delete: :nullify
+  add_foreign_key "vehicles", "locations", column: "launch_port_location_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", on_delete: :nullify
 end

@@ -724,4 +724,19 @@ class VehicleModelImageTest < ActiveSupport::TestCase
 
     assert vehicle.reload.update(name: "Starfall")
   end
+
+  test "stores a blank dedication plaque line as nil" do
+    vehicle = create(:vehicle, dedication: " ", affiliation: "", launch_port: "")
+
+    assert_nil vehicle.dedication
+    assert_nil vehicle.affiliation
+    assert_nil vehicle.launch_port
+  end
+
+  test "names the launch port after the location it links" do
+    port = create(:location, name: "Port Olisar")
+    vehicle = create(:vehicle, launch_port_location: port)
+
+    assert_equal "Port Olisar", vehicle.launch_port
+  end
 end

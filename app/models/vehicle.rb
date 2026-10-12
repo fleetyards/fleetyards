@@ -98,6 +98,15 @@ class Vehicle < ApplicationRecord
   validates :linked_location, presence: true, if: :location_id?
   validates :image, no_vector_image: true
 
+  # The dedication plaque. Unlike `location` it is public with the vehicle: a
+  # launch is history, not where the ship sits now.
+  links_location :launch_port, foreign_key: :launch_port_location_id, as: :launch_port_location
+  validates :launch_port_location, presence: true, if: :launch_port_location_id?
+  DEDICATION_LIMIT = 280
+  PLAQUE_LINE_LIMIT = 100
+  validates :dedication, length: {maximum: DEDICATION_LIMIT}
+  validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy
@@ -122,7 +131,8 @@ class Vehicle < ApplicationRecord
       {parent_vehicle: :model},
       {image_attachment: :blob},
       {model_image: {file_attachment: :blob}},
-      :linked_location
+      :linked_location,
+      :launch_port_location
     ]
   end
 
@@ -136,7 +146,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial].freeze
+  NULL_ATTRS = %w[name serial dedication launch_port affiliation].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},

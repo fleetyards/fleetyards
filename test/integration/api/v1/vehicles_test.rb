@@ -401,6 +401,45 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id sets the dedication plaque" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    vehicle.model.manufacturer.update!(shipyard: "Orison, Crusader (Stanton II)")
+    port = create(:location, name: "Port Olisar")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {
+      dedication: "To boldly go", launchedOn: "2026-10-12", launchPortLocationId: port.id, affiliation: "United Empire of Earth"
+    } do
+      assert_equal "To boldly go", parsed_body["dedication"]
+      assert_equal "2026-10-12", parsed_body["launchedOn"]
+      assert_equal "Port Olisar", parsed_body["launchPort"]
+      assert_equal port.id, parsed_body.dig("launchPortLocation", "id")
+      assert_equal "United Empire of Earth", parsed_body["affiliation"]
+      assert_equal "Orison, Crusader (Stanton II)", parsed_body["shipyard"]
+    end
+  end
+
+  test "PUT /vehicles/:id clears the dedication plaque" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12), affiliation: "UEE")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "", launchedOn: nil, affiliation: ""} do
+      assert_nil parsed_body["dedication"]
+      assert_nil parsed_body["launchedOn"]
+      assert_nil parsed_body["affiliation"]
+    end
+  end
+
+  test "PUT /vehicles/:id rejects a dedication over the limit" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {dedication: "a" * (Vehicle::DEDICATION_LIMIT + 1)}
+  end
+
   test "PUT /vehicles/:id picks a picture from the model's gallery" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
@@ -457,17 +496,18 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_not vehicle.reload.image.attached?
   end
 
-  test "PUT /vehicles/:id ignores the image and log default while the feature is off" do
+  test "PUT /vehicles/:id ignores the overview fields while the feature is off" do
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
     assert_api_response :put, 200,
       path_params: {id: vehicle.id},
-      body: {image: upload_blob("ship.jpg", "image/jpeg").signed_id, logEntriesPublicByDefault: true}
+      body: {image: upload_blob("ship.jpg", "image/jpeg").signed_id, logEntriesPublicByDefault: true, dedication: "To boldly go"}
 
     vehicle.reload
     assert_not vehicle.image.attached?
     assert_not vehicle.log_entries_public_by_default
+    assert_nil vehicle.dedication
   end
 
   private def upload_blob(filename, content_type)
