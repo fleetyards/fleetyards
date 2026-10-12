@@ -445,14 +445,17 @@ const onSubmit = handleSubmit(async (values) => {
   z-index: 2;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 150ms ease;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding-top: 48px;
   border-radius: 10px;
   background: rgb(0 0 0 / 0.45);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(0);
+  // Out a touch quicker than in, so leaving never feels sticky.
+  transition:
+    opacity 160ms ease-in,
+    backdrop-filter 160ms ease-in;
 }
 
 .plaque-edit__locked:hover .plaque-edit__upsell,
@@ -460,6 +463,31 @@ const onSubmit = handleSubmit(async (values) => {
 .plaque-edit__locked--open .plaque-edit__upsell {
   opacity: 1;
   pointer-events: auto;
+  transition:
+    opacity 220ms ease-out,
+    backdrop-filter 260ms ease-out;
+
+  .plaque-edit__upsell-box {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 240ms ease-out 60ms,
+      transform 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2) 60ms;
+  }
+}
+
+// The blur and the rise only where motion is welcome; otherwise it just fades.
+@media (prefers-reduced-motion: no-preference) {
+  .plaque-edit__locked:hover .plaque-edit__upsell,
+  .plaque-edit__locked:focus-within .plaque-edit__upsell,
+  .plaque-edit__locked--open .plaque-edit__upsell {
+    backdrop-filter: blur(3px);
+  }
+
+  // Rises and settles in just behind the backdrop.
+  .plaque-edit__upsell-box {
+    transform: translateY(10px) scale(0.96);
+  }
 }
 
 // Sticks to the top of the dialog while the styles scroll beneath it.
@@ -476,6 +504,10 @@ const onSubmit = handleSubmit(async (values) => {
   border-radius: var(--radius-surface-slim, 12px);
   background: var(--color-surface, rgb(39 43 48 / 0.9));
   text-align: center;
+  opacity: 0;
+  transition:
+    opacity 140ms ease-in,
+    transform 160ms ease-in;
 
   i {
     font-size: 1.6rem;
