@@ -35,20 +35,26 @@ const router = useRouter();
 const comlink = useComlink();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
-const vehicleId = computed(() => {
+const identifier = computed(() => {
   const segment = String(route.params.segment ?? "");
 
   return vehicleIdentifierFromSegment(segment) ?? segment;
 });
 const itemSlug = computed(() => route.params.item as string);
 
-const { data: vehicle } = useShowVehicle(vehicleId);
+const { data: vehicle, ...vehicleStatus } = useShowVehicle(identifier);
+
+// By id, as the cargo tab does: both pages then read and invalidate the same
+// cache entries, whichever serial or id the address carried.
+const vehicleId = computed(() => vehicle.value?.id ?? "");
 
 const {
   data: stockItem,
   refetch: refetchStockItem,
   ...asyncStatus
-} = useVehicleInventoryStockItem(vehicleId, itemSlug);
+} = useVehicleInventoryStockItem(vehicleId, itemSlug, {
+  query: { enabled: computed(() => !!vehicle.value) },
+});
 
 const historyQuery = computed(() => ({
   q: {
@@ -78,9 +84,9 @@ const cargoRoute = computed(() => ({
 }));
 
 const vehicleName = computed(() => {
-  if (!vehicle.value) return vehicleId.value;
+  if (!vehicle.value) return identifier.value;
 
-  return vehicle.value.name || vehicle.value.model?.name || vehicleId.value;
+  return vehicle.value.name || vehicle.value.model?.name || identifier.value;
 });
 
 const destroyMutation = useDestroyVehicleInventoryItem();
@@ -189,62 +195,70 @@ const crumbs = computed<Crumb[]>(() => [
 <template>
   <BreadCrumbs :crumbs="crumbs" />
 
-  <AsyncData :async-status="asyncStatus">
+  <AsyncData :async-status="vehicleStatus">
     <template #resolved>
-      <template v-if="stockItem">
-        <Heading size="hero" hero inline-sub-heading>
-          <template #default>
-            {{ stockItem.name }}
-          </template>
-          <template #subHeading>
-            {{ t("nav.hangar.vehicleCargo") }}
-          </template>
-        </Heading>
+      <AsyncData :async-status="asyncStatus">
+        <template #resolved>
+          <template v-if="stockItem">
+            <Heading size="hero" hero inline-sub-heading>
+              <template #default>
+                {{ stockItem.name }}
+              </template>
+              <template #subHeading>
+                {{ t("nav.hangar.vehicleCargo") }}
+              </template>
+            </Heading>
 
-        <Teleport to="#header-right">
-          <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openEditModal">
-            <i class="fa-duotone fa-pen" />
-            {{ t("actions.logistics.editStockItem") }}
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.MD"
-            mobile-icon-only
-            :tone="BtnTonesEnum.DANGER"
-            @click="destroyStockItem"
-          >
-            <i class="fa-duotone fa-trash" />
-            {{ t("actions.logistics.destroyStockItem") }}
-          </Btn>
-        </Teleport>
-
-        <StockItemPanel :stock-item="stockItem" />
-
-        <Heading size="lg">
-          {{ t("labels.logistics.history") }}
-        </Heading>
-
-        <InventoryLedgerTables
-          active-tab="log"
-          :stock-records="[]"
-          :log-records="historyRecords"
-          :log-loading="historyLoading"
-          show-notes
-        >
-          <template #log-actions="{ record }">
-            <BtnGroup>
+            <Teleport to="#header-right">
               <Btn
-                :size="BtnSizesEnum.SM"
+                :size="BtnSizesEnum.MD"
+                mobile-icon-only
+                @click="openEditModal"
+              >
+                <i class="fa-duotone fa-pen" />
+                {{ t("actions.logistics.editStockItem") }}
+              </Btn>
+              <Btn
+                :size="BtnSizesEnum.MD"
+                mobile-icon-only
                 :tone="BtnTonesEnum.DANGER"
-                :aria-label="t('actions.logistics.destroyEntry')"
-                :title="t('actions.logistics.destroyEntry')"
-                @click="destroyEntry(record as InventoryItem)"
+                @click="destroyStockItem"
               >
                 <i class="fa-duotone fa-trash" />
+                {{ t("actions.logistics.destroyStockItem") }}
               </Btn>
-            </BtnGroup>
+            </Teleport>
+
+            <StockItemPanel :stock-item="stockItem" />
+
+            <Heading size="lg">
+              {{ t("labels.logistics.history") }}
+            </Heading>
+
+            <InventoryLedgerTables
+              active-tab="log"
+              :stock-records="[]"
+              :log-records="historyRecords"
+              :log-loading="historyLoading"
+              show-notes
+            >
+              <template #log-actions="{ record }">
+                <BtnGroup>
+                  <Btn
+                    :size="BtnSizesEnum.SM"
+                    :tone="BtnTonesEnum.DANGER"
+                    :aria-label="t('actions.logistics.destroyEntry')"
+                    :title="t('actions.logistics.destroyEntry')"
+                    @click="destroyEntry(record as InventoryItem)"
+                  >
+                    <i class="fa-duotone fa-trash" />
+                  </Btn>
+                </BtnGroup>
+              </template>
+            </InventoryLedgerTables>
           </template>
-        </InventoryLedgerTables>
-      </template>
+        </template>
+      </AsyncData>
     </template>
   </AsyncData>
 </template>
