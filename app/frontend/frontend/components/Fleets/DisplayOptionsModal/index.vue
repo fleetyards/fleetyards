@@ -20,6 +20,14 @@ import {
 import { useFleetSortFields } from "@/frontend/composables/useFleetSortFields";
 import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 
+type Props = {
+  metrics?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  metrics: false,
+});
+
 const { t } = useI18n();
 
 const columnOptions = computed(() => {
@@ -126,6 +134,20 @@ const displayAsList = () => {
           v-model="fleetStore.detailsVisible"
           name="detailsVisible"
           :label="t('actions.showDetails')"
+        />
+      </div>
+    </div>
+    <div v-if="metrics" class="row">
+      <div class="col-12">
+        <FormToggle
+          v-model="fleetStore.money"
+          name="money"
+          :label="t('actions.showPledgeValue')"
+        />
+        <FormToggle
+          v-model="fleetStore.credits"
+          name="credits"
+          :label="t('actions.showInGameBoughtValue')"
         />
       </div>
     </div>

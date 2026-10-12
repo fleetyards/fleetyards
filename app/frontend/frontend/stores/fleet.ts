@@ -52,6 +52,7 @@ interface FleetState extends ShipListState {
   preview: boolean;
   inviteToken?: string;
   money: boolean;
+  credits: boolean;
   tableViewImageCols: FleetTableViewImageColsEnum[];
   tableViewCols: FleetTableViewColsEnum[];
   sortFields: FleetSortFieldsEnum[];
@@ -78,6 +79,7 @@ export const useFleetStore = defineStore("fleet", {
     detailsVisible: false,
     filterVisible: true,
     money: true,
+    credits: true,
     grouped: true,
     preview: true,
     inviteToken: undefined,
@@ -117,9 +119,6 @@ export const useFleetStore = defineStore("fleet", {
     },
     toggleFilter() {
       this.filterVisible = !this.filterVisible;
-    },
-    toggleMoney() {
-      this.money = !this.money;
     },
     toggleGrouped() {
       this.grouped = !this.grouped;
@@ -178,6 +177,7 @@ export const useFleetStore = defineStore("fleet", {
       "detailsVisible",
       "grouped",
       "money",
+      "credits",
       "preview",
       "inviteToken",
       "gridView",
