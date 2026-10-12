@@ -9,7 +9,6 @@ import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import ContactLinks from "@/frontend/components/StatsCard/ContactLinks/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
-import Pill from "@/shared/components/base/Pill/index.vue";
 import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type StatsCardStatus } from "@/frontend/components/StatsCard/types";
@@ -68,38 +67,52 @@ const discordUrl = computed(() =>
     <!-- The dot only when the API answered, which it does for friends and
          fleet mates: for anyone else an absent dot is not a claim. -->
     <template v-if="user" #icon>
-      <Avatar
-        :avatar="user.avatar?.mediumUrl ?? user.avatar?.smallUrl"
-        size="medium"
-        :online="user.online"
-      />
+      <span class="user-card__avatar">
+        <Avatar
+          :avatar="user.avatar?.mediumUrl ?? user.avatar?.smallUrl"
+          size="medium"
+          :online="user.online"
+        />
+        <!-- Where a member's avatar carries their squadron: a user has none,
+             and the corner mirrors the presence dot's. -->
+        <span
+          v-if="user.supporter"
+          v-tooltip="t('labels.supporter.tooltip')"
+          :aria-label="t('labels.supporter.badge')"
+          role="img"
+          class="user-card__supporter"
+        >
+          <SupporterBadge
+            v-if="user.supporterTier || user.supporterRecurring"
+            :tier="user.supporterTier"
+            :recurring="user.supporterRecurring"
+            :size="20"
+          />
+          <i v-else class="fa-duotone fa-heart" aria-hidden="true" />
+        </span>
+      </span>
     </template>
 
-    <Pill
-      v-if="user?.supporter"
-      v-tooltip="t('labels.supporter.tooltip')"
-      class="user-card__supporter"
-      variant="success"
-      uppercase
-    >
-      <SupporterBadge
-        v-if="user.supporterTier || user.supporterRecurring"
-        :tier="user.supporterTier"
-        :recurring="user.supporterRecurring"
-        :size="18"
-      />
-      <i v-else class="fa-duotone fa-heart" />
-      {{ t("labels.supporter.badge") }}
-    </Pill>
     <ContactLinks :rsi-handle="user?.rsiHandle" :discord-url="discordUrl" />
   </StatsCard>
 </template>
 
 <style lang="scss" scoped>
-.user-card__supporter {
+.user-card__avatar {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
+}
+
+// Placed as MemberAvatar places a squadron: centred 5px in from the corner, as
+// the presence dot is in its own.
+.user-card__supporter {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  display: inline-flex;
+  transform: translate(-50%, 50%);
+  color: var(--color-success, #5cb85c);
+  font-size: 18px;
+  line-height: 1;
 }
 </style>
