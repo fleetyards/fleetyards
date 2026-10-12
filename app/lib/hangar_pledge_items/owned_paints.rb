@@ -42,11 +42,18 @@ module HangarPledgeItems
     end
 
     # "Spirit" names the C1 Spirit as much as "C1 Spirit" does, so either name
-    # may hold the other.
+    # may hold the other -- unless the pledge names another model outright: a
+    # "Nova" pledge is the Nova's, not the Nova Tank's.
     private def same_ship?(ship)
       return false if ship.blank?
+      return true if ship == model_name
+      return false if model_names.include?(ship)
 
       model_name.include?(ship) || ship.include?(model_name)
+    end
+
+    private def model_names
+      @model_names ||= Model.pluck(:name).map { |name| normalize(name) }.to_set
     end
 
     private def model_name

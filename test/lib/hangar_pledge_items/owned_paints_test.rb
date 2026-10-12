@@ -32,6 +32,13 @@ class HangarPledgeItems::OwnedPaintsTest < ActiveSupport::TestCase
     assert_empty owned_ids
   end
 
+  test "ignores a pledge naming another model outright" do
+    create(:model, name: "Spirit")
+    create(:hangar_pledge_item, user: @user, name: "Spirit - IceBreak Paint")
+
+    assert_empty owned_ids
+  end
+
   test "ignores another user's pledges" do
     create(:hangar_pledge_item, name: "Spirit - IceBreak Paint")
 
