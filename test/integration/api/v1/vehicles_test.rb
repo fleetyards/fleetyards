@@ -382,6 +382,14 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id returns 400 for a location that does not exist" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {locationId: SecureRandom.uuid}
+  end
+
   test "PUT /vehicles/:id keeps a location the starmap does not carry as text" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)

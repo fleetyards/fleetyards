@@ -88,6 +88,7 @@ class Vehicle < ApplicationRecord
   # Where the owner left the ship. Only ever shown to the owner: a public
   # hangar saying where a ship is parked is an invitation.
   links_location :location
+  validates :linked_location, presence: true, if: :location_id?
   validates :image, no_vector_image: true
 
   has_one :inventory, dependent: nil
