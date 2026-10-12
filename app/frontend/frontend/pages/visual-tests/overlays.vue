@@ -266,7 +266,14 @@ const demoLocation = {
 const demoUser = {
   username: "TorlekMaru",
   rsiHandle: "TorlekMaru",
+  rsiHandleVerified: true,
   discord: "discord.gg/fleetyards",
+  avatar: { smallUrl: storeImage, mediumUrl: storeImage },
+  // Present because this reader is a friend or fleet mate.
+  online: true,
+  supporter: true,
+  supporterTier: 2,
+  supporterRecurring: true,
 } as unknown as UserPublic;
 
 // A fleet member as the health page's lists open them: everything a row leaves
