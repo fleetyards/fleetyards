@@ -78,7 +78,8 @@ class Vehicle < ApplicationRecord
 
   has_many :vehicle_loadouts, dependent: :destroy
 
-  has_many :log_entries, class_name: "VehicleLogEntry", dependent: :delete_all
+  # Removed by the foreign key's cascade, which also covers the bulk delete.
+  has_many :log_entries, class_name: "VehicleLogEntry", dependent: nil
   has_many :public_log_entries, -> { public_entries }, class_name: "VehicleLogEntry"
 
   has_one_attached :image
@@ -244,8 +245,7 @@ class Vehicle < ApplicationRecord
       erase_versions("VehicleLoadout", loadout_ids)
       VehicleLoadout.where(id: loadout_ids).delete_all
 
-      VehicleLogEntry.where(vehicle_id: vehicle_ids).delete_all
-      ActiveStorage::Attachment.where(record_type: name, record_id: vehicle_ids).find_each(&:purge_later)
+      delete_images(vehicle_ids)
 
       VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
       VehicleModule.where(vehicle_id: vehicle_ids).delete_all
@@ -259,6 +259,21 @@ class Vehicle < ApplicationRecord
       revisit_loaner_visibility(loaner_groups)
 
       deleted
+    end
+  end
+
+  # `Attachment#purge_later` touches its record, which would load every vehicle
+  # being deleted and run the broadcasts this path exists to skip. The rows go
+  # now and the files once nothing can roll the delete back.
+  private_class_method def self.delete_images(vehicle_ids)
+    attachments = ActiveStorage::Attachment.where(record_type: name, name: "image", record_id: vehicle_ids)
+    blob_ids = attachments.pluck(:blob_id)
+    return if blob_ids.empty?
+
+    attachments.delete_all
+
+    ActiveRecord.after_all_transactions_commit do
+      ActiveStorage::Blob.where(id: blob_ids).find_each(&:purge_later)
     end
   end
 
