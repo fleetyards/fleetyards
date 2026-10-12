@@ -10,7 +10,7 @@
         "date": "y 年 M 月 d 日",
         "day": "dd",
         "monthShort": "MMM",
-        "time": "HH:mm",
+        "time": "HH:mm z",
         "year": "yyyy"
       }
     }

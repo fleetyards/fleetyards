@@ -26,7 +26,11 @@ const props = defineProps<Props>();
 const { t, l } = useI18n();
 const { shareQuery } = usePublicHangarShare();
 
-const { data: logEntries, isLoading } = usePublicVehicleLogEntries(
+const {
+  data: logEntries,
+  isLoading,
+  isError,
+} = usePublicVehicleLogEntries(
   () => props.username,
   () => props.vehicle.id,
   shareQuery,
@@ -42,6 +46,13 @@ const title = computed(() =>
 <template>
   <Modal :title="title">
     <ListSkeleton v-if="isLoading" />
+
+    <!-- The panel offers the log off a stored count, so it can still offer one
+         whose owner has since turned the feature off; the endpoint then says
+         no, and an empty list would claim there was never anything shared. -->
+    <p v-else-if="isError" class="text-muted">
+      {{ t("texts.vehicleLog.unavailable") }}
+    </p>
 
     <Empty
       v-else-if="!logEntries?.length"
