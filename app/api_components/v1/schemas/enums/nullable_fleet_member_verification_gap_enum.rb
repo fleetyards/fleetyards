@@ -3,15 +3,17 @@
 module V1
   module Schemas
     module Enums
-      class FleetMemberVerificationGapEnum
+      # Nullable enums get a component of their own rather than
+      # anyOf: [$ref, {type: :null}].
+      class NullableFleetMemberVerificationGapEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = ::FleetMembership::VERIFICATION_GAPS
+        VALUES = (::FleetMembership::VERIFICATION_GAPS + [nil]).freeze
 
         schema({
-          type: :string,
+          type: [:string, :null],
           enum: VALUES,
-          "x-enumNames": VALUES.map { |value| transform_enum_key(value) }
+          "x-enumNames": ::FleetMembership::VERIFICATION_GAPS.map { |value| transform_enum_key(value) } + ["NULL"]
         })
       end
     end

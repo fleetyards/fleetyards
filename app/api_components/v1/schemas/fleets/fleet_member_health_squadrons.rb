@@ -10,21 +10,7 @@ module V1
           type: :object,
           properties: {
             totalCount: {type: :integer},
-            items: {
-              type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  name: {type: :string},
-                  slug: {type: :string},
-                  team: {type: :boolean},
-                  createdAt: {type: :string, format: "date-time"}
-                },
-                required: %w[id name slug team createdAt],
-                additionalProperties: false
-              }
-            }
+            items: {type: :array, items: ::V1::Schemas::Fleets::FleetMemberHealthSquadron}
           },
           required: %w[totalCount items],
           additionalProperties: false

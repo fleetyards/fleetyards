@@ -25,10 +25,7 @@ module V1
             invitedBy: {type: [:string, :null], description: "Username of whoever sent the invitation"},
             rsiHandle: {type: [:string, :null]},
             discordProfileUrl: {type: [:string, :null]},
-            verificationGap: {
-              anyOf: [::V1::Schemas::Enums::FleetMemberVerificationGapEnum, {type: :null}],
-              description: "Why the member is not verified against the fleet's RSI org; null when they are"
-            },
+            verificationGap: ::V1::Schemas::Enums::NullableFleetMemberVerificationGapEnum,
             rsiOrganizationsCheckedAt: {type: [:string, :null], format: "date-time"},
             verificationRemindedAt: {type: [:string, :null], format: "date-time", description: "When the fleet last reminded the member to verify"}
           },

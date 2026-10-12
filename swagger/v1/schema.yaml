@@ -27444,6 +27444,39 @@ components:
       - candidates
       additionalProperties: false
       title: FleetMemberHealthAdmins
+    FleetMemberHealthInviteUrl:
+      type: object
+      properties:
+        token:
+          type: string
+        url:
+          type: string
+        createdBy:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        expiresAfter:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        limit:
+          type:
+          - integer
+          - 'null'
+          description: Uses left; null for no limit
+        usageCount:
+          type: integer
+      required:
+      - token
+      - url
+      - createdAt
+      - usageCount
+      additionalProperties: false
+      title: FleetMemberHealthInviteUrl
     FleetMemberHealthInviteUrls:
       type: object
       properties:
@@ -27452,37 +27485,7 @@ components:
         items:
           type: array
           items:
-            type: object
-            properties:
-              token:
-                type: string
-              url:
-                type: string
-              createdBy:
-                type:
-                - string
-                - 'null'
-              createdAt:
-                type: string
-                format: date-time
-              expiresAfter:
-                type:
-                - string
-                - 'null'
-                format: date-time
-              limit:
-                type:
-                - integer
-                - 'null'
-                description: Uses left; null for no limit
-              usageCount:
-                type: integer
-            required:
-            - token
-            - url
-            - createdAt
-            - usageCount
-            additionalProperties: false
+            "$ref": "#/components/schemas/FleetMemberHealthInviteUrl"
       required:
       - totalCount
       - items
@@ -27548,11 +27551,7 @@ components:
           - string
           - 'null'
         verificationGap:
-          anyOf:
-          - "$ref": "#/components/schemas/FleetMemberVerificationGapEnum"
-          - type: 'null'
-          description: Why the member is not verified against the fleet's RSI org;
-            null when they are
+          "$ref": "#/components/schemas/NullableFleetMemberVerificationGapEnum"
         rsiOrganizationsCheckedAt:
           type:
           - string
@@ -27586,6 +27585,29 @@ components:
       - items
       additionalProperties: false
       title: FleetMemberHealthSection
+    FleetMemberHealthSquadron:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        team:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - slug
+      - team
+      - createdAt
+      additionalProperties: false
+      title: FleetMemberHealthSquadron
     FleetMemberHealthSquadrons:
       type: object
       properties:
@@ -27594,27 +27616,7 @@ components:
         items:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
-              slug:
-                type: string
-              team:
-                type: boolean
-              createdAt:
-                type: string
-                format: date-time
-            required:
-            - id
-            - name
-            - slug
-            - team
-            - createdAt
-            additionalProperties: false
+            "$ref": "#/components/schemas/FleetMemberHealthSquadron"
       required:
       - totalCount
       - items
@@ -27710,19 +27712,6 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetMemberUpdateInput
-    FleetMemberVerificationGapEnum:
-      type: string
-      enum:
-      - no_handle
-      - handle_unverified
-      - orgs_not_checked
-      - org_not_listed
-      x-enumNames:
-      - NO_HANDLE
-      - HANDLE_UNVERIFIED
-      - ORGS_NOT_CHECKED
-      - ORG_NOT_LISTED
-      title: FleetMemberVerificationGapEnum
     FleetMembersList:
       type: object
       properties:
@@ -36086,6 +36075,23 @@ components:
       - ZU
       - 'NULL'
       title: NullableFleetLanguageEnum
+    NullableFleetMemberVerificationGapEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - no_handle
+      - handle_unverified
+      - orgs_not_checked
+      - org_not_listed
+      -
+      x-enumNames:
+      - NO_HANDLE
+      - HANDLE_UNVERIFIED
+      - ORGS_NOT_CHECKED
+      - ORG_NOT_LISTED
+      - 'NULL'
+      title: NullableFleetMemberVerificationGapEnum
     NullableFleetRsiVerificationStatusEnum:
       type:
       - string
