@@ -25,6 +25,8 @@ module V1
             affiliation: {type: [:string, :null], maxLength: ::Vehicle::PLAQUE_LINE_LIMIT},
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             plaqueStyle: ::V1::Schemas::Enums::NullableVehiclePlaqueStyleEnum,
+            # A signed blob id of the plaque rendered as a picture.
+            plaqueImage: {type: [:string, :null]},
             image: {type: [:string, :null]},
             modelImageId: {type: [:string, :null], format: :uuid},
             flagship: {type: :boolean},

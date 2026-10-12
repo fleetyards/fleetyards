@@ -128,6 +128,11 @@ class Vehicle < ApplicationRecord
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
 
+  # The plaque as a picture, for the link preview of a shared plaque. The server
+  # cannot draw the plaque, so the owner's browser renders it on every save.
+  has_one_attached :plaque_image
+  validates :plaque_image, no_vector_image: true
+
   has_one :inventory, dependent: nil
 
   has_many :vehicle_modules, dependent: :destroy

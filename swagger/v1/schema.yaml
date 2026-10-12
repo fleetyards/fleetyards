@@ -16942,6 +16942,54 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{id}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Vehicle id
+      required: true
+    get:
+      summary: Public Hangar Vehicle
+      tags:
+      - PublicHangar
+      operationId: publicHangarVehicle
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehiclePublic"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/vehicles/{vehicle_id}/log-entries":
     parameters:
     - name: username
@@ -40588,6 +40636,10 @@ components:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         plaqueStyle:
           "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
+        plaqueImage:
+          type:
+          - string
+          - 'null'
         image:
           type:
           - string
