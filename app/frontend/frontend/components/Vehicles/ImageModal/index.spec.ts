@@ -6,14 +6,28 @@ import type { Image, Vehicle } from "@/services/fyApi";
 
 const updateVehicle = vi.fn();
 
+const gallery = vi.hoisted(() => ({
+  items: [] as { id: string; url: string }[],
+}));
+
+const GALLERY = [
+  { id: "image-1", url: "https://example.test/1.jpg" },
+  { id: "image-2", url: "https://example.test/2.jpg" },
+];
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useModelImages: () => ({
     data: ref({
-      items: [
-        { id: "image-1", url: "https://example.test/1.jpg" },
-        { id: "image-2", url: "https://example.test/2.jpg" },
-      ] as Image[],
+      items: gallery.items as Image[],
+      meta: {
+        pagination: {
+          totalCount: gallery.items.length,
+          currentPage: 1,
+          totalPages: 1,
+          perPage: 48,
+        },
+      },
     }),
     isLoading: ref(false),
   }),
@@ -53,6 +67,7 @@ const submit = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
 
 describe("VehicleImageModal", () => {
   beforeEach(() => {
+    gallery.items = GALLERY;
     updateVehicle.mockReset().mockResolvedValue({ id: "vehicle-1" });
   });
 
@@ -97,5 +112,23 @@ describe("VehicleImageModal", () => {
     await submit(wrapper);
 
     expect(updateVehicle).not.toHaveBeenCalled();
+  });
+
+  it("drops the upload even when the pick stays the same", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+      }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { modelImageId: null, image: null },
+    });
   });
 });

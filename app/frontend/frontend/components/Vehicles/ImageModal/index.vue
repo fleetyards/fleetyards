@@ -83,9 +83,15 @@ const pick = (imageId: string | null) => {
 // file.
 const { mutateAsync, isPending: submitting } = useUpdateVehicle();
 
-const changes = (values: { image?: string | null }) => {
+// A ship shows one picture of its own: saving either kind clears the other.
+const changes = (values: {
+  image?: string | null;
+}): VehicleUpdateInput | undefined => {
   if (source.value === "gallery") {
-    if (pickedImageId.value === (props.vehicle.modelImageId ?? null)) {
+    if (
+      !props.vehicle.image &&
+      pickedImageId.value === (props.vehicle.modelImageId ?? null)
+    ) {
       return undefined;
     }
 
@@ -93,11 +99,15 @@ const changes = (values: { image?: string | null }) => {
   }
 
   // `undefined` means the field was never touched, so there is nothing to save.
-  return values.image === undefined ? undefined : { image: values.image };
+  if (values.image === undefined) return undefined;
+
+  return props.vehicle.modelImageId
+    ? { image: values.image, modelImageId: null }
+    : { image: values.image };
 };
 
 const onSubmit = handleSubmit(async (values) => {
-  const data: VehicleUpdateInput | undefined = changes(values);
+  const data = changes(values);
 
   if (!data) {
     comlink.emit("close-modal");
