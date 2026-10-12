@@ -14,6 +14,7 @@ import type {
   FleetModelCountsStats,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleImage } from "@/frontend/composables/useVehicleImage";
 import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
@@ -48,8 +49,15 @@ const id = computed(() => {
   return model.value.slug;
 });
 
+const { uploadedImage } = useVehicleImage();
+
 const storeImage = computed(() => {
   const vehicle = props.fleetVehicle as VehiclePublic;
+
+  const uploaded = uploadedImage(vehicle);
+  if (uploaded) {
+    return uploaded.mediumUrl || uploaded.url;
+  }
 
   if (vehicle.paint?.media.storeImage) {
     return vehicle.paint.media.storeImage.mediumUrl;
