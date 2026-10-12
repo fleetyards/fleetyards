@@ -49,6 +49,15 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     create(:friendship, :accepted, requester: @user, addressee: other)
   end
 
+  def fleet_with_another_owner(**reader_membership)
+    fleet = create(:fleet)
+    create(:fleet_membership, :accepted, fleet:, user: @user, **reader_membership)
+    member = create(:user)
+    create(:fleet_membership, :accepted, fleet:, user: member)
+    FleetVehicle.find_or_create_by!(fleet:, vehicle: create(:vehicle, user: member, model: @model))
+    fleet
+  end
+
   test "GET /models/:slug/owners lists the reader's own ships of the model" do
     own = create(:vehicle, user: @user, model: @model, name: "Rust Bucket")
     create(:vehicle, user: @user, model: @model, wanted: true)
@@ -181,6 +190,45 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
       assert_empty parsed_body["fleets"]
+    end
+  end
+
+  # The membership rows outlive the fleet: only the fleet carries the discard.
+  test "GET /models/:slug/owners leaves out a discarded fleet" do
+    fleet_with_another_owner.update_columns(discarded_at: Time.current)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      assert_empty parsed_body["fleets"]
+    end
+  end
+
+  test "GET /models/:slug/owners leaves out a fleet whose ships the reader's role cannot see" do
+    fleet_with_another_owner(fleet_role: nil)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      assert_empty parsed_body["fleets"]
+    end
+  end
+
+  test "GET /models/:slug/owners leaves out fleets for a token without fleet access" do
+    fleet_with_another_owner
+
+    assert_api_response :get, 200,
+      path_params: {slug: @model.slug},
+      headers: oauth_headers_for(@user, scopes: ["hangar:read"]) do
+      assert_empty parsed_body["fleets"]
+    end
+  end
+
+  test "GET /models/:slug/owners lists fleets for a token with fleet access" do
+    fleet = fleet_with_another_owner
+
+    assert_api_response :get, 200,
+      path_params: {slug: @model.slug},
+      headers: oauth_headers_for(@user, scopes: ["hangar:read", "fleet:read"]) do
+      assert_equal [fleet.slug], parsed_body["fleets"].pluck("slug")
     end
   end
 
