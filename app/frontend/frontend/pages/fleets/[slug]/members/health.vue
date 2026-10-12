@@ -8,6 +8,9 @@ export default {
 import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
+import { FleetMembersChannel } from "@/services/fyCable/channels/FleetMembersChannel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -104,6 +107,20 @@ onMounted(() => {
 
 onUnmounted(() => {
   offMemberUpdate?.();
+});
+
+// Another officer's change reaches the page by the channel; it replays
+// nothing missed while the socket was down.
+const refresh = useDebouncedRefresh(refetch);
+
+useSubscription({
+  channel: FleetMembersChannel,
+  received: refresh,
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 
 const capabilities = computed(() => props.membership?.capabilities);

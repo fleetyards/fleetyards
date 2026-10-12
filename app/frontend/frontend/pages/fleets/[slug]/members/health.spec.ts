@@ -13,6 +13,14 @@ import Component from "./health.vue";
 
 let health: FleetMemberHealth;
 const asked: (FleetMemberHealthParams | undefined)[] = [];
+const refetch = vi.fn();
+let received: (() => void) | undefined;
+
+vi.mock("@/shared/composables/useSubscription", () => ({
+  useSubscription: (options: { received: () => void }) => {
+    received = options.received;
+  },
+}));
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -35,7 +43,7 @@ vi.mock("@/services/fyApi", async () => {
         isFetching: ref(false),
         isRefetching: ref(false),
         error: ref(null),
-        refetch: vi.fn(),
+        refetch,
       };
     },
   };
@@ -164,6 +172,21 @@ describe("FleetMembersHealthPage", () => {
   beforeEach(() => {
     health = healthWith();
     asked.length = 0;
+    refetch.mockClear();
+  });
+
+  it("checks again when another officer changes a membership", async () => {
+    vi.useFakeTimers();
+    try {
+      await mount();
+      received?.();
+      received?.();
+      vi.runAllTimers();
+
+      expect(refetch).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("asks for 30 days unless the page says otherwise", async () => {
