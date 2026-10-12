@@ -4004,7 +4004,6 @@
         "ownedPaints": "Le tue verniciature",
         "availablePaints": "Verniciature",
         "paintApplied": "%{paint}, applicata",
-        "morePaints": "Altre %{count} per questa nave",
         "visibility": "Visibilità",
         "showPublic": "Mostra nel mio hangar pubblico",
         "showName": "Mostra il nome",

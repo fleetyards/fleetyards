@@ -102,9 +102,11 @@ const cargoRoute = computed(() => ({
       </li>
     </ul>
 
-    <router-link :to="cargoRoute" class="overview-card-link">
-      {{ t("actions.hangar.manageCargo") }}
-    </router-link>
+    <template #footer>
+      <router-link :to="cargoRoute" class="overview-card-footer-link">
+        {{ t("actions.hangar.manageCargo") }}
+      </router-link>
+    </template>
   </MetricsCard>
 </template>
 

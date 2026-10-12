@@ -556,7 +556,7 @@
         "applyPaint": "Applica %{paint}",
         "choosePaint": "Scegli verniciatura",
         "editLocation": "Cambia posizione",
-        "showPicture": "Immagine"
+        "allPaints": "Tutte le %{count} verniciature"
       },
       "vehicleLog": {
         "open": "Diario di bordo",

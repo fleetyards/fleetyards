@@ -4004,7 +4004,6 @@
         "ownedPaints": "Tes peintures",
         "availablePaints": "Peintures",
         "paintApplied": "%{paint}, appliquée",
-        "morePaints": "%{count} de plus pour ce vaisseau",
         "visibility": "Visibilité",
         "showPublic": "Afficher dans mon hangar public",
         "showName": "Afficher le nom",

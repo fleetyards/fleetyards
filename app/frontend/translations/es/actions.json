@@ -556,7 +556,7 @@
         "applyPaint": "Aplicar %{paint}",
         "choosePaint": "Elegir pintura",
         "editLocation": "Cambiar ubicación",
-        "showPicture": "Imagen"
+        "allPaints": "Las %{count} pinturas"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

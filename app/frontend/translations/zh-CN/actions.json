@@ -556,7 +556,7 @@
         "applyPaint": "应用 %{paint}",
         "choosePaint": "选择涂装",
         "editLocation": "更改位置",
-        "showPicture": "图片"
+        "allPaints": "全部 %{count} 款涂装"
       },
       "vehicleLog": {
         "open": "舰长日志",

@@ -556,7 +556,7 @@
         "applyPaint": "Appliquer %{paint}",
         "choosePaint": "Choisir une peinture",
         "editLocation": "Changer l'emplacement",
-        "showPicture": "Image"
+        "allPaints": "Les %{count} peintures"
       },
       "vehicleLog": {
         "open": "Journal de bord",

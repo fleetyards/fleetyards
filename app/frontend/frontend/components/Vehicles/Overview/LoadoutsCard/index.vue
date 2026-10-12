@@ -76,9 +76,11 @@ const loadoutsRoute = computed(() => ({
       </li>
     </ul>
 
-    <router-link :to="loadoutsRoute" class="overview-card-link">
-      {{ t("actions.hangar.manageLoadouts") }}
-    </router-link>
+    <template #footer>
+      <router-link :to="loadoutsRoute" class="overview-card-footer-link">
+        {{ t("actions.hangar.manageLoadouts") }}
+      </router-link>
+    </template>
   </MetricsCard>
 </template>
 

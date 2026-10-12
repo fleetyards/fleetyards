@@ -4018,7 +4018,6 @@
         "ownedPaints": "Your paints",
         "availablePaints": "Paints",
         "paintApplied": "%{paint}, applied",
-        "morePaints": "%{count} more for this ship",
         "visibility": "Visibility",
         "showPublic": "Show in my public hangar",
         "showName": "Show the name",

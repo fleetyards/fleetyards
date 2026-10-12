@@ -4004,7 +4004,6 @@
         "ownedPaints": "你的涂装",
         "availablePaints": "涂装",
         "paintApplied": "%{paint}，已应用",
-        "morePaints": "此舰船还有 %{count} 款",
         "visibility": "可见性",
         "showPublic": "在我的公开机库中显示",
         "showName": "显示名称",

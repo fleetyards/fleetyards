@@ -118,13 +118,11 @@ const logRoute = computed(() => ({
       </li>
     </ol>
 
-    <router-link
-      v-if="entries.length"
-      :to="logRoute"
-      class="overview-card-link"
-    >
-      {{ t("actions.vehicleOverview.openLog") }}
-    </router-link>
+    <template v-if="entries.length" #footer>
+      <router-link :to="logRoute" class="overview-card-footer-link">
+        {{ t("actions.vehicleOverview.openLog") }}
+      </router-link>
+    </template>
   </MetricsCard>
 </template>
 

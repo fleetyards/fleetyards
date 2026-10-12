@@ -48,8 +48,6 @@ const shown = computed(() =>
   (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
 );
 
-const remaining = computed(() => all.value.length - owned.value.length);
-
 const { useUpdateMutation } = useVehicleMutations();
 const updateMutation = useUpdateMutation(vehicle);
 
@@ -141,13 +139,21 @@ const thumb = (entry: VehiclePaint) =>
 
     <p class="overview-card-muted">
       {{ t("texts.vehicleOverview.applyPaint") }}
-      <router-link
-        v-if="owned.length && remaining > 0"
-        :to="{ name: 'ship', params: { slug: vehicle.model.slug } }"
-      >
-        {{ t("labels.vehicleOverview.morePaints", { count: remaining }) }}
-      </router-link>
     </p>
+
+    <template #footer>
+      <router-link
+        :to="{
+          name: 'ship',
+          params: { slug: vehicle.model.slug },
+          hash: '#paints',
+        }"
+        class="overview-card-footer-link"
+        data-test="vehicle-overview-paints-ship"
+      >
+        {{ t("actions.vehicleOverview.allPaints", { count: all.length }) }}
+      </router-link>
+    </template>
   </MetricsCard>
 </template>
 

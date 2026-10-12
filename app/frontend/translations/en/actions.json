@@ -556,7 +556,7 @@
         "applyPaint": "Apply %{paint}",
         "choosePaint": "Choose paint",
         "editLocation": "Change location",
-        "showPicture": "Picture"
+        "allPaints": "All %{count} paints"
       },
       "vehicleLog": {
         "open": "Captain's Log",
