@@ -27,6 +27,12 @@ const { isFeatureEnabled } = useFeatures();
 // The same conditions the context menu offers these pages under.
 const inGame = computed(() => !!props.vehicle.model.inGame);
 
+// Loaners and wishlist ships get no plaque. A dedicated ship shows its plaque
+// first; until then the card only invites one, further down.
+const plaqueVisible = computed(
+  () => !props.vehicle.loaner && !props.vehicle.wanted,
+);
+
 const cargoVisible = computed(
   () =>
     inGame.value &&
@@ -47,11 +53,15 @@ const cargoVisible = computed(
       </div>
 
       <aside class="vehicle-overview__side">
+        <PlaqueCard
+          v-if="plaqueVisible && vehicle.dedication"
+          :vehicle="vehicle"
+        />
         <ConfigurationCard :vehicle="vehicle" />
         <PaintsCard :vehicle="vehicle" />
         <VisibilityCard v-if="!vehicle.loaner" :vehicle="vehicle" />
         <PlaqueCard
-          v-if="!vehicle.loaner && !vehicle.wanted"
+          v-if="plaqueVisible && !vehicle.dedication"
           :vehicle="vehicle"
         />
         <FleetsCard v-if="vehicle.fleets?.length" :fleets="vehicle.fleets" />

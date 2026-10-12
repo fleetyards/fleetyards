@@ -159,4 +159,33 @@ describe("HangarVehicleOverviewPage", () => {
       "Rust Society",
     );
   });
+
+  const sideCards = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+    wrapper
+      .findAll(".vehicle-overview__side > [data-test]")
+      .map((card) => card.attributes("data-test"));
+
+  it("puts a dedicated ship's plaque at the top of the side column", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ dedication: "To boldly go" }),
+    });
+
+    expect(sideCards(wrapper)[0]).toBe("vehicle-overview-plaque");
+  });
+
+  it("keeps the plaque invitation below the ship's settings", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+    const cards = sideCards(wrapper);
+
+    expect(cards).toContain("vehicle-overview-plaque");
+    expect(cards[0]).not.toBe("vehicle-overview-plaque");
+  });
+
+  it("offers no plaque for a loaner", async () => {
+    const wrapper = await mount({ vehicle: vehicle({ loaner: true }) });
+
+    expect(wrapper.find('[data-test="vehicle-overview-plaque"]').exists()).toBe(
+      false,
+    );
+  });
 });
