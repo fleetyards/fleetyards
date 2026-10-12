@@ -18,6 +18,14 @@ beforeEach(() => {
   );
 });
 
+const vehicleOverviewEnabled = ref(false);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: () => vehicleOverviewEnabled.value,
+  }),
+}));
+
 const NOW = "2026-08-24T12:00:00Z";
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
@@ -79,6 +87,27 @@ const router = createRouter({
       name: "ship",
       component: { template: "<div />" },
     },
+    // An editable panel carries the ship's menu, which links to every tab.
+    {
+      path: "/hangar/:id/overview",
+      name: "hangar-vehicle-overview",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/log",
+      name: "hangar-vehicle-log",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/loadouts",
+      name: "hangar-vehicle-loadouts",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/hangar/:id/cargo",
+      name: "hangar-vehicle-cargo",
+      component: { template: "<div />" },
+    },
   ],
 });
 
@@ -87,6 +116,7 @@ const mount = async (props: {
   highlight?: boolean;
   sortable?: boolean;
   publicLogUsername?: string;
+  editable?: boolean;
 }) => {
   await router.push({ name: "hangar" });
   await router.isReady();
@@ -98,6 +128,38 @@ const mount = async (props: {
 };
 
 describe("VehiclesPanel", () => {
+  beforeEach(() => {
+    vehicleOverviewEnabled.value = false;
+  });
+
+  const titleHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+    wrapper.find('[data-test="vehicle-panel-title"]').attributes("href");
+
+  it("opens the owner's ship on its overview once there is one", async () => {
+    vehicleOverviewEnabled.value = true;
+
+    const wrapper = await mount({
+      vehicle: vehicle({ serial: "IC-021" }),
+      editable: true,
+    });
+
+    expect(titleHref(wrapper)).toContain("/hangar/IC-021/overview");
+  });
+
+  it("opens the model while the overview is not rolled out", async () => {
+    const wrapper = await mount({ vehicle: vehicle(), editable: true });
+
+    expect(titleHref(wrapper)).toContain("/ships/odyssey");
+  });
+
+  it("opens the model for someone else's ship", async () => {
+    vehicleOverviewEnabled.value = true;
+
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(titleHref(wrapper)).toContain("/ships/odyssey");
+  });
+
   const withPicture = () =>
     vehicle({
       image: {

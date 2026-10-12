@@ -12,6 +12,7 @@ import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import {
+  FeatureFlagName,
   type Vehicle,
   type VehiclePublic,
   type Manufacturer,
@@ -19,6 +20,7 @@ import {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
@@ -94,6 +96,27 @@ const image = computed(() => {
 });
 
 const modelName = computed(() => model.value?.name);
+
+const { isFeatureEnabled } = useFeatures();
+
+// The owner's own ship opens on its overview once there is one; anyone else's,
+// and a loaner, which has no page of its own to edit, still opens the model.
+const titleRoute = computed(() => {
+  if (
+    props.editable &&
+    !props.vehicle.loaner &&
+    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
+  ) {
+    const vehicle = props.vehicle as Vehicle;
+
+    return {
+      name: "hangar-vehicle-overview",
+      params: { id: vehicle.serial || vehicle.id },
+    };
+  }
+
+  return { name: "ship", params: { slug: props.vehicle.model.slug } };
+});
 
 const model = computed(() => props.vehicle.model);
 
@@ -206,13 +229,9 @@ const tone = computed(() => {
       <span class="flex items-baseline gap-1 max-w-full">
         <router-link
           v-tooltip="name"
-          :to="{
-            name: 'ship',
-            params: {
-              slug: model.slug,
-            },
-          }"
+          :to="titleRoute"
           class="truncate"
+          data-test="vehicle-panel-title"
         >
           <span>{{ name }}</span>
         </router-link>
