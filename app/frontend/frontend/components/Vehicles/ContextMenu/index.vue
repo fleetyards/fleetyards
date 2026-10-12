@@ -66,7 +66,7 @@ const upgradable = computed(() => {
   }
 
   return (
-    (props.editable || hasAddons) &&
+    (props.editable || hasAddons.value) &&
     (props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades)
   );
 });
