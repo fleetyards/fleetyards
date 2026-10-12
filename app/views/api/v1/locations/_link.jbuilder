@@ -11,4 +11,4 @@ json.kind location.kind
 #
 # Merged rather than set: `Jbuilder.ignore_nil` would drop a system's null
 # and leave the required key missing.
-json.merge!(parent_name: location.parent&.[](:name))
+json.merge!(parent_name: location.parent&.[](:name)) # standard:disable Performance/RedundantMerge -- a Jbuilder, not a Hash: `[]=` would drop the nil

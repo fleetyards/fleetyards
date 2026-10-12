@@ -9,7 +9,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
-import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
 import {
   ModelStateEnum,
@@ -26,6 +25,12 @@ type Props = {
   // in place, so switching tabs shrinks the picture rather than swapping it.
   compact?: boolean;
 };
+
+// Loaded on demand: three.js is the heaviest thing the page could carry, and
+// most visits show the picture.
+const HoloViewer = defineAsyncComponent(
+  () => import("@/shared/components/HoloViewer/index.vue"),
+);
 
 const props = withDefaults(defineProps<Props>(), {
   compact: false,
