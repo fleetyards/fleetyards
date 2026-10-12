@@ -370,6 +370,29 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_not vehicle.reload.image.attached?
   end
 
+  test "PUT /vehicles/:id links the ship to a starmap location" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    location = create(:location, name: "Lorville")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {locationId: location.id} do
+      assert_equal "Lorville", parsed_body["location"]
+      assert_equal location.id, parsed_body.dig("linkedLocation", "id")
+    end
+  end
+
+  test "PUT /vehicles/:id keeps a location the starmap does not carry as text" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {location: "Behind the moon"} do
+      assert_equal "Behind the moon", parsed_body["location"]
+      assert_nil parsed_body["linkedLocation"]
+    end
+  end
+
   test "PUT /vehicles/:id rejects an SVG image" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)

@@ -16,6 +16,8 @@ module V1
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             logEntriesPublicByDefault: {type: :boolean},
+            location: {type: [:string, :null]},
+            locationId: {type: [:string, :null], format: :uuid},
             image: {type: [:string, :null]},
             flagship: {type: :boolean},
             modelPaintId: {type: [:string, :null], format: :uuid},

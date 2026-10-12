@@ -8,6 +8,7 @@ class Vehicle < ApplicationRecord
   # destroyed along with the account.
   include ErasableVersionsConcern
   include ActiveStorageVariants
+  include LinkedLocations
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -83,6 +84,10 @@ class Vehicle < ApplicationRecord
   has_many :public_log_entries, -> { public_entries }, class_name: "VehicleLogEntry"
 
   has_one_attached :image
+
+  # Where the owner left the ship. Only ever shown to the owner: a public
+  # hangar saying where a ship is parked is an invitation.
+  links_location :location
   validates :image, no_vector_image: true
 
   has_one :inventory, dependent: nil
@@ -107,7 +112,8 @@ class Vehicle < ApplicationRecord
       {model: Model.rendered_associations},
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
       {parent_vehicle: :model},
-      {image_attachment: :blob}
+      {image_attachment: :blob},
+      :linked_location
     ]
   end
 

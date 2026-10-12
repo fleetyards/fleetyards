@@ -31,6 +31,8 @@ module V1
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             logEntriesPublicByDefault: {type: :boolean},
+            location: {type: [:string, :null]},
+            linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             image: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},

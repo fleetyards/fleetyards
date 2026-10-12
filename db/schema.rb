@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_130200) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2741,7 +2741,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130200) do
     t.text "rank", collation: "C"
     t.boolean "log_entries_public_by_default", default: false, null: false
     t.integer "public_log_entries_count", default: 0, null: false
+    t.string "location"
+    t.uuid "location_id"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
+    t.index ["location_id"], name: "index_vehicles_on_location_id"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
@@ -2973,4 +2976,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130200) do
   add_foreign_key "users", "locations", column: "current_location_id", on_delete: :nullify
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade
+  add_foreign_key "vehicles", "locations", on_delete: :nullify
 end

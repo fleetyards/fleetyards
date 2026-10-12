@@ -26,6 +26,8 @@ json.public vehicle.public
 json.name_visible vehicle.name_visible
 json.sale_notify vehicle.sale_notify
 json.log_entries_public_by_default vehicle.log_entries_public_by_default
+json.location vehicle.location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: vehicle.linked_location
 json.alternative_names vehicle.alternative_names
 
 json.model do
