@@ -300,6 +300,9 @@ const teams = computed<FleetEventTeam[]>(
 .slot-picker__slot-label {
   text-align: left;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .slot-picker__slot-type {
   margin-left: 6px;
