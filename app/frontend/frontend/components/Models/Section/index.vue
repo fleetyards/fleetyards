@@ -56,11 +56,12 @@ const bodyId = computed(() => `${props.anchor}-section-body`);
           @click="modelsStore.toggleSection(modelSlug, anchor)"
         >
           {{ title }}
-          <i
-            class="fa-light fa-chevron-down model-section__chevron"
-            :class="{ 'model-section__chevron--collapsed': !expanded }"
-            aria-hidden="true"
-          />
+          <span class="model-section__chevron" aria-hidden="true">
+            <i
+              class="fa-solid fa-chevron-down"
+              :class="{ 'model-section__chevron-icon--collapsed': !expanded }"
+            />
+          </span>
         </button>
       </Heading>
       <Collapsed :id="bodyId" :visible="expanded">
@@ -87,20 +88,36 @@ const bodyId = computed(() => `${props.anchor}-section-body`);
 
     &:hover .model-section__chevron,
     &:focus-visible .model-section__chevron {
-      opacity: 1;
+      border-color: var(--color-primary);
+      color: var(--color-lifted);
     }
   }
 
+  // A round button beside the title rather than a bare glyph: on a hero
+  // heading a thin chevron read as decoration, not as something to press.
   &__chevron {
-    font-size: 0.55em;
-    opacity: 0.6;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-edge);
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.35);
+    color: var(--color-text);
+    font-size: 14px;
     transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
+      border-color 0.2s ease,
+      color 0.2s ease;
 
-    &--collapsed {
-      transform: rotate(-90deg);
+    i {
+      transition: transform 0.2s ease;
     }
+  }
+
+  &__chevron-icon--collapsed {
+    transform: rotate(-90deg);
   }
 }
 </style>
