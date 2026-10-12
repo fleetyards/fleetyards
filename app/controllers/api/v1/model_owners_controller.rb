@@ -32,9 +32,9 @@ module Api
       end
 
       # A token the reader granted only hangar access to has no say over their
-      # fleets.
+      # fleets; a signed-in session has, whatever token rides along with it.
       private def fleets_readable?
-        doorkeeper_token.blank? || doorkeeper_token.acceptable?(%w[fleet fleet:read])
+        warden.authenticate?(scope: :user) || doorkeeper_token.acceptable?(%w[fleet fleet:read])
       end
 
       # Friends only as far as their hangar is open to the reader, and only the

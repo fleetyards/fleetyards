@@ -247,6 +247,17 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     assert_match %r{/models/#{@model.slug}/owners}, response.location
   end
 
+  test "GET /models/:slug/owners keeps fleets for a session that also sends a narrower token" do
+    fleet = fleet_with_another_owner
+    sign_in @user
+
+    assert_api_response :get, 200,
+      path_params: {slug: @model.slug},
+      headers: oauth_headers_for(@user, scopes: ["hangar:read"]) do
+      assert_equal [fleet.slug], parsed_body["fleets"].pluck("slug")
+    end
+  end
+
   test "GET /models/:slug/owners returns 404 for an unknown model" do
     sign_in @user
 
