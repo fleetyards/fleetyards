@@ -343,7 +343,9 @@
       },
       "vehicleOverview": {
         "noLoadouts": "还没有配装。从 Erkul 或 SPViewer 链接一个。",
-        "locationPrivate": "只有你能看到你的舰船在哪里。"
+        "locationPrivate": "只有你能看到你的舰船在哪里。",
+        "galleryReplacesUpload": "从图库选择图片会替换你上传的图片。",
+        "galleryEmpty": "这艘舰船还没有图库图片。"
       },
       "model": {
         "sectionEmpty": "%{model} 没有任何%{section}。"

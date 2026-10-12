@@ -39,11 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
 const { t, l } = useI18n();
 const comlink = useComlink();
 
-// The owner's picture first, then the render the ship is wearing, then the
+// The owner's picture first -- uploaded, then picked from the model's
+// gallery -- then the render the ship is wearing, then the
 // model's own.
 const picture = computed(
   () =>
     props.vehicle.image ||
+    props.vehicle.modelImage ||
     props.vehicle.paint?.media.storeImage ||
     props.vehicle.upgrade?.media.storeImage ||
     props.vehicle.model.media.storeImage,
@@ -144,7 +146,7 @@ const openImageModal = () => {
             <i class="fa-duotone fa-camera" />
             <span class="vehicle-hero__action-label">
               {{
-                vehicle.image
+                vehicle.image || vehicle.modelImage
                   ? t("actions.vehicleOverview.changePicture")
                   : t("actions.vehicleOverview.uploadPicture")
               }}

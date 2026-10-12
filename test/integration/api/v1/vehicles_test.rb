@@ -401,6 +401,52 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id picks a picture from the model's gallery" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    image = create(:image, gallery: vehicle.model)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelImageId: image.id} do
+      assert parsed_body.dig("modelImage", "url").present?
+    end
+
+    assert_equal image, vehicle.reload.model_image
+  end
+
+  test "GET /vehicles/:id leaves out a gallery picture disabled since the pick" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    image = create(:image, gallery: vehicle.model)
+    vehicle.update!(model_image: image)
+    image.update!(enabled: false)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: vehicle.id} do
+      assert_nil parsed_body["modelImage"]
+    end
+  end
+
+  test "PUT /vehicles/:id rejects a picture from another model's gallery" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    image = create(:image, gallery: create(:model))
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {modelImageId: image.id}
+
+    assert_nil vehicle.reload.model_image_id
+  end
+
+  test "PUT /vehicles/:id rejects a disabled gallery picture" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    image = create(:image, :disabled, gallery: vehicle.model)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {modelImageId: image.id}
+  end
+
   test "PUT /vehicles/:id rejects an SVG image" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)

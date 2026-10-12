@@ -676,3 +676,23 @@ class LexorankValueBetweenTest < ActiveSupport::TestCase
     end
   end
 end
+
+class VehicleModelImageTest < ActiveSupport::TestCase
+  test "drops a gallery picture of the old model when the model changes" do
+    vehicle = create(:vehicle)
+    vehicle.update!(model_image: create(:image, gallery: vehicle.model))
+
+    vehicle.update!(model: create(:model))
+
+    assert_nil vehicle.reload.model_image_id
+  end
+
+  test "keeps saving once its picked gallery picture is disabled" do
+    vehicle = create(:vehicle)
+    image = create(:image, gallery: vehicle.model)
+    vehicle.update!(model_image: image)
+    image.update!(enabled: false)
+
+    assert vehicle.reload.update(name: "Starfall")
+  end
+end

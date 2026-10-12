@@ -343,7 +343,9 @@
       },
       "vehicleOverview": {
         "noLoadouts": "No loadouts yet. Link one from Erkul or SPViewer.",
-        "locationPrivate": "Only you can see where your ship is."
+        "locationPrivate": "Only you can see where your ship is.",
+        "galleryReplacesUpload": "Picking a gallery picture replaces the one you uploaded.",
+        "galleryEmpty": "This ship has no gallery pictures yet."
       },
       "model": {
         "sectionEmpty": "The %{model} does not have any %{section}."

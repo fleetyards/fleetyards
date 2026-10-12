@@ -5050,6 +5050,13 @@ components:
           - type: 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
+        modelImageId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modelImage:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:

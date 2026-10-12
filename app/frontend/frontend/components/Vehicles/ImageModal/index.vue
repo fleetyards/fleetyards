@@ -10,6 +10,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -17,7 +18,10 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import {
   type FieldError,
+  type Image,
   type Vehicle,
+  type VehicleUpdateInput,
+  useModelImages,
   useUpdateVehicle,
 } from "@/services/fyApi";
 
@@ -50,21 +54,96 @@ const stockImage = computed(
     props.vehicle.model.media.storeImage?.smallUrl,
 );
 
+// Two ways to give the ship a picture: upload one, or pick one of the model's
+// own. The upload wins where both are set, so picking one drops the upload --
+// otherwise the pick would save and change nothing anyone can see.
+type Source = "upload" | "gallery";
+
+const source = ref<Source>(
+  props.vehicle.modelImageId && !props.vehicle.image ? "gallery" : "upload",
+);
+
+const GALLERY_PAGE_SIZE = "48";
+
+const galleryPage = ref(1);
+
+const { data: gallery, isLoading: galleryLoading } = useModelImages(
+  () => props.vehicle.model.slug,
+  () => ({ perPage: GALLERY_PAGE_SIZE, page: String(galleryPage.value) }),
+);
+
+// Pages add up, so a big gallery stays scrollable from its first picture.
+const galleryImages = ref<Image[]>([]);
+
+watch(
+  gallery,
+  (data) => {
+    if (!data) return;
+
+    const known = new Set(galleryImages.value.map((item) => item.id));
+    galleryImages.value = [
+      ...galleryImages.value,
+      ...data.items.filter((item) => !known.has(item.id)),
+    ];
+  },
+  { immediate: true },
+);
+
+const galleryHasMore = computed(() => {
+  const pagination = gallery.value?.meta.pagination;
+
+  return !!pagination && pagination.currentPage < pagination.totalPages;
+});
+
+const loadMoreGallery = () => {
+  galleryPage.value += 1;
+};
+
+const pickedImageId = ref<string | null>(props.vehicle.modelImageId ?? null);
+
+const pick = (imageId: string | null) => {
+  pickedImageId.value = imageId;
+};
+
 // Not the hangar's optimistic update: that merges the request into the cached
 // vehicle, and the request carries a signed blob id where the vehicle holds a
 // file.
 const { mutateAsync, isPending: submitting } = useUpdateVehicle();
 
-const onSubmit = handleSubmit(async (values) => {
+// A ship shows one picture of its own: saving either kind clears the other.
+const changes = (values: {
+  image?: string | null;
+}): VehicleUpdateInput | undefined => {
+  if (source.value === "gallery") {
+    if (
+      !props.vehicle.image &&
+      pickedImageId.value === (props.vehicle.modelImageId ?? null)
+    ) {
+      return undefined;
+    }
+
+    return { modelImageId: pickedImageId.value, image: null };
+  }
+
   // `undefined` means the field was never touched, so there is nothing to save.
-  if (values.image === undefined) {
+  if (values.image === undefined) return undefined;
+
+  return props.vehicle.modelImageId
+    ? { image: values.image, modelImageId: null }
+    : { image: values.image };
+};
+
+const onSubmit = handleSubmit(async (values) => {
+  const data = changes(values);
+
+  if (!data) {
     comlink.emit("close-modal");
     return;
   }
 
   await mutateAsync({
     id: props.vehicle.id,
-    data: { image: values.image },
+    data,
   })
     .then(async (updatedVehicle) => {
       await Promise.all([
@@ -94,7 +173,29 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Modal :title="t('headlines.vehicleOverview.picture')">
     <form id="vehicle-image-form" @submit.prevent="onSubmit">
+      <BtnGroup segmented class="vehicle-image-modal__sources">
+        <Btn
+          :active="source === 'upload'"
+          :aria-pressed="source === 'upload'"
+          data-test="vehicle-image-source-upload"
+          @click="source = 'upload'"
+        >
+          <i class="fa-duotone fa-upload" />
+          {{ t("labels.vehicleOverview.pictureUpload") }}
+        </Btn>
+        <Btn
+          :active="source === 'gallery'"
+          :aria-pressed="source === 'gallery'"
+          data-test="vehicle-image-source-gallery"
+          @click="source = 'gallery'"
+        >
+          <i class="fa-duotone fa-images" />
+          {{ t("labels.vehicleOverview.pictureGallery") }}
+        </Btn>
+      </BtnGroup>
+
       <FormFileInput
+        v-if="source === 'upload'"
         v-model="image"
         v-bind="imageProps"
         :file="vehicle.image"
@@ -105,6 +206,70 @@ const onSubmit = handleSubmit(async (values) => {
         :allowed-types="AllowedFileTypes.IMAGE"
         clearable
       />
+
+      <template v-else>
+        <p v-if="vehicle.image" class="vehicle-image-modal__hint">
+          {{ t("texts.vehicleOverview.galleryReplacesUpload") }}
+        </p>
+        <p
+          v-if="!galleryLoading && !galleryImages.length"
+          class="vehicle-image-modal__hint"
+        >
+          {{ t("texts.vehicleOverview.galleryEmpty") }}
+        </p>
+        <div class="vehicle-image-modal__gallery">
+          <button
+            type="button"
+            class="vehicle-image-modal__choice"
+            :class="{
+              'vehicle-image-modal__choice--picked': pickedImageId === null,
+            }"
+            :aria-pressed="pickedImageId === null"
+            data-test="vehicle-image-gallery-none"
+            @click="pick(null)"
+          >
+            <img
+              v-if="stockImage"
+              :src="stockImage"
+              alt=""
+              class="vehicle-image-modal__thumb"
+            />
+            <span class="vehicle-image-modal__caption">
+              {{ t("labels.vehicleOverview.stockPicture") }}
+            </span>
+          </button>
+          <button
+            v-for="galleryImage in galleryImages"
+            :key="galleryImage.id"
+            type="button"
+            class="vehicle-image-modal__choice"
+            :class="{
+              'vehicle-image-modal__choice--picked':
+                pickedImageId === galleryImage.id,
+            }"
+            :aria-pressed="pickedImageId === galleryImage.id"
+            :aria-label="galleryImage.caption || vehicle.model.name"
+            data-test="vehicle-image-gallery-choice"
+            @click="pick(galleryImage.id)"
+          >
+            <img
+              :src="galleryImage.smallUrl || galleryImage.url"
+              alt=""
+              class="vehicle-image-modal__thumb"
+            />
+          </button>
+        </div>
+        <Btn
+          v-if="galleryHasMore"
+          :loading="galleryLoading"
+          block
+          class="vehicle-image-modal__more"
+          data-test="vehicle-image-gallery-more"
+          @click="loadMoreGallery"
+        >
+          {{ t("actions.loadMore") }}
+        </Btn>
+      </template>
     </form>
 
     <template #footer>
@@ -119,3 +284,66 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.vehicle-image-modal {
+  &__sources {
+    margin-bottom: 15px;
+  }
+
+  &__hint {
+    color: var(--color-text-dim);
+    font-size: 0.85rem;
+  }
+
+  &__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  &__choice {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid var(--color-edge-soft);
+    border-radius: 6px;
+    background: var(--color-gray-black);
+    color: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--color-edge-strong);
+    }
+
+    &--picked,
+    &--picked:hover {
+      border-color: var(--color-gold);
+    }
+  }
+
+  &__more {
+    margin-top: 8px;
+  }
+
+  &__thumb {
+    display: block;
+    width: 100%;
+    height: 84px;
+    object-fit: cover;
+  }
+
+  &__caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 4px 8px;
+    background: rgb(0 0 0 / 0.6);
+    font-size: 0.75rem;
+  }
+}
+</style>

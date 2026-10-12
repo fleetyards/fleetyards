@@ -204,6 +204,26 @@ describe("VehiclesPanel", () => {
     expect(empty.find('[data-test="vehicle-public-log"]').exists()).toBe(false);
   });
 
+  it("draws a picture picked from the gallery before the paint's render", async () => {
+    const wrapper = await mount({
+      vehicle: {
+        ...withPicture(),
+        image: undefined,
+        modelImage: {
+          name: "gallery.jpg",
+          contentType: "image/jpeg",
+          size: 1024,
+          url: "https://example.test/gallery.jpg",
+          mediumUrl: "https://example.test/gallery.webp",
+        },
+      },
+    });
+
+    expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
+      "https://example.test/gallery.webp",
+    );
+  });
+
   it("draws the paint's render when the owner set no picture", async () => {
     const wrapper = await mount({
       vehicle: { ...withPicture(), image: undefined },
