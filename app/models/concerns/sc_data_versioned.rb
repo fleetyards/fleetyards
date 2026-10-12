@@ -6,8 +6,8 @@
 # against one still has to resolve -- so anything meant for a picker narrows to
 # the version the game currently ships. `ScData::Loader::BaseLoader#retire_absent`
 # is the other half: it clears the version off a row the export stopped naming.
-# Commodity and Equipment no longer take part: their rows keep whatever version
-# they were last loaded with, and only their builds say which ones describe them.
+# Commodity and Equipment take no part in that: only their builds say which
+# versions describe them.
 #
 # Note that this only supplies the scope. `ransackable_scopes` is left to each
 # model, because only Component exposes it through ransack -- the commodity and

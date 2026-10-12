@@ -12,9 +12,9 @@ class Commodity < ApplicationRecord
       name description commodity_type uex_id uex_code sc_key sc_ref
     ],
     if: ->(record) { record.author_id.present? },
-    # `version` is a column here -- a stale one, the build carries the version
-    # now -- and paper_trail claims that name for its own accessor unless told
-    # otherwise.
+    # `version` is a column here that nothing maintains -- the builds answer for
+    # the version -- and paper_trail claims that name for its own accessor unless
+    # told otherwise.
     # Component already carries this rename for the same reason.
     version: :paper_trail_version,
     versions: {name: :paper_trail_versions},
