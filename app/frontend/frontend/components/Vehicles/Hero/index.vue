@@ -6,9 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import { useModelsStore } from "@/frontend/stores/models";
+import { storeToRefs } from "pinia";
 import {
   ModelStateEnum,
   modelStateHolo,
@@ -62,13 +65,13 @@ const holoModel = computed(() => {
   return { path, length };
 });
 
-const holoVisible = ref(false);
+// The ship page's own switch, remembered across ships and visits: whoever
+// looks at ships in 3D there sees this one in 3D too.
+const modelsStore = useModelsStore();
+const { holoviewerVisible } = storeToRefs(modelsStore);
 
-watch(
-  () => props.compact,
-  (compact) => {
-    if (compact) holoVisible.value = false;
-  },
+const holoVisible = computed(
+  () => holoviewerVisible.value && !!holoModel.value && !props.compact,
 );
 
 const openEditModal = () => {
@@ -102,6 +105,7 @@ const openImageModal = () => {
     <div class="vehicle-hero__stage">
       <HoloViewer
         v-if="holoVisible && holoModel"
+        :key="holoModel.path"
         :models="[holoModel]"
         class="vehicle-hero__holo"
       />
@@ -200,20 +204,31 @@ const openImageModal = () => {
           </p>
         </div>
         <div class="vehicle-hero__links">
-          <Btn
-            v-if="holoModel"
-            :active="holoVisible"
-            :aria-pressed="holoVisible"
-            data-test="vehicle-hero-holo"
-            @click="holoVisible = !holoVisible"
-          >
-            <i class="fa-duotone fa-cube" />
-            {{
-              holoVisible
-                ? t("actions.vehicleOverview.showPicture")
-                : t("labels.3dView")
-            }}
-          </Btn>
+          <!-- The ship page's pair: the switch, and beside it while the model
+               shows, the way out to the full-window viewer. -->
+          <BtnGroup v-if="holoModel">
+            <Btn
+              v-if="holoVisible"
+              v-tooltip="t('labels.openInNewWindow')"
+              :aria-label="t('labels.openInNewWindow')"
+              :to="{
+                name: 'ship-viewer',
+                params: { slug: vehicle.model.slug },
+              }"
+              data-test="vehicle-hero-holo-viewer"
+            >
+              <i class="fa-light fa-external-link-alt" />
+            </Btn>
+            <Btn
+              :active="holoVisible"
+              :aria-pressed="holoVisible"
+              data-test="vehicle-hero-holo"
+              @click="modelsStore.toggleHoloviewer()"
+            >
+              <i class="fa-duotone fa-cube" />
+              {{ t("labels.3dView") }}
+            </Btn>
+          </BtnGroup>
           <Btn :to="{ name: 'ship', params: { slug: vehicle.model.slug } }">
             {{ t("actions.vehicleOverview.shipDatabase") }}
           </Btn>
