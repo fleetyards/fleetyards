@@ -8,7 +8,6 @@ export default {
 import type { RouteRecordRaw } from "vue-router";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { useSquadronForm } from "@/frontend/composables/useSquadronForm";
 import { type Fleet, type FleetSquadron } from "@/services/fyApi";
 
@@ -49,14 +48,11 @@ const {
     is written with its emblem already on it.
   -->
   <form id="fleet-squadron-form" @submit.prevent="onSubmit">
-    <TabNavView>
-      <template #nav>
-        <TabNavViewItems
-          :routes="props.tabRoutes"
-          :authenticated="true"
-          :resource-access="props.resourceAccess"
-        />
-      </template>
+    <TabNavView
+      :routes="props.tabRoutes"
+      authenticated
+      :resource-access="props.resourceAccess"
+    >
       <template #content>
         <router-view
           :fields="fields"
