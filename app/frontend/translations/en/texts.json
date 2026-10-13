@@ -346,7 +346,7 @@
       },
       "vehiclePlaque": {
         "supporter": "Every other style is a thank-you to the people who keep Fleetyards running.",
-        "keptStyle": "Your plaque keeps its %{style} style, a supporter perk. Saving any change switches it to %{default}.",
+        "keptStyle": "Your plaque keeps its %{style} style, a supporter perk. Saving switches it to %{default}.",
         "credits": {
           "founders": "%{manufacturer} Founders",
           "shipwrights": "%{manufacturer} Shipwrights",

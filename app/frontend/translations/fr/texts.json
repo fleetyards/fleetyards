@@ -346,7 +346,7 @@
       },
       "vehiclePlaque": {
         "supporter": "Tous les autres styles sont un merci à celles et ceux qui font vivre Fleetyards.",
-        "keptStyle": "Votre plaque garde son style %{style}, un avantage réservé aux soutiens. Enregistrer une modification la fait passer en %{default}.",
+        "keptStyle": "Votre plaque garde son style %{style}, un avantage réservé aux soutiens. L'enregistrer la fait passer en %{default}.",
         "credits": {
           "founders": "Fondateurs de %{manufacturer}",
           "shipwrights": "Constructeurs de %{manufacturer}",

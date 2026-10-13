@@ -346,7 +346,7 @@
       },
       "vehiclePlaque": {
         "supporter": "Los demás estilos son un agradecimiento a quienes mantienen Fleetyards en marcha.",
-        "keptStyle": "Tu placa conserva su estilo %{style}, una ventaja para quienes nos apoyan. Al guardar cualquier cambio pasará a %{default}.",
+        "keptStyle": "Tu placa conserva su estilo %{style}, una ventaja para quienes nos apoyan. Al guardar pasará a %{default}.",
         "credits": {
           "founders": "Fundadores de %{manufacturer}",
           "shipwrights": "Constructores de %{manufacturer}",
