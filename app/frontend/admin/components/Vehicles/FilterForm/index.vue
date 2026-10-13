@@ -31,6 +31,8 @@ const prefillFormValues = () => {
     modelProductionStatusIn: filters.value.modelProductionStatusIn || [],
     loanerEq: filters.value.loanerEq,
     wantedEq: filters.value.wantedEq,
+    hasImageEq: filters.value.hasImageEq,
+    hasDedicationEq: filters.value.hasDedicationEq,
   };
 };
 
@@ -104,6 +106,22 @@ watch(
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="wanted"
+    />
+
+    <RadioList
+      v-model="form.hasImageEq"
+      :label="t('labels.filters.vehicles.image')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="has-image"
+    />
+
+    <RadioList
+      v-model="form.hasDedicationEq"
+      :label="t('labels.filters.vehicles.dedication')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="has-dedication"
     />
 
     <br />

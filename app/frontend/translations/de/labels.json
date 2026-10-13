@@ -2408,7 +2408,9 @@
           "group": "Gruppe",
           "loaner": "Leihschiffe",
           "bundled": "Mitgelieferte Snub Crafts",
-          "boughtVia": "Gekauft über?"
+          "boughtVia": "Gekauft über?",
+          "image": "Eigenes Bild",
+          "dedication": "Widmungstafel"
         },
         "models": {
           "name": "Name",

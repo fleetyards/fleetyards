@@ -2408,7 +2408,9 @@
           "group": "群组",
           "loaner": "借用船",
           "bundled": "捆绑的舰载小艇",
-          "boughtVia": "购买方式?"
+          "boughtVia": "购买方式?",
+          "image": "自定义图片",
+          "dedication": "命名铭牌"
         },
         "models": {
           "name": "名称",

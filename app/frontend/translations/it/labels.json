@@ -2408,7 +2408,9 @@
           "group": "Gruppo",
           "loaner": "Navi in comodato",
           "bundled": "Snub Craft in bundle",
-          "boughtVia": "Acquistato tramite?"
+          "boughtVia": "Acquistato tramite?",
+          "image": "Immagine personalizzata",
+          "dedication": "Targa di dedica"
         },
         "models": {
           "name": "Nome",

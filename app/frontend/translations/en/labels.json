@@ -2408,7 +2408,9 @@
           "group": "Group",
           "loaner": "Loaners",
           "bundled": "Bundled Snub Crafts",
-          "boughtVia": "Bought via?"
+          "boughtVia": "Bought via?",
+          "image": "Custom Image",
+          "dedication": "Dedication Plaque"
         },
         "models": {
           "name": "Name",
