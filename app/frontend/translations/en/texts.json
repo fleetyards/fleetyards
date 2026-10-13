@@ -63,6 +63,11 @@
               "one": "One file ready — save to apply it.",
               "other": "%{count} files ready — save to apply them."
             },
+            "processing": {
+              "one": "Cropping one view in the background — it updates here when done.",
+              "other": "Cropping %{count} views in the background — they update here when done."
+            },
+            "processed": "All views are processed.",
             "ignored": "Ignored: %{files}"
           }
         },

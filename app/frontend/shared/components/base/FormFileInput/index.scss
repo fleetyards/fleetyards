@@ -59,6 +59,10 @@
    * reset -- and the only <input> in the template is `hidden`, so none of it
    * ever drew a pixel.
    */
+  &__processing {
+    color: var(--color-muted, #7a8288);
+  }
+
   &__wrapper {
     position: relative;
     display: flex;

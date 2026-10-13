@@ -63,6 +63,11 @@
               "one": "Eine Datei bereit — zum Anwenden speichern.",
               "other": "%{count} Dateien bereit — zum Anwenden speichern."
             },
+            "processing": {
+              "one": "Eine Ansicht wird im Hintergrund zugeschnitten — sie wird hier aktualisiert, sobald sie fertig ist.",
+              "other": "%{count} Ansichten werden im Hintergrund zugeschnitten — sie werden hier aktualisiert, sobald sie fertig sind."
+            },
+            "processed": "Alle Ansichten sind verarbeitet.",
             "ignored": "Ignoriert: %{files}"
           }
         },

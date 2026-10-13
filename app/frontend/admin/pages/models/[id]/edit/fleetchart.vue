@@ -17,14 +17,20 @@ import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
 import { type FolderField } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
+import { useModelMediaUpdates } from "@/admin/composables/useModelMediaUpdates";
 
 type Props = {
   model: ModelExtended;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+useModelMediaUpdates(() => props.model.id);
+
+const isProcessing = (field: FolderField) =>
+  props.model.mediaProcessing.includes(field);
 
 const initialValues = ref<ModelUpdateInput>({
   holo: undefined,
@@ -130,7 +136,11 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
   <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
-    <ViewsFolderUpload @selected="onFolderSelected" @mapped="onFolderMapped" />
+    <ViewsFolderUpload
+      :processing="model.mediaProcessing"
+      @selected="onFolderSelected"
+      @mapped="onFolderMapped"
+    />
 
     <hr />
 
@@ -184,6 +194,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           v-bind="topViewProps"
           :allowed-types="AllowedFileTypes.IMAGE"
           name="topView"
+          :processing="isProcessing('topView')"
           :preview-src="previews.topView"
           transparent
           clearable
@@ -197,6 +208,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="sideViewProps"
           name="sideView"
+          :processing="isProcessing('sideView')"
           :preview-src="previews.sideView"
           transparent
           clearable
@@ -210,6 +222,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="frontViewProps"
           name="frontView"
+          :processing="isProcessing('frontView')"
           :preview-src="previews.frontView"
           transparent
           clearable
@@ -223,6 +236,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="angledViewProps"
           name="angledView"
+          :processing="isProcessing('angledView')"
           :preview-src="previews.angledView"
           transparent
           clearable
@@ -239,6 +253,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="topViewColoredProps"
           name="topViewColored"
+          :processing="isProcessing('topViewColored')"
           :preview-src="previews.topViewColored"
           transparent
           clearable
@@ -252,6 +267,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="sideViewColoredProps"
           name="sideViewColored"
+          :processing="isProcessing('sideViewColored')"
           :preview-src="previews.sideViewColored"
           transparent
           clearable
@@ -265,6 +281,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="frontViewColoredProps"
           name="frontViewColored"
+          :processing="isProcessing('frontViewColored')"
           :preview-src="previews.frontViewColored"
           transparent
           clearable
@@ -278,6 +295,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="angledViewColoredProps"
           name="angledViewColored"
+          :processing="isProcessing('angledViewColored')"
           :preview-src="previews.angledViewColored"
           transparent
           clearable
@@ -296,6 +314,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           v-bind="extendedTopViewProps"
           :allowed-types="AllowedFileTypes.IMAGE"
           name="extendedTopView"
+          :processing="isProcessing('extendedTopView')"
           :preview-src="previews.extendedTopView"
           transparent
           clearable
@@ -309,6 +328,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedSideViewProps"
           name="extendedSideView"
+          :processing="isProcessing('extendedSideView')"
           :preview-src="previews.extendedSideView"
           transparent
           clearable
@@ -322,6 +342,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedFrontViewProps"
           name="extendedFrontView"
+          :processing="isProcessing('extendedFrontView')"
           :preview-src="previews.extendedFrontView"
           transparent
           clearable
@@ -335,6 +356,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedAngledViewProps"
           name="extendedAngledView"
+          :processing="isProcessing('extendedAngledView')"
           :preview-src="previews.extendedAngledView"
           transparent
           clearable
@@ -351,6 +373,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedTopViewColoredProps"
           name="extendedTopViewColored"
+          :processing="isProcessing('extendedTopViewColored')"
           :preview-src="previews.extendedTopViewColored"
           transparent
           clearable
@@ -364,6 +387,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedSideViewColoredProps"
           name="extendedSideViewColored"
+          :processing="isProcessing('extendedSideViewColored')"
           :preview-src="previews.extendedSideViewColored"
           transparent
           clearable
@@ -377,6 +401,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedFrontViewColoredProps"
           name="extendedFrontViewColored"
+          :processing="isProcessing('extendedFrontViewColored')"
           :preview-src="previews.extendedFrontViewColored"
           transparent
           clearable
@@ -390,6 +415,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedAngledViewColoredProps"
           name="extendedAngledViewColored"
+          :processing="isProcessing('extendedAngledViewColored')"
           :preview-src="previews.extendedAngledViewColored"
           transparent
           clearable
@@ -408,6 +434,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedTopViewProps"
           name="landedTopView"
+          :processing="isProcessing('landedTopView')"
           :preview-src="previews.landedTopView"
           transparent
           clearable
@@ -421,6 +448,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedSideViewProps"
           name="landedSideView"
+          :processing="isProcessing('landedSideView')"
           :preview-src="previews.landedSideView"
           transparent
           clearable
@@ -434,6 +462,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedFrontViewProps"
           name="landedFrontView"
+          :processing="isProcessing('landedFrontView')"
           :preview-src="previews.landedFrontView"
           transparent
           clearable
@@ -447,6 +476,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedAngledViewProps"
           name="landedAngledView"
+          :processing="isProcessing('landedAngledView')"
           :preview-src="previews.landedAngledView"
           transparent
           clearable
@@ -463,6 +493,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedTopViewColoredProps"
           name="landedTopViewColored"
+          :processing="isProcessing('landedTopViewColored')"
           :preview-src="previews.landedTopViewColored"
           transparent
           clearable
@@ -476,6 +507,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedSideViewColoredProps"
           name="landedSideViewColored"
+          :processing="isProcessing('landedSideViewColored')"
           :preview-src="previews.landedSideViewColored"
           transparent
           clearable
@@ -489,6 +521,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedFrontViewColoredProps"
           name="landedFrontViewColored"
+          :processing="isProcessing('landedFrontViewColored')"
           :preview-src="previews.landedFrontViewColored"
           transparent
           clearable
@@ -502,6 +535,7 @@ const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="landedAngledViewColoredProps"
           name="landedAngledViewColored"
+          :processing="isProcessing('landedAngledViewColored')"
           :preview-src="previews.landedAngledViewColored"
           transparent
           clearable

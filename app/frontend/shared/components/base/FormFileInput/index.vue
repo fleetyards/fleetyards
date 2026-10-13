@@ -64,6 +64,11 @@ type Props = {
   presetValue?: string | null;
   /** The record's own type, and the filter the picker opens on. */
   presetGroup?: string | null;
+  /**
+   * The attachment is being replaced in the background, and `file` still names
+   * the blob that replacement purges -- so it is not drawn until it lands.
+   */
+  processing?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -96,6 +101,7 @@ const props = withDefaults(defineProps<Props>(), {
   presetCatalogue: undefined,
   presetValue: null,
   presetGroup: undefined,
+  processing: false,
 });
 
 watch(
@@ -478,6 +484,10 @@ defineExpose({
           :src="previewSrc"
           :transparent="transparent || avatar"
           :shadow="!transparent && !avatar"
+        />
+        <i
+          v-else-if="processing"
+          class="fa-duotone fa-spinner-third fa-spin fa-3x base-image-input__processing"
         />
         <LazyImage
           v-else-if="(isImage || isPdf) && internalSrc"
