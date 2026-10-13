@@ -246,6 +246,7 @@ export const useLoadoutSections = (
         key: "weapons",
         label: t("labels.combat.weapons"),
         direction: "higher",
+        counts: {},
         raw: (s) => (s.weaponCount > 0 ? s.weaponCount : undefined),
         value: (s) => (s.weaponCount > 0 ? String(s.weaponCount) : undefined),
       },
@@ -262,6 +263,7 @@ export const useLoadoutSections = (
         key: "armed-missiles",
         label: t("labels.combat.armedMissiles"),
         direction: "higher",
+        counts: {},
         raw: (s) => s.maxArmedMissiles,
         value: (s) =>
           s.maxArmedMissiles ? String(s.maxArmedMissiles) : undefined,

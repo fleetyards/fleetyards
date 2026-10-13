@@ -4,37 +4,38 @@ import { deltasAgainst } from "./delta";
 describe("deltasAgainst", () => {
   it("measures every cell against the baseline", () => {
     expect(deltasAgainst([100, 150, 50], 0, "higher")).toEqual([
-      { percent: 0, tone: "even" },
-      { percent: 50, tone: "better" },
-      { percent: -50, tone: "worse" },
+      { percent: 0, difference: 0, tone: "even" },
+      { percent: 50, difference: 50, tone: "better" },
+      { percent: -50, difference: -50, tone: "worse" },
     ]);
   });
 
   it("inverts for metrics where less is better", () => {
     expect(deltasAgainst([100, 150, 50], 0, "lower")).toEqual([
-      { percent: 0, tone: "even" },
-      { percent: 50, tone: "worse" },
-      { percent: -50, tone: "better" },
+      { percent: 0, difference: 0, tone: "even" },
+      { percent: 50, difference: 50, tone: "worse" },
+      { percent: -50, difference: -50, tone: "better" },
     ]);
   });
 
   it("claims neither side without a direction", () => {
     expect(deltasAgainst([100, 150], 0)).toEqual([
-      { percent: 0, tone: "even" },
-      { percent: 50, tone: "even" },
+      { percent: 0, difference: 0, tone: "even" },
+      { percent: 50, difference: 50, tone: "even" },
     ]);
   });
 
   it("calls a difference the label would round away even", () => {
     expect(deltasAgainst([1000, 1002], 0, "higher")[1]).toEqual({
       percent: 0.2,
+      difference: 2,
       tone: "even",
     });
   });
 
   it("skips cells with no comparable value", () => {
     expect(deltasAgainst([100, undefined, NaN], 0, "higher")).toEqual([
-      { percent: 0, tone: "even" },
+      { percent: 0, difference: 0, tone: "even" },
       undefined,
       undefined,
     ]);
@@ -59,7 +60,39 @@ describe("deltasAgainst", () => {
   it("measures against a negative baseline by its magnitude", () => {
     expect(deltasAgainst([-100, -50], 0, "higher")[1]).toEqual({
       percent: 50,
+      difference: 50,
       tone: "better",
+    });
+  });
+
+  describe("for counts", () => {
+    it("measures the difference instead of a ratio", () => {
+      expect(deltasAgainst([1, 4, 0], 0, "higher", true)).toEqual([
+        { difference: 0, tone: "even" },
+        { difference: 3, tone: "better" },
+        { difference: -1, tone: "worse" },
+      ]);
+    });
+
+    it("anchors on a baseline of zero", () => {
+      expect(deltasAgainst([0, 66], 0, "higher", true)[1]).toEqual({
+        difference: 66,
+        tone: "better",
+      });
+    });
+
+    it("calls any difference uneven, however small against the baseline", () => {
+      expect(deltasAgainst([1000, 1002], 0, "higher", true)[1]).toEqual({
+        difference: 2,
+        tone: "better",
+      });
+    });
+
+    it("claims neither side without a direction", () => {
+      expect(deltasAgainst([2, 4], 0, undefined, true)[1]).toEqual({
+        difference: 2,
+        tone: "even",
+      });
     });
   });
 });

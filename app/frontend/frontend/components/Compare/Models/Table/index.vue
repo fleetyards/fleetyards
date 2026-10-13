@@ -147,22 +147,34 @@ const deltasFor = (row: ValueRow) =>
     row.cells.map((cell) => cell.raw),
     baselineIndex.value,
     row.direction,
+    !!row.counts,
   );
 
-// Baseline mode speaks only in percentages, so it applies to the rows a baseline can
-// anchor. A textual row — manufacturer, classification, production status — has nothing
+// Baseline mode speaks in percentages and differences, so it applies to the rows a
+// baseline can anchor. A textual row — manufacturer, classification, production status — has nothing
 // to diff, and keeps showing its values rather than collapsing to a column of dashes.
 const anchored = (row: ValueRow) => deltasFor(row).some((entry) => entry);
 
-const deltaLabel = (delta?: CompareDelta) =>
-  delta
-    ? `${delta.percent > 0 ? "+" : ""}${toNumber(
-        Math.abs(delta.percent) < 10
-          ? Math.round(delta.percent * 10) / 10
-          : Math.round(delta.percent),
-        "",
-      )}%`
-    : "";
+const signed = (value: number) =>
+  `${value > 0 ? "+" : ""}${toNumber(value, "")}`;
+
+const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
+  if (!delta) {
+    return "";
+  }
+
+  if (delta.percent === undefined) {
+    const label = signed(delta.difference);
+
+    return row.counts?.unit ? `${label} ${row.counts.unit}` : label;
+  }
+
+  return `${signed(
+    Math.abs(delta.percent) < 10
+      ? Math.round(delta.percent * 10) / 10
+      : Math.round(delta.percent),
+  )}%`;
+};
 </script>
 
 <template>
@@ -281,7 +293,7 @@ const deltaLabel = (delta?: CompareDelta) =>
                       class="compare-table__delta"
                       :class="`compare-table__delta--${deltasFor(row)[index]?.tone}`"
                     >
-                      {{ deltaLabel(deltasFor(row)[index]) }}
+                      {{ deltaLabel(row, deltasFor(row)[index]) }}
                     </div>
                     <div v-else class="compare-table__empty">—</div>
                   </template>
