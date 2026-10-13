@@ -31,14 +31,18 @@ const orgBadgeLabel = computed(() =>
   props.orgBadge ? verifiedOrgLabel(props.member) : undefined,
 );
 
+// The fleet's nickname for the member, else the name they chose to show.
 const displayName = computed(
-  () => props.member.nickname || props.member.username,
+  () =>
+    props.member.nickname || props.member.displayName || props.member.username,
 );
 
 // The username never goes away, only moves to second place: it is what every
-// link and lookup resolves on, and a nickname the fleet chose is not identity.
+// link and lookup resolves on, and neither name shown in its place is identity.
 const secondaryName = computed(() =>
-  props.member.nickname ? props.member.username : undefined,
+  displayName.value !== props.member.username
+    ? props.member.username
+    : undefined,
 );
 </script>
 

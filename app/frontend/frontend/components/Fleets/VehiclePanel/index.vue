@@ -85,6 +85,7 @@ const owner = computed<MemberContact | undefined>(() => {
 
   return {
     username: vehicle.username,
+    displayName: vehicle.userDisplayName,
     rsiHandle: vehicle.userRsiHandle,
     discordProfileUrl: vehicle.userDiscordProfileUrl,
     citizenidProfileUrl: vehicle.userCitizenidProfileUrl,
