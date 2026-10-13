@@ -12,6 +12,7 @@ import grin from "@/images/plaque/emblems/grin.png";
 import cnou from "@/images/plaque/emblems/cnou.png";
 import espr from "@/images/plaque/emblems/espr.png";
 import krig from "@/images/plaque/emblems/krig.png";
+import krigMono from "@/images/plaque/emblems/krig-mono.png";
 import xnaa from "@/images/plaque/emblems/xnaa.png";
 import gama from "@/images/plaque/emblems/gama.png";
 import banu from "@/images/plaque/emblems/banu.png";
@@ -26,6 +27,9 @@ export type PlaqueMaker = {
   // multi-colour logo is shown as it is in its maker style, and filtered like
   // any logo in the general ones.
   tint: boolean;
+  // A single-colour cut of a multi-colour logo whose ink is a filled shape: the
+  // general styles silhouette a logo, which would leave only that shape.
+  mono?: string;
   // The emblem's own aspect ratio, which its size is worked out from.
   aspect: number;
   // Hand-tuned for marks whose ink fills little of their box (a tagline, a thin
@@ -71,6 +75,7 @@ export const PLAQUE_MAKERS: Record<string, PlaqueMaker> = {
   KRIG: {
     theme: "kruger",
     emblem: krig,
+    mono: krigMono,
     tint: false,
     aspect: 262 / 201,
     optical: 1.3,

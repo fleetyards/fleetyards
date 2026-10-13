@@ -38,6 +38,23 @@ const logo = computed(
   () => manufacturer.value?.logo?.smallUrl || manufacturer.value?.logo?.url,
 );
 
+const inMakerStyle = computed(
+  () => props.vehicle.plaqueStyle === "manufacturer" && !!maker.value,
+);
+
+// The image drawn through a mask in the style's colour, if the emblem is drawn
+// that way in the current style.
+const emblemMask = computed(() => {
+  if (!maker.value) {
+    return undefined;
+  }
+  if (maker.value.tint) {
+    return maker.value.emblem;
+  }
+
+  return inMakerStyle.value ? undefined : maker.value.mono;
+});
+
 const emblemStyle = computed(() => {
   if (!maker.value) {
     return undefined;
@@ -45,7 +62,7 @@ const emblemStyle = computed(() => {
 
   return {
     ...emblemSize(maker.value),
-    ...(maker.value.tint ? { "--icon": `url(${maker.value.emblem})` } : {}),
+    ...(emblemMask.value ? { "--icon": `url(${emblemMask.value})` } : {}),
   };
 });
 
@@ -55,7 +72,7 @@ const styleClasses = computed(() => {
   if (style !== "manufacturer") {
     return [`vehicle-plaque--${style}`];
   }
-  if (!maker.value) {
+  if (!inMakerStyle.value) {
     return ["vehicle-plaque--brass"];
   }
 
@@ -184,7 +201,7 @@ const lines = computed(() =>
         :class="`vehicle-plaque__deco--${index}`"
       />
       <span
-        v-if="maker?.tint"
+        v-if="emblemMask"
         class="vehicle-plaque__emblem"
         :style="emblemStyle"
         data-test="vehicle-plaque-emblem"

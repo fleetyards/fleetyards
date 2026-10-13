@@ -176,6 +176,23 @@ describe("VehiclePlaque styles", () => {
   it("draws brass when no style is sent", async () => {
     expect((await plaque({})).classes()).toContain("vehicle-plaque--brass");
   });
+
+  it("keeps a multi-colour emblem as it is in its maker style", async () => {
+    const emblem = (
+      await plaque({ plaqueStyle: "manufacturer", manufacturerCode: "KRIG" })
+    ).find('[data-test="vehicle-plaque-emblem"]');
+
+    expect(emblem.element.tagName).toBe("IMG");
+  });
+
+  it("tints the single-colour cut of a filled emblem in a general style", async () => {
+    const emblem = (
+      await plaque({ plaqueStyle: "brass", manufacturerCode: "KRIG" })
+    ).find('[data-test="vehicle-plaque-emblem"]');
+
+    expect(emblem.classes()).toContain("vehicle-plaque__emblem");
+    expect(emblem.attributes("style")).toContain("krig-mono");
+  });
 });
 
 describe("PLAQUE_CREDITS", () => {
