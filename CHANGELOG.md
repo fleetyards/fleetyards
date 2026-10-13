@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.3.0](https://github.com/fleetyards/fleetyards/compare/v9.2.0...v9.3.0) (2026-10-13)
+
+
+### Features
+
+* **hangar:** dedication plaques for hangar ships ([#5639](https://github.com/fleetyards/fleetyards/issues/5639)) ([4a5f34f](https://github.com/fleetyards/fleetyards/commit/4a5f34f383d913fdbb5cc87a5943c147e7fb0d18))
+
+
+### Refactorings
+
+* **users:** drop the users.sale_notify column ([#5615](https://github.com/fleetyards/fleetyards/issues/5615)) ([a12e0e3](https://github.com/fleetyards/fleetyards/commit/a12e0e3b6e718c1818686c41a77f4930b1565c95))
+
 ## [9.2.0](https://github.com/fleetyards/fleetyards/compare/v9.1.2...v9.2.0) (2026-10-13)
 
 
