@@ -26,6 +26,7 @@ import FleetchartImages from "@/frontend/components/Models/FleetchartImages/inde
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
+import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -56,12 +57,6 @@ import {
 import { useClampedText } from "@/shared/composables/useClampedText";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
-
-// three.js and the viewer are most of a ship page's script, and most visits
-// never open the 3D view.
-const HoloViewer = defineAsyncComponent(
-  () => import("@/shared/components/HoloViewer/index.vue"),
-);
 
 type Props = {
   model: ModelExtended;
