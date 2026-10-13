@@ -100,7 +100,10 @@ onMounted(prepare);
 // The whole condition, so the flag loading in or being switched counts too.
 watch([holoUrl, candidate], prepare);
 
+let unmounted = false;
+
 onBeforeUnmount(() => {
+  unmounted = true;
   preparation += 1;
   viewer.value?.remove();
 });
@@ -109,15 +112,23 @@ const failed = () => {
   displayAlert({ text: t("messages.error.default") });
 };
 
+// The 3D view is freed only once Quick Look is ready to take over: a failed
+// preparation leaves it as it was. The holo itself is not loaded until
+// `activateAR`, so the two never hold it at the same time.
 const openQuickLook = async (url: string) => {
-  emit("quickLook");
-
   const element = await prepareAr(url).catch(() => undefined);
+
+  if (unmounted) {
+    element?.remove();
+    return;
+  }
 
   if (!element) {
     failed();
     return;
   }
+
+  emit("quickLook");
 
   try {
     await element.activateAR();

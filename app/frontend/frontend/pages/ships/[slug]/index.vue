@@ -259,6 +259,20 @@ onMounted(() => {
 
 useScrollToHash();
 
+// Quick Look converts the holo in the page, so no 3D view may hold a second copy
+// meanwhile -- the inline preview included, which takes over the side column on
+// a tablet as soon as the main view closes.
+const quickLookOpen = ref(false);
+
+const openingQuickLook = () => {
+  quickLookOpen.value = true;
+  modelsStore.holoviewerVisible = false;
+};
+
+watch(holoviewerVisible, (visible) => {
+  if (visible) quickLookOpen.value = false;
+});
+
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
@@ -347,7 +361,7 @@ const adiMap = computed(() => {
                   :model="model"
                   :active="holoviewerVisible"
                   :displayed-holo-url="holoModel?.path"
-                  @quick-look="modelsStore.holoviewerVisible = false"
+                  @quick-look="openingQuickLook"
                 />
               </BtnGroup>
 
@@ -448,7 +462,7 @@ const adiMap = computed(() => {
         <div class="col-12 col-lg-4">
           <template v-if="holoModel && !mobile">
             <LazyImage
-              v-if="holoviewerVisible"
+              v-if="holoviewerVisible || quickLookOpen"
               :src="storeImage"
               class="side-image"
             />

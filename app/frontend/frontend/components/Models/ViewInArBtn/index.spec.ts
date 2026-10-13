@@ -208,5 +208,16 @@ describe("ViewInArBtn", () => {
 
       expect(element.isConnected).toBe(false);
     });
+
+    it("leaves the 3D view open when Quick Look cannot be prepared", async () => {
+      ar.canActivate = false;
+
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(wrapper.emitted("quickLook")).toBeUndefined();
+      expect(ar.activateAR).not.toHaveBeenCalled();
+    });
   });
 });
