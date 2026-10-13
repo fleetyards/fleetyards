@@ -222,6 +222,7 @@ const route = useRoute();
 
 .serial {
   font-size: 0.85em;
+  margin-left: 0.25rem;
   opacity: 0.8;
 }
 </style>

@@ -245,7 +245,7 @@ const tone = computed(() => {
     :store-image="image"
   >
     <template #heading-title>
-      <span class="flex items-baseline gap-1 max-w-full">
+      <span class="flex items-baseline gap-2 max-w-full">
         <router-link
           v-tooltip="name"
           :to="titleRoute"
