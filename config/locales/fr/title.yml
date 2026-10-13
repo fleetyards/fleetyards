@@ -44,6 +44,7 @@ fr:
       privacy-policy: Politique de confidentialité
       public_hangar: Hangar de %{user}
       public_plaque: "Plaque de dédicace de %{vehicle}"
+      public_vehicle: "%{vehicle} dans le hangar de %{user}"
       public_wishlist: Liste de souhaits de %{user}
       roadmap: Feuille de route
       roadmap_changes: Changements de la feuille de route

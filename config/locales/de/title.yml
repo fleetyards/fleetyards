@@ -44,6 +44,7 @@ de:
       privacy-policy: Datenschutzerklärung
       public_hangar: "%{user} Hangar"
       public_plaque: "Widmungstafel der %{vehicle}"
+      public_vehicle: "%{vehicle} in %{user} Hangar"
       public_wishlist: "%{user} Wunschliste"
       roadmap: Roadmap
       roadmap_changes: Roadmap-Änderungen

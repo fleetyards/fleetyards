@@ -11,7 +11,7 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
 
     @user = create(:user, public_hangar: true)
     @vehicle = create(:vehicle, user: @user, public: true, name: "Contorta", name_visible: true, dedication: "Built rough")
-    @vehicle.plaque_image.attach(io: file_fixture("ship.jpg").open, filename: "plaque.jpg", content_type: "image/jpeg")
+    @vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
   end
 
   test "a shared plaque previews as the plaque" do
@@ -19,7 +19,7 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
 
     assert_includes meta("og:title"), "Contorta"
     assert_equal "Built rough", meta("og:description")
-    assert_includes meta("og:image"), "plaque.jpg"
+    assert_includes meta("og:image"), "plaque.png"
     assert_includes response.body, '<meta name="twitter:card" content="summary_large_image">'
   end
 
@@ -28,16 +28,18 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
 
     get "/hangar/#{@user.username}/?plaque=#{@vehicle.id}"
 
-    assert_not_includes meta("og:image"), "plaque.jpg"
+    assert_not_includes meta("og:image"), "plaque.png"
     assert_not_includes response.body, "twitter:card"
   end
 
-  test "a plaque that has not been drawn yet previews as the hangar" do
+  test "a plaque that has not been drawn yet still names the ship and its dedication" do
     @vehicle.plaque_image.purge
 
     get "/hangar/#{@user.username}/?plaque=#{@vehicle.id}"
 
-    assert_not_includes meta("og:title"), "Contorta"
+    assert_includes meta("og:title"), "Contorta"
+    assert_equal "Built rough", meta("og:description")
+    assert_not_includes meta("og:image"), "plaque.png"
   end
 
   private def meta(property)
