@@ -70,6 +70,7 @@ const defaultStyle = computed<VehiclePlaqueStyleEnum>(() =>
 // A supporter style outlasts the support, but only until the plaque is edited:
 // the server switches it to brass on the next save, so the form does too.
 const keptStyle =
+  !!currentUser?.value &&
   !isSupporter.value &&
   !!props.vehicle.dedication &&
   !!props.vehicle.plaqueStyle &&
