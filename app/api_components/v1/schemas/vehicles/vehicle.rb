@@ -38,6 +38,7 @@ module V1
             launchPort: {type: [:string, :null]},
             launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             affiliation: {type: [:string, :null]},
+            plaqueCaptain: {type: [:string, :null]},
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             manufacturerShortName: {type: [:string, :null]},
             manufacturerCode: {type: [:string, :null]},

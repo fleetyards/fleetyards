@@ -6,6 +6,7 @@ json.launch_port vehicle.launch_port
 json.partial! "api/v1/locations/linked", key: :launch_port_location, location: vehicle.launch_port_location
 json.affiliation vehicle.affiliation
 json.operations_group vehicle.operations_group
+json.plaque_captain vehicle.plaque_captain
 json.shipyard vehicle.model&.manufacturer&.shipyard
 json.manufacturer_short_name vehicle.model&.manufacturer&.short_name
 json.manufacturer_code vehicle.model&.manufacturer&.code

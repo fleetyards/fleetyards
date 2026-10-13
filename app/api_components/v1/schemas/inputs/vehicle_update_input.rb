@@ -24,6 +24,7 @@ module V1
             launchPortLocationId: {type: [:string, :null], format: :uuid},
             affiliation: {type: [:string, :null], maxLength: ::Vehicle::PLAQUE_LINE_LIMIT},
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
+            plaqueCaptain: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
             plaqueStyle: ::V1::Schemas::Enums::NullableVehiclePlaqueStyleEnum,
             # A signed blob id of the plaque rendered as a picture.
             plaqueImage: {type: [:string, :null]},

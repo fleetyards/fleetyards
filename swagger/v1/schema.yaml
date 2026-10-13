@@ -39879,6 +39879,10 @@ components:
           type:
           - string
           - 'null'
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         manufacturerShortName:
@@ -40412,6 +40416,10 @@ components:
           type:
           - string
           - 'null'
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         manufacturerShortName:
@@ -40436,6 +40444,8 @@ components:
           "$ref": "#/components/schemas/Model"
         username:
           type: string
+        userDisplayName:
+          type: string
         userAvatar:
           type: string
           format: uri
@@ -40444,8 +40454,6 @@ components:
         userDiscordProfileUrl:
           type: string
           format: uri
-        userDisplayName:
-          type: string
         userCitizenidProfileUrl:
           type: string
           format: uri
@@ -40656,6 +40664,11 @@ components:
           maxLength: 100
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
         plaqueStyle:
           "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
         plaqueImage:

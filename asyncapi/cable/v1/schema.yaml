@@ -5097,6 +5097,10 @@ components:
           type:
           - string
           - 'null'
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         manufacturerShortName:

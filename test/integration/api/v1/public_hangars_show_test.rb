@@ -55,6 +55,29 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username names the owner and the plaque's captain" do
+    user = create(:user, :public_hangar, display_name: "Torlek Maru")
+    create(:vehicle, :public, user:, dedication: "To boldly go", plaque_captain: "Captain Maru")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal user.username, parsed_body.dig("items", 0, "username")
+      assert_equal "Torlek Maru", parsed_body.dig("items", 0, "userDisplayName")
+      assert_equal "Captain Maru", parsed_body.dig("items", 0, "plaqueCaptain")
+    end
+  end
+
+  test "GET /public/hangars/:username keeps a hidden owner's names to themselves" do
+    user = create(:user, :public_hangar, display_name: "Torlek Maru", hide_owner: true)
+    create(:vehicle, :public, user:, dedication: "To boldly go")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      item = parsed_body.dig("items", 0)
+
+      assert_not_includes item.keys, "username"
+      assert_not_includes item.keys, "userDisplayName"
+    end
+  end
+
   test "GET /public/hangars/:username draws a supporter's plaque in their style" do
     user = create(:user, :public_hangar)
     create(:supporter_contribution, user:)

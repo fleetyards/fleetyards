@@ -106,6 +106,9 @@ class Vehicle < ApplicationRecord
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
+  # Who the plaque names as captain, in place of the owner's display name.
+  normalizes :plaque_captain, with: ->(name) { name.squish.presence }
+  validates :plaque_captain, length: {maximum: User::DISPLAY_NAME_LIMIT}
   # The lore group the plaque credits as the ship's operations crew. Their names
   # and sides of the law live with the plaque in the frontend.
   OPERATIONS_GROUPS = %w[
