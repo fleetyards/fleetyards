@@ -34,9 +34,7 @@ describe("ViewsFolderUpload", () => {
     const subject = await mount(["topView", "sideView"]);
 
     expect(summary(subject).exists()).toBe(true);
-    expect(subject.findAll(".views-folder-upload__matched li")).toHaveLength(
-      2,
-    );
+    expect(subject.findAll(".views-folder-upload__matched li")).toHaveLength(2);
     expect(subject.findAll(".fa-spinner-third")).toHaveLength(2);
   });
 
