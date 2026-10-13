@@ -145,6 +145,10 @@
         "all": "全部",
         "empty": "沒有可用的圖片。"
       },
+      "maintainer": {
+        "badge": "維護者",
+        "tooltip": "維護 FleetYards.net"
+      },
       "supporter": {
         "badge": "支持者",
         "tooltip": "本月支持 FleetYards.net",

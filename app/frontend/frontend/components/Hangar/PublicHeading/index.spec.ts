@@ -35,6 +35,24 @@ describe("HangarPublicHeading", () => {
     );
   });
 
+  // Same insignia as the top supporter band, but its own label: a maintainer
+  // is not shown as a supporter.
+  it("badges a maintainer with the top insignia under their own label", () => {
+    const wrapper = mountWith({
+      supporter: true,
+      maintainer: true,
+      supporterTier: 3,
+    });
+    const pills = wrapper.findAll('[data-test="pill"]');
+    const pill = pills[0];
+
+    expect(pills).toHaveLength(1);
+
+    expect(pill.text()).toContain("labels.maintainer.badge");
+    expect(pill.text()).not.toContain("labels.supporter.badge");
+    expect(pill.find('[data-test="supporter-badge"]').exists()).toBe(true);
+  });
+
   it("leaves a non-supporter unbadged", () => {
     const wrapper = mountWith({ supporter: false });
 

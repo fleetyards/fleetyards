@@ -10,6 +10,8 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
+import { SUPPORTER_TOP_TIER } from "@/shared/components/SupporterBadge/types";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type UserPublic } from "@/services/fyApi";
 
@@ -36,7 +38,17 @@ const props = withDefaults(defineProps<Props>(), {
           {{ t(props.headlineKey, { user: usernamePlural }) }}
         </span>
         <Pill
-          v-if="props.user.supporter"
+          v-if="props.user.maintainer"
+          v-tooltip="t('labels.maintainer.tooltip')"
+          class="hangar-public-heading__supporter"
+          :variant="PillVariantsEnum.DEFAULT"
+          uppercase
+        >
+          <SupporterBadge :tier="SUPPORTER_TOP_TIER" :size="24" />
+          {{ t("labels.maintainer.badge") }}
+        </Pill>
+        <Pill
+          v-else-if="props.user.supporter"
           v-tooltip="t('labels.supporter.tooltip')"
           class="hangar-public-heading__supporter"
           variant="success"

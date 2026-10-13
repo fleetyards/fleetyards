@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
 import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
+import { SUPPORTER_TOP_TIER } from "@/shared/components/SupporterBadge/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { differenceInCalendarDays, parseISO } from "date-fns";
@@ -16,6 +17,7 @@ import { differenceInCalendarDays, parseISO } from "date-fns";
 // renders the same thing for both.
 interface Props {
   supporter?: boolean;
+  maintainer?: boolean;
   supporterTier?: number;
   supporterRecurring?: boolean;
   // Absent while support does not lapse on a nameable date -- an open-ended
@@ -77,6 +79,10 @@ const expiringSoon = computed(() => {
 });
 
 const variant = computed(() => {
+  if (props.maintainer) {
+    return PillVariantsEnum.DEFAULT;
+  }
+
   if (!props.supporter) {
     return PillVariantsEnum.NEUTRAL;
   }
@@ -86,11 +92,26 @@ const variant = computed(() => {
     : PillVariantsEnum.SUCCESS;
 });
 
+const label = computed(() => {
+  if (props.maintainer) {
+    return t("labels.maintainer.badge");
+  }
+
+  return props.supporter
+    ? t("labels.supporter.badge")
+    : t("labels.supporter.none");
+});
+
 // Yields to the fleet tier wherever that is shown: one is the calendar month's
 // edge and the other a spend-down of the same money, so the two give different
 // dates and the pair reads as a contradiction rather than as detail.
 const expiry = computed(() => {
-  if (!props.supporter || fleetTier.value || fleetTierOngoing.value) {
+  if (
+    !props.supporter ||
+    props.maintainer ||
+    fleetTier.value ||
+    fleetTierOngoing.value
+  ) {
     return undefined;
   }
 
@@ -110,7 +131,12 @@ const expiry = computed(() => {
   <div class="supporter-status" data-test="supporter-status">
     <Pill :variant="variant" data-test="supporter-status-pill">
       <SupporterBadge
-        v-if="props.supporter && props.supporterTier"
+        v-if="props.maintainer"
+        :tier="SUPPORTER_TOP_TIER"
+        :size="16"
+      />
+      <SupporterBadge
+        v-else-if="props.supporter && props.supporterTier"
         :tier="props.supporterTier"
         :size="16"
       />
@@ -118,11 +144,7 @@ const expiry = computed(() => {
         v-else
         :class="props.supporter ? 'fa-duotone fa-heart' : 'fa-light fa-heart'"
       />
-      {{
-        props.supporter
-          ? t("labels.supporter.badge")
-          : t("labels.supporter.none")
-      }}
+      {{ label }}
     </Pill>
     <span v-if="expiry" class="supporter-status__expiry">
       {{ expiry }}

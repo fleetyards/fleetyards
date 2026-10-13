@@ -24,12 +24,13 @@ module V1
           hangarDefaultSort: ::V1::Schemas::Enums::NullableVehicleSortEnum,
           publicWishlist: {type: :boolean},
           supporter: {type: :boolean},
+          maintainer: {type: :boolean},
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean},
           online: {type: :boolean, description: "Only for the user's friends and fleet mates"}
         },
         additionalProperties: false,
-        required: %w[username publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist supporter supporterTier supporterRecurring]
+        required: %w[username publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist supporter maintainer supporterTier supporterRecurring]
       })
     end
   end
