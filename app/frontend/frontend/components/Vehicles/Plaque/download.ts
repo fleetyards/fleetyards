@@ -1,5 +1,6 @@
 import domtoimage from "dom-to-image";
 import downloadJs from "downloadjs";
+import { isInstalledApp } from "@/shared/utils/DisplayMode";
 import { toDataUrl } from "./dataUrl";
 import { plaqueFontFaces, withFontFaces } from "./fonts";
 
@@ -79,15 +80,26 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
   }
 };
 
-export const downloadPlaque = async (
-  element: HTMLElement,
-  filename: string,
-) => {
-  downloadJs(
-    await capturePlaque(element),
-    `fleetyards-${filename}.png`,
-    "image/png",
+export const plaqueFile = async (element: HTMLElement, filename: string) => {
+  const blob = await fetch(await capturePlaque(element)).then((response) =>
+    response.blob(),
   );
+
+  return new File([blob], `fleetyards-${filename}.png`, { type: "image/png" });
+};
+
+// A Home Screen app on iOS ignores a download link, so there the picture goes
+// to the share sheet, whose "Save Image" puts it in Photos.
+export const sharesPlaque = (file: File) =>
+  isInstalledApp() && !!navigator.canShare?.({ files: [file] });
+
+export const savePlaque = async (file: File) => {
+  if (sharesPlaque(file)) {
+    await navigator.share({ files: [file] });
+    return;
+  }
+
+  downloadJs(file, file.name, "image/png");
 };
 
 // The plaque on a dark card of the size link previews use, for a shared link.
