@@ -1,32 +1,33 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import downloadJs from "downloadjs";
-import { isInstalledApp } from "@/shared/utils/DisplayMode";
 import { savePlaque } from "./download";
 
 vi.mock("downloadjs", () => ({ default: vi.fn() }));
-vi.mock("@/shared/utils/DisplayMode", () => ({ isInstalledApp: vi.fn() }));
 
 const file = new File(["png"], "fleetyards-plaque.png", { type: "image/png" });
 
+const share = vi.fn();
+
+// Only the fields `savePlaque` reads; `standalone` is set by iOS alone.
+const stubNavigator = ({
+  standalone,
+  canShare = true,
+}: {
+  standalone?: boolean;
+  canShare?: boolean;
+}) => {
+  vi.stubGlobal("navigator", { standalone, canShare: () => canShare, share });
+};
+
 describe("savePlaque", () => {
-  const share = vi.fn();
-
-  beforeEach(() => {
-    vi.stubGlobal("navigator", {
-      ...navigator,
-      canShare: () => true,
-      share,
-    });
-  });
-
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.mocked(downloadJs).mockReset();
     share.mockReset();
   });
 
-  it("hands the picture to the share sheet in a Home Screen app", async () => {
-    vi.mocked(isInstalledApp).mockReturnValue(true);
+  it("hands the picture to the share sheet in the iOS Home Screen app", async () => {
+    stubNavigator({ standalone: true });
 
     await savePlaque(file);
 
@@ -35,7 +36,7 @@ describe("savePlaque", () => {
   });
 
   it("downloads the picture in a browser tab", async () => {
-    vi.mocked(isInstalledApp).mockReturnValue(false);
+    stubNavigator({ standalone: false });
 
     await savePlaque(file);
 
@@ -43,9 +44,17 @@ describe("savePlaque", () => {
     expect(share).not.toHaveBeenCalled();
   });
 
+  it("downloads the picture in an app installed outside iOS", async () => {
+    stubNavigator({});
+
+    await savePlaque(file);
+
+    expect(downloadJs).toHaveBeenCalled();
+    expect(share).not.toHaveBeenCalled();
+  });
+
   it("downloads the picture where files cannot be shared", async () => {
-    vi.mocked(isInstalledApp).mockReturnValue(true);
-    vi.stubGlobal("navigator", { ...navigator, canShare: () => false, share });
+    stubNavigator({ standalone: true, canShare: false });
 
     await savePlaque(file);
 

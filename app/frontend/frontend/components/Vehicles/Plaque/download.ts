@@ -1,6 +1,5 @@
 import domtoimage from "dom-to-image";
 import downloadJs from "downloadjs";
-import { isInstalledApp } from "@/shared/utils/DisplayMode";
 import { toDataUrl } from "./dataUrl";
 import { plaqueFontFaces, withFontFaces } from "./fonts";
 
@@ -99,9 +98,11 @@ export const plaqueFile = async (element: HTMLElement, filename: string) =>
   );
 
 // A Home Screen app on iOS ignores a download link, so there the picture goes
-// to the share sheet, whose "Save Image" puts it in Photos.
+// to the share sheet, whose "Save Image" puts it in Photos. Only iOS sets
+// `navigator.standalone`; installed apps elsewhere download as a tab does.
 export const sharesPlaque = (file: File) =>
-  isInstalledApp() && !!navigator.canShare?.({ files: [file] });
+  (navigator as Navigator & { standalone?: boolean }).standalone === true &&
+  !!navigator.canShare?.({ files: [file] });
 
 export const savePlaque = async (file: File) => {
   if (sharesPlaque(file)) {
