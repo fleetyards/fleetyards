@@ -120,6 +120,15 @@ export const routes = [
     },
   },
   {
+    path: "dedication-plaques/",
+    name: "visual-tests-dedication-plaques",
+    component: () => import("@/frontend/components/Vehicles/Plaque/visual.vue"),
+    meta: {
+      title: "visualTests.dedicationPlaques",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "sync-modal/",
     name: "visual-tests-sync-modal",
     component: () => import("@/frontend/components/Hangar/SyncBtn/visual.vue"),

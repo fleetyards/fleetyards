@@ -1,6 +1,9 @@
 {
   "zh-TW": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "命名銘牌"
+      },
       "vehicleOverview": {
         "paints": "%{model} 塗裝",
         "location": "艦船在哪裡？",
@@ -466,6 +469,7 @@
         "metrics": "指標",
         "states": "狀態",
         "notifications": "通知",
+        "dedicationPlaques": "命名銘牌",
         "syncModal": "同步彈窗",
         "buybackSyncModal": "回購同步彈窗",
         "rsiVerificationModal": "RSI 驗證彈窗",

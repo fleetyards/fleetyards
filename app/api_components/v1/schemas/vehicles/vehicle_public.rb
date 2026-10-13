@@ -17,6 +17,19 @@ module V1
             hangarGroups: {type: :array, items: ::V1::Schemas::Hangar::Groups::HangarGroupPublic},
             loaner: {type: :boolean},
             publicLogEntriesCount: {type: :integer},
+            # The dedication plaque, sent only for a public vehicle.
+            dedication: {type: [:string, :null]},
+            launchedOn: {type: [:string, :null], format: :date},
+            launchPort: {type: [:string, :null]},
+            launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
+            affiliation: {type: [:string, :null]},
+            operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
+            manufacturerShortName: {type: [:string, :null]},
+            manufacturerCode: {type: [:string, :null]},
+            # The style the plaque is drawn in, once a supporter's choice has
+            # fallen back to the default for an owner no longer supporting.
+            plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
+            shipyard: {type: [:string, :null]},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,
             model: {"$ref": "#/components/schemas/Model"},

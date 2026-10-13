@@ -33,6 +33,18 @@ module V1
             logEntriesPublicByDefault: {type: :boolean},
             location: {type: [:string, :null]},
             linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
+            dedication: {type: [:string, :null]},
+            launchedOn: {type: [:string, :null], format: :date},
+            launchPort: {type: [:string, :null]},
+            launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
+            affiliation: {type: [:string, :null]},
+            operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
+            manufacturerShortName: {type: [:string, :null]},
+            manufacturerCode: {type: [:string, :null]},
+            # The style the plaque is drawn in, once a supporter's choice has
+            # fallen back to the default for an owner no longer supporting.
+            plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
+            shipyard: {type: [:string, :null]},
             image: ::Shared::V1::Schemas::MediaFile,
             modelImageId: {type: [:string, :null], format: :uuid},
             modelImage: ::Shared::V1::Schemas::MediaFile,

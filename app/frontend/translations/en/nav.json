@@ -166,6 +166,7 @@
         "metrics": "Metrics",
         "states": "States",
         "notifications": "Notifications",
+        "dedicationPlaques": "Dedication Plaques",
         "syncModal": "Sync Modal",
         "buybackSyncModal": "Buy-back Sync Modal",
         "rsiVerificationModal": "RSI Verification Modal",

@@ -1,6 +1,9 @@
 {
   "fr": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Plaque de dédicace"
+      },
       "vehicleOverview": {
         "paints": "Peintures %{model}",
         "location": "Où est le vaisseau ?",
@@ -466,6 +469,7 @@
         "metrics": "Métriques",
         "states": "États",
         "notifications": "Notifications",
+        "dedicationPlaques": "Plaques de dédicace",
         "syncModal": "Modale Sync",
         "buybackSyncModal": "Modale Sync des rachats",
         "rsiVerificationModal": "Modale de vérification RSI",

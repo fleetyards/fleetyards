@@ -12,6 +12,7 @@ import ConfigurationCard from "@/frontend/components/Vehicles/Overview/Configura
 import PaintsCard from "@/frontend/components/Vehicles/Overview/PaintsCard/index.vue";
 import VisibilityCard from "@/frontend/components/Vehicles/Overview/VisibilityCard/index.vue";
 import FleetsCard from "@/frontend/components/Vehicles/Overview/FleetsCard/index.vue";
+import PlaqueCard from "@/frontend/components/Vehicles/Overview/PlaqueCard/index.vue";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 
@@ -25,6 +26,11 @@ const { isFeatureEnabled } = useFeatures();
 
 // The same conditions the context menu offers these pages under.
 const inGame = computed(() => !!props.vehicle.model.inGame);
+
+// Loaners and wishlist ships get no plaque.
+const plaqueVisible = computed(
+  () => !props.vehicle.loaner && !props.vehicle.wanted,
+);
 
 const cargoVisible = computed(
   () =>
@@ -46,6 +52,7 @@ const cargoVisible = computed(
       </div>
 
       <aside class="vehicle-overview__side">
+        <PlaqueCard v-if="plaqueVisible" :vehicle="vehicle" />
         <ConfigurationCard :vehicle="vehicle" />
         <PaintsCard :vehicle="vehicle" />
         <VisibilityCard v-if="!vehicle.loaner" :vehicle="vehicle" />

@@ -1546,6 +1546,8 @@
         "totalHp": "Total Hull HP"
       },
       "manufacturer": {
+        "shortName": "Short name",
+        "shipyard": "Shipyard",
         "longName": "Long Name",
         "code": "Code",
         "logo": "Logo",
@@ -4161,6 +4163,28 @@
       },
       "tour": {
         "step": "Step %{current} of %{total}"
+      },
+      "vehiclePlaque": {
+        "style": "Style",
+        "styles": {
+          "brass": "Brass",
+          "hud": "Fleetyards HUD",
+          "gunmetal": "Gunmetal",
+          "blueprint": "Shipyard blueprint",
+          "salvage": "Riveted salvage",
+          "glass": "Frosted glass",
+          "carbon": "Carbon & signal red",
+          "walnut": "Walnut & brass",
+          "neon": "Pyro neon",
+          "manufacturer": "Manufacturer style"
+        },
+        "registry": "Registry",
+        "operationsGroup": "Operations crew",
+        "title": "Dedication plaque",
+        "dedication": "Dedication",
+        "launchedOn": "Launch date",
+        "launchPort": "Launch port",
+        "affiliation": "Affiliation"
       },
       "vehicleOverview": {
         "picture": "Picture",

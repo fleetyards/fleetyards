@@ -9,6 +9,9 @@
 <meta property="og:type" content="<%= og_type %>">
 <meta property="og:url" content="<%= og_url %>">
 <meta property="og:image" content="<%= og_image %>">
+<% if @twitter_card.present? %>
+<meta name="twitter:card" content="<%= @twitter_card %>">
+<% end %>
 <link rel="shortcut icon" type="image/png" href="<%= vite_asset_path('images/favicons/favicon.png') %>">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#333333"/>

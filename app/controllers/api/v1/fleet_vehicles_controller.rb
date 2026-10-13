@@ -24,7 +24,8 @@ module Api
         {vehicle_upgrades: :model_upgrade},
         {task_forces: :hangar_group},
         {image_attachment: :blob},
-        {model_image: {file_attachment: :blob}}
+        {model_image: {file_attachment: :blob}},
+        :launch_port_location
       ].freeze
 
       def index

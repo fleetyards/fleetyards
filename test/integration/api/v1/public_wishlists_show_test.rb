@@ -41,6 +41,15 @@ class Api::V1::PublicWishlistsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/wishlists/:username leaves out a wishlist ship's dedication plaque" do
+    user = create(:user, public_wishlist: true)
+    create(:vehicle, :public, user:, wanted: true, dedication: "Someday")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_not parsed_body.dig("items", 0).key?("dedication")
+    end
+  end
+
   test "GET /public/wishlists/:username filters by query" do
     user = create(:user, public_wishlist: true, wanted_vehicle_count: 2)
 

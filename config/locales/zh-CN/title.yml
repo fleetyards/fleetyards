@@ -43,6 +43,8 @@ zh-CN:
       password_request: 请求密码
       privacy-policy: 隐私政策
       public_hangar: "%{user} 的机库"
+      public_plaque: "%{vehicle} 的命名铭牌"
+      public_vehicle: "%{user} 机库中的 %{vehicle}"
       public_wishlist: "%{user} 的愿望清单"
       roadmap: 路线图
       roadmap_changes: 路线图变更

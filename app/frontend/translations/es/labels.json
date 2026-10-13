@@ -1546,6 +1546,8 @@
         "totalHp": "HP total del casco"
       },
       "manufacturer": {
+        "shortName": "Nombre corto",
+        "shipyard": "Astillero",
         "longName": "Nombre completo",
         "code": "Código",
         "logo": "Logo",
@@ -4147,6 +4149,28 @@
       },
       "tour": {
         "step": "Paso %{current} de %{total}"
+      },
+      "vehiclePlaque": {
+        "style": "Estilo",
+        "styles": {
+          "brass": "Latón",
+          "hud": "HUD de Fleetyards",
+          "gunmetal": "Metal de cañón",
+          "blueprint": "Plano de astillero",
+          "salvage": "Chatarra remachada",
+          "glass": "Vidrio esmerilado",
+          "carbon": "Carbono y rojo señal",
+          "walnut": "Nogal y latón",
+          "neon": "Neón de Pyro",
+          "manufacturer": "Estilo del fabricante"
+        },
+        "registry": "Matrícula",
+        "operationsGroup": "Equipo de operaciones",
+        "title": "Placa de dedicatoria",
+        "dedication": "Dedicatoria",
+        "launchedOn": "Fecha de botadura",
+        "launchPort": "Puerto de botadura",
+        "affiliation": "Afiliación"
       },
       "vehicleOverview": {
         "picture": "Imagen",

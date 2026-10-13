@@ -24,7 +24,7 @@ module Api
           @vehicles = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .includes(:model, :vehicle_loadouts)
+            .includes({model: :manufacturer}, :vehicle_loadouts, :launch_port_location, :user)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
         end

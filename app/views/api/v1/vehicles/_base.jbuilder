@@ -29,6 +29,7 @@ json.log_entries_public_by_default vehicle.log_entries_public_by_default
 json.location vehicle.location
 json.partial! "api/v1/locations/linked", key: :linked_location, location: vehicle.linked_location
 json.alternative_names vehicle.alternative_names
+json.partial!("api/v1/vehicles/dedication_plaque", vehicle:)
 
 json.model do
   json.partial! "api/v1/models/model", model: vehicle.model

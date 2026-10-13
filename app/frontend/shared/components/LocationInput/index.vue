@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type MaybeRef } from "vue";
+import { type RuleExpression } from "vee-validate";
 import { useDebounceFn } from "@vueuse/core";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -19,6 +21,7 @@ type Props = {
   // The linked place, as the record's response carries it, so the field can
   // say what it is linked to before anything is typed.
   linked?: { name?: string | null; slug: string } | null;
+  rules?: MaybeRef<RuleExpression<string | number | null>>;
   translationKey?: string;
   label?: string;
   noLabel?: boolean;
@@ -31,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   locationId: undefined,
   linked: undefined,
+  rules: undefined,
   translationKey: undefined,
   label: undefined,
   noLabel: false,
@@ -177,6 +181,7 @@ const linkedLabel = computed(() =>
     <FormInput
       :model-value="modelValue"
       :name="name"
+      :rules="rules"
       :translation-key="translationKey"
       :label="label"
       :no-label="noLabel"

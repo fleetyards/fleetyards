@@ -17279,6 +17279,18 @@ components:
           type: boolean
         logoOverridden:
           type: boolean
+        shortName:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
+        shipyardLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
       additionalProperties: false
       required:
       - name
@@ -17302,6 +17314,19 @@ components:
           type: string
         knownFor:
           type: string
+        shortName:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
+        shipyardLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         logo:
           type:
           - string

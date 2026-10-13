@@ -1222,6 +1222,11 @@
           "failure": "無法移除"
         }
       },
+      "vehiclePlaque": {
+        "removeConfirm": "要移除這艘船的命名銘牌嗎？",
+        "downloadFailure": "銘牌未能儲存為圖片",
+        "failure": "銘牌未能儲存"
+      },
       "vehicleOverview": {
         "image": {
           "success": "圖片已儲存",

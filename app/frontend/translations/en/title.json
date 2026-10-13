@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "%{vehicle} dedication plaque",
       "home": "Home",
       "ships": {
         "index": "Ships",
@@ -199,6 +200,7 @@
         "metrics": "Metrics - Visual Tests",
         "states": "States - Visual Tests",
         "notifications": "Notifications - Visual Tests",
+        "dedicationPlaques": "Dedication Plaques - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
         "buybackSyncModal": "Buy-back Sync Modal - Visual Tests",
         "rsiVerificationModal": "RSI Verification Modal - Visual Tests",

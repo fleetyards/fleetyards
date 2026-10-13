@@ -344,6 +344,26 @@
         "noneForFilter": "Nessuna voce corrisponde a questo filtro.",
         "unavailable": "Questo diario non è disponibile al momento."
       },
+      "vehiclePlaque": {
+        "supporter": "Tutti gli altri stili sono un grazie a chi tiene in vita Fleetyards.",
+        "credits": {
+          "founders": "Fondatori di %{manufacturer}",
+          "shipwrights": "Costruttori di %{manufacturer}",
+          "designers": "Progettisti di %{manufacturer}",
+          "directors": "Direzione di %{manufacturer}"
+        },
+        "fromFleet": "Da una flotta",
+        "classLine": "%{model} di %{manufacturer}",
+        "commissioned": "Commissionata a %{shipyard}",
+        "launched": "Varata a %{date}",
+        "launchedAt": "Varata a %{date}, %{port}",
+        "launchedFrom": "Varata a %{port}",
+        "captain": "Capitano %{name}",
+        "captainOf": "Capitano %{name}, %{affiliation}",
+        "year": "%{month} %{year}",
+        "empty": "Ancora nessuna dedica. Scrivine una e la nave avrà la sua targa.",
+        "visibility": "Finché questa nave è pubblica, chiunque può vedere la targa nel tuo hangar pubblico."
+      },
       "vehicleOverview": {
         "noLoadouts": "Ancora nessun loadout. Collegane uno da Erkul o SPViewer.",
         "locationPrivate": "Solo tu puoi vedere dove si trova la tua nave.",

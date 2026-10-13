@@ -563,6 +563,11 @@
       "supporterNomination": {
         "change": "Cambia flotta"
       },
+      "vehiclePlaque": {
+        "remove": "Rimuovi targa",
+        "edit": "Modifica targa",
+        "show": "Mostra targa di dedica"
+      },
       "vehicleOverview": {
         "open": "Panoramica",
         "uploadPicture": "Carica un'immagine",

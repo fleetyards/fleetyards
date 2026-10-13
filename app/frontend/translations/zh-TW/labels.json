@@ -1546,6 +1546,8 @@
         "totalHp": "船體總 HP"
       },
       "manufacturer": {
+        "shortName": "簡稱",
+        "shipyard": "船塢",
         "longName": "全名",
         "code": "代碼",
         "logo": "標誌",
@@ -4147,6 +4149,28 @@
       },
       "tour": {
         "step": "第 %{current} 步，共 %{total} 步"
+      },
+      "vehiclePlaque": {
+        "style": "樣式",
+        "styles": {
+          "brass": "黃銅",
+          "hud": "Fleetyards 介面",
+          "gunmetal": "槍鐵色",
+          "blueprint": "船塢藍圖",
+          "salvage": "鉚接廢料",
+          "glass": "磨砂玻璃",
+          "carbon": "碳纖維與信號紅",
+          "walnut": "胡桃木與黃銅",
+          "neon": "派羅霓虹",
+          "manufacturer": "製造商樣式"
+        },
+        "registry": "註冊編號",
+        "operationsGroup": "行動組",
+        "title": "命名銘牌",
+        "dedication": "獻詞",
+        "launchedOn": "下水日期",
+        "launchPort": "下水港口",
+        "affiliation": "所屬"
       },
       "vehicleOverview": {
         "picture": "圖片",

@@ -1546,6 +1546,8 @@
         "totalHp": "HP totaux de la coque"
       },
       "manufacturer": {
+        "shortName": "Nom court",
+        "shipyard": "Chantier naval",
         "longName": "Nom complet",
         "code": "Code",
         "logo": "Logo",
@@ -4147,6 +4149,28 @@
       },
       "tour": {
         "step": "Étape %{current} sur %{total}"
+      },
+      "vehiclePlaque": {
+        "style": "Style",
+        "styles": {
+          "brass": "Laiton",
+          "hud": "HUD Fleetyards",
+          "gunmetal": "Métal canon de fusil",
+          "blueprint": "Plan de chantier naval",
+          "salvage": "Ferraille rivetée",
+          "glass": "Verre dépoli",
+          "carbon": "Carbone et rouge signal",
+          "walnut": "Noyer et laiton",
+          "neon": "Néon de Pyro",
+          "manufacturer": "Style du constructeur"
+        },
+        "registry": "Immatriculation",
+        "operationsGroup": "Équipe des opérations",
+        "title": "Plaque de dédicace",
+        "dedication": "Dédicace",
+        "launchedOn": "Date de lancement",
+        "launchPort": "Port de lancement",
+        "affiliation": "Affiliation"
       },
       "vehicleOverview": {
         "picture": "Image",

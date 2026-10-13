@@ -563,6 +563,11 @@
       "supporterNomination": {
         "change": "變更艦隊"
       },
+      "vehiclePlaque": {
+        "remove": "移除銘牌",
+        "edit": "編輯銘牌",
+        "show": "查看命名銘牌"
+      },
       "vehicleOverview": {
         "open": "概覽",
         "uploadPicture": "上傳圖片",

@@ -18,6 +18,7 @@ import { useForm } from "vee-validate";
 import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -43,6 +44,9 @@ const initialValues = ref<ManufacturerInput>({
   logo: undefined,
   icon: undefined,
   scRef: props.manufacturer.scRef,
+  shortName: props.manufacturer.shortName ?? "",
+  shipyard: props.manufacturer.shipyard ?? "",
+  shipyardLocationId: props.manufacturer.shipyardLocation?.id ?? null,
 });
 
 const validationSchema = {
@@ -61,6 +65,9 @@ const [code, codeProps] = defineField("code");
 const [scRef, scRefProps] = defineField("scRef");
 const [logo, logoProps] = defineField("logo");
 const [icon, iconProps] = defineField("icon");
+const [shortName, shortNameProps] = defineField("shortName");
+const [shipyard] = defineField("shipyard");
+const [shipyardLocationId] = defineField("shipyardLocationId");
 
 // The only place the override is visible: once it is on, the sc_data load stops
 // writing here, and clearing the field is what hands the icon back to the game
@@ -101,7 +108,14 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
-    .mutateAsync({ id: props.manufacturer.id, data: values })
+    .mutateAsync({
+      id: props.manufacturer.id,
+      data: {
+        ...values,
+        shortName: values.shortName || null,
+        shipyard: values.shipyard || null,
+      },
+    })
     .then(updated)
     .catch((error) => {
       failed(error, setErrors);
@@ -138,6 +152,19 @@ const handleCancel = async () => {
           v-bind="codeProps"
           translation-key="manufacturer.code"
           name="code"
+        />
+        <FormInput
+          v-model="shortName"
+          v-bind="shortNameProps"
+          translation-key="manufacturer.shortName"
+          name="shortName"
+        />
+        <LocationInput
+          v-model="shipyard"
+          v-model:location-id="shipyardLocationId"
+          :linked="manufacturer.shipyardLocation"
+          name="shipyard"
+          :label="t('labels.manufacturer.shipyard')"
         />
       </div>
       <div class="col-12 col-md-6">

@@ -724,4 +724,66 @@ class VehicleModelImageTest < ActiveSupport::TestCase
 
     assert vehicle.reload.update(name: "Starfall")
   end
+
+  test "stores a blank dedication plaque line as nil" do
+    vehicle = create(:vehicle, dedication: " ", affiliation: "", operations_group: "", launch_port: "")
+
+    assert_nil vehicle.dedication
+    assert_nil vehicle.affiliation
+    assert_nil vehicle.operations_group
+    assert_nil vehicle.launch_port
+  end
+
+  test "accepts only the lore's operations groups" do
+    assert build(:vehicle, operations_group: "nine_tails").valid?
+    assert_not build(:vehicle, operations_group: "vanduul_clan").valid?
+  end
+
+  test "names the launch port after the location it links" do
+    port = create(:location, name: "Port Olisar")
+    vehicle = create(:vehicle, launch_port_location: port)
+
+    assert_equal "Port Olisar", vehicle.launch_port
+  end
+
+  test "draws the plaque in the owner's style only while they support" do
+    vehicle = create(:vehicle, dedication: "To boldly go", plaque_style: "carbon")
+    assert_equal "brass", vehicle.effective_plaque_style
+
+    create(:supporter_contribution, user: vehicle.user)
+    assert_equal "carbon", Vehicle.find(vehicle.id).effective_plaque_style
+  end
+
+  test "accepts only the known plaque styles" do
+    assert build(:vehicle, plaque_style: "manufacturer").valid?
+    assert_not build(:vehicle, plaque_style: "chrome").valid?
+  end
+
+  test "keeps the plaque picture to a small PNG, JPEG or WebP" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+
+    vehicle.plaque_image.attach(io: StringIO.new("not a picture"), filename: "plaque.txt", content_type: "text/plain")
+    assert_not vehicle.valid?
+
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+    assert vehicle.valid?
+  end
+
+  test "drops the plaque picture with the dedication" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    vehicle.update!(dedication: "")
+
+    assert_not vehicle.reload.plaque_image.attached?
+  end
+
+  test "deletes the plaque picture with the vehicle" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    Vehicle.delete_with_dependents([vehicle.id])
+
+    assert_not ActiveStorage::Attachment.exists?(record_type: "Vehicle", record_id: vehicle.id, name: "plaque_image")
+  end
 end

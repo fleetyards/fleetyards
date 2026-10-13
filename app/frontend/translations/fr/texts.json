@@ -344,6 +344,26 @@
         "noneForFilter": "Aucune entrée ne correspond à ce filtre.",
         "unavailable": "Ce journal n'est pas disponible pour le moment."
       },
+      "vehiclePlaque": {
+        "supporter": "Tous les autres styles sont un merci à celles et ceux qui font vivre Fleetyards.",
+        "credits": {
+          "founders": "Fondateurs de %{manufacturer}",
+          "shipwrights": "Constructeurs de %{manufacturer}",
+          "designers": "Concepteurs de %{manufacturer}",
+          "directors": "Direction de %{manufacturer}"
+        },
+        "fromFleet": "Depuis une flotte",
+        "classLine": "%{model} par %{manufacturer}",
+        "commissioned": "Commandé aux %{shipyard}",
+        "launched": "Lancé en %{date}",
+        "launchedAt": "Lancé en %{date}, %{port}",
+        "launchedFrom": "Lancé depuis %{port}",
+        "captain": "Capitaine %{name}",
+        "captainOf": "Capitaine %{name}, %{affiliation}",
+        "year": "%{month} %{year}",
+        "empty": "Pas encore de dédicace. Écrivez-en une et le vaisseau aura sa plaque.",
+        "visibility": "Tant que ce vaisseau est public, tout le monde peut voir la plaque dans votre hangar public."
+      },
       "vehicleOverview": {
         "noLoadouts": "Pas encore de loadout. Ajoutes-en un depuis Erkul ou SPViewer.",
         "locationPrivate": "Toi seul vois où se trouve ton vaisseau.",

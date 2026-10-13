@@ -1,6 +1,9 @@
 {
   "it": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Targa di dedica"
+      },
       "vehicleOverview": {
         "paints": "Verniciature %{model}",
         "location": "Dov'è la nave?",
@@ -466,6 +469,7 @@
         "metrics": "Metriche",
         "states": "Stati",
         "notifications": "Notifiche",
+        "dedicationPlaques": "Targhe di dedica",
         "syncModal": "Modal sincronizzazione",
         "buybackSyncModal": "Modale sincronizzazione riacquisti",
         "rsiVerificationModal": "Modale verifica RSI",

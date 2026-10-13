@@ -174,9 +174,31 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
     }
   });
 
+  // Puts back what `getCurrentMetaInfo` read, verbatim -- for something laid
+  // over a page, like a modal, that names itself while open.
+  const restoreMetaInfo = (info: MetaInfo) => {
+    if (info.title) {
+      document.title = info.title;
+      if (ogTitleElement.value) ogTitleElement.value.content = info.title;
+    }
+    if (info.description !== undefined && descriptionElement.value) {
+      descriptionElement.value.content = info.description;
+      if (ogDescriptionElement.value) {
+        ogDescriptionElement.value.content = info.description;
+      }
+    }
+    const imageElement = ogImageElement();
+    if (info.image && imageElement) imageElement.content = info.image;
+    const typeElement = ogTypeElement();
+    if (info.type && typeElement) typeElement.content = info.type;
+    const urlElement = ogUrlElement();
+    if (urlElement) urlElement.content = window.location.href;
+  };
+
   return {
     updateMetaInfo,
     getCurrentMetaInfo,
+    restoreMetaInfo,
     getTitle,
   };
 };

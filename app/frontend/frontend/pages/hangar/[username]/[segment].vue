@@ -20,6 +20,7 @@ import {
   vehicleSegment,
 } from "@/frontend/utils/vehicleSegment";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[username]/[segment]/routes";
+import { useVehicleMeta } from "@/frontend/composables/useVehicleMeta";
 
 const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
@@ -61,6 +62,8 @@ const identifier = computed(
 );
 
 const { data: vehicle, ...asyncStatus } = useShowVehicle(identifier);
+
+useVehicleMeta(vehicle);
 
 // A renamed ship, a serial added later or a hand-typed address all land here;
 // the address bar is put right once the vehicle is known.

@@ -1546,6 +1546,8 @@
         "totalHp": "HP scafo totali"
       },
       "manufacturer": {
+        "shortName": "Nome breve",
+        "shipyard": "Cantiere navale",
         "longName": "Nome completo",
         "code": "Codice",
         "logo": "Logo",
@@ -4147,6 +4149,28 @@
       },
       "tour": {
         "step": "Passo %{current} di %{total}"
+      },
+      "vehiclePlaque": {
+        "style": "Stile",
+        "styles": {
+          "brass": "Ottone",
+          "hud": "HUD Fleetyards",
+          "gunmetal": "Canna di fucile",
+          "blueprint": "Progetto di cantiere",
+          "salvage": "Rottame rivettato",
+          "glass": "Vetro smerigliato",
+          "carbon": "Carbonio e rosso segnale",
+          "walnut": "Noce e ottone",
+          "neon": "Neon di Pyro",
+          "manufacturer": "Stile del costruttore"
+        },
+        "registry": "Matricola",
+        "operationsGroup": "Squadra operativa",
+        "title": "Targa di dedica",
+        "dedication": "Dedica",
+        "launchedOn": "Data del varo",
+        "launchPort": "Porto del varo",
+        "affiliation": "Affiliazione"
       },
       "vehicleOverview": {
         "picture": "Immagine",

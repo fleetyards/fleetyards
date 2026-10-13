@@ -4781,6 +4781,32 @@ components:
       - ZA
       - ZU
       - 'NULL'
+    NullableVehicleOperationsGroupEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - uee
+      - mercenary_guild
+      - itg
+      - cfp
+      - shubin
+      - nine_tails
+      - headhunters
+      - xenothreat
+      - rough_and_ready
+      -
+      x-enumNames:
+      - UEE
+      - MERCENARY_GUILD
+      - ITG
+      - CFP
+      - SHUBIN
+      - NINE_TAILS
+      - HEADHUNTERS
+      - XENOTHREAT
+      - ROUGH_AND_READY
+      - 'NULL'
     PayoutLedger:
       type: object
       properties:
@@ -5048,6 +5074,43 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
           - type: 'null'
+        dedication:
+          type:
+          - string
+          - 'null'
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+        launchPortLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        affiliation:
+          type:
+          - string
+          - 'null'
+        operationsGroup:
+          "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        manufacturerShortName:
+          type:
+          - string
+          - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        shipyard:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         modelImageId:
@@ -5152,6 +5215,30 @@ components:
       - url
       - createdAt
       - updatedAt
+    VehiclePlaqueStyleEnum:
+      type: string
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
   messages:
     AnnouncementMessage:
       payload:

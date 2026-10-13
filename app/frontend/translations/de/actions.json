@@ -563,6 +563,11 @@
       "supporterNomination": {
         "change": "Flotte ändern"
       },
+      "vehiclePlaque": {
+        "remove": "Tafel entfernen",
+        "edit": "Tafel bearbeiten",
+        "show": "Widmungstafel anzeigen"
+      },
       "vehicleOverview": {
         "open": "Übersicht",
         "uploadPicture": "Bild hochladen",

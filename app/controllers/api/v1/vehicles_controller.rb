@@ -12,6 +12,7 @@ module Api
         except: %i[check_serial]
 
       before_action :set_vehicle, only: %i[show update destroy move]
+      before_action :require_supporter_for_plaque_style, only: %i[create update]
 
       def create
         @vehicle = Vehicle.new(
@@ -156,10 +157,27 @@ module Api
           ).merge(user_id: current_resource_owner.id)
       end
 
+      # Anyone can put a plaque on a ship, in the default style; the other
+      # styles are a supporter perk. A style picked earlier stays where it is.
+      private def require_supporter_for_plaque_style
+        style = vehicle_params[:plaque_style]
+        return if style.blank? || style == ::Vehicle::DEFAULT_PLAQUE_STYLE
+        return if style == @vehicle&.plaque_style
+        return if current_resource_owner.supporter?
+
+        render json: {
+          code: "supporter_required",
+          message: I18n.t("messages.supporter_required")
+        }, status: :forbidden
+      end
+
       private def vehicle_overview_params
         return [] unless feature_enabled?("vehicle_overview")
 
-        %i[image model_image_id log_entries_public_by_default location location_id]
+        %i[
+          image model_image_id log_entries_public_by_default location location_id
+          dedication launched_on launch_port launch_port_location_id affiliation operations_group plaque_style plaque_image
+        ]
       end
 
       private def vehicle_move_params

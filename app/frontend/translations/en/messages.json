@@ -1232,6 +1232,11 @@
           "failure": "Could not remove it"
         }
       },
+      "vehiclePlaque": {
+        "removeConfirm": "Remove this ship's dedication plaque?",
+        "downloadFailure": "The plaque could not be saved as an image",
+        "failure": "The plaque could not be saved"
+      },
       "vehicleOverview": {
         "image": {
           "success": "Picture saved",

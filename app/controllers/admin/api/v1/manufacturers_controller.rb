@@ -23,6 +23,7 @@ module Admin
           q = scope.ransack(manufacturer_query_params)
 
           @manufacturers = q.result(distinct: true)
+            .includes(:shipyard_location)
             .page(page_params)
             .per(per_page(Manufacturer))
         end
@@ -92,7 +93,8 @@ module Admin
 
         private def manufacturer_params
           @manufacturer_params ||= params.permit(
-            :name, :long_name, :code, :description, :known_for, :logo, :icon, :sc_ref
+            :name, :long_name, :code, :description, :known_for, :logo, :icon, :sc_ref,
+            :short_name, :shipyard, :shipyard_location_id
           )
         end
 

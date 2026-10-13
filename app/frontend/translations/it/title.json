@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "Targa di dedica di %{vehicle}",
       "home": "Home",
       "ships": {
         "index": "Navi",
@@ -199,6 +200,7 @@
         "metrics": "Metriche - Test visivi",
         "states": "Stati - Test visivi",
         "notifications": "Notifiche - Test Visivi",
+        "dedicationPlaques": "Targhe di dedica - Test Visivi",
         "syncModal": "Modal sincronizzazione - Test Visivi",
         "buybackSyncModal": "Modale sincronizzazione riacquisti - Test Visivi",
         "rsiVerificationModal": "Modale verifica RSI - Test Visivi",

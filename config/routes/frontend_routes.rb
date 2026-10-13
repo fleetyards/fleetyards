@@ -96,6 +96,10 @@ namespace :frontend, **frontend_options do
   get "hangar/:username/fleetchart", to: "hangar#public", as: :public_hangar_fleetchart
   get "hangar/:username/stats", to: "hangar#public", as: :public_hangar_stats
   get "hangar/:username/wishlist", to: "hangar#wishlist", as: :public_wishlist
+  # A ship's own pages: the address leads with its serial or its id, which keeps
+  # it clear of the hangar's other pages above.
+  get "hangar/:username/:segment(/*tab)", to: "hangar#vehicle", as: :hangar_vehicle,
+    constraints: {segment: /(?:[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})[^\/]*/i}
 
   get "compare", to: "base#compare_models"
 

@@ -1546,6 +1546,8 @@
         "totalHp": "Gesamte Rumpf-HP"
       },
       "manufacturer": {
+        "shortName": "Kurzname",
+        "shipyard": "Werft",
         "longName": "Vollständiger Name",
         "code": "Code",
         "logo": "Logo",
@@ -4147,6 +4149,28 @@
       },
       "tour": {
         "step": "Schritt %{current} von %{total}"
+      },
+      "vehiclePlaque": {
+        "style": "Stil",
+        "styles": {
+          "brass": "Messing",
+          "hud": "Fleetyards-HUD",
+          "gunmetal": "Rotguss",
+          "blueprint": "Werft-Blaupause",
+          "salvage": "Genietetes Altmetall",
+          "glass": "Milchglas",
+          "carbon": "Carbon & Signalrot",
+          "walnut": "Nussbaum & Messing",
+          "neon": "Pyro-Neon",
+          "manufacturer": "Herstellerstil"
+        },
+        "registry": "Registernummer",
+        "operationsGroup": "Einsatzcrew",
+        "title": "Widmungstafel",
+        "dedication": "Widmung",
+        "launchedOn": "Stapellauf",
+        "launchPort": "Starthafen",
+        "affiliation": "Zugehörigkeit"
       },
       "vehicleOverview": {
         "picture": "Bild",

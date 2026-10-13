@@ -16942,6 +16942,53 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{id}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: 'Vehicle address: its id, or its serial, followed by its name'
+      required: true
+    get:
+      summary: Public Hangar Vehicle
+      tags:
+      - PublicHangar
+      operationId: publicHangarVehicle
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehiclePublic"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/vehicles/{vehicle_id}/log-entries":
     parameters:
     - name: username
@@ -19065,6 +19112,12 @@ paths:
                 "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: supporter required
           content:
             application/json:
               schema:
@@ -36697,6 +36750,62 @@ components:
       - FAILED
       - 'NULL'
       title: NullableUserRsiVerificationStatusEnum
+    NullableVehicleOperationsGroupEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - uee
+      - mercenary_guild
+      - itg
+      - cfp
+      - shubin
+      - nine_tails
+      - headhunters
+      - xenothreat
+      - rough_and_ready
+      -
+      x-enumNames:
+      - UEE
+      - MERCENARY_GUILD
+      - ITG
+      - CFP
+      - SHUBIN
+      - NINE_TAILS
+      - HEADHUNTERS
+      - XENOTHREAT
+      - ROUGH_AND_READY
+      - 'NULL'
+      title: NullableVehicleOperationsGroupEnum
+    NullableVehiclePlaqueStyleEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      -
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
+      - 'NULL'
+      title: NullableVehiclePlaqueStyleEnum
     NullableVehicleSortEnum:
       type:
       - string
@@ -39734,6 +39843,43 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
           - type: 'null'
+        dedication:
+          type:
+          - string
+          - 'null'
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+        launchPortLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        affiliation:
+          type:
+          - string
+          - 'null'
+        operationsGroup:
+          "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        manufacturerShortName:
+          type:
+          - string
+          - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        shipyard:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         modelImageId:
@@ -40180,6 +40326,31 @@ components:
       items:
         "$ref": "#/components/schemas/VehiclePaint"
       title: VehiclePaintsList
+    VehiclePlaqueStyleEnum:
+      type: string
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
+      title: VehiclePlaqueStyleEnum
     VehiclePublic:
       type: object
       properties:
@@ -40205,6 +40376,43 @@ components:
           type: boolean
         publicLogEntriesCount:
           type: integer
+        dedication:
+          type:
+          - string
+          - 'null'
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+        launchPortLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        affiliation:
+          type:
+          - string
+          - 'null'
+        operationsGroup:
+          "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        manufacturerShortName:
+          type:
+          - string
+          - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        shipyard:
+          type:
+          - string
+          - 'null'
         bundled:
           type: boolean
         bundledParent:
@@ -40404,6 +40612,39 @@ components:
           - string
           - 'null'
           format: uuid
+        dedication:
+          type:
+          - string
+          - 'null'
+          maxLength: 280
+        launchedOn:
+          type:
+          - string
+          - 'null'
+          format: date
+        launchPort:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        launchPortLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        affiliation:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+        operationsGroup:
+          "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        plaqueStyle:
+          "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
+        plaqueImage:
+          type:
+          - string
+          - 'null'
         image:
           type:
           - string

@@ -12,6 +12,11 @@ if vehicle.name_visible?
 end
 json.loaner vehicle.loaner
 json.public_log_entries_count vehicle.public_log_entries_count
+# Fleet lists render this partial for vehicles that are not public too, and the
+# public wishlist for ships the owner cannot give a plaque.
+if vehicle.public? && !vehicle.wanted? && !vehicle.loaner?
+  json.partial!("api/v1/vehicles/dedication_plaque", vehicle:)
+end
 json.model do
   json.partial! "api/v1/models/model", model: vehicle.model if vehicle.model.present?
 end

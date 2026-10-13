@@ -1,6 +1,9 @@
 {
   "es": {
     "headlines": {
+      "vehiclePlaque": {
+        "title": "Placa de dedicatoria"
+      },
       "vehicleOverview": {
         "paints": "Pinturas de %{model}",
         "location": "¿Dónde está la nave?",
@@ -466,6 +469,7 @@
         "metrics": "Métricas",
         "states": "Estados",
         "notifications": "Notificaciones",
+        "dedicationPlaques": "Placas de dedicatoria",
         "syncModal": "Modal de sincronización",
         "buybackSyncModal": "Modal de sincronización de recompras",
         "rsiVerificationModal": "Modal de verificación de RSI",
