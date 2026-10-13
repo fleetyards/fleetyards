@@ -118,10 +118,11 @@ class Vehicle < ApplicationRecord
 
   # How the plaque is drawn. `manufacturer` is the style of the company that built
   # the ship. Every style but the default is a supporter perk: once the owner
-  # stops supporting, the plaque stays but is drawn in the default style.
+  # stops supporting, the plaque keeps its style until it is next edited.
   PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
+  PLAQUE_ATTRS = %w[dedication launched_on launch_port launch_port_location_id affiliation operations_group].freeze
 
   # The plaque as a picture, for the link preview of a shared plaque. The server
   # cannot draw the plaque, so the owner's browser renders it on every save.
@@ -184,6 +185,8 @@ class Vehicle < ApplicationRecord
   before_validation :normalize_serial, if: :serial_changed?
   before_validation :force_ingame_bought_via
   before_save :nil_if_blank
+  # After nil_if_blank, so a blank sent for an empty line is not an edit.
+  before_save :drop_supporter_plaque_style, if: :drop_supporter_plaque_style?
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
   before_save :update_slugs
@@ -874,9 +877,17 @@ class Vehicle < ApplicationRecord
   end
 
   def effective_plaque_style
-    return DEFAULT_PLAQUE_STYLE unless user&.supporter?
-
     plaque_style.presence || DEFAULT_PLAQUE_STYLE
+  end
+
+  private def drop_supporter_plaque_style?
+    plaque_style.present? && plaque_style != DEFAULT_PLAQUE_STYLE &&
+      PLAQUE_ATTRS.any? { |attr| will_save_change_to_attribute?(attr) } &&
+      !user&.supporter?
+  end
+
+  private def drop_supporter_plaque_style
+    self.plaque_style = DEFAULT_PLAQUE_STYLE
   end
 
   protected def nil_if_blank

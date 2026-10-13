@@ -27,8 +27,8 @@ module V1
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             manufacturerShortName: {type: [:string, :null]},
             manufacturerCode: {type: [:string, :null]},
-            # The style the plaque is drawn in, once a supporter's choice has
-            # fallen back to the default for an owner no longer supporting.
+            # The style the plaque is drawn in. A supporter style outlasts the
+            # support until the plaque is next edited.
             plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
             shipyard: {type: [:string, :null]},
             bundled: {type: :boolean},
