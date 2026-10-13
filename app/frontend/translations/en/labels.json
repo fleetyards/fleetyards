@@ -2176,6 +2176,8 @@
         "fleetInvites": "No Invites present"
       },
       "user": {
+        "displayName": "Display name",
+        "displayNameInfo": "Shown instead of your username in your public hangar, on your dedication plaques and in fleet rosters.",
         "hangarDefaultSort": "Default Order",
         "hangarDefaultSortInfo": "Drag a ship by its grip to reorder. Shows while the custom order is active and no filter is set.",
         "hangarDefaultSortOptions": {
@@ -4176,6 +4178,8 @@
           "neon": "Pyro neon",
           "manufacturer": "Manufacturer style"
         },
+        "captain": "Captain",
+        "captainInfo": "Leave empty to name yourself as you show on your public hangar.",
         "registry": "Registry",
         "operationsGroup": "Operations crew",
         "title": "Dedication plaque",

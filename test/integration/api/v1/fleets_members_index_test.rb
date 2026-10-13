@@ -67,6 +67,20 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members carries a member's display name" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+
+    @member.update!(display_name: "Torlek Maru")
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      row = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal "Torlek Maru", row["displayName"]
+    end
+  end
+
   test "GET /fleets/:slug/members says where a member is in the game" do
     lorville = create(:location, name: "Lorville", kind: "city")
     @member.update!(current_location_id: lorville.id)
@@ -265,6 +279,17 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},
       params: {q: {"searchCont" => "wingman"}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members searches by display name" do
+    @member.update!(display_name: "Torlek Maru")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"searchCont" => "torlek"}} do
       assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
     end
   end

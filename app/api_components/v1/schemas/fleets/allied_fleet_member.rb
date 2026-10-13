@@ -9,7 +9,7 @@ module V1
       # activity timestamps, and the point of this schema is that none of them
       # can arrive here by being added there.
       #
-      # `username` and `avatar` are absent for a member who has set
+      # `username`, `displayName` and `avatar` are absent for a member who has set
       # `hide_owner`, which `hidden` announces so a client can render the place
       # without inventing a name for it.
       class AlliedFleetMember
@@ -21,6 +21,7 @@ module V1
             id: {type: :string, format: :uuid},
             hidden: {type: :boolean},
             username: {type: :string},
+            displayName: {type: :string},
             avatar: ::Shared::V1::Schemas::MediaFile,
             role: {type: [:string, :null]}
           },

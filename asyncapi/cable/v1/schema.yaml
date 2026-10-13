@@ -2151,6 +2151,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         nickname:
           type:
           - string
@@ -5092,6 +5094,10 @@ components:
           - "$ref": "#/components/schemas/LocationLink"
           - type: 'null'
         affiliation:
+          type:
+          - string
+          - 'null'
+        plaqueCaptain:
           type:
           - string
           - 'null'

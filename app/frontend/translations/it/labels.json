@@ -2176,6 +2176,8 @@
         "fleetInvites": "Nessun Invito presente"
       },
       "user": {
+        "displayName": "Nome visualizzato",
+        "displayNameInfo": "Mostrato al posto del tuo nome utente nel tuo hangar pubblico, sulle tue targhe di dedica e negli elenchi dei membri delle flotte.",
         "hangarDefaultSort": "Ordine predefinito",
         "hangarDefaultSortInfo": "Trascina una nave per la sua maniglia per riordinarla. Disponibile finché l'ordine personalizzato è attivo e nessun filtro è impostato.",
         "hangarDefaultSortOptions": {
@@ -4162,6 +4164,8 @@
           "neon": "Neon di Pyro",
           "manufacturer": "Stile del costruttore"
         },
+        "captain": "Capitano",
+        "captainInfo": "Lascia vuoto per comparire con il nome del tuo hangar pubblico.",
         "registry": "Matricola",
         "operationsGroup": "Squadra operativa",
         "title": "Targa di dedica",

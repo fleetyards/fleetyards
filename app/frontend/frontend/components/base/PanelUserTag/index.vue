@@ -26,7 +26,9 @@ const { t } = useI18n();
     <template #trigger="{ toggle, visible }">
       <PanelTag aria-haspopup="menu" :aria-expanded="visible" @click="toggle">
         {{ label }}
-        <span class="panel-user-tag-name">{{ member.username }}</span>
+        <span class="panel-user-tag-name">{{
+          member.displayName || member.username
+        }}</span>
         <span
           v-if="member.citizenidProfileUrl"
           v-tooltip="t('labels.user.rsiHandleVerified')"

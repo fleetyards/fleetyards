@@ -10,6 +10,7 @@ module V1
         properties: {
           id: {type: :string, format: :uuid},
           username: {type: :string},
+          displayName: {type: :string},
           email: {type: :string},
           unconfirmedEmail: {type: :string},
           avatar: ::Shared::V1::Schemas::MediaFile,

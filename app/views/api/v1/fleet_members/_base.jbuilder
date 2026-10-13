@@ -1,6 +1,7 @@
 json.id member.id
 json.user_id member.user_id
 json.username member.user.username
+json.display_name member.user.display_name if member.user.display_name.present?
 json.nickname member.nickname
 if member.fleet_role.present?
   json.fleet_role do

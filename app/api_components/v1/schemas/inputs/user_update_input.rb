@@ -12,6 +12,7 @@ module V1
             avatar: {type: [:string, :null]},
             removeAvatar: {type: :boolean},
             rsiHandle: {type: [:string, :null]},
+            displayName: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
             homepage: {type: [:string, :null]},
             discord: {type: [:string, :null]},
             youtube: {type: [:string, :null]},

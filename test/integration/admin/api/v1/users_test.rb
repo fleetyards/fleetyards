@@ -261,6 +261,19 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /users/:id sets and clears the display name" do
+    user = create(:user, display_name: "Torlek Maru")
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: user.id}, body: {displayName: "Captain Maru"} do
+      assert_equal "Captain Maru", parsed_body["displayName"]
+    end
+
+    assert_api_response :put, 200, path_params: {id: user.id}, body: {displayName: nil} do
+      assert_nil parsed_body["displayName"]
+    end
+  end
+
   test "PUT /users/:id makes the user a maintainer" do
     user = create(:user)
     sign_in @admin

@@ -846,3 +846,57 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     assert_empty pages - User::RESERVED_USERNAMES
   end
 end
+
+class UserDisplayNameTest < ActiveSupport::TestCase
+  test "is shown by its display name, or its username without one" do
+    user = build(:user, username: "torlek", display_name: " Torlek   Maru ")
+
+    assert_equal "Torlek Maru", user.shown_name
+
+    user.display_name = "   "
+
+    assert_nil user.display_name
+    assert_equal "torlek", user.shown_name
+  end
+
+  test "drops plaque pictures that name the owner once the name changes" do
+    user = create(:user)
+    named = create(:vehicle, user:, dedication: "To boldly go")
+    captained = create(:vehicle, user:, dedication: "To boldly go", plaque_captain: "Maru")
+    [named, captained].each do |vehicle|
+      vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+    end
+
+    user.update!(display_name: "Torlek Maru")
+
+    assert_not named.reload.plaque_image.attached?
+    assert captained.reload.plaque_image.attached?
+  end
+
+  test "drops plaque pictures that name the owner once they hide" do
+    user = create(:user)
+    vehicle = create(:vehicle, user:, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    user.update!(hide_owner: true)
+
+    assert_not vehicle.reload.plaque_image.attached?
+  end
+
+  test "keeps plaque pictures when nothing they show changes" do
+    user = create(:user)
+    vehicle = create(:vehicle, user:, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    user.update!(discord: "maru")
+
+    assert vehicle.reload.plaque_image.attached?
+  end
+
+  test "rejects a display name over the limit" do
+    user = build(:user, display_name: "a" * (User::DISPLAY_NAME_LIMIT + 1))
+
+    assert_not user.valid?
+    assert user.errors.added?(:display_name, :too_long, count: User::DISPLAY_NAME_LIMIT)
+  end
+end

@@ -20291,6 +20291,8 @@ components:
           type: boolean
         username:
           type: string
+        displayName:
+          type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         role:
@@ -27614,6 +27616,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         nickname:
           type:
           - string
@@ -28034,7 +28038,7 @@ components:
       properties:
         searchCont:
           type: string
-          description: Matches the username or the fleet nickname
+          description: Matches the username, the display name or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -28970,7 +28974,7 @@ components:
       properties:
         searchCont:
           type: string
-          description: Matches the username or the fleet nickname
+          description: Matches the username, the display name or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -39336,6 +39340,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         email:
           type: string
         unconfirmedEmail:
@@ -39560,6 +39566,8 @@ components:
       properties:
         username:
           type: string
+        displayName:
+          type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
@@ -39701,6 +39709,11 @@ components:
           type:
           - string
           - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
         homepage:
           type:
           - string
@@ -39863,6 +39876,10 @@ components:
           - "$ref": "#/components/schemas/LocationLink"
           - type: 'null'
         affiliation:
+          type:
+          - string
+          - 'null'
+        plaqueCaptain:
           type:
           - string
           - 'null'
@@ -40399,6 +40416,10 @@ components:
           type:
           - string
           - 'null'
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
         manufacturerShortName:
@@ -40422,6 +40443,8 @@ components:
         model:
           "$ref": "#/components/schemas/Model"
         username:
+          type: string
+        userDisplayName:
           type: string
         userAvatar:
           type: string
@@ -40641,6 +40664,11 @@ components:
           maxLength: 100
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        plaqueCaptain:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
         plaqueStyle:
           "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
         plaqueImage:

@@ -46,4 +46,32 @@ describe("FleetMemberName", () => {
     );
     expect(wrapper.find(".fa-badge-check").exists()).toBe(false);
   });
+
+  it("shows the display name, with the username second", async () => {
+    const wrapper = await mountName({
+      username: "maru_pilot",
+      displayName: "Torlek Maru",
+    });
+
+    expect(wrapper.find(".member-name__text").text()).toBe("Torlek Maru");
+    expect(wrapper.find(".member-name__username").text()).toBe("maru_pilot");
+  });
+
+  it("puts the fleet's nickname before the display name", async () => {
+    const wrapper = await mountName({
+      username: "maru_pilot",
+      displayName: "Torlek Maru",
+      nickname: "Torlek",
+    });
+
+    expect(wrapper.find(".member-name__text").text()).toBe("Torlek");
+    expect(wrapper.find(".member-name__username").text()).toBe("maru_pilot");
+  });
+
+  it("shows the username once without another name", async () => {
+    const wrapper = await mountName({ username: "maru_pilot" });
+
+    expect(wrapper.find(".member-name__text").text()).toBe("maru_pilot");
+    expect(wrapper.find(".member-name__username").exists()).toBe(false);
+  });
 });

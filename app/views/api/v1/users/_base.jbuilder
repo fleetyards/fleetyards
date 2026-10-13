@@ -3,6 +3,7 @@
 json.id user.id
 
 json.username user.username
+json.display_name user.display_name if user.display_name.present?
 
 json.email user.email
 json.unconfirmed_email user.unconfirmed_email if user.unconfirmed_email.present?

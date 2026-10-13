@@ -10,6 +10,7 @@ import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { plaqueShareUrl } from "@/frontend/components/Vehicles/Plaque/shareUrl";
+import { ownerCaptain } from "@/frontend/components/Vehicles/Plaque/captain";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -58,7 +59,7 @@ const openEditModal = () => {
     class="overview-plaque"
     data-test="vehicle-overview-plaque"
   >
-    <VehiclePlaque :vehicle="vehicle" :captain="currentUser?.username" />
+    <VehiclePlaque :vehicle="vehicle" :captain="ownerCaptain(currentUser)" />
     <div class="overview-plaque__actions">
       <Btn
         v-tooltip="t('actions.vehiclePlaque.edit')"

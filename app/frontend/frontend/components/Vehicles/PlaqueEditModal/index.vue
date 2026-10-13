@@ -25,6 +25,7 @@ import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operati
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import { plaqueSocialImage } from "@/frontend/components/Vehicles/Plaque/download";
+import { ownerCaptain } from "@/frontend/components/Vehicles/Plaque/captain";
 import { useDirectUpload } from "@/shared/composables/useDirectUpload";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -46,6 +47,7 @@ const props = defineProps<Props>();
 
 const DEDICATION_LIMIT = 280;
 const LINE_LIMIT = 100;
+const CAPTAIN_LIMIT = 50;
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -83,6 +85,7 @@ const validationSchema = {
   dedication: `required|max:${DEDICATION_LIMIT}`,
   launchPort: `max:${LINE_LIMIT}`,
   affiliation: `max:${LINE_LIMIT}`,
+  plaqueCaptain: `max:${CAPTAIN_LIMIT}`,
 };
 
 const { defineField, handleSubmit } = useForm({
@@ -95,6 +98,7 @@ const { defineField, handleSubmit } = useForm({
     launchPort: props.vehicle.launchPort ?? "",
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
     affiliation: props.vehicle.affiliation ?? "",
+    plaqueCaptain: props.vehicle.plaqueCaptain ?? "",
     operationsGroup: props.vehicle.operationsGroup ?? null,
     plaqueStyle: keptStyle
       ? FREE_STYLE
@@ -109,6 +113,7 @@ const [launchedOn] = defineField("launchedOn");
 const [launchPort] = defineField("launchPort");
 const [launchPortLocationId] = defineField("launchPortLocationId");
 const [affiliation] = defineField("affiliation");
+const [plaqueCaptain] = defineField("plaqueCaptain");
 const [operationsGroup] = defineField("operationsGroup");
 const [plaqueStyle] = defineField("plaqueStyle");
 
@@ -166,6 +171,7 @@ const preview = computed<Vehicle>(() => ({
   launchedOn: launchedOn.value || null,
   launchPort: launchPort.value || null,
   affiliation: affiliation.value || null,
+  plaqueCaptain: plaqueCaptain.value || null,
   operationsGroup: operationsGroup.value || null,
   plaqueStyle: plaqueStyle.value,
 }));
@@ -207,9 +213,9 @@ const captureVehicle = computed<Vehicle>(() => ({
   serial: props.vehicle.nameVisible ? preview.value.serial : undefined,
 }));
 
-const captureCaptain = computed(() =>
-  currentUser?.value?.hideOwner ? undefined : currentUser?.value?.username,
-);
+// The owner as the public sees them, in the previews as in the picture, so
+// the plaque on screen is the one a shared link shows.
+const captain = computed(() => ownerCaptain(currentUser?.value));
 
 // The plaque as a picture, for the preview of a shared link. Rendered here
 // because only the browser can draw it; a failure leaves the plaque saved and
@@ -249,6 +255,7 @@ const removePlaque = async () => {
         launchPort: null,
         launchPortLocationId: null,
         affiliation: null,
+        plaqueCaptain: null,
         operationsGroup: null,
       },
     })
@@ -269,6 +276,7 @@ const onSubmit = handleSubmit(async (values) => {
         launchPort: values.launchPort || null,
         launchPortLocationId: values.launchPortLocationId ?? null,
         affiliation: values.affiliation || null,
+        plaqueCaptain: values.plaqueCaptain || null,
         operationsGroup: values.operationsGroup || null,
         ...(values.plaqueStyle !== initialPlaqueStyle
           ? { plaqueStyle: values.plaqueStyle || null }
@@ -309,7 +317,7 @@ const onSubmit = handleSubmit(async (values) => {
             >
               <VehiclePlaque
                 :vehicle="previewFor(option.value)"
-                :captain="currentUser?.username"
+                :captain="captain"
               />
               <span class="plaque-edit__style-label">
                 <i v-if="option.locked" class="fa-light fa-lock" />
@@ -342,7 +350,7 @@ const onSubmit = handleSubmit(async (values) => {
               >
                 <VehiclePlaque
                   :vehicle="previewFor(option.value)"
-                  :captain="currentUser?.username"
+                  :captain="captain"
                 />
                 <span class="plaque-edit__style-label">
                   <i v-if="option.locked" class="fa-light fa-lock" />
@@ -380,7 +388,7 @@ const onSubmit = handleSubmit(async (values) => {
           </Alert>
           <VehiclePlaque
             :vehicle="preview"
-            :captain="currentUser?.username"
+            :captain="captain"
             class="plaque-edit__preview"
             data-test="vehicle-plaque-preview"
           />
@@ -409,6 +417,15 @@ const onSubmit = handleSubmit(async (values) => {
                 name="launchPort"
                 :label="t('labels.vehiclePlaque.launchPort')"
                 :rules="validationSchema.launchPort"
+              />
+              <FormInput
+                v-model="plaqueCaptain"
+                name="plaqueCaptain"
+                :label="t('labels.vehiclePlaque.captain')"
+                :info="t('labels.vehiclePlaque.captainInfo')"
+                :placeholder="captain"
+                :rules="validationSchema.plaqueCaptain"
+                data-test="vehicle-plaque-captain-input"
               />
               <FormInput
                 v-model="affiliation"
@@ -447,7 +464,7 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <div ref="capture" class="plaque-edit__capture" aria-hidden="true">
-      <VehiclePlaque :vehicle="captureVehicle" :captain="captureCaptain" />
+      <VehiclePlaque :vehicle="captureVehicle" :captain="captain" />
     </div>
 
     <template #footer>

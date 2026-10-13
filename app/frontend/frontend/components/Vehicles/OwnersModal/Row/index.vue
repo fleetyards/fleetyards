@@ -31,7 +31,11 @@ const { t } = useI18n();
     <Avatar :avatar="owner.avatar" size="small" />
     <span class="owner__body">
       <span class="owner__name">
-        {{ owner.member?.username || t("labels.anonymous") }}
+        {{
+          owner.member?.displayName ||
+          owner.member?.username ||
+          t("labels.anonymous")
+        }}
         <span v-if="owner.count > 1" class="owner__count">
           {{ owner.count }}&times;
         </span>

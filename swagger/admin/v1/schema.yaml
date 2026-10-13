@@ -20901,6 +20901,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         email:
           type: string
         unconfirmedEmail:
@@ -21001,6 +21003,11 @@ components:
       properties:
         username:
           type: string
+        displayName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
         email:
           type: string
         rsiHandle:

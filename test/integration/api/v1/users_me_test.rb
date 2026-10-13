@@ -191,6 +191,21 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     assert_nil user.reload.hangar_default_sort
   end
 
+  test "PUT /users/me sets and clears the display name" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {displayName: "  Torlek   Maru "} do
+      assert_equal "Torlek Maru", parsed_body["displayName"]
+    end
+
+    assert_api_response :put, 200, body: {displayName: "  "} do
+      assert_nil parsed_body["displayName"]
+    end
+
+    assert_nil user.reload.display_name
+  end
+
   test "PUT /users/me returns 401 when not signed in" do
     assert_api_response :put, 401, body: {discord: "x"}
   end

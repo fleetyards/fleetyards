@@ -19,7 +19,8 @@ import miscPattern from "@/images/plaque/misc-pattern.webp";
 type Props = {
   vehicle: Vehicle | VehiclePublic;
   // The owner's name: the public payload carries it only when the owner shows
-  // it, and the owner's own payload never does.
+  // it, and the owner's own payload never does. A captain saved with the
+  // plaque takes its place.
   captain?: string;
 };
 
@@ -151,16 +152,17 @@ const launchLine = computed(() => {
 });
 
 const captainLine = computed(() => {
-  if (!props.captain) {
+  const name = props.vehicle.plaqueCaptain || props.captain;
+  if (!name) {
     return undefined;
   }
 
   return props.vehicle.affiliation
     ? t("texts.vehiclePlaque.captainOf", {
-        name: props.captain,
+        name,
         affiliation: props.vehicle.affiliation,
       })
-    : t("texts.vehiclePlaque.captain", { name: props.captain });
+    : t("texts.vehiclePlaque.captain", { name });
 });
 
 const lines = computed(() =>

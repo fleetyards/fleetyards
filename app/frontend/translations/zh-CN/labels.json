@@ -2176,6 +2176,8 @@
         "fleetInvites": "没有邀请"
       },
       "user": {
+        "displayName": "显示名称",
+        "displayNameInfo": "在你的公开机库、命名铭牌和舰队成员列表中代替用户名显示。",
         "hangarDefaultSort": "默认顺序",
         "hangarDefaultSortInfo": "按住舰船的拖动柄即可重新排序。仅在自定义顺序生效且未设置筛选时可用。",
         "hangarDefaultSortOptions": {
@@ -4162,6 +4164,8 @@
           "neon": "派罗霓虹",
           "manufacturer": "制造商样式"
         },
+        "captain": "舰长",
+        "captainInfo": "留空则使用你在公开机库中显示的名称。",
         "registry": "注册编号",
         "operationsGroup": "行动组",
         "title": "命名铭牌",

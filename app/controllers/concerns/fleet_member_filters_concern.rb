@@ -25,7 +25,7 @@ module FleetMemberFiltersConcern
       # The real association path, not the `username` alias: ransack does not
       # resolve an alias inside an `_or_` chain and would query a
       # `fleet_memberships.username` column that does not exist.
-      query[:user_username_or_nickname_cont] = search if search.present?
+      query[:user_username_or_user_display_name_or_nickname_cont] = search if search.present?
     end
   end
 end

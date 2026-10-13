@@ -2,6 +2,7 @@ import { type MaybeRef } from "vue";
 import { type UserPublic } from "@/services/fyApi";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
+import { shownName } from "@/frontend/utils/possessiveName";
 
 export const usePublicHangarMeta = (
   user?: MaybeRef<UserPublic | undefined>,
@@ -13,9 +14,8 @@ export const usePublicHangarMeta = (
   const { updateMetaInfo } = useMetaInfo({ custom: true });
 
   const userTitle = computed(() => {
-    const username = unref(user)?.username;
-    if (!username) return undefined;
-    return username[0].toUpperCase() + username.slice(1);
+    const current = unref(user);
+    return current?.username ? shownName(current) : undefined;
   });
 
   const pageTitle = computed(() => {

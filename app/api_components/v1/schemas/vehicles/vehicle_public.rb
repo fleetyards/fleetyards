@@ -23,6 +23,7 @@ module V1
             launchPort: {type: [:string, :null]},
             launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             affiliation: {type: [:string, :null]},
+            plaqueCaptain: {type: [:string, :null]},
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             manufacturerShortName: {type: [:string, :null]},
             manufacturerCode: {type: [:string, :null]},
@@ -34,6 +35,7 @@ module V1
             bundledParent: VehicleBundledParent,
             model: {"$ref": "#/components/schemas/Model"},
             username: {type: :string},
+            userDisplayName: {type: :string},
             userAvatar: {type: :string, format: :uri},
             userRsiHandle: {type: :string},
             # Only the fleet-scoped vehicle endpoints send these; the public hangar

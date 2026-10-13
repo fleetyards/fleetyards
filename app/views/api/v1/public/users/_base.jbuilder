@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 json.username user.username
+json.display_name user.display_name if user.display_name.present?
 json.avatar do
   json.partial! "api/v1/shared/file", record: user, attr: :avatar
 end

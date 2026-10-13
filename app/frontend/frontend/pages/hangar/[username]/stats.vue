@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
+import { possessiveName } from "@/frontend/utils/possessiveName";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PublicHangarStats from "@/frontend/components/Hangar/PublicHangarStats/index.vue";
@@ -27,7 +27,7 @@ const { share, shareQuery } = usePublicHangarShare();
 
 const username = computed(() => props.user.username);
 
-const usernamePlural = computed(() => possessiveUsername(username.value));
+const usernamePlural = computed(() => possessiveName(props.user));
 
 onMounted(async () => {
   if (!props.user.publicHangarStats && !share.value) {

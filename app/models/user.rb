@@ -32,7 +32,7 @@ class User < ApplicationRecord
   # where devise writes it directly.
   has_paper_trail on: %i[update],
     only: %i[
-      username email unconfirmed_email rsi_handle public_hangar
+      username display_name email unconfirmed_email rsi_handle public_hangar
       public_hangar_loaners public_wishlist hide_owner tester maintainer
       friends_hangar friends_hangar_stats friends_wishlist show_online_status
     ],
@@ -213,6 +213,10 @@ class User < ApplicationRecord
 
   validate :username_not_a_route_name, if: :username_changed?
 
+  DISPLAY_NAME_LIMIT = 50
+  normalizes :display_name, with: ->(name) { name.squish.presence }
+  validates :display_name, length: {maximum: DISPLAY_NAME_LIMIT}
+
   validates :email,
     uniqueness: {case_sensitive: false},
     presence: true
@@ -241,6 +245,13 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
+  # A plaque's picture is drawn once, in the owner's browser, with the owner's
+  # name on it. Once that name changes, or the owner hides it, the picture is
+  # wrong, and a shared link previews the ship instead until the plaque is
+  # saved again. A captain written onto the plaque does not depend on it.
+  after_update :purge_plaque_pictures,
+    if: -> { saved_change_to_display_name? || saved_change_to_username? || saved_change_to_hide_owner? }
+
   # Turning the switch off has to reach the rosters already showing the dot, and
   # turning it back on has to bring it back — neither is a connection change, so
   # nothing else would broadcast it. Only worth sending while there is something
@@ -262,7 +273,7 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
+      "confirmed_at", "created_at", "current_sign_in_at", "discord", "display_name", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
       "id", "rsi_handle", "twitch", "updated_at", "username", "youtube",
       "search"
@@ -413,6 +424,10 @@ class User < ApplicationRecord
     return I18n.default_locale if stored.blank?
 
     I18n.available_locales.map(&:to_s).include?(stored) ? stored.to_sym : I18n.default_locale
+  end
+
+  def shown_name
+    display_name.presence || username
   end
 
   def public_hangar_url
@@ -1095,6 +1110,12 @@ class User < ApplicationRecord
 
   private def touch_fleet_memberships
     fleet_memberships.update_all(updated_at: Time.zone.now)
+  end
+
+  private def purge_plaque_pictures
+    vehicles.where(plaque_captain: nil).joins(:plaque_image_attachment).find_each do |vehicle|
+      vehicle.plaque_image.purge_later
+    end
   end
 
   # Through the same job a connection change goes through, so co-members and

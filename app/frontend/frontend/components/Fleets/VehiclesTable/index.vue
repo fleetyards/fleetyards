@@ -239,7 +239,10 @@ const openOwnersModal = (modelSlug: string) => {
           {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
         </Btn>
         <template v-else>
-          {{ (record as VehiclePublic).username }}
+          {{
+            (record as VehiclePublic).userDisplayName ||
+            (record as VehiclePublic).username
+          }}
         </template>
       </template>
       <template #col-modelLength="{ record }">

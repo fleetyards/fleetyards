@@ -9,6 +9,7 @@ module V1
         type: :object,
         properties: {
           username: {type: :string},
+          displayName: {type: :string},
           avatar: ::Shared::V1::Schemas::MediaFile,
           rsiHandle: {type: :string},
           rsiHandleVerified: {type: :boolean},
