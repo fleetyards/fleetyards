@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "Targa di dedica di %{vehicle}",
       "home": "Home",
       "ships": {
         "index": "Navi",

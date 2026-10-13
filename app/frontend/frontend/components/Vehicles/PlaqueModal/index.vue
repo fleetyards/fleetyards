@@ -12,6 +12,7 @@ import { type VehiclePublic } from "@/services/fyApi";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { plaqueShareUrl } from "@/frontend/components/Vehicles/Plaque/shareUrl";
 import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 type Props = {
   vehicle: VehiclePublic;
@@ -35,6 +36,38 @@ const shareUrl = computed(() =>
 // Copying from inside the modal needs a node inside it, or the clipboard gets
 // nothing while reporting success.
 const container = ref<HTMLElement>();
+
+// While it is open the page is the plaque: the title and description name it,
+// as the server's preview of a shared plaque link does, and closing hands the
+// hangar's back.
+const { updateMetaInfo, getCurrentMetaInfo, restoreMetaInfo } = useMetaInfo({
+  custom: true,
+});
+const hangarMeta = getCurrentMetaInfo();
+
+onMounted(() => {
+  updateMetaInfo({
+    title: t("title.vehiclePlaque", {
+      vehicle: props.vehicle.name || props.vehicle.model.name,
+    }),
+    description: props.vehicle.dedication ?? undefined,
+    type: "article",
+  });
+});
+
+const route = useRoute();
+const router = useRouter();
+
+// A plaque opened from a shared link takes the link's `plaque` with it when it
+// closes, so the address is the hangar's again and the hangar names itself.
+onBeforeUnmount(() => {
+  restoreMetaInfo(hangarMeta);
+
+  if (route.query.plaque === props.vehicle.id) {
+    const { plaque: _plaque, ...query } = route.query;
+    void router.replace({ query });
+  }
+});
 
 const { t } = useI18n();
 </script>

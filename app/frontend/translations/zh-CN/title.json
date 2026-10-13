@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "%{vehicle} 的命名铭牌",
       "home": "首页",
       "ships": {
         "index": "舰船",

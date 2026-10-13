@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "Placa de dedicatoria de %{vehicle}",
       "home": "Inicio",
       "ships": {
         "index": "Naves",

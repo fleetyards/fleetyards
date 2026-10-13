@@ -38,6 +38,14 @@ export const usePublicHangarMeta = (
     () => route.name,
     () => setTitle(),
   );
+  // A shared plaque names the page while it is open; when it closes and its
+  // `plaque` leaves the address, the hangar names itself again.
+  watch(
+    () => route.query.plaque,
+    (plaque) => {
+      if (!plaque) setTitle();
+    },
+  );
   watch(
     () => unref(user),
     () => setTitle(),
