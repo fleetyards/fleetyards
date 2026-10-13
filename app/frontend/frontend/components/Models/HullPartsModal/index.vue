@@ -60,7 +60,7 @@ const doorBarWidth = (health: number) =>
 </script>
 
 <template>
-  <Modal :title="t('labels.hull.integrity')">
+  <Modal :title="t('labels.hull.integrity')" fill-body>
     <div class="hull-modal">
       <div class="hull-tiles">
         <div class="hull-tiles__item hull-tiles__item--primary">
@@ -320,14 +320,12 @@ const doorBarWidth = (health: number) =>
   border-bottom: 1px solid rgba($gray-light, 0.28);
 }
 
-// The modal body is itself a scroll container, so an inner scroller with its
-// own max-height gives two nested scrollbars. Capping this wrapper at the same
-// height instead means the body never needs to scroll and only the part list
-// does.
+// Shrinks to the modal body rather than overflowing it, so the body never
+// scrolls and only the part list does - two nested scrollbars otherwise.
 .hull-modal {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 15rem);
+  min-height: 0;
 }
 
 .parts-scroll {
