@@ -29,7 +29,7 @@ const { share } = usePublicHangarShare();
 
 const shareUrl = computed(() =>
   props.username
-    ? plaqueShareUrl(props.username, props.vehicle.id, share.value)
+    ? plaqueShareUrl(props.username, props.vehicle, share.value)
     : undefined,
 );
 
@@ -67,7 +67,7 @@ const router = useRouter();
 onBeforeUnmount(() => {
   restoreMetaInfo(hangarMeta);
 
-  if (route.query.plaque === props.vehicle.id) {
+  if (route.query.plaque) {
     const { plaque: _plaque, ...query } = route.query;
     void router.replace({ query });
   }

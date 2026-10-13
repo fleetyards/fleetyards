@@ -34,7 +34,11 @@ const { currentUser } = storeToRefs(useSessionStore());
 // hangar.
 const shareUrl = computed(() =>
   props.vehicle.public && currentUser?.value?.publicHangar
-    ? plaqueShareUrl(currentUser.value.username, props.vehicle.id)
+    ? plaqueShareUrl(currentUser.value.username, {
+        id: props.vehicle.id,
+        name: props.vehicle.nameVisible ? props.vehicle.name : undefined,
+        serial: props.vehicle.nameVisible ? props.vehicle.serial : undefined,
+      })
     : undefined,
 );
 

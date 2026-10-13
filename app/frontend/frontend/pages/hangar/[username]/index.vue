@@ -92,6 +92,8 @@ const { share, shareQuery } = usePublicHangarShare();
 
 // A shared plaque link opens the hangar with that ship's plaque on top. The
 // ship is fetched on its own: it need not be on the page the list shows.
+// The ship's address, as its pages use it: the id, or the serial and name
+// where its owner shows them.
 const plaqueId = computed(() =>
   typeof route.query.plaque === "string" ? route.query.plaque : "",
 );
