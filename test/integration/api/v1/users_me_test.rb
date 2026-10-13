@@ -153,6 +153,15 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /users/me says whether the user is a maintainer" do
+    user = create(:user, maintainer: true)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert parsed_body["maintainer"]
+    end
+  end
+
   test "GET /users/me returns 401 when not signed in" do
     assert_api_response :get, 401
   end

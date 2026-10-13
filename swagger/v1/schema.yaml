@@ -39289,6 +39289,8 @@ components:
           type: boolean
         supporter:
           type: boolean
+        maintainer:
+          type: boolean
         supporterTier:
           type: integer
         supporterRecurring:
@@ -39342,6 +39344,7 @@ components:
       - tracking
       - showOnlineStatus
       - supporter
+      - maintainer
       - supporterTier
       - supporterRecurring
       - twoFactorRequired
@@ -39476,6 +39479,8 @@ components:
           type: boolean
         supporter:
           type: boolean
+        maintainer:
+          type: boolean
         supporterTier:
           type: integer
         supporterRecurring:
@@ -39491,6 +39496,7 @@ components:
       - hangarDefaultSort
       - publicWishlist
       - supporter
+      - maintainer
       - supporterTier
       - supporterRecurring
       title: UserPublic

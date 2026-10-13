@@ -42,6 +42,7 @@ json.tracking user.tracking
 json.show_online_status user.show_online_status
 
 json.supporter user.supporter?
+json.maintainer user.maintainer?
 json.supporter_tier user.supporter_tier
 json.supporter_recurring user.supporter_recurring?
 supporter_until = user.supporter_until

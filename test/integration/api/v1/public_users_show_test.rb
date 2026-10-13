@@ -44,6 +44,15 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/users/:username flags a maintainer" do
+    user = create(:user, :public_hangar, maintainer: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal true, parsed_body["maintainer"]
+      assert_equal 3, parsed_body["supporterTier"]
+    end
+  end
+
   # Anonymity keeps a contribution off the supporters page by name; it is not a
   # secret about whether somebody supports, so the badge is unaffected.
   test "GET /public/users/:username flags an anonymous supporter too" do

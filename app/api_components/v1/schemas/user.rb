@@ -41,6 +41,7 @@ module V1
           tracking: {type: :boolean},
           showOnlineStatus: {type: :boolean},
           supporter: {type: :boolean},
+          maintainer: {type: :boolean},
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean},
           supporterUntil: {type: :string, format: :date},
@@ -58,7 +59,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter supporterTier supporterRecurring
+          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })
