@@ -1,5 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { defineRule } from "vee-validate";
+import { max } from "@vee-validate/rules";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import { type Vehicle } from "@/services/fyApi";
@@ -67,6 +69,11 @@ const styleTile = (wrapper: Awaited<ReturnType<typeof mount>>, style: string) =>
   wrapper.find(`[data-test="vehicle-plaque-style-${style}"]`);
 
 describe("VehiclePlaqueEditModal", () => {
+  // The app registers its rules globally; a spec mounts the form without them.
+  beforeAll(() => {
+    defineRule("max", max);
+  });
+
   it("previews every style on a page of its own", async () => {
     const wrapper = await mount(true);
     await openStyles(wrapper);
