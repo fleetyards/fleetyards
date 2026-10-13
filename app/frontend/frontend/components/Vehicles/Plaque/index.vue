@@ -76,9 +76,13 @@ const credits = computed(() =>
     ...group,
     heading:
       group.role === "operations"
-        ? OPERATIONS_GROUPS[
-            props.vehicle.operationsGroup ?? DEFAULT_OPERATIONS_GROUP
-          ].heading
+        ? // A group a newer server knows and this bundle does not reads as
+          // the default rather than breaking the plaque.
+          (
+            OPERATIONS_GROUPS[
+              props.vehicle.operationsGroup ?? DEFAULT_OPERATIONS_GROUP
+            ] ?? OPERATIONS_GROUPS[DEFAULT_OPERATIONS_GROUP]
+          ).heading
         : t(`texts.vehiclePlaque.credits.${group.role}`, {
             manufacturer: builder.value,
           }),

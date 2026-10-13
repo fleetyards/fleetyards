@@ -105,10 +105,16 @@ const { data: plaqueVehicle } = usePublicHangarVehicle(
 
 const comlink = useComlink();
 
+// Once per link: a refetch hands back a new object, which must not reopen a
+// plaque the visitor already closed.
+const openedPlaque = ref<string>();
+
 watch(plaqueVehicle, (vehicle) => {
-  if (!vehicle?.dedication) {
+  if (!vehicle?.dedication || openedPlaque.value === vehicle.id) {
     return;
   }
+
+  openedPlaque.value = vehicle.id;
 
   comlink.emit("open-modal", {
     component: () =>

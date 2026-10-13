@@ -89,6 +89,10 @@ export const downloadPlaque = async (
 
 // The plaque on a dark card of the size link previews use, for a shared link.
 export const plaqueSocialImage = async (element: HTMLElement) => {
+  if (!element.offsetWidth) {
+    throw new Error("The plaque is not laid out");
+  }
+
   const plaque = await loadImage(
     await capturePlaque(element, PREVIEW_WIDTH / element.offsetWidth),
   );
