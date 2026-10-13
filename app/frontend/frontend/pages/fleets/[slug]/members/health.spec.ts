@@ -158,6 +158,15 @@ const mount = async (query: Record<string, string> = {}) => {
 
 type Subject = Awaited<ReturnType<typeof mount>>;
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
 const check = (subject: Subject, key: string) =>
   subject.find(`[data-test='health-${key}']`);
 
@@ -173,6 +182,7 @@ describe("FleetMembersHealthPage", () => {
     health = healthWith();
     asked.length = 0;
     refetch.mockClear();
+    setViewport(false);
   });
 
   it("checks again when another officer changes a membership", async () => {
@@ -562,5 +572,66 @@ describe("FleetMembersHealthPage", () => {
 
     expect(row.find("[data-test='health-revoke']").exists()).toBe(true);
     expect(row.find("[data-test='health-remove']").exists()).toBe(false);
+  });
+
+  describe("on a phone", () => {
+    beforeEach(() => {
+      setViewport(true);
+    });
+
+    it("folds a member's actions into one menu", async () => {
+      health = healthWith({
+        membersWithoutSquadron: section([member("ward")]),
+      });
+
+      const subject = await mount();
+      const row = subject.find("[data-test='health-noSquadron-ward']");
+
+      expect(row.find("[data-test='health-actions-menu']").exists()).toBe(true);
+      expect(row.find("[data-test='health-add-to-squadron']").exists()).toBe(
+        false,
+      );
+    });
+
+    // The menu is teleported to the body and always rendered, and earlier
+    // specs leave theirs behind: this mount's row is the one that was not
+    // there before, and the click is what makes its menu visible.
+    it("names the squadron on each add-to-squadron row", async () => {
+      health = healthWith({
+        membersWithoutSquadron: section([member("ward")]),
+      });
+
+      const rows = () =>
+        document.body.querySelectorAll(
+          "[data-test='health-add-to-squadron-alpha']",
+        );
+      const before = rows().length;
+      const subject = await mount();
+
+      try {
+        await subject
+          .find(
+            "[data-test='health-noSquadron-ward'] [data-test='health-actions-menu'] button",
+          )
+          .trigger("click");
+
+        const row = [...rows()].at(-1);
+
+        expect(rows()).toHaveLength(before + 1);
+        expect(row?.closest(".btn-menu--visible")).not.toBeNull();
+        expect(row?.textContent?.trim()).toBe("Add to Alpha Wing");
+      } finally {
+        subject.unmount();
+      }
+    });
+
+    it("swaps the day segments for a menu", async () => {
+      const subject = await mount();
+
+      expect(subject.find("[data-test='health-days-menu']").exists()).toBe(
+        true,
+      );
+      expect(subject.find("[data-test='health-days-30']").exists()).toBe(false);
+    });
   });
 });

@@ -315,6 +315,7 @@
             "deleteLink": "删除链接",
             "promoteTo": "提升为 %{role}",
             "addToSquadron": "加入中队",
+            "addToNamedSquadron": "加入%{squadron}",
             "addMembers": "添加成员",
             "deleteSquadron": "解散",
             "remind": "提醒验证"

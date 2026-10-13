@@ -13,6 +13,7 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobileStore } from "@/shared/stores/mobile";
 import { useSessionStore } from "@/frontend/stores/session";
 import {
   useAcceptFleetMember,
@@ -112,6 +113,10 @@ const allowed = computed(() => {
 const shown = (action: MemberHealthAction) =>
   props.actions.includes(action) && allowed.value[action];
 
+// Read, not watched: the page keeps the flag current, and a resize listener
+// per row would be one per member on a long list.
+const { mobile } = storeToRefs(useMobileStore());
+
 const busy = ref(false);
 
 const variables = computed(() => ({
@@ -205,162 +210,247 @@ const addToSquadron = (squadron: FleetSquadron) =>
       data: { username: props.member.username },
     }),
   );
+
+type ButtonEntry = {
+  kind: "button";
+  key: string;
+  icon: string;
+  label: string;
+  onClick: () => unknown;
+  disabled: boolean;
+  loading?: boolean;
+  danger?: boolean;
+};
+
+type Entry = ButtonEntry | { kind: "squadrons" } | { kind: "contact" };
+
+// One list in the order both layouts show it: the toolbar draws each entry as
+// an icon, the phone menu as a labelled row.
+const entries = computed<Entry[]>(() => {
+  const list: Entry[] = [];
+  const button = (
+    entry: Omit<ButtonEntry, "kind" | "disabled"> & { disabled?: boolean },
+  ) => list.push({ kind: "button", disabled: busy.value, ...entry });
+
+  if (shown("answer")) {
+    button({
+      key: "accept",
+      icon: "fa-check",
+      label: t("actions.fleet.members.accept"),
+      onClick: accept,
+      loading: busy.value,
+    });
+    button({
+      key: "decline",
+      icon: "fa-xmark",
+      label: t("actions.fleet.members.decline"),
+      onClick: decline,
+    });
+  }
+  if (shown("promote")) {
+    button({
+      key: "promote",
+      icon: "fa-chevron-up",
+      label: promoteLabel.value,
+      onClick: promote,
+    });
+  }
+  if (shown("addToSquadron")) list.push({ kind: "squadrons" });
+  if (shown("remind")) {
+    button({
+      key: "remind",
+      icon: "fa-bell",
+      label: remindLabel.value,
+      onClick: remind,
+      disabled: busy.value || remindedRecently.value,
+    });
+  }
+  if (shown("contact")) list.push({ kind: "contact" });
+  if (shown("demote")) {
+    button({
+      key: "demote",
+      icon: "fa-chevron-down",
+      label: t("actions.fleet.members.demote"),
+      onClick: demote,
+    });
+  }
+  if (shown("revoke")) {
+    button({
+      key: "revoke",
+      icon: "fa-user-xmark",
+      label: t("actions.fleet.members.health.revoke"),
+      onClick: revoke,
+    });
+  }
+  if (shown("remove")) {
+    button({
+      key: "remove",
+      icon: "fa-user-minus",
+      label: t("actions.fleet.members.health.remove"),
+      onClick: remove,
+      danger: true,
+    });
+  }
+
+  return list;
+});
+
+const entryKey = (entry: Entry) =>
+  entry.kind === "button" ? entry.key : entry.kind;
 </script>
 
 <template>
-  <!-- Icons with their names as tooltips: a row keeps its actions on its own
-       line in a half-width column, where labelled buttons wrapped under it. -->
-  <BtnGroup>
-    <template v-if="shown('answer')">
+  <!-- A phone has no hover for the tooltips and no room for the row of icons,
+       so every action is one labelled entry in a menu. The squadron and
+       contact choices are spread out flat, because a menu cannot open a
+       second one. -->
+  <BtnDropdown
+    v-if="mobile && entries.length"
+    :size="BtnSizesEnum.SM"
+    expand-left
+    data-test="health-actions-menu"
+  >
+    <template v-for="entry in entries" :key="entryKey(entry)">
       <Btn
-        v-tooltip="t('actions.fleet.members.accept')"
-        :aria-label="t('actions.fleet.members.accept')"
-        :size="BtnSizesEnum.SM"
-        :loading="busy"
-        :disabled="busy"
-        data-test="health-accept"
-        @click="accept"
+        v-if="entry.kind === 'button'"
+        :tone="entry.danger ? BtnTonesEnum.DANGER : undefined"
+        :loading="entry.loading"
+        :disabled="entry.disabled"
+        :data-test="`health-${entry.key}`"
+        @click="entry.onClick"
       >
-        <i class="fa-light fa-check" />
+        <i :class="['fa-light', entry.icon]" />
+        <span>{{ entry.label }}</span>
       </Btn>
-      <Btn
-        v-tooltip="t('actions.fleet.members.decline')"
-        :aria-label="t('actions.fleet.members.decline')"
-        :size="BtnSizesEnum.SM"
-        :disabled="busy"
-        data-test="health-decline"
-        @click="decline"
-      >
-        <i class="fa-light fa-xmark" />
-      </Btn>
-    </template>
-    <Btn
-      v-if="shown('promote')"
-      v-tooltip="promoteLabel"
-      :aria-label="promoteLabel"
-      :size="BtnSizesEnum.SM"
-      :disabled="busy"
-      data-test="health-promote"
-      @click="promote"
-    >
-      <i class="fa-light fa-chevron-up" />
-    </Btn>
-    <BtnDropdown
-      v-if="shown('addToSquadron')"
-      :size="BtnSizesEnum.SM"
-      expand-left
-      expand-bottom
-      data-test="health-add-to-squadron"
-    >
-      <template #trigger="{ toggle, visible }">
+      <template v-else-if="entry.kind === 'squadrons'">
         <Btn
-          v-tooltip="t('actions.fleet.members.health.addToSquadron')"
-          :aria-label="t('actions.fleet.members.health.addToSquadron')"
-          :size="BtnSizesEnum.SM"
-          :active="visible"
-          aria-haspopup="menu"
-          :aria-expanded="visible"
-          @click="toggle"
+          v-for="squadron in squadrons"
+          :key="squadron.id"
+          :disabled="busy"
+          :data-test="`health-add-to-squadron-${squadron.slug}`"
+          @click="addToSquadron(squadron)"
         >
           <i class="fa-light fa-users-medical" />
+          <span>
+            {{
+              t("actions.fleet.members.health.addToNamedSquadron", {
+                squadron: squadron.name,
+              })
+            }}
+          </span>
         </Btn>
       </template>
-      <Btn
-        v-for="squadron in squadrons"
-        :key="squadron.id"
-        :size="BtnSizesEnum.SM"
-        :disabled="busy"
-        :data-test="`health-add-to-squadron-${squadron.slug}`"
-        @click="addToSquadron(squadron)"
-      >
-        {{ squadron.name }}
-      </Btn>
-    </BtnDropdown>
-    <Btn
-      v-if="shown('remind')"
-      v-tooltip="remindLabel"
-      :aria-label="remindLabel"
-      :size="BtnSizesEnum.SM"
-      :disabled="busy || remindedRecently"
-      data-test="health-remind"
-      @click="remind"
-    >
-      <i class="fa-light fa-bell" />
-    </Btn>
-    <BtnDropdown
-      v-if="shown('contact')"
-      :size="BtnSizesEnum.SM"
-      expand-left
-      expand-bottom
-      data-test="health-contact"
-    >
-      <template #trigger="{ toggle, visible }">
+      <template v-else>
         <Btn
-          v-tooltip="t('labels.fleet.members.contact')"
-          :aria-label="t('labels.fleet.members.contact')"
-          :size="BtnSizesEnum.SM"
-          :active="visible"
-          aria-haspopup="menu"
-          :aria-expanded="visible"
-          @click="toggle"
+          v-if="spectrumDmUrl"
+          :href="spectrumDmUrl"
+          target="_blank"
+          data-test="health-contact-spectrum"
         >
-          <i class="fa-light fa-message" />
+          <i class="icon icon-rsi" />
+          <span>{{ t("labels.fleet.members.spectrumDm") }}</span>
+        </Btn>
+        <Btn
+          v-if="contact.discordProfileUrl"
+          :href="contact.discordProfileUrl"
+          target="_blank"
+          data-test="health-contact-discord"
+        >
+          <i class="fa-brands fa-discord" />
+          <span>{{ t("labels.fleet.members.discordContact") }}</span>
         </Btn>
       </template>
+    </template>
+  </BtnDropdown>
+  <!-- Icons with their names as tooltips: a row keeps its actions on its own
+       line in a half-width column, where labelled buttons wrapped under it. -->
+  <BtnGroup v-else-if="!mobile && entries.length">
+    <template v-for="entry in entries" :key="entryKey(entry)">
       <Btn
-        v-if="spectrumDmUrl"
+        v-if="entry.kind === 'button'"
+        v-tooltip="entry.label"
+        :aria-label="entry.label"
         :size="BtnSizesEnum.SM"
-        :href="spectrumDmUrl"
-        target="_blank"
-        data-test="health-contact-spectrum"
+        :tone="entry.danger ? BtnTonesEnum.DANGER : undefined"
+        :loading="entry.loading"
+        :disabled="entry.disabled"
+        :data-test="`health-${entry.key}`"
+        @click="entry.onClick"
       >
-        <i class="icon icon-rsi" />
-        <span>{{ t("labels.fleet.members.spectrumDm") }}</span>
+        <i :class="['fa-light', entry.icon]" />
       </Btn>
-      <Btn
-        v-if="contact.discordProfileUrl"
+      <BtnDropdown
+        v-else-if="entry.kind === 'squadrons'"
         :size="BtnSizesEnum.SM"
-        :href="contact.discordProfileUrl"
-        target="_blank"
-        data-test="health-contact-discord"
+        expand-left
+        expand-bottom
+        data-test="health-add-to-squadron"
       >
-        <i class="fa-brands fa-discord" />
-        <span>{{ t("labels.fleet.members.discordContact") }}</span>
-      </Btn>
-    </BtnDropdown>
-    <Btn
-      v-if="shown('demote')"
-      v-tooltip="t('actions.fleet.members.demote')"
-      :aria-label="t('actions.fleet.members.demote')"
-      :size="BtnSizesEnum.SM"
-      :disabled="busy"
-      data-test="health-demote"
-      @click="demote"
-    >
-      <i class="fa-light fa-chevron-down" />
-    </Btn>
-    <Btn
-      v-if="shown('revoke')"
-      v-tooltip="t('actions.fleet.members.health.revoke')"
-      :aria-label="t('actions.fleet.members.health.revoke')"
-      :size="BtnSizesEnum.SM"
-      :disabled="busy"
-      data-test="health-revoke"
-      @click="revoke"
-    >
-      <i class="fa-light fa-user-xmark" />
-    </Btn>
-    <Btn
-      v-if="shown('remove')"
-      v-tooltip="t('actions.fleet.members.health.remove')"
-      :aria-label="t('actions.fleet.members.health.remove')"
-      :size="BtnSizesEnum.SM"
-      :tone="BtnTonesEnum.DANGER"
-      :disabled="busy"
-      data-test="health-remove"
-      @click="remove"
-    >
-      <i class="fa-light fa-user-minus" />
-    </Btn>
+        <template #trigger="{ toggle, visible }">
+          <Btn
+            v-tooltip="t('actions.fleet.members.health.addToSquadron')"
+            :aria-label="t('actions.fleet.members.health.addToSquadron')"
+            :size="BtnSizesEnum.SM"
+            :active="visible"
+            aria-haspopup="menu"
+            :aria-expanded="visible"
+            @click="toggle"
+          >
+            <i class="fa-light fa-users-medical" />
+          </Btn>
+        </template>
+        <Btn
+          v-for="squadron in squadrons"
+          :key="squadron.id"
+          :size="BtnSizesEnum.SM"
+          :disabled="busy"
+          :data-test="`health-add-to-squadron-${squadron.slug}`"
+          @click="addToSquadron(squadron)"
+        >
+          {{ squadron.name }}
+        </Btn>
+      </BtnDropdown>
+      <BtnDropdown
+        v-else
+        :size="BtnSizesEnum.SM"
+        expand-left
+        expand-bottom
+        data-test="health-contact"
+      >
+        <template #trigger="{ toggle, visible }">
+          <Btn
+            v-tooltip="t('labels.fleet.members.contact')"
+            :aria-label="t('labels.fleet.members.contact')"
+            :size="BtnSizesEnum.SM"
+            :active="visible"
+            aria-haspopup="menu"
+            :aria-expanded="visible"
+            @click="toggle"
+          >
+            <i class="fa-light fa-message" />
+          </Btn>
+        </template>
+        <Btn
+          v-if="spectrumDmUrl"
+          :size="BtnSizesEnum.SM"
+          :href="spectrumDmUrl"
+          target="_blank"
+          data-test="health-contact-spectrum"
+        >
+          <i class="icon icon-rsi" />
+          <span>{{ t("labels.fleet.members.spectrumDm") }}</span>
+        </Btn>
+        <Btn
+          v-if="contact.discordProfileUrl"
+          :size="BtnSizesEnum.SM"
+          :href="contact.discordProfileUrl"
+          target="_blank"
+          data-test="health-contact-discord"
+        >
+          <i class="fa-brands fa-discord" />
+          <span>{{ t("labels.fleet.members.discordContact") }}</span>
+        </Btn>
+      </BtnDropdown>
+    </template>
   </BtnGroup>
 </template>
