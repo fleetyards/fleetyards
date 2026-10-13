@@ -37,7 +37,7 @@ module Notifications
       fixed = "#{model.frontend_url}\n#{HASHTAG}"
       return unless platform.fits?(fixed)
 
-      prefix = "New ship added to FleetYards: #{model.manufacturer.name} #{model.name}"
+      prefix = "#{model.manufacturer.name} #{model.name} is now on FleetYards"
       budget = platform.limit - platform.length(fixed) - 1
       text = "#{platform.truncate(prefix, to: budget)}\n#{fixed}"
 

@@ -16,7 +16,7 @@ module Notifications
     end
 
     def expected_text
-      "New ship added to FleetYards: #{@model.manufacturer.name} #{@model.name}\n#{@model.frontend_url}\n#starcitizen"
+      "#{@model.manufacturer.name} #{@model.name} is now on FleetYards\n#{@model.frontend_url}\n#starcitizen"
     end
 
     test "#perform sends discord notification and marks model as notified" do
