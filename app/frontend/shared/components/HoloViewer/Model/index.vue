@@ -1,14 +1,32 @@
 <!-- eslint-disable import/no-self-import -->
 <script lang="ts">
+import { DRACOLoader as SharedDracoLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+
+// One decoder for every holo. Each DRACOLoader keeps its own worker pool, each
+// worker with its own copy of the wasm decoder, and nothing disposes one -- a
+// loader per mount piled them up with every open of the 3D view and every
+// flight/landed switch, which a phone does not survive for long.
+let dracoLoader: SharedDracoLoader | undefined;
+
+const sharedDracoLoader = () => {
+  dracoLoader ??= new SharedDracoLoader()
+    .setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/")
+    .setWorkerLimit(1);
+
+  return dracoLoader;
+};
+
 export default {
   name: "HoloViewerModel",
 };
 </script>
 
 <script setup lang="ts">
-import { useGLTF } from "@tresjs/cientos";
+import { useLoader } from "@tresjs/core";
 import {
+  type Material,
   type Mesh,
+  type Texture,
   DoubleSide,
   FrontSide,
   Box3,
@@ -18,6 +36,7 @@ import {
   MeshLambertMaterial,
   DefaultLoadingManager,
 } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -37,34 +56,60 @@ const props = withDefaults(defineProps<Props>(), {
   windowColor: "#1d3d59",
 });
 
-const setMaterials = (scene: Group) => {
-  const side = props.mobile ? FrontSide : DoubleSide;
-  const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
+// One pair for the whole holo, made once: a colour change recolours them
+// rather than handing every mesh a fresh pair and leaving the old ones on the
+// GPU.
+const side = props.mobile ? FrontSide : DoubleSide;
+const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
 
-  const material = new MaterialClass({
-    color: props.color,
-    side,
-  });
+const material = new MaterialClass({
+  color: props.color,
+  side,
+});
 
-  const windowMaterial = new MaterialClass({
-    color: props.windowColor,
-    opacity: 0.8,
-    transparent: true,
-    side,
-  });
+const windowMaterial = new MaterialClass({
+  color: props.windowColor,
+  opacity: 0.8,
+  transparent: true,
+  side,
+});
 
-  const windowRefs = ["window", "glass"];
+const windowRefs = ["window", "glass"];
 
-  scene.traverse((node) => {
-    if (!(node as Mesh).isMesh) return;
+// The export's own materials and their textures are replaced on load, and
+// nothing else holds them.
+const disposeOriginal = (original: Material | Material[]) => {
+  for (const entry of Array.isArray(original) ? original : [original]) {
+    if (entry === material || entry === windowMaterial) continue;
 
-    if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
-      (node as Mesh).material = windowMaterial;
-    } else {
-      (node as Mesh).material = material;
+    for (const value of Object.values(entry)) {
+      if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
     }
+
+    entry.dispose();
+  }
+};
+
+const setMaterials = (scene: Group) => {
+  scene.traverse((node) => {
+    const mesh = node as Mesh;
+
+    if (!mesh.isMesh) return;
+
+    disposeOriginal(mesh.material);
+
+    mesh.material = windowRefs.some((item) =>
+      node.name.toLowerCase().includes(item),
+    )
+      ? windowMaterial
+      : material;
   });
 };
+
+onUnmounted(() => {
+  material.dispose();
+  windowMaterial.dispose();
+});
 
 const emit = defineEmits(["loaded", "error", "progress"]);
 
@@ -77,9 +122,12 @@ DefaultLoadingManager.onError = (error) => {
   console.error("Error loading GLTF model", error);
 };
 
-const { state } = useGLTF(props.model.path, {
-  draco: true,
-  decoderPath: "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+const { state } = useLoader(GLTFLoader, props.model.path, {
+  extensions: (loader) => {
+    if (loader instanceof GLTFLoader) {
+      loader.setDRACOLoader(sharedDracoLoader());
+    }
+  },
 });
 
 const setup = (scene: Group) => {
@@ -117,10 +165,8 @@ watch(
 
 watch(
   () => props.color,
-  () => {
-    if (state.value) {
-      setMaterials(state.value.scene);
-    }
+  (color) => {
+    material.color.set(color);
   },
 );
 </script>
