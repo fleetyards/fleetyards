@@ -8,8 +8,6 @@ module Notifications
   class NewModelJob < Notifications::BaseJob
     HASHTAG = "#starcitizen"
 
-    THUMB_VARIANT = {format: :jpeg, resize_to_limit: [1000, 1000], saver: {quality: 80}}.freeze
-
     def perform(model_id)
       model = Model.find(model_id)
       return if model.notified? || model.hidden?
@@ -45,20 +43,25 @@ module Notifications
     end
 
     private def link_card(model)
+      image, content_type = thumb(model)
+
       ::Bsky::Post::LinkCard.new(
         uri: model.frontend_url,
         title: "#{model.manufacturer.name} #{model.name}",
         description: model.description.to_s.truncate(300),
-        image: thumb(model),
-        content_type: "image/jpeg"
+        image:,
+        content_type:
       )
     end
 
-    # The card is posted without a picture rather than not at all.
+    # The representation every store image already has preprocessed, so the
+    # job builds nothing new. The card is posted without a picture rather than
+    # not at all.
     private def thumb(model)
       return unless model.store_image.attached?
 
-      model.store_image.variant(THUMB_VARIANT).processed.download
+      variant = model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]).processed
+      [variant.download, variant.image.content_type]
     rescue => e
       Appsignal.report_error(e)
       nil

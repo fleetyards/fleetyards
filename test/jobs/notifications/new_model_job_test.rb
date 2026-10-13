@@ -52,8 +52,8 @@ module Notifications
         client.expects(:create).with { |_text, link_card:|
           link_card.uri == @model.frontend_url &&
             link_card.title == "#{@model.manufacturer.name} #{@model.name}" &&
-            link_card.content_type == "image/jpeg" &&
-            Marcel::MimeType.for(StringIO.new(link_card.image)) == "image/jpeg"
+            link_card.content_type == "image/webp" &&
+            Marcel::MimeType.for(StringIO.new(link_card.image)) == "image/webp"
         }
       })
 
