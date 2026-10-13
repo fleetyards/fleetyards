@@ -374,6 +374,7 @@ defineExpose({
       :shadows="!mobile"
       :dpr="dpr"
       :power-preference="powerPreference"
+      :antialias="!mobile"
       alpha
       :on-error="handleRenderError"
     >
