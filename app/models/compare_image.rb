@@ -85,7 +85,10 @@ class CompareImage < ApplicationRecord
     image.attach(
       io: StringIO.new(buffer),
       filename: "#{slug_set}.jpg",
-      content_type: "image/jpeg"
+      content_type: "image/jpeg",
+      # Known from the canvas, so the link preview that generated it can state
+      # its size without waiting for the analysis job.
+      metadata: {analyzed: true, width: CANVAS_WIDTH, height: CANVAS_HEIGHT}
     )
     save!
   rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid

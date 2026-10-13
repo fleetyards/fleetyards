@@ -77,6 +77,12 @@ class CompareImageTest < ActiveSupport::TestCase
     assert record.image.attached?
   end
 
+  test "records the composite's size, so a link preview can state it at once" do
+    record = CompareImage.for([create_model_with_store_image("rsi-constellation-andromeda"), create_model_with_store_image("aegs-gladius")])
+
+    assert_equal [CompareImage::CANVAS_WIDTH, CompareImage::CANVAS_HEIGHT], record.image.metadata.values_at(:width, :height)
+  end
+
   test "attaches nothing when every store image file is gone" do
     first = create_model_with_store_image("rsi-constellation-andromeda")
     second = create_model_with_store_image("aegs-gladius")
