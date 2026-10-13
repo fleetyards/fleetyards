@@ -231,6 +231,7 @@ const onSubmit = handleSubmit(async (values) => {
   <SupporterStatus
     v-if="sessionStore.currentUser?.supporter"
     :supporter="sessionStore.currentUser?.supporter"
+    :maintainer="sessionStore.currentUser?.maintainer"
     :supporter-tier="sessionStore.currentUser?.supporterTier"
     :supporter-recurring="sessionStore.currentUser?.supporterRecurring"
     :supporter-until="sessionStore.currentUser?.supporterUntil"

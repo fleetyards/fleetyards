@@ -10,6 +10,7 @@ import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import ContactLinks from "@/frontend/components/StatsCard/ContactLinks/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
+import { SUPPORTER_TOP_TIER } from "@/shared/components/SupporterBadge/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type StatsCardStatus } from "@/frontend/components/StatsCard/types";
 import { type UserPublic } from "@/services/fyApi";
@@ -77,13 +78,26 @@ const discordUrl = computed(() =>
              and the corner mirrors the presence dot's. -->
         <span
           v-if="user.supporter"
-          v-tooltip="t('labels.supporter.tooltip')"
-          :aria-label="t('labels.supporter.badge')"
+          v-tooltip="
+            user.maintainer
+              ? t('labels.maintainer.tooltip')
+              : t('labels.supporter.tooltip')
+          "
+          :aria-label="
+            user.maintainer
+              ? t('labels.maintainer.badge')
+              : t('labels.supporter.badge')
+          "
           role="img"
           class="user-card__supporter"
         >
           <SupporterBadge
-            v-if="user.supporterTier"
+            v-if="user.maintainer"
+            :tier="SUPPORTER_TOP_TIER"
+            :size="20"
+          />
+          <SupporterBadge
+            v-else-if="user.supporterTier"
             :tier="user.supporterTier"
             :size="20"
           />

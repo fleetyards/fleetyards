@@ -145,6 +145,10 @@
         "all": "Todas",
         "empty": "No hay imágenes disponibles."
       },
+      "maintainer": {
+        "badge": "Mantenedor",
+        "tooltip": "Mantiene FleetYards.net"
+      },
       "supporter": {
         "badge": "Patrocinador",
         "tooltip": "Apoya a FleetYards.net este mes",
