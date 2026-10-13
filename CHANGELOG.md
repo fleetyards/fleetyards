@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.4.0](https://github.com/fleetyards/fleetyards/compare/v9.3.2...v9.4.0) (2026-10-13)
+
+
+### Features
+
+* **compare:** show counts as differences against the baseline ([#5669](https://github.com/fleetyards/fleetyards/issues/5669)) ([a212779](https://github.com/fleetyards/fleetyards/commit/a21277944deb71c0fd5628f0fddd0357ca5dabec))
+* display name for the public hangar, plaque and fleet roster ([#5665](https://github.com/fleetyards/fleetyards/issues/5665)) ([50cce8f](https://github.com/fleetyards/fleetyards/commit/50cce8f797a58dc0c29df0ad2638671a57fd2dcd))
+* **hangar:** keep a lapsed supporter's plaque style until it is edited ([#5666](https://github.com/fleetyards/fleetyards/issues/5666)) ([a90cdfa](https://github.com/fleetyards/fleetyards/commit/a90cdfa47f3c2f4170b08c89d3e68cf6bb9b947a))
+* **hangar:** pick the plaque launch date in the in-game year ([#5670](https://github.com/fleetyards/fleetyards/issues/5670)) ([2d67bbb](https://github.com/fleetyards/fleetyards/commit/2d67bbb16925a4a5b2dcaebf4aface2e43c5db8a))
+* **hangar:** refresh the guide and add an example ship for empty hangars ([#5668](https://github.com/fleetyards/fleetyards/issues/5668)) ([d05f80f](https://github.com/fleetyards/fleetyards/commit/d05f80f015ef9d8d811b2ede82dccfab3bb8a1fe))
+
+
+### Bug Fixes
+
+* **admin:** report fleetchart views still processing after a folder upload ([#5663](https://github.com/fleetyards/fleetyards/issues/5663)) ([ede6951](https://github.com/fleetyards/fleetyards/commit/ede695182234a59246663fe6900d816bba9f1540))
+
 ## [9.3.2](https://github.com/fleetyards/fleetyards/compare/v9.3.1...v9.3.2) (2026-10-13)
 
 
