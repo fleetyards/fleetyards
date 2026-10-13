@@ -39,48 +39,85 @@ const downloading = ref(false);
 
 // Safari opens the share sheet only right after a tap, and drawing the plaque
 // can take longer than that. A refused share keeps the picture, and the next
-// tap shares it at once.
+// tap shares it at once; a change to the plaque drops it again.
 const ready = ref<File>();
 
+let observer: MutationObserver | undefined;
+
+const keep = (file?: File) => {
+  observer?.disconnect();
+  observer = undefined;
+  ready.value = file;
+
+  const element = file && document.getElementById(props.element);
+  if (!element) {
+    return;
+  }
+
+  observer = new MutationObserver(() => keep());
+  observer.observe(element, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    characterData: true,
+  });
+};
+
+watch(
+  () => [props.element, props.filename],
+  () => keep(),
+);
+
+onBeforeUnmount(() => keep());
+
+const isDomError = (error: unknown, name: string) =>
+  error instanceof DOMException && error.name === name;
+
 const save = async (file: File) => {
+  const retry = ready.value === file;
+
   try {
     await savePlaque(file);
-    ready.value = undefined;
+    keep();
   } catch (error) {
-    if (error instanceof DOMException && error.name === "NotAllowedError") {
-      ready.value = file;
-    } else if (!(
-      error instanceof DOMException && error.name === "AbortError"
-    )) {
-      ready.value = undefined;
-      displayAlert({ text: t("messages.vehiclePlaque.downloadFailure") });
+    if (isDomError(error, "NotAllowedError") && !retry) {
+      keep(file);
+    } else {
+      keep();
+      if (!isDomError(error, "AbortError")) {
+        displayAlert({ text: t("messages.vehiclePlaque.downloadFailure") });
+      }
     }
   }
 };
 
 const download = async () => {
-  if (ready.value) {
-    await save(ready.value);
-    return;
-  }
-
-  const element = document.getElementById(props.element);
-  if (!element) {
+  if (downloading.value) {
     return;
   }
 
   downloading.value = true;
 
-  const file = await plaqueFile(element, props.filename)
-    .catch(() => {
+  try {
+    if (ready.value) {
+      await save(ready.value);
+      return;
+    }
+
+    const element = document.getElementById(props.element);
+    if (!element) {
+      return;
+    }
+
+    const file = await plaqueFile(element, props.filename).catch(() => {
       displayAlert({ text: t("messages.vehiclePlaque.downloadFailure") });
-    })
-    .finally(() => {
-      downloading.value = false;
     });
 
-  if (file) {
-    await save(file);
+    if (file) {
+      await save(file);
+    }
+  } finally {
+    downloading.value = false;
   }
 };
 

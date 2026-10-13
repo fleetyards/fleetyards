@@ -59,6 +59,44 @@ describe("VehiclePlaqueDownloadBtn", () => {
     expect(wrapper.text()).toContain("Save as PNG");
   });
 
+  it("drops the kept picture when the plaque changes", async () => {
+    vi.mocked(plaqueFile).mockResolvedValue(file);
+    vi.mocked(savePlaque).mockRejectedValueOnce(
+      new DOMException("late", "NotAllowedError"),
+    );
+    const wrapper = await mount();
+
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+    expect(wrapper.text()).toContain("Share");
+
+    document.getElementById("plaque")!.textContent = "Renamed";
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Save as PNG");
+
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(plaqueFile).toHaveBeenCalledTimes(2);
+  });
+
+  it("gives up after the share sheet is refused twice", async () => {
+    vi.mocked(plaqueFile).mockResolvedValue(file);
+    vi.mocked(savePlaque).mockRejectedValue(
+      new DOMException("blocked", "NotAllowedError"),
+    );
+    const wrapper = await mount();
+
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(savePlaque).toHaveBeenCalledTimes(2);
+    expect(wrapper.text()).toContain("Save as PNG");
+  });
+
   it("says nothing when the share sheet is dismissed", async () => {
     vi.mocked(plaqueFile).mockResolvedValue(file);
     vi.mocked(savePlaque).mockRejectedValue(
