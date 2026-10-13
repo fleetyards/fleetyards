@@ -117,6 +117,27 @@ afterEach(() => {
 });
 
 describe("Tour", () => {
+  it("does not scroll a sticky target when the step disables scrolling", async () => {
+    const target = addTarget("add");
+    const scrollIntoView = vi.spyOn(target, "scrollIntoView");
+    vi.spyOn(target, "getBoundingClientRect").mockReturnValue(
+      new DOMRect(900, 700, 59, 59),
+    );
+
+    await mountTour([
+      {
+        id: "add",
+        title: "Add ships",
+        text: "Add ships",
+        target: '[data-tour="add"]',
+        scrollIntoView: false,
+      },
+    ]);
+
+    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(hole()?.classList).not.toContain("tour__hole--empty");
+  });
+
   it("leaves out steps whose required target is missing", async () => {
     addTarget("add");
     addTarget("stats");

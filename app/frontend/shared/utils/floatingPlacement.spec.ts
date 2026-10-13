@@ -16,6 +16,51 @@ beforeEach(() => {
 });
 
 describe("placeFloating", () => {
+  it("moves a tour card below a title when clamping its left placement would cover it", () => {
+    const anchor = rect(180, 24, 280, 30);
+    const position = placeFloating(
+      anchor,
+      { width: 360, height: 240 },
+      "left",
+      { gap: 12, margin: 12, avoidOverlap: true, flip: true },
+    );
+
+    expect(position.top).toBeGreaterThanOrEqual(anchor.bottom + 12);
+  });
+
+  it("keeps a narrow-screen tour card above a bottom-edge add button", () => {
+    Object.assign(window, { innerWidth: 390, innerHeight: 844 });
+    const anchor = rect(710, 310, 59, 59);
+    const position = placeFloating(anchor, { width: 360, height: 240 }, "top", {
+      gap: 12,
+      margin: 12,
+      avoidOverlap: true,
+      flip: true,
+    });
+
+    expect(position.top + 240).toBeLessThanOrEqual(anchor.top - 12);
+    expect(position.left).toBeGreaterThanOrEqual(12);
+    expect(position.left + 360).toBeLessThanOrEqual(390 - 12);
+  });
+
+  it("keeps an overlap-avoiding box to the allowed sides", () => {
+    Object.assign(window, { innerWidth: 400, innerHeight: 600 });
+    const anchor = rect(100, 150, 100, 400);
+    const position = placeFloating(
+      anchor,
+      { width: 140, height: 240 },
+      "bottom",
+      {
+        gap: 12,
+        margin: 12,
+        avoidOverlap: true,
+        sides: ["bottom", "top"],
+      },
+    );
+
+    expect(["bottom", "top"]).toContain(position.placement);
+  });
+
   it("centres a box below its anchor", () => {
     expect(
       placeFloating(rect(100, 400), { width: 200, height: 50 }, "bottom"),

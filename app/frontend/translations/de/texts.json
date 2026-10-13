@@ -86,7 +86,7 @@
         },
         "sync": {
           "title": "Mit RSI synchronisieren",
-          "text": "Schon gepledged? Mit der FleetYards-Browsererweiterung synchronisierst du deinen RSI-Hangar, statt Schiffe von Hand hinzuzufügen — und wieder, wann immer sich deine Pledges ändern."
+          "text": "Synchronisiere Schiffe, Lackierungen, Flair und Ausrüstung von RSI mit der FleetYards-Browsererweiterung. Prüfe danach das Ergebnis. Rückkäufe haben eine eigene Synchronisierung auf der Rückkaufseite."
         },
         "display": {
           "title": "Anzeigeoptionen",
@@ -102,7 +102,7 @@
         },
         "wishlist": {
           "title": "Wunschliste",
-          "text": "Schiffe, die du willst, aber noch nicht besitzt, kommen auf deine Wunschliste — auf Wunsch mit Benachrichtigungen bei Sales."
+          "text": "Schiffe, die du haben möchtest, aber noch nicht besitzt, kommen auf deine Wunschliste. Verschiebe sie in deinen Hangar, sobald du sie erwirbst."
         },
         "fleetchart": {
           "title": "Fleetchart",
@@ -114,11 +114,31 @@
         },
         "share": {
           "title": "Hangar teilen",
-          "text": "Dein öffentlicher Hangar ist aktiv. Teile den Link — du entscheidest, welche Schiffe und Gruppen dort erscheinen."
+          "text": "Teile deinen öffentlichen Hangar und lege fest, welche Schiffe und Gruppen erscheinen. In den Hangar-Einstellungen kannst du außerdem einen geheimen Link erstellen, ersetzen oder deaktivieren, der auch bei privatem Hangar funktioniert. Jeder mit diesem Link kann deinen Hangar und seine Statistiken sehen."
         },
         "menu": {
           "title": "Mehr",
-          "text": "Hangar importieren und exportieren, Buy-Backs und deine Import-Historie — und diese Tour, wann immer du sie wieder brauchst."
+          "text": "Importiere oder exportiere deinen Hangar, prüfe den Importverlauf oder starte diese Tour erneut. Auf dem Smartphone findest du hier auch Wunschliste, Fleetchart und Statistiken."
+        },
+        "overview": {
+          "title": "Die eigene Seite deines Schiffs",
+          "text": "Klicke auf den Schiffstitel, um die Übersicht zu öffnen und Konfiguration und Sichtbarkeit zu verwalten, Einträge im Kapitänslogbuch zu schreiben und ein Bild hochzuladen. Gib einem eigenen Schiff eine Widmungsplakette und speichere sie als Bild. Logbucheinträge haben eigene Sichtbarkeitseinstellungen."
+        },
+        "pledgeItems": {
+          "title": "Mehr als Schiffe",
+          "text": "Öffne Lackierungen, Flair oder Ausrüstung über dieses Menü, um die aus deinem RSI-Hangar synchronisierten Gegenstände zu durchsuchen. Rückkäufe werden separat aufgeführt und auf ihrer eigenen Seite synchronisiert."
+        },
+        "reset": {
+          "title": "Nach einem Wipe im Spiel",
+          "text": "Setze hier deine im Spiel gekauften Schiffe zurück: Verschiebe alle auf die Wunschliste als Einkaufsliste oder entferne sie aus deinem Hangar. Mit Echtgeld gekaufte Schiffe bleiben erhalten."
+        },
+        "inventories": {
+          "title": "Hangar-Inventare",
+          "text": "Erfasse Gegenstände an deinen Standorten, dokumentiere Ein- und Auslagerungen und verwalte Transfers über deine Hangar-Inventare."
+        },
+        "exampleShip": {
+          "title": "Beispielschiff",
+          "text": "Nur für die Tour. Dieses Schiff wird nicht in deinem Hangar gespeichert."
         }
       },
       "fleetTour": {

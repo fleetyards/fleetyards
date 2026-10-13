@@ -15,6 +15,9 @@ interface FloatingOptions {
   // side has more room. Off by default: a one-line tooltip always fits, and
   // jumping sides between two hovers of the same anchor reads as jitter.
   flip?: boolean;
+  avoidOverlap?: boolean;
+  // The sides avoidOverlap may move the box to.
+  sides?: FloatingPlacement[];
 }
 
 interface Size {
@@ -56,8 +59,35 @@ export const placeFloating = (
   anchor: DOMRect,
   box: Size,
   requested: string,
-  { gap = 8, margin = 4, flip = false }: FloatingOptions = {},
+  {
+    gap = 8,
+    margin = 4,
+    flip = false,
+    avoidOverlap = false,
+    sides = ["bottom", "top", "right", "left"],
+  }: FloatingOptions = {},
 ): FloatingPosition => {
+  if (avoidOverlap) {
+    const candidates = [requested, ...sides].map((side) =>
+      placeFloating(anchor, box, side, { gap, margin }),
+    );
+    const overlap = ({ top, left }: FloatingPosition) =>
+      Math.max(
+        0,
+        Math.min(left + box.width, anchor.right + gap) -
+          Math.max(left, anchor.left - gap),
+      ) *
+      Math.max(
+        0,
+        Math.min(top + box.height, anchor.bottom + gap) -
+          Math.max(top, anchor.top - gap),
+      );
+
+    return candidates.reduce((best, candidate) =>
+      overlap(candidate) < overlap(best) ? candidate : best,
+    );
+  }
+
   let placement: FloatingPlacement = ["bottom", "left", "right"].includes(
     requested,
   )

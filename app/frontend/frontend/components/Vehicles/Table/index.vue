@@ -74,12 +74,13 @@ const { isFeatureEnabled } = useFeatures();
 // and anyone else's ship on the model.
 const toVehicle = useVehicleRoute();
 
+const hasOverview = (record: Vehicle) =>
+  props.editable &&
+  !record.loaner &&
+  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW);
+
 const nameRoute = (record: Vehicle) => {
-  if (
-    props.editable &&
-    !record.loaner &&
-    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
-  ) {
+  if (hasOverview(record)) {
     return toVehicle("hangar-vehicle-overview", record);
   }
 
@@ -311,7 +312,11 @@ const resetSelected = () => {
       </template>
       <template #col-name="{ record }">
         <div class="name">
-          <router-link :to="nameRoute(record)" data-test="vehicle-table-name">
+          <router-link
+            :to="nameRoute(record)"
+            data-test="vehicle-table-name"
+            :data-tour="hasOverview(record) ? 'vehicle-overview' : undefined"
+          >
             <span v-if="record.name">
               {{ record.name }}
             </span>

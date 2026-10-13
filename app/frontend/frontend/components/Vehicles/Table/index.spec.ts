@@ -96,12 +96,18 @@ describe("VehiclesTable", () => {
     const wrapper = await mount(vehicle());
 
     expect(nameHref(wrapper)).toBe("#/hangar/me/od-0001-ys-vehicle-1/overview");
+    expect(
+      wrapper.get('[data-test="vehicle-table-name"]').attributes("data-tour"),
+    ).toBe("vehicle-overview");
   });
 
   it("opens a loaner on its model", async () => {
     const wrapper = await mount(vehicle({ loaner: true }));
 
     expect(nameHref(wrapper)).toBe("#/ships/odyssey");
+    expect(
+      wrapper.get('[data-test="vehicle-table-name"]').attributes("data-tour"),
+    ).toBeUndefined();
   });
 
   it("opens the model without the overview", async () => {
@@ -109,5 +115,8 @@ describe("VehiclesTable", () => {
     const wrapper = await mount(vehicle());
 
     expect(nameHref(wrapper)).toBe("#/ships/odyssey");
+    expect(
+      wrapper.get('[data-test="vehicle-table-name"]').attributes("data-tour"),
+    ).toBeUndefined();
   });
 });

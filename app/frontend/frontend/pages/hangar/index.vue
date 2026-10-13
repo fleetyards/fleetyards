@@ -21,6 +21,7 @@ import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListAction
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarTour from "@/frontend/components/Hangar/Tour/index.vue";
+import HangarTourExampleShip from "@/frontend/components/Hangar/TourExampleShip/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -335,6 +336,13 @@ const destroyAll = async () => {
 };
 
 const tourOpen = ref(false);
+const showTourExample = computed(
+  () =>
+    tourOpen.value &&
+    !hangarStatsFetching.value &&
+    hangarStats.value?.total === 0 &&
+    !isFilterSelected.value,
+);
 
 const openGuide = () => {
   tourOpen.value = true;
@@ -481,6 +489,7 @@ const openDisplayOptionsModal = () => {
       v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'hangar-inventories' }"
+      data-tour="hangar-inventories"
     >
       <i class="fa-duotone fa-boxes-stacked" />
       {{ t("labels.hangarInventories") }}
@@ -507,8 +516,8 @@ const openDisplayOptionsModal = () => {
 
   <FilteredList
     key="hangar"
-    :hide-loading="fleetchartVisible || !gridView"
-    :hide-empty="!gridView"
+    :hide-loading="fleetchartVisible || !gridView || showTourExample"
+    :hide-empty="!gridView || showTourExample"
     :records="orderedVehicles"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
@@ -696,8 +705,9 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
+      <HangarTourExampleShip v-if="showTourExample" />
       <Grid
-        v-if="gridView"
+        v-else-if="gridView"
         :records="records"
         :filter-visible="filterVisible"
         primary-key="id"

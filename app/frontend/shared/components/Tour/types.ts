@@ -9,6 +9,9 @@ export interface TourStep {
   // nothing it matches is rendered -- the card is centred over the dimmed page.
   target?: string;
   placement?: FloatingPlacement;
+  // Set to false for a fixed or sticky target: scrolling cannot bring it into
+  // view and only jolts the page underneath.
+  scrollIntoView?: boolean;
   // Leave the step out entirely when its target is missing, rather than
   // falling back to the centred card. For steps that only make sense pointing
   // at something: a feature flag, the mobile layout or an empty list can each
