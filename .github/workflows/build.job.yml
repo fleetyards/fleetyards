@@ -57,6 +57,25 @@ jobs:
         id: ruby
         run: echo "version=$(grep '^ruby ' .tool-versions | awk '{print $2}')" >> "$GITHUB_OUTPUT"
 
+      # Mirror Service Images keeps this copy fresh; this only covers a Ruby
+      # bump released before that workflow has run.
+      - name: Ensure Ruby base image is mirrored
+        env:
+          IMAGE: ruby:${{ steps.ruby.outputs.version }}-slim
+        run: |
+          if docker buildx imagetools inspect "ghcr.io/fleetyards/$IMAGE" > /dev/null 2>&1; then
+            exit 0
+          fi
+          for attempt in 1 2 3; do
+            for source in "public.ecr.aws/docker/library/$IMAGE" "docker.io/library/$IMAGE"; do
+              if docker buildx imagetools create --tag "ghcr.io/fleetyards/$IMAGE" "$source"; then
+                exit 0
+              fi
+            done
+            sleep $((attempt * 60))
+          done
+          exit 1
+
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
@@ -68,6 +87,7 @@ jobs:
             service=fleetyards
           build-args: |
             RUBY_VERSION=${{ steps.ruby.outputs.version }}
+            BASE_IMAGE_REGISTRY=ghcr.io/fleetyards
             GIT_REVISION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

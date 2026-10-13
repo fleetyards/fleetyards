@@ -1,7 +1,8 @@
-# The test jobs' Postgres and Redis service containers, copied to GHCR. Pulls
-# from Docker Hub and ECR Public are rate limited per runner IP, which the
-# shared runners exhaust; GHCR pulls inside Actions are not. A tag added to the
-# service containers has to be added here and mirrored before a job uses it.
+# The test jobs' Postgres and Redis service containers and the app's Ruby base
+# image, copied to GHCR. Pulls from Docker Hub and ECR Public are rate limited
+# per runner IP, which the shared runners exhaust; GHCR pulls inside Actions are
+# not. A tag added to the service containers has to be added here and mirrored
+# before a job uses it; the Ruby tag follows .tool-versions.
 name: Mirror Service Images
 
 on:
@@ -11,6 +12,7 @@ on:
   push:
     paths:
       - ".github/workflows/mirror-service-images.yml"
+      - ".tool-versions"
 
 permissions:
   contents: read
@@ -25,7 +27,11 @@ jobs:
         image:
           - postgres:16
           - redis:8.2.9-alpine
+          - ruby
     steps:
+      - uses: actions/checkout@v7
+        if: matrix.image == 'ruby'
+
       - uses: docker/setup-buildx-action@v4
 
       - name: Login to GitHub Container Registry
@@ -39,6 +45,9 @@ jobs:
         env:
           IMAGE: ${{ matrix.image }}
         run: |
+          if [ "$IMAGE" = ruby ]; then
+            IMAGE="ruby:$(grep '^ruby ' .tool-versions | awk '{print $2}')-slim"
+          fi
           for attempt in 1 2 3; do
             for source in "public.ecr.aws/docker/library/$IMAGE" "docker.io/library/$IMAGE"; do
               if docker buildx imagetools create --tag "ghcr.io/fleetyards/$IMAGE" "$source"; then
