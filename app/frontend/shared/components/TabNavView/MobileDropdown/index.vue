@@ -201,7 +201,7 @@ onUnmounted(() => {
           :aria-selected="item.id === props.activeId"
           :aria-disabled="item.disabled || undefined"
           :data-test="`tab-anchor-option-${item.id}`"
-          tabindex="0"
+          :tabindex="item.disabled ? -1 : 0"
           @click="selectAnchor(item)"
           @keydown.enter.prevent="selectAnchor(item)"
           @keydown.space.prevent="selectAnchor(item)"
