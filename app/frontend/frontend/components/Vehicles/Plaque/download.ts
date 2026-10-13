@@ -27,7 +27,7 @@ const loadImage = (src: string) =>
 // re-implementation like html2canvas cannot draw, so the browser renders it
 // itself through an SVG foreignObject. That route cannot fetch the images a
 // mask refers to, so they are swapped for data URLs while the picture is taken.
-export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
+const drawPlaque = async (element: HTMLElement, scale: number) => {
   const restore: (() => void)[] = [];
 
   const inline = async (node: HTMLElement, property: string) => {
@@ -74,19 +74,29 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
     canvas.height = height;
     canvas.getContext("2d")?.drawImage(image, 0, 0);
 
-    return canvas.toDataURL("image/png");
+    return canvas;
   } finally {
     restore.forEach((undo) => undo());
   }
 };
 
-export const plaqueFile = async (element: HTMLElement, filename: string) => {
-  const blob = await fetch(await capturePlaque(element)).then((response) =>
-    response.blob(),
+const pngBlob = async (canvas: HTMLCanvasElement) => {
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/png"),
   );
+  if (!blob) {
+    throw new Error("The plaque could not be drawn");
+  }
 
-  return new File([blob], `fleetyards-${filename}.png`, { type: "image/png" });
+  return blob;
 };
+
+export const plaqueFile = async (element: HTMLElement, filename: string) =>
+  new File(
+    [await pngBlob(await drawPlaque(element, SCALE))],
+    `fleetyards-${filename}.png`,
+    { type: "image/png" },
+  );
 
 // A Home Screen app on iOS ignores a download link, so there the picture goes
 // to the share sheet, whose "Save Image" puts it in Photos.
@@ -108,9 +118,7 @@ export const plaqueSocialImage = async (element: HTMLElement) => {
     throw new Error("The plaque is not laid out");
   }
 
-  const plaque = await loadImage(
-    await capturePlaque(element, PREVIEW_WIDTH / element.offsetWidth),
-  );
+  const plaque = await drawPlaque(element, PREVIEW_WIDTH / element.offsetWidth);
 
   const canvas = document.createElement("canvas");
   canvas.width = PREVIEW_WIDTH;
@@ -138,12 +146,7 @@ export const plaqueSocialImage = async (element: HTMLElement) => {
     height,
   );
 
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/png"),
-  );
-  if (!blob) {
-    throw new Error("The plaque could not be drawn");
-  }
-
-  return new File([blob], "plaque.png", { type: "image/png" });
+  return new File([await pngBlob(canvas)], "plaque.png", {
+    type: "image/png",
+  });
 };
