@@ -55,8 +55,9 @@ A user's optional display name replaces their username on the public hangar, the
 ## Discovery Log
 
 - **2026-10-13** Initial research and plan creation.
+- **2026-10-13** The editor's live previews named the owner even when hidden; they now share the captured picture's resolution. Possessive titles keep a display name as written and capitalise only a username.
 
 ## Progress
 
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
