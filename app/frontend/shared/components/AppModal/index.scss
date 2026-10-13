@@ -16,16 +16,23 @@
     background-color: black;
   }
 
+  // A flex column bounded by this fixed box, so header and footer keep their
+  // height and the body takes what is left - however many rows the footer
+  // wraps onto. A percentage rather than vh: mobile Safari's 100vh ignores its
+  // toolbar and overshoots the visible height.
   .modal-dialog {
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     width: 600px;
     max-width: 600px;
-    max-height: 100vh;
+    max-height: calc(100% - 60px);
     margin: 30px auto;
     transition: $transition-base-speed ease-in-out;
     pointer-events: unset;
 
     &.fullscreen {
+      display: block;
       width: 100%;
       height: 100%;
       max-width: 100%;
@@ -62,6 +69,18 @@
   }
 }
 
+// The mobile nav is shown up to here, above the modal.
+@media (max-width: $desktop-breakpoint) {
+  .app-modal .modal-dialog {
+    max-height: calc(
+      100% - 60px - #{$navigation-mobile-height} -
+        #{$navigation-mobile-bottom-offset}
+    );
+    margin-bottom: 30px + $navigation-mobile-height +
+      $navigation-mobile-bottom-offset;
+  }
+}
+
 @media (max-width: $tablet-breakpoint) {
   .app-modal {
     align-items: flex-end;
@@ -77,6 +96,10 @@
     .modal-dialog {
       min-width: 0;
       width: 100%;
+      max-height: calc(
+        100% - #{$navigation-mobile-height} -
+          #{$navigation-mobile-bottom-offset}
+      );
       margin: 0;
       margin-top: auto !important;
       margin-bottom: $navigation-mobile-height +
@@ -85,12 +108,6 @@
 
       > :first-child {
         margin-top: env(safe-area-inset-top);
-      }
-
-      .modal-content {
-        border-width: 1px 0 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
       }
     }
 

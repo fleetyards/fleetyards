@@ -189,7 +189,7 @@ const insert = async () => {
   box-sizing: border-box;
   width: 600px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 60px);
+  max-height: calc(100% - 60px);
   margin: 30px auto auto;
   padding: 0;
   overflow: visible;
@@ -202,6 +202,13 @@ const insert = async () => {
   transition:
     opacity 0.3s ease-in-out,
     transform 0.3s ease-in-out;
+
+  // Only while open: an unconditional display would override the UA's
+  // display: none on a closed dialog.
+  &[open] {
+    display: flex;
+    flex-direction: column;
+  }
 
   &:focus,
   &:focus-visible {

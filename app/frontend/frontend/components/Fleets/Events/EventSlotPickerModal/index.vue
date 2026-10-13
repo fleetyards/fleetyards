@@ -89,6 +89,7 @@ const teams = computed<FleetEventTeam[]>(
             username: signup.user?.username || '?',
           })
     "
+    fill-body
   >
     <p class="text-muted small">
       {{ t("labels.fleets.events.slotPickerHint") }}
@@ -238,7 +239,7 @@ const teams = computed<FleetEventTeam[]>(
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: 60vh;
+  min-height: 0;
   overflow-y: auto;
 }
 .slot-picker__team {

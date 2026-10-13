@@ -591,10 +591,10 @@ const save = () => {
 
       <!--
         Stuck to the bottom of the scroll area rather than living in the modal's
-        footer. The footer is outside `.modal-body`, whose max-height is sized for
-        a single row of actions, so a tray of chips there pushed the submit button
-        off the bottom of the viewport. Here it costs the grid height it uses and
-        stays in view while you scroll, which is the whole point of it.
+        footer. The footer never shrinks, so a tray of chips there would take its
+        whole height out of the grid, which on a phone leaves almost nothing to
+        scroll. Here it costs the grid height it uses and stays in view while you
+        scroll, which is the whole point of it.
       -->
       <div v-if="!single && selection.length" class="model-picker__tray">
         <Chip

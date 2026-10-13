@@ -20,4 +20,16 @@ describe("AppModalInner", () => {
       "btn--sm",
     );
   });
+
+  it("lays the body out as a column only when asked to fill it", async () => {
+    const plain = await mountWithDefaults<typeof Component>(Component);
+    const filled = await mountWithDefaults<typeof Component>(Component, {
+      props: { fillBody: true },
+    });
+
+    expect(plain.get(".modal-body").classes()).not.toContain(
+      "modal-body--fill",
+    );
+    expect(filled.get(".modal-body").classes()).toContain("modal-body--fill");
+  });
 });

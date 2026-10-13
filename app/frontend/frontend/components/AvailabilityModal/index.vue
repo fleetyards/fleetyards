@@ -117,7 +117,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 </script>
 
 <template>
-  <Modal :title="t('labels.availability.title')">
+  <Modal :title="t('labels.availability.title')" fill-body>
     <div class="availability">
       <p v-if="!hasData" class="availability__empty">
         {{ t("labels.availability.empty") }}
@@ -238,13 +238,12 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 </template>
 
 <style lang="scss" scoped>
-// The modal body scrolls on its own, so an inner scroller with its own
-// max-height would nest two scrollbars. Capping the whole card at that height
-// instead keeps the tiles and the UEX credit put while only the lists move.
+// Shrinks to the modal body rather than overflowing it, so the tiles and the
+// UEX credit stay put while only the lists move.
 .availability {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 16rem);
+  min-height: 0;
 }
 
 .availability__empty {
