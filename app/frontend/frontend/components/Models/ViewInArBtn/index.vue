@@ -11,6 +11,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   mayHaveAr,
   prepareAr,
+  usesQuickLook,
   type ModelViewerElement,
 } from "@/frontend/utils/arViewer";
 import { FeatureFlagName, type Model } from "@/services/fyApi";
@@ -32,11 +33,22 @@ const props = withDefaults(defineProps<Props>(), {
   displayedHoloUrl: undefined,
 });
 
+const emit = defineEmits<{
+  // Quick Look is about to convert the holo in the page. The 3D view holds a
+  // second copy of it on the GPU, and an iPhone runs out of memory with both.
+  quickLook: [];
+}>();
+
 const { t } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
 const viewer = shallowRef<ModelViewerElement>();
+
+const quickLook = usesQuickLook();
+
+// Quick Look prepares on the tap, so the button stands on the cheap check alone.
+const deferred = ref(false);
 
 const holoUrl = computed(() => props.model.media.holo?.url);
 
@@ -62,8 +74,14 @@ const prepare = async () => {
 
   viewer.value?.remove();
   viewer.value = undefined;
+  deferred.value = false;
 
   if (!candidate.value || !holoUrl.value) {
+    return;
+  }
+
+  if (quickLook) {
+    deferred.value = true;
     return;
   }
 
@@ -87,18 +105,44 @@ onBeforeUnmount(() => {
   viewer.value?.remove();
 });
 
-// Straight from the tap, without awaiting anything first: the AR viewers only
-// open from a user gesture.
+const failed = () => {
+  displayAlert({ text: t("messages.error.default") });
+};
+
+const openQuickLook = async (url: string) => {
+  emit("quickLook");
+
+  const element = await prepareAr(url).catch(() => undefined);
+
+  if (!element) {
+    failed();
+    return;
+  }
+
+  try {
+    await element.activateAR();
+  } catch {
+    failed();
+  } finally {
+    element.remove();
+  }
+};
+
+// Scene Viewer straight from the tap, without awaiting anything first: it only
+// opens from a user gesture.
 const open = () => {
-  viewer.value?.activateAR().catch(() => {
-    displayAlert({ text: t("messages.error.default") });
-  });
+  if (deferred.value && holoUrl.value) {
+    void openQuickLook(holoUrl.value);
+    return;
+  }
+
+  viewer.value?.activateAR().catch(failed);
 };
 </script>
 
 <template>
   <Btn
-    v-if="viewer"
+    v-if="viewer || deferred"
     v-tooltip="t('labels.viewInArHint')"
     :aria-label="t('labels.viewInArHint')"
     data-test="view-in-ar"

@@ -345,6 +345,7 @@ const adiMap = computed(() => {
                   :model="model"
                   :active="holoviewerVisible"
                   :displayed-holo-url="holoModel?.path"
+                  @quick-look="modelsStore.holoviewerVisible = false"
                 />
               </BtnGroup>
 

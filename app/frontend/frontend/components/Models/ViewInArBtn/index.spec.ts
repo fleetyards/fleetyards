@@ -6,12 +6,14 @@ import type { Model } from "@/services/fyApi";
 
 const ar = vi.hoisted(() => ({
   mayHaveAr: true,
+  quickLook: false,
   canActivate: true,
   activateAR: vi.fn(() => Promise.resolve()),
 }));
 
 vi.mock("@/frontend/utils/arViewer", () => ({
   mayHaveAr: () => ar.mayHaveAr,
+  usesQuickLook: () => ar.quickLook,
   prepareAr: vi.fn(async () =>
     ar.canActivate
       ? Object.assign(document.createElement("div"), {
@@ -59,6 +61,7 @@ describe("ViewInArBtn", () => {
   beforeEach(() => {
     mockFlag.value = true;
     ar.mayHaveAr = true;
+    ar.quickLook = false;
     ar.canActivate = true;
     ar.activateAR.mockClear();
   });
@@ -160,5 +163,50 @@ describe("ViewInArBtn", () => {
 
     expect(ar.activateAR).toHaveBeenCalledOnce();
     expect(stale.activateAR).not.toHaveBeenCalled();
+  });
+
+  describe("with Quick Look", () => {
+    beforeEach(() => {
+      ar.quickLook = true;
+    });
+
+    it("loads no AR viewer beside the open 3D view", async () => {
+      const { prepareAr } = await import("@/frontend/utils/arViewer");
+      vi.mocked(prepareAr).mockClear();
+
+      const wrapper = await mount({ model: model() });
+
+      expect(prepareAr).not.toHaveBeenCalled();
+      expect(button(wrapper).exists()).toBe(true);
+    });
+
+    it("frees the 3D view, then prepares and opens AR on the tap", async () => {
+      const { prepareAr } = await import("@/frontend/utils/arViewer");
+      vi.mocked(prepareAr).mockClear();
+
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(wrapper.emitted("quickLook")).toHaveLength(1);
+      expect(prepareAr).toHaveBeenCalledWith(HOLO);
+      expect(ar.activateAR).toHaveBeenCalledOnce();
+    });
+
+    it("drops the AR viewer once Quick Look has opened", async () => {
+      const element = Object.assign(document.createElement("div"), {
+        activateAR: vi.fn(() => Promise.resolve()),
+        canActivateAR: true,
+      });
+      document.body.appendChild(element);
+      const { prepareAr } = await import("@/frontend/utils/arViewer");
+      vi.mocked(prepareAr).mockResolvedValueOnce(element as never);
+
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(element.isConnected).toBe(false);
+    });
   });
 });
