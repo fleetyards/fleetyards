@@ -89,10 +89,11 @@ module Bsky
     end
 
     # A card without its picture is still worth posting, so a thumbnail that is
-    # too large is left out, and one Bluesky refuses is reported and left out,
-    # rather than failing the post.
+    # too large or that the upload fails on is reported and left out rather
+    # than failing the post.
     private def upload_thumb(card)
-      return if card.image.blank? || card.image.bytesize > MAX_THUMB_BYTES
+      return if card.image.blank?
+      raise Error, "Thumbnail of #{card.image.bytesize} bytes is over Bluesky's limit" if card.image.bytesize > MAX_THUMB_BYTES
 
       response = HTTParty.post(
         "#{client.session.pds}/xrpc/com.atproto.repo.uploadBlob",
@@ -107,7 +108,7 @@ module Bsky
       raise Error, "Bluesky rejected the image: #{response.code} #{response.body}" if blob.blank?
 
       blob
-    rescue => e
+    rescue Error, HTTParty::Error, Timeout::Error, SocketError, SystemCallError => e
       Appsignal.report_error(e)
       nil
     end

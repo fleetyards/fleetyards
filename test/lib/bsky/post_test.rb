@@ -138,9 +138,10 @@ module Bsky
       }
     end
 
-    test "#create does not upload a thumbnail over Bluesky's size limit" do
+    test "#create reports a thumbnail over Bluesky's size limit instead of uploading it" do
       stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
         .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+      Appsignal.expects(:report_error).with(instance_of(Bsky::Post::Error))
 
       Bsky::Post.new.create("Carrack", link_card: link_card(image: "x" * (Bsky::Post::MAX_THUMB_BYTES + 1)))
 
