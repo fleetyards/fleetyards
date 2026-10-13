@@ -66,7 +66,7 @@ export const placeFloating = (
 ): FloatingPosition => {
   if (avoidOverlap) {
     const candidates = [requested, "bottom", "top", "right", "left"].map(
-      (side) => placeFloating(anchor, box, side, { gap, margin, flip }),
+      (side) => placeFloating(anchor, box, side, { gap, margin }),
     );
     const overlap = ({ top, left }: FloatingPosition) =>
       Math.max(
