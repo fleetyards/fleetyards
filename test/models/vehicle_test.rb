@@ -758,4 +758,32 @@ class VehicleModelImageTest < ActiveSupport::TestCase
     assert build(:vehicle, plaque_style: "manufacturer").valid?
     assert_not build(:vehicle, plaque_style: "chrome").valid?
   end
+
+  test "keeps the plaque picture to a small PNG, JPEG or WebP" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+
+    vehicle.plaque_image.attach(io: StringIO.new("not a picture"), filename: "plaque.txt", content_type: "text/plain")
+    assert_not vehicle.valid?
+
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+    assert vehicle.valid?
+  end
+
+  test "drops the plaque picture with the dedication" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    vehicle.update!(dedication: "")
+
+    assert_not vehicle.reload.plaque_image.attached?
+  end
+
+  test "deletes the plaque picture with the vehicle" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.plaque_image.attach(io: file_fixture("test.png").open, filename: "plaque.png", content_type: "image/png")
+
+    Vehicle.delete_with_dependents([vehicle.id])
+
+    assert_not ActiveStorage::Attachment.exists?(record_type: "Vehicle", record_id: vehicle.id, name: "plaque_image")
+  end
 end
