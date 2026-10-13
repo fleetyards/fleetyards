@@ -20291,6 +20291,8 @@ components:
           type: boolean
         username:
           type: string
+        displayName:
+          type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         role:
@@ -27613,6 +27615,8 @@ components:
           type: string
           format: uuid
         username:
+          type: string
+        displayName:
           type: string
         nickname:
           type:
@@ -39336,6 +39340,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         email:
           type: string
         unconfirmedEmail:
@@ -39560,6 +39566,8 @@ components:
       properties:
         username:
           type: string
+        displayName:
+          type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
@@ -39701,6 +39709,11 @@ components:
           type:
           - string
           - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
         homepage:
           type:
           - string
@@ -40431,6 +40444,8 @@ components:
         userDiscordProfileUrl:
           type: string
           format: uri
+        userDisplayName:
+          type: string
         userCitizenidProfileUrl:
           type: string
           format: uri

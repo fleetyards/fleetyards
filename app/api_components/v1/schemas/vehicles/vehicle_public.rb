@@ -35,6 +35,7 @@ module V1
             model: {"$ref": "#/components/schemas/Model"},
             username: {type: :string},
             userAvatar: {type: :string, format: :uri},
+            userDisplayName: {type: :string},
             userRsiHandle: {type: :string},
             # Only the fleet-scoped vehicle endpoints send these; the public hangar
             # and public fleet payloads carry no contact details for an owner.

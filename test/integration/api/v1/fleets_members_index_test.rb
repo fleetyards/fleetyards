@@ -67,6 +67,20 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members carries a member's display name" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+
+    @member.update!(display_name: "Torlek Maru")
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      row = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal "Torlek Maru", row["displayName"]
+    end
+  end
+
   test "GET /fleets/:slug/members says where a member is in the game" do
     lorville = create(:location, name: "Lorville", kind: "city")
     @member.update!(current_location_id: lorville.id)

@@ -2151,6 +2151,8 @@ components:
           format: uuid
         username:
           type: string
+        displayName:
+          type: string
         nickname:
           type:
           - string

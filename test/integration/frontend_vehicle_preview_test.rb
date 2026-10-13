@@ -39,6 +39,19 @@ class FrontendVehiclePreviewTest < ActionDispatch::IntegrationTest
     assert_equal "Built rough", meta("og:description")
   end
 
+  test "the hangar, its ships and its wishlist are named after the owner's display name" do
+    @user.update!(display_name: "Torlek Maru", public_wishlist: true)
+
+    get "/hangar/#{@user.username}"
+    assert_includes meta("og:title"), "Torlek Maru's Hangar"
+
+    get "/hangar/#{@user.username}/l8-4261-ha-contorta"
+    assert_includes meta("og:title"), "in Torlek Maru's Hangar"
+
+    get "/hangar/#{@user.username}/wishlist"
+    assert_includes meta("og:title"), "Torlek Maru's Wishlist"
+  end
+
   test "a ship's own picture carries its size and the ship's name" do
     @vehicle.image.attach(io: file_fixture("test.png").open, filename: "ship.png", content_type: "image/png")
     @vehicle.image.blob.update!(metadata: {analyzed: true, width: 2826, height: 1985})

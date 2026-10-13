@@ -816,6 +816,24 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     assert_equal "PYRO", user.current_system_code
   end
 
+  test "is shown by its display name, or its username without one" do
+    user = build(:user, username: "torlek", display_name: " Torlek   Maru ")
+
+    assert_equal "Torlek Maru", user.shown_name
+
+    user.display_name = "   "
+
+    assert_nil user.display_name
+    assert_equal "torlek", user.shown_name
+  end
+
+  test "rejects a display name over the limit" do
+    user = build(:user, display_name: "a" * (User::DISPLAY_NAME_LIMIT + 1))
+
+    assert_not user.valid?
+    assert user.errors.added?(:display_name, :too_long, count: User::DISPLAY_NAME_LIMIT)
+  end
+
   test "rejects a username that names a hangar page, in any case" do
     user = build(:user, username: "Stats")
 

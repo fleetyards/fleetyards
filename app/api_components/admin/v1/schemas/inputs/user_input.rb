@@ -11,6 +11,7 @@ module Admin
             type: :object,
             properties: {
               username: {type: :string},
+              displayName: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
               email: {type: :string},
               rsiHandle: {type: :string},
               publicHangar: {type: :boolean},

@@ -16,7 +16,7 @@ module Frontend
       # the visitor -- or the link's share token -- may open.
       if @user.present? && public_user_readable?(:show?)
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
-        @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
+        @title = I18n.t("title.frontend.public_hangar", user: username(@user.shown_name))
         @og_type = "article"
         use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
         preview_plaque if params[:plaque].present?
@@ -32,7 +32,7 @@ module Frontend
       vehicle = segment_vehicle if @user.present? && public_user_readable?(:show?)
 
       if vehicle.present?
-        @title = I18n.t("title.frontend.public_vehicle", vehicle: public_vehicle_name(vehicle), user: username(@user.username))
+        @title = I18n.t("title.frontend.public_vehicle", vehicle: public_vehicle_name(vehicle), user: username(@user.shown_name))
         @description = vehicle_description(vehicle)
         @og_type = "article"
         use_og_image(vehicle_picture(vehicle), alt: public_vehicle_name(vehicle))
@@ -48,7 +48,7 @@ module Frontend
       @user = User.find_by(["normalized_username = :value", {value: params[:username].downcase}])
       if @user.present? && public_user_readable?(:wishlist?)
         vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
-        @title = I18n.t("title.frontend.public_wishlist", user: username(@user.username))
+        @title = I18n.t("title.frontend.public_wishlist", user: username(@user.shown_name))
         @og_type = "article"
         use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
       end

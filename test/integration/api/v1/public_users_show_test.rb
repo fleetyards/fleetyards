@@ -35,6 +35,15 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/users/:username carries the display name" do
+    user = create(:user, :public_hangar, display_name: "Torlek Maru")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal user.username, parsed_body["username"]
+      assert_equal "Torlek Maru", parsed_body["displayName"]
+    end
+  end
+
   test "GET /public/users/:username flags a supporter" do
     user = create(:user, :public_hangar)
     create(:supporter_contribution, user:, started_at: Date.current)

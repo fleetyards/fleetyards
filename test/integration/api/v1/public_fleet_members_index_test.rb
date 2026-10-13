@@ -110,7 +110,7 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
     # `avatar` is absent rather than empty when nothing is attached, so the
     # assertion is that no key outside this set can appear -- not that all of
     # them do.
-    assert_empty member.keys - %w[avatar hidden id role username]
+    assert_empty member.keys - %w[avatar displayName hidden id role username]
     assert_equal %w[hidden id role username].sort, (member.keys & %w[hidden id role username]).sort
 
     %w[
@@ -123,7 +123,7 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "a member who hides themselves keeps their place and loses their name" do
-    hidden_member = create(:user, hide_owner: true)
+    hidden_member = create(:user, hide_owner: true, display_name: "Torlek Maru")
     @fleet.fleet_memberships.create!(
       user: hidden_member, fleet_role: @fleet.default_member_role,
       aasm_state: :accepted, accepted_at: Time.zone.now
@@ -138,6 +138,7 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_equal 2, rows.size
     assert_not_nil hidden_row
     assert_not_includes hidden_row.keys, "username"
+    assert_not_includes hidden_row.keys, "displayName"
     assert_not_includes rows.filter_map { |row| row["username"] }, hidden_member.username
   end
 end

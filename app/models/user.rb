@@ -32,7 +32,7 @@ class User < ApplicationRecord
   # where devise writes it directly.
   has_paper_trail on: %i[update],
     only: %i[
-      username email unconfirmed_email rsi_handle public_hangar
+      username display_name email unconfirmed_email rsi_handle public_hangar
       public_hangar_loaners public_wishlist hide_owner tester maintainer
       friends_hangar friends_hangar_stats friends_wishlist show_online_status
     ],
@@ -212,6 +212,10 @@ class User < ApplicationRecord
   ].freeze
 
   validate :username_not_a_route_name, if: :username_changed?
+
+  DISPLAY_NAME_LIMIT = 50
+  normalizes :display_name, with: ->(name) { name.squish.presence }
+  validates :display_name, length: {maximum: DISPLAY_NAME_LIMIT}
 
   validates :email,
     uniqueness: {case_sensitive: false},
@@ -413,6 +417,10 @@ class User < ApplicationRecord
     return I18n.default_locale if stored.blank?
 
     I18n.available_locales.map(&:to_s).include?(stored) ? stored.to_sym : I18n.default_locale
+  end
+
+  def shown_name
+    display_name.presence || username
   end
 
   def public_hangar_url
