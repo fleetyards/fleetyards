@@ -129,6 +129,11 @@
   }
 }
 
+.tab-nav-dropdown__item:focus-visible {
+  outline: 2px solid var(--color-primary, #428bca);
+  outline-offset: -2px;
+}
+
 // The tab strip's error dot, so a form tab with a failing field still says so
 // with its row folded away behind the trigger.
 .tab-nav-dropdown__error {

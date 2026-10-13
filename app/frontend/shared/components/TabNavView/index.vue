@@ -52,13 +52,13 @@ const emit = defineEmits<{
 const mobile = useMobile();
 
 const collapsed = computed(
-  () => mobile.value && !!(props.routes || props.anchors),
+  () => mobile.value && !!(props.routes?.length || props.anchors?.length),
 );
 const tabsEl = ref<HTMLElement | null>(null);
 const route = useRoute();
 
 const scrollToActive = (smooth = true) => {
-  if (!mobile.value && !props.horizontal) return;
+  if (!props.horizontal || collapsed.value) return;
 
   const container = tabsEl.value;
   if (!container) return;
@@ -121,7 +121,6 @@ watch(
         />
         <TabNavViewItems
           v-else-if="props.routes"
-          v-if="props.routes"
           :routes="props.routes"
           :links="props.links"
           :authenticated="props.authenticated"

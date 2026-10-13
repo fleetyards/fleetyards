@@ -201,7 +201,10 @@ onUnmounted(() => {
           :aria-selected="item.id === props.activeId"
           :aria-disabled="item.disabled || undefined"
           :data-test="`tab-anchor-option-${item.id}`"
+          tabindex="0"
           @click="selectAnchor(item)"
+          @keydown.enter.prevent="selectAnchor(item)"
+          @keydown.space.prevent="selectAnchor(item)"
         >
           <span>{{ item.label }}</span>
           <span
@@ -217,7 +220,10 @@ onUnmounted(() => {
           :class="{ active: isActive(routeName(item)) }"
           role="option"
           :aria-selected="isActive(routeName(item))"
+          tabindex="0"
           @click="select(item)"
+          @keydown.enter.prevent="select(item)"
+          @keydown.space.prevent="select(item)"
         >
           <span>{{ t(`nav.${item.meta?.title}`) }}</span>
           <span v-if="badgeFor(routeName(item))" class="tabs-badge">
@@ -230,7 +236,10 @@ onUnmounted(() => {
           class="tab-nav-dropdown__item tab-nav-dropdown__item--link-out"
           role="option"
           :aria-selected="false"
+          tabindex="0"
           @click="follow(link)"
+          @keydown.enter.prevent="follow(link)"
+          @keydown.space.prevent="follow(link)"
         >
           <span>{{ link.label }}</span>
           <i
