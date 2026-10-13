@@ -9,7 +9,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
 import { type Fleet, type FleetMember, useFleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -97,14 +96,12 @@ const crumbs = computed<Crumb[]>(() => [
     </template>
   </BreadCrumbs>
 
-  <TabNavView v-if="event">
-    <template #nav>
-      <TabNavViewItems
-        :routes="editRoutes"
-        :authenticated="true"
-        :resource-access="resourceAccess"
-      />
-    </template>
+  <TabNavView
+    v-if="event"
+    :routes="editRoutes"
+    authenticated
+    :resource-access="resourceAccess"
+  >
     <template #content>
       <router-view :fleet="fleet" :event="event" />
     </template>

@@ -9,7 +9,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MissionAdminActions from "@/frontend/components/Fleets/Missions/MissionAdminActions/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/missions/[mission]/edit/routes";
 import {
   type Fleet,
@@ -105,14 +104,12 @@ const crumbs = computed<Crumb[]>(() => [
     </template>
   </BreadCrumbs>
 
-  <TabNavView v-if="mission">
-    <template #nav>
-      <TabNavViewItems
-        :routes="editRoutes"
-        :authenticated="true"
-        :resource-access="resourceAccess"
-      />
-    </template>
+  <TabNavView
+    v-if="mission"
+    :routes="editRoutes"
+    authenticated
+    :resource-access="resourceAccess"
+  >
     <template #content>
       <router-view :fleet="fleet" :mission="mission" />
     </template>

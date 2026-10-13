@@ -9,6 +9,9 @@ import { type RouteRecordRaw } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import TabNavViewMobileDropdown from "@/shared/components/TabNavView/MobileDropdown/index.vue";
+import TabNavViewAnchorItems, {
+  type TabNavViewAnchorItem,
+} from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import { type TabNavLink } from "@/shared/components/TabNavView/types";
 
 type Props = {
@@ -22,9 +25,9 @@ type Props = {
   activeKey?: string;
   // Counts to show beside a tab, by route name.
   badges?: Record<string, number>;
-  // Set when the nav slot holds AnchorItems, whose role="tab" items need a
-  // tablist around them.
-  tablist?: boolean;
+  // In-page tabs that switch content without navigating, in place of routes.
+  // The active one is `activeKey`.
+  anchors?: TabNavViewAnchorItem[];
   // A strip above the content instead of the column beside it, for a page
   // whose header already spans the full width.
   horizontal?: boolean;
@@ -38,15 +41,24 @@ const props = withDefaults(defineProps<Props>(), {
   superAdmin: false,
   activeKey: undefined,
   badges: undefined,
+  anchors: undefined,
   horizontal: false,
 });
 
+const emit = defineEmits<{
+  "update:activeKey": [value: string];
+}>();
+
 const mobile = useMobile();
+
+const collapsed = computed(
+  () => mobile.value && !!(props.routes?.length || props.anchors?.length),
+);
 const tabsEl = ref<HTMLElement | null>(null);
 const route = useRoute();
 
 const scrollToActive = (smooth = true) => {
-  if (!mobile.value && !props.horizontal) return;
+  if (!props.horizontal || collapsed.value) return;
 
   const container = tabsEl.value;
   if (!container) return;
@@ -80,15 +92,39 @@ watch(
 
 <template>
   <div v-if="props.horizontal" class="tab-nav-horizontal">
+    <TabNavViewMobileDropdown
+      v-if="collapsed"
+      class="tab-nav-horizontal__dropdown"
+      :routes="props.routes"
+      :anchors="props.anchors"
+      :active-id="props.activeKey"
+      :links="props.links"
+      :authenticated="props.authenticated"
+      :resource-access="props.resourceAccess"
+      :super-admin="props.superAdmin"
+      :badges="props.badges"
+      @update:active-id="emit('update:activeKey', $event)"
+    >
+      <template v-if="$slots['nav-after']" #after>
+        <slot name="nav-after" />
+      </template>
+    </TabNavViewMobileDropdown>
     <ul
+      v-else
       ref="tabsEl"
       class="tabs tabs--horizontal"
-      :role="props.tablist ? 'tablist' : undefined"
-      :aria-orientation="props.tablist ? 'horizontal' : undefined"
+      :role="props.anchors ? 'tablist' : undefined"
+      :aria-orientation="props.anchors ? 'horizontal' : undefined"
     >
       <slot name="nav">
+        <TabNavViewAnchorItems
+          v-if="props.anchors"
+          :items="props.anchors"
+          :active-id="props.activeKey"
+          @update:active-id="emit('update:activeKey', $event)"
+        />
         <TabNavViewItems
-          v-if="props.routes"
+          v-else-if="props.routes"
           :routes="props.routes"
           :links="props.links"
           :authenticated="props.authenticated"
@@ -97,6 +133,7 @@ watch(
           :badges="props.badges"
         />
       </slot>
+      <slot name="nav-after" />
     </ul>
     <slot name="content">
       <router-view />
@@ -110,23 +147,36 @@ watch(
     </div>
     <div class="col-12 col-md-3 tabs-wrapper">
       <TabNavViewMobileDropdown
-        v-if="mobile && props.routes"
+        v-if="collapsed"
         :routes="props.routes"
+        :anchors="props.anchors"
+        :active-id="props.activeKey"
         :links="props.links"
         :authenticated="props.authenticated"
         :resource-access="props.resourceAccess"
         :super-admin="props.superAdmin"
         :badges="props.badges"
-      />
+        @update:active-id="emit('update:activeKey', $event)"
+      >
+        <template v-if="$slots['nav-after']" #after>
+          <slot name="nav-after" />
+        </template>
+      </TabNavViewMobileDropdown>
       <ul
         v-else
         class="tabs"
-        :role="props.tablist ? 'tablist' : undefined"
-        :aria-orientation="props.tablist ? 'vertical' : undefined"
+        :role="props.anchors ? 'tablist' : undefined"
+        :aria-orientation="props.anchors ? 'vertical' : undefined"
       >
         <slot name="nav">
+          <TabNavViewAnchorItems
+            v-if="props.anchors"
+            :items="props.anchors"
+            :active-id="props.activeKey"
+            @update:active-id="emit('update:activeKey', $event)"
+          />
           <TabNavViewItems
-            v-if="props.routes"
+            v-else-if="props.routes"
             :routes="props.routes"
             :links="props.links"
             :authenticated="props.authenticated"
@@ -135,6 +185,7 @@ watch(
             :badges="props.badges"
           />
         </slot>
+        <slot name="nav-after" />
       </ul>
     </div>
   </div>

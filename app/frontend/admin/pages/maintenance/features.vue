@@ -10,9 +10,9 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import {
   useAdminFeatures,
   getAdminFeaturesQueryKey,
@@ -109,15 +109,11 @@ const daysOpen = (fullyOnSince?: string | null) => {
 
   <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
 
-  <TabNavView tablist :active-key="activeTab">
-    <template #nav>
-      <TabNavViewAnchorItems
-        :items="tabItems"
-        :active-id="activeTab"
-        @update:active-id="setActiveTab"
-      />
-    </template>
-
+  <TabNavView
+    :anchors="tabItems"
+    :active-key="activeTab"
+    @update:active-key="setActiveTab"
+  >
     <template #content>
       <InlineEditableList
         empty-name="features"
@@ -127,75 +123,97 @@ const daysOpen = (fullyOnSince?: string | null) => {
         hide-edit
       >
         <template #display="{ item }">
-          <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
-            {{ stateLabel(item.state) }}
-          </BasePill>
-          <router-link
-            :to="{ name: 'admin-feature', params: { name: item.name } }"
-            class="feature-name"
-            data-test="feature-name"
-          >
-            {{ item.name }}
-          </router-link>
-          <BasePill v-if="item.permanent" margin-right>
-            {{ t("labels.features.permanent") }}
-          </BasePill>
-          <BasePill v-if="item.selfServiceUser" margin-right>
-            {{ t("labels.features.selfServiceUser") }}
-          </BasePill>
-          <BasePill v-if="item.selfServiceFleet" margin-right>
-            {{ t("labels.features.selfServiceFleet") }}
-          </BasePill>
-          <BasePill v-if="item.percentageOfActors > 0" margin-right>
-            {{ item.percentageOfActors }}%
-            {{ t("labels.features.percentageOfActors") }}
-          </BasePill>
-          <BasePill v-if="item.percentageOfTime > 0" margin-right>
-            {{ item.percentageOfTime }}%
-            {{ t("labels.features.percentageOfTime") }}
-          </BasePill>
-          <BasePill v-if="item.groups.length > 0" margin-right>
-            {{ item.groups.join(", ") }}
-          </BasePill>
-          <BasePill v-if="item.actors.length > 0" margin-right>
-            {{ item.actors.length }} {{ t("labels.features.actors") }}
-          </BasePill>
-          <BasePill
-            v-if="item.fullyOnSince && !item.permanent"
-            margin-right
-            data-test="feature-open-for"
-          >
-            {{
-              t("labels.features.openFor", {
-                days: daysOpen(item.fullyOnSince),
-              })
-            }}
-          </BasePill>
+          <div class="feature-row">
+            <BasePill
+              :variant="stateVariant(item.state)"
+              uppercase
+              margin-right
+            >
+              {{ stateLabel(item.state) }}
+            </BasePill>
+            <router-link
+              :to="{ name: 'admin-feature', params: { name: item.name } }"
+              class="feature-name"
+              data-test="feature-name"
+            >
+              {{ item.name }}
+            </router-link>
+            <BasePill v-if="item.permanent" margin-right>
+              {{ t("labels.features.permanent") }}
+            </BasePill>
+            <BasePill v-if="item.selfServiceUser" margin-right>
+              {{ t("labels.features.selfServiceUser") }}
+            </BasePill>
+            <BasePill v-if="item.selfServiceFleet" margin-right>
+              {{ t("labels.features.selfServiceFleet") }}
+            </BasePill>
+            <BasePill v-if="item.percentageOfActors > 0" margin-right>
+              {{ item.percentageOfActors }}%
+              {{ t("labels.features.percentageOfActors") }}
+            </BasePill>
+            <BasePill v-if="item.percentageOfTime > 0" margin-right>
+              {{ item.percentageOfTime }}%
+              {{ t("labels.features.percentageOfTime") }}
+            </BasePill>
+            <BasePill v-if="item.groups.length > 0" margin-right>
+              {{ item.groups.join(", ") }}
+            </BasePill>
+            <BasePill v-if="item.actors.length > 0" margin-right>
+              {{ item.actors.length }} {{ t("labels.features.actors") }}
+            </BasePill>
+            <BasePill
+              v-if="item.fullyOnSince && !item.permanent"
+              margin-right
+              data-test="feature-open-for"
+            >
+              {{
+                t("labels.features.openFor", {
+                  days: daysOpen(item.fullyOnSince),
+                })
+              }}
+            </BasePill>
+          </div>
         </template>
 
         <template #actions="{ item, mobile }">
-          <Btn
-            v-tooltip="t('actions.edit')"
-            :to="{ name: 'admin-feature', params: { name: item.name } }"
-            :variant="BtnVariantsEnum.GHOST"
-            :aria-label="`${t('actions.edit')} ${item.name}`"
-            data-test="edit-feature"
-          >
-            <i class="fa-duotone fa-pencil" />
-            <span v-if="mobile">{{ t("actions.edit") }}</span>
-          </Btn>
-          <Btn
-            v-tooltip="t('labels.features.toggle')"
-            data-test="toggle-feature"
-            @click="toggleFeature(item)"
-            :variant="BtnVariantsEnum.GHOST"
-          >
-            <i
-              class="fa-duotone fa-power-off"
-              :class="item.state === 'on' ? 'text-success' : 'text-muted'"
-            />
-            <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
-          </Btn>
+          <BtnDropdown v-if="mobile" data-test="feature-actions">
+            <Btn
+              :to="{ name: 'admin-feature', params: { name: item.name } }"
+              data-test="edit-feature"
+            >
+              <i class="fa-duotone fa-pencil" />
+              <span>{{ t("actions.edit") }}</span>
+            </Btn>
+            <Btn data-test="toggle-feature" @click="toggleFeature(item)">
+              <i
+                class="fa-duotone fa-power-off"
+                :class="item.state === 'on' ? 'text-success' : 'text-muted'"
+              />
+              <span>{{ t("labels.features.toggle") }}</span>
+            </Btn>
+          </BtnDropdown>
+          <template v-else>
+            <Btn
+              v-tooltip="t('actions.edit')"
+              :to="{ name: 'admin-feature', params: { name: item.name } }"
+              :variant="BtnVariantsEnum.GHOST"
+              :aria-label="`${t('actions.edit')} ${item.name}`"
+              data-test="edit-feature"
+            >
+              <i class="fa-duotone fa-pencil" />
+            </Btn>
+            <Btn
+              v-tooltip="t('labels.features.toggle')"
+              data-test="toggle-feature"
+              @click="toggleFeature(item)"
+              :variant="BtnVariantsEnum.GHOST"
+            >
+              <i
+                class="fa-duotone fa-power-off"
+                :class="item.state === 'on' ? 'text-success' : 'text-muted'"
+              />
+            </Btn>
+          </template>
         </template>
       </InlineEditableList>
     </template>
@@ -203,6 +221,15 @@ const daysOpen = (fullyOnSince?: string | null) => {
 </template>
 
 <style lang="scss" scoped>
+// A feature can carry eight pills; on one line they ran off a phone's edge.
+.feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 6px;
+  min-width: 0;
+}
+
 .feature-name {
   font-weight: 600;
   margin-right: 0.5rem;

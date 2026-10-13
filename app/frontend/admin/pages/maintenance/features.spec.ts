@@ -78,7 +78,10 @@ const mountPage = async (tab?: string) => {
         BasePill: { template: "<span><slot /></span>" },
         Btn: { template: "<button><slot /></button>" },
         TabNavView: {
-          template: "<div><slot name='nav' /><slot name='content' /></div>",
+          props: ["anchors"],
+          emits: ["update:activeKey"],
+          template:
+            "<div><button v-for='anchor in anchors' :key='anchor.id' :data-test=\"'tab-anchor-' + anchor.id\" @click=\"$emit('update:activeKey', anchor.id)\" /><slot name='content' /></div>",
         },
         InlineEditableList: {
           props: ["items"],

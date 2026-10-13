@@ -9,7 +9,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as fleetRoutes } from "./settings/routes";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -141,12 +140,7 @@ const leave = () => {
     :authenticated="sessionStore.isAuthenticated"
     :resource-access="membership?.fleetRole?.resourceAccess"
   >
-    <template #nav>
-      <TabNavViewItems
-        :routes="visibleRoutes"
-        :authenticated="sessionStore.isAuthenticated"
-        :resource-access="membership?.fleetRole?.resourceAccess"
-      />
+    <template #nav-after>
       <li
         v-if="fleet"
         v-tooltip="leaveTooltip"
