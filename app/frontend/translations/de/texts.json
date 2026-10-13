@@ -346,6 +346,7 @@
       },
       "vehiclePlaque": {
         "supporter": "Alle weiteren Stile sind ein Dankeschön an alle, die Fleetyards am Laufen halten.",
+        "keptStyle": "Deine Tafel behält ihren Stil %{style}, ein Dankeschön an Unterstützer. Speicherst du eine Änderung, wechselt sie zu %{default}.",
         "credits": {
           "founders": "%{manufacturer}-Gründer",
           "shipwrights": "%{manufacturer}-Schiffbauer",

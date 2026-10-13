@@ -133,6 +133,43 @@ describe("VehiclePlaqueEditModal", () => {
     );
   });
 
+  it("warns a lapsed supporter that saving switches their plaque to brass", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "To boldly go", plaqueStyle: "neon" }),
+      },
+      initialState: { session: { currentUser: { supporter: false } } },
+      plugins: [router],
+    });
+
+    expect(
+      wrapper.find('[data-test="vehicle-plaque-kept-style"]').exists(),
+    ).toBe(true);
+
+    await wrapper.find("#vehicle-plaque-form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ plaqueStyle: "brass" }),
+      }),
+    );
+  });
+
+  it("keeps a supporter's style without a warning", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "To boldly go", plaqueStyle: "neon" }),
+      },
+      initialState: { session: { currentUser: { supporter: true } } },
+      plugins: [router],
+    });
+
+    expect(
+      wrapper.find('[data-test="vehicle-plaque-kept-style"]').exists(),
+    ).toBe(false);
+  });
+
   it("keeps what was typed while a style is picked", async () => {
     const wrapper = await mount(true);
 
