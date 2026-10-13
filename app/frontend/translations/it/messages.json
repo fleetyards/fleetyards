@@ -1223,6 +1223,8 @@
         }
       },
       "vehiclePlaque": {
+        "removeConfirm": "Rimuovere la targa di dedica di questa nave?",
+        "downloadFailure": "Non è stato possibile salvare la targa come immagine",
         "failure": "Non è stato possibile salvare la targa"
       },
       "vehicleOverview": {

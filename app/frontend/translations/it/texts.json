@@ -345,6 +345,7 @@
         "unavailable": "Questo diario non è disponibile al momento."
       },
       "vehiclePlaque": {
+        "supporter": "Tutti gli altri stili sono un grazie a chi tiene in vita Fleetyards.",
         "credits": {
           "founders": "Fondatori di %{manufacturer}",
           "shipwrights": "Costruttori di %{manufacturer}",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "Da una flotta",
         "classLine": "%{model} di %{manufacturer}",
-        "registry": "Matricola %{serial}",
         "commissioned": "Commissionata a %{shipyard}",
         "launched": "Varata a %{date}",
         "launchedAt": "Varata a %{date}, %{port}",

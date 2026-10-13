@@ -4147,6 +4147,20 @@
         "step": "第 %{current} 步，共 %{total} 步"
       },
       "vehiclePlaque": {
+        "style": "样式",
+        "styles": {
+          "brass": "黄铜",
+          "hud": "Fleetyards 界面",
+          "gunmetal": "枪铁色",
+          "blueprint": "船坞蓝图",
+          "salvage": "铆接废料",
+          "glass": "磨砂玻璃",
+          "carbon": "碳纤维与信号红",
+          "walnut": "胡桃木与黄铜",
+          "neon": "派罗霓虹",
+          "manufacturer": "制造商样式"
+        },
+        "registry": "注册编号",
         "operationsGroup": "行动组",
         "title": "命名铭牌",
         "dedication": "献词",

@@ -1223,6 +1223,8 @@
         }
       },
       "vehiclePlaque": {
+        "removeConfirm": "要移除这艘船的命名铭牌吗？",
+        "downloadFailure": "铭牌未能保存为图片",
         "failure": "铭牌未能保存"
       },
       "vehicleOverview": {

@@ -5101,6 +5101,12 @@ components:
           type:
           - string
           - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
         shipyard:
           type:
           - string
@@ -5209,6 +5215,30 @@ components:
       - url
       - createdAt
       - updatedAt
+    VehiclePlaqueStyleEnum:
+      type: string
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
   messages:
     AnnouncementMessage:
       payload:

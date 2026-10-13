@@ -4147,6 +4147,20 @@
         "step": "Schritt %{current} von %{total}"
       },
       "vehiclePlaque": {
+        "style": "Stil",
+        "styles": {
+          "brass": "Messing",
+          "hud": "Fleetyards-HUD",
+          "gunmetal": "Rotguss",
+          "blueprint": "Werft-Blaupause",
+          "salvage": "Genietetes Altmetall",
+          "glass": "Milchglas",
+          "carbon": "Carbon & Signalrot",
+          "walnut": "Nussbaum & Messing",
+          "neon": "Pyro-Neon",
+          "manufacturer": "Herstellerstil"
+        },
+        "registry": "Registernummer",
         "operationsGroup": "Einsatzcrew",
         "title": "Widmungstafel",
         "dedication": "Widmung",

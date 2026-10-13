@@ -564,6 +564,7 @@
         "change": "Flotte ändern"
       },
       "vehiclePlaque": {
+        "remove": "Tafel entfernen",
         "edit": "Tafel bearbeiten",
         "show": "Widmungstafel anzeigen"
       },

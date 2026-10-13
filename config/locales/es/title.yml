@@ -43,6 +43,8 @@ es:
       password_request: Solicitar contraseña
       privacy-policy: Política de privacidad
       public_hangar: Hangar de %{user}
+      public_plaque: "Placa de dedicatoria de %{vehicle}"
+      public_vehicle: "%{vehicle} en el hangar de %{user}"
       public_wishlist: Lista de deseos de %{user}
       roadmap: Hoja de ruta
       roadmap_changes: Cambios de la hoja de ruta

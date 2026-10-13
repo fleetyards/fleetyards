@@ -42,6 +42,8 @@ en:
       password_request: Request Password
       privacy-policy: Privacy Policy
       public_hangar: "%{user} Hangar"
+      public_plaque: "%{vehicle} dedication plaque"
+      public_vehicle: "%{vehicle} in %{user} Hangar"
       public_wishlist: "%{user} Wishlist"
       roadmap: Roadmap
       roadmap_changes: Roadmap Changes

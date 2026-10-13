@@ -345,6 +345,7 @@
         "unavailable": "此日誌暫時無法使用。"
       },
       "vehiclePlaque": {
+        "supporter": "其他所有樣式，都是獻給讓 Fleetyards 持續運作的支持者們的謝禮。",
         "credits": {
           "founders": "%{manufacturer}創辦人",
           "shipwrights": "%{manufacturer}造船師",
@@ -353,7 +354,6 @@
         },
         "fromFleet": "來自艦隊",
         "classLine": "%{manufacturer} 出品的 %{model}",
-        "registry": "註冊編號 %{serial}",
         "commissioned": "建造於 %{shipyard}",
         "launched": "%{date} 下水",
         "launchedAt": "%{date} 於 %{port} 下水",

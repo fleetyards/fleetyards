@@ -106,20 +106,31 @@ class Vehicle < ApplicationRecord
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
-  # The lore group the plaque credits as the ship's operations crew, and which
-  # side of the law it stands on.
-  OPERATIONS_GROUPS = {
-    "uee" => "lawful",
-    "mercenary_guild" => "neutral",
-    "itg" => "neutral",
-    "cfp" => "neutral",
-    "shubin" => "neutral",
-    "nine_tails" => "outlaw",
-    "headhunters" => "outlaw",
-    "xenothreat" => "outlaw",
-    "rough_and_ready" => "outlaw"
-  }.freeze
-  validates :operations_group, inclusion: {in: OPERATIONS_GROUPS.keys}, allow_blank: true
+  # The lore group the plaque credits as the ship's operations crew. Their names
+  # and sides of the law live with the plaque in the frontend.
+  OPERATIONS_GROUPS = %w[
+    uee mercenary_guild itg cfp shubin nine_tails headhunters xenothreat rough_and_ready
+  ].freeze
+  validates :operations_group, inclusion: {in: OPERATIONS_GROUPS}, allow_blank: true
+
+  # How the plaque is drawn. `manufacturer` is the style of the company that built
+  # the ship. Every style but the default is a supporter perk: once the owner
+  # stops supporting, the plaque stays but is drawn in the default style.
+  PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
+  DEFAULT_PLAQUE_STYLE = "brass"
+  validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
+
+  # The plaque as a picture, for the link preview of a shared plaque. The server
+  # cannot draw the plaque, so the owner's browser renders it on every save.
+  has_one_attached :plaque_image
+  validates :plaque_image, no_vector_image: true
+  # Served to anyone the link reaches, so only what a browser rendering of the
+  # plaque can be: a picture, and a small one.
+  PLAQUE_IMAGE_TYPES = %w[image/png image/jpeg image/webp].freeze
+  PLAQUE_IMAGE_MAX_BYTES = 3.megabytes
+  validate :plaque_image_is_a_small_picture, if: -> { attachment_changes.key?("plaque_image") }
+  # Without a dedication there is no plaque, and no picture of one to keep.
+  after_save :purge_plaque_image, if: -> { saved_change_to_dedication? && dedication.blank? && plaque_image.attached? }
 
   has_one :inventory, dependent: nil
 
@@ -145,6 +156,7 @@ class Vehicle < ApplicationRecord
       {parent_vehicle: :model},
       {image_attachment: :blob},
       {model_image: {file_attachment: :blob}},
+      :user,
       :linked_location,
       :launch_port_location
     ]
@@ -160,7 +172,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group].freeze
+  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},
@@ -304,6 +316,24 @@ class Vehicle < ApplicationRecord
     serial if SERIAL_FORMAT.match?(serial)
   end
 
+  ADDRESS_ID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
+  ADDRESS_SERIAL = /\A[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}/i
+
+  # A ship's address in its owner's hangar -- `l8-4261-ha-contorta`,
+  # `<id>-contorta`, `<id>` -- leads with its serial or its id; the name after it
+  # is there to read and is never looked up.
+  def self.at_address(address)
+    address = address.to_s
+
+    if (id = address[ADDRESS_ID])
+      where(id: id.downcase)
+    elsif (serial = address[ADDRESS_SERIAL])
+      where(serial: serial.upcase)
+    else
+      none
+    end
+  end
+
   def self.delete_with_dependents(vehicle_ids)
     return 0 if vehicle_ids.blank?
 
@@ -338,7 +368,7 @@ class Vehicle < ApplicationRecord
   # being deleted and run the broadcasts this path exists to skip. The rows go
   # now and the files once nothing can roll the delete back.
   private_class_method def self.delete_images(vehicle_ids)
-    attachments = ActiveStorage::Attachment.where(record_type: name, name: "image", record_id: vehicle_ids)
+    attachments = ActiveStorage::Attachment.where(record_type: name, name: %w[image plaque_image], record_id: vehicle_ids)
     blob_ids = attachments.pluck(:blob_id)
     return if blob_ids.empty?
 
@@ -826,6 +856,24 @@ class Vehicle < ApplicationRecord
       last = lexorank_ranking.value_between(last, nil)
       where(id:).update_all(rank: last)
     end
+  end
+
+  private def plaque_image_is_a_small_picture
+    blob = plaque_image.blob
+    return if blob.blank?
+    return if PLAQUE_IMAGE_TYPES.include?(blob.content_type) && blob.byte_size <= PLAQUE_IMAGE_MAX_BYTES
+
+    errors.add(:plaque_image, :invalid)
+  end
+
+  private def purge_plaque_image
+    plaque_image.purge_later
+  end
+
+  def effective_plaque_style
+    return DEFAULT_PLAQUE_STYLE unless user&.supporter?
+
+    plaque_style.presence || DEFAULT_PLAQUE_STYLE
   end
 
   protected def nil_if_blank

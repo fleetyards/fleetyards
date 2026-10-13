@@ -1,0 +1,545 @@
+// The general plaque styles a supporter picks from. Ported as-is from the
+// approved mockups: every measure is a share of the plaque's width (cqw).
+
+// A · brass
+.vehicle-plaque--brass {
+  border: 1px solid #8a5a24;
+  border-radius: 0.8cqw;
+  outline: 1px solid #2b2420;
+  outline-offset: -1.6cqw;
+  background: linear-gradient(160deg, #e8b874, #c9924a 45%, #8a5a24);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255/0.35),
+    0 6px 18px rgb(0 0 0/0.45);
+  color: #2b2420;
+}
+.vehicle-plaque--brass .vehicle-plaque__logo {
+  filter: brightness(0) opacity(0.8);
+}
+.vehicle-plaque--brass .vehicle-plaque__group h4 {
+  text-decoration: underline;
+}
+.vehicle-plaque--brass .vehicle-plaque__registry span {
+  font-weight: 700;
+}
+
+// B · Fleetyards HUD
+.vehicle-plaque--hud {
+  border: 2px solid rgb(122 130 136/0.5);
+  border-radius: 2.6cqw;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgb(66 139 202/0.16), transparent 60%),
+    linear-gradient(180deg, #272b30, #1a1d21);
+  box-shadow:
+    0 6px 18px -12px rgb(0 0 0/0.8),
+    inset 0 0 0 1px rgb(255 255 255/0.03);
+  color: #c8c8c8;
+}
+.vehicle-plaque--hud .vehicle-plaque__corner {
+  display: block;
+  position: absolute;
+  width: 4cqw;
+  height: 4cqw;
+  border: 2px solid #428bca;
+}
+.vehicle-plaque--hud .vehicle-plaque__corner--tl {
+  top: 1.6cqw;
+  left: 1.6cqw;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 1cqw;
+}
+.vehicle-plaque--hud .vehicle-plaque__corner--tr {
+  top: 1.6cqw;
+  right: 1.6cqw;
+  border-left: 0;
+  border-bottom: 0;
+  border-top-right-radius: 1cqw;
+}
+.vehicle-plaque--hud .vehicle-plaque__corner--bl {
+  bottom: 1.6cqw;
+  left: 1.6cqw;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-left-radius: 1cqw;
+}
+.vehicle-plaque--hud .vehicle-plaque__corner--br {
+  bottom: 1.6cqw;
+  right: 1.6cqw;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 1cqw;
+}
+.vehicle-plaque--hud .vehicle-plaque__logo {
+  filter: brightness(0) invert(1) opacity(0.85);
+}
+.vehicle-plaque--hud .vehicle-plaque__name {
+  color: #eee;
+  text-shadow: 0 0 2.4cqw rgb(66 139 202/0.55);
+}
+.vehicle-plaque--hud .vehicle-plaque__class {
+  color: #428bca;
+}
+.vehicle-plaque--hud .vehicle-plaque__registry {
+  font-family: Orbitron, sans-serif;
+  font-size: 1.6cqw;
+  color: #959595;
+}
+.vehicle-plaque--hud .vehicle-plaque__registry span {
+  margin-right: 0.8cqw;
+  padding: 0.2cqw 0.8cqw;
+  border: 1px solid rgb(122 130 136/0.5);
+  border-radius: 0.6cqw;
+  color: #7a8288;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2cqw;
+}
+.vehicle-plaque--hud .vehicle-plaque__lines {
+  color: #959595;
+}
+.vehicle-plaque--hud .vehicle-plaque__credits {
+  padding-top: 2cqw;
+  border-top: 1px solid rgb(122 130 136/0.28);
+}
+.vehicle-plaque--hud .vehicle-plaque__group h4 {
+  color: #428bca;
+}
+.vehicle-plaque--hud .vehicle-plaque__group ul {
+  color: #959595;
+}
+.vehicle-plaque--hud .vehicle-plaque__quote {
+  color: #eee;
+}
+
+// C · Gunmetal plate
+.vehicle-plaque--gunmetal {
+  border: 1px solid #0e1012;
+  border-radius: 1cqw;
+  outline: 1px solid rgb(212 175 55/0.7);
+  outline-offset: -1.8cqw;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255/0.018) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(165deg, #4a5057, #2f3439 45%, #1d2024);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255/0.12),
+    0 6px 18px rgb(0 0 0/0.6);
+  color: #d9dcdf;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__logo {
+  filter: brightness(0) invert(0.88);
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__name {
+  color: #eee;
+  text-shadow:
+    0 -1px 0 rgb(0 0 0/0.7),
+    0 1px 0 rgb(255 255 255/0.12);
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__class {
+  color: #d4af37;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__registry {
+  color: #b9bec3;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__lines {
+  color: #b9bec3;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 1px solid rgb(212 175 55/0.45);
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__group h4 {
+  color: #d4af37;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__group ul {
+  color: #aab0b6;
+}
+.vehicle-plaque--gunmetal .vehicle-plaque__quote {
+  color: #eee;
+}
+
+// D · Shipyard blueprint
+.vehicle-plaque--blueprint {
+  border: 2px solid rgb(200 225 255/0.55);
+  border-radius: 0.6cqw;
+  outline: 1px dashed rgb(200 225 255/0.35);
+  outline-offset: -1.8cqw;
+  background:
+    linear-gradient(rgb(200 225 255/0.07) 1px, transparent 1px) 0 0/4cqw 4cqw,
+    linear-gradient(90deg, rgb(200 225 255/0.07) 1px, transparent 1px) 0 0/4cqw
+      4cqw,
+    linear-gradient(160deg, #173457, #0e2340 60%, #0a1a31);
+  color: #dfeaf7;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__logo {
+  filter: brightness(0) invert(1) opacity(0.9);
+}
+.vehicle-plaque--blueprint .vehicle-plaque__name {
+  color: #fff;
+  font-weight: 700;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__class {
+  color: #8fc1ee;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__registry {
+  font-family: Orbitron, sans-serif;
+  font-size: 1.6cqw;
+  color: #dfeaf7;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__registry span {
+  color: #8fc1ee;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__lines {
+  color: #c3d5ea;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 1px solid rgb(200 225 255/0.35);
+}
+.vehicle-plaque--blueprint .vehicle-plaque__group h4 {
+  color: #8fc1ee;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__group ul {
+  color: #c3d5ea;
+}
+.vehicle-plaque--blueprint .vehicle-plaque__quote {
+  color: #fff;
+}
+
+// E · Riveted salvage
+.vehicle-plaque--salvage {
+  border: 1px solid #1c1b18;
+  border-radius: 0.6cqw;
+  background:
+    radial-gradient(60% 40% at 20% 15%, rgb(160 90 40/0.35), transparent 70%),
+    radial-gradient(50% 35% at 85% 90%, rgb(120 70 30/0.35), transparent 70%),
+    linear-gradient(170deg, #5d5a52, #46443e 50%, #34322e);
+  box-shadow:
+    inset 0 0 0 0.8cqw rgb(0 0 0/0.18),
+    0 6px 18px rgb(0 0 0/0.6);
+  color: #ece6d6;
+  padding-top: 7cqw;
+}
+.vehicle-plaque--salvage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.6cqw;
+  background: repeating-linear-gradient(
+    -45deg,
+    #e0a526 0 2cqw,
+    #1c1b18 2cqw 4cqw
+  );
+  border-radius: 0.6cqw 0.6cqw 0 0;
+  opacity: 0.9;
+}
+.vehicle-plaque--salvage .vehicle-plaque__corner {
+  display: block;
+  position: absolute;
+  width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b9b4a6, #4d4a43 70%);
+  box-shadow: 0 1px 1px rgb(0 0 0/0.6);
+}
+.vehicle-plaque--salvage .vehicle-plaque__corner--tl {
+  top: 4cqw;
+  left: 2cqw;
+}
+.vehicle-plaque--salvage .vehicle-plaque__corner--tr {
+  top: 4cqw;
+  right: 2cqw;
+}
+.vehicle-plaque--salvage .vehicle-plaque__corner--bl {
+  bottom: 2cqw;
+  left: 2cqw;
+}
+.vehicle-plaque--salvage .vehicle-plaque__corner--br {
+  bottom: 2cqw;
+  right: 2cqw;
+}
+.vehicle-plaque--salvage .vehicle-plaque__logo {
+  filter: brightness(0) invert(0.92);
+}
+.vehicle-plaque--salvage .vehicle-plaque__name {
+  color: #f3ead2;
+  text-shadow: 0 2px 0 rgb(0 0 0/0.45);
+}
+.vehicle-plaque--salvage .vehicle-plaque__class {
+  color: #e0a526;
+}
+.vehicle-plaque--salvage .vehicle-plaque__registry,
+.vehicle-plaque--salvage .vehicle-plaque__lines {
+  color: #d6cfbd;
+}
+.vehicle-plaque--salvage .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 2px dashed rgb(224 165 38/0.5);
+}
+.vehicle-plaque--salvage .vehicle-plaque__group h4 {
+  color: #e0a526;
+}
+.vehicle-plaque--salvage .vehicle-plaque__group ul {
+  color: #cfc8b6;
+}
+.vehicle-plaque--salvage .vehicle-plaque__quote {
+  color: #f3ead2;
+}
+
+// F · Frosted glass
+.vehicle-plaque--glass {
+  border: 1px solid rgb(255 255 255/0.35);
+  border-radius: 2.4cqw;
+  background:
+    radial-gradient(90% 70% at 50% 0%, rgb(255 255 255/0.28), transparent 70%),
+    linear-gradient(160deg, rgb(214 226 236/0.22), rgb(140 160 180/0.12));
+  backdrop-filter: blur(8px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255/0.5),
+    inset 0 -1px 0 rgb(255 255 255/0.1),
+    0 10px 30px -12px rgb(120 170 220/0.35);
+  color: #eef3f8;
+}
+.vehicle-plaque--glass .vehicle-plaque__logo {
+  filter: brightness(0) invert(1) opacity(0.8);
+}
+.vehicle-plaque--glass .vehicle-plaque__name {
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 3cqw rgb(255 255 255/0.35);
+}
+.vehicle-plaque--glass .vehicle-plaque__class {
+  color: #d8e6f2;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+.vehicle-plaque--glass .vehicle-plaque__registry,
+.vehicle-plaque--glass .vehicle-plaque__lines {
+  color: #c9d6e2;
+  font-weight: 600;
+}
+.vehicle-plaque--glass .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 1px solid rgb(255 255 255/0.25);
+}
+.vehicle-plaque--glass .vehicle-plaque__group h4 {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.vehicle-plaque--glass .vehicle-plaque__group ul {
+  color: #c9d6e2;
+}
+.vehicle-plaque--glass .vehicle-plaque__quote {
+  color: #fff;
+  font-weight: 600;
+}
+
+// G · Carbon & signal red
+.vehicle-plaque--carbon {
+  border: 2px solid #0b0b0c;
+  border-radius: 0.6cqw;
+  background:
+    linear-gradient(
+        45deg,
+        rgb(255 255 255/0.035) 25%,
+        transparent 25% 75%,
+        rgb(255 255 255/0.035) 75%
+      )
+      0 0/1.4cqw 1.4cqw,
+    linear-gradient(
+        45deg,
+        rgb(255 255 255/0.035) 25%,
+        transparent 25% 75%,
+        rgb(255 255 255/0.035) 75%
+      )
+      0.7cqw 0.7cqw/1.4cqw 1.4cqw,
+    linear-gradient(180deg, #1c1d20, #111214);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255/0.08),
+    0 6px 18px rgb(0 0 0/0.7);
+  color: #dadcdf;
+}
+.vehicle-plaque--carbon .vehicle-plaque__corner {
+  display: block;
+  position: absolute;
+  width: 8cqw;
+  height: 0.8cqw;
+  background: #d23a2f;
+}
+.vehicle-plaque--carbon .vehicle-plaque__corner--tl {
+  top: 0;
+  left: 3cqw;
+}
+.vehicle-plaque--carbon .vehicle-plaque__corner--tr {
+  top: 0;
+  right: 3cqw;
+}
+.vehicle-plaque--carbon .vehicle-plaque__corner--bl {
+  bottom: 0;
+  left: 3cqw;
+}
+.vehicle-plaque--carbon .vehicle-plaque__corner--br {
+  bottom: 0;
+  right: 3cqw;
+}
+.vehicle-plaque--carbon .vehicle-plaque__logo {
+  filter: brightness(0) invert(0.9);
+}
+.vehicle-plaque--carbon .vehicle-plaque__name {
+  color: #f2f2f2;
+  letter-spacing: 0.1em;
+}
+.vehicle-plaque--carbon .vehicle-plaque__class {
+  color: #e2483c;
+}
+.vehicle-plaque--carbon .vehicle-plaque__registry {
+  color: #f2f2f2;
+  font-family: Orbitron, sans-serif;
+  font-size: 1.6cqw;
+}
+.vehicle-plaque--carbon .vehicle-plaque__registry span {
+  color: #e2483c;
+}
+.vehicle-plaque--carbon .vehicle-plaque__lines {
+  color: #a9adb2;
+}
+.vehicle-plaque--carbon .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 1px solid rgb(226 72 60/0.55);
+}
+.vehicle-plaque--carbon .vehicle-plaque__group h4 {
+  color: #e2483c;
+}
+.vehicle-plaque--carbon .vehicle-plaque__group ul {
+  color: #a9adb2;
+}
+.vehicle-plaque--carbon .vehicle-plaque__quote {
+  color: #f2f2f2;
+}
+
+// H · Walnut & brass
+.vehicle-plaque--walnut {
+  padding: 4cqw;
+  border-radius: 1.2cqw;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgb(0 0 0/0.12) 0 0.4cqw,
+      transparent 0.4cqw 1.6cqw
+    ),
+    repeating-linear-gradient(
+      88deg,
+      rgb(255 220 180/0.05) 0 0.2cqw,
+      transparent 0.2cqw 2.4cqw
+    ),
+    linear-gradient(160deg, #5a3a24, #3f2716 55%, #2a190e);
+  box-shadow:
+    inset 0 0 0 0.4cqw rgb(0 0 0/0.25),
+    0 8px 22px rgb(0 0 0/0.6);
+}
+.vehicle-plaque--walnut > *:not(.vehicle-plaque__corner) {
+  position: relative;
+  z-index: 1;
+}
+.vehicle-plaque--walnut::before {
+  content: "";
+  position: absolute;
+  inset: 3.4cqw;
+  border-radius: 0.6cqw;
+  background: linear-gradient(160deg, #ecc27e, #c9924a 45%, #94622a);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255/0.4),
+    0 0.4cqw 1cqw rgb(0 0 0/0.55);
+}
+.vehicle-plaque--walnut {
+  color: #2b2420;
+  padding: 7cqw 8cqw 6.4cqw;
+}
+.vehicle-plaque--walnut .vehicle-plaque__corner {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fbe3b0, #8a5a24 75%);
+}
+.vehicle-plaque--walnut .vehicle-plaque__corner--tl {
+  top: 4.4cqw;
+  left: 4.4cqw;
+}
+.vehicle-plaque--walnut .vehicle-plaque__corner--tr {
+  top: 4.4cqw;
+  right: 4.4cqw;
+}
+.vehicle-plaque--walnut .vehicle-plaque__corner--bl {
+  bottom: 4.4cqw;
+  left: 4.4cqw;
+}
+.vehicle-plaque--walnut .vehicle-plaque__corner--br {
+  bottom: 4.4cqw;
+  right: 4.4cqw;
+}
+.vehicle-plaque--walnut .vehicle-plaque__logo {
+  filter: brightness(0) opacity(0.8);
+}
+.vehicle-plaque--walnut .vehicle-plaque__name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.vehicle-plaque--walnut .vehicle-plaque__group h4 {
+  text-decoration: underline;
+}
+
+// I · Pyro neon
+.vehicle-plaque--neon {
+  border: 2px solid #ff3fb4;
+  border-radius: 2cqw;
+  background:
+    radial-gradient(80% 60% at 50% 110%, rgb(255 63 180/0.18), transparent 70%),
+    linear-gradient(180deg, #0d0a12, #07060a);
+  box-shadow:
+    0 0 1.6cqw rgb(255 63 180/0.7),
+    inset 0 0 1.6cqw rgb(255 63 180/0.35);
+  color: #f4e9ff;
+}
+.vehicle-plaque--neon .vehicle-plaque__logo {
+  filter: brightness(0) invert(1) drop-shadow(0 0 0.8cqw rgb(255 63 180/0.9));
+}
+.vehicle-plaque--neon .vehicle-plaque__name {
+  color: #fff;
+  text-shadow:
+    0 0 0.6cqw #ff3fb4,
+    0 0 2cqw #ff3fb4;
+}
+.vehicle-plaque--neon .vehicle-plaque__class {
+  color: #3ff2ff;
+  text-shadow: 0 0 1cqw rgb(63 242 255/0.7);
+}
+.vehicle-plaque--neon .vehicle-plaque__registry,
+.vehicle-plaque--neon .vehicle-plaque__lines {
+  color: #cdb8e6;
+}
+.vehicle-plaque--neon .vehicle-plaque__credits {
+  padding-top: 1.8cqw;
+  border-top: 1px solid rgb(255 63 180/0.45);
+}
+.vehicle-plaque--neon .vehicle-plaque__group h4 {
+  color: #3ff2ff;
+  text-shadow: 0 0 0.8cqw rgb(63 242 255/0.6);
+}
+.vehicle-plaque--neon .vehicle-plaque__group ul {
+  color: #cdb8e6;
+}
+.vehicle-plaque--neon .vehicle-plaque__quote {
+  color: #fff;
+  text-shadow: 0 0 1.2cqw rgb(255 63 180/0.8);
+}

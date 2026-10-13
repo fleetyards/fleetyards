@@ -4161,6 +4161,20 @@
         "step": "Step %{current} of %{total}"
       },
       "vehiclePlaque": {
+        "style": "Style",
+        "styles": {
+          "brass": "Brass",
+          "hud": "Fleetyards HUD",
+          "gunmetal": "Gunmetal",
+          "blueprint": "Shipyard blueprint",
+          "salvage": "Riveted salvage",
+          "glass": "Frosted glass",
+          "carbon": "Carbon & signal red",
+          "walnut": "Walnut & brass",
+          "neon": "Pyro neon",
+          "manufacturer": "Manufacturer style"
+        },
+        "registry": "Registry",
         "operationsGroup": "Operations crew",
         "title": "Dedication plaque",
         "dedication": "Dedication",

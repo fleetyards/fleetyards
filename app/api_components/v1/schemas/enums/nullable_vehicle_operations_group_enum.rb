@@ -8,12 +8,12 @@ module V1
       class NullableVehicleOperationsGroupEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = (::Vehicle::OPERATIONS_GROUPS.keys + [nil]).freeze
+        VALUES = (::Vehicle::OPERATIONS_GROUPS + [nil]).freeze
 
         schema({
           type: [:string, :null],
           enum: VALUES,
-          "x-enumNames": ::Vehicle::OPERATIONS_GROUPS.keys.map { |value| transform_enum_key(value) } + ["NULL"]
+          "x-enumNames": ::Vehicle::OPERATIONS_GROUPS.map { |value| transform_enum_key(value) } + ["NULL"]
         })
       end
     end

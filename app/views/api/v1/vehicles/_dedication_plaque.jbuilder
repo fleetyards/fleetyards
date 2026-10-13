@@ -8,3 +8,5 @@ json.affiliation vehicle.affiliation
 json.operations_group vehicle.operations_group
 json.shipyard vehicle.model&.manufacturer&.shipyard
 json.manufacturer_short_name vehicle.model&.manufacturer&.short_name
+json.manufacturer_code vehicle.model&.manufacturer&.code
+json.plaque_style vehicle.effective_plaque_style if vehicle.dedication.present?

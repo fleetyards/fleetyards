@@ -1223,6 +1223,8 @@
         }
       },
       "vehiclePlaque": {
+        "removeConfirm": "¿Quitar la placa de dedicatoria de esta nave?",
+        "downloadFailure": "No se pudo guardar la placa como imagen",
         "failure": "No se pudo guardar la placa"
       },
       "vehicleOverview": {

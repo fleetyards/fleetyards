@@ -1,7 +1,16 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import { type Vehicle } from "@/services/fyApi";
+
+const emit = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit, on: () => () => undefined }),
+}));
+
+const openedModal = () =>
+  emit.mock.calls.find(([event]) => event === "open-modal")?.[1];
 
 const NOW = "2026-10-12T12:00:00Z";
 
@@ -31,6 +40,22 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   }) as Vehicle;
 
 describe("VehicleOverviewPlaqueCard", () => {
+  beforeEach(() => {
+    emit.mockClear();
+  });
+
+  it("opens the editor for anyone: the default style is free", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle() },
+      initialState: { session: { currentUser: { supporter: false } } },
+    });
+
+    await wrapper.find('[data-test="vehicle-plaque-edit"]').trigger("click");
+
+    expect(openedModal()?.props).toEqual({ vehicle: vehicle() });
+    expect(String(openedModal()?.component)).toContain("PlaqueEditModal");
+  });
+
   it("invites a dedication while there is none", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { vehicle: vehicle() },
@@ -59,6 +84,36 @@ describe("VehicleOverviewPlaqueCard", () => {
     );
     expect(wrapper.find('[data-test="vehicle-plaque-download"]').exists()).toBe(
       true,
+    );
+  });
+
+  it("offers to share the plaque of a public ship in a public hangar", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle({ dedication: "x", public: true }) },
+      initialState: {
+        session: {
+          currentUser: { username: "TorlekMaru", publicHangar: true },
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-share"]').exists()).toBe(
+      true,
+    );
+  });
+
+  it("keeps a hidden ship's plaque unshared", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle({ dedication: "x", public: false }) },
+      initialState: {
+        session: {
+          currentUser: { username: "TorlekMaru", publicHangar: true },
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-share"]').exists()).toBe(
+      false,
     );
   });
 });

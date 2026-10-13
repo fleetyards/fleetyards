@@ -11,6 +11,7 @@
       "defaultAdminShort": "FltYrds Command",
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
+      "vehiclePlaque": "%{vehicle} 的命名銘牌",
       "home": "首頁",
       "ships": {
         "index": "艦船",
@@ -199,6 +200,7 @@
         "metrics": "指標 - 視覺測試",
         "states": "狀態 - 視覺測試",
         "notifications": "通知 - 視覺測試",
+        "dedicationPlaques": "命名銘牌 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
         "buybackSyncModal": "回購同步彈窗 - 視覺測試",
         "rsiVerificationModal": "RSI 驗證彈窗 - 視覺測試",

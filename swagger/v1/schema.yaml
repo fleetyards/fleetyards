@@ -16942,6 +16942,53 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{id}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: 'Vehicle address: its id, or its serial, followed by its name'
+      required: true
+    get:
+      summary: Public Hangar Vehicle
+      tags:
+      - PublicHangar
+      operationId: publicHangarVehicle
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehiclePublic"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/vehicles/{vehicle_id}/log-entries":
     parameters:
     - name: username
@@ -19065,6 +19112,12 @@ paths:
                 "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: supporter required
           content:
             application/json:
               schema:
@@ -36724,6 +36777,35 @@ components:
       - ROUGH_AND_READY
       - 'NULL'
       title: NullableVehicleOperationsGroupEnum
+    NullableVehiclePlaqueStyleEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      -
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
+      - 'NULL'
+      title: NullableVehiclePlaqueStyleEnum
     NullableVehicleSortEnum:
       type:
       - string
@@ -39782,6 +39864,12 @@ components:
           type:
           - string
           - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
         shipyard:
           type:
           - string
@@ -40232,6 +40320,31 @@ components:
       items:
         "$ref": "#/components/schemas/VehiclePaint"
       title: VehiclePaintsList
+    VehiclePlaqueStyleEnum:
+      type: string
+      enum:
+      - brass
+      - hud
+      - gunmetal
+      - blueprint
+      - salvage
+      - glass
+      - carbon
+      - walnut
+      - neon
+      - manufacturer
+      x-enumNames:
+      - BRASS
+      - HUD
+      - GUNMETAL
+      - BLUEPRINT
+      - SALVAGE
+      - GLASS
+      - CARBON
+      - WALNUT
+      - NEON
+      - MANUFACTURER
+      title: VehiclePlaqueStyleEnum
     VehiclePublic:
       type: object
       properties:
@@ -40284,6 +40397,12 @@ components:
           type:
           - string
           - 'null'
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        plaqueStyle:
+          "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
         shipyard:
           type:
           - string
@@ -40514,6 +40633,12 @@ components:
           maxLength: 100
         operationsGroup:
           "$ref": "#/components/schemas/NullableVehicleOperationsGroupEnum"
+        plaqueStyle:
+          "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
+        plaqueImage:
+          type:
+          - string
+          - 'null'
         image:
           type:
           - string

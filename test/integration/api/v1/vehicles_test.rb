@@ -152,6 +152,10 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(403, "supporter required") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -403,6 +407,7 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
 
   test "PUT /vehicles/:id sets the dedication plaque" do
     Flipper.enable("vehicle_overview")
+    create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     vehicle.model.manufacturer.update!(short_name: "Crusader", shipyard: "Orison, Crusader (Stanton II)")
     port = create(:location, name: "Port Olisar")
@@ -422,8 +427,72 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id lets anyone put a plaque on their ship in the default style" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", plaqueStyle: "brass"} do
+      assert_equal "To boldly go", parsed_body["dedication"]
+      assert_equal "brass", parsed_body["plaqueStyle"]
+    end
+  end
+
+  test "PUT /vehicles/:id keeps the other plaque styles for supporters" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 403, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", plaqueStyle: "neon"} do
+      assert_equal "supporter_required", parsed_body["code"]
+    end
+
+    assert_nil vehicle.reload.dedication
+  end
+
+  test "PUT /vehicles/:id lets a lapsed supporter clear their plaque" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", plaque_style: "neon")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: nil, plaqueStyle: nil} do
+      assert_nil parsed_body["dedication"]
+    end
+  end
+
+  test "PUT /vehicles/:id accepts an unchanged plaque from a lapsed supporter" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", name: "Contorta"}
+  end
+
+  test "PUT /vehicles/:id lets a supporter pick a plaque style" do
+    Flipper.enable("vehicle_overview")
+    create(:supporter_contribution, user: @user)
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go", plaqueStyle: "neon"} do
+      assert_equal "neon", parsed_body["plaqueStyle"]
+    end
+  end
+
+  test "GET /vehicles/:id draws a lapsed supporter's plaque in the default style" do
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", plaque_style: "neon")
+    create(:supporter_contribution, user: @user, started_at: 3.months.ago)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: vehicle.id} do
+      assert_equal "brass", parsed_body["plaqueStyle"]
+    end
+    assert_equal "neon", vehicle.reload.plaque_style
+  end
+
   test "PUT /vehicles/:id clears the dedication plaque" do
     Flipper.enable("vehicle_overview")
+    create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12), affiliation: "Maru Inc.", operations_group: "nine_tails")
     sign_in @user
 
@@ -437,6 +506,7 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
 
   test "PUT /vehicles/:id rejects a dedication over the limit" do
     Flipper.enable("vehicle_overview")
+    create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -445,6 +515,7 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
 
   test "PUT /vehicles/:id rejects an operations group the lore does not know" do
     Flipper.enable("vehicle_overview")
+    create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 

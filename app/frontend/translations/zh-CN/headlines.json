@@ -469,6 +469,7 @@
         "metrics": "指标",
         "states": "状态",
         "notifications": "通知",
+        "dedicationPlaques": "命名铭牌",
         "syncModal": "同步弹窗",
         "buybackSyncModal": "回购同步弹窗",
         "rsiVerificationModal": "RSI 验证弹窗",

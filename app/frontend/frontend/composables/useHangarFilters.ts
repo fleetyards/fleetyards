@@ -6,8 +6,9 @@ export const useHangarFilters = (
 ) => {
   return useFilters<HangarQuery>({
     ignoreKeys: ["fleetchart"],
-    // A share link's token rides in the URL of a public hangar; it is no filter.
-    viewKeys: ["share"],
+    // A share link's token and a shared plaque ride in the URL of a public
+    // hangar; neither is a filter.
+    viewKeys: ["share", "plaque"],
     updateCallback,
   });
 };

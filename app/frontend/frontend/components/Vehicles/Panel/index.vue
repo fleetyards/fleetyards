@@ -76,7 +76,7 @@ const openPlaque = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueModal/index.vue"),
-    props: { vehicle: props.vehicle },
+    props: { vehicle: props.vehicle, username: props.publicLogUsername },
   });
 };
 
@@ -320,34 +320,37 @@ const tone = computed(() => {
         data-tour="vehicle-menu"
       />
 
-      <Btn
-        v-if="publicLogVisible"
-        v-tooltip="t('actions.vehicleLog.showPublic')"
-        :variant="BtnVariantsEnum.BARE"
-        :aria-label="t('actions.vehicleLog.showPublic')"
-        class="vehicle-panel--public-log-button"
-        data-test="vehicle-public-log"
-        @click="openPublicLog"
-      >
-        <i class="fa-duotone fa-book" />
-      </Btn>
-      <Btn
-        v-if="plaqueVisible"
-        v-tooltip="t('actions.vehiclePlaque.show')"
-        :variant="BtnVariantsEnum.BARE"
-        :aria-label="t('actions.vehiclePlaque.show')"
-        class="vehicle-panel--plaque-button"
-        data-test="vehicle-plaque-show"
-        @click="openPlaque"
-      >
-        <i class="fa-duotone fa-award" />
-      </Btn>
-      <AddToHangar
-        v-if="!editable"
-        :model="model"
-        class="vehicle-panel--add-to-hangar-button"
-        variant="panel"
-      />
+      <!-- On someone else's ship: adding it comes first, and what its owner
+           shares -- the plaque, the log -- stacks underneath. -->
+      <div v-if="!editable" class="vehicle-panel-public-actions">
+        <AddToHangar
+          :model="model"
+          class="vehicle-panel--add-to-hangar-button"
+          variant="panel"
+        />
+        <Btn
+          v-if="plaqueVisible"
+          v-tooltip="t('actions.vehiclePlaque.show')"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.vehiclePlaque.show')"
+          class="vehicle-panel--plaque-button"
+          data-test="vehicle-plaque-show"
+          @click="openPlaque"
+        >
+          <i class="fa-duotone fa-award" />
+        </Btn>
+        <Btn
+          v-if="publicLogVisible"
+          v-tooltip="t('actions.vehicleLog.showPublic')"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.vehicleLog.showPublic')"
+          class="vehicle-panel--public-log-button"
+          data-test="vehicle-public-log"
+          @click="openPublicLog"
+        >
+          <i class="fa-duotone fa-book" />
+        </Btn>
+      </div>
     </template>
     <template #default>
       <div

@@ -7,7 +7,9 @@ export default {
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
-import DownloadScreenshotBtn from "@/frontend/components/DownloadScreenshotBtn/index.vue";
+import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { plaqueShareUrl } from "@/frontend/components/Vehicles/Plaque/shareUrl";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -28,11 +30,24 @@ const { t } = useI18n();
 const comlink = useComlink();
 const { currentUser } = storeToRefs(useSessionStore());
 
+// Shared only where anyone could see it anyway: a public ship in a public
+// hangar.
+const shareUrl = computed(() =>
+  props.vehicle.public && currentUser?.value?.publicHangar
+    ? plaqueShareUrl(currentUser.value.username, {
+        id: props.vehicle.id,
+        name: props.vehicle.nameVisible ? props.vehicle.name : undefined,
+        serial: props.vehicle.nameVisible ? props.vehicle.serial : undefined,
+      })
+    : undefined,
+);
+
 const openEditModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueEditModal/index.vue"),
     props: { vehicle: props.vehicle },
+    wide: true,
   });
 };
 </script>
@@ -55,13 +70,22 @@ const openEditModal = () => {
       >
         <i class="fa-light fa-pen" />
       </Btn>
-      <DownloadScreenshotBtn
-        :element="`#vehicle-plaque-${vehicle.id}`"
+      <PlaqueDownloadBtn
+        :element="`vehicle-plaque-${vehicle.id}`"
         :filename="`plaque-${vehicle.serial || vehicle.model.slug}`"
         :with-label="false"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
         data-test="vehicle-plaque-download"
+      />
+      <ShareBtn
+        v-if="shareUrl"
+        :url="shareUrl"
+        :title="t('headlines.vehiclePlaque.title')"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.BARE"
+        no-label
+        data-test="vehicle-plaque-share"
       />
     </div>
   </div>

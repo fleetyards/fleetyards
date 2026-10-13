@@ -1,0 +1,685 @@
+// One style per manufacturer, in its own brand colours. Ported as-is from the
+// approved mockups; the maker is set by `vehicle-plaque--maker-<theme>`.
+
+// Anvil: UEE Navy contractor - deep navy, white emblem, double hairline frame,
+// chevron
+.vehicle-plaque--maker-anvil {
+  --bg: linear-gradient(180deg, #16243f, #0c162a);
+  --ink: #ffffff;
+  --sub: #b9c6d8;
+  --accent: #9fb9dc;
+  --rule: rgb(159 185 220/0.35);
+  border-radius: 0.8cqw;
+  box-shadow:
+    inset 0 0 0 0.5cqw #0c162a,
+    inset 0 0 0 calc(0.5cqw + 1px) rgb(255 255 255/0.55),
+    inset 0 0 0 1cqw #0c162a,
+    inset 0 0 0 calc(1cqw + 1px) rgb(255 255 255/0.25);
+}
+.vehicle-plaque--maker-anvil .vehicle-plaque__deco--1 {
+  display: block;
+  bottom: 2.2cqw;
+  left: 50%;
+  width: 6cqw;
+  height: 6cqw;
+  border-right: 2px solid rgb(255 255 255/0.35);
+  border-bottom: 2px solid rgb(255 255 255/0.35);
+  transform: translateX(-50%) rotate(45deg) scale(0.5);
+}
+.vehicle-plaque--maker-anvil .vehicle-plaque__name {
+  letter-spacing: 0.14em;
+}
+
+// RSI: "learn from the past, reach for the future" - white enamel hull, dark
+// trim, one RSI-blue stripe, a band of shuttle-style thermal tiles, a chamfered
+// corner
+.vehicle-plaque--maker-rsi {
+  --bg: linear-gradient(170deg, #f4f5f6, #e3e6e8 60%, #d6dadd);
+  --ink: #2e3338;
+  --sub: #555c63;
+  --accent: #2f7fc1;
+  --emblem: #2f7fc1;
+  --rule: rgb(58 63 69/0.25);
+  --logo: invert(0.8);
+  border-radius: 0.6cqw;
+  clip-path: polygon(0 0, calc(100% - 6cqw) 0, 100% 6cqw, 100% 100%, 0 100%);
+  padding-bottom: 9cqw;
+}
+.vehicle-plaque--maker-rsi .vehicle-plaque__deco--1 {
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5cqw;
+  background:
+    linear-gradient(90deg, #1c1e21 1px, transparent 1px) 0 0/2.5cqw 2.5cqw,
+    linear-gradient(0deg, #1c1e21 1px, transparent 1px) 0 0/2.5cqw 2.5cqw,
+    linear-gradient(180deg, #2b2e32, #16181a);
+}
+.vehicle-plaque--maker-rsi .vehicle-plaque__deco--2 {
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 5cqw;
+  height: 0.7cqw;
+  background: #2f7fc1;
+}
+.vehicle-plaque--maker-rsi .vehicle-plaque__deco--3 {
+  display: block;
+  left: 4cqw;
+  right: 4cqw;
+  top: 3.2cqw;
+  height: 1px;
+  background: rgb(58 63 69/0.25);
+}
+.vehicle-plaque--maker-rsi .vehicle-plaque__name {
+  color: #22272c;
+  letter-spacing: 0.1em;
+}
+
+// Aegis: gloss black, crimson, sharp chamfered corners
+.vehicle-plaque--maker-aegis {
+  --bg: linear-gradient(180deg, #141416, #0a0a0b);
+  --ink: #f2f2f2;
+  --sub: #a3a3a8;
+  --accent: #c8102e;
+  --rule: rgb(200 16 46/0.6);
+  clip-path: polygon(
+    4cqw 0,
+    calc(100% - 4cqw) 0,
+    100% 4cqw,
+    100% calc(100% - 4cqw),
+    calc(100% - 4cqw) 100%,
+    4cqw 100%,
+    0 calc(100% - 4cqw),
+    0 4cqw
+  );
+}
+.vehicle-plaque--maker-aegis .vehicle-plaque__deco--1 {
+  display: block;
+  inset: 1.2cqw;
+  border: 1px solid rgb(200 16 46/0.55);
+  clip-path: inherit;
+}
+
+// Drake: "nothing fancy, reliable and solid" - near-black gunmetal with heavy
+// bevels and hex bolts, a white block name over one yellow rule
+.vehicle-plaque--maker-drake {
+  --bg: linear-gradient(175deg, #232527, #16181a);
+  --ink: #f2f2f2;
+  --sub: #a9adb1;
+  --accent: #e0b21b;
+  --emblem: #e0b21b;
+  --rule: rgb(224 178 27/0.5);
+  clip-path: polygon(
+    4cqw 0,
+    calc(100% - 4cqw) 0,
+    100% 4cqw,
+    100% calc(100% - 4cqw),
+    calc(100% - 4cqw) 100%,
+    4cqw 100%,
+    0 calc(100% - 4cqw),
+    0 4cqw
+  );
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--1 {
+  display: block;
+  inset: 1.4cqw;
+  clip-path: inherit;
+  box-shadow: inset 0 0 0 0.4cqw #2f3235;
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--2,
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--3,
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--4,
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--5 {
+  display: block;
+  width: 2.4cqw;
+  height: 2.2cqw;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  background: radial-gradient(circle at 40% 35%, #8d9094, #2a2c2f 75%);
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--2 {
+  top: 3cqw;
+  left: 5cqw;
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--3 {
+  top: 3cqw;
+  right: 5cqw;
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--4 {
+  bottom: 3cqw;
+  left: 5cqw;
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__deco--5 {
+  bottom: 3cqw;
+  right: 5cqw;
+}
+.vehicle-plaque--maker-drake .vehicle-plaque__name {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  font-size: 6.4cqw;
+  padding-bottom: 0.6cqw;
+  border-bottom: 0.5cqw solid #e0b21b;
+}
+
+// MISC: industrial slate with a jade side bar; the logo's hexagon-and-tail
+// interlocked like a puzzle across the plate, a stroke's width apart
+.vehicle-plaque--maker-misc {
+  --bg:
+    radial-gradient(
+        circle at 50% 50%,
+        transparent 0 2.1cqw,
+        rgb(143 211 181/0.05) 2.1cqw 2.3cqw,
+        transparent 2.3cqw
+      )
+      0 0/5cqw 5cqw,
+    linear-gradient(175deg, #24312f, #172120);
+  --ink: #f1f5f3;
+  --sub: #b7c8c1;
+  --accent: #8fd3b5;
+  --rule: rgb(143 211 181/0.4);
+  border-radius: 0.8cqw;
+  border-left: 1.4cqw solid #8fd3b5;
+}
+.vehicle-plaque--maker-misc {
+  --bg: linear-gradient(175deg, #24312f, #172120);
+}
+.vehicle-plaque--maker-misc::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #8fd3b5;
+  opacity: 0.06;
+  -webkit-mask: var(--mark) 0 0/100% auto repeat-y;
+  mask: var(--mark) 0 0/100% auto repeat-y;
+}
+
+// Origin: pearl white and champagne gold, airy luxury
+.vehicle-plaque--maker-origin {
+  --bg: radial-gradient(90% 70% at 50% 0%, #ffffff, #f1ede6 60%, #e2dccf);
+  --ink: #2a2620;
+  --sub: #6d6455;
+  --accent: #b08a4a;
+  --rule: rgb(176 138 74/0.5);
+  --logo: brightness(0.35) sepia(0.4);
+  border-radius: 2.4cqw;
+  box-shadow:
+    inset 0 0 0 1px rgb(176 138 74/0.6),
+    0 10px 28px rgb(0 0 0/0.4);
+}
+.vehicle-plaque--maker-origin .vehicle-plaque__name {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+}
+.vehicle-plaque--maker-origin .vehicle-plaque__class {
+  letter-spacing: 0.2em;
+  font-weight: 600;
+}
+
+// Crusader: sky blue and white, open air
+.vehicle-plaque--maker-crusader {
+  --bg: linear-gradient(180deg, #e9f4ff, #bcdcf8 55%, #8fc2ee);
+  --ink: #0c2c4f;
+  --sub: #2c4d70;
+  --accent: #0f6cc0;
+  --rule: rgb(15 108 192/0.4);
+  border-radius: 2cqw;
+  box-shadow: 0 8px 22px rgb(0 0 0/0.4);
+}
+.vehicle-plaque--maker-crusader .vehicle-plaque__deco--1 {
+  display: block;
+  left: -10%;
+  right: -10%;
+  bottom: -6cqw;
+  height: 16cqw;
+  border-radius: 50%;
+  background: rgb(255 255 255/0.35);
+}
+
+// Argo: industrial orange and graphite
+.vehicle-plaque--maker-argo {
+  --bg: linear-gradient(175deg, #3a3d40, #2a2c2e);
+  --ink: #f4f1ec;
+  --sub: #c4c0b8;
+  --accent: #ff8a00;
+  --rule: rgb(255 138 0/0.55);
+  border-radius: 0.6cqw;
+  border-top: 1.6cqw solid #ff8a00;
+}
+
+// Tumbril: military ground vehicles - matte olive, a stand-off armour plate
+// bolted proud of it, smoked armoured glass over the name, a stencilled serial
+.vehicle-plaque--maker-tumbril {
+  --bg: transparent;
+  --ink: #ecebdc;
+  --sub: #cfcdb4;
+  --accent: #d9822b;
+  --emblem: #c2b38a;
+  --rule: rgb(194 179 138/0.45);
+  border-radius: 0.4cqw;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--1 {
+  display: block;
+  inset: 2cqw;
+  border-radius: 0.4cqw;
+  background: linear-gradient(175deg, #585b3b, #46492f);
+  box-shadow:
+    0.6cqw 0.8cqw 0 rgb(0 0 0/0.35),
+    inset 0 1px 0 rgb(255 255 255/0.12);
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--2,
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--3,
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--4,
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--5 {
+  display: block;
+  width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #a9a78e, #3b3d2a 75%);
+  z-index: 0;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--2 {
+  top: 3cqw;
+  left: 3cqw;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--3 {
+  top: 3cqw;
+  right: 3cqw;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--4 {
+  bottom: 3cqw;
+  left: 3cqw;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__deco--5 {
+  bottom: 3cqw;
+  right: 3cqw;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__name {
+  padding: 0.6cqw 3cqw;
+  background: linear-gradient(180deg, rgb(20 22 18/0.75), rgb(40 44 36/0.6));
+  border: 0.3cqw solid #2e3021;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+}
+.vehicle-plaque--maker-tumbril .vehicle-plaque__registry::after {
+  content: " · TLS – YAR";
+  color: #d9822b;
+}
+
+// Mirai: racing white with the red strip down the right edge
+.vehicle-plaque--maker-mirai {
+  --bg: linear-gradient(170deg, #ffffff, #eceef1);
+  --ink: #16181c;
+  --sub: #4d535c;
+  --accent: #e01e37;
+  --rule: rgb(224 30 55/0.45);
+  --logo: invert(1) hue-rotate(180deg);
+  border-radius: 1.6cqw;
+  box-shadow: 0 8px 22px rgb(0 0 0/0.4);
+  padding-right: 12cqw;
+  padding-left: 8cqw;
+}
+.vehicle-plaque--maker-mirai .vehicle-plaque__deco--1 {
+  display: block;
+  top: -20%;
+  right: -3cqw;
+  width: 9cqw;
+  height: 150%;
+  background: linear-gradient(180deg, #e01e37, #8c0f22);
+  transform: skewX(-14deg);
+}
+.vehicle-plaque--maker-mirai .vehicle-plaque__deco--2 {
+  display: block;
+  top: -20%;
+  right: 7.4cqw;
+  width: 1cqw;
+  height: 150%;
+  background: #e01e37;
+  transform: skewX(-14deg);
+}
+.vehicle-plaque--maker-mirai .vehicle-plaque__name {
+  font-style: italic;
+}
+
+// Greycat: utilitarian grey with work-orange
+.vehicle-plaque--maker-greycat {
+  --bg: linear-gradient(175deg, #4f555b, #3a3f44);
+  --ink: #ffffff;
+  --sub: #d6d9dc;
+  --accent: #ff7a2b;
+  --rule: rgb(255 255 255/0.4);
+  border: 2px solid #4e5358;
+  border-radius: 0.6cqw;
+}
+.vehicle-plaque--maker-greycat .vehicle-plaque__deco--1 {
+  display: block;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1.4cqw;
+  background: #ff6a13;
+}
+
+// Consolidated Outland: frontier teal and cream
+.vehicle-plaque--maker-co {
+  --bg: linear-gradient(170deg, #1f4b4f, #163a3d);
+  --ink: #f3ecd8;
+  --sub: #cfd8cf;
+  --accent: #f0b74a;
+  --rule: rgb(240 183 74/0.45);
+  border-radius: 1.4cqw;
+  border: 2px solid #0f2a2c;
+}
+
+// Esperia: Tevarin violet, ornate
+.vehicle-plaque--maker-esperia {
+  --bg: radial-gradient(80% 60% at 50% 0%, #5a3a86, #2e1d49 70%, #1c1230);
+  --ink: #f2e9ff;
+  --sub: #cdbde6;
+  --accent: #c9a7ff;
+  --rule: rgb(201 167 255/0.4);
+  border-radius: 3cqw;
+  box-shadow:
+    inset 0 0 0 1px rgb(201 167 255/0.5),
+    inset 0 0 0 1.6cqw rgb(255 255 255/0.03);
+}
+
+// Kruger: "perfection in every piece" - golden-age aerospace: machined aluminium
+// with an engine-turned finish, a white enamel field, one red heritage pinstripe
+.vehicle-plaque--maker-kruger {
+  --bg:
+    repeating-radial-gradient(
+      circle at 20% 30%,
+      rgb(255 255 255/0.18) 0 0.3cqw,
+      transparent 0.3cqw 0.9cqw
+    ),
+    repeating-radial-gradient(
+      circle at 80% 70%,
+      rgb(0 0 0/0.06) 0 0.3cqw,
+      transparent 0.3cqw 0.9cqw
+    ),
+    linear-gradient(160deg, #e1e4e6, #b9bec2 50%, #d4d8db);
+  --ink: #2b2f33;
+  --sub: #4b5156;
+  --accent: #b3261e;
+  --rule: rgb(179 38 30/0.45);
+  --logo: grayscale(1) brightness(1.15) contrast(0.9);
+  border-radius: 6cqw;
+  padding: 5cqw 8cqw;
+}
+.vehicle-plaque--maker-kruger .vehicle-plaque__deco--1 {
+  display: block;
+  inset: 2.2cqw;
+  border-radius: 4.4cqw;
+  background: linear-gradient(180deg, #fbfbf9, #efefec);
+  box-shadow:
+    inset 0 0 0 0.25cqw #b3261e,
+    inset 0 0 0 0.7cqw #fbfbf9,
+    inset 0 0.4cqw 1cqw rgb(0 0 0/0.12);
+}
+.vehicle-plaque--maker-kruger .vehicle-plaque__name {
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-weight: 400;
+  font-size: 7cqw;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #2b2f33;
+}
+.vehicle-plaque--maker-kruger .vehicle-plaque__class {
+  color: #b3261e;
+}
+
+// Aopoa: Xi'an jade and cream, organic
+.vehicle-plaque--maker-aopoa {
+  --bg: radial-gradient(90% 80% at 50% 10%, #2f6b5a, #1c463b 70%, #12302a);
+  --ink: #f4efe0;
+  --sub: #cfe1d6;
+  --accent: #e9d9a6;
+  --rule: rgb(233 217 166/0.45);
+  border-radius: 6cqw 1.2cqw 6cqw 1.2cqw;
+}
+
+// Gatac: alien teal glow
+.vehicle-plaque--maker-gatac {
+  --bg: linear-gradient(180deg, #0d2a2e, #071a1d);
+  --ink: #e5fffb;
+  --sub: #a8d8d1;
+  --accent: #4ff0d6;
+  --rule: rgb(79 240 214/0.4);
+  border-radius: 4cqw;
+  box-shadow:
+    inset 0 0 2cqw rgb(79 240 214/0.25),
+    0 0 1.4cqw rgb(79 240 214/0.35);
+}
+
+// Banu: traders' copper gone to turquoise patina, the logo's rings as ornament
+.vehicle-plaque--maker-banu {
+  --bg:
+    radial-gradient(circle at 15% 20%, rgb(63 166 154/0.35), transparent 30%),
+    radial-gradient(circle at 85% 80%, rgb(63 166 154/0.3), transparent 30%),
+    linear-gradient(165deg, #7a4528, #5c321c 55%, #3f2213);
+  --ink: #fff1e2;
+  --sub: #f0d2b8;
+  --accent: #6fd6c6;
+  --rule: rgb(111 214 198/0.45);
+  border-radius: 3cqw;
+  box-shadow: inset 0 0 0 0.5cqw rgb(111 214 198/0.25);
+}
+.vehicle-plaque--maker-banu .vehicle-plaque__deco--1,
+.vehicle-plaque--maker-banu .vehicle-plaque__deco--2 {
+  display: block;
+  width: 14cqw;
+  height: 14cqw;
+  border-radius: 50%;
+  border: 0.5cqw solid rgb(111 214 198/0.18);
+  box-shadow: 0 0 0 2cqw rgb(111 214 198/0.06);
+}
+.vehicle-plaque--maker-banu .vehicle-plaque__deco--1 {
+  top: -4cqw;
+  left: -4cqw;
+}
+.vehicle-plaque--maker-banu .vehicle-plaque__deco--2 {
+  bottom: -4cqw;
+  right: -4cqw;
+}
+
+// Grey's Market: scrap welded into one - a rust plate bolted on, a weld seam, a
+// steel patch stamped with the G, tape, a scorch mark, a NO REFUNDS tag
+.vehicle-plaque--maker-greys {
+  --bg:
+    radial-gradient(
+      18% 14% at 78% 64%,
+      rgb(0 0 0/0.55),
+      rgb(60 30 10/0.25) 60%,
+      transparent 75%
+    ),
+    linear-gradient(175deg, #3c3e41, #2b2c2f);
+  --ink: #e8e6e1;
+  --sub: #b3b0a8;
+  --accent: #e2c48f;
+  --rule: rgb(226 196 143/0.35);
+  clip-path: polygon(
+    0 2cqw,
+    3cqw 0,
+    22% 1.2cqw,
+    35% 0,
+    58% 0.6cqw,
+    74% 0,
+    100% 1.6cqw,
+    99.2% 30%,
+    100% 55%,
+    98.8% 80%,
+    100% 100%,
+    70% 98.6%,
+    52% 100%,
+    30% 98.8%,
+    8% 100%,
+    0 98%,
+    1% 70%,
+    0 40%
+  );
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--1 {
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38%;
+  background:
+    repeating-linear-gradient(0deg, rgb(0 0 0/0.06) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #5a4433, #463427);
+  clip-path: polygon(0 0, 100% 3%, 96% 50%, 100% 100%, 0 100%);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--2 {
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 37%;
+  width: 0.7cqw;
+  background: repeating-linear-gradient(
+    180deg,
+    #8c8a85 0 0.5cqw,
+    #5d5b57 0.5cqw 1cqw
+  );
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--3 {
+  display: block;
+  top: 6%;
+  right: 5%;
+  width: 16cqw;
+  height: 10cqw;
+  background:
+    radial-gradient(
+      circle at 0.9cqw 0.9cqw,
+      #9a9890 0.45cqw,
+      transparent 0.55cqw
+    ),
+    radial-gradient(
+      circle at calc(100% - 0.9cqw) 0.9cqw,
+      #9a9890 0.45cqw,
+      transparent 0.55cqw
+    ),
+    radial-gradient(
+      circle at 0.9cqw calc(100% - 0.9cqw),
+      #9a9890 0.45cqw,
+      transparent 0.55cqw
+    ),
+    radial-gradient(
+      circle at calc(100% - 0.9cqw) calc(100% - 0.9cqw),
+      #9a9890 0.45cqw,
+      transparent 0.55cqw
+    ),
+    linear-gradient(160deg, #6b6d70, #55575a);
+  transform: rotate(4deg);
+  box-shadow: 0 0.3cqw 0.6cqw rgb(0 0 0/0.5);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--4 {
+  display: block;
+  bottom: 12%;
+  left: 6%;
+  width: 14cqw;
+  height: 2.6cqw;
+  background: rgb(214 196 150/0.55);
+  transform: rotate(-8deg);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--5 {
+  display: block;
+  bottom: 9%;
+  left: 9%;
+  width: 12cqw;
+  height: 2.6cqw;
+  background: rgb(214 196 150/0.45);
+  transform: rotate(11deg);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--6 {
+  display: block;
+  top: 3cqw;
+  left: 5cqw;
+  width: 9cqw;
+  height: 2.6cqw;
+  background: #a8302a;
+  transform: rotate(-5deg);
+  box-shadow: 0 0.2cqw 0.4cqw rgb(0 0 0/0.5);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--7 {
+  display: block;
+  top: 46%;
+  left: 2cqw;
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b5b2aa, #4a4844 70%);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--8 {
+  display: block;
+  bottom: 4cqw;
+  right: 3cqw;
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b5b2aa, #4a4844 70%);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__name {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  transform: rotate(-1deg);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__credits {
+  border-top-style: dashed;
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--3::after {
+  content: "G";
+  font:
+    900 6cqw/1 Georgia,
+    serif;
+  color: rgb(30 30 30/0.35);
+  text-shadow: 0 1px 0 rgb(255 255 255/0.25);
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--6 {
+  width: auto;
+  height: auto;
+  padding: 0.4cqw 1.2cqw;
+  font:
+    800 1.4cqw "Open Sans",
+    sans-serif;
+  letter-spacing: 0.08em;
+  color: #f3e9e4;
+}
+.vehicle-plaque--maker-greys .vehicle-plaque__deco--6::after {
+  content: "NO REFUNDS";
+}
+
+// Vanduul: blood-rust and black, jagged
+.vehicle-plaque--maker-vanduul {
+  --bg:
+    radial-gradient(70% 50% at 50% 100%, rgb(150 20 20/0.45), transparent 70%),
+    linear-gradient(180deg, #1a0f0e, #0b0605);
+  --ink: #f4d9d2;
+  --sub: #b98d84;
+  --accent: #d2301e;
+  --rule: rgb(210 48 30/0.5);
+  clip-path: polygon(
+    0 3cqw,
+    6cqw 0,
+    40% 2cqw,
+    60% 0,
+    calc(100% - 6cqw) 2cqw,
+    100% 0,
+    100% calc(100% - 3cqw),
+    calc(100% - 6cqw) 100%,
+    60% calc(100% - 2cqw),
+    40% 100%,
+    6cqw calc(100% - 2cqw),
+    0 100%
+  );
+}
