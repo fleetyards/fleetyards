@@ -18,7 +18,9 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import CheckPanel from "@/frontend/components/Fleets/MemberHealth/CheckPanel/index.vue";
@@ -63,6 +65,8 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const DAY_STEPS = [14, 30, 60, 90, 180];
 
 const DEFAULT_DAYS = 30;
+
+const mobile = useMobile();
 
 const days = computed(() => {
   const value = Number(route.query.days);
@@ -556,7 +560,32 @@ const crumbs = computed<Crumb[]>(() => [
               "
             >
               <template v-if="check.key === 'inactive'" #actions>
-                <BtnGroup segmented>
+                <!-- Five segments do not fit beside the title on a phone. -->
+                <BtnDropdown
+                  v-if="mobile"
+                  :size="BtnSizesEnum.SM"
+                  expand-left
+                  data-test="health-days-menu"
+                >
+                  <template #label>
+                    <span>
+                      {{
+                        t("labels.fleet.members.health.days", { count: days })
+                      }}
+                    </span>
+                    <i class="fa-light fa-chevron-down" />
+                  </template>
+                  <Btn
+                    v-for="step in DAY_STEPS"
+                    :key="step"
+                    :to="daysLink(step)"
+                    :active="days === step"
+                    :data-test="`health-days-${step}`"
+                  >
+                    {{ t("labels.fleet.members.health.days", { count: step }) }}
+                  </Btn>
+                </BtnDropdown>
+                <BtnGroup v-else segmented>
                   <Btn
                     v-for="step in DAY_STEPS"
                     :key="step"
@@ -696,7 +725,23 @@ const crumbs = computed<Crumb[]>(() => [
                   :data-test="`health-invite-url-${inviteUrl.token}`"
                 >
                   <template v-if="capabilities?.destroyInvites" #actions>
+                    <BtnDropdown
+                      v-if="mobile"
+                      :size="BtnSizesEnum.SM"
+                      expand-left
+                    >
+                      <Btn
+                        :tone="BtnTonesEnum.DANGER"
+                        @click="deleteInviteUrl(inviteUrl.token)"
+                      >
+                        <i class="fa-light fa-trash" />
+                        <span>
+                          {{ t("actions.fleet.members.health.deleteLink") }}
+                        </span>
+                      </Btn>
+                    </BtnDropdown>
                     <Btn
+                      v-else
                       :size="BtnSizesEnum.SM"
                       @click="deleteInviteUrl(inviteUrl.token)"
                     >
@@ -731,7 +776,42 @@ const crumbs = computed<Crumb[]>(() => [
                   "
                   :data-test="`health-emptySquadrons-${squadron.slug}`"
                 >
-                  <template #actions>
+                  <template
+                    v-if="
+                      mobile &&
+                      (capabilities?.manageSquadronMembers ||
+                        capabilities?.destroySquadrons)
+                    "
+                    #actions
+                  >
+                    <BtnDropdown :size="BtnSizesEnum.SM" expand-left>
+                      <Btn
+                        v-if="capabilities?.manageSquadronMembers"
+                        :to="{
+                          name: 'fleet-squadron-members',
+                          params: { slug: fleet.slug, squadron: squadron.slug },
+                        }"
+                        data-test="health-squadron-add-members"
+                      >
+                        <i class="fa-light fa-user-plus" />
+                        <span>
+                          {{ t("actions.fleet.members.health.addMembers") }}
+                        </span>
+                      </Btn>
+                      <Btn
+                        v-if="capabilities?.destroySquadrons"
+                        :tone="BtnTonesEnum.DANGER"
+                        data-test="health-squadron-delete"
+                        @click="deleteSquadron(squadron)"
+                      >
+                        <i class="fa-light fa-trash" />
+                        <span>
+                          {{ t("actions.fleet.members.health.deleteSquadron") }}
+                        </span>
+                      </Btn>
+                    </BtnDropdown>
+                  </template>
+                  <template v-else-if="!mobile" #actions>
                     <Btn
                       v-if="capabilities?.manageSquadronMembers"
                       :size="BtnSizesEnum.SM"
