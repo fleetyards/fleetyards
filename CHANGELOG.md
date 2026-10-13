@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.3.2](https://github.com/fleetyards/fleetyards/compare/v9.3.1...v9.3.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **compare:** record the composite's size when it is generated ([22e9a96](https://github.com/fleetyards/fleetyards/commit/22e9a9615d101685a7172dc0cab49dec5b4eeca0))
+* **hangar:** give link preview images their size and alt text ([beac2f7](https://github.com/fleetyards/fleetyards/commit/beac2f7e499b9882dbc69657df9aae4b451ddc9d))
+* **hangar:** plaque picture rows no longer wrap, and the iOS app can save it ([#5660](https://github.com/fleetyards/fleetyards/issues/5660)) ([35527b1](https://github.com/fleetyards/fleetyards/commit/35527b19d8150b830e9cacf80524ff931ce43a2d))
+* **meta:** give every link preview image its size and alt text ([0e12630](https://github.com/fleetyards/fleetyards/commit/0e12630666eb10535461003271c5a0923e11f6a8))
+* **modals:** keep footer actions above the mobile nav ([#5659](https://github.com/fleetyards/fleetyards/issues/5659)) ([4742767](https://github.com/fleetyards/fleetyards/commit/474276757838d16eab375e0e93dae2ce5f8e8f25))
+
+
+### Chores
+
+* **skills:** keep review-loop in .agents and symlink it like the other skills ([#5662](https://github.com/fleetyards/fleetyards/issues/5662)) ([805edaa](https://github.com/fleetyards/fleetyards/commit/805edaa65b0b9965b276669b6dc8c336ac3d2453))
+
 ## [9.3.1](https://github.com/fleetyards/fleetyards/compare/v9.3.0...v9.3.1) (2026-10-13)
 
 
