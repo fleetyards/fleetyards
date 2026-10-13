@@ -108,7 +108,7 @@ module Bsky
       raise Error, "Bluesky rejected the image: #{response.code} #{response.body}" if blob.blank?
 
       blob
-    rescue Error, HTTParty::Error, Timeout::Error, SocketError, SystemCallError => e
+    rescue Error, HTTParty::Error, Timeout::Error, SocketError, SystemCallError, OpenSSL::SSL::SSLError => e
       Appsignal.report_error(e)
       nil
     end
