@@ -27,6 +27,10 @@ export type CompareLegendEntry = {
   color: string;
 };
 
+// Marks a metric that counts something, so baseline mode shows "+2" rather than a
+// percentage. `unit` is what the difference is counted in, when the value carries one.
+export type CompareCount = { unit?: string };
+
 export type CompareValueCell = {
   key: string;
   value?: string;
@@ -42,6 +46,7 @@ export type CompareTableRow =
       unit?: string;
       html?: boolean;
       direction?: CompareDirection;
+      counts?: CompareCount;
       cells: CompareValueCell[];
     }
   | {
@@ -90,6 +95,7 @@ export type CompareMetric<T> = {
   html?: boolean;
   // Omitted ⇒ the row is never marked best/worst. See `markExtremes`.
   direction?: CompareDirection;
+  counts?: CompareCount;
   raw?: (subject: T) => number | undefined;
   value: (subject: T) => string | undefined;
   // Drops the row when no compared ship has anything to show for it, e.g. ground
@@ -117,6 +123,7 @@ export function valueRows<T>(
       unit: metric.unit,
       html: metric.html,
       direction: metric.direction,
+      counts: metric.counts,
       cells: subjects.map((entry) => ({
         key: entry.key,
         value: metric.value(entry.subject),

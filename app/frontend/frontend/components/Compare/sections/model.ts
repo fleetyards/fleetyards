@@ -135,6 +135,7 @@ export const useModelSections = (
       key: "cargo",
       label: t("model.cargo"),
       direction: "higher",
+      counts: { unit: "SCU" },
       raw: (m) => m.metrics.cargo,
       value: (m) => number(m.metrics.cargo, "cargo"),
     },
@@ -169,6 +170,7 @@ export const useModelSections = (
     {
       key: "crew",
       label: t("model.crew"),
+      counts: {},
       raw: (m) => m.crew.value ?? undefined,
       value: (m) => number(m.crew.value, "people"),
     },
@@ -284,6 +286,7 @@ export const useModelSections = (
       key: "cargo-total",
       label: t("model.cargo"),
       direction: "higher",
+      counts: { unit: "SCU" },
       raw: totalCargo,
       value: (model) => number(totalCargo(model), "cargo"),
     },
@@ -291,6 +294,7 @@ export const useModelSections = (
       key: "cargo-max-container",
       label: t("labels.cargoGridViewer.maxContainerSize"),
       direction: "higher",
+      counts: { unit: "SCU" },
       raw: (model) => maxContainerSize(holdsFor(model)),
       value: (model) => {
         const size = maxContainerSize(holdsFor(model));
@@ -303,6 +307,7 @@ export const useModelSections = (
       label: t("labels.compare.containersOfSize", { size: def.size }),
       direction: "higher",
       unit: "×",
+      counts: {},
       raw: (model) => {
         const holds = holdsFor(model);
 
