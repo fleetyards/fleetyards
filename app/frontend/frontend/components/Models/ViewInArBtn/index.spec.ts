@@ -9,11 +9,15 @@ const ar = vi.hoisted(() => ({
   quickLook: false,
   canActivate: true,
   activateAR: vi.fn(() => Promise.resolve()),
+  openQuickLook: vi.fn((_url: string, _wanted?: () => boolean): Promise<void> =>
+    Promise.resolve(),
+  ),
 }));
 
 vi.mock("@/frontend/utils/arViewer", () => ({
   mayHaveAr: () => ar.mayHaveAr,
   usesQuickLook: () => ar.quickLook,
+  openQuickLook: ar.openQuickLook,
   prepareAr: vi.fn(async () =>
     ar.canActivate
       ? Object.assign(document.createElement("div"), {
@@ -22,6 +26,12 @@ vi.mock("@/frontend/utils/arViewer", () => ({
         })
       : undefined,
   ),
+}));
+
+const displayAlert = vi.hoisted(() => vi.fn());
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displayAlert }),
 }));
 
 const mockFlag = ref(true);
@@ -64,6 +74,8 @@ describe("ViewInArBtn", () => {
     ar.quickLook = false;
     ar.canActivate = true;
     ar.activateAR.mockClear();
+    ar.openQuickLook.mockReset();
+    ar.openQuickLook.mockResolvedValue(undefined);
   });
 
   it("offers AR for a holo exported to scale", async () => {
@@ -191,7 +203,21 @@ describe("ViewInArBtn", () => {
       expect(button(wrapper).exists()).toBe(true);
     });
 
-    it("frees the 3D view, then prepares and opens AR on the tap", async () => {
+    it("frees the 3D view before it loads the holo for Quick Look", async () => {
+      const wrapper = await mount({ model: model() });
+      const freedFirst = vi.fn();
+      ar.openQuickLook.mockImplementationOnce(async () => {
+        freedFirst(wrapper.emitted("quickLook")?.length);
+      });
+
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(freedFirst).toHaveBeenCalledWith(1);
+      expect(ar.openQuickLook).toHaveBeenCalledWith(HOLO, expect.any(Function));
+    });
+
+    it("never loads model-viewer for Quick Look", async () => {
       const { prepareAr } = await import("@/frontend/utils/arViewer");
       vi.mocked(prepareAr).mockClear();
 
@@ -199,36 +225,27 @@ describe("ViewInArBtn", () => {
       await button(wrapper).trigger("click");
       await flushPromises();
 
-      expect(wrapper.emitted("quickLook")).toHaveLength(1);
-      expect(prepareAr).toHaveBeenCalledWith(HOLO);
-      expect(ar.activateAR).toHaveBeenCalledOnce();
+      expect(prepareAr).not.toHaveBeenCalled();
     });
 
-    it("drops the AR viewer once Quick Look has opened", async () => {
-      const element = Object.assign(document.createElement("div"), {
-        activateAR: vi.fn(() => Promise.resolve()),
-        canActivateAR: true,
-      });
-      document.body.appendChild(element);
-      const { prepareAr } = await import("@/frontend/utils/arViewer");
-      vi.mocked(prepareAr).mockResolvedValueOnce(element as never);
+    it("keeps the button while the holo converts, with the 3D view gone", async () => {
+      const late = { resolve: () => {} };
+      ar.openQuickLook.mockImplementationOnce(
+        () => new Promise<void>((resolve) => (late.resolve = resolve)),
+      );
 
       const wrapper = await mount({ model: model() });
       await button(wrapper).trigger("click");
+      await wrapper.setProps({ active: false });
       await flushPromises();
 
-      expect(element.isConnected).toBe(false);
-    });
+      expect(button(wrapper).exists()).toBe(true);
+      expect(button(wrapper).attributes("disabled")).toBeDefined();
 
-    it("leaves the 3D view open when Quick Look cannot be prepared", async () => {
-      ar.canActivate = false;
-
-      const wrapper = await mount({ model: model() });
-      await button(wrapper).trigger("click");
+      late.resolve();
       await flushPromises();
 
-      expect(wrapper.emitted("quickLook")).toBeUndefined();
-      expect(ar.activateAR).not.toHaveBeenCalled();
+      expect(button(wrapper).exists()).toBe(false);
     });
 
     it("says when Quick Look is done, so 3D may come back", async () => {
@@ -239,39 +256,57 @@ describe("ViewInArBtn", () => {
       expect(wrapper.emitted("quickLookEnd")).toHaveLength(1);
     });
 
-    it("prepares once for a second tap while the first is running", async () => {
-      const { prepareAr } = await import("@/frontend/utils/arViewer");
-      vi.mocked(prepareAr).mockClear();
+    it("says so when Quick Look fails, and still ends", async () => {
+      ar.openQuickLook.mockRejectedValueOnce(new Error("decode"));
+      displayAlert.mockClear();
 
       const wrapper = await mount({ model: model() });
       await button(wrapper).trigger("click");
-      await button(wrapper).trigger("click");
       await flushPromises();
 
-      expect(prepareAr).toHaveBeenCalledOnce();
+      expect(displayAlert).toHaveBeenCalled();
+      expect(wrapper.emitted("quickLookEnd")).toHaveLength(1);
     });
 
-    it("drops a preparation the pose changed under", async () => {
-      const { prepareAr } = await import("@/frontend/utils/arViewer");
-      const late = { resolve: (_: unknown) => {} };
-      const element = Object.assign(document.createElement("div"), {
-        activateAR: vi.fn(),
-        canActivateAR: true,
-      });
-      vi.mocked(prepareAr).mockImplementationOnce(
-        () => new Promise((resolve) => (late.resolve = resolve)) as never,
+    it("converts once for a second tap while the first is running", async () => {
+      ar.openQuickLook.mockImplementationOnce(
+        () => new Promise<void>(() => {}),
       );
 
       const wrapper = await mount({ model: model() });
       await button(wrapper).trigger("click");
-      await wrapper.setProps({
-        displayedHoloUrl: "https://fleetyards.test/files/landed.glb",
-      });
-      late.resolve(element);
+      await button(wrapper).trigger("click");
       await flushPromises();
 
-      expect(element.activateAR).not.toHaveBeenCalled();
-      expect(wrapper.emitted("quickLook")).toBeUndefined();
+      expect(ar.openQuickLook).toHaveBeenCalledOnce();
+    });
+
+    it("no longer wants Quick Look once the ship changed", async () => {
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      const wanted = ar.openQuickLook.mock.calls[0][1]!;
+      expect(wanted()).toBe(true);
+
+      await wrapper.setProps({
+        model: model({
+          media: { holo: { url: "https://fleetyards.test/files/other.glb" } },
+        } as Partial<Model>),
+      });
+
+      expect(wanted()).toBe(false);
+    });
+
+    it("no longer wants Quick Look once the page is left", async () => {
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      const wanted = ar.openQuickLook.mock.calls[0][1]!;
+      wrapper.unmount();
+
+      expect(wanted()).toBe(false);
     });
   });
 });

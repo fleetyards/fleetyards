@@ -10,6 +10,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   mayHaveAr,
+  openQuickLook as presentQuickLook,
   prepareAr,
   usesQuickLook,
   type ModelViewerElement,
@@ -119,39 +120,24 @@ const opening = ref(false);
 const nextFrame = () =>
   new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
-// The 3D view is freed only once Quick Look is ready to take over: a failed
-// preparation leaves it as it was. The holo itself is not loaded until
-// `activateAR`, which waits for the 3D view to be gone first.
+// The 3D view goes first, and the holo is loaded for Quick Look only once it is
+// gone: the two copies together are more than an iPhone holds.
 const openQuickLook = async (url: string) => {
   opening.value = true;
-  const current = preparation;
-
-  const element = await prepareAr(url).catch(() => undefined);
-
-  // Left, or the pose or 3D view changed while it was being prepared: the tap
-  // was for something no longer on screen.
-  if (unmounted || current !== preparation) {
-    element?.remove();
-    opening.value = false;
-    return;
-  }
-
-  if (!element) {
-    opening.value = false;
-    failed();
-    return;
-  }
 
   emit("quickLook");
   await nextTick();
   await nextFrame();
 
+  // Left, or moved on to another ship: the tap was for a holo no longer on
+  // screen.
+  const wanted = () => !unmounted && url === holoUrl.value;
+
   try {
-    await element.activateAR();
+    await presentQuickLook(url, wanted);
   } catch {
-    failed();
+    if (wanted()) failed();
   } finally {
-    element.remove();
     opening.value = false;
     emit("quickLookEnd");
   }
@@ -173,7 +159,7 @@ const open = () => {
 
 <template>
   <Btn
-    v-if="viewer || deferred"
+    v-if="viewer || deferred || opening"
     v-tooltip="t('labels.viewInArHint')"
     :aria-label="t('labels.viewInArHint')"
     :loading="opening"
