@@ -1,8 +1,7 @@
 import domtoimage from "dom-to-image";
 import downloadJs from "downloadjs";
-import orbitronLatin from "@/fonts/orbitron/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2";
-import openSansLatin from "@/fonts/opensans/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2";
-import openSansLatinExt from "@/fonts/opensans/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTSGmu0SC55K5gw.woff2";
+import { toDataUrl } from "./dataUrl";
+import { plaqueFontFaces, withFontFaces } from "./fonts";
 
 // Drawn at three times its size on screen, so a download stays sharp.
 const SCALE = 3;
@@ -12,66 +11,6 @@ const PREVIEW_WIDTH = 1200;
 const PREVIEW_HEIGHT = 630;
 const PREVIEW_PADDING = 36;
 const PREVIEW_BACKGROUND = "#0d0f12";
-
-const toDataUrl = async (url: string) => {
-  const blob = await (await fetch(url)).blob();
-
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-};
-
-const LATIN =
-  "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD";
-const LATIN_EXT =
-  "U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF";
-
-// The faces of `stylesheets/shared/fonts.scss` the plaque draws its text with.
-const PLAQUE_FONTS = [
-  {
-    family: "Orbitron",
-    weights: [400, 500, 700, 900],
-    url: orbitronLatin,
-    range: LATIN,
-  },
-  {
-    family: "Open Sans",
-    weights: [400, 700],
-    url: openSansLatin,
-    range: LATIN,
-  },
-  {
-    family: "Open Sans",
-    weights: [400, 700],
-    url: openSansLatinExt,
-    range: LATIN_EXT,
-  },
-];
-
-// dom-to-image embeds web fonts by reading `document.styleSheets`, but the
-// stylesheet declaring them comes from the asset CDN, whose rules a page cannot
-// read. The picture then fell back to system fonts while every box kept the
-// size measured on screen, so the wider text wrapped over the lines below it.
-const plaqueFontsStyle = async () => {
-  const faces = await Promise.all(
-    PLAQUE_FONTS.map(async ({ family, weights, url, range }) => {
-      const src = await toDataUrl(url);
-
-      return weights.map(
-        (weight) =>
-          `@font-face{font-family:"${family}";font-style:normal;font-weight:${weight};src:url(${src}) format("woff2");unicode-range:${range}}`,
-      );
-    }),
-  );
-
-  const style = document.createElement("style");
-  style.textContent = faces.flat().join("");
-
-  return style;
-};
 
 const urlOf = (value: string) => value.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
 
@@ -102,10 +41,6 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
   };
 
   try {
-    const fonts = await plaqueFontsStyle();
-    element.append(fonts);
-    restore.push(() => fonts.remove());
-
     await inline(element, "--mark");
     await Promise.all(
       Array.from(
@@ -113,13 +48,16 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
       ).map((node) => inline(node, "--icon")),
     );
 
+    const width = element.offsetWidth * scale;
+    const height = element.offsetHeight * scale;
+
     // `width` and `height` size the picture, but dom-to-image also gives them
     // to the copy it lays out; pinned back to its own size here, which it
     // applies last, the copy is laid out as on screen and only then scaled.
-    return await domtoimage.toPng(element, {
+    const svg = await domtoimage.toSvg(element, {
       cacheBust: true,
-      width: element.offsetWidth * scale,
-      height: element.offsetHeight * scale,
+      width,
+      height,
       style: {
         width: `${element.offsetWidth}px`,
         height: `${element.offsetHeight}px`,
@@ -127,6 +65,15 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
         transformOrigin: "top left",
       },
     });
+
+    const image = await loadImage(withFontFaces(svg, await plaqueFontFaces()));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext("2d")?.drawImage(image, 0, 0);
+
+    return canvas.toDataURL("image/png");
   } finally {
     restore.forEach((undo) => undo());
   }
