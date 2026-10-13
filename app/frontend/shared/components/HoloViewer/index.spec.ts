@@ -74,16 +74,31 @@ describe("HoloViewer", () => {
     expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
   });
 
-  it("keeps the answer when the holo is swapped for another pose", async () => {
+  it("keeps the answer for a holo no larger than the one agreed to", async () => {
     const wrapper = await mount(40 * MB);
 
     await wrapper
       .find("[data-test='holo-viewer-load-anyway']")
       .trigger("click");
     await wrapper.setProps({
-      models: [{ path: "/landed.gltf", length: 20, size: 45 * MB }],
+      models: [{ path: "/landed.gltf", length: 20, size: 38 * MB }],
     });
 
     expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
+  });
+
+  it("asks again for a larger holo", async () => {
+    const wrapper = await mount(40 * MB);
+
+    await wrapper
+      .find("[data-test='holo-viewer-load-anyway']")
+      .trigger("click");
+    await wrapper.setProps({
+      models: [{ path: "/other.gltf", length: 20, size: 120 * MB }],
+    });
+
+    expect(wrapper.find("[data-test='holo-viewer-too-large']").exists()).toBe(
+      true,
+    );
   });
 });

@@ -17,7 +17,8 @@ import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useMobile } from "@/shared/composables/useMobile";
+import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
+import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
 
 export type HoloModel = {
   path: string;
@@ -51,22 +52,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { displayAlert } = useAppNotifications();
 
-const mobile = useMobile();
+const lowPower = useLowPowerDevice();
 
 const webglSupported = ref(true);
 
-// Some exports run past 100 MB, which no phone parses and decodes without
-// being killed. Above this a phone or tablet asks first instead of loading
-// straight away. Decimal, like the size it names.
-const MOBILE_SIZE_LIMIT = 30_000_000;
-
-// Memory follows the device, not the layout: a tablet in landscape is no
-// phone by width but is killed by the same files.
-const touchDevice =
-  typeof window.matchMedia === "function" &&
-  window.matchMedia("(pointer: coarse)").matches;
-
-const largeConfirmed = ref(false);
+// What was agreed to, in bytes: anything up to it -- the other pose of the same
+// ship, usually -- loads without asking again, and anything larger asks anew.
+const confirmedSize = ref(0);
 
 const totalSize = computed(() =>
   props.models.reduce((sum, model) => sum + (model.size ?? 0), 0),
@@ -74,9 +66,9 @@ const totalSize = computed(() =>
 
 const awaitingConfirmation = computed(
   () =>
-    (mobile.value || touchDevice) &&
-    totalSize.value > MOBILE_SIZE_LIMIT &&
-    !largeConfirmed.value,
+    lowPower.value &&
+    totalSize.value > LOW_POWER_HOLO_SIZE_LIMIT &&
+    totalSize.value > confirmedSize.value,
 );
 
 const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
@@ -101,13 +93,13 @@ onErrorCaptured((error) => {
 });
 
 const dpr = computed(() =>
-  mobile.value
+  lowPower.value
     ? Math.min(window.devicePixelRatio, 1.5)
     : window.devicePixelRatio,
 );
 
 const powerPreference = computed<WebGLPowerPreference>(() =>
-  mobile.value ? "low-power" : "default",
+  lowPower.value ? "low-power" : "default",
 );
 
 const internalFullscreen = ref(props.fullscreen);
@@ -405,17 +397,20 @@ defineExpose({
       <p>
         {{ t("messages.holoViewer.tooLarge", { size: totalSizeMb }) }}
       </p>
-      <Btn data-test="holo-viewer-load-anyway" @click="largeConfirmed = true">
+      <Btn
+        data-test="holo-viewer-load-anyway"
+        @click="confirmedSize = totalSize"
+      >
         {{ t("actions.holoViewer.loadAnyway") }}
       </Btn>
     </div>
     <TresCanvas
       v-else
       :clear-alpha="0"
-      :shadows="!mobile"
+      :shadows="!lowPower"
       :dpr="dpr"
       :power-preference="powerPreference"
-      :antialias="!mobile"
+      :antialias="!lowPower"
       alpha
       :on-error="handleRenderError"
     >
@@ -423,9 +418,9 @@ defineExpose({
       <TresDirectionalLight
         :position="lightPosition"
         :intensity="2"
-        :cast-shadow="!mobile"
+        :cast-shadow="!lowPower"
       />
-      <TresAmbientLight :intensity="mobile ? 0.8 : 0.5" />
+      <TresAmbientLight :intensity="lowPower ? 0.8 : 0.5" />
       <OrbitControls
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
@@ -463,7 +458,7 @@ defineExpose({
           :model="model"
           :color="modelColor"
           :on-grid="grid"
-          :mobile="mobile"
+          :mobile="lowPower"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"
