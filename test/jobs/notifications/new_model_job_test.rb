@@ -36,6 +36,18 @@ module Notifications
       assert_equal false, @model.reload.notified
     end
 
+    test "#perform names the manufacturer by its short name" do
+      @model.manufacturer.update!(name: "Musashi Industrial & Starflight Concern", short_name: "MISC")
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |text, link_card:|
+          text.start_with?("MISC #{@model.name} is now on FleetYards") && link_card.title == "MISC #{@model.name}"
+        }
+      })
+
+      perform
+    end
+
     test "#perform posts the ship, its link and the hashtag to Bluesky" do
       ::Bsky::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text, has_key(:link_card)) })

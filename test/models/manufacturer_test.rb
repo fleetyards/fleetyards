@@ -6,6 +6,11 @@ class ManufacturerTest < ActiveSupport::TestCase
   # The slug is what the public API and the filters identify a manufacturer by,
   # so two rows answering to one made those lookups pick arbitrarily. The export
   # produced seventeen such pairs before the index existed.
+  test "#short_name_or_name prefers the short name" do
+    assert_equal "MISC", build(:manufacturer, name: "Musashi Industrial & Starflight Concern", short_name: "MISC").short_name_or_name
+    assert_equal "Kruger Intergalactic", build(:manufacturer, name: "Kruger Intergalactic", short_name: "").short_name_or_name
+  end
+
   test "the database refuses a second manufacturer with the same slug" do
     create(:manufacturer, name: "Basilisk")
 

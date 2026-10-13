@@ -33,11 +33,15 @@ module Notifications
       fixed = "#{model.frontend_url}\n#{HASHTAG}"
       return unless platform.fits?(fixed)
 
-      prefix = "#{model.manufacturer.name} #{model.name} is now on FleetYards"
+      prefix = "#{ship_name(model)} is now on FleetYards"
       budget = platform.limit - platform.length(fixed) - 1
       text = "#{platform.truncate(prefix, to: budget)}\n#{fixed}"
 
       platform.fits?(text) ? text : fixed
+    end
+
+    private def ship_name(model)
+      "#{model.manufacturer.short_name_or_name} #{model.name}"
     end
 
     private def link_card(model)
@@ -45,7 +49,7 @@ module Notifications
 
       ::Bsky::Post::LinkCard.new(
         uri: model.frontend_url,
-        title: "#{model.manufacturer.name} #{model.name}",
+        title: ship_name(model),
         description: model.description.to_s.truncate(300),
         image:,
         content_type:

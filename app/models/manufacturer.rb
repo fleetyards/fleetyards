@@ -132,6 +132,12 @@ class Manufacturer < ApplicationRecord
     name&.html_safe
   end
 
+  # The name a ship is known by -- "Drake", "RSI", "MISC" -- as the dedication
+  # plaque writes it, and the full name where a manufacturer has no short one.
+  def short_name_or_name
+    short_name.presence || name
+  end
+
   # Every form a ship name may start with to say who built it, longest first.
   # The game files write whichever is shortest to say -- "Kruger S-65 Stingray"
   # for Kruger Intergalactic, "Argo MOLE" for Argo Astronautics, "RSI
