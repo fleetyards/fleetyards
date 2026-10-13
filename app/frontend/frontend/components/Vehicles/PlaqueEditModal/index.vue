@@ -73,6 +73,9 @@ const validationSchema = {
 };
 
 const { defineField, handleSubmit } = useForm({
+  // The style page swaps the fields out; without this, coming back from it
+  // finds every line typed so far gone.
+  keepValuesOnUnmount: true,
   initialValues: {
     dedication: props.vehicle.dedication ?? "",
     launchedOn: props.vehicle.launchedOn ?? null,

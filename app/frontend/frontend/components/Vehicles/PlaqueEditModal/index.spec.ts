@@ -1,4 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { flushPromises } from "@vue/test-utils";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { defineRule } from "vee-validate";
 import { max, required } from "@vee-validate/rules";
@@ -130,5 +131,26 @@ describe("VehiclePlaqueEditModal", () => {
     expect(wrapper.find('[data-test="vehicle-plaque-remove"]').exists()).toBe(
       true,
     );
+  });
+
+  it("keeps what was typed while a style is picked", async () => {
+    const wrapper = await mount(true);
+
+    await wrapper
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("Built rough");
+    await openStyles(wrapper);
+    await styleTile(wrapper, "neon").trigger("click");
+    await wrapper
+      .find('[data-test="vehicle-plaque-styles-back"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(
+      (
+        wrapper.find('[data-test="vehicle-plaque-dedication-input"] textarea')
+          .element as HTMLTextAreaElement
+      ).value,
+    ).toBe("Built rough");
   });
 });
