@@ -74,9 +74,19 @@
       max-width: 100%;
     }
 
+    // Bounded by the space above the mobile nav, so a footer that wraps onto
+    // more rows shrinks the scrolling body instead of pushing its own buttons
+    // under the nav. A percentage of this fixed box rather than vh: mobile
+    // Safari's 100vh ignores its toolbar and overshoots the visible height.
     .modal-dialog {
+      display: flex;
+      flex-direction: column;
       min-width: 0;
       width: 100%;
+      max-height: calc(
+        100% - #{$navigation-mobile-height} -
+          #{$navigation-mobile-bottom-offset}
+      );
       margin: 0;
       margin-top: auto !important;
       margin-bottom: $navigation-mobile-height +

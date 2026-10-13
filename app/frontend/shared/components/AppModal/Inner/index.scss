@@ -88,10 +88,23 @@
     border-top-right-radius: 0;
   }
 
+  .modal-inner {
+    max-height: none;
+    min-height: 0;
+  }
+
+  .modal-inner > .panel,
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .modal-header {
+    flex-shrink: 0;
+  }
+
   .modal-body {
-    max-height: calc(
-      100vh - 14rem - #{$navigation-mobile-height} -
-        #{$navigation-mobile-bottom-offset}
-    );
+    max-height: none;
   }
 }
