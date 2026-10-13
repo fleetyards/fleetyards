@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { possessiveUsername } from "@/frontend/utils/possessiveUsername";
+import { possessiveName } from "@/frontend/utils/possessiveUsername";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -22,7 +22,7 @@ type Props = {
 
 const { t } = useI18n();
 
-const usernamePlural = computed(() => possessiveUsername(props.user.username));
+const usernamePlural = computed(() => possessiveName(props.user));
 
 const props = withDefaults(defineProps<Props>(), {
   headlineKey: "headlines.hangar.public",

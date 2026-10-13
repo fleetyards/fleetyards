@@ -1,9 +1,15 @@
-export const possessiveUsername = (username: string) => {
-  const title = username[0].toUpperCase() + username.slice(1);
+import { type UserPublic } from "@/services/fyApi";
 
-  if (title.endsWith("s") || title.endsWith("x") || title.endsWith("z")) {
-    return title;
-  }
+type NamedUser = Pick<UserPublic, "username" | "displayName">;
 
-  return `${title}'s`;
-};
+const possessive = (name: string) =>
+  name.endsWith("s") || name.endsWith("x") || name.endsWith("z")
+    ? name
+    : `${name}'s`;
+
+// A display name is written as its owner chose it; only a username, which is
+// a URL slug, is capitalised for a title.
+export const shownName = (user: NamedUser) =>
+  user.displayName || user.username[0].toUpperCase() + user.username.slice(1);
+
+export const possessiveName = (user: NamedUser) => possessive(shownName(user));
