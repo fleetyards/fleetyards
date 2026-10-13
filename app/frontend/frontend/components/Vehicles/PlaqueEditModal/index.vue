@@ -14,6 +14,8 @@ import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import LocationInput from "@/shared/components/LocationInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import {
   BtnSizesEnum,
   BtnTonesEnum,
@@ -65,6 +67,17 @@ const defaultStyle = computed<VehiclePlaqueStyleEnum>(() =>
   isSupporter.value && maker.value ? "manufacturer" : FREE_STYLE,
 );
 
+// A supporter style outlasts the support, but only until the plaque is edited:
+// the server switches it to brass on the next save, so the form does too.
+const keptStyle =
+  !!currentUser?.value &&
+  !isSupporter.value &&
+  !!props.vehicle.dedication &&
+  !!props.vehicle.plaqueStyle &&
+  props.vehicle.plaqueStyle !== FREE_STYLE
+    ? props.vehicle.plaqueStyle
+    : undefined;
+
 const validationSchema = {
   // Without one there is no plaque, and the other lines would save to nothing.
   dedication: `required|max:${DEDICATION_LIMIT}`,
@@ -83,9 +96,11 @@ const { defineField, handleSubmit } = useForm({
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
     affiliation: props.vehicle.affiliation ?? "",
     operationsGroup: props.vehicle.operationsGroup ?? null,
-    plaqueStyle: props.vehicle.dedication
-      ? (props.vehicle.plaqueStyle ?? defaultStyle.value)
-      : defaultStyle.value,
+    plaqueStyle: keptStyle
+      ? FREE_STYLE
+      : props.vehicle.dedication
+        ? (props.vehicle.plaqueStyle ?? defaultStyle.value)
+        : defaultStyle.value,
   },
 });
 
@@ -174,7 +189,7 @@ const updateMutation = useUpdateMutation(vehicle);
 // The payload carries the style the plaque is drawn in, not the stored choice,
 // so it is only sent once picked: otherwise saving any line would pin the
 // default as a choice of its own.
-const initialPlaqueStyle = plaqueStyle.value;
+const initialPlaqueStyle = keptStyle ?? plaqueStyle.value;
 
 const { uploadFile } = useDirectUpload();
 
@@ -351,6 +366,18 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
         </div>
         <div v-else key="details">
+          <Alert
+            v-if="keptStyle"
+            :variant="AlertVariantsEnum.WARNING"
+            data-test="vehicle-plaque-kept-style"
+          >
+            {{
+              t("texts.vehiclePlaque.keptStyle", {
+                style: t(`labels.vehiclePlaque.styles.${keptStyle}`),
+                default: t(`labels.vehiclePlaque.styles.${FREE_STYLE}`),
+              })
+            }}
+          </Alert>
           <VehiclePlaque
             :vehicle="preview"
             :captain="currentUser?.username"

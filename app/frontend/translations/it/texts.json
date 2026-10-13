@@ -351,6 +351,7 @@
       },
       "vehiclePlaque": {
         "supporter": "Tutti gli altri stili sono un grazie a chi tiene in vita Fleetyards.",
+        "keptStyle": "La tua targa mantiene lo stile %{style}, un vantaggio per chi ci sostiene. Salvando passerà a %{default}.",
         "credits": {
           "founders": "Fondatori di %{manufacturer}",
           "shipwrights": "Costruttori di %{manufacturer}",

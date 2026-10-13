@@ -351,6 +351,7 @@
       },
       "vehiclePlaque": {
         "supporter": "其他所有樣式，都是獻給讓 Fleetyards 持續運作的支持者們的謝禮。",
+        "keptStyle": "你的銘牌保留了支持者專屬的%{style}樣式。儲存後，它將切換為%{default}。",
         "credits": {
           "founders": "%{manufacturer}創辦人",
           "shipwrights": "%{manufacturer}造船師",
