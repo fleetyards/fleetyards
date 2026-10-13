@@ -121,7 +121,7 @@ module Frontend
     end
 
     private def username(name)
-      return name if name.ends_with?("s") || name.ends_with?("x") || name.ends_with?("z")
+      return name if name.downcase.end_with?("s", "x", "z")
 
       "#{name}'s"
     end

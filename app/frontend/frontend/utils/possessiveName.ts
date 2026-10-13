@@ -3,9 +3,7 @@ import { type UserPublic } from "@/services/fyApi";
 type NamedUser = Pick<UserPublic, "username" | "displayName">;
 
 const possessive = (name: string) =>
-  name.endsWith("s") || name.endsWith("x") || name.endsWith("z")
-    ? name
-    : `${name}'s`;
+  /[sxz]$/i.test(name) ? name : `${name}'s`;
 
 // A display name is written as its owner chose it; only a username, which is
 // a URL slug, is capitalised for a title.

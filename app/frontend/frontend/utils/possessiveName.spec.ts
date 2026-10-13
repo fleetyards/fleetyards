@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { possessiveName, shownName } from "./possessiveUsername";
+import { possessiveName, shownName } from "./possessiveName";
 
 describe("possessiveName", () => {
   it("capitalises a username and adds the possessive", () => {
@@ -10,6 +10,12 @@ describe("possessiveName", () => {
     expect(possessiveName({ username: "ghosts" })).toBe("Ghosts");
     expect(possessiveName({ username: "vex" })).toBe("Vex");
     expect(possessiveName({ username: "oz" })).toBe("Oz");
+  });
+
+  it("adds nothing to a name ending in an uppercase S, X or Z", () => {
+    expect(possessiveName({ username: "ghost", displayName: "JAMES" })).toBe(
+      "JAMES",
+    );
   });
 
   it("uses the display name as written", () => {

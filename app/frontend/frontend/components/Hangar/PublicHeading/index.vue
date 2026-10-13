@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { possessiveName } from "@/frontend/utils/possessiveUsername";
+import { possessiveName } from "@/frontend/utils/possessiveName";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";

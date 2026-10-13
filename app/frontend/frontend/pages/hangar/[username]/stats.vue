@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { possessiveName } from "@/frontend/utils/possessiveUsername";
+import { possessiveName } from "@/frontend/utils/possessiveName";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import PublicHangarStats from "@/frontend/components/Hangar/PublicHangarStats/index.vue";

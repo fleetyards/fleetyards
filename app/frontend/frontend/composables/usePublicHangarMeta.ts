@@ -2,7 +2,7 @@ import { type MaybeRef } from "vue";
 import { type UserPublic } from "@/services/fyApi";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
-import { shownName } from "@/frontend/utils/possessiveUsername";
+import { shownName } from "@/frontend/utils/possessiveName";
 
 export const usePublicHangarMeta = (
   user?: MaybeRef<UserPublic | undefined>,

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { possessiveName } from "@/frontend/utils/possessiveUsername";
+import { possessiveName } from "@/frontend/utils/possessiveName";
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
