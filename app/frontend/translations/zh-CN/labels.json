@@ -1565,7 +1565,6 @@
         "notifyUsers": "应用内通知",
         "postDiscord": "Discord 更新频道",
         "postBluesky": "Bluesky",
-        "postX": "X.com",
         "schedule": "定时发送",
         "publishAt": "发送时间"
       },
@@ -3067,8 +3066,7 @@
           "channels": {
             "in_app": "应用内",
             "discord": "Discord",
-            "bluesky": "Bluesky",
-            "x": "X.com"
+            "bluesky": "Bluesky"
           },
           "deliveryStatuses": {
             "pending": "待处理",
@@ -3097,7 +3095,6 @@
             "noReactions": "暂无表情回应。",
             "fetchedAt": "更新于 %{time}",
             "notFetched": "数据将在一小时内到达。",
-            "xUnavailable": "X 读取数据需要付费。打开帖子即可查看。",
             "untracked": "发布时尚未记录表情回应。"
           }
         },

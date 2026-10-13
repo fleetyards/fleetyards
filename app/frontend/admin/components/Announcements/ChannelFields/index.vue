@@ -15,7 +15,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 const notifyUsers = defineModel<boolean>("notifyUsers", { required: true });
 const postDiscord = defineModel<boolean>("postDiscord", { required: true });
 const postBluesky = defineModel<boolean>("postBluesky", { required: true });
-const postX = defineModel<boolean>("postX", { required: true });
 
 const { t } = useI18n();
 </script>
@@ -42,12 +41,5 @@ const { t } = useI18n();
     translation-key="announcement.postBluesky"
     no-placeholder
     data-test="announcement-post-bluesky"
-  />
-  <FormToggle
-    v-model="postX"
-    name="postX"
-    translation-key="announcement.postX"
-    no-placeholder
-    data-test="announcement-post-x"
   />
 </template>

@@ -1565,7 +1565,6 @@
         "notifyUsers": "Notifica in-app",
         "postDiscord": "Canale aggiornamenti Discord",
         "postBluesky": "Bluesky",
-        "postX": "X.com",
         "schedule": "Pianifica",
         "publishAt": "Invia il"
       },
@@ -3067,8 +3066,7 @@
           "channels": {
             "in_app": "In-app",
             "discord": "Discord",
-            "bluesky": "Bluesky",
-            "x": "X.com"
+            "bluesky": "Bluesky"
           },
           "deliveryStatuses": {
             "pending": "In attesa",
@@ -3097,7 +3095,6 @@
             "noReactions": "Ancora nessuna reazione.",
             "fetchedAt": "Aggiornato %{time}",
             "notFetched": "I numeri arrivano entro un'ora.",
-            "xUnavailable": "X fa pagare la lettura dei numeri. Apri il post per vederli.",
             "untracked": "Pubblicato prima che le reazioni venissero registrate."
           }
         },

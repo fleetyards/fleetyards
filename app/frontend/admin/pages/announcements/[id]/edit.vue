@@ -53,7 +53,6 @@ type FormValues = {
   notifyUsers: boolean;
   postDiscord: boolean;
   postBluesky: boolean;
-  postX: boolean;
 };
 
 const schedule = ref(
@@ -78,7 +77,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
     notifyUsers: props.announcement.notifyUsers,
     postDiscord: props.announcement.postDiscord,
     postBluesky: props.announcement.postBluesky,
-    postX: props.announcement.postX,
   },
   validationSchema,
 });
@@ -90,14 +88,9 @@ const [publishAt, publishAtProps] = defineField("publishAt");
 const [notifyUsers] = defineField("notifyUsers");
 const [postDiscord] = defineField("postDiscord");
 const [postBluesky] = defineField("postBluesky");
-const [postX] = defineField("postX");
 
 const noChannel = computed(
-  () =>
-    !values.notifyUsers &&
-    !values.postDiscord &&
-    !values.postBluesky &&
-    !values.postX,
+  () => !values.notifyUsers && !values.postDiscord && !values.postBluesky,
 );
 
 // The schedule switch is not a form field, so meta.dirty does not see it.
@@ -156,7 +149,6 @@ const onSubmit = handleSubmit(async (formValues) => {
     notifyUsers: formValues.notifyUsers,
     postDiscord: formValues.postDiscord,
     postBluesky: formValues.postBluesky,
-    postX: formValues.postX,
   };
 
   await updateMutation
@@ -234,10 +226,7 @@ const handleCancel = async () => {
           :label="t('labels.announcement.socialParts')"
           :hint="t('labels.admin.announcements.socialPartsInfo')"
           :part-placeholder="t('placeholders.announcement.socialPart')"
-          :limits="[
-            { label: 'X', limit: 280, counter: 'x' },
-            { label: 'Bluesky', limit: 300, counter: 'bluesky' },
-          ]"
+          :limits="[{ label: 'Bluesky', limit: 300, counter: 'bluesky' }]"
         />
       </div>
       <div class="col-12 col-md-5">
@@ -245,7 +234,6 @@ const handleCancel = async () => {
           v-model:notify-users="notifyUsers"
           v-model:post-discord="postDiscord"
           v-model:post-bluesky="postBluesky"
-          v-model:post-x="postX"
         />
         <p v-if="noChannel" class="announcement-form__warning">
           {{ t("labels.admin.announcements.noChannel") }}

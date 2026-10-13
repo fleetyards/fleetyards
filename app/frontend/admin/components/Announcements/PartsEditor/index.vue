@@ -14,11 +14,7 @@ import {
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
-import {
-  blueskyLength,
-  discordLength,
-  xLength,
-} from "@/shared/utils/socialCounters";
+import { blueskyLength, discordLength } from "@/shared/utils/socialCounters";
 
 type Props = {
   name: string;
@@ -34,7 +30,7 @@ type Props = {
   limits?: {
     label: string;
     limit: number;
-    counter?: "x" | "bluesky" | "discord";
+    counter?: "bluesky" | "discord";
   }[];
 };
 
@@ -60,8 +56,7 @@ const threaded = computed(() => parts.value.length > 1);
  */
 const DISCORD_MARKER_OVERHEAD = 9;
 
-function countFor(text: string, counter?: "x" | "bluesky" | "discord") {
-  if (counter === "x") return xLength(text);
+function countFor(text: string, counter?: "bluesky" | "discord") {
   if (counter === "discord") {
     return discordLength(text) + (threaded.value ? DISCORD_MARKER_OVERHEAD : 0);
   }

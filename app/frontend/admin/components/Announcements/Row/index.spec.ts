@@ -51,7 +51,6 @@ const announcement = (attrs: Partial<Announcement> = {}) =>
     notifyUsers: true,
     postDiscord: false,
     postBluesky: false,
-    postX: false,
     publishable: true,
     deliveries: [],
     createdAt: "2026-01-01",
@@ -90,10 +89,10 @@ describe("AnnouncementRow", () => {
           engagementTrackable: true,
         },
         {
-          channel: AnnouncementChannelEnum.X,
+          channel: AnnouncementChannelEnum.BLUESKY,
           status: AnnouncementDeliveryStatusEnum.SUCCEEDED,
           attempts: 1,
-          engagementTrackable: false,
+          engagementTrackable: true,
         },
       ],
     });

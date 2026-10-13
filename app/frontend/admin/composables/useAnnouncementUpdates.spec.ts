@@ -24,7 +24,6 @@ const announcement = (attrs: Partial<Announcement> = {}) =>
     notifyUsers: true,
     postDiscord: false,
     postBluesky: false,
-    postX: false,
     publishable: true,
     deliveries: [],
     createdAt: "2026-01-01",
