@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.2.0](https://github.com/fleetyards/fleetyards/compare/v9.1.2...v9.2.0) (2026-10-13)
+
+
+### Features
+
+* **fleets:** member health page for officers ([#5599](https://github.com/fleetyards/fleetyards/issues/5599)) ([2300522](https://github.com/fleetyards/fleetyards/commit/23005221d8d70fe96122c7f8674e1c15952cc5ad))
+* **fleets:** the squadron filter collapses into one dropdown on phones ([#5607](https://github.com/fleetyards/fleetyards/issues/5607)) ([38fc4e3](https://github.com/fleetyards/fleetyards/commit/38fc4e3f67e5064dabf8ca00a3b5c8680d7b6867))
+* **hangar:** address vehicle pages by username, serial and name ([#5640](https://github.com/fleetyards/fleetyards/issues/5640)) ([e234395](https://github.com/fleetyards/fleetyards/commit/e2343957b3e5b1c83d4c662e9bcc4a058aaf7071))
+* **hangar:** pick the ship's picture from its model's gallery ([#5632](https://github.com/fleetyards/fleetyards/issues/5632)) ([94f0ce2](https://github.com/fleetyards/fleetyards/commit/94f0ce2a58bd24d958ede21b1550bdeddf309416))
+* **hangar:** tidy the vehicle menu and page header ([#5635](https://github.com/fleetyards/fleetyards/issues/5635)) ([f62f8fc](https://github.com/fleetyards/fleetyards/commit/f62f8fc004001c6308366ed450303b217313a6ce))
+* **hangar:** vehicle overview page with a captain's log ([#5617](https://github.com/fleetyards/fleetyards/issues/5617)) ([69a1eba](https://github.com/fleetyards/fleetyards/commit/69a1ebaa9d82b4d7299099f11452a9b26a0a46d1))
+* hide pledge and in-game totals separately ([#5631](https://github.com/fleetyards/fleetyards/issues/5631)) ([8a6205b](https://github.com/fleetyards/fleetyards/commit/8a6205b4480dbc664ddbe7f2f1dbf89d9536dbb2))
+* **ships:** show who in your circle flies a ship ([#5634](https://github.com/fleetyards/fleetyards/issues/5634)) ([01df03b](https://github.com/fleetyards/fleetyards/commit/01df03b76d2b82fb0bbc3398442f297f6519890b))
+* **users:** a dedicated maintainer badge ([#5645](https://github.com/fleetyards/fleetyards/issues/5645)) ([cdefdf3](https://github.com/fleetyards/fleetyards/commit/cdefdf3e9cfdfc9fd90bced4ee531cbf0a806073))
+* **users:** maintainer flag with top-tier supporter perks ([#5644](https://github.com/fleetyards/fleetyards/issues/5644)) ([18c3cd1](https://github.com/fleetyards/fleetyards/commit/18c3cd15af40880e5a3ee95d3ed5782eb88b007f))
+
+
+### Bug Fixes
+
+* **modules:** load the Apollo bed modules from the game files ([#5612](https://github.com/fleetyards/fleetyards/issues/5612)) ([9e4339d](https://github.com/fleetyards/fleetyards/commit/9e4339d6a89ac17cba013fd1a1a0b9c619449ff3))
+* **notifications:** size the swipe flood to the uncovered strip, so it grows with the finger ([#5606](https://github.com/fleetyards/fleetyards/issues/5606)) ([3cf3920](https://github.com/fleetyards/fleetyards/commit/3cf39203c0afdce5d7439d67d9b530d48bb1eaff))
+* **paints:** merge the duplicate Constellation Invictus paints ([#5602](https://github.com/fleetyards/fleetyards/issues/5602)) ([d4c0a78](https://github.com/fleetyards/fleetyards/commit/d4c0a7864bca3bc93fd515bbf336ab9690b82b03)), closes [#5600](https://github.com/fleetyards/fleetyards/issues/5600)
+* **panel:** give heading actions their real width so two controls no longer cover the title ([e4c6151](https://github.com/fleetyards/fleetyards/commit/e4c615100e14b0d305ec33f0ed88855aab397564))
+* **sc_data:** one load at a time, and crew positions per build ([#5641](https://github.com/fleetyards/fleetyards/issues/5641)) ([4460bc4](https://github.com/fleetyards/fleetyards/commit/4460bc4ccbfd36577c062e14a65fe73af4984e39))
+
+
+### Refactorings
+
+* **commodities:** leave the per-terminal prices to the detail ([#5608](https://github.com/fleetyards/fleetyards/issues/5608)) ([4767f9a](https://github.com/fleetyards/fleetyards/commit/4767f9a4e7b0728c2a621bd4d9fd82cdbaaca5b1))
+* **components:** delete the legacy rows nothing points at ([#5613](https://github.com/fleetyards/fleetyards/issues/5613)) ([1e2db01](https://github.com/fleetyards/fleetyards/commit/1e2db01f4ca5853528fedb00398d867439c26ab0))
+* equipment and commodities stop writing their rows without a build ([#5611](https://github.com/fleetyards/fleetyards/issues/5611)) ([ee2fcfa](https://github.com/fleetyards/fleetyards/commit/ee2fcfaf7464ed36a00d2d747ad193e4e8b6e82a))
+* **fleets:** event and mission labels and badges onto the shared row label and Pill ([#5616](https://github.com/fleetyards/fleetyards/issues/5616)) ([d1d78d5](https://github.com/fleetyards/fleetyards/commit/d1d78d5be2360bbd50e8bf0f0ec567d0c2bca1cb))
+* **gestures:** drop the hidden-switch haptics on iOS; vibration stays Android-only ([#5609](https://github.com/fleetyards/fleetyards/issues/5609)) ([655926b](https://github.com/fleetyards/fleetyards/commit/655926b2b29bf8601e2f5152ff8e6a8b5f5e4fbc))
+* **hangar:** link synced paint pledges to catalogue paints ([#5633](https://github.com/fleetyards/fleetyards/issues/5633)) ([70aaba8](https://github.com/fleetyards/fleetyards/commit/70aaba84d3b4eff0f631ebd9d116d3f14079bdeb))
+* **models:** drop the min and max crew columns ([#5601](https://github.com/fleetyards/fleetyards/issues/5601)) ([56d4caa](https://github.com/fleetyards/fleetyards/commit/56d4caa97683d5a7b7f13d6fdb02b9017338f022))
+* small cleanups (dead privilege, string-built flag names, stale Playwright script) ([#5603](https://github.com/fleetyards/fleetyards/issues/5603)) ([4d70fce](https://github.com/fleetyards/fleetyards/commit/4d70fce83585c02d913682df84ccd20487a8a9a4))
+* **users:** retire User#sale_notify ([#5605](https://github.com/fleetyards/fleetyards/issues/5605)) ([a48ec8c](https://github.com/fleetyards/fleetyards/commit/a48ec8c0cd7c3c8d5a30b2c8dd48852531e82d21))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#5623](https://github.com/fleetyards/fleetyards/issues/5623)) ([4e774e1](https://github.com/fleetyards/fleetyards/commit/4e774e12224426fe1837eca2092496a2a8e943dc))
+* **deps-dev:** bump concurrently from 10.0.5 to 10.0.6 ([#5624](https://github.com/fleetyards/fleetyards/issues/5624)) ([3ba1971](https://github.com/fleetyards/fleetyards/commit/3ba1971f0597f3ead518d4a6e6d3013b9886def7))
+* **deps-dev:** bump eslint-plugin-vuejs-accessibility ([#5625](https://github.com/fleetyards/fleetyards/issues/5625)) ([ca5a68a](https://github.com/fleetyards/fleetyards/commit/ca5a68a6f8f3e60011b09bdb863d920c01088913))
+* **deps-dev:** bump knip from 6.39.0 to 6.40.0 ([#5620](https://github.com/fleetyards/fleetyards/issues/5620)) ([52ba9e6](https://github.com/fleetyards/fleetyards/commit/52ba9e62de6dba6ca7894351dd647f01bba66315))
+* **deps-dev:** bump the playwright group with 2 updates ([#5619](https://github.com/fleetyards/fleetyards/issues/5619)) ([83ab424](https://github.com/fleetyards/fleetyards/commit/83ab424f2d70abf15c88ce25d4785dfcffd7a52a))
+* **deps-dev:** bump vite from 8.3.2 to 8.3.4 ([#5622](https://github.com/fleetyards/fleetyards/issues/5622)) ([5710549](https://github.com/fleetyards/fleetyards/commit/57105492c3d64e4fe8868c24e7bedf96e238689c))
+* **deps:** bump @event-calendar/core from 5.16.0 to 5.17.0 ([#5626](https://github.com/fleetyards/fleetyards/issues/5626)) ([e7576cb](https://github.com/fleetyards/fleetyards/commit/e7576cb585a6f53448a9ec527e29e1bff946de31))
+* **deps:** bump appsignal from 5.0.1 to 5.0.3 ([#5621](https://github.com/fleetyards/fleetyards/issues/5621)) ([200376a](https://github.com/fleetyards/fleetyards/commit/200376a46de54575957ff4b42512f3c8b8183adb))
+* **deps:** bump aws-sdk-s3 from 1.233.1 to 1.233.2 ([#5618](https://github.com/fleetyards/fleetyards/issues/5618)) ([fc69144](https://github.com/fleetyards/fleetyards/commit/fc691445f0b9be74070fcc16ea10ddcb826f0e7a))
+* **deps:** bump i18n-js from 4.5.3 to 4.5.4 ([#5628](https://github.com/fleetyards/fleetyards/issues/5628)) ([6dd6064](https://github.com/fleetyards/fleetyards/commit/6dd6064d31433fc2441f2926133989eaa2e35c9b))
+* **deps:** bump vue-router from 5.3.1 to 5.4.0 ([#5627](https://github.com/fleetyards/fleetyards/issues/5627)) ([cc5032a](https://github.com/fleetyards/fleetyards/commit/cc5032abb4556d9f975697c8dd4a13bf621babe1))
+* **skills:** add review-loop skill ([651a066](https://github.com/fleetyards/fleetyards/commit/651a0663e6501521b15420e843f748b91cd9b817))
+
 ## [9.1.2](https://github.com/fleetyards/fleetyards/compare/v9.1.1...v9.1.2) (2026-10-11)
 
 
