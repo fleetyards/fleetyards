@@ -47,8 +47,12 @@ const hangarMeta = getCurrentMetaInfo();
 
 onMounted(() => {
   updateMetaInfo({
+    // The public payload carries the name and serial only where the owner
+    // shows them.
     title: t("title.vehiclePlaque", {
-      vehicle: props.vehicle.name || props.vehicle.model.name,
+      vehicle: props.vehicle.serial
+        ? `${props.vehicle.name || props.vehicle.model.name} (${props.vehicle.serial})`
+        : props.vehicle.name || props.vehicle.model.name,
     }),
     description: props.vehicle.dedication ?? undefined,
     type: "article",

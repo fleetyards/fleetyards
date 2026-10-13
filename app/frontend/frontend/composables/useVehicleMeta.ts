@@ -20,7 +20,9 @@ export const useVehicleMeta = (
       return;
     }
 
-    const name = current.name || current.model.name;
+    const name = [current.name || current.model.name, current.serial]
+      .filter(Boolean)
+      .join(" · ");
     const tab = route.meta.title ? t(`title.${route.meta.title}`) : undefined;
     const text = current.dedication || current.model.description || "";
     const picture =

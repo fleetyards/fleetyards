@@ -35,7 +35,7 @@ class FrontendVehiclePreviewTest < ActionDispatch::IntegrationTest
   test "a public ship's page previews as the ship" do
     get "/hangar/#{@user.username}/l8-4261-ha-contorta/overview"
 
-    assert_includes meta("og:title"), "Contorta"
+    assert_includes meta("og:title"), "Contorta (L8-4261-HA)"
     assert_equal "Built rough", meta("og:description")
   end
 
@@ -43,6 +43,16 @@ class FrontendVehiclePreviewTest < ActionDispatch::IntegrationTest
     get "/hangar/#{@user.username}/#{@vehicle.id}-contorta"
 
     assert_includes meta("og:title"), "Contorta"
+  end
+
+  test "a ship whose name is hidden previews by its model, without name or serial" do
+    @vehicle.update!(name_visible: false)
+
+    get "/hangar/#{@user.username}/l8-4261-ha-contorta"
+
+    assert_not_includes meta("og:title"), "Contorta"
+    assert_not_includes meta("og:title"), "L8-4261-HA"
+    assert_includes meta("og:title"), @vehicle.model.name
   end
 
   test "a hidden ship's page says nothing about it" do

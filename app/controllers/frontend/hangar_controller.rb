@@ -98,11 +98,13 @@ module Frontend
       rails_blob_url(vehicle.model.store_image) if vehicle.model.store_image.attached?
     end
 
-    # The name the public hangar shows: the owner's own only where they show it.
+    # The name the public hangar shows: the owner's own, and its serial, only
+    # where they show them -- the public payload hides both together.
     private def public_vehicle_name(vehicle)
-      return vehicle.name if vehicle.name_visible? && vehicle.name.present?
+      return vehicle.model.name unless vehicle.name_visible?
 
-      vehicle.model.name
+      name = vehicle.name.presence || vehicle.model.name
+      vehicle.serial.present? ? "#{name} (#{vehicle.serial})" : name
     end
 
     private def public_user_readable?(rule)
