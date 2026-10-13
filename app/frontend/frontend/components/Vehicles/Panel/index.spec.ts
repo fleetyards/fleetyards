@@ -147,12 +147,18 @@ describe("VehiclesPanel", () => {
     expect(titleHref(wrapper)).toContain(
       "/hangar/me/ic-0210-ab-vehicle-1/overview",
     );
+    expect(
+      wrapper.get('[data-test="vehicle-panel-title"]').attributes("data-tour"),
+    ).toBe("vehicle-overview");
   });
 
   it("opens the model while the overview is not rolled out", async () => {
     const wrapper = await mount({ vehicle: vehicle(), editable: true });
 
     expect(titleHref(wrapper)).toContain("/ships/odyssey");
+    expect(
+      wrapper.get('[data-test="vehicle-panel-title"]').attributes("data-tour"),
+    ).toBeUndefined();
   });
 
   it("opens the model for someone else's ship", async () => {
@@ -161,6 +167,9 @@ describe("VehiclesPanel", () => {
     const wrapper = await mount({ vehicle: vehicle() });
 
     expect(titleHref(wrapper)).toContain("/ships/odyssey");
+    expect(
+      wrapper.get('[data-test="vehicle-panel-title"]').attributes("data-tour"),
+    ).toBeUndefined();
   });
 
   const withPicture = () =>

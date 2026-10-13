@@ -86,7 +86,7 @@
         },
         "sync": {
           "title": "Synchroniser avec RSI",
-          "text": "Vous avez déjà des pledges ? Avec l'extension de navigateur FleetYards, synchronisez votre hangar RSI au lieu d'ajouter les vaisseaux à la main — et recommencez dès que vos pledges changent."
+          "text": "Synchronisez vaisseaux, peintures, objets décoratifs et équipement depuis RSI avec l’extension FleetYards. Vérifiez le résultat après chaque synchronisation. Les rachats ont leur propre synchronisation sur leur page."
         },
         "display": {
           "title": "Options d'affichage",
@@ -102,7 +102,7 @@
         },
         "wishlist": {
           "title": "Liste de souhaits",
-          "text": "Les vaisseaux que vous voulez sans les posséder encore vont sur votre liste de souhaits, avec des notifications de soldes en option."
+          "text": "Placez les vaisseaux que vous souhaitez acquérir dans votre liste de souhaits, puis déplacez-les dans votre hangar une fois obtenus."
         },
         "fleetchart": {
           "title": "Fleetchart",
@@ -114,11 +114,31 @@
         },
         "share": {
           "title": "Partager votre hangar",
-          "text": "Votre hangar public est activé. Partagez son lien — vous décidez quels vaisseaux et groupes y apparaissent."
+          "text": "Partagez votre hangar public et choisissez les vaisseaux et groupes visibles. Dans les paramètres du hangar, vous pouvez aussi créer, remplacer ou désactiver un lien secret fonctionnant même si votre hangar est privé. Toute personne disposant du lien peut voir votre hangar et ses statistiques."
         },
         "menu": {
           "title": "Plus",
-          "text": "Importer et exporter votre hangar, les buy-backs et votre historique d'import — et cette visite, chaque fois que vous en avez besoin."
+          "text": "Importez ou exportez votre hangar, consultez l’historique des imports ou relancez cette visite. Sur téléphone, ce menu contient aussi la liste de souhaits, le fleetchart et les statistiques."
+        },
+        "overview": {
+          "title": "La page de votre vaisseau",
+          "text": "Cliquez sur le titre du vaisseau pour ouvrir sa vue d’ensemble pour gérer sa configuration et sa visibilité, écrire dans le journal de bord et importer une image. Ajoutez une plaque de dédicace à un vaisseau possédé et enregistrez-la en image. Les entrées du journal ont leurs propres réglages de visibilité."
+        },
+        "pledgeItems": {
+          "title": "Bien plus que des vaisseaux",
+          "text": "Ouvrez Peintures, objets décoratifs ou Équipement depuis ce menu pour parcourir les objets synchronisés depuis votre hangar RSI. Les rachats sont répertoriés séparément et se synchronisent depuis leur propre page."
+        },
+        "reset": {
+          "title": "Après une remise à zéro du jeu",
+          "text": "Réinitialisez ici les vaisseaux achetés en jeu : déplacez-les tous vers la liste de souhaits pour préparer vos achats, ou retirez-les du hangar. Les vaisseaux achetés avec de l’argent réel restent en place."
+        },
+        "inventories": {
+          "title": "Inventaires du hangar",
+          "text": "Suivez les objets sur vos sites, enregistrez les dépôts et les retraits, et gérez les transferts depuis les inventaires du hangar."
+        },
+        "exampleShip": {
+          "title": "Vaisseau d’exemple",
+          "text": "Uniquement pour la visite. Ce vaisseau n’est pas enregistré dans votre hangar."
         }
       },
       "fleetTour": {

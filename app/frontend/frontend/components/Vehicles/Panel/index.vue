@@ -123,12 +123,15 @@ const { isFeatureEnabled } = useFeatures();
 // and a loaner, which has no page of its own to edit, still opens the model.
 const toVehicle = useVehicleRoute();
 
-const titleRoute = computed(() => {
-  if (
+const hasOverview = computed(
+  () =>
     props.editable &&
     !props.vehicle.loaner &&
-    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
-  ) {
+    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
+
+const titleRoute = computed(() => {
+  if (hasOverview.value) {
     const vehicle = props.vehicle as Vehicle;
 
     return toVehicle("hangar-vehicle-overview", vehicle);
@@ -251,6 +254,7 @@ const tone = computed(() => {
           :to="titleRoute"
           class="truncate"
           data-test="vehicle-panel-title"
+          :data-tour="hasOverview ? 'vehicle-overview' : undefined"
         >
           <span>{{ name }}</span>
         </router-link>

@@ -10,10 +10,13 @@ import type { TourStep } from "@/shared/components/Tour/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 
 const open = defineModel<boolean>("open", { default: false });
 
 const { t } = useI18n();
+const { isFeatureEnabled } = useFeatures();
 
 const hangarStore = useHangarStore();
 
@@ -31,7 +34,11 @@ const step = (
 
 const steps = computed<TourStep[]>(() => [
   step("welcome"),
-  step("add", { target: '[data-tour="hangar-add"]', placement: "top" }),
+  step("add", {
+    target: '[data-tour="hangar-add"] button',
+    placement: "top",
+    scrollIntoView: false,
+  }),
   step("sync", { target: '[data-tour="hangar-sync"]', requiresTarget: true }),
   step("display", {
     target: '[data-tour="hangar-display"]',
@@ -46,6 +53,15 @@ const steps = computed<TourStep[]>(() => [
     placement: "left",
     requiresTarget: true,
   }),
+  ...(isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
+    ? [
+        step("overview", {
+          target: '[data-tour="vehicle-overview"]',
+          placement: "left",
+          requiresTarget: true,
+        }),
+      ]
+    : []),
   step("wishlist", {
     target: '[data-tour="hangar-wishlist"]',
     requiresTarget: true,
@@ -58,8 +74,20 @@ const steps = computed<TourStep[]>(() => [
     target: '[data-tour="hangar-stats"]',
     requiresTarget: true,
   }),
+  ...(isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)
+    ? [step("inventories", { target: '[data-tour="hangar-inventories"]' })]
+    : []),
   step("share", {
     target: '[data-tour="hangar-share"]',
+  }),
+  step("pledgeItems", {
+    target: '[data-tour="hangar-menu"]',
+    placement: "left",
+    requiresTarget: true,
+  }),
+  step("reset", {
+    target: '[data-tour="hangar-menu"]',
+    placement: "left",
     requiresTarget: true,
   }),
   step("menu", {

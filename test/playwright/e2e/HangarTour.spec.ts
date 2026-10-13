@@ -33,15 +33,34 @@ test.describe("Hangar tour", () => {
 
     await expect(card(page)).toBeVisible();
     await expect(card(page)).toHaveAttribute("data-step", "welcome");
+    await expect(page.getByTestId("tour-example-ship")).toBeVisible();
 
     await page.getByTestId("tour-next").click();
     await expect(card(page)).toHaveAttribute("data-step", "add");
+    await expect
+      .poll(async () => {
+        const button = await page
+          .locator('[data-tour="hangar-add"] button')
+          .boundingBox();
+        const spotlight = await page.locator(".tour__hole").boundingBox();
+
+        if (!button || !spotlight) return false;
+
+        return (
+          Math.abs(spotlight.x - (button.x - 6)) < 1 &&
+          Math.abs(spotlight.y - (button.y - 6)) < 1 &&
+          Math.abs(spotlight.width - (button.width + 12)) < 1 &&
+          Math.abs(spotlight.height - (button.height + 12)) < 1
+        );
+      })
+      .toBe(true);
 
     await page.keyboard.press("ArrowRight");
     await expect(card(page)).toHaveAttribute("data-step", "sync");
 
     await page.keyboard.press("Escape");
     await expect(card(page)).toHaveCount(0);
+    await expect(page.getByTestId("tour-example-ship")).toHaveCount(0);
 
     // Seen once shown: a reload must not start it again. The groups row is
     // what the auto-start waits for, so the wait after it outlasts its delay.
@@ -66,7 +85,7 @@ test.describe("Hangar tour", () => {
 
     const seen: (string | null)[] = [];
 
-    for (let i = 0; i < 12; i += 1) {
+    for (let i = 0; i < 20; i += 1) {
       seen.push(await card(page).getAttribute("data-step"));
 
       const next = page.getByTestId("tour-next");
@@ -78,11 +97,19 @@ test.describe("Hangar tour", () => {
 
     await expect(card(page)).toHaveCount(0);
 
-    // No vehicles yet, so the step about a ship's own menu has nothing to
-    // point at.
-    expect(seen).not.toContain("vehicle");
+    await expect(page.getByTestId("tour-example-ship")).toHaveCount(0);
+    expect(seen).toContain("vehicle");
     expect(seen).toEqual(
-      expect.arrayContaining(["welcome", "add", "sync", "display", "menu"]),
+      expect.arrayContaining([
+        "welcome",
+        "add",
+        "sync",
+        "display",
+        "share",
+        "pledgeItems",
+        "reset",
+        "menu",
+      ]),
     );
   });
 });

@@ -86,7 +86,7 @@
         },
         "sync": {
           "title": "Sincronizza con RSI",
-          "text": "Hai già dei pledge? Con l'estensione del browser FleetYards sincronizza il tuo hangar RSI invece di aggiungere le navi a mano — e di nuovo ogni volta che i tuoi pledge cambiano."
+          "text": "Sincronizza navi, vernici, oggetti decorativi ed equipaggiamento da RSI con l’estensione FleetYards. Controlla il risultato dopo ogni sincronizzazione. I riacquisti si sincronizzano dalla propria pagina."
         },
         "display": {
           "title": "Opzioni di visualizzazione",
@@ -102,7 +102,7 @@
         },
         "wishlist": {
           "title": "Lista dei desideri",
-          "text": "Le navi che vuoi ma non possiedi ancora vanno nella tua lista dei desideri, con notifiche dei saldi facoltative."
+          "text": "Inserisci nella lista dei desideri le navi che vuoi ma non possiedi ancora. Spostale nell’hangar quando le ottieni."
         },
         "fleetchart": {
           "title": "Fleetchart",
@@ -114,11 +114,31 @@
         },
         "share": {
           "title": "Condividi il tuo hangar",
-          "text": "Il tuo hangar pubblico è attivo. Condividi il link — decidi tu quali navi e gruppi compaiono."
+          "text": "Condividi il tuo hangar pubblico e scegli quali navi e gruppi mostrare. Nelle impostazioni dell’hangar puoi anche creare, sostituire o disattivare un link segreto che funziona anche se l’hangar è privato. Chiunque abbia il link può vedere il tuo hangar e le sue statistiche."
         },
         "menu": {
           "title": "Altro",
-          "text": "Importa ed esporta il tuo hangar, buy-back e cronologia delle importazioni — e questo tour, ogni volta che ti serve."
+          "text": "Importa o esporta il tuo hangar, consulta la cronologia delle importazioni o ripeti questo tour. Sul telefono, questo menu contiene anche la lista dei desideri, il fleetchart e le statistiche."
+        },
+        "overview": {
+          "title": "La pagina della tua nave",
+          "text": "Fai clic sul titolo della nave per aprire la panoramica per gestire configurazione e visibilità, scrivere nel diario del capitano e caricare un’immagine. Aggiungi una targa con dedica a una nave che possiedi e salvala come immagine. Le voci del diario hanno impostazioni di visibilità proprie."
+        },
+        "pledgeItems": {
+          "title": "Non solo navi",
+          "text": "Apri Vernici, oggetti decorativi o Equipaggiamento da questo menu per sfogliare gli oggetti sincronizzati dal tuo hangar RSI. I riacquisti sono elencati separatamente e si sincronizzano dalla propria pagina."
+        },
+        "reset": {
+          "title": "Dopo un azzeramento del gioco",
+          "text": "Reimposta qui le navi acquistate nel gioco: spostale tutte nella lista dei desideri come lista della spesa oppure rimuovile dall’hangar. Le navi acquistate con denaro reale rimangono."
+        },
+        "inventories": {
+          "title": "Inventari dell’hangar",
+          "text": "Tieni traccia degli oggetti nelle tue località, registra depositi e prelievi e gestisci i trasferimenti dagli inventari dell’hangar."
+        },
+        "exampleShip": {
+          "title": "Nave di esempio",
+          "text": "Solo per il tour. Questa nave non viene salvata nel tuo hangar."
         }
       },
       "fleetTour": {

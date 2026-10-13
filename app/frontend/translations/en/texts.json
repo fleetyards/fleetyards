@@ -86,7 +86,7 @@
         },
         "sync": {
           "title": "Sync from RSI",
-          "text": "Already pledged? With the FleetYards browser extension installed, sync your RSI hangar instead of adding ships by hand — and again whenever your pledges change."
+          "text": "Sync ships, paints, flair and equipment from RSI with the FleetYards browser extension. Review the result after each sync; buy-backs have their own sync on the Buy-backs page."
         },
         "display": {
           "title": "Display options",
@@ -102,7 +102,7 @@
         },
         "wishlist": {
           "title": "Wishlist",
-          "text": "Ships you want but don't own yet go on your wishlist, with optional sale notifications."
+          "text": "Ships you want but do not own yet go on your wishlist. Move them to your hangar when you acquire them."
         },
         "fleetchart": {
           "title": "Fleetchart",
@@ -114,11 +114,31 @@
         },
         "share": {
           "title": "Share your hangar",
-          "text": "Your public hangar is on. Share its link — you decide which ships and groups appear there."
+          "text": "Share your public hangar and choose which ships and groups appear. In Hangar settings, you can also create, replace or disable a secret link that works while your hangar is private. Anyone with that link can view your hangar and its stats."
         },
         "menu": {
           "title": "More",
-          "text": "Import and export your hangar, buy-backs and your import history — and this tour, whenever you want it again."
+          "text": "Import or export your hangar, check import history or replay this tour here. On a phone, this menu also holds the wishlist, fleetchart and stats."
+        },
+        "overview": {
+          "title": "Your ship’s own page",
+          "text": "Click a ship’s title to open its overview to manage its configuration and visibility, write captain’s log entries and upload a picture. Give an owned ship a dedication plaque and save it as an image. Log entries have their own visibility settings."
+        },
+        "pledgeItems": {
+          "title": "More than ships",
+          "text": "Open Paints, Flair or Equipment from this menu to browse the items synced from your RSI hangar. Buy-backs are listed separately and can be synced from their own page."
+        },
+        "reset": {
+          "title": "After an in-game wipe",
+          "text": "Reset in-game ships from this menu: move them all to your wishlist to keep a shopping list, or remove them from your hangar. Pledged ships stay in place."
+        },
+        "inventories": {
+          "title": "Hangar inventories",
+          "text": "Track items at your locations, record deposits and withdrawals, and manage transfers from your hangar inventories."
+        },
+        "exampleShip": {
+          "title": "Example ship",
+          "text": "Only here for the guide. This ship is not saved to your hangar."
         }
       },
       "fleetTour": {
