@@ -65,7 +65,8 @@ module Frontend
 
       @title = I18n.t("title.frontend.public_plaque", vehicle: public_vehicle_name(vehicle))
       @description = vehicle.dedication
-      @og_image = vehicle.plaque_image.attached? ? rails_blob_url(vehicle.plaque_image) : vehicle_picture_url(vehicle)
+      # A ship without a picture keeps the hangar's, rather than none at all.
+      @og_image = (vehicle.plaque_image.attached? ? rails_blob_url(vehicle.plaque_image) : vehicle_picture_url(vehicle)) || @og_image
       @twitter_card = "summary_large_image" if @og_image.present?
     end
 
