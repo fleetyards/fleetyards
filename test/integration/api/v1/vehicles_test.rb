@@ -479,15 +479,26 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /vehicles/:id draws a lapsed supporter's plaque in the default style" do
-    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", plaque_style: "neon")
+  test "GET /vehicles/:id keeps a lapsed supporter's plaque in its style" do
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "neon")
     create(:supporter_contribution, user: @user, started_at: 3.months.ago)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {id: vehicle.id} do
+      assert_equal "neon", parsed_body["plaqueStyle"]
+    end
+  end
+
+  test "PUT /vehicles/:id switches a lapsed supporter's edited plaque to the default style" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "neon")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "Ad astra", plaqueStyle: "neon"} do
       assert_equal "brass", parsed_body["plaqueStyle"]
     end
-    assert_equal "neon", vehicle.reload.plaque_style
   end
 
   test "PUT /vehicles/:id clears the dedication plaque" do

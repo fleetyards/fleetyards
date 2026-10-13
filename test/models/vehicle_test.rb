@@ -746,12 +746,31 @@ class VehicleModelImageTest < ActiveSupport::TestCase
     assert_equal "Port Olisar", vehicle.launch_port
   end
 
-  test "draws the plaque in the owner's style only while they support" do
-    vehicle = create(:vehicle, dedication: "To boldly go", plaque_style: "carbon")
-    assert_equal "brass", vehicle.effective_plaque_style
+  test "keeps a supporter style on the plaque after the support ends" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "carbon")
 
+    assert_equal "carbon", vehicle.effective_plaque_style
+  end
+
+  test "drops a supporter style once a non-supporter edits the plaque" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "carbon")
+
+    vehicle.update!(name: "Contorta")
+    assert_equal "carbon", vehicle.reload.plaque_style
+
+    vehicle.update!(affiliation: "Maru Inc.")
+    assert_equal "brass", vehicle.reload.plaque_style
+  end
+
+  test "keeps a supporter's style through an edit of the plaque" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "carbon")
     create(:supporter_contribution, user: vehicle.user)
-    assert_equal "carbon", Vehicle.find(vehicle.id).effective_plaque_style
+
+    Vehicle.find(vehicle.id).update!(dedication: "Ad astra")
+    assert_equal "carbon", vehicle.reload.plaque_style
   end
 
   test "accepts only the known plaque styles" do
