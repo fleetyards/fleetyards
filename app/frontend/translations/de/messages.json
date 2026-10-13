@@ -1223,6 +1223,7 @@
         }
       },
       "vehiclePlaque": {
+        "removeConfirm": "Die Widmungstafel dieses Schiffs entfernen?",
         "downloadFailure": "Die Tafel konnte nicht als Bild gespeichert werden",
         "failure": "Die Tafel konnte nicht gespeichert werden"
       },

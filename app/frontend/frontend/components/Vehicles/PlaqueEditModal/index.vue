@@ -16,6 +16,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
+  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
@@ -216,6 +217,27 @@ const uploadPlaqueImage = async () => {
   } finally {
     capturing.value = false;
   }
+};
+
+// The dedication is required to save a plaque, so taking one down is its own
+// action: every line cleared, and the server drops the picture with it.
+const removePlaque = async () => {
+  await updateMutation
+    .mutateAsync({
+      id: props.vehicle.id,
+      data: {
+        dedication: null,
+        launchedOn: null,
+        launchPort: null,
+        launchPortLocationId: null,
+        affiliation: null,
+        operationsGroup: null,
+      },
+    })
+    .then(() => comlink.emit("close-modal"))
+    .catch(() => {
+      displayAlert({ text: t("messages.vehiclePlaque.failure") });
+    });
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -420,6 +442,18 @@ const onSubmit = handleSubmit(async (values) => {
         >
           <i class="fa-light fa-palette" />
           {{ t("labels.vehiclePlaque.style") }}
+        </Btn>
+        <Btn
+          v-if="vehicle.dedication"
+          :size="BtnSizesEnum.LG"
+          :variant="BtnVariantsEnum.BARE"
+          :tone="BtnTonesEnum.DANGER"
+          :confirm="t('messages.vehiclePlaque.removeConfirm')"
+          :disabled="updateMutation.isPending.value || capturing"
+          data-test="vehicle-plaque-remove"
+          @click="removePlaque"
+        >
+          {{ t("actions.vehiclePlaque.remove") }}
         </Btn>
         <Btn
           :type="BtnTypesEnum.SUBMIT"

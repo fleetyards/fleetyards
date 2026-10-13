@@ -564,6 +564,7 @@
         "change": "Change fleet"
       },
       "vehiclePlaque": {
+        "remove": "Remove plaque",
         "edit": "Edit plaque",
         "show": "Show dedication plaque"
       },

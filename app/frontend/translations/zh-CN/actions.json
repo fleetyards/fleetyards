@@ -564,6 +564,7 @@
         "change": "更改舰队"
       },
       "vehiclePlaque": {
+        "remove": "移除铭牌",
         "edit": "编辑铭牌",
         "show": "查看命名铭牌"
       },

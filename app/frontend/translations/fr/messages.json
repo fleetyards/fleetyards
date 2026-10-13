@@ -1223,6 +1223,7 @@
         }
       },
       "vehiclePlaque": {
+        "removeConfirm": "Retirer la plaque de dédicace de ce vaisseau ?",
         "downloadFailure": "La plaque n'a pas pu être enregistrée en image",
         "failure": "La plaque n'a pas pu être enregistrée"
       },

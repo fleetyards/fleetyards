@@ -119,4 +119,16 @@ describe("VehiclePlaqueEditModal", () => {
       false,
     );
   });
+
+  it("offers to take a plaque down, as the dedication can no longer be emptied", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { vehicle: vehicle({ dedication: "To boldly go" }) },
+      initialState: { session: { currentUser: { supporter: false } } },
+      plugins: [router],
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-remove"]').exists()).toBe(
+      true,
+    );
+  });
 });
