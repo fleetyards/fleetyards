@@ -29,27 +29,29 @@ const copy = (post: string) => {
 </script>
 
 <template>
-  <p class="announcement-manual-posts__info">
-    {{ t("labels.admin.announcements.manualPostsInfo") }}
-  </p>
-  <ol class="announcement-manual-posts">
-    <li
-      v-for="(post, index) in props.posts"
-      :key="index"
-      class="announcement-manual-posts__post"
-      data-test="announcement-manual-post"
-    >
-      <pre class="announcement-manual-posts__text">{{ post }}</pre>
-      <Btn
-        :size="BtnSizesEnum.SM"
-        data-test="announcement-manual-post-copy"
-        @click="copy(post)"
+  <div>
+    <p class="announcement-manual-posts__info">
+      {{ t("labels.admin.announcements.manualPostsInfo") }}
+    </p>
+    <ol class="announcement-manual-posts">
+      <li
+        v-for="(post, index) in props.posts"
+        :key="index"
+        class="announcement-manual-posts__post"
+        data-test="announcement-manual-post"
       >
-        <i class="fa-duotone fa-copy" />
-        {{ t("actions.copy") }}
-      </Btn>
-    </li>
-  </ol>
+        <pre class="announcement-manual-posts__text">{{ post }}</pre>
+        <Btn
+          :size="BtnSizesEnum.SM"
+          data-test="announcement-manual-post-copy"
+          @click="copy(post)"
+        >
+          <i class="fa-duotone fa-copy" />
+          {{ t("actions.copy") }}
+        </Btn>
+      </li>
+    </ol>
+  </div>
 </template>
 
 <style lang="scss" scoped>
