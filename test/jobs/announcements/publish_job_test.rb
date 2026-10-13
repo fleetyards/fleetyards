@@ -9,7 +9,6 @@ module Announcements
 
       Announcements::PostSocialJob.expects(:perform_async).with(announcement.id, "discord").once
       Announcements::PostSocialJob.expects(:perform_async).with(announcement.id, "bluesky").once
-      Announcements::PostSocialJob.expects(:perform_async).with(announcement.id, "x").once
       Announcements::FanOutJob.expects(:perform_async).with(announcement.id).once
 
       Announcements::PublishJob.new.perform(announcement.id)
@@ -17,7 +16,7 @@ module Announcements
       announcement.reload
       assert announcement.status_published?
       assert announcement.published_at.present?
-      assert_equal %w[bluesky discord in_app x], announcement.deliveries.pluck(:channel).sort
+      assert_equal %w[bluesky discord in_app], announcement.deliveries.pluck(:channel).sort
     end
 
     test "#perform leaves out the channels that were not selected" do
@@ -40,7 +39,7 @@ module Announcements
     end
 
     # The admin button and the five-minute scheduler can reach the same
-    # announcement, and dispatching twice means two posts on X.
+    # announcement, and dispatching twice means two posts on Bluesky.
     test "#perform only dispatches for the run that claims the announcement" do
       announcement = create(:announcement, :social)
 

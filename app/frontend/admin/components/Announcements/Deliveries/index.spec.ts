@@ -18,12 +18,12 @@ const mount = (deliveries: AnnouncementDelivery[]) =>
         body: "Now ranked.",
         discordParts: [],
         socialParts: [],
+        socialPosts: [],
         icon: "fa-duotone fa-bullhorn",
         status: AnnouncementStatusEnum.PUBLISHED,
         notifyUsers: true,
         postDiscord: true,
         postBluesky: true,
-        postX: true,
         publishable: false,
         deliveries,
         createdAt: "2026-01-01",
@@ -58,10 +58,10 @@ describe("AnnouncementDeliveries", () => {
   it("offers a retry and no link for a failed post", async () => {
     const wrapper = await mount([
       {
-        channel: AnnouncementChannelEnum.X,
+        channel: AnnouncementChannelEnum.BLUESKY,
         status: AnnouncementDeliveryStatusEnum.FAILED,
         attempts: 2,
-        error: "X API error 429",
+        error: "Bluesky rejected the post: 429",
         engagementTrackable: false,
       },
     ]);

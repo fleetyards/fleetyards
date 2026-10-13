@@ -8,10 +8,10 @@ module Bsky
   class PostTest < ActiveSupport::TestCase
     PDS = "https://bsky.social"
 
+    CREDENTIALS = {handle: "fleetyards.net", app_password: "app-password", endpoint: PDS}.freeze
+
     setup do
-      Rails.application.credentials.stubs(:bsky_handle).returns("fleetyards.net")
-      Rails.application.credentials.stubs(:bsky_app_password).returns("app-password")
-      Rails.application.credentials.stubs(:bsky_endpoint).returns(PDS)
+      Bsky::Post.stubs(:credentials).returns(CREDENTIALS)
 
       stub_request(:post, "#{PDS}/xrpc/com.atproto.server.createSession")
         .to_return(
@@ -24,7 +24,7 @@ module Bsky
     test ".configured? needs all three credentials" do
       assert Bsky::Post.configured?
 
-      Rails.application.credentials.stubs(:bsky_endpoint).returns(nil)
+      Bsky::Post.stubs(:credentials).returns(CREDENTIALS.except(:endpoint))
 
       refute Bsky::Post.configured?
     end
@@ -98,6 +98,56 @@ module Bsky
       }
     end
 
+    test "#create attaches a link card with an uploaded thumbnail" do
+      blob = {"$type" => "blob", "ref" => {"$link" => "bafy"}, "mimeType" => "image/jpeg", "size" => 4}
+      upload = stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.uploadBlob")
+        .with(body: "jpeg", headers: {"Content-Type" => "image/jpeg", "Authorization" => "Bearer token"})
+        .to_return(status: 200, body: {blob:}.to_json, headers: {"Content-Type" => "application/json"})
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+
+      Bsky::Post.new.create("Carrack", link_card: link_card(image: "jpeg"))
+
+      assert_requested upload
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        embed = JSON.parse(request.body).dig("record", "embed")
+
+        embed["$type"] == "app.bsky.embed.external" &&
+          embed["external"] == {
+            "uri" => "https://fleetyards.net/ships/carrack",
+            "title" => "Anvil Carrack",
+            "description" => "Explorer",
+            "thumb" => blob
+          }
+      }
+    end
+
+    test "#create posts the card without a thumbnail when the upload is refused" do
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.uploadBlob")
+        .to_return(status: 400, body: {error: "InvalidRequest"}.to_json, headers: {"Content-Type" => "application/json"})
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+      Appsignal.expects(:report_error).with(instance_of(Bsky::Post::Error))
+
+      Bsky::Post.new.create("Carrack", link_card: link_card(image: "jpeg"))
+
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        external = JSON.parse(request.body).dig("record", "embed", "external")
+
+        external["uri"] == "https://fleetyards.net/ships/carrack" && !external.key?("thumb")
+      }
+    end
+
+    test "#create reports a thumbnail over Bluesky's size limit instead of uploading it" do
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+      Appsignal.expects(:report_error).with(instance_of(Bsky::Post::Error))
+
+      Bsky::Post.new.create("Carrack", link_card: link_card(image: "x" * (Bsky::Post::MAX_THUMB_BYTES + 1)))
+
+      assert_not_requested(:post, "#{PDS}/xrpc/com.atproto.repo.uploadBlob")
+    end
+
     test "#create raises when Bluesky rejects the post" do
       stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
         .to_return(status: 400, body: {error: "InvalidRequest"}.to_json, headers: {"Content-Type" => "application/json"})
@@ -105,10 +155,20 @@ module Bsky
       assert_raises(Bsky::Post::Error) { Bsky::Post.new.create("Hello") }
     end
 
+    private def link_card(image:)
+      Bsky::Post::LinkCard.new(
+        uri: "https://fleetyards.net/ships/carrack",
+        title: "Anvil Carrack",
+        description: "Explorer",
+        image:,
+        content_type: "image/jpeg"
+      )
+    end
+
     # No session is opened until something posts, so an install with no
     # credentials can still name the class.
     test "the session is not opened by the constructor" do
-      Rails.application.credentials.stubs(:bsky_handle).returns(nil)
+      Bsky::Post.stubs(:credentials).returns({})
 
       assert_nothing_raised { Bsky::Post.new }
     end

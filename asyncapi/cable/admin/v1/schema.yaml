@@ -222,6 +222,12 @@ components:
           type: array
           items:
             type: string
+        socialPosts:
+          type: array
+          items:
+            type: string
+          description: 'The posts Bluesky gets, in order: the authored parts, or the
+            one post composed from title, body and link.'
         link:
           type: string
         icon:
@@ -241,8 +247,6 @@ components:
         postDiscord:
           type: boolean
         postBluesky:
-          type: boolean
-        postX:
           type: boolean
         publishable:
           type: boolean
@@ -271,11 +275,11 @@ components:
       - notifyUsers
       - postDiscord
       - postBluesky
-      - postX
       - publishable
       - deliveries
       - discordParts
       - socialParts
+      - socialPosts
       - createdAt
       - updatedAt
     AnnouncementChannelEnum:
@@ -284,12 +288,10 @@ components:
       - in_app
       - discord
       - bluesky
-      - x
       x-enumNames:
       - IN_APP
       - DISCORD
       - BLUESKY
-      - X
     AnnouncementDelivery:
       type: object
       properties:

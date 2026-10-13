@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
 const limits = [
-  { label: "X", limit: 280, counter: "x" as const },
   { label: "Bluesky", limit: 300, counter: "bluesky" as const },
+  { label: "Discord", limit: 2000, counter: "discord" as const },
 ];
 
 describe("AnnouncementPartsEditor", () => {
@@ -55,16 +55,15 @@ describe("AnnouncementPartsEditor", () => {
   });
 
   /*
-   * X bills a URL at 23 characters whatever its real length, so counting plain
-   * characters would tell an author a post is over when it is not.
+   * Bluesky counts graphemes and Discord UTF-16 code units, so the same emoji
+   * costs one on Bluesky and two on Discord.
    */
-  it("counts a URL the way X does, and plainly for Bluesky", async () => {
-    const link = "https://fleetyards.net/a/rather/long/path/to/somewhere";
+  it("counts each platform the way it counts", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         name: "social-parts",
         label: "Posts",
-        modelValue: [`Read on ${link}`],
+        modelValue: ["Launch 🚀"],
         limits,
       },
     });
@@ -73,8 +72,8 @@ describe("AnnouncementPartsEditor", () => {
       "[data-test='parts-editor-part'] .parts-editor__count",
     );
 
-    expect(counts[0].text()).toContain(`${8 + 23}/280`);
-    expect(counts[1].text()).toContain(`${8 + link.length}/300`);
+    expect(counts[0].text()).toContain("8/300");
+    expect(counts[1].text()).toContain("9/2000");
   });
 
   // Two or more parts are a thread, and the form says so.
@@ -129,7 +128,7 @@ describe("AnnouncementPartsEditor", () => {
       props: {
         name: "social-parts",
         label: "Posts",
-        modelValue: ["x".repeat(290)],
+        modelValue: ["x".repeat(301)],
         limits,
       },
     });

@@ -4,9 +4,9 @@ module Announcements
   # Dispatches one announcement to every channel it asked for.
   #
   # Dispatch only: each channel reports its own outcome into its
-  # AnnouncementDelivery row, because they fail independently -- X can be rate
-  # limited in the same minute Bluesky accepts the post -- and a single status
-  # on the announcement has no way to say so.
+  # AnnouncementDelivery row, because they fail independently -- Bluesky can be
+  # rate limited in the same minute Discord accepts the post -- and a single
+  # status on the announcement has no way to say so.
   class PublishJob < Announcements::BaseJob
     # `scheduled` marks the run the five-minute sweep queued, which is held to a
     # stricter claim than the admin's own button. See `claim`.
@@ -53,7 +53,7 @@ module Announcements
     # Claimed in one statement, not checked and then written. The admin button
     # and the sweep can both reach the same announcement, and two runs that
     # each passed a separate `publishable?` would dispatch every channel twice
-    # -- two posts on X, two rows in every reader's inbox. Whoever moves the
+    # -- two posts on Bluesky, two rows in every reader's inbox. Whoever moves the
     # row out of a publishable state owns the send; everyone else returns.
     #
     # A sweep's run claims through `due`, which re-asserts both halves of what

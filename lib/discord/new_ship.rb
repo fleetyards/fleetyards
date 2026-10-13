@@ -14,7 +14,7 @@ module Discord
     end
 
     private def get_message
-      I18n.t("discord.new_ship.message", manufacturer: model.manufacturer.name, model: model.name)
+      I18n.t("discord.new_ship.message", manufacturer: model.manufacturer.short_name_or_name, model: model.name)
     end
 
     private def get_url

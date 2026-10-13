@@ -31,7 +31,7 @@ describe("AnnouncementDeliverySummary", () => {
             AnnouncementDeliveryStatusEnum.SUCCEEDED,
           ),
           delivery(
-            AnnouncementChannelEnum.X,
+            AnnouncementChannelEnum.BLUESKY,
             AnnouncementDeliveryStatusEnum.SUCCEEDED,
           ),
         ],
@@ -55,7 +55,7 @@ describe("AnnouncementDeliverySummary", () => {
             AnnouncementDeliveryStatusEnum.FAILED,
           ),
           delivery(
-            AnnouncementChannelEnum.X,
+            AnnouncementChannelEnum.IN_APP,
             AnnouncementDeliveryStatusEnum.PENDING,
           ),
         ],
@@ -77,7 +77,7 @@ describe("AnnouncementDeliverySummary", () => {
             AnnouncementDeliveryStatusEnum.SUCCEEDED,
           ),
           delivery(
-            AnnouncementChannelEnum.X,
+            AnnouncementChannelEnum.BLUESKY,
             AnnouncementDeliveryStatusEnum.SKIPPED,
           ),
         ],

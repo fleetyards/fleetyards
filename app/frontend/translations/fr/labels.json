@@ -1565,7 +1565,6 @@
         "notifyUsers": "Notification dans l'app",
         "postDiscord": "Canal Discord des mises à jour",
         "postBluesky": "Bluesky",
-        "postX": "X.com",
         "schedule": "Planifier",
         "publishAt": "Envoyer le"
       },
@@ -3067,8 +3066,7 @@
           "channels": {
             "in_app": "Dans l'app",
             "discord": "Discord",
-            "bluesky": "Bluesky",
-            "x": "X.com"
+            "bluesky": "Bluesky"
           },
           "deliveryStatuses": {
             "pending": "En attente",
@@ -3089,6 +3087,7 @@
           "deliverySkippedCount": "%{count} ignorés",
           "attempts": "%{count} tentatives",
           "content": "Contenu",
+          "manualPostsInfo": "Le texte envoyé à Bluesky, à publier à la main sur X ou ailleurs.",
           "engagement": {
             "likes": "J'aime",
             "reposts": "Republications",
@@ -3097,7 +3096,6 @@
             "noReactions": "Aucune réaction pour l'instant.",
             "fetchedAt": "Mis à jour %{time}",
             "notFetched": "Les chiffres arrivent dans l'heure.",
-            "xUnavailable": "X facture la lecture des chiffres. Ouvrez la publication pour les voir.",
             "untracked": "Publié avant le suivi des réactions."
           }
         },

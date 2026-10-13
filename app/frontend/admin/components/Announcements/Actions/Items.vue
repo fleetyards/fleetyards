@@ -84,7 +84,6 @@ const channelSummary = computed(() =>
       t("labels.admin.announcements.channels.discord"),
     props.announcement.postBluesky &&
       t("labels.admin.announcements.channels.bluesky"),
-    props.announcement.postX && t("labels.admin.announcements.channels.x"),
   ]
     .filter(Boolean)
     .join(", "),

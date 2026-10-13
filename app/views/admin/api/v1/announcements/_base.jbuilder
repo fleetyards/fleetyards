@@ -5,6 +5,7 @@ json.title announcement.title
 json.body announcement.body
 json.discord_parts announcement.discord_parts
 json.social_parts announcement.social_parts
+json.social_posts Announcements::SocialPosts.call(announcement, platform: Announcements::Platform::BLUESKY)
 json.link announcement.link if announcement.link.present?
 json.icon announcement.icon
 json.status announcement.status
@@ -14,7 +15,6 @@ json.recipients_count announcement.recipients_count if announcement.recipients_c
 json.notify_users announcement.notify_users
 json.post_discord announcement.post_discord
 json.post_bluesky announcement.post_bluesky
-json.post_x announcement.post_x
 json.publishable announcement.publishable?
 json.last_tested_at announcement.last_tested_at.utc.iso8601 if announcement.last_tested_at.present?
 json.author announcement.admin_user&.username if announcement.admin_user.present?

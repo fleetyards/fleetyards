@@ -2,7 +2,6 @@
 
 require "discord/new_ship"
 require "bsky/post"
-require "x_com/post"
 
 module Notifications
   class NewModelJob < Notifications::BaseJob
@@ -13,8 +12,7 @@ module Notifications
       return if model.notified? || model.hidden?
 
       ::Discord::NewShip.new(model:).run
-      post_socially(model, ::Announcements::Platform::BLUESKY) { |text| ::Bsky::Post.new.create(text) } if ::Bsky::Post.configured?
-      post_socially(model, ::Announcements::Platform::X) { |text| ::XCom::Post.new.create(text) } if ::XCom::Post.configured?
+      post_socially(model, ::Announcements::Platform::BLUESKY) { |text| ::Bsky::Post.new.create(text, link_card: link_card(model)) } if ::Bsky::Post.configured?
 
       model.update(notified: true)
     end
@@ -35,11 +33,40 @@ module Notifications
       fixed = "#{model.frontend_url}\n#{HASHTAG}"
       return unless platform.fits?(fixed)
 
-      prefix = "New ship added to FleetYards: #{model.manufacturer.name} #{model.name}"
+      prefix = "#{ship_name(model)} is now on FleetYards"
       budget = platform.limit - platform.length(fixed) - 1
       text = "#{platform.truncate(prefix, to: budget)}\n#{fixed}"
 
       platform.fits?(text) ? text : fixed
+    end
+
+    private def ship_name(model)
+      "#{model.manufacturer.short_name_or_name} #{model.name}"
+    end
+
+    private def link_card(model)
+      image, content_type = thumb(model)
+
+      ::Bsky::Post::LinkCard.new(
+        uri: model.frontend_url,
+        title: ship_name(model),
+        description: model.description.to_s.truncate(300),
+        image:,
+        content_type:
+      )
+    end
+
+    # The representation every store image already has preprocessed, so the
+    # job builds nothing new. The card is posted without a picture rather than
+    # not at all.
+    private def thumb(model)
+      return unless model.store_image.attached?
+
+      variant = model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]).processed
+      [variant.download, variant.image.content_type]
+    rescue => e
+      Appsignal.report_error(e)
+      nil
     end
   end
 end

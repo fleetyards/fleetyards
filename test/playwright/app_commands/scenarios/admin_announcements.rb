@@ -20,13 +20,12 @@ announcement = Announcement.create!(
   recipients_count: 57_000,
   notify_users: true,
   post_discord: true,
-  post_bluesky: true,
-  post_x: true
+  post_bluesky: true
 )
 
 sent = {status: "succeeded", delivered_at: 2.hours.ago, attempts: 1}
 
-announcement.deliveries.create!(channel: "in_app", **sent)
+announcement.deliveries.create!(channel: "in_app", status: "failed", attempts: 1, error: "Fan-out stopped after 12,000 recipients")
 announcement.deliveries.create!(
   channel: "discord", **sent,
   posted_parts: [{"index" => 0, "message_id" => "111", "channel_id" => "222"}],
@@ -40,7 +39,6 @@ announcement.deliveries.create!(
   engagement: {"likes" => 42, "reposts" => 7, "replies" => 3, "quotes" => 1},
   engagement_fetched_at: 10.minutes.ago
 )
-announcement.deliveries.create!(channel: "x", status: "failed", attempts: 1, error: "X API error 429: Too Many Requests")
 
 Announcement.create!(
   admin_user:,

@@ -27,9 +27,8 @@ class AnnouncementPartLengthValidator < ActiveModel::EachValidator
     end
   end
 
-  # The platforms this announcement is actually going to. A post can be legal
-  # on Bluesky and too long for X, and telling an author their copy is too long
-  # for a channel they did not select is noise.
+  # The platforms this announcement is actually going to. Telling an author
+  # their copy is too long for a channel they did not select is noise.
   private def platforms(record)
     return [options[:platform]] if options[:platform]
 

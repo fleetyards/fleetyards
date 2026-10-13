@@ -106,12 +106,11 @@ module ActiveSupport
     include ActiveSupport::Testing::TimeHelpers
 
     # Inline Sidekiq tests exercise model-creation notifications. Keep them from
-    # posting to Bluesky or X unless a test explicitly supplies creds.
+    # posting to Bluesky unless a test explicitly supplies creds. The posting
+    # account is stubbed rather than the whole `bluesky` group, which also holds
+    # the keys for signing in with Bluesky.
     setup do
-      Rails.application.credentials.stubs(:bsky_handle).returns(nil)
-      Rails.application.credentials.stubs(:bsky_app_password).returns(nil)
-      Rails.application.credentials.stubs(:bsky_endpoint).returns(nil)
-      Rails.application.credentials.stubs(:x).returns(nil)
+      ::Bsky::Post.stubs(:credentials).returns({})
     end
 
     teardown do

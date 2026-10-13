@@ -12,16 +12,28 @@ module Bsky
     # either.
     Record = Struct.new(:uri, :cid)
 
+    # The preview Bluesky shows under a post. Bluesky never fetches a link's
+    # page itself: a post without one is bare text, picture and all.
+    LinkCard = Struct.new(:uri, :title, :description, :image, :content_type)
+
+    # The lexicon's cap on an external embed's thumbnail.
+    MAX_THUMB_BYTES = 1_000_000
+
     # Bluesky counts graphemes, not bytes, and caps a post at 300.
     MAX_LENGTH = 300
 
     COLLECTION = "app.bsky.feed.post"
 
-    def self.handle = Rails.application.credentials.bsky_handle
+    # The account FleetYards posts as. It shares the `bluesky` group with the
+    # OAuth client's keys for signing in with Bluesky, which is a separate
+    # integration.
+    def self.credentials = Rails.application.credentials.bluesky || {}
 
-    def self.app_password = Rails.application.credentials.bsky_app_password
+    def self.handle = credentials[:handle]
 
-    def self.endpoint = Rails.application.credentials.bsky_endpoint
+    def self.app_password = credentials[:app_password]
+
+    def self.endpoint = credentials[:endpoint]
 
     def self.configured?
       handle.present? && app_password.present? && endpoint.present?
@@ -43,7 +55,7 @@ module Bsky
     # second post in a thread and wrong for every one after it: the third would
     # claim the second as the root, and Bluesky would render two threads of two
     # rather than one of three.
-    def create(message, root: nil, parent: nil)
+    def create(message, root: nil, parent: nil, link_card: nil)
       record = {
         "$type" => COLLECTION,
         "createdAt" => Time.current.utc.iso8601(3),
@@ -52,6 +64,8 @@ module Bsky
 
       facets = ::Bsky::Facets.extract(message)
       record["facets"] = facets if facets.any?
+
+      record["embed"] = external_embed(link_card) if link_card.present?
 
       if parent.present?
         record["reply"] = {
@@ -65,6 +79,43 @@ module Bsky
         "repo" => client.session.did,
         "record" => record
       }))
+    end
+
+    private def external_embed(card)
+      external = {
+        "uri" => card.uri,
+        "title" => card.title.to_s,
+        "description" => card.description.to_s
+      }
+      thumb = upload_thumb(card)
+      external["thumb"] = thumb if thumb.present?
+
+      {"$type" => "app.bsky.embed.external", "external" => external}
+    end
+
+    # A card without its picture is still worth posting, so a thumbnail that is
+    # too large or that the upload fails on is reported and left out rather
+    # than failing the post.
+    private def upload_thumb(card)
+      return if card.image.blank?
+      raise Error, "Thumbnail of #{card.image.bytesize} bytes is over Bluesky's limit" if card.image.bytesize > MAX_THUMB_BYTES
+
+      response = HTTParty.post(
+        "#{client.session.pds}/xrpc/com.atproto.repo.uploadBlob",
+        body: card.image,
+        headers: {
+          "Authorization" => "Bearer #{client.session.access_token}",
+          "Content-Type" => card.content_type
+        }
+      )
+      blob = parse(response)&.dig("blob")
+
+      raise Error, "Bluesky rejected the image: #{response.code} #{response.body}" if blob.blank?
+
+      blob
+    rescue Error, HTTParty::Error, Timeout::Error, SocketError, SystemCallError, OpenSSL::SSL::SSLError => e
+      Appsignal.report_error(e)
+      nil
     end
 
     private def ref(post)

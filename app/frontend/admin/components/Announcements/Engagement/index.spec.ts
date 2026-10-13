@@ -56,16 +56,6 @@ describe("AnnouncementEngagement", () => {
     ]);
   });
 
-  // X bills every read, so its delivery links out and never shows a number.
-  it("explains why an X post has no counts", async () => {
-    const wrapper = await mount({
-      channel: AnnouncementChannelEnum.X,
-      engagementTrackable: false,
-    });
-
-    expect(wrapper.text()).toContain("Open the post to see them");
-  });
-
   it("says a Discord post predates reaction tracking", async () => {
     const wrapper = await mount({
       channel: AnnouncementChannelEnum.DISCORD,

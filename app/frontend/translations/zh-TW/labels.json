@@ -1565,7 +1565,6 @@
         "notifyUsers": "應用內通知",
         "postDiscord": "Discord 更新頻道",
         "postBluesky": "Bluesky",
-        "postX": "X.com",
         "schedule": "定時發送",
         "publishAt": "發送時間"
       },
@@ -3067,8 +3066,7 @@
           "channels": {
             "in_app": "應用內",
             "discord": "Discord",
-            "bluesky": "Bluesky",
-            "x": "X.com"
+            "bluesky": "Bluesky"
           },
           "deliveryStatuses": {
             "pending": "待處理",
@@ -3089,6 +3087,7 @@
           "deliverySkippedCount": "%{count} 個已略過",
           "attempts": "嘗試 %{count} 次",
           "content": "內容",
+          "manualPostsInfo": "發送到 Bluesky 的文字，可手動發佈到 X 或其他平台。",
           "engagement": {
             "likes": "按讚",
             "reposts": "轉發",
@@ -3097,7 +3096,6 @@
             "noReactions": "尚無表情回應。",
             "fetchedAt": "更新於 %{time}",
             "notFetched": "數據將在一小時內送達。",
-            "xUnavailable": "X 讀取數據需要付費。開啟貼文即可查看。",
             "untracked": "發布時尚未記錄表情回應。"
           }
         },

@@ -50,7 +50,9 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
     assert_not_includes meta("og:image"), "plaque.png"
   end
 
+  # Decoded, as a crawler reads it: a Faker name like "O'Hara" sits in the
+  # attribute as "O&#39;Hara".
   private def meta(property)
-    response.body[/<meta property="#{property}" content="([^"]*)"/, 1].to_s
+    CGI.unescapeHTML(response.body[/<meta property="#{property}" content="([^"]*)"/, 1].to_s)
   end
 end

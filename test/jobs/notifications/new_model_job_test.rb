@@ -8,7 +8,6 @@ module Notifications
       @model = create(:model, notified: false)
       ::Discord::NewShip.stubs(:new).returns(stub(run: true))
       ::Bsky::Post.stubs(:configured?).returns(false)
-      ::XCom::Post.stubs(:configured?).returns(false)
     end
 
     def perform
@@ -16,13 +15,12 @@ module Notifications
     end
 
     def expected_text
-      "New ship added to FleetYards: #{@model.manufacturer.name} #{@model.name}\n#{@model.frontend_url}\n#starcitizen"
+      "#{@model.manufacturer.name} #{@model.name} is now on FleetYards\n#{@model.frontend_url}\n#starcitizen"
     end
 
     test "#perform sends discord notification and marks model as notified" do
       ::Discord::NewShip.expects(:new).with(model: @model).returns(stub(run: true))
       ::Bsky::Post.expects(:new).never
-      ::XCom::Post.expects(:new).never
 
       perform
 
@@ -38,16 +36,45 @@ module Notifications
       assert_equal false, @model.reload.notified
     end
 
-    test "#perform posts the ship, its link and the hashtag to Bluesky" do
+    test "#perform names the manufacturer by its short name" do
+      @model.manufacturer.update!(name: "Musashi Industrial & Starflight Concern", short_name: "MISC")
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |text, link_card:|
+          text.start_with?("MISC #{@model.name} is now on FleetYards") && link_card.title == "MISC #{@model.name}"
+        }
+      })
 
       perform
     end
 
-    test "#perform posts the ship, its link and the hashtag to X" do
-      ::XCom::Post.stubs(:configured?).returns(true)
-      ::XCom::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
+    test "#perform posts the ship, its link and the hashtag to Bluesky" do
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text, has_key(:link_card)) })
+
+      perform
+    end
+
+    test "#perform gives the Bluesky post a link card with the store image" do
+      @model.store_image.attach(io: Rails.root.join("test/fixtures/files/ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |_text, link_card:|
+          link_card.uri == @model.frontend_url &&
+            link_card.title == "#{@model.manufacturer.name} #{@model.name}" &&
+            link_card.content_type == "image/webp" &&
+            Marcel::MimeType.for(StringIO.new(link_card.image)) == "image/webp"
+        }
+      })
+
+      perform
+    end
+
+    test "#perform posts the link card without a picture when the ship has none" do
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |_text, link_card:| link_card.image.nil? }
+      })
 
       perform
     end
@@ -56,7 +83,7 @@ module Notifications
       Manufacturer.any_instance.stubs(:name).returns("X" * 400)
       ::Bsky::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.expects(:new).returns(mock.tap { |client|
-        client.expects(:create).with { |text|
+        client.expects(:create).with { |text, **|
           ::Announcements::Platform::BLUESKY.fits?(text) &&
             text.end_with?("…\n#{@model.frontend_url}\n#starcitizen")
         }
@@ -69,7 +96,7 @@ module Notifications
       link = "https://fleetyards.test/ships/#{"x" * 256}"
       Model.any_instance.stubs(:frontend_url).returns(link)
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with("#{link}\n#starcitizen") })
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with("#{link}\n#starcitizen", has_key(:link_card)) })
 
       perform
     end
@@ -86,9 +113,7 @@ module Notifications
 
     test "#perform still marks the model notified when a platform fails" do
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::XCom::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.stubs(:new).returns(stub.tap { |client| client.stubs(:create).raises(::Bsky::Post::Error) })
-      ::XCom::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
       Appsignal.expects(:report_error).with(instance_of(::Bsky::Post::Error))
 
       perform

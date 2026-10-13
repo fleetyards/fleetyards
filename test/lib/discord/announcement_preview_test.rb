@@ -56,25 +56,21 @@ module Discord
       assert_includes message, "> Message two"
     end
 
-    # X bills a URL at 23 characters, so the same string costs differently on
-    # the two platforms -- which is exactly what an author needs to see.
-    test "counts an X post the way X does" do
-      link = "https://fleetyards.net/a/rather/long/path/to/somewhere"
-      announcement = build(:announcement, post_x: true, social_parts: ["Read on #{link}"])
+    # Bluesky counts graphemes, so an emoji is one however many codepoints
+    # spell it -- which is exactly what an author needs to see.
+    test "counts a Bluesky post the way Bluesky does" do
+      announcement = build(:announcement, post_bluesky: true, social_parts: ["Launch 👨‍👩‍👧"])
 
       message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
-      expected = ::XCom::Post.weighted_length("Read on #{link}")
 
-      assert_includes message, "#{expected}/#{Announcements::Platform::X.limit}"
-      refute_equal expected, "Read on #{link}".length
+      assert_includes message, "8/#{Announcements::Platform::BLUESKY.limit}"
     end
 
     test "leaves out a channel the announcement did not ask for" do
-      announcement = build(:announcement, post_bluesky: true)
+      announcement = build(:announcement, post_discord: true, discord_parts: ["Hello"])
       message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
 
-      assert_includes message, "/#{Announcements::Platform::BLUESKY.limit}"
-      refute_includes message, "/#{Announcements::Platform::X.limit}"
+      refute_includes message, "/#{Announcements::Platform::BLUESKY.limit}"
     end
 
     test "is not configured without an admin webhook" do

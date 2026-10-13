@@ -111,7 +111,8 @@
           "index": "公告",
           "new": "新建公告",
           "edit": "编辑公告",
-          "deliveries": "投递情况"
+          "deliveries": "投递情况",
+          "manualPosts": "可复制的帖子"
         },
         "supporterContributions": {
           "index": "支持者贡献",

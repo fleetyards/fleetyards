@@ -44,10 +44,6 @@ const sent = computed(
 const note = computed(() => {
   if (!sent.value || props.delivery.engagement) return undefined;
 
-  if (props.delivery.channel === AnnouncementChannelEnum.X) {
-    return t("labels.admin.announcements.engagement.xUnavailable");
-  }
-
   if (!props.delivery.engagementTrackable) {
     return props.delivery.channel === AnnouncementChannelEnum.DISCORD
       ? t("labels.admin.announcements.engagement.untracked")

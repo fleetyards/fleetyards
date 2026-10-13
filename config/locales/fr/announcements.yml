@@ -5,7 +5,6 @@ fr:
       in_app: "Dans l'app"
       discord: "Discord"
       bluesky: "Bluesky"
-      x: "X.com"
     discord:
       first: "%{position}/%{total}"
       continued: "↳ %{position}/%{total}"

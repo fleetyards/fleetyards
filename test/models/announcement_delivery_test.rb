@@ -40,7 +40,7 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
   # out of a delivery that stopped short. Re-posting a thread is not.
   test "a pending in-app delivery is retryable and a pending social one is not" do
     in_app = create(:announcement_delivery, announcement: @announcement, channel: "in_app", status: "pending")
-    social = create(:announcement_delivery, announcement: @announcement, channel: "x", status: "pending")
+    social = create(:announcement_delivery, announcement: @announcement, channel: "bluesky", status: "pending")
 
     assert in_app.retryable?
     refute social.retryable?
@@ -98,15 +98,12 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     end
   end
 
-  test "#engagement_due? stops after thirty days and never covers X" do
+  test "#engagement_due? stops after thirty days" do
     refute build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 31.days.ago).engagement_due?
-    refute build(:announcement_delivery, channel: "x", status: "succeeded", delivered_at: 1.hour.ago).engagement_due?
     refute build(:announcement_delivery, channel: "discord", status: "failed", delivered_at: 1.hour.ago).engagement_due?
   end
 
   test "#post_url links each platform's post" do
-    assert_equal "https://x.com/i/status/42",
-      build(:announcement_delivery, channel: "x", status: "succeeded", external_id: "42").post_url
     assert_equal "https://bsky.app/profile/did:plc:abc/post/3k",
       build(:announcement_delivery, channel: "bluesky", status: "succeeded", external_id: "at://did:plc:abc/app.bsky.feed.post/3k").post_url
     assert_equal "https://discord.com/channels/g/c/m",
