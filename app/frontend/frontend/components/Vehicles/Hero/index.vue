@@ -60,7 +60,8 @@ const title = computed(() => props.vehicle.name || props.vehicle.model.name);
 
 // The ship in flight, the way the ship page opens it.
 const holoModel = computed(() => {
-  const path = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT)?.url;
+  const holo = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT);
+  const path = holo?.url;
   const length = modelStateMetrics(
     props.vehicle.model,
     ModelStateEnum.FLIGHT,
@@ -68,7 +69,7 @@ const holoModel = computed(() => {
 
   if (!path || !length) return undefined;
 
-  return { path, length };
+  return { path, length, size: holo?.size };
 });
 
 // Remembered per vehicle, apart from the ship page's switch.

@@ -25,6 +25,7 @@ const holoModels = computed(() => {
       return {
         path: model.media.holo?.url,
         length: model.metrics.fleetchartOffsetLength,
+        size: model.media.holo?.size,
       };
     })
     .filter((model) => model.path);

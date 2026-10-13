@@ -472,7 +472,8 @@
         "modelLoader": {
           "failure": "我们无法加载请求的3D模型！请稍后再试。"
         },
-        "webglNotSupported": "此设备不支持 3D 查看器。"
+        "webglNotSupported": "此设备不支持 3D 查看器。",
+        "tooLarge": "此 3D 模型大小为 %{size} MB，对此设备而言可能过大。"
       },
       "cargoGridViewer": {
         "confirmReset": "Are you sure you want to reset all ships and container settings?"

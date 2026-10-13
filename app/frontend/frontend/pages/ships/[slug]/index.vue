@@ -26,7 +26,6 @@ import FleetchartImages from "@/frontend/components/Models/FleetchartImages/inde
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
-import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
@@ -57,6 +56,22 @@ import {
 import { useClampedText } from "@/shared/composables/useClampedText";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
+import {
+  isLowPowerDevice,
+  useLowPowerDevice,
+} from "@/shared/composables/useLowPowerDevice";
+import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+
+// three.js and the viewer are most of a ship page's script. A desktop draws the
+// inline preview on every visit, so it starts fetching them straight away; a
+// phone only does once the 3D view is opened.
+const loadHoloViewer = () => import("@/shared/components/HoloViewer/index.vue");
+
+const HoloViewer = defineAsyncComponent(loadHoloViewer);
+
+if (!isLowPowerDevice()) {
+  void loadHoloViewer();
+}
 
 type Props = {
   model: ModelExtended;
@@ -254,12 +269,34 @@ onMounted(() => {
 
 useScrollToHash();
 
+// Quick Look converts the holo in the page, so no 3D view may hold a second copy
+// meanwhile -- the inline preview included, which takes over the side column on
+// a tablet as soon as the main view closes.
+const quickLookOpen = ref(false);
+
+const openingQuickLook = () => {
+  quickLookOpen.value = true;
+  modelsStore.holoviewerVisible = false;
+};
+
+const closedQuickLook = () => {
+  quickLookOpen.value = false;
+};
+
+watch(
+  () => props.model.slug,
+  () => {
+    quickLookOpen.value = false;
+  },
+);
+
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
 
 const holoModel = computed(() => {
-  const path = modelStateHolo(props.model, activeState.value)?.url;
+  const holo = modelStateHolo(props.model, activeState.value);
+  const path = holo?.url;
   const length = modelStateMetrics(
     props.model,
     activeState.value,
@@ -272,8 +309,22 @@ const holoModel = computed(() => {
   return {
     path,
     length,
+    size: holo?.size,
   };
 });
+
+const lowPower = useLowPowerDevice();
+
+// The side preview cannot ask before loading a holo too large for the device,
+// so on such a device it stays the store image; the main 3D view still asks.
+const inlinePreview = computed(
+  () =>
+    !!holoModel.value &&
+    !mobile.value &&
+    !(
+      lowPower.value && (holoModel.value.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT
+    ),
+);
 
 const adiMap = computed(() => {
   if (!props.model.adiMap || !props.model.scIdentifier) {
@@ -340,6 +391,8 @@ const adiMap = computed(() => {
                   :model="model"
                   :active="holoviewerVisible"
                   :displayed-holo-url="holoModel?.path"
+                  @quick-look="openingQuickLook"
+                  @quick-look-end="closedQuickLook"
                 />
               </BtnGroup>
 
@@ -438,9 +491,9 @@ const adiMap = computed(() => {
           </blockquote>
         </div>
         <div class="col-12 col-lg-4">
-          <template v-if="holoModel && !mobile">
+          <template v-if="inlinePreview && holoModel">
             <LazyImage
-              v-if="holoviewerVisible"
+              v-if="holoviewerVisible || quickLookOpen"
               :src="storeImage"
               class="side-image"
             />

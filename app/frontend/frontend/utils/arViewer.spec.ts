@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mayHaveAr } from "./arViewer";
+import { mayHaveAr, usesQuickLook } from "./arViewer";
 
 const anchor = (supportsAr: boolean) =>
   ({
@@ -21,5 +21,15 @@ describe("mayHaveAr", () => {
     expect(
       mayHaveAr("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)", anchor(false)),
     ).toBe(false);
+  });
+});
+
+describe("usesQuickLook", () => {
+  it("answers for a browser that announces Quick Look", () => {
+    expect(usesQuickLook(anchor(true))).toBe(true);
+  });
+
+  it("does not answer for one that does not", () => {
+    expect(usesQuickLook(anchor(false))).toBe(false);
   });
 });

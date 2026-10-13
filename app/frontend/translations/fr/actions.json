@@ -360,6 +360,7 @@
         "generateBackupCodes": "Générer des codes de sauvegarde"
       },
       "holoViewer": {
+        "loadAnyway": "Charger quand même",
         "autoRotate": {
           "enable": "Activer la rotation automatique",
           "disable": "Désactiver la rotation automatique"
