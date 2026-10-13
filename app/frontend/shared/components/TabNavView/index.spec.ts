@@ -32,7 +32,10 @@ const setViewport = (phone: boolean) => {
   })) as unknown as typeof window.matchMedia;
 };
 
-const mountHorizontal = async () => {
+const mountNav = async (
+  props: Record<string, unknown>,
+  slots: Record<string, string> = {},
+) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [
@@ -43,8 +46,8 @@ const mountHorizontal = async () => {
   await router.isReady();
 
   return mount(TabNavView, {
-    props: { routes: tabRoutes, horizontal: true },
-    slots: { content: "<div />" },
+    props: { routes: tabRoutes, ...props },
+    slots: { content: "<div />", ...slots },
     global: { plugins: [router, createPinia()] },
   });
 };
@@ -58,7 +61,7 @@ describe("TabNavView", () => {
     it("keeps the strip on a desktop", async () => {
       setViewport(false);
 
-      const wrapper = await mountHorizontal();
+      const wrapper = await mountNav({ horizontal: true });
 
       expect(wrapper.find(".tabs--horizontal").exists()).toBe(true);
       expect(wrapper.find(".tab-nav-dropdown").exists()).toBe(false);
@@ -67,10 +70,36 @@ describe("TabNavView", () => {
     it("folds the strip into the dropdown on a phone", async () => {
       setViewport(true);
 
-      const wrapper = await mountHorizontal();
+      const wrapper = await mountNav({ horizontal: true });
 
       expect(wrapper.find(".tabs--horizontal").exists()).toBe(false);
       expect(wrapper.find(".tab-nav-dropdown").exists()).toBe(true);
+    });
+  });
+
+  // A row a page adds after its tabs -- leaving the fleet -- has to survive the
+  // fold into the dropdown, or a phone loses the action.
+  describe("rows after the tabs", () => {
+    const leaveRow = '<li data-test="leave"><a>Leave</a></li>';
+
+    it("stays in the column on a desktop", async () => {
+      setViewport(false);
+
+      const wrapper = await mountNav({}, { "nav-after": leaveRow });
+
+      expect(wrapper.find('.tabs [data-test="leave"]').exists()).toBe(true);
+    });
+
+    it("moves into the dropdown on a phone", async () => {
+      setViewport(true);
+
+      const wrapper = await mountNav({}, { "nav-after": leaveRow });
+
+      await wrapper.find(".tab-nav-dropdown__trigger").trigger("click");
+
+      expect(
+        wrapper.find('.tab-nav-dropdown__panel [data-test="leave"]').exists(),
+      ).toBe(true);
     });
   });
 });

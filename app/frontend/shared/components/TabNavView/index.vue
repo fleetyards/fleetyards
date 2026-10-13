@@ -104,7 +104,11 @@ watch(
       :super-admin="props.superAdmin"
       :badges="props.badges"
       @update:active-id="emit('update:activeKey', $event)"
-    />
+    >
+      <template v-if="$slots['nav-after']" #after>
+        <slot name="nav-after" />
+      </template>
+    </TabNavViewMobileDropdown>
     <ul
       v-else
       ref="tabsEl"
@@ -129,6 +133,7 @@ watch(
           :badges="props.badges"
         />
       </slot>
+      <slot name="nav-after" />
     </ul>
     <slot name="content">
       <router-view />
@@ -152,7 +157,11 @@ watch(
         :super-admin="props.superAdmin"
         :badges="props.badges"
         @update:active-id="emit('update:activeKey', $event)"
-      />
+      >
+        <template v-if="$slots['nav-after']" #after>
+          <slot name="nav-after" />
+        </template>
+      </TabNavViewMobileDropdown>
       <ul
         v-else
         class="tabs"
@@ -176,6 +185,7 @@ watch(
             :badges="props.badges"
           />
         </slot>
+        <slot name="nav-after" />
       </ul>
     </div>
   </div>

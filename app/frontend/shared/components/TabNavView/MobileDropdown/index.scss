@@ -129,6 +129,32 @@
   }
 }
 
+// Rows a page adds after the tabs -- an action such as leaving the fleet --
+// written for the desktop strip as `li > a`. Set apart like a link-out.
+.tab-nav-dropdown__panel > :deep(li:not(.tab-nav-dropdown__item)) {
+  > a {
+    display: block;
+    padding: 10px 16px 10px 24px;
+    color: $text-color;
+    cursor: pointer;
+
+    i {
+      margin-right: 6px;
+    }
+  }
+
+  &.disabled > a {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.tab-nav-dropdown__panel
+  > .tab-nav-dropdown__item
+  + :deep(li:not(.tab-nav-dropdown__item)) {
+  border-top: 1px solid $gray-darker;
+}
+
 .tab-nav-dropdown__item:focus-visible {
   outline: 2px solid var(--color-primary, #428bca);
   outline-offset: -2px;

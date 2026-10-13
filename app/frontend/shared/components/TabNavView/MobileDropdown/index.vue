@@ -247,6 +247,7 @@ onUnmounted(() => {
             aria-hidden="true"
           />
         </li>
+        <slot name="after" />
       </ul>
     </Transition>
   </div>
