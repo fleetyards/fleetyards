@@ -19,6 +19,7 @@ const announcement = (attrs: Partial<Announcement> = {}) =>
     body: "Something new just landed.",
     discordParts: [],
     socialParts: [],
+    socialPosts: [],
     icon: "fa-duotone fa-bullhorn",
     status: AnnouncementStatusEnum.DRAFT,
     notifyUsers: true,
