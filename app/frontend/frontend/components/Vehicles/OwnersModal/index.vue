@@ -81,6 +81,7 @@ const owners = computed<Owner[]>(() => {
           key: vehicle.username,
           member: {
             username: vehicle.username,
+            displayName: vehicle.userDisplayName,
             rsiHandle: vehicle.userRsiHandle,
             discordProfileUrl: vehicle.userDiscordProfileUrl,
             citizenidProfileUrl: vehicle.userCitizenidProfileUrl,
@@ -102,14 +103,13 @@ const owners = computed<Owner[]>(() => {
     }
   });
 
+  const shownName = (owner: Owner) =>
+    (owner.member?.displayName || owner.member?.username) as string;
+
   const sorted = [...named.values()].sort((a, b) =>
-    (a.member?.username as string).localeCompare(
-      b.member?.username as string,
-      undefined,
-      {
-        sensitivity: "base",
-      },
-    ),
+    shownName(a).localeCompare(shownName(b), undefined, {
+      sensitivity: "base",
+    }),
   );
 
   return anonymous.count > 0 ? [...sorted, anonymous] : sorted;
