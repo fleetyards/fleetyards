@@ -40,7 +40,31 @@ module Notifications
 
     test "#perform posts the ship, its link and the hashtag to Bluesky" do
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text, has_key(:link_card)) })
+
+      perform
+    end
+
+    test "#perform gives the Bluesky post a link card with the store image" do
+      @model.store_image.attach(io: Rails.root.join("test/fixtures/files/ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |_text, link_card:|
+          link_card.uri == @model.frontend_url &&
+            link_card.title == "#{@model.manufacturer.name} #{@model.name}" &&
+            link_card.content_type == "image/jpeg" &&
+            Marcel::MimeType.for(StringIO.new(link_card.image)) == "image/jpeg"
+        }
+      })
+
+      perform
+    end
+
+    test "#perform posts the link card without a picture when the ship has none" do
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client|
+        client.expects(:create).with { |_text, link_card:| link_card.image.nil? }
+      })
 
       perform
     end
@@ -56,7 +80,7 @@ module Notifications
       Manufacturer.any_instance.stubs(:name).returns("X" * 400)
       ::Bsky::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.expects(:new).returns(mock.tap { |client|
-        client.expects(:create).with { |text|
+        client.expects(:create).with { |text, **|
           ::Announcements::Platform::BLUESKY.fits?(text) &&
             text.end_with?("…\n#{@model.frontend_url}\n#starcitizen")
         }
@@ -69,7 +93,7 @@ module Notifications
       link = "https://fleetyards.test/ships/#{"x" * 256}"
       Model.any_instance.stubs(:frontend_url).returns(link)
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with("#{link}\n#starcitizen") })
+      ::Bsky::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with("#{link}\n#starcitizen", has_key(:link_card)) })
 
       perform
     end
