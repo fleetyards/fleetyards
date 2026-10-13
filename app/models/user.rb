@@ -16,9 +16,6 @@ class User < ApplicationRecord
   # stopped selecting them.
   self.ignored_columns += %w[purchased_vehicles_count wanted_vehicles_count]
 
-  # Ignored ahead of the migration that drops it, for the same reason as above.
-  self.ignored_columns += %w[sale_notify]
-
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # The signup opt-in. It only seeds the `model_on_sale` preference; the
