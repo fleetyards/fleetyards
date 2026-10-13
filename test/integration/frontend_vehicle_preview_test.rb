@@ -72,7 +72,9 @@ class FrontendVehiclePreviewTest < ActionDispatch::IntegrationTest
     assert_not_includes meta("og:title"), "Contorta"
   end
 
+  # Decoded, as a crawler reads it: a Faker name like "O'Hara" sits in the
+  # attribute as "O&#39;Hara".
   private def meta(property)
-    response.body[/<meta property="#{property}" content="([^"]*)"/, 1].to_s
+    CGI.unescapeHTML(response.body[/<meta property="#{property}" content="([^"]*)"/, 1].to_s)
   end
 end
