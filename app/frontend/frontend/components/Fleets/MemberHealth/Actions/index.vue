@@ -228,8 +228,9 @@ type Entry = ButtonEntry | { kind: "squadrons" } | { kind: "contact" };
 // an icon, the phone menu as a labelled row.
 const entries = computed<Entry[]>(() => {
   const list: Entry[] = [];
-  const button = (entry: Omit<ButtonEntry, "kind" | "disabled">) =>
-    list.push({ kind: "button", disabled: busy.value, ...entry });
+  const button = (
+    entry: Omit<ButtonEntry, "kind" | "disabled"> & { disabled?: boolean },
+  ) => list.push({ kind: "button", disabled: busy.value, ...entry });
 
   if (shown("answer")) {
     button({
@@ -256,8 +257,7 @@ const entries = computed<Entry[]>(() => {
   }
   if (shown("addToSquadron")) list.push({ kind: "squadrons" });
   if (shown("remind")) {
-    list.push({
-      kind: "button",
+    button({
       key: "remind",
       icon: "fa-bell",
       label: remindLabel.value,
@@ -364,7 +364,7 @@ const entryKey = (entry: Entry) =>
   </BtnDropdown>
   <!-- Icons with their names as tooltips: a row keeps its actions on its own
        line in a half-width column, where labelled buttons wrapped under it. -->
-  <BtnGroup v-else-if="!mobile">
+  <BtnGroup v-else-if="!mobile && entries.length">
     <template v-for="entry in entries" :key="entryKey(entry)">
       <Btn
         v-if="entry.kind === 'button'"
