@@ -452,7 +452,8 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
 
   test "PUT /vehicles/:id lets a lapsed supporter clear their plaque" do
     Flipper.enable("vehicle_overview")
-    vehicle = create(:vehicle, user: @user, dedication: "To boldly go", plaque_style: "neon")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "neon")
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: nil, plaqueStyle: nil} do
