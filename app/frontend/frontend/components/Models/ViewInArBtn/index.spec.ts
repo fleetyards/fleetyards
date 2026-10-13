@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { Model } from "@/services/fyApi";
 
@@ -168,6 +168,17 @@ describe("ViewInArBtn", () => {
   describe("with Quick Look", () => {
     beforeEach(() => {
       ar.quickLook = true;
+      vi.stubGlobal(
+        "requestAnimationFrame",
+        (callback: FrameRequestCallback) => {
+          callback(0);
+          return 0;
+        },
+      );
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
     });
 
     it("loads no AR viewer beside the open 3D view", async () => {
@@ -218,6 +229,49 @@ describe("ViewInArBtn", () => {
 
       expect(wrapper.emitted("quickLook")).toBeUndefined();
       expect(ar.activateAR).not.toHaveBeenCalled();
+    });
+
+    it("says when Quick Look is done, so 3D may come back", async () => {
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(wrapper.emitted("quickLookEnd")).toHaveLength(1);
+    });
+
+    it("prepares once for a second tap while the first is running", async () => {
+      const { prepareAr } = await import("@/frontend/utils/arViewer");
+      vi.mocked(prepareAr).mockClear();
+
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(prepareAr).toHaveBeenCalledOnce();
+    });
+
+    it("drops a preparation the pose changed under", async () => {
+      const { prepareAr } = await import("@/frontend/utils/arViewer");
+      const late = { resolve: (_: unknown) => {} };
+      const element = Object.assign(document.createElement("div"), {
+        activateAR: vi.fn(),
+        canActivateAR: true,
+      });
+      vi.mocked(prepareAr).mockImplementationOnce(
+        () => new Promise((resolve) => (late.resolve = resolve)) as never,
+      );
+
+      const wrapper = await mount({ model: model() });
+      await button(wrapper).trigger("click");
+      await wrapper.setProps({
+        displayedHoloUrl: "https://fleetyards.test/files/landed.glb",
+      });
+      late.resolve(element);
+      await flushPromises();
+
+      expect(element.activateAR).not.toHaveBeenCalled();
+      expect(wrapper.emitted("quickLook")).toBeUndefined();
     });
   });
 });

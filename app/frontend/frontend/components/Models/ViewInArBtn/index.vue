@@ -37,6 +37,8 @@ const emit = defineEmits<{
   // Quick Look is about to convert the holo in the page. The 3D view holds a
   // second copy of it on the GPU, and an iPhone runs out of memory with both.
   quickLook: [];
+  // Quick Look has opened or failed: the page may draw 3D again.
+  quickLookEnd: [];
 }>();
 
 const { t } = useI18n();
@@ -112,23 +114,37 @@ const failed = () => {
   displayAlert({ text: t("messages.error.default") });
 };
 
+const opening = ref(false);
+
+const nextFrame = () =>
+  new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
+
 // The 3D view is freed only once Quick Look is ready to take over: a failed
 // preparation leaves it as it was. The holo itself is not loaded until
-// `activateAR`, so the two never hold it at the same time.
+// `activateAR`, which waits for the 3D view to be gone first.
 const openQuickLook = async (url: string) => {
+  opening.value = true;
+  const current = preparation;
+
   const element = await prepareAr(url).catch(() => undefined);
 
-  if (unmounted) {
+  // Left, or the pose or 3D view changed while it was being prepared: the tap
+  // was for something no longer on screen.
+  if (unmounted || current !== preparation) {
     element?.remove();
+    opening.value = false;
     return;
   }
 
   if (!element) {
+    opening.value = false;
     failed();
     return;
   }
 
   emit("quickLook");
+  await nextTick();
+  await nextFrame();
 
   try {
     await element.activateAR();
@@ -136,12 +152,16 @@ const openQuickLook = async (url: string) => {
     failed();
   } finally {
     element.remove();
+    opening.value = false;
+    emit("quickLookEnd");
   }
 };
 
 // Scene Viewer straight from the tap, without awaiting anything first: it only
 // opens from a user gesture.
 const open = () => {
+  if (opening.value) return;
+
   if (deferred.value && holoUrl.value) {
     void openQuickLook(holoUrl.value);
     return;
@@ -156,6 +176,8 @@ const open = () => {
     v-if="viewer || deferred"
     v-tooltip="t('labels.viewInArHint')"
     :aria-label="t('labels.viewInArHint')"
+    :loading="opening"
+    :disabled="opening"
     data-test="view-in-ar"
     @click="open"
   >
