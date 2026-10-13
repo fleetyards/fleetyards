@@ -16,6 +16,8 @@ interface FloatingOptions {
   // jumping sides between two hovers of the same anchor reads as jitter.
   flip?: boolean;
   avoidOverlap?: boolean;
+  // The sides avoidOverlap may move the box to.
+  sides?: FloatingPlacement[];
 }
 
 interface Size {
@@ -62,10 +64,11 @@ export const placeFloating = (
     margin = 4,
     flip = false,
     avoidOverlap = false,
+    sides = ["bottom", "top", "right", "left"],
   }: FloatingOptions = {},
 ): FloatingPosition => {
   if (avoidOverlap) {
-    const candidates = [requested, "bottom", "top", "right", "left"].map(
+    const candidates = [requested, ...sides].map(
       (side) => placeFloating(anchor, box, side, { gap, margin }),
     );
     const overlap = ({ top, left }: FloatingPosition) =>

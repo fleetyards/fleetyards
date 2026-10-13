@@ -201,6 +201,7 @@ const place = () => {
     margin: MARGIN,
     flip: true,
     avoidOverlap: true,
+    sides: narrow ? ["bottom", "top"] : undefined,
   });
 
   cardPosition.value = { top, left };

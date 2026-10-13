@@ -43,6 +43,24 @@ describe("placeFloating", () => {
     expect(position.left + 360).toBeLessThanOrEqual(390 - 12);
   });
 
+  it("keeps an overlap-avoiding box to the allowed sides", () => {
+    Object.assign(window, { innerWidth: 400, innerHeight: 600 });
+    const anchor = rect(100, 150, 100, 400);
+    const position = placeFloating(
+      anchor,
+      { width: 140, height: 240 },
+      "bottom",
+      {
+        gap: 12,
+        margin: 12,
+        avoidOverlap: true,
+        sides: ["bottom", "top"],
+      },
+    );
+
+    expect(["bottom", "top"]).toContain(position.placement);
+  });
+
   it("centres a box below its anchor", () => {
     expect(
       placeFloating(rect(100, 400), { width: 200, height: 50 }, "bottom"),
