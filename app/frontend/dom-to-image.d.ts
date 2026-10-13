@@ -10,8 +10,7 @@ declare module "dom-to-image" {
   };
 
   const domtoimage: {
-    toPng(node: Node, options?: Options): Promise<string>;
-    toBlob(node: Node, options?: Options): Promise<Blob>;
+    toSvg(node: Node, options?: Options): Promise<string>;
   };
 
   export default domtoimage;

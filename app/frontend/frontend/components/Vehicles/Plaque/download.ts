@@ -1,5 +1,7 @@
 import domtoimage from "dom-to-image";
 import downloadJs from "downloadjs";
+import { toDataUrl } from "./dataUrl";
+import { plaqueFontFaces, withFontFaces } from "./fonts";
 
 // Drawn at three times its size on screen, so a download stays sharp.
 const SCALE = 3;
@@ -9,17 +11,6 @@ const PREVIEW_WIDTH = 1200;
 const PREVIEW_HEIGHT = 630;
 const PREVIEW_PADDING = 36;
 const PREVIEW_BACKGROUND = "#0d0f12";
-
-const toDataUrl = async (url: string) => {
-  const blob = await (await fetch(url)).blob();
-
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-};
 
 const urlOf = (value: string) => value.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
 
@@ -57,13 +48,16 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
       ).map((node) => inline(node, "--icon")),
     );
 
+    const width = element.offsetWidth * scale;
+    const height = element.offsetHeight * scale;
+
     // `width` and `height` size the picture, but dom-to-image also gives them
     // to the copy it lays out; pinned back to its own size here, which it
     // applies last, the copy is laid out as on screen and only then scaled.
-    return await domtoimage.toPng(element, {
+    const svg = await domtoimage.toSvg(element, {
       cacheBust: true,
-      width: element.offsetWidth * scale,
-      height: element.offsetHeight * scale,
+      width,
+      height,
       style: {
         width: `${element.offsetWidth}px`,
         height: `${element.offsetHeight}px`,
@@ -71,6 +65,15 @@ export const capturePlaque = async (element: HTMLElement, scale = SCALE) => {
         transformOrigin: "top left",
       },
     });
+
+    const image = await loadImage(withFontFaces(svg, await plaqueFontFaces()));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext("2d")?.drawImage(image, 0, 0);
+
+    return canvas.toDataURL("image/png");
   } finally {
     restore.forEach((undo) => undo());
   }
