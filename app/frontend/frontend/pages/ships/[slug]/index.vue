@@ -348,9 +348,29 @@ const adiMap = computed(() => {
                    here it offers every state the model has, so both switches
                    read the same -- one of them showing no selection at all
                    because the chosen state has no holo of its own is worse than
-                   a segment that only moves the dimensions. -->
+                   a segment that only moves the dimensions.
+                   A phone has no inline preview, so there the switch waits for
+                   the holo to open and folds into a menu beside the 3D group. -->
+              <BtnDropdown
+                v-if="holoStates.length > 1 && mobile && holoviewerVisible"
+                data-test="model-holo-states-menu"
+              >
+                <template #label>
+                  <span>{{ t(`labels.model.state.${activeState}`) }}</span>
+                  <i class="fa-light fa-chevron-down" />
+                </template>
+                <Btn
+                  v-for="holoState in availableStates"
+                  :key="holoState"
+                  :active="activeState === holoState"
+                  :data-test="`model-holo-state-${holoState}`"
+                  @click="setModelState(holoState)"
+                >
+                  {{ t(`labels.model.state.${holoState}`) }}
+                </Btn>
+              </BtnDropdown>
               <BtnGroup
-                v-if="holoStates.length > 1"
+                v-else-if="holoStates.length > 1 && !mobile"
                 segmented
                 data-test="model-holo-states"
               >
