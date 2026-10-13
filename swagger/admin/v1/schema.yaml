@@ -10864,6 +10864,12 @@ components:
           type: array
           items:
             type: string
+        socialPosts:
+          type: array
+          items:
+            type: string
+          description: 'The posts Bluesky gets, in order: the authored parts, or the
+            one post composed from title, body and link.'
         link:
           type: string
         icon:
@@ -10915,6 +10921,7 @@ components:
       - deliveries
       - discordParts
       - socialParts
+      - socialPosts
       - createdAt
       - updatedAt
       title: Announcement

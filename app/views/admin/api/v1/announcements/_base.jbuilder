@@ -5,6 +5,7 @@ json.title announcement.title
 json.body announcement.body
 json.discord_parts announcement.discord_parts
 json.social_parts announcement.social_parts
+json.social_posts Announcements::SocialPosts.call(announcement, platform: Announcements::Platform::BLUESKY)
 json.link announcement.link if announcement.link.present?
 json.icon announcement.icon
 json.status announcement.status

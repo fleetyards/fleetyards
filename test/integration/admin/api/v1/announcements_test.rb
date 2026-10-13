@@ -352,6 +352,20 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # What an admin copies to post by hand on X: the same text Bluesky gets.
+  test "GET /announcements/:id returns the posts Bluesky gets" do
+    composed = create(:announcement, :with_link, title: "Trade routes", body: "Now ranked.\n\nMore below.")
+    authored = create(:announcement, social_parts: ["One", "Two"])
+    sign_in @admin_user
+
+    assert_api_response :get, 200, path_params: {id: composed.id} do
+      assert_equal ["Trade routes\n\nNow ranked.\n\n#{composed.absolute_link}"], parsed_body["socialPosts"]
+    end
+    assert_api_response :get, 200, path_params: {id: authored.id} do
+      assert_equal ["One", "Two"], parsed_body["socialPosts"]
+    end
+  end
+
   test "GET /announcements/:id returns 404 for a missing id" do
     sign_in @admin_user
 

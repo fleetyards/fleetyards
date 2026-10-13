@@ -14,6 +14,10 @@ module Admin
             body: {type: :string},
             discordParts: {type: :array, items: {type: :string}},
             socialParts: {type: :array, items: {type: :string}},
+            socialPosts: {
+              type: :array, items: {type: :string},
+              description: "The posts Bluesky gets, in order: the authored parts, or the one post composed from title, body and link."
+            },
             link: {type: :string},
             icon: {type: :string},
             status: ::Admin::V1::Schemas::Enums::AnnouncementStatusEnum,
@@ -33,7 +37,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             id title body icon status notifyUsers postDiscord postBluesky
-            publishable deliveries discordParts socialParts createdAt updatedAt
+            publishable deliveries discordParts socialParts socialPosts createdAt updatedAt
           ]
         })
       end
