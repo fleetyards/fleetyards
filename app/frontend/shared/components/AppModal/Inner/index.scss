@@ -1,11 +1,21 @@
+// Whatever contains this bounds its height; the chain down to the body has to
+// be allowed to shrink for the body to scroll instead of overflowing.
 .modal-inner {
   display: flex;
   flex-direction: column;
-  max-height: 100vh;
+  min-height: 0;
+}
+
+.modal-inner > .panel,
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .modal-header {
   position: relative;
+  flex-shrink: 0;
   padding: 0;
   padding-bottom: 1rem;
   border-bottom: none;
@@ -65,7 +75,6 @@
 
 .modal-body {
   padding: 0;
-  max-height: calc(100vh - 14rem);
   overflow: hidden auto;
 }
 
@@ -86,25 +95,5 @@
     border-width: 1px 0 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-  }
-
-  .modal-inner {
-    max-height: none;
-    min-height: 0;
-  }
-
-  .modal-inner > .panel,
-  .modal-content {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .modal-header {
-    flex-shrink: 0;
-  }
-
-  .modal-body {
-    max-height: none;
   }
 }
