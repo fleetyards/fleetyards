@@ -60,7 +60,7 @@ module Frontend
     private def preview_plaque
       return unless Flipper.enabled?(:vehicle_overview, @user)
 
-      vehicle = @user.vehicles.public.purchased.find_by(id: params[:plaque])
+      vehicle = @user.vehicles.public.purchased.includes(:model).at_address(params[:plaque]).first
       return if vehicle&.dedication.blank?
 
       @title = I18n.t("title.frontend.public_plaque", vehicle: public_vehicle_name(vehicle))
@@ -69,17 +69,8 @@ module Frontend
       @twitter_card = "summary_large_image" if @og_image.present?
     end
 
-    # The address leads with the ship's serial or its id; the name after it is
-    # only there to read, and is never looked up.
     private def segment_vehicle
-      scope = @user.vehicles.public.purchased.includes(:model)
-      segment = params[:segment].to_s
-
-      if (id = segment[/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i])
-        scope.find_by(id: id.downcase)
-      elsif (serial = segment[/\A[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}/i])
-        scope.find_by(serial: serial.upcase)
-      end
+      @user.vehicles.public.purchased.includes(:model).at_address(params[:segment]).first
     end
 
     private def vehicle_description(vehicle)

@@ -23,6 +23,14 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
     assert_includes response.body, '<meta name="twitter:card" content="summary_large_image">'
   end
 
+  test "a plaque link by the ship's address previews as the plaque" do
+    @vehicle.update!(serial: "L8-4261-HA")
+
+    get "/hangar/#{@user.username}/?plaque=l8-4261-ha-contorta"
+
+    assert_includes meta("og:title"), "Contorta (L8-4261-HA)"
+  end
+
   test "a hidden ship's plaque previews as the hangar" do
     @vehicle.update!(public: false)
 

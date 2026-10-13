@@ -9,7 +9,7 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
 
   api_path "/public/hangars/{username}/vehicles/{id}" do
     parameter name: "username", in: :path, schema: {type: :string}, description: "Username", required: true
-    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Vehicle id", required: true
+    parameter name: "id", in: :path, schema: {type: :string}, description: "Vehicle address: its id, or its serial, followed by its name", required: true
 
     get("Public Hangar Vehicle") do
       operationId "publicHangarVehicle"
@@ -42,6 +42,14 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {username: @user.username, id: @vehicle.id} do
       assert_equal @vehicle.id, parsed_body["id"]
       assert_equal "To boldly go", parsed_body["dedication"]
+    end
+  end
+
+  test "GET /public/hangars/:username/vehicles/:id finds a ship by the serial its address leads with" do
+    @vehicle.update!(serial: "L8-4261-HA", name: "Contorta", name_visible: true)
+
+    assert_api_response :get, 200, path_params: {username: @user.username, id: "l8-4261-ha-contorta"} do
+      assert_equal @vehicle.id, parsed_body["id"]
     end
   end
 

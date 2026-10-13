@@ -316,6 +316,24 @@ class Vehicle < ApplicationRecord
     serial if SERIAL_FORMAT.match?(serial)
   end
 
+  ADDRESS_ID = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
+  ADDRESS_SERIAL = /\A[0-9a-z]{2}-[0-9a-z]{4}-[0-9a-z]{2}/i
+
+  # A ship's address in its owner's hangar -- `l8-4261-ha-contorta`,
+  # `<id>-contorta`, `<id>` -- leads with its serial or its id; the name after it
+  # is there to read and is never looked up.
+  def self.at_address(address)
+    address = address.to_s
+
+    if (id = address[ADDRESS_ID])
+      where(id: id.downcase)
+    elsif (serial = address[ADDRESS_SERIAL])
+      where(serial: serial.upcase)
+    else
+      none
+    end
+  end
+
   def self.delete_with_dependents(vehicle_ids)
     return 0 if vehicle_ids.blank?
 

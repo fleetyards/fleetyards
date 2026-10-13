@@ -16954,8 +16954,7 @@ paths:
       in: path
       schema:
         type: string
-        format: uuid
-      description: Vehicle id
+      description: 'Vehicle address: its id, or its serial, followed by its name'
       required: true
     get:
       summary: Public Hangar Vehicle
