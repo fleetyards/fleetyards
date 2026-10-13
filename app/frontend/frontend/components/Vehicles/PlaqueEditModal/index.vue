@@ -65,7 +65,8 @@ const defaultStyle = computed<VehiclePlaqueStyleEnum>(() =>
 );
 
 const validationSchema = {
-  dedication: `max:${DEDICATION_LIMIT}`,
+  // Without one there is no plaque, and the other lines would save to nothing.
+  dedication: `required|max:${DEDICATION_LIMIT}`,
   launchPort: `max:${LINE_LIMIT}`,
   affiliation: `max:${LINE_LIMIT}`,
 };
@@ -178,10 +179,18 @@ const { uploadFile } = useDirectUpload();
 const capture = ref<HTMLElement>();
 const capturing = ref(false);
 
+// Drawn as the public sees it, since anyone the link reaches gets the picture:
+// a name and serial the owner keeps to themselves stay off it.
 const captureVehicle = computed<Vehicle>(() => ({
   ...preview.value,
   id: `${props.vehicle.id}-capture`,
+  name: props.vehicle.nameVisible ? preview.value.name : undefined,
+  serial: props.vehicle.nameVisible ? preview.value.serial : undefined,
 }));
+
+const captureCaptain = computed(() =>
+  currentUser?.value?.hideOwner ? undefined : currentUser?.value?.username,
+);
 
 // The plaque as a picture, for the preview of a shared link. Rendered here
 // because only the browser can draw it; a failure leaves the plaque saved and
@@ -386,10 +395,7 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <div ref="capture" class="plaque-edit__capture" aria-hidden="true">
-      <VehiclePlaque
-        :vehicle="captureVehicle"
-        :captain="currentUser?.username"
-      />
+      <VehiclePlaque :vehicle="captureVehicle" :captain="captureCaptain" />
     </div>
 
     <template #footer>
