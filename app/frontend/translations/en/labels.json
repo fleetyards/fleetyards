@@ -4178,6 +4178,8 @@
           "neon": "Pyro neon",
           "manufacturer": "Manufacturer style"
         },
+        "captain": "Captain",
+        "captainInfo": "Leave empty to name yourself as you show on your public hangar.",
         "registry": "Registry",
         "operationsGroup": "Operations crew",
         "title": "Dedication plaque",

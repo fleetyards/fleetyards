@@ -4164,6 +4164,8 @@
           "neon": "派罗霓虹",
           "manufacturer": "制造商样式"
         },
+        "captain": "舰长",
+        "captainInfo": "留空则使用你在公开机库中显示的名称。",
         "registry": "注册编号",
         "operationsGroup": "行动组",
         "title": "命名铭牌",

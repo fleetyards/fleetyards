@@ -153,4 +153,69 @@ describe("VehiclePlaqueEditModal", () => {
       ).value,
     ).toBe("Built rough");
   });
+
+  describe("captain", () => {
+    const mountAs = (currentUser: Record<string, unknown>) =>
+      mountWithDefaults<typeof Component>(Component, {
+        props: { vehicle: vehicle({ dedication: "To boldly go" }) },
+        initialState: { session: { currentUser } },
+        plugins: [router],
+      });
+
+    const previewCaptain = (wrapper: Awaited<ReturnType<typeof mountAs>>) =>
+      wrapper
+        .find(
+          '[data-test="vehicle-plaque-preview"] [data-test="vehicle-plaque-captain"]',
+        )
+        .text();
+
+    it("names the owner by their display name", async () => {
+      const wrapper = await mountAs({
+        username: "torlek",
+        displayName: "Torlek Maru",
+      });
+
+      expect(previewCaptain(wrapper)).toBe("Captain Torlek Maru");
+    });
+
+    it("names whoever is typed in the owner's place, and saves it", async () => {
+      mutateAsync.mockClear();
+      const wrapper = await mountAs({
+        username: "torlek",
+        displayName: "Torlek Maru",
+      });
+
+      await wrapper
+        .find('[data-test="vehicle-plaque-captain-input"] input')
+        .setValue("Maru");
+      await flushPromises();
+
+      expect(previewCaptain(wrapper)).toBe("Captain Maru");
+
+      await wrapper.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(mutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ plaqueCaptain: "Maru" }),
+        }),
+      );
+    });
+
+    it("leaves a hidden owner off the plaque", async () => {
+      const wrapper = await mountAs({
+        username: "torlek",
+        displayName: "Torlek Maru",
+        hideOwner: true,
+      });
+
+      expect(
+        wrapper
+          .find(
+            '[data-test="vehicle-plaque-preview"] [data-test="vehicle-plaque-captain"]',
+          )
+          .exists(),
+      ).toBe(false);
+    });
+  });
 });

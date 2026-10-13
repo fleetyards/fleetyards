@@ -4164,6 +4164,8 @@
           "neon": "派羅霓虹",
           "manufacturer": "製造商樣式"
         },
+        "captain": "艦長",
+        "captainInfo": "留空則使用你在公開機庫中顯示的名稱。",
         "registry": "註冊編號",
         "operationsGroup": "行動組",
         "title": "命名銘牌",

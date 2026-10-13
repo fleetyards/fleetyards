@@ -11,6 +11,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type VehiclePublic } from "@/services/fyApi";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { plaqueShareUrl } from "@/frontend/components/Vehicles/Plaque/shareUrl";
+import { publicOwnerCaptain } from "@/frontend/components/Vehicles/Plaque/captain";
 import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
@@ -79,7 +80,10 @@ const { t } = useI18n();
 <template>
   <Modal :title="t('headlines.vehiclePlaque.title')">
     <div ref="container">
-      <VehiclePlaque :vehicle="vehicle" :captain="vehicle.username" />
+      <VehiclePlaque
+        :vehicle="vehicle"
+        :captain="publicOwnerCaptain(vehicle)"
+      />
     </div>
 
     <template v-if="shareUrl" #footer>

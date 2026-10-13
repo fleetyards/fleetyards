@@ -92,6 +92,23 @@ describe("VehiclePlaque", () => {
     );
   });
 
+  it("names the captain saved with the plaque in the owner's place", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ dedication: "To boldly go", plaqueCaptain: "Maru" }),
+      captain: "Jared",
+    });
+
+    expect(line(wrapper, "captain")).toBe("Captain Maru");
+  });
+
+  it("names the saved captain even without an owner to name", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ dedication: "To boldly go", plaqueCaptain: "Maru" }),
+    });
+
+    expect(line(wrapper, "captain")).toBe("Captain Maru");
+  });
+
   it("names an unnamed ship after its model and leaves out lines with nothing to say", async () => {
     const wrapper = await mount({
       vehicle: vehicle({ dedication: "To boldly go" }),

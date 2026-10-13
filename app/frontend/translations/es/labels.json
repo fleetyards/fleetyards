@@ -4164,6 +4164,8 @@
           "neon": "Neón de Pyro",
           "manufacturer": "Estilo del fabricante"
         },
+        "captain": "Capitán",
+        "captainInfo": "Déjalo vacío para que aparezca tu nombre tal como se muestra en tu hangar público.",
         "registry": "Matrícula",
         "operationsGroup": "Equipo de operaciones",
         "title": "Placa de dedicatoria",

@@ -4164,6 +4164,8 @@
           "neon": "Pyro-Neon",
           "manufacturer": "Herstellerstil"
         },
+        "captain": "Captain",
+        "captainInfo": "Leer lassen, um dich so zu nennen, wie du in deinem öffentlichen Hangar erscheinst.",
         "registry": "Registernummer",
         "operationsGroup": "Einsatzcrew",
         "title": "Widmungstafel",

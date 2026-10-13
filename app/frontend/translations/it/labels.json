@@ -4164,6 +4164,8 @@
           "neon": "Neon di Pyro",
           "manufacturer": "Stile del costruttore"
         },
+        "captain": "Capitano",
+        "captainInfo": "Lascia vuoto per comparire con il nome del tuo hangar pubblico.",
         "registry": "Matricola",
         "operationsGroup": "Squadra operativa",
         "title": "Targa di dedica",
