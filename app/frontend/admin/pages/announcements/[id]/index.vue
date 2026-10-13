@@ -16,6 +16,7 @@ import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import AnnouncementActions from "@/admin/components/Announcements/Actions/index.vue";
 import AnnouncementDeliveries from "@/admin/components/Announcements/Deliveries/index.vue";
+import AnnouncementManualPosts from "@/admin/components/Announcements/ManualPosts/index.vue";
 import AnnouncementStatusPill from "@/admin/components/Announcements/StatusPill/index.vue";
 import {
   type Announcement,
@@ -107,6 +108,17 @@ const refresh = async () => {
           <code v-if="props.announcement.link" class="announcement-page__link">
             {{ props.announcement.link }}
           </code>
+        </PanelBody>
+      </Panel>
+      <Panel
+        v-if="props.announcement.socialPosts.length"
+        data-test="announcement-manual-posts-panel"
+      >
+        <PanelHeading :size="HeadingSizeEnum.LG">
+          {{ t("headlines.admin.announcements.manualPosts") }}
+        </PanelHeading>
+        <PanelBody>
+          <AnnouncementManualPosts :posts="props.announcement.socialPosts" />
         </PanelBody>
       </Panel>
     </div>

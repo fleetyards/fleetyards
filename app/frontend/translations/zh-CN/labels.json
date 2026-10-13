@@ -3087,6 +3087,7 @@
           "deliverySkippedCount": "%{count} 个已跳过",
           "attempts": "尝试 %{count} 次",
           "content": "内容",
+          "manualPostsInfo": "发送到 Bluesky 的文本，可手动发布到 X 或其他平台。",
           "engagement": {
             "likes": "点赞",
             "reposts": "转发",

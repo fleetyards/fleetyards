@@ -111,7 +111,8 @@
           "index": "Ankündigungen",
           "new": "Neue Ankündigung",
           "edit": "Ankündigung bearbeiten",
-          "deliveries": "Zustellung"
+          "deliveries": "Zustellung",
+          "manualPosts": "Beiträge zum Kopieren"
         },
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",

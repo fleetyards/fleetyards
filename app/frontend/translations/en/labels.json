@@ -3101,6 +3101,7 @@
           "deliverySkippedCount": "%{count} skipped",
           "attempts": "%{count} attempts",
           "content": "Content",
+          "manualPostsInfo": "The text Bluesky gets, to post by hand on X or elsewhere.",
           "engagement": {
             "likes": "Likes",
             "reposts": "Reposts",

@@ -3087,6 +3087,7 @@
           "deliverySkippedCount": "%{count} saltati",
           "attempts": "%{count} tentativi",
           "content": "Contenuto",
+          "manualPostsInfo": "Il testo che riceve Bluesky, da pubblicare a mano su X o altrove.",
           "engagement": {
             "likes": "Mi piace",
             "reposts": "Repost",

@@ -111,7 +111,8 @@
           "index": "Annunci",
           "new": "Nuovo annuncio",
           "edit": "Modifica annuncio",
-          "deliveries": "Consegna"
+          "deliveries": "Consegna",
+          "manualPosts": "Post da copiare"
         },
         "supporterContributions": {
           "index": "Contributi dei sostenitori",

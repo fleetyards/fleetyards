@@ -113,7 +113,8 @@
           "index": "Announcements",
           "new": "New Announcement",
           "edit": "Edit Announcement",
-          "deliveries": "Delivery"
+          "deliveries": "Delivery",
+          "manualPosts": "Posts to copy"
         },
         "supporterContributions": {
           "index": "Supporter Contributions",

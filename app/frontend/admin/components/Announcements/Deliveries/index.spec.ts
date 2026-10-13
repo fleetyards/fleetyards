@@ -18,6 +18,7 @@ const mount = (deliveries: AnnouncementDelivery[]) =>
         body: "Now ranked.",
         discordParts: [],
         socialParts: [],
+        socialPosts: [],
         icon: "fa-duotone fa-bullhorn",
         status: AnnouncementStatusEnum.PUBLISHED,
         notifyUsers: true,

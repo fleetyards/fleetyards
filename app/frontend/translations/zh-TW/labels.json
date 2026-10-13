@@ -3087,6 +3087,7 @@
           "deliverySkippedCount": "%{count} 個已略過",
           "attempts": "嘗試 %{count} 次",
           "content": "內容",
+          "manualPostsInfo": "發送到 Bluesky 的文字，可手動發佈到 X 或其他平台。",
           "engagement": {
             "likes": "按讚",
             "reposts": "轉發",

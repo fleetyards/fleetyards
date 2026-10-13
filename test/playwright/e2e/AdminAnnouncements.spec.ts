@@ -84,4 +84,24 @@ test.describe("Admin Announcements", () => {
       deliveries.getByTestId("announcement-refresh-engagement"),
     ).toBeVisible();
   });
+
+  test("Offers the Bluesky post to copy for X", async ({ page }) => {
+    await page
+      .getByRole("link", { name: "Trade routes for your ship" })
+      .click();
+
+    const post = page
+      .getByTestId("announcement-manual-posts-panel")
+      .getByTestId("announcement-manual-post");
+
+    await expect(post).toHaveCount(1);
+    await expect(post).toContainText("Trade routes for your ship");
+    await expect(post).toContainText(
+      "Trade routes are now ranked for the ship you fly.",
+    );
+    await expect(post).toContainText("/tools/trade-routes/");
+    await expect(
+      post.getByTestId("announcement-manual-post-copy"),
+    ).toBeVisible();
+  });
 });
