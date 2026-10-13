@@ -12,6 +12,13 @@ module Bsky
     # either.
     Record = Struct.new(:uri, :cid)
 
+    # The preview Bluesky shows under a post. Unlike X, it never fetches a
+    # link's page itself: a post without one is bare text, picture and all.
+    LinkCard = Struct.new(:uri, :title, :description, :image, :content_type)
+
+    # The lexicon's cap on an external embed's thumbnail.
+    MAX_THUMB_BYTES = 1_000_000
+
     # Bluesky counts graphemes, not bytes, and caps a post at 300.
     MAX_LENGTH = 300
 
@@ -43,7 +50,7 @@ module Bsky
     # second post in a thread and wrong for every one after it: the third would
     # claim the second as the root, and Bluesky would render two threads of two
     # rather than one of three.
-    def create(message, root: nil, parent: nil)
+    def create(message, root: nil, parent: nil, link_card: nil)
       record = {
         "$type" => COLLECTION,
         "createdAt" => Time.current.utc.iso8601(3),
@@ -52,6 +59,8 @@ module Bsky
 
       facets = ::Bsky::Facets.extract(message)
       record["facets"] = facets if facets.any?
+
+      record["embed"] = external_embed(link_card) if link_card.present?
 
       if parent.present?
         record["reply"] = {
@@ -65,6 +74,42 @@ module Bsky
         "repo" => client.session.did,
         "record" => record
       }))
+    end
+
+    private def external_embed(card)
+      external = {
+        "uri" => card.uri,
+        "title" => card.title.to_s,
+        "description" => card.description.to_s
+      }
+      thumb = upload_thumb(card)
+      external["thumb"] = thumb if thumb.present?
+
+      {"$type" => "app.bsky.embed.external", "external" => external}
+    end
+
+    # A card without its picture is still worth posting, so a thumbnail that is
+    # too large is left out, and one Bluesky refuses is reported and left out,
+    # rather than failing the post.
+    private def upload_thumb(card)
+      return if card.image.blank? || card.image.bytesize > MAX_THUMB_BYTES
+
+      response = HTTParty.post(
+        "#{client.session.pds}/xrpc/com.atproto.repo.uploadBlob",
+        body: card.image,
+        headers: {
+          "Authorization" => "Bearer #{client.session.access_token}",
+          "Content-Type" => card.content_type
+        }
+      )
+      blob = parse(response)&.dig("blob")
+
+      raise Error, "Bluesky rejected the image: #{response.code} #{response.body}" if blob.blank?
+
+      blob
+    rescue => e
+      Appsignal.report_error(e)
+      nil
     end
 
     private def ref(post)
