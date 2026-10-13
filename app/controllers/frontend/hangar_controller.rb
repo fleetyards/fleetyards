@@ -2,6 +2,8 @@
 
 module Frontend
   class HangarController < ApplicationController
+    include OgImageMeta
+
     def index
       @title = I18n.t("title.frontend.hangar")
 
@@ -92,15 +94,6 @@ module Frontend
       return vehicle.model_image.file if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
 
       vehicle.model.store_image if vehicle.model.store_image.attached?
-    end
-
-    private def use_og_image(attachment, alt:)
-      return if attachment.blank?
-
-      @og_image = rails_blob_url(attachment)
-      @og_image_width = attachment.metadata[:width]
-      @og_image_height = attachment.metadata[:height]
-      @og_image_alt = alt
     end
 
     # The name the public hangar shows: the owner's own, and its serial, only

@@ -7,6 +7,7 @@ module Frontend
     before_action :add_features_to_prefetch
 
     include PrefetchHelper
+    include OgImageMeta
 
     def index
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
@@ -37,7 +38,7 @@ module Frontend
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
         @og_type = "article"
-        @og_image = @model.store_image.attached? ? rails_blob_url(@model.store_image) : nil
+        use_og_image(@model.store_image, alt: @model.name)
         add_to_prefetch(:model, @model.to_json)
       end
 
@@ -63,7 +64,7 @@ module Frontend
         @title = @commodity.name
         @description = @commodity.description
         @og_type = "article"
-        @og_image = @commodity.store_image.attached? ? rails_blob_url(@commodity.store_image) : nil
+        use_og_image(@commodity.store_image, alt: @commodity.name)
       end
 
       render_frontend
@@ -132,8 +133,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_images", model: @model.name)
         @description = I18n.t("meta.ship_images.description", model: @model.name)
         @og_type = "article"
-        random_img = @model.random_image
-        @og_image = random_img&.file&.attached? ? rails_blob_url(random_img.file) : nil
+        use_og_image(@model.random_image&.file, alt: @model.name)
       end
 
       render_frontend
@@ -147,8 +147,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_videos", model: @model.name)
         @description = I18n.t("meta.ship_videos.description", model: @model.name)
         @og_type = "article"
-        random_img = @model.random_image
-        @og_image = random_img&.file&.attached? ? rails_blob_url(random_img.file) : nil
+        use_og_image(@model.random_image&.file, alt: @model.name)
       end
 
       render_frontend
@@ -165,7 +164,7 @@ module Frontend
           "meta.compare_ships.description.vs",
           models: @models.map(&:name).join(" vs. ")
         )
-        @og_image = compare_image(@models)
+        use_og_image(compare_image(@models), alt: @models.map(&:name).join(" vs. "))
       end
 
       render_frontend
@@ -251,12 +250,9 @@ module Frontend
 
     private def compare_image(models)
       return if models.blank?
-      return rails_blob_url(models.first.store_image) if models.size == 1 && models.first.store_image.attached?
+      return models.first.store_image if models.size == 1 && models.first.store_image.attached?
 
-      record = CompareImage.for(models)
-      return unless record&.image&.attached?
-
-      rails_blob_url(record.image)
+      CompareImage.for(models)&.image
     end
 
     private def compare_params

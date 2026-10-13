@@ -8,7 +8,7 @@ module Frontend
       if fleet.present?
         @title = fleet.name
         @og_type = "article"
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
+        use_og_image(fleet.logo, alt: fleet.name)
       end
 
       render_frontend
@@ -18,7 +18,7 @@ module Frontend
       @fleet = FleetInviteUrl.find_by(token: params[:token])&.fleet
       if fleet.present?
         @title = I18n.t("title.frontend.fleet_invite", fleet: fleet.name)
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
+        use_og_image(fleet.logo, alt: fleet.name)
       end
 
       render_frontend
@@ -28,7 +28,7 @@ module Frontend
       if fleet.present?
         @title = I18n.t("title.frontend.fleet_stats", fleet: fleet.name)
         @og_type = "article"
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
+        use_og_image(fleet.logo, alt: fleet.name)
       end
 
       render_frontend
@@ -38,7 +38,7 @@ module Frontend
       if fleet.present?
         @title = I18n.t("title.frontend.fleet_members", fleet: fleet.name)
         @og_type = "article"
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
+        use_og_image(fleet.logo, alt: fleet.name)
       end
 
       render_frontend
@@ -66,7 +66,7 @@ module Frontend
       if fleet.present?
         @title = I18n.t("title.frontend.fleet_settings", fleet: fleet.name)
         @og_type = "article"
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
+        use_og_image(fleet.logo, alt: fleet.name)
       end
 
       render_frontend

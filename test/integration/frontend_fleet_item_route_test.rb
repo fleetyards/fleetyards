@@ -58,6 +58,27 @@ class FrontendFleetItemPreviewTest < ActionDispatch::IntegrationTest
     assert_match %r{images/og/default\.jpg}, response.body[/<meta property="og:image" content="([^"]*)"/, 1].to_s
   end
 
+  test "an event's preset cover carries its size, read from the bundled file" do
+    event = create(:fleet_event, :open, fleet: @fleet, title: "Mining night", category: "cargo_hauling")
+
+    get "/fleets/#{@fleet.slug}/events/#{event.slug}"
+
+    assert_match %r{images/missions/cargo_hauling}, meta("og:image")
+    assert_equal "3840", meta("og:image:width")
+    assert_equal "2160", meta("og:image:height")
+  end
+
+  test "a fleet's logo carries its size and the fleet's name" do
+    fleet = create(:fleet, :with_logo, name: "Iron Wake")
+    fleet.logo.blob.update!(metadata: {analyzed: true, width: 512, height: 512})
+
+    get "/fleets/#{fleet.slug}"
+
+    assert_equal "512", meta("og:image:width")
+    assert_equal "512", meta("og:image:height")
+    assert_equal "Iron Wake", meta("og:image:alt")
+  end
+
   test "a draft contract's preview does not name it" do
     contract = create(:fleet_contract, fleet: @fleet, title: "Ore run")
 
@@ -80,6 +101,10 @@ class FrontendFleetItemPreviewTest < ActionDispatch::IntegrationTest
     get "/tools/tours/join/#{tour.invite_token}"
 
     assert_not_includes og_title, "Private loop"
+  end
+
+  private def meta(property)
+    CGI.unescapeHTML(response.body[/<meta property="#{property}" content="([^"]*)"/, 1].to_s)
   end
 
   private def og_title
