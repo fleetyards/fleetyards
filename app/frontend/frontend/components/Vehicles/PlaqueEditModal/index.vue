@@ -24,6 +24,7 @@ import {
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
+import { IN_UNIVERSE_YEAR_OFFSET } from "@/frontend/components/Vehicles/Plaque/launchDate";
 import { plaqueSocialImage } from "@/frontend/components/Vehicles/Plaque/download";
 import { ownerCaptain } from "@/frontend/components/Vehicles/Plaque/captain";
 import { useDirectUpload } from "@/shared/composables/useDirectUpload";
@@ -406,6 +407,7 @@ const onSubmit = handleSubmit(async (values) => {
                 v-model="launchedOn"
                 name="launchedOn"
                 :label="t('labels.vehiclePlaque.launchedOn')"
+                :year-offset="IN_UNIVERSE_YEAR_OFFSET"
                 clearable
               />
             </div>

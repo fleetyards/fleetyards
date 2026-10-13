@@ -27,6 +27,17 @@ const parseLocal = (value: string): Date => {
   return new Date(value);
 };
 
+// 29 February lands on the 28th in a year without one, rather than spilling
+// into March.
+const shiftYears = (date: Date, years: number): Date => {
+  const shifted = new Date(date);
+  shifted.setFullYear(date.getFullYear() + years);
+  if (shifted.getMonth() !== date.getMonth()) shifted.setDate(0);
+  return shifted;
+};
+
+const DEFAULT_YEAR_RANGE: [number, number] = [1900, 2100];
+
 type Props = {
   id?: string;
   name: string;
@@ -45,6 +56,9 @@ type Props = {
   withTime?: boolean;
   minDate?: string | Date;
   maxDate?: string | Date;
+  // Shows and picks dates this many years ahead while the value stays in real
+  // time, for a calendar in the game's own years.
+  yearOffset?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -63,6 +77,7 @@ const props = withDefaults(defineProps<Props>(), {
   withTime: false,
   minDate: undefined,
   maxDate: undefined,
+  yearOffset: 0,
 });
 
 const emit = defineEmits<{
@@ -103,18 +118,40 @@ const {
 
 const hasErrors = computed(() => errors.value.length > 0);
 
+const toPicker = (date: Date) => shiftYears(date, props.yearOffset);
+
+const toPickerBound = (value?: string | Date) =>
+  value === undefined
+    ? undefined
+    : toPicker(typeof value === "string" ? parseLocal(value) : value);
+
 const pickerValue = computed<Date | null>({
-  get: () => (fieldValue.value ? parseLocal(fieldValue.value) : null),
+  get: () => (fieldValue.value ? toPicker(parseLocal(fieldValue.value)) : null),
   set: (next) => {
-    const serialized = next
+    const real = next ? shiftYears(next, -props.yearOffset) : null;
+    const serialized = real
       ? props.withTime
-        ? next.toISOString()
-        : toLocalIsoDate(next)
+        ? real.toISOString()
+        : toLocalIsoDate(real)
       : null;
     handleChange(serialized);
     emit("update:modelValue", serialized);
   },
 });
+
+const pickerMinDate = computed(() => toPickerBound(props.minDate));
+
+const pickerMaxDate = computed(() => toPickerBound(props.maxDate));
+
+// An empty picker opens on today, which is only today in the shifted years.
+const pickerStartDate = computed(() =>
+  props.yearOffset ? toPicker(new Date()) : undefined,
+);
+
+const pickerYearRange = computed<[number, number]>(() => [
+  DEFAULT_YEAR_RANGE[0] + props.yearOffset,
+  DEFAULT_YEAR_RANGE[1] + props.yearOffset,
+]);
 
 const inputFormat = computed(() =>
   props.withTime ? "d MMM yyyy HH:mm" : "d MMM yyyy",
@@ -177,8 +214,10 @@ defineExpose({ clear });
         :formats="{ input: inputFormat, preview: inputFormat }"
         teleport="body"
         auto-apply
-        :min-date="minDate"
-        :max-date="maxDate"
+        :min-date="pickerMinDate"
+        :max-date="pickerMaxDate"
+        :start-date="pickerStartDate"
+        :year-range="pickerYearRange"
         dark
         :data-test="`input-${name}`"
         @cleared="clear"
