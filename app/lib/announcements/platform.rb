@@ -36,8 +36,8 @@ module Announcements
     def truncate(text, to: limit)
       return text if length(text) <= to
 
-      # The ellipsis is budgeted at what this platform charges for it, not at
-      # one.
+      # The ellipsis is budgeted at what this platform charges for it, or a
+      # post trimmed to the cap lands over it.
       budget = to - length(ELLIPSIS)
       kept = +""
 
