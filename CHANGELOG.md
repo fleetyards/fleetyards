@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.3.1](https://github.com/fleetyards/fleetyards/compare/v9.3.0...v9.3.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* **fleets:** member health controls collapse on mobile ([#5655](https://github.com/fleetyards/fleetyards/issues/5655)) ([7ef58e7](https://github.com/fleetyards/fleetyards/commit/7ef58e7bc538b1d4d0918294dc1830902c5776b8))
+* **hangar:** draw the Kruger emblem single-colour in general plaque styles ([c75e82b](https://github.com/fleetyards/fleetyards/commit/c75e82b33138c0c8e063cec9fee4c4915f0f4048))
+* **hangar:** embed the plaque fonts in its link preview ([#5651](https://github.com/fleetyards/fleetyards/issues/5651)) ([d5f25d4](https://github.com/fleetyards/fleetyards/commit/d5f25d4c8b27c03ea432e2bafbd4a7c314346ca1))
+* **hangar:** keep the maker narrowing in the plaque style classes ([714a4f4](https://github.com/fleetyards/fleetyards/commit/714a4f497cba8753ab21e1b72c737eeb80d799e5))
+* **holo:** stop the 3D viewer and AR crashing on mobile ([#5658](https://github.com/fleetyards/fleetyards/issues/5658)) ([3d20a08](https://github.com/fleetyards/fleetyards/commit/3d20a081fcea2d5a503f28a1fcbc750517e0a362))
+* **notifications:** new-ship image on Bluesky, short names, drop X with a copy-for-X panel ([#5650](https://github.com/fleetyards/fleetyards/issues/5650)) ([0fe0363](https://github.com/fleetyards/fleetyards/commit/0fe03633da0d185b435d7df126cc06e3802f04aa))
+* **ships:** mobile holo state switch and views toggle spacing ([#5652](https://github.com/fleetyards/fleetyards/issues/5652)) ([216af68](https://github.com/fleetyards/fleetyards/commit/216af681da6a33a0e8b9c10de6d0f2e78728616a))
+* **tabs:** collapse tab navs to the dropdown on mobile ([#5654](https://github.com/fleetyards/fleetyards/issues/5654)) ([77bac40](https://github.com/fleetyards/fleetyards/commit/77bac407acfdbf0dacbf0a6b42b68f919b4fd55c))
+* **vehicles:** widen the gap between ship name and serial ([b1734c9](https://github.com/fleetyards/fleetyards/commit/b1734c92f57d14ceabac7ff0b8ee8a0d668ea59c))
+
 ## [9.3.0](https://github.com/fleetyards/fleetyards/compare/v9.2.0...v9.3.0) (2026-10-13)
 
 
