@@ -120,7 +120,6 @@ class Vehicle < ApplicationRecord
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
   PLAQUE_ATTRS = %w[dedication launched_on launch_port launch_port_location_id affiliation operations_group].freeze
-  before_save :drop_supporter_plaque_style, if: :drop_supporter_plaque_style?
 
   # The plaque as a picture, for the link preview of a shared plaque. The server
   # cannot draw the plaque, so the owner's browser renders it on every save.
@@ -183,6 +182,8 @@ class Vehicle < ApplicationRecord
   before_validation :normalize_serial, if: :serial_changed?
   before_validation :force_ingame_bought_via
   before_save :nil_if_blank
+  # After nil_if_blank, so a blank sent for an empty line is not an edit.
+  before_save :drop_supporter_plaque_style, if: :drop_supporter_plaque_style?
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
   before_save :update_slugs
