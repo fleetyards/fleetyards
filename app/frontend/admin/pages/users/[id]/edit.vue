@@ -58,6 +58,7 @@ const queryClient = useQueryClient();
 
 const initialValues = ref<UserInput>({
   username: props.user.username,
+  displayName: props.user.displayName,
   email: props.user.email,
   rsiHandle: props.user.rsiHandle,
   publicHangar: props.user.publicHangar,
@@ -79,6 +80,7 @@ const { defineField, handleSubmit, meta, setErrors } = useForm<UserInput>({
 });
 
 const [username, usernameProps] = defineField("username");
+const [displayName, displayNameProps] = defineField("displayName");
 const [email, emailProps] = defineField("email");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
 const [publicHangar, publicHangarProps] = defineField("publicHangar");
@@ -143,7 +145,11 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
-    .mutateAsync({ id: props.user.id!, data: values })
+    .mutateAsync({
+      id: props.user.id!,
+      // Null rather than left out: a cleared name falls back to the username.
+      data: { ...values, displayName: values.displayName || null },
+    })
     .then(updated)
     .catch((error) => {
       failed(error, setErrors);
@@ -190,6 +196,16 @@ const handleCancel = async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="displayName"
+          v-bind="displayNameProps"
+          name="displayName"
+          translation-key="user.displayName"
+          :placeholder="username"
+          clearable
+        />
       </div>
     </div>
     <div class="row">
