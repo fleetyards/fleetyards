@@ -16,7 +16,7 @@ module Frontend
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
         @og_type = "article"
-        @og_image = (vehicle.model.store_image.attached? ? rails_blob_url(vehicle.model.store_image) : nil) if vehicle.present?
+        use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
         preview_plaque if params[:plaque].present?
       end
 
@@ -33,7 +33,7 @@ module Frontend
         @title = I18n.t("title.frontend.public_vehicle", vehicle: public_vehicle_name(vehicle), user: username(@user.username))
         @description = vehicle_description(vehicle)
         @og_type = "article"
-        @og_image = vehicle_picture_url(vehicle)
+        use_og_image(vehicle_picture(vehicle), alt: public_vehicle_name(vehicle))
         @twitter_card = "summary_large_image" if @og_image.present?
       else
         @title = I18n.t("title.frontend.hangar")
@@ -48,7 +48,7 @@ module Frontend
         vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_wishlist", user: username(@user.username))
         @og_type = "article"
-        @og_image = (vehicle.model.store_image.attached? ? rails_blob_url(vehicle.model.store_image) : nil) if vehicle.present?
+        use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
       end
 
       render_frontend
@@ -66,7 +66,11 @@ module Frontend
       @title = I18n.t("title.frontend.public_plaque", vehicle: public_vehicle_name(vehicle))
       @description = vehicle.dedication
       # A ship without a picture keeps the hangar's, rather than none at all.
-      @og_image = (vehicle.plaque_image.attached? ? rails_blob_url(vehicle.plaque_image) : vehicle_picture_url(vehicle)) || @og_image
+      if vehicle.plaque_image.attached?
+        use_og_image(vehicle.plaque_image, alt: @title)
+      else
+        use_og_image(vehicle_picture(vehicle), alt: public_vehicle_name(vehicle))
+      end
       @twitter_card = "summary_large_image" if @og_image.present?
     end
 
@@ -83,11 +87,20 @@ module Frontend
 
     # The picture the public hangar shows for the ship: the owner's own, else the
     # one they picked from the model's gallery, else the model's.
-    private def vehicle_picture_url(vehicle)
-      return rails_blob_url(vehicle.image) if vehicle.image.attached?
-      return rails_blob_url(vehicle.model_image.file) if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
+    private def vehicle_picture(vehicle)
+      return vehicle.image if vehicle.image.attached?
+      return vehicle.model_image.file if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
 
-      rails_blob_url(vehicle.model.store_image) if vehicle.model.store_image.attached?
+      vehicle.model.store_image if vehicle.model.store_image.attached?
+    end
+
+    private def use_og_image(attachment, alt:)
+      return if attachment.blank?
+
+      @og_image = rails_blob_url(attachment)
+      @og_image_width = attachment.metadata[:width]
+      @og_image_height = attachment.metadata[:height]
+      @og_image_alt = alt
     end
 
     # The name the public hangar shows: the owner's own, and its serial, only

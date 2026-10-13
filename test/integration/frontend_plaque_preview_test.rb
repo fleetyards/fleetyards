@@ -23,6 +23,25 @@ class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
     assert_includes response.body, '<meta name="twitter:card" content="summary_large_image">'
   end
 
+  test "a shared plaque's picture carries its size and a description" do
+    @vehicle.plaque_image.blob.update!(metadata: {analyzed: true, width: 1200, height: 630})
+
+    get "/hangar/#{@user.username}/?plaque=#{@vehicle.id}"
+
+    assert_equal "1200", meta("og:image:width")
+    assert_equal "630", meta("og:image:height")
+    assert_equal "Contorta dedication plaque", meta("og:image:alt")
+  end
+
+  test "a plaque picture not yet analysed leaves its size out" do
+    @vehicle.plaque_image.blob.update!(metadata: {})
+
+    get "/hangar/#{@user.username}/?plaque=#{@vehicle.id}"
+
+    assert_not_includes response.body, "og:image:width"
+    assert_equal "Contorta dedication plaque", meta("og:image:alt")
+  end
+
   test "a plaque link by the ship's address previews as the plaque" do
     @vehicle.update!(serial: "L8-4261-HA")
 

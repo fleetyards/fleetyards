@@ -39,6 +39,26 @@ class FrontendVehiclePreviewTest < ActionDispatch::IntegrationTest
     assert_equal "Built rough", meta("og:description")
   end
 
+  test "a ship's own picture carries its size and the ship's name" do
+    @vehicle.image.attach(io: file_fixture("test.png").open, filename: "ship.png", content_type: "image/png")
+    @vehicle.image.blob.update!(metadata: {analyzed: true, width: 2826, height: 1985})
+
+    get "/hangar/#{@user.username}/l8-4261-ha-contorta"
+
+    assert_includes meta("og:image"), "ship.png"
+    assert_equal "2826", meta("og:image:width")
+    assert_equal "1985", meta("og:image:height")
+    assert_equal "Contorta (L8-4261-HA)", meta("og:image:alt")
+  end
+
+  test "a ship without a picture previews the default one at its size" do
+    get "/hangar/#{@user.username}/l8-4261-ha-contorta"
+
+    assert_includes meta("og:image"), "og/default"
+    assert_equal "1200", meta("og:image:width")
+    assert_equal "630", meta("og:image:height")
+  end
+
   test "the ship is found by its id as well as its serial" do
     get "/hangar/#{@user.username}/#{@vehicle.id}-contorta"
 

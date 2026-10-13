@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  DEFAULT_OG_IMAGE_WIDTH = 1200
+  DEFAULT_OG_IMAGE_HEIGHT = 630
+
   def title
     @title ? "#{@title} | #{I18n.t(:"title.default")}" : I18n.t(:"title.default")
   end
@@ -31,6 +34,20 @@ module ApplicationHelper
 
   def og_image
     @og_image || vite_asset_url("images/og/default.jpg")
+  end
+
+  # Only the default picture's size is known up front; an uploaded one's is
+  # read once Active Storage has analysed it, and left out until then.
+  def og_image_width
+    @og_image ? @og_image_width : DEFAULT_OG_IMAGE_WIDTH
+  end
+
+  def og_image_height
+    @og_image ? @og_image_height : DEFAULT_OG_IMAGE_HEIGHT
+  end
+
+  def og_image_alt
+    @og_image_alt || @title || I18n.t(:"title.default")
   end
 
   def og_description
