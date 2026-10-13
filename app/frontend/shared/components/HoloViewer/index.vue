@@ -56,8 +56,15 @@ const mobile = useMobile();
 const webglSupported = ref(true);
 
 // Some exports run past 100 MB, which no phone parses and decodes without
-// being killed. Above this a phone asks first instead of loading straight away.
-const MOBILE_SIZE_LIMIT = 30 * 1024 * 1024;
+// being killed. Above this a phone or tablet asks first instead of loading
+// straight away. Decimal, like the size it names.
+const MOBILE_SIZE_LIMIT = 30_000_000;
+
+// Memory follows the device, not the layout: a tablet in landscape is no
+// phone by width but is killed by the same files.
+const touchDevice =
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(pointer: coarse)").matches;
 
 const largeConfirmed = ref(false);
 
@@ -67,12 +74,12 @@ const totalSize = computed(() =>
 
 const awaitingConfirmation = computed(
   () =>
-    mobile.value &&
+    (mobile.value || touchDevice) &&
     totalSize.value > MOBILE_SIZE_LIMIT &&
     !largeConfirmed.value,
 );
 
-const totalSizeMb = computed(() => Math.round(totalSize.value / 1024 / 1024));
+const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
 
 onMounted(() => {
   webglSupported.value = webglAvailable();
@@ -171,7 +178,6 @@ watch(
   () => {
     loading.value = true;
     progress.value = 0;
-    largeConfirmed.value = false;
   },
 );
 

@@ -17,7 +17,7 @@ vi.mock("./Model/index.vue", () => ({ default: { template: "<div />" } }));
 
 const { default: HoloViewer } = await import("./index.vue");
 
-const MB = 1024 * 1024;
+const MB = 1_000_000;
 
 const setViewport = (phone: boolean) => {
   window.matchMedia = ((query: string) => ({
@@ -70,6 +70,19 @@ describe("HoloViewer", () => {
     setViewport(false);
 
     const wrapper = await mount(180 * MB);
+
+    expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
+  });
+
+  it("keeps the answer when the holo is swapped for another pose", async () => {
+    const wrapper = await mount(40 * MB);
+
+    await wrapper
+      .find("[data-test='holo-viewer-load-anyway']")
+      .trigger("click");
+    await wrapper.setProps({
+      models: [{ path: "/landed.gltf", length: 20, size: 45 * MB }],
+    });
 
     expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
   });
