@@ -72,7 +72,7 @@ const styleClasses = computed(() => {
   if (style !== "manufacturer") {
     return [`vehicle-plaque--${style}`];
   }
-  if (!inMakerStyle.value) {
+  if (!maker.value) {
     return ["vehicle-plaque--brass"];
   }
 
