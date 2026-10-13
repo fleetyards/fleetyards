@@ -14,6 +14,9 @@ export type ModalProps = {
   fixed?: boolean;
   // Runs the bottom cap while the dialog waits on something it started.
   loading?: boolean;
+  // Lays the body out as a column its content can shrink into, for content
+  // that scrolls a part of itself rather than letting the whole body scroll.
+  fillBody?: boolean;
   // For a dialog that is not the app's modal -- one opened above it -- whose
   // close button must close only itself.
   onClose?: () => void;
@@ -23,6 +26,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   title: "",
   fixed: false,
   loading: false,
+  fillBody: false,
   onClose: undefined,
 });
 
@@ -62,7 +66,7 @@ const close = () => {
             </slot>
           </h2>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" :class="{ 'modal-body--fill': fillBody }">
           <slot name="default" />
         </div>
       </div>

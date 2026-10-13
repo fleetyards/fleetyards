@@ -78,6 +78,11 @@
   overflow: hidden auto;
 }
 
+.modal-body--fill {
+  display: flex;
+  flex-direction: column;
+}
+
 .modal-footer {
   display: flex;
   flex-shrink: 0;
