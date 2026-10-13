@@ -24,11 +24,16 @@ module Bsky
 
     COLLECTION = "app.bsky.feed.post"
 
-    def self.handle = Rails.application.credentials.bsky_handle
+    # The account FleetYards posts as. It shares the `bluesky` group with the
+    # OAuth client's keys for signing in with Bluesky, which is a separate
+    # integration.
+    def self.credentials = Rails.application.credentials.bluesky || {}
 
-    def self.app_password = Rails.application.credentials.bsky_app_password
+    def self.handle = credentials[:handle]
 
-    def self.endpoint = Rails.application.credentials.bsky_endpoint
+    def self.app_password = credentials[:app_password]
+
+    def self.endpoint = credentials[:endpoint]
 
     def self.configured?
       handle.present? && app_password.present? && endpoint.present?

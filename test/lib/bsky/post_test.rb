@@ -8,10 +8,10 @@ module Bsky
   class PostTest < ActiveSupport::TestCase
     PDS = "https://bsky.social"
 
+    CREDENTIALS = {handle: "fleetyards.net", app_password: "app-password", endpoint: PDS}.freeze
+
     setup do
-      Rails.application.credentials.stubs(:bsky_handle).returns("fleetyards.net")
-      Rails.application.credentials.stubs(:bsky_app_password).returns("app-password")
-      Rails.application.credentials.stubs(:bsky_endpoint).returns(PDS)
+      Bsky::Post.stubs(:credentials).returns(CREDENTIALS)
 
       stub_request(:post, "#{PDS}/xrpc/com.atproto.server.createSession")
         .to_return(
@@ -24,7 +24,7 @@ module Bsky
     test ".configured? needs all three credentials" do
       assert Bsky::Post.configured?
 
-      Rails.application.credentials.stubs(:bsky_endpoint).returns(nil)
+      Bsky::Post.stubs(:credentials).returns(CREDENTIALS.except(:endpoint))
 
       refute Bsky::Post.configured?
     end
@@ -168,7 +168,7 @@ module Bsky
     # No session is opened until something posts, so an install with no
     # credentials can still name the class.
     test "the session is not opened by the constructor" do
-      Rails.application.credentials.stubs(:bsky_handle).returns(nil)
+      Bsky::Post.stubs(:credentials).returns({})
 
       assert_nothing_raised { Bsky::Post.new }
     end
