@@ -725,23 +725,7 @@ const crumbs = computed<Crumb[]>(() => [
                   :data-test="`health-invite-url-${inviteUrl.token}`"
                 >
                   <template v-if="capabilities?.destroyInvites" #actions>
-                    <BtnDropdown
-                      v-if="mobile"
-                      :size="BtnSizesEnum.SM"
-                      expand-left
-                    >
-                      <Btn
-                        :tone="BtnTonesEnum.DANGER"
-                        @click="deleteInviteUrl(inviteUrl.token)"
-                      >
-                        <i class="fa-light fa-trash" />
-                        <span>
-                          {{ t("actions.fleet.members.health.deleteLink") }}
-                        </span>
-                      </Btn>
-                    </BtnDropdown>
                     <Btn
-                      v-else
                       :size="BtnSizesEnum.SM"
                       @click="deleteInviteUrl(inviteUrl.token)"
                     >
