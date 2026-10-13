@@ -315,6 +315,7 @@
             "deleteLink": "Elimina link",
             "promoteTo": "Promuovi a %{role}",
             "addToSquadron": "Aggiungi a una squadriglia",
+            "addToNamedSquadron": "Aggiungi a %{squadron}",
             "addMembers": "Aggiungi membri",
             "deleteSquadron": "Sciogli",
             "remind": "Ricorda di verificare"

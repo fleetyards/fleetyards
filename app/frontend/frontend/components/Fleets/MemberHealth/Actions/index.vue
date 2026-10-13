@@ -13,6 +13,7 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobile } from "@/shared/composables/useMobile";
 import { useSessionStore } from "@/frontend/stores/session";
 import {
   useAcceptFleetMember,
@@ -112,6 +113,10 @@ const allowed = computed(() => {
 const shown = (action: MemberHealthAction) =>
   props.actions.includes(action) && allowed.value[action];
 
+const mobile = useMobile();
+
+const anyShown = computed(() => props.actions.some(shown));
+
 const busy = ref(false);
 
 const variables = computed(() => ({
@@ -208,9 +213,115 @@ const addToSquadron = (squadron: FleetSquadron) =>
 </script>
 
 <template>
+  <!-- A phone has no hover for the tooltips and no room for the row of icons,
+       so every action is one labelled entry in a menu. The squadron and
+       contact choices are spread out flat, because a menu cannot open a
+       second one. -->
+  <BtnDropdown
+    v-if="mobile && anyShown"
+    :size="BtnSizesEnum.SM"
+    expand-left
+    expand-bottom
+    data-test="health-actions-menu"
+  >
+    <template v-if="shown('answer')">
+      <Btn :disabled="busy" data-test="health-accept" @click="accept">
+        <i class="fa-light fa-check" />
+        <span>{{ t("actions.fleet.members.accept") }}</span>
+      </Btn>
+      <Btn :disabled="busy" data-test="health-decline" @click="decline">
+        <i class="fa-light fa-xmark" />
+        <span>{{ t("actions.fleet.members.decline") }}</span>
+      </Btn>
+    </template>
+    <Btn
+      v-if="shown('promote')"
+      :disabled="busy"
+      data-test="health-promote"
+      @click="promote"
+    >
+      <i class="fa-light fa-chevron-up" />
+      <span>{{ promoteLabel }}</span>
+    </Btn>
+    <template v-if="shown('addToSquadron')">
+      <Btn
+        v-for="squadron in squadrons"
+        :key="squadron.id"
+        :disabled="busy"
+        :data-test="`health-add-to-squadron-${squadron.slug}`"
+        @click="addToSquadron(squadron)"
+      >
+        <i class="fa-light fa-users-medical" />
+        <span>
+          {{
+            t("actions.fleet.members.health.addToNamedSquadron", {
+              squadron: squadron.name,
+            })
+          }}
+        </span>
+      </Btn>
+    </template>
+    <Btn
+      v-if="shown('remind')"
+      :disabled="busy || remindedRecently"
+      data-test="health-remind"
+      @click="remind"
+    >
+      <i class="fa-light fa-bell" />
+      <span>{{ remindLabel }}</span>
+    </Btn>
+    <template v-if="shown('contact')">
+      <Btn
+        v-if="spectrumDmUrl"
+        :href="spectrumDmUrl"
+        target="_blank"
+        data-test="health-contact-spectrum"
+      >
+        <i class="icon icon-rsi" />
+        <span>{{ t("labels.fleet.members.spectrumDm") }}</span>
+      </Btn>
+      <Btn
+        v-if="contact.discordProfileUrl"
+        :href="contact.discordProfileUrl"
+        target="_blank"
+        data-test="health-contact-discord"
+      >
+        <i class="fa-brands fa-discord" />
+        <span>{{ t("labels.fleet.members.discordContact") }}</span>
+      </Btn>
+    </template>
+    <Btn
+      v-if="shown('demote')"
+      :disabled="busy"
+      data-test="health-demote"
+      @click="demote"
+    >
+      <i class="fa-light fa-chevron-down" />
+      <span>{{ t("actions.fleet.members.demote") }}</span>
+    </Btn>
+    <Btn
+      v-if="shown('revoke')"
+      :disabled="busy"
+      data-test="health-revoke"
+      @click="revoke"
+    >
+      <i class="fa-light fa-user-xmark" />
+      <span>{{ t("actions.fleet.members.health.revoke") }}</span>
+    </Btn>
+    <Btn
+      v-if="shown('remove')"
+      :tone="BtnTonesEnum.DANGER"
+      :disabled="busy"
+      data-test="health-remove"
+      @click="remove"
+    >
+      <i class="fa-light fa-user-minus" />
+      <span>{{ t("actions.fleet.members.health.remove") }}</span>
+    </Btn>
+  </BtnDropdown>
   <!-- Icons with their names as tooltips: a row keeps its actions on its own
        line in a half-width column, where labelled buttons wrapped under it. -->
-  <BtnGroup>
+  <BtnGroup v-else-if="!mobile">
     <template v-if="shown('answer')">
       <Btn
         v-tooltip="t('actions.fleet.members.accept')"
