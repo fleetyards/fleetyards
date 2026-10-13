@@ -102,6 +102,19 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
       refute @model.reload.top_view.blob.metadata["trimmed"]
     end
 
+    test "a save that leaves crops to the job lists them as pending" do
+      @model.update!(top_view: padded_blob.signed_id, side_view: padded_blob.signed_id)
+
+      assert_equal %w[side_view top_view], @model.pending_trims.keys.sort
+      assert_equal %w[side_view top_view], @model.reload.live_pending_trims.sort
+    end
+
+    test "a crop done in the request is never pending" do
+      @model.top_view.attach(padded_blob.signed_id)
+
+      assert_empty @model.reload.pending_trims
+    end
+
     # Only a pending crop counts: a store image alongside the one view is
     # preprocessed, not trimmed, and costs the request nothing.
     test "an attachment nobody trims does not push a view out of the request" do
@@ -132,6 +145,36 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
       opaque = Vips::Image.black(100, 40, bands: 3).new_from_image([255, 0, 0]).bandjoin(255).cast(:uchar)
 
       Vips::Image.black(200, 150, bands: 4).cast(:uchar).insert(opaque, 50, 55).write_to_buffer(".png")
+    end
+  end
+
+  class PendingTrimsTest < ActiveStorageVariantsTest
+    test "a crop past its time is no longer reported as pending" do
+      @model.update_columns(pending_trims: {
+        "top_view" => 16.minutes.ago.iso8601(6),
+        "side_view" => 1.minute.ago.iso8601(6)
+      })
+
+      assert_equal %w[side_view], @model.live_pending_trims
+    end
+
+    test "the sweep drops only the crops past their time" do
+      @model.update_columns(pending_trims: {
+        "top_view" => 16.minutes.ago.iso8601(6),
+        "side_view" => 1.minute.ago.iso8601(6)
+      })
+
+      @model.settle_stale_trims
+
+      assert_equal %w[side_view], @model.reload.pending_trims.keys
+    end
+
+    test "the sweep leaves a record with nothing stale alone" do
+      @model.update_columns(pending_trims: {"top_view" => 1.minute.ago.iso8601(6)})
+
+      assert_no_changes -> { @model.reload.pending_trims } do
+        @model.settle_stale_trims
+      end
     end
   end
 

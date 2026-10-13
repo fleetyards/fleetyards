@@ -23,6 +23,11 @@ module ActiveStorageVariants
   # timeout, so a save carrying more than this leaves all of them to the job.
   INLINE_TRIM_LIMIT = 1
 
+  # How long a queued crop counts as on its way. TrimAttachmentJob's five
+  # retries back off for about ten minutes in all, so a crop still listed after
+  # this was lost rather than slow -- and nothing else would ever take it off.
+  PENDING_TRIM_TTL = 15.minutes
+
   included do
     class_attribute :trimmed_attachment_names, default: [], instance_writer: false
 
@@ -60,9 +65,52 @@ module ActiveStorageVariants
       elsif trim_inline && uploaded_attachment_names.include?(name)
         trim_now(name)
       else
-        TrimAttachmentJob.perform_async(self.class.name, id, name)
+        enqueue_trim(name)
       end
     end
+  end
+
+  # Called by TrimAttachmentJob once it is done with the attachment, whether it
+  # cropped it, found nothing to crop or gave up on it.
+  def settle_trim(name)
+    return unless tracks_pending_trims?
+
+    self.class.where(id:).update_all(["pending_trims = pending_trims - ?::text", name])
+    reload_pending_trims
+    pending_trim_settled
+  end
+
+  # Drops the crops that outlived PENDING_TRIM_TTL. The cutoff is applied in
+  # SQL, so a view queued again since this record was read stays listed.
+  def settle_stale_trims
+    return unless tracks_pending_trims?
+
+    cutoff = PENDING_TRIM_TTL.ago
+    return if pending_trims.values.none? { |queued_at| Time.zone.parse(queued_at) < cutoff }
+
+    self.class.where(id:).update_all([<<~SQL.squish, cutoff.iso8601(6)])
+      pending_trims = COALESCE(
+        (SELECT jsonb_object_agg(key, value) FROM jsonb_each_text(pending_trims)
+          WHERE value::timestamptz >= ?::timestamptz),
+        '{}'::jsonb
+      )
+    SQL
+    reload_pending_trims
+    pending_trim_settled
+  end
+
+  # What is still on its way, oldest first. An entry past PENDING_TRIM_TTL is
+  # left out even before the sweep removes it.
+  def live_pending_trims
+    return [] unless tracks_pending_trims?
+
+    cutoff = PENDING_TRIM_TTL.ago
+
+    pending_trims
+      .map { |name, queued_at| [name, Time.zone.parse(queued_at)] }
+      .select { |_name, queued_at| queued_at >= cutoff }
+      .sort_by { |name, queued_at| [queued_at, name] }
+      .map(&:first)
   end
 
   def new_attachment_names
@@ -89,7 +137,39 @@ module ActiveStorageVariants
     # failed request for a record that is already written. The job is the path
     # that retries, so the work is handed back to it.
     Rails.logger.warn("Inline trim of #{self.class.name}##{id} #{name} failed: #{error.class}")
+    enqueue_trim(name)
+  end
+
+  # The crop behind the request replaces the blob the response named, so the
+  # record keeps a list of what is still on its way for a client to wait on.
+  def enqueue_trim(name)
+    if tracks_pending_trims?
+      queued_at = Time.current.iso8601(6)
+
+      self.class.where(id:)
+        .update_all(["pending_trims = pending_trims || jsonb_build_object(?::text, ?::text)", name, queued_at])
+      write_pending_trims(pending_trims.merge(name => queued_at))
+    end
+
     TrimAttachmentJob.perform_async(self.class.name, id, name)
+  end
+
+  def pending_trim_settled
+  end
+
+  def tracks_pending_trims?
+    has_attribute?(:pending_trims)
+  end
+
+  # Written past the dirty tracking: the column was already set in SQL, and a
+  # later save must not write back a list a job has since shortened.
+  def write_pending_trims(entries)
+    self.pending_trims = entries
+    clear_attribute_changes([:pending_trims])
+  end
+
+  def reload_pending_trims
+    write_pending_trims(self.class.where(id:).pick(:pending_trims) || {})
   end
 
   def remember_new_attachments

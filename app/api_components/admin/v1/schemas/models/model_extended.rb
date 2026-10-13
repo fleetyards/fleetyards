@@ -14,9 +14,14 @@ module Admin
                 type: :array,
                 items: ::Shared::V1::Schemas::DockCount
               },
-              links: ::Shared::V1::Schemas::ModelExtendedLinks
+              links: ::Shared::V1::Schemas::ModelExtendedLinks,
+              mediaProcessing: {
+                type: :array,
+                items: {type: :string},
+                description: "Views whose upload is still being cropped in the background. Their media still names the uncropped file, which the crop replaces."
+              }
             },
-            required: %w[dockCounts links]
+            required: %w[dockCounts links mediaProcessing]
           })
         end
       end

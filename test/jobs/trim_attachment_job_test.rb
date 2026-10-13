@@ -4,6 +4,8 @@ require "test_helper"
 require "vips"
 
 class TrimAttachmentJobTest < ActiveSupport::TestCase
+  include ActionCable::TestHelper
+
   setup do
     Sidekiq::Worker.clear_all
 
@@ -43,6 +45,50 @@ class TrimAttachmentJobTest < ActiveSupport::TestCase
     end
 
     assert_equal 0, PreprocessRepresentationsJob.jobs.size
+  end
+
+  test "#perform takes the view off the pending list" do
+    @model.top_view.attach(io: StringIO.new(padded_png), filename: "top.png", content_type: "image/png")
+    @model.update_columns(pending_trims: pending("top_view", "side_view"))
+
+    TrimAttachmentJob.new.perform("Model", @model.id, "top_view")
+
+    assert_equal %w[side_view], @model.reload.pending_trims.keys
+  end
+
+  test "#perform takes an attachment that has gone off the pending list" do
+    @model.update_columns(pending_trims: pending("top_view"))
+
+    TrimAttachmentJob.new.perform("Model", @model.id, "top_view")
+
+    assert_empty @model.reload.pending_trims
+  end
+
+  test "#perform tells admins with access to models what is still pending" do
+    admin_user = create(:admin_user, resource_access: [:models])
+    create(:admin_user, resource_access: [:users])
+    @model.update_columns(pending_trims: pending("top_view", "side_view"))
+
+    assert_broadcasts(AdminModelMediaChannel.broadcasting_for(admin_user), 1) do
+      TrimAttachmentJob.new.perform("Model", @model.id, "top_view")
+    end
+
+    assert_equal({"modelId" => @model.id, "mediaProcessing" => ["sideView"]},
+      broadcasts(AdminModelMediaChannel.broadcasting_for(admin_user)).map { |message| JSON.parse(message) }.first)
+  end
+
+  test "a crop that ran out of retries leaves the pending list" do
+    @model.update_columns(pending_trims: pending("top_view"))
+
+    TrimAttachmentJob.sidekiq_retries_exhausted_block.call(
+      {"args" => ["Model", @model.id, "top_view"]}, StandardError.new
+    )
+
+    assert_empty @model.reload.pending_trims
+  end
+
+  private def pending(*names)
+    names.index_with { Time.current.iso8601(6) }
   end
 
   private def padded_png

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2187,6 +2187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_090000) do
     t.boolean "can_land_on_planets", default: true, null: false
     t.integer "crew"
     t.integer "rsi_crew"
+    t.jsonb "pending_trims", default: {}, null: false
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
