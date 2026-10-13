@@ -5,7 +5,6 @@ zh-CN:
       in_app: "应用内"
       discord: "Discord"
       bluesky: "Bluesky"
-      x: "X.com"
     discord:
       first: "%{position}/%{total}"
       continued: "↳ %{position}/%{total}"

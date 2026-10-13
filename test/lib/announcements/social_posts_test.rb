@@ -23,11 +23,9 @@ module Announcements
       announcement = build(:announcement, :with_link, title: "T", body: "x" * 400)
       link = "https://#{Rails.configuration.app.domain}/fleets/"
 
-      post = SocialPosts.call(announcement, platform: Platform::X).sole
+      post = SocialPosts.call(announcement, platform: Platform::BLUESKY).sole
 
-      # Measured the way X measures: the link is billed at 23 whatever its real
-      # length, so plain characters would read as over when it is not.
-      assert_operator Platform::X.length(post), :<=, Platform::X.limit
+      assert_operator Platform::BLUESKY.length(post), :<=, Platform::BLUESKY.limit
       assert post.end_with?(link)
       assert_includes post, "…"
     end
@@ -58,10 +56,9 @@ module Announcements
     # the platforms the announcement actually selected -- trimming here would
     # silently rewrite copy somebody measured.
     test "hands an authored part back untouched, whatever its length" do
-      announcement = build(:announcement, social_parts: ["y" * 300])
+      announcement = build(:announcement, social_parts: ["y" * 400])
 
-      assert_equal 300, SocialPosts.call(announcement, platform: Platform::BLUESKY).sole.length
-      assert_equal 300, SocialPosts.call(announcement, platform: Platform::X).sole.length
+      assert_equal 400, SocialPosts.call(announcement, platform: Platform::BLUESKY).sole.length
     end
 
     test ".plain_text leaves plain prose alone" do

@@ -20,8 +20,7 @@ module Admin
               publishAt: {type: :string, format: "date-time"},
               notifyUsers: {type: :boolean},
               postDiscord: {type: :boolean},
-              postBluesky: {type: :boolean},
-              postX: {type: :boolean}
+              postBluesky: {type: :boolean}
             },
             additionalProperties: false,
             required: %w[title body]

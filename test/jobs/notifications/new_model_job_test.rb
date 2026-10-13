@@ -8,7 +8,6 @@ module Notifications
       @model = create(:model, notified: false)
       ::Discord::NewShip.stubs(:new).returns(stub(run: true))
       ::Bsky::Post.stubs(:configured?).returns(false)
-      ::XCom::Post.stubs(:configured?).returns(false)
     end
 
     def perform
@@ -22,7 +21,6 @@ module Notifications
     test "#perform sends discord notification and marks model as notified" do
       ::Discord::NewShip.expects(:new).with(model: @model).returns(stub(run: true))
       ::Bsky::Post.expects(:new).never
-      ::XCom::Post.expects(:new).never
 
       perform
 
@@ -69,13 +67,6 @@ module Notifications
       perform
     end
 
-    test "#perform posts the ship, its link and the hashtag to X" do
-      ::XCom::Post.stubs(:configured?).returns(true)
-      ::XCom::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
-
-      perform
-    end
-
     test "#perform shortens the ship name, never the link or the hashtag" do
       Manufacturer.any_instance.stubs(:name).returns("X" * 400)
       ::Bsky::Post.stubs(:configured?).returns(true)
@@ -110,9 +101,7 @@ module Notifications
 
     test "#perform still marks the model notified when a platform fails" do
       ::Bsky::Post.stubs(:configured?).returns(true)
-      ::XCom::Post.stubs(:configured?).returns(true)
       ::Bsky::Post.stubs(:new).returns(stub.tap { |client| client.stubs(:create).raises(::Bsky::Post::Error) })
-      ::XCom::Post.expects(:new).returns(mock.tap { |client| client.expects(:create).with(expected_text) })
       Appsignal.expects(:report_error).with(instance_of(::Bsky::Post::Error))
 
       perform

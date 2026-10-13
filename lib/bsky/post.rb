@@ -12,8 +12,8 @@ module Bsky
     # either.
     Record = Struct.new(:uri, :cid)
 
-    # The preview Bluesky shows under a post. Unlike X, it never fetches a
-    # link's page itself: a post without one is bare text, picture and all.
+    # The preview Bluesky shows under a post. Bluesky never fetches a link's
+    # page itself: a post without one is bare text, picture and all.
     LinkCard = Struct.new(:uri, :title, :description, :image, :content_type)
 
     # The lexicon's cap on an external embed's thumbnail.

@@ -2,13 +2,12 @@
 
 require "bsky/post"
 require "discord/announcement"
-require "x_com/post"
 
 module Announcements
   # Posts one announcement to one social channel.
   #
   # `retry: false`: a retry here is a duplicate post, not a second attempt --
-  # nothing in the three APIs is idempotent, and a timeout that actually landed
+  # nothing in the two APIs is idempotent, and a timeout that actually landed
   # would put the announcement out twice. A failed delivery is retried from the
   # admin instead, where a human can see whether the first one arrived.
   #
@@ -33,7 +32,7 @@ module Announcements
       end
 
       post(announcement, channel, delivery)
-      delivery.succeed!(external_id: external_id_for(channel, delivery))
+      delivery.succeed!(external_id: external_id_for(delivery))
     rescue => e
       Appsignal.report_error(e)
       delivery&.fail!(e.message)
@@ -43,7 +42,6 @@ module Announcements
       case channel.to_s
       when "discord" then ::Discord::Announcement.configured?
       when "bluesky" then ::Bsky::Post.configured?
-      when "x" then ::XCom::Post.configured?
       else false
       end
     end
@@ -51,18 +49,14 @@ module Announcements
     # The id recorded is the first post's, which is what addresses a thread:
     # every reply hangs off it, so it is the one link that opens the whole
     # thing.
-    private def external_id_for(channel, delivery)
-      first = delivery.first_posted_part
-      return nil if first.blank?
-
-      (channel.to_s == "x") ? first["id"] : first["uri"]
+    private def external_id_for(delivery)
+      delivery.first_posted_part&.fetch("uri", nil)
     end
 
     private def post(announcement, channel, delivery)
       case channel.to_s
       when "discord" then post_discord(announcement, delivery)
       when "bluesky" then post_bluesky_thread(announcement, delivery)
-      when "x" then post_x_thread(announcement, delivery)
       end
     end
 
@@ -87,16 +81,6 @@ module Announcements
         delivery.record_part!({"uri" => created.uri, "cid" => created.cid})
         root ||= created
         parent = created
-      end
-    end
-
-    private def post_x_thread(announcement, delivery)
-      client = ::XCom::Post.new
-      previous = delivery.last_posted_part&.fetch("id", nil)
-
-      remaining(announcement, ::Announcements::Platform::X, delivery).each do |text|
-        previous = client.create(text, reply_to: previous)
-        delivery.record_part!({"id" => previous})
       end
     end
 

@@ -57,14 +57,5 @@ module Announcements
       end
       assert_equal({"likes" => 1}, delivery.engagement)
     end
-
-    test "#perform reads nothing for X" do
-      delivery = create(:announcement_delivery, announcement: @announcement, channel: "x", status: "succeeded", delivered_at: 1.hour.ago)
-      ::Bsky::Engagement.any_instance.expects(:fetch).never
-
-      Announcements::RefreshEngagementJob.new.perform(delivery.id)
-
-      assert_nil delivery.reload.engagement_fetched_at
-    end
   end
 end

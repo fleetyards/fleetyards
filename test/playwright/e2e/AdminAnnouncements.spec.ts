@@ -34,7 +34,7 @@ test.describe("Admin Announcements", () => {
       .filter({ hasText: "Trade routes for your ship" });
 
     await expect(sent.getByTestId("announcement-delivery-summary")).toHaveText(
-      "3/4 sent · 1 failed",
+      "2/3 sent · 1 failed",
     );
     await expect(sent.getByTestId("announcement-deliveries")).toHaveCount(0);
 
@@ -67,7 +67,7 @@ test.describe("Admin Announcements", () => {
     await expect(
       deliveries.getByTestId("announcement-delivery-retry"),
     ).toHaveCount(1);
-    // Rows sort by channel, and the failed X post has nothing to open.
+    // The in-app fan-out has no post to open.
     await expect(
       deliveries.getByTestId("announcement-delivery-link"),
     ).toHaveCount(2);

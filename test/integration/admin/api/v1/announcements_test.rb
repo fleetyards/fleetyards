@@ -285,7 +285,7 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
       discordParts: ["## Fleet Ops is in public beta", "**How to switch them on**"],
       socialParts: ["Fleet Ops is in public beta 🚀", "Free in beta, then supporter features."],
       postDiscord: true,
-      postX: true
+      postBluesky: true
     }
 
     assert_api_response :post, 201, body: body do
@@ -298,7 +298,7 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
   test "POST /announcements refuses a social post past the platform limit" do
     sign_in @admin_user
 
-    assert_api_response :post, 400, body: {title: "x", body: "y", postX: true, socialParts: ["z" * 281]} do
+    assert_api_response :post, 400, body: {title: "x", body: "y", postBluesky: true, socialParts: ["z" * 301]} do
       assert_equal "validation_error.announcement.create", parsed_body["code"]
     end
   end
@@ -372,9 +372,9 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     announcement = create(:announcement)
     sign_in @admin_user
 
-    assert_api_response :put, 200, api_path: "/announcements/{id}", path_params: {id: announcement.id}, body: {title: "Updated", body: "New text.", postX: true} do
+    assert_api_response :put, 200, api_path: "/announcements/{id}", path_params: {id: announcement.id}, body: {title: "Updated", body: "New text.", postBluesky: true} do
       assert_equal "Updated", parsed_body["title"]
-      assert parsed_body["postX"]
+      assert parsed_body["postBluesky"]
     end
   end
 
@@ -516,13 +516,13 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
 
   test "PUT /announcements/:id/deliveries/:channel/retry re-queues a failed post" do
     announcement = create(:announcement, :social, :published)
-    create(:announcement_delivery, announcement:, channel: "x", status: "failed", error: "rate limited")
+    create(:announcement_delivery, announcement:, channel: "bluesky", status: "failed", error: "rate limited")
     sign_in @admin_user
 
-    Announcements::PostSocialJob.expects(:perform_async).with(announcement.id, "x").once
+    Announcements::PostSocialJob.expects(:perform_async).with(announcement.id, "bluesky").once
 
-    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "x"} do
-      delivery = parsed_body["deliveries"].find { |row| row["channel"] == "x" }
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "bluesky"} do
+      delivery = parsed_body["deliveries"].find { |row| row["channel"] == "bluesky" }
 
       assert_equal "pending", delivery["status"]
     end
@@ -533,7 +533,7 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
   # list would sit on `failed` until the job settled.
   test "PUT /announcements/:id/deliveries/:channel/retry announces the delivery going back to pending" do
     announcement = create(:announcement, :social, :published)
-    create(:announcement_delivery, announcement:, channel: "x", status: "failed", error: "rate limited")
+    create(:announcement_delivery, announcement:, channel: "bluesky", status: "failed", error: "rate limited")
     sign_in @admin_user
 
     Announcements::PostSocialJob.stubs(:perform_async)
@@ -541,9 +541,9 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     payloads = []
     AdminAnnouncementsChannel.stubs(:broadcast_to).with { |_admin, payload| payloads << payload }
 
-    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "bluesky"}
 
-    broadcast = payloads.last["deliveries"].find { |row| row["channel"] == "x" }
+    broadcast = payloads.last["deliveries"].find { |row| row["channel"] == "bluesky" }
 
     assert_equal "pending", broadcast["status"]
   end
@@ -560,13 +560,13 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
 
   test "PUT /announcements/:id/deliveries/:channel/retry claims the delivery so a second click is refused" do
     announcement = create(:announcement, :social, :published)
-    delivery = create(:announcement_delivery, announcement:, channel: "x", status: "failed")
+    delivery = create(:announcement_delivery, announcement:, channel: "bluesky", status: "failed")
     sign_in @admin_user
 
     Announcements::PostSocialJob.expects(:perform_async).once
 
-    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "x"}
-    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "bluesky"}
+    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "bluesky"}
 
     assert_equal "pending", delivery.reload.status
   end
@@ -586,39 +586,39 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
 
   test "PUT /announcements/:id/deliveries/:channel/retry refuses a social delivery still pending" do
     announcement = create(:announcement, :social, :published)
-    create(:announcement_delivery, announcement:, channel: "x", status: "pending")
+    create(:announcement_delivery, announcement:, channel: "bluesky", status: "pending")
     sign_in @admin_user
 
     Announcements::PostSocialJob.expects(:perform_async).never
 
-    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "bluesky"}
   end
 
   test "PUT /announcements/:id/deliveries/:channel/retry refuses a delivery that succeeded" do
     announcement = create(:announcement, :social, :published)
-    create(:announcement_delivery, announcement:, channel: "x", status: "succeeded")
+    create(:announcement_delivery, announcement:, channel: "bluesky", status: "succeeded")
     sign_in @admin_user
 
     Announcements::PostSocialJob.expects(:perform_async).never
 
-    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "bluesky"}
   end
 
   test "PUT /announcements/:id/deliveries/:channel/retry returns 404 for a channel that was never sent" do
     announcement = create(:announcement, :published)
     sign_in @admin_user
 
-    assert_api_response :put, 404, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 404, path_params: {id: announcement.id, channel: "bluesky"}
   end
 
   test "PUT /announcements/:id/deliveries/:channel/retry returns 401 when not signed in" do
-    assert_api_response :put, 401, path_params: {id: create(:announcement).id, channel: "x"}
+    assert_api_response :put, 401, path_params: {id: create(:announcement).id, channel: "bluesky"}
   end
 
   test "PUT /announcements/:id/deliveries/:channel/retry returns 403 for an admin without access" do
     sign_in create(:admin_user, resource_access: [])
 
-    assert_api_response :put, 403, path_params: {id: create(:announcement).id, channel: "x"}
+    assert_api_response :put, 403, path_params: {id: create(:announcement).id, channel: "bluesky"}
   end
 
   test "PUT /announcements/:id/refresh-engagement queues a refresh for every channel that has counts" do
@@ -629,7 +629,6 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
       announcement:, channel: "discord", status: "succeeded", delivered_at: 1.hour.ago,
       posted_parts: [{"index" => 0, "message_id" => "111", "channel_id" => "222"}]
     )
-    create(:announcement_delivery, announcement:, channel: "x", status: "succeeded", delivered_at: 1.hour.ago)
     create(:announcement_delivery, announcement:, channel: "in_app", status: "succeeded", delivered_at: 1.hour.ago)
     sign_in @admin_user
 
@@ -659,7 +658,6 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
       engagement: {"reactions" => [{"emoji" => "🚀", "count" => 3}], "guild_id" => "333"},
       engagement_fetched_at: 5.minutes.ago
     )
-    create(:announcement_delivery, announcement:, channel: "x", status: "succeeded", delivered_at: 1.hour.ago, external_id: "1234")
     sign_in @admin_user
 
     assert_api_response :get, 200, api_path: "/announcements/{id}", path_params: {id: announcement.id} do
@@ -669,8 +667,6 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
       assert_equal "https://bsky.app/profile/did:plc:abc/post/3k", deliveries["bluesky"]["url"]
       assert_equal [{"emoji" => "🚀", "count" => 3}], deliveries["discord"]["engagement"]["reactions"]
       assert_equal "https://discord.com/channels/333/222/111", deliveries["discord"]["url"]
-      assert_equal "https://x.com/i/status/1234", deliveries["x"]["url"]
-      assert_nil deliveries["x"]["engagement"]
     end
   end
 

@@ -23,7 +23,6 @@ module Admin
             notifyUsers: {type: :boolean},
             postDiscord: {type: :boolean},
             postBluesky: {type: :boolean},
-            postX: {type: :boolean},
             publishable: {type: :boolean},
             lastTestedAt: {type: :string, format: "date-time"},
             author: {type: :string},
@@ -33,7 +32,7 @@ module Admin
           },
           additionalProperties: false,
           required: %w[
-            id title body icon status notifyUsers postDiscord postBluesky postX
+            id title body icon status notifyUsers postDiscord postBluesky
             publishable deliveries discordParts socialParts createdAt updatedAt
           ]
         })

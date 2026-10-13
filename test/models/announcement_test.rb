@@ -31,16 +31,14 @@ class AnnouncementTest < ActiveSupport::TestCase
   # Each part is measured against the platforms the announcement actually
   # selected, and measured the way each of them counts.
   test "each social part is capped by the platforms it is going to" do
-    refute build(:announcement, :social, social_parts: ["ok", "x" * 281]).valid?
+    refute build(:announcement, :social, social_parts: ["ok", "x" * 301]).valid?
     assert build(:announcement, post_bluesky: true, social_parts: ["ok", "x" * 300]).valid?
     refute build(:announcement, post_bluesky: true, social_parts: ["x" * 301]).valid?
   end
 
-  # 200 CJK characters are 400 to X and 200 to Bluesky, so the same post is
-  # legal on one and refused on the other.
-  test "a part is measured the way each platform measures" do
-    assert build(:announcement, post_bluesky: true, social_parts: ["公" * 200]).valid?
-    refute build(:announcement, post_x: true, social_parts: ["公" * 200]).valid?
+  # A ZWJ family is five codepoints and one grapheme to Bluesky.
+  test "a part is measured the way the platform measures" do
+    assert build(:announcement, post_bluesky: true, social_parts: ["👨‍👩‍👧" * 300]).valid?
   end
 
   # A limit for a channel nobody selected is noise.
@@ -49,12 +47,12 @@ class AnnouncementTest < ActiveSupport::TestCase
   end
 
   test "the error names the platform and which part is too long" do
-    announcement = build(:announcement, post_x: true, social_parts: ["ok", "x" * 281])
+    announcement = build(:announcement, post_bluesky: true, social_parts: ["ok", "x" * 301])
     announcement.valid?
 
     message = announcement.errors.full_messages.join
     assert_includes message, "post 2"
-    assert_includes message, I18n.t("announcements.channels.x")
+    assert_includes message, I18n.t("announcements.channels.bluesky")
   end
 
   test "each Discord part is capped at a Discord message" do
@@ -85,7 +83,7 @@ class AnnouncementTest < ActiveSupport::TestCase
   test "#channels lists in_app alongside the selected social channels" do
     announcement = build(:announcement, :social)
 
-    assert_equal %i[in_app discord bluesky x], announcement.channels
+    assert_equal %i[in_app discord bluesky], announcement.channels
   end
 
   test "#social_channels leaves out what was not selected" do

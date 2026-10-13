@@ -34,10 +34,9 @@ class Announcement < ApplicationRecord
   validates :title, presence: true, length: {maximum: 255}
   validates :body, presence: true
   # Measured against the platforms this announcement actually selected, and
-  # measured the way each of them counts. A post can be legal on Bluesky and
-  # too long for X, so the author is told at save rather than having their copy
-  # quietly trimmed on the way out.
-  validates :social_parts, announcement_part_length: {platforms: %i[x bluesky]}
+  # measured the way each of them counts, so the author is told at save rather
+  # than having their copy quietly trimmed on the way out.
+  validates :social_parts, announcement_part_length: {platforms: %i[bluesky]}
   validates :discord_parts, announcement_part_length: {
     platform: Announcements::Platform::DISCORD,
     overhead: ->(total) { Announcements::DiscordMessages.marker_overhead(total) }
@@ -151,7 +150,7 @@ class Announcement < ApplicationRecord
 
   # `link` is stored as a path, because that is what a notification carries and
   # what the app routes on. Every channel that leaves the app -- mail, a Discord
-  # post, a tweet -- has no site around it to resolve one against.
+  # post, a Bluesky post -- has no site around it to resolve one against.
   def absolute_link
     return nil if link.blank?
     return link if link.start_with?("http")

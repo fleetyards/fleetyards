@@ -6,15 +6,14 @@ class AnnouncementDelivery < ApplicationRecord
   IN_APP_CHANNEL = :in_app
   # Order matters only for display; the publish job dispatches them in
   # parallel.
-  SOCIAL_CHANNELS = %i[discord bluesky x].freeze
+  SOCIAL_CHANNELS = %i[discord bluesky].freeze
 
   belongs_to :announcement
 
   enum :channel, {
     in_app: "in_app",
     discord: "discord",
-    bluesky: "bluesky",
-    x: "x"
+    bluesky: "bluesky"
   }, prefix: true
 
   enum :status, {
@@ -40,8 +39,7 @@ class AnnouncementDelivery < ApplicationRecord
     status external_id error delivered_at attempts engagement engagement_fetched_at
   ].freeze
 
-  # The channels whose engagement can be read for free. X is not among them:
-  # every read of a post is billed there, so its delivery links out instead.
+  # The channels whose engagement is read back.
   ENGAGEMENT_CHANNELS = %w[bluesky discord].freeze
 
   # How long after the post its counts are still followed. Engagement on an
@@ -79,7 +77,7 @@ class AnnouncementDelivery < ApplicationRecord
   end
 
   # A part that landed, recorded the moment it does. The next attempt resumes
-  # from here rather than from the top -- none of the three platforms can
+  # from here rather than from the top -- neither platform can
   # unsend a post, so re-running a thread from the first part publishes it
   # twice.
   def record_part!(reference)
@@ -114,7 +112,6 @@ class AnnouncementDelivery < ApplicationRecord
     return nil unless status_succeeded?
 
     case channel
-    when "x" then x_url
     when "bluesky" then bluesky_url
     when "discord" then discord_url
     end
@@ -155,12 +152,6 @@ class AnnouncementDelivery < ApplicationRecord
 
   def skip!(reason)
     update!(status: :skipped, error: reason.to_s.truncate(1_000), delivered_at: nil)
-  end
-
-  private def x_url
-    return nil if external_id.blank?
-
-    "https://x.com/i/status/#{external_id}"
   end
 
   # at://<did>/app.bsky.feed.post/<rkey>

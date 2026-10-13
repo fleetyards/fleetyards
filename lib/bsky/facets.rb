@@ -5,8 +5,13 @@ module Bsky
   # clickable when the record carries a facet naming its range, and the range
   # is in UTF-8 bytes, not characters.
   module Facets
-    URL_PATTERN = ::Announcements::Platform::Weighted::URL_PATTERN
-    URL_TRAILING = ::Announcements::Platform::Weighted::URL_TRAILING
+    # Every character RFC 3986 allows in a URL, and nothing else. `\S+` ran
+    # on until whitespace, so CJK written straight after a link -- which needs
+    # no space before it -- was swallowed into the link.
+    URL_PATTERN = %r{https?://[A-Za-z0-9\-._~:/?\#\[\]@!$&'()*+,;=%]+}
+
+    # A sentence-final full stop is not part of the link it follows.
+    URL_TRAILING = /[.,;:!?'"’”)\]}>]+\z/
 
     # A tag starts after whitespace or at the start of the text, and is not a
     # number: "#1" is a list item, not a tag.

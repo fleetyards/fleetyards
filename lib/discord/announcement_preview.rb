@@ -2,18 +2,17 @@
 
 require "bsky/post"
 require "discord/announcement"
-require "x_com/post"
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord
   # The dry run: the same announcement, posted to the admin channel instead of
   # the updates channel.
   #
-  # It carries the other channels' copy too -- every post of the Bluesky thread
-  # and every post of the X thread, each with its character count -- because
-  # that is the part nobody can check by reading the form. Where a thread
-  # breaks and what each post costs against its platform's limit is the whole
-  # question, and the only honest answer is the composed strings.
+  # It carries the Bluesky copy too -- every post of the thread, each with its
+  # character count -- because that is the part nobody can check by reading
+  # the form. Where a thread breaks and what each post costs against its
+  # platform's limit is the whole question, and the only honest answer is the
+  # composed strings.
   class AnnouncementPreview < ::Discord::Announcement
     def self.configured?
       Rails.application.credentials.discord_admin_endpoint.present?
@@ -29,15 +28,14 @@ module Discord
 
     # Split across as many messages as the preview needs, never truncated. A
     # dry run whose job is to show every part cannot be the one thing that
-    # drops the last of them -- and a long announcement's X posts sit at the
-    # bottom, which is exactly what a cut would take.
+    # drops the last of them -- and a long announcement's Bluesky posts sit at
+    # the bottom, which is exactly what a cut would take.
     private def contents
       blocks = [
         "**#{title}**",
         I18n.t("announcements.preview.channels", channels: channel_list),
         *discord_preview,
-        *social_preview(:bluesky),
-        *social_preview(:x)
+        *social_preview(:bluesky)
       ].compact_blank
 
       pack(blocks)
@@ -72,9 +70,9 @@ module Discord
       preview_blocks(::Announcements::Platform::DISCORD, messages)
     end
 
-    # Counted the way each platform counts -- X weights CJK and emoji and
-    # discounts URLs, Bluesky counts graphemes -- because a number that does
-    # not match the platform's own is worse than no number.
+    # Counted the way the platform counts -- Bluesky counts graphemes --
+    # because a number that does not match the platform's own is worse than no
+    # number.
     private def social_preview(channel)
       return [] unless announcement.public_send(:"post_#{channel}")
 

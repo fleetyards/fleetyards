@@ -10884,8 +10884,6 @@ components:
           type: boolean
         postBluesky:
           type: boolean
-        postX:
-          type: boolean
         publishable:
           type: boolean
         lastTestedAt:
@@ -10913,7 +10911,6 @@ components:
       - notifyUsers
       - postDiscord
       - postBluesky
-      - postX
       - publishable
       - deliveries
       - discordParts
@@ -10927,12 +10924,10 @@ components:
       - in_app
       - discord
       - bluesky
-      - x
       x-enumNames:
       - IN_APP
       - DISCORD
       - BLUESKY
-      - X
       title: AnnouncementChannelEnum
     AnnouncementDelivery:
       type: object
@@ -11028,8 +11023,6 @@ components:
         postDiscord:
           type: boolean
         postBluesky:
-          type: boolean
-        postX:
           type: boolean
       additionalProperties: false
       required:

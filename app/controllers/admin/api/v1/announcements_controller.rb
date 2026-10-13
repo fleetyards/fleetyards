@@ -87,7 +87,7 @@ module Admin
 
           # Claimed in one statement rather than checked and then written.
           # Posting is not idempotent, so two clicks that each passed a
-          # separate status check would put the same announcement on X twice.
+          # separate status check would put the same announcement on Bluesky twice.
           # It also has to be `pending` before the job is queued, or a fast
           # worker writes `succeeded` and this overwrites it.
           return render json: ValidationError.new("announcement.delivery_not_retryable"), status: :bad_request unless delivery.retryable?
@@ -133,7 +133,7 @@ module Admin
         private def announcement_params
           @announcement_params ||= params.permit(
             :title, :body, :link, :icon, :status, :publish_at,
-            :notify_users, :post_discord, :post_bluesky, :post_x,
+            :notify_users, :post_discord, :post_bluesky,
             discord_parts: [], social_parts: []
           ).tap do |permitted|
             # Letting a form set `publishing`, `published` or `failed` would

@@ -23,7 +23,6 @@ FactoryBot.define do
     trait :social do
       post_discord { true }
       post_bluesky { true }
-      post_x { true }
     end
 
     trait :with_link do
