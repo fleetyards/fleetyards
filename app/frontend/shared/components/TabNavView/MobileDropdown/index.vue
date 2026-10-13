@@ -18,11 +18,15 @@ import {
   useActiveTab,
 } from "@/shared/components/TabNavView/useActiveTab";
 import { type TabNavLink } from "@/shared/components/TabNavView/types";
+import { type TabNavViewAnchorItem } from "@/shared/components/TabNavView/AnchorItems/index.vue";
 
 type Props = {
-  routes: RouteRecordRaw[];
+  routes?: RouteRecordRaw[];
+  // In-page tabs that switch content without navigating, in place of routes.
+  anchors?: TabNavViewAnchorItem[];
+  activeId?: string;
   links?: TabNavLink[];
-  authenticated: boolean;
+  authenticated?: boolean;
   resourceAccess?: string[];
   // Mirrors AccessCheck: the flag sits beside the privilege list rather than
   // inside it, so a tab gated on one is only reachable by checking both.
@@ -31,11 +35,19 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  routes: undefined,
+  anchors: undefined,
+  activeId: undefined,
+  authenticated: false,
   links: undefined,
   resourceAccess: undefined,
   superAdmin: false,
   badges: undefined,
 });
+
+const emit = defineEmits<{
+  "update:activeId": [value: string];
+}>();
 
 const badgeFor = (name?: RouteRecordName) => {
   const count = name ? props.badges?.[String(name)] : undefined;
@@ -66,7 +78,7 @@ const visible = ref(false);
 const wrapper = ref<HTMLElement | null>(null);
 
 const filteredRoutes = computed(() => {
-  return props.routes
+  return (props.routes ?? [])
     .filter(isTabRoute)
     .filter((r) => {
       if (props.authenticated) {
@@ -83,7 +95,12 @@ const filteredRoutes = computed(() => {
 
 const { isActive, activeRoute } = useActiveTab(filteredRoutes);
 
+const activeAnchor = computed(() =>
+  props.anchors?.find((item) => item.id === props.activeId),
+);
+
 const activeLabel = computed(() => {
+  if (props.anchors) return activeAnchor.value?.label ?? "";
   if (!activeRoute.value) return "";
   return t(`nav.${activeRoute.value.meta?.title}`);
 });
@@ -98,6 +115,13 @@ const select = (r: RouteRecordRaw) => {
   if (name) {
     void router.push({ name });
   }
+};
+
+const selectAnchor = (item: TabNavViewAnchorItem) => {
+  if (item.disabled) return;
+
+  visible.value = false;
+  emit("update:activeId", item.id);
 };
 
 const follow = (link: TabNavLink) => {
@@ -149,6 +173,11 @@ onUnmounted(() => {
       @click="toggle"
     >
       <span class="tab-nav-dropdown__label">{{ activeLabel }}</span>
+      <span
+        v-if="anchors?.some((item) => item.invalid)"
+        class="tab-nav-dropdown__error"
+        aria-hidden="true"
+      />
       <span v-if="waiting" class="tabs-badge">
         {{ waiting > 99 ? "99+" : waiting }}
       </span>
@@ -159,6 +188,28 @@ onUnmounted(() => {
     </button>
     <Transition name="tab-nav-dropdown-panel">
       <ul v-if="visible" class="tab-nav-dropdown__panel" role="listbox">
+        <li
+          v-for="item in props.anchors"
+          :key="item.id"
+          class="tab-nav-dropdown__item"
+          :class="{
+            active: item.id === props.activeId,
+            disabled: item.disabled,
+            'has-errors': item.invalid,
+          }"
+          role="option"
+          :aria-selected="item.id === props.activeId"
+          :aria-disabled="item.disabled || undefined"
+          :data-test="`tab-anchor-option-${item.id}`"
+          @click="selectAnchor(item)"
+        >
+          <span>{{ item.label }}</span>
+          <span
+            v-if="item.invalid"
+            class="tab-nav-dropdown__error"
+            aria-hidden="true"
+          />
+        </li>
         <li
           v-for="item in filteredRoutes"
           :key="String(routeName(item))"

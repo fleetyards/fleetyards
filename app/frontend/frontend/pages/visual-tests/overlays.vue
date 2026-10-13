@@ -10,7 +10,6 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -605,17 +604,15 @@ const demoStar = {
 
   <Heading :level="HeadingLevelEnum.H2">TabNavView | From items</Heading>
   <p>
-    The slot form, which is what <code>FormTabs</code> builds on: ids rather
-    than routes, and a tab can be marked invalid or disabled.
+    The <code>anchors</code> form, which is what <code>FormTabs</code> builds
+    on: ids rather than routes, and a tab can be marked invalid or disabled.
+    Below the <code>md</code> breakpoint it becomes the same dropdown.
   </p>
-  <TabNavView tablist :active-key="activeAnchor">
-    <template #nav>
-      <TabNavViewAnchorItems
-        :items="anchorItems"
-        :active-id="activeAnchor"
-        @update:active-id="activeAnchor = $event"
-      />
-    </template>
+  <TabNavView
+    :anchors="anchorItems"
+    :active-key="activeAnchor"
+    @update:active-key="activeAnchor = $event"
+  >
     <template #content>
       <Panel>
         <PanelBody>

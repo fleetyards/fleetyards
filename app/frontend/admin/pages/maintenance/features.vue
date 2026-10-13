@@ -12,7 +12,6 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import {
   useAdminFeatures,
   getAdminFeaturesQueryKey,
@@ -109,14 +108,11 @@ const daysOpen = (fullyOnSince?: string | null) => {
 
   <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
 
-  <TabNavView tablist :active-key="activeTab">
-    <template #nav>
-      <TabNavViewAnchorItems
-        :items="tabItems"
-        :active-id="activeTab"
-        @update:active-id="setActiveTab"
-      />
-    </template>
+  <TabNavView
+    :anchors="tabItems"
+    :active-key="activeTab"
+    @update:active-key="setActiveTab"
+  >
 
     <template #content>
       <InlineEditableList

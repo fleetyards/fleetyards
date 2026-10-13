@@ -8,7 +8,6 @@ export default {
 import { shallowRef } from "vue";
 import { useFormErrors } from "vee-validate";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import {
   formTabsContextKey,
   type FormTabRegistration,
@@ -134,14 +133,11 @@ watch(
 </script>
 
 <template>
-  <TabNavView tablist :active-key="activeId">
-    <template #nav>
-      <TabNavViewAnchorItems
-        :items="items"
-        :active-id="activeId"
-        @update:active-id="setActive"
-      />
-    </template>
+  <TabNavView
+    :anchors="items"
+    :active-key="activeId"
+    @update:active-key="setActive"
+  >
     <template #content>
       <slot />
     </template>

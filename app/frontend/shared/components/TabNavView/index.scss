@@ -306,6 +306,10 @@ $nav-transition-speed: 0.3s;
   }
 }
 
+.tab-nav-horizontal__dropdown {
+  margin-bottom: 20px;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .tabs-wrapper {
     margin-bottom: 20px;
