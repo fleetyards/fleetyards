@@ -338,7 +338,10 @@ const destroyAll = async () => {
 const tourOpen = ref(false);
 const showTourExample = computed(
   () =>
-    tourOpen.value && hangarStats.value?.total === 0 && !isFilterSelected.value,
+    tourOpen.value &&
+    !hangarStatsFetching.value &&
+    hangarStats.value?.total === 0 &&
+    !isFilterSelected.value,
 );
 
 const openGuide = () => {
