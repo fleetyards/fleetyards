@@ -593,6 +593,30 @@ describe("FleetMembersHealthPage", () => {
       );
     });
 
+    // The menu is teleported to the body, so its rows are looked up there.
+    it("lists each action as a labelled row once opened", async () => {
+      health = healthWith({
+        membersWithoutSquadron: section([member("ward")]),
+      });
+
+      const subject = await mount();
+      await subject
+        .find(
+          "[data-test='health-noSquadron-ward'] [data-test='health-actions-menu'] button",
+        )
+        .trigger("click");
+
+      // Earlier specs leave their teleported menus behind; this one's is last.
+      const squadronRow = [
+        ...document.body.querySelectorAll(
+          "[data-test='health-add-to-squadron-alpha']",
+        ),
+      ].at(-1);
+      expect(squadronRow?.textContent?.trim()).toBe("Add to Alpha Wing");
+
+      subject.unmount();
+    });
+
     it("swaps the day segments for a menu", async () => {
       const subject = await mount();
 
