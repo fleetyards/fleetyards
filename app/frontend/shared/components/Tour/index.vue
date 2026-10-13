@@ -200,6 +200,7 @@ const place = () => {
     gap: GAP,
     margin: MARGIN,
     flip: true,
+    avoidOverlap: true,
   });
 
   cardPosition.value = { top, left };
@@ -324,7 +325,11 @@ const showStep = async (
 
   const element = currentTarget();
 
-  if (element && !comfortablyVisible(element.getBoundingClientRect())) {
+  if (
+    element &&
+    current.value?.scrollIntoView !== false &&
+    !comfortablyVisible(element.getBoundingClientRect())
+  ) {
     element.scrollIntoView({
       block: "center",
       inline: "nearest",
