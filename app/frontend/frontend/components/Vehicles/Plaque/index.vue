@@ -334,8 +334,17 @@ const lines = computed(() =>
       700 5.6cqw/1.1 Orbitron,
       sans-serif;
     letter-spacing: 0.06em;
-    overflow-wrap: anywhere;
     text-transform: uppercase;
+  }
+
+  // One line each, at every width. A picture of the plaque pins every box to
+  // its width rounded below the text, so a break would draw the second line
+  // over the next one.
+  &__name,
+  &__class,
+  &__registry,
+  &__lines li {
+    white-space: nowrap;
   }
 
   &__class,
