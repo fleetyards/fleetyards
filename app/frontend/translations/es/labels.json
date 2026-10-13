@@ -2176,6 +2176,8 @@
         "fleetInvites": "Sin invitaciones presentes"
       },
       "user": {
+        "displayName": "Nombre visible",
+        "displayNameInfo": "Se muestra en lugar de tu nombre de usuario en tu hangar público, en tus placas de dedicatoria y en las listas de miembros de las flotas.",
         "hangarDefaultSort": "Orden predeterminado",
         "hangarDefaultSortInfo": "Arrastra una nave por su asa para reordenarla. Disponible mientras el orden personalizado esté activo y no haya filtros.",
         "hangarDefaultSortOptions": {

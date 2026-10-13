@@ -2176,6 +2176,8 @@
         "fleetInvites": "Keine Einladungen vorhanden"
       },
       "user": {
+        "displayName": "Anzeigename",
+        "displayNameInfo": "Wird statt deines Benutzernamens in deinem öffentlichen Hangar, auf deinen Widmungstafeln und in Flotten-Mitgliederlisten angezeigt.",
         "hangarDefaultSort": "Standard-Reihenfolge",
         "hangarDefaultSortInfo": "Zieh ein Schiff an seinem Griff, um es umzusortieren. Verfügbar, solange die eigene Reihenfolge aktiv und kein Filter gesetzt ist.",
         "hangarDefaultSortOptions": {

@@ -38,6 +38,8 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 
+const DISPLAY_NAME_LIMIT = 50;
+
 const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -46,6 +48,7 @@ const sessionStore = useSessionStore();
 
 const initialValues = ref<UserUpdateInput>({
   avatar: undefined,
+  displayName: sessionStore.currentUser?.displayName,
   rsiHandle: sessionStore.currentUser?.rsiHandle,
   location: sessionStore.currentUser?.location,
   currentSystem: sessionStore.currentUser?.currentSystem,
@@ -65,6 +68,7 @@ const { defineField, handleSubmit } = useForm({
 });
 
 const [avatar, avatarProps] = defineField("avatar");
+const [displayName, displayNameProps] = defineField("displayName");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
 const [location, locationProps] = defineField("location");
 const [currentSystem] = defineField("currentSystem");
@@ -140,6 +144,7 @@ onMounted(() => {
 });
 
 const setupForm = () => {
+  displayName.value = sessionStore.currentUser?.displayName;
   rsiHandle.value = sessionStore.currentUser?.rsiHandle;
   location.value = sessionStore.currentUser?.location;
   currentSystem.value = sessionStore.currentUser?.currentSystem;
@@ -201,7 +206,8 @@ const onSubmit = handleSubmit(async (values) => {
 
   await mutation
     .mutateAsync({
-      data: rest,
+      // Null rather than left out: a cleared name falls back to the username.
+      data: { ...rest, displayName: rest.displayName || null },
     })
     .then(() => {
       comlink.emit("user-update");
@@ -250,6 +256,19 @@ const onSubmit = handleSubmit(async (values) => {
           :allowed-types="AllowedFileTypes.IMAGE"
           clearable
           avatar
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="displayName"
+          v-bind="displayNameProps"
+          name="displayName"
+          translation-key="user.displayName"
+          :placeholder="sessionStore.currentUser?.username"
+          :info="t('labels.user.displayNameInfo')"
+          :rules="`max:${DISPLAY_NAME_LIMIT}`"
+          clearable
+          data-test="settings-display-name"
         />
       </div>
     </div>

@@ -2176,6 +2176,8 @@
         "fleetInvites": "沒有邀請"
       },
       "user": {
+        "displayName": "顯示名稱",
+        "displayNameInfo": "在你的公開機庫、命名銘牌和艦隊成員列表中代替使用者名稱顯示。",
         "hangarDefaultSort": "預設順序",
         "hangarDefaultSortInfo": "按住艦船的拖曳柄即可重新排序。僅在自訂順序生效且未設定篩選時可用。",
         "hangarDefaultSortOptions": {
