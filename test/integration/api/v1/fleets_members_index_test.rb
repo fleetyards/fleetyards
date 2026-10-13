@@ -283,6 +283,17 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members searches by display name" do
+    @member.update!(display_name: "Torlek Maru")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"searchCont" => "torlek"}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
   test "GET /fleets/:slug/members searches by username" do
     sign_in @admin
 

@@ -266,7 +266,7 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
+      "confirmed_at", "created_at", "current_sign_in_at", "discord", "display_name", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
       "id", "rsi_handle", "twitch", "updated_at", "username", "youtube",
       "search"

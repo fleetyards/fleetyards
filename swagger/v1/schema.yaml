@@ -28038,7 +28038,7 @@ components:
       properties:
         searchCont:
           type: string
-          description: Matches the username or the fleet nickname
+          description: Matches the username, the display name or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -28974,7 +28974,7 @@ components:
       properties:
         searchCont:
           type: string
-          description: Matches the username or the fleet nickname
+          description: Matches the username, the display name or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
