@@ -248,3 +248,27 @@ describe("FormFileInput presets", () => {
     expect(subject.emitted("update:modelValue")).toBeUndefined();
   });
 });
+
+// The background job replacing the attachment purges the blob `file` names, so
+// drawing it while the job runs fails the moment the job lands.
+describe("FormFileInput processing", () => {
+  it("does not draw an attachment that is being replaced", async () => {
+    const subject = await mount({
+      file: { ...(attachedFile as object), contentType: "image/png" },
+      processing: true,
+    });
+
+    expect(shownImage(subject).exists()).toBe(false);
+    expect(subject.find(".base-image-input__processing").exists()).toBe(true);
+  });
+
+  it("still draws the local file the upload came from", async () => {
+    const subject = await mount({
+      file: attachedFile,
+      previewSrc: "blob:local-view",
+      processing: true,
+    });
+
+    expect(shownImage(subject).props("src")).toBe("blob:local-view");
+  });
+});

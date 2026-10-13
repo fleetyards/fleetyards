@@ -63,6 +63,11 @@
               "one": "Un file pronto — salva per applicarlo.",
               "other": "%{count} file pronti — salva per applicarli."
             },
+            "processing": {
+              "one": "Ritaglio di una vista in background — si aggiornerà qui al termine.",
+              "other": "Ritaglio di %{count} viste in background — si aggiorneranno qui al termine."
+            },
+            "processed": "Tutte le viste sono state elaborate.",
             "ignored": "Ignorati: %{files}"
           }
         },

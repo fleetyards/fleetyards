@@ -1134,6 +1134,24 @@ class Model < ApplicationRecord
     ActionCable.server.broadcast("models", to_jbuilder_hash)
   end
 
+  # The views a crop behind the request is still replacing, named the way the
+  # admin API names the media.
+  def media_processing
+    live_pending_trims.map { |name| name.camelize(:lower) }
+  end
+
+  private def pending_trim_settled
+    payload = {modelId: id, mediaProcessing: media_processing}
+
+    AdminUser.find_each do |admin_user|
+      next unless admin_user.has_access?(:models)
+
+      AdminModelMediaChannel.broadcast_to(admin_user, payload)
+    rescue => e
+      Rails.logger.error("Model media broadcast failed for #{id} to admin #{admin_user.id}: #{e.message}")
+    end
+  end
+
   private def send_new_model_notification
     return if notified?
 

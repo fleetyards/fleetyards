@@ -63,6 +63,11 @@
               "one": "Un fichier prêt — enregistrez pour l'appliquer.",
               "other": "%{count} fichiers prêts — enregistrez pour les appliquer."
             },
+            "processing": {
+              "one": "Recadrage d'une vue en arrière-plan — elle sera mise à jour ici une fois terminée.",
+              "other": "Recadrage de %{count} vues en arrière-plan — elles seront mises à jour ici une fois terminées."
+            },
+            "processed": "Toutes les vues sont traitées.",
             "ignored": "Ignorés : %{files}"
           }
         },

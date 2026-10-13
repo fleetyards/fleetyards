@@ -18,6 +18,17 @@ channels:
     messages:
       Announcement:
         "$ref": "#/components/messages/Announcement"
+  AdminModelMedia:
+    address: admin_model_media:{admin_user_gid}
+    x-actioncable-channel: AdminModelMediaChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      ModelMediaProcessing:
+        "$ref": "#/components/messages/ModelMediaProcessing"
   AdminNotifications:
     address: admin_notifications:{admin_user_gid}
     x-actioncable-channel: AdminNotificationsChannel
@@ -61,6 +72,13 @@ operations:
     messages:
     - "$ref": "#/channels/AdminAnnouncements/messages/Announcement"
     summary: An announcement's send made progress
+  receiveAdminModelMedia:
+    action: receive
+    channel:
+      "$ref": "#/channels/AdminModelMedia"
+    messages:
+    - "$ref": "#/channels/AdminModelMedia/messages/ModelMediaProcessing"
+    summary: A background crop of one of a model's views settled
   receiveAdminNotification:
     action: receive
     channel:
@@ -481,6 +499,20 @@ components:
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT
       - IMPORTS_UEX_EQUIPMENT_PRICES_IMPORT
+    ModelMediaProcessing:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        mediaProcessing:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - modelId
+      - mediaProcessing
     UserPresenceMessage:
       type: object
       properties:
@@ -522,6 +554,9 @@ components:
     Import:
       payload:
         "$ref": "#/components/schemas/Import"
+    ModelMediaProcessing:
+      payload:
+        "$ref": "#/components/schemas/ModelMediaProcessing"
     UserPresenceMessage:
       payload:
         "$ref": "#/components/schemas/UserPresenceMessage"

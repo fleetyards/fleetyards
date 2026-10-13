@@ -63,6 +63,11 @@
               "one": "Un archivo listo — guarda para aplicarlo.",
               "other": "%{count} archivos listos — guarda para aplicarlos."
             },
+            "processing": {
+              "one": "Recortando una vista en segundo plano — se actualizará aquí al terminar.",
+              "other": "Recortando %{count} vistas en segundo plano — se actualizarán aquí al terminar."
+            },
+            "processed": "Todas las vistas están procesadas.",
             "ignored": "Ignorados: %{files}"
           }
         },

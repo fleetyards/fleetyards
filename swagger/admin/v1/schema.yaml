@@ -11686,6 +11686,7 @@ components:
       type: string
       enum:
       - AdminAnnouncementsChannel
+      - AdminModelMediaChannel
       - AdminNotificationsChannel
       - AdminPresenceChannel
       - AppVersionChannel
@@ -11708,6 +11709,7 @@ components:
       - WishlistDestroyChannel
       x-enumNames:
       - ADMIN_ANNOUNCEMENTS_CHANNEL
+      - ADMIN_MODEL_MEDIA_CHANNEL
       - ADMIN_NOTIFICATIONS_CHANNEL
       - ADMIN_PRESENCE_CHANNEL
       - APP_VERSION_CHANNEL
@@ -17984,6 +17986,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/DockCount"
+        mediaProcessing:
+          type: array
+          items:
+            type: string
+          description: Views whose upload is still being cropped in the background.
+            Their media still names the uncropped file, which the crop replaces.
       additionalProperties: false
       required:
       - id
@@ -18013,6 +18021,7 @@ components:
       - active
       - dockCounts
       - links
+      - mediaProcessing
       title: ModelExtended
     ModelExtendedLinks:
       type: object
@@ -18165,6 +18174,21 @@ components:
       - meta
       - items
       title: ModelLoaners
+    ModelMediaProcessing:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        mediaProcessing:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - modelId
+      - mediaProcessing
+      title: ModelMediaProcessing
     ModelMetrics:
       type: object
       properties:

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
@@ -18,7 +19,18 @@ import {
 
 type PlannedFile = MappedFile & { file: File };
 
+type Props = {
+  // The views the model is still cropping in the background since the save.
+  processing?: string[];
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  processing: () => [],
+});
+
 const { t } = useI18n();
+
+const { displaySuccess } = useAppNotifications();
 
 const emit = defineEmits<{
   selected: [previews: Partial<Record<FolderField, string>>];
@@ -30,6 +42,51 @@ const ignored = ref<string[]>([]);
 const uploaded = ref<File[]>([]);
 const uploading = ref(false);
 const previews = new Map<FolderField, string>();
+const processed = ref(false);
+
+watch(
+  () => props.processing.length,
+  (count, previous) => {
+    if (count === 0 && previous > 0) {
+      processed.value = true;
+      displaySuccess({ text: t("texts.admin.models.viewsFolder.processed") });
+    } else if (count > 0) {
+      processed.value = false;
+    }
+  },
+);
+
+const isProcessing = (field: string) => props.processing.includes(field);
+
+// A page opened while the crops are still running has no plan of its own, so
+// the views the model reports stand in for it.
+const unplannedProcessing = computed(() =>
+  props.processing.filter(
+    (field) => !plan.value.some((entry) => entry.field === field),
+  ),
+);
+
+const summary = computed(() => {
+  if (uploading.value) {
+    return t("texts.admin.models.viewsFolder.uploading", {
+      count: plan.value.length,
+    });
+  }
+
+  if (props.processing.length) {
+    return t("texts.admin.models.viewsFolder.processing", {
+      count: props.processing.length,
+    });
+  }
+
+  if (processed.value) {
+    return t("texts.admin.models.viewsFolder.processed");
+  }
+
+  return t("texts.admin.models.viewsFolder.matched", {
+    count: plan.value.length,
+  });
+});
 
 // The file input reports the folder in webkitRelativePath, a drop does not.
 const nameOf = (file: File) => file.webkitRelativePath || file.name;
@@ -75,6 +132,7 @@ const filterFolder = (files: File[]) => {
     file: item,
   }));
   uploaded.value = [];
+  processed.value = false;
 
   // A signed id only arrives once the upload finishes, but the file itself can
   // be shown at once -- a picture as a picture, a holo in its viewer -- so no
@@ -157,23 +215,19 @@ const isUploaded = (entry: PlannedFile) => uploaded.value.includes(entry.file);
       @files:rejected="onFilesRejected"
     />
 
-    <template v-if="plan.length">
-      <p class="views-folder-upload__summary">
-        {{
-          uploading
-            ? t("texts.admin.models.viewsFolder.uploading", {
-                count: plan.length,
-              })
-            : t("texts.admin.models.viewsFolder.matched", {
-                count: plan.length,
-              })
-        }}
+    <template v-if="plan.length || processing.length">
+      <p class="views-folder-upload__summary" role="status">
+        {{ summary }}
       </p>
       <ul class="views-folder-upload__matched">
         <li v-for="entry in plan" :key="entry.field">
           <span class="views-folder-upload__state">
             <i
-              v-if="isUploaded(entry)"
+              v-if="isProcessing(entry.field)"
+              class="fa-duotone fa-spinner-third fa-spin"
+            />
+            <i
+              v-else-if="isUploaded(entry)"
               class="fa-duotone fa-circle-check text-success"
             />
             <i v-else class="fa-light fa-cloud-upload" />
@@ -184,6 +238,16 @@ const isUploaded = (entry: PlannedFile) => uploaded.value.includes(entry.file);
             </span>
             <span class="views-folder-upload__filename">
               {{ entry.filename }}
+            </span>
+          </span>
+        </li>
+        <li v-for="field in unplannedProcessing" :key="field">
+          <span class="views-folder-upload__state">
+            <i class="fa-duotone fa-spinner-third fa-spin" />
+          </span>
+          <span class="views-folder-upload__field">
+            <span class="views-folder-upload__label">
+              {{ t(`labels.model.${field}`) }}
             </span>
           </span>
         </li>
