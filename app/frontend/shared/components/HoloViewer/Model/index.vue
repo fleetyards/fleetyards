@@ -1,6 +1,7 @@
 <!-- eslint-disable import/no-self-import -->
 <script lang="ts">
 import { DRACOLoader as SharedDracoLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { isMobileWidth } from "@/shared/stores/mobile";
 
 // One decoder for every holo. Each DRACOLoader keeps its own worker pool, each
 // worker with its own copy of the wasm decoder, and nothing disposes one -- a
@@ -11,7 +12,9 @@ let dracoLoader: SharedDracoLoader | undefined;
 const sharedDracoLoader = () => {
   dracoLoader ??= new SharedDracoLoader()
     .setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/")
-    .setWorkerLimit(1);
+    // A phone decodes one holo at a time; the multi-ship viewer on a desktop
+    // decodes several side by side.
+    .setWorkerLimit(isMobileWidth() ? 1 : 4);
 
   return dracoLoader;
 };
