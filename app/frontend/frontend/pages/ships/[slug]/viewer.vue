@@ -57,10 +57,12 @@ const { resolveState } = useModelStates(() => props.model);
 // Popped out of the ship page, so it opens on the state that page was left on.
 const holoModel = computed(() => {
   const state = resolveState(modelState.value);
+  const holo = modelStateHolo(props.model, state);
 
   return {
-    path: modelStateHolo(props.model, state)?.url,
+    path: holo?.url,
     length: modelStateMetrics(props.model, state).fleetchartLength,
+    size: holo?.size,
   };
 });
 

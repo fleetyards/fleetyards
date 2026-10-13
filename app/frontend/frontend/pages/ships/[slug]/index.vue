@@ -264,7 +264,8 @@ const toggleHoloviewer = () => {
 };
 
 const holoModel = computed(() => {
-  const path = modelStateHolo(props.model, activeState.value)?.url;
+  const holo = modelStateHolo(props.model, activeState.value);
+  const path = holo?.url;
   const length = modelStateMetrics(
     props.model,
     activeState.value,
@@ -277,6 +278,7 @@ const holoModel = computed(() => {
   return {
     path,
     length,
+    size: holo?.size,
   };
 });
 

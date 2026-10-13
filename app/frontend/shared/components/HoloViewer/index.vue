@@ -22,6 +22,8 @@ import { useMobile } from "@/shared/composables/useMobile";
 export type HoloModel = {
   path: string;
   length?: number;
+  // Bytes, where the file is known: a phone asks before loading a large one.
+  size?: number;
 };
 
 type Props = {
@@ -52,6 +54,25 @@ const { displayAlert } = useAppNotifications();
 const mobile = useMobile();
 
 const webglSupported = ref(true);
+
+// Some exports run past 100 MB, which no phone parses and decodes without
+// being killed. Above this a phone asks first instead of loading straight away.
+const MOBILE_SIZE_LIMIT = 30 * 1024 * 1024;
+
+const largeConfirmed = ref(false);
+
+const totalSize = computed(() =>
+  props.models.reduce((sum, model) => sum + (model.size ?? 0), 0),
+);
+
+const awaitingConfirmation = computed(
+  () =>
+    mobile.value &&
+    totalSize.value > MOBILE_SIZE_LIMIT &&
+    !largeConfirmed.value,
+);
+
+const totalSizeMb = computed(() => Math.round(totalSize.value / 1024 / 1024));
 
 onMounted(() => {
   webglSupported.value = webglAvailable();
@@ -150,6 +171,7 @@ watch(
   () => {
     loading.value = true;
     progress.value = 0;
+    largeConfirmed.value = false;
   },
 );
 
@@ -359,7 +381,7 @@ defineExpose({
     </BtnGroup>
 
     <Loader
-      v-if="loading && webglSupported"
+      v-if="loading && webglSupported && !awaitingConfirmation"
       :loading="loading"
       :progress="progress"
     />
@@ -367,6 +389,19 @@ defineExpose({
     <div v-if="!webglSupported" class="holo-viewer__fallback">
       <i class="fa-light fa-cube" />
       <p>{{ t("messages.holoViewer.webglNotSupported") }}</p>
+    </div>
+    <div
+      v-else-if="awaitingConfirmation"
+      class="holo-viewer__fallback"
+      data-test="holo-viewer-too-large"
+    >
+      <i class="fa-light fa-cube" />
+      <p>
+        {{ t("messages.holoViewer.tooLarge", { size: totalSizeMb }) }}
+      </p>
+      <Btn data-test="holo-viewer-load-anyway" @click="largeConfirmed = true">
+        {{ t("actions.holoViewer.loadAnyway") }}
+      </Btn>
     </div>
     <TresCanvas
       v-else

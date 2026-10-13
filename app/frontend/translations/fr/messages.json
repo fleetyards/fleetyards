@@ -472,7 +472,8 @@
         "modelLoader": {
           "failure": "Nous n'avons pas pu charger le modèle 3D demandé ! Veuillez réessayer plus tard."
         },
-        "webglNotSupported": "La visionneuse 3D n'est pas disponible sur cet appareil."
+        "webglNotSupported": "La visionneuse 3D n'est pas disponible sur cet appareil.",
+        "tooLarge": "Ce modèle 3D fait %{size} Mo et pourrait être trop volumineux pour cet appareil."
       },
       "cargoGridViewer": {
         "confirmReset": "Are you sure you want to reset all ships and container settings?"

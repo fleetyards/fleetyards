@@ -472,7 +472,8 @@
         "modelLoader": {
           "failure": "Wir konnten das angeforderte 3D-Modell nicht laden! Bitte versuche es später erneut."
         },
-        "webglNotSupported": "Der 3D-Viewer ist auf diesem Gerät nicht verfügbar."
+        "webglNotSupported": "Der 3D-Viewer ist auf diesem Gerät nicht verfügbar.",
+        "tooLarge": "Dieses 3D-Modell ist %{size} MB groß und könnte für dieses Gerät zu groß sein."
       },
       "cargoGridViewer": {
         "confirmReset": "Möchtest du wirklich alle Schiffe und Container-Einstellungen zurücksetzen?"

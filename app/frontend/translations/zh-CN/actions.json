@@ -360,6 +360,7 @@
         "generateBackupCodes": "生成备用码"
       },
       "holoViewer": {
+        "loadAnyway": "仍然加载",
         "autoRotate": {
           "enable": "Enable auto rotate",
           "disable": "Disable auto rotate"
