@@ -21,7 +21,7 @@ import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListAction
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarTour from "@/frontend/components/Hangar/Tour/index.vue";
-import HangarTourExampleShip from "@/frontend/components/Hangar/Tour/ExampleShip.vue";
+import HangarTourExampleShip from "@/frontend/components/Hangar/TourExampleShip/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
