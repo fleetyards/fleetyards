@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Announcement < ApplicationRecord
+  # Ignored a release ahead of the migration that drops it: the pre-deploy hook
+  # migrates before any new container boots, so the release still serving
+  # traffic must already have stopped selecting it.
+  self.ignored_columns += %w[post_x]
+
   belongs_to :admin_user, optional: true
   has_many :deliveries, class_name: "AnnouncementDelivery", dependent: :destroy
 
