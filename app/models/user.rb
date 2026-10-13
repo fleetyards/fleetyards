@@ -245,6 +245,13 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
+  # A plaque's picture is drawn once, in the owner's browser, with the owner's
+  # name on it. Once that name changes, or the owner hides it, the picture is
+  # wrong, and a shared link previews the ship instead until the plaque is
+  # saved again. A captain written onto the plaque does not depend on it.
+  after_update :purge_plaque_pictures,
+    if: -> { saved_change_to_display_name? || saved_change_to_username? || saved_change_to_hide_owner? }
+
   # Turning the switch off has to reach the rosters already showing the dot, and
   # turning it back on has to bring it back — neither is a connection change, so
   # nothing else would broadcast it. Only worth sending while there is something
@@ -1103,6 +1110,12 @@ class User < ApplicationRecord
 
   private def touch_fleet_memberships
     fleet_memberships.update_all(updated_at: Time.zone.now)
+  end
+
+  private def purge_plaque_pictures
+    vehicles.where(plaque_captain: nil).joins(:plaque_image_attachment).find_each do |vehicle|
+      vehicle.plaque_image.purge_later
+    end
   end
 
   # Through the same job a connection change goes through, so co-members and
