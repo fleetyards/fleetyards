@@ -36,5 +36,6 @@ overrides:
   js-yaml@4: '>=4.3.2 <5'
 patchedDependencies:
   '@tresjs/core@5.8.1': patches/@tresjs__core@5.8.1.patch
+  '@vue/language-core@3.3.13': patches/@vue__language-core@3.3.13.patch
 minimumReleaseAgeExclude:
   - asyncapi-cable@0.3.0

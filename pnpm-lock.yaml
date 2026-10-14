@@ -117,6 +117,7 @@ overrides:
 
 patchedDependencies:
   '@tresjs/core@5.8.1': 51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2
+  '@vue/language-core@3.3.13': d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15
 
 importers:
 
@@ -10892,7 +10893,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vue/language-core@3.3.13':
+  '@vue/language-core@3.3.13(patch_hash=d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15)':
     dependencies:
       '@volar/language-core': 2.4.28
       '@vue/compiler-dom': 3.5.43
@@ -14855,7 +14856,7 @@ snapshots:
   vue-tsc@3.3.13(typescript@6.0.3):
     dependencies:
       '@volar/typescript': 2.4.28(typescript@6.0.3)
-      '@vue/language-core': 3.3.13
+      '@vue/language-core': 3.3.13(patch_hash=d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15)
       typescript: 6.0.3
 
   vue3-highlightjs@1.0.5(vue@3.5.43(typescript@6.0.3)):

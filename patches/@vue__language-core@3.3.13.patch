@@ -1,0 +1,32 @@
+diff --git a/lib/codegen/template/element.js b/lib/codegen/template/element.js
+index 77ef8ce8a456ef342ec6065a90b3709381517012..1471621fdddf11cdc0a1e30de5043a56327f1999 100644
+--- a/lib/codegen/template/element.js
++++ b/lib/codegen/template/element.js
+@@ -169,13 +169,11 @@ function* generateComponent(options, ctx, node) {
+     const propsVar = ctx.getInternalVariable();
+     const failedPropExps = [];
+     const propCodes = [...(0, elementProps_1.generateElementProps)(options, ctx, node, props, options.vueCompilerOptions.checkUnknownProps, failedPropExps)];
+-    const propsStr = (0, muggle_string_1.toString)(propCodes);
+     yield `// @ts-ignore${utils_1.newLine}`;
+     yield `const ${functionalVar} = ${options.vueCompilerOptions.checkUnknownProps ? names_1.names.asFunctionalComponent0 : names_1.names.asFunctionalComponent1}(${componentVar}, new ${componentVar}({${utils_1.newLine}`;
+-    yield `// @ts-ignore${utils_1.newLine}`;
+-    yield propsStr
+-        .replace(/\/\/(.*)$/gm, (_, body) => `/*${body.replaceAll('*/', '*\\/')} */`)
+-        .replace(/\n/g, ' ');
++    for (const code of propCodes) {
++        yield typeof code === 'string' ? code : [code[0], code[1], code[2], {}];
++    }
+     yield `}))${utils_1.endOfLine}`;
+     yield `const `;
+     const boundary = yield* boundary_1.Boundary.start('template', node.loc.start.offset, node.loc.end.offset, codeFeatures_1.codeFeatures.doNotReportTs6133);
+@@ -232,7 +230,9 @@ function* generateComponent(options, ctx, node) {
+     if (shouldInheritAttrs) {
+         if (options.vueCompilerOptions.checkRequiredFallthroughAttributes) {
+             const restsVar = ctx.getInternalVariable();
+-            yield `var ${restsVar} = ${names_1.names.omit}(${getPropsVar()}, {\n${propsStr}})${utils_1.endOfLine}`;
++            yield `var ${restsVar} = ${names_1.names.omit}(${getPropsVar()}, {${utils_1.newLine}`;
++            yield* propCodes;
++            yield `})${utils_1.endOfLine}`;
+             ctx.inheritedAttrVars.add(restsVar);
+         }
+         else {
