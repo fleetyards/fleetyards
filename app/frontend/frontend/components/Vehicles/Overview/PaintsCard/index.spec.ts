@@ -90,6 +90,19 @@ describe("VehicleOverviewPaintsCard", () => {
     });
   });
 
+  it("offers no paint editing for a loaner", async () => {
+    paints.value = [entry("Rust Society", { owned: true })];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, loaner: true } });
+
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paints-all"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paint"]').attributes(),
+    ).toHaveProperty("disabled");
+  });
+
   it("opens the loadout paints tab from a paint", async () => {
     paints.value = [entry("Rust Society", { owned: true })];
 

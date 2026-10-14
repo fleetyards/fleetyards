@@ -43,6 +43,9 @@ const shown = computed(() =>
 
 const { openLoadoutModal } = useVehicleModals();
 
+// Loaners carry the paint they were lent with, as on the configuration card.
+const editable = computed(() => !props.vehicle.loaner);
+
 const openPicker = (paintId?: string) =>
   openLoadoutModal(props.vehicle, {
     tab: VehicleLoadoutTabsEnum.PAINTS,
@@ -68,6 +71,7 @@ const thumb = (entry: VehiclePaint) =>
   >
     <template #head>
       <Btn
+        v-if="editable"
         :size="BtnSizesEnum.SM"
         data-test="vehicle-overview-paints-all"
         @click="openPicker()"
@@ -83,6 +87,7 @@ const thumb = (entry: VehiclePaint) =>
         class="overview-paints__paint"
         :class="{ 'overview-paints__paint--applied': entry.applied }"
         :aria-pressed="entry.applied"
+        :disabled="!editable"
         :aria-label="
           entry.applied
             ? t('labels.vehicleOverview.paintApplied', {
