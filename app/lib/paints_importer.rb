@@ -423,7 +423,8 @@ class PaintsImporter
     x1 = ["X1", "X1 Velocity", "X1 Force"]
     ursa = ["Ursa", "Ursa Medivac", "Ursa Fortuna", "Lynx"]
     mpuv = ["MPUV Cargo", "MPUV Personnel", "MPUV Tractor"]
-    sabre = ["Sabre", "Sabre Comet", "Sabre Raven", "Sabre Firebird", "Sabre Peregrine"]
+    sabre_raven = ["Sabre Raven", "Sabre Raven EX"]
+    sabre = ["Sabre", "Sabre Comet", *sabre_raven, "Sabre Firebird", "Sabre Peregrine"]
     zeus = ["Zeus Mk II MR", "Zeus Mk II CL", "Zeus Mk II ES"]
     terrapin = ["Terrapin", "Terrapin Medic"]
     spirit = ["A1 Spirit", "C1 Spirit", "E1 Spirit"]
@@ -608,6 +609,7 @@ class PaintsImporter
       "X1 2954 Auspicious Red Dragon" => x1,
       "Scorpius Stinger Black Orange" => scorpius,
       "Sabre" => sabre,
+      "Sabre Raven" => sabre_raven,
       "C1 Spirit 2954 Best In Show" => spirit,
       "F8C Lightning 2954 Best In Show" => f8c,
       "Guardian" => guardian,
