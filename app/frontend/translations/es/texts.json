@@ -78,7 +78,7 @@
       "hangarTour": {
         "welcome": {
           "title": "Bienvenido a tu hangar",
-          "text": "Tu hangar lleva la cuenta de todas las naves que tienes. Este breve recorrido te muestra dónde está todo — puedes repetirlo desde el menú cuando quieras."
+          "text": "Tu hangar lleva la cuenta de todas las naves que tienes. Este breve recorrido te muestra dónde está todo — puedes repetirlo desde el botón ? cuando quieras."
         },
         "add": {
           "title": "Añadir naves",
@@ -118,7 +118,7 @@
         },
         "menu": {
           "title": "Más",
-          "text": "Importa o exporta tu hangar, consulta el historial de importaciones o repite esta visita. En el móvil, este menú también incluye la lista de deseos, el fleetchart y las estadísticas."
+          "text": "Importa o exporta tu hangar y consulta el historial de importaciones. En el móvil, este menú también incluye la lista de deseos, el fleetchart, las estadísticas, los objetos de Pledge y esta visita."
         },
         "overview": {
           "title": "La página de tu nave",

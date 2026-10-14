@@ -78,7 +78,7 @@
       "hangarTour": {
         "welcome": {
           "title": "Welcome to your hangar",
-          "text": "Your hangar keeps track of every ship you own. This short tour shows where everything is — you can replay it from the menu at any time."
+          "text": "Your hangar keeps track of every ship you own. This short tour shows where everything is — you can replay it from the ? button at any time."
         },
         "add": {
           "title": "Add ships",
@@ -118,7 +118,7 @@
         },
         "menu": {
           "title": "More",
-          "text": "Import or export your hangar, check import history or replay this tour here. On a phone, this menu also holds the wishlist, fleetchart and stats."
+          "text": "Import or export your hangar and check import history here. On a phone, this menu also holds the wishlist, fleetchart, stats, pledge items and this tour."
         },
         "overview": {
           "title": "Your ship’s own page",

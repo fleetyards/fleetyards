@@ -11,12 +11,15 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useMobile } from "@/shared/composables/useMobile";
 import { FeatureFlagName } from "@/services/fyApi";
 
 const open = defineModel<boolean>("open", { default: false });
 
 const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
+
+const mobile = useMobile();
 
 const hangarStore = useHangarStore();
 
@@ -80,8 +83,12 @@ const steps = computed<TourStep[]>(() => [
   step("share", {
     target: '[data-tour="hangar-share"]',
   }),
+  // A header button on a desktop; on a phone the header's buttons all move
+  // into the page's menu.
   step("pledgeItems", {
-    target: '[data-tour="hangar-menu"]',
+    target: mobile.value
+      ? '[data-tour="hangar-menu"]'
+      : '[data-tour="hangar-pledge-items"]',
     placement: "left",
     requiresTarget: true,
   }),

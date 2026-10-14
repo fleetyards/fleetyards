@@ -379,6 +379,33 @@ useTourAutostart({
   start: openGuide,
 });
 
+// Pages next to the hangar rather than actions on its list, so they sit with
+// the page's own buttons, not in the toolbar's menu.
+const pledgeItemPages = [
+  {
+    route: "hangar-paints",
+    icon: "fa-light fa-paintbrush",
+    label: "nav.hangar.paints",
+  },
+  {
+    route: "hangar-flair",
+    icon: "fa-light fa-trophy-star",
+    label: "nav.hangar.flair",
+  },
+  {
+    route: "hangar-equipment",
+    icon: "fa-light fa-shirt",
+    label: "nav.hangar.equipment",
+  },
+  {
+    route: "hangar-buybacks",
+    icon: "fa-light fa-rotate-left",
+    label: "nav.hangar.buybacks",
+  },
+];
+
+const RSI_PLEDGES_URL = "https://robertsspaceindustries.com/account/pledges";
+
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
     component: () =>
@@ -495,13 +522,47 @@ const openDisplayOptionsModal = () => {
       {{ t("labels.hangarInventories") }}
     </Btn>
 
+    <BtnDropdown :size="BtnSizesEnum.MD" data-tour="hangar-pledge-items">
+      <template #label>
+        <i class="fa-duotone fa-box-open" />
+        {{ t("nav.hangar.pledgeItems") }}
+        <i class="fa-light fa-chevron-down" />
+      </template>
+      <Btn
+        v-for="item in pledgeItemPages"
+        :key="item.route"
+        :to="{ name: item.route }"
+      >
+        <i :class="item.icon" />
+        <span>{{ t(item.label) }}</span>
+      </Btn>
+
+      <hr />
+
+      <Btn :href="RSI_PLEDGES_URL" target="_blank">
+        <img :src="rsiLogo" />
+        <span>{{ t("nav.rsiHangar") }}</span>
+      </Btn>
+    </BtnDropdown>
+
     <Btn
+      v-tooltip="t('labels.hangarStats')"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'hangar-stats' }"
+      :aria-label="t('labels.hangarStats')"
       data-tour="hangar-stats"
     >
       <i class="fa-light fa-chart-bar" />
-      {{ t("labels.hangarStats") }}
+    </Btn>
+
+    <Btn
+      v-tooltip="t('actions.showGuide')"
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.showGuide')"
+      data-test="hangar-show-guide"
+      @click="openGuide"
+    >
+      <i class="fa-duotone fa-question" />
     </Btn>
 
     <ShareBtn
@@ -573,29 +634,29 @@ const openDisplayOptionsModal = () => {
               :size="BtnSizesEnum.SM"
             />
 
+            <Btn data-test="hangar-show-guide" @click="openGuide">
+              <i class="fa-duotone fa-question" />
+              <span>{{ t("actions.showGuide") }}</span>
+            </Btn>
+
+            <hr />
+
+            <Btn
+              v-for="item in pledgeItemPages"
+              :key="item.route"
+              :to="{ name: item.route }"
+            >
+              <i :class="item.icon" />
+              <span>{{ t(item.label) }}</span>
+            </Btn>
+
+            <Btn :href="RSI_PLEDGES_URL" target="_blank">
+              <img :src="rsiLogo" />
+              <span>{{ t("nav.rsiHangar") }}</span>
+            </Btn>
+
             <hr />
           </template>
-
-          <Btn
-            :aria-label="t('actions.showGuide')"
-            data-test="hangar-show-guide"
-            @click="openGuide"
-          >
-            <i class="fa-duotone fa-question" />
-            <span>{{ t("actions.showGuide") }}</span>
-          </Btn>
-
-          <hr />
-
-          <Btn
-            href="https://robertsspaceindustries.com/account/pledges"
-            target="_blank"
-          >
-            <img :src="rsiLogo" />
-            <span>{{ t("nav.rsiHangar") }}</span>
-          </Btn>
-
-          <hr />
 
           <Btn :aria-label="t('actions.export')" @click="exportJson">
             <i class="fa-light fa-download" />
@@ -611,38 +672,6 @@ const openDisplayOptionsModal = () => {
           </Btn>
 
           <HangarImportBtn :size="BtnSizesEnum.SM" />
-
-          <Btn
-            :aria-label="t('nav.hangar.buybacks')"
-            :to="{ name: 'hangar-buybacks' }"
-          >
-            <i class="fa-light fa-rotate-left" />
-            <span>{{ t("nav.hangar.buybacks") }}</span>
-          </Btn>
-
-          <Btn
-            :aria-label="t('nav.hangar.paints')"
-            :to="{ name: 'hangar-paints' }"
-          >
-            <i class="fa-light fa-paintbrush" />
-            <span>{{ t("nav.hangar.paints") }}</span>
-          </Btn>
-
-          <Btn
-            :aria-label="t('nav.hangar.flair')"
-            :to="{ name: 'hangar-flair' }"
-          >
-            <i class="fa-light fa-trophy-star" />
-            <span>{{ t("nav.hangar.flair") }}</span>
-          </Btn>
-
-          <Btn
-            :aria-label="t('nav.hangar.equipment')"
-            :to="{ name: 'hangar-equipment' }"
-          >
-            <i class="fa-light fa-shirt" />
-            <span>{{ t("nav.hangar.equipment") }}</span>
-          </Btn>
 
           <Btn
             :aria-label="t('nav.hangar.imports')"
