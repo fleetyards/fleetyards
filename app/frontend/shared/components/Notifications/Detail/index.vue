@@ -172,12 +172,13 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <Markdown
+      <div
         v-if="notification.body"
         class="notification-detail__body"
         data-test="notification-detail-body"
-        :source="notification.body"
-      />
+      >
+        <Markdown :source="notification.body" />
+      </div>
       <p
         v-else
         class="notification-detail__body notification-detail__body--empty"
@@ -281,7 +282,7 @@ onBeforeUnmount(() => {
 }
 
 .notification-detail__body {
-  margin: 16px 0 0;
+  margin: 24px 0 0;
   padding: 12px 14px;
   color: $text-color;
   font-size: 0.9em;
