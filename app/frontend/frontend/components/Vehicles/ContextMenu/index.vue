@@ -29,6 +29,8 @@ type Props = {
   onVehiclePage?: boolean;
   // Where the page edits the groups itself, as the overview's card does.
   hideGroups?: boolean;
+  // Where the page links the ship database itself, as the overview's hero does.
+  hideShipPage?: boolean;
   wishlist?: boolean;
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
@@ -40,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   hideEdit: false,
   onVehiclePage: false,
   hideGroups: false,
+  hideShipPage: false,
   wishlist: false,
   variant: undefined,
   size: undefined,
@@ -294,7 +297,7 @@ const cargoVisible = computed(
       <span>{{ t("actions.hangar.manageCargo") }}</span>
     </Btn>
     <Btn
-      v-if="vehicle.model"
+      v-if="vehicle.model && !hideShipPage"
       data-test="vehicle-ship-page"
       :to="{
         name: 'ship',

@@ -65,6 +65,7 @@ type MountProps = {
   wishlist?: boolean;
   onVehiclePage?: boolean;
   hideGroups?: boolean;
+  hideShipPage?: boolean;
 };
 
 let mounted: { unmount: () => void }[] = [];
@@ -137,6 +138,12 @@ describe("VehicleContextMenu", () => {
     await mount({ onVehiclePage: true, hideGroups: true });
 
     expect(items()).not.toContain("vehicle-edit-groups");
+  });
+
+  it("leaves the ship database to a page that links it", async () => {
+    await mount({ onVehiclePage: true, hideShipPage: true });
+
+    expect(items()).not.toContain("vehicle-ship-page");
   });
 
   it("offers no log or picture without the overview", async () => {
