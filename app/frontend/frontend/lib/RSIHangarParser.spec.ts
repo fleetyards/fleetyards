@@ -391,6 +391,25 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("reports a standalone ship pledge with upgrade data but no upgrade read", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<input type="hidden" class="js-upgrade-data" value="{}">
+          <div class="with-images">${item("Insurance", "120 Month Insurance")}</div>`,
+          "Standalone Ships - F8C Lightning",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [],
+      unread: expect.anything(),
+    });
+  });
+
   it("reports both an item without a kind and a standalone pledge without a ship", () => {
     expect(
       extract(

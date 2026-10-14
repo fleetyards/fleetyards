@@ -254,8 +254,11 @@ export class RSIHangarParser {
       // upgrade until it is applied.
       if (
         name?.startsWith("Standalone Ship") &&
-        !entry.getElementsByClassName("js-upgrade-data")[0] &&
-        !holdsShip
+        !holdsShip &&
+        !(
+          entry.getElementsByClassName("js-upgrade-data")[0] &&
+          items.some((item) => item.type === "ccu")
+        )
       ) {
         const kinds = new Set(
           elements.map((item) => {
