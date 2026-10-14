@@ -184,13 +184,14 @@ describe("RSIHangarParser.extractPage", () => {
       pledgeIds: ["101", "102"],
       pledges: [
         { id: "101", name: "CSV-SM", type: "ship" },
+        { id: "101", name: "Upgrade - Clipper To S-65 Stingray", type: "ccu" },
         { id: "102", name: "Cutter", type: "ship" },
         { id: "102", name: "Self-Land Hangar", type: "extra" },
       ],
     });
   });
 
-  it("skips a ship upgrade RSI labels as one", () => {
+  it("reads a ship upgrade RSI labels as one", () => {
     const page = extract(
       pledgesPage(
         pledge(
@@ -201,7 +202,17 @@ describe("RSIHangarParser.extractPage", () => {
       ),
     );
 
-    expect(page).toMatchObject({ status: RsiPageStatus.PAGE, pledges: [] });
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - Merchantman To Hull E",
+          type: "ccu",
+          pledgeItemCount: 1,
+        },
+      ],
+    });
     expect(page).not.toHaveProperty("unread", expect.anything());
   });
 
@@ -517,9 +528,16 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.PAGE,
-      pledges: [],
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - Clipper To S-65 Stingray",
+          type: "ccu",
+          pledgeItemCount: 1,
+        },
+      ],
       pledgeIds: ["101"],
     });
   });

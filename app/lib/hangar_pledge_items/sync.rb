@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module HangarPledgeItems
-  # Replaces a user's paints, hangar flair and FPS equipment with the ones a
+  # Replaces a user's paints, hangar flair, FPS equipment and CCUs with the ones a
   # hangar sync read. The pledge list is the whole truth: a melted or gifted
   # pledge simply stops being listed, so anything not in `items` goes.
   class Sync
-    KINDS_BY_ITEM_TYPE = {"skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
+    KINDS_BY_ITEM_TYPE = {"ccu" => "ccu", "skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
 
     # RSI gives the items it lists under "Also Contains" no kind at all, and
     # labels coins, statues and ship models "FPS Equipment" as often as gear.

@@ -24,6 +24,7 @@ type Props = {
   syncPaints?: boolean;
   syncHangarFlair?: boolean;
   syncEquipment?: boolean;
+  syncCcus?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   syncPaints: true,
   syncHangarFlair: true,
   syncEquipment: true,
+  syncCcus: true,
 });
 
 defineEmits<{
@@ -50,6 +52,7 @@ const items = computed(() =>
       "skin",
       "flair",
       "equipment",
+      "ccu",
       "extra",
     ].includes(pledge.type),
   ),
@@ -81,6 +84,7 @@ const paints = computed(() => pledgeRows("skin"));
 const hangarFlair = computed(() => pledgeRows("flair"));
 
 const equipment = computed(() => pledgeRows("equipment"));
+const ccus = computed(() => pledgeRows("ccu"));
 
 // Sorted into flair or equipment only once the server stores them.
 const extras = computed(() => pledgeRows("extra"));
@@ -107,6 +111,7 @@ const foundUpgrades = computed(() => props.result?.foundUpgrades || []);
 const syncedPaints = computed(() => props.result?.syncedPaints || []);
 const syncedHangarFlair = computed(() => props.result?.syncedHangarFlair || []);
 const syncedEquipment = computed(() => props.result?.syncedEquipment || []);
+const syncedCcus = computed(() => props.result?.syncedCcus || []);
 const missingUpgrades = computed(() => props.result?.missingUpgrades || []);
 const missingUpgradeVehicles = computed(
   () => props.result?.missingUpgradeVehicles || [],
@@ -254,6 +259,21 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-5 text-right">{{ equipment.size }}</dd>
             </template>
+            <template v-if="ccus.size">
+              <dt
+                class="col-sm-7"
+                :data-test="syncCcus ? undefined : 'ccus-not-synced'"
+              >
+                {{
+                  t(
+                    syncCcus
+                      ? "labels.syncExtension.pledgeItems.ccus"
+                      : "labels.syncExtension.pledgeItems.ccusNotSynced",
+                  )
+                }}:
+              </dt>
+              <dd class="col-sm-5 text-right">{{ ccus.size }}</dd>
+            </template>
             <template v-if="extras.size">
               <dt class="col-sm-7">
                 {{ t("labels.syncExtension.pledgeItems.extras") }}:
@@ -366,6 +386,14 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-4 text-right">
                 {{ syncedEquipment.length }}
+              </dd>
+            </template>
+            <template v-if="syncedCcus.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.syncedCcus") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ syncedCcus.length }}
               </dd>
             </template>
           </dl>

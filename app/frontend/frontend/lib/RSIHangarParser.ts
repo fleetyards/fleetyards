@@ -30,6 +30,7 @@ export type RSIHangarPage =
     };
 
 const READ_KINDS = new Map<string, RSIHangarItemKind>([
+  ["Upgrade", "ccu"],
   ["Ship", "ship"],
   ["Component", "component"],
   ["Skin", "skin"],
@@ -39,9 +40,8 @@ const READ_KINDS = new Map<string, RSIHangarItemKind>([
 
 // Kinds that never become a vehicle. Any other label may be a ship RSI has
 // relabelled: skipped, it would drop out of the sync and the unmatched action
-// would act on it. "Upgrade" is a ship-to-ship upgrade, which RSI once listed
-// without a kind.
-const SKIPPED_KINDS = ["Insurance", "Credits", "Upgrade"];
+// would act on it.
+const SKIPPED_KINDS = ["Insurance", "Credits"];
 
 const KNOWN_KINDS = [...READ_KINDS.keys(), ...SKIPPED_KINDS];
 
@@ -219,6 +219,12 @@ export class RSIHangarParser {
               `item without kind, markup ${this.markupClasses(item)}, liner "${this.linerText(item)}", in ${this.pledgeCategory(name)}`,
             );
             unreadEntries.add(entry);
+          } else if (
+            /^Upgrade - .+ to .+/i.test(
+              item.querySelector(".title")?.textContent?.trim() || "",
+            )
+          ) {
+            items.push(this.parseItem(id, item, "Upgrade", pledgeInfo));
           } else if (item.closest(".without-images")) {
             items.push(this.parseItem(id, item, kind, pledgeInfo));
           }

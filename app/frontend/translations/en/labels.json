@@ -2700,6 +2700,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Hangar Flair",
+        "upgrades": "Upgrades / CCUs",
         "equipment": "FPS Gear",
         "createdOn": "Created",
         "meltable": "Meltable",
@@ -2786,6 +2787,8 @@
         "syncPaintsHint": "Replaces your paints with the ones in your RSI hangar. Off leaves the stored paints as they are.",
         "syncHangarFlair": "Sync hangar flair",
         "syncHangarFlairHint": "Replaces your hangar flair with the ones in your RSI hangar. Off leaves the stored flair as it is.",
+        "syncCcus": "Sync CCUs",
+        "syncCcusHint": "Replaces your CCUs with those in your RSI hangar. Off keeps stored CCUs unchanged.",
         "syncEquipment": "Sync FPS gear",
         "syncEquipmentHint": "Replaces your FPS gear with the gear in your RSI hangar. Off leaves the stored gear as it is.",
         "settings": "Settings",
@@ -2822,6 +2825,8 @@
           "paintsNotSynced": "Paints (not synced)",
           "hangarFlairNotSynced": "Hangar Flair (not synced)",
           "equipment": "FPS Gear",
+          "ccus": "Upgrades / CCUs",
+          "ccusNotSynced": "CCUs (not synced)",
           "equipmentNotSynced": "FPS Gear (not synced)",
           "extras": "Other Items (sorted into flair and FPS gear)"
         },
@@ -2841,6 +2846,7 @@
           "foundUpgrades": "Found Upgrades",
           "syncedPaints": "Paints synced",
           "syncedHangarFlair": "Hangar flair synced",
+          "syncedCcus": "CCUs synced",
           "syncedEquipment": "FPS gear synced",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"

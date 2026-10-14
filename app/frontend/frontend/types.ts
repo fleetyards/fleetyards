@@ -13,7 +13,14 @@ export interface ShipListState {
 // `extra` is an item RSI lists without a kind, under a pledge's "Also
 // Contains". The server sorts it into hangar flair or FPS equipment.
 export type RSIHangarItemKind =
-  "ship" | "component" | "skin" | "upgrade" | "flair" | "equipment" | "extra";
+  | "ship"
+  | "component"
+  | "skin"
+  | "upgrade"
+  | "flair"
+  | "equipment"
+  | "extra"
+  | "ccu";
 
 export type RSIHangarItem = {
   id: string;

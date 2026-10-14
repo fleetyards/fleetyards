@@ -10,6 +10,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
   {
     "/hangar/paints" => ["Hangar Paints", "hangarPaints"],
     "/hangar/flair" => ["Hangar Flair", "hangarFlair"],
+    "/hangar/upgrades" => ["Hangar Upgrades", "hangarUpgrades"],
     "/hangar/equipment" => ["Hangar Equipment", "hangarEquipment"]
   }.each do |path, (summary, operation_id)|
     api_path path do
@@ -163,6 +164,23 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/equipment needs a signed-in user" do
     assert_api_response :get, 401, api_path: "/hangar/equipment"
+  end
+
+  test "GET /hangar/upgrades lists only the caller's CCUs" do
+    user = create(:user)
+    ccu = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter")
+    create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
+    create(:hangar_pledge_item, kind: "ccu", name: "Upgrade - Merchantman To Hull E")
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/upgrades" do
+      assert_equal [ccu.id], parsed_body["items"].pluck("id")
+      assert_equal "ccu", parsed_body["items"].first["kind"]
+    end
+  end
+
+  test "GET /hangar/upgrades needs a signed-in user" do
+    assert_api_response :get, 401, api_path: "/hangar/upgrades"
   end
 
   test "GET /hangar/paints pages by perPage and offers its page sizes" do

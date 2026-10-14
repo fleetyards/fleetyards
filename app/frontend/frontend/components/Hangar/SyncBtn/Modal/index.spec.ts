@@ -669,6 +669,7 @@ describe("HangarSyncModal", () => {
         syncPaints: false,
         syncHangarFlair: true,
         syncEquipment: false,
+        syncCcus: true,
       }),
     });
   });
@@ -686,7 +687,13 @@ describe("HangarSyncModal", () => {
     expect(reportMutateAsync).not.toHaveBeenCalled();
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({
-        items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
+        items: [
+          expect.objectContaining({ name: "Cutter", type: "ship" }),
+          expect.objectContaining({
+            name: "Upgrade - Clipper To S-65 Stingray",
+            type: "ccu",
+          }),
+        ],
       }),
     });
   });
@@ -764,7 +771,7 @@ describe("HangarSyncModal", () => {
     await flushPromises();
 
     await replyWithPage(
-      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+      '<div class="item"><div class="title">Star Citizen Digital Download</div></div>',
     );
 
     expect(reportMutateAsync).not.toHaveBeenCalled();

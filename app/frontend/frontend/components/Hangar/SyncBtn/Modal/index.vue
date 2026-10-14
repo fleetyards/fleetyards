@@ -96,7 +96,7 @@ const missingUnmatchedGroup = computed(
     filesUnmatchedIntoGroup.value && !hangarStore.syncUnmatchedHangarGroupId,
 );
 
-// Both toggles live behind the cog and are remembered, so a user who turned
+// The toggles live behind the cog and are remembered, so a user who turned
 // one off once would otherwise start every later sync without seeing it.
 const skippedItems = computed(() => [
   ...(hangarStore.syncPaints
@@ -108,6 +108,7 @@ const skippedItems = computed(() => [
   ...(hangarStore.syncEquipment
     ? []
     : [t("labels.syncExtension.pledgeItems.equipment")]),
+  ...(hangarStore.syncCcus ? [] : [t("labels.syncExtension.pledgeItems.ccus")]),
 ]);
 
 // Only once Start could be pressed: a check mid-run would spend an RSI request
@@ -220,6 +221,7 @@ const start = () => {
     syncPaints: hangarStore.syncPaints,
     syncHangarFlair: hangarStore.syncHangarFlair,
     syncEquipment: hangarStore.syncEquipment,
+    syncCcus: hangarStore.syncCcus,
     unmatchedVehiclesAction: hangarStore.syncUnmatchedVehiclesAction,
     unmatchedHangarGroupId: filesUnmatchedIntoGroup.value
       ? hangarStore.syncUnmatchedHangarGroupId
@@ -279,6 +281,14 @@ const refreshPage = async () => {
             autosaved
             :label="t('labels.syncExtension.syncEquipment')"
             :info="t('labels.syncExtension.syncEquipmentHint')"
+            no-placeholder
+          />
+          <FormToggle
+            v-model="hangarStore.syncCcus"
+            name="syncCcus"
+            autosaved
+            :label="t('labels.syncExtension.syncCcus')"
+            :info="t('labels.syncExtension.syncCcusHint')"
             no-placeholder
           />
           <BaseSelect
@@ -371,6 +381,7 @@ const refreshPage = async () => {
           :sync-paints="hangarStore.syncPaints"
           :sync-hangar-flair="hangarStore.syncHangarFlair"
           :sync-equipment="hangarStore.syncEquipment"
+          :sync-ccus="hangarStore.syncCcus"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>

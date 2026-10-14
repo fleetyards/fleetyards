@@ -3,7 +3,7 @@ class HangarSync < HangarImporter
 
   attr_accessor :data, :ships, :components, :upgrades
 
-  ITEM_TYPES = %w[ship component upgrade skin flair equipment extra].freeze
+  ITEM_TYPES = %w[ship component upgrade skin flair equipment extra ccu].freeze
 
   OUTCOMES = %w[synced nothing_to_sync only_skipped_items].freeze
 
@@ -32,6 +32,7 @@ class HangarSync < HangarImporter
     synced_paints
     synced_hangar_flair
     synced_equipment
+    synced_ccus
   ].freeze
 
   WARNING_KEYS = %i[
@@ -171,7 +172,8 @@ class HangarSync < HangarImporter
       missing_upgrade_vehicles:,
       synced_paints: pledge_items.fetch("paint", []),
       synced_hangar_flair: pledge_items.fetch("flair", []),
-      synced_equipment: pledge_items.fetch("equipment", [])
+      synced_equipment: pledge_items.fetch("equipment", []),
+      synced_ccus: pledge_items.fetch("ccu", [])
     }
   end
 
@@ -700,6 +702,7 @@ class HangarSync < HangarImporter
     kinds = []
     kinds << "paint" if @import.nil? || @import.sync_paints?
     kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
+    kinds << "ccu" if @import.nil? || @import.sync_ccus?
     kinds << "equipment" if @import.nil? || @import.sync_equipment?
     kinds
   end

@@ -12381,6 +12381,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/upgrades":
+    get:
+      summary: Hangar Upgrades
+      tags:
+      - Hangar
+      operationId: hangarUpgrades
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     get:
       summary: Images list
@@ -30832,10 +30876,12 @@ components:
       - paint
       - flair
       - equipment
+      - ccu
       x-enumNames:
       - PAINT
       - FLAIR
       - EQUIPMENT
+      - CCU
       title: HangarPledgeItemKindEnum
     HangarPledgeItemQuery:
       type: object
@@ -31147,6 +31193,11 @@ components:
             type: string
             format: uuid
         syncedHangarFlair:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedCcus:
           type: array
           items:
             type: string
@@ -37872,6 +37923,7 @@ components:
       - flair
       - equipment
       - extra
+      - ccu
       x-enumNames:
       - SHIP
       - COMPONENT
@@ -37880,6 +37932,7 @@ components:
       - FLAIR
       - EQUIPMENT
       - EXTRA
+      - CCU
       title: RsiHangarItemKindEnum
     RsiHangarUnreadPageInput:
       type: object
@@ -38831,6 +38884,9 @@ components:
           type: boolean
           default: false
         syncHangarFlair:
+          type: boolean
+          default: false
+        syncCcus:
           type: boolean
           default: false
         syncEquipment:

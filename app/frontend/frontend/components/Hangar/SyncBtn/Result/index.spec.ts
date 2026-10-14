@@ -128,6 +128,25 @@ describe("HangarSyncResult", () => {
     ).toBe(true);
   });
 
+  it("counts CCU rows separately and marks them when sync is disabled", async () => {
+    const ccu = {
+      id: "1",
+      name: "Upgrade - Aurora To Cutter",
+      type: RsiHangarItemKindEnum.CCU,
+    };
+    const wrapper = await mountWithDefaults(HangarSyncResult, {
+      props: {
+        processSteps: [{ name: "fetchHangar", status: "success" }],
+        currentPage: 1,
+        pledges: [ccu, ccu],
+        finished: false,
+        finishedWithErrors: false,
+        syncCcus: false,
+      },
+    });
+    expect(wrapper.find("[data-test='ccus-not-synced'] + dd").text()).toBe("1");
+  });
+
   it("counts FPS equipment, and the extras the server sorts on storing", async () => {
     const wrapper = await mountWithDefaults(HangarSyncResult, {
       props: {

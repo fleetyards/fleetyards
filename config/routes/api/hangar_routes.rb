@@ -13,6 +13,7 @@ resource :hangar, only: %i[show destroy] do
   delete "buybacks/:id", to: "hangar_buybacks#destroy"
   get "paints", to: "hangar_pledge_items#paints"
   get "flair", to: "hangar_pledge_items#flair"
+  get "upgrades", to: "hangar_pledge_items#upgrades"
   get "equipment", to: "hangar_pledge_items#equipment"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
