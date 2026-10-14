@@ -584,7 +584,8 @@
         "choosePaint": "Choose paint",
         "editLocation": "Change location",
         "allPaints": "All %{count} paints",
-        "fullscreenHolo": "Full screen"
+        "fullscreenHolo": "Full screen",
+        "showAllMatches": "Show all (%{count})"
       },
       "vehicleLog": {
         "open": "Captain's Log",

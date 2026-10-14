@@ -584,7 +584,8 @@
         "choosePaint": "Elegir pintura",
         "editLocation": "Cambiar ubicación",
         "allPaints": "Las %{count} pinturas",
-        "fullscreenHolo": "Pantalla completa"
+        "fullscreenHolo": "Pantalla completa",
+        "showAllMatches": "Ver todo (%{count})"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

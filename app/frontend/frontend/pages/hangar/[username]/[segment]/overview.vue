@@ -13,6 +13,7 @@ import PaintsCard from "@/frontend/components/Vehicles/Overview/PaintsCard/index
 import VisibilityCard from "@/frontend/components/Vehicles/Overview/VisibilityCard/index.vue";
 import FleetsCard from "@/frontend/components/Vehicles/Overview/FleetsCard/index.vue";
 import PlaqueCard from "@/frontend/components/Vehicles/Overview/PlaqueCard/index.vue";
+import AcquireCard from "@/frontend/components/Vehicles/Overview/AcquireCard/index.vue";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 
@@ -51,6 +52,7 @@ const cargoVisible = computed(
       </div>
 
       <aside class="vehicle-overview__side">
+        <AcquireCard v-if="vehicle.wanted" :vehicle="vehicle" />
         <PlaqueCard
           v-if="plaqueVisible"
           :vehicle="vehicle"

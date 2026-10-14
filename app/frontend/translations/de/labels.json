@@ -2755,7 +2755,8 @@
         "priceMin": "Mindestpreis (USD)",
         "priceMax": "Höchstpreis (USD)",
         "upgradeFrom": "Upgrade von",
-        "upgradeTo": "Upgrade auf"
+        "upgradeTo": "Upgrade auf",
+        "gets": "Bringt dir das Schiff"
       },
       "buybackSync": {
         "extensionVersion": "Installierte Erweiterungsversion",
@@ -4224,7 +4225,8 @@
         "planLoadout": "Loadout planen",
         "pictureUpload": "Hochladen",
         "pictureGallery": "Galerie",
-        "stockPicture": "Standardbild"
+        "stockPicture": "Standardbild",
+        "waysToGetIt": "Wege zum Schiff"
       },
       "vehicleLog": {
         "entries": "Logbucheinträge",

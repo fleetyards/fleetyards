@@ -24,6 +24,9 @@ const { stubCard } = vi.hoisted(() => ({
   }),
 }));
 
+vi.mock("@/frontend/components/Vehicles/Overview/AcquireCard/index.vue", () =>
+  stubCard("AcquireCard"),
+);
 vi.mock("@/frontend/components/Vehicles/Overview/LogCard/index.vue", () =>
   stubCard("LogCard"),
 );
@@ -120,6 +123,14 @@ describe("HangarVehicleOverviewPage", () => {
     );
 
     shipInventoriesEnabled.value = false;
+  });
+
+  it("shows the ways to get a ship only while it is on the wishlist", async () => {
+    const wanted = await mount({ vehicle: vehicle({ wanted: true }) });
+    const owned = await mount({ vehicle: vehicle() });
+
+    expect(wanted.findComponent({ name: "AcquireCard" }).exists()).toBe(true);
+    expect(owned.findComponent({ name: "AcquireCard" }).exists()).toBe(false);
   });
 
   it("offers neither for a ship not yet in the game", async () => {

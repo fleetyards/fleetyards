@@ -2755,7 +2755,8 @@
         "priceMin": "Min. price (USD)",
         "priceMax": "Max. price (USD)",
         "upgradeFrom": "Upgrade from",
-        "upgradeTo": "Upgrade to"
+        "upgradeTo": "Upgrade to",
+        "gets": "Gets you the ship"
       },
       "buybackSync": {
         "extensionVersion": "Installed extension version",
@@ -4238,7 +4239,8 @@
         "planLoadout": "Plan a loadout",
         "pictureUpload": "Upload",
         "pictureGallery": "Gallery",
-        "stockPicture": "Standard picture"
+        "stockPicture": "Standard picture",
+        "waysToGetIt": "Ways to get it"
       },
       "vehicleLog": {
         "entries": "log entries",

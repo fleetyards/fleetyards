@@ -584,7 +584,8 @@
         "choosePaint": "選擇塗裝",
         "editLocation": "變更位置",
         "allPaints": "全部 %{count} 款塗裝",
-        "fullscreenHolo": "全螢幕"
+        "fullscreenHolo": "全螢幕",
+        "showAllMatches": "查看全部（%{count}）"
       },
       "vehicleLog": {
         "open": "艦長日誌",

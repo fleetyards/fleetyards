@@ -2755,7 +2755,8 @@
         "priceMin": "Prix min. (USD)",
         "priceMax": "Prix max. (USD)",
         "upgradeFrom": "Amélioration depuis",
-        "upgradeTo": "Amélioration vers"
+        "upgradeTo": "Amélioration vers",
+        "gets": "Vous obtient le vaisseau"
       },
       "buybackSync": {
         "extensionVersion": "Version installée de l'extension",
@@ -4224,7 +4225,8 @@
         "planLoadout": "Planifier un loadout",
         "pictureUpload": "Téléverser",
         "pictureGallery": "Galerie",
-        "stockPicture": "Image standard"
+        "stockPicture": "Image standard",
+        "waysToGetIt": "Comment l'obtenir"
       },
       "vehicleLog": {
         "entries": "entrées du journal",

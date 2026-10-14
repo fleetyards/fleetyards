@@ -584,7 +584,8 @@
         "choosePaint": "Choisir une peinture",
         "editLocation": "Changer l'emplacement",
         "allPaints": "Les %{count} peintures",
-        "fullscreenHolo": "Plein écran"
+        "fullscreenHolo": "Plein écran",
+        "showAllMatches": "Tout afficher (%{count})"
       },
       "vehicleLog": {
         "open": "Journal de bord",
