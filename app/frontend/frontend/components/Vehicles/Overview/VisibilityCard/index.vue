@@ -87,6 +87,12 @@ const update = async (key: Setting["key"], value: boolean) => {
 .overview-visibility {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 20px;
+
+  // The gap spaces the toggles; a toggle's own margin would also pad the
+  // card's bottom edge.
+  :deep(.form-toggle) {
+    margin-bottom: 0;
+  }
 }
 </style>
