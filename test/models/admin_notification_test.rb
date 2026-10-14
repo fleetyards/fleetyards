@@ -38,7 +38,7 @@ class AdminNotificationTest < ActiveSupport::TestCase
 
     notification = AdminNotification.notify!(type: :paints_import, title: "Paints Import Results").first
 
-    assert_equal "fa-duotone fa-palette", notification.icon
+    assert_equal "fa-duotone fa-paint-roller", notification.icon
   end
 
   test "folds a repeated report into the unread row instead of stacking up" do
