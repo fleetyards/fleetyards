@@ -43,10 +43,11 @@ const shown = computed(() =>
 
 const { openLoadoutModal } = useVehicleModals();
 
-const openPicker = () =>
+const openPicker = (paintId?: string) =>
   openLoadoutModal(props.vehicle, {
     tab: VehicleLoadoutTabsEnum.PAINTS,
     editable: true,
+    paintId,
   });
 
 const thumb = (entry: VehiclePaint) =>
@@ -69,7 +70,7 @@ const thumb = (entry: VehiclePaint) =>
       <Btn
         :size="BtnSizesEnum.SM"
         data-test="vehicle-overview-paints-all"
-        @click="openPicker"
+        @click="openPicker()"
       >
         {{ t("actions.vehicleOverview.choosePaint") }}
       </Btn>
@@ -90,7 +91,7 @@ const thumb = (entry: VehiclePaint) =>
             : t('actions.vehicleOverview.choosePaint')
         "
         data-test="vehicle-overview-paint"
-        @click="openPicker"
+        @click="openPicker(entry.paint.id)"
       >
         <img
           v-if="thumb(entry)"

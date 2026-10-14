@@ -124,6 +124,22 @@ describe("VehicleLoadoutModal", () => {
     expect(selected[0].text()).toContain("Combat Module");
   });
 
+  it("saves a preselected paint, even after the ship refreshes", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(), editable: true, paintId: "p2" },
+    });
+
+    await wrapper.setProps({ vehicle: vehicle() });
+    await flushPromises();
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      id: "v1",
+      data: { modelPaintId: "p2" },
+    });
+  });
+
   // A background refetch of the hangar must not discard an unsaved choice.
   it("keeps a pending choice when the ship refreshes underneath it", async () => {
     const wrapper = await mountModal(vehicle(["m1"]));

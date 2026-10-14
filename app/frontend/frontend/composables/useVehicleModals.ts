@@ -23,7 +23,11 @@ export const useVehicleModals = () => {
 
   const openLoadoutModal = (
     vehicle: Vehicle | VehiclePublic,
-    options: { tab?: VehicleLoadoutTabsEnum; editable?: boolean } = {},
+    options: {
+      tab?: VehicleLoadoutTabsEnum;
+      editable?: boolean;
+      paintId?: string;
+    } = {},
   ) => {
     comlink.emit("open-modal", {
       component: () =>
@@ -33,6 +37,7 @@ export const useVehicleModals = () => {
         vehicle,
         editable: options.editable ?? false,
         tab: options.tab,
+        paintId: options.paintId,
       },
     });
   };

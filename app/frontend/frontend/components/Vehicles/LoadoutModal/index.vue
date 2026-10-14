@@ -37,11 +37,13 @@ type Props = {
   vehicle: Vehicle;
   editable?: boolean;
   tab?: VehicleLoadoutTabsEnum;
+  paintId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   tab: undefined,
+  paintId: undefined,
 });
 
 const { t } = useI18n();
@@ -85,6 +87,12 @@ watch(
 const [modelPaintId] = defineField("modelPaintId");
 const [modelModuleIds] = defineField("modelModuleIds");
 const [modelUpgradeIds] = defineField("modelUpgradeIds");
+
+// Set as a pending choice rather than an initial value, so it saves like a pick
+// and survives the background refetch the watcher above lets through.
+if (props.paintId) {
+  modelPaintId.value = props.paintId;
+}
 
 const model = computed(() => props.vehicle.model);
 

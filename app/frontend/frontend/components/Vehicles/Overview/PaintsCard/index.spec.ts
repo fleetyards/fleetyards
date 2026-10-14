@@ -41,8 +41,8 @@ const router = createRouter({
   ],
 });
 
-const mount = () =>
-  mountWithDefaults(Component, { props: { vehicle }, plugins: [router] });
+const mount = (props: { vehicle: Vehicle } = { vehicle }) =>
+  mountWithDefaults(Component, { props, plugins: [router] });
 
 const names = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
   wrapper
@@ -73,6 +73,23 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(names(wrapper)).toEqual(["Rust Society", "Stormbringer"]);
   });
 
+  it("opens the loadout paints tab without a preselection from the header", async () => {
+    paints.value = [entry("Rust Society", { owned: true })];
+
+    const wrapper = await mount();
+
+    await wrapper
+      .find('[data-test="vehicle-overview-paints-all"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paints",
+      editable: true,
+      paintId: undefined,
+    });
+  });
+
   it("opens the loadout paints tab from a paint", async () => {
     paints.value = [entry("Rust Society", { owned: true })];
 
@@ -84,6 +101,7 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
       tab: "paints",
       editable: true,
+      paintId: "Rust Society",
     });
   });
 
@@ -98,6 +116,7 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
       tab: "paints",
       editable: true,
+      paintId: "Rust Society",
     });
   });
 });
