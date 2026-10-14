@@ -321,7 +321,9 @@ const openOwnersModal = (modelSlug: string) => {
             },
           }"
         >
-          <span class="no-wrap">{{ t("actions.vehicleOverview.shipDatabase") }}</span>
+          <span class="no-wrap">{{
+            t("actions.vehicleOverview.shipDatabase")
+          }}</span>
         </Btn>
       </template>
       <template #empty>
