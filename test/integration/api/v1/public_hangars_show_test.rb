@@ -110,6 +110,20 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username leaves out the vehicles in an excluded group" do
+    user = create(:user, :public_hangar)
+    combat = create(:hangar_group, :public, user:, name: "Combat")
+    grouped = create(:vehicle, :public, user:)
+    grouped.hangar_groups << combat
+    ungrouped = create(:vehicle, :public, user:)
+
+    assert_api_response :get, 200,
+      path_params: {username: user.username},
+      params: {q: {"hangarGroupsNotIn" => [combat.slug], "sorts" => "modelName asc"}} do
+      assert_equal [ungrouped.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /public/hangars/:username honours perPage" do
     user = create(:user, :public_hangar)
     create_list(:vehicle, 2, :public, user: user)
