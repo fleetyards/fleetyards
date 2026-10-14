@@ -53,7 +53,7 @@ module Maintenance
       loaners -= collapse_duplicates(loaners)
       loaners -= remove_unlisted(loaners)
 
-      touched = realign_wanted(loaners) | revisit_hidden(loaners)
+      touched = realign_parent_flags(loaners) | revisit_hidden(loaners)
 
       touched.each { |loaner| schedule_fleet_update(loaner) }
     end
@@ -80,9 +80,9 @@ module Maintenance
     end
 
     # A loaner without a parent is not this task's business: nothing says what
-    # its `wanted` should be, and destroying it is a decision for whoever finds
-    # out how it got orphaned.
-    private def realign_wanted(loaners)
+    # its `wanted` or `hidden_by_user` should be, and destroying it is a
+    # decision for whoever finds out how it got orphaned.
+    private def realign_parent_flags(loaners)
       loaners.select do |loaner|
         parent = loaner.parent_vehicle
         next false if parent.nil?
