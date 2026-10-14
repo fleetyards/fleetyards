@@ -2411,7 +2411,13 @@
           "bundled": "隨附的 Snub Craft",
           "hiddenByUser": "隱藏的艦船",
           "boughtVia": "購買方式?",
-          "image": "自訂圖片",
+          "image": "圖片",
+          "imageSources": {
+            "custom": "非預設",
+            "upload": "已上傳",
+            "gallery": "來自圖庫",
+            "default": "預設"
+          },
           "dedication": "命名銘牌"
         },
         "models": {
