@@ -121,6 +121,43 @@ describe("VehiclePlaqueEditModal", () => {
     );
   });
 
+  it("saves a supporter's new plaque in the maker's style it was shown in", async () => {
+    mutateAsync.mockClear();
+    const wrapper = await mount(true);
+
+    await wrapper
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("To boldly go");
+    await wrapper.find("#vehicle-plaque-form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ plaqueStyle: "manufacturer" }),
+      }),
+    );
+  });
+
+  it("leaves an existing plaque's style out when it is not changed", async () => {
+    mutateAsync.mockClear();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "To boldly go", plaqueStyle: "neon" }),
+      },
+      initialState: { session: { currentUser: { supporter: true } } },
+      plugins: [router],
+    });
+
+    await wrapper.find("#vehicle-plaque-form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.not.objectContaining({ plaqueStyle: expect.anything() }),
+      }),
+    );
+  });
+
   it("offers to take a plaque down, as the dedication can no longer be emptied", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { vehicle: vehicle({ dedication: "To boldly go" }) },

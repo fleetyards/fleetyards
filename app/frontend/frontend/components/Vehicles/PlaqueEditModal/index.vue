@@ -194,9 +194,12 @@ const { useUpdateMutation } = useVehicleMutations();
 const updateMutation = useUpdateMutation(vehicle);
 
 // The payload carries the style the plaque is drawn in, not the stored choice,
-// so it is only sent once picked: otherwise saving any line would pin the
-// default as a choice of its own.
-const initialPlaqueStyle = keptStyle ?? plaqueStyle.value;
+// so on an existing plaque it is only sent once picked: otherwise saving any
+// line would pin the default as a choice of its own. A new plaque always sends
+// it, as the style the form starts on is not the server's default.
+const initialPlaqueStyle = props.vehicle.dedication
+  ? (keptStyle ?? plaqueStyle.value)
+  : undefined;
 
 const { uploadFile } = useDirectUpload();
 
