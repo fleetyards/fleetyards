@@ -2864,12 +2864,12 @@ components:
           items:
             type: string
             format: uuid
-        syncedCcus:
+        syncedEquipment:
           type: array
           items:
             type: string
             format: uuid
-        syncedEquipment:
+        syncedCcus:
           type: array
           items:
             type: string

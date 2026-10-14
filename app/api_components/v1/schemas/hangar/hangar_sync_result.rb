@@ -34,8 +34,9 @@ module V1
             syncedPaints: {type: :array, items: {type: :string, format: :uuid}},
             syncedHangarFlair: {type: :array, items: {type: :string, format: :uuid}},
             # Left out by a run from before equipment was synced.
-            syncedCcus: {type: :array, items: {type: :string, format: :uuid}},
             syncedEquipment: {type: :array, items: {type: :string, format: :uuid}},
+            # Left out by a run from before CCUs were synced.
+            syncedCcus: {type: :array, items: {type: :string, format: :uuid}},
             # Left out by a run from before the sync decided it had nothing to do.
             outcome: {"$ref": "#/components/schemas/HangarSyncOutcomeEnum"},
             # Only there when the parser could not read every item: unmatched
