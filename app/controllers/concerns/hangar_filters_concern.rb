@@ -22,10 +22,13 @@ module HangarFiltersConcern
     end
   end
 
+  # Loaner deduplication keeps one visible row per hidden_by_user state, so
+  # listing both states at once would show a loaner twice; the ones lent by
+  # hidden ships are only listed on their own.
   private def hidden_by_user_included?(scope)
     case vehicle_query_params.delete("hidden_by_user_eq")
     when "true"
-      scope
+      scope.where(hidden_by_user: false).or(scope.where(hidden_by_user: true, loaner: false))
     when "only"
       scope.where(hidden_by_user: true)
     else

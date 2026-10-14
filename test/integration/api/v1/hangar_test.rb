@@ -136,6 +136,18 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar lists a loaner once when hidden ships are shown alongside the rest" do
+    user = create(:user)
+    loaner_model = create(:model)
+    create(:vehicle, user:, wanted: false, hidden_by_user: true, model: create(:model).tap { |m| m.loaners << loaner_model })
+    create(:vehicle, user:, wanted: false, model: create(:model).tap { |m| m.loaners << loaner_model })
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "true", loanerEq: "only"}} do
+      assert_equal [loaner_model.slug], parsed_body["items"].map { |item| item.dig("model", "slug") }
+    end
+  end
+
   test "GET /hangar filters by query" do
     user = create(:user, vehicle_count: 3)
     sign_in user
