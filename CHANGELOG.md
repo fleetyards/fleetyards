@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.6.0](https://github.com/fleetyards/fleetyards/compare/v9.5.0...v9.6.0) (2026-10-14)
+
+
+### Features
+
+* **hangar:** hide specific ships from the hangar ([#5675](https://github.com/fleetyards/fleetyards/issues/5675)) ([1468919](https://github.com/fleetyards/fleetyards/commit/1468919b11e511c59146c46c04c8e4eed568f766))
+* **hangar:** split the page menu into list actions and header pages ([#5676](https://github.com/fleetyards/fleetyards/issues/5676)) ([3b46d34](https://github.com/fleetyards/fleetyards/commit/3b46d34d3a87bc3e8097f4111fa86b5f7c33f5e0))
+
+
+### Bug Fixes
+
+* **paints:** share Sabre Raven paints with the Raven EX ([#5678](https://github.com/fleetyards/fleetyards/issues/5678)) ([543d90c](https://github.com/fleetyards/fleetyards/commit/543d90ca38980494834708bbd00837f1189a03a9))
+
 ## [9.5.0](https://github.com/fleetyards/fleetyards/compare/v9.4.0...v9.5.0) (2026-10-14)
 
 
