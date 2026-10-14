@@ -2411,3 +2411,6 @@ PUT /notifications/{id}/archive added the new `fleet_verification_requested` enu
 PUT /notifications/{id}/read added the new `fleet_verification_requested` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `fleet_verification_requested` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_verification_requested` enum value to the `notificationType` response property for the response status `200`
+GET /hangar/equipment added the new `ccu` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/flair added the new `ccu` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/paints added the new `ccu` enum value to the `items/items/kind` response property for the response status `200`
