@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.5.0](https://github.com/fleetyards/fleetyards/compare/v9.4.0...v9.5.0) (2026-10-14)
+
+
+### Features
+
+* **admin:** filter vehicles by custom image and dedication plaque ([#5672](https://github.com/fleetyards/fleetyards/issues/5672)) ([d05e92a](https://github.com/fleetyards/fleetyards/commit/d05e92a470faf80ddc7f4319e1d04c0861455f80))
+
+
+### Bug Fixes
+
+* **holo:** open Quick Look without model-viewer ([#5671](https://github.com/fleetyards/fleetyards/issues/5671)) ([f05fb5a](https://github.com/fleetyards/fleetyards/commit/f05fb5aca00124276fe0172c80930a297547b2b8))
+
 ## [9.4.0](https://github.com/fleetyards/fleetyards/compare/v9.3.2...v9.4.0) (2026-10-13)
 
 
