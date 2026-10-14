@@ -4244,13 +4244,16 @@
         "tabs": {
           "paints": "Lackierungen",
           "modules": "Module",
-          "upgrades": "Upgrade-Kits",
+          "upgrades": "Add-ons",
           "weapons": "Waffen",
           "missiles": "Raketen",
           "shields": "Schildgeneratoren",
           "powerPlants": "Kraftwerke",
           "coolers": "Kühler",
-          "quantumDrives": "Quantum-Antriebe"
+          "quantumDrives": "Quantum-Antriebe",
+          "radar": "Radar",
+          "lifeSupport": "Lebenserhaltung",
+          "flightBlades": "Flugsteuerungs-Blades"
         },
         "comingSoon": "Demnächst verfügbar",
         "none": "Keine"

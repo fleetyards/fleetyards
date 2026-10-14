@@ -4244,13 +4244,16 @@
         "tabs": {
           "paints": "塗裝",
           "modules": "模組",
-          "upgrades": "升級套件",
+          "upgrades": "附加組件",
           "weapons": "武器",
           "missiles": "飛彈",
           "shields": "護盾產生器",
           "powerPlants": "發電機",
           "coolers": "冷卻器",
-          "quantumDrives": "量子引擎"
+          "quantumDrives": "量子引擎",
+          "radar": "雷達",
+          "lifeSupport": "生命維持",
+          "flightBlades": "飛行刀片"
         },
         "comingSoon": "即將推出",
         "none": "無"

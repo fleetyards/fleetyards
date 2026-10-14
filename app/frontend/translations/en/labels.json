@@ -4258,13 +4258,16 @@
         "tabs": {
           "paints": "Paints",
           "modules": "Modules",
-          "upgrades": "Upgrade-Kits",
+          "upgrades": "Add-ons",
           "weapons": "Weapons",
           "missiles": "Missiles",
           "shields": "Shield generators",
           "powerPlants": "Power plants",
           "coolers": "Coolers",
-          "quantumDrives": "Quantum drives"
+          "quantumDrives": "Quantum drives",
+          "radar": "Radar",
+          "lifeSupport": "Life support",
+          "flightBlades": "Flight blades"
         },
         "comingSoon": "Coming soon",
         "none": "None"

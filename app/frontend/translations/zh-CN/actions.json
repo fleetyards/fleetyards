@@ -590,6 +590,9 @@
         "open": "舰长日志",
         "add": "新条目",
         "showPublic": "舰长日志"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "保存配置"
       }
     }
   }

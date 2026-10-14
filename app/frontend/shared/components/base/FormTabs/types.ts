@@ -7,6 +7,7 @@ export type FormTabRegistration = {
   disabled: Ref<boolean>;
   hidden: Ref<boolean>;
   icon: Ref<string | undefined>;
+  iconSrc: Ref<string | undefined>;
   hint: Ref<string | undefined>;
 };
 

@@ -169,7 +169,7 @@ describe("FormTabs", () => {
             ),
             h(
               FormTab,
-              { id: "two", label: "Two", icon: "fa-solid fa-camera" },
+              { id: "two", label: "Two", iconSrc: "/radar.svg" },
               () => "Second",
             ),
           ],
@@ -183,7 +183,8 @@ describe("FormTabs", () => {
       "true",
     );
     expect(tabs[1].attributes("aria-label")).toBe("Two");
-    expect(tabs[1].find(".fa-camera").exists()).toBe(true);
+    expect(tabs[1].find("img").attributes("src")).toBe("/radar.svg");
+    expect(tabs[1].classes()).toContain("tab-anchor--compact");
     await tabs[1].trigger("mouseenter");
     expect(document.body.querySelector("[data-tooltip]")?.textContent).toBe(
       "Two",

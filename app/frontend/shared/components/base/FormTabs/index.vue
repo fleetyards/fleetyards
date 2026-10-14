@@ -114,6 +114,7 @@ const items = computed(() =>
     disabled: tab.disabled.value,
     invalid: tabHasErrors(tab),
     icon: tab.icon.value,
+    iconSrc: tab.iconSrc.value,
     hint: tab.hint.value,
   })),
 );

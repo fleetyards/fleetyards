@@ -590,6 +590,9 @@
         "open": "Captain's Log",
         "add": "New entry",
         "showPublic": "Captain's Log"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Save loadout"
       }
     }
   }

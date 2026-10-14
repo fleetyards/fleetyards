@@ -1,6 +1,22 @@
 .vehicle-loadout {
   min-height: 100px;
 
+  :deep(.tab-anchor__icon) {
+    filter: grayscale(1);
+  }
+
+  :deep(.tab-anchor__content > i) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    font-size: 1.375rem;
+    line-height: 1;
+    color: $gray-light;
+  }
+
   &__layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

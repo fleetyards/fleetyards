@@ -590,6 +590,9 @@
         "open": "Diario di bordo",
         "add": "Nuova voce",
         "showPublic": "Diario di bordo"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Salva equipaggiamento"
       }
     }
   }

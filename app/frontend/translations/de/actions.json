@@ -590,6 +590,9 @@
         "open": "Logbuch",
         "add": "Neuer Eintrag",
         "showPublic": "Logbuch"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Loadout speichern"
       }
     }
   }

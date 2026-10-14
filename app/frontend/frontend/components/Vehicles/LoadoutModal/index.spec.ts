@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { ModelModule, Vehicle } from "@/services/fyApi";
 import Component from "./index.vue";
+import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 
 const modules = ref<{ items: ModelModule[] }>({
   items: [
@@ -133,4 +134,74 @@ describe("VehicleLoadoutModal", () => {
 
     expect(wrapper.findAll(".addon-option--selected")).toHaveLength(2);
   });
+});
+
+it("shows the additional component sections and unsupported add-on sections", async () => {
+  const v = vehicle();
+  v.model.hasModules = false;
+  const wrapper = await mountModal(v);
+  const tabs = wrapper.findAllComponents({ name: "FormTab" });
+  const ids = tabs.map((tab) => tab.props("id"));
+  expect(
+    tabs.find((tab) => tab.props("id") === "modules")?.props("disabled"),
+  ).toBe(true);
+  expect(ids).toEqual(
+    expect.arrayContaining([
+      "radar",
+      "lifeSupport",
+      "flightBlades",
+      "modules",
+      "upgrades",
+    ]),
+  );
+});
+
+it("orders systems before propulsion and weapons, with paints last", async () => {
+  const wrapper = await mountModal(vehicle());
+  const tabs = wrapper.findAllComponents({ name: "FormTab" });
+  expect(tabs.map((tab) => tab.props("id"))).toEqual([
+    "radar",
+    "coolers",
+    "lifeSupport",
+    "powerPlants",
+    "shields",
+    "modules",
+    "upgrades",
+    "quantumDrives",
+    "flightBlades",
+    "missiles",
+    "weapons",
+    "paints",
+  ]);
+  for (const [id, category] of [
+    ["radar", "radar"],
+    ["coolers", "cooler"],
+    ["lifeSupport", "lifesupport"],
+    ["powerPlants", "powerplant"],
+    ["shields", "shieldgenerator"],
+    ["modules", "module"],
+    ["quantumDrives", "quantumdrive"],
+    ["flightBlades", "controller"],
+    ["missiles", "missiles"],
+    ["weapons", "weapons"],
+    ["paints", "paints"],
+  ]) {
+    const tab = tabs.find((tab) => tab.props("id") === id)!;
+    const icon = categoryIcon(category)!;
+    expect(tab.props(icon.kind === "svg" ? "iconSrc" : "icon")).toBe(
+      icon.kind === "svg" ? icon.src : icon.className,
+    );
+  }
+});
+
+it("reserves saving a loadout while keeping current changes saveable", async () => {
+  const wrapper = await mountModal(vehicle());
+  expect(
+    wrapper
+      .get('[data-test="vehicle-loadout-save-preset"]')
+      .attributes("disabled"),
+  ).toBeDefined();
+  expect(
+    wrapper.get('[data-test="vehicle-loadout-save"]').attributes("disabled"),
+  ).toBeUndefined();
 });

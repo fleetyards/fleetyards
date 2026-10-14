@@ -15,6 +15,7 @@ type Props = {
   disabled?: boolean;
   hidden?: boolean;
   icon?: string;
+  iconSrc?: string;
   hint?: string;
 };
 
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   hidden: false,
   icon: undefined,
+  iconSrc: undefined,
   hint: undefined,
 });
 
@@ -39,6 +41,7 @@ context.registerTab({
   disabled: toRef(props, "disabled"),
   hidden: toRef(props, "hidden"),
   icon: toRef(props, "icon"),
+  iconSrc: toRef(props, "iconSrc"),
   hint: toRef(props, "hint"),
 });
 

@@ -590,6 +590,9 @@
         "open": "Journal de bord",
         "add": "Nouvelle entrée",
         "showPublic": "Journal de bord"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Enregistrer l’équipement"
       }
     }
   }

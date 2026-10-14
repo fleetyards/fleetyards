@@ -590,6 +590,9 @@
         "open": "Cuaderno de bitácora",
         "add": "Nueva entrada",
         "showPublic": "Cuaderno de bitácora"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Guardar equipamiento"
       }
     }
   }

@@ -11,6 +11,7 @@ export type TabNavViewAnchorItem = {
   invalid?: boolean;
   disabled?: boolean;
   icon?: string;
+  iconSrc?: string;
   // Says why a disabled tab cannot be opened yet.
   hint?: string;
 };
@@ -96,7 +97,7 @@ const onKeydown = (event: KeyboardEvent, item: TabNavViewAnchorItem) => {
     role="tab"
     :class="{
       active: item.id === activeId,
-      'tab-anchor--compact': activeLabelOnly && !!item.icon,
+      'tab-anchor--compact': activeLabelOnly && !!(item.icon || item.iconSrc),
       disabled: item.disabled,
       'has-errors': item.invalid,
     }"
@@ -116,11 +117,19 @@ const onKeydown = (event: KeyboardEvent, item: TabNavViewAnchorItem) => {
   >
     <a :aria-label="item.label">
       <span class="tab-anchor__content">
-        <i v-if="item.icon" :class="item.icon" aria-hidden="true" />
+        <img
+          v-if="item.iconSrc"
+          :src="item.iconSrc"
+          class="tab-anchor__icon"
+          alt=""
+        />
+        <i v-else-if="item.icon" :class="item.icon" aria-hidden="true" />
         <span
           class="tab-anchor__label"
           :aria-hidden="
-            (activeLabelOnly && !!item.icon && item.id !== activeId) ||
+            (activeLabelOnly &&
+              !!(item.icon || item.iconSrc) &&
+              item.id !== activeId) ||
             undefined
           "
         >
@@ -137,6 +146,13 @@ const onKeydown = (event: KeyboardEvent, item: TabNavViewAnchorItem) => {
   align-items: center;
   gap: 8px;
   vertical-align: middle;
+}
+
+.tab-anchor__icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  object-fit: contain;
 }
 
 .tab-anchor__label {

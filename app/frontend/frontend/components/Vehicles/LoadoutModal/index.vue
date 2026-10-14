@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -114,36 +115,62 @@ const paintsVisible = computed(
 
 // Components a later version of this editor will cover, shown so the tab strip
 // already says where it is headed.
-const upcomingTabs = computed(() => [
+const categoryTabIcon = (category: string) => {
+  const icon = categoryIcon(category);
+  return {
+    icon: icon?.kind === "fa" ? icon.className : undefined,
+    iconSrc: icon?.kind === "svg" ? icon.src : undefined,
+  };
+};
+
+const systemTabs = computed(() => [
   {
-    id: "weapons",
-    label: t("labels.vehicleLoadout.tabs.weapons"),
-    icon: "fa-duotone fa-crosshairs",
-  },
-  {
-    id: "missiles",
-    label: t("labels.vehicleLoadout.tabs.missiles"),
-    icon: "fa-duotone fa-rocket-launch",
-  },
-  {
-    id: "shields",
-    label: t("labels.vehicleLoadout.tabs.shields"),
-    icon: "fa-duotone fa-shield-halved",
-  },
-  {
-    id: "powerPlants",
-    label: t("labels.vehicleLoadout.tabs.powerPlants"),
-    icon: "fa-duotone fa-bolt",
+    id: "radar",
+    label: t("labels.vehicleLoadout.tabs.radar"),
+    ...categoryTabIcon("radar"),
   },
   {
     id: "coolers",
     label: t("labels.vehicleLoadout.tabs.coolers"),
-    icon: "fa-duotone fa-snowflake",
+    ...categoryTabIcon("cooler"),
   },
+  {
+    id: "lifeSupport",
+    label: t("labels.vehicleLoadout.tabs.lifeSupport"),
+    ...categoryTabIcon("lifesupport"),
+  },
+  {
+    id: "powerPlants",
+    label: t("labels.vehicleLoadout.tabs.powerPlants"),
+    ...categoryTabIcon("powerplant"),
+  },
+  {
+    id: "shields",
+    label: t("labels.vehicleLoadout.tabs.shields"),
+    ...categoryTabIcon("shieldgenerator"),
+  },
+]);
+
+const propulsionWeaponTabs = computed(() => [
   {
     id: "quantumDrives",
     label: t("labels.vehicleLoadout.tabs.quantumDrives"),
-    icon: "fa-duotone fa-atom",
+    ...categoryTabIcon("quantumdrive"),
+  },
+  {
+    id: "flightBlades",
+    label: t("labels.vehicleLoadout.tabs.flightBlades"),
+    ...categoryTabIcon("controller"),
+  },
+  {
+    id: "missiles",
+    label: t("labels.vehicleLoadout.tabs.missiles"),
+    ...categoryTabIcon("missiles"),
+  },
+  {
+    id: "weapons",
+    label: t("labels.vehicleLoadout.tabs.weapons"),
+    ...categoryTabIcon("weapons"),
   },
 ]);
 
@@ -272,27 +299,22 @@ const onSubmit = handleSubmit(async (values) => {
         <div class="vehicle-loadout__layout">
           <div class="vehicle-loadout__main">
             <FormTab
-              :id="VehicleLoadoutTabsEnum.PAINTS"
-              :label="t('labels.vehicleLoadout.tabs.paints')"
-              icon="fa-duotone fa-paint-roller"
-              :fields="['modelPaintId']"
-              :hidden="!paintsVisible"
-            >
-              <VehiclePaintPicker
-                v-if="paintsVisible"
-                v-model="modelPaintId"
-                :model-slug="vehicle.model.slug"
-                :default-image="vehicle.model.media.storeImage?.smallUrl"
-                hide-legend
-              />
-            </FormTab>
+              v-for="upcoming in systemTabs"
+              :id="upcoming.id"
+              :key="upcoming.id"
+              :label="upcoming.label"
+              :icon="upcoming.icon"
+              :icon-src="upcoming.iconSrc"
+              :hint="t('labels.vehicleLoadout.comingSoon')"
+              disabled
+            />
 
             <FormTab
               :id="VehicleLoadoutTabsEnum.MODULES"
               :label="t('labels.vehicleLoadout.tabs.modules')"
-              icon="fa-duotone fa-cubes"
+              :icon="categoryTabIcon('module').icon"
               :fields="['modelModuleIds']"
-              :hidden="!vehicle.model.hasModules"
+              :disabled="!vehicle.model.hasModules"
             >
               <div class="vehicle-loadout__sections">
                 <AsyncData
@@ -342,7 +364,7 @@ const onSubmit = handleSubmit(async (values) => {
               :label="t('labels.vehicleLoadout.tabs.upgrades')"
               icon="fa-duotone fa-wrench"
               :fields="['modelUpgradeIds']"
-              :hidden="!vehicle.model.hasUpgrades"
+              :disabled="!vehicle.model.hasUpgrades"
             >
               <AsyncData
                 :fullscreen="false"
@@ -360,14 +382,31 @@ const onSubmit = handleSubmit(async (values) => {
             </FormTab>
 
             <FormTab
-              v-for="upcoming in upcomingTabs"
+              v-for="upcoming in propulsionWeaponTabs"
               :id="upcoming.id"
               :key="upcoming.id"
               :label="upcoming.label"
               :icon="upcoming.icon"
+              :icon-src="upcoming.iconSrc"
               :hint="t('labels.vehicleLoadout.comingSoon')"
               disabled
             />
+
+            <FormTab
+              :id="VehicleLoadoutTabsEnum.PAINTS"
+              :label="t('labels.vehicleLoadout.tabs.paints')"
+              :icon="categoryTabIcon('paints').icon"
+              :fields="['modelPaintId']"
+              :hidden="!paintsVisible"
+            >
+              <VehiclePaintPicker
+                v-if="paintsVisible"
+                v-model="modelPaintId"
+                :model-slug="vehicle.model.slug"
+                :default-image="vehicle.model.media.storeImage?.smallUrl"
+                hide-legend
+              />
+            </FormTab>
           </div>
 
           <aside
@@ -409,6 +448,11 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template v-if="editable" #footer>
+      <span v-tooltip="t('labels.vehicleLoadout.comingSoon')">
+        <Btn disabled data-test="vehicle-loadout-save-preset">
+          {{ t("actions.vehicleLoadout.saveLoadout") }}
+        </Btn>
+      </span>
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
