@@ -1,6 +1,6 @@
-import { mount, flushPromises } from "@vue/test-utils";
-import { createTestingPinia } from "@pinia/testing";
-import { describe, expect, it, vi } from "vitest";
+import { flushPromises } from "@vue/test-utils";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { ModelModule, Vehicle } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -23,6 +23,7 @@ const resolved = () => ({
 // Partial: the row and the contents summary reach for real enums from here.
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
+  useModelPaints: () => ({ data: ref([]), ...resolved() }),
   useModelModulePackages: () => ({ data: ref(undefined), ...resolved() }),
   useModelModules: () => ({ data: modules, ...resolved() }),
   useModelUpgrades: () => ({ data: ref([]), ...resolved() }),
@@ -49,30 +50,47 @@ const vehicle = (modelModuleIds: string[] = []): Vehicle =>
     id: "v1",
     modelModuleIds,
     modelUpgradeIds: [],
-    model: { name: "Retaliator", slug: "retaliator" },
+    model: {
+      name: "Retaliator",
+      slug: "retaliator",
+      hasModules: true,
+      media: {},
+      metrics: {},
+    },
   }) as unknown as Vehicle;
 
-const mountModal = async (v: Vehicle) => {
-  const wrapper = mount(Component, {
-    props: { vehicle: v, editable: true },
-    global: {
-      plugins: [createTestingPinia()],
-      stubs: {
-        Modal: { template: "<div><slot /><slot name='footer' /></div>" },
-      },
-      directives: { Tooltip: {} },
-    },
-  });
-  await flushPromises();
-  return wrapper;
-};
+const mountModal = (v: Vehicle) =>
+  mountWithDefaults(Component, { props: { vehicle: v, editable: true } });
 
 const rowToggle = (
   wrapper: Awaited<ReturnType<typeof mountModal>>,
   i: number,
 ) => wrapper.findAll("[data-test='vehicle-addon-toggle']")[i];
 
-describe("AddonsModal", () => {
+beforeEach(() => mutateAsync.mockClear());
+
+describe("VehicleLoadoutModal", () => {
+  it("does not save an unchanged loadout", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]));
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("does not allow a visitor to save", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(["m1"]), editable: false },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-loadout-save"]').exists()).toBe(
+      false,
+    );
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
   /**
    * The whole broken chain in one assertion: a row click has to reach the form
    * field and land in the payload. It used to stop at the row.
@@ -86,7 +104,7 @@ describe("AddonsModal", () => {
 
     expect(mutateAsync).toHaveBeenCalledWith({
       id: "v1",
-      data: { modelModuleIds: ["m1"], modelUpgradeIds: [] },
+      data: { modelModuleIds: ["m1"] },
     });
   });
 

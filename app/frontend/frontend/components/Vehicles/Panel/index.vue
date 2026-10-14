@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
@@ -207,16 +209,15 @@ const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
 
 const comlink = useComlink();
 
-const openAddonsModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-      editable: props.editable,
-    },
+const { openLoadoutModal } = useVehicleModals();
+
+const openAddonsModal = () =>
+  openLoadoutModal(props.vehicle, {
+    editable: props.editable,
+    tab: model.value?.hasModules
+      ? VehicleLoadoutTabsEnum.MODULES
+      : VehicleLoadoutTabsEnum.UPGRADES,
   });
-};
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
@@ -401,10 +402,10 @@ const tone = computed(() => {
         @click="openAddonsModal"
       >
         <span v-show="hasAddons">
-          <i class="fa fa-plus-octagon" />
+          <i class="fa-duotone fa-puzzle" />
         </span>
         <span v-show="!hasAddons">
-          <i class="fa-regular fa-plus-octagon" />
+          <i class="fa-regular fa-puzzle" />
         </span>
       </div>
     </template>

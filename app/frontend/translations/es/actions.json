@@ -236,7 +236,8 @@
           "openModal": "Restablecer naves del juego después del wipe",
           "moveToWishlist": "Mover a lista de deseos",
           "removeAll": "Eliminar todo"
-        }
+        },
+        "editLoadout": "Editar configuración"
       },
       "syncExtension": {
         "cancel": "Cancelar",

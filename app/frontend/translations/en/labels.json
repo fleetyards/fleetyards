@@ -4244,6 +4244,30 @@
         "statsEntries": "Entries",
         "statsPublic": "Public",
         "statsSince": "Since"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "General",
+          "visibility": "Visibility",
+          "names": "Names",
+          "groups": "Groups",
+          "picture": "Picture"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "Paints",
+          "modules": "Modules",
+          "upgrades": "Upgrade-Kits",
+          "weapons": "Weapons",
+          "missiles": "Missiles",
+          "shields": "Shield generators",
+          "powerPlants": "Power plants",
+          "coolers": "Coolers",
+          "quantumDrives": "Quantum drives"
+        },
+        "comingSoon": "Coming soon",
+        "none": "None"
       }
     }
   }

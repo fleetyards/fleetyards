@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "VehicleNamingModalAlternativeNamesInput",
+  name: "VehicleEditModalAlternativeNamesInput",
 };
 </script>
 
@@ -104,3 +104,7 @@ const onChange = () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

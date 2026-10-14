@@ -43,7 +43,7 @@ const rows = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 const toggle = (wrapper: Awaited<ReturnType<typeof mount>>, index: number) =>
   rows(wrapper)[index].find("[data-test='vehicle-addon-package-toggle']");
 
-describe("AddonsModalPackages", () => {
+describe("VehicleLoadoutModalPackages", () => {
   /**
    * The regression: this emitted "upate:modelValue", so applying a package was a
    * no-op no matter what the row did.

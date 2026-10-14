@@ -236,7 +236,8 @@
           "openModal": "数据重置后重置游戏内飞船",
           "moveToWishlist": "移至愿望清单",
           "removeAll": "全部移除"
-        }
+        },
+        "editLoadout": "编辑配装"
       },
       "syncExtension": {
         "cancel": "取消",

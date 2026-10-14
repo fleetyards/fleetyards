@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -198,15 +199,10 @@ onBeforeUnmount(() => {
   hangarDeleteAllComlink.value();
 });
 
-const openEditModal = (vehicle: Vehicle) => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-    props: {
-      vehicle,
-      wishlist: props.wishlist,
-    },
-  });
-};
+const { openEditModal: openVehicleEdit } = useVehicleModals();
+
+const openEditModal = (vehicle: Vehicle) =>
+  openVehicleEdit(vehicle, { wishlist: props.wishlist });
 
 const storeImage = (record: Vehicle) => {
   if (record && record.paint) {

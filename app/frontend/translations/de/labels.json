@@ -4230,6 +4230,30 @@
         "statsEntries": "Einträge",
         "statsPublic": "Öffentlich",
         "statsSince": "Seit"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "Allgemein",
+          "visibility": "Sichtbarkeit",
+          "names": "Namen",
+          "groups": "Gruppen",
+          "picture": "Bild"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "Lackierungen",
+          "modules": "Module",
+          "upgrades": "Upgrade-Kits",
+          "weapons": "Waffen",
+          "missiles": "Raketen",
+          "shields": "Schildgeneratoren",
+          "powerPlants": "Kraftwerke",
+          "coolers": "Kühler",
+          "quantumDrives": "Quantum-Antriebe"
+        },
+        "comingSoon": "Demnächst verfügbar",
+        "none": "Keine"
       }
     }
   }

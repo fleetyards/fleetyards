@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
@@ -39,13 +41,10 @@ const openLocationModal = () => {
   });
 };
 
-const openGroupsModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/GroupsModal/index.vue"),
-    props: { vehicle: props.vehicle },
-  });
-};
+const { openEditModal } = useVehicleModals();
+
+const openGroupsModal = () =>
+  openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.GROUPS });
 
 const paintThumb = computed(
   () => props.vehicle.paint?.media.storeImage?.smallUrl,

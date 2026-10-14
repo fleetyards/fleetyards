@@ -236,7 +236,8 @@
           "openModal": "Resetta navi in-game dopo il wipe",
           "moveToWishlist": "Sposta nella lista dei desideri",
           "removeAll": "Rimuovi tutto"
-        }
+        },
+        "editLoadout": "Modifica configurazione"
       },
       "syncExtension": {
         "cancel": "Annulla",

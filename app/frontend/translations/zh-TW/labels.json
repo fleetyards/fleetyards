@@ -4230,6 +4230,30 @@
         "statsEntries": "條目",
         "statsPublic": "公開",
         "statsSince": "始於"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "一般",
+          "visibility": "可見性",
+          "names": "名稱",
+          "groups": "分組",
+          "picture": "圖片"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "塗裝",
+          "modules": "模組",
+          "upgrades": "升級套件",
+          "weapons": "武器",
+          "missiles": "飛彈",
+          "shields": "護盾產生器",
+          "powerPlants": "發電機",
+          "coolers": "冷卻器",
+          "quantumDrives": "量子引擎"
+        },
+        "comingSoon": "即將推出",
+        "none": "無"
       }
     }
   }

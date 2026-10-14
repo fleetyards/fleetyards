@@ -1,7 +1,8 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import Component from "./index.vue";
+import Component from "../index.vue";
+import { VehicleEditTabsEnum } from "../types";
 import type { Image, Vehicle } from "@/services/fyApi";
 
 const updateVehicle = vi.fn();
@@ -17,6 +18,8 @@ const GALLERY = [
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
+  useHangarGroups: () => ({ data: ref([]) }),
+  useVehicleBoughtViaFilters: () => ({ data: ref([]) }),
   useModelImages: () => ({
     data: ref({
       items: gallery.items as Image[],
@@ -45,6 +48,7 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
+    useUpdateMutation: () => ({ mutateAsync: vi.fn(), isPending: ref(false) }),
     invalidateVehiclePage: vi.fn(),
     invalidateHangarQueries: vi.fn(),
   }),
@@ -53,19 +57,23 @@ vi.mock("@/frontend/composables/useVehicleMutations", () => ({
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
     id: "vehicle-1",
+    alternativeNames: [],
+    hangarGroupIds: [],
     model: { name: "Ironclad", slug: "ironclad", media: {} },
     ...overrides,
   }) as Vehicle;
 
 const mount = (props: { vehicle: Vehicle }) =>
-  mountWithDefaults(Component, { props });
+  mountWithDefaults(Component, {
+    props: { ...props, tab: VehicleEditTabsEnum.IMAGE },
+  });
 
 const submit = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
   await wrapper.find("form").trigger("submit");
   await flushPromises();
 };
 
-describe("VehicleImageModal", () => {
+describe("VehicleEditModal image tab", () => {
   beforeEach(() => {
     gallery.items = GALLERY;
     updateVehicle.mockReset().mockResolvedValue({ id: "vehicle-1" });

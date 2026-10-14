@@ -1,0 +1,123 @@
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import Component from "./index.vue";
+import { flushPromises } from "@vue/test-utils";
+import { VehicleEditTabsEnum } from "./types";
+
+const mutateAsync = vi.fn().mockResolvedValue({});
+
+vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
+  default: { name: "FormFileInput", template: "<div />" },
+}));
+import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
+
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/services/fyApi")>()),
+  useVehicleBoughtViaFilters: () => ({
+    data: ref([
+      { label: "Pledge Store", value: "pledge_store", category: "boughtVia" },
+      { label: "In-Game", value: "ingame", category: "boughtVia" },
+    ]),
+  }),
+  useHangarGroups: () => ({ data: ref([]) }),
+}));
+
+vi.mock("@/frontend/composables/useVehicleMutations", () => ({
+  useVehicleMutations: () => ({
+    useUpdateMutation: () => ({ mutateAsync, isPending: ref(false) }),
+  }),
+}));
+
+const vehicle = (ingameOnly: boolean): Vehicle =>
+  ({
+    id: "vehicle-1",
+    flagship: false,
+    public: true,
+    nameVisible: true,
+    name: "Old name",
+    serial: "LEGACY SERIAL",
+    boughtVia: BoughtViaEnum.PLEDGE_STORE,
+    alternativeNames: [],
+    hangarGroupIds: [],
+    model: {
+      id: "model-1",
+      name: "ATLS IKTI",
+      slug: "argo-atls-ikti",
+      ingameOnly,
+    },
+  }) as unknown as Vehicle;
+
+const boughtViaOptions = async (ingameOnly: boolean) => {
+  const wrapper = await mountWithDefaults(Component, {
+    props: { vehicle: vehicle(ingameOnly), wishlist: false },
+  });
+
+  return wrapper
+    .findAllComponents({ name: "BaseSelect" })
+    .find((select) => select.props("name") === "boughtVia")
+    ?.props("options") as { value: string }[];
+};
+
+beforeEach(() => {
+  mutateAsync.mockClear();
+  Element.prototype.scrollTo = vi.fn();
+});
+
+describe("the way a ship was bought", () => {
+  it("offers only in-game for a ship the pledge store never sells", async () => {
+    expect(
+      (await boughtViaOptions(true)).map((option) => option.value),
+    ).toEqual(["ingame"]);
+  });
+
+  it("offers both for a pledge ship", async () => {
+    expect(
+      (await boughtViaOptions(false)).map((option) => option.value),
+    ).toEqual(["pledge_store", "ingame"]);
+  });
+});
+
+describe("VehicleEditModal", () => {
+  it("opens the requested tab and saves only changed fields", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(false), tab: VehicleEditTabsEnum.NAMES },
+    });
+
+    expect(wrapper.find("#form-tab-panel-names").isVisible()).toBe(true);
+    await wrapper.find('input[name="name"]').setValue("New name");
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { name: "New name" },
+      }),
+    );
+  });
+
+  it("does not save when nothing changed", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(false) },
+    });
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("omits groups and uses wishlist visibility settings", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle: vehicle(false),
+        wishlist: true,
+        tab: VehicleEditTabsEnum.VISIBILITY,
+      },
+    });
+
+    expect(wrapper.find('[data-test="tab-anchor-groups"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('input[name="saleNotify"]').exists()).toBe(true);
+    expect(wrapper.find('input[name="public"]').exists()).toBe(false);
+    expect(wrapper.find('input[name="nameVisible"]').exists()).toBe(false);
+  });
+});

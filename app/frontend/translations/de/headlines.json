@@ -256,6 +256,7 @@
       "buybackSync": "RSI-Rückkauf-Pledges synchronisieren",
       "syncExtension": "RSI-Hangar synchronisieren",
       "editMyVehicle": "Edit my %{vehicle}",
+      "vehicleLoadout": "Loadout für %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",

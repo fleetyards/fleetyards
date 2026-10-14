@@ -4230,6 +4230,30 @@
         "statsEntries": "Voci",
         "statsPublic": "Pubbliche",
         "statsSince": "Dal"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "Generale",
+          "visibility": "Visibilità",
+          "names": "Nomi",
+          "groups": "Gruppi",
+          "picture": "Immagine"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "Verniciature",
+          "modules": "Moduli",
+          "upgrades": "Kit Di Potenziamento",
+          "weapons": "Armi",
+          "missiles": "Missili",
+          "shields": "Generatori di scudi",
+          "powerPlants": "Generatori",
+          "coolers": "Refrigeranti",
+          "quantumDrives": "Motori Quantum"
+        },
+        "comingSoon": "Prossimamente",
+        "none": "Nessuno"
       }
     }
   }
