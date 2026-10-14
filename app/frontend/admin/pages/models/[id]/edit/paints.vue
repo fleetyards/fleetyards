@@ -223,7 +223,7 @@ const bulkCopy = (selectedIds: string[]) => {
         :loading="isImportingPaints"
         @click="importPaints"
       >
-        <i class="fa-duotone fa-palette" />
+        <i class="fa-duotone fa-paint-roller" />
         {{ t("actions.models.importPaints") }}
       </Btn>
       <Btn

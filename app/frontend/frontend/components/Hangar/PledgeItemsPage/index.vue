@@ -42,7 +42,7 @@ const KINDS = {
     getQueryKey: getHangarPaintsQueryKey,
     headline: "headlines.hangar.paints",
     emptyName: "labels.hangarPledgeItems.paints",
-    icon: "fa-duotone fa-paintbrush",
+    icon: "fa-duotone fa-paint-roller",
   },
   flair: {
     useItems: useHangarFlair,

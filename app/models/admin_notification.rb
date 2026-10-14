@@ -36,7 +36,7 @@ class AdminNotification < ApplicationRecord
     paints_import: {
       retention: 30.days,
       access: [:models],
-      icon: "fa-duotone fa-palette"
+      icon: "fa-duotone fa-paint-roller"
     },
     modules_import: {
       retention: 30.days,

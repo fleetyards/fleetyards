@@ -21,7 +21,7 @@ const sections = [
   {
     key: "paints",
     route: "hangar-paints",
-    icon: "fa-light fa-paintbrush",
+    icon: "fa-light fa-paint-roller",
     label: "nav.hangar.paints",
   },
   {

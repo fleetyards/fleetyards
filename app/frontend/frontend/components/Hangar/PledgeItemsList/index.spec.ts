@@ -23,7 +23,7 @@ const pledgeItem = (
 
 const mount = async (items: HangarPledgeItem[]) =>
   mountWithDefaults(Component, {
-    props: { items, icon: "fa-duotone fa-paintbrush" },
+    props: { items, icon: "fa-duotone fa-paint-roller" },
   });
 
 describe("Hangar/PledgeItemsList", () => {
@@ -60,7 +60,7 @@ describe("Hangar/PledgeItemsList", () => {
     expect(rows[0].find("img").attributes("src")).toBe(
       "https://media.test/akuma.jpg",
     );
-    expect(rows[1].find(".fa-paintbrush").exists()).toBe(true);
+    expect(rows[1].find(".fa-paint-roller").exists()).toBe(true);
   });
 
   it("shows the melt value of an item that is its whole pledge", async () => {

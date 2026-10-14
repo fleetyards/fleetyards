@@ -387,7 +387,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
-        icon="fa-duotone fa-palette fa-4x"
+        icon="fa-duotone fa-paint-roller fa-4x"
         :value="paintedVehiclesPercent"
         :label="t('labels.stats.paintedVehicles')"
         suffix="%"
