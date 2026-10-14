@@ -17,9 +17,14 @@ import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
+  // A wishlist ship shows the cargo it carried into the wishlist, and nothing
+  // when it carried none.
+  readonly?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  readonly: false,
+});
 
 const TOP_COUNT = 4;
 
@@ -29,6 +34,8 @@ const vehicleId = computed(() => props.vehicle.id);
 
 const { data: inventory, isLoading } = useVehicleInventory(vehicleId);
 const { data: stock } = useVehicleInventoryStock(vehicleId);
+
+const hasCargo = computed(() => (inventory.value?.entriesCount ?? 0) > 0);
 
 // `toNumber` reads an empty hold as "not available"; here it is just empty.
 const scu = (value: number) => (value ? String(toNumber(value)) : "0");
@@ -64,6 +71,7 @@ const cargoRoute = computed(() =>
 
 <template>
   <MetricsCard
+    v-if="!readonly || hasCargo"
     :title="t('nav.hangar.vehicleCargo')"
     :loading="isLoading"
     variant="slim"

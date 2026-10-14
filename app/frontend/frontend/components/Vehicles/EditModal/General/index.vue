@@ -17,12 +17,9 @@ import {
 
 type Props = {
   vehicle: Vehicle;
-  wishlist?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  wishlist: false,
-});
+const props = defineProps<Props>();
 
 const { t } = useI18n();
 const values = useFormValues<VehicleUpdateInput>();
@@ -60,7 +57,7 @@ const boughtViaOptions = computed(() => {
         />
       </div>
     </div>
-    <div v-if="!wishlist" class="col-12 col-md-6">
+    <div class="col-12 col-md-6">
       <FormToggle
         name="flagship"
         :model-value="values.flagship"

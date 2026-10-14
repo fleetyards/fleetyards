@@ -2275,6 +2275,8 @@
         "public": "公開可見",
         "fullPublic": "公開可見（包括名稱）",
         "publicShort": "公開",
+        "saleNotifyOn": "銷售通知已開啟",
+        "saleNotifyOff": "銷售通知已關閉",
         "nameVisible": "公開可見",
         "hidden": "隱藏?",
         "saleNotify": "我希望收到銷售通知",
@@ -4252,6 +4254,7 @@
         "tabs": {
           "general": "一般",
           "visibility": "可見性",
+          "notifications": "通知",
           "names": "名稱",
           "groups": "分組",
           "picture": "圖片"

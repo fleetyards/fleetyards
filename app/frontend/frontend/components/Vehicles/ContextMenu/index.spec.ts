@@ -209,11 +209,12 @@ describe("VehicleContextMenu", () => {
     expect(items()).not.toContain("vehicle-manage-cargo");
   });
 
-  it("moves a wishlist ship to the hangar and keeps its cargo out", async () => {
+  it("moves a wishlist ship to the hangar and keeps its log and cargo out", async () => {
     await mount({ wishlist: true });
 
     expect(items()).toContain("vehicle-add-to-hangar");
     expect(items()).not.toContain("vehicle-add-to-wishlist");
+    expect(items()).not.toContain("vehicle-log");
     expect(items()).not.toContain("vehicle-manage-cargo");
   });
 

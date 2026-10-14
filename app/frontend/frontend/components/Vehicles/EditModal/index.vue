@@ -98,7 +98,19 @@ const changedFields = (values: VehicleEditValues) => {
   return Object.keys(changes).length ? changes : undefined;
 };
 
-const activeTab = ref<string>(props.tab);
+// A wishlist ship is only named and watched for sales; how it was bought, its
+// groups and its picture belong to a ship in the hangar.
+const WISHLIST_TABS = [
+  VehicleEditTabsEnum.NAMES,
+  VehicleEditTabsEnum.VISIBILITY,
+];
+
+const tabVisible = (tab: VehicleEditTabsEnum) =>
+  !props.wishlist || WISHLIST_TABS.includes(tab);
+
+const activeTab = ref<string>(
+  tabVisible(props.tab) ? props.tab : VehicleEditTabsEnum.NAMES,
+);
 
 // The gallery is fetched by the image tab itself, so it waits until the tab is
 // first opened rather than loading with every edit.
@@ -212,13 +224,18 @@ const vehicleName = computed(
           :label="t('labels.vehicleEdit.tabs.general')"
           icon="fa-duotone fa-sliders"
           :fields="['boughtVia', 'flagship']"
+          :hidden="!tabVisible(VehicleEditTabsEnum.GENERAL)"
         >
-          <General :vehicle="vehicle" :wishlist="wishlist" />
+          <General v-if="!wishlist" :vehicle="vehicle" />
         </FormTab>
         <FormTab
           :id="VehicleEditTabsEnum.VISIBILITY"
-          :label="t('labels.vehicleEdit.tabs.visibility')"
-          icon="fa-duotone fa-eye"
+          :label="
+            wishlist
+              ? t('labels.vehicleEdit.tabs.notifications')
+              : t('labels.vehicleEdit.tabs.visibility')
+          "
+          :icon="wishlist ? 'fa-duotone fa-bell' : 'fa-duotone fa-eye'"
           :fields="[
             'public',
             'nameVisible',
@@ -241,7 +258,7 @@ const vehicleName = computed(
           :label="t('labels.vehicleEdit.tabs.groups')"
           icon="fa-duotone fa-object-group"
           :fields="['hangarGroupIds']"
-          :hidden="wishlist"
+          :hidden="!tabVisible(VehicleEditTabsEnum.GROUPS)"
         >
           <Groups v-if="!wishlist" />
         </FormTab>
@@ -250,9 +267,10 @@ const vehicleName = computed(
           :label="t('labels.vehicleEdit.tabs.picture')"
           icon="fa-duotone fa-camera"
           :fields="['image']"
+          :hidden="!tabVisible(VehicleEditTabsEnum.IMAGE)"
         >
           <ImagePanel
-            v-if="imageTabOpened"
+            v-if="imageTabOpened && !wishlist"
             ref="imagePanel"
             :vehicle="vehicle"
           />

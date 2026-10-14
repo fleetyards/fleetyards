@@ -2275,6 +2275,8 @@
         "public": "Public Visible",
         "fullPublic": "Public Visible including Name",
         "publicShort": "Public",
+        "saleNotifyOn": "Sale notifications on",
+        "saleNotifyOff": "Sale notifications off",
         "nameVisible": "Public Visible",
         "hidden": "Hidden?",
         "saleNotify": "I want to receive Sale Notifications",
@@ -4266,6 +4268,7 @@
         "tabs": {
           "general": "General",
           "visibility": "Visibility",
+          "notifications": "Notifications",
           "names": "Names",
           "groups": "Groups",
           "picture": "Picture"

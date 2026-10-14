@@ -23,9 +23,14 @@ import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
+  // A wishlist ship keeps a plaque written before it moved there, but gets no
+  // new one.
+  readonly?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  readonly: false,
+});
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -62,6 +67,7 @@ const openEditModal = () => {
     <VehiclePlaque :vehicle="vehicle" :captain="ownerCaptain(currentUser)" />
     <div class="overview-plaque__actions">
       <Btn
+        v-if="!readonly"
         v-tooltip="t('actions.vehiclePlaque.edit')"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
@@ -91,7 +97,7 @@ const openEditModal = () => {
     </div>
   </div>
   <div
-    v-else
+    v-else-if="!readonly"
     class="overview-plaque-invite"
     data-test="vehicle-overview-plaque"
   >

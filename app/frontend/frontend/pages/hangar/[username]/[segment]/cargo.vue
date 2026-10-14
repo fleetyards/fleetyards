@@ -103,6 +103,10 @@ const refetch = async () => {
 
 const hasCargo = computed(() => (inventory.value?.entriesCount ?? 0) > 0);
 
+// A wishlist ship can still be emptied of cargo it carried in, but nothing new
+// goes aboard.
+const readonly = computed(() => props.vehicle.wanted);
+
 const toVehicle = useVehicleRoute();
 
 const stockItemRoute = (slug?: string) =>
@@ -367,6 +371,7 @@ onMounted(() => {
            menu over the table instead. -->
       <div class="vehicle-cargo__actions">
         <Btn
+          v-if="!readonly"
           data-test="vehicle-cargo-deposit"
           @click="openItemModal('deposit')"
         >
@@ -377,7 +382,7 @@ onMounted(() => {
           <i class="fa-duotone fa-arrow-up-from-square" />
           {{ t("actions.logistics.withdraw") }}
         </Btn>
-        <Btn @click="openCsvImportModal">
+        <Btn v-if="!readonly" @click="openCsvImportModal">
           <i class="fa-duotone fa-file-csv" />
           {{ t("actions.logistics.importCsv") }}
         </Btn>

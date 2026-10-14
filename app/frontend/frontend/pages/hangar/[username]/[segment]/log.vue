@@ -89,6 +89,10 @@ const destroy = (logEntry: VehicleLogEntry) => {
   });
 };
 
+// A wishlist ship keeps the entries written before it moved there, readable
+// and removable, but takes no new ones and no edits.
+const readonly = computed(() => props.vehicle.wanted);
+
 // The public hangar lists only bought ships, so a wishlist ship's entries are
 // never shown there, public or not.
 const publiclyListed = computed(
@@ -269,6 +273,7 @@ const since = computed(() => {
               </span>
               <span class="vehicle-log__actions">
                 <Btn
+                  v-if="!readonly"
                   :size="BtnSizesEnum.SM"
                   :variant="BtnVariantsEnum.BARE"
                   :aria-label="t('actions.edit')"
@@ -301,6 +306,7 @@ const since = computed(() => {
 
     <template #side>
       <Btn
+        v-if="!readonly"
         class="vehicle-log__add"
         data-test="vehicle-log-add"
         @click="openEntryModal()"
@@ -331,6 +337,7 @@ const since = computed(() => {
       </MetricsCard>
 
       <MetricsCard
+        v-if="!readonly"
         :title="t('labels.vehicleOverview.visibility')"
         variant="slim"
       >

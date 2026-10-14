@@ -227,6 +227,11 @@ const pageShortcutsVisible = computed(
   () => vehicleOverviewVisible.value && !props.onVehiclePage,
 );
 
+// A wishlist ship takes no new log entries.
+const logVisible = computed(
+  () => pageShortcutsVisible.value && !props.wishlist,
+);
+
 const toVehicle = useVehicleRoute();
 
 const logRoute = computed(() => toVehicle("hangar-vehicle-log", props.vehicle));
@@ -264,10 +269,7 @@ const visibleGroups = computed(() =>
     { name: "edit", visible: editVisible.value || loadoutVisible.value },
     {
       name: "manage",
-      visible:
-        loadoutsVisible.value ||
-        cargoVisible.value ||
-        pageShortcutsVisible.value,
+      visible: loadoutsVisible.value || cargoVisible.value || logVisible.value,
     },
     { name: "organize", visible: props.editable && !props.onVehiclePage },
     { name: "remove", visible: props.editable },
@@ -345,7 +347,7 @@ const separatorBefore = (name: string) =>
       <span>{{ t("actions.hangar.manageCargo") }}</span>
     </Btn>
     <Btn
-      v-if="pageShortcutsVisible"
+      v-if="logVisible"
       :aria-label="t('actions.vehicleLog.open')"
       data-test="vehicle-log"
       :to="logRoute"

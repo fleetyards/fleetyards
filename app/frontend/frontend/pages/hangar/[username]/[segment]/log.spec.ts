@@ -36,7 +36,10 @@ const vehicle = {
   logEntriesPublicByDefault: false,
 } as Vehicle;
 
-const mount = () => mountWithDefaults(Component, { props: { vehicle } });
+const mount = (overrides: Partial<Vehicle> = {}) =>
+  mountWithDefaults(Component, {
+    props: { vehicle: { ...vehicle, ...overrides } },
+  });
 
 const titles = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper
@@ -71,5 +74,21 @@ describe("HangarVehicleLogPage", () => {
       .trigger("click");
 
     expect(titles(wrapper)).toEqual(["Checkmate"]);
+  });
+
+  it("keeps a wishlist ship's entries readable and removable, but closed to new ones", async () => {
+    const wrapper = await mount({ wanted: true });
+
+    expect(titles(wrapper)).toEqual(["Four years", "Checkmate", "Pyro"]);
+    expect(wrapper.find('[data-test="vehicle-log-add"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="vehicle-log-entry-edit"]').exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper.find('[data-test="vehicle-log-public-default"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find('[data-test="vehicle-log-entry-remove"]').exists(),
+    ).toBe(true);
   });
 });
