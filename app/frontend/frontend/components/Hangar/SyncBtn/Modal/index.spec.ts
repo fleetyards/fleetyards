@@ -674,7 +674,7 @@ describe("HangarSyncModal", () => {
     });
   });
 
-  it("submits a hangar whose ship upgrade has no kind", async () => {
+  it("submits a hangar holding a ship its upgrade was applied to", async () => {
     const { wrapper } = await mountModal();
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
@@ -687,13 +687,7 @@ describe("HangarSyncModal", () => {
     expect(reportMutateAsync).not.toHaveBeenCalled();
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({
-        items: [
-          expect.objectContaining({ name: "Cutter", type: "ship" }),
-          expect.objectContaining({
-            name: "Upgrade - Clipper To S-65 Stingray",
-            type: "ccu",
-          }),
-        ],
+        items: [expect.objectContaining({ name: "Cutter", type: "ship" })],
       }),
     });
   });
