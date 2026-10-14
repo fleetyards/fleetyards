@@ -307,7 +307,7 @@ const cargoVisible = computed(
       }"
     >
       <DuotoneGlyph :glyph="SHIP_GLYPH" />
-      <span>{{ t("actions.showDetailPage") }}</span>
+      <span>{{ t("actions.vehicleOverview.shipDatabase") }}</span>
     </Btn>
     <Btn
       v-if="editable && !hideEdit && !onVehiclePage"
