@@ -11,6 +11,7 @@ module V1
           properties: {
             ids: {type: :array, items: {type: :string, format: :uuid}},
             wanted: {type: [:boolean, :null]},
+            hiddenByUser: {type: [:boolean, :null]},
             public: {type: [:boolean, :null]},
             hangarGroupIds: {type: [:array, :null], items: {type: :string, format: :uuid}}
           },

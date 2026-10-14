@@ -417,7 +417,12 @@ const resetSelected = () => {
             class="fa-duotone fa-dollar-sign on-sale"
           />
           <i
-            v-if="record.public && record.nameVisible"
+            v-if="record.hiddenByUser"
+            v-tooltip="t('labels.vehicle.hiddenByUser')"
+            class="fa-duotone fa-ghost"
+          />
+          <i
+            v-else-if="record.public && record.nameVisible"
             v-tooltip="t('labels.vehicle.fullPublic')"
             class="fa-duotone fa-eye-evil full-public-icon"
           />

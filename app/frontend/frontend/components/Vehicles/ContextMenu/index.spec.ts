@@ -117,6 +117,7 @@ describe("VehicleContextMenu", () => {
       "vehicle-change-picture",
       "vehicle-edit-groups",
       "vehicle-add-to-wishlist",
+      "vehicle-toggle-hidden",
       "vehicle-remove",
     ]);
   });
@@ -129,6 +130,7 @@ describe("VehicleContextMenu", () => {
       "vehicle-edit-name",
       "vehicle-edit-groups",
       "vehicle-add-to-wishlist",
+      "vehicle-toggle-hidden",
       "vehicle-remove",
     ]);
   });
@@ -162,6 +164,35 @@ describe("VehicleContextMenu", () => {
     expect(items()).not.toContain("vehicle-add-to-wishlist");
     expect(items()).not.toContain("vehicle-manage-cargo");
     expect(items()).not.toContain("vehicle-edit-groups");
+  });
+
+  it("offers to hide a ship, and to show a hidden one again", async () => {
+    await mount();
+
+    const toggle = () =>
+      document.body.querySelector('[data-test="vehicle-toggle-hidden"]');
+
+    expect(toggle()?.textContent).toContain("Hide from Hangar");
+
+    mounted.forEach((wrapper) => wrapper.unmount());
+    mounted = [];
+
+    await mount({ vehicle: vehicle({ hiddenByUser: true }) });
+
+    expect(toggle()?.textContent).toContain("Show in Hangar");
+  });
+
+  it("leaves hiding out for the wishlist and a bundled snub craft", async () => {
+    await mount({ wishlist: true });
+
+    expect(items()).not.toContain("vehicle-toggle-hidden");
+
+    mounted.forEach((wrapper) => wrapper.unmount());
+    mounted = [];
+
+    await mount({ vehicle: vehicle({ bundled: true }) });
+
+    expect(items()).not.toContain("vehicle-toggle-hidden");
   });
 
   it("offers a visitor add-ons only when some are fitted", async () => {

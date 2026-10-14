@@ -2266,6 +2266,7 @@
         "loaner": "借用",
         "bundled": "捆绑",
         "bundledWith": "与 %{parent} 捆绑",
+        "hiddenByUser": "已从机库中隐藏",
         "public": "公开可见",
         "fullPublic": "公开可见（包括名称）",
         "publicShort": "公开",
@@ -2408,6 +2409,7 @@
           "group": "群组",
           "loaner": "借用船",
           "bundled": "捆绑的舰载小艇",
+          "hiddenByUser": "隐藏的舰船",
           "boughtVia": "购买方式?",
           "image": "自定义图片",
           "dedication": "命名铭牌"

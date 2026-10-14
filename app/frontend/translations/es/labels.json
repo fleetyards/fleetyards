@@ -2266,6 +2266,7 @@
         "loaner": "Prestado",
         "bundled": "Incluida en un paquete",
         "bundledWith": "Incluida con %{parent}",
+        "hiddenByUser": "Oculta de tu hangar",
         "public": "Visible públicamente",
         "fullPublic": "Visible públicamente incluyendo nombre",
         "publicShort": "Público",
@@ -2408,6 +2409,7 @@
           "group": "Grupo",
           "loaner": "Prestados",
           "bundled": "Snub Crafts incluidos en un paquete",
+          "hiddenByUser": "Naves ocultas",
           "boughtVia": "¿Comprado mediante?",
           "image": "Imagen propia",
           "dedication": "Placa de dedicatoria"

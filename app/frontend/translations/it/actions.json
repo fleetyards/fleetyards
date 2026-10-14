@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Rendi pubblico",
         "hideFromPublicHangar": "Nascondi da pubblico",
         "editGroupsSelected": "Aggiungi/rimuovi gruppo",
+        "hideFromHangar": "Nascondi dall'hangar",
+        "showInHangar": "Mostra nell'hangar",
         "resetIngame": {
           "openModal": "Resetta navi in-game dopo il wipe",
           "moveToWishlist": "Sposta nella lista dei desideri",

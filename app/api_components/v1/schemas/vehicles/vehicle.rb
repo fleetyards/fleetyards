@@ -51,6 +51,7 @@ module V1
             modelImage: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
+            hiddenByUser: {type: :boolean},
             activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
             # Only the single-vehicle endpoint sends these: the fleets the ship
             # is listed in, as far as its owner is still a member.
@@ -60,7 +61,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model wanted loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
+            id model wanted hiddenByUser loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
             modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
           ]
         })

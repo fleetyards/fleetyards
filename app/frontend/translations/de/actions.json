@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Veröffentlichen",
         "hideFromPublicHangar": "Nicht öffentlich anzeigen",
         "editGroupsSelected": "Hinzufügen/Entfernen aus Gruppen",
+        "hideFromHangar": "Im Hangar ausblenden",
+        "showInHangar": "Im Hangar einblenden",
         "resetIngame": {
           "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
           "moveToWishlist": "Zur Wunschliste verschieben",

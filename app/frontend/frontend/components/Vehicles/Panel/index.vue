@@ -358,7 +358,15 @@ const tone = computed(() => {
     </template>
     <template #default>
       <div
-        v-if="vehicle.loaner"
+        v-if="(vehicle as Vehicle).hiddenByUser"
+        v-tooltip="t('labels.vehicle.hiddenByUser')"
+        class="vehicle-panel-hidden-label"
+        data-test="vehicle-hidden-label"
+      >
+        <i class="fa-light fa-ghost" />
+      </div>
+      <div
+        v-else-if="vehicle.loaner"
         v-tooltip="t('labels.vehicle.loaner')"
         class="vehicle-panel-loaner-label"
       >

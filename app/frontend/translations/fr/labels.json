@@ -2266,6 +2266,7 @@
         "loaner": "Prêteur",
         "bundled": "Inclus",
         "bundledWith": "Inclus avec %{parent}",
+        "hiddenByUser": "Masqué de votre Hangar",
         "public": "Visibilité publique",
         "fullPublic": "Visibilité Publique incluant le nom",
         "publicShort": "Publique",
@@ -2408,6 +2409,7 @@
           "group": "Groupe",
           "loaner": "Prêteurs",
           "bundled": "Snub Crafts inclus",
+          "hiddenByUser": "Vaisseaux masqués",
           "boughtVia": "Acheté via?",
           "image": "Image personnalisée",
           "dedication": "Plaque de dédicace"

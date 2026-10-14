@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Make Public",
         "hideFromPublicHangar": "Hide from Public",
         "editGroupsSelected": "Add/Remove from Groups",
+        "hideFromHangar": "从机库中隐藏",
+        "showInHangar": "在机库中显示",
         "resetIngame": {
           "openModal": "数据重置后重置游戏内飞船",
           "moveToWishlist": "移至愿望清单",

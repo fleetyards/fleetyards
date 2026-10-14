@@ -165,6 +165,17 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/groups leaves ships their owner hid out of the count" do
+    group = create(:hangar_group, user: @user)
+    create(:vehicle, user: @user, wanted: false, hangar_group_ids: [group.id])
+    create(:vehicle, user: @user, wanted: false, hidden_by_user: true, hangar_group_ids: [group.id])
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal 1, parsed_body.first["vehiclesCount"]
+    end
+  end
+
   test "GET /hangar/groups returns 401 when not signed in" do
     assert_api_response :get, 401
   end

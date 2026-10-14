@@ -57,7 +57,7 @@ module Api
         @vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
         @vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
-        return if @vehicle.update(vehicle_params)
+        return if @vehicle.update(writable_params(@vehicle, vehicle_params))
 
         render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
       end
@@ -89,7 +89,7 @@ module Api
           scope.find_each do |vehicle|
             vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
-            next if vehicle.update(vehicle_bulk_params)
+            next if vehicle.update(writable_params(vehicle, vehicle_bulk_params))
 
             errors << vehicle.errors
           end
@@ -135,7 +135,7 @@ module Api
       def check_serial
         authorize!
 
-        render json: {taken: current_resource_owner.vehicles.visible.purchased.exists?(serial: Vehicle.normalized_serial(params[:value]))}
+        render json: {taken: current_resource_owner.vehicles.where(hidden: false).purchased.exists?(serial: Vehicle.normalized_serial(params[:value]))}
       end
 
       private def set_vehicle
@@ -152,7 +152,7 @@ module Api
         @vehicle_params ||= params.transform_keys(&:underscore)
           .permit(
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
-            :model_paint_id, :bought_via, *vehicle_overview_params,
+            :model_paint_id, :bought_via, :hidden_by_user, *vehicle_overview_params,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
           ).merge(user_id: current_resource_owner.id)
       end
@@ -194,8 +194,16 @@ module Api
       private def vehicle_bulk_params
         @vehicle_bulk_params ||= params.transform_keys(&:underscore)
           .permit(
-            :wanted, :public, hangar_group_ids: []
+            :wanted, :public, :hidden_by_user, hangar_group_ids: []
           ).merge(user_id: current_resource_owner.id)
+      end
+
+      # A loaner or bundled snub craft takes `hidden_by_user` from its parent,
+      # whose next save would overwrite a value written here.
+      private def writable_params(vehicle, attributes)
+        return attributes unless vehicle.loaner? || vehicle.bundled?
+
+        attributes.except(:hidden_by_user)
       end
     end
   end

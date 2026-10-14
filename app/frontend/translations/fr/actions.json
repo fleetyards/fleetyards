@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Rendre publique",
         "hideFromPublicHangar": "Rendre privé",
         "editGroupsSelected": "Ajouter/Retirer des groupes",
+        "hideFromHangar": "Masquer du Hangar",
+        "showInHangar": "Afficher dans le Hangar",
         "resetIngame": {
           "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
           "moveToWishlist": "Déplacer dans la liste de souhaits",

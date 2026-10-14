@@ -113,6 +113,41 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar leaves out the ships its owner hid, and lists them on request" do
+    user = create(:user)
+    shown = create(:vehicle, user:, wanted: false)
+    hidden = create(:vehicle, user:, wanted: false, hidden_by_user: true)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      ids = parsed_body["items"].pluck("id")
+
+      assert_includes ids, shown.id
+      assert_not_includes ids, hidden.id
+    end
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "true"}} do
+      assert_equal [shown.id, hidden.id].sort, parsed_body["items"].pluck("id").sort
+    end
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "only"}} do
+      assert_equal [hidden.id], parsed_body["items"].pluck("id")
+      assert_equal true, parsed_body["items"].first["hiddenByUser"]
+    end
+  end
+
+  test "GET /hangar lists a loaner once when hidden ships are shown alongside the rest" do
+    user = create(:user)
+    loaner_model = create(:model)
+    create(:vehicle, user:, wanted: false, hidden_by_user: true, model: create(:model).tap { |m| m.loaners << loaner_model })
+    create(:vehicle, user:, wanted: false, model: create(:model).tap { |m| m.loaners << loaner_model })
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "true", loanerEq: "only"}} do
+      assert_equal [loaner_model.slug], parsed_body["items"].map { |item| item.dig("model", "slug") }
+    end
+  end
+
   test "GET /hangar filters by query" do
     user = create(:user, vehicle_count: 3)
     sign_in user

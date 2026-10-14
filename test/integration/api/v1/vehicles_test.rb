@@ -196,6 +196,15 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 204, body: {ids: vehicles.map(&:id), wanted: true}
   end
 
+  test "PUT /vehicles/bulk hides the listed vehicles" do
+    vehicles = create_list(:vehicle, 2, user: @user, wanted: false)
+    sign_in @user
+
+    assert_api_response :put, 204, body: {ids: vehicles.map(&:id), hiddenByUser: true}
+
+    assert vehicles.map(&:reload).all?(&:hidden_by_user)
+  end
+
   test "PUT /vehicles/bulk returns 401 when not signed in" do
     vehicles = create_list(:vehicle, 3, user: @user)
 
@@ -308,6 +317,32 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {name: "Enterprise A"}
+  end
+
+  test "PUT /vehicles/:id hides and unhides the vehicle" do
+    vehicle = create(:vehicle, user: @user, wanted: false)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {hiddenByUser: true} do
+      assert_equal true, parsed_body["hiddenByUser"]
+    end
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {hiddenByUser: false} do
+      assert_equal false, parsed_body["hiddenByUser"]
+    end
+  end
+
+  # A loaner takes the flag from its parent, which would overwrite it on its
+  # next save.
+  test "PUT /vehicles/:id leaves a loaner's hidden flag to its parent" do
+    loaner_model = create(:model)
+    parent = create(:vehicle, user: @user, wanted: false, model: create(:model).tap { |m| m.loaners << loaner_model })
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: loaner.id}, body: {hiddenByUser: true}
+
+    assert_equal false, loaner.reload.hidden_by_user
   end
 
   # The controller sets `whodunnit` from `current_resource_owner`, so the owner

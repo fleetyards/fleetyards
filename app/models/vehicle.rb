@@ -17,9 +17,9 @@ class Vehicle < ApplicationRecord
   # through `.with_bundled_snub_crafts`, which restores it.
   thread_mattr_accessor :skip_bundled_snub_crafts, instance_accessor: false, default: false
 
-  # A loaner and a bundled snub craft are derived rows: `wanted` and `hidden`
-  # are recomputed from the parent on every parent save, so a version on one
-  # records a calculation rather than a decision.
+  # A loaner and a bundled snub craft are derived rows: `wanted`,
+  # `hidden_by_user` and `hidden` are recomputed from the parent on every parent
+  # save, so a version on one records a calculation rather than a decision.
   #
   # That predicate cannot tell a machine write from a user's: the hangar sync
   # writes `name` and `wanted` on the same non-loaner rows a rename does. The
@@ -33,7 +33,7 @@ class Vehicle < ApplicationRecord
   # the same transaction.
   has_paper_trail on: %i[create update],
     only: %i[
-      name serial wanted flagship public name_visible sale_notify hidden
+      name serial wanted flagship public name_visible sale_notify hidden hidden_by_user
       loaner bought_via model_id model_paint_id alternative_names
     ],
     if: ->(record) { !record.loaner? && !record.bundled? },
@@ -46,7 +46,9 @@ class Vehicle < ApplicationRecord
   max_paginates_per 240
   per_page_steps [*PageSizes.up_to(max_per_page), :all]
 
-  scope :visible, -> { where(hidden: false) }
+  # `hidden` is the loaner deduplication below; `hidden_by_user` is the owner
+  # taking a ship out of their hangar while the sync keeps matching it.
+  scope :visible, -> { where(hidden: false, hidden_by_user: false) }
 
   belongs_to :model
   belongs_to :model_paint, optional: true
@@ -189,6 +191,7 @@ class Vehicle < ApplicationRecord
   before_save :drop_supporter_plaque_style, if: :drop_supporter_plaque_style?
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
+  before_save :reset_hidden_by_user_if_wanted
   before_save :update_slugs
   before_create :setup_rank
 
@@ -286,8 +289,10 @@ class Vehicle < ApplicationRecord
     where(wanted: true)
   end
 
+  # A ship its owner hid stays out of every public view, whatever its own
+  # `public` says, and comes back with that setting when it is unhidden.
   def self.public
-    where(public: true)
+    where(public: true, hidden_by_user: false)
   end
 
   # Run-wide rather than an attribute on each row: `update_bundled_snub_crafts`
@@ -411,8 +416,9 @@ class Vehicle < ApplicationRecord
       .pluck(:id)
   end
 
-  # `hidden` is a property of a whole (model, wanted) group rather than of a row
-  # -- exactly one visible -- so deleting a loaner can leave its group with none.
+  # `hidden` is a property of a whole (model, wanted, hidden_by_user) group
+  # rather than of a row -- exactly one visible -- so deleting a loaner can
+  # leave its group with none.
   # The survivor is one already visible where there is one, so a group that was
   # correct apart from the rows that just went keeps the loaner its user sees.
   #
@@ -426,7 +432,7 @@ class Vehicle < ApplicationRecord
     user_ids, model_ids = loaner_groups.transpose
 
     flipped = where(loaner: true, user_id: user_ids, model_id: model_ids)
-      .group_by { |loaner| [loaner.user_id, loaner.model_id, loaner.wanted] }
+      .group_by { |loaner| [loaner.user_id, loaner.model_id, loaner.wanted, loaner.hidden_by_user] }
       .flat_map do |_group_key, group|
         visible = group.find { |loaner| !loaner.hidden? } || group.first
 
@@ -475,6 +481,14 @@ class Vehicle < ApplicationRecord
     self.rsi_pledge_synced_at = nil
   end
 
+  # Hidden ships are only listed through the hangar's filter, so one moved to
+  # the wishlist would be out of reach.
+  def reset_hidden_by_user_if_wanted
+    return unless wanted?
+
+    self.hidden_by_user = false
+  end
+
   def reset_hangar_groups
     return unless wanted?
 
@@ -517,31 +531,32 @@ class Vehicle < ApplicationRecord
 
   # The parents of the given models whose `add_loaners` would change something:
   # one missing a listed loaner, holding one its model no longer lists, a
-  # duplicate, or one whose `wanted` differs from its own, or a loaner in a group
-  # without exactly one visible row. Walking every parent instead takes hours,
-  # and on most runs none of them needs a write.
+  # duplicate, or one whose `wanted` or `hidden_by_user` differs from its own,
+  # or a loaner in a group without exactly one visible row. Walking every parent
+  # instead takes hours, and on most runs none of them needs a write.
   def self.out_of_sync_loaner_parent_ids(model_ids)
     return [] if model_ids.blank?
 
     connection.select_values(sanitize_sql_array([<<~SQL.squish, model_ids]))
       WITH parents AS (
-        SELECT id, user_id, model_id, wanted FROM vehicles
+        SELECT id, user_id, model_id, wanted, hidden_by_user FROM vehicles
         WHERE loaner = FALSE AND model_id IN (?)
       ),
       listed AS (
         SELECT model_id, loaner_model_id FROM model_loaners WHERE hidden = FALSE
       ),
       children AS (
-        SELECT loaners.id, loaners.user_id, loaners.model_id, loaners.wanted,
-          parents.id AS parent_id, parents.model_id AS parent_model_id, parents.wanted AS parent_wanted
+        SELECT loaners.id, loaners.user_id, loaners.model_id, loaners.wanted, loaners.hidden_by_user,
+          parents.id AS parent_id, parents.model_id AS parent_model_id, parents.wanted AS parent_wanted,
+          parents.hidden_by_user AS parent_hidden_by_user
         FROM vehicles loaners
         JOIN parents ON parents.id = loaners.vehicle_id AND parents.user_id = loaners.user_id
         WHERE loaners.loaner = TRUE
       ),
       broken_groups AS (
-        SELECT user_id, model_id, wanted FROM vehicles
+        SELECT user_id, model_id, wanted, hidden_by_user FROM vehicles
         WHERE loaner = TRUE
-        GROUP BY user_id, model_id, wanted
+        GROUP BY user_id, model_id, wanted, hidden_by_user
         HAVING count(*) FILTER (WHERE hidden = FALSE) <> 1
       )
       SELECT parents.id FROM parents
@@ -551,7 +566,9 @@ class Vehicle < ApplicationRecord
       UNION
       SELECT children.parent_id FROM children
       LEFT JOIN listed ON listed.model_id = children.parent_model_id AND listed.loaner_model_id = children.model_id
-      WHERE listed.model_id IS NULL OR children.wanted IS DISTINCT FROM children.parent_wanted
+      WHERE listed.model_id IS NULL
+        OR children.wanted IS DISTINCT FROM children.parent_wanted
+        OR children.hidden_by_user IS DISTINCT FROM children.parent_hidden_by_user
       UNION
       SELECT parent_id FROM children GROUP BY parent_id, model_id HAVING count(*) > 1
       UNION
@@ -559,6 +576,7 @@ class Vehicle < ApplicationRecord
       JOIN broken_groups ON broken_groups.user_id = children.user_id
         AND broken_groups.model_id = children.model_id
         AND broken_groups.wanted IS NOT DISTINCT FROM children.wanted
+        AND broken_groups.hidden_by_user = children.hidden_by_user
     SQL
   end
 
@@ -603,13 +621,16 @@ class Vehicle < ApplicationRecord
     if existing_loaner.present?
       existing_loaner.update(
         wanted:,
-        hidden: Vehicle.where(loaner: true, model_id: model_loaner.id, wanted:, user_id:, hidden: false)
+        hidden_by_user:,
+        hidden: Vehicle.where(loaner: true, model_id: model_loaner.id, wanted:, hidden_by_user:, user_id:, hidden: false)
           .where.not(id: existing_loaner.id).exists?
       )
 
-      # A duplicate or the row's old wanted state may have been the only
-      # visible loaner of its group, one another parent's loaner still sits in.
-      reveal_loaner_groups([model_loaner.id]) if duplicates.any? || existing_loaner.saved_change_to_wanted?
+      # A duplicate or the row's old group may have been the only visible
+      # loaner of that group, one another parent's loaner still sits in.
+      if duplicates.any? || existing_loaner.saved_change_to_wanted? || existing_loaner.saved_change_to_hidden_by_user?
+        reveal_loaner_groups([model_loaner.id])
+      end
 
       return
     end
@@ -621,12 +642,14 @@ class Vehicle < ApplicationRecord
       vehicle_id: id,
       public: false,
       wanted:,
-      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, user_id:)
+      hidden_by_user:,
+      hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, hidden_by_user:, user_id:)
     )
   end
 
-  # One loaner of a model stays visible per wanted state. Destroying rows can
-  # take a group's visible one with it, so the oldest remaining row takes over.
+  # One loaner of a model stays visible per wanted and hidden_by_user state.
+  # Destroying rows can take a group's visible one with it, so the oldest
+  # remaining row takes over.
   private def destroy_loaners(scope)
     model_ids = scope.distinct.pluck(:model_id)
     return if model_ids.empty?
@@ -638,7 +661,7 @@ class Vehicle < ApplicationRecord
 
   private def reveal_loaner_groups(model_ids)
     Vehicle.where(loaner: true, user_id:, model_id: model_ids).to_a
-      .group_by { |loaner| [loaner.model_id, loaner.wanted] }
+      .group_by { |loaner| [loaner.model_id, loaner.wanted, loaner.hidden_by_user] }
       .each_value do |group|
         next if group.any? { |loaner| !loaner.hidden? }
 
@@ -672,7 +695,7 @@ class Vehicle < ApplicationRecord
     existing = Vehicle.where(bundled: true, vehicle_id: id, model_id: snub_craft_model.id, user_id:).first
 
     if existing.present?
-      existing.update(wanted:) if existing.wanted != wanted
+      existing.update(wanted:, hidden_by_user:) if existing.wanted != wanted || existing.hidden_by_user != hidden_by_user
       return
     end
 
@@ -684,7 +707,8 @@ class Vehicle < ApplicationRecord
       user_id:,
       vehicle_id: id,
       public: false,
-      wanted:
+      wanted:,
+      hidden_by_user:
     )
   end
 

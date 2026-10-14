@@ -18,7 +18,8 @@ module Api
       def show
         authorize! with: ::HangarPolicy
 
-        scope = authorized_scope(Vehicle.all).visible.purchased
+        scope = authorized_scope(Vehicle.all).where(hidden: false).purchased
+        scope = hidden_by_user_included?(scope)
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
@@ -201,8 +202,9 @@ module Api
       end
 
       private def export_vehicles
-        scope = authorized_scope(Vehicle.all).visible.purchased
+        scope = authorized_scope(Vehicle.all).where(hidden: false).purchased
 
+        scope = hidden_by_user_included?(scope)
         scope = loaner_included?(scope)
         scope = bundled_included?(scope)
 

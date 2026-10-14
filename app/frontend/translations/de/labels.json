@@ -2266,6 +2266,7 @@
         "loaner": "Leihschiff",
         "bundled": "Mitgeliefert",
         "bundledWith": "Mitgeliefert mit %{parent}",
+        "hiddenByUser": "Aus deinem Hangar ausgeblendet",
         "public": "Öffentlich sichtbar",
         "fullPublic": "Öffentlich sichtbar inkl. Name",
         "publicShort": "Öffentlich",
@@ -2408,6 +2409,7 @@
           "group": "Gruppe",
           "loaner": "Leihschiffe",
           "bundled": "Mitgelieferte Snub Crafts",
+          "hiddenByUser": "Ausgeblendete Schiffe",
           "boughtVia": "Gekauft über?",
           "image": "Eigenes Bild",
           "dedication": "Widmungstafel"

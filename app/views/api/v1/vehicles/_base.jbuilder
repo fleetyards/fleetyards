@@ -5,6 +5,7 @@ json.name vehicle.name
 json.slug vehicle.slug
 json.serial vehicle.serial
 json.wanted vehicle.wanted
+json.hidden_by_user vehicle.hidden_by_user
 json.bought_via vehicle.bought_via
 json.bought_via_label vehicle.bought_via_label
 json.loaner vehicle.loaner

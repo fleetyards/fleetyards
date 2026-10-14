@@ -43,6 +43,22 @@ class HangarSyncTest < ActiveSupport::TestCase
       end
     end
 
+    test "keeps matching a ship its owner hid, and leaves it hidden" do
+      @andromeda_ship.update!(hidden_by_user: true)
+
+      travel_to 1.minute.from_now do
+        result = ::HangarSync.new(@input).run(@user.id)
+
+        assert_includes result[:found_vehicles], @andromeda_ship.id
+        assert_equal 47, result[:imported_vehicles].size
+      end
+
+      @andromeda_ship.reload
+      assert @andromeda_ship.hidden_by_user
+      assert_not_nil @andromeda_ship.rsi_pledge_id
+      assert_equal 1, @user.vehicles.where(model: @andromeda_model, loaner: false).count
+    end
+
     # The sync renames the corsair and moves the javelin to wanted -- both
     # columns a user edits by hand, so nothing about the row says which of the
     # two wrote it. It is held out at the entry point instead.

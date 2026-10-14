@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Make Public",
         "hideFromPublicHangar": "Hide from Public",
         "editGroupsSelected": "Add/Remove from Groups",
+        "hideFromHangar": "Hide from Hangar",
+        "showInHangar": "Show in Hangar",
         "resetIngame": {
           "openModal": "Reset Ingame Ships after Wipe",
           "moveToWishlist": "Move to Wishlist",

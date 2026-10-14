@@ -45,6 +45,16 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username leaves out a public ship its owner hid" do
+    user = create(:user, :public_hangar)
+    shown = create(:vehicle, :public, user:)
+    create(:vehicle, :public, user:, hidden_by_user: true)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal [shown.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /public/hangars/:username shows a public vehicle's dedication plaque" do
     user = create(:user, :public_hangar)
     create(:vehicle, :public, user:, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12))

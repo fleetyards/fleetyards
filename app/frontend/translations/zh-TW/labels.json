@@ -2266,6 +2266,7 @@
         "loaner": "借用",
         "bundled": "隨附",
         "bundledWith": "隨附於 %{parent}",
+        "hiddenByUser": "已從機庫中隱藏",
         "public": "公開可見",
         "fullPublic": "公開可見（包括名稱）",
         "publicShort": "公開",
@@ -2408,6 +2409,7 @@
           "group": "群組",
           "loaner": "借用船",
           "bundled": "隨附的 Snub Craft",
+          "hiddenByUser": "隱藏的艦船",
           "boughtVia": "購買方式?",
           "image": "自訂圖片",
           "dedication": "命名銘牌"

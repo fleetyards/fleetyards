@@ -131,6 +131,35 @@ const addToHangar = async () => {
     });
 };
 
+const hideable = computed(
+  () =>
+    props.editable &&
+    !props.wishlist &&
+    !props.vehicle.loaner &&
+    !props.vehicle.bundled,
+);
+
+const toggleHidden = async () => {
+  updating.value = true;
+
+  await updateMutation
+    .mutateAsync({
+      id: props.vehicle.id,
+      data: {
+        hiddenByUser: !props.vehicle.hiddenByUser,
+      },
+    })
+    .then(() => {
+      comlink.emit("vehicle-save", props.vehicle.id);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
+
 const { displayConfirm } = useAppNotifications();
 
 const remove = () => {
@@ -380,6 +409,29 @@ const cargoVisible = computed(
     >
       <i class="fa-duotone fa-garage" />
       <span>{{ t("actions.addToHangar") }}</span>
+    </Btn>
+    <Btn
+      v-if="hideable"
+      :aria-label="
+        vehicle.hiddenByUser
+          ? t('actions.hangar.showInHangar')
+          : t('actions.hangar.hideFromHangar')
+      "
+      :disabled="updating"
+      data-test="vehicle-toggle-hidden"
+      @click="toggleHidden"
+    >
+      <i
+        class="fa-duotone"
+        :class="vehicle.hiddenByUser ? 'fa-garage' : 'fa-ghost'"
+      />
+      <span>
+        {{
+          vehicle.hiddenByUser
+            ? t("actions.hangar.showInHangar")
+            : t("actions.hangar.hideFromHangar")
+        }}
+      </span>
     </Btn>
     <Btn
       :tone="BtnTonesEnum.DANGER"
