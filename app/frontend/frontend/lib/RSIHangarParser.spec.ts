@@ -345,6 +345,35 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
+  it("reads an insurance upgrade RSI files as a standalone ship pledge", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<input type="hidden" class="js-upgrade-data" value="{}">
+          <div class="with-images">${item("Insurance", "120 Month Insurance")}</div>
+          <div class="also-contains">Also Contains</div>
+          <div class="without-images">
+            <div class="item"><div class="title">Upgrade - F8C Lightning To F8C Lightning</div></div>
+          </div>`,
+          "Standalone Ships - F8C to F8C with 10 Year Insurance Upgrade",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - F8C Lightning To F8C Lightning",
+          type: "ccu",
+        },
+      ],
+    });
+    expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
   it("reports both an item without a kind and a standalone pledge without a ship", () => {
     expect(
       extract(

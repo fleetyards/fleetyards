@@ -243,9 +243,12 @@ export class RSIHangarParser {
       });
 
       // Every standalone ship pledge holds its ship. One that reads none has
-      // lost both its kind and its manufacturer.
+      // lost both its kind and its manufacturer. RSI files an insurance
+      // upgrade under the same category, holding only the insurance and the
+      // upgrade until it is applied.
       if (
         name?.startsWith("Standalone Ship") &&
+        !entry.getElementsByClassName("js-upgrade-data")[0] &&
         !items.some((item) => item.type === "ship")
       ) {
         const kinds = new Set(
