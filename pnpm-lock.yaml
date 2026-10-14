@@ -141,8 +141,8 @@ importers:
         specifier: ^1.8.0
         version: 1.8.0
       '@google/model-viewer':
-        specifier: ^4.3.1
-        version: 4.3.1(three@0.186.1)
+        specifier: ^4.4.0
+        version: 4.4.0(three@0.186.1)
       '@number-flow/vue':
         specifier: ^0.5.2
         version: 0.5.2(vue@3.5.43(typescript@6.0.3))
@@ -1563,8 +1563,8 @@ packages:
   '@gerrit0/mini-shiki@3.23.0':
     resolution: {integrity: sha512-bEMORlG0cqdjVyCEuU0cDQbORWX+kYCeo0kV1lbxF5bt4r7SID2l9bqsxJEM0zndaxpOUT7riCyIVEuqq/Ynxg==}
 
-  '@google/model-viewer@4.3.1':
-    resolution: {integrity: sha512-GP+inXhAtY31E8rILVmByA6z8CZZjdlNajddppyI1/j1eIaSQiZcMRaUqTFe7+jv4mzRzwKIOiKBud0apiv+WQ==}
+  '@google/model-viewer@4.4.0':
+    resolution: {integrity: sha512-8z1SB5sPlzKoak5mdx/D31brBakPYm3Qi31EfAucHAUrtrHHCbabypkKvSwReYhUpPaxyJ46oT47uWE/hrs1Zw==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
       three: ^0.183.0
@@ -8825,7 +8825,7 @@ snapshots:
       '@shikijs/vscode-textmate': 10.0.2
     optional: true
 
-  '@google/model-viewer@4.3.1(three@0.186.1)':
+  '@google/model-viewer@4.4.0(three@0.186.1)':
     dependencies:
       '@monogrid/gainmap-js': 3.4.0(three@0.186.1)
       lit: 3.3.3
