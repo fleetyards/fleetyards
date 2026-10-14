@@ -131,7 +131,12 @@
           "point_of_interest": "Point of interest",
           "nav_point": "Nav point",
           "other": "Other"
-        }
+        },
+        "setLocation": "Set Location",
+        "myLocation": "My location",
+        "shipLocation": "A ship’s location",
+        "setLocationSuccess": "Location updated.",
+        "setLocationFailure": "Could not update the location."
       },
       "sortOptions": "Sort Options",
       "loading": "Loading…",

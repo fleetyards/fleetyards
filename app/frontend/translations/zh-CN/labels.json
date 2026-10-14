@@ -131,7 +131,12 @@
           "point_of_interest": "兴趣点",
           "nav_point": "导航点",
           "other": "其他"
-        }
+        },
+        "setLocation": "设置位置",
+        "myLocation": "我的位置",
+        "shipLocation": "飞船位置",
+        "setLocationSuccess": "位置已更新。",
+        "setLocationFailure": "无法更新位置。"
       },
       "sortOptions": "排序选项",
       "loading": "加载中…",
