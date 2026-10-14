@@ -199,6 +199,17 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: from.slug, upgradeToModelSlugEq: to.slug}} do
       assert_equal [matching.id], parsed_body["items"].pluck("id")
     end
+    standard = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to S-65 Stingray Standard Edition")
+    best_in_show = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to S-65 Stingray Best In Show Edition 2955")
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: to.slug}} do
+      assert_includes parsed_body["items"].pluck("id"), standard.id
+      assert_includes parsed_body["items"].pluck("id"), best_in_show.id
+    end
+    pirate = create(:model, name: "Gladius Pirate Edition")
+    pirate_upgrade = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Cutter to Gladius Pirate Edition")
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: pirate.slug}} do
+      assert_equal [pirate_upgrade.id], parsed_body["items"].pluck("id")
+    end
     assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: "unknown-model"}} do
       assert_empty parsed_body["items"]
     end

@@ -39,11 +39,16 @@ class HangarPledgeItem < ApplicationRecord
       (regexp_match(hangar_pledge_items.name,
         '(?i)^(?:Upgrade[[:space:]]*-[[:space:]]*)?(.+?)[[:space:]]+to[[:space:]]+(.+)$'))[#{position}]
     SQL
+    # RSI appends how the upgrade was sold to the target ship. Catalogue names
+    # such as "Gladius Pirate Edition" end the same way, so the name is also
+    # compared as it stands.
+    sale = <<~SQL.squish
+      regexp_replace(#{ship}, '(?i)[[:space:]]+(-[[:space:]]*)?(warbond([[:space:]]+edition)?|standard[[:space:]]+edition|best[[:space:]]+in[[:space:]]+show([[:space:]]+edition)?([[:space:]]+[0-9]{4})?)$', '')
+    SQL
     # Arel instead of a bind: the regex literals contain `?` and `:name`
     # sequences that both bind styles would substitute.
-    upgrades.where(Arel.sql(<<~SQL.squish).in(names))
-      lower(trim(regexp_replace(#{ship}, '(?i)[[:space:]]+(-[[:space:]]*)?warbond([[:space:]]+edition)?$', '')))
-    SQL
+    upgrades.where(Arel.sql("lower(trim(#{ship}))").in(names))
+      .or(upgrades.where(Arel.sql("lower(trim(#{sale}))").in(names)))
   end
 
   # Newest pledge first, the order RSI lists the hangar in. Pledge ids grow
