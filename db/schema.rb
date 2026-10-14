@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_14_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1513,6 +1513,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_120000) do
     t.boolean "sync_paints", default: true, null: false
     t.boolean "sync_hangar_flair", default: true, null: false
     t.boolean "sync_equipment", default: true, null: false
+    t.boolean "sync_ccus", default: false, null: false
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"

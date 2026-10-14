@@ -2711,6 +2711,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Hangar-Flair",
+        "upgrades": "Upgrades / CCUs",
         "equipment": "FPS-Ausrüstung",
         "createdOn": "Erstellt",
         "meltable": "Einschmelzbar",
@@ -2797,6 +2798,8 @@
         "syncPaintsHint": "Ersetzt deine Lackierungen durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten Lackierungen unverändert.",
         "syncHangarFlair": "Hangar-Flair synchronisieren",
         "syncHangarFlairHint": "Ersetzt dein Hangar-Flair durch das aus deinem RSI-Hangar. Aus lässt das gespeicherte Flair unverändert.",
+        "syncCcus": "CCUs synchronisieren",
+        "syncCcusHint": "Ersetzt deine CCUs durch die aus deinem RSI-Hangar. Aus lässt die gespeicherten CCUs unverändert.",
         "syncEquipment": "FPS-Ausrüstung synchronisieren",
         "syncEquipmentHint": "Ersetzt deine FPS-Ausrüstung durch die aus deinem RSI-Hangar. Aus lässt die gespeicherte Ausrüstung unverändert.",
         "settings": "Einstellungen",
@@ -2833,6 +2836,8 @@
           "paintsNotSynced": "Lackierungen (nicht synchronisiert)",
           "hangarFlairNotSynced": "Hangar-Flair (nicht synchronisiert)",
           "equipment": "FPS-Ausrüstung",
+          "ccus": "Upgrades / CCUs",
+          "ccusNotSynced": "CCUs (nicht synchronisiert)",
           "equipmentNotSynced": "FPS-Ausrüstung (nicht synchronisiert)",
           "extras": "Weitere Gegenstände (werden Flair und FPS-Ausrüstung zugeordnet)"
         },
@@ -2852,6 +2857,7 @@
           "foundUpgrades": "Gefundene Upgrades",
           "syncedPaints": "Synchronisierte Lackierungen",
           "syncedHangarFlair": "Synchronisiertes Hangar-Flair",
+          "syncedCcus": "Synchronisierte CCUs",
           "syncedEquipment": "Synchronisierte FPS-Ausrüstung",
           "missingUpgrades": "Upgrades nicht gefunden",
           "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"

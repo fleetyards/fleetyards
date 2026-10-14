@@ -190,7 +190,7 @@ describe("RSIHangarParser.extractPage", () => {
     });
   });
 
-  it("skips a ship upgrade RSI labels as one", () => {
+  it("reads a ship upgrade RSI labels as one", () => {
     const page = extract(
       pledgesPage(
         pledge(
@@ -201,7 +201,17 @@ describe("RSIHangarParser.extractPage", () => {
       ),
     );
 
-    expect(page).toMatchObject({ status: RsiPageStatus.PAGE, pledges: [] });
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - Merchantman To Hull E",
+          type: "ccu",
+          pledgeItemCount: 1,
+        },
+      ],
+    });
     expect(page).not.toHaveProperty("unread", expect.anything());
   });
 
@@ -331,6 +341,72 @@ describe("RSIHangarParser.extractPage", () => {
       unread: {
         details: ['no ship in a "Standalone Ships" pledge, kinds Insurance'],
       },
+    });
+  });
+
+  it("reads an insurance upgrade RSI files as a standalone ship pledge", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<input type="hidden" class="js-upgrade-data" value="{}">
+          <div class="with-images">${item("Insurance", "120 Month Insurance")}</div>
+          <div class="also-contains">Also Contains</div>
+          <div class="without-images">
+            <div class="item"><div class="title">Upgrade - F8C Lightning To F8C Lightning</div></div>
+          </div>`,
+          "Standalone Ships - F8C to F8C with 10 Year Insurance Upgrade",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - F8C Lightning To F8C Lightning",
+          type: "ccu",
+        },
+      ],
+    });
+    expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
+  it("leaves out an upgrade already applied to the pledge's ship", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            item("Ship", "Cutter") +
+              item("Upgrade", "Upgrade - Aurora MR To Cutter"),
+            "Standalone Ship - Aurora MR - Upgraded",
+          ),
+        ),
+      ),
+    ).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [{ id: "101", name: "Cutter", type: "ship" }],
+    });
+  });
+
+  it("reports a standalone ship pledge with upgrade data but no upgrade read", () => {
+    const page = extract(
+      pledgesPage(
+        pledge(
+          "101",
+          `<input type="hidden" class="js-upgrade-data" value="{}">
+          <div class="with-images">${item("Insurance", "120 Month Insurance")}</div>`,
+          "Standalone Ships - F8C Lightning",
+        ),
+      ),
+    );
+
+    expect(page).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [],
+      unread: expect.anything(),
     });
   });
 
@@ -517,9 +593,16 @@ describe("RSIHangarParser.extractPage", () => {
           ),
         ),
       ),
-    ).toEqual({
+    ).toMatchObject({
       status: RsiPageStatus.PAGE,
-      pledges: [],
+      pledges: [
+        {
+          id: "101",
+          name: "Upgrade - Clipper To S-65 Stingray",
+          type: "ccu",
+          pledgeItemCount: 1,
+        },
+      ],
       pledgeIds: ["101"],
     });
   });

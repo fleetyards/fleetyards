@@ -2711,6 +2711,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Decorazioni per l'hangar",
+        "upgrades": "Potenziamenti / CCU",
         "equipment": "Equipaggiamento FPS",
         "createdOn": "Creato",
         "meltable": "Fondibile",
@@ -2797,6 +2798,8 @@
         "syncPaintsHint": "Sostituisce le tue verniciature con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
         "syncHangarFlair": "Sincronizza decorazioni per l'hangar",
         "syncHangarFlairHint": "Sostituisce le tue decorazioni con quelle del tuo hangar RSI. Disattivato lascia invariate quelle salvate.",
+        "syncCcus": "Sincronizza CCU",
+        "syncCcusHint": "Sostituisce i tuoi CCU con quelli del tuo hangar RSI. Disattivato mantiene invariati i CCU salvati.",
         "syncEquipment": "Sincronizza equipaggiamento FPS",
         "syncEquipmentHint": "Sostituisce il tuo equipaggiamento FPS con quello del tuo hangar RSI. Disattivato lascia invariato quello salvato.",
         "settings": "Impostazioni",
@@ -2833,6 +2836,8 @@
           "paintsNotSynced": "Verniciature (non sincronizzate)",
           "hangarFlairNotSynced": "Decorazioni per l'hangar (non sincronizzate)",
           "equipment": "Equipaggiamento FPS",
+          "ccus": "Potenziamenti / CCU",
+          "ccusNotSynced": "CCU (non sincronizzati)",
           "equipmentNotSynced": "Equipaggiamento FPS (non sincronizzato)",
           "extras": "Altri oggetti (smistati tra decorazioni ed equipaggiamento FPS)"
         },
@@ -2852,6 +2857,7 @@
           "foundUpgrades": "Upgrade trovati",
           "syncedPaints": "Verniciature sincronizzate",
           "syncedHangarFlair": "Decorazioni per l'hangar sincronizzate",
+          "syncedCcus": "CCU sincronizzati",
           "syncedEquipment": "Equipaggiamento FPS sincronizzato",
           "missingUpgrades": "Upgrade non trovati",
           "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade"

@@ -2869,6 +2869,11 @@ components:
           items:
             type: string
             format: uuid
+        syncedCcus:
+          type: array
+          items:
+            type: string
+            format: uuid
         outcome:
           "$ref": "#/components/schemas/HangarSyncOutcomeEnum"
         incomplete:

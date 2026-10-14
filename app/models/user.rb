@@ -208,7 +208,7 @@ class User < ApplicationRecord
   # these names would have their public hangar shadowed by the page.
   RESERVED_USERNAMES = %w[
     buybacks equipment fleetchart flair imports inventories paints preview
-    stats transactions transfers wishlist
+    stats transactions transfers upgrades wishlist
   ].freeze
 
   validate :username_not_a_route_name, if: :username_changed?

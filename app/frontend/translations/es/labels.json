@@ -2711,6 +2711,7 @@
       },
       "hangarPledgeItems": {
         "flair": "Decoración de hangar",
+        "upgrades": "Mejoras / CCU",
         "equipment": "Equipo FPS",
         "createdOn": "Creado",
         "meltable": "Fundible",
@@ -2797,6 +2798,8 @@
         "syncPaintsHint": "Sustituye tus pinturas por las de tu hangar de RSI. Desactivado deja las pinturas guardadas como están.",
         "syncHangarFlair": "Sincronizar decoración de hangar",
         "syncHangarFlairHint": "Sustituye tu decoración de hangar por la de tu hangar de RSI. Desactivado deja la decoración guardada como está.",
+        "syncCcus": "Sincronizar CCU",
+        "syncCcusHint": "Sustituye tus CCU por los de tu hangar de RSI. Desactivado conserva los CCU guardados.",
         "syncEquipment": "Sincronizar equipo FPS",
         "syncEquipmentHint": "Sustituye tu equipo FPS por el de tu hangar de RSI. Desactivado deja el equipo guardado como está.",
         "settings": "Ajustes",
@@ -2833,6 +2836,8 @@
           "paintsNotSynced": "Pinturas (no se sincronizan)",
           "hangarFlairNotSynced": "Decoración de hangar (no se sincroniza)",
           "equipment": "Equipo FPS",
+          "ccus": "Mejoras / CCU",
+          "ccusNotSynced": "CCU (sin sincronizar)",
           "equipmentNotSynced": "Equipo FPS (no se sincroniza)",
           "extras": "Otros objetos (se reparten entre decoración y equipo FPS)"
         },
@@ -2852,6 +2857,7 @@
           "foundUpgrades": "Mejoras encontradas",
           "syncedPaints": "Pinturas sincronizadas",
           "syncedHangarFlair": "Decoración de hangar sincronizada",
+          "syncedCcus": "CCU sincronizados",
           "syncedEquipment": "Equipo FPS sincronizado",
           "missingUpgrades": "Mejoras no encontradas",
           "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras"

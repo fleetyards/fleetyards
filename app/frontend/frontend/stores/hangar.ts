@@ -70,6 +70,7 @@ interface HangarState extends ShipListState {
   syncPaints: boolean;
   syncHangarFlair: boolean;
   syncEquipment: boolean;
+  syncCcus: boolean;
   syncUnmatchedVehiclesAction: HangarSyncUnmatchedActionEnum;
   syncUnmatchedHangarGroupId?: string;
   tableViewImageCols: HangarTableViewImageColsEnum[];
@@ -96,6 +97,7 @@ export const useHangarStore = defineStore("hangar", {
     syncPaints: true,
     syncHangarFlair: true,
     syncEquipment: true,
+    syncCcus: true,
     syncUnmatchedVehiclesAction: "wishlist",
     syncUnmatchedHangarGroupId: undefined,
     tableViewImageCols: [
@@ -169,6 +171,7 @@ export const useHangarStore = defineStore("hangar", {
       "syncPaints",
       "syncHangarFlair",
       "syncEquipment",
+      "syncCcus",
       "syncUnmatchedVehiclesAction",
       "syncUnmatchedHangarGroupId",
     ],

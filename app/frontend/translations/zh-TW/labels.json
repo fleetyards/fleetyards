@@ -2711,6 +2711,7 @@
       },
       "hangarPledgeItems": {
         "flair": "機庫裝飾",
+        "upgrades": "升級 / CCU",
         "equipment": "FPS 裝備",
         "createdOn": "建立於",
         "meltable": "可熔煉",
@@ -2797,6 +2798,8 @@
         "syncPaintsHint": "以你 RSI 機庫中的塗裝取代已儲存的塗裝。關閉時保留已儲存的塗裝不變。",
         "syncHangarFlair": "同步機庫裝飾",
         "syncHangarFlairHint": "以你 RSI 機庫中的機庫裝飾取代已儲存的裝飾。關閉時保留已儲存的裝飾不變。",
+        "syncCcus": "同步 CCU",
+        "syncCcusHint": "以你 RSI 機庫中的 CCU 取代已儲存的 CCU。關閉時保留已儲存的 CCU 不變。",
         "syncEquipment": "同步 FPS 裝備",
         "syncEquipmentHint": "以你 RSI 機庫中的 FPS 裝備取代已儲存的裝備。關閉時保留已儲存的裝備不變。",
         "settings": "設定",
@@ -2833,6 +2836,8 @@
           "paintsNotSynced": "塗裝（不會同步）",
           "hangarFlairNotSynced": "機庫裝飾（不會同步）",
           "equipment": "FPS 裝備",
+          "ccus": "升級 / CCU",
+          "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 裝備（不會同步）",
           "extras": "其他物品（歸入機庫裝飾和 FPS 裝備）"
         },
@@ -2852,6 +2857,7 @@
           "foundUpgrades": "找到的升級",
           "syncedPaints": "已同步塗裝",
           "syncedHangarFlair": "已同步機庫裝飾",
+          "syncedCcus": "已同步 CCU",
           "syncedEquipment": "已同步 FPS 裝備",
           "missingUpgrades": "未找到升級",
           "missingUpgradeVehicles": "未找到匹配的飛船用於升級"

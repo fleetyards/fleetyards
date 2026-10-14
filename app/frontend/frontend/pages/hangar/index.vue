@@ -398,6 +398,11 @@ const pledgeItemPages = [
     label: "nav.hangar.equipment",
   },
   {
+    route: "hangar-upgrades",
+    icon: "fa-light fa-arrow-up",
+    label: "nav.hangar.upgrades",
+  },
+  {
     route: "hangar-buybacks",
     icon: "fa-light fa-rotate-left",
     label: "nav.hangar.buybacks",

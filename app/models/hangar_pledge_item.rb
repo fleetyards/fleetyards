@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A paint, a piece of hangar flair or FPS equipment in the user's RSI hangar,
+# A paint, piece of hangar flair, FPS equipment or CCU in the user's RSI hangar,
 # as read by the hangar sync. None becomes a vehicle, so all are kept as RSI
 # lists them.
 class HangarPledgeItem < ApplicationRecord
@@ -8,7 +8,7 @@ class HangarPledgeItem < ApplicationRecord
   max_paginates_per 240
   per_page_steps PageSizes.up_to(max_per_page)
 
-  KINDS = %w[paint flair equipment].freeze
+  KINDS = %w[paint flair equipment ccu].freeze
 
   belongs_to :user
 
@@ -19,10 +19,37 @@ class HangarPledgeItem < ApplicationRecord
   validates :kind, inclusion: {in: KINDS}
   validates :quantity, numericality: {only_integer: true, greater_than: 0}
 
+  scope :upgrades, -> { where(kind: "ccu") }
   scope :paints, -> { where(kind: "paint") }
   scope :flair, -> { where(kind: "flair") }
   scope :equipment, -> { where(kind: "equipment") }
   scope :with_value, -> { where(pledge_value: 0.01..) }
+
+  scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
+  scope :upgrade_to_model_slug_eq, ->(slug) { upgrade_for_model(slug, 2) }
+
+  # Hangar CCUs carry ship names rather than the RSI ship ids buybacks expose.
+  # Resolve the selected model at query time so already-synced CCUs work too.
+  def self.upgrade_for_model(slug, position)
+    model = Model.find_by(slug:)
+    return none unless model
+
+    names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
+    ship = <<~SQL.squish
+      (regexp_match(hangar_pledge_items.name,
+        '(?i)^(?:Upgrade[[:space:]]*-[[:space:]]*)?(.+?)[[:space:]]+to[[:space:]]+(.+)$'))[#{position}]
+    SQL
+    # RSI appends how the upgrade was sold to the target ship. Catalogue names
+    # such as "Gladius Pirate Edition" end the same way, so the name is also
+    # compared as it stands.
+    sale = <<~SQL.squish
+      regexp_replace(#{ship}, '(?i)[[:space:]]+(-[[:space:]]*)?(warbond([[:space:]]+edition)?|standard[[:space:]]+edition|best[[:space:]]+in[[:space:]]+show([[:space:]]+edition)?([[:space:]]+[0-9]{4})?)$', '')
+    SQL
+    # Arel instead of a bind: the regex literals contain `?` and `:name`
+    # sequences that both bind styles would substitute.
+    upgrades.where(Arel.sql("lower(trim(#{ship}))").in(names))
+      .or(upgrades.where(Arel.sql("lower(trim(#{sale}))").in(names)))
+  end
 
   # Newest pledge first, the order RSI lists the hangar in. Pledge ids grow
   # over time, so they order pledges created on the same day, and any pledge
@@ -53,7 +80,11 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   def self.ransackable_scopes(_auth_object = nil)
-    %i[with_value]
+    %i[with_value upgrade_from_model_slug_eq upgrade_to_model_slug_eq]
+  end
+
+  def self.ransackable_scopes_skip_sanitize_args
+    %i[upgrade_from_model_slug_eq upgrade_to_model_slug_eq]
   end
 
   def self.ransackable_associations(_auth_object = nil)

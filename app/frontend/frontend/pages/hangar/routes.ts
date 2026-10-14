@@ -238,6 +238,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "upgrades/",
+    name: "hangar-upgrades",
+    component: () => import("@/frontend/pages/hangar/upgrades.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.upgrades",
+      backgroundImage: "bg-5",
+    },
+  },
+  {
     path: "stats/",
     name: "hangar-stats",
     component: () => import("@/frontend/pages/hangar/stats.vue"),

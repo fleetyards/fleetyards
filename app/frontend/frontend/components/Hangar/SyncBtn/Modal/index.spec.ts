@@ -669,11 +669,12 @@ describe("HangarSyncModal", () => {
         syncPaints: false,
         syncHangarFlair: true,
         syncEquipment: false,
+        syncCcus: true,
       }),
     });
   });
 
-  it("submits a hangar whose ship upgrade has no kind", async () => {
+  it("submits a hangar holding a ship its upgrade was applied to", async () => {
     const { wrapper } = await mountModal();
 
     await wrapper.find("[data-test='start-sync']").trigger("click");
@@ -764,7 +765,7 @@ describe("HangarSyncModal", () => {
     await flushPromises();
 
     await replyWithPage(
-      '<div class="item"><div class="title">Upgrade - Clipper To S-65 Stingray</div></div>',
+      '<div class="item"><div class="title">Star Citizen Digital Download</div></div>',
     );
 
     expect(reportMutateAsync).not.toHaveBeenCalled();

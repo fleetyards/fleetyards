@@ -25,18 +25,27 @@ import {
   getHangarPaintsQueryKey,
   useHangarFlair,
   getHangarFlairQueryKey,
+  useHangarUpgrades,
+  getHangarUpgradesQueryKey,
   useHangarEquipment,
   getHangarEquipmentQueryKey,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
 
 type Props = {
-  kind: "paints" | "flair" | "equipment";
+  kind: "paints" | "flair" | "equipment" | "upgrades";
 };
 
 const props = defineProps<Props>();
 
 const KINDS = {
+  upgrades: {
+    useItems: useHangarUpgrades,
+    getQueryKey: getHangarUpgradesQueryKey,
+    headline: "headlines.hangar.upgrades",
+    emptyName: "labels.hangarPledgeItems.upgrades",
+    icon: "fa-duotone fa-arrow-up",
+  },
   paints: {
     useItems: useHangarPaints,
     getQueryKey: getHangarPaintsQueryKey,
@@ -127,7 +136,7 @@ onUnmounted(() => {
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm :upgrades="kind === 'upgrades'" />
     </template>
 
     <template #actions-left>

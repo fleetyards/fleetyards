@@ -10,6 +10,7 @@ const routerOn = async (name: string) => {
       "hangar-paints",
       "hangar-flair",
       "hangar-equipment",
+      "hangar-upgrades",
       "hangar-buybacks",
     ].map((routeName) => ({
       path: `/${routeName}`,
@@ -43,19 +44,25 @@ describe("Hangar/PledgeItemsSwitch", () => {
       plugins: [await routerOn("hangar-flair")],
     });
 
-    const segments = ["paints", "flair", "equipment", "buybacks"].map((key) =>
-      wrapper.find(`[data-test='pledge-items-switch-${key}']`),
-    );
+    const segments = [
+      "paints",
+      "flair",
+      "equipment",
+      "upgrades",
+      "buybacks",
+    ].map((key) => wrapper.find(`[data-test='pledge-items-switch-${key}']`));
 
     expect(segments.map((segment) => segment.attributes("href"))).toEqual([
       "#/hangar-paints",
       "#/hangar-flair",
       "#/hangar-equipment",
+      "#/hangar-upgrades",
       "#/hangar-buybacks",
     ]);
     expect(segments.map((segment) => segment.classes("active"))).toEqual([
       false,
       true,
+      false,
       false,
       false,
     ]);

@@ -2711,6 +2711,7 @@
       },
       "hangarPledgeItems": {
         "flair": "机库装饰",
+        "upgrades": "升级 / CCU",
         "equipment": "FPS 装备",
         "createdOn": "创建于",
         "meltable": "可熔炼",
@@ -2797,6 +2798,8 @@
         "syncPaintsHint": "用你 RSI 机库中的涂装替换已保存的涂装。关闭时保留已保存的涂装不变。",
         "syncHangarFlair": "同步机库装饰",
         "syncHangarFlairHint": "用你 RSI 机库中的机库装饰替换已保存的装饰。关闭时保留已保存的装饰不变。",
+        "syncCcus": "同步 CCU",
+        "syncCcusHint": "用你 RSI 机库中的 CCU 替换已保存的 CCU。关闭时保留已保存的 CCU 不变。",
         "syncEquipment": "同步 FPS 装备",
         "syncEquipmentHint": "用你 RSI 机库中的 FPS 装备替换已保存的装备。关闭时保留已保存的装备不变。",
         "settings": "设置",
@@ -2833,6 +2836,8 @@
           "paintsNotSynced": "涂装（不会同步）",
           "hangarFlairNotSynced": "机库装饰（不会同步）",
           "equipment": "FPS 装备",
+          "ccus": "升级 / CCU",
+          "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 装备（不会同步）",
           "extras": "其他物品（归入机库装饰和 FPS 装备）"
         },
@@ -2852,6 +2857,7 @@
           "foundUpgrades": "找到的升级",
           "syncedPaints": "已同步涂装",
           "syncedHangarFlair": "已同步机库装饰",
+          "syncedCcus": "已同步 CCU",
           "syncedEquipment": "已同步 FPS 装备",
           "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "未找到匹配的飞船用于升级"

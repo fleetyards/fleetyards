@@ -37,6 +37,12 @@ const sections = [
     label: "nav.hangar.equipment",
   },
   {
+    key: "upgrades",
+    route: "hangar-upgrades",
+    icon: "fa-light fa-arrow-up",
+    label: "nav.hangar.upgrades",
+  },
+  {
     key: "buybacks",
     route: "hangar-buybacks",
     icon: "fa-light fa-rotate-left",
@@ -50,7 +56,7 @@ const current = computed(() =>
 </script>
 
 <template>
-  <!-- One button on a phone: four segments took the toolbar's row from the
+  <!-- One button on a phone: the segments took the toolbar's row from the
        paginator. The list's icon alone, as on the segments, because the page
        title right above already names it. -->
   <BtnDropdown v-if="mobile" data-test="pledge-items-switch-menu">

@@ -3,12 +3,16 @@
 module Api
   module V1
     class HangarPledgeItemsController < ::Api::BaseController
-      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment]
+      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment upgrades]
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[paints flair equipment]
+        only: %i[paints flair equipment upgrades]
+
+      def upgrades
+        list(HangarPledgeItem.upgrades)
+      end
 
       def paints
         list(HangarPledgeItem.paints)
@@ -35,7 +39,7 @@ module Api
       end
 
       private def pledge_item_query_params
-        @pledge_item_query_params ||= params.permit(q: [:name_cont, :meltable_eq, :with_value]).fetch(:q, {})
+        @pledge_item_query_params ||= params.permit(q: [:name_cont, :meltable_eq, :with_value, :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq]).fetch(:q, {})
       end
     end
   end
