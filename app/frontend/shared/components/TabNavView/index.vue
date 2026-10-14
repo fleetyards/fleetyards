@@ -31,6 +31,7 @@ type Props = {
   // A strip above the content instead of the column beside it, for a page
   // whose header already spans the full width.
   horizontal?: boolean;
+  activeLabelOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   badges: undefined,
   anchors: undefined,
   horizontal: false,
+  activeLabelOnly: false,
 });
 
 const emit = defineEmits<{
@@ -120,6 +122,7 @@ watch(
         <TabNavViewAnchorItems
           v-if="props.anchors"
           :items="props.anchors"
+          :active-label-only="props.activeLabelOnly"
           :active-id="props.activeKey"
           @update:active-id="emit('update:activeKey', $event)"
         />
@@ -172,6 +175,7 @@ watch(
           <TabNavViewAnchorItems
             v-if="props.anchors"
             :items="props.anchors"
+            :active-label-only="props.activeLabelOnly"
             :active-id="props.activeKey"
             @update:active-id="emit('update:activeKey', $event)"
           />

@@ -256,6 +256,7 @@
       "buybackSync": "同步 RSI 可回购承诺",
       "syncExtension": "同步 RSI 机库",
       "editMyVehicle": "Edit my %{vehicle}",
+      "vehicleLoadout": "%{vehicle} 的配装",
       "nameMyVehicle": "Name my %{vehicle}",
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",

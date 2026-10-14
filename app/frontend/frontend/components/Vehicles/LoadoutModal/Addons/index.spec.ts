@@ -32,7 +32,7 @@ const mount = (props: Record<string, unknown>) =>
 const rows = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.findAll("[data-test='vehicle-addon']");
 
-describe("VehicleAddonsModalAddons", () => {
+describe("VehicleLoadoutModalAddons", () => {
   /**
    * The regression this list was rebuilt for: it used to push into a local copy
    * behind a watcher Vue 3 never fires for an in-place mutation, so a click drew

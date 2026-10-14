@@ -14,12 +14,18 @@ type Props = {
   fields?: string[];
   disabled?: boolean;
   hidden?: boolean;
+  icon?: string;
+  iconSrc?: string;
+  hint?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   fields: () => [],
   disabled: false,
   hidden: false,
+  icon: undefined,
+  iconSrc: undefined,
+  hint: undefined,
 });
 
 const context = inject(formTabsContextKey, null);
@@ -34,6 +40,9 @@ context.registerTab({
   fields: toRef(props, "fields"),
   disabled: toRef(props, "disabled"),
   hidden: toRef(props, "hidden"),
+  icon: toRef(props, "icon"),
+  iconSrc: toRef(props, "iconSrc"),
+  hint: toRef(props, "hint"),
 });
 
 onUnmounted(() => {

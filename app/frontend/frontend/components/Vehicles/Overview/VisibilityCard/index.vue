@@ -6,10 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { type Vehicle, type VehicleUpdateInput } from "@/services/fyApi";
 
 type Props = {
@@ -19,12 +20,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const { displayAlert } = useAppNotifications();
-
-const vehicle = computed(() => props.vehicle);
-
-const { useUpdateMutation } = useVehicleMutations();
-const updateMutation = useUpdateMutation(vehicle);
 
 type Setting = {
   key: keyof VehicleUpdateInput & keyof Vehicle;
@@ -53,13 +48,10 @@ const settings = computed<Setting[]>(() =>
       ],
 );
 
-const update = async (key: Setting["key"], value: boolean) => {
-  await updateMutation
-    .mutateAsync({ id: props.vehicle.id, data: { [key]: value } })
-    .catch(() => {
-      displayAlert({ text: t("messages.vehicleOverview.setting.failure") });
-    });
-};
+const { openEditModal } = useVehicleModals();
+
+const openVisibility = () =>
+  openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.VISIBILITY });
 </script>
 
 <template>
@@ -68,18 +60,31 @@ const update = async (key: Setting["key"], value: boolean) => {
     variant="slim"
     data-test="vehicle-overview-visibility"
   >
-    <div class="overview-visibility">
-      <FormToggle
+    <template #head>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        :aria-label="t('actions.edit')"
+        data-test="vehicle-visibility-edit"
+        @click="openVisibility"
+      >
+        <i class="fa-duotone fa-pencil" />
+        {{ t("actions.edit") }}
+      </Btn>
+    </template>
+    <dl class="overview-visibility">
+      <div
         v-for="setting in settings"
         :key="setting.key"
-        :model-value="!!vehicle[setting.key]"
-        :name="setting.key"
-        :label="setting.label"
-        :disabled="updateMutation.isPending.value"
-        :data-test="`vehicle-setting-${setting.key}`"
-        @update:model-value="update(setting.key, $event)"
-      />
-    </div>
+        class="overview-visibility__setting"
+      >
+        <dt>{{ setting.label }}</dt>
+        <dd :data-test="`vehicle-setting-${setting.key}`">
+          {{
+            vehicle[setting.key] ? t("labels.enabled") : t("labels.disabled")
+          }}
+        </dd>
+      </div>
+    </dl>
   </MetricsCard>
 </template>
 
@@ -87,12 +92,18 @@ const update = async (key: Setting["key"], value: boolean) => {
 .overview-visibility {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+  margin: 0;
 
-  // The gap spaces the toggles; a toggle's own margin would also pad the
-  // card's bottom edge.
-  :deep(.form-toggle) {
-    margin-bottom: 0;
+  &__setting {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  dt,
+  dd {
+    margin: 0;
   }
 }
 </style>

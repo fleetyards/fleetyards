@@ -236,7 +236,8 @@
           "openModal": "Reset Ingame Ships after Wipe",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
-        }
+        },
+        "editLoadout": "Edit loadout"
       },
       "syncExtension": {
         "cancel": "Cancel",
@@ -589,6 +590,9 @@
         "open": "Captain's Log",
         "add": "New entry",
         "showPublic": "Captain's Log"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Save loadout"
       }
     }
   }

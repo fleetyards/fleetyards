@@ -48,6 +48,16 @@ class Api::V1::PublicHangarsStatsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username/stats counts the whole public wishlist, as the wishlist lists it" do
+    user = create(:user, public_hangar_stats: true, public_wishlist: true)
+    create(:vehicle, user: user, wanted: true, public: true)
+    create(:vehicle, user: user, wanted: true, public: false)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal 2, parsed_body["wishlistTotal"]
+    end
+  end
+
   test "GET /public/hangars/:username/stats omits wishlist_total when public_wishlist disabled" do
     user = create(:user, public_hangar_stats: true, vehicle_count: 2, wanted_vehicle_count: 3, public_wishlist: false)
 

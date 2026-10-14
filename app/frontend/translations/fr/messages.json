@@ -1258,6 +1258,9 @@
         "defaultUpdate": {
           "failure": "Le réglage n'a pas pu être enregistré"
         }
+      },
+      "vehicleLoadout": {
+        "failure": "La configuration n'a pas pu être enregistrée."
       }
     }
   }

@@ -131,7 +131,12 @@
           "point_of_interest": "Ort von Interesse",
           "nav_point": "Navigationspunkt",
           "other": "Sonstiges"
-        }
+        },
+        "setLocation": "Standort setzen",
+        "myLocation": "Mein Standort",
+        "shipLocation": "Standort eines Schiffs",
+        "setLocationSuccess": "Standort aktualisiert.",
+        "setLocationFailure": "Standort konnte nicht aktualisiert werden."
       },
       "sortOptions": "Sortieroptionen",
       "loading": "Lädt…",
@@ -4236,6 +4241,33 @@
         "statsEntries": "Einträge",
         "statsPublic": "Öffentlich",
         "statsSince": "Seit"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "Allgemein",
+          "visibility": "Sichtbarkeit",
+          "names": "Namen",
+          "groups": "Gruppen",
+          "picture": "Bild"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "Lackierungen",
+          "modules": "Module",
+          "upgrades": "Add-ons",
+          "weapons": "Waffen",
+          "missiles": "Raketen",
+          "shields": "Schildgeneratoren",
+          "powerPlants": "Kraftwerke",
+          "coolers": "Kühler",
+          "quantumDrives": "Quantum-Antriebe",
+          "radar": "Radar",
+          "lifeSupport": "Lebenserhaltung",
+          "flightBlades": "Flugsteuerungs-Blades"
+        },
+        "comingSoon": "Demnächst verfügbar",
+        "none": "Keine"
       }
     }
   }

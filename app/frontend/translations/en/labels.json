@@ -131,7 +131,12 @@
           "point_of_interest": "Point of interest",
           "nav_point": "Nav point",
           "other": "Other"
-        }
+        },
+        "setLocation": "Set Location",
+        "myLocation": "My location",
+        "shipLocation": "A ship’s location",
+        "setLocationSuccess": "Location updated.",
+        "setLocationFailure": "Could not update the location."
       },
       "sortOptions": "Sort Options",
       "loading": "Loading…",
@@ -4250,6 +4255,33 @@
         "statsEntries": "Entries",
         "statsPublic": "Public",
         "statsSince": "Since"
+      },
+      "vehicleEdit": {
+        "tabs": {
+          "general": "General",
+          "visibility": "Visibility",
+          "names": "Names",
+          "groups": "Groups",
+          "picture": "Picture"
+        }
+      },
+      "vehicleLoadout": {
+        "tabs": {
+          "paints": "Paints",
+          "modules": "Modules",
+          "upgrades": "Add-ons",
+          "weapons": "Weapons",
+          "missiles": "Missiles",
+          "shields": "Shield generators",
+          "powerPlants": "Power plants",
+          "coolers": "Coolers",
+          "quantumDrives": "Quantum drives",
+          "radar": "Radar",
+          "lifeSupport": "Life support",
+          "flightBlades": "Flight blades"
+        },
+        "comingSoon": "Coming soon",
+        "none": "None"
       }
     }
   }

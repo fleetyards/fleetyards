@@ -1268,6 +1268,9 @@
         "defaultUpdate": {
           "failure": "The setting could not be saved"
         }
+      },
+      "vehicleLoadout": {
+        "failure": "The loadout could not be saved."
       }
     }
   }

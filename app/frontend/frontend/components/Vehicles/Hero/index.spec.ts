@@ -17,6 +17,12 @@ vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
   },
 }));
 
+const openEditModal = vi.fn();
+
+vi.mock("@/frontend/composables/useVehicleModals", () => ({
+  useVehicleModals: () => ({ openEditModal }),
+}));
+
 const vehicle = {
   id: "vehicle-1",
   name: "Rust Bucket",
@@ -105,4 +111,11 @@ describe("VehicleHero", () => {
     setViewport(true);
     expect(menuOffersShipPage(await mount(false))).toBe(true);
   });
+});
+
+it("opens image editing on the image tab of the vehicle editor", async () => {
+  const wrapper = await mount(false);
+  await wrapper.find('[data-test="vehicle-image-edit"]').trigger("click");
+
+  expect(openEditModal).toHaveBeenLastCalledWith(vehicle, { tab: "image" });
 });

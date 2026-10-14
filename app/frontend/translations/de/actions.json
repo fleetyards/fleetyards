@@ -236,7 +236,8 @@
           "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
           "moveToWishlist": "Zur Wunschliste verschieben",
           "removeAll": "Alle entfernen"
-        }
+        },
+        "editLoadout": "Loadout bearbeiten"
       },
       "syncExtension": {
         "cancel": "Abbrechen",
@@ -589,6 +590,9 @@
         "open": "Logbuch",
         "add": "Neuer Eintrag",
         "showPublic": "Logbuch"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Loadout speichern"
       }
     }
   }

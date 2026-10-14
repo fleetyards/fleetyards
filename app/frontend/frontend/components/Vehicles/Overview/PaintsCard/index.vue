@@ -5,19 +5,16 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { useQueryClient } from "@tanstack/vue-query";
 import {
   type Vehicle,
   type VehiclePaint,
   useVehiclePaints,
-  getVehiclePaintsQueryKey,
 } from "@/services/fyApi";
 
 type Props = {
@@ -29,10 +26,6 @@ const props = defineProps<Props>();
 const SHOWN_COUNT = 6;
 
 const { t } = useI18n();
-const { displayAlert } = useAppNotifications();
-const queryClient = useQueryClient();
-
-const vehicle = computed(() => props.vehicle);
 
 const { data: vehiclePaints, isLoading } = useVehiclePaints(
   () => props.vehicle.id,
@@ -48,37 +41,17 @@ const shown = computed(() =>
   (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
 );
 
-const { useUpdateMutation } = useVehicleMutations();
-const updateMutation = useUpdateMutation(vehicle);
+const { openLoadoutModal } = useVehicleModals();
 
-const apply = async (entry: VehiclePaint) => {
-  if (entry.applied) return;
+// Loaners carry the paint they were lent with, as on the configuration card.
+const editable = computed(() => !props.vehicle.loaner);
 
-  await updateMutation
-    .mutateAsync({
-      id: props.vehicle.id,
-      data: { modelPaintId: entry.paint.id },
-    })
-    .then(() =>
-      queryClient.invalidateQueries({
-        queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
-      }),
-    )
-    .catch(() => {
-      displayAlert({ text: t("messages.vehicleOverview.paint.failure") });
-    });
-};
-
-const comlink = useComlink();
-
-const openPicker = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/PaintPickerModal/index.vue"),
-    props: { vehicle: props.vehicle },
-    wide: true,
+const openPicker = (paintId?: string) =>
+  openLoadoutModal(props.vehicle, {
+    tab: VehicleLoadoutTabsEnum.PAINTS,
+    editable: true,
+    paintId,
   });
-};
 
 const thumb = (entry: VehiclePaint) =>
   entry.paint.media.storeImage?.smallUrl || entry.paint.media.storeImage?.url;
@@ -98,9 +71,10 @@ const thumb = (entry: VehiclePaint) =>
   >
     <template #head>
       <Btn
+        v-if="editable"
         :size="BtnSizesEnum.SM"
         data-test="vehicle-overview-paints-all"
-        @click="openPicker"
+        @click="openPicker()"
       >
         {{ t("actions.vehicleOverview.choosePaint") }}
       </Btn>
@@ -113,18 +87,16 @@ const thumb = (entry: VehiclePaint) =>
         class="overview-paints__paint"
         :class="{ 'overview-paints__paint--applied': entry.applied }"
         :aria-pressed="entry.applied"
+        :disabled="!editable"
         :aria-label="
           entry.applied
             ? t('labels.vehicleOverview.paintApplied', {
                 paint: entry.paint.name,
               })
-            : t('actions.vehicleOverview.applyPaint', {
-                paint: entry.paint.name,
-              })
+            : t('actions.vehicleOverview.choosePaint')
         "
-        :disabled="updateMutation.isPending.value"
         data-test="vehicle-overview-paint"
-        @click="apply(entry)"
+        @click="openPicker(entry.paint.id)"
       >
         <img
           v-if="thumb(entry)"

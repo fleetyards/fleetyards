@@ -384,7 +384,7 @@ useTourAutostart({
 const pledgeItemPages = [
   {
     route: "hangar-paints",
-    icon: "fa-light fa-paintbrush",
+    icon: "fa-light fa-paint-roller",
     label: "nav.hangar.paints",
   },
   {
@@ -609,11 +609,6 @@ const openDisplayOptionsModal = () => {
               <span>{{ t("labels.wishlist") }}</span>
             </Btn>
 
-            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-              <DuotoneGlyph :glyph="SHIP_GLYPH" />
-              <span>{{ t("labels.fleetchart") }}</span>
-            </Btn>
-
             <Btn
               v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
               :to="{ name: 'hangar-inventories' }"
@@ -622,21 +617,14 @@ const openDisplayOptionsModal = () => {
               <span>{{ t("labels.hangarInventories") }}</span>
             </Btn>
 
+            <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+              <DuotoneGlyph :glyph="SHIP_GLYPH" />
+              <span>{{ t("labels.fleetchart") }}</span>
+            </Btn>
+
             <Btn :to="{ name: 'hangar-stats' }">
               <i class="fa-duotone fa-chart-bar" />
               <span>{{ t("labels.hangarStats") }}</span>
-            </Btn>
-
-            <ShareBtn
-              v-if="currentUser && currentUser.publicHangar && shareUrl"
-              :url="shareUrl"
-              :title="shareTitle"
-              :size="BtnSizesEnum.SM"
-            />
-
-            <Btn data-test="hangar-show-guide" @click="openGuide">
-              <i class="fa-duotone fa-question" />
-              <span>{{ t("actions.showGuide") }}</span>
             </Btn>
 
             <hr />
@@ -656,7 +644,33 @@ const openDisplayOptionsModal = () => {
             </Btn>
 
             <hr />
+
+            <ShareBtn
+              v-if="currentUser && currentUser.publicHangar && shareUrl"
+              :url="shareUrl"
+              :title="shareTitle"
+              :size="BtnSizesEnum.SM"
+            />
+
+            <Btn data-test="hangar-show-guide" @click="openGuide">
+              <i class="fa-duotone fa-question" />
+              <span>{{ t("actions.showGuide") }}</span>
+            </Btn>
+
+            <hr />
           </template>
+
+          <HangarImportBtn :size="BtnSizesEnum.SM" />
+
+          <Btn
+            :aria-label="t('nav.hangar.imports')"
+            :to="{ name: 'hangar-imports' }"
+          >
+            <i class="fa-light fa-clock-rotate-left" />
+            <span>{{ t("nav.hangar.imports") }}</span>
+          </Btn>
+
+          <hr />
 
           <Btn :aria-label="t('actions.export')" @click="exportJson">
             <i class="fa-light fa-download" />
@@ -671,15 +685,7 @@ const openDisplayOptionsModal = () => {
             <span>{{ t("actions.exportHangarLink") }}</span>
           </Btn>
 
-          <HangarImportBtn :size="BtnSizesEnum.SM" />
-
-          <Btn
-            :aria-label="t('nav.hangar.imports')"
-            :to="{ name: 'hangar-imports' }"
-          >
-            <i class="fa-light fa-clock-rotate-left" />
-            <span>{{ t("nav.hangar.imports") }}</span>
-          </Btn>
+          <hr />
 
           <Btn
             :aria-label="t('actions.hangar.resetIngame.openModal')"

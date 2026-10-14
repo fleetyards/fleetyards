@@ -21,14 +21,13 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 
 type Props = {
   vehicle: Vehicle;
   editable?: boolean;
   hideEdit?: boolean;
   onVehiclePage?: boolean;
-  // Where the page edits the groups itself, as the overview's card does.
-  hideGroups?: boolean;
   // Where the page links the ship database itself, as the overview's hero does.
   hideShipPage?: boolean;
   wishlist?: boolean;
@@ -41,7 +40,6 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   onVehiclePage: false,
-  hideGroups: false,
   hideShipPage: false,
   wishlist: false,
   variant: undefined,
@@ -67,15 +65,21 @@ const hasAddons = computed(() => {
   );
 });
 
-const upgradable = computed(() => {
+// A visitor only gets to look at the addons the owner picked; the owner also
+// picks the paint there.
+const loadoutVisible = computed(() => {
   if (!props.vehicle) {
     return false;
   }
 
-  return (
-    (props.editable || hasAddons.value) &&
-    (props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades)
-  );
+  const hasAddonChoices =
+    props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades;
+
+  if (!props.editable) {
+    return !!hasAddons.value && hasAddonChoices;
+  }
+
+  return hasAddonChoices || props.vehicle.model.hasPaints;
 });
 
 const { useUpdateMutation, useDestroyMutation } = useVehicleMutations();
@@ -137,6 +141,7 @@ const addToHangar = async () => {
 const hideable = computed(
   () =>
     props.editable &&
+    !props.onVehiclePage &&
     !props.wishlist &&
     !props.vehicle.loaner &&
     !props.vehicle.bundled,
@@ -203,55 +208,14 @@ const destroy = async () => {
 
 const comlink = useComlink();
 
-const openEditModal = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-      wishlist: props.wishlist,
-    },
-  });
+const { openEditModal, openLoadoutModal } = useVehicleModals();
+
+const openEdit = () => {
+  openEditModal(props.vehicle, { wishlist: props.wishlist });
 };
 
-const openNamingModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/NamingModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-    },
-  });
-};
-
-const openEditGroupsModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/GroupsModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-    },
-  });
-};
-
-const openAddonsModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/AddonsModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-      editable: props.editable,
-    },
-  });
-};
-
-const openImageModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/ImageModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-    },
-  });
+const openLoadout = () => {
+  openLoadoutModal(props.vehicle, { editable: props.editable });
 };
 
 const vehicleOverviewVisible = computed(
@@ -287,6 +251,31 @@ const cargoVisible = computed(
     props.vehicle.model?.inGame &&
     isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
 );
+
+const shipPageVisible = computed(
+  () => !!props.vehicle.model && !props.hideShipPage,
+);
+
+const editVisible = computed(() => props.editable && !props.hideEdit);
+
+const visibleGroups = computed(() =>
+  [
+    { name: "database", visible: shipPageVisible.value },
+    { name: "edit", visible: editVisible.value || loadoutVisible.value },
+    {
+      name: "manage",
+      visible:
+        loadoutsVisible.value ||
+        cargoVisible.value ||
+        pageShortcutsVisible.value,
+    },
+    { name: "organize", visible: props.editable && !props.onVehiclePage },
+    { name: "remove", visible: props.editable },
+  ].filter((group) => group.visible),
+);
+
+const separatorBefore = (name: string) =>
+  visibleGroups.value.findIndex((group) => group.name === name) > 0;
 </script>
 
 <template>
@@ -299,14 +288,44 @@ const cargoVisible = computed(
     expand-bottom
   >
     <Btn
-      v-if="pageShortcutsVisible"
-      :aria-label="t('actions.vehicleLog.open')"
-      data-test="vehicle-log"
-      :to="logRoute"
+      v-if="shipPageVisible"
+      data-test="vehicle-ship-page"
+      :to="{
+        name: 'ship',
+        params: {
+          slug: vehicle.model.slug,
+        },
+      }"
     >
-      <i class="fa-duotone fa-book" />
-      <span>{{ t("actions.vehicleLog.open") }}</span>
+      <DuotoneGlyph :glyph="SHIP_GLYPH" />
+      <span>{{ t("actions.vehicleOverview.shipDatabase") }}</span>
     </Btn>
+    <hr v-if="separatorBefore('edit')" />
+    <Btn
+      v-if="editVisible"
+      :aria-label="t('actions.edit')"
+      data-test="vehicle-edit"
+      @click="openEdit"
+    >
+      <i class="fa fa-pencil" />
+      <span>{{ t("actions.edit") }}</span>
+    </Btn>
+    <Btn
+      v-if="loadoutVisible"
+      :aria-label="
+        editable ? t('actions.hangar.editLoadout') : t('labels.model.addons')
+      "
+      data-test="vehicle-loadout"
+      @click="openLoadout"
+    >
+      <i class="fa-duotone fa-puzzle" />
+      <span>
+        {{
+          editable ? t("actions.hangar.editLoadout") : t("labels.model.addons")
+        }}
+      </span>
+    </Btn>
+    <hr v-if="separatorBefore('manage')" />
     <Btn
       v-if="loadoutsVisible"
       :aria-label="t('actions.hangar.manageLoadouts')"
@@ -326,93 +345,15 @@ const cargoVisible = computed(
       <span>{{ t("actions.hangar.manageCargo") }}</span>
     </Btn>
     <Btn
-      v-if="vehicle.model && !hideShipPage"
-      data-test="vehicle-ship-page"
-      :to="{
-        name: 'ship',
-        params: {
-          slug: vehicle.model.slug,
-        },
-      }"
-    >
-      <DuotoneGlyph :glyph="SHIP_GLYPH" />
-      <span>{{ t("actions.vehicleOverview.shipDatabase") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && !hideEdit && !onVehiclePage"
-      :aria-label="t('actions.edit')"
-      data-test="vehicle-edit"
-      @click="openEditModal"
-    >
-      <i class="fa fa-pencil" />
-      <span>{{ t("actions.edit") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable"
-      :aria-label="t('actions.hangar.editName')"
-      data-test="vehicle-edit-name"
-      @click="openNamingModal"
-    >
-      <i class="fa fa-signature" />
-      <span>{{ t("actions.hangar.editName") }}</span>
-    </Btn>
-    <Btn
       v-if="pageShortcutsVisible"
-      :aria-label="
-        vehicle.image
-          ? t('actions.vehicleOverview.changePicture')
-          : t('actions.vehicleOverview.uploadPicture')
-      "
-      data-test="vehicle-change-picture"
-      @click="openImageModal"
+      :aria-label="t('actions.vehicleLog.open')"
+      data-test="vehicle-log"
+      :to="logRoute"
     >
-      <i class="fa-duotone fa-camera" />
-      <span>
-        {{
-          vehicle.image
-            ? t("actions.vehicleOverview.changePicture")
-            : t("actions.vehicleOverview.uploadPicture")
-        }}
-      </span>
+      <i class="fa-duotone fa-book" />
+      <span>{{ t("actions.vehicleLog.open") }}</span>
     </Btn>
-    <Btn
-      v-if="editable && !wishlist && !hideGroups"
-      :aria-label="t('actions.hangar.editGroups')"
-      data-test="vehicle-edit-groups"
-      @click="openEditGroupsModal"
-    >
-      <i class="fa-duotone fa-object-group" />
-      <span>{{ t("actions.hangar.editGroups") }}</span>
-    </Btn>
-    <Btn
-      v-if="upgradable"
-      :aria-label="t('labels.model.addons')"
-      data-test="vehicle-addons"
-      @click="openAddonsModal"
-    >
-      <i class="fa fa-plus-octagon" />
-      <span>{{ t("labels.model.addons") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && !wishlist"
-      :aria-label="t('actions.addToWishlist')"
-      :disabled="updating"
-      data-test="vehicle-add-to-wishlist"
-      @click="addToWishlist"
-    >
-      <i class="fa-duotone fa-wand-sparkles" />
-      <span>{{ t("actions.addToWishlist") }}</span>
-    </Btn>
-    <Btn
-      v-if="editable && wishlist"
-      :aria-label="t('actions.addToHangar')"
-      :disabled="updating"
-      data-test="vehicle-add-to-hangar"
-      @click="addToHangar"
-    >
-      <i class="fa-duotone fa-garage" />
-      <span>{{ t("actions.addToHangar") }}</span>
-    </Btn>
+    <hr v-if="separatorBefore('organize')" />
     <Btn
       v-if="hideable"
       :aria-label="
@@ -436,6 +377,27 @@ const cargoVisible = computed(
         }}
       </span>
     </Btn>
+    <Btn
+      v-if="editable && !onVehiclePage && !wishlist"
+      :aria-label="t('actions.addToWishlist')"
+      :disabled="updating"
+      data-test="vehicle-add-to-wishlist"
+      @click="addToWishlist"
+    >
+      <i class="fa-duotone fa-wand-sparkles" />
+      <span>{{ t("actions.addToWishlist") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && !onVehiclePage && wishlist"
+      :aria-label="t('actions.addToHangar')"
+      :disabled="updating"
+      data-test="vehicle-add-to-hangar"
+      @click="addToHangar"
+    >
+      <i class="fa-duotone fa-garage" />
+      <span>{{ t("actions.addToHangar") }}</span>
+    </Btn>
+    <hr v-if="separatorBefore('remove')" />
     <Btn
       :tone="BtnTonesEnum.DANGER"
       v-if="editable"

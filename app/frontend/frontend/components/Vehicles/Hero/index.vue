@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
@@ -96,25 +98,10 @@ const openFullscreenHolo = () => {
   });
 };
 
-const openEditModal = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/Vehicles/Modal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-      wishlist: props.vehicle.wanted,
-    },
-  });
-};
+const { openEditModal: openVehicleEdit } = useVehicleModals();
 
-const openImageModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Vehicles/ImageModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-    },
-  });
-};
+const openImageModal = () =>
+  openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
 </script>
 
 <template>
@@ -155,18 +142,11 @@ const openImageModal = () => {
               }}
             </span>
           </Btn>
-          <Btn data-test="vehicle-overview-edit" @click="openEditModal">
-            <i class="fa fa-pencil" />
-            <span class="vehicle-hero__action-label">
-              {{ t("actions.vehicleOverview.edit") }}
-            </span>
-          </Btn>
           <VehicleContextMenu
             :vehicle="vehicle"
             :wishlist="vehicle.wanted"
             editable
             on-vehicle-page
-            :hide-groups="!compact"
             :hide-ship-page="!compact && !mobile"
           />
         </div>

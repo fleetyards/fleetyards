@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import SetLocation from "@/frontend/components/Locations/SetLocation/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -317,6 +318,7 @@ watch(
             </div>
 
             <div class="location-page__badges">
+              <SetLocation :location="location" />
               <span
                 v-if="location.retired"
                 class="location-page__badge location-page__badge--retired"

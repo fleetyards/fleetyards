@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 import { Form } from "vee-validate";
 import Component from "./index.vue";
 import FormTab from "./Tab/index.vue";
+import Tooltip from "@/shared/plugins/Tooltip";
 
 const buildRouter = () =>
   createRouter({
@@ -30,8 +31,9 @@ const mountInForm = async (slotContent: () => unknown) => {
     }),
     {
       global: {
-        plugins: [router, pinia],
+        plugins: [router, pinia, Tooltip],
       },
+      attachTo: document.body,
     },
   );
 };
@@ -153,6 +155,93 @@ describe("FormTabs", () => {
     expect(tabs[1].attributes("aria-selected")).toBe("false");
   });
 
+  it("shows only the active icon tab's label and keeps names accessible", async () => {
+    const wrapper = await mountInForm(() =>
+      h(
+        Component,
+        { syncUrl: false, horizontal: true, activeLabelOnly: true },
+        {
+          default: () => [
+            h(
+              FormTab,
+              { id: "one", label: "One", icon: "fa-solid fa-eye" },
+              () => "First",
+            ),
+            h(
+              FormTab,
+              { id: "two", label: "Two", iconSrc: "/radar.svg" },
+              () => "Second",
+            ),
+          ],
+        },
+      ),
+    );
+    const tabs = wrapper.findAll('[role="tab"]');
+
+    expect(tabs[0].text()).toBe("One");
+    expect(tabs[1].find(".tab-anchor__label").attributes("aria-hidden")).toBe(
+      "true",
+    );
+    expect(tabs[1].attributes("aria-label")).toBe("Two");
+    expect(tabs[1].find("img").attributes("src")).toBe("/radar.svg");
+    expect(tabs[1].classes()).toContain("tab-anchor--compact");
+    await tabs[1].trigger("mouseenter");
+    expect(document.body.querySelector("[data-tooltip]")?.textContent).toBe(
+      "Two",
+    );
+    await tabs[1].trigger("keydown", { key: "Enter" });
+    expect(tabs[0].find(".tab-anchor__label").attributes("aria-hidden")).toBe(
+      "true",
+    );
+    expect(tabs[1].text()).toBe("Two");
+
+    wrapper.unmount();
+  });
+
+  it("keeps disabled tab hints and labels for tabs without icons", async () => {
+    const wrapper = await mountInForm(() =>
+      h(
+        Component,
+        { syncUrl: false, horizontal: true, activeLabelOnly: true },
+        {
+          default: () => [
+            h(
+              FormTab,
+              { id: "one", label: "One", icon: "fa-solid fa-eye" },
+              () => "First",
+            ),
+            h(
+              FormTab,
+              {
+                id: "two",
+                label: "Two",
+                icon: "fa-solid fa-camera",
+                disabled: true,
+                hint: "Coming soon",
+              },
+              () => "Second",
+            ),
+            h(FormTab, { id: "three", label: "Three" }, () => "Third"),
+          ],
+        },
+      ),
+    );
+    const tabs = wrapper.findAll('[role="tab"]');
+
+    expect(tabs[1].find(".tab-anchor__label").attributes("aria-hidden")).toBe(
+      "true",
+    );
+    await tabs[1].trigger("mouseenter");
+    expect(document.body.querySelector("[data-tooltip]")?.textContent).toBe(
+      "Two — Coming soon",
+    );
+    await tabs[1].trigger("click");
+    expect(tabs[0].attributes("aria-selected")).toBe("true");
+    expect(tabs[2].text()).toBe("Three");
+
+    wrapper.unmount();
+  });
+
   describe("on a phone", () => {
     beforeEach(() => {
       setViewport(true);
@@ -162,11 +251,19 @@ describe("FormTabs", () => {
       mountInForm(() =>
         h(
           Component,
-          { syncUrl: false },
+          { syncUrl: false, horizontal: true, activeLabelOnly: true },
           {
             default: () => [
-              h(FormTab, { id: "one", label: "One" }, () => "First"),
-              h(FormTab, { id: "two", label: "Two" }, () => "Second"),
+              h(
+                FormTab,
+                { id: "one", label: "One", icon: "fa-solid fa-eye" },
+                () => "First",
+              ),
+              h(
+                FormTab,
+                { id: "two", label: "Two", icon: "fa-solid fa-camera" },
+                () => "Second",
+              ),
               h(
                 FormTab,
                 { id: "three", label: "Three", disabled: true },

@@ -175,7 +175,7 @@ const { t } = useI18n();
               :disabled="deciding"
               @click="decideSelected(markAsPaintMutation)"
             >
-              <i class="fa-duotone fa-palette" />
+              <i class="fa-duotone fa-paint-roller" />
             </Btn>
             <Btn
               v-tooltip="t('actions.unlistedModel.ignoreSelected')"

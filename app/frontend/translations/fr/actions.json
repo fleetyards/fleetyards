@@ -236,7 +236,8 @@
           "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
           "moveToWishlist": "Déplacer dans la liste de souhaits",
           "removeAll": "Tout supprimer"
-        }
+        },
+        "editLoadout": "Modifier la configuration"
       },
       "syncExtension": {
         "cancel": "Annuler",
@@ -589,6 +590,9 @@
         "open": "Journal de bord",
         "add": "Nouvelle entrée",
         "showPublic": "Journal de bord"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "Enregistrer l’équipement"
       }
     }
   }

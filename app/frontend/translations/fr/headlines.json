@@ -256,6 +256,7 @@
       "buybackSync": "Synchroniser les pledges rachetables RSI",
       "syncExtension": "Synchroniser le hangar RSI",
       "editMyVehicle": "Éditer mon %{vehicle}",
+      "vehicleLoadout": "Configuration pour %{vehicle}",
       "nameMyVehicle": "Nommer mon %{vehicle}",
       "editGroups": "Editer les groupes",
       "newVehicles": "Ajouter des vaisseaux",

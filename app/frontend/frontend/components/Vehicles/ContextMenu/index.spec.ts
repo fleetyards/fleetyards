@@ -64,7 +64,7 @@ type MountProps = {
   editable?: boolean;
   wishlist?: boolean;
   onVehiclePage?: boolean;
-  hideGroups?: boolean;
+  hideEdit?: boolean;
   hideShipPage?: boolean;
 };
 
@@ -92,6 +92,13 @@ const items = () =>
     document.body.querySelectorAll('[data-test="dropdown-list"] [data-test]'),
   ).map((item) => item.getAttribute("data-test"));
 
+const menuStructure = () =>
+  Array.from(
+    document.body.querySelectorAll('[data-test="dropdown-list"] > *'),
+  ).map((item) =>
+    item.tagName === "HR" ? "separator" : item.getAttribute("data-test"),
+  );
+
 describe("VehicleContextMenu", () => {
   beforeEach(() => {
     enabledFlags.value = [
@@ -105,41 +112,80 @@ describe("VehicleContextMenu", () => {
     mounted = [];
   });
 
-  it("orders a hangar card's menu as pages, edits, status, removal", async () => {
+  it("orders a hangar card's menu as database, edits, management, organization, removal", async () => {
     await mount();
 
     expect(items()).toEqual([
-      "vehicle-log",
-      "vehicle-manage-loadouts",
-      "vehicle-manage-cargo",
       "vehicle-ship-page",
       "vehicle-edit",
-      "vehicle-edit-name",
-      "vehicle-change-picture",
-      "vehicle-edit-groups",
-      "vehicle-add-to-wishlist",
+      "vehicle-manage-loadouts",
+      "vehicle-manage-cargo",
+      "vehicle-log",
       "vehicle-toggle-hidden",
+      "vehicle-add-to-wishlist",
+      "vehicle-remove",
+    ]);
+    expect(menuStructure()).toEqual([
+      "vehicle-ship-page",
+      "separator",
+      "vehicle-edit",
+      "separator",
+      "vehicle-manage-loadouts",
+      "vehicle-manage-cargo",
+      "vehicle-log",
+      "separator",
+      "vehicle-toggle-hidden",
+      "vehicle-add-to-wishlist",
+      "separator",
       "vehicle-remove",
     ]);
   });
 
-  it("leaves out what the vehicle page already offers", async () => {
+  it("offers editing without hangar organization on the vehicle page", async () => {
     await mount({ onVehiclePage: true });
 
     expect(items()).toEqual([
       "vehicle-ship-page",
-      "vehicle-edit-name",
-      "vehicle-edit-groups",
-      "vehicle-add-to-wishlist",
-      "vehicle-toggle-hidden",
+      "vehicle-edit",
       "vehicle-remove",
     ]);
   });
 
-  it("leaves the groups to a page that edits them", async () => {
-    await mount({ onVehiclePage: true, hideGroups: true });
+  it("separates overview editing from removal when the database link is hidden", async () => {
+    await mount({ onVehiclePage: true, hideShipPage: true });
 
-    expect(items()).not.toContain("vehicle-edit-groups");
+    expect(menuStructure()).toEqual([
+      "vehicle-edit",
+      "separator",
+      "vehicle-remove",
+    ]);
+  });
+
+  it("does not add a separator to a visitor's database-only menu", async () => {
+    await mount({ editable: false });
+
+    expect(menuStructure()).toEqual(["vehicle-ship-page"]);
+  });
+
+  it("does not leave separators when all groups are hidden", async () => {
+    await mount({ editable: false, hideShipPage: true });
+
+    expect(menuStructure()).toEqual([]);
+  });
+
+  it("keeps loadout editing with edits and separates it from management", async () => {
+    await mount({
+      hideEdit: true,
+      vehicle: vehicle({ model: { ...vehicle().model, hasPaints: true } }),
+    });
+
+    expect(menuStructure().slice(0, 5)).toEqual([
+      "vehicle-ship-page",
+      "separator",
+      "vehicle-loadout",
+      "separator",
+      "vehicle-manage-loadouts",
+    ]);
   });
 
   it("leaves the ship database to a page that links it", async () => {
@@ -148,12 +194,11 @@ describe("VehicleContextMenu", () => {
     expect(items()).not.toContain("vehicle-ship-page");
   });
 
-  it("offers no log or picture without the overview", async () => {
+  it("offers no log without the overview", async () => {
     enabledFlags.value = [FeatureFlagName.SHIP_INVENTORIES];
     await mount();
 
     expect(items()).not.toContain("vehicle-log");
-    expect(items()).not.toContain("vehicle-change-picture");
     expect(items()).toContain("vehicle-manage-loadouts");
   });
 
@@ -164,13 +209,12 @@ describe("VehicleContextMenu", () => {
     expect(items()).not.toContain("vehicle-manage-cargo");
   });
 
-  it("moves a wishlist ship to the hangar and keeps its cargo and groups out", async () => {
+  it("moves a wishlist ship to the hangar and keeps its cargo out", async () => {
     await mount({ wishlist: true });
 
     expect(items()).toContain("vehicle-add-to-hangar");
     expect(items()).not.toContain("vehicle-add-to-wishlist");
     expect(items()).not.toContain("vehicle-manage-cargo");
-    expect(items()).not.toContain("vehicle-edit-groups");
   });
 
   it("offers to hide a ship, and to show a hidden one again", async () => {
@@ -212,6 +256,6 @@ describe("VehicleContextMenu", () => {
       } as Partial<Vehicle>),
     });
 
-    expect(items()).not.toContain("vehicle-addons");
+    expect(items()).not.toContain("vehicle-loadout");
   });
 });

@@ -236,7 +236,8 @@
           "openModal": "資料重置後重設遊戲內飛船",
           "moveToWishlist": "移至願望清單",
           "removeAll": "全部移除"
-        }
+        },
+        "editLoadout": "編輯裝配"
       },
       "syncExtension": {
         "cancel": "取消",
@@ -589,6 +590,9 @@
         "open": "艦長日誌",
         "add": "新條目",
         "showPublic": "艦長日誌"
+      },
+      "vehicleLoadout": {
+        "saveLoadout": "儲存配置"
       }
     }
   }

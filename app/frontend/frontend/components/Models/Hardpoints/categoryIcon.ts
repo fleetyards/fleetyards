@@ -68,7 +68,7 @@ export const categoryFaIcons: Record<string, string> = {
   salvagefillerstation: "fa-duotone fa-bin-recycle",
   relay: "fa-duotone fa-transformer-bolt",
 
-  paints: "fa-duotone fa-palette",
+  paints: "fa-duotone fa-paint-roller",
   doors: "fa-duotone fa-door-open",
   // Only flight blades reach the catalogue from this category; the sliders
   // read as the handling they retune.

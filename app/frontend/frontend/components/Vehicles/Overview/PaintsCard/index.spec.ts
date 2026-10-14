@@ -6,20 +6,15 @@ import Component from "./index.vue";
 import type { Vehicle, VehiclePaint } from "@/services/fyApi";
 
 const paints = ref<VehiclePaint[]>([]);
-const updateVehicle = vi.fn();
+const openLoadoutModal = vi.fn();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useVehiclePaints: () => ({ data: paints, isLoading: ref(false) }),
 }));
 
-vi.mock("@/frontend/composables/useVehicleMutations", () => ({
-  useVehicleMutations: () => ({
-    useUpdateMutation: () => ({
-      mutateAsync: updateVehicle,
-      isPending: ref(false),
-    }),
-  }),
+vi.mock("@/frontend/composables/useVehicleModals", () => ({
+  useVehicleModals: () => ({ openLoadoutModal }),
 }));
 
 const entry = (
@@ -46,8 +41,8 @@ const router = createRouter({
   ],
 });
 
-const mount = () =>
-  mountWithDefaults(Component, { props: { vehicle }, plugins: [router] });
+const mount = (props: { vehicle: Vehicle } = { vehicle }) =>
+  mountWithDefaults(Component, { props, plugins: [router] });
 
 const names = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
   wrapper
@@ -56,7 +51,7 @@ const names = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
 
 describe("VehicleOverviewPaintsCard", () => {
   beforeEach(() => {
-    updateVehicle.mockReset().mockResolvedValue({});
+    openLoadoutModal.mockReset();
   });
 
   it("shows only the paints the owner has pledged for", async () => {
@@ -78,7 +73,37 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(names(wrapper)).toEqual(["Rust Society", "Stormbringer"]);
   });
 
-  it("applies a paint that is not on the ship yet", async () => {
+  it("opens the loadout paints tab without a preselection from the header", async () => {
+    paints.value = [entry("Rust Society", { owned: true })];
+
+    const wrapper = await mount();
+
+    await wrapper
+      .find('[data-test="vehicle-overview-paints-all"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paints",
+      editable: true,
+      paintId: undefined,
+    });
+  });
+
+  it("offers no paint editing for a loaner", async () => {
+    paints.value = [entry("Rust Society", { owned: true })];
+
+    const wrapper = await mount({ vehicle: { ...vehicle, loaner: true } });
+
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paints-all"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find('[data-test="vehicle-overview-paint"]').attributes(),
+    ).toHaveProperty("disabled");
+  });
+
+  it("opens the loadout paints tab from a paint", async () => {
     paints.value = [entry("Rust Society", { owned: true })];
 
     const wrapper = await mount();
@@ -86,13 +111,14 @@ describe("VehicleOverviewPaintsCard", () => {
     await wrapper.find('[data-test="vehicle-overview-paint"]').trigger("click");
     await flushPromises();
 
-    expect(updateVehicle).toHaveBeenCalledWith({
-      id: "vehicle-1",
-      data: { modelPaintId: "Rust Society" },
+    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paints",
+      editable: true,
+      paintId: "Rust Society",
     });
   });
 
-  it("leaves the applied paint alone", async () => {
+  it("opens the same editor from the applied paint", async () => {
     paints.value = [entry("Rust Society", { owned: true, applied: true })];
 
     const wrapper = await mount();
@@ -100,6 +126,10 @@ describe("VehicleOverviewPaintsCard", () => {
     await wrapper.find('[data-test="vehicle-overview-paint"]').trigger("click");
     await flushPromises();
 
-    expect(updateVehicle).not.toHaveBeenCalled();
+    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paints",
+      editable: true,
+      paintId: "Rust Society",
+    });
   });
 });

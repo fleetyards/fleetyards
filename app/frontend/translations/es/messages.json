@@ -1258,6 +1258,9 @@
         "defaultUpdate": {
           "failure": "No se pudo guardar el ajuste"
         }
+      },
+      "vehicleLoadout": {
+        "failure": "No se pudo guardar la configuración."
       }
     }
   }

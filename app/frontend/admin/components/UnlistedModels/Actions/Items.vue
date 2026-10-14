@@ -122,7 +122,7 @@ const ignore = async () => {
     v-tooltip="!withLabels && t('actions.unlistedModel.markAsPaint')"
     @click="markAsPaint"
   >
-    <i class="fa-duotone fa-palette" />
+    <i class="fa-duotone fa-paint-roller" />
     <span v-if="withLabels">{{ t("actions.unlistedModel.markAsPaint") }}</span>
   </Btn>
   <Btn

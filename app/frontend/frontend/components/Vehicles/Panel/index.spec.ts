@@ -26,6 +26,12 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
   }),
 }));
 
+const openLoadoutModal = vi.fn();
+
+vi.mock("@/frontend/composables/useVehicleModals", () => ({
+  useVehicleModals: () => ({ openLoadoutModal, openEditModal: vi.fn() }),
+}));
+
 const NOW = "2026-08-24T12:00:00Z";
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
@@ -333,5 +339,24 @@ describe("VehiclesPanel", () => {
     await grip.trigger("keydown", { key: "ArrowRight" });
 
     expect(wrapper.emitted("move")).toEqual([[-1], [1]]);
+  });
+});
+
+describe("vehicle loadout shortcut", () => {
+  it.each([
+    { hasModules: true, hasUpgrades: false, tab: "modules" },
+    { hasModules: false, hasUpgrades: true, tab: "upgrades" },
+  ])("opens the $tab category", async ({ hasModules, hasUpgrades, tab }) => {
+    const ship = vehicle({
+      model: { ...vehicle().model, hasModules, hasUpgrades },
+    });
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
+      editable: true,
+      tab,
+    });
   });
 });
