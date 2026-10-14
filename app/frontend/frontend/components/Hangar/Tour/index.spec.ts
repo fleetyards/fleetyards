@@ -39,9 +39,21 @@ const steps = () => {
   return wrapper.findComponent(TourStub).props("steps") as TourStep[];
 };
 
+const originalMatchMedia = window.matchMedia;
+
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
 afterEach(() => {
   wrapper?.unmount();
   enabledFeatures.clear();
+  window.matchMedia = originalMatchMedia;
 });
 
 describe("HangarTour", () => {
@@ -91,6 +103,22 @@ describe("HangarTour", () => {
 
     expect(inventories).toBeDefined();
     expect(inventories?.requiresTarget).not.toBe(true);
+  });
+
+  it("points pledge items at the header on a desktop", () => {
+    setViewport(false);
+
+    expect(steps().find((step) => step.id === "pledgeItems")?.target).toBe(
+      '[data-tour="hangar-pledge-items"]',
+    );
+  });
+
+  it("points pledge items at the page menu on a phone", () => {
+    setViewport(true);
+
+    expect(steps().find((step) => step.id === "pledgeItems")?.target).toBe(
+      '[data-tour="hangar-menu"]',
+    );
   });
 
   it("explains sharing when the public share button is absent", () => {

@@ -78,7 +78,7 @@
       "hangarTour": {
         "welcome": {
           "title": "Bienvenue dans votre hangar",
-          "text": "Votre hangar recense tous les vaisseaux que vous possédez. Cette courte visite vous montre où tout se trouve — vous pouvez la relancer à tout moment depuis le menu."
+          "text": "Votre hangar recense tous les vaisseaux que vous possédez. Cette courte visite vous montre où tout se trouve — vous pouvez la relancer à tout moment depuis le bouton ?."
         },
         "add": {
           "title": "Ajouter des vaisseaux",
@@ -118,7 +118,7 @@
         },
         "menu": {
           "title": "Plus",
-          "text": "Importez ou exportez votre hangar, consultez l’historique des imports ou relancez cette visite. Sur téléphone, ce menu contient aussi la liste de souhaits, le fleetchart et les statistiques."
+          "text": "Importez ou exportez votre hangar et consultez l’historique des imports. Sur téléphone, ce menu contient aussi la liste de souhaits, le fleetchart, les statistiques, les articles de promesse et cette visite."
         },
         "overview": {
           "title": "La page de votre vaisseau",

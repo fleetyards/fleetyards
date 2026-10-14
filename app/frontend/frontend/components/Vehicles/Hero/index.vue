@@ -17,6 +17,7 @@ import {
 } from "@/frontend/composables/useModelStates";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useMobile } from "@/shared/composables/useMobile";
 import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t, l } = useI18n();
 const comlink = useComlink();
+const mobile = useMobile();
 
 // The owner's picture first -- uploaded, then picked from the model's
 // gallery -- then the render the ship is wearing, then the
@@ -165,6 +167,7 @@ const openImageModal = () => {
             editable
             on-vehicle-page
             :hide-groups="!compact"
+            :hide-ship-page="!compact && !mobile"
           />
         </div>
       </div>

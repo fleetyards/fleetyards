@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
@@ -10,7 +10,11 @@ vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
 }));
 
 vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
-  default: { name: "VehicleContextMenu", template: "<div />" },
+  default: {
+    name: "VehicleContextMenu",
+    props: ["hideShipPage"],
+    template: "<div />",
+  },
 }));
 
 const vehicle = {
@@ -43,6 +47,24 @@ const router = createRouter({
   ],
 });
 
+const setViewport = (phone: boolean) => {
+  window.matchMedia = ((query: string) => ({
+    matches: phone,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  })) as unknown as typeof window.matchMedia;
+};
+
+const originalMatchMedia = window.matchMedia;
+
+afterEach(() => {
+  window.matchMedia = originalMatchMedia;
+});
+
+const menuOffersShipPage = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+  !wrapper.findComponent({ name: "VehicleContextMenu" }).props("hideShipPage");
+
 const mount = (compact: boolean) =>
   mountWithDefaults(Component, {
     props: { vehicle, compact },
@@ -68,5 +90,19 @@ describe("VehicleHero", () => {
 
     expect(wrapper.classes()).toContain("vehicle-hero--compact");
     expect(wrapper.find("h1").text()).toBe("Rust Bucket");
+  });
+
+  it("leaves the ship database to its own link on a desktop overview", async () => {
+    setViewport(false);
+
+    expect(menuOffersShipPage(await mount(false))).toBe(false);
+  });
+
+  it("keeps the ship database in the menu where the links are hidden", async () => {
+    setViewport(false);
+    expect(menuOffersShipPage(await mount(true))).toBe(true);
+
+    setViewport(true);
+    expect(menuOffersShipPage(await mount(false))).toBe(true);
   });
 });

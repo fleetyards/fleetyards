@@ -89,9 +89,9 @@ const toggleFleetchart = () => {
     <ShareBtn
       v-if="membership && fleet.publicFleet"
       :size="BtnSizesEnum.MD"
-      :mobile-icon-only="true"
       :url="shareUrl"
       :title="shareTitle"
+      no-label
     />
   </Teleport>
 

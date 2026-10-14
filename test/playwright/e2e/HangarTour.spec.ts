@@ -26,7 +26,7 @@ test.describe("Hangar tour", () => {
     await expect(page).not.toHaveURL(/\/login/);
   });
 
-  test("starts once on an empty hangar and replays from the menu", async ({
+  test("starts once on an empty hangar and replays from the header", async ({
     page,
   }) => {
     await page.goto("/hangar/");
@@ -69,11 +69,7 @@ test.describe("Hangar tour", () => {
     await page.waitForTimeout(1500);
     await expect(card(page)).toHaveCount(0);
 
-    await page.locator("[data-tour='hangar-menu'] button").first().click();
-    await page
-      .getByTestId("dropdown-list")
-      .getByTestId("hangar-show-guide")
-      .click();
+    await page.getByTestId("hangar-show-guide").click();
 
     await expect(card(page)).toBeVisible();
     await expect(card(page)).toHaveAttribute("data-step", "welcome");

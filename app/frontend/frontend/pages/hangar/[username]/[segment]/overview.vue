@@ -84,9 +84,14 @@ const cargoVisible = computed(
   }
 
   // MetricsCard's slim body sits flush under the heading's divider, which
-  // suits a list of tiles but crowds running text.
+  // suits a list of tiles but crowds running text. The bottom matches, and the
+  // last block's own spacing is dropped so it does not add to it.
   :deep(.metrics-card__body--slim) {
-    padding-top: 15px;
+    padding-block: 15px;
+
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 
   // Each card keeps its own height: stretched to its neighbour's, a short one

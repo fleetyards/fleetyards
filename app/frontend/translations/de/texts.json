@@ -78,7 +78,7 @@
       "hangarTour": {
         "welcome": {
           "title": "Willkommen in deinem Hangar",
-          "text": "Dein Hangar behält den Überblick über alle Schiffe, die du besitzt. Diese kurze Tour zeigt dir, wo alles ist — du kannst sie jederzeit über das Menü erneut starten."
+          "text": "Dein Hangar behält den Überblick über alle Schiffe, die du besitzt. Diese kurze Tour zeigt dir, wo alles ist — du kannst sie jederzeit über den ?-Button erneut starten."
         },
         "add": {
           "title": "Schiffe hinzufügen",
@@ -118,7 +118,7 @@
         },
         "menu": {
           "title": "Mehr",
-          "text": "Importiere oder exportiere deinen Hangar, prüfe den Importverlauf oder starte diese Tour erneut. Auf dem Smartphone findest du hier auch Wunschliste, Fleetchart und Statistiken."
+          "text": "Importiere oder exportiere deinen Hangar und prüfe den Importverlauf. Auf dem Smartphone findest du hier auch Wunschliste, Fleetchart, Statistiken, Pledge-Gegenstände und diese Tour."
         },
         "overview": {
           "title": "Die eigene Seite deines Schiffs",
