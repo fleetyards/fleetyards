@@ -21,9 +21,9 @@ module Maintenance
   # more; those are removed.
   #
   # Runs per user rather than per row: `hidden` is a property of a whole
-  # (model, wanted) group -- exactly one visible -- and repairing rows one at a
-  # time in arbitrary order would hide all of them or leave several visible
-  # depending on the order they arrived in.
+  # (model, wanted, hidden_by_user) group -- exactly one visible -- and
+  # repairing rows one at a time in arbitrary order would hide all of them or
+  # leave several visible depending on the order they arrived in.
   #
   # A task rather than a data migration, for the reason `BackfillHardpointBuilds`
   # records: `bin/deploy-release` runs `data:migrate` inside the Kamal pre-deploy
@@ -85,18 +85,19 @@ module Maintenance
     private def realign_wanted(loaners)
       loaners.select do |loaner|
         parent = loaner.parent_vehicle
-        next false if parent.nil? || loaner.wanted == parent.wanted
+        next false if parent.nil?
+        next false if loaner.wanted == parent.wanted && loaner.hidden_by_user == parent.hidden_by_user
 
-        loaner.update_columns(wanted: parent.wanted, updated_at: Time.zone.now)
+        loaner.update_columns(wanted: parent.wanted, hidden_by_user: parent.hidden_by_user, updated_at: Time.zone.now)
         true
       end
     end
 
-    # One visible row per (model, wanted) group. The survivor is the one already
+    # One visible row per (model, wanted, hidden_by_user) group. The survivor is the one already
     # visible where there is one, so a repair does not move which loaner a user
     # sees when the group was correct apart from its neighbours.
     private def revisit_hidden(loaners)
-      loaners.group_by { |loaner| [loaner.model_id, loaner.wanted] }.flat_map do |_group_key, group|
+      loaners.group_by { |loaner| [loaner.model_id, loaner.wanted, loaner.hidden_by_user] }.flat_map do |_group_key, group|
         visible = group.find { |loaner| !loaner.hidden? } || group.first
 
         group.select do |loaner|

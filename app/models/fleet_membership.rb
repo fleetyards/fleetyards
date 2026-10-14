@@ -399,6 +399,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def update_fleet_vehicle(vehicle)
+    return FleetVehicle.find_by(fleet_id:, vehicle_id: vehicle.id)&.destroy if vehicle.hidden_by_user?
+
     case ships_filter
     when "all"
       update_fleet_vehicle_for_all(vehicle)

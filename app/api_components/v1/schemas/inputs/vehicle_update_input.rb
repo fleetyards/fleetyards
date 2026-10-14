@@ -12,6 +12,7 @@ module V1
             name: {type: [:string, :null]},
             serial: {type: [:string, :null]},
             wanted: {type: :boolean},
+            hiddenByUser: {type: :boolean},
             nameVisible: {type: :boolean},
             public: {type: :boolean},
             saleNotify: {type: :boolean},

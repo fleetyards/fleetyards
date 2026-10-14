@@ -263,6 +263,94 @@ class VehicleOutOfSyncLoanerParentIdsTest < ActiveSupport::TestCase
   end
 end
 
+class VehicleHiddenByUserTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+    @loaner_model = create(:model)
+    @snub_model = create(:model)
+    @parent_model = create(:model).tap do |model|
+      model.loaners << @loaner_model
+      model.snub_crafts << @snub_model
+    end
+  end
+
+  test "a hidden ship drops out of every visible and public listing" do
+    vehicle = create(:vehicle, user: @user, model: @parent_model, wanted: false, public: true)
+
+    vehicle.update!(hidden_by_user: true)
+
+    assert_not_includes Vehicle.visible, vehicle
+    assert_not_includes Vehicle.public, vehicle
+    assert_equal true, vehicle.reload.public
+  end
+
+  test "its loaner and bundled snub craft are hidden with it" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+
+    parent.update!(hidden_by_user: true)
+
+    children = Vehicle.where(vehicle_id: parent.id)
+    assert_equal 2, children.count
+    assert children.all?(&:hidden_by_user)
+    assert_empty Vehicle.visible.where(vehicle_id: parent.id)
+  end
+
+  test "hiding the parent of a group's visible loaner hands visibility to another parent's loaner" do
+    other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+    first = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    second = create(:vehicle, user: @user, model: other_parent_model, wanted: false)
+    assert_equal false, Vehicle.find_by(loaner: true, vehicle_id: first.id).hidden
+
+    first.update!(hidden_by_user: true)
+
+    visible = Vehicle.visible.where(loaner: true, user_id: @user.id, model_id: @loaner_model.id)
+    assert_equal [second.id], visible.map(&:vehicle_id)
+  end
+
+  test "unhiding keeps exactly one visible loaner of the model" do
+    other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+    first = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    create(:vehicle, user: @user, model: other_parent_model, wanted: false)
+    first.update!(hidden_by_user: true)
+
+    first.update!(hidden_by_user: false)
+
+    loaners = Vehicle.where(loaner: true, user_id: @user.id, model_id: @loaner_model.id)
+    assert_equal 2, loaners.count
+    assert_equal 1, loaners.visible.count
+  end
+
+  test "moving a hidden ship to the wishlist unhides it" do
+    vehicle = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    vehicle.update!(hidden_by_user: true)
+
+    vehicle.update!(wanted: true)
+
+    assert_equal false, vehicle.reload.hidden_by_user
+    assert_empty Vehicle.where(vehicle_id: vehicle.id, hidden_by_user: true)
+  end
+
+  test "names a parent whose loaner disagrees on hidden_by_user" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    Vehicle.where(loaner: true, vehicle_id: parent.id).update_all(hidden_by_user: true)
+
+    assert_equal [parent.id], Vehicle.out_of_sync_loaner_parent_ids([@parent_model.id])
+  end
+
+  test "a hidden ship and its loaner leave the fleet" do
+    membership = create(:fleet_membership, :accepted, user: @user)
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    Sidekiq::Testing.inline! { parent.update_fleet_vehicle }
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+    membership.update_fleet_vehicle(loaner)
+    assert_equal 2, FleetVehicle.where(fleet_id: membership.fleet_id).count
+
+    Sidekiq::Testing.inline! { parent.update!(hidden_by_user: true) }
+
+    assert_empty FleetVehicle.where(fleet_id: membership.fleet_id)
+  end
+end
+
 class VehicleScheduleFleetVehicleUpdateTest < ActiveSupport::TestCase
   setup do
     @vehicle = create(:vehicle)

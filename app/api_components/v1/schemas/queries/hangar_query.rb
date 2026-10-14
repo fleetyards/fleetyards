@@ -39,6 +39,7 @@ module V1
             publicEq: {type: :boolean},
             loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
             bundledEq: {type: :string},
+            hiddenByUserEq: ::V1::Schemas::Enums::HiddenVehiclesFilterEnum,
             boughtViaEq: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},

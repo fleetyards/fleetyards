@@ -5130,6 +5130,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
+        hiddenByUser:
+          type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         fleets:
@@ -5147,6 +5149,7 @@ components:
       - id
       - model
       - wanted
+      - hiddenByUser
       - loaner
       - bundled
       - flagship

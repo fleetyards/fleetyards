@@ -30963,6 +30963,8 @@ components:
           "$ref": "#/components/schemas/LoanerFilterEnum"
         bundledEq:
           type: string
+        hiddenByUserEq:
+          "$ref": "#/components/schemas/HiddenVehiclesFilterEnum"
         boughtViaEq:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupsIn:
@@ -31414,6 +31416,15 @@ components:
       items:
         "$ref": "#/components/schemas/Hardpoint"
       title: HardpointsList
+    HiddenVehiclesFilterEnum:
+      type: string
+      enum:
+      - 'true'
+      - only
+      x-enumNames:
+      - 'TRUE'
+      - ONLY
+      title: HiddenVehiclesFilterEnum
     Image:
       type: object
       properties:
@@ -39912,6 +39923,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
+        hiddenByUser:
+          type: boolean
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         fleets:
@@ -39929,6 +39942,7 @@ components:
       - id
       - model
       - wanted
+      - hiddenByUser
       - loaner
       - bundled
       - flagship
@@ -40592,6 +40606,10 @@ components:
           type:
           - boolean
           - 'null'
+        hiddenByUser:
+          type:
+          - boolean
+          - 'null'
         public:
           type:
           - boolean
@@ -40619,6 +40637,8 @@ components:
           - string
           - 'null'
         wanted:
+          type: boolean
+        hiddenByUser:
           type: boolean
         nameVisible:
           type: boolean

@@ -53,6 +53,17 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/stats leaves out the ships their owner hid" do
+    user = create(:user)
+    create(:vehicle, user:, wanted: false)
+    create(:vehicle, user:, wanted: false, hidden_by_user: true)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal 1, parsed_body["total"]
+    end
+  end
+
   # The counts are deliberately blind to their own filter, as the group counts
   # are: a chip that reads 0 the moment you exclude it leaves nothing to click to
   # undo the exclusion.

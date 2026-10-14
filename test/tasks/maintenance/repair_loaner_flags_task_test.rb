@@ -33,6 +33,16 @@ module Maintenance
       assert_equal true, loaner.reload.wanted
     end
 
+    test "#process realigns a loaner whose hidden_by_user disagrees with its parent" do
+      parent = create(:vehicle, user: @user, model: @parent_model, wanted: false, hidden_by_user: true)
+      loaner = Vehicle.find_by(loaner: true, vehicle_id: parent.id)
+      loaner.update_columns(hidden_by_user: false)
+
+      @task.process(@user)
+
+      assert_equal true, loaner.reload.hidden_by_user
+    end
+
     test "#process collapses a parent's duplicate loaners, keeping the visible one" do
       parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
       visible = Vehicle.find_by(loaner: true, vehicle_id: parent.id)
@@ -99,6 +109,17 @@ module Maintenance
       loaners = Vehicle.where(loaner: true, user_id: @user.id, model_id: @loaner_model.id)
       assert_equal 1, loaners.where(hidden: false, wanted: false).count
       assert_equal 1, loaners.where(hidden: false, wanted: true).count
+    end
+
+    test "#process keeps a visible loaner apart from the ones under hidden ships" do
+      other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+      create(:vehicle, user: @user, model: @parent_model, wanted: false, hidden_by_user: true)
+      create(:vehicle, user: @user, model: other_parent_model, wanted: false)
+
+      @task.process(@user)
+
+      loaners = Vehicle.where(loaner: true, user_id: @user.id, model_id: @loaner_model.id)
+      assert_equal 1, loaners.visible.count
     end
 
     test "#process does not move which loaner is visible when the group is already correct" do

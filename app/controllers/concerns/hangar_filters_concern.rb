@@ -22,6 +22,17 @@ module HangarFiltersConcern
     end
   end
 
+  private def hidden_by_user_included?(scope)
+    case vehicle_query_params.delete("hidden_by_user_eq")
+    when "true"
+      scope
+    when "only"
+      scope.where(hidden_by_user: true)
+    else
+      scope.where(hidden_by_user: false)
+    end
+  end
+
   private def bundled_included?(scope)
     case vehicle_query_params.delete("bundled_eq")
     when "false"
