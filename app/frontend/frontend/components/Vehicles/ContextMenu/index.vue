@@ -141,6 +141,7 @@ const addToHangar = async () => {
 const hideable = computed(
   () =>
     props.editable &&
+    !props.onVehiclePage &&
     !props.wishlist &&
     !props.vehicle.loaner &&
     !props.vehicle.bundled,
@@ -255,9 +256,7 @@ const shipPageVisible = computed(
   () => !!props.vehicle.model && !props.hideShipPage,
 );
 
-const editVisible = computed(
-  () => props.editable && !props.hideEdit && !props.onVehiclePage,
-);
+const editVisible = computed(() => props.editable && !props.hideEdit);
 
 const visibleGroups = computed(() =>
   [
@@ -270,7 +269,7 @@ const visibleGroups = computed(() =>
         cargoVisible.value ||
         pageShortcutsVisible.value,
     },
-    { name: "organize", visible: props.editable },
+    { name: "organize", visible: props.editable && !props.onVehiclePage },
     { name: "remove", visible: props.editable },
   ].filter((group) => group.visible),
 );
@@ -379,7 +378,7 @@ const separatorBefore = (name: string) =>
       </span>
     </Btn>
     <Btn
-      v-if="editable && !wishlist"
+      v-if="editable && !onVehiclePage && !wishlist"
       :aria-label="t('actions.addToWishlist')"
       :disabled="updating"
       data-test="vehicle-add-to-wishlist"
@@ -389,7 +388,7 @@ const separatorBefore = (name: string) =>
       <span>{{ t("actions.addToWishlist") }}</span>
     </Btn>
     <Btn
-      v-if="editable && wishlist"
+      v-if="editable && !onVehiclePage && wishlist"
       :aria-label="t('actions.addToHangar')"
       :disabled="updating"
       data-test="vehicle-add-to-hangar"

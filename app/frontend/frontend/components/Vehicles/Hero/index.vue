@@ -100,8 +100,6 @@ const openFullscreenHolo = () => {
 
 const { openEditModal: openVehicleEdit } = useVehicleModals();
 
-const openEditModal = () => openVehicleEdit(props.vehicle);
-
 const openImageModal = () =>
   openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
 </script>
@@ -142,12 +140,6 @@ const openImageModal = () =>
                   ? t("actions.vehicleOverview.changePicture")
                   : t("actions.vehicleOverview.uploadPicture")
               }}
-            </span>
-          </Btn>
-          <Btn data-test="vehicle-overview-edit" @click="openEditModal">
-            <i class="fa fa-pencil" />
-            <span class="vehicle-hero__action-label">
-              {{ t("actions.vehicleOverview.edit") }}
             </span>
           </Btn>
           <VehicleContextMenu

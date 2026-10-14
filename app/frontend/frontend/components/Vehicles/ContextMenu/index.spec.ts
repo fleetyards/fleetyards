@@ -141,23 +141,21 @@ describe("VehicleContextMenu", () => {
     ]);
   });
 
-  it("leaves out what the vehicle page already offers", async () => {
+  it("offers editing without hangar organization on the vehicle page", async () => {
     await mount({ onVehiclePage: true });
 
     expect(items()).toEqual([
       "vehicle-ship-page",
-      "vehicle-toggle-hidden",
-      "vehicle-add-to-wishlist",
+      "vehicle-edit",
       "vehicle-remove",
     ]);
   });
 
-  it("skips empty edit and management groups without duplicate separators", async () => {
+  it("separates overview editing from removal when the database link is hidden", async () => {
     await mount({ onVehiclePage: true, hideShipPage: true });
 
     expect(menuStructure()).toEqual([
-      "vehicle-toggle-hidden",
-      "vehicle-add-to-wishlist",
+      "vehicle-edit",
       "separator",
       "vehicle-remove",
     ]);

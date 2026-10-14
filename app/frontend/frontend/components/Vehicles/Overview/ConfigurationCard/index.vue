@@ -5,14 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
@@ -29,6 +25,7 @@ type Fact = {
   key: string;
   label: string;
   value?: string;
+  edit?: () => void;
 };
 
 const comlink = useComlink();
@@ -41,10 +38,13 @@ const openLocationModal = () => {
   });
 };
 
-const { openEditModal } = useVehicleModals();
+const { openEditModal, openLoadoutModal } = useVehicleModals();
 
 const openGroupsModal = () =>
   openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.GROUPS });
+
+const editLoadout = (tab: VehicleLoadoutTabsEnum) =>
+  openLoadoutModal(props.vehicle, { tab, editable: true });
 
 const paintThumb = computed(
   () => props.vehicle.paint?.media.storeImage?.smallUrl,
@@ -55,16 +55,19 @@ const facts = computed(() =>
     [
       {
         key: "upgrade",
+        edit: () => editLoadout(VehicleLoadoutTabsEnum.UPGRADES),
         label: t("labels.model.upgrades"),
         value: props.vehicle.upgrade?.name,
       },
       {
         key: "modulePackage",
+        edit: () => editLoadout(VehicleLoadoutTabsEnum.MODULES),
         label: t("labels.model.modulePackages"),
         value: props.vehicle.modulePackage?.name,
       },
       {
         key: "boughtVia",
+        edit: () => openEditModal(props.vehicle),
         label: t("labels.vehicle.boughtViaSelect.label"),
         value: props.vehicle.boughtViaLabel,
       },
@@ -77,6 +80,8 @@ const facts = computed(() =>
       },
       {
         key: "alternativeNames",
+        edit: () =>
+          openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.NAMES }),
         label: t("headlines.hangar.alternativeNames"),
         value: props.vehicle.alternativeNames.join(", "),
       },
@@ -102,26 +107,41 @@ const facts = computed(() =>
         <div>
           <dt>{{ t("labels.vehicle.modelPaintSelect.label") }}</dt>
           <dd>
-            {{ vehicle.paint?.name || t("labels.vehicleOverview.noPaint") }}
+            <button
+              class="overview-config__edit"
+              :disabled="vehicle.loaner || !vehicle.model.hasPaints"
+              @click="editLoadout(VehicleLoadoutTabsEnum.PAINTS)"
+            >
+              <span>{{
+                vehicle.paint?.name || t("labels.vehicleOverview.noPaint")
+              }}</span>
+              <i
+                v-if="!vehicle.loaner && vehicle.model.hasPaints"
+                class="fa-light fa-pen"
+                aria-hidden="true"
+              />
+            </button>
           </dd>
         </div>
       </div>
       <div class="overview-config__fact" data-test="vehicle-fact-location">
         <dt>{{ t("labels.vehicleOverview.location") }}</dt>
-        <dd class="overview-config__editable">
-          <span>
-            {{ vehicle.location || t("labels.vehicleOverview.noLocation") }}
-          </span>
-          <Btn
-            v-if="!vehicle.loaner"
-            :size="BtnSizesEnum.XS"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('actions.vehicleOverview.editLocation')"
+        <dd>
+          <button
+            class="overview-config__edit"
+            :disabled="vehicle.loaner"
             data-test="vehicle-location-edit"
             @click="openLocationModal"
           >
-            <i class="fa-light fa-pen" />
-          </Btn>
+            <span>{{
+              vehicle.location || t("labels.vehicleOverview.noLocation")
+            }}</span>
+            <i
+              v-if="!vehicle.loaner"
+              class="fa-light fa-pen"
+              aria-hidden="true"
+            />
+          </button>
         </dd>
       </div>
       <div
@@ -131,7 +151,17 @@ const facts = computed(() =>
         :data-test="`vehicle-fact-${fact.key}`"
       >
         <dt>{{ fact.label }}</dt>
-        <dd>{{ fact.value }}</dd>
+        <dd>
+          <button
+            v-if="fact.edit && !vehicle.loaner"
+            class="overview-config__edit"
+            @click="fact.edit"
+          >
+            <span>{{ fact.value }}</span
+            ><i class="fa-light fa-pen" aria-hidden="true" />
+          </button>
+          <span v-else>{{ fact.value }}</span>
+        </dd>
       </div>
       <div
         v-if="!vehicle.wanted"
@@ -139,34 +169,36 @@ const facts = computed(() =>
         data-test="vehicle-fact-hangarGroups"
       >
         <dt>{{ t("labels.vehicle.hangarGroups") }}</dt>
-        <dd class="overview-config__editable">
-          <span
-            v-if="vehicle.hangarGroups.length"
-            class="overview-config__groups"
-          >
-            <span
-              v-for="group in vehicle.hangarGroups"
-              :key="group.id"
-              class="overview-config__group"
-            >
-              <span
-                class="overview-config__group-dot"
-                :style="{ backgroundColor: group.color }"
-              />
-              {{ group.name }}
-            </span>
-          </span>
-          <span v-else>{{ t("labels.vehicleOverview.noGroups") }}</span>
-          <Btn
-            v-if="!vehicle.loaner"
-            :size="BtnSizesEnum.XS"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('actions.hangar.editGroups')"
+        <dd>
+          <button
+            class="overview-config__edit"
+            :disabled="vehicle.loaner"
             data-test="vehicle-groups-edit"
             @click="openGroupsModal"
           >
-            <i class="fa-light fa-pen" />
-          </Btn>
+            <span
+              v-if="vehicle.hangarGroups.length"
+              class="overview-config__groups"
+            >
+              <span
+                v-for="group in vehicle.hangarGroups"
+                :key="group.id"
+                class="overview-config__group"
+              >
+                <span
+                  class="overview-config__group-dot"
+                  :style="{ backgroundColor: group.color }"
+                />
+                {{ group.name }}
+              </span>
+            </span>
+            <span v-else>{{ t("labels.vehicleOverview.noGroups") }}</span>
+            <i
+              v-if="!vehicle.loaner"
+              class="fa-light fa-pen"
+              aria-hidden="true"
+            />
+          </button>
         </dd>
       </div>
     </dl>
@@ -204,11 +236,40 @@ const facts = computed(() =>
     object-fit: cover;
   }
 
-  &__editable {
+  &__paint > div {
+    flex: 1;
+  }
+
+  &__fact:hover .overview-config__edit i,
+  &__paint:hover .overview-config__edit i {
+    opacity: 1;
+  }
+
+  &__edit {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+
+    &:disabled {
+      cursor: default;
+    }
+    i {
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+    &:hover i,
+    &:focus-visible i {
+      opacity: 1;
+    }
   }
 
   &__groups {
