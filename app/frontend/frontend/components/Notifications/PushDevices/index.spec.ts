@@ -47,6 +47,20 @@ const mount = async (next: WebPushStatusEnum, current?: string) => {
 };
 
 describe("NotificationsPushDevices", () => {
+  it("explains missing server configuration without blaming the browser", async () => {
+    const wrapper = await mount(WebPushStatusEnum.UNAVAILABLE);
+
+    expect(
+      wrapper.find('[data-test="push-devices-unavailable"]').exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find('[data-test="push-devices-unsupported"]').exists(),
+    ).toBe(false);
+    expect(wrapper.find('[data-test="push-devices-enable"]').exists()).toBe(
+      false,
+    );
+  });
+
   it("explains a browser that cannot receive push", async () => {
     const wrapper = await mount(WebPushStatusEnum.UNSUPPORTED);
 

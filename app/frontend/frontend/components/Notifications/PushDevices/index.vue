@@ -114,6 +114,15 @@ const deviceLabel = (device: PushDevice) => {
         {{ t("texts.settings.notifications.push.unsupported") }}
       </Alert>
 
+      <Alert
+        v-else-if="status === WebPushStatusEnum.UNAVAILABLE"
+        :size="AlertSizesEnum.COMPACT"
+        variant="neutral"
+        data-test="push-devices-unavailable"
+      >
+        {{ t("texts.settings.notifications.push.unavailable") }}
+      </Alert>
+
       <!-- The browser holds this decision now; asking again does nothing. -->
       <Alert
         v-else-if="status === WebPushStatusEnum.DENIED"

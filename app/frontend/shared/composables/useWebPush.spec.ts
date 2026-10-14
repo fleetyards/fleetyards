@@ -59,10 +59,12 @@ const setup = ({
     subscribe: vi.fn().mockResolvedValue(created),
   };
 
+  const requestPermission = vi.fn().mockResolvedValue(requested);
+
   vi.stubGlobal("PushManager", class {});
   vi.stubGlobal("Notification", {
     permission,
-    requestPermission: vi.fn().mockResolvedValue(requested),
+    requestPermission,
   });
   Object.defineProperty(navigator, "serviceWorker", {
     configurable: true,
@@ -75,7 +77,7 @@ const setup = ({
   });
   window.VAPID_PUBLIC_KEY = key;
 
-  return { pushManager, created };
+  return { pushManager, created, requestPermission };
 };
 
 beforeEach(() => {
@@ -102,10 +104,34 @@ describe("applicationServerKey", () => {
 });
 
 describe("useWebPush", () => {
-  it("is unsupported without a server key", () => {
-    setup({ key: "" });
+  it("reports missing browser push APIs as unsupported", () => {
+    setup();
+    Reflect.deleteProperty(window, "PushManager");
 
     expect(useWebPush().status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
+  });
+
+  it("can enable push in a desktop standalone app", async () => {
+    setup();
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: true })),
+    );
+    const push = useWebPush();
+
+    expect(push.status.value).toBe(WebPushStatusEnum.OFF);
+    expect(await push.enable(USER)).toBe(true);
+    expect(push.status.value).toBe(WebPushStatusEnum.ON);
+  });
+
+  it("reports missing server configuration without blaming the browser", async () => {
+    const { requestPermission } = setup({ key: "" });
+
+    const push = useWebPush();
+
+    expect(push.status.value).toBe(WebPushStatusEnum.UNAVAILABLE);
+    expect(await push.enable(USER)).toBe(false);
+    expect(requestPermission).not.toHaveBeenCalled();
   });
 
   it("reports a permission the browser already denied", () => {
@@ -132,7 +158,7 @@ describe("useWebPush", () => {
   });
 
   // A slow worker is not proof the subscription is gone.
-  it("is unsupported once no worker shows up, and keeps what it knew", async () => {
+  it("reports a failed check once no worker shows up, and keeps what it knew", async () => {
     vi.useFakeTimers();
     remember("row-1", "https://fcm.googleapis.com/abc");
     setup({ registered: false });
@@ -142,7 +168,7 @@ describe("useWebPush", () => {
     await vi.advanceTimersByTimeAsync(10_000);
     await refreshing;
 
-    expect(push.status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
+    expect(push.status.value).toBe(WebPushStatusEnum.FAILED);
     expect(stored()).toEqual({
       id: "row-1",
       endpoint: "https://fcm.googleapis.com/abc",

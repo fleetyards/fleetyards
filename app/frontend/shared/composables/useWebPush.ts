@@ -8,6 +8,7 @@ import {
 
 export enum WebPushStatusEnum {
   UNSUPPORTED = "unsupported",
+  UNAVAILABLE = "unavailable",
   DENIED = "denied",
   FAILED = "failed",
   OFF = "off",
@@ -68,15 +69,11 @@ export const applicationServerKey = (
   return Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
 };
 
-// No key means the server cannot send (only production holds one), and a
-// browser without these APIs cannot receive -- iOS Safari only has them in a
-// web app added to the Home Screen.
 const pushSupported = () =>
   typeof window !== "undefined" &&
   "serviceWorker" in navigator &&
   "PushManager" in window &&
-  "Notification" in window &&
-  !!window.VAPID_PUBLIC_KEY;
+  "Notification" in window;
 
 const toInput = (subscription: PushSubscription): PushSubscriptionInput => {
   const json = subscription.toJSON();
@@ -90,6 +87,7 @@ const toInput = (subscription: PushSubscription): PushSubscriptionInput => {
 
 export const useWebPush = () => {
   const supported = pushSupported();
+  const configured = supported && !!window.VAPID_PUBLIC_KEY;
 
   const permission = ref<NotificationPermission>(
     supported ? window.Notification.permission : "default",
@@ -175,7 +173,7 @@ export const useWebPush = () => {
   // A worker that has not turned up yet decides nothing: what is stored stays
   // for a later visit to reconcile.
   const refresh = async (userId: string) => {
-    if (!supported) return;
+    if (!supported || !configured) return;
 
     failed.value = false;
 
@@ -234,7 +232,7 @@ export const useWebPush = () => {
   // Only ever from a click: a prompt nobody asked for is the quickest way to
   // a permanent "denied", which nothing on the page can undo.
   const enable = async (userId: string) => {
-    if (!supported || busy.value) return false;
+    if (!supported || !configured || busy.value) return false;
 
     busy.value = true;
 
@@ -268,7 +266,7 @@ export const useWebPush = () => {
   // The browser first: if it refuses to let go, the server row stays and the
   // page keeps saying on, which is the truth.
   const disable = async () => {
-    if (!supported || busy.value) return;
+    if (!supported || !configured || busy.value) return;
 
     busy.value = true;
 
@@ -292,11 +290,10 @@ export const useWebPush = () => {
   };
 
   const status = computed(() => {
-    if (!supported || workerMissing.value) {
-      return WebPushStatusEnum.UNSUPPORTED;
-    }
+    if (!supported) return WebPushStatusEnum.UNSUPPORTED;
+    if (!configured) return WebPushStatusEnum.UNAVAILABLE;
     if (permission.value === "denied") return WebPushStatusEnum.DENIED;
-    if (failed.value) return WebPushStatusEnum.FAILED;
+    if (failed.value || workerMissing.value) return WebPushStatusEnum.FAILED;
 
     return subscriptionId.value ? WebPushStatusEnum.ON : WebPushStatusEnum.OFF;
   });
