@@ -136,7 +136,7 @@ onUnmounted(() => {
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm :upgrades="kind === 'upgrades'" />
     </template>
 
     <template #actions-left>

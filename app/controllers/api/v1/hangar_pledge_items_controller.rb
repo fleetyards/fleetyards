@@ -39,7 +39,7 @@ module Api
       end
 
       private def pledge_item_query_params
-        @pledge_item_query_params ||= params.permit(q: [:name_cont, :meltable_eq, :with_value]).fetch(:q, {})
+        @pledge_item_query_params ||= params.permit(q: [:name_cont, :meltable_eq, :with_value, :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq]).fetch(:q, {})
       end
     end
   end

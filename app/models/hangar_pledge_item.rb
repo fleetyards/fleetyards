@@ -25,6 +25,27 @@ class HangarPledgeItem < ApplicationRecord
   scope :equipment, -> { where(kind: "equipment") }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
+  scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
+  scope :upgrade_to_model_slug_eq, ->(slug) { upgrade_for_model(slug, 2) }
+
+  # Hangar CCUs carry ship names rather than the RSI ship ids buybacks expose.
+  # Resolve the selected model at query time so already-synced CCUs work too.
+  def self.upgrade_for_model(slug, position)
+    model = Model.find_by(slug:)
+    return none unless model
+
+    names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
+    ship = <<~SQL.squish
+      (regexp_match(hangar_pledge_items.name,
+        '(?i)^(?:Upgrade[[:space:]]*-[[:space:]]*)?(.+?)[[:space:]]+to[[:space:]]+(.+)$'))[#{position}]
+    SQL
+    # Arel instead of a bind: the regex literals contain `?` and `:name`
+    # sequences that both bind styles would substitute.
+    upgrades.where(Arel.sql(<<~SQL.squish).in(names))
+      lower(trim(regexp_replace(#{ship}, '(?i)[[:space:]]+(-[[:space:]]*)?warbond([[:space:]]+edition)?$', '')))
+    SQL
+  end
+
   # Newest pledge first, the order RSI lists the hangar in. Pledge ids grow
   # over time, so they order pledges created on the same day, and any pledge
   # whose date could not be read.
@@ -54,7 +75,11 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   def self.ransackable_scopes(_auth_object = nil)
-    %i[with_value]
+    %i[with_value upgrade_from_model_slug_eq upgrade_to_model_slug_eq]
+  end
+
+  def self.ransackable_scopes_skip_sanitize_args
+    %i[upgrade_from_model_slug_eq upgrade_to_model_slug_eq]
   end
 
   def self.ransackable_associations(_auth_object = nil)

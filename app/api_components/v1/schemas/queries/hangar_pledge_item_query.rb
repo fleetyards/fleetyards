@@ -9,6 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
+            upgradeFromModelSlugEq: {type: :string},
+            upgradeToModelSlugEq: {type: :string},
             nameCont: {type: :string},
             meltableEq: {type: :boolean},
             withValue: {type: :boolean, description: "Only items whose pledge melts for more than nothing"}

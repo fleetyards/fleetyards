@@ -179,6 +179,31 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/upgrades filters from and to by the selected catalogue ships" do
+    user = create(:user)
+    from = create(:model, name: "Clipper", rsi_name: "Anvil Clipper")
+    to = create(:model, name: "S-65 Stingray")
+    matching = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Anvil Clipper To S-65 Stingray Warbond Edition")
+    other_to = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Clipper to Cutter")
+    reverse = create(:hangar_pledge_item, user:, kind: "ccu", name: "S-65 Stingray to Clipper")
+    create(:hangar_pledge_item, kind: "ccu", name: matching.name)
+    create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Super Clipper To S-65 Stingray")
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: from.slug}} do
+      assert_equal [matching.id, other_to.id].sort, parsed_body["items"].pluck("id").sort
+    end
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeToModelSlugEq: from.slug}} do
+      assert_equal [reverse.id], parsed_body["items"].pluck("id")
+    end
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: from.slug, upgradeToModelSlugEq: to.slug}} do
+      assert_equal [matching.id], parsed_body["items"].pluck("id")
+    end
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {upgradeFromModelSlugEq: "unknown-model"}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/upgrades needs a signed-in user" do
     assert_api_response :get, 401, api_path: "/hangar/upgrades"
   end

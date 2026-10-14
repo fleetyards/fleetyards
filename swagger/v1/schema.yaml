@@ -30886,6 +30886,10 @@ components:
     HangarPledgeItemQuery:
       type: object
       properties:
+        upgradeFromModelSlugEq:
+          type: string
+        upgradeToModelSlugEq:
+          type: string
         nameCont:
           type: string
         meltableEq:
