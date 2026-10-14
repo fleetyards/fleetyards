@@ -94,10 +94,12 @@ test.describe("Hangar", () => {
       .click();
     await page
       .getByTestId("dropdown-list")
-      .locator("[data-test='vehicle-edit-name']")
+      .locator("[data-test='vehicle-edit']")
       .click();
 
     await page.getByTestId("modal").waitFor({ state: "visible" });
+
+    await page.getByTestId("modal").getByTestId("tab-anchor-names").click();
 
     await page.getByTestId("input-name").fill("Enterprise");
 
