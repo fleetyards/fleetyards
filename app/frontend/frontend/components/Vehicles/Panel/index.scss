@@ -41,7 +41,8 @@
   }
 
   &-loaner-label,
-  &-bundled-label {
+  &-bundled-label,
+  &-hidden-label {
     position: absolute;
     top: 0;
     right: 0;
@@ -61,6 +62,10 @@
 
   &-bundled-label {
     background-color: $primary;
+  }
+
+  &-hidden-label {
+    background-color: $gray;
   }
 
   &-addons {

@@ -230,6 +230,8 @@
         "showOnPublicHangar": "Hacer público",
         "hideFromPublicHangar": "Ocultar del público",
         "editGroupsSelected": "Añadir/Eliminar de grupos",
+        "hideFromHangar": "Ocultar del hangar",
+        "showInHangar": "Mostrar en el hangar",
         "resetIngame": {
           "openModal": "Restablecer naves del juego después del wipe",
           "moveToWishlist": "Mover a lista de deseos",

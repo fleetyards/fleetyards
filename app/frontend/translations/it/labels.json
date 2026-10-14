@@ -2266,6 +2266,7 @@
         "loaner": "Prestito",
         "bundled": "In bundle",
         "bundledWith": "In bundle con %{parent}",
+        "hiddenByUser": "Nascosta dal tuo hangar",
         "public": "Pubblicamente Visibile",
         "fullPublic": "Pubblicamente Visibile incluso il nome",
         "publicShort": "Pubblico",
@@ -2408,6 +2409,7 @@
           "group": "Gruppo",
           "loaner": "Navi in comodato",
           "bundled": "Snub Craft in bundle",
+          "hiddenByUser": "Navi nascoste",
           "boughtVia": "Acquistato tramite?",
           "image": "Immagine personalizzata",
           "dedication": "Targa di dedica"

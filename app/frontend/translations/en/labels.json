@@ -2266,6 +2266,7 @@
         "loaner": "Loaner",
         "bundled": "Bundled",
         "bundledWith": "Bundled with %{parent}",
+        "hiddenByUser": "Hidden from your Hangar",
         "public": "Public Visible",
         "fullPublic": "Public Visible including Name",
         "publicShort": "Public",
@@ -2408,6 +2409,7 @@
           "group": "Group",
           "loaner": "Loaners",
           "bundled": "Bundled Snub Crafts",
+          "hiddenByUser": "Hidden Ships",
           "boughtVia": "Bought via?",
           "image": "Custom Image",
           "dedication": "Dedication Plaque"

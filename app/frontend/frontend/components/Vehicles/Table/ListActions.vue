@@ -114,6 +114,24 @@ const showOnPublicHangar = async () => {
     });
 };
 
+const setHiddenBulk = async (hiddenByUser: boolean) => {
+  updating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: props.selected,
+        hiddenByUser,
+      },
+    })
+    .then(() => {
+      resetSelected();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
+
 const destroyBulkMutation = useDestroyBulkMutation();
 
 const { displayConfirm } = useAppNotifications();
@@ -171,6 +189,27 @@ const destroyBulk = async () => {
   <Btn v-else :disabled="updating" @click="addToWishlistBulk">
     {{ t("actions.addToWishlist") }}
   </Btn>
+  <BtnGroup v-if="!wishlist">
+    <span>{{ t("labels.filters.vehicles.hiddenByUser") }}</span>
+    <Btn
+      v-tooltip="t('actions.hangar.showInHangar')"
+      :aria-label="t('actions.hangar.showInHangar')"
+      :disabled="updating"
+      data-test="vehicles-bulk-show"
+      @click="setHiddenBulk(false)"
+    >
+      <i class="fa-duotone fa-garage" />
+    </Btn>
+    <Btn
+      v-tooltip="t('actions.hangar.hideFromHangar')"
+      :aria-label="t('actions.hangar.hideFromHangar')"
+      :disabled="updating"
+      data-test="vehicles-bulk-hide"
+      @click="setHiddenBulk(true)"
+    >
+      <i class="fa-duotone fa-ghost" />
+    </Btn>
+  </BtnGroup>
   <Btn v-if="!wishlist" @click="openBulkGroupEditModal">
     {{ t("actions.hangar.editGroupsSelected") }}
   </Btn>
