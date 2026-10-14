@@ -37,14 +37,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const slots = defineSlots<{
-  default: [];
-  subtitle: [];
-  actions: [];
+  default?: () => unknown;
+  subtitle?: () => unknown;
+  actions?: () => unknown;
   // Something that belongs beside the title *and* its subtitle rather than
   // inside either -- an emblem, an avatar. `Heading` stacks the two into a
   // column, so a leading element has to sit outside it or it lands on the
   // title's line alone and the subtitle wraps underneath it.
-  leading: [];
+  leading?: () => unknown;
 }>();
 
 const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);

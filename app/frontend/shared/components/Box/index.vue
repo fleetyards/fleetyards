@@ -31,9 +31,9 @@ withDefaults(defineProps<Props>(), {
 });
 
 const slots = defineSlots<{
-  default: [];
-  heading: [];
-  footer: [];
+  default?: () => unknown;
+  heading?: () => unknown;
+  footer?: () => unknown;
 }>();
 </script>
 
