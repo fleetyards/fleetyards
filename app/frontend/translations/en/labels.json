@@ -2411,7 +2411,13 @@
           "bundled": "Bundled Snub Crafts",
           "hiddenByUser": "Hidden Ships",
           "boughtVia": "Bought via?",
-          "image": "Custom Image",
+          "image": "Image",
+          "imageSources": {
+            "custom": "Any non-default",
+            "upload": "Uploaded",
+            "gallery": "From gallery",
+            "default": "Default"
+          },
           "dedication": "Dedication Plaque"
         },
         "models": {

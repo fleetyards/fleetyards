@@ -2411,7 +2411,13 @@
           "bundled": "捆绑的舰载小艇",
           "hiddenByUser": "隐藏的舰船",
           "boughtVia": "购买方式?",
-          "image": "自定义图片",
+          "image": "图片",
+          "imageSources": {
+            "custom": "非默认",
+            "upload": "已上传",
+            "gallery": "来自图库",
+            "default": "默认"
+          },
           "dedication": "命名铭牌"
         },
         "models": {

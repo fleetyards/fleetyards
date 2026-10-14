@@ -2411,7 +2411,13 @@
           "bundled": "Snub Craft in bundle",
           "hiddenByUser": "Navi nascoste",
           "boughtVia": "Acquistato tramite?",
-          "image": "Immagine personalizzata",
+          "image": "Immagine",
+          "imageSources": {
+            "custom": "Non predefinita",
+            "upload": "Caricata",
+            "gallery": "Dalla galleria",
+            "default": "Predefinita"
+          },
           "dedication": "Targa di dedica"
         },
         "models": {

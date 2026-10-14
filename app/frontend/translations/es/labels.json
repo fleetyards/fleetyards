@@ -2411,7 +2411,13 @@
           "bundled": "Snub Crafts incluidos en un paquete",
           "hiddenByUser": "Naves ocultas",
           "boughtVia": "¿Comprado mediante?",
-          "image": "Imagen propia",
+          "image": "Imagen",
+          "imageSources": {
+            "custom": "No predeterminada",
+            "upload": "Subida",
+            "gallery": "De la galería",
+            "default": "Predeterminada"
+          },
           "dedication": "Placa de dedicatoria"
         },
         "models": {

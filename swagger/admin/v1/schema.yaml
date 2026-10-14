@@ -21266,6 +21266,19 @@ components:
       - createdAt
       - updatedAt
       title: Vehicle
+    VehicleImageSourceFilterEnum:
+      type: string
+      enum:
+      - custom
+      - upload
+      - gallery
+      - default
+      x-enumNames:
+      - CUSTOM
+      - UPLOAD
+      - GALLERY
+      - DEFAULT
+      title: VehicleImageSourceFilterEnum
     VehicleInput:
       type: object
       properties:
@@ -21356,8 +21369,8 @@ components:
           "$ref": "#/components/schemas/LoanerFilterEnum"
         wantedEq:
           type: boolean
-        hasImageEq:
-          type: boolean
+        imageSourceEq:
+          "$ref": "#/components/schemas/VehicleImageSourceFilterEnum"
         hasDedicationEq:
           type: boolean
         s:

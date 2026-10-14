@@ -14,13 +14,23 @@ import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSele
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type VehicleQuery } from "@/services/fyAdminApi";
+import {
+  type VehicleQuery,
+  VehicleImageSourceFilterEnum,
+} from "@/services/fyAdminApi";
 import { useVehicleFilters } from "@/admin/composables/useVehicleFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
 const { booleanOptions } = useFilterOptions();
 
 const { t } = useI18n();
+
+const imageSourceOptions = Object.values(VehicleImageSourceFilterEnum).map(
+  (source) => ({
+    label: t(`labels.filters.vehicles.imageSources.${source}`),
+    value: source,
+  }),
+);
 
 const prefillFormValues = () => {
   return {
@@ -31,7 +41,7 @@ const prefillFormValues = () => {
     modelProductionStatusIn: filters.value.modelProductionStatusIn || [],
     loanerEq: filters.value.loanerEq,
     wantedEq: filters.value.wantedEq,
-    hasImageEq: filters.value.hasImageEq,
+    imageSourceEq: filters.value.imageSourceEq,
     hasDedicationEq: filters.value.hasDedicationEq,
   };
 };
@@ -109,11 +119,11 @@ watch(
     />
 
     <RadioList
-      v-model="form.hasImageEq"
+      v-model="form.imageSourceEq"
       :label="t('labels.filters.vehicles.image')"
       :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="has-image"
+      :options="imageSourceOptions"
+      name="image-source"
     />
 
     <RadioList

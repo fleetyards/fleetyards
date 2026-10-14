@@ -2411,7 +2411,13 @@
           "bundled": "Mitgelieferte Snub Crafts",
           "hiddenByUser": "Ausgeblendete Schiffe",
           "boughtVia": "Gekauft über?",
-          "image": "Eigenes Bild",
+          "image": "Bild",
+          "imageSources": {
+            "custom": "Nicht Standard",
+            "upload": "Hochgeladen",
+            "gallery": "Aus der Galerie",
+            "default": "Standard"
+          },
           "dedication": "Widmungstafel"
         },
         "models": {

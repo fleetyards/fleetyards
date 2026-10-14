@@ -233,16 +233,41 @@ class Vehicle < ApplicationRecord
     parent.table[:bought_via]
   end
 
-  ransacker :has_image, type: :boolean do
-    Arel.sql(<<~SQL.squish)
-      EXISTS (
-        SELECT 1 FROM active_storage_attachments
-        WHERE active_storage_attachments.record_type = 'Vehicle'
-          AND active_storage_attachments.record_id = vehicles.id
-          AND active_storage_attachments.name = 'image'
-      )
-    SQL
-  end
+  # Mirrors what the ship shows: an upload wins over a gallery pick, and a pick
+  # of an image that has since been disabled or lost its file falls back to the
+  # stock render.
+  IMAGE_SOURCE_FILTERS = %w[custom upload gallery default].freeze
+
+  UPLOADED_IMAGE_SQL = <<~SQL.squish
+    EXISTS (
+      SELECT 1 FROM active_storage_attachments
+      WHERE active_storage_attachments.record_type = 'Vehicle'
+        AND active_storage_attachments.record_id = vehicles.id
+        AND active_storage_attachments.name = 'image'
+    )
+  SQL
+
+  GALLERY_IMAGE_SQL = <<~SQL.squish
+    EXISTS (
+      SELECT 1 FROM images
+      INNER JOIN active_storage_attachments
+        ON active_storage_attachments.record_type = 'Image'
+        AND active_storage_attachments.record_id = images.id
+        AND active_storage_attachments.name = 'file'
+      WHERE images.id = vehicles.model_image_id
+        AND images.enabled = TRUE
+    )
+  SQL
+
+  scope :image_source_eq, ->(source) {
+    case source
+    when "upload" then where(UPLOADED_IMAGE_SQL)
+    when "gallery" then where(GALLERY_IMAGE_SQL).where.not(UPLOADED_IMAGE_SQL)
+    when "custom" then where(UPLOADED_IMAGE_SQL).or(where(GALLERY_IMAGE_SQL))
+    when "default" then where.not(UPLOADED_IMAGE_SQL).where.not(GALLERY_IMAGE_SQL)
+    else all
+    end
+  }
 
   # A blank dedication is stored as NULL (see `NULL_ATTRS`), and without one
   # there is no plaque.
@@ -253,7 +278,7 @@ class Vehicle < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
-      "focus", "hangar_groups", "has_dedication", "has_image", "height", "hidden", "id", "id_value", "length", "loaner",
+      "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
@@ -267,6 +292,10 @@ class Vehicle < ApplicationRecord
       "module_package", "public_hangar_groups", "task_forces", "user", "vehicle_modules",
       "vehicle_upgrades"
     ]
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[image_source_eq]
   end
 
   serialize :alternative_names, type: Array, coder: YAML

@@ -2411,7 +2411,13 @@
           "bundled": "Snub Crafts inclus",
           "hiddenByUser": "Vaisseaux masqués",
           "boughtVia": "Acheté via?",
-          "image": "Image personnalisée",
+          "image": "Image",
+          "imageSources": {
+            "custom": "Non par défaut",
+            "upload": "Téléversée",
+            "gallery": "De la galerie",
+            "default": "Par défaut"
+          },
           "dedication": "Plaque de dédicace"
         },
         "models": {
