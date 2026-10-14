@@ -133,6 +133,7 @@ defineExpose({ changes });
 
     <FormFileInput
       v-if="source === 'upload'"
+      v-model="image"
       :file="vehicle.image"
       :preview-src="vehicle.image ? undefined : stockImage"
       name="image"

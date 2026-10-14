@@ -41,9 +41,14 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 // The upload field pulls three.js in through its preset picker, which the test
-// environment cannot load; these cases are about the gallery.
+// environment cannot load; the stub only reports a clear the way the real one does.
 vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
-  default: { name: "FormFileInput", template: "<div />" },
+  default: {
+    name: "FormFileInput",
+    emits: ["update:modelValue"],
+    template:
+      '<button type="button" data-test="file-input-clear" @click="$emit(\'update:modelValue\', null)" />',
+  },
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -137,6 +142,22 @@ describe("VehicleEditModal image tab", () => {
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
       data: { modelImageId: null, image: null },
+    });
+  });
+
+  it("removes an uploaded picture when the upload is cleared", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+      }),
+    });
+
+    await wrapper.find('[data-test="file-input-clear"]').trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { image: null },
     });
   });
 
