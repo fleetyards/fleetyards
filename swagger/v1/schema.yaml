@@ -20905,6 +20905,10 @@ components:
           type: string
         upgradeToModelSlugEq:
           type: string
+        modelSlugEq:
+          type: string
+          description: 'Pledges that would put this ship in the hangar: ships and
+            packages containing it, and upgrades to it'
         s:
           "$ref": "#/components/schemas/BuybackPledgeSortingEnum"
         sorts:

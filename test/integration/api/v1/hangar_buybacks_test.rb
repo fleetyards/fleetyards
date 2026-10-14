@@ -382,6 +382,32 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds the pledges that would put a ship in the hangar" do
+    user = create(:user)
+    cutlass = create(:model, name: "Cutlass Black", rsi_name: "Cutlass Black", rsi_id: 100)
+    create(:model, rsi_id: 308)
+    standalone = buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Black - Warbond",
+      contained: "Cutlass Black and 2 items")
+    package = buyback(user, kind: "package", name: "Package - Cutlass Starter Pack",
+      contained: "cutlass black and 6 items")
+    insured = buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Black",
+      contained: "Cutlass Black and 6 month insurance")
+    upgrade = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to Cutlass Black",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 100)
+    buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Blue", contained: "Cutlass Blue and 2 items")
+    buyback(user, kind: "paint", name: "Paint - Cutlass Black Ghoulish Green", contained: "Cutlass Black and 1 item")
+    buyback(create(:user), kind: "ship", name: "Standalone Ship - Cutlass Black", contained: "Cutlass Black and 2 items")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => cutlass.slug}} do
+      assert_equal [standalone.id, package.id, insured.id, upgrade.id].sort, parsed_body["items"].pluck("id").sort
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => "nope-not-a-ship"}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end
