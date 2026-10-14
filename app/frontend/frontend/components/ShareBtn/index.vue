@@ -91,6 +91,7 @@ const copyShareUrl = () => {
 <template>
   <Btn
     v-tooltip="noLabel && t('actions.share')"
+    :aria-label="noLabel ? t('actions.share') : undefined"
     :variant="variant"
     :size="size"
     :block="block"
