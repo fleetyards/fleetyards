@@ -184,7 +184,6 @@ describe("RSIHangarParser.extractPage", () => {
       pledgeIds: ["101", "102"],
       pledges: [
         { id: "101", name: "CSV-SM", type: "ship" },
-        { id: "101", name: "Upgrade - Clipper To S-65 Stingray", type: "ccu" },
         { id: "102", name: "Cutter", type: "ship" },
         { id: "102", name: "Self-Land Hangar", type: "extra" },
       ],
@@ -372,6 +371,24 @@ describe("RSIHangarParser.extractPage", () => {
       ],
     });
     expect(page).not.toHaveProperty("unread", expect.anything());
+  });
+
+  it("leaves out an upgrade already applied to the pledge's ship", () => {
+    expect(
+      extract(
+        pledgesPage(
+          pledge(
+            "101",
+            item("Ship", "Cutter") +
+              item("Upgrade", "Upgrade - Aurora MR To Cutter"),
+            "Standalone Ship - Aurora MR - Upgraded",
+          ),
+        ),
+      ),
+    ).toMatchObject({
+      status: RsiPageStatus.PAGE,
+      pledges: [{ id: "101", name: "Cutter", type: "ship" }],
+    });
   });
 
   it("reports both an item without a kind and a standalone pledge without a ship", () => {

@@ -242,6 +242,12 @@ export class RSIHangarParser {
         }
       });
 
+      // An upgrade listed beside a ship has been applied to it and is spent.
+      const holdsShip = items.some((item) => item.type === "ship");
+      const pledgeItems = holdsShip
+        ? items.filter((item) => item.type !== "ccu")
+        : items;
+
       // Every standalone ship pledge holds its ship. One that reads none has
       // lost both its kind and its manufacturer. RSI files an insurance
       // upgrade under the same category, holding only the insurance and the
@@ -249,7 +255,7 @@ export class RSIHangarParser {
       if (
         name?.startsWith("Standalone Ship") &&
         !entry.getElementsByClassName("js-upgrade-data")[0] &&
-        !items.some((item) => item.type === "ship")
+        !holdsShip
       ) {
         const kinds = new Set(
           elements.map((item) => {
@@ -265,7 +271,7 @@ export class RSIHangarParser {
         unreadEntries.add(entry);
       }
 
-      pledges.push(...items);
+      pledges.push(...pledgeItems);
     });
 
     // Every pledge row, not just one: a row that no longer reads would drop
