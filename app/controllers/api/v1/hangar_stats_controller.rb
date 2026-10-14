@@ -13,8 +13,9 @@ module Api
       def show
         authorize! with: ::HangarPolicy
 
-        scope = authorized_scope(Vehicle.all).visible.purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: %i[build last_build])
+        scope = authorized_scope(Vehicle.all).where(hidden: false).purchased.includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: %i[build last_build])
 
+        scope = hidden_by_user_included?(scope)
         scope = loaner_included?(scope)
         scope = bundled_included?(scope)
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?

@@ -62,6 +62,14 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_equal 1, parsed_body["total"]
     end
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "only"}} do
+      assert_equal 1, parsed_body["total"]
+    end
+
+    assert_api_response :get, 200, params: {q: {hiddenByUserEq: "true"}} do
+      assert_equal 2, parsed_body["total"]
+    end
   end
 
   # The counts are deliberately blind to their own filter, as the group counts
