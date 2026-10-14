@@ -28,7 +28,7 @@ module Admin
               modelSearchCont: {type: :string},
               loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
               wantedEq: {type: :boolean},
-              hasImageEq: {type: :boolean},
+              imageSourceEq: ::Admin::V1::Schemas::Enums::VehicleImageSourceFilterEnum,
               hasDedicationEq: {type: :boolean},
               s: {anyOf: [{
                 type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum

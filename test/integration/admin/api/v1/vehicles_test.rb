@@ -138,19 +138,29 @@ class Admin::Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /vehicles filters by hasImageEq query" do
-    create_list(:vehicle, 2)
-    with_image = create(:vehicle)
-    with_image.image.attach(io: file_fixture("image.jpg").open, filename: "image.jpg")
+  test "GET /vehicles filters by imageSourceEq query" do
+    plain = create(:vehicle)
+    uploaded = create(:vehicle)
+    uploaded.image.attach(io: file_fixture("image.jpg").open, filename: "image.jpg")
+    picked = create(:vehicle)
+    picked.update!(model_image: create(:image, gallery: picked.model))
+    both = create(:vehicle)
+    both.update!(model_image: create(:image, gallery: both.model))
+    both.image.attach(io: file_fixture("image.jpg").open, filename: "image.jpg")
+    pick_disabled = create(:vehicle)
+    pick_disabled.update!(model_image: create(:image, gallery: pick_disabled.model))
+    pick_disabled.model_image.update!(enabled: false)
     sign_in @admin
 
-    assert_api_response :get, 200, params: {q: {"hasImageEq" => true}} do
-      assert_equal [with_image.id], parsed_body["items"].pluck("id")
-    end
-
-    assert_api_response :get, 200, params: {q: {"hasImageEq" => false}} do
-      assert_equal 2, parsed_body["items"].count
-      assert_not_includes parsed_body["items"].pluck("id"), with_image.id
+    {
+      "upload" => [uploaded, both],
+      "gallery" => [picked],
+      "custom" => [uploaded, picked, both],
+      "default" => [plain, pick_disabled]
+    }.each do |source, expected|
+      assert_api_response :get, 200, params: {q: {"imageSourceEq" => source}} do
+        assert_equal expected.map(&:id).sort, parsed_body["items"].pluck("id").sort, source
+      end
     end
   end
 

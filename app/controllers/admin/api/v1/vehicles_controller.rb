@@ -64,7 +64,7 @@ module Admin
         private def vehicle_query_params
           @vehicle_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :model_name_cont, :id_eq, :model_id_eq,
-            :loaner_eq, :wanted_eq, :has_image_eq, :has_dedication_eq, :s, :sorts,
+            :loaner_eq, :wanted_eq, :image_source_eq, :has_dedication_eq, :s, :sorts,
             s: [], sorts: [],
             name_in: [], id_in: [], id_not_in: [], model_slug_in: [], model_name_in: [],
             model_id_in: [], model_id_not_in: [], model_production_status_in: [],
