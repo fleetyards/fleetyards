@@ -10,11 +10,15 @@ export type TabNavViewAnchorItem = {
   label: string;
   invalid?: boolean;
   disabled?: boolean;
+  icon?: string;
+  // Says why a disabled tab cannot be opened yet.
+  hint?: string;
 };
 
 type Props = {
   items: TabNavViewAnchorItem[];
   activeId?: string;
+  activeLabelOnly?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -92,17 +96,85 @@ const onKeydown = (event: KeyboardEvent, item: TabNavViewAnchorItem) => {
     role="tab"
     :class="{
       active: item.id === activeId,
+      'tab-anchor--compact': activeLabelOnly && !!item.icon,
       disabled: item.disabled,
       'has-errors': item.invalid,
     }"
     :aria-selected="item.id === activeId"
+    :aria-label="item.label"
     :aria-disabled="item.disabled || undefined"
     :tabindex="item.id === focusableId ? 0 : -1"
     :data-tab-id="item.id"
     :data-test="`tab-anchor-${item.id}`"
+    v-tooltip="
+      activeLabelOnly
+        ? [item.label, item.hint].filter(Boolean).join(' — ')
+        : item.hint
+    "
     @click="activate(item)"
     @keydown="onKeydown($event, item)"
   >
-    <a>{{ item.label }}</a>
+    <a :aria-label="item.label">
+      <span class="tab-anchor__content">
+        <i v-if="item.icon" :class="item.icon" aria-hidden="true" />
+        <span
+          class="tab-anchor__label"
+          :aria-hidden="
+            (activeLabelOnly && !!item.icon && item.id !== activeId) ||
+            undefined
+          "
+        >
+          <span>{{ item.label }}</span>
+        </span>
+      </span>
+    </a>
   </li>
 </template>
+
+<style lang="scss" scoped>
+.tab-anchor__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+}
+
+.tab-anchor__label {
+  display: grid;
+  grid-template-columns: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-columns 200ms ease,
+    opacity 200ms ease;
+
+  > span {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.tab-anchor--compact {
+  .tab-anchor__content {
+    transition: gap 200ms ease;
+  }
+
+  &:not(.active) {
+    .tab-anchor__content {
+      gap: 0;
+    }
+
+    .tab-anchor__label {
+      grid-template-columns: 0fr;
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-anchor__label,
+  .tab-anchor--compact .tab-anchor__content {
+    transition: none;
+  }
+}
+</style>

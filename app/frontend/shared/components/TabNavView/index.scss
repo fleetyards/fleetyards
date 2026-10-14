@@ -297,6 +297,17 @@ $nav-transition-speed: 0.35s;
   }
 }
 
+.tab-nav-horizontal > .tabs.tabs--horizontal :deep(li.tab-anchor--compact) {
+  &:not(.active) > a::before {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
+  }
+}
+
 .tab-nav-horizontal__dropdown {
   margin-bottom: 20px;
 }

@@ -18,6 +18,8 @@ type Props = {
   defaultTab?: string;
   queryKey?: string;
   syncUrl?: boolean;
+  horizontal?: boolean;
+  activeLabelOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
   defaultTab: undefined,
   queryKey: "tab",
   syncUrl: true,
+  horizontal: false,
+  activeLabelOnly: false,
 });
 
 const emit = defineEmits<{
@@ -109,6 +113,8 @@ const items = computed(() =>
     label: tab.label.value,
     disabled: tab.disabled.value,
     invalid: tabHasErrors(tab),
+    icon: tab.icon.value,
+    hint: tab.hint.value,
   })),
 );
 
@@ -136,6 +142,8 @@ watch(
   <TabNavView
     :anchors="items"
     :active-key="activeId"
+    :horizontal="horizontal"
+    :active-label-only="activeLabelOnly"
     @update:active-key="setActive"
   >
     <template #content>

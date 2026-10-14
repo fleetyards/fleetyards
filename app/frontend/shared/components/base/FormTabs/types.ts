@@ -6,6 +6,8 @@ export type FormTabRegistration = {
   fields: Ref<string[]>;
   disabled: Ref<boolean>;
   hidden: Ref<boolean>;
+  icon: Ref<string | undefined>;
+  hint: Ref<string | undefined>;
 };
 
 export type FormTabsContext = {
