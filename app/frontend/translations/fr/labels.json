@@ -2408,7 +2408,9 @@
           "group": "Groupe",
           "loaner": "Prêteurs",
           "bundled": "Snub Crafts inclus",
-          "boughtVia": "Acheté via?"
+          "boughtVia": "Acheté via?",
+          "image": "Image personnalisée",
+          "dedication": "Plaque de dédicace"
         },
         "models": {
           "name": "Nom",

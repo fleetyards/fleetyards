@@ -230,10 +230,27 @@ class Vehicle < ApplicationRecord
     parent.table[:bought_via]
   end
 
+  ransacker :has_image, type: :boolean do
+    Arel.sql(<<~SQL.squish)
+      EXISTS (
+        SELECT 1 FROM active_storage_attachments
+        WHERE active_storage_attachments.record_type = 'Vehicle'
+          AND active_storage_attachments.record_id = vehicles.id
+          AND active_storage_attachments.name = 'image'
+      )
+    SQL
+  end
+
+  # A blank dedication is stored as NULL (see `NULL_ATTRS`), and without one
+  # there is no plaque.
+  ransacker :has_dedication, type: :boolean do
+    Arel.sql("vehicles.dedication IS NOT NULL")
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
-      "focus", "hangar_groups", "height", "hidden", "id", "id_value", "length", "loaner",
+      "focus", "hangar_groups", "has_dedication", "has_image", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
