@@ -105,6 +105,8 @@ class Hardpoint < ApplicationRecord
     external_fuel_tank: 10,
     refuel_boom: 11,
     ore_pod: 12,
+    module: 13,
+    salvage: 14,
     unknown: 99
   }.freeze
 
@@ -115,7 +117,7 @@ class Hardpoint < ApplicationRecord
     refuel_boom: 25,
     main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
     weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
-    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
+    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47, salvage_storage: 48,
     armor: 50, countermeasures: 51,
     selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63, ore_pods: 64,
     seat: 70,
@@ -186,8 +188,12 @@ class Hardpoint < ApplicationRecord
       :weapon
     when "fueltanks", "fuel_intakes", "quantumdrive"
       :propulsion
-    when "cargogrid", "module", "salvagefillerstation"
+    when "cargogrid"
       :other
+    when "module"
+      :module
+    when "salvagefillerstation"
+      :salvage
     when "relay", "batteries"
       :relay
     else
@@ -208,6 +214,10 @@ class Hardpoint < ApplicationRecord
 
     if ore_pod?
       self.group = :ore_pod
+    end
+
+    if component&.component_type == "SalvageInternalStorage"
+      self.group = :salvage
     end
 
     if sc_name&.start_with?("hardpoint_relay_")
@@ -239,6 +249,8 @@ class Hardpoint < ApplicationRecord
         :emp
       when "ExternalFuelTank"
         :external_fuel_tanks
+      when "SalvageInternalStorage"
+        :salvage_storage
       when "DockingCollar", "ToolArm"
         (component&.category == "refuel_boom") ? :utility : (component&.category || :unknown)
       else
