@@ -60,10 +60,16 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 | `app/frontend/frontend/components/Vehicles/LoadoutModal/` | editor |
 | `app/frontend/frontend/components/Vehicles/Overview/LoadoutsCard/index.vue`, `shared/components/LoadoutMarker/index.vue`, `pages/hangar/[username]/[segment]/loadouts.vue` | url-less loadouts |
 
+## Shape after the reshape
+
+- `vehicle_loadout_items`: `slot_path` (hardpoint names from the hull down, `/`-joined) + polymorphic `item` (`ModelModule` only, `VehicleLoadoutItem::ITEM_TYPES`). A nested path needs its parent path fitted; unfitting a module drops what sits under it.
+- Loadout editor (`LoadoutModal`): one fleetyards loadout (by `loadoutId`, `newLoadout`, or the active one), name + fitting, one Save. Category tabs only; nothing owned is edited there.
+- Vehicle editor (`EditModal`): Modules / Upgrades / Paint tabs for what the ship owns (`Addons`, `Packages` moved here).
+- Loadouts page: "Edit loadout" on a fleetyards row, "New loadout" button.
+
 ## Not in scope (deferred)
 - **Components per hardpoint** — the other "coming soon" tabs; they reuse `vehicle_loadout_items` with a component reference. Becomes its own issue.
 - **Paint in the loadout** — after the component categories work.
-- **Named presets ("Save loadout")** — the editor edits the active fleetyards loadout; saving several named ones stays reserved.
 - **Admin UI for module slots** — the admin API takes `slot`; a form for it is separate.
 
 ## Discovery Log
@@ -78,4 +84,7 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 - [x] Phase 2 — Model and table
 - [x] Phase 3 — API
 - [x] Phase 4 — Frontend
+- [x] Stock modules fittable without being owned
+- [x] Explicit save; saved loadouts editable
+- [x] Reshape: one loadout per editor; owned equipment in the vehicle editor; slot paths + polymorphic items
 - [ ] Live check in a running app (not done: needs a dev server on this branch)
