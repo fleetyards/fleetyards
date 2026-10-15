@@ -584,7 +584,9 @@
         "choosePaint": "Scegli verniciatura",
         "editLocation": "Cambia posizione",
         "allPaints": "Tutte le %{count} verniciature",
-        "fullscreenHolo": "Schermo intero"
+        "fullscreenHolo": "Schermo intero",
+        "allUpgrades": "Tutti i %{count} potenziamenti",
+        "allBuybacks": "Tutti i %{count} pledge riacquistabili"
       },
       "vehicleLog": {
         "open": "Diario di bordo",

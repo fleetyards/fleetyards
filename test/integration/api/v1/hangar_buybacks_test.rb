@@ -382,6 +382,32 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds the pledges that would put a ship in the hangar" do
+    user = create(:user)
+    cutlass = create(:model, name: "Cutlass Black", rsi_name: "Cutlass Black", rsi_id: 100)
+    create(:model, rsi_id: 308)
+    standalone = buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Black - Warbond",
+      contained: "Cutlass Black and 2 items")
+    package = buyback(user, kind: "package", name: "Package - Cutlass Starter Pack",
+      contained: "cutlass black and 6 items")
+    insured = buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Black",
+      contained: "Cutlass Black and 6 month insurance")
+    upgrade = buyback(user, kind: "upgrade", name: "Upgrade - Clipper to Cutlass Black",
+      upgrade_from_ship_id: 308, upgrade_to_ship_id: 100)
+    buyback(user, kind: "ship", name: "Standalone Ship - Cutlass Blue", contained: "Cutlass Blue and 2 items")
+    buyback(user, kind: "paint", name: "Paint - Cutlass Black Ghoulish Green", contained: "Cutlass Black and 1 item")
+    buyback(create(:user), kind: "ship", name: "Standalone Ship - Cutlass Black", contained: "Cutlass Black and 2 items")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => cutlass.slug}} do
+      assert_equal [standalone.id, package.id, insured.id, upgrade.id].sort, parsed_body["items"].pluck("id").sort
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => "nope-not-a-ship"}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end
@@ -395,7 +421,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
        reclaimedOn: "2023-11-26", contained: "Cutter Scout and 3 items",
        image: "https://robertsspaceindustries.com/media/s1pzv94jrc3jhr/heap_infobox/cutter.jpg"},
       {id: "111313560", kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
-       available: false, upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461}
+       available: false, upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461, page: 3}
     ]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
@@ -411,6 +437,13 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate cutter, :available?
     assert_equal 19461, user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").upgrade_to_sku_id
     assert_not user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").available?
+    assert_equal 3, user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").rsi_page
+    assert_nil cutter.rsi_page
+
+    assert_api_response :get, 200 do
+      pages = parsed_body["items"].to_h { |item| [item["rsiPledgeId"], item["rsiPage"]] }
+      assert_equal({"44725819" => nil, "111313560" => 3}, pages)
+    end
   end
 
   test "PUT /hangar/sync-rsi-buybacks keeps stored details and only lists pledges without them" do

@@ -21,6 +21,7 @@ module V1
             meltValue: {type: :number, description: "What melting the item returns, in USD; only for an item that is its whole pledge"},
             pledgeName: {type: :string},
             pledgeValue: {type: :number, description: "What melting the whole pledge returns, in USD"},
+            rsiPage: {type: :integer, description: "The page of the RSI hangar the pledge was last read from"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

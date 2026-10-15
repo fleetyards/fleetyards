@@ -17,6 +17,7 @@ module V1
             insuranceIn: {type: :array, items: {type: :string}, description: "`lifetime`, `none` or a number of months"},
             upgradeFromModelSlugEq: {type: :string},
             upgradeToModelSlugEq: {type: :string},
+            modelSlugEq: {type: :string, description: "Pledges that would put this ship in the hangar: ships and packages containing it, and upgrades to it"},
             s: ::V1::Schemas::Enums::BuybackPledgeSortingEnum,
             sorts: {type: :array, items: ::V1::Schemas::Enums::BuybackPledgeSortingEnum}
           },

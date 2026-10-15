@@ -168,7 +168,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/upgrades lists only the caller's CCUs" do
     user = create(:user)
-    ccu = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter")
+    ccu = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter", rsi_page: 2)
     create(:hangar_pledge_item, user:, kind: "flair", name: "Takuetsu Cutlass Model")
     create(:hangar_pledge_item, kind: "ccu", name: "Upgrade - Merchantman To Hull E")
     sign_in user
@@ -176,6 +176,7 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/hangar/upgrades" do
       assert_equal [ccu.id], parsed_body["items"].pluck("id")
       assert_equal "ccu", parsed_body["items"].first["kind"]
+      assert_equal 2, parsed_body["items"].first["rsiPage"]
     end
   end
 

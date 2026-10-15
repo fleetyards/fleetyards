@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import RowList from "@/shared/components/RowList/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   RowListItemTonesEnum,
   type RowListItemBadge,
@@ -15,7 +17,11 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useImageViewer } from "@/shared/composables/useImageViewer";
-import type { HangarPledgeItem } from "@/services/fyApi";
+import { rsiHangarUrl } from "@/frontend/utils/rsiPledgeUrls";
+import {
+  HangarPledgeItemKindEnum,
+  type HangarPledgeItem,
+} from "@/services/fyApi";
 
 type Props = {
   items: HangarPledgeItem[];
@@ -139,6 +145,21 @@ const sub = (item: HangarPledgeItem) =>
 
         <template #sub>
           {{ sub(record) }}
+        </template>
+
+        <!-- A CCU is applied in the RSI hangar, the next step towards the
+             ship it leads to. -->
+        <template v-if="record.kind === HangarPledgeItemKindEnum.CCU" #actions>
+          <Btn
+            :href="rsiHangarUrl(record)"
+            :variant="BtnVariantsEnum.GHOST"
+            :aria-label="t('labels.hangarPledgeItems.openOnRsi')"
+            mobile-icon-only
+            data-test="pledge-item-rsi-link"
+          >
+            <i class="fa-light fa-arrow-up-right-from-square" />
+            <span>{{ t("labels.hangarPledgeItems.openOnRsi") }}</span>
+          </Btn>
         </template>
       </RowListItem>
     </template>

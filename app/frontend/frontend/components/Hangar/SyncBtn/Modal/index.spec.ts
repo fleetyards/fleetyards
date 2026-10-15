@@ -674,6 +674,23 @@ describe("HangarSyncModal", () => {
     });
   });
 
+  it("submits each pledge with the hangar page it was read from", async () => {
+    const { wrapper } = await mountModal();
+
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    await replyWithPage(
+      '<div class="item"><div class="title">Cutter</div><div class="kind">Ship</div></div>',
+    );
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        items: [expect.objectContaining({ name: "Cutter", page: 1 })],
+      }),
+    });
+  });
+
   it("submits a hangar holding a ship its upgrade was applied to", async () => {
     const { wrapper } = await mountModal();
 

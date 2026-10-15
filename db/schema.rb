@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -308,6 +308,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_180000) do
     t.integer "insurance_months"
     t.boolean "lifetime_insurance", default: false, null: false
     t.datetime "details_synced_at"
+    t.integer "rsi_page"
     t.index ["user_id", "rsi_pledge_id"], name: "index_buyback_pledges_on_user_id_and_rsi_pledge_id", unique: true
   end
 
@@ -1427,6 +1428,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_180000) do
     t.boolean "meltable", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "rsi_page"
     t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
   end
 

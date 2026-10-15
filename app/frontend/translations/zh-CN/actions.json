@@ -584,7 +584,9 @@
         "choosePaint": "选择涂装",
         "editLocation": "更改位置",
         "allPaints": "全部 %{count} 款涂装",
-        "fullscreenHolo": "全屏"
+        "fullscreenHolo": "全屏",
+        "allUpgrades": "全部 %{count} 个升级",
+        "allBuybacks": "全部 %{count} 个可回购承诺"
       },
       "vehicleLog": {
         "open": "舰长日志",

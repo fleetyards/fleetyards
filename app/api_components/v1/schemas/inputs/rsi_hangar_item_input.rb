@@ -18,7 +18,8 @@ module V1
             pledgeValue: {type: :number, description: "What melting the whole pledge returns, in USD"},
             pledgeItemCount: {type: :integer, description: "How many items the pledge holds, of any kind"},
             pledgeCreatedOn: {type: :string, format: :date},
-            meltable: {type: :boolean, description: "Whether RSI offers to melt the pledge"}
+            meltable: {type: :boolean, description: "Whether RSI offers to melt the pledge"},
+            page: {type: :integer, description: "The page of the RSI hangar the pledge was read from"}
           },
           additionalProperties: false,
           required: %w[id name type]

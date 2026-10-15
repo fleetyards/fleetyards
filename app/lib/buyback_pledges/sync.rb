@@ -73,7 +73,8 @@ module BuybackPledges
         user_id: user.id,
         rsi_pledge_id: item[:id].to_s,
         upgraded: ActiveModel::Type::Boolean.new.cast(item[:upgraded]) || false,
-        image_url: item[:image]
+        image_url: item[:image],
+        rsi_page: item[:page].presence&.to_i
       )
 
       available = ActiveModel::Type::Boolean.new.cast(item[:available])

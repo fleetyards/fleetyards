@@ -584,7 +584,9 @@
         "choosePaint": "Lackierung wählen",
         "editLocation": "Standort ändern",
         "allPaints": "Alle %{count} Lackierungen",
-        "fullscreenHolo": "Vollbild"
+        "fullscreenHolo": "Vollbild",
+        "allUpgrades": "Alle %{count} Upgrades",
+        "allBuybacks": "Alle %{count} Rückkauf-Pledges"
       },
       "vehicleLog": {
         "open": "Logbuch",

@@ -69,6 +69,28 @@ class BuybackPledge < ApplicationRecord
     conditions.empty? ? all : where(conditions.join(" OR "))
   }
 
+  scope :model_slug_eq, ->(slug) { obtaining_model(slug) }
+
+  # The pledges that would put this ship in the hangar: a ship or package that
+  # contains it, or an upgrade that leads to it. RSI names a pledge's ship only
+  # in `contained`, as "Cutlass Black and 2 items", so that is matched against
+  # the model's names at query time.
+  def self.obtaining_model(slug)
+    model = Model.find_by(slug:)
+    return none unless model
+
+    names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
+    ship = <<~SQL.squish
+      lower(trim(regexp_replace(buyback_pledges.contained,
+        '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
+    SQL
+
+    containing = where(kind: %w[ship package]).where(Arel.sql(ship).in(names))
+    return containing if model.rsi_id.blank?
+
+    containing.or(where(kind: "upgrade", upgrade_to_ship_id: model.rsi_id))
+  end
+
   INSURANCE_MONTHS = 1..9999
 
   # Insurance is read from a pledge's detail page, so a pledge whose details
@@ -116,11 +138,11 @@ class BuybackPledge < ApplicationRecord
   end
 
   def self.ransackable_scopes(_auth_object = nil)
-    %i[price_in insurance_in]
+    %i[price_in insurance_in model_slug_eq]
   end
 
   # Ransack would otherwise read "1" as true, and drop a one-month filter.
   def self.ransackable_scopes_skip_sanitize_args
-    %i[insurance_in]
+    %i[insurance_in model_slug_eq]
   end
 end

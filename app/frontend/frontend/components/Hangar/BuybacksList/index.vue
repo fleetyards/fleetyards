@@ -17,13 +17,13 @@ import {
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
+import { buybackRsiUrl as rsiUrl } from "@/frontend/utils/rsiPledgeUrls";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
-  BuybackPledgeKindEnum,
   getHangarBuybacksQueryKey,
   useDestroyHangarBuyback,
   type BuybackPledge,
@@ -50,13 +50,6 @@ const filterLink = (key: string, value: string) => ({
   name: route.name as string,
   query: { ...route.query, page: undefined, [key]: value },
 });
-
-// An upgrade's buy-back is a modal on RSI's list page, with no address of its
-// own, so it links to the list.
-const rsiUrl = (buyback: BuybackPledge) =>
-  buyback.kind === BuybackPledgeKindEnum.UPGRADE
-    ? `${window.RSI_ENDPOINT}/account/buy-back-pledges`
-    : `${window.RSI_ENDPOINT}/pledge/buyback/${buyback.rsiPledgeId}`;
 
 const insurance = (buyback: BuybackPledge) => {
   if (buyback.lifetimeInsurance) {

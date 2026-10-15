@@ -114,6 +114,14 @@ describe("HangarBuybacksFilterForm", () => {
     );
   });
 
+  it("prefills the ship a pledge gets you from the URL", async () => {
+    const { wrapper } = await setup({ modelSlugEq: "cutlass-black" });
+
+    expect(picker(wrapper, "modelSlugEq").props("modelValue")).toBe(
+      "cutlass-black",
+    );
+  });
+
   it("puts a picked ship in the URL and removes it again on clear", async () => {
     const { router, wrapper } = await setup();
 

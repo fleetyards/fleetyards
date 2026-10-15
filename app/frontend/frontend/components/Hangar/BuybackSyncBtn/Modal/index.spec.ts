@@ -268,7 +268,7 @@ describe("HangarBuybackSyncModal", () => {
     expect(askedFor("sync")).toBe(false);
   });
 
-  it("reads every page before submitting the list", async () => {
+  it("reads every page before submitting the list, each pledge with its page", async () => {
     const wrapper = await startSync();
 
     await answerNextPage(buybackPage("1"));
@@ -281,8 +281,8 @@ describe("HangarBuybackSyncModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith({
       data: {
         items: [
-          expect.objectContaining({ id: "1", kind: "ship" }),
-          expect.objectContaining({ id: "2", kind: "ship" }),
+          expect.objectContaining({ id: "1", kind: "ship", page: 1 }),
+          expect.objectContaining({ id: "2", kind: "ship", page: 2 }),
         ],
       },
     });

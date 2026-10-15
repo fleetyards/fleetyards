@@ -230,7 +230,7 @@ module Api
           :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :sync_equipment, :sync_ccus,
           :unmatched_vehicles_action,
           :unmatched_hangar_group_id, :extension_version,
-          items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable],
+          items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable, :page],
           unread_pages: [:check, :page_number, details: [], markup: []]
         )
       end

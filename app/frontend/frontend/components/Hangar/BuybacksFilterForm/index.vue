@@ -31,6 +31,7 @@ const prefillFormValues = (): BuybackPledgeQuery => ({
   priceLteq: filters.value.priceLteq,
   upgradeFromModelSlugEq: filters.value.upgradeFromModelSlugEq,
   upgradeToModelSlugEq: filters.value.upgradeToModelSlugEq,
+  modelSlugEq: filters.value.modelSlugEq,
 });
 
 const setupForm = () => {
@@ -170,6 +171,12 @@ const kindOptions = computed(() =>
         />
       </div>
     </div>
+
+    <ModelPickerSelect
+      v-model="form.modelSlugEq"
+      name="modelSlugEq"
+      :label="t('labels.buybacks.gets')"
+    />
 
     <ModelPickerSelect
       v-model="form.upgradeFromModelSlugEq"

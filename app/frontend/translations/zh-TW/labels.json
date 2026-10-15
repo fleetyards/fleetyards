@@ -2712,6 +2712,7 @@
         "shop": "商店"
       },
       "hangarPledgeItems": {
+        "openOnRsi": "在 RSI 機庫中開啟",
         "flair": "機庫裝飾",
         "upgrades": "升級 / CCU",
         "equipment": "FPS 裝備",
@@ -2755,7 +2756,8 @@
         "priceMin": "最低價格（USD）",
         "priceMax": "最高價格（USD）",
         "upgradeFrom": "升級自",
-        "upgradeTo": "升級至"
+        "upgradeTo": "升級至",
+        "gets": "可取得該艦船"
       },
       "buybackSync": {
         "extensionVersion": "已安裝的擴充功能版本",
@@ -4224,7 +4226,8 @@
         "planLoadout": "規劃配裝",
         "pictureUpload": "上傳",
         "pictureGallery": "圖庫",
-        "stockPicture": "標準圖片"
+        "stockPicture": "標準圖片",
+        "waysToGetIt": "取得途徑"
       },
       "vehicleLog": {
         "entries": "日誌條目",

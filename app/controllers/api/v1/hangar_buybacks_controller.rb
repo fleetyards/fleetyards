@@ -82,7 +82,7 @@ module Api
       private def buyback_query_params
         @buyback_query_params ||= params.permit(q: [
           :kind_eq, :name_cont, :price_gteq, :price_lteq,
-          :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq, :s, :sorts,
+          :upgrade_from_model_slug_eq, :upgrade_to_model_slug_eq, :model_slug_eq, :s, :sorts,
           price_in: [], insurance_in: [], s: [], sorts: []
         ]).fetch(:q, {})
       end
@@ -90,7 +90,7 @@ module Api
       private def sync_params
         params.permit(items: [
           :id, :kind, :name, :upgraded, :available, :reclaimed_on, :contained, :image,
-          :upgrade_from_ship_id, :upgrade_to_ship_id, :upgrade_to_sku_id
+          :upgrade_from_ship_id, :upgrade_to_ship_id, :upgrade_to_sku_id, :page
         ])
       end
 

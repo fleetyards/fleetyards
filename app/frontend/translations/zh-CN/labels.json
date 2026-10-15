@@ -2712,6 +2712,7 @@
         "shop": "商店"
       },
       "hangarPledgeItems": {
+        "openOnRsi": "在 RSI 机库中打开",
         "flair": "机库装饰",
         "upgrades": "升级 / CCU",
         "equipment": "FPS 装备",
@@ -2755,7 +2756,8 @@
         "priceMin": "最低价格（USD）",
         "priceMax": "最高价格（USD）",
         "upgradeFrom": "升级自",
-        "upgradeTo": "升级至"
+        "upgradeTo": "升级至",
+        "gets": "可获得该舰船"
       },
       "buybackSync": {
         "extensionVersion": "已安装的扩展版本",
@@ -4224,7 +4226,8 @@
         "planLoadout": "规划配装",
         "pictureUpload": "上传",
         "pictureGallery": "图库",
-        "stockPicture": "标准图片"
+        "stockPicture": "标准图片",
+        "waysToGetIt": "获取途径"
       },
       "vehicleLog": {
         "entries": "日志条目",

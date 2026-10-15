@@ -184,6 +184,7 @@ module HangarPledgeItems
             pledge_value: group.first[:pledge_value].presence,
             pledge_item_count: group.first[:pledge_item_count].presence,
             pledge_created_on: group.first[:pledge_created_on].presence,
+            rsi_page: group.first[:page].presence&.to_i,
             meltable: ActiveModel::Type::Boolean.new.cast(group.first[:meltable]) || false
           }
         end

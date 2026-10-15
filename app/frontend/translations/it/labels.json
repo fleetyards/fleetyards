@@ -2712,6 +2712,7 @@
         "shop": "Negozio"
       },
       "hangarPledgeItems": {
+        "openOnRsi": "Apri nell'hangar RSI",
         "flair": "Decorazioni per l'hangar",
         "upgrades": "Potenziamenti / CCU",
         "equipment": "Equipaggiamento FPS",
@@ -2755,7 +2756,8 @@
         "priceMin": "Prezzo min. (USD)",
         "priceMax": "Prezzo max. (USD)",
         "upgradeFrom": "Upgrade da",
-        "upgradeTo": "Upgrade a"
+        "upgradeTo": "Upgrade a",
+        "gets": "Ti fa ottenere la nave"
       },
       "buybackSync": {
         "extensionVersion": "Versione installata dell'estensione",
@@ -4224,7 +4226,8 @@
         "planLoadout": "Pianifica un loadout",
         "pictureUpload": "Carica",
         "pictureGallery": "Galleria",
-        "stockPicture": "Immagine predefinita"
+        "stockPicture": "Immagine predefinita",
+        "waysToGetIt": "Come ottenerla"
       },
       "vehicleLog": {
         "entries": "voci del diario",

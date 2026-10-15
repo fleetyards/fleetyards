@@ -19,7 +19,8 @@ module V1
             image: {type: :string, format: :uri},
             upgradeFromShipId: {type: :integer},
             upgradeToShipId: {type: :integer},
-            upgradeToSkuId: {type: :integer}
+            upgradeToSkuId: {type: :integer},
+            page: {type: :integer, description: "The page of the RSI buy-back list the pledge was read from"}
           },
           additionalProperties: false,
           required: %w[id kind name]

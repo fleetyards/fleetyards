@@ -2,6 +2,7 @@
 
 json.id buyback_pledge.id
 json.rsi_pledge_id buyback_pledge.rsi_pledge_id
+json.rsi_page buyback_pledge.rsi_page if buyback_pledge.rsi_page.present?
 json.kind buyback_pledge.kind
 json.name buyback_pledge.name
 json.upgraded buyback_pledge.upgraded

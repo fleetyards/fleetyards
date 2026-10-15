@@ -2,6 +2,7 @@
 
 json.id hangar_pledge_item.id
 json.rsi_pledge_id hangar_pledge_item.rsi_pledge_id
+json.rsi_page hangar_pledge_item.rsi_page if hangar_pledge_item.rsi_page.present?
 json.kind hangar_pledge_item.kind
 json.name hangar_pledge_item.name
 json.quantity hangar_pledge_item.quantity

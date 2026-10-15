@@ -11,6 +11,7 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             rsiPledgeId: {type: :string},
+            rsiPage: {type: :integer, description: "The page of the RSI buy-back list the pledge was last read from"},
             kind: ::V1::Schemas::Enums::BuybackPledgeKindEnum,
             name: {type: :string},
             upgraded: {type: :boolean},
