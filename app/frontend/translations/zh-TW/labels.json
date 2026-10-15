@@ -1138,6 +1138,8 @@
       },
       "source": "來源",
       "loadout": {
+        "marker": "配置「%{name}」",
+        "fleetyards": "Fleetyards 配裝",
         "namePlaceholder": "配置名稱...",
         "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
         "empty": "尚無配置。建立一個開始使用。",
@@ -4287,6 +4289,26 @@
           "flightBlades": "飛行刀片"
         },
         "comingSoon": "即將推出",
+        "ownedModules": "你擁有的模組",
+        "nothingFitted": "未裝配",
+        "owned": "已擁有",
+        "notOwned": "未擁有",
+        "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
+        "loadoutName": "配裝名稱",
+        "stock": "原廠",
+        "unslotted": "暫時無法裝配，因為遊戲檔案未說明它們佔用哪個槽位：%{modules}",
+        "notFlightReady": "只有可飛行的艦船才能使用配裝",
+        "slots": {
+          "default": "模組槽位",
+          "front": "前方模組槽位",
+          "rear": "後方模組槽位",
+          "left": "左側模組槽位",
+          "right": "右側模組槽位"
+        },
+        "unavailable": {
+          "modules": "此艦船不支援模組",
+          "upgrades": "此艦船沒有可用的附加組件"
+        },
         "none": "無"
       }
     }

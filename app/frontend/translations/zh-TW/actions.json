@@ -594,6 +594,8 @@
         "showPublic": "艦長日誌"
       },
       "vehicleLoadout": {
+        "editLoadout": "編輯配置",
+        "newLoadout": "新增配置",
         "saveLoadout": "儲存配置"
       }
     }

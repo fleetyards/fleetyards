@@ -43,6 +43,7 @@ class Api::V1::VehiclesDestroyBulkTest < ActionDispatch::IntegrationTest
 
   test "PUT /vehicles/destroy-bulk destroys what hangs off the vehicles" do
     vehicle = create(:vehicle, user: @user)
+    vehicle.model.update!(production_status: "flight-ready")
     create(:vehicle_loadout, vehicle: vehicle)
     TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
     FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)

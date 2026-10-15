@@ -306,6 +306,16 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler"
+            items:
+              not_fleetyards: "ne peuvent être équipés que dans une configuration Fleetyards"
+              slot_taken: "ne peuvent contenir qu'un module par emplacement"
+              module_not_in_slot: "doivent chacun correspondre à l'emplacement où ils sont placés"
+              item_type_not_supported: "ne contiennent que des modules pour l'instant"
+              parent_not_fitted: "doivent se trouver dans un emplacement équipé"
         payout_entry:
           attributes:
             entry_type:

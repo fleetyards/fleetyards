@@ -1,8 +1,31 @@
+/*
+ * The ship sits behind the controls rather than beside them, as the configuration
+ * terminal does: the angled view fills the right of the screen and fades out
+ * under the panel on the left, which keeps the full width for choosing.
+ */
 .vehicle-loadout {
-  min-height: 100px;
+  position: relative;
+  padding: 0 0 24px;
 
-  :deep(.tab-anchor__icon) {
-    filter: grayscale(1);
+  // The ship on a layer of its own, faded in from the left rather than painted
+  // under a gradient: the panel keeps its own colour where the controls sit.
+  // Only where the controls leave room beside it; on a phone it would sit
+  // under them.
+  &::before {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 30%;
+    background-image: var(--loadout-backdrop, none);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    mask-image: linear-gradient(90deg, transparent 0%, black 45%);
+    opacity: 0.85;
+    pointer-events: none;
+    content: "";
   }
 
   :deep(.tab-anchor__content > i) {
@@ -14,18 +37,38 @@
     height: 24px;
     font-size: 1.375rem;
     line-height: 1;
-    color: $gray-light;
+    color: var(--color-text);
   }
 
-  &__layout {
+  /*
+   * Most of the strip is components this editor does not cover yet. Drained of
+   * colour and pushed well back, so the few tabs that open read as the strip and
+   * the rest as a preview of it.
+   */
+  :deep(li.disabled) {
+    > a {
+      opacity: 0.35;
+    }
+
+    .tab-anchor__icon {
+      filter: grayscale(1);
+    }
+
+    .tab-anchor__content > i {
+      color: $gray-light;
+    }
+  }
+
+  &__panel {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+  }
+
+  // The slots and the comparison side by side, as a choice and what it does.
+  &__category {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-  }
-
-  &__sections {
-    display: flex;
-    flex-direction: column;
     gap: 24px;
   }
 
@@ -47,28 +90,38 @@
     }
   }
 
-  /*
-   * Says what pressing a package row does, because it replaces the module
-   * selection rather than adding to it — which is not something a row of images
-   * can show on its own.
-   */
   &__hint {
     color: var(--color-text-dim);
     font-size: 13px;
   }
 
-  &__preview {
+  // Where the comparison would be, on a hull with no slot to fit.
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 16px;
+    border: 1px dashed var(--color-edge-soft);
+    border-radius: 6px;
+    color: var(--color-text-dim);
+    text-align: center;
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__ship {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    order: -1;
-  }
-
-  &__image {
-    width: 100%;
-    max-height: 220px;
-    border-radius: 6px;
-    object-fit: cover;
+    margin-bottom: 16px;
   }
 
   &__model {
@@ -80,41 +133,103 @@
 
     strong {
       color: var(--color-text);
-      font-size: 1.1rem;
+      font-size: 1.3rem;
+      text-transform: uppercase;
     }
   }
 
-  &__summary {
+  &__figures {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 12px 24px;
     margin: 0;
+  }
 
+  &__figure {
     dt {
       color: var(--color-text-dim);
-      font-size: 0.8rem;
-      font-weight: normal;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
+    // Not Orbitron: its slashed zero reads as an empty-set sign on the counts.
     dd {
       margin: 0;
+      color: var(--color-text);
+      font-size: 1.15rem;
+      font-weight: 600;
     }
   }
 
-  &__summary-entry {
-    padding-top: 10px;
-    border-top: 1px solid var(--color-edge-faint);
+  &__figure-delta {
+    margin-left: 4px;
+    font-size: 0.75rem;
+
+    &--better {
+      color: var(--color-success, #{$success});
+    }
+
+    &--worse {
+      color: var(--color-danger, #{$danger});
+    }
+
+    &--even {
+      color: var(--color-text-dim);
+    }
   }
 }
 
 @media (min-width: $tablet-breakpoint) {
   .vehicle-loadout {
-    &__layout {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    // The whole screen the modal was given, less its title and the footer bar,
+    // so the ship has room behind the controls instead of an empty band below.
+    min-height: calc(100dvh - 260px);
+
+    &::before {
+      display: block;
     }
 
-    &__preview {
-      order: 0;
+    &__category {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+      align-items: start;
+    }
+
+    // The ship's figures in the corner, over the backdrop, where the terminal
+    // keeps them.
+    &__ship {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      align-items: flex-end;
+      text-align: right;
+      margin: 0;
+    }
+
+    &__figures {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    &__panel {
+      padding-right: 260px;
     }
   }
+}
+
+@media (min-width: $desktop-breakpoint) {
+  .vehicle-loadout__panel {
+    padding-right: 0;
+    width: 62%;
+  }
+}
+
+// In the footer, beside the save it names: as wide as a name needs, no wider,
+// and sharing the row with the button on a phone.
+.vehicle-loadout__name {
+  flex: 1 1 160px;
+  max-width: 280px;
+  margin: 0;
 }

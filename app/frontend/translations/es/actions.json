@@ -594,6 +594,8 @@
         "showPublic": "Cuaderno de bitácora"
       },
       "vehicleLoadout": {
+        "editLoadout": "Editar equipamiento",
+        "newLoadout": "Nuevo equipamiento",
         "saveLoadout": "Guardar equipamiento"
       }
     }

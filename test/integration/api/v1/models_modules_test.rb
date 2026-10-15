@@ -46,6 +46,21 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules marks the module the hull comes with" do
+    model = create(:model)
+    stock = create(:model_module, name: "Stock Module", sc_key: "RSI_Stock_Module")
+    extra = create(:model_module, name: "Extra Module", sc_key: "RSI_Extra_Module")
+    create(:module_hardpoint, model:, model_module: stock, slot: "hardpoint_module")
+    create(:module_hardpoint, model:, model_module: extra, slot: "hardpoint_module")
+    create(:hardpoint, parent: model, source: :game_files, sc_name: "hardpoint_module",
+      component: create(:component, sc_key: "rsi_stock_module", category: "module", component_type: "Module"))
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal({"Extra Module" => false, "Stock Module" => true},
+        parsed_body["items"].to_h { |item| [item["name"], item["stock"]] })
+    end
+  end
+
   test "GET /models/:slug/modules returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end

@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
+import {
+  type Vehicle,
+  BoughtViaEnum,
+  VehicleLoadoutKindEnum,
+} from "@/services/fyApi";
 
 // The card carries a store image, and jsdom has no IntersectionObserver for
 // useLazyBackground to hand it to.
@@ -27,9 +31,15 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 }));
 
 const openLoadoutModal = vi.fn();
+const openEditModal = vi.fn();
+const openLoadoutView = vi.fn();
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openLoadoutModal, openEditModal: vi.fn() }),
+  useVehicleModals: () => ({
+    openLoadoutModal,
+    openEditModal,
+    openLoadoutView,
+  }),
 }));
 
 const NOW = "2026-08-24T12:00:00Z";
@@ -342,21 +352,77 @@ describe("VehiclesPanel", () => {
   });
 });
 
-describe("vehicle loadout shortcut", () => {
+describe("vehicle add-ons shortcut", () => {
   it.each([
     { hasModules: true, hasUpgrades: false, tab: "modules" },
     { hasModules: false, hasUpgrades: true, tab: "upgrades" },
-  ])("opens the $tab category", async ({ hasModules, hasUpgrades, tab }) => {
+  ])(
+    "opens the owner's $tab on the vehicle",
+    async ({ hasModules, hasUpgrades, tab }) => {
+      const ship = vehicle({
+        model: { ...vehicle().model, hasModules, hasUpgrades },
+      });
+      const wrapper = await mount({ vehicle: ship, editable: true });
+
+      await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+      expect(openEditModal).toHaveBeenLastCalledWith(ship, { tab });
+    },
+  );
+
+  it("shows what is fitted on the owner's loaner", async () => {
     const ship = vehicle({
-      model: { ...vehicle().model, hasModules, hasUpgrades },
+      loaner: true,
+      modelModuleIds: ["m1"],
+      model: { ...vehicle().model, hasModules: true },
     });
     const wrapper = await mount({ vehicle: ship, editable: true });
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
-    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      editable: true,
-      tab,
+    expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
+  });
+
+  it("shows a visitor what is fitted", async () => {
+    const ship = vehicle({
+      modelModuleIds: ["m1"],
+      model: { ...vehicle().model, hasModules: true },
     });
+    const wrapper = await mount({ vehicle: ship, editable: false });
+
+    await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
+  });
+});
+
+describe("loadout marker", () => {
+  const fitted = {
+    id: "l1",
+    name: "Hauler",
+    active: true,
+    kind: VehicleLoadoutKindEnum.FLEETYARDS,
+    items: [],
+    createdAt: "2026-10-01T00:00:00Z",
+    updatedAt: "2026-10-01T00:00:00Z",
+  };
+
+  it("shows the owner the loadout, with a way into the editor", async () => {
+    const ship = vehicle({ activeLoadout: fitted });
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.get("[data-test='loadout-marker']").trigger("click");
+
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship, { editable: true });
+  });
+
+  it("shows a visitor the loadout", async () => {
+    const ship = vehicle({ activeLoadout: fitted });
+    const wrapper = await mount({ vehicle: ship, editable: false });
+
+    await wrapper.get("[data-test='loadout-marker']").trigger("click");
+
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship, { editable: false });
   });
 });

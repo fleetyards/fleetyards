@@ -69,6 +69,24 @@
   }
 }
 
+// Only where there is no mobile nav to clear: below this the modal keeps the
+// rules that hold it above the nav, and only takes the width.
+@media (min-width: $desktop-breakpoint) {
+  .app-modal.large .modal-dialog {
+    width: calc(100% - 40px);
+    max-width: none;
+    max-height: calc(100% - 40px);
+    margin: 20px auto;
+  }
+}
+
+@media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint) {
+  .app-modal.large .modal-dialog {
+    width: calc(100% - 40px);
+    max-width: none;
+  }
+}
+
 // The mobile nav is shown up to here, above the modal.
 @media (max-width: $desktop-breakpoint) {
   .app-modal .modal-dialog {

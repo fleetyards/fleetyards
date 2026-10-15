@@ -22,7 +22,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes({model: :manufacturer}, :vehicle_loadouts, :launch_port_location, :user)
+            .includes({model: :manufacturer}, {vehicle_loadouts: :items}, :launch_port_location, :user)
             .joins(model: :manufacturer)
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))

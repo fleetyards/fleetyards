@@ -1,0 +1,115 @@
+.loadout-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__swap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    i {
+      color: var(--color-success, #{$success});
+    }
+
+    strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+  }
+
+  &__row {
+    dt {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      color: var(--color-text-dim);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    dd {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 0;
+    }
+  }
+
+  // Not Orbitron: its slashed zero reads as an empty-set sign on the counts.
+  &__value {
+    color: var(--color-text);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  // The compare tool's tones: better and worse where the metric has a
+  // direction, neutral where it does not.
+  &__delta {
+    font-size: 0.75rem;
+
+    &--better {
+      color: var(--color-success, #{$success});
+    }
+
+    &--worse {
+      color: var(--color-danger, #{$danger});
+    }
+
+    &--even {
+      color: var(--color-text);
+    }
+  }
+
+  &__bars {
+    position: relative;
+    display: block;
+    height: 6px;
+    border: 1px solid var(--color-edge-soft);
+    border-radius: 2px;
+  }
+
+  &__bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 1px;
+
+    &--before {
+      background: var(--color-edge-soft);
+    }
+
+    &--after {
+      background: var(--color-text-dim);
+    }
+
+    &--better {
+      background: var(--color-success, #{$success});
+    }
+
+    &--worse {
+      background: var(--color-danger, #{$danger});
+    }
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-dim);
+    font-size: 0.85rem;
+  }
+}

@@ -7,7 +7,7 @@ require "test_helper"
 # every version here is a change somebody chose to make.
 class VehicleLoadoutVersioningTest < ActiveSupport::TestCase
   setup do
-    @vehicle = create(:vehicle)
+    @vehicle = create(:vehicle, model: create(:model, production_status: "flight-ready"))
   end
 
   def versions_for(loadout)

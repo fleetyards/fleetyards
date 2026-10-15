@@ -594,6 +594,8 @@
         "showPublic": "Journal de bord"
       },
       "vehicleLoadout": {
+        "editLoadout": "Modifier l’équipement",
+        "newLoadout": "Nouvel équipement",
         "saveLoadout": "Enregistrer l’équipement"
       }
     }

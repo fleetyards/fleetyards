@@ -1138,6 +1138,8 @@
       },
       "source": "来源",
       "loadout": {
+        "marker": "配置“%{name}”",
+        "fleetyards": "Fleetyards 配装",
         "namePlaceholder": "配置名称...",
         "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
         "empty": "暂无配置。创建一个以开始使用。",
@@ -4287,6 +4289,26 @@
           "flightBlades": "飞行刀片"
         },
         "comingSoon": "即将推出",
+        "ownedModules": "你拥有的模块",
+        "nothingFitted": "未装配",
+        "owned": "已拥有",
+        "notOwned": "未拥有",
+        "noSlots": "这艘舰船目前还没有可在此装配的内容",
+        "loadoutName": "配装名称",
+        "stock": "原厂",
+        "unslotted": "暂时无法装配，因为游戏文件未说明它们占用哪个槽位：%{modules}",
+        "notFlightReady": "只有可飞行的舰船才能使用配装",
+        "slots": {
+          "default": "模块槽位",
+          "front": "前部模块槽位",
+          "rear": "后部模块槽位",
+          "left": "左侧模块槽位",
+          "right": "右侧模块槽位"
+        },
+        "unavailable": {
+          "modules": "该舰船不支持模块",
+          "upgrades": "该舰船没有可用的附加组件"
+        },
         "none": "无"
       }
     }

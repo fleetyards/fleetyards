@@ -34,10 +34,24 @@ if (!context) {
   throw new Error("FormTab must be used inside <FormTabs>");
 }
 
+/**
+ * Held by content, not identity. A template passes `:fields="['name']"` as a
+ * fresh array on every render of the slot, and FormTabs renders that slot: each
+ * new array re-rendered the strip, which rendered the slot again, until Vue gave
+ * up with "Maximum recursive updates exceeded".
+ */
+const fields = computed<string[]>((previous) =>
+  previous &&
+  previous.length === props.fields.length &&
+  previous.every((field, index) => field === props.fields[index])
+    ? previous
+    : props.fields,
+);
+
 context.registerTab({
   id: props.id,
   label: toRef(props, "label"),
-  fields: toRef(props, "fields"),
+  fields,
   disabled: toRef(props, "disabled"),
   hidden: toRef(props, "hidden"),
   icon: toRef(props, "icon"),

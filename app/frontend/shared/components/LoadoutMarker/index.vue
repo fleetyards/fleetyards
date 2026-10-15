@@ -6,27 +6,42 @@ export default {
 
 <script lang="ts" setup>
 import type { VehicleLoadoutMinimal } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   loadout: VehicleLoadoutMinimal;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+// Named as a loadout, so a name chosen without context still reads as one.
+const title = computed(() =>
+  t("labels.loadout.marker", { name: props.loadout.name }),
+);
+
+// A fleetyards loadout is kept here rather than on another site, so the panel
+// shows it instead of linking away.
+const emit = defineEmits<{ open: [] }>();
 </script>
 
 <template>
-  <a
-    v-tooltip="loadout.name"
-    :aria-label="loadout.name"
+  <component
+    :is="loadout.url ? 'a' : 'button'"
+    v-tooltip="title"
+    :aria-label="title"
     class="loadout-marker"
     :class="{
       'erkul-link': loadout.urlSource === 'erkul',
       'spviewer-link': loadout.urlSource === 'spviewer',
     }"
     :href="loadout.url"
-    target="_blank"
-    rel="noopener"
-    @click.stop
+    :target="loadout.url ? '_blank' : undefined"
+    :rel="loadout.url ? 'noopener' : undefined"
+    :type="loadout.url ? undefined : 'button'"
+    data-test="loadout-marker"
+    @click.stop="loadout.url || emit('open')"
   >
     <template v-if="loadout.urlSource">
       <i />
@@ -34,7 +49,7 @@ defineProps<Props>();
     <template v-else>
       <i class="fa-duotone fa-crosshairs" />
     </template>
-  </a>
+  </component>
 </template>
 
 <style lang="scss" scoped>
@@ -49,6 +64,8 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   background-color: $gray;
+  padding: 0;
+  border: 0;
   cursor: pointer;
 
   // Doubled to outrank PanelBody's rounded variants, which round every link

@@ -1138,6 +1138,8 @@
       },
       "source": "Source",
       "loadout": {
+        "marker": "Loadout \"%{name}\"",
+        "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
         "empty": "No loadouts yet. Create one to get started.",
@@ -4301,6 +4303,26 @@
           "flightBlades": "Flight blades"
         },
         "comingSoon": "Coming soon",
+        "ownedModules": "Modules you own",
+        "nothingFitted": "Nothing fitted",
+        "owned": "Owned",
+        "notOwned": "Not owned",
+        "noSlots": "Nothing on this ship can be fitted here yet",
+        "loadoutName": "Loadout name",
+        "stock": "Stock",
+        "unslotted": "Not fittable yet, because the game files do not say which slot they take: %{modules}",
+        "notFlightReady": "Loadouts are only available for flight-ready ships",
+        "slots": {
+          "default": "Module slot",
+          "front": "Front module slot",
+          "rear": "Rear module slot",
+          "left": "Left module slot",
+          "right": "Right module slot"
+        },
+        "unavailable": {
+          "modules": "This ship takes no modules",
+          "upgrades": "There are no add-ons for this ship"
+        },
         "none": "None"
       }
     }

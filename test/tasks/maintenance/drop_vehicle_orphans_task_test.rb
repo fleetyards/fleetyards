@@ -54,6 +54,7 @@ module Maintenance
     test "#process drops the rows an orphaned vehicle carries" do
       orphan = orphan_vehicle
       carried = FleetVehicle.create!(fleet: create(:fleet), vehicle: orphan)
+      orphan.model.update!(production_status: "flight-ready")
       loadout = create(:vehicle_loadout, vehicle: orphan)
 
       run_task(dry_run: false)

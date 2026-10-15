@@ -23852,6 +23852,7 @@ components:
       - fleet_tours
       - hangar_inventories
       - holo_ar
+      - loadout_editor
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -23873,6 +23874,7 @@ components:
       - FLEET_TOURS
       - HANGAR_INVENTORIES
       - HOLO_AR
+      - LOADOUT_EDITOR
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID
@@ -34751,6 +34753,10 @@ components:
           type: string
           description: Module slot identifier (hardpoint sc_name). Present when fetched
             via a model's modules endpoint.
+        stock:
+          type: boolean
+          description: Whether the hull comes with this module from the factory. Present
+            when fetched via a model's modules endpoint.
         hardpoints:
           type: array
           items:
@@ -40238,10 +40244,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -40252,7 +40264,8 @@ components:
       required:
       - id
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
       title: VehicleLoadout
@@ -40263,10 +40276,68 @@ components:
           type:
           - string
           - 'null'
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
-          type: string
+          type:
+          - string
+          - 'null'
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItemInput"
       additionalProperties: false
       title: VehicleLoadoutInput
+    VehicleLoadoutItem:
+      type: object
+      properties:
+        slotPath:
+          type: string
+          description: Hardpoint names from the hull down, joined by /
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slotPath
+      - itemType
+      - itemId
+      title: VehicleLoadoutItem
+    VehicleLoadoutItemInput:
+      type: object
+      properties:
+        slotPath:
+          type: string
+          description: Hardpoint names from the hull down, joined by /
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slotPath
+      - itemType
+      - itemId
+      title: VehicleLoadoutItemInput
+    VehicleLoadoutItemTypeEnum:
+      type: string
+      enum:
+      - ModelModule
+      x-enumNames:
+      - MODEL_MODULE
+      title: VehicleLoadoutItemTypeEnum
+    VehicleLoadoutKindEnum:
+      type: string
+      enum:
+      - link
+      - fleetyards
+      x-enumNames:
+      - LINK
+      - FLEETYARDS
+      title: VehicleLoadoutKindEnum
     VehicleLoadoutMinimal:
       type: object
       properties:
@@ -40277,10 +40348,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -40292,7 +40369,8 @@ components:
       - id
       - name
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal

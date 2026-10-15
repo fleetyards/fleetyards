@@ -594,6 +594,8 @@
         "showPublic": "舰长日志"
       },
       "vehicleLoadout": {
+        "editLoadout": "编辑配置",
+        "newLoadout": "新建配置",
         "saveLoadout": "保存配置"
       }
     }
