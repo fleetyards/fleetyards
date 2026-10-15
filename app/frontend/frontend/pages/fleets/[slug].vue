@@ -13,6 +13,7 @@ import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
 import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 import {
+  FleetMembershipStatusEnum,
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
   useFleetMembership as useFleetMembershipQuery,
@@ -38,14 +39,15 @@ const {
 });
 
 // A signed-in reader falls back to the visitor payload only once the members'
-// copy is refused -- a 404, which is how a non-member is told. Racing the two,
-// or falling back on any failure, let a member's page render from the visitor
-// payload, which leaves out what only members see: a settings form seeded from
-// it would save the gaps back.
+// copy is refused -- a 403, which is how a non-member is told. A 404 means the
+// fleet does not exist, so the visitor payload would 404 as well. Racing the
+// two, or falling back on any failure, let a member's page render from the
+// visitor payload, which leaves out what only members see: a settings form
+// seeded from it would save the gaps back.
 const memberFleetRefused = computed(() => {
   const error = asyncFleetStatus.error.value;
 
-  return !!error && errorTypeFrom(error) === ErrorTypesEnum.NOT_FOUND;
+  return !!error && errorTypeFrom(error) === ErrorTypesEnum.FORBIDDEN;
 });
 
 const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
@@ -82,10 +84,19 @@ const membershipFailed = computed(() => {
   return !!error && errorTypeFrom(error) !== ErrorTypesEnum.NOT_FOUND;
 });
 
+// An invited or requested membership is not one yet: the members' copy of the
+// fleet refuses it, so the page holds the visitor payload, and the child pages
+// would ask member endpoints that refuse it too.
+const acceptedMembership = computed(() =>
+  membership.value?.status === FleetMembershipStatusEnum.ACCEPTED
+    ? membership.value
+    : undefined,
+);
+
 // Public fleet routes are the ones that don't need a session; every other
 // child route reads the membership.
 const membershipRequired = computed(
-  () => !!route.meta.needsAuthentication && !membership.value,
+  () => !!route.meta.needsAuthentication && !acceptedMembership.value,
 );
 
 // Vue Query keeps the last good payload through a failed refetch, so a member
@@ -131,10 +142,13 @@ useFleetMeta(resolvedFleet);
       <NotAuthorized v-else-if="membershipRequired" />
       <AccessCheck
         v-else
-        :resource-access="membership?.fleetRole?.resourceAccess"
+        :resource-access="acceptedMembership?.fleetRole?.resourceAccess"
       >
         <template #granted>
-          <router-view :fleet="resolvedFleet" :membership="membership" />
+          <router-view
+            :fleet="resolvedFleet"
+            :membership="acceptedMembership"
+          />
         </template>
       </AccessCheck>
     </template>
