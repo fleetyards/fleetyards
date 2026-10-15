@@ -38,6 +38,7 @@ describe("LoadoutMarker", () => {
     const marker = wrapper.get("[data-test='loadout-marker']");
 
     expect(marker.element.tagName).toBe("BUTTON");
+    expect(marker.attributes("aria-label")).toBe('Loadout "Hauler"');
     await marker.trigger("click");
     expect(wrapper.emitted("open")).toHaveLength(1);
   });

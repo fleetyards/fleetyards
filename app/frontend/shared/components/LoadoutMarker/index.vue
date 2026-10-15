@@ -6,12 +6,20 @@ export default {
 
 <script lang="ts" setup>
 import type { VehicleLoadoutMinimal } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   loadout: VehicleLoadoutMinimal;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+// Named as a loadout, so a name chosen without context still reads as one.
+const title = computed(() =>
+  t("labels.loadout.marker", { name: props.loadout.name }),
+);
 
 // A fleetyards loadout is kept here rather than on another site, so the panel
 // shows it instead of linking away.
@@ -21,8 +29,8 @@ const emit = defineEmits<{ open: [] }>();
 <template>
   <component
     :is="loadout.url ? 'a' : 'button'"
-    v-tooltip="loadout.name"
-    :aria-label="loadout.name"
+    v-tooltip="title"
+    :aria-label="title"
     class="loadout-marker"
     :class="{
       'erkul-link': loadout.urlSource === 'erkul',

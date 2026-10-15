@@ -1138,6 +1138,7 @@
       },
       "source": "Fonte",
       "loadout": {
+        "marker": "Equipaggiamento «%{name}»",
         "fleetyards": "Configurazione Fleetyards",
         "namePlaceholder": "Nome configurazione...",
         "urlPlaceholder": "Incolla l'URL della configurazione di erkul.games o spviewer.eu...",

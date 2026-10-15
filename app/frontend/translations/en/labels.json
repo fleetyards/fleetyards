@@ -1138,6 +1138,7 @@
       },
       "source": "Source",
       "loadout": {
+        "marker": "Loadout \"%{name}\"",
         "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",

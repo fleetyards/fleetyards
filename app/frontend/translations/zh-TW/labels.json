@@ -1138,6 +1138,7 @@
       },
       "source": "來源",
       "loadout": {
+        "marker": "配置「%{name}」",
         "fleetyards": "Fleetyards 配裝",
         "namePlaceholder": "配置名稱...",
         "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
