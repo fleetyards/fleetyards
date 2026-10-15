@@ -4294,7 +4294,6 @@
         "nothingFitted": "Rien d'équipé",
         "compareHint": "Survolez un module pour voir ce qu’il change",
         "loadoutName": "Nom de la configuration",
-        "loadoutNamePlaceholder": "p. ex. Mission médicale",
         "stock": "D'origine",
         "noOwnedModuleForSlot": "Vous ne possédez aucun module pour cet emplacement",
         "unslotted": "Pas encore équipables, car les fichiers du jeu n'indiquent pas quel emplacement ils occupent : %{modules}",

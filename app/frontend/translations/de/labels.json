@@ -4294,7 +4294,6 @@
         "nothingFitted": "Nichts ausgerüstet",
         "compareHint": "Zeige auf ein Modul, um zu sehen, was es ändert",
         "loadoutName": "Name des Loadouts",
-        "loadoutNamePlaceholder": "z. B. Rettungseinsatz",
         "stock": "Serienmäßig",
         "noOwnedModuleForSlot": "Du besitzt kein Modul für diesen Slot",
         "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",

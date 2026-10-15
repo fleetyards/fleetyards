@@ -4294,7 +4294,6 @@
         "nothingFitted": "Niente montato",
         "compareHint": "Passa sopra un modulo per vedere cosa cambia",
         "loadoutName": "Nome della configurazione",
-        "loadoutNamePlaceholder": "es. Missione medica",
         "stock": "Di serie",
         "noOwnedModuleForSlot": "Non possiedi alcun modulo per questo slot",
         "unslotted": "Non ancora montabili, perché i file di gioco non indicano quale slot occupano: %{modules}",

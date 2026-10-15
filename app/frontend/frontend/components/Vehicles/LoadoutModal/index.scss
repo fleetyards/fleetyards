@@ -65,11 +65,6 @@
     max-width: 1100px;
   }
 
-  &__name {
-    max-width: 420px;
-    margin-bottom: 12px;
-  }
-
   // The slots and the comparison side by side, as a choice and what it does.
   &__category {
     display: grid;
@@ -200,4 +195,11 @@
     padding-right: 0;
     width: 62%;
   }
+}
+
+// In the footer, beside the save it names: as wide as a name needs, no wider.
+.vehicle-loadout__name {
+  width: 280px;
+  max-width: 100%;
+  margin: 0;
 }

@@ -4294,7 +4294,6 @@
         "nothingFitted": "未装配",
         "compareHint": "指向一个模块以查看它带来的变化",
         "loadoutName": "配装名称",
-        "loadoutNamePlaceholder": "例如：医疗任务",
         "stock": "原厂",
         "noOwnedModuleForSlot": "你没有适用于该槽位的模块",
         "unslotted": "暂时无法装配，因为游戏文件未说明它们占用哪个槽位：%{modules}",

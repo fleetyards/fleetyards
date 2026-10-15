@@ -4294,7 +4294,6 @@
         "nothingFitted": "Nada equipado",
         "compareHint": "Señala un módulo para ver qué cambia",
         "loadoutName": "Nombre de la configuración",
-        "loadoutNamePlaceholder": "p. ej. Misión médica",
         "stock": "De serie",
         "noOwnedModuleForSlot": "No posees ningún módulo para esta ranura",
         "unslotted": "Aún no se pueden equipar, porque los archivos del juego no indican qué ranura ocupan: %{modules}",

@@ -416,15 +416,6 @@ const onSubmit = handleSubmit(async (values) => {
           {{ t("labels.vehicleLoadout.notFlightReady") }}
         </p>
 
-        <FormInput
-          v-else-if="editable"
-          name="loadoutName"
-          :label="t('labels.vehicleLoadout.loadoutName')"
-          :placeholder="t('labels.vehicleLoadout.loadoutNamePlaceholder')"
-          class="vehicle-loadout__name"
-          data-test="vehicle-loadout-name"
-        />
-
         <FormTabs
           :default-tab="tab"
           :sync-url="false"
@@ -511,6 +502,17 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template v-if="editable" #footer>
+      <!-- Named where it is saved; the label stays as the field's accessible name. -->
+      <FormInput
+        v-if="flightReady"
+        name="loadoutName"
+        :label="t('labels.vehicleLoadout.loadoutName')"
+        :placeholder="t('labels.vehicleLoadout.loadoutName')"
+        no-label
+        inline
+        class="vehicle-loadout__name"
+        data-test="vehicle-loadout-name"
+      />
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
