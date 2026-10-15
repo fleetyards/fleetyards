@@ -6,7 +6,9 @@ $phone-indent: 82px;
  * A row in a list of addons, shared by the hardpoint slot's module picker, the
  * hangar's modules-and-upgrades modal and its paint picker. A list rather than
  * a grid of photographs: the figures line up down the modal and can be read
- * against each other, which a two-up grid of store images never allowed.
+ * against each other, which a two-up grid of store images never allowed. The
+ * stacked card is the exception, for paints, which have a picture to recognise
+ * and no figures to compare.
  */
 .addon-option {
   position: relative;
@@ -229,6 +231,7 @@ $phone-indent: 82px;
   }
 
   .addon-option__quantity {
+    align-self: flex-start;
     margin-left: 4px;
   }
 }
