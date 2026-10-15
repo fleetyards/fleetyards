@@ -230,8 +230,6 @@ class Hardpoint < ApplicationRecord
       end
     elsif sc_name&.start_with?("hardpoint_engineeringscreen")
       :seat
-    elsif sc_name&.start_with?("hardpoint_mining_pod")
-      :cargogrid
     else
       case component&.component_type
       when "EMP"
