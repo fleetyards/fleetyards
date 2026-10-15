@@ -37,6 +37,20 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules serves the medical beds a module holds" do
+    model = create(:model)
+    medical = create(:model_module, name: "Tier 2 Module",
+      medical_beds: {"tiers" => [{"tier" => 2, "name" => "Clinic", "beds" => 2}], "respawn_beds" => 2})
+    create(:module_hardpoint, model:, model_module: medical)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal(
+        {"tiers" => [{"tier" => 2, "name" => "Clinic", "beds" => 2}], "respawnBeds" => 2},
+        parsed_body["items"].sole.dig("metrics", "medicalBeds")
+      )
+    end
+  end
+
   test "GET /models/:slug/modules serialises the slot when set on module_hardpoint" do
     model = create(:model)
     create(:module_hardpoint, model: model, slot: "hardpoint_front_module")

@@ -11,6 +11,18 @@ json.sc_key model_module.sc_key
 json.metrics({})
 json.metrics do
   json.cargo model_module.cargo.to_f
+
+  medical_beds = model_module.medical_beds&.with_indifferent_access
+  if medical_beds.present?
+    json.medical_beds do
+      json.tiers medical_beds[:tiers] do |tier|
+        json.tier tier[:tier]
+        json.name tier[:name]
+        json.beds tier[:beds]
+      end
+      json.respawn_beds medical_beds[:respawn_beds]
+    end
+  end
 end
 
 json.availability do

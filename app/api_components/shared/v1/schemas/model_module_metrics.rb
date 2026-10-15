@@ -11,7 +11,8 @@ module Shared
         schema({
           type: :object,
           properties: {
-            cargo: {type: :number}
+            cargo: {type: :number},
+            medicalBeds: ::Shared::V1::Schemas::ModelModuleMedicalBeds
           },
           additionalProperties: false
         })
