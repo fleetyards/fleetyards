@@ -287,9 +287,13 @@ const itemSize = (
     : model.metrics.fleetchartOffsetLength;
   const length = (fleetchartLength || 0) * sizeMultiplicator.value;
 
+  const height = (length * imageMaxHeight(item)) / imageMaxWidth(item);
+
+  // An image without a width would make the height Infinity, and one item
+  // would throw every column break and the auto height after it.
   return {
     width: length,
-    height: (length * imageMaxHeight(item)) / imageMaxWidth(item),
+    height: height === Infinity ? 0 : height,
   };
 };
 
