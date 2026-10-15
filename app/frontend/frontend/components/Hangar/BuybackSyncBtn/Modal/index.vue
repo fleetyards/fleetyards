@@ -69,11 +69,13 @@ const buybackSync = useBuybackSync();
 const { status, currentPage, buybacks, result, detailsStarted, running } =
   buybackSync;
 
+const details = useBuybackDetailsSync();
+
 const {
   total: detailsTotal,
   done: detailsDone,
   running: detailsRunning,
-} = useBuybackDetailsSync();
+} = details;
 
 // A run going or one that ended with a result is shown whatever the extension
 // says now; a failed one needs the extension for its retry, so it shows the
@@ -123,11 +125,15 @@ onMounted(() => {
 });
 
 // A run still going is what the modal opens on next time, and so is one that
-// ended in the background, until its result has been shown here once.
+// ended in the background, until its result has been shown here once. The
+// price pass is part of the run: its result is only shown once it is over.
 onBeforeUnmount(() => {
   unmounted = true;
   hangarStore.buybackSyncModalOpen = false;
+  if (detailsRunning.value) return;
+
   buybackSync.reset();
+  details.reset();
 });
 
 // Only the latest check answers: retry can be pressed while one is out.
