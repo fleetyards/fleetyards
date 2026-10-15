@@ -11,8 +11,14 @@
 class MoveVehiclePaintsAndPictures < ActiveRecord::Migration[8.1]
   def up
     # Data migrations run after every schema migration, so on a database built
-    # from scratch the columns are already dropped, and there is nothing to move.
-    return unless column_exists?(:vehicles, :model_paint_id)
+    # from scratch the columns are already dropped, with nothing to move. With
+    # vehicles in it, the drop shipped in the same deploy as this move, and
+    # skipping would lose every paint and picture without a word.
+    unless column_exists?(:vehicles, :model_paint_id)
+      return unless select_value("SELECT EXISTS (SELECT 1 FROM vehicles)")
+
+      raise "vehicles.model_paint_id is gone before its paints and pictures moved: deploy this before the column drop"
+    end
 
     execute <<~SQL.squish
       INSERT INTO vehicle_paints (vehicle_id, model_paint_id, created_at, updated_at)
