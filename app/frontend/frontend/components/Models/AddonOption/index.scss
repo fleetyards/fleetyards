@@ -4,10 +4,10 @@ $phone-indent: 82px;
 $phone-indent-large: 138px;
 
 /*
- * A row in a list of addons, shared by the hardpoint slot's module picker and
- * the hangar's modules-and-upgrades modal. A list rather than a grid of
- * photographs: the figures line up down the modal and can be read against each
- * other, which a two-up grid of store images never allowed.
+ * A row in a list of addons, shared by the hardpoint slot's module picker, the
+ * hangar's modules-and-upgrades modal and its paint picker. A list rather than
+ * a grid of photographs: the figures line up down the modal and can be read
+ * against each other, which a two-up grid of store images never allowed.
  */
 .addon-option {
   position: relative;
