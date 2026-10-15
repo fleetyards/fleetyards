@@ -136,7 +136,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-source-gallery"]')
+      .find('[data-test="vehicle-image-source-paints"]')
       .trigger("click");
 
     expect(
@@ -144,35 +144,34 @@ describe("VehicleEditModal image tab", () => {
         .findAll('[data-test="vehicle-image-gallery-paint"]')
         .map((choice) => choice.text()),
     ).toEqual(["Rust Society", "Stormbringer"]);
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(0);
   });
 
-  it("keeps the paint pictures apart from the model's gallery", async () => {
-    const wrapper = await mount({
-      vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
-    });
+  it("keeps the paints out of the model's gallery", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
 
     await wrapper
       .find('[data-test="vehicle-image-source-gallery"]')
       .trigger("click");
 
-    const paints = wrapper.find('[data-test="vehicle-image-gallery-paints"]');
-    const images = wrapper.find('[data-test="vehicle-image-gallery-images"]');
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(2);
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-paint"]'),
+    ).toHaveLength(0);
+  });
+
+  it("opens on the paints when the ship shows a paint's picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
+    });
 
     expect(
-      paints.find('[data-test="vehicle-image-gallery-none"]').exists(),
+      wrapper.find('[data-test="vehicle-image-gallery-paints"]').exists(),
     ).toBe(true);
-    expect(
-      paints.findAll('[data-test="vehicle-image-gallery-paint"]'),
-    ).toHaveLength(2);
-    expect(
-      paints.findAll('[data-test="vehicle-image-gallery-choice"]'),
-    ).toHaveLength(0);
-    expect(
-      images.findAll('[data-test="vehicle-image-gallery-choice"]'),
-    ).toHaveLength(2);
-    expect(
-      images.findAll('[data-test="vehicle-image-gallery-paint"]'),
-    ).toHaveLength(0);
   });
 
   it("picks a paint's picture in place of a gallery picture", async () => {
@@ -184,6 +183,9 @@ describe("VehicleEditModal image tab", () => {
       }),
     });
 
+    await wrapper
+      .find('[data-test="vehicle-image-source-paints"]')
+      .trigger("click");
     await wrapper
       .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
       .trigger("click");
