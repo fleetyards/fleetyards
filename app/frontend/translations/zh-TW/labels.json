@@ -4292,7 +4292,7 @@
         "fittedHint": "每個槽位一個模組，從你擁有的模組中選擇",
         "ownedModules": "你擁有的模組",
         "nothingFitted": "未裝配",
-        "compareHint": "指向一個模組以查看它帶來的變化",
+        "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
         "loadoutName": "配裝名稱",
         "stock": "原廠",
         "noOwnedModuleForSlot": "你沒有適用於此槽位的模組",

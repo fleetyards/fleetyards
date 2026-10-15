@@ -148,25 +148,41 @@ describe("VehicleLoadoutModal", () => {
     expect(cargo(wrapper)).toContain("+32");
   });
 
-  it("compares the option under the pointer with what the slot holds", async () => {
+  it("previews the option under the pointer, then returns to what is picked", async () => {
     const wrapper = await mountModal(
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
     );
+    const cargoRow = () =>
+      wrapper.get("[data-test='vehicle-loadout-comparison-cargo']").text();
 
+    // The slot's own fitting, before anything is pointed at.
     expect(
-      wrapper.find("[data-test='vehicle-loadout-comparison']").exists(),
-    ).toBe(false);
+      wrapper.get("[data-test='vehicle-loadout-comparison']").text(),
+    ).toContain("Combat Module");
+    expect(cargoRow()).not.toContain("+32");
 
     await wrapper
       .findAll("[data-test='vehicle-loadout-slot-module']")[0]
       .trigger("mouseenter");
 
-    const comparison = wrapper.get("[data-test='vehicle-loadout-comparison']");
-    expect(comparison.text()).toContain("Combat Module");
-    expect(comparison.text()).toContain("Cargo Module");
+    expect(cargoRow()).toContain("+32");
+
+    await wrapper
+      .get("[data-test='vehicle-loadout-fitting']")
+      .trigger("mouseleave");
+
+    expect(cargoRow()).not.toContain("+32");
+  });
+
+  it("says so when the hull has no slot to fit", async () => {
+    const empty = modules.value;
+    modules.value = { items: [] };
+    const wrapper = await mountModal(vehicle());
+
     expect(
-      wrapper.get("[data-test='vehicle-loadout-comparison-cargo']").text(),
-    ).toContain("+32");
+      wrapper.find("[data-test='vehicle-loadout-no-slots']").exists(),
+    ).toBe(true);
+    modules.value = empty;
   });
 
   it("fits one module per slot, swapping rather than adding", async () => {

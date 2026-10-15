@@ -4292,7 +4292,7 @@
         "fittedHint": "Ein Modul pro Slot, aus den Modulen, die du besitzt",
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
-        "compareHint": "Zeige auf ein Modul, um zu sehen, was es ändert",
+        "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
         "loadoutName": "Name des Loadouts",
         "stock": "Serienmäßig",
         "noOwnedModuleForSlot": "Du besitzt kein Modul für diesen Slot",

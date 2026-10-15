@@ -4292,7 +4292,7 @@
         "fittedHint": "Un module par emplacement, parmi les modules que vous possédez",
         "ownedModules": "Vos modules",
         "nothingFitted": "Rien d'équipé",
-        "compareHint": "Survolez un module pour voir ce qu’il change",
+        "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
         "loadoutName": "Nom de la configuration",
         "stock": "D'origine",
         "noOwnedModuleForSlot": "Vous ne possédez aucun module pour cet emplacement",

@@ -4306,7 +4306,7 @@
         "fittedHint": "One module per slot, from the modules you own",
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
-        "compareHint": "Point at a module to see what it changes",
+        "noSlots": "Nothing on this ship can be fitted here yet",
         "loadoutName": "Loadout name",
         "stock": "Stock",
         "noOwnedModuleForSlot": "You own no module for this slot",

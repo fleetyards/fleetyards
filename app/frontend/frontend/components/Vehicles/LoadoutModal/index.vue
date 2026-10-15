@@ -242,20 +242,47 @@ const shipFigures = computed(() =>
   ),
 );
 
-// The slot and option under the pointer or focus; compared against what the
-// saved loadout holds in that slot, with the rest of the fitting as it is.
-const preview = ref<{ slot: string; moduleId: string | null }>();
+const slots = computed(() =>
+  [
+    ...new Set(
+      modules.value
+        .map((mod) => mod.slot)
+        .filter((slot): slot is string => !!slot),
+    ),
+  ].sort(),
+);
+
+/**
+ * The panel always answers for one slot: the one last picked in, or the first.
+ * Pointing at an option previews it there for as long as the pointer or focus
+ * stays on the list, then the panel returns to what is picked, so passing over
+ * options on the way to it never leaves it on one of them.
+ */
+const pickedSlot = ref<string>();
+
+const hovered = ref<{ slot: string; moduleId: string | null }>();
 
 const onPreview = (slot: string, moduleId: string | null) => {
-  preview.value = { slot, moduleId };
+  hovered.value = { slot, moduleId };
+};
+
+const onPreviewEnd = () => {
+  hovered.value = undefined;
+};
+
+const onPick = (slot: string) => {
+  pickedSlot.value = slot;
 };
 
 const comparison = computed(() => {
-  if (!preview.value) {
+  const slot = hovered.value?.slot ?? pickedSlot.value ?? slots.value[0];
+  if (!slot) {
     return undefined;
   }
 
-  const { slot, moduleId } = preview.value;
+  const moduleId = hovered.value
+    ? hovered.value.moduleId
+    : (fittedModules.value || {})[slot];
   const savedId = savedValues().fittedModules[slot];
   const others = Object.entries(fittedModules.value || {})
     .filter(([path]) => path !== slot)
@@ -465,6 +492,8 @@ const onSubmit = handleSubmit(async (values) => {
                       :owned-ids="vehicle.modelModuleIds"
                       :editable="editable"
                       @preview="onPreview"
+                      @preview-end="onPreviewEnd"
+                      @pick="onPick"
                     />
                   </fieldset>
 
@@ -476,12 +505,14 @@ const onSubmit = handleSubmit(async (values) => {
                     :from="comparison.from"
                     :to="comparison.to"
                   />
-                  <p
-                    v-else-if="editable && flightReady"
-                    class="vehicle-loadout__comparison vehicle-loadout__hint"
+                  <div
+                    v-else-if="flightReady"
+                    class="vehicle-loadout__comparison vehicle-loadout__empty"
+                    data-test="vehicle-loadout-no-slots"
                   >
-                    {{ t("labels.vehicleLoadout.compareHint") }}
-                  </p>
+                    <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
+                    <p>{{ t("labels.vehicleLoadout.noSlots") }}</p>
+                  </div>
                 </div>
               </template>
             </AsyncData>

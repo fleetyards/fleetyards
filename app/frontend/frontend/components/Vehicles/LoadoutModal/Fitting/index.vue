@@ -32,7 +32,19 @@ const emit = defineEmits<{
   // The option under the pointer or focus, so the editor can compare it with
   // what the slot holds; `null` is the empty choice.
   preview: [slot: string, moduleId: string | null];
+  // The pointer or focus has left the slots: back to what is picked.
+  previewEnd: [];
+  pick: [slot: string];
 }>();
+
+const root = ref<HTMLElement>();
+
+// Focus moving between options keeps the preview; only leaving the list ends it.
+const onFocusOut = (event: FocusEvent) => {
+  if (!root.value?.contains(event.relatedTarget as Node | null)) {
+    emit("previewEnd");
+  }
+};
 
 const { t } = useI18n();
 
@@ -96,7 +108,13 @@ const visibleSlots = computed(() =>
 </script>
 
 <template>
-  <div class="loadout-fitting" data-test="vehicle-loadout-fitting">
+  <div
+    ref="root"
+    class="loadout-fitting"
+    data-test="vehicle-loadout-fitting"
+    @mouseleave="emit('previewEnd')"
+    @focusout="onFocusOut"
+  >
     <fieldset
       v-for="slot in visibleSlots"
       :key="slot"
@@ -116,7 +134,7 @@ const visibleSlots = computed(() =>
           @focusin="emit('preview', slot, null)"
           @toggle="
             fit(slot);
-            emit('preview', slot, null);
+            emit('pick', slot);
           "
         />
         <AddonOption
@@ -135,7 +153,7 @@ const visibleSlots = computed(() =>
           @focusin="emit('preview', slot, mod.id)"
           @toggle="
             fit(slot, mod.id);
-            emit('preview', slot, mod.id);
+            emit('pick', slot);
           "
         />
         <p

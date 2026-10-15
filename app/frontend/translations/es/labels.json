@@ -4292,7 +4292,7 @@
         "fittedHint": "Un módulo por ranura, de los módulos que posees",
         "ownedModules": "Tus módulos",
         "nothingFitted": "Nada equipado",
-        "compareHint": "Señala un módulo para ver qué cambia",
+        "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "loadoutName": "Nombre de la configuración",
         "stock": "De serie",
         "noOwnedModuleForSlot": "No posees ningún módulo para esta ranura",

@@ -4292,7 +4292,7 @@
         "fittedHint": "每个槽位一个模块，从你拥有的模块中选择",
         "ownedModules": "你拥有的模块",
         "nothingFitted": "未装配",
-        "compareHint": "指向一个模块以查看它带来的变化",
+        "noSlots": "这艘舰船目前还没有可在此装配的内容",
         "loadoutName": "配装名称",
         "stock": "原厂",
         "noOwnedModuleForSlot": "你没有适用于该槽位的模块",

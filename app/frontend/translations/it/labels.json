@@ -4292,7 +4292,7 @@
         "fittedHint": "Un modulo per slot, tra i moduli che possiedi",
         "ownedModules": "I tuoi moduli",
         "nothingFitted": "Niente montato",
-        "compareHint": "Passa sopra un modulo per vedere cosa cambia",
+        "noSlots": "Su questa nave non si può ancora montare nulla qui",
         "loadoutName": "Nome della configurazione",
         "stock": "Di serie",
         "noOwnedModuleForSlot": "Non possiedi alcun modulo per questo slot",
