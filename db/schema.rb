@@ -2781,7 +2781,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_150000) do
     t.uuid "vehicle_id"
     t.boolean "loaner", default: false
     t.boolean "hidden", default: false
-    t.uuid "model_paint_id"
     t.boolean "notify", default: true
     t.string "serial"
     t.string "alternative_names"
@@ -2797,7 +2796,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_150000) do
     t.integer "public_log_entries_count", default: 0, null: false
     t.string "location"
     t.uuid "location_id"
-    t.uuid "model_image_id"
     t.text "dedication"
     t.date "launched_on"
     t.string "launch_port"
@@ -2813,8 +2811,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_150000) do
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
-    t.index ["model_image_id"], name: "index_vehicles_on_model_image_id"
-    t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
     t.index ["picture_type", "picture_id"], name: "index_vehicles_on_picture"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id", "rank"], name: "index_vehicles_on_user_id_and_rank", unique: true
@@ -3051,7 +3047,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_150000) do
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade
   add_foreign_key "vehicle_paints", "model_paints", on_delete: :cascade
   add_foreign_key "vehicle_paints", "vehicles", on_delete: :cascade
-  add_foreign_key "vehicles", "images", column: "model_image_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", column: "launch_port_location_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", on_delete: :nullify
 end
