@@ -2768,6 +2768,12 @@
         "added": "Nuevos",
         "removed": "Eliminados",
         "prices": "Precios leídos",
+        "background": {
+          "finished": "Sincronización de recompras terminada",
+          "incomplete": "Sincronización de recompras terminada, faltan algunos precios",
+          "unsupported": "La sincronización de recompras necesita una extensión más reciente",
+          "failed": "La sincronización de recompras ha fallado"
+        },
         "status": {
           "fetching": "Leyendo páginas de recompra",
           "submitting": "Guardando",

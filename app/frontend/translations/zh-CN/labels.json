@@ -2768,6 +2768,12 @@
         "added": "新增",
         "removed": "已移除",
         "prices": "已读取价格",
+        "background": {
+          "finished": "回购同步已完成",
+          "incomplete": "回购同步已完成，部分价格缺失",
+          "unsupported": "回购同步需要更新版本的扩展",
+          "failed": "回购同步失败"
+        },
         "status": {
           "fetching": "正在读取回购页面",
           "submitting": "正在保存",

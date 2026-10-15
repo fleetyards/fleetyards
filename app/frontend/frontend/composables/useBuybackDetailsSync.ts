@@ -258,5 +258,22 @@ export const useBuybackDetailsSync = () => {
     cancel();
   };
 
-  return { status, total, done, running, cancelling, run, cancel, discard };
+  // Drops the outcome of a pass that is over, once it has been shown.
+  const reset = () => {
+    if (running.value) return;
+
+    status.value = "idle";
+  };
+
+  return {
+    status,
+    total,
+    done,
+    running,
+    cancelling,
+    run,
+    cancel,
+    discard,
+    reset,
+  };
 };

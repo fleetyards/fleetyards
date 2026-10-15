@@ -2768,6 +2768,12 @@
         "added": "Nuovi",
         "removed": "Rimossi",
         "prices": "Prezzi letti",
+        "background": {
+          "finished": "Sincronizzazione dei riacquisti completata",
+          "incomplete": "Sincronizzazione dei riacquisti completata, mancano alcuni prezzi",
+          "unsupported": "La sincronizzazione dei riacquisti richiede un'estensione più recente",
+          "failed": "Sincronizzazione dei riacquisti non riuscita"
+        },
         "status": {
           "fetching": "Lettura delle pagine di riacquisto",
           "submitting": "Salvataggio",

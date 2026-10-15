@@ -13,6 +13,7 @@ const pass = vi.hoisted(() => ({
   cancelling: undefined as unknown as Ref<boolean>,
   cancel: vi.fn(),
   discard: vi.fn(),
+  reset: vi.fn(),
 }));
 
 vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
@@ -29,6 +30,8 @@ vi.mock("@/frontend/composables/useBuybackDetailsSync", async () => {
 const list = vi.hoisted(() => ({
   status: undefined as unknown as Ref<string>,
   currentPage: undefined as unknown as Ref<number>,
+  detailsStarted: undefined as unknown as Ref<boolean>,
+  result: undefined as unknown as Ref<{ detailsPending: string[] } | undefined>,
   cancel: vi.fn(),
   reset: vi.fn(),
 }));
@@ -76,8 +79,11 @@ describe("HangarBuybackSyncProgress", () => {
     pass.cancelling = ref(false);
     pass.cancel.mockClear();
     pass.discard.mockClear();
+    pass.reset.mockClear();
     list.status = ref("idle");
     list.currentPage = ref(1);
+    list.detailsStarted = ref(false);
+    list.result = ref(undefined);
     list.cancel.mockClear();
     list.reset.mockClear();
     emit.mockClear();
@@ -131,6 +137,7 @@ describe("HangarBuybackSyncProgress", () => {
     await find(wrapper, "cancel-buyback-sync-progress").trigger("click");
     expect(pass.cancel).toHaveBeenCalled();
     expect(list.cancel).not.toHaveBeenCalled();
+    expect(list.reset).not.toHaveBeenCalled();
   });
 
   it("stays out of the way while the modal shows the run", async () => {
@@ -191,6 +198,21 @@ describe("HangarBuybackSyncProgress", () => {
     expect(displayWarning).not.toHaveBeenCalled();
   });
 
+  // The list was stored before the pass began, so its result is still shown.
+  it("keeps the result of a run whose price pass was cancelled", async () => {
+    list.status.value = "finished";
+    list.detailsStarted.value = true;
+    pass.status.value = "running";
+
+    const wrapper = mountProgress();
+    pass.status.value = "idle";
+    await flushPromises();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.incomplete",
+    );
+  });
+
   it("goes away as soon as the pass is cancelled", async () => {
     pass.status.value = "running";
 
@@ -199,6 +221,102 @@ describe("HangarBuybackSyncProgress", () => {
     await flushPromises();
 
     expect(find(wrapper, "buyback-sync-progress-card").exists()).toBe(false);
+  });
+
+  it("stays up once the run has finished, and opens its result", async () => {
+    list.status.value = "finished";
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.finished",
+    );
+    expect(find(wrapper, "cancel-buyback-sync-progress").exists()).toBe(false);
+
+    await find(wrapper, "open-buyback-sync-progress").trigger("click");
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({ component: expect.any(Function) }),
+    );
+  });
+
+  it("waits for the price pass before showing the result", async () => {
+    list.status.value = "finished";
+    list.detailsStarted.value = true;
+    pass.status.value = "running";
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "buyback-sync-ended").exists()).toBe(false);
+
+    pass.status.value = "incomplete";
+    await flushPromises();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.incomplete",
+    );
+  });
+
+  // The outcome of an earlier pass says nothing about a run that read no prices.
+  it("ignores a price pass this run did not start", () => {
+    list.status.value = "finished";
+    pass.status.value = "incomplete";
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.finished",
+    );
+  });
+
+  it("says when the extension could not read the prices", () => {
+    list.status.value = "finished";
+    list.result.value = { detailsPending: ["1"] };
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.incomplete",
+    );
+  });
+
+  it("says when the run failed", () => {
+    list.status.value = "failed";
+
+    const wrapper = mountProgress();
+
+    const ended = find(wrapper, "buyback-sync-ended");
+    expect(ended.text()).toBe("labels.buybackSync.background.failed");
+    expect(ended.classes()).toContain("text-danger");
+  });
+
+  // An update fixes it, which a retry would not.
+  it("tells an outdated extension apart from a failure", () => {
+    list.status.value = "unsupported";
+
+    const wrapper = mountProgress();
+
+    const ended = find(wrapper, "buyback-sync-ended");
+    expect(ended.text()).toBe("labels.buybackSync.background.unsupported");
+    expect(ended.classes()).not.toContain("text-danger");
+  });
+
+  it("can dismiss a finished run without opening it", async () => {
+    list.status.value = "finished";
+
+    const wrapper = mountProgress();
+
+    await find(wrapper, "dismiss-buyback-sync-progress").trigger("click");
+    expect(list.reset).toHaveBeenCalled();
+    expect(pass.reset).toHaveBeenCalled();
+  });
+
+  it("offers no dismiss while the run is going", () => {
+    list.status.value = "fetching";
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "dismiss-buyback-sync-progress").exists()).toBe(false);
   });
 
   it("drops the list and the pass on sign-out", async () => {
@@ -210,5 +328,6 @@ describe("HangarBuybackSyncProgress", () => {
 
     expect(list.reset).toHaveBeenCalledWith(true);
     expect(pass.discard).toHaveBeenCalled();
+    expect(pass.reset).toHaveBeenCalled();
   });
 });

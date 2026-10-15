@@ -69,11 +69,22 @@ const buybackSync = useBuybackSync();
 const { status, currentPage, buybacks, result, detailsStarted, running } =
   buybackSync;
 
+const details = useBuybackDetailsSync();
+
 const {
   total: detailsTotal,
   done: detailsDone,
   running: detailsRunning,
-} = useBuybackDetailsSync();
+} = details;
+
+// Cancelled passes go back to idle; their prices are missing all the same.
+const detailsIncomplete = computed(
+  () =>
+    status.value === "finished" &&
+    detailsStarted.value &&
+    !detailsRunning.value &&
+    details.status.value !== "finished",
+);
 
 // A run going or one that ended with a result is shown whatever the extension
 // says now; a failed one needs the extension for its retry, so it shows the
@@ -104,7 +115,7 @@ const checkExtension = async () => {
 // and warn about a session the run already has.
 const canStart = () =>
   !unmounted &&
-  !running.value &&
+  ["idle", "failed"].includes(status.value) &&
   extensionReady.value &&
   extensionSupportsBuybacks.value;
 
@@ -123,11 +134,15 @@ onMounted(() => {
 });
 
 // A run still going is what the modal opens on next time, and so is one that
-// ended in the background, until its result has been shown here once.
+// ended in the background, until its result has been shown here once. The
+// price pass is part of the run: its result is only shown once it is over.
 onBeforeUnmount(() => {
   unmounted = true;
   hangarStore.buybackSyncModalOpen = false;
+  if (detailsRunning.value) return;
+
   buybackSync.reset();
+  details.reset();
 });
 
 // Only the latest check answers: retry can be pressed while one is out.
@@ -253,6 +268,13 @@ const cancelRun = () => {
         data-test="buyback-sync-details-background"
       >
         {{ t("texts.buybackSync.detailsBackground") }}
+      </p>
+      <p
+        v-if="detailsIncomplete"
+        class="text-warning"
+        data-test="buyback-sync-details-incomplete"
+      >
+        {{ t("texts.buybackSync.detailsIncomplete") }}
       </p>
       <p
         v-if="

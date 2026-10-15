@@ -4,6 +4,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useBuybackSync } from "@/frontend/composables/useBuybackSync";
+import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
 import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 
@@ -331,10 +332,13 @@ describe("HangarBuybackSyncModal", () => {
 
     await answerNextPage(buybackPage("1"));
     await answerNextPage(emptyBuybackPage);
+    rsiIdentity.mockClear();
 
     const wrapper = await mountModal(currentExtension);
 
     expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    // A result offers no Start, so it needs no session check.
+    expect(rsiIdentity).not.toHaveBeenCalled();
     wrapper.unmount();
     mounted = undefined;
 
@@ -707,34 +711,62 @@ describe("HangarBuybackSyncModal", () => {
       await finishPass();
     });
 
-    it("offers no new sync while prices are still being read", async () => {
+    // The price pass is part of the run, so a modal closed during it opens on
+    // the run again rather than on a new sync.
+    it("opens on a run whose prices are still being read", async () => {
       await syncList(detailExtension);
       mounted?.unmount();
 
+      expect(useBuybackSync().status.value).toBe("finished");
+
       const wrapper = await mountModal(detailExtension);
-      extensionReplies("identify", { handle: "ACaptain" });
-      await flushPromises();
 
       expect(
-        wrapper.find("[data-test='buyback-sync-details-running']").exists(),
+        wrapper.find("[data-test='buyback-sync-details-background']").exists(),
       ).toBe(true);
       expect(
-        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
-      ).toBeDefined();
+        wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
+      ).toBe(false);
+      expect(wrapper.find("[data-test='start-buyback-sync']").exists()).toBe(
+        false,
+      );
 
-      extensionReplies("syncBuybackPricing", {
-        currencyCode: "EUR",
-        exchangeRate: 8800,
-        taxRate: 1900,
-        isTaxInclusive: true,
-      });
+      await finishPass();
+
+      expect(wrapper.find("[data-test='buyback-sync-prices']").text()).toBe(
+        "1 / 1",
+      );
+    });
+
+    it("keeps the result of a pass that ended in the background until shown", async () => {
+      await syncList(detailExtension);
+      mounted?.unmount();
+      await finishPass();
+
+      expect(useBuybackSync().status.value).toBe("finished");
+      expect(useBuybackDetailsSync().status.value).toBe("finished");
+
+      const wrapper = await mountModal(detailExtension);
+      wrapper.unmount();
+      mounted = undefined;
+
+      expect(useBuybackSync().status.value).toBe("idle");
+      expect(useBuybackDetailsSync().status.value).toBe("idle");
+    });
+
+    it("says when a pass ended before reading every price", async () => {
+      await syncList(detailExtension);
+      mounted?.unmount();
+      extensionReplies("syncBuybackPricing", undefined, { code: 500 });
       await flushPromises();
-      extensionReplies("syncBuybackDetail", detailPage, { id: "1" });
-      await flushPromises();
+
+      expect(useBuybackDetailsSync().status.value).toBe("incomplete");
+
+      const wrapper = await mountModal(detailExtension);
 
       expect(
-        wrapper.find("[data-test='start-buyback-sync']").attributes("disabled"),
-      ).toBeUndefined();
+        wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
+      ).toBe(true);
     });
 
     it("reads prices while a hangar sync runs", async () => {

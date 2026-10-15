@@ -2768,6 +2768,12 @@
         "added": "New",
         "removed": "Removed",
         "prices": "Prices read",
+        "background": {
+          "finished": "Buy-back sync finished",
+          "incomplete": "Buy-back sync finished, some prices missing",
+          "unsupported": "Buy-back sync needs a newer extension",
+          "failed": "Buy-back sync failed"
+        },
         "status": {
           "fetching": "Reading buy-back pages",
           "submitting": "Saving",

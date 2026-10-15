@@ -2768,6 +2768,12 @@
         "added": "Neu",
         "removed": "Entfernt",
         "prices": "Preise gelesen",
+        "background": {
+          "finished": "Rückkauf-Synchronisierung abgeschlossen",
+          "incomplete": "Rückkauf-Synchronisierung abgeschlossen, einige Preise fehlen",
+          "unsupported": "Rückkauf-Synchronisierung braucht eine neuere Erweiterung",
+          "failed": "Rückkauf-Synchronisierung fehlgeschlagen"
+        },
         "status": {
           "fetching": "Rückkaufseiten werden gelesen",
           "submitting": "Wird gespeichert",

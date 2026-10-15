@@ -42,6 +42,37 @@ const stage = computed(() => {
   return undefined;
 });
 
+// A run that ended in the background stays up until its result is opened or
+// dismissed, so the outcome is not only a toast that was easy to miss.
+const ended = computed(
+  () =>
+    ["finished", "failed", "unsupported"].includes(list.status.value) &&
+    !details.running.value,
+);
+
+const outcome = computed(() => {
+  if (list.status.value === "unsupported") return "unsupported";
+  if (list.status.value === "failed") return "failed";
+
+  // A cancelled pass goes back to idle, but its list is stored all the same.
+  // Without a pass at all, the extension could not read the prices.
+  if (list.detailsStarted.value) {
+    return details.status.value === "finished" ? "finished" : "incomplete";
+  }
+
+  return list.result.value?.detailsPending.length ? "incomplete" : "finished";
+});
+
+const outcomeClass = computed(
+  () =>
+    ({
+      finished: "text-success",
+      incomplete: "text-warning",
+      unsupported: "text-warning",
+      failed: "text-danger",
+    })[outcome.value],
+);
+
 // The modal that started the pass is usually long closed by the time it ends,
 // so how it ended is told here.
 watch(details.status, (current, previous) => {
@@ -63,6 +94,7 @@ watch(
 
     list.reset(true);
     details.discard();
+    details.reset();
   },
 );
 
@@ -80,15 +112,24 @@ const cancel = () => {
     list.cancel();
   }
 };
+
+const dismiss = () => {
+  list.reset();
+  details.reset();
+};
 </script>
 
 <template>
   <transition name="fade">
     <SyncProgressCard
-      v-if="stage && !hangarStore.buybackSyncModalOpen"
+      v-if="(stage || ended) && !hangarStore.buybackSyncModalOpen"
+      :loading="!!stage"
       data-test="buyback-sync-progress-card"
     >
-      <span data-test="buyback-sync-stage">
+      <span v-if="ended" :class="outcomeClass" data-test="buyback-sync-ended">
+        {{ t(`labels.buybackSync.background.${outcome}`) }}
+      </span>
+      <span v-else data-test="buyback-sync-stage">
         {{
           stage === "details"
             ? t("labels.buybackSync.detailsProgress")
@@ -96,7 +137,7 @@ const cancel = () => {
         }}
       </span>
       <span
-        v-if="stage !== 'submitting'"
+        v-if="stage && stage !== 'submitting'"
         class="buyback-sync-progress__count"
         data-test="buyback-sync-count"
       >
@@ -113,16 +154,29 @@ const cancel = () => {
         data-test="open-buyback-sync-progress"
         @click="open"
       >
-        {{ t("actions.showDetails") }}
+        {{
+          ended
+            ? t("actions.syncExtension.showResult")
+            : t("actions.showDetails")
+        }}
       </Btn>
       <Btn
-        v-if="stage !== 'submitting'"
+        v-if="stage && stage !== 'submitting'"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.GHOST"
         data-test="cancel-buyback-sync-progress"
         @click="cancel"
       >
         {{ t("actions.syncExtension.cancel") }}
+      </Btn>
+      <Btn
+        v-if="ended"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        data-test="dismiss-buyback-sync-progress"
+        @click="dismiss"
+      >
+        {{ t("actions.syncExtension.close") }}
       </Btn>
     </SyncProgressCard>
   </transition>
