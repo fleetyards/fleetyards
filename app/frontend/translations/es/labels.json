@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "Carga",
         "cargoHolds": "Bodegas de carga",
+        "keepCargo": "Mantener esta cifra de carga en lugar de las bodegas de los archivos del juego",
         "hydrogenFuelTankSize": "Tamaño del tanque de hidrógeno",
         "hydrogenFuelTanks": "Tanques de combustible de hidrógeno",
         "quantumFuelTankSize": "Tamaño del tanque Quantum",

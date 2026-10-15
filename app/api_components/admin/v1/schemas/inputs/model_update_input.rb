@@ -64,6 +64,7 @@ module Admin
               price: {type: [:number, :null]},
               pledgePrice: {type: [:number, :null]},
               cargo: {type: [:number, :null]},
+              keepCargo: {type: :boolean},
               cargoHolds: {type: [:string, :null]},
               hydrogenFuelTankSize: {type: [:number, :null]},
               hydrogenFuelTanks: {type: [:string, :null]},

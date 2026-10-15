@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "Cargaison",
         "cargoHolds": "Soutes à cargaison",
+        "keepCargo": "Garder ce chiffre de cargaison au lieu des soutes des fichiers du jeu",
         "hydrogenFuelTankSize": "Taille du réservoir hydrogène",
         "hydrogenFuelTanks": "Réservoirs de carburant hydrogène",
         "quantumFuelTankSize": "Taille du réservoir Quantum",

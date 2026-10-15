@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "Carico",
         "cargoHolds": "Stive di carico",
+        "keepCargo": "Mantieni questo valore di carico invece delle stive dei file di gioco",
         "hydrogenFuelTankSize": "Dimensione serbatoio idrogeno",
         "hydrogenFuelTanks": "Serbatoi carburante idrogeno",
         "quantumFuelTankSize": "Dimensione serbatoio Quantum",

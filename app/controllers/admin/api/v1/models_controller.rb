@@ -178,7 +178,7 @@ module Admin
             :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
             :classification, :focus, :size, :dock_size, :vehicle_size, :length, :beam, :height, :on_sale, :player_ownable, :ingame_only, :can_land_on_planets,
-            :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
+            :store_url, :sales_page_url, :price, :pledge_price, :cargo, :keep_cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
             :landed_length, :landed_beam, :landed_height,
             :landed_fleetchart_offset_length, :landed_fleetchart_offset_beam,

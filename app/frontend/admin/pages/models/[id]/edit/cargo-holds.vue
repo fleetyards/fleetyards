@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import {
   type ModelExtended,
@@ -41,6 +42,7 @@ const queryClient = useQueryClient();
 // Cargo total form
 const cargoInitialValues = ref<ModelUpdateInput>({
   cargo: props.model.metrics.cargo,
+  keepCargo: props.model.keepCargo,
 });
 
 const cargoValidationSchema = {};
@@ -51,6 +53,7 @@ const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
 });
 
 const [cargo, cargoProps] = defineField("cargo");
+const [keepCargo, keepCargoProps] = defineField("keepCargo");
 
 const editableList = ref<{
   editingId: string | null;
@@ -161,6 +164,16 @@ const formatOffset = (hold: AdminCargoHold) => {
           :type="InputTypesEnum.NUMBER"
           translation-key="model.cargo"
           :suffix="t('number.units.cargo')"
+        />
+      </div>
+      <!-- For a ship whose game-file version is not the one sold: otherwise a
+      flight-ready ship's cargo is what its holds take. -->
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="keepCargo"
+          v-bind="keepCargoProps"
+          name="keepCargo"
+          translation-key="model.keepCargo"
         />
       </div>
     </div>

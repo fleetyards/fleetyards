@@ -10,6 +10,7 @@ module Admin
           schema({
             properties: {
               hidden: {type: :boolean},
+              keepCargo: {type: :boolean, description: "The cargo entered stands instead of the game-file holds"},
               active: {type: :boolean},
               scKey: {type: :string},
               positionsNeedCuration: {type: :boolean},
@@ -19,7 +20,7 @@ module Admin
               dimensionsMeasuredAt: {type: :string, format: :"date-time"},
               media: AdminModelMedia
             },
-            required: %w[hidden active media]
+            required: %w[hidden keepCargo active media]
           })
         end
       end
