@@ -26,6 +26,7 @@ import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations"
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 
 type Props = {
   vehicle: Vehicle;
@@ -59,15 +60,18 @@ const deleting = ref(false);
 
 const updating = ref(false);
 
-// The owner edits the ship's loadout once the editor is switched on; anyone
-// else, or anyone looking at a loaner or a wishlist ship, looks at the one that
-// is active, as the panel's loadout marker does.
+const { loadoutEditorAvailable } = useLoadoutEditor();
+
+// The owner edits the ship's loadout where the editor is available; anyone
+// else, or anyone looking at a loaner, a wishlist ship or one that is not flight
+// ready, looks at the one that is active, as the panel's loadout marker does.
 const loadoutEditable = computed(
   () =>
     props.editable &&
     !props.wishlist &&
     !props.vehicle?.wanted &&
-    !props.vehicle?.loaner,
+    !props.vehicle?.loaner &&
+    loadoutEditorAvailable(props.vehicle),
 );
 
 const loadoutVisible = computed(() => {
@@ -81,10 +85,7 @@ const loadoutVisible = computed(() => {
     );
   }
 
-  return (
-    isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR) &&
-    !!props.vehicle.model.hasModules
-  );
+  return !!props.vehicle.model.hasModules;
 });
 
 const { useUpdateMutation, useDestroyMutation } = useVehicleMutations();
@@ -324,7 +325,9 @@ const separatorBefore = (name: string) =>
     <Btn
       v-if="loadoutVisible"
       :aria-label="
-        editable ? t('actions.hangar.editLoadout') : t('labels.model.addons')
+        loadoutEditable
+          ? t('actions.hangar.editLoadout')
+          : t('labels.model.addons')
       "
       data-test="vehicle-loadout"
       @click="openLoadout"
@@ -332,7 +335,9 @@ const separatorBefore = (name: string) =>
       <i class="fa-duotone fa-puzzle" />
       <span>
         {{
-          editable ? t("actions.hangar.editLoadout") : t("labels.model.addons")
+          loadoutEditable
+            ? t("actions.hangar.editLoadout")
+            : t("labels.model.addons")
         }}
       </span>
     </Btn>

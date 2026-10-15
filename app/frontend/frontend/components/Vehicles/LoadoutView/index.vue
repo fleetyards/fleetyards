@@ -17,14 +17,13 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import {
   type ModelModule,
   type Vehicle,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
   VehicleLoadoutItemTypeEnum,
-  FeatureFlagName,
   useModelModules as useModelModulesQuery,
 } from "@/services/fyApi";
 
@@ -108,11 +107,11 @@ const previewImage = computed(
     model.value?.media.storeImage?.url,
 );
 
-const { isFeatureEnabled } = useFeatures();
+const { loadoutEditorAvailable } = useLoadoutEditor();
 
-// The owner's way into the editor, once the editor is switched on.
+// The owner's way into the editor, where the editor is available.
 const editVisible = computed(
-  () => props.editable && isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
+  () => props.editable && loadoutEditorAvailable(props.vehicle),
 );
 
 const comlink = useComlink();

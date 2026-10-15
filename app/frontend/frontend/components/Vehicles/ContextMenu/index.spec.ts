@@ -6,6 +6,7 @@ import {
   type Vehicle,
   BoughtViaEnum,
   FeatureFlagName,
+  ModelProductionStatusEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
 
@@ -34,6 +35,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
       name: "Odyssey",
       slug: "odyssey",
       inGame: true,
+      productionStatus: ModelProductionStatusEnum.FLIGHT_READY,
       hasModules: false,
       hasUpgrades: false,
     },
@@ -204,6 +206,47 @@ describe("VehicleContextMenu", () => {
     });
 
     expect(items()).not.toContain("vehicle-loadout");
+  });
+
+  it("offers no loadout editing on a ship that is not flight ready", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
+    await mount({
+      vehicle: vehicle({
+        model: {
+          ...vehicle().model,
+          hasModules: true,
+          productionStatus: ModelProductionStatusEnum.IN_PRODUCTION,
+        },
+      }),
+    });
+
+    expect(items()).not.toContain("vehicle-loadout");
+  });
+
+  it("shows the owner the active loadout of a ship that is not flight ready", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
+    await mount({
+      vehicle: vehicle({
+        model: {
+          ...vehicle().model,
+          hasModules: true,
+          productionStatus: ModelProductionStatusEnum.IN_CONCEPT,
+        },
+        activeLoadout: {
+          id: "loadout-1",
+          kind: VehicleLoadoutKindEnum.FLEETYARDS,
+        },
+      } as Partial<Vehicle>),
+    });
+
+    const entry = document.body.querySelector('[data-test="vehicle-loadout"]');
+    expect(entry?.textContent).toContain("Modules & Upgrade-Kits");
   });
 
   it("shows a loaner's or wishlist ship's loadout rather than editing it", async () => {

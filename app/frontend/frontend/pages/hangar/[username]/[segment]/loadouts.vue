@@ -15,6 +15,7 @@ import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
   type Vehicle,
@@ -154,6 +155,12 @@ const editorEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
 );
 
+// The new-loadout button stays, disabled with its reason, on a ship that is not
+// flight ready; an existing loadout on one has no fitting to open.
+const { loadoutEditorAvailable } = useLoadoutEditor();
+
+const fittingEditable = computed(() => loadoutEditorAvailable(props.vehicle));
+
 const editFitting = (record: VehicleLoadout) => {
   openLoadoutModal(props.vehicle, {
     editable: true,
@@ -225,7 +232,7 @@ const onActivate = async (record: VehicleLoadout) => {
       <template #actions="{ item }">
         <Btn
           v-if="
-            editorEnabled && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
+            fittingEditable && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
           "
           v-tooltip="t('actions.vehicleLoadout.editLoadout')"
           :data-test="`loadout-edit-fitting-${item.id}`"
