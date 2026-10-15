@@ -31,7 +31,10 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import {
+  HANGAR_VIEW_KEYS,
+  useHangarFilters,
+} from "@/frontend/composables/useHangarFilters";
 import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -208,6 +211,7 @@ onMounted(async () => {
 
   <FilteredList
     :key="`public-wishlist-${username}`"
+    :view-keys="HANGAR_VIEW_KEYS"
     :hide-loading="fleetchartVisible"
     :records="wishlist?.items || []"
     :name="route.name?.toString() || ''"

@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import PaginatorAboveList from "@/shared/components/Paginator/AboveList/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import { listFilterKey } from "@/shared/components/Empty/types";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
@@ -52,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   staticFilters: false,
   hideEmpty: false,
   hideLoading: false,
-  isFilterSelected: false,
+  isFilterSelected: undefined,
   placeholders: false,
   viewKeys: () => [],
 });
@@ -217,7 +218,11 @@ const clientError = computed(
   () => errorType.value === ErrorTypesEnum.CLIENT_ERROR,
 );
 
-const { resetFilter, hasResettableQuery } = useFilters({
+const {
+  resetFilter,
+  hasResettableQuery,
+  isFilterSelected: routeFiltered,
+} = useFilters({
   viewKeys: props.viewKeys,
 });
 
@@ -238,6 +243,13 @@ const resetQuery = async () => {
 
   filterFormReset.value = false;
 };
+
+// A page that runs its own filter composable knows its own ignore and view
+// keys, so its answer wins; the list's reading of the URL covers the rest.
+provide(listFilterKey, {
+  filtered: computed(() => props.isFilterSelected ?? routeFiltered.value),
+  reset: resetQuery,
+});
 
 const emptyVisible = computed(() => {
   return !!(

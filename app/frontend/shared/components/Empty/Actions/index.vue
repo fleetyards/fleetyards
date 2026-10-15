@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { listFilterKey } from "../types";
 
 type Props = {
   pagePresent: boolean;
@@ -42,7 +43,16 @@ const resetPage = () => {
     .catch((_err) => {});
 };
 
+const listFilter = inject(listFilterKey, undefined);
+
 const reset = () => {
+  // A list keeps its view - a share token, a tab - through a reset.
+  if (listFilter) {
+    void listFilter.reset();
+
+    return;
+  }
+
   router
     .replace({
       name: String(route.name),
