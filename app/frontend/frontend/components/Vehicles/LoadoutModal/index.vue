@@ -284,7 +284,10 @@ const summary = computed(() =>
     {
       key: "modules",
       label: t("labels.vehicleLoadout.tabs.modules"),
-      values: selectedNames(modules.value, fittedModuleIds.value),
+      values: selectedNames(
+        modules.value,
+        flightReady.value ? fittedModuleIds.value : modelModuleIds.value,
+      ),
       visible: !!model.value?.hasModules,
     },
     {
