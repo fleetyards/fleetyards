@@ -391,12 +391,12 @@ module Rsi
         # Repointing a vehicle at the paint it should always have been is a
         # correction to our own catalogue, not a repaint the owner chose.
         PaperTrail.request(enabled: false) do
+          # A gallery image of the folded model goes with the model, so only an
+          # upload keeps the ship from showing the paint it was bought as.
           Vehicle.where(model_id: model.id).find_each do |vehicle|
-            custom_picture = vehicle.image.attached? || vehicle.model_image_id?
-            vehicle.update(
-              model_id: paint.model_id,
-              model_paint_picture_id: (paint.id unless custom_picture || !paint.store_image.attached?)
-            )
+            picture = paint.id if paint.store_image.attached? && !vehicle.image.attached?
+            next unless vehicle.update(model_id: paint.model_id, model_paint_picture_id: picture)
+
             vehicle.vehicle_paints.find_or_create_by!(model_paint: paint)
           end
         end
