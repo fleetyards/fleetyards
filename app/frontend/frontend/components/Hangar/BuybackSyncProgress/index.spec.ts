@@ -135,7 +135,7 @@ describe("HangarBuybackSyncProgress", () => {
     await find(wrapper, "cancel-buyback-sync-progress").trigger("click");
     expect(pass.cancel).toHaveBeenCalled();
     expect(list.cancel).not.toHaveBeenCalled();
-    expect(list.reset).toHaveBeenCalled();
+    expect(list.reset).not.toHaveBeenCalled();
   });
 
   it("stays out of the way while the modal shows the run", async () => {
@@ -194,6 +194,21 @@ describe("HangarBuybackSyncProgress", () => {
 
     expect(displaySuccess).not.toHaveBeenCalled();
     expect(displayWarning).not.toHaveBeenCalled();
+  });
+
+  // The list was stored before the pass began, so its result is still shown.
+  it("keeps the result of a run whose price pass was cancelled", async () => {
+    list.status.value = "finished";
+    list.detailsStarted.value = true;
+    pass.status.value = "running";
+
+    const wrapper = mountProgress();
+    pass.status.value = "idle";
+    await flushPromises();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.incomplete",
+    );
   });
 
   it("goes away as soon as the pass is cancelled", async () => {

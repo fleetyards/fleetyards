@@ -53,7 +53,8 @@ const ended = computed(
 const outcome = computed(() => {
   if (list.status.value !== "finished") return "failed";
 
-  return list.detailsStarted.value && details.status.value === "incomplete"
+  // A cancelled pass goes back to idle, but its list is stored all the same.
+  return list.detailsStarted.value && details.status.value !== "finished"
     ? "incomplete"
     : "finished";
 });
@@ -98,11 +99,9 @@ const open = () => {
   });
 };
 
-// A pass cancelled here ends the run with it; there is no result to keep up.
 const cancel = () => {
   if (stage.value === "details") {
     details.cancel();
-    list.reset();
   } else {
     list.cancel();
   }
