@@ -97,6 +97,8 @@ class Vehicle < ApplicationRecord
   belongs_to :picture, polymorphic: true, optional: true
   # The type is client input, so it is checked before anything resolves it.
   validates :picture_type, inclusion: {in: PICTURE_TYPES}, allow_nil: true
+  validates :picture_id, presence: true, if: :picture_type?
+  validates :picture_type, presence: true, if: :picture_id?
   # Only a new pick is checked: an image disabled later must not block every
   # other save of the vehicle, the hangar sync's among them.
   validate :picture_of_own_model, if: -> { picture_id? && (will_save_change_to_picture_id? || will_save_change_to_picture_type?) }

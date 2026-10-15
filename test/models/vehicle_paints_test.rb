@@ -47,6 +47,11 @@ class VehiclePaintsTest < ActiveSupport::TestCase
     assert_not @vehicle.update(picture: create(:model_paint, :with_store_image))
   end
 
+  test "takes a picture type only together with an id, and the other way round" do
+    assert_not @vehicle.update(picture_type: "ModelPaint", picture_id: nil)
+    assert_not @vehicle.reload.update(picture_type: nil, picture_id: @paint.id)
+  end
+
   test "takes no paint without a store image as its picture" do
     assert_not @vehicle.update(picture: create(:model_paint, model: @model))
   end
