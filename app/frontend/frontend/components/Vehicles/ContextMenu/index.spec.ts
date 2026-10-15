@@ -6,6 +6,7 @@ import {
   type Vehicle,
   BoughtViaEnum,
   FeatureFlagName,
+  ModelProductionStatusEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
 
@@ -34,6 +35,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
       name: "Odyssey",
       slug: "odyssey",
       inGame: true,
+      productionStatus: ModelProductionStatusEnum.FLIGHT_READY,
       hasModules: false,
       hasUpgrades: false,
     },
@@ -201,6 +203,24 @@ describe("VehicleContextMenu", () => {
   it("offers no loadout editing until the editor is switched on", async () => {
     await mount({
       vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
+    });
+
+    expect(items()).not.toContain("vehicle-loadout");
+  });
+
+  it("offers no loadout editing on a ship that is not flight ready", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
+    await mount({
+      vehicle: vehicle({
+        model: {
+          ...vehicle().model,
+          hasModules: true,
+          productionStatus: ModelProductionStatusEnum.IN_PRODUCTION,
+        },
+      }),
     });
 
     expect(items()).not.toContain("vehicle-loadout");

@@ -26,6 +26,7 @@ import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations"
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 
 type Props = {
   vehicle: Vehicle;
@@ -70,6 +71,8 @@ const loadoutEditable = computed(
     !props.vehicle?.loaner,
 );
 
+const { loadoutEditorAvailable } = useLoadoutEditor();
+
 const loadoutVisible = computed(() => {
   if (!props.vehicle) {
     return false;
@@ -82,8 +85,7 @@ const loadoutVisible = computed(() => {
   }
 
   return (
-    isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR) &&
-    !!props.vehicle.model.hasModules
+    loadoutEditorAvailable(props.vehicle) && !!props.vehicle.model.hasModules
   );
 });
 

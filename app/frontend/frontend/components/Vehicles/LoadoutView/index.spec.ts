@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import {
   FeatureFlagName,
+  ModelProductionStatusEnum,
   type Vehicle,
   type VehicleLoadoutMinimal,
 } from "@/services/fyApi";
@@ -57,6 +58,7 @@ const vehicle = {
   model: {
     name: "Retaliator",
     slug: "retaliator",
+    productionStatus: ModelProductionStatusEnum.FLIGHT_READY,
     media: {},
     metrics: { cargo: 100 },
   },
@@ -139,6 +141,26 @@ describe("VehicleLoadoutView", () => {
       wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
     ).toBe(false);
     enabledFlags.value = [FeatureFlagName.LOADOUT_EDITOR];
+  });
+
+  it("offers the owner no way in on a ship that is not flight ready", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle: {
+          ...vehicle,
+          model: {
+            ...vehicle.model,
+            productionStatus: ModelProductionStatusEnum.IN_CONCEPT,
+          },
+        },
+        loadout,
+        editable: true,
+      },
+    });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
+    ).toBe(false);
   });
 
   it("offers a visitor no way to edit", async () => {
