@@ -484,6 +484,7 @@
         "screenHeight": "Screen Height",
         "viewpoint": "Viewpoint",
         "screenHeightOptions": {
+          "auto": "Auto",
           "1x": "1x",
           "1_5x": "1.5x",
           "2x": "2x",

@@ -9,6 +9,7 @@ export enum FleetchartViewpoints {
 }
 
 export enum FleetchartScreenHeights {
+  AUTO = "auto",
   ONE = "1x",
   ONEFIVE = "1_5x",
   TWO = "2x",
@@ -72,7 +73,8 @@ export const useFleetchartStore = defineStore("fleetchart", {
       return (namespace: string) => state.mode[namespace] || "panzoom";
     },
     fleetchartScreenHeight: (state) => {
-      return (namespace: string) => state.screenHeight[namespace] || "1x";
+      return (namespace: string) =>
+        state.screenHeight[namespace] || FleetchartScreenHeights.AUTO;
     },
     fleetchartScale: (state) => {
       return (namespace: string) => state.scale[namespace] || 1;

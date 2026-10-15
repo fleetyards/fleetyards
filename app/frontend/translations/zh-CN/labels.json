@@ -484,6 +484,7 @@
         "screenHeight": "屏幕高度",
         "viewpoint": "视角",
         "screenHeightOptions": {
+          "auto": "自动",
           "1x": "1x",
           "1_5x": "1.5x",
           "2x": "2x",
