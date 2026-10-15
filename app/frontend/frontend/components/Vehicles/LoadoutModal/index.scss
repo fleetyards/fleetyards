@@ -5,14 +5,14 @@
  */
 .vehicle-loadout {
   position: relative;
-  // The whole screen the modal was given, less its title and the footer bar, so
-  // the ship has room behind the controls instead of an empty band below them.
-  min-height: calc(100dvh - 260px);
   padding: 0 0 24px;
 
   // The ship on a layer of its own, faded in from the left rather than painted
   // under a gradient: the panel keeps its own colour where the controls sit.
+  // Only where the controls leave room beside it; on a phone it would sit
+  // under them.
   &::before {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -162,6 +162,14 @@
 
 @media (min-width: $tablet-breakpoint) {
   .vehicle-loadout {
+    // The whole screen the modal was given, less its title and the footer bar,
+    // so the ship has room behind the controls instead of an empty band below.
+    min-height: calc(100dvh - 260px);
+
+    &::before {
+      display: block;
+    }
+
     &__category {
       grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
       align-items: start;
@@ -197,9 +205,10 @@
   }
 }
 
-// In the footer, beside the save it names: as wide as a name needs, no wider.
+// In the footer, beside the save it names: as wide as a name needs, no wider,
+// and sharing the row with the button on a phone.
 .vehicle-loadout__name {
-  width: 280px;
-  max-width: 100%;
+  flex: 1 1 160px;
+  max-width: 280px;
   margin: 0;
 }
