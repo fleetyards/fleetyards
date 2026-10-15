@@ -10,7 +10,9 @@ module V1
           type: :object,
           properties: {
             name: {type: [:string, :null]},
-            url: {type: :string}
+            kind: ::V1::Schemas::Enums::VehicleLoadoutKindEnum,
+            url: {type: [:string, :null]},
+            items: {type: :array, items: ::V1::Schemas::Inputs::VehicleLoadoutItemInput}
           },
           additionalProperties: false
         })

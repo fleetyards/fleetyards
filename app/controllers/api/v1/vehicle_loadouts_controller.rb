@@ -17,7 +17,7 @@ module Api
       def index
         authorize! with: VehicleLoadoutPolicy
 
-        @vehicle_loadouts = @vehicle.vehicle_loadouts.order(active: :desc, name: :asc)
+        @vehicle_loadouts = @vehicle.vehicle_loadouts.includes(:items).order(active: :desc, name: :asc)
       end
 
       def show
@@ -64,8 +64,13 @@ module Api
       end
 
       private def vehicle_loadout_params
-        @vehicle_loadout_params ||= params.transform_keys(&:underscore)
-          .permit(:name, :url)
+        @vehicle_loadout_params ||= begin
+          permitted = params.transform_keys(&:underscore)
+            .permit(:name, :url, :kind, items: [:slot, :model_module_id])
+
+          permitted[:item_list] = permitted.delete(:items) if permitted.key?(:items)
+          permitted
+        end
       end
     end
   end

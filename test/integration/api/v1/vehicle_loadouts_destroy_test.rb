@@ -39,7 +39,7 @@ class Api::V1::VehicleLoadoutsDestroyTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = create(:user)
-    @vehicle = create(:vehicle, user: @user)
+    @vehicle = create(:vehicle, user: @user, model: create(:model, production_status: "flight-ready"))
   end
 
   test "DELETE /vehicles/:vehicle_id/loadouts/:id deletes the loadout" do

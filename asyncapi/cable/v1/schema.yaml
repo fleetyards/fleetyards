@@ -5201,6 +5201,27 @@ components:
       - fid
       - name
       - slug
+    VehicleLoadoutItem:
+      type: object
+      properties:
+        slot:
+          type: string
+          description: The module hardpoint's sc_name on the hull
+        modelModuleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slot
+      - modelModuleId
+    VehicleLoadoutKindEnum:
+      type: string
+      enum:
+      - link
+      - fleetyards
+      x-enumNames:
+      - LINK
+      - FLEETYARDS
     VehicleLoadoutMinimal:
       type: object
       properties:
@@ -5211,10 +5232,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -5226,7 +5253,8 @@ components:
       - id
       - name
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
     VehiclePlaqueStyleEnum:

@@ -40238,10 +40238,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -40252,7 +40258,8 @@ components:
       required:
       - id
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
       title: VehicleLoadout
@@ -40263,10 +40270,54 @@ components:
           type:
           - string
           - 'null'
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
-          type: string
+          type:
+          - string
+          - 'null'
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItemInput"
       additionalProperties: false
       title: VehicleLoadoutInput
+    VehicleLoadoutItem:
+      type: object
+      properties:
+        slot:
+          type: string
+          description: The module hardpoint's sc_name on the hull
+        modelModuleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slot
+      - modelModuleId
+      title: VehicleLoadoutItem
+    VehicleLoadoutItemInput:
+      type: object
+      properties:
+        slot:
+          type: string
+        modelModuleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slot
+      - modelModuleId
+      title: VehicleLoadoutItemInput
+    VehicleLoadoutKindEnum:
+      type: string
+      enum:
+      - link
+      - fleetyards
+      x-enumNames:
+      - LINK
+      - FLEETYARDS
+      title: VehicleLoadoutKindEnum
     VehicleLoadoutMinimal:
       type: object
       properties:
@@ -40277,10 +40328,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -40292,7 +40349,8 @@ components:
       - id
       - name
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal

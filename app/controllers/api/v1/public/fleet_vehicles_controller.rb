@@ -12,7 +12,7 @@ module Api
         VEHICLE_RENDER_INCLUDES = [
           :model_paint,
           :module_package,
-          :vehicle_loadouts,
+          {vehicle_loadouts: :items},
           :public_hangar_groups,
           {model: [:manufacturer]},
           {vehicle_modules: :model_module},

@@ -15,13 +15,15 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             active: {type: :boolean},
+            kind: ::V1::Schemas::Enums::VehicleLoadoutKindEnum,
             url: {type: :string},
             urlSource: {type: :string},
+            items: {type: :array, items: ::V1::Schemas::Vehicles::VehicleLoadoutItem},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name active url createdAt updatedAt]
+          required: %w[id name active kind items createdAt updatedAt]
         })
       end
     end

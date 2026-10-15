@@ -41,7 +41,7 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = create(:user)
-    @vehicle = create(:vehicle, user: @user)
+    @vehicle = create(:vehicle, user: @user, model: create(:model, production_status: "flight-ready"))
   end
 
   test "PUT /vehicles/:vehicle_id/loadouts/:id updates the loadout" do
@@ -78,5 +78,26 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
       path_params: {vehicle_id: @vehicle.id, id: loadout.id},
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
       body: {name: "Updated Loadout", url: "https://erkul.games/loadout/updated123"}
+  end
+
+  def fittable_module(slot)
+    model_module = create(:model_module)
+    create(:module_hardpoint, model: @vehicle.model, model_module:, slot:)
+    @vehicle.update!(model_module_ids: @vehicle.model_module_ids + [model_module.id])
+    model_module
+  end
+
+  test "PUT /vehicles/:vehicle_id/loadouts/:id replaces the fitting" do
+    old = fittable_module("hardpoint_module")
+    new = fittable_module("hardpoint_module")
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle,
+      item_list: [{slot: "hardpoint_module", model_module_id: old.id}])
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {vehicle_id: @vehicle.id, id: loadout.id},
+      body: {items: [{slot: "hardpoint_module", modelModuleId: new.id}]} do
+      assert_equal [new.id], parsed_body["items"].pluck("modelModuleId")
+    end
   end
 end

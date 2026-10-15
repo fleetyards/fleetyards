@@ -37,7 +37,7 @@ class Api::V1::VehicleLoadoutsIndexTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = create(:user)
-    @vehicle = create(:vehicle, user: @user)
+    @vehicle = create(:vehicle, user: @user, model: create(:model, production_status: "flight-ready"))
   end
 
   test "GET /vehicles/:vehicle_id/loadouts lists loadouts" do
