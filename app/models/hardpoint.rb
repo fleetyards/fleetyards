@@ -104,6 +104,7 @@ class Hardpoint < ApplicationRecord
     other: 9,
     external_fuel_tank: 10,
     refuel_boom: 11,
+    ore_pod: 12,
     unknown: 99
   }.freeze
 
@@ -116,7 +117,7 @@ class Hardpoint < ApplicationRecord
     weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
     quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
     armor: 50, countermeasures: 51,
-    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
+    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63, ore_pods: 64,
     seat: 70,
     relay: 80,
     paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
@@ -205,8 +206,8 @@ class Hardpoint < ApplicationRecord
       self.group = :seat
     end
 
-    if sc_name&.start_with?("hardpoint_mining_pod")
-      self.group = :other
+    if ore_pod?
+      self.group = :ore_pod
     end
 
     if sc_name&.start_with?("hardpoint_relay_")
@@ -230,6 +231,8 @@ class Hardpoint < ApplicationRecord
       end
     elsif sc_name&.start_with?("hardpoint_engineeringscreen")
       :seat
+    elsif ore_pod?
+      :ore_pods
     else
       case component&.component_type
       when "EMP"
@@ -247,6 +250,15 @@ class Hardpoint < ApplicationRecord
         end
       end
     end
+  end
+
+  # A collapsed pod is a spare stowed in a rack: it holds nothing, and counting
+  # it would put sixteen extra pods on a MOLE.
+  def ore_pod?
+    return true if sc_name&.start_with?("hardpoint_mining_pod")
+
+    sc_key = component&.sc_key.to_s
+    sc_key.include?("mining_pod") && !sc_key.end_with?("_collapsed")
   end
 
   def set_group_key
