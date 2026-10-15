@@ -4,7 +4,7 @@ import type { ModelModule } from "@/services/fyApi";
 
 // Ports that say nothing about what the module is for. The slot row drops the
 // same two from its own expansion.
-const UNINFORMATIVE: HardpointCategoryEnum[] = [
+export const UNINFORMATIVE: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.CONTROLLER,
   HardpointCategoryEnum.UNKNOWN,
 ];

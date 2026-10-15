@@ -151,6 +151,23 @@ describe("VehicleLoadoutModal", () => {
     expect(cargo(wrapper)).toBe("132");
   });
 
+  it("shows what each option and the whole fitting change", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
+    );
+
+    const cargoOption = wrapper.findAll(
+      "[data-test='vehicle-loadout-slot-module']",
+    )[0];
+    expect(cargoOption.text()).toContain("+32");
+
+    await slotPick(wrapper, 0).trigger("click");
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-changes']").text(),
+    ).toContain("+32");
+  });
+
   it("fits one module per slot, swapping rather than adding", async () => {
     const wrapper = await mountModal(vehicle(["m1", "m2"]));
 

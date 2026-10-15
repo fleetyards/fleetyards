@@ -4306,6 +4306,7 @@
         "fittedHint": "One module per slot, from the modules you own",
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
+        "changes": "Changes from the saved loadout",
         "loadoutName": "Loadout name",
         "loadoutNamePlaceholder": "e.g. Medical run",
         "stock": "Stock",

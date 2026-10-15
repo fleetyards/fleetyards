@@ -139,3 +139,20 @@
     margin-bottom: 12px;
   }
 }
+
+.vehicle-loadout {
+  &__changes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Direction, not merit: more cargo is not better than more torpedoes.
+  &__change--gain {
+    color: var(--color-text);
+  }
+
+  &__change--loss {
+    color: var(--color-text-dim);
+  }
+}

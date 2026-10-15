@@ -10,6 +10,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
+import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
+import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
 import { type ModelModule } from "@/services/fyApi";
 
 type Props = {
@@ -55,17 +57,6 @@ const candidates = (slot: string) =>
       mod.slot === slot && (mod.stock || props.ownedIds.includes(mod.id)),
   );
 
-const badges = (mod: ModelModule) =>
-  mod.stock
-    ? [
-        {
-          key: "stock",
-          label: t("labels.vehicleLoadout.stock"),
-          variant: PillVariantsEnum.NEUTRAL,
-        },
-      ]
-    : [];
-
 // Owned, but the game files never said which slot it takes, so there is
 // nowhere to fit it.
 const unslotted = computed(() => owned.value.filter((mod) => !mod.slot));
@@ -73,6 +64,42 @@ const unslotted = computed(() => owned.value.filter((mod) => !mod.slot));
 const { slotLabel } = useLoadoutSlotLabel();
 
 const fittedIn = (slot: string) => props.modelValue[slot];
+
+const { diff } = useFittingDiff();
+
+const fittedModule = (slot: string) =>
+  props.modules.find((mod) => mod.id === fittedIn(slot));
+
+// What picking this would change against what the slot holds now: the
+// figures a swap gains and loses, not the option's own totals.
+const changes = (slot: string, mod?: ModelModule): AddonBadge[] => {
+  if (!props.editable) {
+    return [];
+  }
+
+  const current = fittedModule(slot);
+  if (mod && mod.id === current?.id) {
+    return [];
+  }
+
+  return diff(current ? [current] : [], mod ? [mod] : []).map((change) => ({
+    key: `change-${change.key}`,
+    label: change.label,
+  }));
+};
+
+const badges = (slot: string, mod: ModelModule): AddonBadge[] => [
+  ...(mod.stock
+    ? [
+        {
+          key: "stock",
+          label: t("labels.vehicleLoadout.stock"),
+          variant: PillVariantsEnum.NEUTRAL,
+        },
+      ]
+    : []),
+  ...changes(slot, mod),
+];
 
 const fit = (slot: string, moduleId?: string) => {
   const next = { ...props.modelValue };
@@ -106,6 +133,7 @@ const visibleSlots = computed(() =>
           v-if="editable"
           :name="t('labels.vehicleLoadout.nothingFitted')"
           icon="fa-duotone fa-layer-minus"
+          :badges="changes(slot)"
           :selected="!fittedIn(slot)"
           test-id="vehicle-loadout-slot-empty"
           @toggle="fit(slot)"
@@ -118,7 +146,7 @@ const visibleSlots = computed(() =>
           :name="mod.name"
           :image="mod.media?.storeImage?.smallUrl"
           :contents="mod.description || contents(mod)"
-          :badges="badges(mod)"
+          :badges="badges(slot, mod)"
           :selected="editable && mod.id === fittedIn(slot)"
           :editable="editable"
           test-id="vehicle-loadout-slot-module"

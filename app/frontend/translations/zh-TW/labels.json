@@ -4292,6 +4292,7 @@
         "fittedHint": "每個槽位一個模組，從你擁有的模組中選擇",
         "ownedModules": "你擁有的模組",
         "nothingFitted": "未裝配",
+        "changes": "相對已儲存配置的變化",
         "loadoutName": "配裝名稱",
         "loadoutNamePlaceholder": "例如：醫療任務",
         "stock": "原廠",

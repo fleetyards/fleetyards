@@ -23,6 +23,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
+import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
 import {
   type Vehicle,
   type VehicleLoadoutItemInput,
@@ -225,6 +226,19 @@ const previewImage = computed(
     model.value?.media.storeImage?.mediumUrl ||
     model.value?.media.storeImage?.url,
 );
+
+const { diff } = useFittingDiff();
+
+// Everything the unsaved fitting changes on the ship, against the loadout as
+// saved: the sum of every swap made so far.
+const changes = computed(() => {
+  const saved = Object.values(savedValues().fittedModules);
+
+  return diff(
+    modules.value.filter((mod) => saved.includes(mod.id)),
+    modules.value.filter((mod) => fittedModuleIds.value.includes(mod.id)),
+  );
+});
 
 const fittedNames = computed(() =>
   modules.value
@@ -455,6 +469,28 @@ const onSubmit = handleSubmit(async (values) => {
                       ? fittedNames.join(", ")
                       : t("labels.vehicleLoadout.none")
                   }}
+                </dd>
+              </div>
+              <div
+                v-if="changes.length"
+                class="vehicle-loadout__summary-entry"
+                data-test="vehicle-loadout-changes"
+              >
+                <dt>{{ t("labels.vehicleLoadout.changes") }}</dt>
+                <dd>
+                  <ul class="vehicle-loadout__changes">
+                    <li
+                      v-for="change in changes"
+                      :key="change.key"
+                      :class="
+                        change.delta > 0
+                          ? 'vehicle-loadout__change--gain'
+                          : 'vehicle-loadout__change--loss'
+                      "
+                    >
+                      {{ change.label }}
+                    </li>
+                  </ul>
                 </dd>
               </div>
             </dl>
