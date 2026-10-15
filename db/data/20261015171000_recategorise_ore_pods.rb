@@ -28,7 +28,7 @@ class RecategoriseOrePods < ActiveRecord::Migration[8.1]
       }
 
       builds = HardpointBuild.where(hardpoint_id: pod.id)
-      builds = builds.where(component_id: pod.component_id) unless pod.sc_name.start_with?("hardpoint_mining_pod")
+      builds = builds.where(component_id: pod.component_id) unless pod.sc_name.to_s.start_with?("hardpoint_mining_pod")
       builds.update_all(attributes)
       Hardpoint.where(id: pod.id).update_all(attributes.merge(updated_at: Time.current))
     end
