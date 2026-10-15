@@ -2303,6 +2303,10 @@
         "hidden": "Nascosto?",
         "saleNotify": "Voglio ricevere notifiche di messa in vendita",
         "hangarGroups": "Gruppi",
+        "ownedPaintsSelect": {
+          "label": "Verniciature possedute",
+          "pledged": "Da un pledge"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "Seleziona una Paint",
           "label": "Verniciatura"
@@ -4241,7 +4245,10 @@
         "noPaint": "Verniciatura standard",
         "ownedPaints": "Le tue verniciature",
         "availablePaints": "Verniciature",
-        "paintApplied": "%{paint}, applicata",
+        "ownedPaintsCount": {
+          "one": "%{count} verniciatura",
+          "other": "%{count} verniciature"
+        },
         "visibility": "Visibilità",
         "showPublic": "Mostra nel mio hangar pubblico",
         "showName": "Mostra il nome",

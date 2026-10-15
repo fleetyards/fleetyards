@@ -2303,6 +2303,10 @@
         "hidden": "隱藏?",
         "saleNotify": "我希望收到銷售通知",
         "hangarGroups": "群組",
+        "ownedPaintsSelect": {
+          "label": "擁有的塗裝",
+          "pledged": "來自承諾包"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "選擇塗裝",
           "label": "塗裝"
@@ -4241,7 +4245,10 @@
         "noPaint": "標準塗裝",
         "ownedPaints": "你的塗裝",
         "availablePaints": "塗裝",
-        "paintApplied": "%{paint}，已套用",
+        "ownedPaintsCount": {
+          "one": "%{count} 款塗裝",
+          "other": "%{count} 款塗裝"
+        },
         "visibility": "可見性",
         "showPublic": "在我的公開機庫中顯示",
         "showName": "顯示名稱",

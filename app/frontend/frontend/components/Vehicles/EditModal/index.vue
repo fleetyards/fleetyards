@@ -40,7 +40,7 @@ type Props = {
   vehicle: Vehicle;
   wishlist?: boolean;
   tab?: VehicleEditTabsEnum;
-  // A paint picked elsewhere, opened here to be saved.
+  // A paint picked elsewhere, added to the owned ones here to be saved.
   paintId?: string;
 };
 
@@ -69,7 +69,7 @@ const savedValues = (): VehicleEditValues => ({
   hangarGroupIds: [...props.vehicle.hangarGroupIds],
   modelModuleIds: [...props.vehicle.modelModuleIds],
   modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
-  modelPaintId: props.vehicle.paint?.id ?? null,
+  modelPaintIds: [...props.vehicle.modelPaintIds],
 });
 
 const EDITABLE_FIELDS = Object.keys(
@@ -83,8 +83,11 @@ const { handleSubmit, resetForm, setErrors, meta, setFieldValue } =
 
 // Set as a pending choice rather than an initial value, so it saves like a pick
 // and survives a background refetch of the hangar.
-if (props.paintId) {
-  setFieldValue("modelPaintId", props.paintId);
+if (props.paintId && !props.vehicle.modelPaintIds.includes(props.paintId)) {
+  setFieldValue("modelPaintIds", [
+    ...props.vehicle.modelPaintIds,
+    props.paintId,
+  ]);
 }
 
 // A pending edit wins over the refresh, or a background refetch of the hangar
@@ -194,7 +197,10 @@ const onSubmit = handleSubmit(async (values) => {
 
   await save({ ...changes, ...imageChanges }, !!imageChanges)
     .then(async () => {
-      if (changes && "modelPaintId" in changes) {
+      if (
+        (changes && "modelPaintIds" in changes) ||
+        (imageChanges && "modelPaintPictureId" in imageChanges)
+      ) {
         await queryClient.invalidateQueries({
           queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
         });
@@ -333,7 +339,7 @@ const vehicleName = computed(
           :id="VehicleEditTabsEnum.PAINT"
           :label="t('labels.vehicleLoadout.tabs.paints')"
           icon="fa-duotone fa-paint-roller"
-          :fields="['modelPaintId']"
+          :fields="['modelPaintIds']"
           :hidden="!equipmentVisible || !vehicle.model.hasPaints"
         >
           <Paint

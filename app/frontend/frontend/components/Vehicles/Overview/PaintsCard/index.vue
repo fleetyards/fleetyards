@@ -35,15 +35,15 @@ const all = computed<VehiclePaint[]>(() => vehiclePaints.value || []);
 
 const owned = computed(() => all.value.filter((entry) => entry.owned));
 
-// Without a synced paint pledge there is nothing to call "yours", so the card
-// offers the model's paints instead of standing empty.
+// A ship that records no paint yet shows the model's paints instead of standing
+// empty.
 const shown = computed(() =>
   (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
 );
 
 const { openEditModal } = useVehicleModals();
 
-// Loaners carry the paint they were lent with, as on the configuration card.
+// A loaner's paints are the lender's, as on the configuration card.
 const editable = computed(() => !props.vehicle.loaner);
 
 const openPicker = (paintId?: string) =>
@@ -72,7 +72,7 @@ const thumb = (entry: VehiclePaint) =>
         data-test="vehicle-overview-paints-all"
         @click="openPicker()"
       >
-        {{ t("actions.vehicleOverview.choosePaint") }}
+        {{ t("actions.vehicleOverview.editPaints") }}
       </Btn>
     </template>
     <div class="overview-paints">
@@ -81,16 +81,8 @@ const thumb = (entry: VehiclePaint) =>
         :key="entry.paint.id"
         type="button"
         class="overview-paints__paint"
-        :class="{ 'overview-paints__paint--applied': entry.applied }"
-        :aria-pressed="entry.applied"
+        :class="{ 'overview-paints__paint--picture': entry.picture }"
         :disabled="!editable"
-        :aria-label="
-          entry.applied
-            ? t('labels.vehicleOverview.paintApplied', {
-                paint: entry.paint.name,
-              })
-            : t('actions.vehicleOverview.choosePaint')
-        "
         data-test="vehicle-overview-paint"
         @click="openPicker(entry.paint.id)"
       >
@@ -145,7 +137,7 @@ const thumb = (entry: VehiclePaint) =>
       border-color: var(--color-edge-strong);
     }
 
-    &--applied {
+    &--picture {
       border-color: var(--color-gold);
       cursor: default;
     }

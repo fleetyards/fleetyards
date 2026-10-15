@@ -25,12 +25,12 @@ export type VehicleEditValues = Pick<
   | "hangarGroupIds"
   | "modelModuleIds"
   | "modelUpgradeIds"
-  | "modelPaintId"
+  | "modelPaintIds"
 > & {
   image?: string | null;
 };
 
 export type VehicleImageChanges = Pick<
   VehicleUpdateInput,
-  "image" | "modelImageId"
+  "image" | "modelImageId" | "modelPaintPictureId"
 >;

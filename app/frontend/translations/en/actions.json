@@ -581,7 +581,7 @@
         "shipDatabase": "Ship database",
         "openLog": "Open the log",
         "applyPaint": "Apply %{paint}",
-        "choosePaint": "Choose paint",
+        "editPaints": "Edit paints",
         "editLocation": "Change location",
         "allPaints": "All %{count} paints",
         "fullscreenHolo": "Full screen",

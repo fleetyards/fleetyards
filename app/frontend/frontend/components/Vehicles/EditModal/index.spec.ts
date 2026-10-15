@@ -53,6 +53,7 @@ const vehicle = (ingameOnly: boolean): Vehicle =>
     alternativeNames: [],
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     hangarGroupIds: [],
     model: {
       id: "model-1",
@@ -135,7 +136,7 @@ describe("VehicleEditModal", () => {
     await vi.waitFor(() =>
       expect(mutateAsync).toHaveBeenCalledWith({
         id: "vehicle-1",
-        data: { modelPaintId: "paint-2" },
+        data: { modelPaintIds: ["paint-2"] },
       }),
     );
   });

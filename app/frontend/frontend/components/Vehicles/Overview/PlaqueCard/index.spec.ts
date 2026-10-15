@@ -22,6 +22,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     hangarGroups: [],
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     model: {
       id: "model-1",
       name: "Carrack",

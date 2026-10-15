@@ -581,7 +581,7 @@
         "shipDatabase": "艦船資料庫",
         "openLog": "開啟日誌",
         "applyPaint": "套用 %{paint}",
-        "choosePaint": "選擇塗裝",
+        "editPaints": "編輯塗裝",
         "editLocation": "變更位置",
         "allPaints": "全部 %{count} 款塗裝",
         "fullscreenHolo": "全螢幕",

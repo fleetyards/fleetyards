@@ -581,7 +581,7 @@
         "shipDatabase": "Base de datos de naves",
         "openLog": "Abrir el cuaderno",
         "applyPaint": "Aplicar %{paint}",
-        "choosePaint": "Elegir pintura",
+        "editPaints": "Editar pinturas",
         "editLocation": "Cambiar ubicación",
         "allPaints": "Las %{count} pinturas",
         "fullscreenHolo": "Pantalla completa",

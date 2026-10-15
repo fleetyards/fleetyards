@@ -2303,6 +2303,10 @@
         "hidden": "Versteckt?",
         "saleNotify": "Ich möchte Angebotsbenachrichtigungen erhalten",
         "hangarGroups": "Gruppen",
+        "ownedPaintsSelect": {
+          "label": "Eigene Lackierungen",
+          "pledged": "Aus einem Paket"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "Lackierung auswählen",
           "label": "Lackierung"
@@ -4241,7 +4245,10 @@
         "noPaint": "Standardlackierung",
         "ownedPaints": "Deine Lackierungen",
         "availablePaints": "Lackierungen",
-        "paintApplied": "%{paint}, aktiv",
+        "ownedPaintsCount": {
+          "one": "%{count} Lackierung",
+          "other": "%{count} Lackierungen"
+        },
         "visibility": "Sichtbarkeit",
         "showPublic": "In meinem öffentlichen Hangar zeigen",
         "showName": "Namen zeigen",

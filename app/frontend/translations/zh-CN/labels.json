@@ -2303,6 +2303,10 @@
         "hidden": "隐藏?",
         "saleNotify": "我希望收到销售通知",
         "hangarGroups": "群组",
+        "ownedPaintsSelect": {
+          "label": "拥有的涂装",
+          "pledged": "来自承诺包"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "选择涂装",
           "label": "涂装"
@@ -4241,7 +4245,10 @@
         "noPaint": "标准涂装",
         "ownedPaints": "你的涂装",
         "availablePaints": "涂装",
-        "paintApplied": "%{paint}，已应用",
+        "ownedPaintsCount": {
+          "one": "%{count} 款涂装",
+          "other": "%{count} 款涂装"
+        },
         "visibility": "可见性",
         "showPublic": "在我的公开机库中显示",
         "showName": "显示名称",

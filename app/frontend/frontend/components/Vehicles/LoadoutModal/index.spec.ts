@@ -88,6 +88,7 @@ const vehicle = (
     id: "v1",
     modelModuleIds,
     modelUpgradeIds: [],
+    modelPaintIds: [],
     activeLoadout: fitted
       ? {
           id: "l1",

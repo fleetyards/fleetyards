@@ -3,7 +3,7 @@ import { flushPromises } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "../index.vue";
 import { VehicleEditTabsEnum } from "../types";
-import type { Image, Vehicle } from "@/services/fyApi";
+import type { Image, ModelPaint, Vehicle } from "@/services/fyApi";
 
 const updateVehicle = vi.fn();
 
@@ -32,6 +32,21 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
         },
       },
     }),
+    isLoading: ref(false),
+  }),
+  useModelPaints: () => ({
+    data: ref([
+      {
+        id: "paint-1",
+        name: "Rust Society",
+        media: { storeImage: { url: "https://example.test/rust.jpg" } },
+      },
+      {
+        id: "paint-2",
+        name: "Stormbringer",
+        media: { storeImage: { url: "https://example.test/storm.jpg" } },
+      },
+    ] as ModelPaint[]),
     isLoading: ref(false),
   }),
   useUpdateVehicle: () => ({
@@ -65,6 +80,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     alternativeNames: [],
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     hangarGroupIds: [],
     model: { name: "Ironclad", slug: "ironclad", media: {} },
     ...overrides,
@@ -100,6 +116,57 @@ describe("VehicleEditModal image tab", () => {
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
       data: { modelImageId: "image-2", image: null },
+    });
+  });
+
+  it("offers the pictures of the paints the ship owns", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')
+        .map((choice) => choice.text()),
+    ).toEqual(["Stormbringer"]);
+  });
+
+  it("picks a paint's picture in place of a gallery picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ modelPaintIds: ["paint-2"], modelImageId: "image-1" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-gallery-paint"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { modelImageId: null, modelPaintPictureId: "paint-2", image: null },
+    });
+  });
+
+  it("goes back to the standard picture from a paint's picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        modelPaintIds: ["paint-2"],
+        modelPaintPictureId: "paint-2",
+      }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-gallery-none"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { modelImageId: null, modelPaintPictureId: null, image: null },
     });
   });
 

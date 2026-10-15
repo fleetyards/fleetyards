@@ -14,40 +14,51 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   }),
 }));
 
-const mount = (modelValue: string | null) =>
+const mount = (modelValue: string[], pledgedIds: string[] = []) =>
   mountWithDefaults(Component, {
-    props: { modelSlug: "ironclad", modelValue },
+    props: { modelSlug: "ironclad", modelValue, pledgedIds },
   });
+
+const choices = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+  wrapper.findAll('[data-test="paint-picker-choice"]');
 
 describe("VehiclePaintPicker", () => {
-  it("offers the standard livery beside every paint", async () => {
-    const wrapper = await mount(null);
+  it("offers every paint of the model", async () => {
+    const wrapper = await mount([]);
+
+    expect(choices(wrapper).map((choice) => choice.text())).toEqual([
+      "Rust Society",
+      "Stormbringer",
+    ]);
+  });
+
+  it("marks the paints the ship owns", async () => {
+    const wrapper = await mount(["paint-1", "paint-2"]);
 
     expect(
-      wrapper
-        .findAll('[data-test="paint-picker-choice"]')
-        .map((choice) => choice.text()),
-    ).toEqual(["Standard livery", "Rust Society", "Stormbringer"]);
+      choices(wrapper).map((choice) => choice.attributes("aria-pressed")),
+    ).toEqual(["true", "true"]);
   });
 
-  it("marks the paint the ship wears", async () => {
-    const wrapper = await mount("paint-2");
+  it("adds a paint and removes one", async () => {
+    const wrapper = await mount(["paint-1"]);
 
-    const pressed = wrapper
-      .findAll('[data-test="paint-picker-choice"]')
-      .filter((choice) => choice.attributes("aria-pressed") === "true")
-      .map((choice) => choice.text());
+    await choices(wrapper)[1].trigger("click");
+    await choices(wrapper)[0].trigger("click");
 
-    expect(pressed).toEqual(["Stormbringer"]);
+    expect(wrapper.emitted("update:modelValue")).toEqual([
+      [["paint-1", "paint-2"]],
+      [[]],
+    ]);
   });
 
-  it("picks a paint, and clears it again with the standard livery", async () => {
-    const wrapper = await mount("paint-1");
-    const choices = wrapper.findAll('[data-test="paint-picker-choice"]');
+  it("marks a paint a pledge suggests", async () => {
+    const wrapper = await mount([], ["paint-2"]);
 
-    await choices[2].trigger("click");
-    await choices[0].trigger("click");
-
-    expect(wrapper.emitted("update:modelValue")).toEqual([["paint-2"], [null]]);
+    expect(
+      choices(wrapper).map((choice) =>
+        choice.find('[data-test="paint-picker-pledged"]').exists(),
+      ),
+    ).toEqual([false, true]);
   });
 });
