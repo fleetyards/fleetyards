@@ -1622,6 +1622,10 @@
         "videoType": "Type"
       },
       "modelModule": {
+        "slot": "Slot",
+        "noSlot": "No slot",
+        "slotsOnHull": "Module slots on this hull: %{slots}",
+        "noSlotsOnHull": "The game files give this hull no module slots; any name can be set",
         "name": "Name",
         "description": "Description",
         "price": "Price",

@@ -13,6 +13,7 @@ module Admin
               name: {type: :string},
               description: {type: [:string, :null]},
               modelId: {type: [:string, :null], format: :uuid},
+              slot: {type: [:string, :null], description: "With a modelId: the module hardpoint's name on that hull"},
               manufacturerId: {type: :string, format: :uuid},
               price: {type: [:number, :null]},
               pledgePrice: {type: [:number, :null]},

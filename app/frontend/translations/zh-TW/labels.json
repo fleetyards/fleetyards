@@ -1622,6 +1622,10 @@
         "videoType": "類型"
       },
       "modelModule": {
+        "slot": "槽位",
+        "noSlot": "無槽位",
+        "slotsOnHull": "此艦船的模組槽位：%{slots}",
+        "noSlotsOnHull": "遊戲檔案沒有為此艦船提供模組槽位；可以設定任意名稱",
         "name": "名稱",
         "description": "描述",
         "price": "價格",

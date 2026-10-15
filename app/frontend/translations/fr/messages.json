@@ -78,6 +78,11 @@
         "success": "Votre mot de passe a été modifié avec succès.",
         "failure": "Votre mot de passe n'a pas pu être mis à jour."
       },
+      "modelModule": {
+        "update": {
+          "failure": "Le module n’a pas pu être enregistré."
+        }
+      },
       "updateProfile": {
         "success": "Profil mis à jour.",
         "failure": "Profile could not be updated."

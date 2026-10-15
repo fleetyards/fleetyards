@@ -31,7 +31,7 @@ module Admin
                 model_id: params[:model_id],
                 model_module_id: @model_module.id
               )
-              mh.update!(slot: params[:slot]) if params[:slot].present? && mh.slot != params[:slot]
+              assign_slot(mh)
             end
 
             render :show, status: :created
@@ -86,7 +86,7 @@ module Admin
             model_id: model.id,
             model_module_id: @model_module.id
           )
-          mh.update!(slot: params[:slot]) if params[:slot].present? && mh.slot != params[:slot]
+          assign_slot(mh)
 
           render :show, status: :ok
         end
@@ -101,6 +101,15 @@ module Admin
           hardpoint.destroy!
 
           render :show, status: :ok
+        end
+
+        # Sent at all, it is the slot: blank clears it, so a slot set by hand can
+        # be taken back. Left out, the link keeps the slot it has.
+        private def assign_slot(module_hardpoint)
+          return unless params.key?(:slot)
+
+          slot = params[:slot].presence
+          module_hardpoint.update!(slot:) if module_hardpoint.slot != slot
         end
 
         private def set_model_module

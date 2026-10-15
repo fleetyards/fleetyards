@@ -45,6 +45,22 @@ class Admin::Api::V1::ModelModulesLinkTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /model-modules/:id/link places the module in a slot, and clears it" do
+    model = create(:model)
+    mod = create(:model_module)
+    create(:module_hardpoint, model:, model_module: mod, slot: "hardpoint_front_module")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: mod.id}, body: {modelId: model.id, slot: "hardpoint_rear_module"}
+    assert_equal "hardpoint_rear_module", ModuleHardpoint.find_by(model:, model_module: mod).slot
+
+    assert_api_response :put, 200, path_params: {id: mod.id}, body: {modelId: model.id}
+    assert_equal "hardpoint_rear_module", ModuleHardpoint.find_by(model:, model_module: mod).slot
+
+    assert_api_response :put, 200, path_params: {id: mod.id}, body: {modelId: model.id, slot: ""}
+    assert_nil ModuleHardpoint.find_by(model:, model_module: mod).slot
+  end
+
   test "PUT /model-modules/:id/link returns 401 when not signed in" do
     model = create(:model)
     mod = create(:model_module)
