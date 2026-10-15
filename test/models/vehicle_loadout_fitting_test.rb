@@ -23,7 +23,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
   end
 
   def fleetyards_loadout(items)
-    @vehicle.vehicle_loadouts.new(kind: "fleetyards", item_list: items)
+    VehicleLoadout.new(vehicle: @vehicle, kind: "fleetyards", item_list: items)
   end
 
   test "fits one owned module into each slot" do
@@ -47,6 +47,27 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
 
     assert_not loadout.save
     assert loadout.errors.of_kind?(:items, :module_not_owned)
+  end
+
+  test "fits one owned copy into one slot only" do
+    both_sides = create(:model_module, name: "Side Module")
+    create(:module_hardpoint, model: @model, model_module: both_sides, slot: "hardpoint_left_module")
+    create(:module_hardpoint, model: @model, model_module: both_sides, slot: "hardpoint_right_module")
+    @vehicle.update!(model_module_ids: [both_sides.id])
+
+    loadout = fleetyards_loadout(fit(["hardpoint_left_module", both_sides], ["hardpoint_right_module", both_sides]))
+
+    assert_not loadout.save
+    assert loadout.errors.of_kind?(:items, :module_not_owned)
+
+    # Cleared first, as `VehiclesController#update` does: the ids writer keeps
+    # one copy when asked to go from one to two of the same module.
+    @vehicle.vehicle_modules.destroy_all
+    @vehicle.reload
+    @vehicle.update!(model_module_ids: [both_sides.id, both_sides.id])
+
+    two_copies = fleetyards_loadout(fit(["hardpoint_left_module", both_sides], ["hardpoint_right_module", both_sides]))
+    assert two_copies.save, two_copies.errors.details.inspect
   end
 
   test "refuses a module in a slot it does not fit, or one with no known slot" do

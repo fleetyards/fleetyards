@@ -97,8 +97,12 @@ class VehicleLoadout < ApplicationRecord
     slots = item_list.pluck(:slot)
     errors.add(:items, :slot_taken) if slots.uniq.size != slots.size
 
+    # Counted, not just looked up: one owned copy fills one slot.
     module_ids = item_list.pluck(:model_module_id)
-    errors.add(:items, :module_not_owned) if (module_ids - vehicle.model_module_ids).any?
+    owned = vehicle.model_module_ids.tally
+    if module_ids.tally.any? { |id, count| count > owned.fetch(id, 0) }
+      errors.add(:items, :module_not_owned)
+    end
 
     fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
       .pluck(:model_module_id, :slot)
