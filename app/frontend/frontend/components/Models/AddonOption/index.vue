@@ -18,6 +18,9 @@ type Props = {
   // A glyph instead of a photograph, for a row that stands for the absence of a
   // choice rather than for a thing with a picture.
   icon?: string;
+  // For a picture that is the whole point of the row, like a paint, which a
+  // module-sized thumbnail shrinks past recognising.
+  largeImage?: boolean;
   contents?: string;
   badges?: AddonBadge[];
   selected?: boolean;
@@ -32,6 +35,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   icon: undefined,
+  largeImage: false,
   contents: undefined,
   badges: () => [],
   selected: false,
@@ -84,6 +88,7 @@ const accessibleName = computed(() =>
     :class="{
       'addon-option--selected': selected,
       'addon-option--static': !editable,
+      'addon-option--large-image': largeImage,
     }"
     :data-test="testId"
   >
