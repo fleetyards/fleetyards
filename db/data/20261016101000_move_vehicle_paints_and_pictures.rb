@@ -10,6 +10,10 @@
 # paints that did come with one.
 class MoveVehiclePaintsAndPictures < ActiveRecord::Migration[8.1]
   def up
+    # Data migrations run after every schema migration, so on a database built
+    # from scratch the columns are already dropped, and there is nothing to move.
+    return unless column_exists?(:vehicles, :model_paint_id)
+
     execute <<~SQL.squish
       INSERT INTO vehicle_paints (vehicle_id, model_paint_id, created_at, updated_at)
       SELECT vehicles.id, vehicles.model_paint_id, NOW(), NOW()
