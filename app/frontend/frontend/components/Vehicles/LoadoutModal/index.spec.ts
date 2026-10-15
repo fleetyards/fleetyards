@@ -485,3 +485,16 @@ it("disables the modules category on a ship without modules", async () => {
       ?.props("disabled"),
   ).toBe(true);
 });
+
+it("disables the modules category on a ship that is not flight-ready", async () => {
+  const wrapper = await mountModal(
+    vehicle(["m1"], { productionStatus: "in-concept" }),
+  );
+
+  expect(
+    wrapper
+      .findAllComponents({ name: "FormTab" })
+      .find((tab) => tab.props("id") === "modules")
+      ?.props("disabled"),
+  ).toBe(true);
+});

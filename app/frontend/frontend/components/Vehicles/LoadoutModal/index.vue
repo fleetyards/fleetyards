@@ -230,6 +230,18 @@ const modulesFor = (ids: string[]) =>
 
 const hullCargo = computed(() => model.value?.metrics.cargo || 0);
 
+// A ship that is not flight ready has modules but no slots to fit them in, so
+// the category would open on an empty panel.
+const modulesHint = computed(() => {
+  if (!flightReady.value) {
+    return t("labels.vehicleLoadout.notFlightReady");
+  }
+
+  return props.vehicle.model.hasModules
+    ? undefined
+    : t("labels.vehicleLoadout.unavailable.modules");
+});
+
 const { metrics, rows } = useFittingDiff();
 
 // The ship's figures under the fitting as it stands, each with its change
@@ -463,12 +475,8 @@ const onSubmit = handleSubmit(async (values) => {
             :label="t('labels.vehicleLoadout.tabs.modules')"
             :icon="categoryTabIcon('module').icon"
             :fields="['fittedModules']"
-            :disabled="!vehicle.model.hasModules"
-            :hint="
-              vehicle.model.hasModules
-                ? undefined
-                : t('labels.vehicleLoadout.unavailable.modules')
-            "
+            :disabled="!flightReady || !vehicle.model.hasModules"
+            :hint="modulesHint"
           >
             <AsyncData :async-status="modulesAsyncStatus">
               <template #resolved>
