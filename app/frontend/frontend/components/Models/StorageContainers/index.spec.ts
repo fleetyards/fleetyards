@@ -32,13 +32,32 @@ describe("ModelStorageContainers", () => {
     });
 
     const ore = wrapper.get("[data-test='storage-containers-ore']");
-    expect(ore.text()).toContain("Ore pods");
+    expect(ore.text()).toContain("Ore Pods");
     expect(ore.text()).toContain("16");
     expect(ore.text()).toContain("MISC Ore Pod");
 
     const salvage = wrapper.get("[data-test='storage-containers-salvage']");
-    expect(salvage.text()).toContain("Salvage storage");
+    expect(salvage.text()).toContain("Salvage Storage");
     expect(salvage.text()).toContain("13");
+  });
+
+  it("keeps salvage stores of different sizes apart", async () => {
+    const store = (capacity: number) =>
+      ({
+        name: "hardpoint_internal_storage",
+        componentName: null,
+        capacity,
+        kind: "salvage",
+      }) as StorageContainer;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { model: model([store(13), store(6)]) },
+    });
+
+    expect(
+      wrapper
+        .get("[data-test='storage-containers-salvage']")
+        .findAll(".storage-container"),
+    ).toHaveLength(2);
   });
 
   it("shows nothing for a ship without any", async () => {

@@ -1175,8 +1175,8 @@
         "quantumFuelTankSize": "Quantum Fuel Tank Size",
         "quantumFuelTanks": "Quantum Fuel Tanks",
         "externalFuelTanks": "External Fuel Tanks",
-        "orePods": "Ore pods",
-        "salvageStorage": "Salvage storage",
+        "orePods": "Ore Pods",
+        "salvageStorage": "Salvage Storage",
         "externalFuelTanksTotal": "Total Capacity",
         "externalFuelTanksCount": "Pods",
         "refuelBoom": "Refueling Boom",
@@ -1375,7 +1375,7 @@
         "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
       },
       "storageContainers": {
-        "total": "Total capacity",
+        "total": "Total Capacity",
         "count": "Containers",
         "perContainer": "each",
         "hintOre": "Holds mined ore, not cargo.",

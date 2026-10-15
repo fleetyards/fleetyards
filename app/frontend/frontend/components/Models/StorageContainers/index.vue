@@ -12,6 +12,10 @@ import {
   StorageContainerKindEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  type CapacityGroup,
+  groupByCapacity,
+} from "@/frontend/composables/useCapacityGroups";
 
 const { t, toNumber } = useI18n();
 
@@ -21,20 +25,13 @@ type Props = {
 
 const props = defineProps<Props>();
 
-type Group = {
-  name: string;
-  count: number;
-  perContainer: number;
-  share: number;
-};
-
 type Card = {
   kind: StorageContainerKindEnum;
   title: string;
   hint: string;
   total: number;
   count: number;
-  groups: Group[];
+  groups: CapacityGroup[];
 };
 
 const TITLES: Record<StorageContainerKindEnum, string> = {
@@ -49,9 +46,8 @@ const HINTS: Record<StorageContainerKindEnum, string> = {
 
 /**
  * Ore pods and salvage storage, a card per kind, apart from the cargo card:
- * what they hold is not cargo space. Grouped by component as the external fuel
- * tanks are; salvage storage has no name in the game files, so it is named by
- * its kind.
+ * what they hold is not cargo space. Salvage storage has no name in the game
+ * files, so it is named by its kind.
  */
 const cards = computed<Card[]>(() =>
   Object.values(StorageContainerKindEnum)
@@ -59,42 +55,17 @@ const cards = computed<Card[]>(() =>
       const containers = (props.model.storageContainers || []).filter(
         (container: StorageContainer) => container.kind === kind,
       );
-      const total = containers.reduce(
-        (sum, container) => sum + (container.capacity || 0),
-        0,
-      );
-      const groups = new Map<string, Group>();
-
-      containers.forEach((container) => {
-        const name = container.componentName || t(TITLES[kind]);
-        const group = groups.get(name);
-
-        if (group) {
-          group.count += 1;
-        } else {
-          groups.set(name, {
-            name,
-            count: 1,
-            perContainer: container.capacity || 0,
-            share: 0,
-          });
-        }
-      });
 
       return {
         kind,
         title: t(TITLES[kind]),
         hint: t(HINTS[kind]),
-        total,
+        total: containers.reduce(
+          (sum, container) => sum + (container.capacity || 0),
+          0,
+        ),
         count: containers.length,
-        groups: [...groups.values()]
-          .map((group) => ({
-            ...group,
-            share: total
-              ? Math.round(((group.perContainer * group.count) / total) * 100)
-              : 0,
-          }))
-          .sort((a, b) => b.perContainer * b.count - a.perContainer * a.count),
+        groups: groupByCapacity(containers, t(TITLES[kind])),
       };
     })
     .filter((card) => card.count),
@@ -128,7 +99,7 @@ const cards = computed<Card[]>(() =>
     <div class="storage-containers">
       <div
         v-for="group in card.groups"
-        :key="group.name"
+        :key="group.key"
         class="storage-container"
         :title="group.name"
       >
@@ -136,7 +107,7 @@ const cards = computed<Card[]>(() =>
           <span class="storage-container__name">{{ group.name }}</span>
           <span class="storage-container__count">{{ group.count }}x</span>
           <span class="storage-container__share">
-            {{ toNumber(group.perContainer, "cargo") }}
+            {{ toNumber(group.capacity, "cargo") }}
             {{ t("labels.storageContainers.perContainer") }}
           </span>
         </div>
