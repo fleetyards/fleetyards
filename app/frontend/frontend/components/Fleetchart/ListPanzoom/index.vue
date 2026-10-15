@@ -163,9 +163,15 @@ const comlink = useComlink();
 
 const fleetchartToggleStatusComlink = ref();
 
-const handleResize = debounce(() => {
-  updateScreenSize().catch(() => {});
-}, 300);
+// deviceorientation fires continuously on a phone, which would keep a plain
+// debounce from ever running.
+const handleResize = debounce(
+  () => {
+    updateScreenSize().catch(() => {});
+  },
+  300,
+  { maxWait: 1000 },
+);
 
 const handleOrientation = handleResize;
 
