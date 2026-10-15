@@ -193,6 +193,21 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 999.0, model.reload.mass
   end
 
+  test "a flight-ready ship's cargo is what its game-file holds take" do
+    holdless = create(:model, production_status: "flight-ready", cargo: 102.0, rsi_cargo: 102.0)
+    bigger_holds = create(:model, production_status: "flight-ready", cargo: 40.0,
+      cargo_holds: [{"capacity" => 32}, {"capacity" => 32}])
+
+    assert_equal 0.0, holdless.reload.cargo
+    assert_equal 64.0, bigger_holds.reload.cargo
+  end
+
+  test "a ship not yet flying keeps the official cargo figure" do
+    model = create(:model, production_status: "in-concept", cargo: 102.0, rsi_cargo: 102.0)
+
+    assert_equal 102.0, model.reload.cargo
+  end
+
   test "the ship matrix does not override the column when there is no build" do
     model = create(:model, mass: 100.0, rsi_mass: 555.0)
 

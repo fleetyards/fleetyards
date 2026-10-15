@@ -683,14 +683,30 @@ class Model < ApplicationRecord
     set_hydrogen_fuel_from_hardpoints
   end
 
+  # Once a ship flies, its cargo is what its holds in the game files take, and
+  # nothing else. The official figure from the RSI page counts what RSI lists
+  # (102 SCU on a Retaliator whose hull holds none, its cargo modules already
+  # included; ore pods and salvage storage on the mining and salvage ships), and
+  # would sit under every module added on top of it. Before a ship flies there
+  # are no holds to read, so the official figure stands.
   def set_cargo_from_hardpoints
-    return if cargo_holds.blank? || (cargo.present? && !cargo.zero? && !cargo_holds_change_to_be_saved)
-
-    self.cargo = cargo_holds.sum do |cargo_hold|
-      cargo_hold.dig("capacity")&.to_f || 0
+    if production_status == "flight-ready"
+      self.cargo = cargo_holds_capacity
+      update_cargo_holds_db if cargo_holds.present? && cargo_holds_change_to_be_saved
+      return
     end
 
+    return if cargo_holds.blank? || (cargo.present? && !cargo.zero? && !cargo_holds_change_to_be_saved)
+
+    self.cargo = cargo_holds_capacity
+
     update_cargo_holds_db
+  end
+
+  def cargo_holds_capacity
+    (cargo_holds || []).sum do |cargo_hold|
+      cargo_hold.dig("capacity")&.to_f || 0
+    end
   end
 
   def set_quantum_fuel_from_hardpoints
