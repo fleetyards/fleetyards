@@ -7,9 +7,10 @@
 # has a paint fitted. A slot or build with a component keeps whatever that
 # component says, as a load would.
 #
-# `update_all` skips the hardpoint's touch, so the hulls and components that
-# hold these slots are touched here, walking up through nested slots: their
-# cached payloads embed the hardpoints.
+# `update_all` skips the timestamps, which the hardpoint payloads are cached
+# by: the slot and its build row both key them, so both are bumped. So are the
+# hulls and components that hold these slots, walking up through nested slots,
+# since their cached payloads embed the hardpoints.
 class CategorisePaintHardpoints < ActiveRecord::Migration[8.1]
   PAINTS = 90
   UNKNOWN = 999
@@ -27,8 +28,9 @@ class CategorisePaintHardpoints < ActiveRecord::Migration[8.1]
     changed = unknown_ids | unknown_build_ids
     return if changed.empty?
 
-    empty_builds.update_all(category: PAINTS)
-    Hardpoint.where(id: unknown_ids).update_all(category: PAINTS, updated_at: Time.current)
+    empty_builds.update_all(category: PAINTS, updated_at: Time.current)
+    Hardpoint.where(id: unknown_ids).update_all(category: PAINTS)
+    Hardpoint.where(id: changed).update_all(updated_at: Time.current)
 
     touch_roots(rows.select { |row| changed.include?(row.first) }.map { |row| row[1..2] })
   end
