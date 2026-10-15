@@ -93,17 +93,10 @@ const openPublicLog = () => {
   });
 };
 
-// The owner's picture -- uploaded, else picked from the model's gallery --
-// comes before every stock render, the paint's
-// included.
+// The owner's picture, uploaded or picked, comes before every stock render.
 const image = computed(() => {
-  const picked = props.vehicle.image || props.vehicle.modelImage;
-  if (picked) {
-    return picked.mediumUrl || picked.url;
-  }
-
-  if (props.vehicle.paint && props.vehicle.paint.media.storeImage) {
-    return props.vehicle.paint.media.storeImage.mediumUrl;
+  if (props.vehicle.image) {
+    return props.vehicle.image.mediumUrl || props.vehicle.image.url;
   }
 
   if (props.vehicle.upgrade && props.vehicle.upgrade.media.storeImage) {

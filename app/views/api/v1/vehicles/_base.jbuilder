@@ -36,11 +36,6 @@ json.model do
   json.partial! "api/v1/models/model", model: vehicle.model
 end
 
-json.paint do
-  json.partial! "api/v1/model_paints/base", model_paint: vehicle.model_paint if vehicle.model_paint.present?
-end
-json.paint nil if vehicle.model_paint.blank?
-
 json.upgrade do
   json.partial! "api/v1/model_upgrades/base", model_upgrade: vehicle.model_upgrades.first if vehicle.model_upgrades.present?
 end
@@ -53,24 +48,18 @@ end
 
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
+json.model_paint_ids vehicle.model_paint_ids
 
 json.module_package do
   json.partial! "api/v1/model_module_packages/base", module_package: vehicle.module_package if vehicle.module_package.present?
 end
 json.module_package nil if vehicle.module_package.blank?
 
-if vehicle.image.attached?
-  json.image do
-    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
-  end
-end
-
-json.model_image_id vehicle.model_image_id
-if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
-  json.model_image do
-    json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
-  end
-end
+json.partial!("api/v1/vehicles/image", vehicle:)
+# For the editor alone: whether the picture is an upload, and what is picked.
+json.image_uploaded vehicle.image.attached?
+json.picture_type vehicle.picture_type
+json.picture_id vehicle.picture_id
 
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do

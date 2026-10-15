@@ -3,7 +3,7 @@ import { flushPromises } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "../index.vue";
 import { VehicleEditTabsEnum } from "../types";
-import type { Image, Vehicle } from "@/services/fyApi";
+import type { Image, ModelPaint, Vehicle } from "@/services/fyApi";
 
 const updateVehicle = vi.fn();
 
@@ -34,6 +34,28 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     }),
     isLoading: ref(false),
   }),
+  useVehiclePaints: () => ({
+    data: ref(
+      [
+        {
+          id: "paint-1",
+          name: "Rust Society",
+          media: { storeImage: { url: "https://example.test/rust.jpg" } },
+        },
+        {
+          id: "paint-2",
+          name: "Stormbringer",
+          media: { storeImage: { url: "https://example.test/storm.jpg" } },
+        },
+      ].map((paint) => ({
+        owned: false,
+        pledged: false,
+        picture: false,
+        paint: paint as ModelPaint,
+      })),
+    ),
+    isLoading: ref(false),
+  }),
   useUpdateVehicle: () => ({
     mutateAsync: updateVehicle,
     isPending: ref(false),
@@ -51,6 +73,10 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   },
 }));
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
+}));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
     useUpdateMutation: () => ({ mutateAsync: vi.fn(), isPending: ref(false) }),
@@ -65,6 +91,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     alternativeNames: [],
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     hangarGroupIds: [],
     model: { name: "Ironclad", slug: "ironclad", media: {} },
     ...overrides,
@@ -99,13 +126,53 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: "image-2", image: null },
+      data: { pictureType: "Image", pictureId: "image-2", image: null },
     });
   });
 
-  it("goes back to the standard picture", async () => {
+  it("offers the pictures of the paints the ship owns", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-1" }),
+      vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')
+        .map((choice) => choice.text()),
+    ).toEqual(["Stormbringer"]);
+  });
+
+  it("picks a paint's picture in place of a gallery picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        modelPaintIds: ["paint-2"],
+        pictureType: "Image",
+        pictureId: "image-1",
+      }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-gallery-paint"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { pictureType: "ModelPaint", pictureId: "paint-2", image: null },
+    });
+  });
+
+  it("goes back to the standard picture from a paint's picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        modelPaintIds: ["paint-2"],
+        pictureType: "ModelPaint",
+        pictureId: "paint-2",
+      }),
     });
 
     await wrapper
@@ -115,13 +182,29 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
+    });
+  });
+
+  it("goes back to the standard picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-1" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-gallery-none"]')
+      .trigger("click");
+    await submit(wrapper);
+
+    expect(updateVehicle).toHaveBeenCalledWith({
+      id: "vehicle-1",
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 
   it("saves nothing when the pick is unchanged", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-1" }),
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-1" }),
     });
 
     await submit(wrapper);
@@ -133,6 +216,7 @@ describe("VehicleEditModal image tab", () => {
     const wrapper = await mount({
       vehicle: vehicle({
         image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+        imageUploaded: true,
       }),
     });
 
@@ -143,7 +227,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 
@@ -151,6 +235,7 @@ describe("VehicleEditModal image tab", () => {
     const wrapper = await mount({
       vehicle: vehicle({
         image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+        imageUploaded: true,
       }),
     });
 
@@ -167,7 +252,7 @@ describe("VehicleEditModal image tab", () => {
     gallery.items = [];
 
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-gone" }),
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-gone" }),
     });
 
     await wrapper
@@ -177,7 +262,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 });

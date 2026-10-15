@@ -22,7 +22,8 @@ module Api
 
         @vehicles = current_resource_owner.vehicles.visible.purchased
           .where(model: @model)
-          .includes({image_attachment: :blob}, model_paint: ModelPaint.attachment_preloads)
+          .includes({image_attachment: :blob})
+          .preload(Vehicle::PICTURE_PRELOADS)
           .order(:rank)
 
         load_friends

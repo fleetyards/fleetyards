@@ -5,14 +5,23 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useField } from "vee-validate";
+import { useField, useFieldValue } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Image, type Vehicle, useModelImages } from "@/services/fyApi";
+import {
+  type Image,
+  type ModelPaint,
+  type Vehicle,
+  FeatureFlagName,
+  NullableVehiclePictureTypeEnum as PictureType,
+  useModelImages,
+  useVehiclePaints,
+} from "@/services/fyApi";
 import type { VehicleImageChanges } from "@/frontend/components/Vehicles/EditModal/types";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   vehicle: Vehicle;
@@ -28,7 +37,6 @@ const { value: image } = useField<string | null | undefined>("image");
 // upload falls back to rather than a blank dropzone.
 const stockImage = computed(
   () =>
-    props.vehicle.paint?.media.storeImage?.smallUrl ||
     props.vehicle.upgrade?.media.storeImage?.smallUrl ||
     props.vehicle.model.media.storeImage?.smallUrl,
 );
@@ -39,7 +47,14 @@ const stockImage = computed(
 type Source = "upload" | "gallery";
 
 const source = ref<Source>(
-  props.vehicle.modelImageId && !props.vehicle.image ? "gallery" : "upload",
+  props.vehicle.pictureId && !props.vehicle.imageUploaded
+    ? "gallery"
+    : "upload",
+);
+
+// Only an upload belongs in the upload field: `image` is the picked picture too.
+const uploadedImage = computed(() =>
+  props.vehicle.imageUploaded ? props.vehicle.image : undefined,
 );
 
 const GALLERY_PAGE_SIZE = "48";
@@ -78,31 +93,77 @@ const loadMoreGallery = () => {
   galleryPage.value += 1;
 };
 
-const pickedImageId = ref<string | null>(props.vehicle.modelImageId ?? null);
+// The paints the ship owns join the gallery with their store images, read from
+// the form so a paint added in the Paint tab can be picked before saving. The
+// current pick stays offered after its paint is no longer owned.
+const ownedPaintIds = useFieldValue<string[]>("modelPaintIds");
 
-const pick = (imageId: string | null) => {
-  pickedImageId.value = imageId;
+const { isFeatureEnabled } = useFeatures();
+
+// The vehicle's own list, which keeps its paints after the catalogue hides one.
+// Part of the vehicle overview, as saving a gallery pick is.
+const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
+  query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
+});
+
+const paintPictures = computed<ModelPaint[]>(() =>
+  (vehiclePaints.value || [])
+    .map((entry) => entry.paint)
+    .filter(
+      (paint) =>
+        paint.media.storeImage &&
+        ((ownedPaintIds.value || []).includes(paint.id) ||
+          (props.vehicle.pictureType === PictureType.MODEL_PAINT &&
+            paint.id === props.vehicle.pictureId)),
+    ),
+);
+
+type Pick = {
+  type: NonNullable<VehicleImageChanges["pictureType"]>;
+  id: string;
+} | null;
+
+const savedPick = (): Pick =>
+  props.vehicle.pictureType && props.vehicle.pictureId
+    ? { type: props.vehicle.pictureType, id: props.vehicle.pictureId }
+    : null;
+
+const picked = ref<Pick>(savedPick());
+
+const pick = (choice: Pick) => {
+  picked.value = choice;
 };
 
-// A ship shows one picture of its own: saving either kind clears the other.
+const isPicked = (type: string, id: string) =>
+  picked.value?.type === type && picked.value.id === id;
+
+// A ship shows one picture of its own: saving a pick drops the upload, and an
+// upload drops the pick.
 const changes = (): VehicleImageChanges | undefined => {
   if (source.value === "gallery") {
+    const saved = savedPick();
     if (
-      !props.vehicle.image &&
-      pickedImageId.value === (props.vehicle.modelImageId ?? null)
+      !props.vehicle.imageUploaded &&
+      picked.value?.type === saved?.type &&
+      picked.value?.id === saved?.id
     ) {
       return undefined;
     }
 
-    return { modelImageId: pickedImageId.value, image: null };
+    return {
+      pictureType: picked.value?.type ?? null,
+      pictureId: picked.value?.id ?? null,
+      image: null,
+    };
   }
 
   // `undefined` means the field was never touched, so there is nothing to save.
   if (image.value === undefined) return undefined;
 
-  return props.vehicle.modelImageId
-    ? { image: image.value, modelImageId: null }
-    : { image: image.value };
+  return {
+    image: image.value,
+    ...(props.vehicle.pictureId ? { pictureType: null, pictureId: null } : {}),
+  };
 };
 
 defineExpose({ changes });
@@ -134,8 +195,8 @@ defineExpose({ changes });
     <FormFileInput
       v-if="source === 'upload'"
       v-model="image"
-      :file="vehicle.image"
-      :preview-src="vehicle.image ? undefined : stockImage"
+      :file="uploadedImage"
+      :preview-src="uploadedImage ? undefined : stockImage"
       name="image"
       :label="t('labels.vehicleOverview.picture')"
       :info="t('labels.vehicleOverview.pictureInfo')"
@@ -143,11 +204,11 @@ defineExpose({ changes });
       clearable
     />
     <template v-else>
-      <p v-if="vehicle.image" class="vehicle-edit-image__hint">
+      <p v-if="vehicle.imageUploaded" class="vehicle-edit-image__hint">
         {{ t("texts.vehicleOverview.galleryReplacesUpload") }}
       </p>
       <p
-        v-if="!galleryLoading && !galleryImages.length"
+        v-if="!galleryLoading && !galleryImages.length && !paintPictures.length"
         class="vehicle-edit-image__hint"
       >
         {{ t("texts.vehicleOverview.galleryEmpty") }}
@@ -157,9 +218,9 @@ defineExpose({ changes });
           type="button"
           class="vehicle-edit-image__choice"
           :class="{
-            'vehicle-edit-image__choice--picked': pickedImageId === null,
+            'vehicle-edit-image__choice--picked': picked === null,
           }"
-          :aria-pressed="pickedImageId === null"
+          :aria-pressed="picked === null"
           data-test="vehicle-image-gallery-none"
           @click="pick(null)"
         >
@@ -174,18 +235,45 @@ defineExpose({ changes });
           </span>
         </button>
         <button
+          v-for="paint in paintPictures"
+          :key="`paint-${paint.id}`"
+          type="button"
+          class="vehicle-edit-image__choice"
+          :class="{
+            'vehicle-edit-image__choice--picked': isPicked(
+              PictureType.MODEL_PAINT,
+              paint.id,
+            ),
+          }"
+          :aria-pressed="isPicked(PictureType.MODEL_PAINT, paint.id)"
+          :aria-label="paint.name"
+          data-test="vehicle-image-gallery-paint"
+          @click="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
+        >
+          <img
+            :src="
+              paint.media.storeImage?.smallUrl || paint.media.storeImage?.url
+            "
+            alt=""
+            class="vehicle-edit-image__thumb"
+          />
+          <span class="vehicle-edit-image__caption">{{ paint.name }}</span>
+        </button>
+        <button
           v-for="galleryImage in galleryImages"
           :key="galleryImage.id"
           type="button"
           class="vehicle-edit-image__choice"
           :class="{
-            'vehicle-edit-image__choice--picked':
-              pickedImageId === galleryImage.id,
+            'vehicle-edit-image__choice--picked': isPicked(
+              PictureType.IMAGE,
+              galleryImage.id,
+            ),
           }"
-          :aria-pressed="pickedImageId === galleryImage.id"
+          :aria-pressed="isPicked(PictureType.IMAGE, galleryImage.id)"
           :aria-label="galleryImage.caption || vehicle.model.name"
           data-test="vehicle-image-gallery-choice"
-          @click="pick(galleryImage.id)"
+          @click="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
         >
           <img
             :src="galleryImage.smallUrl || galleryImage.url"

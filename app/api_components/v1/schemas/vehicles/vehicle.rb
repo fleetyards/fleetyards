@@ -25,9 +25,9 @@ module V1
             model: {"$ref": "#/components/schemas/Model"},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
+            modelPaintIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             nameVisible: {type: :boolean},
-            paint: {"$ref": "#/components/schemas/ModelPaint"},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             logEntriesPublicByDefault: {type: :boolean},
@@ -47,8 +47,10 @@ module V1
             plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
             shipyard: {type: [:string, :null]},
             image: ::Shared::V1::Schemas::MediaFile,
-            modelImageId: {type: [:string, :null], format: :uuid},
-            modelImage: ::Shared::V1::Schemas::MediaFile,
+            # The editor's: whether `image` is an upload, and what is picked.
+            imageUploaded: {type: :boolean},
+            pictureType: ::V1::Schemas::Enums::NullableVehiclePictureTypeEnum,
+            pictureId: {type: [:string, :null], format: :uuid},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             hiddenByUser: {type: :boolean},
@@ -62,7 +64,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id model wanted hiddenByUser loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
-            modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
+            modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds modelPaintIds createdAt updatedAt
           ]
         })
       end

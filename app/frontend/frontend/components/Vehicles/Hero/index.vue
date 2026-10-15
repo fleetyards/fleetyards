@@ -68,8 +68,6 @@ const toggleSaleNotify = async () => {
 const picture = computed(
   () =>
     props.vehicle.image ||
-    props.vehicle.modelImage ||
-    props.vehicle.paint?.media.storeImage ||
     props.vehicle.upgrade?.media.storeImage ||
     props.vehicle.model.media.storeImage,
 );
@@ -145,7 +143,7 @@ const openImageModal = () =>
       />
 
       <div class="vehicle-hero__top">
-        <span v-if="vehicle.image" class="vehicle-hero__own-picture">
+        <span v-if="vehicle.imageUploaded" class="vehicle-hero__own-picture">
           <i class="fa-duotone fa-camera" />
           {{ t("labels.vehicleOverview.ownPicture") }}
         </span>
@@ -159,7 +157,7 @@ const openImageModal = () =>
             <i class="fa-duotone fa-camera" />
             <span class="vehicle-hero__action-label">
               {{
-                vehicle.image || vehicle.modelImage
+                vehicle.image
                   ? t("actions.vehicleOverview.changePicture")
                   : t("actions.vehicleOverview.uploadPicture")
               }}

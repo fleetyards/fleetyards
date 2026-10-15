@@ -326,3 +326,7 @@ PUT /vehicles/{id} added the new `ore_pod` enum value to the `modulePackage/modu
 PUT /vehicles/{id} added the new `ore_pods` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `salvage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
 PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles removed the optional property `items/items/paint` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `paint` from the response with the `200` status

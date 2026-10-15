@@ -581,7 +581,7 @@
         "shipDatabase": "Database delle navi",
         "openLog": "Apri il diario",
         "applyPaint": "Applica %{paint}",
-        "choosePaint": "Scegli verniciatura",
+        "editPaints": "Modifica verniciature",
         "editLocation": "Cambia posizione",
         "allPaints": "Tutte le %{count} verniciature",
         "fullscreenHolo": "Schermo intero",

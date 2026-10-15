@@ -30,13 +30,16 @@ module V1
             # A signed blob id of the plaque rendered as a picture.
             plaqueImage: {type: [:string, :null]},
             image: {type: [:string, :null]},
-            modelImageId: {type: [:string, :null], format: :uuid},
+            # The picked picture: one of the model's gallery images, or one of
+            # its paints, whose store image it shows.
+            pictureType: ::V1::Schemas::Enums::NullableVehiclePictureTypeEnum,
+            pictureId: {type: [:string, :null], format: :uuid},
             flagship: {type: :boolean},
-            modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
+            modelPaintIds: {type: :array, items: {type: :string, format: :uuid}},
             alternativeNames: {type: :array, items: {type: :string}}
           },
           additionalProperties: false

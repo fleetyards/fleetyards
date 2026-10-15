@@ -111,14 +111,8 @@ const getModel = (record: FleetVehicle): Model => {
 const storeImage = (record: FleetVehicle) => {
   const vehicle = record as VehiclePublic;
 
-  const picked = vehicle.image || vehicle.modelImage;
-
-  if (picked) {
-    return picked;
-  }
-
-  if (vehicle.paint?.media.storeImage) {
-    return vehicle.paint.media.storeImage;
+  if (vehicle.image) {
+    return vehicle.image;
   }
 
   if (vehicle.upgrade?.media.storeImage) {

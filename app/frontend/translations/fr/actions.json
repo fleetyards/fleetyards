@@ -581,7 +581,7 @@
         "shipDatabase": "Base de données des vaisseaux",
         "openLog": "Ouvrir le journal",
         "applyPaint": "Appliquer %{paint}",
-        "choosePaint": "Choisir une peinture",
+        "editPaints": "Modifier les peintures",
         "editLocation": "Changer l'emplacement",
         "allPaints": "Les %{count} peintures",
         "fullscreenHolo": "Plein écran",

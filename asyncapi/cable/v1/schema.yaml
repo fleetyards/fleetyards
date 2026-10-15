@@ -3894,164 +3894,6 @@ components:
         topView:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
-    ModelPaint:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type: string
-        lastUpdatedAt:
-          type: string
-          format: date-time
-        lastUpdatedAtLabel:
-          type: string
-        availability:
-          "$ref": "#/components/schemas/ItemAvailability"
-        media:
-          "$ref": "#/components/schemas/ModelPaintMedia"
-        nameWithModel:
-          type: string
-        rsiId:
-          type: integer
-        rsiName:
-          type: string
-        rsiSlug:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        angledView:
-          type: string
-          format: uri
-          deprecated: true
-        angledViewHeight:
-          type: number
-          deprecated: true
-        angledViewLarge:
-          type: string
-          format: uri
-          deprecated: true
-        angledViewMedium:
-          type: string
-          format: uri
-          deprecated: true
-        angledViewSmall:
-          type: string
-          format: uri
-          deprecated: true
-        angledViewWidth:
-          type: number
-          deprecated: true
-        angledViewXlarge:
-          type: string
-          format: uri
-          deprecated: true
-        fleetchartImage:
-          type: string
-          format: uri
-          deprecated: true
-        hasStoreImage:
-          type: boolean
-        sideView:
-          type: string
-          format: uri
-          deprecated: true
-        sideViewHeight:
-          type: number
-          deprecated: true
-        sideViewLarge:
-          type: string
-          format: uri
-          deprecated: true
-        sideViewMedium:
-          type: string
-          format: uri
-          deprecated: true
-        sideViewSmall:
-          type: string
-          format: uri
-          deprecated: true
-        sideViewWidth:
-          type: number
-          deprecated: true
-        sideViewXlarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImage:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageLarge:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageMedium:
-          type: string
-          format: uri
-          deprecated: true
-        storeImageSmall:
-          type: string
-          format: uri
-          deprecated: true
-        topView:
-          type: string
-          format: uri
-          deprecated: true
-        topViewHeight:
-          type: number
-          deprecated: true
-        topViewLarge:
-          type: string
-          format: uri
-          deprecated: true
-        topViewMedium:
-          type: string
-          format: uri
-          deprecated: true
-        topViewSmall:
-          type: string
-          format: uri
-          deprecated: true
-        topViewWidth:
-          type: number
-          deprecated: true
-        topViewXlarge:
-          type: string
-          format: uri
-          deprecated: true
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - availability
-      - media
-      - createdAt
-      - updatedAt
-    ModelPaintMedia:
-      type: object
-      properties:
-        angledView:
-          "$ref": "#/components/schemas/MediaFile"
-        fleetchartImage:
-          type: string
-        sideView:
-          "$ref": "#/components/schemas/MediaFile"
-        storeImage:
-          "$ref": "#/components/schemas/MediaFile"
-        topView:
-          "$ref": "#/components/schemas/MediaFile"
-      additionalProperties: false
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -4832,6 +4674,18 @@ components:
       - XENOTHREAT
       - ROUGH_AND_READY
       - 'NULL'
+    NullableVehiclePictureTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - Image
+      - ModelPaint
+      -
+      x-enumNames:
+      - IMAGE
+      - MODEL_PAINT
+      - 'NULL'
     PayoutLedger:
       type: object
       properties:
@@ -5104,12 +4958,15 @@ components:
           items:
             type: string
             format: uuid
+        modelPaintIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         modulePackage:
           "$ref": "#/components/schemas/ModelModulePackage"
         nameVisible:
           type: boolean
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
         public:
           type: boolean
         saleNotify:
@@ -5167,13 +5024,15 @@ components:
           - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
-        modelImageId:
+        imageUploaded:
+          type: boolean
+        pictureType:
+          "$ref": "#/components/schemas/NullableVehiclePictureTypeEnum"
+        pictureId:
           type:
           - string
           - 'null'
           format: uuid
-        modelImage:
-          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
@@ -5210,6 +5069,7 @@ components:
       - hangarGroupIds
       - hangarGroups
       - modelModuleIds
+      - modelPaintIds
       - createdAt
       - updatedAt
     VehicleBundledParent:

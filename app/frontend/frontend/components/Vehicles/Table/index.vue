@@ -205,8 +205,8 @@ const openEditModal = (vehicle: Vehicle) =>
   openVehicleEdit(vehicle, { wishlist: props.wishlist });
 
 const storeImage = (record: Vehicle) => {
-  if (record && record.paint) {
-    return record.paint.media.storeImage;
+  if (record && record.image) {
+    return record.image;
   }
 
   if (record && record.upgrade) {

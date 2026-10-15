@@ -2303,6 +2303,10 @@
         "hidden": "Hidden?",
         "saleNotify": "I want to receive Sale Notifications",
         "hangarGroups": "Groups",
+        "ownedPaintsSelect": {
+          "label": "Owned paints",
+          "pledged": "From a pledge"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "Select a Paint",
           "label": "Paint"
@@ -4255,7 +4259,10 @@
         "noPaint": "Standard livery",
         "ownedPaints": "Your paints",
         "availablePaints": "Paints",
-        "paintApplied": "%{paint}, applied",
+        "ownedPaintsCount": {
+          "one": "%{count} paint",
+          "other": "%{count} paints"
+        },
         "visibility": "Visibility",
         "showPublic": "Show in my public hangar",
         "showName": "Show the name",

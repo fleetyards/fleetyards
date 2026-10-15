@@ -21284,6 +21284,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarGroup"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         loaner:
           type: boolean
         model:
@@ -21302,8 +21304,6 @@ components:
           "$ref": "#/components/schemas/ModelModulePackage"
         nameVisible:
           type: boolean
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
         public:
           type: boolean
         saleNotify:

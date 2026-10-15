@@ -25,8 +25,7 @@ export const useVehicleMeta = (
       .join(" · ");
     const tab = route.meta.title ? t(`title.${route.meta.title}`) : undefined;
     const text = current.dedication || current.model.description || "";
-    const picture =
-      current.image || current.modelImage || current.model.media.storeImage;
+    const picture = current.image || current.model.media.storeImage;
 
     updateMetaInfo({
       title: tab ? `${name} · ${tab}` : name,

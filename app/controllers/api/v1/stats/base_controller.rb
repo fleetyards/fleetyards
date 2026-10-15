@@ -122,14 +122,16 @@ module Api
         # nobody has rather than shaping the ranking.
         WISH_TO_OWN_FLOOR = 100
 
-        # Share of hangared ships carrying a paint. Loaners are left out because
+        # Share of hangared ships owning a paint. Loaners are left out because
         # nobody chose their paint.
         private def painted_vehicles_percent
           hangared = Vehicle.visible.purchased.where(loaner: false)
           total = hangared.count
           return 0 if total.zero?
 
-          (hangared.where.not(model_paint_id: nil).count * 100.0 / total).round(1)
+          painted = hangared.where(id: VehiclePaint.select(:vehicle_id)).count
+
+          (painted * 100.0 / total).round(1)
         end
 
         # Standing demand, as opposed to `most_wishlisted`, which is the month's
@@ -174,8 +176,8 @@ module Api
 
         def top_paints
           top_paints = cached_chart(:top_paints) do
-            paint_counts = Vehicle.visible.purchased.where(loaner: false)
-              .where.not(model_paint_id: nil)
+            paint_counts = VehiclePaint
+              .where(vehicle_id: Vehicle.visible.purchased.where(loaner: false).select(:id))
               .group(:model_paint_id).count
 
             names = ModelPaint.where(id: paint_counts.keys).includes(:model)

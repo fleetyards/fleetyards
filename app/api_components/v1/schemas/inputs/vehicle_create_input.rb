@@ -17,11 +17,11 @@ module V1
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             flagship: {type: :boolean},
-            modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
             modelModuleIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
+            modelPaintIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
             alternativeNames: {type: [:array, :null], items: {type: :string}}
           },
           additionalProperties: false,

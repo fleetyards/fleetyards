@@ -62,6 +62,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     bundled: false,
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     nameVisible: false,
     public: false,
     saleNotify: false,
@@ -159,20 +160,13 @@ describe("HangarVehicleOverviewPage", () => {
     ).toContain("Dusk Haulers");
   });
 
-  it("names the applied paint", async () => {
+  it("counts the paints the ship owns", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({
-        paint: {
-          id: "paint-1",
-          name: "Rust Society",
-          slug: "rust-society",
-          media: {},
-        } as Vehicle["paint"],
-      }),
+      vehicle: vehicle({ modelPaintIds: ["paint-1", "paint-2"] }),
     });
 
     expect(wrapper.find('[data-test="vehicle-fact-paint"]').text()).toContain(
-      "Rust Society",
+      "2 paints",
     );
   });
 

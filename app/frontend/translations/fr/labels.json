@@ -2303,6 +2303,10 @@
         "hidden": "Masqué ?",
         "saleNotify": "Je souhaite recevoir les notifications de vente",
         "hangarGroups": "Groupes",
+        "ownedPaintsSelect": {
+          "label": "Peintures possédées",
+          "pledged": "D'un pledge"
+        },
         "modelPaintSelect": {
           "nullablePrompt": "Sélectionner une peinture",
           "label": "Peinture"
@@ -4241,7 +4245,10 @@
         "noPaint": "Peinture standard",
         "ownedPaints": "Tes peintures",
         "availablePaints": "Peintures",
-        "paintApplied": "%{paint}, appliquée",
+        "ownedPaintsCount": {
+          "one": "%{count} peinture",
+          "other": "%{count} peintures"
+        },
         "visibility": "Visibilité",
         "showPublic": "Afficher dans mon hangar public",
         "showName": "Afficher le nom",

@@ -39,6 +39,7 @@ const vehicle = (
     publicLogEntriesCount: 0,
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     hangarGroupIds: [],
     hangarGroups: [],
     model: {

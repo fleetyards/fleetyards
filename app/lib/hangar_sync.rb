@@ -217,7 +217,7 @@ class HangarSync < HangarImporter
     imported_vehicles = []
     found_vehicles = []
     missing_models = []
-    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false, bought_via: :pledge_store).order(model_paint_id: :desc, created_at: :asc)
+    vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false, bought_via: :pledge_store).order(created_at: :asc)
 
     @ships.each_with_index do |item, index|
       break if stop_requested?(index)
@@ -246,9 +246,11 @@ class HangarSync < HangarImporter
           next
         end
 
-        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model.id
-        )
+        # A plain pledge goes to a hull no painted pledge has claimed, where
+        # there is one, so the painted pledges still find theirs.
+        vehicle = vehicle_scope.where.not(id: vehicle_ids).where(model_id: model.id)
+          .reorder(Arel.sql("EXISTS (SELECT 1 FROM vehicle_paints WHERE vehicle_paints.vehicle_id = vehicles.id) ASC"), created_at: :asc)
+          .first
 
         if vehicle.present?
           vehicle.update!(
@@ -270,31 +272,15 @@ class HangarSync < HangarImporter
         next
       end
 
+      # A painted ship pledge: the hull, with the paint it came in recorded as
+      # owned. Which paint the ship wears is the loadout's to say. Only a hull
+      # already bound to this pledge or owning this paint is its match -- any
+      # other hull may be a plain pledge's that comes later in the list.
       model_paint = ModelPaint.where(paint_query).first
       if model_paint.present?
-        vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id,
-          rsi_pledge_id: item[:id]
-        )
-
-        if vehicle_with_ref.present?
-          vehicle_with_ref.update!(
-            rsi_pledge_synced_at: Time.current,
-            name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
-            wanted: false
-          )
-
-          vehicle_ids << vehicle_with_ref.id
-          found_vehicles << vehicle_with_ref.id
-
-          next
-        end
-
-        vehicle = vehicle_scope.where.not(id: vehicle_ids).find_by(
-          model_id: model_paint.model_id,
-          model_paint_id: model_paint.id
-        )
+        candidates = vehicle_scope.where.not(id: vehicle_ids).where(model_id: model_paint.model_id)
+        vehicle = candidates.find_by(rsi_pledge_id: item[:id]) ||
+          candidates.where(id: VehiclePaint.where(model_paint_id: model_paint.id).select(:vehicle_id)).first
 
         if vehicle.present?
           vehicle.update!(
@@ -303,12 +289,16 @@ class HangarSync < HangarImporter
             name: item[:custom_name]&.strip.presence || vehicle.name,
             wanted: false
           )
+          record_owned_paint(vehicle, model_paint, item)
           vehicle_ids << vehicle.id
           found_vehicles << vehicle.id
           next
         end
 
-        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+        # A new ship looks the way its pledge showed it.
+        picture = model_paint if model_paint.store_image.attached?
+        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, picture:))
+        record_owned_paint(vehicle, model_paint, item)
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id
         next
@@ -319,11 +309,15 @@ class HangarSync < HangarImporter
 
     # Reconcile: match newly imported vehicles against unmatched existing vehicles
     # This handles cases where pledge IDs changed and the normal matching failed
-    unmatched_vehicle_ids = vehicle_scope.where.not(id: vehicle_ids).pluck(:id, :model_id, :model_paint_id)
-    imported_vehicle_records = Vehicle.where(id: imported_vehicles).pluck(:id, :model_id, :model_paint_id)
+    unmatched_vehicle_ids = with_owned_paints(vehicle_scope.where.not(id: vehicle_ids).pluck(:id, :model_id))
+    imported_vehicle_records = with_owned_paints(Vehicle.where(id: imported_vehicles).pluck(:id, :model_id))
 
-    imported_vehicle_records.each do |imported_id, imported_model_id, imported_paint_id|
-      match = unmatched_vehicle_ids.find { |_, model_id, paint_id| model_id == imported_model_id && paint_id == imported_paint_id }
+    # An imported ship takes over an unmatched one of the same model that owns
+    # every paint it came in.
+    imported_vehicle_records.each do |imported_id, imported_model_id, imported_paint_ids|
+      match = unmatched_vehicle_ids.find do |_, model_id, paint_ids|
+        model_id == imported_model_id && (imported_paint_ids - paint_ids).empty?
+      end
       next unless match
 
       original_id = match[0]
@@ -336,6 +330,13 @@ class HangarSync < HangarImporter
         rsi_pledge_synced_at: imported_vehicle.rsi_pledge_synced_at,
         wanted: false
       )
+
+      imported_vehicle.vehicle_paints.each do |imported_paint|
+        original_vehicle.vehicle_paints.find_by(model_paint_id: imported_paint.model_paint_id)&.update!(
+          rsi_pledge_id: imported_paint.rsi_pledge_id,
+          rsi_pledge_synced_at: imported_paint.rsi_pledge_synced_at
+        )
+      end
 
       # Remove the duplicate
       imported_vehicle.destroy!
@@ -712,6 +713,19 @@ class HangarSync < HangarImporter
     return false unless @import&.cancel_requested?
 
     @cancelled = true
+  end
+
+  private def record_owned_paint(vehicle, model_paint, item)
+    vehicle.vehicle_paints.find_or_initialize_by(model_paint:)
+      .update!(rsi_pledge_id: item[:id], rsi_pledge_synced_at: Time.current)
+  end
+
+  # `[id, model_id]` pairs, each with the ids of the paints the vehicle owns.
+  private def with_owned_paints(rows)
+    owned = VehiclePaint.where(vehicle_id: rows.map(&:first)).pluck(:vehicle_id, :model_paint_id)
+      .group_by(&:first).transform_values { |pairs| pairs.map(&:last) }
+
+    rows.map { |id, model_id| [id, model_id, owned.fetch(id, [])] }
   end
 
   private def default_params(user_id, item)

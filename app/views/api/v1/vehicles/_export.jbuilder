@@ -5,7 +5,7 @@ json.slug local_assigns[:hangar_link] ? vehicle.model.hangar_link_slug : vehicle
 json.ship_code vehicle.model.sc_data_identifier
 json.manufacturer_name vehicle.model.manufacturer.name
 json.manufacturer_code vehicle.model.manufacturer.code
-json.paint_slug vehicle.model_paint&.slug
+json.paint_slugs vehicle.model_paints.map(&:slug)
 json.ship_name vehicle.name
 json.ship_serial vehicle.serial
 json.wanted vehicle.wanted

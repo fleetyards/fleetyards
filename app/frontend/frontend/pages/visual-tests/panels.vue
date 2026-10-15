@@ -185,6 +185,7 @@ const vehicle = computed<Vehicle | undefined>(() => {
     bundled: false,
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     nameVisible: false,
     public: false,
     saleNotify: false,

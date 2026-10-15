@@ -96,14 +96,6 @@ const vehicle = computed(() => {
   return undefined;
 });
 
-const paint = computed(() => {
-  if (vehicle.value && vehicle.value.paint) {
-    return vehicle.value.paint;
-  }
-
-  return null;
-});
-
 const modulePackage = computed(() => {
   if (vehicle.value && vehicle.value.modulePackage) {
     return vehicle.value.modulePackage;
@@ -120,18 +112,6 @@ const image = computed(() => {
       modulePackage.value.media.angledView)
   ) {
     const url = extractImageFromModel(modulePackage.value);
-    if (url) {
-      return url;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.media.topView ||
-      paint.value.media.sideView ||
-      paint.value.media.angledView)
-  ) {
-    const url = extractImageFromModel(paint.value);
     if (url) {
       return url;
     }
@@ -165,10 +145,6 @@ const name = computed(() => {
 });
 
 const modelName = computed(() => {
-  if (paint.value && paint.value.rsiId) {
-    return `${model.value.manufacturer?.code} ${paint.value.name}`;
-  }
-
   return `${model.value.manufacturer?.code} ${model.value.name}`;
 });
 
@@ -219,18 +195,6 @@ const sourceImageHeightMax = computed(() => {
     }
   }
 
-  if (
-    paint.value &&
-    (paint.value.media.topView ||
-      paint.value.media.sideView ||
-      paint.value.media.angledView)
-  ) {
-    const height = extractMaxHeightFromModel(paint.value);
-    if (height) {
-      return height;
-    }
-  }
-
   return extractMaxHeightFromModel(effectiveModel.value);
 });
 
@@ -242,18 +206,6 @@ const sourceImageHeight = computed(() => {
       modulePackage.value.media.angledView)
   ) {
     const height = extractImageHeightFromModel(modulePackage.value);
-    if (height) {
-      return height;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.media.topView ||
-      paint.value.media.sideView ||
-      paint.value.media.angledView)
-  ) {
-    const height = extractImageHeightFromModel(paint.value);
     if (height) {
       return height;
     }
@@ -275,18 +227,6 @@ const sourceImageWidth = computed(() => {
     }
   }
 
-  if (
-    paint.value &&
-    (paint.value.media.topView ||
-      paint.value.media.sideView ||
-      paint.value.media.angledView)
-  ) {
-    const width = extractImageWidthFromModel(paint.value);
-    if (width) {
-      return width;
-    }
-  }
-
   return extractImageWidthFromModel(effectiveModel.value);
 });
 
@@ -298,18 +238,6 @@ const sourceImageWidthMax = computed(() => {
       modulePackage.value.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(modulePackage.value);
-    if (width) {
-      return width;
-    }
-  }
-
-  if (
-    paint.value &&
-    (paint.value.media.topView ||
-      paint.value.media.sideView ||
-      paint.value.media.angledView)
-  ) {
-    const width = extractMaxWidthFromModel(paint.value);
     if (width) {
       return width;
     }

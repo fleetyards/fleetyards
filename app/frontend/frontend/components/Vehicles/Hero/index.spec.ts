@@ -116,6 +116,20 @@ describe("VehicleHero", () => {
     ).toBe(false);
   });
 
+  it("calls only an uploaded picture the owner's own", async () => {
+    const picture = {
+      url: "https://example.test/picture.jpg",
+    } as Vehicle["image"];
+    const uploaded = await mount(false, {
+      image: picture,
+      imageUploaded: true,
+    });
+    const picked = await mount(false, { image: picture, imageUploaded: false });
+
+    expect(uploaded.find(".vehicle-hero__own-picture").exists()).toBe(true);
+    expect(picked.find(".vehicle-hero__own-picture").exists()).toBe(false);
+  });
+
   it("offers no picture for a wishlist ship", async () => {
     const wrapper = await mount(false, { wanted: true });
 

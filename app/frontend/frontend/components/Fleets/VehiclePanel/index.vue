@@ -53,13 +53,8 @@ const id = computed(() => {
 const storeImage = computed(() => {
   const vehicle = props.fleetVehicle as VehiclePublic;
 
-  const picked = vehicle.image || vehicle.modelImage;
-  if (picked) {
-    return picked.mediumUrl || picked.url;
-  }
-
-  if (vehicle.paint?.media.storeImage) {
-    return vehicle.paint.media.storeImage.mediumUrl;
+  if (vehicle.image) {
+    return vehicle.image.mediumUrl || vehicle.image.url;
   }
 
   if (vehicle.upgrade?.media.storeImage) {

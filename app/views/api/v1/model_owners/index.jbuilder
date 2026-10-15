@@ -5,16 +5,7 @@ json.vehicles @vehicles do |vehicle|
   json.name vehicle.name
   json.serial vehicle.serial
   json.flagship vehicle.flagship
-  if vehicle.image.attached?
-    json.image do
-      json.partial! "api/v1/shared/file", record: vehicle, attr: :image
-    end
-  end
-  if vehicle.model_paint&.store_image&.attached?
-    json.paint_image do
-      json.partial! "api/v1/shared/file", record: vehicle.model_paint, attr: :store_image
-    end
-  end
+  json.partial!("api/v1/vehicles/image", vehicle:)
 end
 
 json.friends do

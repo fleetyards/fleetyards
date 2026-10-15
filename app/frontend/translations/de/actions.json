@@ -581,7 +581,7 @@
         "shipDatabase": "Schiffsdatenbank",
         "openLog": "Logbuch öffnen",
         "applyPaint": "%{paint} anwenden",
-        "choosePaint": "Lackierung wählen",
+        "editPaints": "Lackierungen bearbeiten",
         "editLocation": "Standort ändern",
         "allPaints": "Alle %{count} Lackierungen",
         "fullscreenHolo": "Vollbild",

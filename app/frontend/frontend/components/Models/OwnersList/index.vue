@@ -46,8 +46,7 @@ const friendsMore = computed(() =>
 );
 
 const vehicleImage = (vehicle: ModelOwnerVehicle) =>
-  (vehicle.image || vehicle.paintImage || props.model.media.storeImage)
-    ?.smallUrl;
+  (vehicle.image || props.model.media.storeImage)?.smallUrl;
 
 const empty = computed(
   () =>

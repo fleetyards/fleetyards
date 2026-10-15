@@ -427,7 +427,7 @@ class HangarSyncTest < ActiveSupport::TestCase
   class WithPaintOnlyPledgeTest < HangarSyncTest
     test "matches a paint the RSI hangar names after its ship" do
       gladius = Model.find_by!(slug: "aegs-gladius")
-      paint = create(:model_paint, model: gladius, name: "Dunlevy")
+      paint = create(:model_paint, :with_store_image, model: gladius, name: "Dunlevy")
 
       input = @input + [{"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"}]
 
@@ -435,9 +435,38 @@ class HangarSyncTest < ActiveSupport::TestCase
 
       assert_equal [], result[:missing_models]
 
-      vehicle = Vehicle.where(id: result[:imported_vehicles]).find_by(model_paint_id: paint.id)
+      vehicle = Vehicle.where(id: result[:imported_vehicles]).joins(:vehicle_paints)
+        .find_by(vehicle_paints: {model_paint_id: paint.id})
       assert vehicle.present?
       assert_equal gladius.id, vehicle.model_id
+      assert_equal "99999", vehicle.vehicle_paints.sole.rsi_pledge_id
+      assert_equal paint, vehicle.picture
+    end
+
+    test "records the paint of a painted pledge on the hull that owns it" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      paint = create(:model_paint, model: gladius, name: "Dunlevy")
+      existing = create(:vehicle, user: @user, model: gladius, bought_via: :pledge_store, model_paint_ids: [paint.id])
+
+      ::HangarSync.new([{"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"}]).run(@user.id)
+
+      assert_equal "99999", existing.reload.vehicle_paints.sole.rsi_pledge_id
+      assert_equal 1, Vehicle.where(user: @user, model: gladius).count
+    end
+
+    test "leaves a plain pledge's hull to it when a painted pledge comes first" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      create(:model_paint, model: gladius, name: "Dunlevy")
+      plain = create(:vehicle, user: @user, model: gladius, bought_via: :pledge_store, rsi_pledge_id: "11111")
+
+      ::HangarSync.new([
+        {"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"},
+        {"id" => "11111", "type" => "ship", "name" => "Gladius"}
+      ]).run(@user.id)
+
+      assert_equal "11111", plain.reload.rsi_pledge_id
+      assert_empty plain.model_paint_ids
+      assert_equal 2, Vehicle.where(user: @user, model: gladius).count
     end
   end
 

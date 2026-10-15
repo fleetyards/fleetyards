@@ -47,8 +47,12 @@ const openGroupsModal = () =>
 const editEquipment = (tab: VehicleEditTabsEnum) =>
   openEditModal(props.vehicle, { tab });
 
-const paintThumb = computed(
-  () => props.vehicle.paint?.media.storeImage?.smallUrl,
+const ownedPaints = computed(() =>
+  props.vehicle.modelPaintIds.length
+    ? t("labels.vehicleOverview.ownedPaintsCount", {
+        count: props.vehicle.modelPaintIds.length,
+      })
+    : t("labels.vehicleOverview.noPaint"),
 );
 
 const facts = computed(() =>
@@ -99,23 +103,15 @@ const facts = computed(() =>
   >
     <dl class="overview-config">
       <div class="overview-config__paint" data-test="vehicle-fact-paint">
-        <img
-          v-if="paintThumb"
-          :src="paintThumb"
-          alt=""
-          class="overview-config__thumb"
-        />
         <div>
-          <dt>{{ t("labels.vehicle.modelPaintSelect.label") }}</dt>
+          <dt>{{ t("labels.vehicle.ownedPaintsSelect.label") }}</dt>
           <dd>
             <button
               class="overview-config__edit"
               :disabled="vehicle.loaner || !vehicle.model.hasPaints"
               @click="editEquipment(VehicleEditTabsEnum.PAINT)"
             >
-              <span>{{
-                vehicle.paint?.name || t("labels.vehicleOverview.noPaint")
-              }}</span>
+              <span>{{ ownedPaints }}</span>
               <i
                 v-if="!vehicle.loaner && vehicle.model.hasPaints"
                 class="fa-light fa-pen"
@@ -228,13 +224,6 @@ const facts = computed(() =>
     display: flex;
     align-items: center;
     gap: 12px;
-  }
-
-  &__thumb {
-    width: 64px;
-    height: 40px;
-    border-radius: 4px;
-    object-fit: cover;
   }
 
   &__paint > div {

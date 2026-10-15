@@ -33,6 +33,22 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     ...resolved(),
   }),
   useModelModulePackages: () => ({ data: ref({ items: [] }), ...resolved() }),
+  useModelPaints: () => ({ data: ref([]), ...resolved() }),
+  useVehiclePaints: () => ({
+    data: ref([
+      {
+        owned: false,
+        pledged: true,
+        picture: false,
+        paint: { id: "paint-pledged", name: "Pledged", media: {} },
+      },
+    ]),
+    ...resolved(),
+  }),
+}));
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -53,6 +69,7 @@ const vehicle = (ingameOnly: boolean): Vehicle =>
     alternativeNames: [],
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     hangarGroupIds: [],
     model: {
       id: "model-1",
@@ -135,9 +152,38 @@ describe("VehicleEditModal", () => {
     await vi.waitFor(() =>
       expect(mutateAsync).toHaveBeenCalledWith({
         id: "vehicle-1",
-        data: { modelPaintId: "paint-2" },
+        data: { modelPaintIds: ["paint-2"] },
       }),
     );
+  });
+
+  it("suggests the pledged paints once the paint tab is open", async () => {
+    const painted = vehicle(false);
+    painted.model.hasPaints = true;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: painted, tab: VehicleEditTabsEnum.PAINT },
+    });
+    await flushPromises();
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { modelPaintIds: ["paint-pledged"] },
+      }),
+    );
+  });
+
+  it("leaves the pledged paints unsaved while the paint tab stays closed", async () => {
+    const painted = vehicle(false);
+    painted.model.hasPaints = true;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: painted },
+    });
+    await flushPromises();
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).not.toHaveBeenCalled();
   });
 
   it("does not save when nothing changed", async () => {

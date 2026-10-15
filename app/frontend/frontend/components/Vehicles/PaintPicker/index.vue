@@ -11,47 +11,38 @@ import { type ModelPaint, useModelPaints } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
-  modelValue?: string | null;
-  // The model's own render, for the "no paint" choice.
-  defaultImage?: string;
+  // In place of the model's catalogue paints, where the caller has a list that
+  // also keeps the ship's own paints the catalogue has since hidden.
+  paints?: ModelPaint[];
+  // The paints the ship owns.
+  modelValue?: string[];
+  // Paints a synced pledge of the owner's resolves to, marked as a suggestion:
+  // a pledge names no ship, so it cannot say which hull owns one.
+  pledgedIds?: string[];
   // Where a heading already names the choice, the legend stays for screen
   // readers only.
   hideLegend?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: undefined,
-  defaultImage: undefined,
+  paints: undefined,
+  modelValue: () => [],
+  pledgedIds: () => [],
   hideLegend: false,
 });
 
-const emit = defineEmits<{ "update:modelValue": [value: string | null] }>();
+const emit = defineEmits<{ "update:modelValue": [value: string[]] }>();
 
 const { t } = useI18n();
 
-const { data: paints, isLoading } = useModelPaints(() => props.modelSlug);
+const { data: modelPaints, isLoading } = useModelPaints(() => props.modelSlug, {
+  query: { enabled: () => !props.paints },
+});
+
+const paints = computed(() => props.paints || modelPaints.value);
 
 const thumb = (paint: ModelPaint) =>
   paint.media.storeImage?.smallUrl || paint.media.storeImage?.url;
-
-type Choice = {
-  id: string | null;
-  name: string;
-  image?: string;
-};
-
-const choices = computed<Choice[]>(() => [
-  {
-    id: null,
-    name: t("labels.vehicleOverview.noPaint"),
-    image: props.defaultImage,
-  },
-  ...(paints.value || []).map((paint) => ({
-    id: paint.id,
-    name: paint.name,
-    image: thumb(paint),
-  })),
-]);
 
 // A handful fits at a glance; a ship with a dozen liveries needs narrowing.
 const SEARCH_THRESHOLD = 9;
@@ -62,24 +53,33 @@ const searchable = computed(
 
 const search = ref<string | number | null>("");
 
-const visibleChoices = computed(() => {
+const visiblePaints = computed(() => {
   const term = String(search.value ?? "")
     .trim()
     .toLowerCase();
-  if (!term) return choices.value;
+  const all = paints.value || [];
+  if (!term) return all;
 
-  return choices.value.filter((choice) =>
-    choice.name.toLowerCase().includes(term),
-  );
+  return all.filter((paint) => paint.name.toLowerCase().includes(term));
 });
 
-const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
+const owned = (paint: ModelPaint) => props.modelValue.includes(paint.id);
+
+const pledged = (paint: ModelPaint) => props.pledgedIds.includes(paint.id);
+
+const toggle = (paint: ModelPaint) =>
+  emit(
+    "update:modelValue",
+    owned(paint)
+      ? props.modelValue.filter((id) => id !== paint.id)
+      : [...props.modelValue, paint.id],
+  );
 </script>
 
 <template>
   <fieldset class="paint-picker" :aria-busy="isLoading">
     <legend class="paint-picker__legend" :class="{ 'sr-only': hideLegend }">
-      {{ t("labels.vehicle.modelPaintSelect.label") }}
+      {{ t("labels.vehicle.ownedPaintsSelect.label") }}
     </legend>
     <!-- Standalone, so inside the vehicle form the search is not submitted
          with the vehicle. -->
@@ -98,23 +98,30 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
     />
     <div class="paint-picker__grid">
       <button
-        v-for="choice in visibleChoices"
-        :key="choice.id ?? 'none'"
+        v-for="paint in visiblePaints"
+        :key="paint.id"
         type="button"
         class="paint-picker__choice"
-        :class="{ 'paint-picker__choice--selected': selected(choice) }"
-        :aria-pressed="selected(choice)"
+        :class="{ 'paint-picker__choice--selected': owned(paint) }"
+        :aria-pressed="owned(paint)"
         data-test="paint-picker-choice"
-        @click="emit('update:modelValue', choice.id)"
+        @click="toggle(paint)"
       >
         <img
-          v-if="choice.image"
-          :src="choice.image"
+          v-if="thumb(paint)"
+          :src="thumb(paint)"
           alt=""
           class="paint-picker__image"
         />
         <span v-else class="paint-picker__image" />
-        <span class="paint-picker__name">{{ choice.name }}</span>
+        <span class="paint-picker__name">{{ paint.name }}</span>
+        <span
+          v-if="pledged(paint)"
+          class="paint-picker__pledged"
+          data-test="paint-picker-pledged"
+        >
+          {{ t("labels.vehicle.ownedPaintsSelect.pledged") }}
+        </span>
       </button>
     </div>
   </fieldset>
@@ -169,6 +176,13 @@ const selected = (choice: Choice) => (props.modelValue ?? null) === choice.id;
     width: 100%;
     height: 64px;
     object-fit: cover;
+  }
+
+  &__pledged {
+    display: block;
+    padding: 0 8px 6px;
+    color: var(--color-text-dim);
+    font-size: 0.7rem;
   }
 
   &__name {

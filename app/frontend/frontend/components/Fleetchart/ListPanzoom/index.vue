@@ -491,18 +491,6 @@ const imageMaxHeight = (item: Vehicle | Model | VehiclePublic) => {
     }
   }
 
-  if (
-    vehicle.paint &&
-    (vehicle.paint.media.topView ||
-      vehicle.paint.media.sideView ||
-      vehicle.paint.media.angledView)
-  ) {
-    const height = extractMaxHeightFromModel(vehicle.paint);
-    if (height) {
-      return height;
-    }
-  }
-
   if (extended.value) {
     const height = extractMaxHeightFromExtended(model);
     if (height) {
@@ -524,18 +512,6 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
       vehicle.modulePackage.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(vehicle.modulePackage);
-    if (width) {
-      return width;
-    }
-  }
-
-  if (
-    vehicle.paint &&
-    (vehicle.paint.media.topView ||
-      vehicle.paint.media.sideView ||
-      vehicle.paint.media.angledView)
-  ) {
-    const width = extractMaxWidthFromModel(vehicle.paint);
     if (width) {
       return width;
     }

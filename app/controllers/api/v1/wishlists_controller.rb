@@ -42,7 +42,8 @@ module Api
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :launch_port_location, :user, model: [:manufacturer])
+          .preload(Vehicle::PICTURE_PRELOADS)
+          .includes(:vehicle_upgrades, :model_upgrades, :launch_port_location, :user, model: [:manufacturer])
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))

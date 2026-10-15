@@ -13,7 +13,6 @@ import type {
   VehiclePublic,
   ModelModulePackage,
   MediaFile,
-  ModelPaint,
 } from "@/services/fyApi";
 import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
@@ -80,19 +79,7 @@ const modulePackage = computed<ModelModulePackage | null>(() => {
   return null;
 });
 
-const paint = computed<ModelPaint | null>(() => {
-  if (vehicle.value && vehicle.value.paint) {
-    return vehicle.value.paint;
-  }
-
-  return null;
-});
-
 const angledView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.angledView) {
-    return paint.value.media.angledView;
-  }
-
   if (modulePackage.value && modulePackage.value.media.angledView) {
     // if (props.colored && modulePackage.value.media.angledViewColored) {
     //   return modulePackage.value.media.angledViewColored;
@@ -118,10 +105,6 @@ const angledView = computed(() => {
 });
 
 const frontView = computed(() => {
-  // if (props.colored && paint.value && paint.value.media.frontView) {
-  //   return paint.value.media.frontView;
-  // }
-
   // if (modulePackage.value && modulePackage.value.media.frontView) {
   //   if (props.colored && modulePackage.value.media.frontViewColored) {
   //     return modulePackage.value.media.frontViewColored;
@@ -147,10 +130,6 @@ const frontView = computed(() => {
 });
 
 const sideView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.sideView) {
-    return paint.value.media.sideView;
-  }
-
   if (modulePackage.value && modulePackage.value.media.sideView) {
     // if (props.colored && modulePackage.value.media.sideViewColored) {
     //   return modulePackage.value.media.sideViewColored;
@@ -176,10 +155,6 @@ const sideView = computed(() => {
 });
 
 const topView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.topView) {
-    return paint.value.media.topView;
-  }
-
   if (modulePackage.value && modulePackage.value.media.topView) {
     // if (props.colored && modulePackage.value.media.topViewColored) {
     //   return modulePackage.value.media.topViewColored;
@@ -227,10 +202,6 @@ const name = computed(() => {
 });
 
 const modelName = computed(() => {
-  if (paint.value && paint.value.rsiId) {
-    return `${model.value.manufacturer?.code} ${paint.value.name}`;
-  }
-
   return `${model.value.manufacturer?.code} ${model.value.name}`;
 });
 

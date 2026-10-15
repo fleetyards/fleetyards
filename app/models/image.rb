@@ -15,6 +15,11 @@ class Image < ApplicationRecord
 
   has_one_attached :file
 
+  # Ships showing this picture. A polymorphic reference has no foreign key to
+  # clear it, and their cached payloads are keyed by their timestamps.
+  has_many :picture_vehicles, class_name: "Vehicle", as: :picture, dependent: nil
+  before_destroy -> { picture_vehicles.update_all(picture_type: nil, picture_id: nil, updated_at: Time.current) }
+
   ransack_alias :model, :model_slug
 
   before_validation :set_gallery_fields

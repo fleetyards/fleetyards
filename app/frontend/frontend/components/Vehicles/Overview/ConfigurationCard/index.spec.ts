@@ -19,6 +19,7 @@ const vehicle = {
   alternativeNames: ["Alias"],
   boughtViaLabel: "Pledge",
   hangarGroups: [],
+  modelPaintIds: [],
   upgrade: { name: "Kit" },
   modulePackage: { name: "Package" },
 } as unknown as Vehicle;

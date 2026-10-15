@@ -18,10 +18,7 @@ json.model do
   json.partial! "admin/api/v1/models/base", model: vehicle.model
 end
 
-json.paint do
-  json.partial! "api/v1/model_paints/base", model_paint: vehicle.model_paint if vehicle.model_paint.present?
-end
-json.paint nil if vehicle.model_paint.blank?
+json.partial!("api/v1/vehicles/image", vehicle:)
 
 json.upgrade do
   json.partial! "api/v1/model_upgrades/base", model_upgrade: vehicle.model_upgrades.first if vehicle.model_upgrades.present?

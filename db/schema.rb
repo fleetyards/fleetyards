@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_15_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2739,6 +2739,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_170000) do
     t.datetime "rsi_pledge_synced_at"
   end
 
+  create_table "vehicle_paints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "vehicle_id", null: false
+    t.uuid "model_paint_id", null: false
+    t.string "rsi_pledge_id"
+    t.datetime "rsi_pledge_synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_paint_id"], name: "index_vehicle_paints_on_model_paint_id"
+    t.index ["vehicle_id", "model_paint_id"], name: "index_vehicle_paints_on_vehicle_id_and_model_paint_id", unique: true
+    t.index ["vehicle_id"], name: "index_vehicle_paints_on_vehicle_id"
+  end
+
   create_table "vehicle_upgrades", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_upgrade_id"
     t.uuid "vehicle_id"
@@ -2787,12 +2799,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_170000) do
     t.string "plaque_style"
     t.string "plaque_captain"
     t.boolean "hidden_by_user", default: false, null: false
+    t.string "picture_type"
+    t.uuid "picture_id"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_image_id"], name: "index_vehicles_on_model_image_id"
     t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
+    t.index ["picture_type", "picture_id"], name: "index_vehicles_on_picture"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id", "rank"], name: "index_vehicles_on_user_id_and_rank", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
@@ -3026,6 +3041,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_170000) do
   add_foreign_key "vehicle_loadout_items", "vehicle_loadouts", on_delete: :cascade
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade
+  add_foreign_key "vehicle_paints", "model_paints", on_delete: :cascade
+  add_foreign_key "vehicle_paints", "vehicles", on_delete: :cascade
   add_foreign_key "vehicles", "images", column: "model_image_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", column: "launch_port_location_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", on_delete: :nullify

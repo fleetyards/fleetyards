@@ -44,6 +44,18 @@ class Api::V1::HangarExportTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/export lists the paints a ship owns" do
+    user = create(:user)
+    vehicle = create(:vehicle, user:, wanted: false)
+    paint = create(:model_paint, model: vehicle.model)
+    vehicle.update!(model_paint_ids: [paint.id])
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [paint.slug], parsed_body.sole["paintSlugs"]
+    end
+  end
+
   test "GET /hangar/export returns 401 when not signed in" do
     assert_api_response :get, 401
   end

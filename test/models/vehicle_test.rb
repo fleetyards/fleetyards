@@ -5,7 +5,8 @@ require "test_helper"
 class VehicleTest < ActiveSupport::TestCase
   should belong_to(:user)
   should belong_to(:model)
-  should belong_to(:model_paint).optional(true)
+  should belong_to(:picture).optional(true)
+  should have_many(:model_paints).through(:vehicle_paints)
   should belong_to(:module_package).optional(true)
 end
 
@@ -392,16 +393,16 @@ class VehicleVersioningTest < ActiveSupport::TestCase
       versions_for(vehicle).order(created_at: :desc).first.changeset["name"]
   end
 
-  test "a repaint records a version" do
+  test "picking a paint picture records a version" do
     vehicle = create(:vehicle)
-    paint = create(:model_paint, model: vehicle.model)
+    paint = create(:model_paint, :with_store_image, model: vehicle.model)
 
     assert_difference -> { versions_for(vehicle).count }, 1 do
-      vehicle.update!(model_paint_id: paint.id)
+      vehicle.update!(picture: paint)
     end
 
     assert_equal paint.id,
-      versions_for(vehicle).order(created_at: :desc).first.changeset["model_paint_id"].last
+      versions_for(vehicle).order(created_at: :desc).first.changeset["picture_id"].last
   end
 
   test "a retrofit records a version" do
@@ -798,17 +799,17 @@ end
 class VehicleModelImageTest < ActiveSupport::TestCase
   test "drops a gallery picture of the old model when the model changes" do
     vehicle = create(:vehicle)
-    vehicle.update!(model_image: create(:image, gallery: vehicle.model))
+    vehicle.update!(picture: create(:image, gallery: vehicle.model))
 
     vehicle.update!(model: create(:model))
 
-    assert_nil vehicle.reload.model_image_id
+    assert_nil vehicle.reload.picture_id
   end
 
   test "keeps saving once its picked gallery picture is disabled" do
     vehicle = create(:vehicle)
     image = create(:image, gallery: vehicle.model)
-    vehicle.update!(model_image: image)
+    vehicle.update!(picture: image)
     image.update!(enabled: false)
 
     assert vehicle.reload.update(name: "Starfall")

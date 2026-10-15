@@ -22,7 +22,8 @@ const entry = (
   overrides: Partial<VehiclePaint> = {},
 ): VehiclePaint => ({
   owned: false,
-  applied: false,
+  pledged: false,
+  picture: false,
   paint: { id: name, name, slug: name, media: {} } as VehiclePaint["paint"],
   ...overrides,
 });
@@ -116,8 +117,8 @@ describe("VehicleOverviewPaintsCard", () => {
     });
   });
 
-  it("opens the same editor from the applied paint", async () => {
-    paints.value = [entry("Rust Society", { owned: true, applied: true })];
+  it("opens the same editor from the paint the ship's picture shows", async () => {
+    paints.value = [entry("Rust Society", { owned: true, picture: true })];
 
     const wrapper = await mount();
 
