@@ -313,7 +313,6 @@ fr:
             items:
               not_fleetyards: "ne peuvent être équipés que dans une configuration Fleetyards"
               slot_taken: "ne peuvent contenir qu'un module par emplacement"
-              module_not_owned: "doivent être des modules que possède le vaisseau"
               module_not_in_slot: "doivent chacun correspondre à l'emplacement où ils sont placés"
               item_type_not_supported: "ne contiennent que des modules pour l'instant"
               parent_not_fitted: "doivent se trouver dans un emplacement équipé"

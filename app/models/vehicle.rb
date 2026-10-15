@@ -80,7 +80,6 @@ class Vehicle < ApplicationRecord
   has_many :fleet_vehicles, dependent: :destroy
 
   has_many :vehicle_loadouts, dependent: :destroy
-  has_many :vehicle_loadout_items, through: :vehicle_loadouts, source: :items
 
   # Removed by the foreign key's cascade, which also covers the bulk delete.
   has_many :log_entries, class_name: "VehicleLogEntry", dependent: nil
@@ -795,25 +794,6 @@ class Vehicle < ApplicationRecord
       .find_each do |vehicle|
       vehicle.update(flagship: false)
     end
-  end
-
-  def stock_module_ids
-    ModuleHardpoint.stock_modules(model).values
-  end
-
-  # A module that leaves the hangar cannot stay fitted, unless the hull comes
-  # with it, and neither can anything fitted inside it. Destroyed one by one so
-  # each loadout it sat in is touched and re-rendered.
-  def unfit_unowned_modules
-    unfitted = vehicle_loadout_items.where(item_type: "ModelModule")
-      .where.not(item_id: model_module_ids + stock_module_ids)
-    nested = unfitted.pluck(:vehicle_loadout_id, :slot_path).map do |loadout_id, path|
-      vehicle_loadout_items.where(vehicle_loadout_id: loadout_id)
-        .where("vehicle_loadout_items.slot_path LIKE ?", "#{VehicleLoadoutItem.sanitize_sql_like(path)}/%")
-    end
-
-    [unfitted, *nested].each(&:destroy_all)
-    vehicle_loadouts.reset
   end
 
   def set_module_package

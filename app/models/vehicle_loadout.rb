@@ -111,19 +111,12 @@ class VehicleLoadout < ApplicationRecord
 
   # A module goes in a slot on the hull itself, named by the module hardpoint,
   # so one whose slot the game files never revealed matches none and cannot be
-  # fitted.
+  # fitted. Whether the ship owns it does not matter: a loadout is a plan.
   private def modules_fit
     modules = item_list.select { |item| item[:item_type] == "ModelModule" }
     return if modules.empty?
 
-    # Counted, not just looked up: one owned copy fills one slot. The hull's
-    # stock modules are there to fit without being owned.
     module_ids = modules.pluck(:item_id)
-    owned = (vehicle.model_module_ids + vehicle.stock_module_ids).tally
-    if module_ids.tally.any? { |id, count| count > owned.fetch(id, 0) }
-      errors.add(:items, :module_not_owned)
-    end
-
     fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
       .pluck(:model_module_id, :slot)
     unless modules.all? { |item| fitting.include?([item[:item_id], item[:slot_path]]) }

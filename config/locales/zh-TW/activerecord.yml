@@ -313,7 +313,6 @@ zh-TW:
             items:
               not_fleetyards: "只能裝配在 Fleetyards 配裝中"
               slot_taken: "每個槽位只能裝配一個模組"
-              module_not_owned: "必須是該艦船擁有的模組"
               module_not_in_slot: "必須與所在的槽位相符"
               item_type_not_supported: "目前只能包含模組"
               parent_not_fitted: "必須位於已裝配的槽位中"

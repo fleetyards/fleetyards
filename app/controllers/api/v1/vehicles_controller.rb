@@ -57,10 +57,7 @@ module Api
         @vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
         @vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
-        if @vehicle.update(writable_params(@vehicle, vehicle_params))
-          @vehicle.unfit_unowned_modules unless vehicle_params[:model_module_ids].nil?
-          return
-        end
+        return if @vehicle.update(writable_params(@vehicle, vehicle_params))
 
         render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
       end

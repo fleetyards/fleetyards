@@ -314,7 +314,6 @@ en:
             items:
               not_fleetyards: "can only be fitted to a fleetyards loadout"
               slot_taken: "can hold only one module per slot"
-              module_not_owned: "must be modules the ship owns"
               module_not_in_slot: "must each fit the slot they are placed in"
               item_type_not_supported: "only holds modules for now"
               parent_not_fitted: "must sit in a slot that is fitted"

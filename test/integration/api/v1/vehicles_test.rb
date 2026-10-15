@@ -319,24 +319,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {name: "Enterprise A"}
   end
 
-  test "PUT /vehicles/:id unfits a module the ship no longer owns" do
-    model = create(:model, production_status: "flight-ready")
-    kept, dropped = create_list(:model_module, 2)
-    create(:module_hardpoint, model:, model_module: kept, slot: "hardpoint_rear_module")
-    create(:module_hardpoint, model:, model_module: dropped, slot: "hardpoint_front_module")
-    vehicle = create(:vehicle, user: @user, model:, model_module_ids: [kept.id, dropped.id])
-    loadout = create(:vehicle_loadout, :fleetyards, :active, vehicle:, item_list: [
-      {slot_path: "hardpoint_rear_module", item_type: "ModelModule", item_id: kept.id},
-      {slot_path: "hardpoint_front_module", item_type: "ModelModule", item_id: dropped.id}
-    ])
-    sign_in @user
-
-    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelModuleIds: [kept.id]} do
-      assert_equal [kept.id], parsed_body["activeLoadout"]["items"].pluck("itemId")
-    end
-    assert_equal [kept.id], loadout.reload.items.pluck(:item_id)
-  end
-
   test "PUT /vehicles/:id hides and unhides the vehicle" do
     vehicle = create(:vehicle, user: @user, wanted: false)
     sign_in @user

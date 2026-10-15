@@ -26,7 +26,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     VehicleLoadout.new(vehicle: @vehicle, kind: "fleetyards", item_list: items)
   end
 
-  test "fits one owned module into each slot" do
+  test "fits one module into each slot" do
     loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo], ["hardpoint_rear_module", @rear_cargo]))
 
     assert loadout.save, loadout.errors.full_messages.to_sentence
@@ -41,33 +41,13 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert loadout.errors.of_kind?(:items, :slot_taken)
   end
 
-  test "refuses a module the ship does not own" do
-    @vehicle.update!(model_module_ids: [@rear_cargo.id])
-    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo]))
-
-    assert_not loadout.save
-    assert loadout.errors.of_kind?(:items, :module_not_owned)
-  end
-
-  test "fits one owned copy into one slot only" do
-    both_sides = create(:model_module, name: "Side Module")
-    create(:module_hardpoint, model: @model, model_module: both_sides, slot: "hardpoint_left_module")
-    create(:module_hardpoint, model: @model, model_module: both_sides, slot: "hardpoint_right_module")
-    @vehicle.update!(model_module_ids: [both_sides.id])
-
-    loadout = fleetyards_loadout(fit(["hardpoint_left_module", both_sides], ["hardpoint_right_module", both_sides]))
-
-    assert_not loadout.save
-    assert loadout.errors.of_kind?(:items, :module_not_owned)
-
-    # Cleared first, as `VehiclesController#update` does: the ids writer keeps
-    # one copy when asked to go from one to two of the same module.
+  test "fits a module the ship does not own: a loadout is a plan" do
     @vehicle.vehicle_modules.destroy_all
     @vehicle.reload
-    @vehicle.update!(model_module_ids: [both_sides.id, both_sides.id])
 
-    two_copies = fleetyards_loadout(fit(["hardpoint_left_module", both_sides], ["hardpoint_right_module", both_sides]))
-    assert two_copies.save, two_copies.errors.details.inspect
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_torpedo]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
   end
 
   test "refuses a module in a slot it does not fit, or one with no known slot" do
@@ -78,24 +58,6 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert wrong_slot.errors.of_kind?(:items, :module_not_in_slot)
     assert_not unslotted.save
     assert unslotted.errors.of_kind?(:items, :module_not_in_slot)
-  end
-
-  test "fits the hull's stock module without owning it, and keeps it fitted" do
-    stock = create(:model_module, name: "Front Stock Module", sc_key: "AEGS_Front_Stock")
-    create(:module_hardpoint, model: @model, model_module: stock, slot: "hardpoint_front_module")
-    create(:hardpoint, parent: @model, source: :game_files, category: :module,
-      sc_name: "hardpoint_front_module", component: create(:component, sc_key: "aegs_front_stock", category: "module", component_type: "Module"))
-    @vehicle.vehicle_modules.destroy_all
-    @vehicle.reload
-
-    loadout = fleetyards_loadout(fit(["hardpoint_front_module", stock]))
-
-    assert loadout.save, loadout.errors.full_messages.to_sentence
-    assert_not_includes @vehicle.model_module_ids, stock.id
-
-    @vehicle.unfit_unowned_modules
-
-    assert_equal [stock.id], loadout.reload.items.pluck(:item_id)
   end
 
   test "refuses a slot inside one that is not fitted" do
@@ -112,18 +74,6 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
 
     assert_not loadout.save
     assert loadout.errors.of_kind?(:items, :item_type_not_supported)
-  end
-
-  test "unfitting a module takes what was fitted inside it along" do
-    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo]))
-    loadout.save!
-    # Written past the validation, standing in for a component category.
-    loadout.items.create!(slot_path: "hardpoint_front_module/hardpoint_turret", item: @rear_cargo)
-
-    @vehicle.update!(model_module_ids: [@rear_cargo.id])
-    @vehicle.unfit_unowned_modules
-
-    assert_empty loadout.reload.items
   end
 
   test "a module removed from the catalogue is unfitted with what sat inside it" do
@@ -161,16 +111,6 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     loadout.update!(item_list: fit(["hardpoint_front_module", @front_torpedo]))
 
     assert_equal [@front_torpedo.id], loadout.reload.items.pluck(:item_id)
-  end
-
-  test "a module that leaves the hangar is unfitted" do
-    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo], ["hardpoint_rear_module", @rear_cargo]))
-    loadout.save!
-
-    @vehicle.update!(model_module_ids: [@rear_cargo.id])
-    @vehicle.unfit_unowned_modules
-
-    assert_equal [@rear_cargo.id], loadout.reload.items.pluck(:item_id)
   end
 
   test "activating a fleetyards loadout switches off an active link" do
