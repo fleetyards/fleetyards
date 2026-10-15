@@ -1178,6 +1178,8 @@
         "quantumFuelTanks": "量子燃料箱",
         "externalFuelTanks": "外掛燃料箱",
         "orePods": "礦石艙",
+        "medicalBedsTier": "%{tier} 級醫療床",
+        "respawnBeds": "重生床位",
         "salvageStorage": "回收儲存",
         "externalFuelTanksTotal": "總容量",
         "externalFuelTanksCount": "燃料艙",

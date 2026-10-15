@@ -1178,6 +1178,8 @@
         "quantumFuelTanks": "Quantum-Treibstofftanks",
         "externalFuelTanks": "Externe Treibstofftanks",
         "orePods": "Erzbehälter",
+        "medicalBedsTier": "Medizinische Betten Stufe %{tier}",
+        "respawnBeds": "Respawn-Betten",
         "salvageStorage": "Bergungsspeicher",
         "externalFuelTanksTotal": "Gesamtkapazität",
         "externalFuelTanksCount": "Pods",

@@ -1178,6 +1178,8 @@
         "quantumFuelTanks": "Tanques de combustible Quantum",
         "externalFuelTanks": "Tanques de combustible externos",
         "orePods": "Contenedores de mineral",
+        "medicalBedsTier": "Camas médicas de nivel %{tier}",
+        "respawnBeds": "Camas de reaparición",
         "salvageStorage": "Almacén de chatarra",
         "externalFuelTanksTotal": "Capacidad total",
         "externalFuelTanksCount": "Pods",

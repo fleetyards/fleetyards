@@ -24,7 +24,41 @@ const torpedoes = {
   ],
 } as unknown as ModelModule;
 
+const medical = (tier: number, name: string, beds: number) =>
+  ({
+    id: `tier-${tier}`,
+    metrics: {
+      cargo: 0,
+      medicalBeds: { tiers: [{ tier, name, beds }], respawnBeds: beds },
+    },
+    hardpoints: [],
+  }) as unknown as ModelModule;
+
 describe("useFittingDiff", () => {
+  it("tells medical modules apart by their beds, tier by tier", () => {
+    const { metrics, rows } = useFittingDiff();
+
+    const byKey = Object.fromEntries(
+      rows(
+        metrics(0, [medical(1, "Hospital", 1)]),
+        metrics(0, [medical(3, "Ambulance", 3)]),
+      ).map((row) => [row.key, row]),
+    );
+
+    expect(byKey.medical_beds_1).toMatchObject({
+      before: 1,
+      after: 0,
+      delta: { tone: "even" },
+    });
+    expect(byKey.medical_beds_3).toMatchObject({ before: 0, after: 3 });
+    // More beds to respawn at is better.
+    expect(byKey.respawn_beds).toMatchObject({
+      before: 1,
+      after: 3,
+      delta: { tone: "better" },
+    });
+  });
+
   it("adds the fitted modules to the hull's figures", () => {
     const { metrics } = useFittingDiff();
 

@@ -1178,6 +1178,8 @@
         "quantumFuelTanks": "Réservoirs de carburant Quantum",
         "externalFuelTanks": "Réservoirs de carburant externes",
         "orePods": "Conteneurs de minerai",
+        "medicalBedsTier": "Lits médicaux de niveau %{tier}",
+        "respawnBeds": "Lits de réapparition",
         "salvageStorage": "Stockage de récupération",
         "externalFuelTanksTotal": "Capacité totale",
         "externalFuelTanksCount": "Nacelles",
