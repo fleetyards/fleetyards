@@ -16,6 +16,7 @@ import {
   type ModelPaint,
   type Vehicle,
   FeatureFlagName,
+  NullableVehiclePictureTypeEnum as PictureType,
   useModelImages,
   useVehiclePaints,
 } from "@/services/fyApi";
@@ -46,10 +47,14 @@ const stockImage = computed(
 type Source = "upload" | "gallery";
 
 const source = ref<Source>(
-  (props.vehicle.modelImageId || props.vehicle.modelPaintPictureId) &&
-    !props.vehicle.image
+  props.vehicle.pictureId && !props.vehicle.imageUploaded
     ? "gallery"
     : "upload",
+);
+
+// Only an upload belongs in the upload field: `image` is the picked picture too.
+const uploadedImage = computed(() =>
+  props.vehicle.imageUploaded ? props.vehicle.image : undefined,
 );
 
 const GALLERY_PAGE_SIZE = "48";
@@ -108,22 +113,20 @@ const paintPictures = computed<ModelPaint[]>(() =>
       (paint) =>
         paint.media.storeImage &&
         ((ownedPaintIds.value || []).includes(paint.id) ||
-          paint.id === props.vehicle.modelPaintPictureId),
+          (props.vehicle.pictureType === PictureType.MODEL_PAINT &&
+            paint.id === props.vehicle.pictureId)),
     ),
 );
 
-type Pick = { kind: "image" | "paint"; id: string } | null;
+type Pick = {
+  type: NonNullable<VehicleImageChanges["pictureType"]>;
+  id: string;
+} | null;
 
-const savedPick = (): Pick => {
-  if (props.vehicle.modelImageId) {
-    return { kind: "image", id: props.vehicle.modelImageId };
-  }
-  if (props.vehicle.modelPaintPictureId) {
-    return { kind: "paint", id: props.vehicle.modelPaintPictureId };
-  }
-
-  return null;
-};
+const savedPick = (): Pick =>
+  props.vehicle.pictureType && props.vehicle.pictureId
+    ? { type: props.vehicle.pictureType, id: props.vehicle.pictureId }
+    : null;
 
 const picked = ref<Pick>(savedPick());
 
@@ -131,28 +134,25 @@ const pick = (choice: Pick) => {
   picked.value = choice;
 };
 
-const isPicked = (kind: "image" | "paint", id: string) =>
-  picked.value?.kind === kind && picked.value.id === id;
+const isPicked = (type: string, id: string) =>
+  picked.value?.type === type && picked.value.id === id;
 
-// A ship shows one picture of its own: saving one kind clears the others.
+// A ship shows one picture of its own: saving a pick drops the upload, and an
+// upload drops the pick.
 const changes = (): VehicleImageChanges | undefined => {
   if (source.value === "gallery") {
     const saved = savedPick();
     if (
-      !props.vehicle.image &&
-      picked.value?.kind === saved?.kind &&
+      !props.vehicle.imageUploaded &&
+      picked.value?.type === saved?.type &&
       picked.value?.id === saved?.id
     ) {
       return undefined;
     }
 
-    const paintId = picked.value?.kind === "paint" ? picked.value.id : null;
-
     return {
-      modelImageId: picked.value?.kind === "image" ? picked.value.id : null,
-      ...(paintId || props.vehicle.modelPaintPictureId
-        ? { modelPaintPictureId: paintId }
-        : {}),
+      pictureType: picked.value?.type ?? null,
+      pictureId: picked.value?.id ?? null,
       image: null,
     };
   }
@@ -162,8 +162,7 @@ const changes = (): VehicleImageChanges | undefined => {
 
   return {
     image: image.value,
-    ...(props.vehicle.modelImageId ? { modelImageId: null } : {}),
-    ...(props.vehicle.modelPaintPictureId ? { modelPaintPictureId: null } : {}),
+    ...(props.vehicle.pictureId ? { pictureType: null, pictureId: null } : {}),
   };
 };
 
@@ -196,8 +195,8 @@ defineExpose({ changes });
     <FormFileInput
       v-if="source === 'upload'"
       v-model="image"
-      :file="vehicle.image"
-      :preview-src="vehicle.image ? undefined : stockImage"
+      :file="uploadedImage"
+      :preview-src="uploadedImage ? undefined : stockImage"
       name="image"
       :label="t('labels.vehicleOverview.picture')"
       :info="t('labels.vehicleOverview.pictureInfo')"
@@ -205,7 +204,7 @@ defineExpose({ changes });
       clearable
     />
     <template v-else>
-      <p v-if="vehicle.image" class="vehicle-edit-image__hint">
+      <p v-if="vehicle.imageUploaded" class="vehicle-edit-image__hint">
         {{ t("texts.vehicleOverview.galleryReplacesUpload") }}
       </p>
       <p
@@ -241,12 +240,15 @@ defineExpose({ changes });
           type="button"
           class="vehicle-edit-image__choice"
           :class="{
-            'vehicle-edit-image__choice--picked': isPicked('paint', paint.id),
+            'vehicle-edit-image__choice--picked': isPicked(
+              PictureType.MODEL_PAINT,
+              paint.id,
+            ),
           }"
-          :aria-pressed="isPicked('paint', paint.id)"
+          :aria-pressed="isPicked(PictureType.MODEL_PAINT, paint.id)"
           :aria-label="paint.name"
           data-test="vehicle-image-gallery-paint"
-          @click="pick({ kind: 'paint', id: paint.id })"
+          @click="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
         >
           <img
             :src="
@@ -264,14 +266,14 @@ defineExpose({ changes });
           class="vehicle-edit-image__choice"
           :class="{
             'vehicle-edit-image__choice--picked': isPicked(
-              'image',
+              PictureType.IMAGE,
               galleryImage.id,
             ),
           }"
-          :aria-pressed="isPicked('image', galleryImage.id)"
+          :aria-pressed="isPicked(PictureType.IMAGE, galleryImage.id)"
           :aria-label="galleryImage.caption || vehicle.model.name"
           data-test="vehicle-image-gallery-choice"
-          @click="pick({ kind: 'image', id: galleryImage.id })"
+          @click="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
         >
           <img
             :src="galleryImage.smallUrl || galleryImage.url"

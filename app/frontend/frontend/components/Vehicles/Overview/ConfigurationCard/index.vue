@@ -47,8 +47,6 @@ const openGroupsModal = () =>
 const editEquipment = (tab: VehicleEditTabsEnum) =>
   openEditModal(props.vehicle, { tab });
 
-const paintThumb = computed(() => props.vehicle.paintPicture?.smallUrl);
-
 const ownedPaints = computed(() =>
   props.vehicle.modelPaintIds.length
     ? t("labels.vehicleOverview.ownedPaintsCount", {
@@ -105,12 +103,6 @@ const facts = computed(() =>
   >
     <dl class="overview-config">
       <div class="overview-config__paint" data-test="vehicle-fact-paint">
-        <img
-          v-if="paintThumb"
-          :src="paintThumb"
-          alt=""
-          class="overview-config__thumb"
-        />
         <div>
           <dt>{{ t("labels.vehicle.ownedPaintsSelect.label") }}</dt>
           <dd>
@@ -232,13 +224,6 @@ const facts = computed(() =>
     display: flex;
     align-items: center;
     gap: 12px;
-  }
-
-  &__thumb {
-    width: 64px;
-    height: 40px;
-    border-radius: 4px;
-    object-fit: cover;
   }
 
   &__paint > div {

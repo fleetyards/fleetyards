@@ -32,5 +32,5 @@ export type VehicleEditValues = Pick<
 
 export type VehicleImageChanges = Pick<
   VehicleUpdateInput,
-  "image" | "modelImageId" | "modelPaintPictureId"
+  "image" | "pictureType" | "pictureId"
 >;

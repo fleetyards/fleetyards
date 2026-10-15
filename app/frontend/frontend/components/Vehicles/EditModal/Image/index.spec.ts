@@ -126,7 +126,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: "image-2", image: null },
+      data: { pictureType: "Image", pictureId: "image-2", image: null },
     });
   });
 
@@ -148,7 +148,11 @@ describe("VehicleEditModal image tab", () => {
 
   it("picks a paint's picture in place of a gallery picture", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ modelPaintIds: ["paint-2"], modelImageId: "image-1" }),
+      vehicle: vehicle({
+        modelPaintIds: ["paint-2"],
+        pictureType: "Image",
+        pictureId: "image-1",
+      }),
     });
 
     await wrapper
@@ -158,7 +162,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, modelPaintPictureId: "paint-2", image: null },
+      data: { pictureType: "ModelPaint", pictureId: "paint-2", image: null },
     });
   });
 
@@ -166,7 +170,8 @@ describe("VehicleEditModal image tab", () => {
     const wrapper = await mount({
       vehicle: vehicle({
         modelPaintIds: ["paint-2"],
-        modelPaintPictureId: "paint-2",
+        pictureType: "ModelPaint",
+        pictureId: "paint-2",
       }),
     });
 
@@ -177,13 +182,13 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, modelPaintPictureId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 
   it("goes back to the standard picture", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-1" }),
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-1" }),
     });
 
     await wrapper
@@ -193,13 +198,13 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 
   it("saves nothing when the pick is unchanged", async () => {
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-1" }),
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-1" }),
     });
 
     await submit(wrapper);
@@ -211,6 +216,7 @@ describe("VehicleEditModal image tab", () => {
     const wrapper = await mount({
       vehicle: vehicle({
         image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+        imageUploaded: true,
       }),
     });
 
@@ -221,7 +227,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 
@@ -229,6 +235,7 @@ describe("VehicleEditModal image tab", () => {
     const wrapper = await mount({
       vehicle: vehicle({
         image: { url: "https://example.test/own.jpg" } as Vehicle["image"],
+        imageUploaded: true,
       }),
     });
 
@@ -245,7 +252,7 @@ describe("VehicleEditModal image tab", () => {
     gallery.items = [];
 
     const wrapper = await mount({
-      vehicle: vehicle({ modelImageId: "image-gone" }),
+      vehicle: vehicle({ pictureType: "Image", pictureId: "image-gone" }),
     });
 
     await wrapper
@@ -255,7 +262,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(updateVehicle).toHaveBeenCalledWith({
       id: "vehicle-1",
-      data: { modelImageId: null, image: null },
+      data: { pictureType: null, pictureId: null, image: null },
     });
   });
 });

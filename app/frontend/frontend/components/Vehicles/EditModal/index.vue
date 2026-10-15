@@ -206,7 +206,7 @@ const onSubmit = handleSubmit(async (values) => {
     .then(async () => {
       if (
         (changes && "modelPaintIds" in changes) ||
-        (imageChanges && "modelPaintPictureId" in imageChanges)
+        (imageChanges && "pictureId" in imageChanges)
       ) {
         await queryClient.invalidateQueries({
           queryKey: getVehiclePaintsQueryKey(props.vehicle.id),

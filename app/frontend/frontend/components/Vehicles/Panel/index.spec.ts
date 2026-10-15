@@ -198,16 +198,14 @@ describe("VehiclesPanel", () => {
         url: "https://example.test/own.jpg",
         mediumUrl: "https://example.test/own.webp",
       },
-      paintPicture: {
-        name: "paint",
-        contentType: "image/jpeg",
-        size: 1024,
-        url: "https://example.test/paint.jpg",
-        mediumUrl: "https://example.test/paint.webp",
-      },
+      upgrade: {
+        media: {
+          storeImage: { mediumUrl: "https://example.test/upgrade.webp" },
+        },
+      } as Vehicle["upgrade"],
     });
 
-  it("draws the uploaded picture before a paint picture", async () => {
+  it("draws the ship's picture before every stock render", async () => {
     const wrapper = await mount({ vehicle: withPicture() });
 
     expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
@@ -258,33 +256,13 @@ describe("VehiclesPanel", () => {
     );
   });
 
-  it("draws a picture picked from the gallery before the paint's render", async () => {
-    const wrapper = await mount({
-      vehicle: {
-        ...withPicture(),
-        image: undefined,
-        modelImage: {
-          name: "gallery.jpg",
-          contentType: "image/jpeg",
-          size: 1024,
-          url: "https://example.test/gallery.jpg",
-          mediumUrl: "https://example.test/gallery.webp",
-        },
-      },
-    });
-
-    expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
-      "https://example.test/gallery.webp",
-    );
-  });
-
-  it("draws the paint's render when the owner set no picture", async () => {
+  it("draws the stock render when the ship has no picture", async () => {
     const wrapper = await mount({
       vehicle: { ...withPicture(), image: undefined },
     });
 
     expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
-      "https://example.test/paint.webp",
+      "https://example.test/upgrade.webp",
     );
   });
 
