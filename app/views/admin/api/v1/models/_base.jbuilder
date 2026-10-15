@@ -248,10 +248,6 @@ json.speeds do
 end
 
 if local_assigns.fetch(:extended, false)
-  # The module slots the hull has in the build being served, for an admin
-  # placing a module in one.
-  json.module_slots model.hardpoints.in_build.where(category: :module, source: :game_files)
-    .where.not(sc_name: nil).distinct.order(:sc_name).pluck(:sc_name)
   json.dock_counts do
     json.array! model.dock_counts, partial: "api/v1/dock_counts/base", as: :dock_count
   end
