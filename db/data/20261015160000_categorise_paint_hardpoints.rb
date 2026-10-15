@@ -2,9 +2,10 @@
 
 # Paint slots the game files leave empty were stored as `unknown`, having no
 # component to name their category. Their name names it now; this sets the
-# slots already loaded, and every build row of a paint slot that still reads
-# `unknown` -- including older builds of a slot whose current build has a paint
-# fitted.
+# empty slots already loaded, and every empty build row of a paint slot that
+# still reads `unknown` -- including older builds of a slot whose current build
+# has a paint fitted. A slot or build with a component keeps whatever that
+# component says, as a load would.
 #
 # `update_all` skips the hardpoint's touch, so the hulls and components that
 # hold these slots are touched here, walking up through nested slots: their
@@ -20,12 +21,13 @@ class CategorisePaintHardpoints < ActiveRecord::Migration[8.1]
     return if rows.empty?
 
     ids = rows.map(&:first)
-    unknown_ids = slots.where(category: UNKNOWN).pluck(:id)
-    unknown_build_ids = HardpointBuild.where(hardpoint_id: ids, category: UNKNOWN).distinct.pluck(:hardpoint_id)
+    unknown_ids = slots.where(category: UNKNOWN, component_id: nil).pluck(:id)
+    empty_builds = HardpointBuild.where(hardpoint_id: ids, category: UNKNOWN, component_id: nil)
+    unknown_build_ids = empty_builds.distinct.pluck(:hardpoint_id)
     changed = unknown_ids | unknown_build_ids
     return if changed.empty?
 
-    HardpointBuild.where(hardpoint_id: ids, category: UNKNOWN).update_all(category: PAINTS)
+    empty_builds.update_all(category: PAINTS)
     Hardpoint.where(id: unknown_ids).update_all(category: PAINTS, updated_at: Time.current)
 
     touch_roots(rows.select { |row| changed.include?(row.first) }.map { |row| row[1..2] })
