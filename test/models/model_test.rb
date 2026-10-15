@@ -205,6 +205,15 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 64.0, bigger_holds.reload.cargo
   end
 
+  test "a ship flagged to keep its cargo keeps the figure entered" do
+    model = create(:model, production_status: "flight-ready", cargo: 5400.0, keep_cargo: true)
+    create(:model_build, model:, cargo_holds: [])
+
+    model.reload.save!
+
+    assert_equal 5400.0, model.reload.cargo
+  end
+
   test "a flying ship the game files do not know keeps the official cargo figure" do
     model = create(:model, production_status: "flight-ready", cargo: 96.0, rsi_cargo: 96.0)
 

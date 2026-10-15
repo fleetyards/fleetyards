@@ -102,7 +102,7 @@ module Rsi
       # page's figure only stands for one that is not flying yet.
       updates[:rsi_cargo] = nil_or_decimal(data["cargocapacity"])
       cargo_from_holds = updates.fetch(:production_status, model.production_status) == "flight-ready" && model.in_game?
-      updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if !cargo_from_holds && ((model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?)
+      updates[:cargo] = nil_or_decimal(data["cargocapacity"]) if !model.keep_cargo && !cargo_from_holds && ((model_updated(model, data) && nil_or_decimal(data["cargocapacity"]) != model.rsi_cargo) || model.cargo.blank? || model.cargo.zero?)
 
       # The matrix now gives one figure, min and max alike. Where it still gives a
       # range the upper end is the one the game files agree with. The game files

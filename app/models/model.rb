@@ -686,7 +686,7 @@ class Model < ApplicationRecord
   # `cargo` is one column for every source, so only a save under the default
   # source derives it: a ptu load must not write ptu holds into it.
   def set_cargo_from_hardpoints
-    return unless ::ScData::Source.current.default?
+    return if keep_cargo || !::ScData::Source.current.default?
 
     # Otherwise the holds only fill in a figure nobody gave, or follow holds
     # that changed.
