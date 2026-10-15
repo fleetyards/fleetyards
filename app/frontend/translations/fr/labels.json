@@ -1619,6 +1619,10 @@
         "videoType": "Type"
       },
       "modelModule": {
+        "slot": "Emplacement",
+        "noSlot": "Aucun emplacement",
+        "slotsOnHull": "Emplacements de module sur ce vaisseau : %{slots}",
+        "noSlotsOnHull": "Les fichiers du jeu ne donnent aucun emplacement de module à ce vaisseau ; n’importe quel nom peut être utilisé",
         "name": "Nom",
         "description": "Description",
         "price": "Prix",

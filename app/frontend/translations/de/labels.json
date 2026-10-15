@@ -1619,6 +1619,10 @@
         "videoType": "Typ"
       },
       "modelModule": {
+        "slot": "Slot",
+        "noSlot": "Kein Slot",
+        "slotsOnHull": "Modul-Slots an diesem Schiff: %{slots}",
+        "noSlotsOnHull": "Die Spieldateien geben diesem Schiff keine Modul-Slots; jeder Name kann gesetzt werden",
         "name": "Name",
         "description": "Beschreibung",
         "price": "Preis",

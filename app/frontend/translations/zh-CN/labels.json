@@ -1619,6 +1619,10 @@
         "videoType": "类型"
       },
       "modelModule": {
+        "slot": "槽位",
+        "noSlot": "无槽位",
+        "slotsOnHull": "此舰船的模块槽位：%{slots}",
+        "noSlotsOnHull": "游戏文件没有为此舰船提供模块槽位；可以设置任意名称",
         "name": "名称",
         "description": "描述",
         "price": "价格",

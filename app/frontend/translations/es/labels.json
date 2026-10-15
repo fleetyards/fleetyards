@@ -1619,6 +1619,10 @@
         "videoType": "Tipo"
       },
       "modelModule": {
+        "slot": "Ranura",
+        "noSlot": "Sin ranura",
+        "slotsOnHull": "Ranuras de módulo en esta nave: %{slots}",
+        "noSlotsOnHull": "Los archivos del juego no dan ranuras de módulo a esta nave; se puede poner cualquier nombre",
         "name": "Nombre",
         "description": "Descripción",
         "price": "Precio",
