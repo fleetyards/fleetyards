@@ -443,15 +443,30 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal paint.id, vehicle.model_paint_picture_id
     end
 
-    test "records the paint of a painted pledge on the hull it already has" do
+    test "records the paint of a painted pledge on the hull that owns it" do
       gladius = Model.find_by!(slug: "aegs-gladius")
       paint = create(:model_paint, model: gladius, name: "Dunlevy")
-      existing = create(:vehicle, user: @user, model: gladius, bought_via: :pledge_store)
+      existing = create(:vehicle, user: @user, model: gladius, bought_via: :pledge_store, model_paint_ids: [paint.id])
 
       ::HangarSync.new([{"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"}]).run(@user.id)
 
-      assert_equal [paint.id], existing.reload.model_paint_ids
+      assert_equal "99999", existing.reload.vehicle_paints.sole.rsi_pledge_id
       assert_equal 1, Vehicle.where(user: @user, model: gladius).count
+    end
+
+    test "leaves a plain pledge's hull to it when a painted pledge comes first" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      create(:model_paint, model: gladius, name: "Dunlevy")
+      plain = create(:vehicle, user: @user, model: gladius, bought_via: :pledge_store, rsi_pledge_id: "11111")
+
+      ::HangarSync.new([
+        {"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"},
+        {"id" => "11111", "type" => "ship", "name" => "Gladius"}
+      ]).run(@user.id)
+
+      assert_equal "11111", plain.reload.rsi_pledge_id
+      assert_empty plain.model_paint_ids
+      assert_equal 2, Vehicle.where(user: @user, model: gladius).count
     end
   end
 

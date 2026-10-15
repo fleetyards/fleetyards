@@ -273,18 +273,14 @@ class HangarSync < HangarImporter
       end
 
       # A painted ship pledge: the hull, with the paint it came in recorded as
-      # owned. Which paint the ship wears is the loadout's to say.
+      # owned. Which paint the ship wears is the loadout's to say. Only a hull
+      # already bound to this pledge or owning this paint is its match -- any
+      # other hull may be a plain pledge's that comes later in the list.
       model_paint = ModelPaint.where(paint_query).first
       if model_paint.present?
         candidates = vehicle_scope.where.not(id: vehicle_ids).where(model_id: model_paint.model_id)
         vehicle = candidates.find_by(rsi_pledge_id: item[:id]) ||
-          candidates.reorder(
-            Arel.sql(ActiveRecord::Base.sanitize_sql_array([
-              "EXISTS (SELECT 1 FROM vehicle_paints WHERE vehicle_paints.vehicle_id = vehicles.id AND vehicle_paints.model_paint_id = ?) DESC",
-              model_paint.id
-            ])),
-            created_at: :asc
-          ).first
+          candidates.where(id: VehiclePaint.where(model_paint_id: model_paint.id).select(:vehicle_id)).first
 
         if vehicle.present?
           vehicle.update!(
