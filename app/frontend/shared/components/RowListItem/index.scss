@@ -9,10 +9,16 @@
 // What a tenant still owns is what sits between the name and the badges: a lead
 // metric, a run of owners, an icon. Those arrive through slots and are styled in
 // the tenant's own scope.
+// The badges and the action never shrink, so a row whose facts do not fit
+// wraps rather than taking the room from the title -- which otherwise went down
+// to nothing between 992px and a wide screen, the badges running off the row.
+// Only when it has to: the title keeps a floor beside the thumbnail, and what
+// does not fit moves to a line below.
 .row-list-item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
+  gap: 8px 14px;
   padding: 10px 16px;
   background-color: var(--color-control, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
@@ -37,7 +43,7 @@
   }
 
   &__main {
-    flex: 1 1 auto;
+    flex: 1 1 160px;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -220,6 +226,8 @@
 
   &__badges {
     display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
     gap: 6px;
     flex: none;
   }
@@ -257,34 +265,13 @@
     font-variant-numeric: tabular-nums;
   }
 
+  // The margin is a no-op on one line, where the title takes the slack; on a
+  // wrapped line it keeps the action at the row's end instead of under the
+  // thumbnail.
   &__actions {
     display: flex;
     align-items: center;
     flex: none;
-  }
-}
-
-// The badges and the action never shrink, so a row whose facts do not fit took
-// the room from the title -- down to nothing between 992px and a wide screen,
-// with the sub-line wrapping a word a line and the badges running off the row.
-// The row wraps instead, at any width, but only when it has to: the title keeps
-// a floor beside the thumbnail, and what does not fit moves to a line below.
-.row-list-item {
-  flex-wrap: wrap;
-  row-gap: 8px;
-
-  &__main {
-    flex: 1 1 160px;
-  }
-
-  &__badges {
-    flex-wrap: wrap;
-    max-width: 100%;
-  }
-
-  // A no-op on one line, where the title takes the slack; on a wrapped line it
-  // keeps the action at the row's end instead of under the thumbnail.
-  &__actions {
     margin-inline-start: auto;
   }
 }
