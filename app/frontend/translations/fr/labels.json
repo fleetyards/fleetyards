@@ -2305,7 +2305,8 @@
         "hangarGroups": "Groupes",
         "ownedPaintsSelect": {
           "label": "Peintures possédées",
-          "pledged": "D'un pledge"
+          "pledged": "D'un pledge",
+          "empty": "Aucune peinture trouvée"
         },
         "modelPaintSelect": {
           "nullablePrompt": "Sélectionner une peinture",

@@ -63,4 +63,31 @@ describe("VehiclePaintPicker", () => {
       choices(wrapper).map((choice) => choice.text().includes("From a pledge")),
     ).toEqual([false, true]);
   });
+
+  it("says so when the search matches no paint", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        modelSlug: "ironclad",
+        paints: Array.from({ length: 10 }, (_, index) => ({
+          id: `paint-${index}`,
+          name: `Livery ${index}`,
+          slug: `livery-${index}`,
+          media: {},
+        })) as ModelPaint[],
+      },
+    });
+
+    expect(wrapper.find('[data-test="paint-picker-empty"]').exists()).toBe(
+      false,
+    );
+
+    await wrapper
+      .find('[data-test="input-paint-picker-search"]')
+      .setValue("nothing like it");
+
+    expect(choices(wrapper)).toHaveLength(0);
+    expect(wrapper.find('[data-test="paint-picker-empty"]').exists()).toBe(
+      true,
+    );
+  });
 });

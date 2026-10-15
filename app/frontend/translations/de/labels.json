@@ -2305,7 +2305,8 @@
         "hangarGroups": "Gruppen",
         "ownedPaintsSelect": {
           "label": "Eigene Lackierungen",
-          "pledged": "Aus einem Paket"
+          "pledged": "Aus einem Paket",
+          "empty": "Keine Lackierungen gefunden"
         },
         "modelPaintSelect": {
           "nullablePrompt": "Lackierung auswählen",

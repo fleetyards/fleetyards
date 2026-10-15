@@ -133,12 +133,21 @@ const toggle = (paint: ModelPaint) =>
         test-id="paint-picker-choice"
         @toggle="toggle(paint)"
       />
+
+      <p
+        v-if="!isLoading && !visiblePaints.length"
+        class="addon-options__empty"
+        data-test="paint-picker-empty"
+      >
+        {{ t("labels.vehicle.ownedPaintsSelect.empty") }}
+      </p>
     </div>
   </fieldset>
 </template>
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/AddonOption/list";
+@import "@/frontend/components/Vehicles/EditModal/Addons/index";
 
 .paint-picker {
   min-width: 0;
