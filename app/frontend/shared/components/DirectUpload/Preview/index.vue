@@ -10,7 +10,7 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type FileUpload } from "@/shared/components/DirectUpload/index.vue";
-import { fileTypeMap } from "../types";
+import { fileTypeMap, fileTypeOf } from "../types";
 
 // Loaded only for a model file: the viewer brings three.js with it, which every
 // other preview -- an image, a PDF -- would otherwise download for nothing.
@@ -84,28 +84,30 @@ const progressCssClasses = computed(() => {
   };
 });
 
+const fileType = computed(() => fileTypeOf(props.file.file));
+
 const isImage = computed(() => {
-  return fileTypeMap.image.includes(props.file.file.type || "");
+  return fileTypeMap.image.includes(fileType.value);
 });
 
 const isHolo = computed(() => {
-  return fileTypeMap.holo.includes(props.file.file.type || "");
+  return fileTypeMap.holo.includes(fileType.value);
 });
 
 const fileTypeIconClass = computed(() => {
-  if (fileTypeMap.holo.includes(props.file.file.type || "")) {
+  if (fileTypeMap.holo.includes(fileType.value)) {
     return "fa-cube"; // Note: FontAwesome does not have a holo icon, replace with appropriate icon
   }
-  if (fileTypeMap.image.includes(props.file.file.type || "")) {
+  if (fileTypeMap.image.includes(fileType.value)) {
     return "fa-image";
   }
-  if (fileTypeMap.video.includes(props.file.file.type || "")) {
+  if (fileTypeMap.video.includes(fileType.value)) {
     return "fa-video";
   }
-  if (fileTypeMap.audio.includes(props.file.file.type || "")) {
+  if (fileTypeMap.audio.includes(fileType.value)) {
     return "fa-audio-description";
   }
-  if (fileTypeMap.pdf.includes(props.file.file.type || "")) {
+  if (fileTypeMap.pdf.includes(fileType.value)) {
     return "fa-file-pdf";
   }
   return "fa-file";
