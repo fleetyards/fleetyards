@@ -2767,6 +2767,11 @@
         "added": "New",
         "removed": "Removed",
         "prices": "Prices read",
+        "background": {
+          "finished": "Buy-back sync finished",
+          "incomplete": "Buy-back sync finished, some prices missing",
+          "failed": "Buy-back sync failed"
+        },
         "status": {
           "fetching": "Reading buy-back pages",
           "submitting": "Saving",

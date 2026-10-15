@@ -2767,6 +2767,11 @@
         "added": "新增",
         "removed": "已移除",
         "prices": "已讀取價格",
+        "background": {
+          "finished": "回購同步已完成",
+          "incomplete": "回購同步已完成，部分價格缺失",
+          "failed": "回購同步失敗"
+        },
         "status": {
           "fetching": "正在讀取回購頁面",
           "submitting": "正在儲存",
