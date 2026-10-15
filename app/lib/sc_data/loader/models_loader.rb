@@ -372,15 +372,15 @@ module ScData
       end
 
       # Ore pods and salvage storage, apart from cargo: what they hold is not
-      # cargo space. Matched by component, not by slot name -- the Golem's and
-      # ROC's pods sit in slots named for cargo -- and only where something can
-      # be held, which leaves out the collapsed pods a Prospector stows. The
+      # cargo space. A `Container` counts as ore only where the hardpoint list
+      # files it as an ore pod, so the figure and the list agree: a Raft's cargo
+      # pod is a `Container` too. Only where something can be held, and the
       # ROC's pods name their volume `storage` rather than `capacity`.
       STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
 
       private def update_storage_containers(model, hardpoints, update_params)
         containers = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
-          extract_named_type_data(hardpoints, component_type).filter_map do |container|
+          extract_named_type_data(hardpoints, component_type) { |hardpoint| kind != "ore" || hardpoint.ore_pod? }.filter_map do |container|
             capacity = (container["capacity"] || container["storage"]).to_f
             next unless capacity.positive?
 

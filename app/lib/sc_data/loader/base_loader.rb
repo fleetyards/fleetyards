@@ -289,13 +289,14 @@ module ScData
         end.flatten
       end
 
-      def extract_named_type_data(hardpoints, component_type)
+      def extract_named_type_data(hardpoints, component_type, &select)
         hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |hardpoint|
           if hardpoint.hardpoints.present?
-            extract_named_type_data(hardpoint.hardpoints, component_type)
+            extract_named_type_data(hardpoint.hardpoints, component_type, &select)
           else
             next if hardpoint.component.blank?
             next if hardpoint.component.component_type != component_type
+            next if select && !select.call(hardpoint)
 
             (hardpoint.component.type_data || {}).merge(
               "name" => hardpoint.sc_name,
