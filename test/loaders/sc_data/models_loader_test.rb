@@ -199,6 +199,37 @@ module ScData
         assert_nil model.reload.description
       end
 
+      test "#load_model keeps ore pods and salvage storage apart from cargo" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Storage Test")
+        pod = create(:component, name: "Ore Pod", component_type: "Container", type_data: {"capacity" => 8.0})
+        collapsed = create(:component, name: "Ore Pod Collapsed", component_type: "Container", type_data: {"capacity" => 0.0})
+        salvage = create(:component, name: nil, component_type: "SalvageInternalStorage", type_data: {"capacity" => 13.0})
+        grid = create(:component, name: "Cargo Grid", component_type: "CargoGrid", type_data: {"capacity" => 32.0})
+        {
+          "hardpoint_mining_pod_1" => pod, "hardpoint_mining_pod_2" => pod,
+          "hardpoint_stored_pod_1" => collapsed, "hardpoint_internal_storage" => salvage,
+          "hardpoint_cargogrid" => grid
+        }.each do |sc_name, component|
+          create(:hardpoint, parent: model, source: :game_files, sc_name:, component:)
+        end
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        build = loader.load_model(model)
+
+        assert_equal(
+          [
+            ["hardpoint_mining_pod_1", "ore", 8.0],
+            ["hardpoint_mining_pod_2", "ore", 8.0],
+            ["hardpoint_internal_storage", "salvage", 13.0]
+          ],
+          build.storage_containers.map { |container| container.values_at("name", "kind", "capacity") }
+        )
+        assert_equal build.storage_containers, model.reload.storage_containers
+      end
+
       test "#load_model takes the crew from the build" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "Crew Test", crew: 6)

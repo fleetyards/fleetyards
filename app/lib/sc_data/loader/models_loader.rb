@@ -149,6 +149,7 @@ module ScData
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
         update_params = update_hydrogen_fuel_tanks(hardpoints, update_params)
         update_params = update_external_fuel_tanks(hardpoints, update_params)
+        update_params = update_storage_containers(hardpoints, update_params)
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
@@ -366,6 +367,22 @@ module ScData
         return update_params if fuel_tanks.blank?
 
         update_params[:external_fuel_tanks] = fuel_tanks
+
+        update_params
+      end
+
+      # Ore pods and salvage storage, apart from cargo: what they hold is not
+      # cargo space. Matched by component, not by slot name -- the Golem's and
+      # ROC's pods sit in slots named for cargo -- and only where something can
+      # be held, which leaves out the collapsed pods a Prospector stows.
+      STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
+
+      private def update_storage_containers(hardpoints, update_params)
+        update_params[:storage_containers] = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
+          extract_named_type_data(hardpoints, component_type)
+            .select { |container| container["capacity"].to_f.positive? }
+            .map { |container| container.merge("kind" => kind) }
+        end
 
         update_params
       end
