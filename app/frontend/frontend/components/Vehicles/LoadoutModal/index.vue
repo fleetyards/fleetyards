@@ -35,6 +35,7 @@ import {
   getVehicleLoadoutsQueryKey,
   getVehiclePaintsQueryKey,
   updateVehicleLoadout,
+  useVehicleLoadouts,
   useModelModules as useModelModulesQuery,
   useModelModulePackages as useModelModulePackagesQuery,
   useModelPaints as useModelPaintsQuery,
@@ -73,11 +74,26 @@ const VEHICLE_FIELDS: (keyof VehicleValues)[] = [
   "modelUpgradeIds",
 ];
 
-const fleetyardsLoadout = computed(() =>
-  props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
-    ? props.vehicle.activeLoadout
-    : undefined,
-);
+const { data: loadoutsData } = useVehicleLoadouts(() => props.vehicle.id, {
+  query: { enabled: () => props.editable },
+});
+
+/**
+ * The loadout the fitting is written to: the active one when it is a
+ * fleetyards loadout, otherwise the one the ship already has while a linked
+ * build is active. Saving activates it, so the editor never starts a second
+ * one beside an inactive first.
+ */
+const fleetyardsLoadout = computed(() => {
+  const active = props.vehicle.activeLoadout;
+  if (active?.kind === VehicleLoadoutKindEnum.FLEETYARDS) {
+    return active;
+  }
+
+  return (loadoutsData.value || [])
+    .filter((loadout) => loadout.kind === VehicleLoadoutKindEnum.FLEETYARDS)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
+});
 
 const savedValues = (): LoadoutValues => ({
   modelPaintId: props.vehicle.paint?.id ?? null,
@@ -103,16 +119,13 @@ const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
  * A pending choice wins over the refresh, or a background refetch of the hangar
  * would discard what you had just picked and not yet saved.
  */
-watch(
-  () => props.vehicle,
-  () => {
-    if (meta.value.dirty) {
-      return;
-    }
+watch([() => props.vehicle, () => fleetyardsLoadout.value?.updatedAt], () => {
+  if (meta.value.dirty) {
+    return;
+  }
 
-    resetForm({ values: savedValues() });
-  },
-);
+  resetForm({ values: savedValues() });
+});
 
 const [modelPaintId] = defineField("modelPaintId");
 const [modelModuleIds] = defineField("modelModuleIds");
@@ -327,10 +340,14 @@ const saveFitting = async (fitted: Record<string, string>) => {
     modelModuleId,
   }));
 
-  if (fleetyardsLoadout.value) {
-    await updateVehicleLoadout(props.vehicle.id, fleetyardsLoadout.value.id, {
-      items,
-    });
+  const target = fleetyardsLoadout.value;
+
+  if (target) {
+    await updateVehicleLoadout(props.vehicle.id, target.id, { items });
+
+    if (!target.active) {
+      await activateVehicleLoadout(props.vehicle.id, target.id);
+    }
   } else {
     const loadout = await createVehicleLoadout(props.vehicle.id, {
       kind: VehicleLoadoutKindEnum.FLEETYARDS,

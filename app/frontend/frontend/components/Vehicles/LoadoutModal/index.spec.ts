@@ -39,6 +39,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useModelModulePackages: () => ({ data: ref(undefined), ...resolved() }),
   useModelModules: () => ({ data: modules, ...resolved() }),
   useModelUpgrades: () => ({ data: ref([]), ...resolved() }),
+  useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
   activateVehicleLoadout: (...args: unknown[]) =>
@@ -46,6 +47,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 const mutateAsync = vi.fn(() => Promise.resolve());
+const loadouts = ref<unknown[]>([]);
 const createVehicleLoadout = vi.fn((..._args: unknown[]) =>
   Promise.resolve({ id: "new" }),
 );
@@ -117,6 +119,7 @@ const slotPick = (wrapper: Awaited<ReturnType<typeof mountModal>>, i: number) =>
   wrapper.findAll("[data-test='vehicle-loadout-slot-module-toggle']")[i];
 
 beforeEach(() => {
+  loadouts.value = [];
   mutateAsync.mockClear();
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
@@ -219,6 +222,32 @@ describe("VehicleLoadoutModal", () => {
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l1", {
       items: [{ slot: "hardpoint_module", modelModuleId: "m2" }],
     });
+  });
+
+  // A linked build is active, but the ship already has a fleetyards loadout:
+  // that one is refitted and switched back on, not joined by a second.
+  it("refits and reactivates an inactive fleetyards loadout", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [{ slot: "hardpoint_module", modelModuleId: "m1" }],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1", "m2"]));
+    await flushPromises();
+
+    await slotPick(wrapper, 1).trigger("click");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(createVehicleLoadout).not.toHaveBeenCalled();
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
+      items: [{ slot: "hardpoint_module", modelModuleId: "m2" }],
+    });
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "l2");
   });
 
   it("unfits a module that is given up", async () => {
