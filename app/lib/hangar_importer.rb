@@ -97,14 +97,19 @@ class HangarImporter
         ]
         model = Model.where(model_query).first
         if model.present?
-          Vehicle.create(params.merge(model_id: model.id))
+          Vehicle.create(params.merge(model_id: model.id, model_paint_ids: owned_paint_ids(item, model.id)))
           imported_models << model.name
           next
         end
 
+        # An export from before owned paints names the one paint a ship had in
+        # `paint_slug`, which is what `slug` was set to above.
         model_paint = ModelPaint.where(query).first
         if model_paint.present?
-          Vehicle.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+          Vehicle.create(params.merge(
+            model_id: model_paint.model_id,
+            model_paint_ids: owned_paint_ids(item, model_paint.model_id) | [model_paint.id]
+          ))
           imported_models << model_paint.name
           next
         end
@@ -154,6 +159,15 @@ class HangarImporter
   # The group the user aimed this run at overrides whatever the file says: they
   # picked it while starting the import, and the per-item names are the
   # fallback for a plain re-import that expressed no preference.
+  # The paints an export says the ship owns: `paint_slugs`, or the single
+  # `paint_slug` an older export carried. Only the model's own count.
+  private def owned_paint_ids(item, model_id)
+    slugs = (Array(item[:paint_slugs]) + [item[:paint_slug]]).compact_blank.map { |slug| slug.to_s.downcase }
+    return [] if slugs.empty?
+
+    ModelPaint.where(model_id:, slug: slugs).pluck(:id)
+  end
+
   private def hangar_group_ids_for(item)
     return [@import.hangar_group_id] if @import.hangar_group_id.present?
 

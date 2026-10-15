@@ -137,6 +137,27 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal [@model.name], result[:imported]
   end
 
+  test "imports the paints an export lists as owned" do
+    owned = create(:model_paint, model: @model)
+    other_model_paint = create(:model_paint)
+    import = import_for([{slug: @model.slug, paint_slugs: [owned.slug, other_model_paint.slug]}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal [owned.id], Vehicle.find_by!(user_id: @user.id).model_paint_ids
+  end
+
+  test "imports the single paint an older export names as owned" do
+    paint = create(:model_paint, model: @model)
+    import = import_for([{paint_slug: paint.slug}])
+
+    ::HangarImporter.new(import).run
+
+    vehicle = Vehicle.find_by!(user_id: @user.id)
+    assert_equal @model.id, vehicle.model_id
+    assert_equal [paint.id], vehicle.model_paint_ids
+  end
+
   test "imports a ship whose serial predates the game format, without it" do
     import = import_for([{slug: @model.slug, ship_serial: "SUB FLAGSHIP"}])
 
