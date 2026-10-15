@@ -59,7 +59,12 @@ export function setupAppsignal(app: App<Element>) {
 
 // For failures a component handles itself, which never reach the error handler.
 export function reportError(error: unknown, action?: string) {
-  if (!appsignal || shouldIgnore(error)) return;
+  if (shouldIgnore(error)) return;
+
+  if (!appsignal) {
+    console.error(error);
+    return;
+  }
 
   const reported = error instanceof Error ? error : new Error(String(error));
 
