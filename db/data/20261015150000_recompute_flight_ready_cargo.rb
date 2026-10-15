@@ -5,14 +5,19 @@
 # page's figure, with its own copy of the rule so a later change to the model
 # does not change what this did.
 #
+# The Javelin keeps the figure CIG named: the one in the game files is a
+# temporary NPC version, not the ship that is sold.
+#
 # Written straight to the column rather than saved: a validation tripping on
 # an unrelated attribute of one old model must not stop the deploy. `updated_at`
 # moves with it so the cached ship payloads let the new figure through.
 class RecomputeFlightReadyCargo < ActiveRecord::Migration[8.1]
   def up
+    Model.where(slug: "aegs-javelin").update_all(keep_cargo: true, updated_at: Time.current)
+
     source = ::ScData::Source.default.served
 
-    Model.where(production_status: "flight-ready").find_each do |model|
+    Model.where(production_status: "flight-ready", keep_cargo: false).find_each do |model|
       build = ModelBuild.find_by(model_id: model.id, environment: source.environment, version: source.version)
       next if build.blank?
 
