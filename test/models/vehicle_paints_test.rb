@@ -62,6 +62,18 @@ class VehiclePaintsTest < ActiveSupport::TestCase
     assert_nil @vehicle.reload.model_paint_picture_id
   end
 
+  test "a deleted paint leaves the ships owning it, and the one showing it, touched" do
+    @vehicle.update!(model_paint_ids: [@paint.id], model_paint_picture: @paint)
+    @vehicle.update_columns(updated_at: 1.day.ago)
+
+    @paint.destroy!
+
+    @vehicle.reload
+    assert_empty @vehicle.model_paint_ids
+    assert_nil @vehicle.model_paint_picture_id
+    assert_operator @vehicle.updated_at, :>, 1.hour.ago
+  end
+
   test "drops the paint picture on a model change" do
     @vehicle.update!(model_paint_picture: @paint)
 

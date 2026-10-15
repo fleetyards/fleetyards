@@ -29,7 +29,12 @@ class ModelPaint < ApplicationRecord
   # the store, which is ahead of the game -- rather than that it was dropped.
   belongs_to :component, optional: true
 
-  has_many :vehicles, dependent: :nullify
+  # Destroyed one by one, so each ship is touched and its cached payload with it.
+  has_many :vehicle_paints, dependent: :destroy
+  has_many :vehicles, through: :vehicle_paints
+  has_many :picture_vehicles, class_name: "Vehicle", foreign_key: :model_paint_picture_id,
+    inverse_of: :model_paint_picture, dependent: nil
+  before_destroy :drop_as_vehicle_picture
   has_many :item_prices, as: :item, dependent: :destroy
 
   has_one_attached :store_image
@@ -57,7 +62,7 @@ class ModelPaint < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["model", "shop_commodities", "vehicles"]
+    ["model", "shop_commodities", "vehicle_paints", "vehicles"]
   end
 
   DEFAULT_SORTING_PARAMS = "name asc"
@@ -91,5 +96,11 @@ class ModelPaint < ApplicationRecord
   private def update_slugs
     super
     self.rsi_slug = generate_slug(rsi_name)
+  end
+
+  # The column nullifies itself, but that skips the ships' timestamps, which
+  # their cached payloads are keyed by.
+  private def drop_as_vehicle_picture
+    picture_vehicles.update_all(model_paint_picture_id: nil, updated_at: Time.current)
   end
 end
