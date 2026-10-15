@@ -100,4 +100,15 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
       assert_equal [new.id], parsed_body["items"].pluck("modelModuleId")
     end
   end
+
+  test "PUT /vehicles/:vehicle_id/loadouts/:id keeps the kind it was created with" do
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
+    sign_in @user
+
+    put "/api/v1/vehicles/#{@vehicle.id}/loadouts/#{loadout.id}", as: :json,
+      params: {kind: "link", url: "https://erkul.games/loadout/x"}
+
+    assert_response :bad_request
+    assert loadout.reload.kind_fleetyards?
+  end
 end

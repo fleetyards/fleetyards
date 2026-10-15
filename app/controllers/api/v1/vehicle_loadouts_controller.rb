@@ -65,8 +65,11 @@ module Api
 
       private def vehicle_loadout_params
         @vehicle_loadout_params ||= begin
-          permitted = params.transform_keys(&:underscore)
-            .permit(:name, :url, :kind, items: [:slot, :model_module_id])
+          # The kind is chosen once: a link turned fleetyards loadout, or the
+          # other way round, would keep fields the new kind does not allow.
+          keys = [:name, :url, {items: [:slot, :model_module_id]}]
+          keys << :kind if action_name == "create"
+          permitted = params.transform_keys(&:underscore).permit(*keys)
 
           permitted[:item_list] = permitted.delete(:items) if permitted.key?(:items)
           permitted
