@@ -22,6 +22,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import {
   type Vehicle,
   type VehicleLoadoutItemInput,
@@ -66,9 +67,10 @@ type LoadoutValues = {
   fittedModules: Record<string, string>;
 };
 
-const { data: loadoutsData } = useVehicleLoadouts(() => props.vehicle.id, {
-  query: { enabled: () => props.editable && !!props.loadoutId },
-});
+const { data: loadoutsData, isPending: loadoutsPending } = useVehicleLoadouts(
+  () => props.vehicle.id,
+  { query: { enabled: () => props.editable } },
+);
 
 const editedLoadout = computed(() => {
   if (props.newLoadout) {
@@ -82,11 +84,21 @@ const editedLoadout = computed(() => {
   }
 
   const active = props.vehicle.activeLoadout;
+  if (active?.kind === VehicleLoadoutKindEnum.FLEETYARDS) {
+    return active;
+  }
 
-  return active?.kind === VehicleLoadoutKindEnum.FLEETYARDS
-    ? active
-    : undefined;
+  // A linked build is active: the ship's own loadout is still the one to
+  // edit, or every save would start another beside it.
+  return (loadoutsData.value || [])
+    .filter((loadout) => loadout.kind === VehicleLoadoutKindEnum.FLEETYARDS)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
 });
+
+// Until the list is in, a save could not tell an edit from a new loadout.
+const loadoutPending = computed(
+  () => props.editable && !props.newLoadout && loadoutsPending.value,
+);
 
 const savedValues = (): LoadoutValues => ({
   loadoutName: editedLoadout.value?.name ?? "",
@@ -209,6 +221,7 @@ const propulsionWeaponTabs = computed(() => [
 const previewImage = computed(
   () =>
     props.vehicle.paint?.media.storeImage?.mediumUrl ||
+    props.vehicle.paint?.media.storeImage?.url ||
     model.value?.media.storeImage?.mediumUrl ||
     model.value?.media.storeImage?.url,
 );
@@ -235,7 +248,7 @@ const saving = ref(false);
  * the loadouts page.
  */
 const onSubmit = handleSubmit(async (values) => {
-  if (!props.editable || !flightReady.value) {
+  if (!props.editable || !flightReady.value || loadoutPending.value) {
     return;
   }
 
@@ -246,8 +259,28 @@ const onSubmit = handleSubmit(async (values) => {
     itemType: VehicleLoadoutItemTypeEnum.MODEL_MODULE,
     itemId,
   }));
-  const name = values.loadoutName.trim() || undefined;
+  // A cleared name goes back to the default the server gives.
+  const name = values.loadoutName.trim();
   const target = editedLoadout.value;
+
+  // What this editor does not show yet stays, as long as the slot it sits in
+  // is still fitted.
+  const fittedPaths = items.map((item) => item.slotPath);
+  const kept = (target?.items || []).filter(
+    (item) =>
+      item.itemType !== VehicleLoadoutItemTypeEnum.MODEL_MODULE &&
+      (!item.slotPath.includes("/") ||
+        fittedPaths.includes(
+          item.slotPath.slice(0, item.slotPath.lastIndexOf("/")),
+        )),
+  );
+  items.push(
+    ...kept.map(({ slotPath, itemType, itemId }) => ({
+      slotPath,
+      itemType,
+      itemId,
+    })),
+  );
 
   saving.value = true;
 
@@ -280,8 +313,14 @@ const onSubmit = handleSubmit(async (values) => {
     ]);
 
     comlink.emit("close-modal");
-  } catch {
-    displayAlert({ text: t("messages.vehicleLoadout.failure") });
+  } catch (error) {
+    // The reason -- a name another loadout already has, say -- is what tells
+    // the owner what to change.
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
   } finally {
     saving.value = false;
   }
@@ -429,7 +468,7 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
         :loading="saving"
-        :disabled="!flightReady"
+        :disabled="!flightReady || loadoutPending"
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}

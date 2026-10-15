@@ -172,7 +172,7 @@ describe("VehicleLoadoutModal", () => {
 
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
-      name: undefined,
+      name: "",
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
       ],
@@ -190,6 +190,73 @@ describe("VehicleLoadoutModal", () => {
 
     expect(createVehicleLoadout).toHaveBeenCalled();
     expect(activateVehicleLoadout).not.toHaveBeenCalled();
+  });
+
+  it("edits the ship's own loadout while a linked build is active", async () => {
+    loadouts.value = [
+      {
+        id: "l3",
+        name: "Hauler",
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(
+      vehicle(["m1"], { activeLoadout: { id: "link", kind: "link" } }),
+    );
+    await flushPromises();
+
+    await slotPick(wrapper, 0).trigger("click");
+    await save(wrapper);
+
+    expect(createVehicleLoadout).not.toHaveBeenCalled();
+    expect(updateVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      "l3",
+      expect.objectContaining({ name: "Hauler" }),
+    );
+  });
+
+  it("keeps what it does not show yet, inside a slot that stays fitted", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Gunship",
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [
+          {
+            slotPath: "hardpoint_module",
+            itemType: "ModelModule",
+            itemId: "m1",
+          },
+          {
+            slotPath: "hardpoint_module/hardpoint_turret",
+            itemType: "Component",
+            itemId: "c1",
+          },
+        ],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    await save(wrapper);
+
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
+      name: "Gunship",
+      items: [
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
+        {
+          slotPath: "hardpoint_module/hardpoint_turret",
+          itemType: "Component",
+          itemId: "c1",
+        },
+      ],
+    });
   });
 
   it("edits the active fleetyards loadout in place", async () => {
