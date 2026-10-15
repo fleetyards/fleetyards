@@ -139,7 +139,7 @@ const onDestroy = async (record: AdminHardpoint) => {
 const blankCreateForm = (): AdminHardpointInput => ({
   parentId: props.model.id,
   parentType: "Model",
-  group: "other",
+  group: "unknown",
   category: "unknown",
 });
 
