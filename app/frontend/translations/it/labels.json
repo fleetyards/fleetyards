@@ -1138,6 +1138,7 @@
       },
       "source": "Fonte",
       "loadout": {
+        "fleetyards": "Configurazione Fleetyards",
         "namePlaceholder": "Nome configurazione...",
         "urlPlaceholder": "Incolla l'URL della configurazione di erkul.games o spviewer.eu...",
         "empty": "Ancora nessuna configurazione. Creane una per iniziare.",
@@ -4287,6 +4288,20 @@
           "flightBlades": "Blade di volo"
         },
         "comingSoon": "Prossimamente",
+        "fitted": "Montato",
+        "fittedHint": "Un modulo per slot, tra i moduli che possiedi",
+        "ownedModules": "I tuoi moduli",
+        "nothingFitted": "Niente montato",
+        "noOwnedModuleForSlot": "Non possiedi alcun modulo per questo slot",
+        "unslotted": "Non ancora montabili, perché i file di gioco non indicano quale slot occupano: %{modules}",
+        "notFlightReady": "Le configurazioni sono disponibili solo per le navi pronte al volo",
+        "slots": {
+          "default": "Slot modulo",
+          "front": "Slot modulo anteriore",
+          "rear": "Slot modulo posteriore",
+          "left": "Slot modulo sinistro",
+          "right": "Slot modulo destro"
+        },
         "unavailable": {
           "modules": "Questa nave non accetta moduli",
           "upgrades": "Non esistono componenti aggiuntivi per questa nave"

@@ -1138,6 +1138,7 @@
       },
       "source": "Fuente",
       "loadout": {
+        "fleetyards": "Configuración de Fleetyards",
         "namePlaceholder": "Nombre de la configuración...",
         "urlPlaceholder": "Pega la URL de una configuración de erkul.games o spviewer.eu...",
         "empty": "Aún no hay configuraciones. Crea una para empezar.",
@@ -4287,6 +4288,20 @@
           "flightBlades": "Blades de vuelo"
         },
         "comingSoon": "Próximamente",
+        "fitted": "Equipado",
+        "fittedHint": "Un módulo por ranura, de los módulos que posees",
+        "ownedModules": "Tus módulos",
+        "nothingFitted": "Nada equipado",
+        "noOwnedModuleForSlot": "No posees ningún módulo para esta ranura",
+        "unslotted": "Aún no se pueden equipar, porque los archivos del juego no indican qué ranura ocupan: %{modules}",
+        "notFlightReady": "Las configuraciones solo están disponibles para naves listas para volar",
+        "slots": {
+          "default": "Ranura de módulo",
+          "front": "Ranura de módulo delantera",
+          "rear": "Ranura de módulo trasera",
+          "left": "Ranura de módulo izquierda",
+          "right": "Ranura de módulo derecha"
+        },
         "unavailable": {
           "modules": "Esta nave no admite módulos",
           "upgrades": "No hay complementos para esta nave"

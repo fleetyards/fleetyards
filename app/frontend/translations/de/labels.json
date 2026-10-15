@@ -1138,6 +1138,7 @@
       },
       "source": "Quelle",
       "loadout": {
+        "fleetyards": "Fleetyards-Loadout",
         "namePlaceholder": "Loadout-Name...",
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
@@ -4287,6 +4288,20 @@
           "flightBlades": "Flugsteuerungs-Blades"
         },
         "comingSoon": "Demnächst verfügbar",
+        "fitted": "Ausgerüstet",
+        "fittedHint": "Ein Modul pro Slot, aus den Modulen, die du besitzt",
+        "ownedModules": "Deine Module",
+        "nothingFitted": "Nichts ausgerüstet",
+        "noOwnedModuleForSlot": "Du besitzt kein Modul für diesen Slot",
+        "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",
+        "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
+        "slots": {
+          "default": "Modul-Slot",
+          "front": "Vorderer Modul-Slot",
+          "rear": "Hinterer Modul-Slot",
+          "left": "Linker Modul-Slot",
+          "right": "Rechter Modul-Slot"
+        },
         "unavailable": {
           "modules": "Dieses Schiff nimmt keine Module auf",
           "upgrades": "Für dieses Schiff gibt es keine Add-ons"

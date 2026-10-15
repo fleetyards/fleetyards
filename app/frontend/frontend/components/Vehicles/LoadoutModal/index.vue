@@ -18,6 +18,7 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import VehiclePaintPicker from "@/frontend/components/Vehicles/PaintPicker/index.vue";
 import Addons from "./Addons/index.vue";
 import Packages from "./Packages/index.vue";
+import Fitting from "./Fitting/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -26,7 +27,14 @@ import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations"
 import {
   type Vehicle,
   type VehicleUpdateInput,
+  ModelProductionStatusEnum,
+  VehicleLoadoutKindEnum,
+  activateVehicleLoadout,
+  createVehicleLoadout,
+  getShowVehicleQueryKey,
+  getVehicleLoadoutsQueryKey,
   getVehiclePaintsQueryKey,
+  updateVehicleLoadout,
   useModelModules as useModelModulesQuery,
   useModelModulePackages as useModelModulePackagesQuery,
   useModelPaints as useModelPaintsQuery,
@@ -48,18 +56,40 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-type LoadoutValues = Pick<
+type VehicleValues = Pick<
   VehicleUpdateInput,
   "modelPaintId" | "modelModuleIds" | "modelUpgradeIds"
 >;
+
+// What the vehicle owns is saved on the vehicle; what is fitted, slot by slot,
+// on its active fleetyards loadout.
+type LoadoutValues = VehicleValues & {
+  fittedModules: Record<string, string>;
+};
+
+const VEHICLE_FIELDS: (keyof VehicleValues)[] = [
+  "modelPaintId",
+  "modelModuleIds",
+  "modelUpgradeIds",
+];
+
+const fleetyardsLoadout = computed(() =>
+  props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
+    ? props.vehicle.activeLoadout
+    : undefined,
+);
 
 const savedValues = (): LoadoutValues => ({
   modelPaintId: props.vehicle.paint?.id ?? null,
   modelModuleIds: [...props.vehicle.modelModuleIds],
   modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
+  fittedModules: Object.fromEntries(
+    (fleetyardsLoadout.value?.items || []).map((item) => [
+      item.slot,
+      item.modelModuleId,
+    ]),
+  ),
 });
-
-const LOADOUT_FIELDS = Object.keys(savedValues()) as (keyof LoadoutValues)[];
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
   initialValues: savedValues(),
@@ -87,6 +117,19 @@ watch(
 const [modelPaintId] = defineField("modelPaintId");
 const [modelModuleIds] = defineField("modelModuleIds");
 const [modelUpgradeIds] = defineField("modelUpgradeIds");
+const [fittedModules] = defineField("fittedModules");
+
+// A module given up cannot stay fitted; the server unfits it on save as well.
+watch(modelModuleIds, (owned) => {
+  const fitted = fittedModules.value || {};
+  const kept = Object.fromEntries(
+    Object.entries(fitted).filter(([, id]) => (owned || []).includes(id)),
+  );
+
+  if (Object.keys(kept).length !== Object.keys(fitted).length) {
+    fittedModules.value = kept;
+  }
+});
 
 // Set as a pending choice rather than an initial value, so it saves like a pick
 // and survives the background refetch the watcher above lets through.
@@ -114,6 +157,21 @@ const { data: paintsData } = useModelPaintsQuery(modelSlug);
 const packages = computed(() => modulePackages.value?.items ?? []);
 const modules = computed(() => modulesData.value?.items ?? []);
 const upgrades = computed(() => upgradesData.value ?? []);
+
+const flightReady = computed(
+  () =>
+    model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
+);
+
+const fittedModuleIds = computed(() =>
+  Object.values(fittedModules.value || {}),
+);
+
+const moduleCargo = computed(() =>
+  modules.value
+    .filter((mod) => fittedModuleIds.value.includes(mod.id))
+    .reduce((total, mod) => total + (mod.metrics?.cargo || 0), 0),
+);
 
 // Picking a paint is a change of the vehicle's look, not something to show to a
 // visitor who cannot make it.
@@ -213,7 +271,7 @@ const summary = computed(() =>
     {
       key: "modules",
       label: t("labels.vehicleLoadout.tabs.modules"),
-      values: selectedNames(modules.value, modelModuleIds.value),
+      values: selectedNames(modules.value, fittedModuleIds.value),
       visible: !!model.value?.hasModules,
     },
     {
@@ -231,7 +289,7 @@ const queryClient = useQueryClient();
 
 const { displayAlert } = useAppNotifications();
 
-const { useUpdateMutation } = useVehicleMutations();
+const { useUpdateMutation, invalidateHangarQueries } = useVehicleMutations();
 
 const vehicle = computed(() => props.vehicle);
 
@@ -240,7 +298,7 @@ const mutation = useUpdateMutation(vehicle);
 const changedFields = (values: LoadoutValues) => {
   const saved = savedValues();
 
-  const changes = LOADOUT_FIELDS.reduce<VehicleUpdateInput>((data, field) => {
+  const changes = VEHICLE_FIELDS.reduce<VehicleUpdateInput>((data, field) => {
     if (JSON.stringify(values[field]) !== JSON.stringify(saved[field])) {
       return { ...data, [field]: values[field] };
     }
@@ -251,35 +309,80 @@ const changedFields = (values: LoadoutValues) => {
   return Object.keys(changes).length ? changes : undefined;
 };
 
+const fittingKey = (fitted: Record<string, string>) =>
+  JSON.stringify(Object.entries(fitted).sort());
+
+const fittingChanged = (values: LoadoutValues) =>
+  flightReady.value &&
+  fittingKey(values.fittedModules) !== fittingKey(savedValues().fittedModules);
+
+/**
+ * Fitting is written to the active fleetyards loadout, which is created and
+ * activated on the first save. Activating it switches off a linked build: a
+ * ship flies one loadout at a time.
+ */
+const saveFitting = async (fitted: Record<string, string>) => {
+  const items = Object.entries(fitted).map(([slot, modelModuleId]) => ({
+    slot,
+    modelModuleId,
+  }));
+
+  if (fleetyardsLoadout.value) {
+    await updateVehicleLoadout(props.vehicle.id, fleetyardsLoadout.value.id, {
+      items,
+    });
+  } else {
+    const loadout = await createVehicleLoadout(props.vehicle.id, {
+      kind: VehicleLoadoutKindEnum.FLEETYARDS,
+      items,
+    });
+    await activateVehicleLoadout(props.vehicle.id, loadout.id);
+  }
+
+  await Promise.all([
+    invalidateHangarQueries(),
+    queryClient.invalidateQueries({
+      queryKey: getShowVehicleQueryKey(props.vehicle.id),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+    }),
+  ]);
+};
+
 const onSubmit = handleSubmit(async (values) => {
   if (!props.editable) {
     return;
   }
 
   const changes = changedFields(values);
+  const refit = fittingChanged(values);
 
-  if (!changes) {
+  if (!changes && !refit) {
     comlink.emit("close-modal");
     return;
   }
 
-  await mutation
-    .mutateAsync({
-      id: props.vehicle.id,
-      data: changes,
-    })
-    .then(async () => {
+  try {
+    // Owned first: a module can only be fitted once the ship owns it.
+    if (changes) {
+      await mutation.mutateAsync({ id: props.vehicle.id, data: changes });
+
       if ("modelPaintId" in changes) {
         await queryClient.invalidateQueries({
           queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
         });
       }
+    }
 
-      comlink.emit("close-modal");
-    })
-    .catch(() => {
-      displayAlert({ text: t("messages.vehicleLoadout.failure") });
-    });
+    if (refit) {
+      await saveFitting(values.fittedModules);
+    }
+
+    comlink.emit("close-modal");
+  } catch {
+    displayAlert({ text: t("messages.vehicleLoadout.failure") });
+  }
 });
 </script>
 
@@ -321,7 +424,7 @@ const onSubmit = handleSubmit(async (values) => {
               :id="VehicleLoadoutTabsEnum.MODULES"
               :label="t('labels.vehicleLoadout.tabs.modules')"
               :icon="categoryTabIcon('module').icon"
-              :fields="['modelModuleIds']"
+              :fields="['modelModuleIds', 'fittedModules']"
               :disabled="!vehicle.model.hasModules"
               :hint="
                 vehicle.model.hasModules
@@ -330,6 +433,36 @@ const onSubmit = handleSubmit(async (values) => {
               "
             >
               <div class="vehicle-loadout__sections">
+                <AsyncData :async-status="modulesAsyncStatus">
+                  <template #resolved>
+                    <fieldset data-test="vehicle-loadout-fitted">
+                      <legend>
+                        <h3>{{ t("labels.vehicleLoadout.fitted") }}</h3>
+                        <span
+                          v-if="editable && flightReady"
+                          class="vehicle-loadout__hint"
+                        >
+                          {{ t("labels.vehicleLoadout.fittedHint") }}
+                        </span>
+                      </legend>
+                      <Fitting
+                        v-if="flightReady"
+                        v-model="fittedModules"
+                        :modules="modules"
+                        :owned-ids="modelModuleIds || []"
+                        :editable="editable"
+                      />
+                      <p
+                        v-else
+                        class="vehicle-loadout__hint"
+                        data-test="vehicle-loadout-not-flight-ready"
+                      >
+                        {{ t("labels.vehicleLoadout.notFlightReady") }}
+                      </p>
+                    </fieldset>
+                  </template>
+                </AsyncData>
+
                 <AsyncData :async-status="modulePackagesAsyncStatus">
                   <template #resolved>
                     <fieldset v-if="packages.length">
@@ -352,7 +485,7 @@ const onSubmit = handleSubmit(async (values) => {
                   <template #resolved>
                     <fieldset>
                       <legend>
-                        <h3>{{ t("labels.model.modules") }}</h3>
+                        <h3>{{ t("labels.vehicleLoadout.ownedModules") }}</h3>
                       </legend>
                       <Addons
                         v-model="modelModuleIds"
@@ -433,7 +566,7 @@ const onSubmit = handleSubmit(async (values) => {
               <span v-html="vehicle.model.manufacturer?.name" />
               <strong>{{ vehicle.model.name }}</strong>
             </p>
-            <Specs :model="vehicle.model" />
+            <Specs :model="vehicle.model" :module-cargo="moduleCargo" />
             <dl class="vehicle-loadout__summary">
               <div
                 v-for="entry in summary"
