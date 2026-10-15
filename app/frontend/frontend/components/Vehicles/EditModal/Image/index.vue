@@ -207,80 +207,95 @@ defineExpose({ changes });
       <p v-if="vehicle.imageUploaded" class="vehicle-edit-image__hint">
         {{ t("texts.vehicleOverview.galleryReplacesUpload") }}
       </p>
-      <p
-        v-if="!galleryLoading && !galleryImages.length && !paintPictures.length"
-        class="vehicle-edit-image__hint"
-      >
-        {{ t("texts.vehicleOverview.galleryEmpty") }}
-      </p>
-      <div class="vehicle-edit-image__gallery">
-        <button
-          type="button"
-          class="vehicle-edit-image__choice"
-          :class="{
-            'vehicle-edit-image__choice--picked': picked === null,
-          }"
-          :aria-pressed="picked === null"
-          data-test="vehicle-image-gallery-none"
-          @click="pick(null)"
-        >
-          <img
-            v-if="stockImage"
-            :src="stockImage"
-            alt=""
-            class="vehicle-edit-image__thumb"
-          />
-          <span class="vehicle-edit-image__caption">
-            {{ t("labels.vehicleOverview.stockPicture") }}
-          </span>
-        </button>
-        <button
-          v-for="paint in paintPictures"
-          :key="`paint-${paint.id}`"
-          type="button"
-          class="vehicle-edit-image__choice"
-          :class="{
-            'vehicle-edit-image__choice--picked': isPicked(
-              PictureType.MODEL_PAINT,
-              paint.id,
-            ),
-          }"
-          :aria-pressed="isPicked(PictureType.MODEL_PAINT, paint.id)"
-          :aria-label="paint.name"
-          data-test="vehicle-image-gallery-paint"
-          @click="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
-        >
-          <img
-            :src="
-              paint.media.storeImage?.smallUrl || paint.media.storeImage?.url
-            "
-            alt=""
-            class="vehicle-edit-image__thumb"
-          />
-          <span class="vehicle-edit-image__caption">{{ paint.name }}</span>
-        </button>
-        <button
-          v-for="galleryImage in galleryImages"
-          :key="galleryImage.id"
-          type="button"
-          class="vehicle-edit-image__choice"
-          :class="{
-            'vehicle-edit-image__choice--picked': isPicked(
-              PictureType.IMAGE,
-              galleryImage.id,
-            ),
-          }"
-          :aria-pressed="isPicked(PictureType.IMAGE, galleryImage.id)"
-          :aria-label="galleryImage.caption || vehicle.model.name"
-          data-test="vehicle-image-gallery-choice"
-          @click="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
-        >
-          <img
-            :src="galleryImage.smallUrl || galleryImage.url"
-            alt=""
-            class="vehicle-edit-image__thumb"
-          />
-        </button>
+      <div class="vehicle-edit-image__sections">
+        <section data-test="vehicle-image-gallery-paints">
+          <h3 class="vehicle-edit-image__heading">
+            {{ t("labels.vehicleLoadout.tabs.paints") }}
+          </h3>
+          <div class="vehicle-edit-image__gallery">
+            <button
+              type="button"
+              class="vehicle-edit-image__choice"
+              :class="{
+                'vehicle-edit-image__choice--picked': picked === null,
+              }"
+              :aria-pressed="picked === null"
+              data-test="vehicle-image-gallery-none"
+              @click="pick(null)"
+            >
+              <img
+                v-if="stockImage"
+                :src="stockImage"
+                alt=""
+                class="vehicle-edit-image__thumb"
+              />
+              <span class="vehicle-edit-image__caption">
+                {{ t("labels.vehicleOverview.stockPicture") }}
+              </span>
+            </button>
+            <button
+              v-for="paint in paintPictures"
+              :key="`paint-${paint.id}`"
+              type="button"
+              class="vehicle-edit-image__choice"
+              :class="{
+                'vehicle-edit-image__choice--picked': isPicked(
+                  PictureType.MODEL_PAINT,
+                  paint.id,
+                ),
+              }"
+              :aria-pressed="isPicked(PictureType.MODEL_PAINT, paint.id)"
+              :aria-label="paint.name"
+              data-test="vehicle-image-gallery-paint"
+              @click="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
+            >
+              <img
+                :src="
+                  paint.media.storeImage?.smallUrl ||
+                  paint.media.storeImage?.url
+                "
+                alt=""
+                class="vehicle-edit-image__thumb"
+              />
+              <span class="vehicle-edit-image__caption">{{ paint.name }}</span>
+            </button>
+          </div>
+        </section>
+        <section data-test="vehicle-image-gallery-images">
+          <h3 class="vehicle-edit-image__heading">
+            {{ t("labels.vehicleOverview.pictureGallery") }}
+          </h3>
+          <p
+            v-if="!galleryLoading && !galleryImages.length"
+            class="vehicle-edit-image__hint"
+          >
+            {{ t("texts.vehicleOverview.galleryEmpty") }}
+          </p>
+          <div v-else class="vehicle-edit-image__gallery">
+            <button
+              v-for="galleryImage in galleryImages"
+              :key="galleryImage.id"
+              type="button"
+              class="vehicle-edit-image__choice"
+              :class="{
+                'vehicle-edit-image__choice--picked': isPicked(
+                  PictureType.IMAGE,
+                  galleryImage.id,
+                ),
+              }"
+              :aria-pressed="isPicked(PictureType.IMAGE, galleryImage.id)"
+              :aria-label="galleryImage.caption || vehicle.model.name"
+              data-test="vehicle-image-gallery-choice"
+              @click="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
+            >
+              <img
+                :src="galleryImage.smallUrl || galleryImage.url"
+                alt=""
+                class="vehicle-edit-image__thumb"
+              />
+            </button>
+          </div>
+        </section>
       </div>
       <Btn
         v-if="galleryHasMore"
@@ -307,12 +322,23 @@ defineExpose({ changes });
     font-size: 0.85rem;
   }
 
+  &__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  &__heading {
+    margin: 0 0 8px;
+    font-size: 1rem;
+  }
+
   &__gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 8px;
-    max-height: 420px;
-    overflow-y: auto;
   }
 
   &__choice {

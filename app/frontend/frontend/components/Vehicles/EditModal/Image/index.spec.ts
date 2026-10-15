@@ -146,6 +146,35 @@ describe("VehicleEditModal image tab", () => {
     ).toEqual(["Stormbringer"]);
   });
 
+  it("keeps the paint pictures apart from the model's gallery", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+
+    const paints = wrapper.find('[data-test="vehicle-image-gallery-paints"]');
+    const images = wrapper.find('[data-test="vehicle-image-gallery-images"]');
+
+    expect(
+      paints.find('[data-test="vehicle-image-gallery-none"]').exists(),
+    ).toBe(true);
+    expect(
+      paints.findAll('[data-test="vehicle-image-gallery-paint"]'),
+    ).toHaveLength(1);
+    expect(
+      paints.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(0);
+    expect(
+      images.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(2);
+    expect(
+      images.findAll('[data-test="vehicle-image-gallery-paint"]'),
+    ).toHaveLength(0);
+  });
+
   it("picks a paint's picture in place of a gallery picture", async () => {
     const wrapper = await mount({
       vehicle: vehicle({
