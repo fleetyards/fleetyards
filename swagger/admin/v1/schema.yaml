@@ -16130,12 +16130,14 @@ components:
       - quantumenforcementdevice
       - emp
       - salvagemunching
+      - salvage_storage
       - armor
       - countermeasures
       - selfdestruct
       - lifesupport
       - batteries
       - utility
+      - ore_pods
       - seat
       - relay
       - paints
@@ -16171,12 +16173,14 @@ components:
       - QUANTUMENFORCEMENTDEVICE
       - EMP
       - SALVAGEMUNCHING
+      - SALVAGE_STORAGE
       - ARMOR
       - COUNTERMEASURES
       - SELFDESTRUCT
       - LIFESUPPORT
       - BATTERIES
       - UTILITY
+      - ORE_PODS
       - SEAT
       - RELAY
       - PAINTS
@@ -16201,6 +16205,9 @@ components:
       - other
       - external_fuel_tank
       - refuel_boom
+      - ore_pod
+      - module
+      - salvage
       - unknown
       x-enumNames:
       - AVIONIC
@@ -16215,6 +16222,9 @@ components:
       - OTHER
       - EXTERNAL_FUEL_TANK
       - REFUEL_BOOM
+      - ORE_POD
+      - MODULE
+      - SALVAGE
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
