@@ -16,10 +16,9 @@ class ModuleHardpoint < ApplicationRecord
   # name it as the slot's stock component. Every vehicle of the model can fit
   # these without owning them.
   def self.stock_modules(model)
-    stock_keys = model.hardpoints.where(category: :module, source: :game_files)
-      .includes(:component)
+    stock_keys = game_file_slots(model).includes(:component)
       .each_with_object({}) do |hp, keys|
-        key = hp.component&.sc_key&.downcase
+        key = stock_key(hp)
         keys[hp.sc_name] = key if key.present?
       end
     return {} if stock_keys.empty?
@@ -32,8 +31,18 @@ class ModuleHardpoint < ApplicationRecord
       end
   end
 
+  # The module slots the game files give a hull, and the module each comes
+  # with, which `stock_modules` and `derive_slot` both read.
+  def self.game_file_slots(model)
+    model.hardpoints.where(category: :module, source: :game_files)
+  end
+
+  def self.stock_key(hardpoint)
+    hardpoint.component&.sc_key&.downcase
+  end
+
   def self.derive_slot(model, model_module)
-    module_slots = model.hardpoints.where(category: :module, source: :game_files)
+    module_slots = game_file_slots(model)
     return nil if module_slots.empty?
 
     mod_key = (model_module.sc_key || "").downcase
@@ -42,7 +51,7 @@ class ModuleHardpoint < ApplicationRecord
     slot = module_slots.find do |hp|
       hp_name = hp.sc_name || ""
 
-      hp.component&.sc_key&.downcase == mod_key ||
+      stock_key(hp) == mod_key ||
         POSITION_KEYWORDS.any? do |kw|
           hp_name.include?(kw) && (mod_key.include?(kw) || mod_name.include?(kw))
         end

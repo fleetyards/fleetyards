@@ -126,6 +126,16 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert_empty loadout.reload.items
   end
 
+  test "a module removed from the catalogue is unfitted with what sat inside it" do
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo], ["hardpoint_rear_module", @rear_cargo]))
+    loadout.save!
+    loadout.items.create!(slot_path: "hardpoint_front_module/hardpoint_turret", item: @rear_cargo)
+
+    @front_cargo.destroy!
+
+    assert_equal ["hardpoint_rear_module"], loadout.reload.items.pluck(:slot_path)
+  end
+
   test "a link carries no items and a fleetyards loadout no url" do
     link = @vehicle.vehicle_loadouts.new(url: "https://erkul.games/loadout/x",
       item_list: fit(["hardpoint_rear_module", @rear_cargo]))
