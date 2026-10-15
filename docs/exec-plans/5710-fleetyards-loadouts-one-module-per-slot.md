@@ -69,7 +69,8 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 
 ## Not in scope (deferred)
 - **Loadout page with hardpoints and metrics** — #5713. The modal read view covers the marker until then.
-- **Components per hardpoint** — the other "coming soon" tabs; they reuse `vehicle_loadout_items` with a component reference. Becomes its own issue.
+- **Components per hardpoint** — #5714. The other "coming soon" tabs; they reuse `vehicle_loadout_items` with a component item.
+- **Ship detail page's role** — #5715. Information only, or loadouts shown there too.
 - **Paint in the loadout** — after the component categories work.
 - **Admin UI for module slots** — the admin API takes `slot`; a form for it is separate.
 
