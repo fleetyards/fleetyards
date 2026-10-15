@@ -22,8 +22,11 @@ class MoveVehiclePaintsAndPictures < ActiveRecord::Migration[8.1]
 
     execute <<~SQL.squish
       UPDATE vehicles
-      SET picture_type = 'Image', picture_id = model_image_id, updated_at = NOW()
-      WHERE model_image_id IS NOT NULL
+      SET picture_type = 'Image', picture_id = vehicles.model_image_id, updated_at = NOW()
+      FROM images
+      WHERE images.id = vehicles.model_image_id
+        AND images.gallery_type = 'Model'
+        AND images.gallery_id = vehicles.model_id
     SQL
 
     execute <<~SQL.squish
