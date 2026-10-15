@@ -77,6 +77,15 @@ const {
   running: detailsRunning,
 } = details;
 
+// Cancelled passes go back to idle; their prices are missing all the same.
+const detailsIncomplete = computed(
+  () =>
+    status.value === "finished" &&
+    detailsStarted.value &&
+    !detailsRunning.value &&
+    details.status.value !== "finished",
+);
+
 // A run going or one that ended with a result is shown whatever the extension
 // says now; a failed one needs the extension for its retry, so it shows the
 // install or update links when that is missing.
@@ -259,6 +268,13 @@ const cancelRun = () => {
         data-test="buyback-sync-details-background"
       >
         {{ t("texts.buybackSync.detailsBackground") }}
+      </p>
+      <p
+        v-if="detailsIncomplete"
+        class="text-warning"
+        data-test="buyback-sync-details-incomplete"
+      >
+        {{ t("texts.buybackSync.detailsIncomplete") }}
       </p>
       <p
         v-if="

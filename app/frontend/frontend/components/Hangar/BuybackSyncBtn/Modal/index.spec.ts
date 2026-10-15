@@ -724,6 +724,9 @@ describe("HangarBuybackSyncModal", () => {
       expect(
         wrapper.find("[data-test='buyback-sync-details-background']").exists(),
       ).toBe(true);
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
+      ).toBe(false);
       expect(wrapper.find("[data-test='start-buyback-sync']").exists()).toBe(
         false,
       );
@@ -749,6 +752,21 @@ describe("HangarBuybackSyncModal", () => {
 
       expect(useBuybackSync().status.value).toBe("idle");
       expect(useBuybackDetailsSync().status.value).toBe("idle");
+    });
+
+    it("says when a pass ended before reading every price", async () => {
+      await syncList(detailExtension);
+      mounted?.unmount();
+      extensionReplies("syncBuybackPricing", undefined, { code: 500 });
+      await flushPromises();
+
+      expect(useBuybackDetailsSync().status.value).toBe("incomplete");
+
+      const wrapper = await mountModal(detailExtension);
+
+      expect(
+        wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
+      ).toBe(true);
     });
 
     it("reads prices while a hangar sync runs", async () => {
