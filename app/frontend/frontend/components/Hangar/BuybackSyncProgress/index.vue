@@ -94,6 +94,7 @@ watch(
 
     list.reset(true);
     details.discard();
+    details.reset();
   },
 );
 

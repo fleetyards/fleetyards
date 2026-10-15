@@ -328,5 +328,6 @@ describe("HangarBuybackSyncProgress", () => {
 
     expect(list.reset).toHaveBeenCalledWith(true);
     expect(pass.discard).toHaveBeenCalled();
+    expect(pass.reset).toHaveBeenCalled();
   });
 });
