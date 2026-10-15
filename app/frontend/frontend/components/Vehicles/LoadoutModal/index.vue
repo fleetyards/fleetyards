@@ -18,6 +18,7 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import Fitting from "./Fitting/index.vue";
 import Comparison from "./Comparison/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
+import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -243,15 +244,7 @@ const shipFigures = computed(() =>
   ),
 );
 
-const slots = computed(() =>
-  [
-    ...new Set(
-      modules.value
-        .map((mod) => mod.slot)
-        .filter((slot): slot is string => !!slot),
-    ),
-  ].sort(),
-);
+const slots = computed(() => moduleSlots(modules.value));
 
 /**
  * The panel always answers for one slot: the one last picked in, or the first.

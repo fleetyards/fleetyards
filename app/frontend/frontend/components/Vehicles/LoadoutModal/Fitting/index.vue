@@ -11,6 +11,7 @@ import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
+import { moduleSlots } from "@/frontend/components/Vehicles/LoadoutModal/moduleSlots";
 import { type ModelModule } from "@/services/fyApi";
 
 type Props = {
@@ -50,15 +51,7 @@ const { t } = useI18n();
 
 const { contents } = useModuleContents();
 
-const slots = computed(() =>
-  [
-    ...new Set(
-      props.modules
-        .map((mod) => mod.slot)
-        .filter((slot): slot is string => !!slot),
-    ),
-  ].sort(),
-);
+const slots = computed(() => moduleSlots(props.modules));
 
 // A loadout is a plan: every module the slot takes, owned or not.
 const candidates = (slot: string) =>
