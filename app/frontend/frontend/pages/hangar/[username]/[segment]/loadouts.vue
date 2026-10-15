@@ -24,6 +24,7 @@ import {
   useActivateVehicleLoadout,
   getVehicleLoadoutsQueryKey,
   VehicleLoadoutKindEnum,
+  ModelProductionStatusEnum,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -51,6 +52,14 @@ const spviewerShipUrl = computed(() => {
 });
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
+
+// The API refuses a loadout of either kind for a ship still in concept or
+// production, so the page does not offer one.
+const flightReady = computed(
+  () =>
+    props.vehicle.model?.productionStatus ===
+    ModelProductionStatusEnum.FLIGHT_READY,
+);
 
 const loadoutItems = computed(() => (loadouts.value as VehicleLoadout[]) || []);
 
@@ -223,14 +232,22 @@ const onActivate = async (record: VehicleLoadout) => {
     </InlineEditableList>
 
     <template #side>
-      <Btn
-        class="loadouts-page__add"
-        :disabled="editableList?.creating"
-        @click="editableList?.startCreate()"
+      <span
+        v-tooltip="
+          flightReady ? undefined : t('labels.vehicleLoadout.notFlightReady')
+        "
+        class="loadouts-page__add-wrapper"
       >
-        <i class="fa-duotone fa-plus" />
-        {{ t("actions.add") }}
-      </Btn>
+        <Btn
+          class="loadouts-page__add"
+          :disabled="editableList?.creating || !flightReady"
+          data-test="loadouts-add"
+          @click="editableList?.startCreate()"
+        >
+          <i class="fa-duotone fa-plus" />
+          {{ t("actions.add") }}
+        </Btn>
+      </span>
 
       <MetricsCard
         v-if="erkulShipUrl || spviewerShipUrl"
@@ -260,6 +277,11 @@ const onActivate = async (record: VehicleLoadout) => {
 .loadouts-page {
   &__add {
     width: 100%;
+  }
+
+  // Holds the tooltip a disabled button cannot, and the button's full width.
+  &__add-wrapper {
+    display: block;
   }
 
   &__ship-links {
