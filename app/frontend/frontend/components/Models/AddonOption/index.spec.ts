@@ -129,4 +129,13 @@ describe("AddonOption", () => {
     expect(wrapper.emitted("increase")).toHaveLength(1);
     expect(wrapper.emitted("decrease")).toHaveLength(1);
   });
+
+  it("draws the picture large only when asked", async () => {
+    expect((await mount()).classes()).not.toContain(
+      "addon-option--large-image",
+    );
+    expect((await mount({ largeImage: true })).classes()).toContain(
+      "addon-option--large-image",
+    );
+  });
 });
