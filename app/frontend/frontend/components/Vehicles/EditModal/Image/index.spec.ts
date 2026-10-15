@@ -73,6 +73,10 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   },
 }));
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
+}));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
     useUpdateMutation: () => ({ mutateAsync: vi.fn(), isPending: ref(false) }),

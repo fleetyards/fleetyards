@@ -15,10 +15,12 @@ import {
   type Image,
   type ModelPaint,
   type Vehicle,
+  FeatureFlagName,
   useModelImages,
   useVehiclePaints,
 } from "@/services/fyApi";
 import type { VehicleImageChanges } from "@/frontend/components/Vehicles/EditModal/types";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   vehicle: Vehicle;
@@ -91,8 +93,13 @@ const loadMoreGallery = () => {
 // current pick stays offered after its paint is no longer owned.
 const ownedPaintIds = useFieldValue<string[]>("modelPaintIds");
 
+const { isFeatureEnabled } = useFeatures();
+
 // The vehicle's own list, which keeps its paints after the catalogue hides one.
-const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id);
+// Part of the vehicle overview, as saving a gallery pick is.
+const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
+  query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
+});
 
 const paintPictures = computed<ModelPaint[]>(() =>
   (vehiclePaints.value || [])
