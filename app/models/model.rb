@@ -683,28 +683,45 @@ class Model < ApplicationRecord
     set_hydrogen_fuel_from_hardpoints
   end
 
-  # Once a ship flies, its cargo is what its holds in the game files take, and
-  # nothing else. The official figure from the RSI page counts what RSI lists
-  # (102 SCU on a Retaliator whose hull holds none, its cargo modules already
-  # included; ore pods and salvage storage on the mining and salvage ships), and
-  # would sit under every module added on top of it. Before a ship flies there
-  # are no holds to read, so the official figure stands.
+  # `cargo` is one column for every source, so only a save under the default
+  # source derives it: a ptu load must not write ptu holds into it.
   def set_cargo_from_hardpoints
-    if production_status == "flight-ready"
-      self.cargo = cargo_holds_capacity
-      update_cargo_holds_db if cargo_holds.present? && cargo_holds_change_to_be_saved
-      return
-    end
+    return unless ::ScData::Source.current.default?
 
-    return if cargo_holds.blank? || (cargo.present? && !cargo.zero? && !cargo_holds_change_to_be_saved)
+    # Otherwise the holds only fill in a figure nobody gave, or follow holds
+    # that changed.
+    fills_gap = cargo_holds.present? &&
+      (cargo.blank? || cargo.zero? || cargo_holds_change_to_be_saved)
+    return unless cargo_from_holds_only? || fills_gap
 
-    self.cargo = cargo_holds_capacity
+    self.cargo = cargo_holds_capacity(holds_for_cargo)
 
-    update_cargo_holds_db
+    update_cargo_holds_db if holds_for_cargo.present? && (fills_gap || cargo_holds_change_to_be_saved)
   end
 
-  def cargo_holds_capacity
-    (cargo_holds || []).sum do |cargo_hold|
+  # Once a ship flies and the game files know it, its cargo is what its holds
+  # take, and nothing else. The official figure from the RSI page counts what
+  # RSI lists (102 SCU on a Retaliator whose hull holds none, its cargo modules
+  # already included; ore pods and salvage storage on the mining and salvage
+  # ships), and would sit under every module added on top of it.
+  #
+  # Only once the game files know the ship -- a build, or holds arriving in this
+  # very save -- or a flying ship the loader never matched would lose the only
+  # figure it has.
+  def cargo_from_holds_only?
+    production_status == "flight-ready" &&
+      (in_game? || cargo_holds_change_to_be_saved)
+  end
+
+  # The holds this save writes, ahead of the build that will carry them: the
+  # loader sets the column before it writes the new build, and the reader would
+  # still answer with the build before it.
+  def holds_for_cargo
+    cargo_holds_change_to_be_saved ? self[:cargo_holds] : cargo_holds
+  end
+
+  def cargo_holds_capacity(holds = cargo_holds)
+    (holds || []).sum do |cargo_hold|
       cargo_hold.dig("capacity")&.to_f || 0
     end
   end
