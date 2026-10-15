@@ -264,27 +264,37 @@
   }
 }
 
-// A phone has no room for a thumbnail, a title and a run of badges on one
-// line: the badges never shrink, so the title took what was left - one word a
-// line, with the badges running off the row. The row wraps instead, only when
-// it has to: the title keeps a floor beside the thumbnail, and the badges that
-// do not fit move to a line of their own under it.
-@media (max-width: 992px) {
-  .row-list-item {
+// The badges and the action never shrink, so a row whose facts do not fit took
+// the room from the title -- down to nothing between 992px and a wide screen,
+// with the sub-line wrapping a word a line and the badges running off the row.
+// The row wraps instead, at any width, but only when it has to: the title keeps
+// a floor beside the thumbnail, and what does not fit moves to a line below.
+.row-list-item {
+  flex-wrap: wrap;
+  row-gap: 8px;
+
+  &__main {
+    flex: 1 1 160px;
+  }
+
+  &__badges {
     flex-wrap: wrap;
-    row-gap: 8px;
+    max-width: 100%;
+  }
 
-    &__main {
-      flex: 1 1 160px;
-    }
+  // A no-op on one line, where the title takes the slack; on a wrapped line it
+  // keeps the action at the row's end instead of under the thumbnail.
+  &__actions {
+    margin-inline-start: auto;
+  }
+}
 
-    &__badges {
-      flex-wrap: wrap;
-      max-width: 100%;
-      // After the row's action rather than before it: a wrapped row keeps its
-      // action up beside the title, where a card's menu sits, and the badges
-      // take the line below.
-      order: 1;
-    }
+// On a phone the badges go after the row's action rather than before it: a
+// wrapped row keeps its action up beside the title, where a card's menu sits,
+// and the badges take the line below. Not on a desktop, where the row usually
+// fits on one line and the action belongs last.
+@media (max-width: 992px) {
+  .row-list-item__badges {
+    order: 1;
   }
 }
