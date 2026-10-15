@@ -1,17 +1,23 @@
 # frozen_string_literal: true
 
-# Flight-ready ships take their cargo from the game-file holds now, but the
-# rule only applies on save. The ones still carrying the RSI page's figure --
-# 14 locally, the Retaliator's 102 SCU among them -- are set here.
+# Flight-ready ships the game files know take their cargo from their holds, but
+# the rule only applies on save. This sets the ones still carrying the RSI
+# page's figure, with its own copy of the rule so a later change to the model
+# does not change what this did.
 #
 # Written straight to the column rather than saved: a validation tripping on
 # an unrelated attribute of one old model must not stop the deploy. `updated_at`
 # moves with it so the cached ship payloads let the new figure through.
 class RecomputeFlightReadyCargo < ActiveRecord::Migration[8.1]
   def up
+    source = ::ScData::Source.default.served
+
     Model.where(production_status: "flight-ready").find_each do |model|
-      capacity = model.cargo_holds_capacity
-      next if (model.cargo.to_f - capacity).abs < 0.001
+      build = ModelBuild.find_by(model_id: model.id, environment: source.environment, version: source.version)
+      next if build.blank?
+
+      capacity = (build.cargo_holds || []).sum { |hold| hold["capacity"].to_f }
+      next if model.cargo.present? && (model.cargo.to_f - capacity).abs < 0.001
 
       model.update_columns(cargo: capacity, updated_at: Time.current)
     end
