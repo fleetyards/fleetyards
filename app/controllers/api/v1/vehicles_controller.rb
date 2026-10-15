@@ -53,13 +53,20 @@ module Api
       end
 
       def update
-        @vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
-        @vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
-        @vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
+        # Owned paints are written as soon as they are assigned, so a paint the
+        # ship cannot own raises from inside `update` rather than failing it.
+        updated = ActiveRecord::Base.transaction do
+          @vehicle.vehicle_modules.destroy_all unless vehicle_params[:model_module_ids].nil?
+          @vehicle.vehicle_upgrades.destroy_all unless vehicle_params[:model_upgrade_ids].nil?
+          @vehicle.task_forces.destroy_all unless vehicle_params[:hangar_group_ids].nil?
 
-        return if @vehicle.update(writable_params(@vehicle, vehicle_params))
+          @vehicle.update(writable_params(@vehicle, vehicle_params)) || raise(ActiveRecord::Rollback)
+        end
+        return if updated
 
         render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
+      rescue ActiveRecord::RecordInvalid => e
+        render json: ValidationError.new("vehicle.update", errors: e.record.errors), status: :bad_request
       end
 
       def move

@@ -329,6 +329,19 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id rejects another model's paint as an owned paint, and keeps the rest" do
+    vehicle = create(:vehicle, user: @user)
+    own = create(:model_paint, model: vehicle.model)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id},
+      body: {modelPaintIds: [own.id, create(:model_paint).id], name: "Renamed"}
+
+    vehicle.reload
+    assert_empty vehicle.model_paint_ids
+    assert_not_equal "Renamed", vehicle.name
+  end
+
   test "PUT /vehicles/:id picks a paint's picture in place of a gallery image" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
