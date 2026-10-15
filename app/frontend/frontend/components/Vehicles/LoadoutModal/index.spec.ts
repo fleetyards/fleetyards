@@ -214,6 +214,25 @@ describe("VehicleLoadoutModal", () => {
     expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
   });
 
+  it("finishes the loadout it created when switching it on failed, rather than creating another", async () => {
+    activateVehicleLoadout.mockImplementationOnce(() =>
+      Promise.reject(new Error("timeout")),
+    );
+    const wrapper = await mountModal(vehicle(["m1"]));
+
+    await slotPick(wrapper, 0).trigger("click");
+    await save(wrapper);
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledTimes(1);
+    expect(updateVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      "new",
+      expect.objectContaining({ items: [expect.anything()] }),
+    );
+    expect(activateVehicleLoadout).toHaveBeenCalledTimes(2);
+  });
+
   it("leaves an active linked build switched on when saving a new loadout", async () => {
     const wrapper = await mountModal(
       vehicle(["m1"], { activeLoadout: { id: "link", kind: "link" } }),

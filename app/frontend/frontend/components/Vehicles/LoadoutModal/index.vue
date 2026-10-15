@@ -26,6 +26,7 @@ import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
 import {
   type Vehicle,
+  type VehicleLoadout,
   type VehicleLoadoutItemInput,
   ModelProductionStatusEnum,
   VehicleLoadoutItemTypeEnum,
@@ -305,6 +306,10 @@ const { invalidateHangarQueries } = useVehicleMutations();
 
 const saving = ref(false);
 
+// Created by a save whose activation then failed: the retry finishes that one
+// rather than creating another beside it.
+const createdLoadout = ref<VehicleLoadout>();
+
 /**
  * Writes the loadout being edited, or a new one. A new loadout is switched on
  * only when nothing else is: replacing an active build stays a choice made on
@@ -324,7 +329,7 @@ const onSubmit = handleSubmit(async (values) => {
   }));
   // A cleared name goes back to the default the server gives.
   const name = values.loadoutName.trim();
-  const target = editedLoadout.value;
+  const target = createdLoadout.value ?? editedLoadout.value;
 
   // What this editor does not show yet stays, as long as the slot it sits in
   // is still fitted.
@@ -354,15 +359,15 @@ const onSubmit = handleSubmit(async (values) => {
         items,
       });
     } else {
-      const loadout = await createVehicleLoadout(props.vehicle.id, {
+      createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.FLEETYARDS,
         name,
         items,
       });
+    }
 
-      if (!props.vehicle.activeLoadout) {
-        await activateVehicleLoadout(props.vehicle.id, loadout.id);
-      }
+    if (createdLoadout.value && !props.vehicle.activeLoadout) {
+      await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
     }
 
     await Promise.all([
