@@ -4,7 +4,11 @@ import { defineComponent, h, ref, toValue, type MaybeRef } from "vue";
 import { flushPromises } from "@vue/test-utils";
 import { RouterView, createRouter, createWebHashHistory } from "vue-router";
 import { AxiosError, type AxiosResponse } from "axios";
-import type { Fleet, FleetMember } from "@/services/fyApi";
+import {
+  FleetMembershipStatusEnum,
+  type Fleet,
+  type FleetMember,
+} from "@/services/fyApi";
 import Component from "./[slug].vue";
 
 const fleetState = {
@@ -126,6 +130,11 @@ const mountFleetPage = async (
   });
 };
 
+const accepted = {
+  id: "m1",
+  status: FleetMembershipStatusEnum.ACCEPTED,
+} as FleetMember;
+
 describe("FleetRouterView", () => {
   beforeEach(() => {
     fleetState.fleet.value = undefined;
@@ -184,9 +193,44 @@ describe("FleetRouterView", () => {
     );
   });
 
+  it("denies a member-only route to an invited member", async () => {
+    setMembership("member");
+    fleetState.fleetError.value = httpError(403);
+    fleetState.membership.value = {
+      id: "m1",
+      status: FleetMembershipStatusEnum.INVITED,
+    } as FleetMember;
+
+    const wrapper = await mountFleetPage(
+      true,
+      "/fleets/evle/settings/membership/",
+    );
+
+    expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "NotAuthorized" }).exists()).toBe(
+      true,
+    );
+  });
+
+  it("shows an invited member the visitor view without the membership", async () => {
+    setMembership("member");
+    fleetState.fleetError.value = httpError(403);
+    fleetState.membership.value = {
+      id: "m1",
+      status: FleetMembershipStatusEnum.INVITED,
+    } as FleetMember;
+
+    const wrapper = await mountFleetPage(true);
+
+    const child = wrapper.findComponent(Child);
+    expect(child.exists()).toBe(true);
+    expect((child.vm.$attrs.fleet as Fleet).name).toBe("EVLE");
+    expect(child.vm.$attrs.membership).toBeUndefined();
+  });
+
   it("renders a member-only route for a member", async () => {
     setMembership("member");
-    fleetState.membership.value = { id: "m1" } as FleetMember;
+    fleetState.membership.value = accepted;
 
     const wrapper = await mountFleetPage(
       true,
@@ -198,7 +242,7 @@ describe("FleetRouterView", () => {
 
   it("renders a member's page from the members' copy only", async () => {
     setMembership("member");
-    fleetState.membership.value = { id: "m1" } as FleetMember;
+    fleetState.membership.value = accepted;
     fleetState.publicFleet.value = { slug: "evle", name: "Visitor" } as Fleet;
     fleetState.fleetPending.value = true;
 
@@ -220,7 +264,7 @@ describe("FleetRouterView", () => {
 
   it("does not fall back to the visitor payload when the members' copy fails", async () => {
     setMembership("member");
-    fleetState.membership.value = { id: "m1" } as FleetMember;
+    fleetState.membership.value = accepted;
     fleetState.fleetError.value = httpError(500);
 
     const wrapper = await mountFleetPage(
