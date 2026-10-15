@@ -5,13 +5,14 @@
 # its own looks the same afterwards. A paint of another model -- left behind by
 # a model change -- is neither.
 #
-# The pledge stays with the paint: a painted ship pledge is what sync matched
-# it by.
+# No pledge is carried over: the hull's pledge is not necessarily the one the
+# paint came with, as a paint applied by hand shows. The next sync stamps the
+# paints that did come with one.
 class MoveVehiclePaintsToOwnedPaints < ActiveRecord::Migration[8.1]
   def up
     execute <<~SQL.squish
-      INSERT INTO vehicle_paints (vehicle_id, model_paint_id, rsi_pledge_id, rsi_pledge_synced_at, created_at, updated_at)
-      SELECT vehicles.id, vehicles.model_paint_id, vehicles.rsi_pledge_id, vehicles.rsi_pledge_synced_at, NOW(), NOW()
+      INSERT INTO vehicle_paints (vehicle_id, model_paint_id, created_at, updated_at)
+      SELECT vehicles.id, vehicles.model_paint_id, NOW(), NOW()
       FROM vehicles
       INNER JOIN model_paints
         ON model_paints.id = vehicles.model_paint_id
