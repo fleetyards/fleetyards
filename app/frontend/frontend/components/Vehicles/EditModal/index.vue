@@ -21,6 +21,7 @@ import {
 import {
   type Vehicle,
   type VehicleUpdateInput,
+  getVehicleLoadoutsQueryKey,
   getVehiclePaintsQueryKey,
   useUpdateVehicle,
 } from "@/services/fyApi";
@@ -197,6 +198,13 @@ const onSubmit = handleSubmit(async (values) => {
       if (changes && "modelPaintId" in changes) {
         await queryClient.invalidateQueries({
           queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
+        });
+      }
+
+      // The server unfits a module the ship no longer owns.
+      if (changes && "modelModuleIds" in changes) {
+        await queryClient.invalidateQueries({
+          queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
         });
       }
 
