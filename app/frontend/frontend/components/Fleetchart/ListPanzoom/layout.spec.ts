@@ -11,7 +11,7 @@ const ships = (count: number, width = 300, height = 80) =>
 
 const screen = { width: 1600, height: 900 };
 
-// The panzoom chart's own margins, as the component subtracts them.
+// The room a column gets at each factor; the value is arbitrary here.
 const columnHeight = (factor: number) => screen.height * factor - 120;
 
 describe("layoutColumns", () => {
@@ -46,7 +46,7 @@ describe("chartSize", () => {
     ];
 
     expect(chartSize(sizes, [[0, 1], [2]])).toEqual({
-      width: 200 + 50 + 30,
+      width: 220 + 70 + 30,
       height: 140,
     });
   });

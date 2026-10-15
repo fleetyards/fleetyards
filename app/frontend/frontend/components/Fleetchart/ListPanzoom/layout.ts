@@ -3,9 +3,11 @@ export type FleetchartItemSize = {
   height: number;
 };
 
-// Mirrors the column and item spacing in index.scss and the item margin the
-// columns are filled with.
+// Mirrors the spacing in index.scss and Item/index.scss: an item's padding on
+// either side, and the margin between columns. Labels, off by default, are
+// left out.
 const ITEM_GAP = 20;
+const ITEM_PADDING = 20;
 const COLUMN_GAP = 30;
 
 const MIN_FACTOR = 1;
@@ -40,7 +42,7 @@ export const layoutColumns = (
 
 export const chartSize = (sizes: FleetchartItemSize[], columns: number[][]) => {
   const widths = columns.map((column) =>
-    Math.max(...column.map((index) => sizes[index].width)),
+    Math.max(...column.map((index) => sizes[index].width + ITEM_PADDING)),
   );
   const heights = columns.map((column) =>
     column.reduce((sum, index) => sum + sizes[index].height + ITEM_GAP, 0),
