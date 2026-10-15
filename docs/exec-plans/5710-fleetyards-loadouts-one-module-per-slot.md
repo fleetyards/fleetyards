@@ -20,7 +20,7 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 2. `VehicleLoadout`: `kind` enum `link`/`fleetyards`; `url` required for `link` and absent for `fleetyards`; items only on `fleetyards`; vehicle's model must be flight-ready (both kinds); `has_many :items`, accepts a replace-all items list; default name "Fleetyards Loadout" for the fleetyards kind.
 3. `VehicleLoadoutItem`: `belongs_to :vehicle_loadout, touch: true`, `belongs_to :model_module`; validates the module is owned by the vehicle and that the module's `module_hardpoints.slot` on the vehicle's model equals `slot` (so an unslotted module cannot be fitted).
 4. Pruning: when the vehicle's owned modules are replaced (`VehiclesController#update`), drop items whose module is no longer owned.
-5. paper_trail on items, `VersionedItem::ROOTS` entry, `ErasableVersionsConcern`; bulk vehicle delete keeps working via the cascade.
+5. Items are not versioned (replaced wholesale on every save, like `vehicle_modules`); bulk vehicle delete keeps working via the cascade.
 
 ### Phase 3 — API
 1. Controller permits `kind` and `items: [slot, modelModuleId]`.
@@ -69,9 +69,13 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 ## Discovery Log
 
 - **2026-10-15** Initial research. `module_hardpoints.slot` was never backfilled: 27 of 33 links nil locally; 21 derivable. Galaxy and Endeavor have no game-file module hardpoints. `ModelsController#modules` maps one slot per module (`.to_h`). All 383 existing loadouts are links on flight-ready ships. `groupKey` and hardpoint ids are not stable; persist `sc_name`.
+- **2026-10-15** `url`/`urlSource` are omitted on a fleetyards loadout rather than sent as null: null would have made both nullable across 19 endpoints in oasdiff; omitted leaves only "url became optional" (19 ignore entries, from the pinned oasdiff 1.18.1).
+- **2026-10-15** `VehiclesController#update` reloads `vehicle_loadouts` after unfitting, or the response renders the loadout it had cached before the prune.
+- **2026-10-15** The editor fixes from main (FormTabs render loop, tab clarity, module cargo in Specs) were uncommitted there; carried over as their own commits because the fitting builds on them.
 
 ## Progress
-- [ ] Phase 1 — Slot backfill
-- [ ] Phase 2 — Model and table
-- [ ] Phase 3 — API
-- [ ] Phase 4 — Frontend
+- [x] Phase 1 — Slot backfill
+- [x] Phase 2 — Model and table
+- [x] Phase 3 — API
+- [x] Phase 4 — Frontend
+- [ ] Live check in a running app (not done: needs a dev server on this branch)
