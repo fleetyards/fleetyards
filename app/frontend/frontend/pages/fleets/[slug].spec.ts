@@ -39,9 +39,14 @@ const setMembership = (
         ? httpError(500)
         : null;
   status.isPending.value = state === "disabled" || state === "loading";
-  // The members' copy of the fleet is refused exactly when the membership is.
+  // The members' copy of the fleet is refused exactly when the membership is,
+  // but a non-member is told so with a 403, not the membership's 404.
   fleetState.fleetError.value =
-    state === "notFound" || state === "failed" ? status.error.value : null;
+    state === "notFound"
+      ? httpError(403)
+      : state === "failed"
+        ? status.error.value
+        : null;
   status.isFetching.value = state === "loading";
   status.isLoading.value = state === "loading";
 };
@@ -132,6 +137,15 @@ describe("FleetRouterView", () => {
 
   it("renders a public fleet for a signed-in non-member", async () => {
     setMembership("notFound");
+
+    const wrapper = await mountFleetPage(true);
+
+    expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(true);
+  });
+
+  it("renders a public fleet when the members' copy is not found", async () => {
+    setMembership("notFound");
+    fleetState.fleetError.value = httpError(404);
 
     const wrapper = await mountFleetPage(true);
 
