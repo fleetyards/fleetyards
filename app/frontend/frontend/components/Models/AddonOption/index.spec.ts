@@ -129,4 +129,11 @@ describe("AddonOption", () => {
     expect(wrapper.emitted("increase")).toHaveLength(1);
     expect(wrapper.emitted("decrease")).toHaveLength(1);
   });
+
+  it("lays out as a card only when asked", async () => {
+    expect((await mount()).classes()).not.toContain("addon-option--stacked");
+    expect((await mount({ stacked: true })).classes()).toContain(
+      "addon-option--stacked",
+    );
+  });
 });

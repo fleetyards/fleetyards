@@ -3,10 +3,12 @@
 $phone-indent: 82px;
 
 /*
- * A row in a list of addons, shared by the hardpoint slot's module picker and
- * the hangar's modules-and-upgrades modal. A list rather than a grid of
- * photographs: the figures line up down the modal and can be read against each
- * other, which a two-up grid of store images never allowed.
+ * A row in a list of addons, shared by the hardpoint slot's module picker, the
+ * hangar's modules-and-upgrades modal and its paint picker. A list rather than
+ * a grid of photographs: the figures line up down the modal and can be read
+ * against each other, which a two-up grid of store images never allowed. The
+ * stacked card is the exception, for paints, which have a picture to recognise
+ * and no figures to compare.
  */
 .addon-option {
   position: relative;
@@ -198,6 +200,39 @@ $phone-indent: 82px;
   // than sitting back under the thumbnail.
   .addon-option__quantity {
     margin-left: $phone-indent;
+  }
+}
+
+/*
+ * After the phone rules, so the card keeps its full-width picture and drops the
+ * indent that lines a row's figures up beside a thumbnail.
+ */
+.addon-option--stacked {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 8px;
+  padding: 8px 8px 10px;
+
+  .addon-option__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .addon-option__body {
+    padding: 0 4px;
+  }
+
+  .addon-option__meta {
+    flex-wrap: wrap;
+    width: auto;
+    padding: 0 4px;
+  }
+
+  .addon-option__quantity {
+    align-self: flex-start;
+    margin-left: 4px;
   }
 }
 

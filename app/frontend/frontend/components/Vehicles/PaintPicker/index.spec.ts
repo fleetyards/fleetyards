@@ -22,29 +22,33 @@ const mount = (modelValue: string[], pledgedIds: string[] = []) =>
 const choices = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.findAll('[data-test="paint-picker-choice"]');
 
+const toggles = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+  wrapper.findAll('[data-test="paint-picker-choice-toggle"]');
+
 describe("VehiclePaintPicker", () => {
   it("offers every paint of the model", async () => {
     const wrapper = await mount([]);
 
-    expect(choices(wrapper).map((choice) => choice.text())).toEqual([
-      "Rust Society",
-      "Stormbringer",
-    ]);
+    expect(
+      choices(wrapper).map((choice) =>
+        choice.find(".addon-option__name").text(),
+      ),
+    ).toEqual(["Rust Society", "Stormbringer"]);
   });
 
   it("marks the paints the ship owns", async () => {
     const wrapper = await mount(["paint-1", "paint-2"]);
 
     expect(
-      choices(wrapper).map((choice) => choice.attributes("aria-pressed")),
+      toggles(wrapper).map((toggle) => toggle.attributes("aria-pressed")),
     ).toEqual(["true", "true"]);
   });
 
   it("adds a paint and removes one", async () => {
     const wrapper = await mount(["paint-1"]);
 
-    await choices(wrapper)[1].trigger("click");
-    await choices(wrapper)[0].trigger("click");
+    await toggles(wrapper)[1].trigger("click");
+    await toggles(wrapper)[0].trigger("click");
 
     expect(wrapper.emitted("update:modelValue")).toEqual([
       [["paint-1", "paint-2"]],
@@ -56,9 +60,34 @@ describe("VehiclePaintPicker", () => {
     const wrapper = await mount([], ["paint-2"]);
 
     expect(
-      choices(wrapper).map((choice) =>
-        choice.find('[data-test="paint-picker-pledged"]').exists(),
-      ),
+      choices(wrapper).map((choice) => choice.text().includes("From a pledge")),
     ).toEqual([false, true]);
+  });
+
+  it("says so when the search matches no paint", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        modelSlug: "ironclad",
+        paints: Array.from({ length: 10 }, (_, index) => ({
+          id: `paint-${index}`,
+          name: `Livery ${index}`,
+          slug: `livery-${index}`,
+          media: {},
+        })) as ModelPaint[],
+      },
+    });
+
+    expect(wrapper.find('[data-test="paint-picker-empty"]').exists()).toBe(
+      false,
+    );
+
+    await wrapper
+      .find('[data-test="input-paint-picker-search"]')
+      .setValue("nothing like it");
+
+    expect(choices(wrapper)).toHaveLength(0);
+    expect(wrapper.find('[data-test="paint-picker-empty"]').exists()).toBe(
+      true,
+    );
   });
 });

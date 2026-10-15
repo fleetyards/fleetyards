@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelPaint, useModelPaints } from "@/services/fyApi";
 
@@ -41,7 +44,7 @@ const { data: modelPaints, isLoading } = useModelPaints(() => props.modelSlug, {
 
 const paints = computed(() => props.paints || modelPaints.value);
 
-const thumb = (paint: ModelPaint) =>
+const image = (paint: ModelPaint) =>
   paint.media.storeImage?.smallUrl || paint.media.storeImage?.url;
 
 // A handful fits at a glance; a ship with a dozen liveries needs narrowing.
@@ -66,6 +69,28 @@ const visiblePaints = computed(() => {
 const owned = (paint: ModelPaint) => props.modelValue.includes(paint.id);
 
 const pledged = (paint: ModelPaint) => props.pledgedIds.includes(paint.id);
+
+const badges = (paint: ModelPaint): AddonBadge[] => {
+  const list: AddonBadge[] = [];
+
+  if (owned(paint)) {
+    list.push({
+      key: "owned",
+      label: t("labels.vehicleLoadout.owned"),
+      variant: PillVariantsEnum.SUCCESS,
+    });
+  }
+
+  if (pledged(paint)) {
+    list.push({
+      key: "pledged",
+      label: t("labels.vehicle.ownedPaintsSelect.pledged"),
+      variant: PillVariantsEnum.NEUTRAL,
+    });
+  }
+
+  return list;
+};
 
 const toggle = (paint: ModelPaint) =>
   emit(
@@ -97,38 +122,34 @@ const toggle = (paint: ModelPaint) =>
       clearable
     />
     <div class="paint-picker__grid">
-      <button
+      <AddonOption
         v-for="paint in visiblePaints"
         :key="paint.id"
-        type="button"
-        class="paint-picker__choice"
-        :class="{ 'paint-picker__choice--selected': owned(paint) }"
-        :aria-pressed="owned(paint)"
-        data-test="paint-picker-choice"
-        @click="toggle(paint)"
+        :name="paint.name"
+        :image="image(paint)"
+        :badges="badges(paint)"
+        :selected="owned(paint)"
+        stacked
+        test-id="paint-picker-choice"
+        @toggle="toggle(paint)"
+      />
+
+      <p
+        v-if="!isLoading && !visiblePaints.length"
+        class="addon-options__empty"
+        data-test="paint-picker-empty"
       >
-        <img
-          v-if="thumb(paint)"
-          :src="thumb(paint)"
-          alt=""
-          class="paint-picker__image"
-        />
-        <span v-else class="paint-picker__image" />
-        <span class="paint-picker__name">{{ paint.name }}</span>
-        <span
-          v-if="pledged(paint)"
-          class="paint-picker__pledged"
-          data-test="paint-picker-pledged"
-        >
-          {{ t("labels.vehicle.ownedPaintsSelect.pledged") }}
-        </span>
-      </button>
+        {{ t("labels.vehicle.ownedPaintsSelect.empty") }}
+      </p>
     </div>
   </fieldset>
 </template>
 
 <style lang="scss" scoped>
+@import "@/frontend/components/Vehicles/EditModal/Addons/index";
+
 .paint-picker {
+  min-width: 0;
   margin: 0 0 15px;
   padding: 0;
   border: 0;
@@ -139,59 +160,18 @@ const toggle = (paint: ModelPaint) =>
   }
 
   &__search {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
+  // Two cards across the edit modal, one on a phone.
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-    max-height: 320px;
-    overflow-y: auto;
-  }
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
 
-  &__choice {
-    padding: 0;
-    overflow: hidden;
-    border: 2px solid var(--color-edge-soft);
-    border-radius: 6px;
-    background: var(--color-gray-black);
-    color: inherit;
-    text-align: left;
-    cursor: pointer;
-
-    &:hover,
-    &:focus-visible {
-      border-color: var(--color-edge-strong);
+    .addon-options__empty {
+      grid-column: 1 / -1;
     }
-
-    &--selected,
-    &--selected:hover {
-      border-color: var(--color-gold);
-    }
-  }
-
-  &__image {
-    display: block;
-    width: 100%;
-    height: 64px;
-    object-fit: cover;
-  }
-
-  &__pledged {
-    display: block;
-    padding: 0 8px 6px;
-    color: var(--color-text-dim);
-    font-size: 0.7rem;
-  }
-
-  &__name {
-    display: block;
-    padding: 6px 8px;
-    overflow: hidden;
-    font-size: 0.75rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 }
 </style>

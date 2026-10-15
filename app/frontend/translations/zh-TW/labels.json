@@ -2305,7 +2305,8 @@
         "hangarGroups": "群組",
         "ownedPaintsSelect": {
           "label": "擁有的塗裝",
-          "pledged": "來自承諾包"
+          "pledged": "來自承諾包",
+          "empty": "未找到塗裝"
         },
         "modelPaintSelect": {
           "nullablePrompt": "選擇塗裝",

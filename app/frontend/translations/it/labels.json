@@ -2305,7 +2305,8 @@
         "hangarGroups": "Gruppi",
         "ownedPaintsSelect": {
           "label": "Verniciature possedute",
-          "pledged": "Da un pledge"
+          "pledged": "Da un pledge",
+          "empty": "Nessuna verniciatura trovata"
         },
         "modelPaintSelect": {
           "nullablePrompt": "Seleziona una Paint",

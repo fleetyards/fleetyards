@@ -2305,7 +2305,8 @@
         "hangarGroups": "群组",
         "ownedPaintsSelect": {
           "label": "拥有的涂装",
-          "pledged": "来自承诺包"
+          "pledged": "来自承诺包",
+          "empty": "未找到涂装"
         },
         "modelPaintSelect": {
           "nullablePrompt": "选择涂装",
