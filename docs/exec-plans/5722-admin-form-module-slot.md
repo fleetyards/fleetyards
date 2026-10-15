@@ -34,5 +34,5 @@ An admin can see and set or clear each module's slot on a hull from the admin mo
 - **2026-10-15** The admin module payload already carries `moduleHardpoints[].slot`. `ModulesImporter` sets a slot only on creating a link.
 
 ## Progress
-- [ ] Phase 1 — API
-- [ ] Phase 2 — Admin page
+- [x] Phase 1 — API
+- [x] Phase 2 — Admin page
