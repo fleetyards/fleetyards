@@ -326,15 +326,15 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     create(:module_hardpoint, model:, model_module: dropped, slot: "hardpoint_front_module")
     vehicle = create(:vehicle, user: @user, model:, model_module_ids: [kept.id, dropped.id])
     loadout = create(:vehicle_loadout, :fleetyards, :active, vehicle:, item_list: [
-      {slot: "hardpoint_rear_module", model_module_id: kept.id},
-      {slot: "hardpoint_front_module", model_module_id: dropped.id}
+      {slot_path: "hardpoint_rear_module", item_type: "ModelModule", item_id: kept.id},
+      {slot_path: "hardpoint_front_module", item_type: "ModelModule", item_id: dropped.id}
     ])
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelModuleIds: [kept.id]} do
-      assert_equal [kept.id], parsed_body["activeLoadout"]["items"].pluck("modelModuleId")
+      assert_equal [kept.id], parsed_body["activeLoadout"]["items"].pluck("itemId")
     end
-    assert_equal [kept.id], loadout.reload.items.pluck(:model_module_id)
+    assert_equal [kept.id], loadout.reload.items.pluck(:item_id)
   end
 
   test "PUT /vehicles/:id hides and unhides the vehicle" do

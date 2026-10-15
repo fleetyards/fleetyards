@@ -9,11 +9,12 @@ module V1
         schema({
           type: :object,
           properties: {
-            slot: {type: :string},
-            modelModuleId: {type: :string, format: :uuid}
+            slotPath: {type: :string, description: "Hardpoint names from the hull down, joined by /"},
+            itemType: ::V1::Schemas::Enums::VehicleLoadoutItemTypeEnum,
+            itemId: {type: :string, format: :uuid}
           },
           additionalProperties: false,
-          required: %w[slot modelModuleId]
+          required: %w[slotPath itemType itemId]
         })
       end
     end

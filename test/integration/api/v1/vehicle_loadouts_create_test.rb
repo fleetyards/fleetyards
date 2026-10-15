@@ -91,13 +91,13 @@ class Api::V1::VehicleLoadoutsCreateTest < ActionDispatch::IntegrationTest
       body: {
         kind: "fleetyards",
         items: [
-          {slot: "hardpoint_front_module", modelModuleId: front.id},
-          {slot: "hardpoint_rear_module", modelModuleId: rear.id}
+          {slotPath: "hardpoint_front_module", itemType: "ModelModule", itemId: front.id},
+          {slotPath: "hardpoint_rear_module", itemType: "ModelModule", itemId: rear.id}
         ]
       } do
       assert_equal "fleetyards", parsed_body["kind"]
       assert_not parsed_body.key?("url")
-      assert_equal [front.id, rear.id], parsed_body["items"].pluck("modelModuleId")
+      assert_equal [front.id, rear.id], parsed_body["items"].pluck("itemId")
     end
   end
 
@@ -109,8 +109,8 @@ class Api::V1::VehicleLoadoutsCreateTest < ActionDispatch::IntegrationTest
     post "/api/v1/vehicles/#{@vehicle.id}/loadouts", as: :json, params: {
       kind: "fleetyards",
       items: [
-        {slot: "hardpoint_module", modelModuleId: first.id},
-        {slot: "hardpoint_module", modelModuleId: second.id}
+        {slotPath: "hardpoint_module", itemType: "ModelModule", itemId: first.id},
+        {slotPath: "hardpoint_module", itemType: "ModelModule", itemId: second.id}
       ]
     }
 

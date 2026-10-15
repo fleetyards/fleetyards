@@ -40289,30 +40289,44 @@ components:
     VehicleLoadoutItem:
       type: object
       properties:
-        slot:
+        slotPath:
           type: string
-          description: The module hardpoint's sc_name on the hull
-        modelModuleId:
+          description: Hardpoint names from the hull down, joined by /
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
           type: string
           format: uuid
       additionalProperties: false
       required:
-      - slot
-      - modelModuleId
+      - slotPath
+      - itemType
+      - itemId
       title: VehicleLoadoutItem
     VehicleLoadoutItemInput:
       type: object
       properties:
-        slot:
+        slotPath:
           type: string
-        modelModuleId:
+          description: Hardpoint names from the hull down, joined by /
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
           type: string
           format: uuid
       additionalProperties: false
       required:
-      - slot
-      - modelModuleId
+      - slotPath
+      - itemType
+      - itemId
       title: VehicleLoadoutItemInput
+    VehicleLoadoutItemTypeEnum:
+      type: string
+      enum:
+      - ModelModule
+      x-enumNames:
+      - MODEL_MODULE
+      title: VehicleLoadoutItemTypeEnum
     VehicleLoadoutKindEnum:
       type: string
       enum:

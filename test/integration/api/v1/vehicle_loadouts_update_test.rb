@@ -91,13 +91,13 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
     old = fittable_module("hardpoint_module")
     new = fittable_module("hardpoint_module")
     loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle,
-      item_list: [{slot: "hardpoint_module", model_module_id: old.id}])
+      item_list: [{slot_path: "hardpoint_module", item_type: "ModelModule", item_id: old.id}])
     sign_in @user
 
     assert_api_response :put, 200,
       path_params: {vehicle_id: @vehicle.id, id: loadout.id},
-      body: {items: [{slot: "hardpoint_module", modelModuleId: new.id}]} do
-      assert_equal [new.id], parsed_body["items"].pluck("modelModuleId")
+      body: {items: [{slotPath: "hardpoint_module", itemType: "ModelModule", itemId: new.id}]} do
+      assert_equal [new.id], parsed_body["items"].pluck("itemId")
     end
   end
 
