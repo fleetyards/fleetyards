@@ -14,6 +14,7 @@ import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
   type Vehicle,
@@ -27,6 +28,7 @@ import {
   getVehicleLoadoutsQueryKey,
   VehicleLoadoutKindEnum,
   ModelProductionStatusEnum,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -142,8 +144,15 @@ const onDestroy = async (record: VehicleLoadout) => {
   });
 };
 
-// A fleetyards loadout is fitted in the loadout editor, not inline.
+// A fleetyards loadout is fitted in the loadout editor, not inline; until the
+// editor is switched on the page keeps to linked builds.
 const { openLoadoutModal } = useVehicleModals();
+
+const { isFeatureEnabled } = useFeatures();
+
+const editorEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
+);
 
 const editFitting = (record: VehicleLoadout) => {
   openLoadoutModal(props.vehicle, {
@@ -215,7 +224,9 @@ const onActivate = async (record: VehicleLoadout) => {
 
       <template #actions="{ item }">
         <Btn
-          v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+          v-if="
+            editorEnabled && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
+          "
           v-tooltip="t('actions.vehicleLoadout.editLoadout')"
           :data-test="`loadout-edit-fitting-${item.id}`"
           @click="editFitting(item)"
@@ -277,6 +288,7 @@ const onActivate = async (record: VehicleLoadout) => {
           {{ t("actions.add") }}
         </Btn>
         <Btn
+          v-if="editorEnabled"
           class="loadouts-page__add"
           :disabled="!flightReady || !vehicle.model?.hasModules"
           data-test="loadouts-new-fleetyards"

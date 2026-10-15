@@ -174,9 +174,13 @@ describe("VehicleContextMenu", () => {
   });
 
   it("keeps loadout editing with edits and separates it from management", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
     await mount({
       hideEdit: true,
-      vehicle: vehicle({ model: { ...vehicle().model, hasPaints: true } }),
+      vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
     });
 
     expect(menuStructure().slice(0, 5)).toEqual([
@@ -186,6 +190,14 @@ describe("VehicleContextMenu", () => {
       "separator",
       "vehicle-manage-loadouts",
     ]);
+  });
+
+  it("offers no loadout editing until the editor is switched on", async () => {
+    await mount({
+      vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
+    });
+
+    expect(items()).not.toContain("vehicle-loadout");
   });
 
   it("leaves the ship database to a page that links it", async () => {

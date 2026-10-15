@@ -17,12 +17,14 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   type ModelModule,
   type Vehicle,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
   VehicleLoadoutItemTypeEnum,
+  FeatureFlagName,
   useModelModules as useModelModulesQuery,
 } from "@/services/fyApi";
 
@@ -104,6 +106,13 @@ const previewImage = computed(
     props.vehicle.paint?.media.storeImage?.url ||
     model.value?.media.storeImage?.mediumUrl ||
     model.value?.media.storeImage?.url,
+);
+
+const { isFeatureEnabled } = useFeatures();
+
+// The owner's way into the editor, once the editor is switched on.
+const editVisible = computed(
+  () => props.editable && isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
 );
 
 const comlink = useComlink();
@@ -190,7 +199,7 @@ const edit = () => {
       </p>
     </div>
 
-    <template v-if="editable" #footer>
+    <template v-if="editVisible" #footer>
       <Btn data-test="vehicle-loadout-view-edit" @click="edit">
         <i class="fa-duotone fa-screwdriver-wrench" />
         {{ t("actions.vehicleLoadout.editLoadout") }}

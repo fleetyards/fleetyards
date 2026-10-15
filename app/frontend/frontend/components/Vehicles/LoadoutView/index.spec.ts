@@ -1,7 +1,11 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
-import type { Vehicle, VehicleLoadoutMinimal } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type Vehicle,
+  type VehicleLoadoutMinimal,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
 const resolved = () => ({
@@ -32,6 +36,15 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 const openLoadoutModal = vi.fn();
+
+const enabledFlags = ref<FeatureFlagName[]>([FeatureFlagName.LOADOUT_EDITOR]);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: (flag: FeatureFlagName) =>
+      enabledFlags.value.includes(flag),
+  }),
+}));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
   useVehicleModals: () => ({ openLoadoutModal }),
@@ -114,6 +127,18 @@ describe("VehicleLoadoutView", () => {
       loadoutId: "l1",
       tab: "modules",
     });
+  });
+
+  it("offers the owner no way in until the editor is switched on", async () => {
+    enabledFlags.value = [];
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
+    ).toBe(false);
+    enabledFlags.value = [FeatureFlagName.LOADOUT_EDITOR];
   });
 
   it("offers a visitor no way to edit", async () => {
