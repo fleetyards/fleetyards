@@ -49,7 +49,7 @@ describe("useVehicleModals", () => {
     expect(emit).toHaveBeenCalledWith(
       "open-modal",
       expect.objectContaining({
-        wide: true,
+        large: true,
         props: {
           vehicle,
           tab: "modules",

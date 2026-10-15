@@ -25,26 +25,46 @@ const torpedoes = {
 } as unknown as ModelModule;
 
 describe("useFittingDiff", () => {
-  it("lists what a swap gains and loses, cargo first", () => {
-    const { diff } = useFittingDiff();
+  it("adds the fitted modules to the hull's figures", () => {
+    const { metrics } = useFittingDiff();
 
-    expect(diff([torpedoes], [cargo])).toEqual([
-      { key: "cargo", delta: 32, label: "+32 SCU" },
-      { key: "torpedoes", delta: -2, label: "−2 × torpedoes" },
-    ]);
+    expect(Object.fromEntries(metrics(100, [cargo, torpedoes]))).toEqual({
+      cargo: 132,
+      torpedoes: 2,
+    });
   });
 
-  it("says what removing a module takes away", () => {
-    const { diff } = useFittingDiff();
+  it("reads a swap as the compare tool reads two ships", () => {
+    const { metrics, rows } = useFittingDiff();
 
-    expect(diff([cargo], []).map((change) => change.label)).toEqual([
-      "−32 SCU",
-    ]);
+    const [cargoRow, torpedoRow] = rows(
+      metrics(100, [torpedoes]),
+      metrics(100, [cargo]),
+    );
+
+    expect(cargoRow).toMatchObject({
+      key: "cargo",
+      before: 100,
+      after: 132,
+      value: "132 SCU",
+      deltaLabel: "+32 SCU",
+      delta: { tone: "better" },
+    });
+    // How many hardpoints of a kind is neither better nor worse.
+    expect(torpedoRow).toMatchObject({
+      key: "torpedoes",
+      before: 2,
+      after: 0,
+      deltaLabel: "\u22122",
+      delta: { tone: "even" },
+    });
   });
 
-  it("reports nothing for a swap that changes nothing", () => {
-    const { diff } = useFittingDiff();
+  it("marks nothing for a swap that changes nothing", () => {
+    const { metrics, rows } = useFittingDiff();
 
-    expect(diff([cargo], [cargo])).toEqual([]);
+    expect(rows(metrics(100, [cargo]), metrics(100, [cargo]))).toEqual([
+      expect.objectContaining({ key: "cargo", deltaLabel: undefined }),
+    ]);
   });
 });

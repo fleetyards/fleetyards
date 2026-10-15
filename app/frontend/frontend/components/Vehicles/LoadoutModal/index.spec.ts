@@ -127,11 +127,7 @@ const save = async (wrapper: Wrapper) => {
 };
 
 const cargo = (wrapper: Wrapper) =>
-  wrapper
-    .findAll("[data-test='vehicle-specs'] div")
-    .find((spec) => spec.find("dt").text() === "labels.model.cargo")
-    ?.find("dd")
-    .text();
+  wrapper.get("[data-test='vehicle-loadout-figure-cargo'] dd").text();
 
 beforeEach(() => {
   loadouts.value = [];
@@ -141,30 +137,35 @@ beforeEach(() => {
 });
 
 describe("VehicleLoadoutModal", () => {
-  it("counts only the fitted module's cargo in the ship's stats", async () => {
+  it("shows the ship's cargo with its change against the saved loadout", async () => {
     const wrapper = await mountModal(vehicle(["m1", "m2"]));
 
     expect(cargo(wrapper)).toBe("100");
 
     await slotPick(wrapper, 0).trigger("click");
 
-    expect(cargo(wrapper)).toBe("132");
+    expect(cargo(wrapper)).toContain("132");
+    expect(cargo(wrapper)).toContain("+32");
   });
 
-  it("shows what each option and the whole fitting change", async () => {
+  it("compares the option under the pointer with what the slot holds", async () => {
     const wrapper = await mountModal(
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
     );
 
-    const cargoOption = wrapper.findAll(
-      "[data-test='vehicle-loadout-slot-module']",
-    )[0];
-    expect(cargoOption.text()).toContain("+32");
-
-    await slotPick(wrapper, 0).trigger("click");
-
     expect(
-      wrapper.get("[data-test='vehicle-loadout-changes']").text(),
+      wrapper.find("[data-test='vehicle-loadout-comparison']").exists(),
+    ).toBe(false);
+
+    await wrapper
+      .findAll("[data-test='vehicle-loadout-slot-module']")[0]
+      .trigger("mouseenter");
+
+    const comparison = wrapper.get("[data-test='vehicle-loadout-comparison']");
+    expect(comparison.text()).toContain("Combat Module");
+    expect(comparison.text()).toContain("Cargo Module");
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-comparison-cargo']").text(),
     ).toContain("+32");
   });
 

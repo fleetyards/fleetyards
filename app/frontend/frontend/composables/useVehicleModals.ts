@@ -43,7 +43,9 @@ export const useVehicleModals = () => {
     comlink.emit("open-modal", {
       component: () =>
         import("@/frontend/components/Vehicles/LoadoutModal/index.vue"),
-      wide: true,
+      // Most of the screen, as the configuration terminal takes it: the ship is
+      // the backdrop and the choices need the width.
+      large: true,
       props: {
         vehicle,
         editable: options.editable ?? false,

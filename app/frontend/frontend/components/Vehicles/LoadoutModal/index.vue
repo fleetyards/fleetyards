@@ -13,10 +13,10 @@ import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import Fitting from "./Fitting/index.vue";
+import Comparison from "./Comparison/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -152,12 +152,6 @@ const fittedModuleIds = computed(() =>
   Object.values(fittedModules.value || {}),
 );
 
-const moduleCargo = computed(() =>
-  modules.value
-    .filter((mod) => fittedModuleIds.value.includes(mod.id))
-    .reduce((total, mod) => total + (mod.metrics?.cargo || 0), 0),
-);
-
 // Components a later version of this editor will cover, shown so the tab strip
 // already says where it is headed.
 const categoryTabIcon = (category: string) => {
@@ -219,32 +213,60 @@ const propulsionWeaponTabs = computed(() => [
   },
 ]);
 
-const previewImage = computed(
-  () =>
-    props.vehicle.paint?.media.storeImage?.mediumUrl ||
-    props.vehicle.paint?.media.storeImage?.url ||
-    model.value?.media.storeImage?.mediumUrl ||
-    model.value?.media.storeImage?.url,
-);
+// The ship as a backdrop rather than a picture beside the controls: the
+// angled view, coloured where there is one.
+const backdrop = computed(() => {
+  const media = model.value?.media;
+  const file =
+    media?.angledViewColored || media?.angledView || media?.storeImage;
 
-const { diff } = useFittingDiff();
-
-// Everything the unsaved fitting changes on the ship, against the loadout as
-// saved: the sum of every swap made so far.
-const changes = computed(() => {
-  const saved = Object.values(savedValues().fittedModules);
-
-  return diff(
-    modules.value.filter((mod) => saved.includes(mod.id)),
-    modules.value.filter((mod) => fittedModuleIds.value.includes(mod.id)),
-  );
+  return file ? file.largeUrl || file.url : undefined;
 });
 
-const fittedNames = computed(() =>
-  modules.value
-    .filter((mod) => fittedModuleIds.value.includes(mod.id))
-    .map((mod) => mod.name),
+const modulesFor = (ids: string[]) =>
+  modules.value.filter((mod) => ids.includes(mod.id));
+
+const hullCargo = computed(() => model.value?.metrics.cargo || 0);
+
+const { metrics, rows } = useFittingDiff();
+
+// The ship's figures under the fitting as it stands, each with its change
+// against the loadout as saved.
+const shipFigures = computed(() =>
+  rows(
+    metrics(
+      hullCargo.value,
+      modulesFor(Object.values(savedValues().fittedModules)),
+    ),
+    metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
+  ),
 );
+
+// The slot and option under the pointer or focus; compared against what the
+// saved loadout holds in that slot, with the rest of the fitting as it is.
+const preview = ref<{ slot: string; moduleId: string | null }>();
+
+const onPreview = (slot: string, moduleId: string | null) => {
+  preview.value = { slot, moduleId };
+};
+
+const comparison = computed(() => {
+  if (!preview.value) {
+    return undefined;
+  }
+
+  const { slot, moduleId } = preview.value;
+  const savedId = savedValues().fittedModules[slot];
+  const others = Object.entries(fittedModules.value || {})
+    .filter(([path]) => path !== slot)
+    .map(([, id]) => id);
+
+  return {
+    from: modules.value.find((mod) => mod.id === savedId),
+    to: modules.value.find((mod) => mod.id === moduleId),
+    others: modulesFor(others),
+  };
+});
 
 const comlink = useComlink();
 
@@ -353,59 +375,88 @@ const onSubmit = handleSubmit(async (values) => {
     <form
       :id="`vehicle-loadout-${vehicle.id}`"
       class="vehicle-loadout"
+      :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"
     >
-      <p
-        v-if="!flightReady"
-        class="vehicle-loadout__hint"
-        data-test="vehicle-loadout-not-flight-ready"
-      >
-        {{ t("labels.vehicleLoadout.notFlightReady") }}
-      </p>
+      <aside class="vehicle-loadout__ship" data-test="vehicle-loadout-ship">
+        <p class="vehicle-loadout__model">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span v-html="vehicle.model.manufacturer?.name" />
+          <strong>{{ vehicle.model.name }}</strong>
+        </p>
+        <dl class="vehicle-loadout__figures">
+          <div
+            v-for="figure in shipFigures"
+            :key="figure.key"
+            class="vehicle-loadout__figure"
+            :data-test="`vehicle-loadout-figure-${figure.key}`"
+          >
+            <dt>{{ figure.label }}</dt>
+            <dd>
+              {{ figure.value }}
+              <span
+                v-if="figure.deltaLabel"
+                class="vehicle-loadout__figure-delta"
+                :class="`vehicle-loadout__figure-delta--${figure.delta?.tone}`"
+              >
+                {{ figure.deltaLabel }}
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </aside>
 
-      <FormInput
-        v-else-if="editable"
-        name="loadoutName"
-        :label="t('labels.vehicleLoadout.loadoutName')"
-        :placeholder="t('labels.vehicleLoadout.loadoutNamePlaceholder')"
-        class="vehicle-loadout__name"
-        data-test="vehicle-loadout-name"
-      />
+      <div class="vehicle-loadout__panel">
+        <p
+          v-if="!flightReady"
+          class="vehicle-loadout__hint"
+          data-test="vehicle-loadout-not-flight-ready"
+        >
+          {{ t("labels.vehicleLoadout.notFlightReady") }}
+        </p>
 
-      <FormTabs
-        :default-tab="tab"
-        :sync-url="false"
-        horizontal
-        active-label-only
-      >
-        <div class="vehicle-loadout__layout">
-          <div class="vehicle-loadout__main">
-            <FormTab
-              v-for="upcoming in systemTabs"
-              :id="upcoming.id"
-              :key="upcoming.id"
-              :label="upcoming.label"
-              :icon="upcoming.icon"
-              :icon-src="upcoming.iconSrc"
-              :hint="t('labels.vehicleLoadout.comingSoon')"
-              disabled
-            />
+        <FormInput
+          v-else-if="editable"
+          name="loadoutName"
+          :label="t('labels.vehicleLoadout.loadoutName')"
+          :placeholder="t('labels.vehicleLoadout.loadoutNamePlaceholder')"
+          class="vehicle-loadout__name"
+          data-test="vehicle-loadout-name"
+        />
 
-            <FormTab
-              :id="VehicleLoadoutTabsEnum.MODULES"
-              :label="t('labels.vehicleLoadout.tabs.modules')"
-              :icon="categoryTabIcon('module').icon"
-              :fields="['fittedModules']"
-              :disabled="!vehicle.model.hasModules"
-              :hint="
-                vehicle.model.hasModules
-                  ? undefined
-                  : t('labels.vehicleLoadout.unavailable.modules')
-              "
-            >
-              <AsyncData :async-status="modulesAsyncStatus">
-                <template #resolved>
+        <FormTabs
+          :default-tab="tab"
+          :sync-url="false"
+          horizontal
+          active-label-only
+        >
+          <FormTab
+            v-for="upcoming in systemTabs"
+            :id="upcoming.id"
+            :key="upcoming.id"
+            :label="upcoming.label"
+            :icon="upcoming.icon"
+            :icon-src="upcoming.iconSrc"
+            :hint="t('labels.vehicleLoadout.comingSoon')"
+            disabled
+          />
+
+          <FormTab
+            :id="VehicleLoadoutTabsEnum.MODULES"
+            :label="t('labels.vehicleLoadout.tabs.modules')"
+            :icon="categoryTabIcon('module').icon"
+            :fields="['fittedModules']"
+            :disabled="!vehicle.model.hasModules"
+            :hint="
+              vehicle.model.hasModules
+                ? undefined
+                : t('labels.vehicleLoadout.unavailable.modules')
+            "
+          >
+            <AsyncData :async-status="modulesAsyncStatus">
+              <template #resolved>
+                <div class="vehicle-loadout__category">
                   <fieldset data-test="vehicle-loadout-fitted">
                     <legend>
                       <h3>{{ t("labels.vehicleLoadout.fitted") }}</h3>
@@ -422,81 +473,41 @@ const onSubmit = handleSubmit(async (values) => {
                       :modules="modules"
                       :owned-ids="vehicle.modelModuleIds"
                       :editable="editable"
+                      @preview="onPreview"
                     />
                   </fieldset>
-                </template>
-              </AsyncData>
-            </FormTab>
 
-            <FormTab
-              v-for="upcoming in propulsionWeaponTabs"
-              :id="upcoming.id"
-              :key="upcoming.id"
-              :label="upcoming.label"
-              :icon="upcoming.icon"
-              :icon-src="upcoming.iconSrc"
-              :hint="t('labels.vehicleLoadout.comingSoon')"
-              disabled
-            />
-          </div>
+                  <Comparison
+                    v-if="comparison"
+                    class="vehicle-loadout__comparison"
+                    :hull-cargo="hullCargo"
+                    :others="comparison.others"
+                    :from="comparison.from"
+                    :to="comparison.to"
+                  />
+                  <p
+                    v-else-if="editable && flightReady"
+                    class="vehicle-loadout__comparison vehicle-loadout__hint"
+                  >
+                    {{ t("labels.vehicleLoadout.compareHint") }}
+                  </p>
+                </div>
+              </template>
+            </AsyncData>
+          </FormTab>
 
-          <aside
-            class="vehicle-loadout__preview"
-            data-test="vehicle-loadout-preview"
-          >
-            <img
-              v-if="previewImage"
-              :src="previewImage"
-              :alt="vehicle.model.name"
-              class="vehicle-loadout__image"
-            />
-            <p class="vehicle-loadout__model">
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <span v-html="vehicle.model.manufacturer?.name" />
-              <strong>{{ vehicle.model.name }}</strong>
-            </p>
-            <Specs :model="vehicle.model" :module-cargo="moduleCargo" />
-            <dl class="vehicle-loadout__summary">
-              <div
-                v-if="vehicle.model.hasModules"
-                class="vehicle-loadout__summary-entry"
-                data-test="vehicle-loadout-summary-modules"
-              >
-                <dt>{{ t("labels.vehicleLoadout.tabs.modules") }}</dt>
-                <dd>
-                  {{
-                    fittedNames.length
-                      ? fittedNames.join(", ")
-                      : t("labels.vehicleLoadout.none")
-                  }}
-                </dd>
-              </div>
-              <div
-                v-if="changes.length"
-                class="vehicle-loadout__summary-entry"
-                data-test="vehicle-loadout-changes"
-              >
-                <dt>{{ t("labels.vehicleLoadout.changes") }}</dt>
-                <dd>
-                  <ul class="vehicle-loadout__changes">
-                    <li
-                      v-for="change in changes"
-                      :key="change.key"
-                      :class="
-                        change.delta > 0
-                          ? 'vehicle-loadout__change--gain'
-                          : 'vehicle-loadout__change--loss'
-                      "
-                    >
-                      {{ change.label }}
-                    </li>
-                  </ul>
-                </dd>
-              </div>
-            </dl>
-          </aside>
-        </div>
-      </FormTabs>
+          <FormTab
+            v-for="upcoming in propulsionWeaponTabs"
+            :id="upcoming.id"
+            :key="upcoming.id"
+            :label="upcoming.label"
+            :icon="upcoming.icon"
+            :icon-src="upcoming.iconSrc"
+            :hint="t('labels.vehicleLoadout.comingSoon')"
+            disabled
+          />
+        </FormTabs>
+      </div>
     </form>
 
     <template v-if="editable" #footer>

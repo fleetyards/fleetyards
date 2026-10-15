@@ -4292,7 +4292,7 @@
         "fittedHint": "每个槽位一个模块，从你拥有的模块中选择",
         "ownedModules": "你拥有的模块",
         "nothingFitted": "未装配",
-        "changes": "相对已保存配置的变化",
+        "compareHint": "指向一个模块以查看它带来的变化",
         "loadoutName": "配装名称",
         "loadoutNamePlaceholder": "例如：医疗任务",
         "stock": "原厂",

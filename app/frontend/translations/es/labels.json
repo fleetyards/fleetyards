@@ -4292,7 +4292,7 @@
         "fittedHint": "Un módulo por ranura, de los módulos que posees",
         "ownedModules": "Tus módulos",
         "nothingFitted": "Nada equipado",
-        "changes": "Cambios respecto al equipamiento guardado",
+        "compareHint": "Señala un módulo para ver qué cambia",
         "loadoutName": "Nombre de la configuración",
         "loadoutNamePlaceholder": "p. ej. Misión médica",
         "stock": "De serie",

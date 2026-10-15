@@ -1,81 +1,97 @@
 import { useI18n } from "@/shared/composables/useI18n";
 import { UNINFORMATIVE } from "@/frontend/composables/useModuleContents";
+import {
+  type CompareDelta,
+  deltasAgainst,
+} from "@/frontend/components/Compare/delta";
+import type { CompareDirection } from "@/frontend/components/Compare/highlights";
 import type { ModelModule } from "@/services/fyApi";
 
-export type FittingChange = {
+// What a fitting adds up to on the ship, by metric.
+export type FittingMetrics = Map<string, number>;
+
+export type FittingRow = {
   key: string;
   label: string;
-  delta: number;
+  before: number;
+  after: number;
+  value: string;
+  delta?: CompareDelta;
+  deltaLabel?: string;
 };
-
-type Effect = Map<string, number>;
 
 const CARGO = "cargo";
 
-// What a module brings to the ship: its cargo, and the hardpoints it adds,
-// counted by category. The same reading `useModuleContents` summarises.
-const moduleEffect = (mod: ModelModule): Effect => {
-  const effect: Effect = new Map();
-
-  if (mod.metrics?.cargo) {
-    effect.set(CARGO, mod.metrics.cargo);
-  }
-
-  (mod.hardpoints || []).forEach((hardpoint) => {
-    const category = hardpoint.category;
-    if (!category || UNINFORMATIVE.includes(category)) {
-      return;
-    }
-
-    effect.set(category, (effect.get(category) || 0) + 1);
-  });
-
-  return effect;
+// Directions as the compare tool sets them: more cargo is better; how many
+// hardpoints of a kind a module brings is neither better nor worse.
+const DIRECTIONS: Record<string, CompareDirection | undefined> = {
+  [CARGO]: "higher",
 };
 
-const combine = (modules: ModelModule[]): Effect =>
-  modules.reduce<Effect>((total, mod) => {
-    moduleEffect(mod).forEach((amount, key) => {
-      total.set(key, (total.get(key) || 0) + amount);
-    });
-    return total;
-  }, new Map());
-
 /**
- * Every stat a change of fitting moves, as plus and minus values: what the
- * ship gains and loses going from one set of fitted items to another. The
- * editor reads it per option and for the whole loadout against the saved one.
+ * The ship's figures under a fitting and the change from one fitting to
+ * another, read the way the compare tool reads two ships: a value, a signed
+ * difference and whether that is better or worse. Cargo is the hull's hold
+ * plus what the modules carry; hardpoints are what the modules bring.
  */
 export const useFittingDiff = () => {
   const { t, toNumber } = useI18n();
 
-  const label = (key: string, delta: number) => {
-    const sign = delta > 0 ? "+" : "−";
-    const amount = Math.abs(delta);
+  const metrics = (hullCargo: number, modules: ModelModule[]) => {
+    const totals: FittingMetrics = new Map([[CARGO, hullCargo]]);
 
-    if (key === CARGO) {
-      return `${sign}${toNumber(amount, "cargo")}`;
-    }
+    modules.forEach((mod) => {
+      totals.set(CARGO, (totals.get(CARGO) || 0) + (mod.metrics?.cargo || 0));
 
-    return `${sign}${amount} × ${t(`labels.hardpoint.categories.${key}`)}`;
+      (mod.hardpoints || []).forEach((hardpoint) => {
+        const category = hardpoint.category;
+        if (!category || UNINFORMATIVE.includes(category)) {
+          return;
+        }
+
+        totals.set(category, (totals.get(category) || 0) + 1);
+      });
+    });
+
+    return totals;
   };
 
-  const diff = (from: ModelModule[], to: ModelModule[]): FittingChange[] => {
-    const before = combine(from);
-    const after = combine(to);
-    const keys = [...new Set([...before.keys(), ...after.keys()])];
+  const labelFor = (key: string) =>
+    key === CARGO
+      ? t("labels.model.cargo")
+      : t(`labels.hardpoint.categories.${key}`);
 
-    return keys
-      .map((key) => ({
-        key,
-        delta: (after.get(key) || 0) - (before.get(key) || 0),
-      }))
-      .filter((change) => change.delta !== 0)
-      .sort((a, b) =>
-        a.key === CARGO ? -1 : b.key === CARGO ? 1 : a.key.localeCompare(b.key),
+  const format = (key: string, amount: number) =>
+    key === CARGO ? String(toNumber(amount, "cargo")) : String(amount);
+
+  const signed = (key: string, difference: number) =>
+    `${difference > 0 ? "+" : "−"}${format(key, Math.abs(difference))}`;
+
+  // Every metric either fitting has, cargo first; a metric neither touches
+  // is left out rather than listed as "no change".
+  const rows = (before: FittingMetrics, after: FittingMetrics): FittingRow[] =>
+    [...new Set([...before.keys(), ...after.keys()])]
+      .filter((key) =>
+        key === CARGO ? before.get(key) || 0 || after.get(key) || 0 : true,
       )
-      .map((change) => ({ ...change, label: label(change.key, change.delta) }));
-  };
+      .sort((a, b) => (a === CARGO ? -1 : b === CARGO ? 1 : a.localeCompare(b)))
+      .map((key) => {
+        const from = before.get(key) || 0;
+        const to = after.get(key) || 0;
+        const [, delta] = deltasAgainst([from, to], 0, DIRECTIONS[key], true);
 
-  return { diff };
+        return {
+          key,
+          label: labelFor(key),
+          before: from,
+          after: to,
+          value: format(key, to),
+          delta,
+          deltaLabel: delta?.difference
+            ? signed(key, delta.difference)
+            : undefined,
+        };
+      });
+
+  return { metrics, rows };
 };

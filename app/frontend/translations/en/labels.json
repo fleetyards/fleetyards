@@ -4306,7 +4306,7 @@
         "fittedHint": "One module per slot, from the modules you own",
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
-        "changes": "Changes from the saved loadout",
+        "compareHint": "Point at a module to see what it changes",
         "loadoutName": "Loadout name",
         "loadoutNamePlaceholder": "e.g. Medical run",
         "stock": "Stock",

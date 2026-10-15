@@ -4292,7 +4292,7 @@
         "fittedHint": "Ein Modul pro Slot, aus den Modulen, die du besitzt",
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
-        "changes": "Änderungen gegenüber dem gespeicherten Loadout",
+        "compareHint": "Zeige auf ein Modul, um zu sehen, was es ändert",
         "loadoutName": "Name des Loadouts",
         "loadoutNamePlaceholder": "z. B. Rettungseinsatz",
         "stock": "Serienmäßig",
