@@ -243,6 +243,11 @@ class Hardpoint < ApplicationRecord
       :seat
     elsif ore_pod?
       :ore_pods
+    # Most hulls leave their paint slots empty in the game files, and an empty
+    # slot has no component to name its category. The slot's name still does;
+    # a fitted component keeps deciding for itself.
+    elsif component.nil? && sc_name&.start_with?("hardpoint_paint")
+      :paints
     else
       case component&.component_type
       when "EMP"

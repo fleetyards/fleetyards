@@ -496,6 +496,7 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
 
   test "takes the loadouts and the rows hanging off the vehicle" do
     vehicle = create(:vehicle, user: @user)
+    vehicle.model.update!(production_status: "flight-ready")
     create(:vehicle_loadout, vehicle: vehicle)
     TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
     FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)

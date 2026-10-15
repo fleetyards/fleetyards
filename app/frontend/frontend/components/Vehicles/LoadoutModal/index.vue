@@ -12,54 +12,107 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
-import VehiclePaintPicker from "@/frontend/components/Vehicles/PaintPicker/index.vue";
-import Addons from "./Addons/index.vue";
-import Packages from "./Packages/index.vue";
+import Fitting from "./Fitting/index.vue";
+import Comparison from "./Comparison/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
+import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
+import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
 import {
   type Vehicle,
-  type VehicleUpdateInput,
-  getVehiclePaintsQueryKey,
+  type VehicleLoadout,
+  type VehicleLoadoutItemInput,
+  ModelProductionStatusEnum,
+  VehicleLoadoutItemTypeEnum,
+  VehicleLoadoutKindEnum,
+  activateVehicleLoadout,
+  createVehicleLoadout,
+  getShowVehicleQueryKey,
+  getVehicleLoadoutsQueryKey,
+  updateVehicleLoadout,
   useModelModules as useModelModulesQuery,
-  useModelModulePackages as useModelModulePackagesQuery,
-  useModelPaints as useModelPaintsQuery,
-  useModelUpgrades as useModelUpgradesQuery,
+  useVehicleLoadouts,
 } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
   editable?: boolean;
   tab?: VehicleLoadoutTabsEnum;
-  paintId?: string;
+  // The saved fleetyards loadout to edit. Without one the editor opens the
+  // active fleetyards loadout, or a new one.
+  loadoutId?: string;
+  newLoadout?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   tab: undefined,
-  paintId: undefined,
+  loadoutId: undefined,
+  newLoadout: false,
 });
 
 const { t } = useI18n();
 
-type LoadoutValues = Pick<
-  VehicleUpdateInput,
-  "modelPaintId" | "modelModuleIds" | "modelUpgradeIds"
->;
+/**
+ * One fleetyards loadout: its name and what is fitted, slot path by slot path.
+ * What the ship owns is edited on the vehicle, not here; this only reads it to
+ * know what can be fitted.
+ */
+type LoadoutValues = {
+  loadoutName: string;
+  fittedModules: Record<string, string>;
+};
 
-const savedValues = (): LoadoutValues => ({
-  modelPaintId: props.vehicle.paint?.id ?? null,
-  modelModuleIds: [...props.vehicle.modelModuleIds],
-  modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
+const { data: loadoutsData, isPending: loadoutsPending } = useVehicleLoadouts(
+  () => props.vehicle.id,
+  { query: { enabled: () => props.editable } },
+);
+
+const editedLoadout = computed(() => {
+  if (props.newLoadout) {
+    return undefined;
+  }
+
+  if (props.loadoutId) {
+    return (loadoutsData.value || []).find(
+      (loadout) => loadout.id === props.loadoutId,
+    );
+  }
+
+  const active = props.vehicle.activeLoadout;
+  if (active?.kind === VehicleLoadoutKindEnum.FLEETYARDS) {
+    return active;
+  }
+
+  // A linked build is active: the ship's own loadout is still the one to
+  // edit, or every save would start another beside it.
+  return (loadoutsData.value || [])
+    .filter((loadout) => loadout.kind === VehicleLoadoutKindEnum.FLEETYARDS)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
 });
 
-const LOADOUT_FIELDS = Object.keys(savedValues()) as (keyof LoadoutValues)[];
+// Until the list is in, a save could not tell an edit from a new loadout.
+const loadoutPending = computed(
+  () => props.editable && !props.newLoadout && loadoutsPending.value,
+);
+
+const savedValues = (): LoadoutValues => ({
+  loadoutName: editedLoadout.value?.name ?? "",
+  fittedModules: Object.fromEntries(
+    (editedLoadout.value?.items || [])
+      .filter(
+        (item) => item.itemType === VehicleLoadoutItemTypeEnum.MODEL_MODULE,
+      )
+      .map((item) => [item.slotPath, item.itemId]),
+  ),
+});
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
   initialValues: savedValues(),
@@ -73,52 +126,32 @@ const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
  * A pending choice wins over the refresh, or a background refetch of the hangar
  * would discard what you had just picked and not yet saved.
  */
-watch(
-  () => props.vehicle,
-  () => {
-    if (meta.value.dirty) {
-      return;
-    }
+watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
+  if (meta.value.dirty) {
+    return;
+  }
 
-    resetForm({ values: savedValues() });
-  },
-);
+  resetForm({ values: savedValues() });
+});
 
-const [modelPaintId] = defineField("modelPaintId");
-const [modelModuleIds] = defineField("modelModuleIds");
-const [modelUpgradeIds] = defineField("modelUpgradeIds");
-
-// Set as a pending choice rather than an initial value, so it saves like a pick
-// and survives the background refetch the watcher above lets through.
-if (props.paintId) {
-  modelPaintId.value = props.paintId;
-}
+const [fittedModules] = defineField("fittedModules");
 
 const model = computed(() => props.vehicle.model);
 
 const modelSlug = computed(() => model.value?.slug ?? "");
 
-const { data: modulePackages, ...modulePackagesAsyncStatus } =
-  useModelModulePackagesQuery(modelSlug);
-
 const { data: modulesData, ...modulesAsyncStatus } =
   useModelModulesQuery(modelSlug);
 
-const { data: upgradesData, ...upgradesAsyncStatus } =
-  useModelUpgradesQuery(modelSlug);
-
-const { data: paintsData } = useModelPaintsQuery(modelSlug);
-
-// Three endpoints, three shapes: modules and packages come back paginated under
-// `items`, upgrades as a bare array.
-const packages = computed(() => modulePackages.value?.items ?? []);
 const modules = computed(() => modulesData.value?.items ?? []);
-const upgrades = computed(() => upgradesData.value ?? []);
 
-// Picking a paint is a change of the vehicle's look, not something to show to a
-// visitor who cannot make it.
-const paintsVisible = computed(
-  () => props.editable && !!model.value?.hasPaints,
+const flightReady = computed(
+  () =>
+    model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
+);
+
+const fittedModuleIds = computed(() =>
+  Object.values(fittedModules.value || {}),
 );
 
 // Components a later version of this editor will cover, shown so the tab strip
@@ -182,48 +215,79 @@ const propulsionWeaponTabs = computed(() => [
   },
 ]);
 
-const selectedPaint = computed(() =>
-  (paintsData.value || []).find((paint) => paint.id === modelPaintId.value),
+// The ship as a backdrop rather than a picture beside the controls: the
+// angled view, coloured where there is one.
+const backdrop = computed(() => {
+  const media = model.value?.media;
+  const file =
+    media?.angledViewColored || media?.angledView || media?.storeImage;
+
+  return file ? file.largeUrl || file.url : undefined;
+});
+
+const modulesFor = (ids: string[]) =>
+  modules.value.filter((mod) => ids.includes(mod.id));
+
+const hullCargo = computed(() => model.value?.metrics.cargo || 0);
+
+const { metrics, rows } = useFittingDiff();
+
+// The ship's figures under the fitting as it stands, each with its change
+// against the loadout as saved.
+const shipFigures = computed(() =>
+  rows(
+    metrics(
+      hullCargo.value,
+      modulesFor(Object.values(savedValues().fittedModules)),
+    ),
+    metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
+  ),
 );
 
-const previewImage = computed(
-  () =>
-    selectedPaint.value?.media.storeImage?.mediumUrl ||
-    selectedPaint.value?.media.storeImage?.url ||
-    model.value?.media.storeImage?.mediumUrl ||
-    model.value?.media.storeImage?.url,
-);
+const slots = computed(() => moduleSlots(modules.value));
 
-const selectedNames = (
-  addons: { id: string; name: string }[],
-  ids?: string[] | null,
-) =>
-  addons
-    .filter((addon) => (ids || []).includes(addon.id))
-    .map((addon) => addon.name);
+/**
+ * The panel always answers for one slot: the one last picked in, or the first.
+ * Pointing at an option previews it there for as long as the pointer or focus
+ * stays on the list, then the panel returns to what is picked, so passing over
+ * options on the way to it never leaves it on one of them.
+ */
+const pickedSlot = ref<string>();
 
-const summary = computed(() =>
-  [
-    {
-      key: "paint",
-      label: t("labels.vehicleLoadout.tabs.paints"),
-      values: selectedPaint.value ? [selectedPaint.value.name] : [],
-      visible: paintsVisible.value,
-    },
-    {
-      key: "modules",
-      label: t("labels.vehicleLoadout.tabs.modules"),
-      values: selectedNames(modules.value, modelModuleIds.value),
-      visible: !!model.value?.hasModules,
-    },
-    {
-      key: "upgrades",
-      label: t("labels.vehicleLoadout.tabs.upgrades"),
-      values: selectedNames(upgrades.value, modelUpgradeIds.value),
-      visible: !!model.value?.hasUpgrades,
-    },
-  ].filter((entry) => entry.visible),
-);
+const hovered = ref<{ slot: string; moduleId: string | null }>();
+
+const onPreview = (slot: string, moduleId: string | null) => {
+  hovered.value = { slot, moduleId };
+};
+
+const onPreviewEnd = () => {
+  hovered.value = undefined;
+};
+
+const onPick = (slot: string) => {
+  pickedSlot.value = slot;
+};
+
+const comparison = computed(() => {
+  const slot = hovered.value?.slot ?? pickedSlot.value ?? slots.value[0];
+  if (!slot) {
+    return undefined;
+  }
+
+  const moduleId = hovered.value
+    ? hovered.value.moduleId
+    : (fittedModules.value || {})[slot];
+  const savedId = savedValues().fittedModules[slot];
+  const others = Object.entries(fittedModules.value || {})
+    .filter(([path]) => path !== slot)
+    .map(([, id]) => id);
+
+  return {
+    from: modules.value.find((mod) => mod.id === savedId),
+    to: modules.value.find((mod) => mod.id === moduleId),
+    others: modulesFor(others),
+  };
+});
 
 const comlink = useComlink();
 
@@ -231,55 +295,96 @@ const queryClient = useQueryClient();
 
 const { displayAlert } = useAppNotifications();
 
-const { useUpdateMutation } = useVehicleMutations();
+const { invalidateHangarQueries } = useVehicleMutations();
 
-const vehicle = computed(() => props.vehicle);
+const saving = ref(false);
 
-const mutation = useUpdateMutation(vehicle);
+// Created by a save whose activation then failed: the retry finishes that one
+// rather than creating another beside it.
+const createdLoadout = ref<VehicleLoadout>();
 
-const changedFields = (values: LoadoutValues) => {
-  const saved = savedValues();
+/**
+ * Writes the loadout being edited, or a new one. A new loadout is switched on
+ * only when nothing else is: replacing an active build stays a choice made on
+ * the loadouts page.
+ */
+const onSubmit = handleSubmit(async (values) => {
+  if (!props.editable || !flightReady.value || loadoutPending.value) {
+    return;
+  }
 
-  const changes = LOADOUT_FIELDS.reduce<VehicleUpdateInput>((data, field) => {
-    if (JSON.stringify(values[field]) !== JSON.stringify(saved[field])) {
-      return { ...data, [field]: values[field] };
+  const items: VehicleLoadoutItemInput[] = Object.entries(
+    values.fittedModules,
+  ).map(([slotPath, itemId]) => ({
+    slotPath,
+    itemType: VehicleLoadoutItemTypeEnum.MODEL_MODULE,
+    itemId,
+  }));
+  // A cleared name goes back to the default the server gives.
+  const name = values.loadoutName.trim();
+  const target = createdLoadout.value ?? editedLoadout.value;
+
+  // What this editor does not show yet stays, as long as the slot it sits in
+  // is still fitted.
+  const fittedPaths = items.map((item) => item.slotPath);
+  const kept = (target?.items || []).filter(
+    (item) =>
+      item.itemType !== VehicleLoadoutItemTypeEnum.MODEL_MODULE &&
+      (!item.slotPath.includes("/") ||
+        fittedPaths.includes(
+          item.slotPath.slice(0, item.slotPath.lastIndexOf("/")),
+        )),
+  );
+  items.push(
+    ...kept.map(({ slotPath, itemType, itemId }) => ({
+      slotPath,
+      itemType,
+      itemId,
+    })),
+  );
+
+  saving.value = true;
+
+  try {
+    if (target) {
+      await updateVehicleLoadout(props.vehicle.id, target.id, {
+        name,
+        items,
+      });
+    } else {
+      createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
+        kind: VehicleLoadoutKindEnum.FLEETYARDS,
+        name,
+        items,
+      });
     }
 
-    return data;
-  }, {});
+    if (createdLoadout.value && !props.vehicle.activeLoadout) {
+      await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
+    }
 
-  return Object.keys(changes).length ? changes : undefined;
-};
+    await Promise.all([
+      invalidateHangarQueries(),
+      queryClient.invalidateQueries({
+        queryKey: getShowVehicleQueryKey(props.vehicle.id),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
 
-const onSubmit = handleSubmit(async (values) => {
-  if (!props.editable) {
-    return;
-  }
-
-  const changes = changedFields(values);
-
-  if (!changes) {
     comlink.emit("close-modal");
-    return;
-  }
-
-  await mutation
-    .mutateAsync({
-      id: props.vehicle.id,
-      data: changes,
-    })
-    .then(async () => {
-      if ("modelPaintId" in changes) {
-        await queryClient.invalidateQueries({
-          queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
-        });
-      }
-
-      comlink.emit("close-modal");
-    })
-    .catch(() => {
-      displayAlert({ text: t("messages.vehicleLoadout.failure") });
+  } catch (error) {
+    // The reason -- a name another loadout already has, say -- is what tells
+    // the owner what to change.
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
     });
+  } finally {
+    saving.value = false;
+  }
 });
 </script>
 
@@ -295,179 +400,147 @@ const onSubmit = handleSubmit(async (values) => {
     <form
       :id="`vehicle-loadout-${vehicle.id}`"
       class="vehicle-loadout"
+      :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"
     >
-      <FormTabs
-        :default-tab="tab"
-        :sync-url="false"
-        horizontal
-        active-label-only
-      >
-        <div class="vehicle-loadout__layout">
-          <div class="vehicle-loadout__main">
-            <FormTab
-              v-for="upcoming in systemTabs"
-              :id="upcoming.id"
-              :key="upcoming.id"
-              :label="upcoming.label"
-              :icon="upcoming.icon"
-              :icon-src="upcoming.iconSrc"
-              :hint="t('labels.vehicleLoadout.comingSoon')"
-              disabled
-            />
-
-            <FormTab
-              :id="VehicleLoadoutTabsEnum.MODULES"
-              :label="t('labels.vehicleLoadout.tabs.modules')"
-              :icon="categoryTabIcon('module').icon"
-              :fields="['modelModuleIds']"
-              :disabled="!vehicle.model.hasModules"
-            >
-              <div class="vehicle-loadout__sections">
-                <AsyncData
-                  :fullscreen="false"
-                  :async-status="modulePackagesAsyncStatus"
-                >
-                  <template #resolved>
-                    <fieldset v-if="packages.length">
-                      <legend>
-                        <h3>{{ t("labels.model.modulePackages") }}</h3>
-                        <span v-if="editable" class="vehicle-loadout__hint">
-                          {{ t("addon.packages.hint") }}
-                        </span>
-                      </legend>
-                      <Packages
-                        v-model="modelModuleIds"
-                        :packages="packages"
-                        :editable="editable"
-                      />
-                    </fieldset>
-                  </template>
-                </AsyncData>
-
-                <AsyncData
-                  :fullscreen="false"
-                  :async-status="modulesAsyncStatus"
-                >
-                  <template #resolved>
-                    <fieldset>
-                      <legend>
-                        <h3>{{ t("labels.model.modules") }}</h3>
-                      </legend>
-                      <Addons
-                        v-model="modelModuleIds"
-                        :addons="modules"
-                        :editable="editable"
-                        :empty-label="t('addon.empty.modules')"
-                      />
-                    </fieldset>
-                  </template>
-                </AsyncData>
-              </div>
-            </FormTab>
-
-            <FormTab
-              :id="VehicleLoadoutTabsEnum.UPGRADES"
-              :label="t('labels.vehicleLoadout.tabs.upgrades')"
-              icon="fa-duotone fa-wrench"
-              :fields="['modelUpgradeIds']"
-              :disabled="!vehicle.model.hasUpgrades"
-            >
-              <AsyncData
-                :fullscreen="false"
-                :async-status="upgradesAsyncStatus"
-              >
-                <template #resolved>
-                  <Addons
-                    v-model="modelUpgradeIds"
-                    :addons="upgrades"
-                    :editable="editable"
-                    :empty-label="t('addon.empty.upgrades')"
-                  />
-                </template>
-              </AsyncData>
-            </FormTab>
-
-            <FormTab
-              v-for="upcoming in propulsionWeaponTabs"
-              :id="upcoming.id"
-              :key="upcoming.id"
-              :label="upcoming.label"
-              :icon="upcoming.icon"
-              :icon-src="upcoming.iconSrc"
-              :hint="t('labels.vehicleLoadout.comingSoon')"
-              disabled
-            />
-
-            <FormTab
-              :id="VehicleLoadoutTabsEnum.PAINTS"
-              :label="t('labels.vehicleLoadout.tabs.paints')"
-              :icon="categoryTabIcon('paints').icon"
-              :fields="['modelPaintId']"
-              :hidden="!paintsVisible"
-            >
-              <VehiclePaintPicker
-                v-if="paintsVisible"
-                v-model="modelPaintId"
-                :model-slug="vehicle.model.slug"
-                :default-image="vehicle.model.media.storeImage?.smallUrl"
-                hide-legend
-              />
-            </FormTab>
-          </div>
-
-          <aside
-            class="vehicle-loadout__preview"
-            data-test="vehicle-loadout-preview"
+      <aside class="vehicle-loadout__ship" data-test="vehicle-loadout-ship">
+        <p class="vehicle-loadout__model">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span v-html="vehicle.model.manufacturer?.name" />
+          <strong>{{ vehicle.model.name }}</strong>
+        </p>
+        <dl class="vehicle-loadout__figures">
+          <div
+            v-for="figure in shipFigures"
+            :key="figure.key"
+            class="vehicle-loadout__figure"
+            :data-test="`vehicle-loadout-figure-${figure.key}`"
           >
-            <img
-              v-if="previewImage"
-              :src="previewImage"
-              :alt="vehicle.model.name"
-              class="vehicle-loadout__image"
-            />
-            <p class="vehicle-loadout__model">
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <span v-html="vehicle.model.manufacturer?.name" />
-              <strong>{{ vehicle.model.name }}</strong>
-            </p>
-            <Specs :model="vehicle.model" />
-            <dl class="vehicle-loadout__summary">
-              <div
-                v-for="entry in summary"
-                :key="entry.key"
-                class="vehicle-loadout__summary-entry"
-                :data-test="`vehicle-loadout-summary-${entry.key}`"
+            <dt>{{ figure.label }}</dt>
+            <dd>
+              {{ figure.value }}
+              <span
+                v-if="figure.deltaLabel"
+                class="vehicle-loadout__figure-delta"
+                :class="`vehicle-loadout__figure-delta--${figure.delta?.tone}`"
               >
-                <dt>{{ entry.label }}</dt>
-                <dd>
-                  {{
-                    entry.values.length
-                      ? entry.values.join(", ")
-                      : t("labels.vehicleLoadout.none")
-                  }}
-                </dd>
-              </div>
-            </dl>
-          </aside>
-        </div>
-      </FormTabs>
+                {{ figure.deltaLabel }}
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="vehicle-loadout__panel">
+        <p
+          v-if="!flightReady"
+          class="vehicle-loadout__hint"
+          data-test="vehicle-loadout-not-flight-ready"
+        >
+          {{ t("labels.vehicleLoadout.notFlightReady") }}
+        </p>
+
+        <FormTabs
+          :default-tab="tab"
+          :sync-url="false"
+          horizontal
+          active-label-only
+        >
+          <FormTab
+            v-for="upcoming in systemTabs"
+            :id="upcoming.id"
+            :key="upcoming.id"
+            :label="upcoming.label"
+            :icon="upcoming.icon"
+            :icon-src="upcoming.iconSrc"
+            :hint="t('labels.vehicleLoadout.comingSoon')"
+            disabled
+          />
+
+          <FormTab
+            :id="VehicleLoadoutTabsEnum.MODULES"
+            :label="t('labels.vehicleLoadout.tabs.modules')"
+            :icon="categoryTabIcon('module').icon"
+            :fields="['fittedModules']"
+            :disabled="!vehicle.model.hasModules"
+            :hint="
+              vehicle.model.hasModules
+                ? undefined
+                : t('labels.vehicleLoadout.unavailable.modules')
+            "
+          >
+            <AsyncData :async-status="modulesAsyncStatus">
+              <template #resolved>
+                <div class="vehicle-loadout__category">
+                  <fieldset data-test="vehicle-loadout-fitted">
+                    <Fitting
+                      v-if="flightReady"
+                      v-model="fittedModules"
+                      :modules="modules"
+                      :owned-ids="vehicle.modelModuleIds"
+                      :editable="editable"
+                      @preview="onPreview"
+                      @preview-end="onPreviewEnd"
+                      @pick="onPick"
+                    />
+                  </fieldset>
+
+                  <Comparison
+                    v-if="comparison"
+                    class="vehicle-loadout__comparison"
+                    :hull-cargo="hullCargo"
+                    :others="comparison.others"
+                    :from="comparison.from"
+                    :to="comparison.to"
+                  />
+                  <div
+                    v-else-if="flightReady"
+                    class="vehicle-loadout__comparison vehicle-loadout__empty"
+                    data-test="vehicle-loadout-no-slots"
+                  >
+                    <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
+                    <p>{{ t("labels.vehicleLoadout.noSlots") }}</p>
+                  </div>
+                </div>
+              </template>
+            </AsyncData>
+          </FormTab>
+
+          <FormTab
+            v-for="upcoming in propulsionWeaponTabs"
+            :id="upcoming.id"
+            :key="upcoming.id"
+            :label="upcoming.label"
+            :icon="upcoming.icon"
+            :icon-src="upcoming.iconSrc"
+            :hint="t('labels.vehicleLoadout.comingSoon')"
+            disabled
+          />
+        </FormTabs>
+      </div>
     </form>
 
     <template v-if="editable" #footer>
-      <span v-tooltip="t('labels.vehicleLoadout.comingSoon')">
-        <Btn disabled data-test="vehicle-loadout-save-preset">
-          {{ t("actions.vehicleLoadout.saveLoadout") }}
-        </Btn>
-      </span>
+      <!-- Named where it is saved; the label stays as the field's accessible name. -->
+      <FormInput
+        v-if="flightReady"
+        name="loadoutName"
+        :label="t('labels.vehicleLoadout.loadoutName')"
+        :placeholder="t('labels.vehicleLoadout.loadoutName')"
+        no-label
+        inline
+        class="vehicle-loadout__name"
+        data-test="vehicle-loadout-name"
+      />
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
-        :loading="mutation.isPending.value"
+        :loading="saving"
+        :disabled="!flightReady || loadoutPending"
         data-test="vehicle-loadout-save"
       >
-        {{ t("actions.save") }}
+        {{ t("actions.vehicleLoadout.saveLoadout") }}
       </Btn>
     </template>
   </Modal>

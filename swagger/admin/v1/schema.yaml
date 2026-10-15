@@ -18011,6 +18011,11 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/DockCount"
+        moduleSlots:
+          type: array
+          items:
+            type: string
+          description: The module hardpoints the game files give the hull, by sc_name
         mediaProcessing:
           type: array
           items:
@@ -18048,6 +18053,7 @@ components:
       - dockCounts
       - links
       - mediaProcessing
+      - moduleSlots
       title: ModelExtended
     ModelExtendedLinks:
       type: object
@@ -18112,6 +18118,11 @@ components:
         modelId:
           type: string
           format: uuid
+        slot:
+          type:
+          - string
+          - 'null'
+          description: The module hardpoint's name on the hull; blank clears it
       required:
       - modelId
       title: ModelLinkInput
@@ -18348,6 +18359,10 @@ components:
           type: string
           description: Module slot identifier (hardpoint sc_name). Present when fetched
             via a model's modules endpoint.
+        stock:
+          type: boolean
+          description: Whether the hull comes with this module from the factory. Present
+            when fetched via a model's modules endpoint.
         hardpoints:
           type: array
           items:
@@ -18408,6 +18423,11 @@ components:
           - string
           - 'null'
           format: uuid
+        slot:
+          type:
+          - string
+          - 'null'
+          description: 'With a modelId: the module hardpoint''s name on that hull'
         manufacturerId:
           type: string
           format: uuid

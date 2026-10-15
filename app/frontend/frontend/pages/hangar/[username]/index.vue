@@ -35,7 +35,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
-import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import {
+  HANGAR_VIEW_KEYS,
+  useHangarFilters,
+} from "@/frontend/composables/useHangarFilters";
 import { usePublicHangarShare } from "@/frontend/composables/usePublicHangarShare";
 import { useComlink } from "@/shared/composables/useComlink";
 import { usePublicHangarVehicle } from "@/services/fyApi";
@@ -354,6 +357,7 @@ useSubscription({
 
   <FilteredList
     :key="`public-hangar-${username}`"
+    :view-keys="HANGAR_VIEW_KEYS"
     :hide-loading="fleetchartVisible"
     :records="vehicles?.items || []"
     :name="route.name?.toString() || ''"

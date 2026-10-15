@@ -10,7 +10,11 @@ import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  VehicleLoadoutKindEnum,
+  type Vehicle,
+} from "@/services/fyApi";
 import {
   BtnSizesEnum,
   BtnTonesEnum,
@@ -55,31 +59,32 @@ const deleting = ref(false);
 
 const updating = ref(false);
 
-const hasAddons = computed(() => {
-  if (!props.vehicle) {
-    return false;
-  }
+// The owner edits the ship's loadout once the editor is switched on; anyone
+// else, or anyone looking at a loaner or a wishlist ship, looks at the one that
+// is active, as the panel's loadout marker does.
+const loadoutEditable = computed(
+  () =>
+    props.editable &&
+    !props.wishlist &&
+    !props.vehicle?.wanted &&
+    !props.vehicle?.loaner,
+);
 
-  return (
-    props.vehicle.modelModuleIds.length || props.vehicle.modelUpgradeIds.length
-  );
-});
-
-// A visitor only gets to look at the addons the owner picked; the owner also
-// picks the paint there.
 const loadoutVisible = computed(() => {
   if (!props.vehicle) {
     return false;
   }
 
-  const hasAddonChoices =
-    props.vehicle.model.hasModules || props.vehicle.model.hasUpgrades;
-
-  if (!props.editable) {
-    return !!hasAddons.value && hasAddonChoices;
+  if (!loadoutEditable.value) {
+    return (
+      props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
+    );
   }
 
-  return hasAddonChoices || props.vehicle.model.hasPaints;
+  return (
+    isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR) &&
+    !!props.vehicle.model.hasModules
+  );
 });
 
 const { useUpdateMutation, useDestroyMutation } = useVehicleMutations();
@@ -208,14 +213,18 @@ const destroy = async () => {
 
 const comlink = useComlink();
 
-const { openEditModal, openLoadoutModal } = useVehicleModals();
+const { openEditModal, openLoadoutModal, openLoadoutView } = useVehicleModals();
 
 const openEdit = () => {
   openEditModal(props.vehicle, { wishlist: props.wishlist });
 };
 
 const openLoadout = () => {
-  openLoadoutModal(props.vehicle, { editable: props.editable });
+  if (loadoutEditable.value) {
+    openLoadoutModal(props.vehicle, { editable: true });
+  } else {
+    openLoadoutView(props.vehicle);
+  }
 };
 
 const vehicleOverviewVisible = computed(

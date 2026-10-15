@@ -78,6 +78,11 @@
         "success": "Password modificata correttamente.",
         "failure": "La tua password non può essere cambiata."
       },
+      "modelModule": {
+        "update": {
+          "failure": "Impossibile salvare il modulo."
+        }
+      },
       "updateProfile": {
         "success": "Profilo aggiornato.",
         "failure": "Il profilo non può essere aggiornato."

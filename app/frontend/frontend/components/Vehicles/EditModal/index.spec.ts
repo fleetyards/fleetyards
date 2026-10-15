@@ -6,6 +6,14 @@ import { VehicleEditTabsEnum } from "./types";
 
 const mutateAsync = vi.fn().mockResolvedValue({});
 
+const resolved = () => ({
+  isPending: ref(false),
+  isFetching: ref(false),
+  isLoading: ref(false),
+  isRefetching: ref(false),
+  error: ref(undefined),
+});
+
 vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   default: { name: "FormFileInput", template: "<div />" },
 }));
@@ -20,6 +28,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     ]),
   }),
   useHangarGroups: () => ({ data: ref([]) }),
+  useModelModules: () => ({
+    data: ref({ items: [{ id: "m1", name: "Cargo Module", slug: "cargo" }] }),
+    ...resolved(),
+  }),
+  useModelModulePackages: () => ({ data: ref({ items: [] }), ...resolved() }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -38,6 +51,8 @@ const vehicle = (ingameOnly: boolean): Vehicle =>
     serial: "LEGACY SERIAL",
     boughtVia: BoughtViaEnum.PLEDGE_STORE,
     alternativeNames: [],
+    modelModuleIds: [],
+    modelUpgradeIds: [],
     hangarGroupIds: [],
     model: {
       id: "model-1",
@@ -90,6 +105,37 @@ describe("VehicleEditModal", () => {
       expect(mutateAsync).toHaveBeenCalledWith({
         id: "vehicle-1",
         data: { name: "New name" },
+      }),
+    );
+  });
+
+  it("records a module the ship owns", async () => {
+    const v = vehicle(false);
+    v.model.hasModules = true;
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: v, tab: VehicleEditTabsEnum.MODULES },
+    });
+    await flushPromises();
+
+    await wrapper.get("[data-test='vehicle-addon-toggle']").trigger("click");
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { modelModuleIds: ["m1"] },
+      }),
+    );
+  });
+
+  it("saves a paint picked elsewhere", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(false), paintId: "paint-2" },
+    });
+    await wrapper.find("form").trigger("submit");
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "vehicle-1",
+        data: { modelPaintId: "paint-2" },
       }),
     );
   });

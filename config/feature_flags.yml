@@ -100,3 +100,6 @@ fleet_directory:
 
 vehicle_overview:
   description: "Vehicle overview — an overview tab, a captain's log and an uploaded picture for each ship in the hangar"
+
+loadout_editor:
+  description: "Loadout editor — fit modules slot by slot and save fleetyards loadouts for each ship"

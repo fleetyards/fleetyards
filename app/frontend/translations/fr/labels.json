@@ -1138,6 +1138,8 @@
       },
       "source": "Source",
       "loadout": {
+        "marker": "Équipement « %{name} »",
+        "fleetyards": "Configuration Fleetyards",
         "namePlaceholder": "Nom de la configuration...",
         "urlPlaceholder": "Coller l'URL de configuration erkul.games ou spviewer.eu...",
         "empty": "Aucune configuration pour le moment. Créez-en une pour commencer.",
@@ -1629,6 +1631,10 @@
         "videoType": "Type"
       },
       "modelModule": {
+        "slot": "Emplacement",
+        "noSlot": "Aucun emplacement",
+        "slotsOnHull": "Emplacements de module sur ce vaisseau : %{slots}",
+        "noSlotsOnHull": "Les fichiers du jeu ne donnent aucun emplacement de module à ce vaisseau ; n’importe quel nom peut être utilisé",
         "name": "Nom",
         "description": "Description",
         "price": "Prix",
@@ -4301,6 +4307,26 @@
           "flightBlades": "Blades de vol"
         },
         "comingSoon": "Bientôt disponible",
+        "ownedModules": "Vos modules",
+        "nothingFitted": "Rien d'équipé",
+        "owned": "Possédé",
+        "notOwned": "Non possédé",
+        "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
+        "loadoutName": "Nom de la configuration",
+        "stock": "D'origine",
+        "unslotted": "Pas encore équipables, car les fichiers du jeu n'indiquent pas quel emplacement ils occupent : %{modules}",
+        "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",
+        "slots": {
+          "default": "Emplacement de module",
+          "front": "Emplacement de module avant",
+          "rear": "Emplacement de module arrière",
+          "left": "Emplacement de module gauche",
+          "right": "Emplacement de module droit"
+        },
+        "unavailable": {
+          "modules": "Ce vaisseau n'accepte aucun module",
+          "upgrades": "Aucune extension n'existe pour ce vaisseau"
+        },
         "none": "Aucun"
       }
     }

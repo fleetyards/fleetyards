@@ -13,6 +13,9 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
   type Vehicle,
   type VehicleLoadout,
@@ -23,6 +26,9 @@ import {
   useDestroyVehicleLoadout,
   useActivateVehicleLoadout,
   getVehicleLoadoutsQueryKey,
+  VehicleLoadoutKindEnum,
+  ModelProductionStatusEnum,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -50,6 +56,14 @@ const spviewerShipUrl = computed(() => {
 });
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
+
+// The API refuses a loadout of either kind for a ship still in concept or
+// production, so the page does not offer one.
+const flightReady = computed(
+  () =>
+    props.vehicle.model?.productionStatus ===
+    ModelProductionStatusEnum.FLIGHT_READY,
+);
 
 const loadoutItems = computed(() => (loadouts.value as VehicleLoadout[]) || []);
 
@@ -90,11 +104,15 @@ const onSaveCreate = async () => {
 // Edit
 const editForm = ref<VehicleLoadoutInput>({});
 
+// A fleetyards loadout has no url to edit; its fitting is changed in the
+// loadout editor.
+const editingLink = ref(true);
+
 const onStartEdit = (record: VehicleLoadout) => {
-  editForm.value = {
-    name: record.name,
-    url: record.url || "",
-  };
+  editingLink.value = record.kind === VehicleLoadoutKindEnum.LINK;
+  editForm.value = editingLink.value
+    ? { name: record.name, url: record.url || "" }
+    : { name: record.name };
 };
 
 const updateMutation = useUpdateVehicleLoadout({
@@ -123,6 +141,32 @@ const onDestroy = async (record: VehicleLoadout) => {
   await destroyMutation.mutateAsync({
     vehicleId: props.vehicle.id,
     id: record.id,
+  });
+};
+
+// A fleetyards loadout is fitted in the loadout editor, not inline; until the
+// editor is switched on the page keeps to linked builds.
+const { openLoadoutModal } = useVehicleModals();
+
+const { isFeatureEnabled } = useFeatures();
+
+const editorEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
+);
+
+const editFitting = (record: VehicleLoadout) => {
+  openLoadoutModal(props.vehicle, {
+    editable: true,
+    loadoutId: record.id,
+    tab: VehicleLoadoutTabsEnum.MODULES,
+  });
+};
+
+const newFleetyardsLoadout = () => {
+  openLoadoutModal(props.vehicle, {
+    editable: true,
+    newLoadout: true,
+    tab: VehicleLoadoutTabsEnum.MODULES,
   });
 };
 
@@ -171,11 +215,24 @@ const onActivate = async (record: VehicleLoadout) => {
                 {{ item.urlSource || item.url }}
               </a>
             </div>
+            <div v-else class="loadouts-page__item-links">
+              {{ t("labels.loadout.fleetyards") }}
+            </div>
           </div>
         </div>
       </template>
 
       <template #actions="{ item }">
+        <Btn
+          v-if="
+            editorEnabled && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
+          "
+          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
+          :data-test="`loadout-edit-fitting-${item.id}`"
+          @click="editFitting(item)"
+        >
+          <i class="fa-duotone fa-screwdriver-wrench" />
+        </Btn>
         <Btn
           v-if="!item.active"
           v-tooltip="t('labels.loadout.activate')"
@@ -204,6 +261,7 @@ const onActivate = async (record: VehicleLoadout) => {
           class="loadouts-page__edit-name"
         />
         <FormInput
+          v-if="editingLink"
           v-model="editForm.url"
           name="edit-loadout-url"
           :placeholder="t('labels.loadout.urlPlaceholder')"
@@ -214,14 +272,32 @@ const onActivate = async (record: VehicleLoadout) => {
     </InlineEditableList>
 
     <template #side>
-      <Btn
-        class="loadouts-page__add"
-        :disabled="editableList?.creating"
-        @click="editableList?.startCreate()"
+      <span
+        v-tooltip="
+          flightReady ? undefined : t('labels.vehicleLoadout.notFlightReady')
+        "
+        class="loadouts-page__add-wrapper"
       >
-        <i class="fa-duotone fa-plus" />
-        {{ t("actions.add") }}
-      </Btn>
+        <Btn
+          class="loadouts-page__add"
+          :disabled="editableList?.creating || !flightReady"
+          data-test="loadouts-add"
+          @click="editableList?.startCreate()"
+        >
+          <i class="fa-duotone fa-plus" />
+          {{ t("actions.add") }}
+        </Btn>
+        <Btn
+          v-if="editorEnabled"
+          class="loadouts-page__add"
+          :disabled="!flightReady || !vehicle.model?.hasModules"
+          data-test="loadouts-new-fleetyards"
+          @click="newFleetyardsLoadout"
+        >
+          <i class="fa-duotone fa-screwdriver-wrench" />
+          {{ t("actions.vehicleLoadout.newLoadout") }}
+        </Btn>
+      </span>
 
       <MetricsCard
         v-if="erkulShipUrl || spviewerShipUrl"
@@ -251,6 +327,15 @@ const onActivate = async (record: VehicleLoadout) => {
 .loadouts-page {
   &__add {
     width: 100%;
+
+    & + & {
+      margin-top: 8px;
+    }
+  }
+
+  // Holds the tooltip a disabled button cannot, and the button's full width.
+  &__add-wrapper {
+    display: block;
   }
 
   &__ship-links {

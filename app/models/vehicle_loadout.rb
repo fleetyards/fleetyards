@@ -16,10 +16,39 @@ class VehicleLoadout < ApplicationRecord
 
   belongs_to :vehicle, touch: true
 
+  # A link points at a build kept on another site; a fleetyards loadout keeps
+  # its own record of what is fitted, slot by slot. Never both.
+  enum :kind, {
+    link: "link",
+    fleetyards: "fleetyards"
+  }, prefix: true
+
+  has_many :items, -> { order(:slot_path) },
+    class_name: "VehicleLoadoutItem",
+    inverse_of: :vehicle_loadout,
+    dependent: :delete_all
+
   before_validation :set_default_name, if: -> { name.blank? }
 
-  validates :url, presence: true
+  validates :url, presence: true, if: :kind_link?
+  validates :url, absence: true, if: :kind_fleetyards?
   validates :name, uniqueness: {scope: :vehicle_id}, allow_nil: true
+  validate :ship_is_flight_ready, on: :create
+  validate :item_list_fits, unless: -> { item_list.nil? }
+
+  after_save :write_item_list, unless: -> { item_list.nil? }
+
+  attr_reader :item_list
+
+  # The whole fitting at once: a list of `{slot_path:, item_type:, item_id:}`
+  # that replaces whatever was fitted before, written after the loadout
+  # validates.
+  def item_list=(list)
+    @item_list = Array(list).map do |item|
+      item = item.to_h.symbolize_keys
+      {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s}
+    end
+  end
 
   scope :active, -> { where(active: true) }
 
@@ -54,11 +83,62 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
+  private def ship_is_flight_ready
+    return if vehicle&.model&.production_status == "flight-ready"
+
+    errors.add(:base, :not_flight_ready)
+  end
+
+  private def item_list_fits
+    return if item_list.empty?
+    return errors.add(:items, :not_fleetyards) unless kind_fleetyards?
+
+    paths = item_list.pluck(:slot_path)
+    errors.add(:items, :slot_taken) if paths.uniq.size != paths.size
+
+    unless item_list.all? { |item| VehicleLoadoutItem::ITEM_TYPES.include?(item[:item_type]) }
+      return errors.add(:items, :item_type_not_supported)
+    end
+
+    # A hardpoint inside a module or a turret only exists while that is fitted.
+    nested = paths.select { |path| path.include?("/") }
+    if nested.any? { |path| paths.exclude?(path.rpartition("/").first) }
+      errors.add(:items, :parent_not_fitted)
+    end
+
+    modules_fit
+  end
+
+  # A module goes in a slot on the hull itself, named by the module hardpoint,
+  # so one whose slot the game files never revealed matches none and cannot be
+  # fitted. Whether the ship owns it does not matter: a loadout is a plan.
+  private def modules_fit
+    modules = item_list.select { |item| item[:item_type] == "ModelModule" }
+    return if modules.empty?
+
+    module_ids = modules.pluck(:item_id)
+    fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
+      .pluck(:model_module_id, :slot)
+    unless modules.all? { |item| fitting.include?([item[:item_id], item[:slot_path]]) }
+      errors.add(:items, :module_not_in_slot)
+    end
+  end
+
+  # One insert rather than a create per item, each touching the loadout and the
+  # vehicle. The explicit touch is what busts the caches keyed on both when only
+  # the fitting changed, including when it was emptied.
+  private def write_item_list
+    items.delete_all
+    items.insert_all!(item_list) if item_list.any?
+    @item_list = nil
+    touch
+  end
+
   private def set_default_name
     base = case url_source
     when "erkul" then "Erkul Loadout"
     when "spviewer" then "SPViewer Loadout"
-    else "Custom Loadout"
+    else kind_fleetyards? ? "Fleetyards Loadout" : "Custom Loadout"
     end
 
     existing = vehicle.vehicle_loadouts.where("name LIKE ?", "#{base}%").pluck(:name)

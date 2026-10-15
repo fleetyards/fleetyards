@@ -306,6 +306,16 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "Las configuraciones solo están disponibles para naves listas para volar"
+            items:
+              not_fleetyards: "solo se pueden equipar en una configuración de Fleetyards"
+              slot_taken: "solo pueden tener un módulo por ranura"
+              module_not_in_slot: "deben encajar en la ranura en la que se colocan"
+              item_type_not_supported: "por ahora solo admiten módulos"
+              parent_not_fitted: "deben estar en una ranura equipada"
         payout_entry:
           attributes:
             entry_type:

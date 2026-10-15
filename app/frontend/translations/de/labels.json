@@ -1138,6 +1138,8 @@
       },
       "source": "Quelle",
       "loadout": {
+        "marker": "Loadout „%{name}“",
+        "fleetyards": "Fleetyards-Loadout",
         "namePlaceholder": "Loadout-Name...",
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
@@ -1629,6 +1631,10 @@
         "videoType": "Typ"
       },
       "modelModule": {
+        "slot": "Slot",
+        "noSlot": "Kein Slot",
+        "slotsOnHull": "Modul-Slots an diesem Schiff: %{slots}",
+        "noSlotsOnHull": "Die Spieldateien geben diesem Schiff keine Modul-Slots; jeder Name kann gesetzt werden",
         "name": "Name",
         "description": "Beschreibung",
         "price": "Preis",
@@ -4301,6 +4307,26 @@
           "flightBlades": "Flugsteuerungs-Blades"
         },
         "comingSoon": "Demnächst verfügbar",
+        "ownedModules": "Deine Module",
+        "nothingFitted": "Nichts ausgerüstet",
+        "owned": "Im Besitz",
+        "notOwned": "Nicht im Besitz",
+        "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
+        "loadoutName": "Name des Loadouts",
+        "stock": "Serienmäßig",
+        "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",
+        "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
+        "slots": {
+          "default": "Modul-Slot",
+          "front": "Vorderer Modul-Slot",
+          "rear": "Hinterer Modul-Slot",
+          "left": "Linker Modul-Slot",
+          "right": "Rechter Modul-Slot"
+        },
+        "unavailable": {
+          "modules": "Dieses Schiff nimmt keine Module auf",
+          "upgrades": "Für dieses Schiff gibt es keine Add-ons"
+        },
         "none": "Keine"
       }
     }

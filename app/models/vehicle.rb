@@ -156,7 +156,7 @@ class Vehicle < ApplicationRecord
   def self.rendered_associations
     [
       :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
-      :task_forces, :hangar_groups, :module_package, :vehicle_loadouts,
+      :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: :items},
       {model: Model.rendered_associations},
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
       {parent_vehicle: :model},

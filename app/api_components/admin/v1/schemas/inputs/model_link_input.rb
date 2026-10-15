@@ -10,7 +10,8 @@ module Admin
           schema({
             type: :object,
             properties: {
-              modelId: {type: :string, format: :uuid}
+              modelId: {type: :string, format: :uuid},
+              slot: {type: [:string, :null], description: "The module hardpoint's name on the hull; blank clears it"}
             },
             required: [:modelId]
           })

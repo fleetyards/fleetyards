@@ -21,25 +21,33 @@ import {
 import {
   type Vehicle,
   type VehicleUpdateInput,
+  getVehiclePaintsQueryKey,
   useUpdateVehicle,
 } from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import General from "./General/index.vue";
 import Visibility from "./Visibility/index.vue";
 import Names from "./Names/index.vue";
 import Groups from "./Groups/index.vue";
 import ImagePanel from "./Image/index.vue";
+import Modules from "./Modules/index.vue";
+import Upgrades from "./Upgrades/index.vue";
+import Paint from "./Paint/index.vue";
 import { VehicleEditTabsEnum, type VehicleEditValues } from "./types";
 
 type Props = {
   vehicle: Vehicle;
   wishlist?: boolean;
   tab?: VehicleEditTabsEnum;
+  // A paint picked elsewhere, opened here to be saved.
+  paintId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   wishlist: false,
   tab: VehicleEditTabsEnum.GENERAL,
+  paintId: undefined,
 });
 
 const { t } = useI18n();
@@ -59,17 +67,25 @@ const savedValues = (): VehicleEditValues => ({
   serial: props.vehicle.serial,
   alternativeNames: [...props.vehicle.alternativeNames],
   hangarGroupIds: [...props.vehicle.hangarGroupIds],
+  modelModuleIds: [...props.vehicle.modelModuleIds],
+  modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
+  modelPaintId: props.vehicle.paint?.id ?? null,
 });
 
 const EDITABLE_FIELDS = Object.keys(
   savedValues(),
 ) as (keyof VehicleUpdateInput & keyof VehicleEditValues)[];
 
-const { handleSubmit, resetForm, setErrors, meta } = useForm<VehicleEditValues>(
-  {
+const { handleSubmit, resetForm, setErrors, meta, setFieldValue } =
+  useForm<VehicleEditValues>({
     initialValues: savedValues(),
-  },
-);
+  });
+
+// Set as a pending choice rather than an initial value, so it saves like a pick
+// and survives a background refetch of the hangar.
+if (props.paintId) {
+  setFieldValue("modelPaintId", props.paintId);
+}
 
 // A pending edit wins over the refresh, or a background refetch of the hangar
 // would discard what was typed and not yet saved.
@@ -108,6 +124,12 @@ const WISHLIST_TABS = [
 const tabVisible = (tab: VehicleEditTabsEnum) =>
   !props.wishlist || WISHLIST_TABS.includes(tab);
 
+// What a ship carries is the owner's record of it; a loaner carries what it was
+// lent with.
+const equipmentVisible = computed(
+  () => !props.wishlist && !props.vehicle.loaner,
+);
+
 const activeTab = ref<string>(
   tabVisible(props.tab) ? props.tab : VehicleEditTabsEnum.NAMES,
 );
@@ -128,6 +150,8 @@ const { useUpdateMutation, invalidateVehiclePage, invalidateHangarQueries } =
   useVehicleMutations();
 
 const vehicle = computed(() => props.vehicle);
+
+const queryClient = useQueryClient();
 
 const updateMutation = useUpdateMutation(vehicle);
 
@@ -169,7 +193,13 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   await save({ ...changes, ...imageChanges }, !!imageChanges)
-    .then(() => {
+    .then(async () => {
+      if (changes && "modelPaintId" in changes) {
+        await queryClient.invalidateQueries({
+          queryKey: getVehiclePaintsQueryKey(props.vehicle.id),
+        });
+      }
+
       comlink.emit("close-modal");
     })
     .catch((error) => {
@@ -272,6 +302,42 @@ const vehicleName = computed(
           <ImagePanel
             v-if="imageTabOpened && !wishlist"
             ref="imagePanel"
+            :vehicle="vehicle"
+          />
+        </FormTab>
+        <FormTab
+          :id="VehicleEditTabsEnum.MODULES"
+          :label="t('labels.vehicleLoadout.tabs.modules')"
+          icon="fa-duotone fa-puzzle"
+          :fields="['modelModuleIds']"
+          :hidden="!equipmentVisible || !vehicle.model.hasModules"
+        >
+          <Modules
+            v-if="equipmentVisible && vehicle.model.hasModules"
+            :vehicle="vehicle"
+          />
+        </FormTab>
+        <FormTab
+          :id="VehicleEditTabsEnum.UPGRADES"
+          :label="t('labels.vehicleLoadout.tabs.upgrades')"
+          icon="fa-duotone fa-wrench"
+          :fields="['modelUpgradeIds']"
+          :hidden="!equipmentVisible || !vehicle.model.hasUpgrades"
+        >
+          <Upgrades
+            v-if="equipmentVisible && vehicle.model.hasUpgrades"
+            :vehicle="vehicle"
+          />
+        </FormTab>
+        <FormTab
+          :id="VehicleEditTabsEnum.PAINT"
+          :label="t('labels.vehicleLoadout.tabs.paints')"
+          icon="fa-duotone fa-paint-roller"
+          :fields="['modelPaintId']"
+          :hidden="!equipmentVisible || !vehicle.model.hasPaints"
+        >
+          <Paint
+            v-if="equipmentVisible && vehicle.model.hasPaints"
             :vehicle="vehicle"
           />
         </FormTab>

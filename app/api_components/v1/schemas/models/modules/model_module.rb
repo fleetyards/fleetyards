@@ -31,6 +31,7 @@ module V1
               manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
               slot: {type: :string, description: "Module slot identifier (hardpoint sc_name). Present when fetched via a model's modules endpoint."},
+              stock: {type: :boolean, description: "Whether the hull comes with this module from the factory. Present when fetched via a model's modules endpoint."},
 
               hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},
 

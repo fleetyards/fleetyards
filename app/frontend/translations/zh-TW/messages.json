@@ -78,6 +78,11 @@
         "success": "您的密碼已成功更改。",
         "failure": "您的密碼無法更新。"
       },
+      "modelModule": {
+        "update": {
+          "failure": "無法儲存模組。"
+        }
+      },
       "updateProfile": {
         "success": "個人資料已更新。",
         "failure": "個人資料無法更新。"

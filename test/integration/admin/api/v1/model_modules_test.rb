@@ -183,6 +183,15 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /model-modules places the new module in a slot on the hull" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {name: "Cargo Module", modelId: model.id, slot: "hardpoint_front_module"} do
+      assert_equal "hardpoint_front_module", ModelModule.last.module_hardpoints.first.slot
+    end
+  end
+
   test "POST /model-modules returns 401 when not signed in" do
     model = create(:model)
 

@@ -8,6 +8,7 @@ export default {
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import type {
   VehiclePublic,
   Model,
@@ -135,6 +136,12 @@ const filterManufacturerQuery = (manufacturer: string) => {
   return { manufacturerIn: [manufacturer] };
 };
 
+const { openLoadoutView } = useVehicleModals();
+
+// A fleet member's ship is shown, never edited, from the fleet.
+const openActiveLoadout = () =>
+  openLoadoutView(props.fleetVehicle as VehiclePublic);
+
 const activeLoadout = computed(
   () => (props.fleetVehicle as VehiclePublic).activeLoadout,
 );
@@ -205,7 +212,11 @@ const route = useRoute();
         :model-slug="ownersModelSlug"
         :fleet-slug="fleetSlug"
       />
-      <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
+      <LoadoutMarker
+        v-if="activeLoadout"
+        :loadout="activeLoadout"
+        @open="openActiveLoadout"
+      />
     </template>
   </ModelPanel>
 </template>

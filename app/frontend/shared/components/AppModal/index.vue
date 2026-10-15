@@ -30,6 +30,7 @@ const component = ref<Raw<Component> | undefined>();
 const componentProps = ref({});
 
 const wide = ref(false);
+const large = ref(false);
 
 const fixed = ref(false);
 
@@ -73,6 +74,7 @@ const open = async (options: AppModalOptions) => {
   openCount += 1;
   componentProps.value = options.props;
   wide.value = !!options.wide;
+  large.value = !!options.large;
   fixed.value = !!options.fixed;
   dirty.value = !!options.dirty;
   fullscreen.value = !!options.fullscreen;
@@ -163,6 +165,7 @@ const modalClasses = computed(() => {
     in: isOpen.value,
     show: isShow.value,
     wide: wide.value,
+    large: large.value,
     fixed: fixed.value,
     fullscreen: fullscreen.value,
   };

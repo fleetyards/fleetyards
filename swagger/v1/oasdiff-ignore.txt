@@ -2494,3 +2494,22 @@ GET /wishlist added the new `ore_pod` enum value to the `items/items/modulePacka
 GET /wishlist added the new `ore_pods` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 GET /wishlist added the new `salvage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
 GET /wishlist added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/activeLoadout/url` became optional for the status `200`
+GET /hangar the response property `items/items/activeLoadout/url` became optional for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/activeLoadout/url` became optional for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/activeLoadout/url` became optional for the status `200`
+GET /public/hangars/embed the response property `items/activeLoadout/url` became optional for the status `200`
+GET /public/hangars/{username} the response property `items/items/activeLoadout/url` became optional for the status `200`
+GET /public/hangars/{username}/vehicles/{id} the response property `activeLoadout/url` became optional for the status `200`
+GET /public/wishlists/{username} the response property `items/items/activeLoadout/url` became optional for the status `200`
+POST /vehicles the response property `activeLoadout/url` became optional for the status `201`
+DELETE /vehicles/{id} the response property `activeLoadout/url` became optional for the status `200`
+GET /vehicles/{id} the response property `activeLoadout/url` became optional for the status `200`
+PUT /vehicles/{id} the response property `activeLoadout/url` became optional for the status `200`
+GET /vehicles/{vehicle_id}/loadouts the response property `items/url` became optional for the status `200`
+POST /vehicles/{vehicle_id}/loadouts the response property `url` became optional for the status `201`
+DELETE /vehicles/{vehicle_id}/loadouts/{id} the response property `url` became optional for the status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id} the response property `url` became optional for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id} the response property `url` became optional for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `url` became optional for the status `200`
+GET /wishlist the response property `items/items/activeLoadout/url` became optional for the status `200`

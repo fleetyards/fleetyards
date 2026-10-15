@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h } from "vue";
 import { createRouter, createMemoryHistory } from "vue-router";
@@ -91,6 +91,37 @@ describe("FormTabs", () => {
     const tabs = wrapper.findAll('[role="tab"]');
     expect(tabs[0].attributes("aria-selected")).toBe("true");
     expect(tabs[1].attributes("aria-selected")).toBe("false");
+  });
+
+  it("settles when fields arrive as a fresh array on every render", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const renders = vi.fn();
+
+    await mountInForm(() =>
+      h(
+        Component,
+        { syncUrl: false },
+        {
+          default: () => {
+            renders();
+            return [
+              h(FormTab, { id: "one", label: "One", fields: ["a"] }, () => ""),
+              h(FormTab, { id: "two", label: "Two", fields: ["b"] }, () => ""),
+            ];
+          },
+        },
+      ),
+    );
+    await flushPromises();
+
+    expect(renders.mock.calls.length).toBeLessThan(5);
+    expect(
+      warn.mock.calls.some((args) =>
+        String(args[0]).includes("Maximum recursive updates"),
+      ),
+    ).toBe(false);
+
+    warn.mockRestore();
   });
 
   it("switches active tab on click", async () => {

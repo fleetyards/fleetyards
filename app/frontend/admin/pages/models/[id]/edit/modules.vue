@@ -23,11 +23,13 @@ import {
   useUpdateModelModule as useUpdateModelModuleMutation,
   useDestroyModelModule as useDestroyModelModuleMutation,
   useUnlinkModelModule as useUnlinkModelModuleMutation,
+  useLinkModelModule as useLinkModelModuleMutation,
   getListModelModulesQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
@@ -43,7 +45,7 @@ const props = defineProps<Props>();
 const { t, toUEC } = useI18n();
 const queryClient = useQueryClient();
 const comlink = useComlink();
-const { displayConfirm } = useAppNotifications();
+const { displayConfirm, displayAlert } = useAppNotifications();
 
 const editableList = ref<{
   editingId: string | null;
@@ -70,10 +72,29 @@ const invalidateModules = () =>
     queryKey: getListModelModulesQueryKey(),
   });
 
+// The module's slot on this hull, the module hardpoint it takes. Saved through
+// the link, which holds it, rather than the module, which several hulls share.
+const slotFor = (record: ModelModule) =>
+  record.moduleHardpoints?.find((link) => link.modelId === props.model.id)
+    ?.slot ?? "";
+
+// The slot as the edit began, so saving compares against that rather than a
+// list the module's own save has just refetched.
+const editSlot = ref("");
+const originalSlot = ref("");
+
+const linkMutation = useLinkModelModuleMutation({
+  mutation: {
+    onSettled: invalidateModules,
+  },
+});
+
 // Edit
 const editForm = ref<ModelModuleInput>({});
 
 const onStartEdit = (record: ModelModule) => {
+  editSlot.value = slotFor(record);
+  originalSlot.value = editSlot.value;
   editForm.value = {
     name: record.name,
     description: record.description,
@@ -102,10 +123,33 @@ const onSaveEdit = async () => {
   const id = editableList.value?.editingId;
   if (!id) return;
 
-  await updateMutation.mutateAsync({
-    id,
-    data: editForm.value,
-  });
+  const slot = editSlot.value.trim();
+
+  // The row stays open on a failure, with the reason, so nothing is half
+  // saved without the admin knowing.
+  try {
+    await updateMutation.mutateAsync({
+      id,
+      data: editForm.value,
+    });
+
+    if (slot !== originalSlot.value) {
+      await linkMutation.mutateAsync({
+        id,
+        data: { modelId: props.model.id, slot },
+      });
+    }
+  } catch (error) {
+    displayAlert({
+      text: [
+        t("messages.modelModule.update.failure"),
+        firstErrorMessageFrom(error),
+      ]
+        .filter(Boolean)
+        .join(": "),
+    });
+    return;
+  }
 
   editableList.value?.finishEdit();
 };
@@ -222,6 +266,9 @@ const onUnlink = (record: ModelModule) => {
       <template v-if="item.scKey">
         <span class="text-muted">{{ item.scKey }}</span>
       </template>
+      <span class="text-muted" data-test="model-module-slot">
+        {{ slotFor(item) || t("labels.modelModule.noSlot") }}
+      </span>
       <template v-if="item.pledgePrice">
         <span class="text-muted" v-html="toUEC(item.pledgePrice)" />
       </template>
@@ -302,6 +349,20 @@ const onUnlink = (record: ModelModule) => {
           name="edit-sc-key"
           translation-key="modelModule.scKey"
         />
+        <FormInput
+          v-model="editSlot"
+          name="edit-slot"
+          translation-key="modelModule.slot"
+        />
+        <p class="text-muted" data-test="model-module-slots">
+          {{
+            model.moduleSlots.length
+              ? t("labels.modelModule.slotsOnHull", {
+                  slots: model.moduleSlots.join(", "),
+                })
+              : t("labels.modelModule.noSlotsOnHull")
+          }}
+        </p>
       </div>
     </template>
 
@@ -344,6 +405,11 @@ const onUnlink = (record: ModelModule) => {
           v-model="createForm.scKey"
           name="create-sc-key"
           translation-key="modelModule.scKey"
+        />
+        <FormInput
+          v-model="createForm.slot"
+          name="create-slot"
+          translation-key="modelModule.slot"
         />
       </div>
     </template>

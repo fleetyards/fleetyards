@@ -3739,6 +3739,10 @@ components:
           type: string
           description: Module slot identifier (hardpoint sc_name). Present when fetched
             via a model's modules endpoint.
+        stock:
+          type: boolean
+          description: Whether the hull comes with this module from the factory. Present
+            when fetched via a model's modules endpoint.
         hardpoints:
           type: array
           items:
@@ -5240,6 +5244,36 @@ components:
       - fid
       - name
       - slug
+    VehicleLoadoutItem:
+      type: object
+      properties:
+        slotPath:
+          type: string
+          description: Hardpoint names from the hull down, joined by /
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - slotPath
+      - itemType
+      - itemId
+    VehicleLoadoutItemTypeEnum:
+      type: string
+      enum:
+      - ModelModule
+      x-enumNames:
+      - MODEL_MODULE
+    VehicleLoadoutKindEnum:
+      type: string
+      enum:
+      - link
+      - fleetyards
+      x-enumNames:
+      - LINK
+      - FLEETYARDS
     VehicleLoadoutMinimal:
       type: object
       properties:
@@ -5250,10 +5284,16 @@ components:
           type: string
         active:
           type: boolean
+        kind:
+          "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
           type: string
         urlSource:
           type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VehicleLoadoutItem"
         createdAt:
           type: string
           format: date-time
@@ -5265,7 +5305,8 @@ components:
       - id
       - name
       - active
-      - url
+      - kind
+      - items
       - createdAt
       - updatedAt
     VehiclePlaqueStyleEnum:

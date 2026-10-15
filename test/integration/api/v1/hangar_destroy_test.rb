@@ -10,6 +10,7 @@ class Api::V1::HangarDestroyTest < ActionDispatch::IntegrationTest
 
   test "empties a hangar whose vehicles carry loadouts" do
     vehicle = create(:vehicle, user: @user)
+    vehicle.model.update!(production_status: "flight-ready")
     create(:vehicle_loadout, vehicle: vehicle)
 
     delete "/api/v1/hangar", as: :json

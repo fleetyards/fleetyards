@@ -38,7 +38,7 @@ class Api::V1::VehicleLoadoutsActivateTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = create(:user)
-    @vehicle = create(:vehicle, user: @user)
+    @vehicle = create(:vehicle, user: @user, model: create(:model, production_status: "flight-ready"))
   end
 
   test "PUT /vehicles/:vehicle_id/loadouts/:id/activate activates the loadout" do

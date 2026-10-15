@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -41,17 +41,13 @@ const shown = computed(() =>
   (owned.value.length ? owned.value : all.value).slice(0, SHOWN_COUNT),
 );
 
-const { openLoadoutModal } = useVehicleModals();
+const { openEditModal } = useVehicleModals();
 
 // Loaners carry the paint they were lent with, as on the configuration card.
 const editable = computed(() => !props.vehicle.loaner);
 
 const openPicker = (paintId?: string) =>
-  openLoadoutModal(props.vehicle, {
-    tab: VehicleLoadoutTabsEnum.PAINTS,
-    editable: true,
-    paintId,
-  });
+  openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.PAINT, paintId });
 
 const thumb = (entry: VehiclePaint) =>
   entry.paint.media.storeImage?.smallUrl || entry.paint.media.storeImage?.url;

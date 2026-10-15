@@ -17,7 +17,7 @@ module Api
       def index
         authorize! with: VehicleLoadoutPolicy
 
-        @vehicle_loadouts = @vehicle.vehicle_loadouts.order(active: :desc, name: :asc)
+        @vehicle_loadouts = @vehicle.vehicle_loadouts.includes(:items).order(active: :desc, name: :asc)
       end
 
       def show
@@ -64,8 +64,16 @@ module Api
       end
 
       private def vehicle_loadout_params
-        @vehicle_loadout_params ||= params.transform_keys(&:underscore)
-          .permit(:name, :url)
+        @vehicle_loadout_params ||= begin
+          # The kind is chosen once: a link turned fleetyards loadout, or the
+          # other way round, would keep fields the new kind does not allow.
+          keys = [:name, :url, {items: [:slot_path, :item_type, :item_id]}]
+          keys << :kind if action_name == "create"
+          permitted = params.transform_keys(&:underscore).permit(*keys)
+
+          permitted[:item_list] = permitted.delete(:items) if permitted.key?(:items)
+          permitted
+        end
       end
     end
   end

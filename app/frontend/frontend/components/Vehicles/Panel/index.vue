@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
@@ -209,17 +209,32 @@ const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
 
 const comlink = useComlink();
 
-const { openLoadoutModal } = useVehicleModals();
+const { openEditModal, openLoadoutView } = useVehicleModals();
 
+// The owner edits what the ship carries; a visitor, or anyone looking at a
+// loaner or a wishlist ship, sees what is fitted.
 const openAddonsModal = () =>
-  openLoadoutModal(props.vehicle, {
-    editable: props.editable,
-    tab: model.value?.hasModules
-      ? VehicleLoadoutTabsEnum.MODULES
-      : VehicleLoadoutTabsEnum.UPGRADES,
-  });
+  props.editable &&
+  !(props.vehicle as Vehicle).loaner &&
+  !(props.vehicle as Vehicle).wanted
+    ? openEditModal(props.vehicle as Vehicle, {
+        tab: model.value?.hasModules
+          ? VehicleEditTabsEnum.MODULES
+          : VehicleEditTabsEnum.UPGRADES,
+      })
+    : openLoadoutView(props.vehicle);
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
+
+// Everyone sees what is fitted; the owner gets a way into the editor from
+// there.
+const openActiveLoadout = () =>
+  openLoadoutView(props.vehicle, {
+    editable:
+      props.editable &&
+      !(props.vehicle as Vehicle).loaner &&
+      !(props.vehicle as Vehicle).wanted,
+  });
 
 // Two separate meanings on one edge, so they cannot share a tone: gold is the
 // flagship, matching its certificate icon, and the group tone is the transient
@@ -391,7 +406,11 @@ const tone = computed(() => {
         :groups="vehicle.hangarGroups"
         class="vehicle-panel-hangar-groups"
       />
-      <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
+      <LoadoutMarker
+        v-if="activeLoadout"
+        :loadout="activeLoadout"
+        @open="openActiveLoadout"
+      />
       <div
         v-if="upgradable && vehicle"
         v-tooltip="t('labels.model.addons')"
