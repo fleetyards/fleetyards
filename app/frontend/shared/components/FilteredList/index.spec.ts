@@ -34,6 +34,7 @@ const ListComponent = Component as unknown as new (...args: unknown[]) => {
     asyncStatus: AsyncStatus;
     placeholders?: boolean;
     viewKeys?: string[];
+    isFilterSelected?: boolean;
   };
   $slots: Record<string, unknown>;
 };
@@ -334,6 +335,43 @@ describe("FilteredList", () => {
     const wrapper = await mountEmptyOn(
       { s: "name asc", tab: "grid", share: "token" },
       ["share"],
+    );
+
+    expect(
+      wrapper.findComponent({ name: "EmptyInfo" }).props("queryPresent"),
+    ).toBe(false);
+  });
+
+  it("keeps the list's view keys through the empty box's reset", async () => {
+    const wrapper = await mountEmptyOn(
+      { searchCont: "starfarer", share: "token", s: "name asc" },
+      ["share"],
+    );
+
+    const reset = wrapper
+      .findComponent({ name: "EmptyActions" })
+      .findAll("button")
+      .at(-1);
+    await reset?.trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ share: "token" });
+  });
+
+  it("takes the page's own word on whether the list is filtered", async () => {
+    await router.push({ name: "ships", query: { searchCont: "starfarer" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: loaded(),
+          isFilterSelected: false,
+        },
+        plugins: [router],
+      },
     );
 
     expect(

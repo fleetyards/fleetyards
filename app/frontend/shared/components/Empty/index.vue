@@ -10,7 +10,7 @@ import EmptyHeadline from "./Headline/index.vue";
 import EmptyActions from "./Actions/index.vue";
 import EmptyInfo from "./Info/index.vue";
 import { useRoute } from "vue-router";
-import { EmptyVariantsEnum, listFilteredKey } from "./types";
+import { EmptyVariantsEnum, listFilterKey } from "./types";
 
 type Props = {
   variant?: `${EmptyVariantsEnum}`;
@@ -34,7 +34,7 @@ const isPagePresent = computed(
   () => !!route.query.page && Number(route.query.page) > 1,
 );
 
-const listFiltered = inject(listFilteredKey, undefined);
+const listFilter = inject(listFilterKey, undefined);
 
 // Only a filter or a page beyond the first is something the reader can undo.
 // Any parameter at all used to count, which made a tab, a sort or a highlighted
@@ -44,8 +44,8 @@ const listFiltered = inject(listFilteredKey, undefined);
 // hangar that matched nothing read as an empty one.
 const isQueryPresent = computed(
   () =>
-    (listFiltered
-      ? listFiltered.value
+    (listFilter
+      ? listFilter.filtered.value
       : Object.keys(route.query?.q || {}).length > 0) || isPagePresent.value,
 );
 

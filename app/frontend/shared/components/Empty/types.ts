@@ -1,13 +1,18 @@
-import type { ComputedRef, InjectionKey, Ref } from "vue";
+import type { InjectionKey, Ref } from "vue";
 
 export enum EmptyVariantsEnum {
   DEFAULT = "default",
   BOX = "box",
 }
 
-// Whether the list an empty box stands in was narrowed by a filter. Offered by
-// FilteredList, which knows the page's view keys; the box cannot tell a filter
-// from view state by reading the URL on its own.
-export const listFilteredKey = Symbol("listFiltered") as InjectionKey<
-  Ref<boolean> | ComputedRef<boolean>
->;
+// The list an empty box stands in, as FilteredList offers it: whether a filter
+// narrowed it, and how to clear that filter without leaving the view. The box
+// cannot tell a filter from view state by reading the URL on its own.
+export type ListFilterContext = {
+  filtered: Readonly<Ref<boolean>>;
+  reset: () => Promise<void>;
+};
+
+export const listFilterKey = Symbol(
+  "listFilter",
+) as InjectionKey<ListFilterContext>;
