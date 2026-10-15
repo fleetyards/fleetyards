@@ -42,7 +42,7 @@
     "@google/model-viewer": "^4.4.0",
     "@number-flow/vue": "^0.5.2",
     "@rails/activestorage": "^8.1.400",
-    "@tanstack/vue-query": "^5.104.1",
+    "@tanstack/vue-query": "^5.104.2",
     "@tiptap/core": "^3.31.4",
     "@tiptap/extension-details": "^3.31.4",
     "@tiptap/extension-image": "^3.31.4",
