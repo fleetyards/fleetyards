@@ -17,14 +17,15 @@ module Api
 
         # A paint the ship owns stays listed even once the catalogue hides it,
         # or the card would lose it.
-        kept_ids = @vehicle.model_paint_ids | [@vehicle.model_paint_picture_id].compact
+        owned_ids = @vehicle.model_paint_ids
+        kept_ids = owned_ids | [@vehicle.model_paint_picture_id].compact
         paints = @vehicle.model.paints
           .visible.active
           .or(@vehicle.model.paints.where(id: kept_ids))
           .includes(:item_prices, *ModelPaint.attachment_preloads)
           .order(name: :asc)
           .to_a
-        @owned_ids = @vehicle.model_paint_ids.to_set
+        @owned_ids = owned_ids.to_set
         @pledged_ids = HangarPledgeItems::OwnedPaints.new(current_resource_owner).paint_ids(paints).to_set
         @paints = paints.sort_by do |paint|
           if @owned_ids.include?(paint.id) then 0
