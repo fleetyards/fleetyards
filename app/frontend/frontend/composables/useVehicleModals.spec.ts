@@ -42,7 +42,7 @@ describe("useVehicleModals", () => {
 
   it("opens the requested loadout category with explicit editing access", () => {
     useVehicleModals().openLoadoutModal(vehicle, {
-      tab: VehicleLoadoutTabsEnum.PAINTS,
+      tab: VehicleLoadoutTabsEnum.MODULES,
       editable: true,
     });
 
@@ -50,7 +50,53 @@ describe("useVehicleModals", () => {
       "open-modal",
       expect.objectContaining({
         wide: true,
-        props: { vehicle, tab: "paints", editable: true },
+        props: {
+          vehicle,
+          tab: "modules",
+          editable: true,
+          loadoutId: undefined,
+          newLoadout: false,
+        },
+      }),
+    );
+  });
+
+  it("opens a saved loadout, or a new one", () => {
+    useVehicleModals().openLoadoutModal(vehicle, {
+      editable: true,
+      loadoutId: "loadout-1",
+    });
+    useVehicleModals().openLoadoutModal(vehicle, {
+      editable: true,
+      newLoadout: true,
+    });
+
+    expect(emit).toHaveBeenNthCalledWith(
+      1,
+      "open-modal",
+      expect.objectContaining({
+        props: expect.objectContaining({ loadoutId: "loadout-1" }),
+      }),
+    );
+    expect(emit).toHaveBeenNthCalledWith(
+      2,
+      "open-modal",
+      expect.objectContaining({
+        props: expect.objectContaining({ newLoadout: true }),
+      }),
+    );
+  });
+
+  it("opens the vehicle's paint with a pick to save", () => {
+    useVehicleModals().openEditModal(vehicle, {
+      tab: VehicleEditTabsEnum.PAINT,
+      paintId: "paint-1",
+    });
+
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({
+        props: expect.objectContaining({ tab: "paint", paintId: "paint-1" }),
       }),
     );
   });
@@ -61,7 +107,13 @@ describe("useVehicleModals", () => {
     expect(emit).toHaveBeenCalledWith(
       "open-modal",
       expect.objectContaining({
-        props: { vehicle, tab: undefined, editable: false },
+        props: {
+          vehicle,
+          tab: undefined,
+          editable: false,
+          loadoutId: undefined,
+          newLoadout: false,
+        },
       }),
     );
   });

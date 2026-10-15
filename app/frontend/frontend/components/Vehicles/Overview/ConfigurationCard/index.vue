@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -38,13 +37,15 @@ const openLocationModal = () => {
   });
 };
 
-const { openEditModal, openLoadoutModal } = useVehicleModals();
+const { openEditModal } = useVehicleModals();
 
 const openGroupsModal = () =>
   openEditModal(props.vehicle, { tab: VehicleEditTabsEnum.GROUPS });
 
-const editLoadout = (tab: VehicleLoadoutTabsEnum) =>
-  openLoadoutModal(props.vehicle, { tab, editable: true });
+// What the ship carries is edited with the rest of the vehicle; which of it is
+// fitted belongs to a loadout.
+const editEquipment = (tab: VehicleEditTabsEnum) =>
+  openEditModal(props.vehicle, { tab });
 
 const paintThumb = computed(
   () => props.vehicle.paint?.media.storeImage?.smallUrl,
@@ -55,13 +56,13 @@ const facts = computed(() =>
     [
       {
         key: "upgrade",
-        edit: () => editLoadout(VehicleLoadoutTabsEnum.UPGRADES),
+        edit: () => editEquipment(VehicleEditTabsEnum.UPGRADES),
         label: t("labels.model.upgrades"),
         value: props.vehicle.upgrade?.name,
       },
       {
         key: "modulePackage",
-        edit: () => editLoadout(VehicleLoadoutTabsEnum.MODULES),
+        edit: () => editEquipment(VehicleEditTabsEnum.MODULES),
         label: t("labels.model.modulePackages"),
         value: props.vehicle.modulePackage?.name,
       },
@@ -110,7 +111,7 @@ const facts = computed(() =>
             <button
               class="overview-config__edit"
               :disabled="vehicle.loaner || !vehicle.model.hasPaints"
-              @click="editLoadout(VehicleLoadoutTabsEnum.PAINTS)"
+              @click="editEquipment(VehicleEditTabsEnum.PAINT)"
             >
               <span>{{
                 vehicle.paint?.name || t("labels.vehicleOverview.noPaint")

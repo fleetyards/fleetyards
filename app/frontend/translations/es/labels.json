@@ -4292,6 +4292,8 @@
         "fittedHint": "Un módulo por ranura, de los módulos que posees",
         "ownedModules": "Tus módulos",
         "nothingFitted": "Nada equipado",
+        "loadoutName": "Nombre de la configuración",
+        "loadoutNamePlaceholder": "p. ej. Misión médica",
         "stock": "De serie",
         "noOwnedModuleForSlot": "No posees ningún módulo para esta ranura",
         "unslotted": "Aún no se pueden equipar, porque los archivos del juego no indican qué ranura ocupan: %{modules}",

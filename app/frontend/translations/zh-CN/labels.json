@@ -4292,6 +4292,8 @@
         "fittedHint": "每个槽位一个模块，从你拥有的模块中选择",
         "ownedModules": "你拥有的模块",
         "nothingFitted": "未装配",
+        "loadoutName": "配装名称",
+        "loadoutNamePlaceholder": "例如：医疗任务",
         "stock": "原厂",
         "noOwnedModuleForSlot": "你没有适用于该槽位的模块",
         "unslotted": "暂时无法装配，因为游戏文件未说明它们占用哪个槽位：%{modules}",

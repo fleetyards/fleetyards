@@ -4292,6 +4292,8 @@
         "fittedHint": "Ein Modul pro Slot, aus den Modulen, die du besitzt",
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
+        "loadoutName": "Name des Loadouts",
+        "loadoutNamePlaceholder": "z. B. Rettungseinsatz",
         "stock": "Serienmäßig",
         "noOwnedModuleForSlot": "Du besitzt kein Modul für diesen Slot",
         "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",

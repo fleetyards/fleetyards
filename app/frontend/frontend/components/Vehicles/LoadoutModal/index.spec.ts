@@ -24,6 +24,8 @@ const modules = ref<{ items: ModelModule[] }>({
   ] as unknown as ModelModule[],
 });
 
+const loadouts = ref<unknown[]>([]);
+
 const resolved = () => ({
   isPending: ref(false),
   isFetching: ref(false),
@@ -32,22 +34,6 @@ const resolved = () => ({
   error: ref(undefined),
 });
 
-// Partial: the row and the contents summary reach for real enums from here.
-vi.mock("@/services/fyApi", async (importOriginal) => ({
-  ...(await importOriginal<Record<string, unknown>>()),
-  useModelPaints: () => ({ data: ref([]), ...resolved() }),
-  useModelModulePackages: () => ({ data: ref(undefined), ...resolved() }),
-  useModelModules: () => ({ data: modules, ...resolved() }),
-  useModelUpgrades: () => ({ data: ref([]), ...resolved() }),
-  useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
-  createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
-  updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
-  activateVehicleLoadout: (...args: unknown[]) =>
-    activateVehicleLoadout(...args),
-}));
-
-const mutateAsync = vi.fn(() => Promise.resolve());
-const loadouts = ref<unknown[]>([]);
 const createVehicleLoadout = vi.fn((..._args: unknown[]) =>
   Promise.resolve({ id: "new" }),
 );
@@ -58,9 +44,19 @@ const activateVehicleLoadout = vi.fn((..._args: unknown[]) =>
   Promise.resolve({}),
 );
 
+// Partial: the row and the contents summary reach for real enums from here.
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  useModelModules: () => ({ data: modules, ...resolved() }),
+  useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
+  createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
+  updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
+  activateVehicleLoadout: (...args: unknown[]) =>
+    activateVehicleLoadout(...args),
+}));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
-    useUpdateMutation: () => ({ mutateAsync, isPending: ref(false) }),
     invalidateHangarQueries: () => Promise.resolve(),
   }),
 }));
@@ -81,7 +77,12 @@ const vehicle = (
   {
     fitted,
     productionStatus = "flight-ready",
-  }: { fitted?: Record<string, string>; productionStatus?: string } = {},
+    activeLoadout,
+  }: {
+    fitted?: Record<string, string>;
+    productionStatus?: string;
+    activeLoadout?: Record<string, unknown>;
+  } = {},
 ): Vehicle =>
   ({
     id: "v1",
@@ -90,13 +91,16 @@ const vehicle = (
     activeLoadout: fitted
       ? {
           id: "l1",
+          name: "Hauler",
           kind: "fleetyards",
-          items: Object.entries(fitted).map(([slot, modelModuleId]) => ({
-            slot,
-            modelModuleId,
+          active: true,
+          items: Object.entries(fitted).map(([slotPath, itemId]) => ({
+            slotPath,
+            itemType: "ModelModule",
+            itemId,
           })),
         }
-      : undefined,
+      : activeLoadout,
     model: {
       name: "Retaliator",
       slug: "retaliator",
@@ -107,78 +111,44 @@ const vehicle = (
     },
   }) as unknown as Vehicle;
 
-const mountModal = (v: Vehicle) =>
-  mountWithDefaults(Component, { props: { vehicle: v, editable: true } });
+const mountModal = (v: Vehicle, props: Record<string, unknown> = {}) =>
+  mountWithDefaults(Component, {
+    props: { vehicle: v, editable: true, ...props },
+  });
 
-const rowToggle = (
-  wrapper: Awaited<ReturnType<typeof mountModal>>,
-  i: number,
-) => wrapper.findAll("[data-test='vehicle-addon-toggle']")[i];
+type Wrapper = Awaited<ReturnType<typeof mountModal>>;
 
-const slotPick = (wrapper: Awaited<ReturnType<typeof mountModal>>, i: number) =>
+const slotPick = (wrapper: Wrapper, i: number) =>
   wrapper.findAll("[data-test='vehicle-loadout-slot-module-toggle']")[i];
+
+const save = async (wrapper: Wrapper) => {
+  await wrapper.find("form").trigger("submit");
+  await flushPromises();
+};
+
+const cargo = (wrapper: Wrapper) =>
+  wrapper
+    .findAll("[data-test='vehicle-specs'] div")
+    .find((spec) => spec.find("dt").text() === "labels.model.cargo")
+    ?.find("dd")
+    .text();
 
 beforeEach(() => {
   loadouts.value = [];
-  mutateAsync.mockClear();
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
   activateVehicleLoadout.mockClear();
 });
 
 describe("VehicleLoadoutModal", () => {
-  it("does not save an unchanged loadout", async () => {
-    const wrapper = await mountModal(vehicle(["m1"]));
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
-
-    expect(mutateAsync).not.toHaveBeenCalled();
-  });
-
-  it("does not allow a visitor to save", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: { vehicle: vehicle(["m1"]), editable: false },
-    });
-
-    expect(wrapper.find('[data-test="vehicle-loadout-save"]').exists()).toBe(
-      false,
-    );
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
-    expect(mutateAsync).not.toHaveBeenCalled();
-  });
-
-  /**
-   * The whole broken chain in one assertion: a row click has to reach the form
-   * field and land in the payload. It used to stop at the row.
-   */
-  it("saves the selection a row click made", async () => {
-    const wrapper = await mountModal(vehicle());
-
-    await rowToggle(wrapper, 0).trigger("click");
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
-
-    expect(mutateAsync).toHaveBeenCalledWith({
-      id: "v1",
-      data: { modelModuleIds: ["m1"] },
-    });
-  });
-
   it("counts only the fitted module's cargo in the ship's stats", async () => {
     const wrapper = await mountModal(vehicle(["m1", "m2"]));
-    const cargo = () =>
-      wrapper
-        .findAll("[data-test='vehicle-specs'] div")
-        .find((spec) => spec.find("dt").text() === "labels.model.cargo")
-        ?.find("dd")
-        .text();
 
-    expect(cargo()).toBe("100");
+    expect(cargo(wrapper)).toBe("100");
 
     await slotPick(wrapper, 0).trigger("click");
 
-    expect(cargo()).toBe("132");
+    expect(cargo(wrapper)).toBe("132");
   });
 
   it("fits one module per slot, swapping rather than adding", async () => {
@@ -194,78 +164,112 @@ describe("VehicleLoadoutModal", () => {
     ).toHaveLength(1);
   });
 
-  it("creates and activates a fleetyards loadout on the first fitting", async () => {
+  it("saves a new loadout and switches it on when nothing else is", async () => {
     const wrapper = await mountModal(vehicle(["m1"]));
 
     await slotPick(wrapper, 0).trigger("click");
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
+    await save(wrapper);
 
-    expect(mutateAsync).not.toHaveBeenCalled();
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
-      items: [{ slot: "hardpoint_module", modelModuleId: "m1" }],
+      name: undefined,
+      items: [
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
+      ],
     });
     expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
   });
 
-  it("refits the active fleetyards loadout in place", async () => {
+  it("leaves an active linked build switched on when saving a new loadout", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1"], { activeLoadout: { id: "link", kind: "link" } }),
+    );
+
+    await slotPick(wrapper, 0).trigger("click");
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalled();
+    expect(activateVehicleLoadout).not.toHaveBeenCalled();
+  });
+
+  it("edits the active fleetyards loadout in place", async () => {
     const wrapper = await mountModal(
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m1" } }),
     );
 
     await slotPick(wrapper, 1).trigger("click");
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
+    await save(wrapper);
 
     expect(createVehicleLoadout).not.toHaveBeenCalled();
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l1", {
-      items: [{ slot: "hardpoint_module", modelModuleId: "m2" }],
+      name: "Hauler",
+      items: [
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
+      ],
     });
   });
 
-  // A linked build is active, but the ship already has a fleetyards loadout:
-  // that one is refitted and switched back on, not joined by a second.
-  it("refits and reactivates an inactive fleetyards loadout", async () => {
+  it("edits the saved loadout it was opened for, without activating it", async () => {
     loadouts.value = [
       {
         id: "l2",
+        name: "Medical run",
         kind: "fleetyards",
         active: false,
         updatedAt: "2026-10-01T00:00:00Z",
-        items: [{ slot: "hardpoint_module", modelModuleId: "m1" }],
+        items: [
+          {
+            slotPath: "hardpoint_module",
+            itemType: "ModelModule",
+            itemId: "m1",
+          },
+        ],
       },
     ];
-    const wrapper = await mountModal(vehicle(["m1", "m2"]));
+    const wrapper = await mountModal(vehicle(["m1", "m2"]), {
+      loadoutId: "l2",
+    });
     await flushPromises();
 
     await slotPick(wrapper, 1).trigger("click");
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
+    await save(wrapper);
 
-    expect(createVehicleLoadout).not.toHaveBeenCalled();
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
-      items: [{ slot: "hardpoint_module", modelModuleId: "m2" }],
+      name: "Medical run",
+      items: [
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
+      ],
     });
-    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "l2");
+    expect(activateVehicleLoadout).not.toHaveBeenCalled();
   });
 
-  it("unfits a module that is given up", async () => {
+  it("starts a new loadout beside the active one when asked to", async () => {
     const wrapper = await mountModal(
       vehicle(["m1"], { fitted: { hardpoint_module: "m1" } }),
+      { newLoadout: true },
     );
 
-    await rowToggle(wrapper, 0).trigger("click");
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
+    expect(
+      wrapper.findAll(
+        "[data-test='vehicle-loadout-slot-module'].addon-option--selected",
+      ),
+    ).toHaveLength(0);
 
-    expect(mutateAsync).toHaveBeenCalledWith({
-      id: "v1",
-      data: { modelModuleIds: [] },
-    });
-    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l1", {
-      items: [],
-    });
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalled();
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+  });
+
+  it("does not let a visitor save", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]), { editable: false });
+
+    expect(wrapper.find('[data-test="vehicle-loadout-save"]').exists()).toBe(
+      false,
+    );
+    await save(wrapper);
+
+    expect(createVehicleLoadout).not.toHaveBeenCalled();
   });
 
   it("offers no fitting on a ship that is not flight-ready", async () => {
@@ -279,78 +283,41 @@ describe("VehicleLoadoutModal", () => {
     expect(wrapper.find("[data-test='vehicle-loadout-fitting']").exists()).toBe(
       false,
     );
+    expect(
+      wrapper.get('[data-test="vehicle-loadout-save"]').attributes("disabled"),
+    ).toBeDefined();
   });
 
-  // Reassigning the initial values never reached the form, so the modal kept
-  // answering for whichever ship it was first opened for.
-  it("re-seeds the fields when the ship it was opened for changes", async () => {
-    const wrapper = await mountModal(vehicle(["m1"]));
+  it("re-seeds the fitting when the ship it was opened for changes", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m1" } }),
+    );
 
-    expect(
-      wrapper.findAll("[data-test='vehicle-addon'].addon-option--selected"),
-    ).toHaveLength(1);
-
-    await wrapper.setProps({ vehicle: vehicle(["m2"]) });
+    await wrapper.setProps({
+      vehicle: vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
+    });
     await flushPromises();
 
     const selected = wrapper.findAll(
-      "[data-test='vehicle-addon'].addon-option--selected",
+      "[data-test='vehicle-loadout-slot-module'].addon-option--selected",
     );
     expect(selected).toHaveLength(1);
     expect(selected[0].text()).toContain("Combat Module");
   });
-
-  it("saves a preselected paint, even after the ship refreshes", async () => {
-    const wrapper = await mountWithDefaults(Component, {
-      props: { vehicle: vehicle(), editable: true, paintId: "p2" },
-    });
-
-    await wrapper.setProps({ vehicle: vehicle() });
-    await flushPromises();
-    await wrapper.find("form").trigger("submit");
-    await flushPromises();
-
-    expect(mutateAsync).toHaveBeenCalledWith({
-      id: "v1",
-      data: { modelPaintId: "p2" },
-    });
-  });
-
-  // A background refetch of the hangar must not discard an unsaved choice.
-  it("keeps a pending choice when the ship refreshes underneath it", async () => {
-    const wrapper = await mountModal(vehicle(["m1"]));
-
-    await rowToggle(wrapper, 1).trigger("click");
-    await wrapper.setProps({ vehicle: vehicle(["m1"]) });
-    await flushPromises();
-
-    expect(
-      wrapper.findAll("[data-test='vehicle-addon'].addon-option--selected"),
-    ).toHaveLength(2);
-  });
 });
 
-it("shows the additional component sections and unsupported add-on sections", async () => {
-  const v = vehicle();
-  v.model.hasModules = false;
-  const wrapper = await mountModal(v);
-  const tabs = wrapper.findAllComponents({ name: "FormTab" });
-  const ids = tabs.map((tab) => tab.props("id"));
-  expect(
-    tabs.find((tab) => tab.props("id") === "modules")?.props("disabled"),
-  ).toBe(true);
-  expect(ids).toEqual(
-    expect.arrayContaining([
-      "radar",
-      "lifeSupport",
-      "flightBlades",
-      "modules",
-      "upgrades",
-    ]),
-  );
+it("keeps owned modules, upgrades and paint out of the loadout", async () => {
+  const wrapper = await mountModal(vehicle());
+  const ids = wrapper
+    .findAllComponents({ name: "FormTab" })
+    .map((tab) => tab.props("id"));
+
+  expect(ids).not.toContain("upgrades");
+  expect(ids).not.toContain("paints");
+  expect(wrapper.find("[data-test='vehicle-addon']").exists()).toBe(false);
 });
 
-it("orders systems before propulsion and weapons, with paints last", async () => {
+it("orders systems before propulsion and weapons", async () => {
   const wrapper = await mountModal(vehicle());
   const tabs = wrapper.findAllComponents({ name: "FormTab" });
   expect(tabs.map((tab) => tab.props("id"))).toEqual([
@@ -360,12 +327,10 @@ it("orders systems before propulsion and weapons, with paints last", async () =>
     "powerPlants",
     "shields",
     "modules",
-    "upgrades",
     "quantumDrives",
     "flightBlades",
     "missiles",
     "weapons",
-    "paints",
   ]);
   for (const [id, category] of [
     ["radar", "radar"],
@@ -378,7 +343,6 @@ it("orders systems before propulsion and weapons, with paints last", async () =>
     ["flightBlades", "controller"],
     ["missiles", "missiles"],
     ["weapons", "weapons"],
-    ["paints", "paints"],
   ]) {
     const tab = tabs.find((tab) => tab.props("id") === id)!;
     const icon = categoryIcon(category)!;
@@ -388,14 +352,15 @@ it("orders systems before propulsion and weapons, with paints last", async () =>
   }
 });
 
-it("reserves saving a loadout while keeping current changes saveable", async () => {
-  const wrapper = await mountModal(vehicle());
+it("disables the modules category on a ship without modules", async () => {
+  const v = vehicle();
+  v.model.hasModules = false;
+  const wrapper = await mountModal(v);
+
   expect(
     wrapper
-      .get('[data-test="vehicle-loadout-save-preset"]')
-      .attributes("disabled"),
-  ).toBeDefined();
-  expect(
-    wrapper.get('[data-test="vehicle-loadout-save"]').attributes("disabled"),
-  ).toBeUndefined();
+      .findAllComponents({ name: "FormTab" })
+      .find((tab) => tab.props("id") === "modules")
+      ?.props("disabled"),
+  ).toBe(true);
 });

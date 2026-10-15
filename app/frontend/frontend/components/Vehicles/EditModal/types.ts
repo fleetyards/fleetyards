@@ -6,6 +6,9 @@ export enum VehicleEditTabsEnum {
   NAMES = "names",
   GROUPS = "groups",
   IMAGE = "image",
+  MODULES = "modules",
+  UPGRADES = "upgrades",
+  PAINT = "paint",
 }
 
 export type VehicleEditValues = Pick<
@@ -20,6 +23,9 @@ export type VehicleEditValues = Pick<
   | "serial"
   | "alternativeNames"
   | "hangarGroupIds"
+  | "modelModuleIds"
+  | "modelUpgradeIds"
+  | "modelPaintId"
 > & {
   image?: string | null;
 };

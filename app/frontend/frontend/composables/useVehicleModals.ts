@@ -8,7 +8,11 @@ export const useVehicleModals = () => {
 
   const openEditModal = (
     vehicle: Vehicle,
-    options: { tab?: VehicleEditTabsEnum; wishlist?: boolean } = {},
+    options: {
+      tab?: VehicleEditTabsEnum;
+      wishlist?: boolean;
+      paintId?: string;
+    } = {},
   ) => {
     comlink.emit("open-modal", {
       component: () =>
@@ -17,6 +21,7 @@ export const useVehicleModals = () => {
         vehicle,
         wishlist: options.wishlist ?? vehicle.wanted,
         tab: options.tab,
+        paintId: options.paintId,
       },
     });
   };
@@ -26,7 +31,8 @@ export const useVehicleModals = () => {
     options: {
       tab?: VehicleLoadoutTabsEnum;
       editable?: boolean;
-      paintId?: string;
+      loadoutId?: string;
+      newLoadout?: boolean;
     } = {},
   ) => {
     comlink.emit("open-modal", {
@@ -37,7 +43,8 @@ export const useVehicleModals = () => {
         vehicle,
         editable: options.editable ?? false,
         tab: options.tab,
-        paintId: options.paintId,
+        loadoutId: options.loadoutId,
+        newLoadout: options.newLoadout ?? false,
       },
     });
   };

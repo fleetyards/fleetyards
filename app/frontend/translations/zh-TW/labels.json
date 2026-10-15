@@ -4292,6 +4292,8 @@
         "fittedHint": "每個槽位一個模組，從你擁有的模組中選擇",
         "ownedModules": "你擁有的模組",
         "nothingFitted": "未裝配",
+        "loadoutName": "配裝名稱",
+        "loadoutNamePlaceholder": "例如：醫療任務",
         "stock": "原廠",
         "noOwnedModuleForSlot": "你沒有適用於此槽位的模組",
         "unslotted": "暫時無法裝配，因為遊戲檔案未說明它們佔用哪個槽位：%{modules}",

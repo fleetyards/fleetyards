@@ -27,9 +27,10 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 }));
 
 const openLoadoutModal = vi.fn();
+const openEditModal = vi.fn();
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openLoadoutModal, openEditModal: vi.fn() }),
+  useVehicleModals: () => ({ openLoadoutModal, openEditModal }),
 }));
 
 const NOW = "2026-08-24T12:00:00Z";
@@ -342,21 +343,35 @@ describe("VehiclesPanel", () => {
   });
 });
 
-describe("vehicle loadout shortcut", () => {
+describe("vehicle add-ons shortcut", () => {
   it.each([
     { hasModules: true, hasUpgrades: false, tab: "modules" },
     { hasModules: false, hasUpgrades: true, tab: "upgrades" },
-  ])("opens the $tab category", async ({ hasModules, hasUpgrades, tab }) => {
+  ])(
+    "opens the owner's $tab on the vehicle",
+    async ({ hasModules, hasUpgrades, tab }) => {
+      const ship = vehicle({
+        model: { ...vehicle().model, hasModules, hasUpgrades },
+      });
+      const wrapper = await mount({ vehicle: ship, editable: true });
+
+      await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+      expect(openEditModal).toHaveBeenLastCalledWith(ship, { tab });
+    },
+  );
+
+  it("shows a visitor what is fitted", async () => {
     const ship = vehicle({
-      model: { ...vehicle().model, hasModules, hasUpgrades },
+      modelModuleIds: ["m1"],
+      model: { ...vehicle().model, hasModules: true },
     });
-    const wrapper = await mount({ vehicle: ship, editable: true });
+    const wrapper = await mount({ vehicle: ship, editable: false });
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
     expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      editable: true,
-      tab,
+      tab: "modules",
     });
   });
 });

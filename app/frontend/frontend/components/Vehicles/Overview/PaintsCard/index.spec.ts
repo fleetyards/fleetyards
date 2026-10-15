@@ -6,7 +6,7 @@ import Component from "./index.vue";
 import type { Vehicle, VehiclePaint } from "@/services/fyApi";
 
 const paints = ref<VehiclePaint[]>([]);
-const openLoadoutModal = vi.fn();
+const openEditModal = vi.fn();
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
@@ -14,7 +14,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openLoadoutModal }),
+  useVehicleModals: () => ({ openEditModal }),
 }));
 
 const entry = (
@@ -51,7 +51,7 @@ const names = (wrapper: Awaited<ReturnType<typeof mountWithDefaults>>) =>
 
 describe("VehicleOverviewPaintsCard", () => {
   beforeEach(() => {
-    openLoadoutModal.mockReset();
+    openEditModal.mockReset();
   });
 
   it("shows only the paints the owner has pledged for", async () => {
@@ -73,7 +73,7 @@ describe("VehicleOverviewPaintsCard", () => {
     expect(names(wrapper)).toEqual(["Rust Society", "Stormbringer"]);
   });
 
-  it("opens the loadout paints tab without a preselection from the header", async () => {
+  it("opens the vehicle paint tab without a preselection from the header", async () => {
     paints.value = [entry("Rust Society", { owned: true })];
 
     const wrapper = await mount();
@@ -83,9 +83,8 @@ describe("VehicleOverviewPaintsCard", () => {
       .trigger("click");
     await flushPromises();
 
-    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
-      tab: "paints",
-      editable: true,
+    expect(openEditModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paint",
       paintId: undefined,
     });
   });
@@ -103,7 +102,7 @@ describe("VehicleOverviewPaintsCard", () => {
     ).toHaveProperty("disabled");
   });
 
-  it("opens the loadout paints tab from a paint", async () => {
+  it("opens the vehicle paint tab from a paint", async () => {
     paints.value = [entry("Rust Society", { owned: true })];
 
     const wrapper = await mount();
@@ -111,9 +110,8 @@ describe("VehicleOverviewPaintsCard", () => {
     await wrapper.find('[data-test="vehicle-overview-paint"]').trigger("click");
     await flushPromises();
 
-    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
-      tab: "paints",
-      editable: true,
+    expect(openEditModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paint",
       paintId: "Rust Society",
     });
   });
@@ -126,9 +124,8 @@ describe("VehicleOverviewPaintsCard", () => {
     await wrapper.find('[data-test="vehicle-overview-paint"]').trigger("click");
     await flushPromises();
 
-    expect(openLoadoutModal).toHaveBeenCalledWith(vehicle, {
-      tab: "paints",
-      editable: true,
+    expect(openEditModal).toHaveBeenCalledWith(vehicle, {
+      tab: "paint",
       paintId: "Rust Society",
     });
   });

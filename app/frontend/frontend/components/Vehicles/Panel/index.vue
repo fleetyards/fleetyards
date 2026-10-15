@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
+import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
@@ -209,15 +210,17 @@ const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
 
 const comlink = useComlink();
 
-const { openLoadoutModal } = useVehicleModals();
+const { openEditModal, openLoadoutModal } = useVehicleModals();
 
+// The owner edits what the ship carries; a visitor sees what is fitted.
 const openAddonsModal = () =>
-  openLoadoutModal(props.vehicle, {
-    editable: props.editable,
-    tab: model.value?.hasModules
-      ? VehicleLoadoutTabsEnum.MODULES
-      : VehicleLoadoutTabsEnum.UPGRADES,
-  });
+  props.editable
+    ? openEditModal(props.vehicle as Vehicle, {
+        tab: model.value?.hasModules
+          ? VehicleEditTabsEnum.MODULES
+          : VehicleEditTabsEnum.UPGRADES,
+      })
+    : openLoadoutModal(props.vehicle, { tab: VehicleLoadoutTabsEnum.MODULES });
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 

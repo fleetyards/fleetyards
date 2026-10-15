@@ -3,13 +3,12 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import type { Vehicle } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const { openEditModal, openLoadoutModal, emit } = vi.hoisted(() => ({
+const { openEditModal, emit } = vi.hoisted(() => ({
   openEditModal: vi.fn(),
-  openLoadoutModal: vi.fn(),
   emit: vi.fn(),
 }));
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openEditModal, openLoadoutModal }),
+  useVehicleModals: () => ({ openEditModal }),
 }));
 vi.mock("@/shared/composables/useComlink", () => ({
   useComlink: () => ({ emit }),
@@ -28,17 +27,14 @@ describe("Configuration edits", () => {
   it("opens the editor for each editable value", async () => {
     const wrapper = await mountWithDefaults(Component, { props: { vehicle } });
     for (const [fact, tab] of [
-      ["paint", "paints"],
+      ["paint", "paint"],
       ["upgrade", "upgrades"],
       ["modulePackage", "modules"],
     ]) {
       await wrapper
         .get(`[data-test="vehicle-fact-${fact}"] button`)
         .trigger("click");
-      expect(openLoadoutModal).toHaveBeenLastCalledWith(vehicle, {
-        tab,
-        editable: true,
-      });
+      expect(openEditModal).toHaveBeenLastCalledWith(vehicle, { tab });
     }
     await wrapper
       .get('[data-test="vehicle-fact-boughtVia"] button')
