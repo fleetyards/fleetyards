@@ -28,7 +28,7 @@ class Api::V1::StatsTopPaintsTest < ActionDispatch::IntegrationTest
   test "GET /stats/top-paints names the ship the paint belongs to" do
     model = create(:model, name: "Corsair")
     paint = create(:model_paint, model:, name: "Best in Show")
-    create_list(:vehicle, 2, model:, model_paint: paint, wanted: false, loaner: false)
+    create_list(:vehicle, 2, model:, model_paints: [paint], wanted: false, loaner: false)
 
     assert_api_response :get, 200 do
       assert_equal ["Corsair - Best in Show"], parsed_body.map { |point| point["label"] }
@@ -41,7 +41,7 @@ class Api::V1::StatsTopPaintsTest < ActionDispatch::IntegrationTest
   test "GET /stats/top-paints does not repeat a ship already in the paint name" do
     model = create(:model, name: "Carrack")
     paint = create(:model_paint, model:, name: "Carrack Expedition")
-    create(:vehicle, model:, model_paint: paint, wanted: false, loaner: false)
+    create(:vehicle, model:, model_paints: [paint], wanted: false, loaner: false)
 
     assert_api_response :get, 200 do
       assert_equal ["Carrack Expedition"], parsed_body.map { |point| point["label"] }
@@ -50,7 +50,7 @@ class Api::V1::StatsTopPaintsTest < ActionDispatch::IntegrationTest
 
   test "GET /stats/top-paints ignores a ship with no paint set" do
     model = create(:model)
-    create(:vehicle, model:, model_paint: nil, wanted: false, loaner: false)
+    create(:vehicle, model:, wanted: false, loaner: false)
 
     assert_api_response :get, 200 do
       assert_empty parsed_body
@@ -60,8 +60,8 @@ class Api::V1::StatsTopPaintsTest < ActionDispatch::IntegrationTest
   test "GET /stats/top-paints leaves out wishlist entries and loaners" do
     model = create(:model)
     paint = create(:model_paint, model:)
-    create(:vehicle, model:, model_paint: paint, wanted: true, loaner: false)
-    create(:vehicle, model:, model_paint: paint, wanted: false, loaner: true)
+    create(:vehicle, model:, model_paints: [paint], wanted: true, loaner: false)
+    create(:vehicle, model:, model_paints: [paint], wanted: false, loaner: true)
 
     assert_api_response :get, 200 do
       assert_empty parsed_body
