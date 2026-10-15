@@ -88,6 +88,12 @@ class ModelModule < ApplicationRecord
     end
   end
 
+  # From the build alone where there is one: a module without beds in this
+  # build has none, rather than the beds another build left on the column.
+  def medical_beds
+    build ? build.medical_beds : super
+  end
+
   has_one_attached :store_image
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true

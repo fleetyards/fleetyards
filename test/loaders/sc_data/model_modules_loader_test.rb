@@ -82,7 +82,22 @@ module ScData
         fixture_loader(::ScData::Loader::ModelModulesLoader).load_model_module(never)
 
         assert_nil emptied.reload.read_attribute(:medical_beds)
+        assert_nil emptied.builds.sole.medical_beds
         assert_nil never.reload.read_attribute(:medical_beds)
+      end
+
+      test "#load_model_module clears beds from the build it reloads once they are gone" do
+        model_module = create(:model_module, sc_key: "aegs_avenger_nose_s3")
+        create(:component, sc_key: "aegs_avenger_thruster_main")
+        model_module.builds.create!(environment: fixture_source.environment, version: fixture_source.version,
+          medical_beds: {"tiers" => [], "respawn_beds" => 1})
+        model_module.update_columns(medical_beds: {"tiers" => [], "respawn_beds" => 1}.to_yaml)
+
+        ::ScData::Source.with(fixture_source) do
+          fixture_loader(::ScData::Loader::ModelModulesLoader).load_model_module(model_module)
+        end
+
+        assert_nil model_module.builds.sole.reload.medical_beds
       end
 
       # No ports is an empty loadout, not a skipped one: what an earlier load of

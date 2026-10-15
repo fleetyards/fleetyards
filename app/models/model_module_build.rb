@@ -29,7 +29,11 @@ class ModelModuleBuild < ApplicationRecord
   # hand the callback the *previous* build's value on the second load and store a
   # capacity the module does not have. The build row still records it, for a
   # per-build comparison; nothing reads it through.
-  READ_THROUGH = (FACTS - %i[cargo_holds]).freeze
+  #
+  # `medical_beds` is read through too, but not by this fallback: for it nil is
+  # an answer -- no beds in this build -- not a gap, so `ModelModule` reads the
+  # build's value even when it is nil.
+  READ_THROUGH = (FACTS - %i[cargo_holds medical_beds]).freeze
 
   # The same serialization the module declares, so a build reads back the
   # structure the column encodes rather than a raw YAML string.
@@ -40,9 +44,13 @@ class ModelModuleBuild < ApplicationRecord
   validates :version, presence: true
   validates :model_module_id, uniqueness: {scope: [:environment, :version]}
 
-  # The facts a build row holds, read off a module.
+  # The facts a build row holds, read off a module: the column for those not
+  # read through the build, which is what the load just wrote, rather than the
+  # stale build row a reload would answer from.
   def self.facts_from(model_module)
-    FACTS.index_with { |fact| model_module.public_send(fact) }
+    FACTS.index_with do |fact|
+      READ_THROUGH.include?(fact) ? model_module.public_send(fact) : model_module.read_attribute(fact)
+    end
   end
 
   # Every build this environment still has.
