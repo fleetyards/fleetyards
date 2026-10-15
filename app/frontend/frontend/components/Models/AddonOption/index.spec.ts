@@ -130,12 +130,10 @@ describe("AddonOption", () => {
     expect(wrapper.emitted("decrease")).toHaveLength(1);
   });
 
-  it("draws the picture large only when asked", async () => {
-    expect((await mount()).classes()).not.toContain(
-      "addon-option--large-image",
-    );
-    expect((await mount({ largeImage: true })).classes()).toContain(
-      "addon-option--large-image",
+  it("lays out as a card only when asked", async () => {
+    expect((await mount()).classes()).not.toContain("addon-option--stacked");
+    expect((await mount({ stacked: true })).classes()).toContain(
+      "addon-option--stacked",
     );
   });
 });
