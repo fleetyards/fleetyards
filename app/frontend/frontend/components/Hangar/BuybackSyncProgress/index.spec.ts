@@ -31,6 +31,7 @@ const list = vi.hoisted(() => ({
   status: undefined as unknown as Ref<string>,
   currentPage: undefined as unknown as Ref<number>,
   detailsStarted: undefined as unknown as Ref<boolean>,
+  result: undefined as unknown as Ref<{ detailsPending: string[] } | undefined>,
   cancel: vi.fn(),
   reset: vi.fn(),
 }));
@@ -82,6 +83,7 @@ describe("HangarBuybackSyncProgress", () => {
     list.status = ref("idle");
     list.currentPage = ref(1);
     list.detailsStarted = ref(false);
+    list.result = ref(undefined);
     list.cancel.mockClear();
     list.reset.mockClear();
     emit.mockClear();
@@ -264,6 +266,17 @@ describe("HangarBuybackSyncProgress", () => {
 
     expect(find(wrapper, "buyback-sync-ended").text()).toBe(
       "labels.buybackSync.background.finished",
+    );
+  });
+
+  it("says when the extension could not read the prices", () => {
+    list.status.value = "finished";
+    list.result.value = { detailsPending: ["1"] };
+
+    const wrapper = mountProgress();
+
+    expect(find(wrapper, "buyback-sync-ended").text()).toBe(
+      "labels.buybackSync.background.incomplete",
     );
   });
 

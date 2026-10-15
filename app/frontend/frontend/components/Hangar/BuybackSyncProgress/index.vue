@@ -55,9 +55,12 @@ const outcome = computed(() => {
   if (list.status.value === "failed") return "failed";
 
   // A cancelled pass goes back to idle, but its list is stored all the same.
-  return list.detailsStarted.value && details.status.value !== "finished"
-    ? "incomplete"
-    : "finished";
+  // Without a pass at all, the extension could not read the prices.
+  if (list.detailsStarted.value) {
+    return details.status.value === "finished" ? "finished" : "incomplete";
+  }
+
+  return list.result.value?.detailsPending.length ? "incomplete" : "finished";
 });
 
 const outcomeClass = computed(
