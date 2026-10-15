@@ -70,8 +70,8 @@ const cssClasses = computed(() => {
 });
 
 const slots = defineSlots<{
-  default: [];
-  subHeading: [];
+  default?: () => unknown;
+  subHeading?: () => unknown;
 }>();
 </script>
 
