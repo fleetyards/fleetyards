@@ -104,7 +104,7 @@ describe("VehicleEditModal", () => {
     expect(mutateAsync).not.toHaveBeenCalled();
   });
 
-  it("omits groups and uses wishlist visibility settings", async () => {
+  it("offers a wishlist ship only its names and sale notifications", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         vehicle: vehicle(false),
@@ -113,11 +113,36 @@ describe("VehicleEditModal", () => {
       },
     });
 
-    expect(wrapper.find('[data-test="tab-anchor-groups"]').exists()).toBe(
-      false,
-    );
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .filter((tab) => !tab.props("hidden"))
+        .map((tab) => tab.props("id")),
+    ).toEqual(["visibility", "names"]);
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .find((tab) => tab.props("id") === "visibility")
+        ?.props("label"),
+    ).toBe("Notifications");
     expect(wrapper.find('input[name="saleNotify"]').exists()).toBe(true);
     expect(wrapper.find('input[name="public"]').exists()).toBe(false);
     expect(wrapper.find('input[name="nameVisible"]').exists()).toBe(false);
+    expect(
+      wrapper.find('input[name="logEntriesPublicByDefault"]').exists(),
+    ).toBe(false);
+    expect(wrapper.find('input[name="flagship"]').exists()).toBe(false);
+  });
+
+  it("opens a wishlist ship on its names when asked for a hangar tab", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle: vehicle(false),
+        wishlist: true,
+        tab: VehicleEditTabsEnum.IMAGE,
+      },
+    });
+
+    expect(wrapper.find("#form-tab-panel-names").isVisible()).toBe(true);
   });
 });

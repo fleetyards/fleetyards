@@ -27,17 +27,11 @@ type Setting = {
 };
 
 // Sale alerts only ever go out for a ship on the wishlist, and a wishlist ship
-// is never in the public hangar, so each ship is offered the switches that do
-// something for it.
+// is never in the public hangar and keeps no log, so each ship is offered the
+// switches that do something for it.
 const settings = computed<Setting[]>(() =>
   props.wishlist
-    ? [
-        { name: "saleNotify", label: t("labels.vehicle.saleNotify") },
-        {
-          name: "logEntriesPublicByDefault",
-          label: t("labels.vehicleLog.publicByDefault"),
-        },
-      ]
+    ? [{ name: "saleNotify", label: t("labels.vehicle.saleNotify") }]
     : [
         { name: "public", label: t("labels.vehicleOverview.showPublic") },
         { name: "nameVisible", label: t("labels.vehicleOverview.showName") },

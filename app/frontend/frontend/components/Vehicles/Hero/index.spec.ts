@@ -18,6 +18,13 @@ vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
 }));
 
 const openEditModal = vi.fn();
+const mutateAsync = vi.fn().mockResolvedValue({});
+
+vi.mock("@/frontend/composables/useVehicleMutations", () => ({
+  useVehicleMutations: () => ({
+    useUpdateMutation: () => ({ mutateAsync, isPending: ref(false) }),
+  }),
+}));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
   useVehicleModals: () => ({ openEditModal }),
@@ -71,9 +78,9 @@ afterEach(() => {
 const menuOffersShipPage = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   !wrapper.findComponent({ name: "VehicleContextMenu" }).props("hideShipPage");
 
-const mount = (compact: boolean) =>
+const mount = (compact: boolean, overrides: Partial<Vehicle> = {}) =>
   mountWithDefaults(Component, {
-    props: { vehicle, compact },
+    props: { vehicle: { ...vehicle, ...overrides }, compact },
     plugins: [router],
   });
 
@@ -85,6 +92,36 @@ describe("VehicleHero", () => {
     expect(
       wrapper.find('[data-test="vehicle-hero-location"]').text(),
     ).toContain("Lorville");
+  });
+
+  it("switches a wishlist ship's sale notifications from its badge", async () => {
+    const wrapper = await mount(false, { wanted: true, saleNotify: false });
+    const badge = wrapper.find('[data-test="vehicle-badge-sale-notify"]');
+
+    expect(badge.attributes("aria-pressed")).toBe("false");
+
+    await badge.trigger("click");
+
+    expect(mutateAsync).toHaveBeenLastCalledWith({
+      id: "vehicle-1",
+      data: { saleNotify: true },
+    });
+  });
+
+  it("shows the sale notification badge only on a wishlist ship", async () => {
+    const wrapper = await mount(false, { saleNotify: true });
+
+    expect(
+      wrapper.find('[data-test="vehicle-badge-sale-notify"]').exists(),
+    ).toBe(false);
+  });
+
+  it("offers no picture for a wishlist ship", async () => {
+    const wrapper = await mount(false, { wanted: true });
+
+    expect(wrapper.find('[data-test="vehicle-image-edit"]').exists()).toBe(
+      false,
+    );
   });
 
   it("shrinks into the banner without leaving the page", async () => {

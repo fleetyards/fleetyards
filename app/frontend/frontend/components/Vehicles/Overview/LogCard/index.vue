@@ -19,9 +19,14 @@ import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 
 type Props = {
   vehicle: Vehicle;
+  // Entries written before a ship moved to the wishlist stay readable, but no
+  // new ones are started there.
+  readonly?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  readonly: false,
+});
 
 const PREVIEW_COUNT = 3;
 
@@ -65,12 +70,13 @@ const logRoute = computed(() => toVehicle("hangar-vehicle-log", props.vehicle));
 
 <template>
   <MetricsCard
+    v-if="!readonly || entries.length"
     :title="t('nav.hangar.vehicleLog')"
     :loading="isLoading"
     variant="slim"
     data-test="vehicle-overview-log"
   >
-    <template #head>
+    <template v-if="!readonly" #head>
       <Btn
         :size="BtnSizesEnum.SM"
         data-test="vehicle-overview-log-add"

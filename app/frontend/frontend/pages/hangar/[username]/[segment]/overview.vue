@@ -27,16 +27,11 @@ const { isFeatureEnabled } = useFeatures();
 // The same conditions the context menu offers these pages under.
 const inGame = computed(() => !!props.vehicle.model.inGame);
 
-// Loaners and wishlist ships get no plaque.
-const plaqueVisible = computed(
-  () => !props.vehicle.loaner && !props.vehicle.wanted,
-);
+// Loaners get no plaque.
+const plaqueVisible = computed(() => !props.vehicle.loaner);
 
 const cargoVisible = computed(
-  () =>
-    inGame.value &&
-    !props.vehicle.wanted &&
-    isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
+  () => inGame.value && isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
 );
 </script>
 
@@ -44,18 +39,31 @@ const cargoVisible = computed(
   <div class="vehicle-overview">
     <div class="vehicle-overview__grid">
       <div class="vehicle-overview__main">
-        <LogCard :vehicle="vehicle" />
+        <LogCard :vehicle="vehicle" :readonly="vehicle.wanted" />
         <div v-if="cargoVisible || inGame" class="vehicle-overview__pair">
-          <CargoCard v-if="cargoVisible" :vehicle="vehicle" />
+          <CargoCard
+            v-if="cargoVisible"
+            :vehicle="vehicle"
+            :readonly="vehicle.wanted"
+          />
           <LoadoutsCard v-if="inGame" :vehicle="vehicle" />
         </div>
       </div>
 
       <aside class="vehicle-overview__side">
-        <PlaqueCard v-if="plaqueVisible" :vehicle="vehicle" />
-        <ConfigurationCard :vehicle="vehicle" />
+        <PlaqueCard
+          v-if="plaqueVisible"
+          :vehicle="vehicle"
+          :readonly="vehicle.wanted"
+        />
+        <ConfigurationCard v-if="!vehicle.wanted" :vehicle="vehicle" />
         <PaintsCard :vehicle="vehicle" />
-        <VisibilityCard v-if="!vehicle.loaner" :vehicle="vehicle" />
+        <!-- A wishlist ship's only switch, sale notifications, is shown in
+             the header instead. -->
+        <VisibilityCard
+          v-if="!vehicle.loaner && !vehicle.wanted"
+          :vehicle="vehicle"
+        />
         <FleetsCard v-if="vehicle.fleets?.length" :fleets="vehicle.fleets" />
       </aside>
     </div>

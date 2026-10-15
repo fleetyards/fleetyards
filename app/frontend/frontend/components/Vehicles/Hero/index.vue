@@ -20,6 +20,8 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
@@ -42,6 +44,23 @@ const props = withDefaults(defineProps<Props>(), {
 const { t, l } = useI18n();
 const comlink = useComlink();
 const mobile = useMobile();
+const { displayAlert } = useAppNotifications();
+
+const { useUpdateMutation } = useVehicleMutations();
+
+const updateMutation = useUpdateMutation(computed(() => props.vehicle));
+
+// The one setting a wishlist ship has, switched where it is shown.
+const toggleSaleNotify = async () => {
+  await updateMutation
+    .mutateAsync({
+      id: props.vehicle.id,
+      data: { saleNotify: !props.vehicle.saleNotify },
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.vehicleOverview.setting.failure") });
+    });
+};
 
 // The owner's picture first -- uploaded, then picked from the model's
 // gallery -- then the render the ship is wearing, then the
@@ -132,7 +151,11 @@ const openImageModal = () =>
         </span>
         <span v-else />
         <div v-if="!vehicle.loaner" class="vehicle-hero__actions">
-          <Btn data-test="vehicle-image-edit" @click="openImageModal">
+          <Btn
+            v-if="!vehicle.wanted"
+            data-test="vehicle-image-edit"
+            @click="openImageModal"
+          >
             <i class="fa-duotone fa-camera" />
             <span class="vehicle-hero__action-label">
               {{
@@ -173,6 +196,29 @@ const openImageModal = () =>
             <span v-if="vehicle.wanted" class="vehicle-hero__badge">
               {{ t("labels.vehicle.wanted") }}
             </span>
+            <button
+              v-if="vehicle.wanted"
+              type="button"
+              class="vehicle-hero__badge vehicle-hero__badge--toggle"
+              :class="{
+                'vehicle-hero__badge--sale-notify': vehicle.saleNotify,
+              }"
+              :aria-pressed="vehicle.saleNotify"
+              :disabled="updateMutation.isPending.value"
+              :tabindex="compact ? -1 : undefined"
+              data-test="vehicle-badge-sale-notify"
+              @click="toggleSaleNotify"
+            >
+              <i
+                class="fa-duotone"
+                :class="vehicle.saleNotify ? 'fa-bell' : 'fa-bell-slash'"
+              />
+              {{
+                vehicle.saleNotify
+                  ? t("labels.vehicle.saleNotifyOn")
+                  : t("labels.vehicle.saleNotifyOff")
+              }}
+            </button>
             <span v-if="vehicle.loaner" class="vehicle-hero__badge">
               {{ t("labels.vehicle.loaner") }}
             </span>
@@ -385,6 +431,39 @@ const openImageModal = () =>
 
     &--public {
       background: rgb(66 139 202 / 0.85);
+    }
+
+    &--toggle {
+      border: 0;
+      font-family: inherit;
+      line-height: inherit;
+      cursor: pointer;
+      transition:
+        background 150ms ease,
+        color 150ms ease;
+
+      &:hover,
+      &:focus-visible {
+        background: rgb(78 84 90 / 0.95);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      &:disabled {
+        cursor: progress;
+      }
+    }
+
+    &--sale-notify {
+      background: color-mix(in srgb, var(--color-primary) 85%, transparent);
+
+      &:hover,
+      &:focus-visible {
+        background: var(--color-primary);
+      }
     }
   }
 

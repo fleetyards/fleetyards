@@ -2275,6 +2275,8 @@
         "public": "Visible públicamente",
         "fullPublic": "Visible públicamente incluyendo nombre",
         "publicShort": "Público",
+        "saleNotifyOn": "Notificaciones de venta activadas",
+        "saleNotifyOff": "Notificaciones de venta desactivadas",
         "nameVisible": "Visible públicamente",
         "hidden": "¿Oculto?",
         "saleNotify": "Deseo recibir notificaciones de ventas",
@@ -4252,6 +4254,7 @@
         "tabs": {
           "general": "General",
           "visibility": "Visibilidad",
+          "notifications": "Notificaciones",
           "names": "Nombres",
           "groups": "Grupos",
           "picture": "Imagen"

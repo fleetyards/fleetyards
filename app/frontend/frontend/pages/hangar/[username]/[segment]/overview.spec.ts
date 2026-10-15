@@ -18,7 +18,7 @@ const { stubCard } = vi.hoisted(() => ({
   stubCard: (name: string) => ({
     default: {
       name,
-      props: ["vehicle", "fleets", "model"],
+      props: ["vehicle", "fleets", "model", "readonly"],
       template: "<div />",
     },
   }),
@@ -107,12 +107,17 @@ describe("HangarVehicleOverviewPage", () => {
     shipInventoriesEnabled.value = false;
   });
 
-  it("leaves cargo off a wishlist ship", async () => {
+  it("hands a wishlist ship's log and cargo over read-only", async () => {
     shipInventoriesEnabled.value = true;
 
     const wrapper = await mount({ vehicle: vehicle({ wanted: true }) });
 
-    expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "LogCard" }).props("readonly")).toBe(
+      true,
+    );
+    expect(wrapper.findComponent({ name: "CargoCard" }).props("readonly")).toBe(
+      true,
+    );
 
     shipInventoriesEnabled.value = false;
   });
@@ -177,6 +182,49 @@ describe("HangarVehicleOverviewPage", () => {
     const wrapper = await mount({ vehicle: vehicle() });
 
     expect(sideCards(wrapper)[0]).toBe("vehicle-overview-plaque");
+  });
+
+  it("shows a wishlist ship's plaque without a way to edit it", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ wanted: true, dedication: "To boldly go" }),
+    });
+
+    expect(wrapper.find('[data-test="vehicle-overview-plaque"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find('[data-test="vehicle-plaque-edit"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("invites no plaque for a wishlist ship without one", async () => {
+    const wrapper = await mount({ vehicle: vehicle({ wanted: true }) });
+
+    expect(wrapper.find('[data-test="vehicle-overview-plaque"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("leaves the configuration card off a wishlist ship", async () => {
+    const wanted = await mount({ vehicle: vehicle({ wanted: true }) });
+    const owned = await mount({ vehicle: vehicle() });
+
+    expect(
+      wanted.find('[data-test="vehicle-overview-configuration"]').exists(),
+    ).toBe(false);
+    expect(
+      owned.find('[data-test="vehicle-overview-configuration"]').exists(),
+    ).toBe(true);
+  });
+
+  it("leaves the visibility card off a wishlist ship", async () => {
+    const wanted = await mount({ vehicle: vehicle({ wanted: true }) });
+    const owned = await mount({ vehicle: vehicle() });
+
+    expect(wanted.findComponent({ name: "VisibilityCard" }).exists()).toBe(
+      false,
+    );
+    expect(owned.findComponent({ name: "VisibilityCard" }).exists()).toBe(true);
   });
 
   it("offers no plaque for a loaner", async () => {
