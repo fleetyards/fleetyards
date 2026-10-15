@@ -48,6 +48,15 @@
     }
   }
 
+  &.large {
+    .modal-dialog {
+      width: calc(100% - 40px);
+      max-width: none;
+      max-height: calc(100% - 40px);
+      margin: 20px auto;
+    }
+  }
+
   &.fade {
     opacity: 0;
 
