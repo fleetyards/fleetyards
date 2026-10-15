@@ -347,6 +347,9 @@ useMetricsMasonry(metricsGrid);
                 HardpointGroupEnum.AVIONIC,
                 HardpointGroupEnum.SYSTEM,
                 HardpointGroupEnum.OTHER,
+                HardpointGroupEnum.ORE_POD,
+                HardpointGroupEnum.SALVAGE,
+                HardpointGroupEnum.MODULE,
                 HardpointGroupEnum.EXTERNAL_FUEL_TANK,
               ]"
               :key="group"

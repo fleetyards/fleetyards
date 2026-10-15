@@ -2053,10 +2053,13 @@
           "thruster": "Propulsor",
           "weapon": "Armas",
           "defense": "Defensa",
-          "other": "Otros",
+          "other": "Carga",
           "auxiliary": "Auxiliar",
           "seat": "Asientos",
           "external_fuel_tank": "Tanques de combustible externos",
+          "ore_pod": "Contenedores de mineral",
+          "module": "Módulos",
+          "salvage": "Salvamento",
           "refuel_boom": "Brazo de repostaje"
         },
         "types": {
@@ -2101,6 +2104,8 @@
           "fuel_intakes": "Tomas de combustible",
           "fueltanks": "Tanques de combustible",
           "external_fuel_tanks": "Tanques de combustible externos",
+          "ore_pods": "Contenedores de mineral",
+          "salvage_storage": "Almacén de chatarra",
           "refuel_boom": "Brazo de repostaje",
           "quantumdrive": "Motores Quantum y módulos de salto",
           "jump_modules": "Módulos de salto",

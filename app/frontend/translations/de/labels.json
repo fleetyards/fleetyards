@@ -2053,10 +2053,13 @@
           "thruster": "Triebwerk",
           "weapon": "Waffen",
           "defense": "Verteidigung",
-          "other": "Sonstige",
+          "other": "Fracht",
           "auxiliary": "Hilfssysteme",
           "seat": "Sitze",
           "external_fuel_tank": "Externe Treibstofftanks",
+          "ore_pod": "Erzbehälter",
+          "module": "Module",
+          "salvage": "Bergung",
           "refuel_boom": "Betankungsausleger"
         },
         "types": {
@@ -2101,6 +2104,8 @@
           "fuel_intakes": "Treibstoffeinlässe",
           "fueltanks": "Treibstofftanks",
           "external_fuel_tanks": "Externe Treibstofftanks",
+          "ore_pods": "Erzbehälter",
+          "salvage_storage": "Bergungsspeicher",
           "refuel_boom": "Betankungsausleger",
           "quantumdrive": "Quantum-Antriebe & Sprungmodule",
           "jump_modules": "Sprungmodule",

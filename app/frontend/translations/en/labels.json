@@ -2053,10 +2053,13 @@
           "thruster": "Thruster",
           "weapon": "Weapons",
           "defense": "Defense",
-          "other": "Other",
+          "other": "Cargo",
           "auxiliary": "Auxiliary",
           "seat": "Seats",
           "external_fuel_tank": "External Fuel Tanks",
+          "ore_pod": "Ore Pods",
+          "module": "Modules",
+          "salvage": "Salvage",
           "refuel_boom": "Refuel Boom"
         },
         "types": {
@@ -2101,6 +2104,8 @@
           "fuel_intakes": "Fuel Intakes",
           "fueltanks": "Fuel Tanks",
           "external_fuel_tanks": "External Fuel Tanks",
+          "ore_pods": "Ore Pods",
+          "salvage_storage": "Salvage Storage",
           "refuel_boom": "Refuel Boom",
           "quantumdrive": "Quantum Drives & Jump Modules",
           "jump_modules": "Jump Modules",

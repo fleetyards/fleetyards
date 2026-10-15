@@ -57,7 +57,9 @@ const itemComponent = computed(() => {
   }
   if (
     props.category === HardpointCategoryEnum.FUELTANKS ||
-    props.category === HardpointCategoryEnum.EXTERNAL_FUEL_TANKS
+    props.category === HardpointCategoryEnum.EXTERNAL_FUEL_TANKS ||
+    props.category === HardpointCategoryEnum.ORE_PODS ||
+    props.category === HardpointCategoryEnum.SALVAGE_STORAGE
   ) {
     return HardpointFuelItem;
   }

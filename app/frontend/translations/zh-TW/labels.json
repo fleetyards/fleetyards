@@ -2053,10 +2053,13 @@
           "thruster": "推進器",
           "weapon": "武器",
           "defense": "防禦",
-          "other": "其他",
+          "other": "貨物",
           "auxiliary": "輔助",
           "seat": "座位",
           "external_fuel_tank": "外掛燃料箱",
+          "ore_pod": "礦石艙",
+          "module": "模組",
+          "salvage": "打撈",
           "refuel_boom": "加油臂"
         },
         "types": {
@@ -2101,6 +2104,8 @@
           "fuel_intakes": "燃料進氣口",
           "fueltanks": "燃料箱",
           "external_fuel_tanks": "外掛燃料箱",
+          "ore_pods": "礦石艙",
+          "salvage_storage": "回收儲存",
           "refuel_boom": "加油臂",
           "quantumdrive": "量子引擎與跳躍模組",
           "jump_modules": "跳躍模組",
