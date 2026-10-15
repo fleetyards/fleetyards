@@ -9,6 +9,7 @@ import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { type ModelModule } from "@/services/fyApi";
 
 type Props = {
@@ -69,22 +70,7 @@ const badges = (mod: ModelModule) =>
 // nowhere to fit it.
 const unslotted = computed(() => owned.value.filter((mod) => !mod.slot));
 
-// The same keywords `ModuleHardpoint.derive_slot` reads a slot's position
-// from, bow and stern being the front and rear by another name.
-const SLOT_POSITIONS = [
-  ["front", "front"],
-  ["bow", "front"],
-  ["rear", "rear"],
-  ["stern", "rear"],
-  ["left", "left"],
-  ["right", "right"],
-] as const;
-
-const slotLabel = (slot: string) => {
-  const position = SLOT_POSITIONS.find(([keyword]) => slot.includes(keyword));
-
-  return t(`labels.vehicleLoadout.slots.${position?.[1] || "default"}`);
-};
+const { slotLabel } = useLoadoutSlotLabel();
 
 const fittedIn = (slot: string) => props.modelValue[slot];
 
