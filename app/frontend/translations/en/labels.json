@@ -4306,6 +4306,7 @@
         "fittedHint": "One module per slot, from the modules you own",
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
+        "stock": "Stock",
         "noOwnedModuleForSlot": "You own no module for this slot",
         "unslotted": "Not fittable yet, because the game files do not say which slot they take: %{modules}",
         "notFlightReady": "Loadouts are only available for flight-ready ships",

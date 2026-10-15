@@ -4292,6 +4292,7 @@
         "fittedHint": "Ein Modul pro Slot, aus den Modulen, die du besitzt",
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
+        "stock": "Serienmäßig",
         "noOwnedModuleForSlot": "Du besitzt kein Modul für diesen Slot",
         "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",
         "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",

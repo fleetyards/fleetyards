@@ -8,6 +8,7 @@ export default {
 import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type ModelModule } from "@/services/fyApi";
 
 type Props = {
@@ -46,8 +47,23 @@ const slots = computed(() =>
   ].sort(),
 );
 
+// The hull's stock modules are always there to fit; the rest only when owned.
 const candidates = (slot: string) =>
-  owned.value.filter((mod) => mod.slot === slot);
+  props.modules.filter(
+    (mod) =>
+      mod.slot === slot && (mod.stock || props.ownedIds.includes(mod.id)),
+  );
+
+const badges = (mod: ModelModule) =>
+  mod.stock
+    ? [
+        {
+          key: "stock",
+          label: t("labels.vehicleLoadout.stock"),
+          variant: PillVariantsEnum.NEUTRAL,
+        },
+      ]
+    : [];
 
 // Owned, but the game files never said which slot it takes, so there is
 // nowhere to fit it.
@@ -116,6 +132,7 @@ const visibleSlots = computed(() =>
           :name="mod.name"
           :image="mod.media?.storeImage?.smallUrl"
           :contents="mod.description || contents(mod)"
+          :badges="badges(mod)"
           :selected="editable && mod.id === fittedIn(slot)"
           :editable="editable"
           test-id="vehicle-loadout-slot-module"

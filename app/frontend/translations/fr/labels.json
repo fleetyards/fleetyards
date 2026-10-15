@@ -4292,6 +4292,7 @@
         "fittedHint": "Un module par emplacement, parmi les modules que vous possédez",
         "ownedModules": "Vos modules",
         "nothingFitted": "Rien d'équipé",
+        "stock": "D'origine",
         "noOwnedModuleForSlot": "Vous ne possédez aucun module pour cet emplacement",
         "unslotted": "Pas encore équipables, car les fichiers du jeu n'indiquent pas quel emplacement ils occupent : %{modules}",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",

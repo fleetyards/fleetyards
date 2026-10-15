@@ -8,6 +8,12 @@ const modules = [
   { id: "torpedo", name: "Front Torpedo Bay", slot: "hardpoint_front_module" },
   { id: "rear", name: "Rear Cargo", slot: "hardpoint_rear_module" },
   { id: "mystery", name: "Mystery Module" },
+  {
+    id: "stock",
+    name: "Factory Rear Module",
+    slot: "hardpoint_rear_module",
+    stock: true,
+  },
 ] as unknown as ModelModule[];
 
 const mountFitting = (props: {
@@ -28,6 +34,16 @@ describe("VehicleLoadoutModalFitting", () => {
     );
     expect(front.text()).toContain("Front Cargo");
     expect(front.text()).not.toContain("Front Torpedo Bay");
+  });
+
+  it("offers the hull's stock module without it being owned", async () => {
+    const wrapper = await mountFitting({ ownedIds: [], editable: true });
+
+    const rear = wrapper.get(
+      "[data-test='vehicle-loadout-slot-hardpoint_rear_module']",
+    );
+    expect(rear.text()).toContain("Factory Rear Module");
+    expect(rear.text()).not.toContain("Rear Cargo");
   });
 
   it("names owned modules that cannot be fitted for want of a slot", async () => {

@@ -132,11 +132,15 @@ const [modelModuleIds] = defineField("modelModuleIds");
 const [modelUpgradeIds] = defineField("modelUpgradeIds");
 const [fittedModules] = defineField("fittedModules");
 
-// A module given up cannot stay fitted; the server unfits it on save as well.
+// A module given up cannot stay fitted, unless the hull comes with it; the
+// server unfits it on save as well.
 watch(modelModuleIds, (owned) => {
   const fitted = fittedModules.value || {};
+  const stock = modules.value.filter((mod) => mod.stock).map((mod) => mod.id);
   const kept = Object.fromEntries(
-    Object.entries(fitted).filter(([, id]) => (owned || []).includes(id)),
+    Object.entries(fitted).filter(
+      ([, id]) => (owned || []).includes(id) || stock.includes(id),
+    ),
   );
 
   if (Object.keys(kept).length !== Object.keys(fitted).length) {
