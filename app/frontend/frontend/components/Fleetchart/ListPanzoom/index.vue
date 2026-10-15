@@ -25,6 +25,11 @@ import type {
 } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
+  autoScreenHeightFactor,
+  layoutColumns,
+  type FleetchartItemSize,
+} from "./layout";
+import {
   FleetchartScreenHeights,
   FleetchartViewpoints,
   useFleetchartStore,
@@ -56,8 +61,6 @@ const minZoom = 0.2;
 const pinchSpeed = 3;
 
 const margin = 80;
-
-const innerMargin = 20;
 
 const marginBottom = 40;
 
@@ -113,23 +116,24 @@ const selectedScreenHeight = computed(() => {
   return fleetchartStore.fleetchartScreenHeight(props.namespace);
 });
 
-const screenHeightFactor = computed(() => {
-  return {
-    "1x": 1,
-    "1_5x": 1.5,
-    "2x": 2,
-    "3x": 3,
-    "4x": 4,
-  }[selectedScreenHeight.value];
-});
+const fixedScreenHeightFactors: Record<
+  Exclude<FleetchartScreenHeights, FleetchartScreenHeights.AUTO>,
+  number
+> = {
+  "1x": 1,
+  "1_5x": 1.5,
+  "2x": 2,
+  "3x": 3,
+  "4x": 4,
+};
 
-const maxColHeight = computed(() => {
+const columnHeightFor = (factor: number) => {
   if (!screenHeight.value) {
     return 0;
   }
 
-  return screenHeight.value * screenHeightFactor.value - margin - marginBottom;
-});
+  return screenHeight.value * factor - margin - marginBottom;
+};
 
 const initialZoomData = computed(() => {
   return fleetchartStore.fleetchartZoomData(props.namespace);
@@ -159,13 +163,17 @@ const comlink = useComlink();
 
 const fleetchartToggleStatusComlink = ref();
 
-const handleResize = () => {
-  updateScreenSize().catch(() => {});
-};
+// deviceorientation fires continuously on a phone, which would keep a plain
+// debounce from ever running.
+const handleResize = debounce(
+  () => {
+    updateScreenSize().catch(() => {});
+  },
+  300,
+  { maxWait: 1000 },
+);
 
-const handleOrientation = () => {
-  updateScreenSize().catch(() => {});
-};
+const handleOrientation = handleResize;
 
 onMounted(async () => {
   showStatus.value = !!route.query?.showStatus;
@@ -176,8 +184,6 @@ onMounted(async () => {
   );
 
   await updateScreenSize();
-
-  setupColumns();
 
   await setupZoom();
 
@@ -192,6 +198,7 @@ onUnmounted(() => {
 
   panzoomInstance.value = undefined;
 
+  handleResize.cancel();
   window.removeEventListener("resize", handleResize);
   window.removeEventListener("deviceorientation", handleOrientation);
 });
@@ -261,46 +268,72 @@ const checkReset = () => {
 const debouncedCheckReset = debounce(checkReset, 300);
 
 const updateScreenSize = async () => {
+  const resized =
+    screenWidth.value !== window.innerWidth ||
+    screenHeight.value !== window.innerHeight;
+
   screenWidth.value = window.innerWidth;
   screenHeight.value = window.innerHeight;
+
+  if (resized) {
+    setupColumns();
+  }
 
   await drawGridLines();
 };
 
+const itemSize = (
+  item: Vehicle | Model | VehiclePublic,
+): FleetchartItemSize => {
+  const model = (item as Vehicle).model || item;
+  const fleetchartLength = extended.value
+    ? model.metrics.extendedFleetchartOffsetLength ||
+      model.metrics.extendedLength ||
+      model.metrics.fleetchartOffsetLength
+    : model.metrics.fleetchartOffsetLength;
+  const length = (fleetchartLength || 0) * sizeMultiplicator.value;
+
+  const height = (length * imageMaxHeight(item)) / imageMaxWidth(item);
+
+  // An image without a width would make the height Infinity, and one item
+  // would throw every column break and the auto height after it.
+  return {
+    width: length,
+    height: height === Infinity ? 0 : height,
+  };
+};
+
+const screenHeightFactor = (sizes: FleetchartItemSize[]) => {
+  const selected = selectedScreenHeight.value;
+
+  if (selected !== FleetchartScreenHeights.AUTO) {
+    return fixedScreenHeightFactors[selected];
+  }
+
+  return autoScreenHeightFactor(
+    sizes,
+    { width: screenWidth.value || 0, height: screenHeight.value || 0 },
+    columnHeightFor,
+  );
+};
+
 const setupColumns = () => {
-  fleetchartColumns.value = {};
-  let index = 0;
-  let colHeight = 0;
+  const items = props.items
+    .map((item) => ({ item, size: itemSize(item) }))
+    .filter(({ size }) => !Number.isNaN(size.height));
+  const sizes = items.map(({ size }) => size);
 
-  props.items.forEach((item) => {
-    const model = (item as Vehicle).model || item;
-    const fleetchartLength = extended.value
-      ? model.metrics.extendedFleetchartOffsetLength ||
-        model.metrics.extendedLength ||
-        model.metrics.fleetchartOffsetLength
-      : model.metrics.fleetchartOffsetLength;
-    const length = (fleetchartLength || 0) * sizeMultiplicator.value;
+  const columns = layoutColumns(
+    sizes,
+    columnHeightFor(screenHeightFactor(sizes)),
+  );
 
-    const height = (length * imageMaxHeight(item)) / imageMaxWidth(item);
-
-    if (Number.isNaN(height)) {
-      return;
-    }
-
-    colHeight += height;
-
-    if (colHeight > maxColHeight.value) {
-      colHeight = height;
-      index += 1;
-    }
-
-    colHeight += innerMargin;
-
-    fleetchartColumns.value[index] = [
-      ...(fleetchartColumns.value[index] || []),
-      item,
-    ];
-  });
+  fleetchartColumns.value = Object.fromEntries(
+    columns.map((column, index) => [
+      index,
+      column.map((itemIndex) => items[itemIndex].item),
+    ]),
+  );
 };
 
 const toggleGrid = async () => {
