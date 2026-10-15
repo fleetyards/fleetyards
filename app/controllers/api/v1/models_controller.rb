@@ -255,6 +255,7 @@ module Api
           .where(model_module_id: @model_modules.map(&:id))
           .pluck(:model_module_id, :slot)
           .to_h
+        @stock_module_ids = ModuleHardpoint.stock_modules(model).values
       end
 
       def module_packages

@@ -11,6 +11,7 @@ json.items do
       json.partial!("api/v1/model_modules/base", model_module:)
     end
     json.slot @module_slots[model_module.id]
+    json.stock @stock_module_ids.include?(model_module.id)
   end
 end
 json.partial! "api/shared/meta", result: @model_modules
