@@ -121,7 +121,7 @@ const toggle = (paint: ModelPaint) =>
       no-label
       clearable
     />
-    <div class="addon-options">
+    <div class="paint-picker__grid">
       <AddonOption
         v-for="paint in visiblePaints"
         :key="paint.id"
@@ -129,7 +129,7 @@ const toggle = (paint: ModelPaint) =>
         :image="image(paint)"
         :badges="badges(paint)"
         :selected="owned(paint)"
-        large-image
+        stacked
         test-id="paint-picker-choice"
         @toggle="toggle(paint)"
       />
@@ -146,7 +146,6 @@ const toggle = (paint: ModelPaint) =>
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/AddonOption/list";
 @import "@/frontend/components/Vehicles/EditModal/Addons/index";
 
 .paint-picker {
@@ -162,6 +161,17 @@ const toggle = (paint: ModelPaint) =>
 
   &__search {
     margin-bottom: 10px;
+  }
+
+  // Two cards across the edit modal, one on a phone.
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+
+    .addon-options__empty {
+      grid-column: 1 / -1;
+    }
   }
 }
 </style>
