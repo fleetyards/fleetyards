@@ -38,17 +38,15 @@ const {
 });
 
 // A signed-in reader falls back to the visitor payload only once the members'
-// copy is refused -- a 403 for a non-member, a 404 for a fleet they cannot see
-// at all. Racing the two, or falling back on any failure, let a member's page
-// render from the visitor payload, which leaves out what only members see: a
-// settings form seeded from it would save the gaps back.
+// copy is refused -- a 403, which is how a non-member is told. A 404 means the
+// fleet does not exist, so the visitor payload would 404 as well. Racing the
+// two, or falling back on any failure, let a member's page render from the
+// visitor payload, which leaves out what only members see: a settings form
+// seeded from it would save the gaps back.
 const memberFleetRefused = computed(() => {
   const error = asyncFleetStatus.error.value;
-  if (!error) return false;
 
-  const type = errorTypeFrom(error);
-
-  return type === ErrorTypesEnum.FORBIDDEN || type === ErrorTypesEnum.NOT_FOUND;
+  return !!error && errorTypeFrom(error) === ErrorTypesEnum.FORBIDDEN;
 });
 
 const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(

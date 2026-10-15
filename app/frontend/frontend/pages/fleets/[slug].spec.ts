@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, ref, toValue, type MaybeRef } from "vue";
 import { flushPromises } from "@vue/test-utils";
 import { RouterView, createRouter, createWebHashHistory } from "vue-router";
 import { AxiosError, type AxiosResponse } from "axios";
@@ -12,6 +12,7 @@ const fleetState = {
   fleetError: ref<unknown>(null),
   fleetPending: ref(false),
   publicFleet: ref<Fleet | undefined>(),
+  publicFleetEnabled: { value: false as MaybeRef<boolean> },
   membership: ref<FleetMember | undefined>(),
   membershipStatus: {
     error: ref<unknown>(null),
@@ -73,7 +74,14 @@ vi.mock("@/services/fyApi", async () => {
     ...actual,
     useFleet: () =>
       settled(fleetState.fleet, fleetState.fleetError, fleetState.fleetPending),
-    usePublicFleet: () => settled(fleetState.publicFleet),
+    usePublicFleet: (
+      _slug: unknown,
+      options: { query: { enabled: MaybeRef<boolean> } },
+    ) => {
+      fleetState.publicFleetEnabled.value = options.query.enabled;
+
+      return settled(fleetState.publicFleet);
+    },
     useFleetMembership: () => ({
       data: fleetState.membership,
       ...fleetState.membershipStatus,
@@ -143,13 +151,15 @@ describe("FleetRouterView", () => {
     expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(true);
   });
 
-  it("renders a public fleet when the members' copy is not found", async () => {
+  it("shows not found without asking for the visitor payload", async () => {
     setMembership("notFound");
     fleetState.fleetError.value = httpError(404);
 
     const wrapper = await mountFleetPage(true);
 
-    expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "NotFound" }).exists()).toBe(true);
+    expect(toValue(fleetState.publicFleetEnabled.value)).toBe(false);
   });
 
   it("waits while the membership is still loading", async () => {
