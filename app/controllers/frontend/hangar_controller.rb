@@ -87,11 +87,11 @@ module Frontend
       helpers.truncate(helpers.strip_tags(text).squish, length: 200)
     end
 
-    # The picture the public hangar shows for the ship: the owner's own, else the
-    # one they picked from the model's gallery, else the model's.
+    # The picture the public hangar shows for the ship: the owner's own or picked
+    # one, else the model's.
     private def vehicle_picture(vehicle)
-      return vehicle.image if vehicle.image.attached?
-      return vehicle.model_image.file if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
+      record, attr = vehicle.image_source
+      return record.public_send(attr) if record.present?
 
       vehicle.model.store_image if vehicle.model.store_image.attached?
     end

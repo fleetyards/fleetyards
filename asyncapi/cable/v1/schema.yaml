@@ -4674,6 +4674,18 @@ components:
       - XENOTHREAT
       - ROUGH_AND_READY
       - 'NULL'
+    NullableVehiclePictureTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - Image
+      - ModelPaint
+      -
+      x-enumNames:
+      - IMAGE
+      - MODEL_PAINT
+      - 'NULL'
     PayoutLedger:
       type: object
       properties:
@@ -5012,20 +5024,15 @@ components:
           - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
-        modelImageId:
+        imageUploaded:
+          type: boolean
+        pictureType:
+          "$ref": "#/components/schemas/NullableVehiclePictureTypeEnum"
+        pictureId:
           type:
           - string
           - 'null'
           format: uuid
-        modelImage:
-          "$ref": "#/components/schemas/MediaFile"
-        modelPaintPictureId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        paintPicture:
-          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:

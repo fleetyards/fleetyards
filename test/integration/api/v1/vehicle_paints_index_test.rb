@@ -62,7 +62,7 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /vehicles/:vehicle_id/paints marks the paint whose picture the ship shows" do
-    @vehicle.update!(model_paint_picture: @storm)
+    @vehicle.update!(picture: @storm)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do

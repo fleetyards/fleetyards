@@ -182,7 +182,7 @@ module Api
         return [] unless feature_enabled?("vehicle_overview")
 
         %i[
-          image model_image_id model_paint_picture_id log_entries_public_by_default location location_id
+          image picture_type picture_id log_entries_public_by_default location location_id
           dedication launched_on launch_port launch_port_location_id affiliation operations_group plaque_captain plaque_style plaque_image
         ]
       end

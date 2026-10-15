@@ -143,19 +143,21 @@ class Admin::Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     uploaded = create(:vehicle)
     uploaded.image.attach(io: file_fixture("image.jpg").open, filename: "image.jpg")
     picked = create(:vehicle)
-    picked.update!(model_image: create(:image, gallery: picked.model))
+    picked.update!(picture: create(:image, gallery: picked.model))
     both = create(:vehicle)
-    both.update!(model_image: create(:image, gallery: both.model))
+    both.update!(picture: create(:image, gallery: both.model))
     both.image.attach(io: file_fixture("image.jpg").open, filename: "image.jpg")
     pick_disabled = create(:vehicle)
-    pick_disabled.update!(model_image: create(:image, gallery: pick_disabled.model))
-    pick_disabled.model_image.update!(enabled: false)
+    pick_disabled.update!(picture: create(:image, gallery: pick_disabled.model))
+    pick_disabled.picture.update!(enabled: false)
+    painted = create(:vehicle)
+    painted.update!(picture: create(:model_paint, :with_store_image, model: painted.model))
     sign_in @admin
 
     {
       "upload" => [uploaded, both],
-      "gallery" => [picked],
-      "custom" => [uploaded, picked, both],
+      "gallery" => [picked, painted],
+      "custom" => [uploaded, picked, both, painted],
       "default" => [plain, pick_disabled]
     }.each do |source, expected|
       assert_api_response :get, 200, params: {q: {"imageSourceEq" => source}} do

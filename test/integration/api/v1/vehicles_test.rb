@@ -346,13 +346,13 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     paint = create(:model_paint, :with_store_image, model: vehicle.model)
-    vehicle.update!(model_image: create(:image, gallery: vehicle.model))
+    vehicle.update!(picture: create(:image, gallery: vehicle.model))
     sign_in @user
 
-    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelPaintPictureId: paint.id} do
-      assert_equal paint.id, parsed_body["modelPaintPictureId"]
-      assert_nil parsed_body["modelImageId"]
-      assert parsed_body.dig("paintPicture", "url").present?
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {pictureType: "ModelPaint", pictureId: paint.id} do
+      assert_equal ["ModelPaint", paint.id], parsed_body.values_at("pictureType", "pictureId")
+      assert_equal false, parsed_body["imageUploaded"]
+      assert parsed_body.dig("image", "url").present?
     end
   end
 
@@ -362,7 +362,7 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :put, 400, path_params: {id: vehicle.id},
-      body: {modelPaintPictureId: create(:model_paint, :with_store_image).id}
+      body: {pictureType: "ModelPaint", pictureId: create(:model_paint, :with_store_image).id}
   end
 
   test "PUT /vehicles/:id hides and unhides the vehicle" do
@@ -632,23 +632,23 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     image = create(:image, gallery: vehicle.model)
     sign_in @user
 
-    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelImageId: image.id} do
-      assert parsed_body.dig("modelImage", "url").present?
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {pictureType: "Image", pictureId: image.id} do
+      assert parsed_body.dig("image", "url").present?
     end
 
-    assert_equal image, vehicle.reload.model_image
+    assert_equal image, vehicle.reload.picture
   end
 
   test "GET /vehicles/:id leaves out a gallery picture disabled since the pick" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     image = create(:image, gallery: vehicle.model)
-    vehicle.update!(model_image: image)
+    vehicle.update!(picture: image)
     image.update!(enabled: false)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {id: vehicle.id} do
-      assert_nil parsed_body["modelImage"]
+      assert_nil parsed_body["image"]
     end
   end
 
@@ -658,9 +658,9 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     image = create(:image, gallery: create(:model))
     sign_in @user
 
-    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {modelImageId: image.id}
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {pictureType: "Image", pictureId: image.id}
 
-    assert_nil vehicle.reload.model_image_id
+    assert_nil vehicle.reload.picture_id
   end
 
   test "PUT /vehicles/:id rejects a disabled gallery picture" do
@@ -669,7 +669,28 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     image = create(:image, :disabled, gallery: vehicle.model)
     sign_in @user
 
-    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {modelImageId: image.id}
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {pictureType: "Image", pictureId: image.id}
+  end
+
+  test "PUT /vehicles/:id rejects a picture type that is neither an image nor a paint" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {pictureType: "User", pictureId: @user.id}
+  end
+
+  test "GET /vehicles/:id serves an upload over the picked picture" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    vehicle.update!(picture: create(:model_paint, :with_store_image, model: vehicle.model))
+    vehicle.image.attach(io: file_fixture("image.jpg").open, filename: "upload.jpg")
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: vehicle.id} do
+      assert_equal "upload.jpg", parsed_body.dig("image", "name")
+      assert_equal true, parsed_body["imageUploaded"]
+    end
   end
 
   test "PUT /vehicles/:id rejects an SVG image" do

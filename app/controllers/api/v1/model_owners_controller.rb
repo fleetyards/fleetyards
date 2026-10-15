@@ -22,7 +22,7 @@ module Api
 
         @vehicles = current_resource_owner.vehicles.visible.purchased
           .where(model: @model)
-          .includes({image_attachment: :blob}, {model_paint_picture: {store_image_attachment: :blob}})
+          .includes({image_attachment: :blob}, {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]})
           .order(:rank)
 
         load_friends

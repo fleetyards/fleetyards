@@ -35107,8 +35107,6 @@ components:
           type: boolean
         image:
           "$ref": "#/components/schemas/MediaFile"
-        paintImage:
-          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - id
@@ -36886,6 +36884,19 @@ components:
       - ROUGH_AND_READY
       - 'NULL'
       title: NullableVehicleOperationsGroupEnum
+    NullableVehiclePictureTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - Image
+      - ModelPaint
+      -
+      x-enumNames:
+      - IMAGE
+      - MODEL_PAINT
+      - 'NULL'
+      title: NullableVehiclePictureTypeEnum
     NullableVehiclePlaqueStyleEnum:
       type:
       - string
@@ -40045,20 +40056,15 @@ components:
           - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
-        modelImageId:
+        imageUploaded:
+          type: boolean
+        pictureType:
+          "$ref": "#/components/schemas/NullableVehiclePictureTypeEnum"
+        pictureId:
           type:
           - string
           - 'null'
           format: uuid
-        modelImage:
-          "$ref": "#/components/schemas/MediaFile"
-        modelPaintPictureId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        paintPicture:
-          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
@@ -40707,10 +40713,6 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         image:
           "$ref": "#/components/schemas/MediaFile"
-        modelImage:
-          "$ref": "#/components/schemas/MediaFile"
-        paintPicture:
-          "$ref": "#/components/schemas/MediaFile"
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
@@ -40919,12 +40921,9 @@ components:
           type:
           - string
           - 'null'
-        modelImageId:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        modelPaintPictureId:
+        pictureType:
+          "$ref": "#/components/schemas/NullableVehiclePictureTypeEnum"
+        pictureId:
           type:
           - string
           - 'null'

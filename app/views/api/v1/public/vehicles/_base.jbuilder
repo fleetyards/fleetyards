@@ -41,19 +41,7 @@ if vehicle.module_package.present?
   end
 end
 
-if vehicle.image.attached?
-  json.image do
-    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
-  end
-end
-
-if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
-  json.model_image do
-    json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
-  end
-end
-
-json.partial!("api/v1/vehicles/paint_picture", vehicle:)
+json.partial!("api/v1/vehicles/image", vehicle:)
 
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do

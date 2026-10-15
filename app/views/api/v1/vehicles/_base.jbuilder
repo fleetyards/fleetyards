@@ -55,21 +55,11 @@ json.module_package do
 end
 json.module_package nil if vehicle.module_package.blank?
 
-if vehicle.image.attached?
-  json.image do
-    json.partial! "api/v1/shared/file", record: vehicle, attr: :image
-  end
-end
-
-json.model_image_id vehicle.model_image_id
-if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
-  json.model_image do
-    json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
-  end
-end
-
-json.model_paint_picture_id vehicle.model_paint_picture_id
-json.partial!("api/v1/vehicles/paint_picture", vehicle:)
+json.partial!("api/v1/vehicles/image", vehicle:)
+# For the editor alone: whether the picture is an upload, and what is picked.
+json.image_uploaded vehicle.image.attached?
+json.picture_type vehicle.picture_type
+json.picture_id vehicle.picture_id
 
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do

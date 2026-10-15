@@ -14,8 +14,7 @@ module V1
               name: {type: :string},
               serial: {type: :string},
               flagship: {type: :boolean},
-              image: ::Shared::V1::Schemas::MediaFile,
-              paintImage: ::Shared::V1::Schemas::MediaFile
+              image: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
             required: %w[id flagship]

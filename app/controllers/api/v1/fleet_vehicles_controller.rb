@@ -15,7 +15,7 @@ module Api
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
       VEHICLE_RENDER_INCLUDES = [
-        {model_paint_picture: {store_image_attachment: :blob}},
+        {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]},
         :module_package,
         {vehicle_loadouts: :items},
         {user: [:omniauth_connections]},
@@ -24,7 +24,6 @@ module Api
         {vehicle_upgrades: :model_upgrade},
         {task_forces: :hangar_group},
         {image_attachment: :blob},
-        {model_image: {file_attachment: :blob}},
         :launch_port_location
       ].freeze
 

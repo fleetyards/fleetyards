@@ -18,7 +18,8 @@ module Api
         # A paint the ship owns stays listed even once the catalogue hides it,
         # or the card would lose it.
         owned_ids = @vehicle.model_paint_ids
-        kept_ids = owned_ids | [@vehicle.model_paint_picture_id].compact
+        picture_id = @vehicle.picture_id if @vehicle.picture_type == "ModelPaint"
+        kept_ids = owned_ids | [picture_id].compact
         paints = @vehicle.model.paints
           .visible.active
           .or(@vehicle.model.paints.where(id: kept_ids))
