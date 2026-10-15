@@ -48,6 +48,7 @@ module Api
         )
           .order(@q.result.order_values)
           .includes(Vehicle.rendered_associations)
+          .preload(Vehicle::PICTURE_PRELOADS)
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))

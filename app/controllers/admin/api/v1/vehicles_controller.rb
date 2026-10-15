@@ -54,7 +54,9 @@ module Admin
           normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] ||= sorting_params(Vehicle, vehicle_query_params["sorts"])
 
-          scope = authorized_scope(Vehicle.all).includes(:user, model: :manufacturer).where(hidden: false)
+          scope = authorized_scope(Vehicle.all).includes(:user, model: :manufacturer)
+            .preload({image_attachment: :blob}, Vehicle::PICTURE_PRELOADS)
+            .where(hidden: false)
 
           scope = loaner_included?(scope)
 

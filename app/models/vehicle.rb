@@ -166,13 +166,17 @@ class Vehicle < ApplicationRecord
   # `model_modules` is named rather than `vehicle_modules`, because that is what
   # `model_module_ids` reads: preloading the join alone still leaves one query
   # per vehicle, which is invisible until the queries are counted.
+  # The picked picture with whichever attachment its type has. Preloaded, never
+  # `includes`d: a polymorphic association cannot be joined, and a `pluck` or a
+  # condition on an `includes` scope turns it into a join.
+  PICTURE_PRELOADS = {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]}.freeze
+
   def self.rendered_associations
     [
       :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
       :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: :items},
       {model: Model.rendered_associations},
       :model_paints,
-      {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]},
       {parent_vehicle: :model},
       {image_attachment: :blob},
       :user,

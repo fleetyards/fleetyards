@@ -10,7 +10,6 @@ module Api
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
         VEHICLE_RENDER_INCLUDES = [
-          {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]},
           :module_package,
           {vehicle_loadouts: :items},
           :public_hangar_groups,
@@ -27,7 +26,7 @@ module Api
         end
 
         def index
-          scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
+          scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
 
           scope = scope.where(loaner: loaner_included?)
           scope = narrow_to_squadrons(scope)
@@ -47,7 +46,7 @@ module Api
               Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
             )
               .order(@q.result.order_values)
-              .includes(VEHICLE_RENDER_INCLUDES)
+              .includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
               .joins(model: :manufacturer)
 
             @vehicles = result_with_pagination(result, per_page(Vehicle))
@@ -59,7 +58,7 @@ module Api
             ahoy.track "fleet_embedding", request.path_parameters
           end
 
-          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -72,7 +71,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(VEHICLE_RENDER_INCLUDES)
+            .includes(VEHICLE_RENDER_INCLUDES).preload(Vehicle::PICTURE_PRELOADS)
             .joins(model: :manufacturer)
             .all
         end
