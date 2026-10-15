@@ -75,9 +75,6 @@ module ScData
         paint_logos[item[:manufacturer_ref]]
       end
 
-      # How a ship flies through a jump tunnel lives in a record of its own the
-      # drive only points at: the speed it drops to on leaving the tunnel and
-      # the top speed it can hold inside it.
       # The medical beds in the rooms a module brings, by tier, and how many of
       # them a player can respawn at. Keyed by the module's record name.
       private def module_medical_beds(key)
@@ -86,12 +83,13 @@ module ScData
 
         tiers = Hash.new(0)
         rooms.each { |room| room["medbedTiers"]&.each { |name, beds| tiers[name] += beds.to_i } }
-        return if tiers.empty?
+        respawn_beds = rooms.sum { |room| room["medbedRespawn"].to_i }
+        return if tiers.empty? && respawn_beds.zero?
 
         {
           tiers: tiers.map { |name, beds| {tier: MEDICAL_BED_TIERS[name], name:, beds:} }
             .sort_by { |tier| tier[:tier] || MEDICAL_BED_TIERS.size + 1 },
-          respawn_beds: rooms.sum { |room| room["medbedRespawn"].to_i }
+          respawn_beds:
         }
       end
 
@@ -103,6 +101,9 @@ module ScData
         end
       end
 
+      # How a ship flies through a jump tunnel lives in a record of its own the
+      # drive only points at: the speed it drops to on leaving the tunnel and
+      # the top speed it can hold inside it.
       private def jump_drive_flight(ref)
         tuning = jump_drive_flight_tunings[ref]
         return {} if tuning.blank?
