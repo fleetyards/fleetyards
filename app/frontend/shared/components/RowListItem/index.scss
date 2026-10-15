@@ -280,7 +280,7 @@
 // wrapped row keeps its action up beside the title, where a card's menu sits,
 // and the badges take the line below. Not on a desktop, where the row usually
 // fits on one line and the action belongs last.
-@media (max-width: 992px) {
+@media (max-width: $desktop-breakpoint) {
   .row-list-item__badges {
     order: 1;
   }
