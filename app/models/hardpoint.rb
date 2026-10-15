@@ -104,6 +104,9 @@ class Hardpoint < ApplicationRecord
     other: 9,
     external_fuel_tank: 10,
     refuel_boom: 11,
+    ore_pod: 12,
+    module: 13,
+    salvage: 14,
     unknown: 99
   }.freeze
 
@@ -114,9 +117,9 @@ class Hardpoint < ApplicationRecord
     refuel_boom: 25,
     main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
     weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
-    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
+    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47, salvage_storage: 48,
     armor: 50, countermeasures: 51,
-    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
+    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63, ore_pods: 64,
     seat: 70,
     relay: 80,
     paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
@@ -185,8 +188,12 @@ class Hardpoint < ApplicationRecord
       :weapon
     when "fueltanks", "fuel_intakes", "quantumdrive"
       :propulsion
-    when "cargogrid", "module", "salvagefillerstation"
+    when "cargogrid"
       :other
+    when "module"
+      :module
+    when "salvagefillerstation"
+      :salvage
     when "relay", "batteries"
       :relay
     else
@@ -205,8 +212,12 @@ class Hardpoint < ApplicationRecord
       self.group = :seat
     end
 
-    if sc_name&.start_with?("hardpoint_mining_pod")
-      self.group = :other
+    if ore_pod?
+      self.group = :ore_pod
+    end
+
+    if component&.component_type == "SalvageInternalStorage"
+      self.group = :salvage
     end
 
     if sc_name&.start_with?("hardpoint_relay_")
@@ -230,8 +241,8 @@ class Hardpoint < ApplicationRecord
       end
     elsif sc_name&.start_with?("hardpoint_engineeringscreen")
       :seat
-    elsif sc_name&.start_with?("hardpoint_mining_pod")
-      :cargogrid
+    elsif ore_pod?
+      :ore_pods
     # Most hulls leave their paint slots empty in the game files, and an empty
     # slot has no component to name its category. The slot's name still does;
     # a fitted component keeps deciding for itself.
@@ -243,6 +254,8 @@ class Hardpoint < ApplicationRecord
         :emp
       when "ExternalFuelTank"
         :external_fuel_tanks
+      when "SalvageInternalStorage"
+        :salvage_storage
       when "DockingCollar", "ToolArm"
         (component&.category == "refuel_boom") ? :utility : (component&.category || :unknown)
       else
@@ -254,6 +267,15 @@ class Hardpoint < ApplicationRecord
         end
       end
     end
+  end
+
+  # A collapsed pod is a spare stowed in a rack: it holds nothing, and counting
+  # it would put sixteen extra pods on a MOLE.
+  def ore_pod?
+    return true if sc_name&.start_with?("hardpoint_mining_pod")
+
+    sc_key = component&.sc_key.to_s
+    sc_key.include?("mining_pod") && !sc_key.end_with?("_collapsed")
   end
 
   def set_group_key

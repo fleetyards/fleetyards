@@ -10,6 +10,7 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import {
+  HardpointCategoryEnum,
   HardpointSourceEnum,
   type Hardpoint,
   type FuelTank,
@@ -32,8 +33,12 @@ const count = computed(() => {
   return props.hardpoints.length;
 });
 
-const typeData = computed(() => {
-  return hardpoint.value.component?.typeData as FuelTank;
+// A ground vehicle's ore pod names its volume `storage`.
+const capacity = computed(() => {
+  const data = hardpoint.value.component?.typeData as
+    (FuelTank & { storage?: number }) | undefined;
+
+  return data?.capacity || data?.storage;
 });
 
 const label = computed(() => {
@@ -43,8 +48,14 @@ const label = computed(() => {
   if (hardpoint.value.component?.subType === "QuantumFuel") {
     return t("labels.hardpoint.fuelTanks.quantum");
   }
-  if (hardpoint.value.component?.type === "ExternalFuelTank") {
+  if (
+    hardpoint.value.component?.type === "ExternalFuelTank" ||
+    hardpoint.value.category === HardpointCategoryEnum.ORE_PODS
+  ) {
     return hardpoint.value.component?.name || t("labels.notAvailable");
+  }
+  if (hardpoint.value.category === HardpointCategoryEnum.SALVAGE_STORAGE) {
+    return t("labels.model.salvageStorage");
   }
 
   return "TBD";
@@ -67,8 +78,8 @@ const label = computed(() => {
         </template>
       </HardpointComponent>
       <HardpointHeadline
-        v-if="typeData?.capacity"
-        :value="toNumber(typeData.capacity, 'cargo')"
+        v-if="capacity"
+        :value="toNumber(capacity, 'cargo')"
         :unit="t('labels.cargoGridViewer.capacity')"
       />
     </template>

@@ -1177,6 +1177,8 @@
         "quantumFuelTankSize": "Dimensione serbatoio Quantum",
         "quantumFuelTanks": "Serbatoi carburante Quantum",
         "externalFuelTanks": "Serbatoi di carburante esterni",
+        "orePods": "Contenitori di minerale",
+        "salvageStorage": "Deposito di recupero",
         "externalFuelTanksTotal": "Capacità totale",
         "externalFuelTanksCount": "Pod",
         "refuelBoom": "Braccio di rifornimento",
@@ -1373,6 +1375,13 @@
         "maxContainerSub": "il container più grande che ci sta",
         "containers": "Capacità in container",
         "hint": "Numero massimo di container di ciascuna dimensione che entrano nelle griglie di carico; la barra mostra quanta parte della capacità totale occupano."
+      },
+      "storageContainers": {
+        "total": "Capacità totale",
+        "count": "Contenitori",
+        "perContainer": "ciascuno",
+        "hintOre": "Contiene minerale estratto, non carico.",
+        "hintSalvage": "Contiene materiale recuperato, non carico."
       },
       "fuelTanks": {
         "capacitySub": "su %{count} pod",
@@ -2050,10 +2059,13 @@
           "thruster": "Propulsori",
           "weapon": "Armamenti",
           "defense": "Difesa",
-          "other": "Altro",
+          "other": "Carico",
           "auxiliary": "Ausiliario",
           "seat": "Sedili",
           "external_fuel_tank": "Serbatoi di carburante esterni",
+          "ore_pod": "Contenitori di minerale",
+          "module": "Moduli",
+          "salvage": "Recupero",
           "refuel_boom": "Braccio di rifornimento"
         },
         "types": {
@@ -2098,6 +2110,8 @@
           "fuel_intakes": "Prese di carburante",
           "fueltanks": "Serbatoi di carburante",
           "external_fuel_tanks": "Serbatoi di carburante esterni",
+          "ore_pods": "Contenitori di minerale",
+          "salvage_storage": "Deposito di recupero",
           "refuel_boom": "Braccio di rifornimento",
           "quantumdrive": "Motori Quantum e moduli di salto",
           "jump_modules": "Moduli di salto",

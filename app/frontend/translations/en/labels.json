@@ -1177,6 +1177,8 @@
         "quantumFuelTankSize": "Quantum Fuel Tank Size",
         "quantumFuelTanks": "Quantum Fuel Tanks",
         "externalFuelTanks": "External Fuel Tanks",
+        "orePods": "Ore Pods",
+        "salvageStorage": "Salvage Storage",
         "externalFuelTanksTotal": "Total Capacity",
         "externalFuelTanksCount": "Pods",
         "refuelBoom": "Refueling Boom",
@@ -1373,6 +1375,13 @@
         "maxContainerSub": "largest box that fits",
         "containers": "Container Capacity",
         "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+      },
+      "storageContainers": {
+        "total": "Total Capacity",
+        "count": "Containers",
+        "perContainer": "each",
+        "hintOre": "Holds mined ore, not cargo.",
+        "hintSalvage": "Holds salvaged material, not cargo."
       },
       "fuelTanks": {
         "capacitySub": "across %{count} pods",
@@ -2050,10 +2059,13 @@
           "thruster": "Thruster",
           "weapon": "Weapons",
           "defense": "Defense",
-          "other": "Other",
+          "other": "Cargo",
           "auxiliary": "Auxiliary",
           "seat": "Seats",
           "external_fuel_tank": "External Fuel Tanks",
+          "ore_pod": "Ore Pods",
+          "module": "Modules",
+          "salvage": "Salvage",
           "refuel_boom": "Refuel Boom"
         },
         "types": {
@@ -2098,6 +2110,8 @@
           "fuel_intakes": "Fuel Intakes",
           "fueltanks": "Fuel Tanks",
           "external_fuel_tanks": "External Fuel Tanks",
+          "ore_pods": "Ore Pods",
+          "salvage_storage": "Salvage Storage",
           "refuel_boom": "Refuel Boom",
           "quantumdrive": "Quantum Drives & Jump Modules",
           "jump_modules": "Jump Modules",

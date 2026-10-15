@@ -1177,6 +1177,8 @@
         "quantumFuelTankSize": "量子燃料箱大小",
         "quantumFuelTanks": "量子燃料箱",
         "externalFuelTanks": "外掛燃料箱",
+        "orePods": "礦石艙",
+        "salvageStorage": "回收儲存",
         "externalFuelTanksTotal": "總容量",
         "externalFuelTanksCount": "燃料艙",
         "refuelBoom": "加油臂",
@@ -1373,6 +1375,13 @@
         "maxContainerSub": "可容納的最大貨櫃",
         "containers": "貨櫃容量",
         "hint": "各種尺寸的貨櫃在貨物網格上最多可放置的數量；長條顯示它佔總容量的比例。"
+      },
+      "storageContainers": {
+        "total": "總容量",
+        "count": "容器",
+        "perContainer": "每個",
+        "hintOre": "存放開採的礦石，不是貨物。",
+        "hintSalvage": "存放回收的材料，不是貨物。"
       },
       "fuelTanks": {
         "capacitySub": "分佈於 %{count} 個燃料艙",
@@ -2050,10 +2059,13 @@
           "thruster": "推進器",
           "weapon": "武器",
           "defense": "防禦",
-          "other": "其他",
+          "other": "貨物",
           "auxiliary": "輔助",
           "seat": "座位",
           "external_fuel_tank": "外掛燃料箱",
+          "ore_pod": "礦石艙",
+          "module": "模組",
+          "salvage": "打撈",
           "refuel_boom": "加油臂"
         },
         "types": {
@@ -2098,6 +2110,8 @@
           "fuel_intakes": "燃料進氣口",
           "fueltanks": "燃料箱",
           "external_fuel_tanks": "外掛燃料箱",
+          "ore_pods": "礦石艙",
+          "salvage_storage": "回收儲存",
           "refuel_boom": "加油臂",
           "quantumdrive": "量子引擎與跳躍模組",
           "jump_modules": "跳躍模組",

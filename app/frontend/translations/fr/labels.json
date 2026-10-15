@@ -1177,6 +1177,8 @@
         "quantumFuelTankSize": "Taille du réservoir Quantum",
         "quantumFuelTanks": "Réservoirs de carburant Quantum",
         "externalFuelTanks": "Réservoirs de carburant externes",
+        "orePods": "Conteneurs de minerai",
+        "salvageStorage": "Stockage de récupération",
         "externalFuelTanksTotal": "Capacité totale",
         "externalFuelTanksCount": "Nacelles",
         "refuelBoom": "Perche de ravitaillement",
@@ -1373,6 +1375,13 @@
         "maxContainerSub": "plus grande caisse acceptée",
         "containers": "Capacité en conteneurs",
         "hint": "Nombre maximal de conteneurs de chaque taille pouvant tenir sur les grilles de cargaison ; la barre indique la part de la capacité totale ainsi remplie."
+      },
+      "storageContainers": {
+        "total": "Capacité totale",
+        "count": "Conteneurs",
+        "perContainer": "chacun",
+        "hintOre": "Contient du minerai extrait, pas de cargaison.",
+        "hintSalvage": "Contient des matériaux récupérés, pas de cargaison."
       },
       "fuelTanks": {
         "capacitySub": "réparti sur %{count} nacelles",
@@ -2050,10 +2059,13 @@
           "thruster": "Propulseur",
           "weapon": "Armes",
           "defense": "Défense",
-          "other": "Autre",
+          "other": "Cargaison",
           "auxiliary": "Auxiliaire",
           "seat": "Sièges",
           "external_fuel_tank": "Réservoirs de carburant externes",
+          "ore_pod": "Conteneurs de minerai",
+          "module": "Modules",
+          "salvage": "Récupération",
           "refuel_boom": "Perche de ravitaillement"
         },
         "types": {
@@ -2098,6 +2110,8 @@
           "fuel_intakes": "Prises de carburant",
           "fueltanks": "Réservoirs de carburant",
           "external_fuel_tanks": "Réservoirs de carburant externes",
+          "ore_pods": "Conteneurs de minerai",
+          "salvage_storage": "Stockage de récupération",
           "refuel_boom": "Perche de ravitaillement",
           "quantumdrive": "Moteurs Quantum et modules de saut",
           "jump_modules": "Modules de saut",

@@ -8,6 +8,10 @@ export default {
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model, ExternalFuelTank } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  type CapacityGroup,
+  groupByCapacity,
+} from "@/frontend/composables/useCapacityGroups";
 
 const { t, toNumber } = useI18n();
 
@@ -25,43 +29,9 @@ const totalCapacity = computed(() =>
   tanks.value.reduce((sum, tank) => sum + (tank.capacity || 0), 0),
 );
 
-type Group = {
-  componentName: string;
-  count: number;
-  perTankCapacity: number;
-  share: number;
-};
-
-const groups = computed<Group[]>(() => {
-  const map = new Map<string, Group>();
-
-  for (const tank of tanks.value) {
-    const key = tank.componentName || "—";
-    const existing = map.get(key);
-
-    if (existing) {
-      existing.count += 1;
-    } else {
-      map.set(key, {
-        componentName: key,
-        count: 1,
-        perTankCapacity: tank.capacity || 0,
-        share: 0,
-      });
-    }
-  }
-
-  const total = totalCapacity.value;
-
-  return [...map.values()]
-    .map((group) => ({
-      ...group,
-      share: total
-        ? Math.round(((group.perTankCapacity * group.count) / total) * 100)
-        : 0,
-    }))
-    .sort((a, b) => b.perTankCapacity * b.count - a.perTankCapacity * a.count);
-});
+const groups = computed<CapacityGroup[]>(() =>
+  groupByCapacity(tanks.value, "\u2014"),
+);
 </script>
 
 <template>
@@ -100,15 +70,15 @@ const groups = computed<Group[]>(() => {
     <div class="fuel-tanks">
       <div
         v-for="group in groups"
-        :key="group.componentName"
+        :key="group.key"
         class="fuel-tank"
-        :title="group.componentName"
+        :title="group.name"
       >
         <div class="fuel-tank__head">
-          <span class="fuel-tank__name">{{ group.componentName }}</span>
+          <span class="fuel-tank__name">{{ group.name }}</span>
           <span class="fuel-tank__count">{{ group.count }}x</span>
           <span class="fuel-tank__share">
-            {{ toNumber(group.perTankCapacity, "cargo") }}
+            {{ toNumber(group.capacity, "cargo") }}
             {{ t("labels.fuelTanks.perPod") }}
           </span>
         </div>

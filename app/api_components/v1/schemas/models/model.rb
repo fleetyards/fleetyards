@@ -54,6 +54,7 @@ module V1
             hydrogenFuelTanks: {type: :array, items: ::Shared::V1::Schemas::FuelTank},
             quantumFuelTanks: {type: :array, items: ::Shared::V1::Schemas::FuelTank},
             externalFuelTanks: {type: :array, items: ::Shared::V1::Schemas::ExternalFuelTank},
+            storageContainers: {type: :array, items: ::Shared::V1::Schemas::StorageContainer},
             refuelBoom: ::Shared::V1::Schemas::RefuelBoom,
 
             onSale: {type: :boolean},

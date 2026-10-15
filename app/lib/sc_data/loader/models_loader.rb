@@ -149,6 +149,7 @@ module ScData
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
         update_params = update_hydrogen_fuel_tanks(hardpoints, update_params)
         update_params = update_external_fuel_tanks(hardpoints, update_params)
+        update_params = update_storage_containers(model, hardpoints, update_params)
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
@@ -366,6 +367,32 @@ module ScData
         return update_params if fuel_tanks.blank?
 
         update_params[:external_fuel_tanks] = fuel_tanks
+
+        update_params
+      end
+
+      # Ore pods and salvage storage, apart from cargo: what they hold is not
+      # cargo space. A `Container` counts as ore only where the hardpoint list
+      # files it as an ore pod, so the figure and the list agree: a Raft's cargo
+      # pod is a `Container` too. Only where something can be held, and the
+      # ROC's pods name their volume `storage` rather than `capacity`.
+      STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
+
+      private def update_storage_containers(model, hardpoints, update_params)
+        containers = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
+          extract_named_type_data(hardpoints, component_type) { |hardpoint| kind != "ore" || hardpoint.ore_pod? }.filter_map do |container|
+            capacity = (container["capacity"] || container["storage"]).to_f
+            next unless capacity.positive?
+
+            container.except("storage").merge("capacity" => capacity, "kind" => kind)
+          end
+        end
+
+        # Nothing for a ship that never had any, but cleared for one whose
+        # build has dropped them.
+        return update_params if containers.blank? && model.storage_containers.blank?
+
+        update_params[:storage_containers] = containers
 
         update_params
       end
