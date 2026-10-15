@@ -99,8 +99,8 @@ const columns: BaseTableCol<Vehicle>[] = [
 ];
 
 const image = (record: Vehicle) => {
-  if (record.paint && record.paint.media.storeImage) {
-    return record.paint.media.storeImage;
+  if (record.paintPicture) {
+    return record.paintPicture;
   }
 
   if (record.upgrade && record.upgrade.media.storeImage) {

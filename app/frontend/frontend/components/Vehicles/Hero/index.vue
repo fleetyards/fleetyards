@@ -69,7 +69,7 @@ const picture = computed(
   () =>
     props.vehicle.image ||
     props.vehicle.modelImage ||
-    props.vehicle.paint?.media.storeImage ||
+    props.vehicle.paintPicture ||
     props.vehicle.upgrade?.media.storeImage ||
     props.vehicle.model.media.storeImage,
 );

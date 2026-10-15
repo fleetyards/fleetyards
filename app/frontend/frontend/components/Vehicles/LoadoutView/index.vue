@@ -102,8 +102,8 @@ const badges = (mod: ModelModule) =>
 
 const previewImage = computed(
   () =>
-    props.vehicle.paint?.media.storeImage?.mediumUrl ||
-    props.vehicle.paint?.media.storeImage?.url ||
+    props.vehicle.paintPicture?.mediumUrl ||
+    props.vehicle.paintPicture?.url ||
     model.value?.media.storeImage?.mediumUrl ||
     model.value?.media.storeImage?.url,
 );

@@ -57,6 +57,7 @@ const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
     bundled: false,
     modelModuleIds: [],
     modelUpgradeIds: [],
+    modelPaintIds: [],
     nameVisible: false,
     public: false,
     saleNotify: false,
@@ -197,20 +198,16 @@ describe("VehiclesPanel", () => {
         url: "https://example.test/own.jpg",
         mediumUrl: "https://example.test/own.webp",
       },
-      paint: {
-        id: "paint-1",
-        name: "Ghoulish Green",
-        slug: "ghoulish-green",
-        media: {
-          storeImage: {
-            name: "paint",
-            mediumUrl: "https://example.test/paint.webp",
-          },
-        },
-      } as Vehicle["paint"],
+      paintPicture: {
+        name: "paint",
+        contentType: "image/jpeg",
+        size: 1024,
+        url: "https://example.test/paint.jpg",
+        mediumUrl: "https://example.test/paint.webp",
+      },
     });
 
-  it("draws the owner's picture before the paint's render", async () => {
+  it("draws the uploaded picture before a paint picture", async () => {
     const wrapper = await mount({ vehicle: withPicture() });
 
     expect(wrapper.findComponent(ModelPanel).props("storeImage")).toBe(
