@@ -38,8 +38,15 @@ const chart = (width: number, height: number) => {
   const parent = document.createElement("div");
   const element = document.createElement("div");
   element.id = "fleetchart";
-  Object.defineProperty(element, "scrollWidth", { value: width });
-  Object.defineProperty(element, "scrollHeight", { value: height });
+  element.getBoundingClientRect = () =>
+    ({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+    }) as DOMRect;
   parent.appendChild(element);
   document.body.appendChild(parent);
 
@@ -94,6 +101,16 @@ describe("DownloadScreenshotBtn", () => {
     expect(scale).toBeLessThan(1);
     expect(1740 * scale * 25000 * scale).toBeLessThanOrEqual(16_777_216);
     expect(25000 * scale).toBeLessThanOrEqual(16_384);
+  });
+
+  it("keeps the pixel ratio for a large chart zoomed out to fit", async () => {
+    // A 1740x25000 chart shown at a quarter of its size.
+    chart(435, 6250);
+    html2canvas.mockResolvedValue(canvas(new Blob(["png"])));
+
+    await clickDownload();
+
+    expect(html2canvas.mock.calls[0][1].scale).toBe(2);
   });
 
   it("tells the user and reports it when the chart cannot be drawn", async () => {

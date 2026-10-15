@@ -27,15 +27,17 @@ type Props = {
 
 // Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
 // pixels, Firefox's a side of 32767px. A large fleet drawn at the screen's
-// pixel ratio passes both, so the scale gives way first.
+// pixel ratio passes both, so the scale gives way first. The side is held to
+// half of Firefox's, as older mobile browsers stop well before it.
 const MAX_CANVAS_AREA = 16_777_216;
 const MAX_CANVAS_SIDE = 16_384;
 
+// html2canvas sizes the canvas from the element's box, transform included, so
+// a zoomed panzoom chart is measured as it is shown.
 const canvasScale = (element: HTMLElement) => {
-  // A zoomed panzoom chart is transformed, so its box can outgrow its scroll size.
   const box = element.getBoundingClientRect();
-  const width = Math.max(element.scrollWidth, box.width, 1);
-  const height = Math.max(element.scrollHeight, box.height, 1);
+  const width = Math.max(box.width, 1);
+  const height = Math.max(box.height, 1);
 
   return Math.min(
     window.devicePixelRatio || 1,
