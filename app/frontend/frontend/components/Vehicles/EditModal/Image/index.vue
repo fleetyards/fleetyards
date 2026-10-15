@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useField, useFieldValue } from "vee-validate";
+import { useField } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -93,15 +93,12 @@ const loadMoreGallery = () => {
   galleryPage.value += 1;
 };
 
-// The paints the ship owns join the gallery with their store images, read from
-// the form so a paint added in the Paint tab can be picked before saving. The
-// current pick stays offered after its paint is no longer owned.
-const ownedPaintIds = useFieldValue<string[]>("modelPaintIds");
-
 const { isFeatureEnabled } = useFeatures();
 
-// The vehicle's own list, which keeps its paints after the catalogue hides one.
-// Part of the vehicle overview, as saving a gallery pick is.
+// Every paint of the model joins the gallery with its store image, owned or not:
+// the picture is a look for the ship, not a record of what it owns. The
+// vehicle's own list, because it keeps the current pick after the catalogue
+// hides its paint, and lists owned paints first.
 const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
   query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
 });
@@ -109,13 +106,7 @@ const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
 const paintPictures = computed<ModelPaint[]>(() =>
   (vehiclePaints.value || [])
     .map((entry) => entry.paint)
-    .filter(
-      (paint) =>
-        paint.media.storeImage &&
-        ((ownedPaintIds.value || []).includes(paint.id) ||
-          (props.vehicle.pictureType === PictureType.MODEL_PAINT &&
-            paint.id === props.vehicle.pictureId)),
-    ),
+    .filter((paint) => paint.media.storeImage),
 );
 
 type Pick = {

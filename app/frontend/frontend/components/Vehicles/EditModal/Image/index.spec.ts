@@ -130,7 +130,7 @@ describe("VehicleEditModal image tab", () => {
     });
   });
 
-  it("offers the pictures of the paints the ship owns", async () => {
+  it("offers the picture of every paint, owned or not", async () => {
     const wrapper = await mount({
       vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
     });
@@ -143,7 +143,7 @@ describe("VehicleEditModal image tab", () => {
       wrapper
         .findAll('[data-test="vehicle-image-gallery-paint"]')
         .map((choice) => choice.text()),
-    ).toEqual(["Stormbringer"]);
+    ).toEqual(["Rust Society", "Stormbringer"]);
   });
 
   it("keeps the paint pictures apart from the model's gallery", async () => {
@@ -163,7 +163,7 @@ describe("VehicleEditModal image tab", () => {
     ).toBe(true);
     expect(
       paints.findAll('[data-test="vehicle-image-gallery-paint"]'),
-    ).toHaveLength(1);
+    ).toHaveLength(2);
     expect(
       paints.findAll('[data-test="vehicle-image-gallery-choice"]'),
     ).toHaveLength(0);
@@ -185,7 +185,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-paint"]')
+      .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
       .trigger("click");
     await submit(wrapper);
 
