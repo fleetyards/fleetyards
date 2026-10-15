@@ -323,6 +323,9 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     %w[hardpoint_rear_module hardpoint_front_module].each do |sc_name|
       create(:hardpoint, parent: model, source: :game_files, sc_name:, component: module_component)
     end
+    # A slot no build being served has any more is not offered.
+    create(:hardpoint, :without_build, parent: model, source: :game_files,
+      sc_name: "hardpoint_retired_module", component: module_component)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {id: model.id} do

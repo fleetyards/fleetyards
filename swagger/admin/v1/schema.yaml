@@ -18393,6 +18393,11 @@ components:
           - string
           - 'null'
           format: uuid
+        slot:
+          type:
+          - string
+          - 'null'
+          description: 'With a modelId: the module hardpoint''s name on that hull'
         manufacturerId:
           type: string
           format: uuid
