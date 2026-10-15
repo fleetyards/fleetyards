@@ -323,12 +323,14 @@ const onSubmit = handleSubmit(async (values) => {
               :icon="categoryTabIcon('module').icon"
               :fields="['modelModuleIds']"
               :disabled="!vehicle.model.hasModules"
+              :hint="
+                vehicle.model.hasModules
+                  ? undefined
+                  : t('labels.vehicleLoadout.unavailable.modules')
+              "
             >
               <div class="vehicle-loadout__sections">
-                <AsyncData
-                  :fullscreen="false"
-                  :async-status="modulePackagesAsyncStatus"
-                >
+                <AsyncData :async-status="modulePackagesAsyncStatus">
                   <template #resolved>
                     <fieldset v-if="packages.length">
                       <legend>
@@ -346,10 +348,7 @@ const onSubmit = handleSubmit(async (values) => {
                   </template>
                 </AsyncData>
 
-                <AsyncData
-                  :fullscreen="false"
-                  :async-status="modulesAsyncStatus"
-                >
+                <AsyncData :async-status="modulesAsyncStatus">
                   <template #resolved>
                     <fieldset>
                       <legend>
@@ -373,11 +372,13 @@ const onSubmit = handleSubmit(async (values) => {
               icon="fa-duotone fa-wrench"
               :fields="['modelUpgradeIds']"
               :disabled="!vehicle.model.hasUpgrades"
+              :hint="
+                vehicle.model.hasUpgrades
+                  ? undefined
+                  : t('labels.vehicleLoadout.unavailable.upgrades')
+              "
             >
-              <AsyncData
-                :fullscreen="false"
-                :async-status="upgradesAsyncStatus"
-              >
+              <AsyncData :async-status="upgradesAsyncStatus">
                 <template #resolved>
                   <Addons
                     v-model="modelUpgradeIds"

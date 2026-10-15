@@ -4301,6 +4301,10 @@
           "flightBlades": "Flight blades"
         },
         "comingSoon": "Coming soon",
+        "unavailable": {
+          "modules": "This ship takes no modules",
+          "upgrades": "There are no add-ons for this ship"
+        },
         "none": "None"
       }
     }

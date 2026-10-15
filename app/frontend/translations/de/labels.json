@@ -4287,6 +4287,10 @@
           "flightBlades": "Flugsteuerungs-Blades"
         },
         "comingSoon": "Demnächst verfügbar",
+        "unavailable": {
+          "modules": "Dieses Schiff nimmt keine Module auf",
+          "upgrades": "Für dieses Schiff gibt es keine Add-ons"
+        },
         "none": "Keine"
       }
     }

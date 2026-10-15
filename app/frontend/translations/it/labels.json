@@ -4287,6 +4287,10 @@
           "flightBlades": "Blade di volo"
         },
         "comingSoon": "Prossimamente",
+        "unavailable": {
+          "modules": "Questa nave non accetta moduli",
+          "upgrades": "Non esistono componenti aggiuntivi per questa nave"
+        },
         "none": "Nessuno"
       }
     }

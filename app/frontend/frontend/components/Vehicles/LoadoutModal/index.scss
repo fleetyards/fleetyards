@@ -1,10 +1,6 @@
 .vehicle-loadout {
   min-height: 100px;
 
-  :deep(.tab-anchor__icon) {
-    filter: grayscale(1);
-  }
-
   :deep(.tab-anchor__content > i) {
     display: inline-flex;
     align-items: center;
@@ -14,7 +10,26 @@
     height: 24px;
     font-size: 1.375rem;
     line-height: 1;
-    color: $gray-light;
+    color: var(--color-text);
+  }
+
+  /*
+   * Most of the strip is components this editor does not cover yet. Drained of
+   * colour and pushed well back, so the few tabs that open read as the strip and
+   * the rest as a preview of it.
+   */
+  :deep(li.disabled) {
+    > a {
+      opacity: 0.35;
+    }
+
+    .tab-anchor__icon {
+      filter: grayscale(1);
+    }
+
+    .tab-anchor__content > i {
+      color: $gray-light;
+    }
   }
 
   &__layout {

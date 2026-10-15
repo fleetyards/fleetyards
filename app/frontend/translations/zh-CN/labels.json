@@ -4287,6 +4287,10 @@
           "flightBlades": "飞行刀片"
         },
         "comingSoon": "即将推出",
+        "unavailable": {
+          "modules": "该舰船不支持模块",
+          "upgrades": "该舰船没有可用的附加组件"
+        },
         "none": "无"
       }
     }

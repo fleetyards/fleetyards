@@ -4287,6 +4287,10 @@
           "flightBlades": "Blades de vol"
         },
         "comingSoon": "Bientôt disponible",
+        "unavailable": {
+          "modules": "Ce vaisseau n'accepte aucun module",
+          "upgrades": "Aucune extension n'existe pour ce vaisseau"
+        },
         "none": "Aucun"
       }
     }
