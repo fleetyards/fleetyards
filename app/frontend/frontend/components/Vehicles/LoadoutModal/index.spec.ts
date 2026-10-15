@@ -155,10 +155,10 @@ describe("VehicleLoadoutModal", () => {
     const cargoRow = () =>
       wrapper.get("[data-test='vehicle-loadout-comparison-cargo']").text();
 
-    // The slot's own fitting, before anything is pointed at.
+    // The slot's own fitting, before anything is pointed at: no swap to show.
     expect(
-      wrapper.get("[data-test='vehicle-loadout-comparison']").text(),
-    ).toContain("Combat Module");
+      wrapper.get("[data-test='vehicle-loadout-comparison-swap']").text(),
+    ).toBe("Combat Module");
     expect(cargoRow()).not.toContain("+32");
 
     await wrapper

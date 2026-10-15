@@ -47,15 +47,23 @@ const width = (row: FittingRow, value: number) => {
   return max ? `${(value / max) * 100}%` : "0%";
 };
 
+// Nothing swapped: the slot's own module, not a change from it to itself.
+const unchanged = computed(() => props.from?.id === props.to?.id);
+
 const name = (mod?: ModelModule) =>
   mod?.name || t("labels.vehicleLoadout.nothingFitted");
 </script>
 
 <template>
   <div class="loadout-comparison" data-test="vehicle-loadout-comparison">
-    <p class="loadout-comparison__swap">
-      <span>{{ name(from) }}</span>
-      <i class="fa-regular fa-arrow-right" aria-hidden="true" />
+    <p
+      class="loadout-comparison__swap"
+      data-test="vehicle-loadout-comparison-swap"
+    >
+      <template v-if="!unchanged">
+        <span>{{ name(from) }}</span>
+        <i class="fa-regular fa-arrow-right" aria-hidden="true" />
+      </template>
       <strong>{{ name(to) }}</strong>
     </p>
 
@@ -78,7 +86,11 @@ const name = (mod?: ModelModule) =>
         </dt>
         <dd>
           <span class="loadout-comparison__value">{{ row.value }}</span>
-          <span class="loadout-comparison__bars" aria-hidden="true">
+          <span
+            v-if="!unchanged"
+            class="loadout-comparison__bars"
+            aria-hidden="true"
+          >
             <span
               class="loadout-comparison__bar loadout-comparison__bar--before"
               :style="{ width: width(row, row.before) }"
