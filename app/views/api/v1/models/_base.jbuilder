@@ -219,6 +219,7 @@ json.cargo_holds model.cargo_holds_with_offsets
 json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
 json.quantum_fuel_tanks model.quantum_fuel_tanks
 json.external_fuel_tanks model.external_fuel_tanks
+json.storage_containers model.storage_containers || []
 json.refuel_boom model.refuel_boom
 
 json.on_sale model.on_sale

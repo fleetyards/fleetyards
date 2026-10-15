@@ -56,6 +56,9 @@ class ModelBuild < ApplicationRecord
   # later write to the row, an admin correction included, bumps `updated_at`.
   LATE_FACTS = %i[crew storage_containers].freeze
 
+  # What a storage container holds: ore from a mining pod, or salvage.
+  STORAGE_KINDS = %w[ore salvage].freeze
+
   def self.fact_recorded?(fact, value)
     !value.nil? || LATE_FACTS.exclude?(fact)
   end

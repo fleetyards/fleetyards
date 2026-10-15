@@ -34080,6 +34080,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ExternalFuelTank"
+        storageContainers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StorageContainer"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -34378,6 +34382,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ExternalFuelTank"
+        storageContainers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/StorageContainer"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -38749,6 +38757,33 @@ components:
       - shipOfTheMonthCount
       - paintedVehiclesPercent
       title: Stats
+    StorageContainer:
+      type: object
+      properties:
+        name:
+          type: string
+        componentName:
+          type:
+          - string
+          - 'null'
+        capacity:
+          type: number
+        kind:
+          "$ref": "#/components/schemas/StorageContainerKindEnum"
+      additionalProperties: false
+      required:
+      - capacity
+      - kind
+      title: StorageContainer
+    StorageContainerKindEnum:
+      type: string
+      enum:
+      - ore
+      - salvage
+      x-enumNames:
+      - ORE
+      - SALVAGE
+      title: StorageContainerKindEnum
     StoreImageMedia:
       type: object
       properties:

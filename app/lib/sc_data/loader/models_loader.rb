@@ -376,6 +376,7 @@ module ScData
       # ROC's pods sit in slots named for cargo -- and only where something can
       # be held, which leaves out the collapsed pods a Prospector stows.
       STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
+      raise "unknown storage kind" unless (STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS).empty?
 
       private def update_storage_containers(hardpoints, update_params)
         update_params[:storage_containers] = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
