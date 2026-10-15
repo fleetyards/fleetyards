@@ -40,6 +40,6 @@ A ship's mining ore pods and salvage storage are a model fact of their own, serv
 - **2026-10-15** The parsed tree already carries both: `Container`/`Cargo` ore pods with `type_data.capacity`, and `SalvageInternalStorage` (name nil) with capacity. No re-parse needed. Values fill on the next `load:models`.
 
 ## Progress
-- [ ] Phase 1 — Fact and loader
-- [ ] Phase 2 — API
-- [ ] Phase 3 — Ship page
+- [x] Phase 1 — Fact and loader
+- [x] Phase 2 — API
+- [x] Phase 3 — Ship page
