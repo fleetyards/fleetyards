@@ -163,13 +163,11 @@ const comlink = useComlink();
 
 const fleetchartToggleStatusComlink = ref();
 
-const handleResize = () => {
+const handleResize = debounce(() => {
   updateScreenSize().catch(() => {});
-};
+}, 300);
 
-const handleOrientation = () => {
-  updateScreenSize().catch(() => {});
-};
+const handleOrientation = handleResize;
 
 onMounted(async () => {
   showStatus.value = !!route.query?.showStatus;
@@ -180,8 +178,6 @@ onMounted(async () => {
   );
 
   await updateScreenSize();
-
-  setupColumns();
 
   await setupZoom();
 
@@ -196,6 +192,7 @@ onUnmounted(() => {
 
   panzoomInstance.value = undefined;
 
+  handleResize.cancel();
   window.removeEventListener("resize", handleResize);
   window.removeEventListener("deviceorientation", handleOrientation);
 });
@@ -265,8 +262,16 @@ const checkReset = () => {
 const debouncedCheckReset = debounce(checkReset, 300);
 
 const updateScreenSize = async () => {
+  const resized =
+    screenWidth.value !== window.innerWidth ||
+    screenHeight.value !== window.innerHeight;
+
   screenWidth.value = window.innerWidth;
   screenHeight.value = window.innerHeight;
+
+  if (resized) {
+    setupColumns();
+  }
 
   await drawGridLines();
 };
