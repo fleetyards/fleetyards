@@ -143,7 +143,7 @@ const openImageModal = () =>
       />
 
       <div class="vehicle-hero__top">
-        <span v-if="vehicle.image" class="vehicle-hero__own-picture">
+        <span v-if="vehicle.imageUploaded" class="vehicle-hero__own-picture">
           <i class="fa-duotone fa-camera" />
           {{ t("labels.vehicleOverview.ownPicture") }}
         </span>
