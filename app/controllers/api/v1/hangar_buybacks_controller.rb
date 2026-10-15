@@ -90,7 +90,7 @@ module Api
       private def sync_params
         params.permit(items: [
           :id, :kind, :name, :upgraded, :available, :reclaimed_on, :contained, :image,
-          :upgrade_from_ship_id, :upgrade_to_ship_id, :upgrade_to_sku_id
+          :upgrade_from_ship_id, :upgrade_to_ship_id, :upgrade_to_sku_id, :page
         ])
       end
 

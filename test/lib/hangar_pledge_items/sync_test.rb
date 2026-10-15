@@ -30,6 +30,14 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert ccu.reload
   end
 
+  test "remembers the RSI hangar page a CCU was read from" do
+    item = {id: "1003", type: "ccu", name: "Upgrade - Aurora To Cutter", page: 4}
+
+    HangarPledgeItems::Sync.new(@user, [item], kinds: ["ccu"]).run
+
+    assert_equal 4, @user.hangar_pledge_items.upgrades.sole.rsi_page
+  end
+
   test "syncs a CCU-only hangar without attempting vehicle upgrades and preserves skipped CCUs" do
     input = [{id: "1002", type: "ccu", name: "Upgrade - Aurora To Cutter"}]
     import = Imports::HangarSync.create!(user: @user, input:, sync_ccus: true)

@@ -20817,6 +20817,10 @@ components:
           format: uuid
         rsiPledgeId:
           type: string
+        rsiPage:
+          type: integer
+          description: The page of the RSI buy-back list the pledge was last read
+            from
         kind:
           "$ref": "#/components/schemas/BuybackPledgeKindEnum"
         name:
@@ -30856,6 +30860,9 @@ components:
         pledgeValue:
           type: number
           description: What melting the whole pledge returns, in USD
+        rsiPage:
+          type: integer
+          description: The page of the RSI hangar the pledge was last read from
         createdAt:
           type: string
           format: date-time
@@ -37872,6 +37879,9 @@ components:
           type: integer
         upgradeToSkuId:
           type: integer
+        page:
+          type: integer
+          description: The page of the RSI buy-back list the pledge was read from
       additionalProperties: false
       required:
       - id
@@ -37915,6 +37925,9 @@ components:
         meltable:
           type: boolean
           description: Whether RSI offers to melt the pledge
+        page:
+          type: integer
+          description: The page of the RSI hangar the pledge was read from
       additionalProperties: false
       required:
       - id

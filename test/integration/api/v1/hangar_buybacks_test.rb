@@ -421,7 +421,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
        reclaimedOn: "2023-11-26", contained: "Cutter Scout and 3 items",
        image: "https://robertsspaceindustries.com/media/s1pzv94jrc3jhr/heap_infobox/cutter.jpg"},
       {id: "111313560", kind: "upgrade", name: "Upgrade - Clipper to S-65 Stingray Standard Edition",
-       available: false, upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461}
+       available: false, upgradeFromShipId: 308, upgradeToShipId: 322, upgradeToSkuId: 19461, page: 3}
     ]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
@@ -437,6 +437,13 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     assert_predicate cutter, :available?
     assert_equal 19461, user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").upgrade_to_sku_id
     assert_not user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").available?
+    assert_equal 3, user.buyback_pledges.find_by!(rsi_pledge_id: "111313560").rsi_page
+    assert_nil cutter.rsi_page
+
+    assert_api_response :get, 200 do
+      pages = parsed_body["items"].to_h { |item| [item["rsiPledgeId"], item["rsiPage"]] }
+      assert_equal({"44725819" => nil, "111313560" => 3}, pages)
+    end
   end
 
   test "PUT /hangar/sync-rsi-buybacks keeps stored details and only lists pledges without them" do

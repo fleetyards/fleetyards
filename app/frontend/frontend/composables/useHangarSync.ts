@@ -276,7 +276,12 @@ export const useHangarSync = () => {
 
     newPledgeIds.forEach((pledgeId) => seenPledgeIds.add(pledgeId));
 
-    pledges.value = [...pledges.value, ...newPledges];
+    // RSI gives a pledge no address of its own, so the page it was read from
+    // is what a link to it can go by.
+    pledges.value = [
+      ...pledges.value,
+      ...newPledges.map((pledge) => ({ ...pledge, page: currentPage.value })),
+    ];
 
     currentPage.value += 1;
     setTimeout(() => void fetchPage(id), PAGE_DELAY);

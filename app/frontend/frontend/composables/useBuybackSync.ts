@@ -179,7 +179,12 @@ export const useBuybackSync = () => {
     }
 
     newBuybacks.forEach((pledge) => seenIds.add(pledge.id));
-    buybacks.value = [...buybacks.value, ...newBuybacks];
+    // RSI gives a pledge no address of its own, so the page it was read from
+    // is what a link to it can go by.
+    buybacks.value = [
+      ...buybacks.value,
+      ...newBuybacks.map((pledge) => ({ ...pledge, page: currentPage.value })),
+    ];
 
     currentPage.value += 1;
     setTimeout(() => void fetchPage(id), PAGE_DELAY);
