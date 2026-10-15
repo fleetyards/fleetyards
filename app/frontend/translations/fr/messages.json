@@ -1,6 +1,9 @@
 {
   "fr": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "Le graphique de la flotte n'a pas pu être enregistré en image"
+      },
       "buyback": {
         "destroy": {
           "failure": "Impossible de retirer le pledge de rachat."

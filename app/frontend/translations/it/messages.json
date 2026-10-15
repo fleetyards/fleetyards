@@ -1,6 +1,9 @@
 {
   "it": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "Non è stato possibile salvare il grafico flotta come immagine"
+      },
       "buyback": {
         "destroy": {
           "failure": "Impossibile rimuovere il pledge di riacquisto."

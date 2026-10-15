@@ -9,6 +9,8 @@ import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { reportError } from "@/shared/plugins/Appsignal";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -23,6 +25,40 @@ type Props = {
   inline?: boolean;
 };
 
+// Past a browser's canvas limit the picture comes back empty: Safari's is 16.7M
+// pixels, Firefox's a side of 32767px. A large fleet drawn at the screen's
+// pixel ratio passes both, so the scale gives way first.
+const MAX_CANVAS_AREA = 16_777_216;
+const MAX_CANVAS_SIDE = 16_384;
+
+const canvasScale = (element: HTMLElement) => {
+  // A zoomed panzoom chart is transformed, so its box can outgrow its scroll size.
+  const box = element.getBoundingClientRect();
+  const width = Math.max(element.scrollWidth, box.width, 1);
+  const height = Math.max(element.scrollHeight, box.height, 1);
+
+  return Math.min(
+    window.devicePixelRatio || 1,
+    Math.sqrt(MAX_CANVAS_AREA / (width * height)),
+    MAX_CANVAS_SIDE / Math.max(width, height),
+  );
+};
+
+const pngBlob = (canvas: HTMLCanvasElement) =>
+  new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(
+          new Error(
+            `The fleetchart could not be encoded at ${canvas.width}x${canvas.height}`,
+          ),
+        );
+      }
+    }, "image/png");
+  });
+
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
@@ -32,6 +68,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
+const { displayAlert } = useAppNotifications();
 
 const downloading = ref(false);
 
@@ -60,21 +98,23 @@ const download = async () => {
 
   const parentNode = element.parentNode as HTMLElement;
 
-  html2canvas(element, {
-    backgroundColor: null,
-    useCORS: true,
-    windowWidth: parentNode.scrollWidth,
-    windowHeight: parentNode.scrollHeight + 100,
-  })
-    .then((canvas) => {
-      element.classList.remove("fleetchart-download");
-      downloading.value = false;
-      downloadJs(canvas.toDataURL(), `fleetyards-${props.filename}.png`);
-    })
-    .catch(() => {
-      element.classList.remove("fleetchart-download");
-      downloading.value = false;
+  try {
+    const canvas = await html2canvas(element, {
+      backgroundColor: null,
+      useCORS: true,
+      scale: canvasScale(element),
+      windowWidth: parentNode.scrollWidth,
+      windowHeight: parentNode.scrollHeight + 100,
     });
+
+    downloadJs(await pngBlob(canvas), `fleetyards-${props.filename}.png`);
+  } catch (error) {
+    reportError(error, "DownloadScreenshotBtn#download");
+    displayAlert({ text: t("messages.fleetchartScreenshot.failure") });
+  } finally {
+    element.classList.remove("fleetchart-download");
+    downloading.value = false;
+  }
 };
 </script>
 

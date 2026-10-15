@@ -1,6 +1,9 @@
 {
   "en": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "The fleetchart could not be saved as an image"
+      },
       "buyback": {
         "destroy": {
           "failure": "Could not remove the buy-back pledge."
