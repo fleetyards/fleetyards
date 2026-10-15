@@ -36,6 +36,12 @@ const others = computed(() =>
   all.value.filter((loadout) => !loadout.active).slice(0, OTHERS_COUNT),
 );
 
+// A fleetyards loadout is kept here rather than on another site, so it links
+// nowhere and names its kind where a link names its site.
+const source = (loadout: VehicleLoadout) =>
+  loadout.urlSource ||
+  (loadout.url ? undefined : t("labels.loadout.fleetyards"));
+
 const toVehicle = useVehicleRoute();
 
 const loadoutsRoute = computed(() =>
@@ -54,11 +60,12 @@ const loadoutsRoute = computed(() =>
       {{ t("texts.vehicleOverview.noLoadouts") }}
     </p>
 
-    <a
+    <component
+      :is="active.url ? 'a' : 'div'"
       v-if="active"
       :href="active.url"
-      target="_blank"
-      rel="noopener"
+      :target="active.url ? '_blank' : undefined"
+      :rel="active.url ? 'noopener' : undefined"
       class="overview-loadouts__active"
       data-test="vehicle-overview-active-loadout"
     >
@@ -66,15 +73,21 @@ const loadoutsRoute = computed(() =>
         {{ t("labels.loadout.active") }}
       </span>
       <span class="overview-loadouts__name">{{ active.name }}</span>
-      <span class="overview-card-row__aside">{{ active.urlSource }}</span>
-    </a>
+      <span class="overview-card-row__aside">{{ source(active) }}</span>
+    </component>
 
     <ul v-if="others.length" class="overview-card-rows">
       <li v-for="loadout in others" :key="loadout.id" class="overview-card-row">
-        <a :href="loadout.url" target="_blank" rel="noopener">
+        <a
+          v-if="loadout.url"
+          :href="loadout.url"
+          target="_blank"
+          rel="noopener"
+        >
           {{ loadout.name }}
         </a>
-        <span class="overview-card-row__aside">{{ loadout.urlSource }}</span>
+        <span v-else>{{ loadout.name }}</span>
+        <span class="overview-card-row__aside">{{ source(loadout) }}</span>
       </li>
     </ul>
 

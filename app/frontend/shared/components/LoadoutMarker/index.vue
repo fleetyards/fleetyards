@@ -14,8 +14,13 @@ type Props = {
 defineProps<Props>();
 </script>
 
+<!--
+  A span for a fleetyards loadout: it is kept here, not on another site, so
+  there is nowhere to link to.
+-->
 <template>
-  <a
+  <component
+    :is="loadout.url ? 'a' : 'span'"
     v-tooltip="loadout.name"
     :aria-label="loadout.name"
     class="loadout-marker"
@@ -24,8 +29,8 @@ defineProps<Props>();
       'spviewer-link': loadout.urlSource === 'spviewer',
     }"
     :href="loadout.url"
-    target="_blank"
-    rel="noopener"
+    :target="loadout.url ? '_blank' : undefined"
+    :rel="loadout.url ? 'noopener' : undefined"
     @click.stop
   >
     <template v-if="loadout.urlSource">
@@ -34,7 +39,7 @@ defineProps<Props>();
     <template v-else>
       <i class="fa-duotone fa-crosshairs" />
     </template>
-  </a>
+  </component>
 </template>
 
 <style lang="scss" scoped>

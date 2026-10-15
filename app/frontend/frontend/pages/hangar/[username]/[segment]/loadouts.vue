@@ -23,6 +23,7 @@ import {
   useDestroyVehicleLoadout,
   useActivateVehicleLoadout,
   getVehicleLoadoutsQueryKey,
+  VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -90,11 +91,15 @@ const onSaveCreate = async () => {
 // Edit
 const editForm = ref<VehicleLoadoutInput>({});
 
+// A fleetyards loadout has no url to edit; its fitting is changed in the
+// loadout editor.
+const editingLink = ref(true);
+
 const onStartEdit = (record: VehicleLoadout) => {
-  editForm.value = {
-    name: record.name,
-    url: record.url || "",
-  };
+  editingLink.value = record.kind === VehicleLoadoutKindEnum.LINK;
+  editForm.value = editingLink.value
+    ? { name: record.name, url: record.url || "" }
+    : { name: record.name };
 };
 
 const updateMutation = useUpdateVehicleLoadout({
@@ -171,6 +176,9 @@ const onActivate = async (record: VehicleLoadout) => {
                 {{ item.urlSource || item.url }}
               </a>
             </div>
+            <div v-else class="loadouts-page__item-links">
+              {{ t("labels.loadout.fleetyards") }}
+            </div>
           </div>
         </div>
       </template>
@@ -204,6 +212,7 @@ const onActivate = async (record: VehicleLoadout) => {
           class="loadouts-page__edit-name"
         />
         <FormInput
+          v-if="editingLink"
           v-model="editForm.url"
           name="edit-loadout-url"
           :placeholder="t('labels.loadout.urlPlaceholder')"
