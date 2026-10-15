@@ -36,8 +36,7 @@ const count = computed(() => {
 // A ground vehicle's ore pod names its volume `storage`.
 const capacity = computed(() => {
   const data = hardpoint.value.component?.typeData as
-    | (FuelTank & { storage?: number })
-    | undefined;
+    (FuelTank & { storage?: number }) | undefined;
 
   return data?.capacity || data?.storage;
 });
