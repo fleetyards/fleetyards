@@ -476,15 +476,6 @@ const onSubmit = handleSubmit(async (values) => {
               <template #resolved>
                 <div class="vehicle-loadout__category">
                   <fieldset data-test="vehicle-loadout-fitted">
-                    <legend>
-                      <h3>{{ t("labels.vehicleLoadout.fitted") }}</h3>
-                      <span
-                        v-if="editable && flightReady"
-                        class="vehicle-loadout__hint"
-                      >
-                        {{ t("labels.vehicleLoadout.fittedHint") }}
-                      </span>
-                    </legend>
                     <Fitting
                       v-if="flightReady"
                       v-model="fittedModules"

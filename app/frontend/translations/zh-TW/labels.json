@@ -4288,14 +4288,13 @@
           "flightBlades": "飛行刀片"
         },
         "comingSoon": "即將推出",
-        "fitted": "已裝配",
-        "fittedHint": "每個槽位一個模組，從你擁有的模組中選擇",
         "ownedModules": "你擁有的模組",
         "nothingFitted": "未裝配",
+        "owned": "已擁有",
+        "notOwned": "未擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
         "loadoutName": "配裝名稱",
         "stock": "原廠",
-        "noOwnedModuleForSlot": "你沒有適用於此槽位的模組",
         "unslotted": "暫時無法裝配，因為遊戲檔案未說明它們佔用哪個槽位：%{modules}",
         "notFlightReady": "只有可飛行的艦船才能使用配裝",
         "slots": {

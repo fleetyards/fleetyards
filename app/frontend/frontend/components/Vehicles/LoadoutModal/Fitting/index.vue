@@ -50,10 +50,6 @@ const { t } = useI18n();
 
 const { contents } = useModuleContents();
 
-const owned = computed(() =>
-  props.modules.filter((mod) => props.ownedIds.includes(mod.id)),
-);
-
 const slots = computed(() =>
   [
     ...new Set(
@@ -64,31 +60,42 @@ const slots = computed(() =>
   ].sort(),
 );
 
-// The hull's stock modules are always there to fit; the rest only when owned.
+// A loadout is a plan: every module the slot takes, owned or not.
 const candidates = (slot: string) =>
-  props.modules.filter(
-    (mod) =>
-      mod.slot === slot && (mod.stock || props.ownedIds.includes(mod.id)),
-  );
+  props.modules.filter((mod) => mod.slot === slot);
 
-// Owned, but the game files never said which slot it takes, so there is
-// nowhere to fit it.
-const unslotted = computed(() => owned.value.filter((mod) => !mod.slot));
+// The game files never said which slot these take, so there is nowhere to
+// fit them yet.
+const unslotted = computed(() => props.modules.filter((mod) => !mod.slot));
 
 const { slotLabel } = useLoadoutSlotLabel();
 
 const fittedIn = (slot: string) => props.modelValue[slot];
 
+// Whether picking it means using what the ship has, or planning for something
+// it does not have yet.
+const ownership = (mod: ModelModule): AddonBadge => {
+  if (props.ownedIds.includes(mod.id)) {
+    return {
+      key: "ownership",
+      label: t("labels.vehicleLoadout.owned"),
+      variant: PillVariantsEnum.SUCCESS,
+    };
+  }
+
+  if (mod.stock) {
+    return {
+      key: "ownership",
+      label: t("labels.vehicleLoadout.stock"),
+      variant: PillVariantsEnum.NEUTRAL,
+    };
+  }
+
+  return { key: "ownership", label: t("labels.vehicleLoadout.notOwned") };
+};
+
 const badges = (mod: ModelModule): AddonBadge[] =>
-  mod.stock
-    ? [
-        {
-          key: "stock",
-          label: t("labels.vehicleLoadout.stock"),
-          variant: PillVariantsEnum.NEUTRAL,
-        },
-      ]
-    : [];
+  props.editable ? [ownership(mod)] : [];
 
 const fit = (slot: string, moduleId?: string) => {
   const next = { ...props.modelValue };
@@ -156,12 +163,6 @@ const visibleSlots = computed(() =>
             emit('pick', slot);
           "
         />
-        <p
-          v-if="editable && !candidates(slot).length"
-          class="loadout-fitting__hint"
-        >
-          {{ t("labels.vehicleLoadout.noOwnedModuleForSlot") }}
-        </p>
       </div>
     </fieldset>
 

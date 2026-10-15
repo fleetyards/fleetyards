@@ -4288,14 +4288,13 @@
           "flightBlades": "Blades de vuelo"
         },
         "comingSoon": "Próximamente",
-        "fitted": "Equipado",
-        "fittedHint": "Un módulo por ranura, de los módulos que posees",
         "ownedModules": "Tus módulos",
         "nothingFitted": "Nada equipado",
+        "owned": "En propiedad",
+        "notOwned": "No en propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "loadoutName": "Nombre de la configuración",
         "stock": "De serie",
-        "noOwnedModuleForSlot": "No posees ningún módulo para esta ranura",
         "unslotted": "Aún no se pueden equipar, porque los archivos del juego no indican qué ranura ocupan: %{modules}",
         "notFlightReady": "Las configuraciones solo están disponibles para naves listas para volar",
         "slots": {

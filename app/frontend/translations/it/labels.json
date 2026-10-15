@@ -4288,14 +4288,13 @@
           "flightBlades": "Blade di volo"
         },
         "comingSoon": "Prossimamente",
-        "fitted": "Montato",
-        "fittedHint": "Un modulo per slot, tra i moduli che possiedi",
         "ownedModules": "I tuoi moduli",
         "nothingFitted": "Niente montato",
+        "owned": "Posseduto",
+        "notOwned": "Non posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
         "loadoutName": "Nome della configurazione",
         "stock": "Di serie",
-        "noOwnedModuleForSlot": "Non possiedi alcun modulo per questo slot",
         "unslotted": "Non ancora montabili, perché i file di gioco non indicano quale slot occupano: %{modules}",
         "notFlightReady": "Le configurazioni sono disponibili solo per le navi pronte al volo",
         "slots": {

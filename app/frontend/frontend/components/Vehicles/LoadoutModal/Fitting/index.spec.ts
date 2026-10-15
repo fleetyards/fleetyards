@@ -23,34 +23,39 @@ const mountFitting = (props: {
 }) => mountWithDefaults(Component, { props: { modules, ...props } });
 
 describe("VehicleLoadoutModalFitting", () => {
-  it("offers only owned modules, slot by slot", async () => {
-    const wrapper = await mountFitting({
-      ownedIds: ["front", "rear"],
-      editable: true,
-    });
+  it("offers every module the slot takes, marked by ownership", async () => {
+    const wrapper = await mountFitting({ ownedIds: ["front"], editable: true });
 
-    const front = wrapper.get(
-      "[data-test='vehicle-loadout-slot-hardpoint_front_module']",
+    const rows = wrapper
+      .get("[data-test='vehicle-loadout-slot-hardpoint_front_module']")
+      .findAll("[data-test='vehicle-loadout-slot-module']")
+      .map((row) => row.text());
+
+    expect(rows).toHaveLength(2);
+    expect(rows.find((row) => row.includes("Front Cargo"))).toContain("Owned");
+    expect(rows.find((row) => row.includes("Front Torpedo Bay"))).toContain(
+      "Not owned",
     );
-    expect(front.text()).toContain("Front Cargo");
-    expect(front.text()).not.toContain("Front Torpedo Bay");
   });
 
-  it("offers the hull's stock module without it being owned", async () => {
+  it("marks the module the hull comes with as stock", async () => {
     const wrapper = await mountFitting({ ownedIds: [], editable: true });
 
-    const rear = wrapper.get(
-      "[data-test='vehicle-loadout-slot-hardpoint_rear_module']",
+    const rows = wrapper
+      .get("[data-test='vehicle-loadout-slot-hardpoint_rear_module']")
+      .findAll("[data-test='vehicle-loadout-slot-module']")
+      .map((row) => row.text());
+
+    expect(rows.find((row) => row.includes("Factory Rear Module"))).toContain(
+      "Stock",
     );
-    expect(rear.text()).toContain("Factory Rear Module");
-    expect(rear.text()).not.toContain("Rear Cargo");
+    expect(rows.find((row) => row.includes("Rear Cargo"))).toContain(
+      "Not owned",
+    );
   });
 
-  it("names owned modules that cannot be fitted for want of a slot", async () => {
-    const wrapper = await mountFitting({
-      ownedIds: ["mystery"],
-      editable: true,
-    });
+  it("names the modules that cannot be fitted for want of a slot", async () => {
+    const wrapper = await mountFitting({ ownedIds: [], editable: true });
 
     expect(
       wrapper.get("[data-test='vehicle-loadout-unslotted']").text(),
