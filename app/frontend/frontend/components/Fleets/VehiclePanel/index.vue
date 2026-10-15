@@ -9,7 +9,6 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
-import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import type {
   VehiclePublic,
   Model,
@@ -137,13 +136,11 @@ const filterManufacturerQuery = (manufacturer: string) => {
   return { manufacturerIn: [manufacturer] };
 };
 
-const { openLoadoutModal } = useVehicleModals();
+const { openLoadoutView } = useVehicleModals();
 
 // A fleet member's ship is shown, never edited, from the fleet.
 const openActiveLoadout = () =>
-  openLoadoutModal(props.fleetVehicle as VehiclePublic, {
-    tab: VehicleLoadoutTabsEnum.MODULES,
-  });
+  openLoadoutView(props.fleetVehicle as VehiclePublic);
 
 const activeLoadout = computed(
   () => (props.fleetVehicle as VehiclePublic).activeLoadout,

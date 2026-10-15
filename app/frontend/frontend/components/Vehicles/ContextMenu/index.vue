@@ -208,14 +208,18 @@ const destroy = async () => {
 
 const comlink = useComlink();
 
-const { openEditModal, openLoadoutModal } = useVehicleModals();
+const { openEditModal, openLoadoutModal, openLoadoutView } = useVehicleModals();
 
 const openEdit = () => {
   openEditModal(props.vehicle, { wishlist: props.wishlist });
 };
 
 const openLoadout = () => {
-  openLoadoutModal(props.vehicle, { editable: props.editable });
+  if (props.editable) {
+    openLoadoutModal(props.vehicle, { editable: true });
+  } else {
+    openLoadoutView(props.vehicle);
+  }
 };
 
 const vehicleOverviewVisible = computed(

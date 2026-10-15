@@ -32,9 +32,14 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 
 const openLoadoutModal = vi.fn();
 const openEditModal = vi.fn();
+const openLoadoutView = vi.fn();
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openLoadoutModal, openEditModal }),
+  useVehicleModals: () => ({
+    openLoadoutModal,
+    openEditModal,
+    openLoadoutView,
+  }),
 }));
 
 const NOW = "2026-08-24T12:00:00Z";
@@ -376,9 +381,7 @@ describe("vehicle add-ons shortcut", () => {
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
     expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
-    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      tab: "modules",
-    });
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
   });
 
   it("shows a visitor what is fitted", async () => {
@@ -390,9 +393,7 @@ describe("vehicle add-ons shortcut", () => {
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
-    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      tab: "modules",
-    });
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
   });
 });
 
@@ -407,16 +408,13 @@ describe("loadout marker", () => {
     updatedAt: "2026-10-01T00:00:00Z",
   };
 
-  it("opens the owner's loadout in the editor", async () => {
+  it("shows the owner the loadout, with a way into the editor", async () => {
     const ship = vehicle({ activeLoadout: fitted });
     const wrapper = await mount({ vehicle: ship, editable: true });
 
     await wrapper.get("[data-test='loadout-marker']").trigger("click");
 
-    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      editable: true,
-      tab: "modules",
-    });
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship, { editable: true });
   });
 
   it("shows a visitor the loadout", async () => {
@@ -425,9 +423,6 @@ describe("loadout marker", () => {
 
     await wrapper.get("[data-test='loadout-marker']").trigger("click");
 
-    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
-      editable: false,
-      tab: "modules",
-    });
+    expect(openLoadoutView).toHaveBeenLastCalledWith(ship, { editable: false });
   });
 });

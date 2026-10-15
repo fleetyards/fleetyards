@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -210,7 +209,7 @@ const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
 
 const comlink = useComlink();
 
-const { openEditModal, openLoadoutModal } = useVehicleModals();
+const { openEditModal, openLoadoutView } = useVehicleModals();
 
 // The owner edits what the ship carries; a visitor, or anyone looking at a
 // loaner or a wishlist ship, sees what is fitted.
@@ -223,18 +222,18 @@ const openAddonsModal = () =>
           ? VehicleEditTabsEnum.MODULES
           : VehicleEditTabsEnum.UPGRADES,
       })
-    : openLoadoutModal(props.vehicle, { tab: VehicleLoadoutTabsEnum.MODULES });
+    : openLoadoutView(props.vehicle);
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
-// The owner lands in the editor on it; anyone else sees what is fitted.
+// Everyone sees what is fitted; the owner gets a way into the editor from
+// there.
 const openActiveLoadout = () =>
-  openLoadoutModal(props.vehicle, {
+  openLoadoutView(props.vehicle, {
     editable:
       props.editable &&
       !(props.vehicle as Vehicle).loaner &&
       !(props.vehicle as Vehicle).wanted,
-    tab: VehicleLoadoutTabsEnum.MODULES,
   });
 
 // Two separate meanings on one edge, so they cannot share a tone: gold is the

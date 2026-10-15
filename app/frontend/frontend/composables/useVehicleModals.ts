@@ -1,5 +1,10 @@
 import { useComlink } from "@/shared/composables/useComlink";
-import type { Vehicle, VehiclePublic } from "@/services/fyApi";
+import {
+  type Vehicle,
+  type VehicleLoadoutMinimal,
+  type VehiclePublic,
+  VehicleLoadoutKindEnum,
+} from "@/services/fyApi";
 import type { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import type { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 
@@ -49,5 +54,28 @@ export const useVehicleModals = () => {
     });
   };
 
-  return { openEditModal, openLoadoutModal };
+  // A loadout to look at rather than edit: the active fleetyards loadout unless
+  // another is named. A linked build is read on its own site.
+  const openLoadoutView = (
+    vehicle: Vehicle | VehiclePublic,
+    options: { editable?: boolean; loadout?: VehicleLoadoutMinimal } = {},
+  ) => {
+    const active =
+      vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
+        ? vehicle.activeLoadout
+        : undefined;
+
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Vehicles/LoadoutView/index.vue"),
+      wide: true,
+      props: {
+        vehicle,
+        loadout: options.loadout ?? active,
+        editable: options.editable ?? false,
+      },
+    });
+  };
+
+  return { openEditModal, openLoadoutModal, openLoadoutView };
 };
