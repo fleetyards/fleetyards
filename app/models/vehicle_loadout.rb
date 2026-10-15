@@ -124,10 +124,14 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
+  # One insert rather than a create per item, each touching the loadout and the
+  # vehicle. The explicit touch is what busts the caches keyed on both when only
+  # the fitting changed, including when it was emptied.
   private def write_item_list
     items.delete_all
-    item_list.each { |item| items.create!(item) }
+    items.insert_all!(item_list) if item_list.any?
     @item_list = nil
+    touch
   end
 
   private def set_default_name

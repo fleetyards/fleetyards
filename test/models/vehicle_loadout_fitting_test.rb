@@ -113,6 +113,19 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert_equal [@front_torpedo.id], loadout.reload.items.pluck(:item_id)
   end
 
+  test "emptying the fitting touches the loadout and the vehicle" do
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo]))
+    loadout.save!
+
+    travel 1.minute do
+      loadout.update!(item_list: [])
+
+      assert_empty loadout.reload.items
+      assert_in_delta Time.current, loadout.updated_at, 1.second
+      assert_in_delta Time.current, @vehicle.reload.updated_at, 1.second
+    end
+  end
+
   test "activating a fleetyards loadout switches off an active link" do
     link = @vehicle.vehicle_loadouts.create!(url: "https://erkul.games/loadout/x", active: true)
     loadout = fleetyards_loadout([])
