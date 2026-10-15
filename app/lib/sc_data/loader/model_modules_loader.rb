@@ -63,7 +63,7 @@ module ScData
         update_params = {}
         update_params[:production_status] = "flight-ready" if ships_in_live
 
-        update_params = update_metrics(module_data, update_params)
+        update_params = update_metrics(model_module, module_data, update_params)
         # This build's slots, for the same reason the models loader asks that
         # way: a slot the build dropped keeps its row and would still be counted
         # into the module's cargo holds.
@@ -81,8 +81,12 @@ module ScData
         load_item("items/#{sc_key.downcase}")
       end
 
-      private def update_metrics(module_data, update_params)
+      private def update_metrics(model_module, module_data, update_params)
         update_params[:description] = module_data.dig("description") if module_data.dig("description").present?
+        # Cleared when a build drops the beds, but not written for a module that
+        # never had any.
+        medical_beds = module_data["medical_beds"].presence
+        update_params[:medical_beds] = medical_beds if medical_beds || model_module.read_attribute(:medical_beds)
 
         update_params
       end

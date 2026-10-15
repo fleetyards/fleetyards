@@ -37,6 +37,10 @@ class ModelModule < ApplicationRecord
   has_many :docks, as: :parent, dependent: :destroy
 
   serialize :cargo_holds, coder: YAML
+  # The medical beds the module's rooms hold, by tier: `tier` (1 the best),
+  # `name` (the game's Hospital, Clinic, Ambulance), `beds`, and `respawn_beds`
+  # for the ones a player can respawn at.
+  serialize :medical_beds, coder: YAML
 
   # What each build of the game says about this module. Written alongside the
   # columns, so the reads can move over in their own step.

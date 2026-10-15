@@ -20,7 +20,7 @@ class ModelModuleBuild < ApplicationRecord
   # the loader hardcodes it to "flight-ready" while the admin API also permits
   # it, so it is a load-versus-curation conflict that predates this table and
   # wants deciding on its own rather than being quietly settled here.
-  FACTS = %i[description cargo_holds].freeze
+  FACTS = %i[description cargo_holds medical_beds].freeze
 
   # The facts `ModelModule` reads through its build. `cargo_holds` is held back
   # for the same kind of reason `ComponentBuild` holds back `manufacturer_id` and
@@ -34,6 +34,7 @@ class ModelModuleBuild < ApplicationRecord
   # The same serialization the module declares, so a build reads back the
   # structure the column encodes rather than a raw YAML string.
   serialize :cargo_holds, coder: YAML
+  serialize :medical_beds, coder: YAML
 
   validates :environment, presence: true
   validates :version, presence: true
