@@ -14,16 +14,16 @@ A ship's mining ore pods and salvage storage are a model fact of their own, serv
 4. `Hardpoint#set_category`: `hardpoint_mining_pod*` no longer `cargogrid`; data migration for the rows already loaded.
 
 ### Phase 2 — API
-1. Shared schema `StorageContainer`; `Model` schema `storageContainers`; public and admin jbuilder; admin input and permitted params; regenerate schemas and clients.
+1. Shared schema `StorageContainer`; `Model` schema `storageContainers`; public and admin jbuilder; regenerate schemas and clients. No admin write path: the fact comes from the game files only, as hardpoints do.
 
 ### Phase 3 — Ship page
-1. `Models/StorageContainers` (ore pods and salvage storage, count and total per kind), mounted in `Models/Hardpoints` beside `ExternalFuelTanks`; admin `cargo-and-fuel` JSON view; labels in all locales.
+1. `Models/StorageContainers` (ore pods and salvage storage, count and total per kind), mounted in `Models/Hardpoints` beside `ExternalFuelTanks`; labels in all locales. Grouping shared with the fuel tank card (`useCapacityGroups`).
 
 ## Intent Verification
 
 - [ ] **Separate** — the ship page shows ore pods and salvage storage in their own section, never in cargo or the cargo grid
 - [ ] **Not cargo grid** — mining pod hardpoints are no longer categorised `cargogrid`
-- [ ] **No guesses** — ROC/ROC-DS pods without a capacity in the data show none (locally they carry 1.2/3.4, so they do show)
+- [ ] **No guesses** — a pod with no volume in the data shows none; the ROC/ROC-DS pods name theirs `storage` (1.2/3.4) and show
 
 ## Key files
 
@@ -38,6 +38,7 @@ A ship's mining ore pods and salvage storage are a model fact of their own, serv
 ## Discovery Log
 
 - **2026-10-15** The parsed tree already carries both: `Container`/`Cargo` ore pods with `type_data.capacity`, and `SalvageInternalStorage` (name nil) with capacity. No re-parse needed. Values fill on the next `load:models`.
+- **2026-10-15** The ROC and ROC-DS ore pods carry `type_data.storage`, not `capacity`; the loader reads both.
 
 ## Progress
 - [x] Phase 1 — Fact and loader
