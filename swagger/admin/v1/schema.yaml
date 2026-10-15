@@ -17661,6 +17661,9 @@ components:
           format: date-time
         hidden:
           type: boolean
+        keepCargo:
+          type: boolean
+          description: The cargo entered stands instead of the game-file holds
         active:
           type: boolean
         scKey:
@@ -17702,6 +17705,7 @@ components:
       - createdAt
       - updatedAt
       - hidden
+      - keepCargo
       - active
       title: Model
     ModelAvailability:
@@ -17964,6 +17968,9 @@ components:
           format: date-time
         hidden:
           type: boolean
+        keepCargo:
+          type: boolean
+          description: The cargo entered stands instead of the game-file holds
         active:
           type: boolean
         scKey:
@@ -18018,6 +18025,7 @@ components:
       - createdAt
       - updatedAt
       - hidden
+      - keepCargo
       - active
       - dockCounts
       - links
@@ -19568,6 +19576,8 @@ components:
           type:
           - number
           - 'null'
+        keepCargo:
+          type: boolean
         cargoHolds:
           type:
           - string

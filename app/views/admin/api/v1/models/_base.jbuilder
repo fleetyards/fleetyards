@@ -7,6 +7,7 @@ json.in_game model.in_game?
 json.name model.name
 json.slug model.slug
 json.hidden model.hidden
+json.keep_cargo model.keep_cargo
 json.active model.active
 json.positions_need_curation model.positions_need_curation
 

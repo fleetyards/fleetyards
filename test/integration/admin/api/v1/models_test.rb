@@ -356,6 +356,17 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /models/:id keeps the cargo entered for a flying ship" do
+    model = create(:model, production_status: "flight-ready")
+    create(:model_build, model:, cargo_holds: [])
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {cargo: 5400, keepCargo: true} do
+      assert parsed_body["keepCargo"]
+      assert_equal 5400.0, model.reload.cargo
+    end
+  end
+
   test "PUT /models/:id marks a ship as unable to land on planets" do
     model = create(:model)
     sign_in @user

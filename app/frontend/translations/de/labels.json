@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "Fracht",
         "cargoHolds": "Frachträume",
+        "keepCargo": "Diesen Frachtwert statt der Frachträume aus den Spieldateien behalten",
         "hydrogenFuelTankSize": "Hydrogen-Tankgröße",
         "hydrogenFuelTanks": "Hydrogen-Treibstofftanks",
         "quantumFuelTankSize": "Quantum-Tankgröße",

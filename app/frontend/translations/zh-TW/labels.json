@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "貨物",
         "cargoHolds": "貨艙",
+        "keepCargo": "保留此貨運數值，而不是使用遊戲檔案中的貨艙",
         "hydrogenFuelTankSize": "氫燃料箱大小",
         "hydrogenFuelTanks": "氫燃料箱",
         "quantumFuelTankSize": "量子燃料箱大小",

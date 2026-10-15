@@ -1169,6 +1169,7 @@
         "reverseSpeedBoosted": "Reverse Speed Boosted",
         "cargo": "Cargo",
         "cargoHolds": "Cargo Holds",
+        "keepCargo": "Keep this cargo figure instead of the game-file holds",
         "hydrogenFuelTankSize": "Hydrogen Fuel Tank Size",
         "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
         "quantumFuelTankSize": "Quantum Fuel Tank Size",
