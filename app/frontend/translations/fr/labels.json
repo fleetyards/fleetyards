@@ -2770,6 +2770,7 @@
         "background": {
           "finished": "Synchronisation des rachats terminée",
           "incomplete": "Synchronisation des rachats terminée, certains prix manquent",
+          "unsupported": "La synchronisation des rachats nécessite une extension plus récente",
           "failed": "La synchronisation des rachats a échoué"
         },
         "status": {

@@ -51,7 +51,8 @@ const ended = computed(
 );
 
 const outcome = computed(() => {
-  if (list.status.value !== "finished") return "failed";
+  if (list.status.value === "unsupported") return "unsupported";
+  if (list.status.value === "failed") return "failed";
 
   // A cancelled pass goes back to idle, but its list is stored all the same.
   return list.detailsStarted.value && details.status.value !== "finished"
@@ -64,6 +65,7 @@ const outcomeClass = computed(
     ({
       finished: "text-success",
       incomplete: "text-warning",
+      unsupported: "text-warning",
       failed: "text-danger",
     })[outcome.value],
 );

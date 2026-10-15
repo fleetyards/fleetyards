@@ -2770,6 +2770,7 @@
         "background": {
           "finished": "回購同步已完成",
           "incomplete": "回購同步已完成，部分價格缺失",
+          "unsupported": "回購同步需要較新版本的擴充功能",
           "failed": "回購同步失敗"
         },
         "status": {

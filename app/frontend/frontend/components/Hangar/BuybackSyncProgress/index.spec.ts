@@ -267,14 +267,25 @@ describe("HangarBuybackSyncProgress", () => {
     );
   });
 
-  it.each(["failed", "unsupported"])("says when the run %s", (status) => {
-    list.status.value = status;
+  it("says when the run failed", () => {
+    list.status.value = "failed";
 
     const wrapper = mountProgress();
 
     const ended = find(wrapper, "buyback-sync-ended");
     expect(ended.text()).toBe("labels.buybackSync.background.failed");
     expect(ended.classes()).toContain("text-danger");
+  });
+
+  // An update fixes it, which a retry would not.
+  it("tells an outdated extension apart from a failure", () => {
+    list.status.value = "unsupported";
+
+    const wrapper = mountProgress();
+
+    const ended = find(wrapper, "buyback-sync-ended");
+    expect(ended.text()).toBe("labels.buybackSync.background.unsupported");
+    expect(ended.classes()).not.toContain("text-danger");
   });
 
   it("can dismiss a finished run without opening it", async () => {
