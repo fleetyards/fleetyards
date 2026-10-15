@@ -1,6 +1,9 @@
 {
   "zh-TW": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "艦隊圖表未能儲存為圖片"
+      },
       "buyback": {
         "destroy": {
           "failure": "無法移除該回購承諾。"

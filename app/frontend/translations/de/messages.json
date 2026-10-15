@@ -1,6 +1,9 @@
 {
   "de": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "Die Flottenübersicht konnte nicht als Bild gespeichert werden"
+      },
       "buyback": {
         "destroy": {
           "failure": "Der Rückkauf-Pledge konnte nicht entfernt werden."

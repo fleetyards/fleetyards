@@ -1,6 +1,9 @@
 {
   "es": {
     "messages": {
+      "fleetchartScreenshot": {
+        "failure": "No se pudo guardar el gráfico de flota como imagen"
+      },
       "buyback": {
         "destroy": {
           "failure": "No se pudo quitar el pledge de recompra."
