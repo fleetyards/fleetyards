@@ -2,7 +2,12 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
-import { type Vehicle, BoughtViaEnum, FeatureFlagName } from "@/services/fyApi";
+import {
+  type Vehicle,
+  BoughtViaEnum,
+  FeatureFlagName,
+  VehicleLoadoutKindEnum,
+} from "@/services/fyApi";
 
 const enabledFlags = ref<FeatureFlagName[]>([]);
 
@@ -198,6 +203,34 @@ describe("VehicleContextMenu", () => {
     });
 
     expect(items()).not.toContain("vehicle-loadout");
+  });
+
+  it("shows a loaner's or wishlist ship's loadout rather than editing it", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
+    const modular = { model: { ...vehicle().model, hasModules: true } };
+
+    await mount({ vehicle: vehicle({ ...modular, loaner: true }) });
+
+    expect(items()).not.toContain("vehicle-loadout");
+
+    mounted.forEach((wrapper) => wrapper.unmount());
+    mounted = [];
+
+    await mount({
+      vehicle: vehicle({
+        ...modular,
+        wanted: true,
+        activeLoadout: {
+          id: "loadout-1",
+          kind: VehicleLoadoutKindEnum.FLEETYARDS,
+        },
+      } as Partial<Vehicle>),
+    });
+
+    expect(items()).toContain("vehicle-loadout");
   });
 
   it("leaves the ship database to a page that links it", async () => {

@@ -60,13 +60,22 @@ const deleting = ref(false);
 const updating = ref(false);
 
 // The owner edits the ship's loadout once the editor is switched on; anyone
-// else looks at the one that is active.
+// else, or anyone looking at a loaner or a wishlist ship, looks at the one that
+// is active, as the panel's loadout marker does.
+const loadoutEditable = computed(
+  () =>
+    props.editable &&
+    !props.wishlist &&
+    !props.vehicle?.wanted &&
+    !props.vehicle?.loaner,
+);
+
 const loadoutVisible = computed(() => {
   if (!props.vehicle) {
     return false;
   }
 
-  if (!props.editable) {
+  if (!loadoutEditable.value) {
     return (
       props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
     );
@@ -211,7 +220,7 @@ const openEdit = () => {
 };
 
 const openLoadout = () => {
-  if (props.editable) {
+  if (loadoutEditable.value) {
     openLoadoutModal(props.vehicle, { editable: true });
   } else {
     openLoadoutView(props.vehicle);
