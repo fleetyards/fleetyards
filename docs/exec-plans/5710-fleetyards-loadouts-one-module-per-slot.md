@@ -72,6 +72,7 @@ A vehicle's active fleetyards loadout records which owned module is fitted in ea
 - **Components per hardpoint** — #5714. The other "coming soon" tabs; they reuse `vehicle_loadout_items` with a component item.
 - **Ship detail page's role** — #5715. Information only, or loadouts shown there too.
 - **Owned paints and paint pictures in the gallery** — #5716. The Paint tab still sets the single applied paint.
+- **Modules without figures** — #5718. The Apollo's medical tiers compare as identical.
 - **Paint in the loadout** — after the component categories work.
 - **Admin UI for module slots** — the admin API takes `slot`; a form for it is separate.
 
