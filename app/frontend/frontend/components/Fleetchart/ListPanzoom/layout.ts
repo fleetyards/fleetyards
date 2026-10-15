@@ -34,7 +34,7 @@ export const layoutColumns = (
 
     columnHeight += ITEM_GAP;
 
-    columns[index] = [...(columns[index] || []), itemIndex];
+    (columns[index] ??= []).push(itemIndex);
   });
 
   return columns.filter(Boolean);
@@ -75,7 +75,7 @@ export const autoScreenHeightFactor = (
   for (let factor = MIN_FACTOR; factor <= MAX_FACTOR; factor += FACTOR_STEP) {
     const columns = layoutColumns(sizes, columnHeight(factor));
     const { width, height } = chartSize(sizes, columns);
-    const distance = height ? Math.abs(Math.log(width / height / target)) : 0;
+    const distance = Math.abs(Math.log(width / height / target));
 
     if (distance < bestDistance) {
       best = factor;
