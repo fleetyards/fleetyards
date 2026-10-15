@@ -1,6 +1,15 @@
 module ScData
   module Parser
     class ItemsParser < ScData::Parser::BaseParser
+      # Written by the exporter from the object containers in `Data.p4k`, which
+      # the raw tree does not carry: the rooms a module brings and what stands
+      # in them. Exports before it existed have no file.
+      SHIP_ROOMS_FILE = "derived/shiprooms.json"
+
+      # The game's medical bed tiers, best first: a Hospital bed treats and
+      # respawns where an Ambulance bed only stabilises.
+      MEDICAL_BED_TIERS = {"Hospital" => 1, "Clinic" => 2, "Ambulance" => 3}.freeze
+
       def all
         load_ammo_params
         load_weapon_records
@@ -69,6 +78,31 @@ module ScData
       # How a ship flies through a jump tunnel lives in a record of its own the
       # drive only points at: the speed it drops to on leaving the tunnel and
       # the top speed it can hold inside it.
+      # The medical beds in the rooms a module brings, by tier, and how many of
+      # them a player can respawn at. Keyed by the module's record name.
+      private def module_medical_beds(key)
+        rooms = ship_room_items[key.to_s.downcase]
+        return if rooms.blank?
+
+        tiers = Hash.new(0)
+        rooms.each { |room| room["medbedTiers"]&.each { |name, beds| tiers[name] += beds.to_i } }
+        return if tiers.empty?
+
+        {
+          tiers: tiers.map { |name, beds| {tier: MEDICAL_BED_TIERS[name], name:, beds:} }
+            .sort_by { |tier| tier[:tier] || MEDICAL_BED_TIERS.size + 1 },
+          respawn_beds: rooms.sum { |room| room["medbedRespawn"].to_i }
+        }
+      end
+
+      private def ship_room_items
+        @ship_room_items ||= begin
+          file = "#{base_path}/#{SHIP_ROOMS_FILE}"
+          rooms = File.exist?(file) ? JSON.parse(File.read(file))["items"] : nil
+          (rooms || {}).transform_keys(&:downcase)
+        end
+      end
+
       private def jump_drive_flight(ref)
         tuning = jump_drive_flight_tunings[ref]
         return {} if tuning.blank?
@@ -197,6 +231,11 @@ module ScData
 
         loadout = extract_item_loadout(values)
         item[:loadout] = loadout if loadout.present?
+
+        if category == "module"
+          medical_beds = module_medical_beds(key)
+          item[:medical_beds] = medical_beds if medical_beds.present?
+        end
 
         if values.dig("Components", "SEntityComponentDefaultLoadoutParams")
           default_loadout = extract_item_default_loadout(values.dig("Components", "SEntityComponentDefaultLoadoutParams"))
