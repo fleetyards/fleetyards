@@ -30,6 +30,8 @@ const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
   query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
 });
 
+const paints = computed(() => vehiclePaints.value?.map((entry) => entry.paint));
+
 const pledgedIds = computed(() =>
   (vehiclePaints.value || [])
     .filter((entry) => entry.pledged)
@@ -55,6 +57,7 @@ watch(
   <VehiclePaintPicker
     v-model="modelPaintIds"
     :model-slug="vehicle.model.slug"
+    :paints="paints"
     :pledged-ids="pledgedIds"
     hide-legend
   />

@@ -16,7 +16,7 @@ import {
   type ModelPaint,
   type Vehicle,
   useModelImages,
-  useModelPaints,
+  useVehiclePaints,
 } from "@/services/fyApi";
 import type { VehicleImageChanges } from "@/frontend/components/Vehicles/EditModal/types";
 
@@ -91,15 +91,18 @@ const loadMoreGallery = () => {
 // current pick stays offered after its paint is no longer owned.
 const ownedPaintIds = useFieldValue<string[]>("modelPaintIds");
 
-const { data: modelPaints } = useModelPaints(() => props.vehicle.model.slug);
+// The vehicle's own list, which keeps its paints after the catalogue hides one.
+const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id);
 
 const paintPictures = computed<ModelPaint[]>(() =>
-  (modelPaints.value || []).filter(
-    (paint) =>
-      paint.media.storeImage &&
-      ((ownedPaintIds.value || []).includes(paint.id) ||
-        paint.id === props.vehicle.modelPaintPictureId),
-  ),
+  (vehiclePaints.value || [])
+    .map((entry) => entry.paint)
+    .filter(
+      (paint) =>
+        paint.media.storeImage &&
+        ((ownedPaintIds.value || []).includes(paint.id) ||
+          paint.id === props.vehicle.modelPaintPictureId),
+    ),
 );
 
 type Pick = { kind: "image" | "paint"; id: string } | null;

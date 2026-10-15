@@ -11,6 +11,9 @@ import { type ModelPaint, useModelPaints } from "@/services/fyApi";
 
 type Props = {
   modelSlug: string;
+  // In place of the model's catalogue paints, where the caller has a list that
+  // also keeps the ship's own paints the catalogue has since hidden.
+  paints?: ModelPaint[];
   // The paints the ship owns.
   modelValue?: string[];
   // Paints a synced pledge of the owner's resolves to, marked as a suggestion:
@@ -22,6 +25,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  paints: undefined,
   modelValue: () => [],
   pledgedIds: () => [],
   hideLegend: false,
@@ -31,7 +35,11 @@ const emit = defineEmits<{ "update:modelValue": [value: string[]] }>();
 
 const { t } = useI18n();
 
-const { data: paints, isLoading } = useModelPaints(() => props.modelSlug);
+const { data: modelPaints, isLoading } = useModelPaints(() => props.modelSlug, {
+  query: { enabled: () => !props.paints },
+});
+
+const paints = computed(() => props.paints || modelPaints.value);
 
 const thumb = (paint: ModelPaint) =>
   paint.media.storeImage?.smallUrl || paint.media.storeImage?.url;

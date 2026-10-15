@@ -34,19 +34,26 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     }),
     isLoading: ref(false),
   }),
-  useModelPaints: () => ({
-    data: ref([
-      {
-        id: "paint-1",
-        name: "Rust Society",
-        media: { storeImage: { url: "https://example.test/rust.jpg" } },
-      },
-      {
-        id: "paint-2",
-        name: "Stormbringer",
-        media: { storeImage: { url: "https://example.test/storm.jpg" } },
-      },
-    ] as ModelPaint[]),
+  useVehiclePaints: () => ({
+    data: ref(
+      [
+        {
+          id: "paint-1",
+          name: "Rust Society",
+          media: { storeImage: { url: "https://example.test/rust.jpg" } },
+        },
+        {
+          id: "paint-2",
+          name: "Stormbringer",
+          media: { storeImage: { url: "https://example.test/storm.jpg" } },
+        },
+      ].map((paint) => ({
+        owned: false,
+        pledged: false,
+        picture: false,
+        paint: paint as ModelPaint,
+      })),
+    ),
     isLoading: ref(false),
   }),
   useUpdateVehicle: () => ({
