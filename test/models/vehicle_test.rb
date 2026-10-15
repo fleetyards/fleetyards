@@ -5,7 +5,8 @@ require "test_helper"
 class VehicleTest < ActiveSupport::TestCase
   should belong_to(:user)
   should belong_to(:model)
-  should belong_to(:model_paint).optional(true)
+  should belong_to(:model_paint_picture).class_name("ModelPaint").optional(true)
+  should have_many(:model_paints).through(:vehicle_paints)
   should belong_to(:module_package).optional(true)
 end
 
@@ -392,16 +393,16 @@ class VehicleVersioningTest < ActiveSupport::TestCase
       versions_for(vehicle).order(created_at: :desc).first.changeset["name"]
   end
 
-  test "a repaint records a version" do
+  test "picking a paint picture records a version" do
     vehicle = create(:vehicle)
-    paint = create(:model_paint, model: vehicle.model)
+    paint = create(:model_paint, :with_store_image, model: vehicle.model)
 
     assert_difference -> { versions_for(vehicle).count }, 1 do
-      vehicle.update!(model_paint_id: paint.id)
+      vehicle.update!(model_paint_picture_id: paint.id)
     end
 
     assert_equal paint.id,
-      versions_for(vehicle).order(created_at: :desc).first.changeset["model_paint_id"].last
+      versions_for(vehicle).order(created_at: :desc).first.changeset["model_paint_picture_id"].last
   end
 
   test "a retrofit records a version" do

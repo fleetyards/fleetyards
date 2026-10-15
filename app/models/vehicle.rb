@@ -34,7 +34,7 @@ class Vehicle < ApplicationRecord
   has_paper_trail on: %i[create update],
     only: %i[
       name serial wanted flagship public name_visible sale_notify hidden hidden_by_user
-      loaner bought_via model_id model_paint_id alternative_names
+      loaner bought_via model_id model_paint_picture_id alternative_names
     ],
     if: ->(record) { !record.loaner? && !record.bundled? },
     meta: {
@@ -50,8 +50,12 @@ class Vehicle < ApplicationRecord
   # taking a ship out of their hangar while the sync keeps matching it.
   scope :visible, -> { where(hidden: false, hidden_by_user: false) }
 
+  # Owned paints are `vehicle_paints` now, and the picture is chosen in the
+  # gallery. Ignored until the column is dropped, so the release before this one
+  # keeps reading it while this one boots.
+  self.ignored_columns += ["model_paint_id"]
+
   belongs_to :model
-  belongs_to :model_paint, optional: true
   belongs_to :user, touch: :hangar_updated_at
   belongs_to :module_package,
     class_name: "ModelModulePackage",
@@ -93,6 +97,14 @@ class Vehicle < ApplicationRecord
   # other save of the vehicle, the hangar sync's among them.
   validate :model_image_from_own_model, if: -> { model_image_id? && will_save_change_to_model_image_id? }
   before_validation :drop_model_image_of_another_model, if: :will_save_change_to_model_id?
+
+  # Or one of the model's paints' store image, in the gallery beside them.
+  belongs_to :model_paint_picture, class_name: "ModelPaint", optional: true
+  validate :model_paint_picture_from_own_model, if: -> { model_paint_picture_id? && will_save_change_to_model_paint_picture_id? }
+  before_validation :drop_model_paint_picture_of_another_model, if: :will_save_change_to_model_id?
+  # One gallery pick at a time: picking one source replaces the other, so a
+  # client sending only the new pick never trips the database check.
+  before_validation :keep_one_gallery_picture
 
   # Where the owner left the ship. Only ever shown to the owner: a public
   # hangar saying where a ship is parked is an invitation.
@@ -146,6 +158,11 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_upgrades, dependent: :destroy
   has_many :model_upgrades, through: :vehicle_upgrades
 
+  has_many :vehicle_paints, dependent: :destroy
+  has_many :model_paints, through: :vehicle_paints
+  # A paint of the old model is not a paint this ship can own.
+  after_save :drop_paints_of_another_model, if: :saved_change_to_model_id?
+
   # Everything `api/v1/vehicles/_base.jbuilder` reaches for. It renders the whole
   # model partial per vehicle, so `Model.rendered_associations` comes along
   # nested -- without it a hangar pays for every ship picture once per vehicle.
@@ -158,7 +175,8 @@ class Vehicle < ApplicationRecord
       :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
       :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: :items},
       {model: Model.rendered_associations},
-      {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
+      :model_paints,
+      {model_paint_picture: ModelPaint.attachment_preloads},
       {parent_vehicle: :model},
       {image_attachment: :blob},
       {model_image: {file_attachment: :blob}},
@@ -279,7 +297,7 @@ class Vehicle < ApplicationRecord
     [
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
-      "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
+      "manufacturer", "model_id", "model_paint_picture_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
       "user_id", "vehicle_id", "wanted"
@@ -288,7 +306,7 @@ class Vehicle < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     [
-      "fleet_vehicles", "hangar_groups", "model", "model_modules", "model_paint", "model_upgrades",
+      "fleet_vehicles", "hangar_groups", "model", "model_modules", "model_paints", "model_upgrades",
       "module_package", "public_hangar_groups", "task_forces", "user", "vehicle_modules",
       "vehicle_upgrades"
     ]
@@ -769,8 +787,6 @@ class Vehicle < ApplicationRecord
   end
 
   def export_name
-    return model_paint.rsi_name if model_paint.present? && model_paint.rsi_id.present?
-
     model.rsi_name || model.name
   end
 
@@ -815,7 +831,7 @@ class Vehicle < ApplicationRecord
   def to_jbuilder_hash(*_args)
     ActiveRecord::Associations::Preloader.new(
       records: [self],
-      associations: [:model_paint, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
+      associations: [:model_paints, :model_paint_picture, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
         model: [:manufacturer]]
     ).call
 
@@ -1010,5 +1026,30 @@ class Vehicle < ApplicationRecord
   # A picture of the old model would show the wrong ship.
   private def drop_model_image_of_another_model
     self.model_image_id = nil if model_image.present? && model_image.gallery_id != model_id
+  end
+
+  private def model_paint_picture_from_own_model
+    return if model_paint_picture.present? && model_paint_picture.model_id == model_id &&
+      model_paint_picture.store_image.attached?
+
+    errors.add(:model_paint_picture, :invalid)
+  end
+
+  private def drop_model_paint_picture_of_another_model
+    self.model_paint_picture_id = nil if model_paint_picture.present? && model_paint_picture.model_id != model_id
+  end
+
+  private def keep_one_gallery_picture
+    return unless model_image_id? && model_paint_picture_id?
+
+    if will_save_change_to_model_paint_picture_id?
+      self.model_image_id = nil
+    else
+      self.model_paint_picture_id = nil
+    end
+  end
+
+  private def drop_paints_of_another_model
+    vehicle_paints.joins(:model_paint).where.not(model_paints: {model_id:}).destroy_all
   end
 end
