@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import PaginatorAboveList from "@/shared/components/Paginator/AboveList/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import { listFilteredKey } from "@/shared/components/Empty/types";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
@@ -217,9 +218,18 @@ const clientError = computed(
   () => errorType.value === ErrorTypesEnum.CLIENT_ERROR,
 );
 
-const { resetFilter, hasResettableQuery } = useFilters({
+const {
+  resetFilter,
+  hasResettableQuery,
+  isFilterSelected: routeFiltered,
+} = useFilters({
   viewKeys: props.viewKeys,
 });
+
+provide(
+  listFilteredKey,
+  computed(() => props.isFilterSelected || routeFiltered.value),
+);
 
 const resettable = computed(() => hasResettableQuery.value);
 

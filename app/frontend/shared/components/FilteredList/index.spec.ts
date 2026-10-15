@@ -305,6 +305,42 @@ describe("FilteredList", () => {
     expect(router.currentRoute.value.query).toEqual({ t: "archive" });
   });
 
+  const mountEmptyOn = async (
+    query: Record<string, string>,
+    viewKeys: string[] = [],
+  ) => {
+    await router.push({ name: "ships", query });
+
+    return mountWithDefaults<typeof ListComponent>(ListComponent, {
+      props: {
+        name: "test-list",
+        records: [],
+        asyncStatus: loaded(),
+        viewKeys,
+      },
+      plugins: [router],
+    });
+  };
+
+  it("tells the empty box a filter at the top of the URL is one", async () => {
+    const wrapper = await mountEmptyOn({ searchCont: "starfarer" });
+
+    expect(
+      wrapper.findComponent({ name: "EmptyInfo" }).props("queryPresent"),
+    ).toBe(true);
+  });
+
+  it("leaves sort and view state out of the empty box's filter", async () => {
+    const wrapper = await mountEmptyOn(
+      { s: "name asc", tab: "grid", share: "token" },
+      ["share"],
+    );
+
+    expect(
+      wrapper.findComponent({ name: "EmptyInfo" }).props("queryPresent"),
+    ).toBe(false);
+  });
+
   it("offers no reset when the route holds nothing to clear", async () => {
     await router.push({ name: "ships", query: { tab: "grid" } });
 

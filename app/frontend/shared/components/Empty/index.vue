@@ -10,7 +10,7 @@ import EmptyHeadline from "./Headline/index.vue";
 import EmptyActions from "./Actions/index.vue";
 import EmptyInfo from "./Info/index.vue";
 import { useRoute } from "vue-router";
-import { EmptyVariantsEnum } from "./types";
+import { EmptyVariantsEnum, listFilteredKey } from "./types";
 
 type Props = {
   variant?: `${EmptyVariantsEnum}`;
@@ -34,12 +34,19 @@ const isPagePresent = computed(
   () => !!route.query.page && Number(route.query.page) > 1,
 );
 
-// The filters live under `q`, and only they decide whether this list came back
-// empty because of something the reader can undo. Any parameter at all used to
-// count, which made a tab, a sort or a highlighted record read as a filter -
-// so the notifications page offered to reset filters it never had.
+const listFiltered = inject(listFilteredKey, undefined);
+
+// Only a filter or a page beyond the first is something the reader can undo.
+// Any parameter at all used to count, which made a tab, a sort or a highlighted
+// record read as a filter - so the notifications page offered to reset filters
+// it never had. Inside a FilteredList the list says whether it is filtered;
+// most filters sit at the top level of the URL, not under `q`, so a filtered
+// hangar that matched nothing read as an empty one.
 const isQueryPresent = computed(
-  () => Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value,
+  () =>
+    (listFiltered
+      ? listFiltered.value
+      : Object.keys(route.query?.q || {}).length > 0) || isPagePresent.value,
 );
 
 const cssClasses = computed(() => {
