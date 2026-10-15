@@ -594,6 +594,8 @@
         "showPublic": "Logbuch"
       },
       "vehicleLoadout": {
+        "editLoadout": "Loadout bearbeiten",
+        "newLoadout": "Neues Loadout",
         "saveLoadout": "Loadout speichern"
       }
     }

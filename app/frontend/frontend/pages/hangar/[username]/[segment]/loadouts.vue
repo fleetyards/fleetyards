@@ -13,6 +13,8 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
   type Vehicle,
   type VehicleLoadout,
@@ -140,6 +142,25 @@ const onDestroy = async (record: VehicleLoadout) => {
   });
 };
 
+// A fleetyards loadout is fitted in the loadout editor, not inline.
+const { openLoadoutModal } = useVehicleModals();
+
+const editFitting = (record: VehicleLoadout) => {
+  openLoadoutModal(props.vehicle, {
+    editable: true,
+    loadoutId: record.id,
+    tab: VehicleLoadoutTabsEnum.MODULES,
+  });
+};
+
+const newFleetyardsLoadout = () => {
+  openLoadoutModal(props.vehicle, {
+    editable: true,
+    newLoadout: true,
+    tab: VehicleLoadoutTabsEnum.MODULES,
+  });
+};
+
 // Activate
 const activateMutation = useActivateVehicleLoadout({
   mutation: { onSettled: invalidateLoadouts },
@@ -194,6 +215,14 @@ const onActivate = async (record: VehicleLoadout) => {
 
       <template #actions="{ item }">
         <Btn
+          v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
+          :data-test="`loadout-edit-fitting-${item.id}`"
+          @click="editFitting(item)"
+        >
+          <i class="fa-duotone fa-screwdriver-wrench" />
+        </Btn>
+        <Btn
           v-if="!item.active"
           v-tooltip="t('labels.loadout.activate')"
           @click="onActivate(item)"
@@ -247,6 +276,15 @@ const onActivate = async (record: VehicleLoadout) => {
           <i class="fa-duotone fa-plus" />
           {{ t("actions.add") }}
         </Btn>
+        <Btn
+          class="loadouts-page__add"
+          :disabled="!flightReady || !vehicle.model?.hasModules"
+          data-test="loadouts-new-fleetyards"
+          @click="newFleetyardsLoadout"
+        >
+          <i class="fa-duotone fa-screwdriver-wrench" />
+          {{ t("actions.vehicleLoadout.newLoadout") }}
+        </Btn>
       </span>
 
       <MetricsCard
@@ -277,6 +315,10 @@ const onActivate = async (record: VehicleLoadout) => {
 .loadouts-page {
   &__add {
     width: 100%;
+
+    & + & {
+      margin-top: 8px;
+    }
   }
 
   // Holds the tooltip a disabled button cannot, and the button's full width.
