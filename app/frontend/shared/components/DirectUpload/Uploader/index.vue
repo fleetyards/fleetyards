@@ -13,6 +13,7 @@ import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import { type Blob } from "@rails/activestorage";
 import { useDirectUpload } from "@/shared/composables/useDirectUpload";
 import { filesFromDataTransfer } from "@/shared/components/DirectUpload/directoryFiles";
+import { fileTypeOf } from "@/shared/components/DirectUpload/types";
 import { v4 as uuidv4 } from "uuid";
 
 export type FileUpload = {
@@ -84,7 +85,7 @@ const handleFileSelect = async (fileList?: FileList | File[]) => {
     }
 
     if (props.allowedTypes && props.allowedTypes.length) {
-      const fileType = file.type;
+      const fileType = fileTypeOf(file);
 
       const isAllowed = props.allowedTypes.some((type) => {
         return fileType === type;
