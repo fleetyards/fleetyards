@@ -1175,6 +1175,8 @@
         "quantumFuelTankSize": "Tamaño del tanque Quantum",
         "quantumFuelTanks": "Tanques de combustible Quantum",
         "externalFuelTanks": "Tanques de combustible externos",
+        "orePods": "Contenedores de mineral",
+        "salvageStorage": "Almacén de chatarra",
         "externalFuelTanksTotal": "Capacidad total",
         "externalFuelTanksCount": "Pods",
         "refuelBoom": "Brazo de repostaje",
@@ -1371,6 +1373,13 @@
         "maxContainerSub": "la caja más grande que cabe",
         "containers": "Capacidad de contenedores",
         "hint": "Número máximo de contenedores de cada tamaño que caben en las grillas de carga; la barra muestra qué parte de la capacidad total ocupan."
+      },
+      "storageContainers": {
+        "total": "Capacidad total",
+        "count": "Contenedores",
+        "perContainer": "cada uno",
+        "hintOre": "Guarda mineral extraído, no carga.",
+        "hintSalvage": "Guarda material recuperado, no carga."
       },
       "fuelTanks": {
         "capacitySub": "en %{count} pods",

@@ -1175,6 +1175,8 @@
         "quantumFuelTankSize": "Taille du réservoir Quantum",
         "quantumFuelTanks": "Réservoirs de carburant Quantum",
         "externalFuelTanks": "Réservoirs de carburant externes",
+        "orePods": "Conteneurs de minerai",
+        "salvageStorage": "Stockage de récupération",
         "externalFuelTanksTotal": "Capacité totale",
         "externalFuelTanksCount": "Nacelles",
         "refuelBoom": "Perche de ravitaillement",
@@ -1371,6 +1373,13 @@
         "maxContainerSub": "plus grande caisse acceptée",
         "containers": "Capacité en conteneurs",
         "hint": "Nombre maximal de conteneurs de chaque taille pouvant tenir sur les grilles de cargaison ; la barre indique la part de la capacité totale ainsi remplie."
+      },
+      "storageContainers": {
+        "total": "Capacité totale",
+        "count": "Conteneurs",
+        "perContainer": "chacun",
+        "hintOre": "Contient du minerai extrait, pas de cargaison.",
+        "hintSalvage": "Contient des matériaux récupérés, pas de cargaison."
       },
       "fuelTanks": {
         "capacitySub": "réparti sur %{count} nacelles",

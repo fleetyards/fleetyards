@@ -1175,6 +1175,8 @@
         "quantumFuelTankSize": "Quantum-Tankgröße",
         "quantumFuelTanks": "Quantum-Treibstofftanks",
         "externalFuelTanks": "Externe Treibstofftanks",
+        "orePods": "Erzbehälter",
+        "salvageStorage": "Bergungsspeicher",
         "externalFuelTanksTotal": "Gesamtkapazität",
         "externalFuelTanksCount": "Pods",
         "refuelBoom": "Betankungsausleger",
@@ -1371,6 +1373,13 @@
         "maxContainerSub": "größte passende Box",
         "containers": "Containerkapazität",
         "hint": "Maximale Anzahl an Containern jeder Größe, die auf die Frachtraster passen; der Balken zeigt, welchen Anteil der Gesamtkapazität das ausfüllt."
+      },
+      "storageContainers": {
+        "total": "Gesamtkapazität",
+        "count": "Behälter",
+        "perContainer": "je",
+        "hintOre": "Fasst abgebautes Erz, keine Fracht.",
+        "hintSalvage": "Fasst geborgenes Material, keine Fracht."
       },
       "fuelTanks": {
         "capacitySub": "in %{count} Pods",

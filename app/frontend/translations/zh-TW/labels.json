@@ -1175,6 +1175,8 @@
         "quantumFuelTankSize": "量子燃料箱大小",
         "quantumFuelTanks": "量子燃料箱",
         "externalFuelTanks": "外掛燃料箱",
+        "orePods": "礦石艙",
+        "salvageStorage": "回收儲存",
         "externalFuelTanksTotal": "總容量",
         "externalFuelTanksCount": "燃料艙",
         "refuelBoom": "加油臂",
@@ -1371,6 +1373,13 @@
         "maxContainerSub": "可容納的最大貨櫃",
         "containers": "貨櫃容量",
         "hint": "各種尺寸的貨櫃在貨物網格上最多可放置的數量；長條顯示它佔總容量的比例。"
+      },
+      "storageContainers": {
+        "total": "總容量",
+        "count": "容器",
+        "perContainer": "每個",
+        "hintOre": "存放開採的礦石，不是貨物。",
+        "hintSalvage": "存放回收的材料，不是貨物。"
       },
       "fuelTanks": {
         "capacitySub": "分佈於 %{count} 個燃料艙",

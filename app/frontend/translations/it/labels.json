@@ -1175,6 +1175,8 @@
         "quantumFuelTankSize": "Dimensione serbatoio Quantum",
         "quantumFuelTanks": "Serbatoi carburante Quantum",
         "externalFuelTanks": "Serbatoi di carburante esterni",
+        "orePods": "Contenitori di minerale",
+        "salvageStorage": "Deposito di recupero",
         "externalFuelTanksTotal": "Capacità totale",
         "externalFuelTanksCount": "Pod",
         "refuelBoom": "Braccio di rifornimento",
@@ -1371,6 +1373,13 @@
         "maxContainerSub": "il container più grande che ci sta",
         "containers": "Capacità in container",
         "hint": "Numero massimo di container di ciascuna dimensione che entrano nelle griglie di carico; la barra mostra quanta parte della capacità totale occupano."
+      },
+      "storageContainers": {
+        "total": "Capacità totale",
+        "count": "Contenitori",
+        "perContainer": "ciascuno",
+        "hintOre": "Contiene minerale estratto, non carico.",
+        "hintSalvage": "Contiene materiale recuperato, non carico."
       },
       "fuelTanks": {
         "capacitySub": "su %{count} pod",
