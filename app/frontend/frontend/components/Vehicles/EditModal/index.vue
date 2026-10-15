@@ -141,9 +141,16 @@ const activeTab = ref<string>(
 // first opened rather than loading with every edit.
 const imageTabOpened = ref(props.tab === VehicleEditTabsEnum.IMAGE);
 
+// Likewise the paint tab, whose pledge suggestion fills the owned paints: it
+// must only do that where the owner can see it, or any save would take it along.
+const paintTabOpened = ref(props.tab === VehicleEditTabsEnum.PAINT);
+
 watch(activeTab, (tab) => {
   if (tab === VehicleEditTabsEnum.IMAGE) {
     imageTabOpened.value = true;
+  }
+  if (tab === VehicleEditTabsEnum.PAINT) {
+    paintTabOpened.value = true;
   }
 });
 
@@ -343,7 +350,7 @@ const vehicleName = computed(
           :hidden="!equipmentVisible || !vehicle.model.hasPaints"
         >
           <Paint
-            v-if="equipmentVisible && vehicle.model.hasPaints"
+            v-if="paintTabOpened && equipmentVisible && vehicle.model.hasPaints"
             :vehicle="vehicle"
           />
         </FormTab>
