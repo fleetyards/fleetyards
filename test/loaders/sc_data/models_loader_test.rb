@@ -205,11 +205,12 @@ module ScData
         pod = create(:component, name: "Ore Pod", component_type: "Container", type_data: {"capacity" => 8.0})
         collapsed = create(:component, name: "Ore Pod Collapsed", component_type: "Container", type_data: {"capacity" => 0.0})
         salvage = create(:component, name: nil, component_type: "SalvageInternalStorage", type_data: {"capacity" => 13.0})
+        roc_pod = create(:component, name: "ROC Ore Pod", component_type: "Container", type_data: {"storage" => 1.2})
         grid = create(:component, name: "Cargo Grid", component_type: "CargoGrid", type_data: {"capacity" => 32.0})
         {
           "hardpoint_mining_pod_1" => pod, "hardpoint_mining_pod_2" => pod,
           "hardpoint_stored_pod_1" => collapsed, "hardpoint_internal_storage" => salvage,
-          "hardpoint_cargogrid" => grid
+          "hardpoint_cargogrid" => grid, "hardpoint_cargogrid_main" => roc_pod
         }.each do |sc_name, component|
           create(:hardpoint, parent: model, source: :game_files, sc_name:, component:)
         end
@@ -221,6 +222,7 @@ module ScData
 
         assert_equal(
           [
+            ["hardpoint_cargogrid_main", "ore", 1.2],
             ["hardpoint_mining_pod_1", "ore", 8.0],
             ["hardpoint_mining_pod_2", "ore", 8.0],
             ["hardpoint_internal_storage", "salvage", 13.0]
@@ -228,6 +230,10 @@ module ScData
           build.storage_containers.map { |container| container.values_at("name", "kind", "capacity") }
         )
         assert_equal build.storage_containers, model.reload.storage_containers
+      end
+
+      test "storage container kinds are the ones a build knows" do
+        assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end
 
       test "#load_model takes the crew from the build" do

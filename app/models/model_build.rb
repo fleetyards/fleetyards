@@ -54,7 +54,7 @@ class ModelBuild < ApplicationRecord
   # skips a side without one rather than report the fact appearing on every
   # model at once. Telling those builds apart by timestamp does not work: any
   # later write to the row, an admin correction included, bumps `updated_at`.
-  LATE_FACTS = %i[crew storage_containers].freeze
+  LATE_FACTS = %i[crew].freeze
 
   # What a storage container holds: ore from a mining pod, or salvage.
   STORAGE_KINDS = %w[ore salvage].freeze

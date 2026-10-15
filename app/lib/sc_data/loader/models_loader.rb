@@ -374,16 +374,23 @@ module ScData
       # Ore pods and salvage storage, apart from cargo: what they hold is not
       # cargo space. Matched by component, not by slot name -- the Golem's and
       # ROC's pods sit in slots named for cargo -- and only where something can
-      # be held, which leaves out the collapsed pods a Prospector stows.
+      # be held, which leaves out the collapsed pods a Prospector stows. The
+      # ROC's pods name their volume `storage` rather than `capacity`.
       STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
-      raise "unknown storage kind" unless (STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS).empty?
 
       private def update_storage_containers(hardpoints, update_params)
-        update_params[:storage_containers] = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
-          extract_named_type_data(hardpoints, component_type)
-            .select { |container| container["capacity"].to_f.positive? }
-            .map { |container| container.merge("kind" => kind) }
+        containers = STORAGE_CONTAINER_KINDS.flat_map do |component_type, kind|
+          extract_named_type_data(hardpoints, component_type).filter_map do |container|
+            capacity = (container["capacity"] || container["storage"]).to_f
+            next unless capacity.positive?
+
+            container.except("storage").merge("capacity" => capacity, "kind" => kind)
+          end
         end
+
+        return update_params if containers.blank?
+
+        update_params[:storage_containers] = containers
 
         update_params
       end

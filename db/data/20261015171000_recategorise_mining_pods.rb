@@ -14,8 +14,10 @@ class RecategoriseMiningPods < ActiveRecord::Migration[8.1]
       .where("sc_name LIKE ?", "hardpoint\\_mining\\_pod%")
       .includes(:component)
 
+    # The model's own derivation, so this writes what the next load would.
     pods.each do |pod|
-      category = Hardpoint.categories[pod.component&.category.to_s] || Hardpoint.categories["unknown"]
+      pod.valid?
+      category = Hardpoint.categories.fetch(pod.category.to_s)
 
       HardpointBuild.where(hardpoint_id: pod.id, category: CARGOGRID).update_all(category:)
       Hardpoint.where(id: pod.id).update_all(category:, updated_at: Time.current)
