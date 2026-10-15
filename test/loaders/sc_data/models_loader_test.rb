@@ -232,6 +232,21 @@ module ScData
         assert_equal build.storage_containers, model.reload.storage_containers
       end
 
+      test "#load_model clears ore pods a build no longer carries, and writes none for a ship without" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        emptied = create(:model, name: "Emptied", storage_containers: [{"name" => "hardpoint_mining_pod_1", "capacity" => 8.0, "kind" => "ore"}])
+        never = create(:model, name: "Never")
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(emptied)
+        loader.load_model(never)
+
+        assert_equal [], emptied.reload.storage_containers
+        assert_nil never.reload.read_attribute(:storage_containers)
+      end
+
       test "storage container kinds are the ones a build knows" do
         assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end
