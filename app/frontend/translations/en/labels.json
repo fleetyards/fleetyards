@@ -1179,6 +1179,7 @@
         "externalFuelTanks": "External Fuel Tanks",
         "orePods": "Ore Pods",
         "medicalBedsTier": "Tier %{tier} medical beds",
+        "medicalBedsNamed": "%{name} medical beds",
         "respawnBeds": "Respawn beds",
         "salvageStorage": "Salvage Storage",
         "externalFuelTanksTotal": "Total Capacity",

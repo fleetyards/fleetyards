@@ -1179,6 +1179,7 @@
         "externalFuelTanks": "Tanques de combustible externos",
         "orePods": "Contenedores de mineral",
         "medicalBedsTier": "Camas médicas de nivel %{tier}",
+        "medicalBedsNamed": "Camas médicas (%{name})",
         "respawnBeds": "Camas de reaparición",
         "salvageStorage": "Almacén de chatarra",
         "externalFuelTanksTotal": "Capacidad total",

@@ -1179,6 +1179,7 @@
         "externalFuelTanks": "外挂燃料箱",
         "orePods": "矿石舱",
         "medicalBedsTier": "%{tier} 级医疗床",
+        "medicalBedsNamed": "%{name}医疗床",
         "respawnBeds": "重生床位",
         "salvageStorage": "回收储存",
         "externalFuelTanksTotal": "总容量",

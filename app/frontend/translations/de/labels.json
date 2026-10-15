@@ -1179,6 +1179,7 @@
         "externalFuelTanks": "Externe Treibstofftanks",
         "orePods": "Erzbehälter",
         "medicalBedsTier": "Medizinische Betten Stufe %{tier}",
+        "medicalBedsNamed": "Medizinische Betten (%{name})",
         "respawnBeds": "Respawn-Betten",
         "salvageStorage": "Bergungsspeicher",
         "externalFuelTanksTotal": "Gesamtkapazität",

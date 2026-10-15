@@ -1179,6 +1179,7 @@
         "externalFuelTanks": "Serbatoi di carburante esterni",
         "orePods": "Contenitori di minerale",
         "medicalBedsTier": "Letti medici di livello %{tier}",
+        "medicalBedsNamed": "Letti medici (%{name})",
         "respawnBeds": "Letti di rinascita",
         "salvageStorage": "Deposito di recupero",
         "externalFuelTanksTotal": "Capacità totale",

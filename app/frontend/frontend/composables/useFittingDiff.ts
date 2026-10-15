@@ -22,7 +22,8 @@ export type FittingRow = {
 
 const CARGO = "cargo";
 const RESPAWN_BEDS = "respawn_beds";
-const MEDICAL_BEDS = "medical_beds_";
+const MEDICAL_BEDS = "medical_beds_tier_";
+const NAMED_MEDICAL_BEDS = "medical_beds_named_";
 
 // Directions as the compare tool sets them: more cargo is better, and so are
 // more beds to respawn at; how many hardpoints of a kind a module brings, or
@@ -56,15 +57,19 @@ export const useFittingDiff = () => {
           return;
         }
 
-        totals.set(category, (totals.get(category) || 0) + 1);
+        add(totals, category, 1);
       });
 
       // A tier the game names but does not rank is kept apart by its name.
       const medicalBeds = mod.metrics?.medicalBeds;
-      medicalBeds?.tiers.forEach((tier) => {
-        add(totals, `${MEDICAL_BEDS}${tier.tier ?? tier.name}`, tier.beds);
-      });
-      if (medicalBeds?.respawnBeds) {
+      if (medicalBeds) {
+        medicalBeds.tiers.forEach((tier) => {
+          const key =
+            tier.tier === null
+              ? `${NAMED_MEDICAL_BEDS}${tier.name}`
+              : `${MEDICAL_BEDS}${tier.tier}`;
+          add(totals, key, tier.beds);
+        });
         add(totals, RESPAWN_BEDS, medicalBeds.respawnBeds);
       }
     });
@@ -78,6 +83,11 @@ export const useFittingDiff = () => {
     if (key.startsWith(MEDICAL_BEDS)) {
       return t("labels.model.medicalBedsTier", {
         tier: key.slice(MEDICAL_BEDS.length),
+      });
+    }
+    if (key.startsWith(NAMED_MEDICAL_BEDS)) {
+      return t("labels.model.medicalBedsNamed", {
+        name: key.slice(NAMED_MEDICAL_BEDS.length),
       });
     }
 

@@ -45,12 +45,12 @@ describe("useFittingDiff", () => {
       ).map((row) => [row.key, row]),
     );
 
-    expect(byKey.medical_beds_1).toMatchObject({
+    expect(byKey.medical_beds_tier_1).toMatchObject({
       before: 1,
       after: 0,
       delta: { tone: "even" },
     });
-    expect(byKey.medical_beds_3).toMatchObject({ before: 0, after: 3 });
+    expect(byKey.medical_beds_tier_3).toMatchObject({ before: 0, after: 3 });
     // More beds to respawn at is better.
     expect(byKey.respawn_beds).toMatchObject({
       before: 1,
