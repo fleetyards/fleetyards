@@ -23,7 +23,7 @@ class VehicleLoadout < ApplicationRecord
     fleetyards: "fleetyards"
   }, prefix: true
 
-  has_many :items, -> { order(:slot) },
+  has_many :items, -> { order(:slot_path) },
     class_name: "VehicleLoadoutItem",
     inverse_of: :vehicle_loadout,
     dependent: :delete_all
@@ -40,12 +40,13 @@ class VehicleLoadout < ApplicationRecord
 
   attr_reader :item_list
 
-  # The whole fitting at once: a list of `{slot:, model_module_id:}` that
-  # replaces whatever was fitted before, written after the loadout validates.
+  # The whole fitting at once: a list of `{slot_path:, item_type:, item_id:}`
+  # that replaces whatever was fitted before, written after the loadout
+  # validates.
   def item_list=(list)
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
-      {slot: item[:slot].to_s, model_module_id: item[:model_module_id].to_s}
+      {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s}
     end
   end
 
@@ -88,18 +89,36 @@ class VehicleLoadout < ApplicationRecord
     errors.add(:base, :not_flight_ready)
   end
 
-  # A slot is the module hardpoint's name on the hull, so a module whose slot
-  # the game files never revealed matches none and cannot be fitted.
   private def item_list_fits
     return if item_list.empty?
     return errors.add(:items, :not_fleetyards) unless kind_fleetyards?
 
-    slots = item_list.pluck(:slot)
-    errors.add(:items, :slot_taken) if slots.uniq.size != slots.size
+    paths = item_list.pluck(:slot_path)
+    errors.add(:items, :slot_taken) if paths.uniq.size != paths.size
+
+    unless item_list.all? { |item| VehicleLoadoutItem::ITEM_TYPES.include?(item[:item_type]) }
+      return errors.add(:items, :item_type_not_supported)
+    end
+
+    # A hardpoint inside a module or a turret only exists while that is fitted.
+    nested = paths.select { |path| path.include?("/") }
+    if nested.any? { |path| paths.exclude?(path.rpartition("/").first) }
+      errors.add(:items, :parent_not_fitted)
+    end
+
+    modules_fit
+  end
+
+  # A module goes in a slot on the hull itself, named by the module hardpoint,
+  # so one whose slot the game files never revealed matches none and cannot be
+  # fitted.
+  private def modules_fit
+    modules = item_list.select { |item| item[:item_type] == "ModelModule" }
+    return if modules.empty?
 
     # Counted, not just looked up: one owned copy fills one slot. The hull's
     # stock modules are there to fit without being owned.
-    module_ids = item_list.pluck(:model_module_id)
+    module_ids = modules.pluck(:item_id)
     owned = (vehicle.model_module_ids + vehicle.stock_module_ids).tally
     if module_ids.tally.any? { |id, count| count > owned.fetch(id, 0) }
       errors.add(:items, :module_not_owned)
@@ -107,7 +126,7 @@ class VehicleLoadout < ApplicationRecord
 
     fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
       .pluck(:model_module_id, :slot)
-    unless item_list.all? { |item| fitting.include?([item[:model_module_id], item[:slot]]) }
+    unless modules.all? { |item| fitting.include?([item[:item_id], item[:slot_path]]) }
       errors.add(:items, :module_not_in_slot)
     end
   end

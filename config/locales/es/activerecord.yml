@@ -315,6 +315,8 @@ es:
               slot_taken: "solo pueden tener un módulo por ranura"
               module_not_owned: "deben ser módulos que posea la nave"
               module_not_in_slot: "deben encajar en la ranura en la que se colocan"
+              item_type_not_supported: "por ahora solo admiten módulos"
+              parent_not_fitted: "deben estar en una ranura equipada"
         payout_entry:
           attributes:
             entry_type:

@@ -19,7 +19,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
   end
 
   def fit(*pairs)
-    pairs.map { |slot, mod| {slot:, model_module_id: mod.id} }
+    pairs.map { |slot, mod| {slot_path: slot, item_type: "ModelModule", item_id: mod.id} }
   end
 
   def fleetyards_loadout(items)
@@ -30,7 +30,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo], ["hardpoint_rear_module", @rear_cargo]))
 
     assert loadout.save, loadout.errors.full_messages.to_sentence
-    assert_equal [@front_cargo.id, @rear_cargo.id], loadout.items.pluck(:model_module_id)
+    assert_equal [@front_cargo.id, @rear_cargo.id], loadout.items.pluck(:item_id)
     assert_equal "Fleetyards Loadout", loadout.name
   end
 
@@ -95,7 +95,35 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
 
     @vehicle.unfit_unowned_modules
 
-    assert_equal [stock.id], loadout.reload.items.pluck(:model_module_id)
+    assert_equal [stock.id], loadout.reload.items.pluck(:item_id)
+  end
+
+  test "refuses a slot inside one that is not fitted" do
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo]) + [
+      {slot_path: "hardpoint_rear_module/hardpoint_turret", item_type: "ModelModule", item_id: @rear_cargo.id}
+    ])
+
+    assert_not loadout.save
+    assert loadout.errors.of_kind?(:items, :parent_not_fitted)
+  end
+
+  test "refuses anything but a module for now" do
+    loadout = fleetyards_loadout([{slot_path: "hardpoint_weapon", item_type: "Component", item_id: SecureRandom.uuid}])
+
+    assert_not loadout.save
+    assert loadout.errors.of_kind?(:items, :item_type_not_supported)
+  end
+
+  test "unfitting a module takes what was fitted inside it along" do
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", @front_cargo]))
+    loadout.save!
+    # Written past the validation, standing in for a component category.
+    loadout.items.create!(slot_path: "hardpoint_front_module/hardpoint_turret", item: @rear_cargo)
+
+    @vehicle.update!(model_module_ids: [@rear_cargo.id])
+    @vehicle.unfit_unowned_modules
+
+    assert_empty loadout.reload.items
   end
 
   test "a link carries no items and a fleetyards loadout no url" do
@@ -122,7 +150,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
 
     loadout.update!(item_list: fit(["hardpoint_front_module", @front_torpedo]))
 
-    assert_equal [@front_torpedo.id], loadout.reload.items.pluck(:model_module_id)
+    assert_equal [@front_torpedo.id], loadout.reload.items.pluck(:item_id)
   end
 
   test "a module that leaves the hangar is unfitted" do
@@ -132,7 +160,7 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     @vehicle.update!(model_module_ids: [@rear_cargo.id])
     @vehicle.unfit_unowned_modules
 
-    assert_equal [@rear_cargo.id], loadout.reload.items.pluck(:model_module_id)
+    assert_equal [@rear_cargo.id], loadout.reload.items.pluck(:item_id)
   end
 
   test "activating a fleetyards loadout switches off an active link" do

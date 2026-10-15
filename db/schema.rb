@@ -2697,12 +2697,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_151000) do
 
   create_table "vehicle_loadout_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "vehicle_loadout_id", null: false
-    t.string "slot", null: false
-    t.uuid "model_module_id", null: false
+    t.string "slot_path", null: false
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["model_module_id"], name: "index_vehicle_loadout_items_on_model_module_id"
-    t.index ["vehicle_loadout_id", "slot"], name: "index_vehicle_loadout_items_on_vehicle_loadout_id_and_slot", unique: true
+    t.index ["item_type", "item_id"], name: "index_vehicle_loadout_items_on_item"
+    t.index ["vehicle_loadout_id", "slot_path"], name: "index_vehicle_loadout_items_on_loadout_and_slot_path", unique: true
   end
 
   create_table "vehicle_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3020,7 +3021,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_151000) do
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
   add_foreign_key "users", "locations", column: "current_location_id", on_delete: :nullify
-  add_foreign_key "vehicle_loadout_items", "model_modules", on_delete: :cascade
   add_foreign_key "vehicle_loadout_items", "vehicle_loadouts", on_delete: :cascade
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade

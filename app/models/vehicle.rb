@@ -802,10 +802,17 @@ class Vehicle < ApplicationRecord
   end
 
   # A module that leaves the hangar cannot stay fitted, unless the hull comes
-  # with it. Destroyed one by one so each loadout it sat in is touched and
-  # re-rendered.
+  # with it, and neither can anything fitted inside it. Destroyed one by one so
+  # each loadout it sat in is touched and re-rendered.
   def unfit_unowned_modules
-    vehicle_loadout_items.where.not(model_module_id: model_module_ids + stock_module_ids).destroy_all
+    unfitted = vehicle_loadout_items.where(item_type: "ModelModule")
+      .where.not(item_id: model_module_ids + stock_module_ids)
+    nested = unfitted.pluck(:vehicle_loadout_id, :slot_path).map do |loadout_id, path|
+      vehicle_loadout_items.where(vehicle_loadout_id: loadout_id)
+        .where("vehicle_loadout_items.slot_path LIKE ?", "#{VehicleLoadoutItem.sanitize_sql_like(path)}/%")
+    end
+
+    [unfitted, *nested].each(&:destroy_all)
     vehicle_loadouts.reset
   end
 

@@ -315,6 +315,8 @@ it:
               slot_taken: "possono contenere un solo modulo per slot"
               module_not_owned: "devono essere moduli posseduti dalla nave"
               module_not_in_slot: "devono adattarsi allo slot in cui sono inseriti"
+              item_type_not_supported: "per ora contengono solo moduli"
+              parent_not_fitted: "devono trovarsi in uno slot montato"
         payout_entry:
           attributes:
             entry_type:

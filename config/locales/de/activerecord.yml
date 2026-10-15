@@ -315,6 +315,8 @@ de:
               slot_taken: "dürfen nur ein Modul pro Slot enthalten"
               module_not_owned: "müssen Module sein, die das Schiff besitzt"
               module_not_in_slot: "müssen jeweils in den Slot passen, in dem sie sitzen"
+              item_type_not_supported: "enthalten vorerst nur Module"
+              parent_not_fitted: "müssen in einem ausgerüsteten Slot sitzen"
         payout_entry:
           attributes:
             entry_type:

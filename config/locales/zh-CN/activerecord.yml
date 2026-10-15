@@ -315,6 +315,8 @@ zh-CN:
               slot_taken: "每个槽位只能装配一个模块"
               module_not_owned: "必须是该舰船拥有的模块"
               module_not_in_slot: "必须与所在的槽位匹配"
+              item_type_not_supported: "目前只能包含模块"
+              parent_not_fitted: "必须位于已装配的槽位中"
         payout_entry:
           attributes:
             entry_type:

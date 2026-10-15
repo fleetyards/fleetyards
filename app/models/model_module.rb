@@ -25,6 +25,9 @@ class ModelModule < ApplicationRecord
     dependent: :destroy
   has_many :models, through: :module_hardpoints
   has_many :model_module_package_items, dependent: :destroy
+  # Polymorphic, so no foreign key removes these with the module; destroyed so
+  # each loadout it was fitted in is touched.
+  has_many :vehicle_loadout_items, as: :item, dependent: :destroy
   has_many :model_module_packages, through: :model_module_package_items
 
   has_many :item_prices, as: :item, dependent: :destroy
