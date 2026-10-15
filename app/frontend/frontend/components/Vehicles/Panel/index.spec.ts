@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
-import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
+import {
+  type Vehicle,
+  BoughtViaEnum,
+  VehicleLoadoutKindEnum,
+} from "@/services/fyApi";
 
 // The card carries a store image, and jsdom has no IntersectionObserver for
 // useLazyBackground to hand it to.
@@ -397,12 +401,14 @@ describe("loadout marker", () => {
     id: "l1",
     name: "Hauler",
     active: true,
-    kind: "fleetyards",
+    kind: VehicleLoadoutKindEnum.FLEETYARDS,
     items: [],
+    createdAt: "2026-10-01T00:00:00Z",
+    updatedAt: "2026-10-01T00:00:00Z",
   };
 
   it("opens the owner's loadout in the editor", async () => {
-    const ship = vehicle({ activeLoadout: fitted } as Partial<Vehicle>);
+    const ship = vehicle({ activeLoadout: fitted });
     const wrapper = await mount({ vehicle: ship, editable: true });
 
     await wrapper.get("[data-test='loadout-marker']").trigger("click");
@@ -414,7 +420,7 @@ describe("loadout marker", () => {
   });
 
   it("shows a visitor the loadout", async () => {
-    const ship = vehicle({ activeLoadout: fitted } as Partial<Vehicle>);
+    const ship = vehicle({ activeLoadout: fitted });
     const wrapper = await mount({ vehicle: ship, editable: false });
 
     await wrapper.get("[data-test='loadout-marker']").trigger("click");
