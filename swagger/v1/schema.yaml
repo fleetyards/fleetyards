@@ -23852,6 +23852,7 @@ components:
       - fleet_tours
       - hangar_inventories
       - holo_ar
+      - loadout_editor
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -23873,6 +23874,7 @@ components:
       - FLEET_TOURS
       - HANGAR_INVENTORIES
       - HOLO_AR
+      - LOADOUT_EDITOR
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID
