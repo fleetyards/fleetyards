@@ -17,6 +17,12 @@ class HardpointCategoryTest < ActiveSupport::TestCase
     end
   end
 
+  test "a component fitted in a paint slot keeps deciding the category" do
+    fitted = create(:component, category: "utility", component_type: "Misc")
+
+    assert_equal "utility", hardpoint("hardpoint_paint", component: fitted).category
+  end
+
   test "a slot without a component and without a telling name stays unknown" do
     assert_equal "unknown", hardpoint("hardpoint_whatever").category
   end
