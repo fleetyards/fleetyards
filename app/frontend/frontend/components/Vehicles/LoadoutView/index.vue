@@ -109,7 +109,7 @@ const previewImage = computed(
 
 const { loadoutEditorAvailable } = useLoadoutEditor();
 
-// The owner's way into the editor, once the editor is switched on.
+// The owner's way into the editor, where the editor is available.
 const editVisible = computed(
   () => props.editable && loadoutEditorAvailable(props.vehicle),
 );
