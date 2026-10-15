@@ -585,7 +585,8 @@
         "editLocation": "Change location",
         "allPaints": "All %{count} paints",
         "fullscreenHolo": "Full screen",
-        "showAllMatches": "Show all (%{count})"
+        "allUpgrades": "All %{count} upgrades",
+        "allBuybacks": "All %{count} buy-backs"
       },
       "vehicleLog": {
         "open": "Captain's Log",

@@ -585,7 +585,8 @@
         "editLocation": "Standort ändern",
         "allPaints": "Alle %{count} Lackierungen",
         "fullscreenHolo": "Vollbild",
-        "showAllMatches": "Alle anzeigen (%{count})"
+        "allUpgrades": "Alle %{count} Upgrades",
+        "allBuybacks": "Alle %{count} Rückkauf-Pledges"
       },
       "vehicleLog": {
         "open": "Logbuch",

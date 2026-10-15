@@ -8,6 +8,7 @@ export default {
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
+import { buybackRsiUrl, rsiHangarUrl } from "@/frontend/utils/rsiPledgeUrls";
 import {
   type BuybackPledge,
   type HangarPledgeItem,
@@ -66,7 +67,7 @@ const price = (value?: number) =>
     ? undefined
     : formatCents(Math.round(value * 100), "USD");
 
-// The lists' own filters, so "show all" lands on exactly these.
+// The lists' own filters, so the footer lands on exactly these.
 const buybacksRoute = computed(() => ({
   name: "hangar-buybacks",
   query: { modelSlugEq: slug.value },
@@ -86,6 +87,51 @@ const upgradesRoute = computed(() => ({
     variant="slim"
     data-test="vehicle-overview-acquire"
   >
+    <!-- An upgrade already in the hangar costs nothing more, so it comes
+         before anything that has to be bought back. -->
+    <section
+      v-if="upgradeCount"
+      class="overview-acquire__section"
+      data-test="vehicle-overview-acquire-upgrades"
+    >
+      <h3 class="overview-acquire__heading">
+        {{ t("nav.hangar.upgrades") }}
+      </h3>
+      <ul class="overview-card-rows">
+        <li
+          v-for="upgrade in upgradeItems"
+          :key="upgrade.id"
+          class="overview-card-row"
+          data-test="vehicle-overview-acquire-upgrade"
+        >
+          <span class="overview-acquire__name">
+            <a
+              :href="rsiHangarUrl(upgrade)"
+              target="_blank"
+              rel="noopener"
+              class="overview-acquire__link"
+              data-test="vehicle-overview-acquire-upgrade-link"
+            >
+              {{ upgrade.name }}
+              <i
+                class="fa-light fa-arrow-up-right-from-square"
+                aria-hidden="true"
+              />
+            </a>
+            <small v-if="upgrade.quantity > 1" class="overview-acquire__note">
+              ×{{ upgrade.quantity }}
+            </small>
+          </span>
+          <span
+            v-if="price(upgrade.pledgeValue)"
+            class="overview-card-row__aside"
+          >
+            {{ price(upgrade.pledgeValue) }}
+          </span>
+        </li>
+      </ul>
+    </section>
+
     <section
       v-if="buybackCount"
       class="overview-acquire__section"
@@ -103,58 +149,58 @@ const upgradesRoute = computed(() => ({
           data-test="vehicle-overview-acquire-buyback"
         >
           <span class="overview-acquire__name">
-            {{ buyback.name }}
-            <small v-if="!buyback.available" class="overview-acquire__note">
-              {{ t("labels.buybacks.notAvailable") }}
-            </small>
+            <a
+              v-if="buyback.available"
+              :href="buybackRsiUrl(buyback)"
+              target="_blank"
+              rel="noopener"
+              class="overview-acquire__link"
+              data-test="vehicle-overview-acquire-buyback-link"
+            >
+              {{ buyback.name }}
+              <i
+                class="fa-light fa-arrow-up-right-from-square"
+                aria-hidden="true"
+              />
+            </a>
+            <template v-else>
+              {{ buyback.name }}
+              <small class="overview-acquire__note">
+                {{ t("labels.buybacks.notAvailable") }}
+              </small>
+            </template>
           </span>
           <span v-if="price(buyback.price)" class="overview-card-row__aside">
             {{ price(buyback.price) }}
           </span>
         </li>
       </ul>
-      <router-link :to="buybacksRoute" class="overview-acquire__more">
-        {{
-          t("actions.vehicleOverview.showAllMatches", { count: buybackCount })
-        }}
-      </router-link>
     </section>
 
-    <section
-      v-if="upgradeCount"
-      class="overview-acquire__section"
-      data-test="vehicle-overview-acquire-upgrades"
-    >
-      <h3 class="overview-acquire__heading">
-        {{ t("nav.hangar.upgrades") }}
-      </h3>
-      <ul class="overview-card-rows">
-        <li
-          v-for="upgrade in upgradeItems"
-          :key="upgrade.id"
-          class="overview-card-row"
-          data-test="vehicle-overview-acquire-upgrade"
+    <template #footer>
+      <div class="overview-acquire__footer">
+        <router-link
+          v-if="upgradeCount"
+          :to="upgradesRoute"
+          class="overview-card-footer-link"
+          data-test="vehicle-overview-acquire-all-upgrades"
         >
-          <span class="overview-acquire__name">
-            {{ upgrade.name }}
-            <small v-if="upgrade.quantity > 1" class="overview-acquire__note">
-              ×{{ upgrade.quantity }}
-            </small>
-          </span>
-          <span
-            v-if="price(upgrade.pledgeValue)"
-            class="overview-card-row__aside"
-          >
-            {{ price(upgrade.pledgeValue) }}
-          </span>
-        </li>
-      </ul>
-      <router-link :to="upgradesRoute" class="overview-acquire__more">
-        {{
-          t("actions.vehicleOverview.showAllMatches", { count: upgradeCount })
-        }}
-      </router-link>
-    </section>
+          {{
+            t("actions.vehicleOverview.allUpgrades", { count: upgradeCount })
+          }}
+        </router-link>
+        <router-link
+          v-if="buybackCount"
+          :to="buybacksRoute"
+          class="overview-card-footer-link"
+          data-test="vehicle-overview-acquire-all-buybacks"
+        >
+          {{
+            t("actions.vehicleOverview.allBuybacks", { count: buybackCount })
+          }}
+        </router-link>
+      </div>
+    </template>
   </MetricsCard>
 </template>
 
@@ -182,6 +228,25 @@ const upgradesRoute = computed(() => ({
     overflow-wrap: anywhere;
   }
 
+  &__link {
+    color: inherit;
+
+    i {
+      margin-left: 4px;
+      color: var(--color-muted);
+      font-size: 0.75em;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-primary);
+
+      i {
+        color: inherit;
+      }
+    }
+  }
+
   &__note {
     margin-left: 6px;
     color: var(--color-text-dim);
@@ -191,8 +256,28 @@ const upgradesRoute = computed(() => ({
     color: var(--color-text-dim);
   }
 
-  &__more {
-    font-size: 0.85rem;
+  // Both lists side by side as the card's last row, split down the middle
+  // rather than stacked into two rows of the footer.
+  &__footer {
+    display: flex;
+
+    .overview-card-footer-link {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .overview-card-footer-link + .overview-card-footer-link {
+      border-left: 1px solid var(--color-edge-soft);
+    }
+
+    .overview-card-footer-link:first-child:not(:last-child) {
+      border-bottom-right-radius: 0;
+    }
+
+    .overview-card-footer-link:last-child:not(:first-child) {
+      border-bottom-left-radius: 0;
+    }
   }
 }
 </style>

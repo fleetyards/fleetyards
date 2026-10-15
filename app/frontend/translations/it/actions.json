@@ -585,7 +585,8 @@
         "editLocation": "Cambia posizione",
         "allPaints": "Tutte le %{count} verniciature",
         "fullscreenHolo": "Schermo intero",
-        "showAllMatches": "Mostra tutto (%{count})"
+        "allUpgrades": "Tutti i %{count} potenziamenti",
+        "allBuybacks": "Tutti i %{count} pledge riacquistabili"
       },
       "vehicleLog": {
         "open": "Diario di bordo",

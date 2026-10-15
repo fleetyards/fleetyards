@@ -585,7 +585,8 @@
         "editLocation": "Cambiar ubicación",
         "allPaints": "Las %{count} pinturas",
         "fullscreenHolo": "Pantalla completa",
-        "showAllMatches": "Ver todo (%{count})"
+        "allUpgrades": "Las %{count} mejoras",
+        "allBuybacks": "Los %{count} pledges de recompra"
       },
       "vehicleLog": {
         "open": "Cuaderno de bitácora",

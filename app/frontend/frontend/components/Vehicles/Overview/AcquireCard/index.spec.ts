@@ -127,18 +127,71 @@ describe("VehicleOverviewAcquireCard", () => {
       wrapper.find('[data-test="vehicle-overview-acquire-upgrade"]').text(),
     ).toContain("×2");
 
-    const links = wrapper.findAll("a").map((link) => link.attributes("href"));
-
-    expect(links).toContain("#/hangar/buybacks?modelSlugEq=cutlass-black");
-    expect(links).toContain(
-      "#/hangar/upgrades?upgradeToModelSlugEq=cutlass-black",
-    );
+    expect(
+      wrapper
+        .find('[data-test="vehicle-overview-acquire-all-upgrades"]')
+        .attributes("href"),
+    ).toBe("#/hangar/upgrades?upgradeToModelSlugEq=cutlass-black");
+    expect(
+      wrapper
+        .find('[data-test="vehicle-overview-acquire-all-buybacks"]')
+        .attributes("href"),
+    ).toBe("#/hangar/buybacks?modelSlugEq=cutlass-black");
 
     buybacks.value = [];
     upgrades.value = [];
   });
 
-  it("marks a buy-back RSI no longer offers", async () => {
+  it("puts the upgrades already in the hangar before the buy-backs", async () => {
+    buybacks.value = [buyback()];
+    upgrades.value = [upgrade()];
+
+    const wrapper = await mount();
+
+    expect(
+      wrapper
+        .findAll("section")
+        .map((section) => section.attributes("data-test")),
+    ).toEqual([
+      "vehicle-overview-acquire-upgrades",
+      "vehicle-overview-acquire-buybacks",
+    ]);
+
+    buybacks.value = [];
+    upgrades.value = [];
+  });
+
+  it("links a buy-back to its page on RSI", async () => {
+    window.RSI_ENDPOINT = "https://rsi.test";
+    buybacks.value = [buyback({ rsiPledgeId: "42" })];
+
+    const wrapper = await mount();
+    const link = wrapper.find(
+      '[data-test="vehicle-overview-acquire-buyback-link"]',
+    );
+
+    expect(link.attributes("href")).toBe("https://rsi.test/pledge/buyback/42");
+    expect(link.attributes("target")).toBe("_blank");
+
+    buybacks.value = [];
+  });
+
+  it("links an upgrade to the RSI hangar it is applied in", async () => {
+    window.RSI_ENDPOINT = "https://rsi.test";
+    upgrades.value = [upgrade({ rsiPage: 2 })];
+
+    const wrapper = await mount();
+
+    expect(
+      wrapper
+        .find('[data-test="vehicle-overview-acquire-upgrade-link"]')
+        .attributes("href"),
+    ).toBe("https://rsi.test/account/pledges?page=2");
+
+    upgrades.value = [];
+  });
+
+  it("marks a buy-back RSI no longer offers, without a link", async () => {
     buybacks.value = [buyback({ available: false })];
 
     const wrapper = await mount();
@@ -146,6 +199,11 @@ describe("VehicleOverviewAcquireCard", () => {
     expect(
       wrapper.find('[data-test="vehicle-overview-acquire-buyback"]').classes(),
     ).toContain("overview-acquire__row--unavailable");
+    expect(
+      wrapper
+        .find('[data-test="vehicle-overview-acquire-buyback-link"]')
+        .exists(),
+    ).toBe(false);
 
     buybacks.value = [];
   });

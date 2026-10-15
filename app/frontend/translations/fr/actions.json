@@ -585,7 +585,8 @@
         "editLocation": "Changer l'emplacement",
         "allPaints": "Les %{count} peintures",
         "fullscreenHolo": "Plein écran",
-        "showAllMatches": "Tout afficher (%{count})"
+        "allUpgrades": "Les %{count} améliorations",
+        "allBuybacks": "Les %{count} pledges rachetables"
       },
       "vehicleLog": {
         "open": "Journal de bord",
