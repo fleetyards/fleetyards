@@ -34,6 +34,25 @@ describe("Hangar/PledgeItemsList", () => {
     expect(wrapper.text()).toContain("Pledge 00064530");
   });
 
+  it("links a CCU, and only a CCU, to the RSI hangar", async () => {
+    window.RSI_ENDPOINT = "https://rsi.test";
+
+    const wrapper = await mount([
+      pledgeItem({
+        id: "ccu",
+        kind: HangarPledgeItemKindEnum.CCU,
+        name: "Upgrade - Aurora MR to Cutlass Black",
+      }),
+      pledgeItem(),
+    ]);
+    const links = wrapper.findAll('[data-test="pledge-item-rsi-link"]');
+
+    expect(links).toHaveLength(1);
+    expect(links[0].attributes("href")).toBe(
+      "https://rsi.test/account/pledges",
+    );
+  });
+
   it("counts an item only when the pledge holds more than one", async () => {
     const wrapper = await mount([
       pledgeItem(),

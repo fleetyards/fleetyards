@@ -2712,6 +2712,7 @@
         "shop": "Tienda"
       },
       "hangarPledgeItems": {
+        "openOnRsi": "Abrir en el hangar de RSI",
         "flair": "Decoración de hangar",
         "upgrades": "Mejoras / CCU",
         "equipment": "Equipo FPS",

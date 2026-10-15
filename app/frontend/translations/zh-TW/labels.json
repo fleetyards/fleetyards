@@ -2712,6 +2712,7 @@
         "shop": "商店"
       },
       "hangarPledgeItems": {
+        "openOnRsi": "在 RSI 機庫中開啟",
         "flair": "機庫裝飾",
         "upgrades": "升級 / CCU",
         "equipment": "FPS 裝備",
