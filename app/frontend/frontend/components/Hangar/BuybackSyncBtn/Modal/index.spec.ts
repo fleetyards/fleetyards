@@ -332,10 +332,13 @@ describe("HangarBuybackSyncModal", () => {
 
     await answerNextPage(buybackPage("1"));
     await answerNextPage(emptyBuybackPage);
+    rsiIdentity.mockClear();
 
     const wrapper = await mountModal(currentExtension);
 
     expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    // A result offers no Start, so it needs no session check.
+    expect(rsiIdentity).not.toHaveBeenCalled();
     wrapper.unmount();
     mounted = undefined;
 

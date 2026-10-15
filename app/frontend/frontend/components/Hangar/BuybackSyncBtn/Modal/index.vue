@@ -106,7 +106,7 @@ const checkExtension = async () => {
 // and warn about a session the run already has.
 const canStart = () =>
   !unmounted &&
-  !running.value &&
+  ["idle", "failed"].includes(status.value) &&
   extensionReady.value &&
   extensionSupportsBuybacks.value;
 
