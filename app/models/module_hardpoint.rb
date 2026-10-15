@@ -12,6 +12,26 @@ class ModuleHardpoint < ApplicationRecord
     ["model_id", "model_module_id", "slot", "created_at", "updated_at"]
   end
 
+  # The module each slot comes with from the factory, by slot: the game files
+  # name it as the slot's stock component. Every vehicle of the model can fit
+  # these without owning them.
+  def self.stock_modules(model)
+    stock_keys = model.hardpoints.where(category: :module, source: :game_files)
+      .includes(:component)
+      .each_with_object({}) do |hp, keys|
+        key = hp.component&.sc_key&.downcase
+        keys[hp.sc_name] = key if key.present?
+      end
+    return {} if stock_keys.empty?
+
+    where(model:, slot: stock_keys.keys).includes(:model_module)
+      .each_with_object({}) do |module_hardpoint, stock|
+        next unless module_hardpoint.model_module.sc_key&.downcase == stock_keys[module_hardpoint.slot]
+
+        stock[module_hardpoint.slot] = module_hardpoint.model_module_id
+      end
+  end
+
   def self.derive_slot(model, model_module)
     module_slots = model.hardpoints.where(category: :module, source: :game_files)
     return nil if module_slots.empty?

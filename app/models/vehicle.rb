@@ -797,10 +797,15 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  # A module that leaves the hangar cannot stay fitted. Destroyed one by one so
-  # each loadout it sat in is touched and re-rendered.
+  def stock_module_ids
+    ModuleHardpoint.stock_modules(model).values
+  end
+
+  # A module that leaves the hangar cannot stay fitted, unless the hull comes
+  # with it. Destroyed one by one so each loadout it sat in is touched and
+  # re-rendered.
   def unfit_unowned_modules
-    vehicle_loadout_items.where.not(model_module_id: model_module_ids).destroy_all
+    vehicle_loadout_items.where.not(model_module_id: model_module_ids + stock_module_ids).destroy_all
     vehicle_loadouts.reset
   end
 

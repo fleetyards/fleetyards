@@ -97,9 +97,10 @@ class VehicleLoadout < ApplicationRecord
     slots = item_list.pluck(:slot)
     errors.add(:items, :slot_taken) if slots.uniq.size != slots.size
 
-    # Counted, not just looked up: one owned copy fills one slot.
+    # Counted, not just looked up: one owned copy fills one slot. The hull's
+    # stock modules are there to fit without being owned.
     module_ids = item_list.pluck(:model_module_id)
-    owned = vehicle.model_module_ids.tally
+    owned = (vehicle.model_module_ids + vehicle.stock_module_ids).tally
     if module_ids.tally.any? { |id, count| count > owned.fetch(id, 0) }
       errors.add(:items, :module_not_owned)
     end

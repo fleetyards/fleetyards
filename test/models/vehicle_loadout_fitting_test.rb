@@ -80,6 +80,24 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert unslotted.errors.of_kind?(:items, :module_not_in_slot)
   end
 
+  test "fits the hull's stock module without owning it, and keeps it fitted" do
+    stock = create(:model_module, name: "Front Stock Module", sc_key: "AEGS_Front_Stock")
+    create(:module_hardpoint, model: @model, model_module: stock, slot: "hardpoint_front_module")
+    create(:hardpoint, parent: @model, source: :game_files, category: :module,
+      sc_name: "hardpoint_front_module", component: create(:component, sc_key: "aegs_front_stock", category: "module", component_type: "Module"))
+    @vehicle.vehicle_modules.destroy_all
+    @vehicle.reload
+
+    loadout = fleetyards_loadout(fit(["hardpoint_front_module", stock]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    assert_not_includes @vehicle.model_module_ids, stock.id
+
+    @vehicle.unfit_unowned_modules
+
+    assert_equal [stock.id], loadout.reload.items.pluck(:model_module_id)
+  end
+
   test "a link carries no items and a fleetyards loadout no url" do
     link = @vehicle.vehicle_loadouts.new(url: "https://erkul.games/loadout/x",
       item_list: fit(["hardpoint_rear_module", @rear_cargo]))
