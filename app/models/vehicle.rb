@@ -34,7 +34,7 @@ class Vehicle < ApplicationRecord
   has_paper_trail on: %i[create update],
     only: %i[
       name serial wanted flagship public name_visible sale_notify hidden hidden_by_user
-      loaner bought_via model_id model_paint_picture_id alternative_names
+      loaner bought_via model_id picture_type picture_id alternative_names
     ],
     if: ->(record) { !record.loaner? && !record.bundled? },
     meta: {
@@ -50,10 +50,10 @@ class Vehicle < ApplicationRecord
   # taking a ship out of their hangar while the sync keeps matching it.
   scope :visible, -> { where(hidden: false, hidden_by_user: false) }
 
-  # Owned paints are `vehicle_paints` now, and the picture is chosen in the
-  # gallery. Ignored until the column is dropped, so the release before this one
-  # keeps reading it while this one boots.
-  self.ignored_columns += ["model_paint_id"]
+  # Owned paints are `vehicle_paints` now, and a gallery pick is `picture`.
+  # Ignored until the columns are dropped, so the release before this one keeps
+  # reading them while this one boots.
+  self.ignored_columns += ["model_paint_id", "model_image_id"]
 
   belongs_to :model
   belongs_to :user, touch: :hangar_updated_at
@@ -91,20 +91,16 @@ class Vehicle < ApplicationRecord
 
   has_one_attached :image
 
-  # One of the model's own gallery pictures, picked rather than uploaded.
-  belongs_to :model_image, class_name: "Image", optional: true
+  # A picture picked rather than uploaded: one of the model's gallery images,
+  # or one of its paints, whose store image it shows. An upload wins over it.
+  PICTURE_TYPES = %w[Image ModelPaint].freeze
+  belongs_to :picture, polymorphic: true, optional: true
+  # The type is client input, so it is checked before anything resolves it.
+  validates :picture_type, inclusion: {in: PICTURE_TYPES}, allow_nil: true
   # Only a new pick is checked: an image disabled later must not block every
   # other save of the vehicle, the hangar sync's among them.
-  validate :model_image_from_own_model, if: -> { model_image_id? && will_save_change_to_model_image_id? }
-  before_validation :drop_model_image_of_another_model, if: :will_save_change_to_model_id?
-
-  # Or one of the model's paints' store image, in the gallery beside them.
-  belongs_to :model_paint_picture, class_name: "ModelPaint", optional: true
-  validate :model_paint_picture_from_own_model, if: -> { model_paint_picture_id? && will_save_change_to_model_paint_picture_id? }
-  before_validation :drop_model_paint_picture_of_another_model, if: :will_save_change_to_model_id?
-  # One gallery pick at a time: picking one source replaces the other, so a
-  # client sending only the new pick never trips the database check.
-  before_validation :keep_one_gallery_picture
+  validate :picture_of_own_model, if: -> { picture_id? && (will_save_change_to_picture_id? || will_save_change_to_picture_type?) }
+  before_validation :drop_picture_of_another_model, if: :will_save_change_to_model_id?
 
   # Where the owner left the ship. Only ever shown to the owner: a public
   # hangar saying where a ship is parked is an invitation.
@@ -176,10 +172,9 @@ class Vehicle < ApplicationRecord
       :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: :items},
       {model: Model.rendered_associations},
       :model_paints,
-      {model_paint_picture: ModelPaint.attachment_preloads},
+      {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]},
       {parent_vehicle: :model},
       {image_attachment: :blob},
-      {model_image: {file_attachment: :blob}},
       :user,
       :linked_location,
       :launch_port_location
@@ -272,8 +267,15 @@ class Vehicle < ApplicationRecord
         ON active_storage_attachments.record_type = 'Image'
         AND active_storage_attachments.record_id = images.id
         AND active_storage_attachments.name = 'file'
-      WHERE images.id = vehicles.model_image_id
+      WHERE vehicles.picture_type = 'Image'
+        AND images.id = vehicles.picture_id
         AND images.enabled = TRUE
+    ) OR EXISTS (
+      SELECT 1 FROM active_storage_attachments
+      WHERE vehicles.picture_type = 'ModelPaint'
+        AND active_storage_attachments.record_type = 'ModelPaint'
+        AND active_storage_attachments.record_id = vehicles.picture_id
+        AND active_storage_attachments.name = 'store_image'
     )
   SQL
 
@@ -297,7 +299,7 @@ class Vehicle < ApplicationRecord
     [
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
-      "manufacturer", "model_id", "model_paint_picture_id", "module_package_id", "name", "name_visible",
+      "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
       "user_id", "vehicle_id", "wanted"
@@ -786,6 +788,29 @@ class Vehicle < ApplicationRecord
     end
   end
 
+  # The record and attachment the ship's picture comes from: an upload, else the
+  # picked picture while it still has a file to show. Without either the ship
+  # shows its stock render, which is the client's to pick.
+  def image_source
+    return [self, :image] if image.attached?
+
+    picture_source
+  end
+
+  # A gallery image disabled since, or a paint whose store image went, has
+  # nothing to show.
+  def picture_source
+    case picture
+    when Image then [picture, :file] if picture.enabled? && picture.file.attached?
+    when ModelPaint then [picture, :store_image] if picture.store_image.attached?
+    end
+  end
+
+  def picture_file
+    record, attr = picture_source
+    record&.public_send(attr)
+  end
+
   def export_name
     model.rsi_name || model.name
   end
@@ -831,7 +856,7 @@ class Vehicle < ApplicationRecord
   def to_jbuilder_hash(*_args)
     ActiveRecord::Associations::Preloader.new(
       records: [self],
-      associations: [:model_paints, :model_paint_picture, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
+      associations: [:model_paints, :picture, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
         model: [:manufacturer]]
     ).call
 
@@ -1016,36 +1041,24 @@ class Vehicle < ApplicationRecord
     errors.add(:model, :not_player_ownable)
   end
 
-  private def model_image_from_own_model
-    return if model_image.present? && model_image.enabled? &&
-      model_image.gallery_type == "Model" && model_image.gallery_id == model_id
+  private def picture_of_own_model
+    return if PICTURE_TYPES.include?(picture_type) && picture_file.present? && picture_model_id == model_id
 
-    errors.add(:model_image, :invalid)
+    errors.add(:picture, :invalid)
   end
 
   # A picture of the old model would show the wrong ship.
-  private def drop_model_image_of_another_model
-    self.model_image_id = nil if model_image.present? && model_image.gallery_id != model_id
+  private def drop_picture_of_another_model
+    return unless PICTURE_TYPES.include?(picture_type)
+    return if picture.blank? || picture_model_id == model_id
+
+    self.picture = nil
   end
 
-  private def model_paint_picture_from_own_model
-    return if model_paint_picture.present? && model_paint_picture.model_id == model_id &&
-      model_paint_picture.store_image.attached?
-
-    errors.add(:model_paint_picture, :invalid)
-  end
-
-  private def drop_model_paint_picture_of_another_model
-    self.model_paint_picture_id = nil if model_paint_picture.present? && model_paint_picture.model_id != model_id
-  end
-
-  private def keep_one_gallery_picture
-    return unless model_image_id? && model_paint_picture_id?
-
-    if will_save_change_to_model_paint_picture_id?
-      self.model_image_id = nil
-    else
-      self.model_paint_picture_id = nil
+  private def picture_model_id
+    case picture
+    when Image then picture.gallery_id if picture.gallery_type == "Model"
+    when ModelPaint then picture.model_id
     end
   end
 

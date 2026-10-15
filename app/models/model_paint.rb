@@ -32,8 +32,7 @@ class ModelPaint < ApplicationRecord
   # Destroyed one by one, so each ship is touched and its cached payload with it.
   has_many :vehicle_paints, dependent: :destroy
   has_many :vehicles, through: :vehicle_paints
-  has_many :picture_vehicles, class_name: "Vehicle", foreign_key: :model_paint_picture_id,
-    inverse_of: :model_paint_picture, dependent: nil
+  has_many :picture_vehicles, class_name: "Vehicle", as: :picture, dependent: nil
   before_destroy :drop_as_vehicle_picture
   has_many :item_prices, as: :item, dependent: :destroy
 
@@ -98,9 +97,9 @@ class ModelPaint < ApplicationRecord
     self.rsi_slug = generate_slug(rsi_name)
   end
 
-  # The column nullifies itself, but that skips the ships' timestamps, which
-  # their cached payloads are keyed by.
+  # A polymorphic reference has no foreign key to clear it, and the ships'
+  # cached payloads are keyed by their timestamps.
   private def drop_as_vehicle_picture
-    picture_vehicles.update_all(model_paint_picture_id: nil, updated_at: Time.current)
+    picture_vehicles.update_all(picture_type: nil, picture_id: nil, updated_at: Time.current)
   end
 end

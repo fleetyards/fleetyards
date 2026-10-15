@@ -11,9 +11,8 @@ class AddVehiclePaints < ActiveRecord::Migration[8.1]
     end
     add_index :vehicle_paints, %i[vehicle_id model_paint_id], unique: true
 
-    add_reference :vehicles, :model_paint_picture, type: :uuid, index: true,
-      foreign_key: {to_table: :model_paints, on_delete: :nullify}
-    add_check_constraint :vehicles, "num_nonnulls(model_image_id, model_paint_picture_id) <= 1",
-      name: "vehicles_one_gallery_picture"
+    # The picture picked for the ship: a model gallery `Image`, or a `ModelPaint`
+    # whose store image it shows. Beside an uploaded image, which wins.
+    add_reference :vehicles, :picture, type: :uuid, polymorphic: true, index: true
   end
 end

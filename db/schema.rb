@@ -2799,19 +2799,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
     t.string "plaque_style"
     t.string "plaque_captain"
     t.boolean "hidden_by_user", default: false, null: false
-    t.uuid "model_paint_picture_id"
+    t.string "picture_type"
+    t.uuid "picture_id"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_image_id"], name: "index_vehicles_on_model_image_id"
     t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
-    t.index ["model_paint_picture_id"], name: "index_vehicles_on_model_paint_picture_id"
+    t.index ["picture_type", "picture_id"], name: "index_vehicles_on_picture"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id", "rank"], name: "index_vehicles_on_user_id_and_rank", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
     t.index ["vehicle_id", "bundled"], name: "index_vehicles_on_vehicle_id_and_bundled"
-    t.check_constraint "num_nonnulls(model_image_id, model_paint_picture_id) <= 1", name: "vehicles_one_gallery_picture"
   end
 
   create_table "versions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -3046,5 +3046,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
   add_foreign_key "vehicles", "images", column: "model_image_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", column: "launch_port_location_id", on_delete: :nullify
   add_foreign_key "vehicles", "locations", on_delete: :nullify
-  add_foreign_key "vehicles", "model_paints", column: "model_paint_picture_id", on_delete: :nullify
 end

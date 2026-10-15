@@ -440,7 +440,7 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert vehicle.present?
       assert_equal gladius.id, vehicle.model_id
       assert_equal "99999", vehicle.vehicle_paints.sole.rsi_pledge_id
-      assert_equal paint.id, vehicle.model_paint_picture_id
+      assert_equal paint, vehicle.picture
     end
 
     test "records the paint of a painted pledge on the hull that owns it" do

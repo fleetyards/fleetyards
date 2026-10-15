@@ -296,8 +296,8 @@ class HangarSync < HangarImporter
         end
 
         # A new ship looks the way its pledge showed it.
-        picture = model_paint.store_image.attached? ? model_paint.id : nil
-        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, model_paint_picture_id: picture))
+        picture = model_paint if model_paint.store_image.attached?
+        vehicle = vehicle_scope.create!(params.merge(model_id: model_paint.model_id, picture:))
         record_owned_paint(vehicle, model_paint, item)
         vehicle_ids << vehicle.id
         imported_vehicles << vehicle.id

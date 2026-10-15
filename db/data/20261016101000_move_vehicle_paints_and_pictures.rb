@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-# A vehicle's one paint becomes a paint it owns, and the picture that paint gave
-# it becomes the picture chosen in the gallery, so a ship without a picture of
-# its own looks the same afterwards. A paint of another model -- left behind by
-# a model change -- is neither.
+# A vehicle's one paint becomes a paint it owns, and its picture becomes the
+# picked `picture`: the gallery image it had picked, else the store image its
+# paint gave it, so every ship looks the same afterwards. A paint of another
+# model -- left behind by a model change -- is neither owned nor shown.
 #
 # No pledge is carried over: the hull's pledge is not necessarily the one the
 # paint came with, as a paint applied by hand shows. The next sync stamps the
 # paints that did come with one.
-class MoveVehiclePaintsToOwnedPaints < ActiveRecord::Migration[8.1]
+class MoveVehiclePaintsAndPictures < ActiveRecord::Migration[8.1]
   def up
     execute <<~SQL.squish
       INSERT INTO vehicle_paints (vehicle_id, model_paint_id, created_at, updated_at)
@@ -22,11 +22,17 @@ class MoveVehiclePaintsToOwnedPaints < ActiveRecord::Migration[8.1]
 
     execute <<~SQL.squish
       UPDATE vehicles
-      SET model_paint_picture_id = vehicles.model_paint_id, updated_at = NOW()
+      SET picture_type = 'Image', picture_id = model_image_id, updated_at = NOW()
+      WHERE model_image_id IS NOT NULL
+    SQL
+
+    execute <<~SQL.squish
+      UPDATE vehicles
+      SET picture_type = 'ModelPaint', picture_id = vehicles.model_paint_id, updated_at = NOW()
       FROM model_paints
       WHERE model_paints.id = vehicles.model_paint_id
         AND model_paints.model_id = vehicles.model_id
-        AND vehicles.model_image_id IS NULL
+        AND vehicles.picture_id IS NULL
         AND NOT EXISTS (
           SELECT 1 FROM active_storage_attachments
           WHERE record_type = 'Vehicle' AND record_id = vehicles.id AND name = 'image'

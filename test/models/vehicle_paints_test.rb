@@ -40,45 +40,46 @@ class VehiclePaintsTest < ActiveSupport::TestCase
   end
 
   test "takes a paint of its model with a store image as its picture" do
-    assert @vehicle.update(model_paint_picture: @paint)
+    assert @vehicle.update(picture: @paint)
   end
 
   test "takes no paint of another model as its picture" do
-    assert_not @vehicle.update(model_paint_picture: create(:model_paint, :with_store_image))
+    assert_not @vehicle.update(picture: create(:model_paint, :with_store_image))
   end
 
   test "takes no paint without a store image as its picture" do
-    assert_not @vehicle.update(model_paint_picture: create(:model_paint, model: @model))
+    assert_not @vehicle.update(picture: create(:model_paint, model: @model))
   end
 
-  test "a paint picture replaces a gallery image, and a gallery image a paint picture" do
+  test "a deleted gallery image leaves the ship showing it touched, and without a picture" do
     image = create(:image, gallery: @model)
-    @vehicle.update!(model_image: image)
+    @vehicle.update!(picture: image)
+    @vehicle.update_columns(updated_at: 1.day.ago)
 
-    @vehicle.update!(model_paint_picture: @paint)
-    assert_nil @vehicle.reload.model_image_id
+    image.destroy!
 
-    @vehicle.update!(model_image: image)
-    assert_nil @vehicle.reload.model_paint_picture_id
+    @vehicle.reload
+    assert_nil @vehicle.picture_id
+    assert_operator @vehicle.updated_at, :>, 1.hour.ago
   end
 
   test "a deleted paint leaves the ships owning it, and the one showing it, touched" do
-    @vehicle.update!(model_paint_ids: [@paint.id], model_paint_picture: @paint)
+    @vehicle.update!(model_paint_ids: [@paint.id], picture: @paint)
     @vehicle.update_columns(updated_at: 1.day.ago)
 
     @paint.destroy!
 
     @vehicle.reload
     assert_empty @vehicle.model_paint_ids
-    assert_nil @vehicle.model_paint_picture_id
+    assert_nil @vehicle.picture_id
     assert_operator @vehicle.updated_at, :>, 1.hour.ago
   end
 
   test "drops the paint picture on a model change" do
-    @vehicle.update!(model_paint_picture: @paint)
+    @vehicle.update!(picture: @paint)
 
     @vehicle.update!(model: create(:model))
 
-    assert_nil @vehicle.reload.model_paint_picture_id
+    assert_nil @vehicle.reload.picture_id
   end
 end
