@@ -317,6 +317,19 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: model.id}
   end
 
+  test "GET /models/:id lists the module slots the game files give the hull" do
+    model = create(:model)
+    module_component = create(:component, sc_key: "rsi_module", category: "module", component_type: "Module")
+    %w[hardpoint_rear_module hardpoint_front_module].each do |sc_name|
+      create(:hardpoint, parent: model, source: :game_files, sc_name:, component: module_component)
+    end
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: model.id} do
+      assert_equal %w[hardpoint_front_module hardpoint_rear_module], parsed_body["moduleSlots"]
+    end
+  end
+
   test "GET /models/:id returns 404 for missing id" do
     sign_in @user
 
