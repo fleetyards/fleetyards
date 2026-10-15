@@ -15,7 +15,7 @@ module Api
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
       VEHICLE_RENDER_INCLUDES = [
-        :model_paint,
+        {model_paint_picture: {store_image_attachment: :blob}},
         :module_package,
         {vehicle_loadouts: :items},
         {user: [:omniauth_connections]},
@@ -115,7 +115,7 @@ module Api
         )
           .order(@q.result.order_values)
           .includes(
-            :model_paint,
+            :model_paints,
             :model_modules,
             :model_upgrades,
             :hangar_groups,

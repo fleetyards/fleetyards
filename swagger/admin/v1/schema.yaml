@@ -21302,8 +21302,8 @@ components:
           "$ref": "#/components/schemas/ModelModulePackage"
         nameVisible:
           type: boolean
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
+        paintPicture:
+          "$ref": "#/components/schemas/MediaFile"
         public:
           type: boolean
         saleNotify:

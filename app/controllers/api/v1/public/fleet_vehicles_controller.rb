@@ -10,7 +10,7 @@ module Api
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
         VEHICLE_RENDER_INCLUDES = [
-          :model_paint,
+          {model_paint_picture: {store_image_attachment: :blob}},
           :module_package,
           {vehicle_loadouts: :items},
           :public_hangar_groups,

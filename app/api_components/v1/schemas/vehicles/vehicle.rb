@@ -25,9 +25,9 @@ module V1
             model: {"$ref": "#/components/schemas/Model"},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
+            modelPaintIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             nameVisible: {type: :boolean},
-            paint: {"$ref": "#/components/schemas/ModelPaint"},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             logEntriesPublicByDefault: {type: :boolean},
@@ -49,6 +49,8 @@ module V1
             image: ::Shared::V1::Schemas::MediaFile,
             modelImageId: {type: [:string, :null], format: :uuid},
             modelImage: ::Shared::V1::Schemas::MediaFile,
+            modelPaintPictureId: {type: [:string, :null], format: :uuid},
+            paintPicture: ::Shared::V1::Schemas::MediaFile,
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
             hiddenByUser: {type: :boolean},
@@ -62,7 +64,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id model wanted hiddenByUser loaner bundled flagship public nameVisible saleNotify logEntriesPublicByDefault alternativeNames
-            modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
+            modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds modelPaintIds createdAt updatedAt
           ]
         })
       end

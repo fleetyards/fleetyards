@@ -10,9 +10,9 @@ json.vehicles @vehicles do |vehicle|
       json.partial! "api/v1/shared/file", record: vehicle, attr: :image
     end
   end
-  if vehicle.model_paint&.store_image&.attached?
+  if vehicle.model_paint_picture&.store_image&.attached?
     json.paint_image do
-      json.partial! "api/v1/shared/file", record: vehicle.model_paint, attr: :store_image
+      json.partial! "api/v1/shared/file", record: vehicle.model_paint_picture, attr: :store_image
     end
   end
 end

@@ -14,7 +14,7 @@ module V1
             shipCode: {type: :string},
             manufacturerName: {type: :string},
             manufacturerCode: {type: :string},
-            paintSlug: {type: :string},
+            paintSlugs: {type: :array, items: {type: :string}},
             shipName: {type: :string},
             shipSerial: {type: :string},
             wanted: {type: :boolean},

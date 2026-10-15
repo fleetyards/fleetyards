@@ -319,6 +319,39 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {name: "Enterprise A"}
   end
 
+  test "PUT /vehicles/:id records the paints the ship owns" do
+    vehicle = create(:vehicle, user: @user)
+    paints = create_list(:model_paint, 2, model: vehicle.model)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelPaintIds: paints.map(&:id)} do
+      assert_equal paints.map(&:id).sort, parsed_body["modelPaintIds"].sort
+    end
+  end
+
+  test "PUT /vehicles/:id picks a paint's picture in place of a gallery image" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    paint = create(:model_paint, :with_store_image, model: vehicle.model)
+    vehicle.update!(model_image: create(:image, gallery: vehicle.model))
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {modelPaintPictureId: paint.id} do
+      assert_equal paint.id, parsed_body["modelPaintPictureId"]
+      assert_nil parsed_body["modelImageId"]
+      assert parsed_body.dig("paintPicture", "url").present?
+    end
+  end
+
+  test "PUT /vehicles/:id rejects another model's paint as the picture" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id},
+      body: {modelPaintPictureId: create(:model_paint, :with_store_image).id}
+  end
+
   test "PUT /vehicles/:id hides and unhides the vehicle" do
     vehicle = create(:vehicle, user: @user, wanted: false)
     sign_in @user

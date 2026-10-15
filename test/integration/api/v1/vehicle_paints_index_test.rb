@@ -44,19 +44,30 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
     @user = create(:user)
     @model = create(:model, name: "Ironclad")
     @rust = create(:model_paint, model: @model, name: "Rust Society")
-    @storm = create(:model_paint, model: @model, name: "Stormbringer")
-    @vehicle = create(:vehicle, user: @user, model: @model, model_paint: @storm)
+    @storm = create(:model_paint, :with_store_image, model: @model, name: "Stormbringer")
+    @vehicle = create(:vehicle, user: @user, model: @model, model_paints: [@storm])
   end
 
-  test "GET /vehicles/:vehicle_id/paints lists the owned paints first and marks the applied one" do
+  test "GET /vehicles/:vehicle_id/paints lists the ship's paints first, then the pledged ones" do
+    create(:model_paint, model: @model, name: "Alpha")
     item = create(:hangar_pledge_item, user: @user, name: "Ironclad - Rust Society Paint")
     HangarPledgeItems::PaintLinker.new.link([item])
     sign_in @user
 
     assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
-      assert_equal ["Rust Society", "Stormbringer"], parsed_body.map { |entry| entry.dig("paint", "name") }
-      assert_equal [true, false], parsed_body.pluck("owned")
-      assert_equal [false, true], parsed_body.pluck("applied")
+      assert_equal ["Stormbringer", "Rust Society", "Alpha"], parsed_body.map { |entry| entry.dig("paint", "name") }
+      assert_equal [true, false, false], parsed_body.pluck("owned")
+      assert_equal [false, true, false], parsed_body.pluck("pledged")
+    end
+  end
+
+  test "GET /vehicles/:vehicle_id/paints marks the paint whose picture the ship shows" do
+    @vehicle.update!(model_paint_picture: @storm)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      picture = parsed_body.select { |entry| entry["picture"] }
+      assert_equal ["Stormbringer"], picture.map { |entry| entry.dig("paint", "name") }
     end
   end
 
@@ -69,13 +80,13 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /vehicles/:vehicle_id/paints keeps the applied paint once the catalogue hides it" do
+  test "GET /vehicles/:vehicle_id/paints keeps an owned paint once the catalogue hides it" do
     @storm.update!(hidden: true)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
-      applied = parsed_body.find { |entry| entry["applied"] }
-      assert_equal "Stormbringer", applied&.dig("paint", "name")
+      owned = parsed_body.find { |entry| entry["owned"] }
+      assert_equal "Stormbringer", owned&.dig("paint", "name")
     end
   end
 

@@ -217,7 +217,7 @@ module Api
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(model: [:manufacturer])
+          .includes(:model_paints, model: [:manufacturer])
           .joins(model: [:manufacturer])
       end
 

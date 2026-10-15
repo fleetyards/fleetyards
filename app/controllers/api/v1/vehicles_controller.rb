@@ -152,8 +152,8 @@ module Api
         @vehicle_params ||= params.transform_keys(&:underscore)
           .permit(
             :name, :serial, :model_id, :wanted, :name_visible, :public, :sale_notify, :flagship,
-            :model_paint_id, :bought_via, :hidden_by_user, *vehicle_overview_params,
-            hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
+            :bought_via, :hidden_by_user, *vehicle_overview_params,
+            hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], model_paint_ids: [], alternative_names: []
           ).merge(user_id: current_resource_owner.id)
       end
 
@@ -175,7 +175,7 @@ module Api
         return [] unless feature_enabled?("vehicle_overview")
 
         %i[
-          image model_image_id log_entries_public_by_default location location_id
+          image model_image_id model_paint_picture_id log_entries_public_by_default location location_id
           dedication launched_on launch_port launch_port_location_id affiliation operations_group plaque_captain plaque_style plaque_image
         ]
       end

@@ -29469,8 +29469,10 @@ components:
           type: string
         manufacturerCode:
           type: string
-        paintSlug:
-          type: string
+        paintSlugs:
+          type: array
+          items:
+            type: string
         shipName:
           type: string
         shipSerial:
@@ -39977,12 +39979,15 @@ components:
           items:
             type: string
             format: uuid
+        modelPaintIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         modulePackage:
           "$ref": "#/components/schemas/ModelModulePackage"
         nameVisible:
           type: boolean
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
         public:
           type: boolean
         saleNotify:
@@ -40047,6 +40052,13 @@ components:
           format: uuid
         modelImage:
           "$ref": "#/components/schemas/MediaFile"
+        modelPaintPictureId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        paintPicture:
+          "$ref": "#/components/schemas/MediaFile"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
@@ -40083,6 +40095,7 @@ components:
       - hangarGroupIds
       - hangarGroups
       - modelModuleIds
+      - modelPaintIds
       - createdAt
       - updatedAt
       title: Vehicle
@@ -40148,11 +40161,6 @@ components:
           type: boolean
         flagship:
           type: boolean
-        modelPaintId:
-          type:
-          - string
-          - 'null'
-          format: uuid
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupIds:
@@ -40170,6 +40178,13 @@ components:
             type: string
             format: uuid
         modelUpgradeIds:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+        modelPaintIds:
           type:
           - array
           - 'null'
@@ -40211,8 +40226,10 @@ components:
           type: string
         manufacturerCode:
           type: string
-        paintSlug:
-          type: string
+        paintSlugs:
+          type: array
+          items:
+            type: string
         shipName:
           type: string
         shipSerial:
@@ -40544,14 +40561,17 @@ components:
       properties:
         owned:
           type: boolean
-        applied:
+        pledged:
+          type: boolean
+        picture:
           type: boolean
         paint:
           "$ref": "#/components/schemas/ModelPaint"
       additionalProperties: false
       required:
       - owned
-      - applied
+      - pledged
+      - picture
       - paint
       title: VehiclePaint
     VehiclePaintsList:
@@ -40685,11 +40705,11 @@ components:
           "$ref": "#/components/schemas/ModelModulePackage"
         upgrade:
           "$ref": "#/components/schemas/ModelUpgrade"
-        paint:
-          "$ref": "#/components/schemas/ModelPaint"
         image:
           "$ref": "#/components/schemas/MediaFile"
         modelImage:
+          "$ref": "#/components/schemas/MediaFile"
+        paintPicture:
           "$ref": "#/components/schemas/MediaFile"
         activeLoadout:
           "$ref": "#/components/schemas/VehicleLoadoutMinimal"
@@ -40904,13 +40924,13 @@ components:
           - string
           - 'null'
           format: uuid
-        flagship:
-          type: boolean
-        modelPaintId:
+        modelPaintPictureId:
           type:
           - string
           - 'null'
           format: uuid
+        flagship:
+          type: boolean
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupIds:
@@ -40924,6 +40944,11 @@ components:
             type: string
             format: uuid
         modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelPaintIds:
           type: array
           items:
             type: string

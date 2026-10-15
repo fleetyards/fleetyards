@@ -2513,3 +2513,24 @@ GET /vehicles/{vehicle_id}/loadouts/{id} the response property `url` became opti
 PUT /vehicles/{vehicle_id}/loadouts/{id} the response property `url` became optional for the status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `url` became optional for the status `200`
 GET /wishlist the response property `items/items/activeLoadout/url` became optional for the status `200`
+GET /vehicles/{vehicle_id}/paints removed the required property `items/applied` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/paint` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles/export removed the optional property `items/paintSlug` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the optional property `items/paintSlug` from the response with the `200` status
+GET /hangar removed the optional property `items/items/paint` from the response with the `200` status
+GET /hangar/export removed the optional property `items/paintSlug` from the response with the `200` status
+GET /hangar/export/hangar-link removed the optional property `items/paintSlug` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/paint` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/paint` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/paint` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/paint` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `paint` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/paint` from the response with the `200` status
+POST /vehicles removed the request property `modelPaintId`
+POST /vehicles removed the optional property `paint` from the response with the `201` status
+DELETE /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+PUT /vehicles/{id} removed the request property `modelPaintId`
+PUT /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/paint` from the response with the `200` status
+GET /wishlist/export removed the optional property `items/paintSlug` from the response with the `200` status

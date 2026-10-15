@@ -31,12 +31,15 @@ module V1
             plaqueImage: {type: [:string, :null]},
             image: {type: [:string, :null]},
             modelImageId: {type: [:string, :null], format: :uuid},
+            # A paint of the ship's model whose store image is the picture;
+            # replaces a gallery image, as one replaces the other.
+            modelPaintPictureId: {type: [:string, :null], format: :uuid},
             flagship: {type: :boolean},
-            modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
+            modelPaintIds: {type: :array, items: {type: :string, format: :uuid}},
             alternativeNames: {type: :array, items: {type: :string}}
           },
           additionalProperties: false

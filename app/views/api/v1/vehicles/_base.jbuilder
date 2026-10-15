@@ -36,11 +36,6 @@ json.model do
   json.partial! "api/v1/models/model", model: vehicle.model
 end
 
-json.paint do
-  json.partial! "api/v1/model_paints/base", model_paint: vehicle.model_paint if vehicle.model_paint.present?
-end
-json.paint nil if vehicle.model_paint.blank?
-
 json.upgrade do
   json.partial! "api/v1/model_upgrades/base", model_upgrade: vehicle.model_upgrades.first if vehicle.model_upgrades.present?
 end
@@ -53,6 +48,7 @@ end
 
 json.model_module_ids vehicle.model_module_ids
 json.model_upgrade_ids vehicle.model_upgrade_ids
+json.model_paint_ids vehicle.model_paint_ids
 
 json.module_package do
   json.partial! "api/v1/model_module_packages/base", module_package: vehicle.module_package if vehicle.module_package.present?
@@ -71,6 +67,9 @@ if vehicle.model_image&.enabled? && vehicle.model_image.file.attached?
     json.partial! "api/v1/shared/file", record: vehicle.model_image, attr: :file
   end
 end
+
+json.model_paint_picture_id vehicle.model_paint_picture_id
+json.partial!("api/v1/vehicles/paint_picture", vehicle:)
 
 active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do

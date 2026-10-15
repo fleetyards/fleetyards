@@ -27,7 +27,7 @@ module Admin
               modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
               modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
               nameVisible: {type: :boolean},
-              paint: {"$ref": "#/components/schemas/ModelPaint"},
+              paintPicture: ::Shared::V1::Schemas::MediaFile,
               public: {type: :boolean},
               saleNotify: {type: :boolean},
               upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
