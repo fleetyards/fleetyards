@@ -56,3 +56,14 @@ export function setupAppsignal(app: App<Element>) {
     };
   }
 }
+
+// For failures a component handles itself, which never reach the error handler.
+export function reportError(error: unknown, action?: string) {
+  if (!appsignal || shouldIgnore(error)) return;
+
+  const reported = error instanceof Error ? error : new Error(String(error));
+
+  void appsignal.sendError(reported, (span) => {
+    if (action) span.setAction(action);
+  });
+}
