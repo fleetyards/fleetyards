@@ -53,12 +53,21 @@ const candidates = (slot: string) =>
 // nowhere to fit it.
 const unslotted = computed(() => owned.value.filter((mod) => !mod.slot));
 
-const SLOT_POSITIONS = ["front", "rear", "left", "right"] as const;
+// The same keywords `ModuleHardpoint.derive_slot` reads a slot's position
+// from, bow and stern being the front and rear by another name.
+const SLOT_POSITIONS = [
+  ["front", "front"],
+  ["bow", "front"],
+  ["rear", "rear"],
+  ["stern", "rear"],
+  ["left", "left"],
+  ["right", "right"],
+] as const;
 
 const slotLabel = (slot: string) => {
-  const position = SLOT_POSITIONS.find((keyword) => slot.includes(keyword));
+  const position = SLOT_POSITIONS.find(([keyword]) => slot.includes(keyword));
 
-  return t(`labels.vehicleLoadout.slots.${position || "default"}`);
+  return t(`labels.vehicleLoadout.slots.${position?.[1] || "default"}`);
 };
 
 const fittedIn = (slot: string) => props.modelValue[slot];
