@@ -18,6 +18,8 @@ import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
+import orePodsIconUrl from "@/images/hardpoints/ore_pods.svg";
+import salvageStorageIconUrl from "@/images/hardpoints/salvage_storage.svg";
 
 // The drawn set. Keyed by the category string itself, which a component and a
 // hardpoint slot share for everything below -- the exception is thrusters, and
@@ -49,6 +51,8 @@ export const categorySvgIcons = {
   utility_items: utilityItemsIconUrl,
   quantumenforcementdevice: qedIconUrl,
   emp: empIconUrl,
+  ore_pods: orePodsIconUrl,
+  salvage_storage: salvageStorageIconUrl,
 } as const;
 
 // The categories the drawn set never got, carried as Font Awesome glyphs the
