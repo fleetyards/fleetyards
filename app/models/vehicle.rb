@@ -794,27 +794,20 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  # The record and attachment the ship's picture comes from: an upload, else the
-  # picked picture while it still has a file to show. Without either the ship
-  # shows its stock render, which is the client's to pick.
-  def image_source
-    return [self, :image] if image.attached?
-
-    picture_source
+  # The ship's picture: an upload, else the picked picture while it still has a
+  # file to show. Without either the ship shows its stock render, which is the
+  # client's to pick.
+  def display_image
+    image.attached? ? image : picture_file
   end
 
   # A gallery image disabled since, or a paint whose store image went, has
   # nothing to show.
-  def picture_source
-    case picture
-    when Image then [picture, :file] if picture.enabled? && picture.file.attached?
-    when ModelPaint then [picture, :store_image] if picture.store_image.attached?
-    end
-  end
-
   def picture_file
-    record, attr = picture_source
-    record&.public_send(attr)
+    case picture
+    when Image then picture.file if picture.enabled? && picture.file.attached?
+    when ModelPaint then picture.store_image if picture.store_image.attached?
+    end
   end
 
   def export_name

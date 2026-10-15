@@ -90,8 +90,7 @@ module Frontend
     # The picture the public hangar shows for the ship: the owner's own or picked
     # one, else the model's.
     private def vehicle_picture(vehicle)
-      record, attr = vehicle.image_source
-      return record.public_send(attr) if record.present?
+      return vehicle.display_image if vehicle.display_image.present?
 
       vehicle.model.store_image if vehicle.model.store_image.attached?
     end
