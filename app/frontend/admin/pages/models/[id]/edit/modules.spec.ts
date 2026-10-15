@@ -37,6 +37,12 @@ vi.mock("@/services/fyAdminApi", async () => {
   };
 });
 
+const displayAlert = vi.hoisted(() => vi.fn());
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displayAlert, displayConfirm: vi.fn() }),
+}));
+
 // The file input carries a 3D preview whose library does not load under the
 // test runner.
 vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
@@ -127,7 +133,9 @@ const mountPage = async () => {
 
 beforeEach(() => {
   updateModelModule.mockClear();
-  linkModelModule.mockClear();
+  linkModelModule.mockReset();
+  linkModelModule.mockImplementation(() => Promise.resolve({}));
+  displayAlert.mockClear();
 });
 
 describe("AdminModelEditModulesPage", () => {
@@ -174,6 +182,25 @@ describe("AdminModelEditModulesPage", () => {
       id: "module-1",
       data: { modelId: "model-1", slot: "" },
     });
+  });
+
+  it("says so and keeps the row open when the slot cannot be saved", async () => {
+    modules.value = { items: [mod("hardpoint_front_module")] };
+    linkModelModule.mockImplementation(() => Promise.reject(new Error("400")));
+    const wrapper = await mountPage();
+
+    await wrapper.get("[data-test='start-edit']").trigger("click");
+    await wrapper
+      .get("input[name='edit-slot']")
+      .setValue("hardpoint_rear_module");
+    await wrapper.get("[data-test='save-edit']").trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: expect.stringContaining("messages.modelModule.update.failure"),
+      }),
+    );
   });
 
   it("leaves the link alone when the slot did not change", async () => {

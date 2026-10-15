@@ -29,6 +29,7 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
@@ -44,7 +45,7 @@ const props = defineProps<Props>();
 const { t, toUEC } = useI18n();
 const queryClient = useQueryClient();
 const comlink = useComlink();
-const { displayConfirm } = useAppNotifications();
+const { displayConfirm, displayAlert } = useAppNotifications();
 
 const editableList = ref<{
   editingId: string | null;
@@ -75,9 +76,12 @@ const invalidateModules = () =>
 // the link, which holds it, rather than the module, which several hulls share.
 const slotFor = (record: ModelModule) =>
   record.moduleHardpoints?.find((link) => link.modelId === props.model.id)
-    ?.slot ?? undefined;
+    ?.slot ?? "";
 
-const editSlot = ref<string>("");
+// The slot as the edit began, so saving compares against that rather than a
+// list the module's own save has just refetched.
+const editSlot = ref("");
+const originalSlot = ref("");
 
 const linkMutation = useLinkModelModuleMutation({
   mutation: {
@@ -89,7 +93,8 @@ const linkMutation = useLinkModelModuleMutation({
 const editForm = ref<ModelModuleInput>({});
 
 const onStartEdit = (record: ModelModule) => {
-  editSlot.value = slotFor(record) || "";
+  editSlot.value = slotFor(record);
+  originalSlot.value = editSlot.value;
   editForm.value = {
     name: record.name,
     description: record.description,
@@ -118,21 +123,32 @@ const onSaveEdit = async () => {
   const id = editableList.value?.editingId;
   if (!id) return;
 
-  await updateMutation.mutateAsync({
-    id,
-    data: editForm.value,
-  });
-
-  const record = (data.value?.items as ModelModule[] | undefined)?.find(
-    (item) => item.id === id,
-  );
   const slot = editSlot.value.trim();
 
-  if (record && slot !== (slotFor(record) || "")) {
-    await linkMutation.mutateAsync({
+  // The row stays open on a failure, with the reason, so nothing is half
+  // saved without the admin knowing.
+  try {
+    await updateMutation.mutateAsync({
       id,
-      data: { modelId: props.model.id, slot },
+      data: editForm.value,
     });
+
+    if (slot !== originalSlot.value) {
+      await linkMutation.mutateAsync({
+        id,
+        data: { modelId: props.model.id, slot },
+      });
+    }
+  } catch (error) {
+    displayAlert({
+      text: [
+        t("messages.modelModule.update.failure"),
+        firstErrorMessageFrom(error),
+      ]
+        .filter(Boolean)
+        .join(": "),
+    });
+    return;
   }
 
   editableList.value?.finishEdit();
@@ -389,6 +405,11 @@ const onUnlink = (record: ModelModule) => {
           v-model="createForm.scKey"
           name="create-sc-key"
           translation-key="modelModule.scKey"
+        />
+        <FormInput
+          v-model="createForm.slot"
+          name="create-slot"
+          translation-key="modelModule.slot"
         />
       </div>
     </template>

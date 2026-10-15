@@ -78,6 +78,11 @@
         "success": "Dein Passwort wurde erfolgreich geändert.",
         "failure": "Dein Passwort konnte nicht aktualisiert werden."
       },
+      "modelModule": {
+        "update": {
+          "failure": "Das Modul konnte nicht gespeichert werden."
+        }
+      },
       "updateProfile": {
         "success": "Profil aktualisiert.",
         "failure": "Profile could not be updated."
