@@ -16,10 +16,38 @@ class VehicleLoadout < ApplicationRecord
 
   belongs_to :vehicle, touch: true
 
+  # A link points at a build kept on another site; a fleetyards loadout keeps
+  # its own record of what is fitted, slot by slot. Never both.
+  enum :kind, {
+    link: "link",
+    fleetyards: "fleetyards"
+  }, prefix: true
+
+  has_many :items, -> { order(:slot) },
+    class_name: "VehicleLoadoutItem",
+    inverse_of: :vehicle_loadout,
+    dependent: :delete_all
+
   before_validation :set_default_name, if: -> { name.blank? }
 
-  validates :url, presence: true
+  validates :url, presence: true, if: :kind_link?
+  validates :url, absence: true, if: :kind_fleetyards?
   validates :name, uniqueness: {scope: :vehicle_id}, allow_nil: true
+  validate :ship_is_flight_ready, on: :create
+  validate :item_list_fits, unless: -> { item_list.nil? }
+
+  after_save :write_item_list, unless: -> { item_list.nil? }
+
+  attr_reader :item_list
+
+  # The whole fitting at once: a list of `{slot:, model_module_id:}` that
+  # replaces whatever was fitted before, written after the loadout validates.
+  def item_list=(list)
+    @item_list = Array(list).map do |item|
+      item = item.to_h.symbolize_keys
+      {slot: item[:slot].to_s, model_module_id: item[:model_module_id].to_s}
+    end
+  end
 
   scope :active, -> { where(active: true) }
 
@@ -54,11 +82,42 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
+  private def ship_is_flight_ready
+    return if vehicle&.model&.production_status == "flight-ready"
+
+    errors.add(:base, :not_flight_ready)
+  end
+
+  # A slot is the module hardpoint's name on the hull, so a module whose slot
+  # the game files never revealed matches none and cannot be fitted.
+  private def item_list_fits
+    return if item_list.empty?
+    return errors.add(:items, :not_fleetyards) unless kind_fleetyards?
+
+    slots = item_list.pluck(:slot)
+    errors.add(:items, :slot_taken) if slots.uniq.size != slots.size
+
+    module_ids = item_list.pluck(:model_module_id)
+    errors.add(:items, :module_not_owned) if (module_ids - vehicle.model_module_ids).any?
+
+    fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
+      .pluck(:model_module_id, :slot)
+    unless item_list.all? { |item| fitting.include?([item[:model_module_id], item[:slot]]) }
+      errors.add(:items, :module_not_in_slot)
+    end
+  end
+
+  private def write_item_list
+    items.delete_all
+    item_list.each { |item| items.create!(item) }
+    @item_list = nil
+  end
+
   private def set_default_name
     base = case url_source
     when "erkul" then "Erkul Loadout"
     when "spviewer" then "SPViewer Loadout"
-    else "Custom Loadout"
+    else kind_fleetyards? ? "Fleetyards Loadout" : "Custom Loadout"
     end
 
     existing = vehicle.vehicle_loadouts.where("name LIKE ?", "#{base}%").pluck(:name)

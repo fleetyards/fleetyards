@@ -307,6 +307,15 @@ en:
         announcement_limit_reached: "Your fleet already has %{count} announcements up. Remove one before posting another."
         already_passed: "has already passed"
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "Loadouts are only available for flight-ready ships"
+            items:
+              not_fleetyards: "can only be fitted to a fleetyards loadout"
+              slot_taken: "can hold only one module per slot"
+              module_not_owned: "must be modules the ship owns"
+              module_not_in_slot: "must each fit the slot they are placed in"
         fleet_subscription:
           attributes:
             ended_at:

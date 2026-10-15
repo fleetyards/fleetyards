@@ -306,6 +306,15 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "只有可飞行的舰船才能使用配装"
+            items:
+              not_fleetyards: "只能装配在 Fleetyards 配装中"
+              slot_taken: "每个槽位只能装配一个模块"
+              module_not_owned: "必须是该舰船拥有的模块"
+              module_not_in_slot: "必须与所在的槽位匹配"
         payout_entry:
           attributes:
             entry_type:

@@ -306,6 +306,15 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "Le configurazioni sono disponibili solo per le navi pronte al volo"
+            items:
+              not_fleetyards: "possono essere montati solo in una configurazione Fleetyards"
+              slot_taken: "possono contenere un solo modulo per slot"
+              module_not_owned: "devono essere moduli posseduti dalla nave"
+              module_not_in_slot: "devono adattarsi allo slot in cui sono inseriti"
         payout_entry:
           attributes:
             entry_type:

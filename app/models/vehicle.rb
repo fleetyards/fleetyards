@@ -80,6 +80,7 @@ class Vehicle < ApplicationRecord
   has_many :fleet_vehicles, dependent: :destroy
 
   has_many :vehicle_loadouts, dependent: :destroy
+  has_many :vehicle_loadout_items, through: :vehicle_loadouts, source: :items
 
   # Removed by the foreign key's cascade, which also covers the bulk delete.
   has_many :log_entries, class_name: "VehicleLogEntry", dependent: nil
@@ -156,7 +157,7 @@ class Vehicle < ApplicationRecord
   def self.rendered_associations
     [
       :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
-      :task_forces, :hangar_groups, :module_package, :vehicle_loadouts,
+      :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: :items},
       {model: Model.rendered_associations},
       {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
       {parent_vehicle: :model},
@@ -794,6 +795,13 @@ class Vehicle < ApplicationRecord
       .find_each do |vehicle|
       vehicle.update(flagship: false)
     end
+  end
+
+  # A module that leaves the hangar cannot stay fitted. Destroyed one by one so
+  # each loadout it sat in is touched and re-rendered.
+  def unfit_unowned_modules
+    vehicle_loadout_items.where.not(model_module_id: model_module_ids).destroy_all
+    vehicle_loadouts.reset
   end
 
   def set_module_package

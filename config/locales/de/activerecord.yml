@@ -306,6 +306,15 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        vehicle_loadout:
+          attributes:
+            base:
+              not_flight_ready: "Loadouts gibt es nur für flugbereite Schiffe"
+            items:
+              not_fleetyards: "können nur in einem Fleetyards-Loadout ausgerüstet werden"
+              slot_taken: "dürfen nur ein Modul pro Slot enthalten"
+              module_not_owned: "müssen Module sein, die das Schiff besitzt"
+              module_not_in_slot: "müssen jeweils in den Slot passen, in dem sie sitzen"
         payout_entry:
           attributes:
             entry_type:
