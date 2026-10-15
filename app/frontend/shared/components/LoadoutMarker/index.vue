@@ -12,15 +12,15 @@ type Props = {
 };
 
 defineProps<Props>();
+
+// A fleetyards loadout is kept here rather than on another site, so the panel
+// shows it instead of linking away.
+const emit = defineEmits<{ open: [] }>();
 </script>
 
-<!--
-  A span for a fleetyards loadout: it is kept here, not on another site, so
-  there is nowhere to link to.
--->
 <template>
   <component
-    :is="loadout.url ? 'a' : 'span'"
+    :is="loadout.url ? 'a' : 'button'"
     v-tooltip="loadout.name"
     :aria-label="loadout.name"
     class="loadout-marker"
@@ -31,7 +31,9 @@ defineProps<Props>();
     :href="loadout.url"
     :target="loadout.url ? '_blank' : undefined"
     :rel="loadout.url ? 'noopener' : undefined"
-    @click.stop
+    :type="loadout.url ? undefined : 'button'"
+    data-test="loadout-marker"
+    @click.stop="loadout.url || emit('open')"
   >
     <template v-if="loadout.urlSource">
       <i />
@@ -54,6 +56,8 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   background-color: $gray;
+  padding: 0;
+  border: 0;
   cursor: pointer;
 
   // Doubled to outrank PanelBody's rounded variants, which round every link

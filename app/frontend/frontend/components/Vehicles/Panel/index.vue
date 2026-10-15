@@ -227,6 +227,16 @@ const openAddonsModal = () =>
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
+// The owner lands in the editor on it; anyone else sees what is fitted.
+const openActiveLoadout = () =>
+  openLoadoutModal(props.vehicle, {
+    editable:
+      props.editable &&
+      !(props.vehicle as Vehicle).loaner &&
+      !(props.vehicle as Vehicle).wanted,
+    tab: VehicleLoadoutTabsEnum.MODULES,
+  });
+
 // Two separate meanings on one edge, so they cannot share a tone: gold is the
 // flagship, matching its certificate icon, and the group tone is the transient
 // hover on a group chip. The group wins while it is hovered - otherwise a
@@ -397,7 +407,11 @@ const tone = computed(() => {
         :groups="vehicle.hangarGroups"
         class="vehicle-panel-hangar-groups"
       />
-      <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
+      <LoadoutMarker
+        v-if="activeLoadout"
+        :loadout="activeLoadout"
+        @open="openActiveLoadout"
+      />
       <div
         v-if="upgradable && vehicle"
         v-tooltip="t('labels.model.addons')"

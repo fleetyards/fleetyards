@@ -391,3 +391,37 @@ describe("vehicle add-ons shortcut", () => {
     });
   });
 });
+
+describe("loadout marker", () => {
+  const fitted = {
+    id: "l1",
+    name: "Hauler",
+    active: true,
+    kind: "fleetyards",
+    items: [],
+  };
+
+  it("opens the owner's loadout in the editor", async () => {
+    const ship = vehicle({ activeLoadout: fitted } as Partial<Vehicle>);
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.get("[data-test='loadout-marker']").trigger("click");
+
+    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
+      editable: true,
+      tab: "modules",
+    });
+  });
+
+  it("shows a visitor the loadout", async () => {
+    const ship = vehicle({ activeLoadout: fitted } as Partial<Vehicle>);
+    const wrapper = await mount({ vehicle: ship, editable: false });
+
+    await wrapper.get("[data-test='loadout-marker']").trigger("click");
+
+    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
+      editable: false,
+      tab: "modules",
+    });
+  });
+});
