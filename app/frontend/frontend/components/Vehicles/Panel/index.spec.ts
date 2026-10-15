@@ -361,6 +361,22 @@ describe("vehicle add-ons shortcut", () => {
     },
   );
 
+  it("shows what is fitted on the owner's loaner", async () => {
+    const ship = vehicle({
+      loaner: true,
+      modelModuleIds: ["m1"],
+      model: { ...vehicle().model, hasModules: true },
+    });
+    const wrapper = await mount({ vehicle: ship, editable: true });
+
+    await wrapper.find(".vehicle-panel-addons").trigger("click");
+
+    expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
+    expect(openLoadoutModal).toHaveBeenLastCalledWith(ship, {
+      tab: "modules",
+    });
+  });
+
   it("shows a visitor what is fitted", async () => {
     const ship = vehicle({
       modelModuleIds: ["m1"],

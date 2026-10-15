@@ -212,9 +212,12 @@ const comlink = useComlink();
 
 const { openEditModal, openLoadoutModal } = useVehicleModals();
 
-// The owner edits what the ship carries; a visitor sees what is fitted.
+// The owner edits what the ship carries; a visitor, or anyone looking at a
+// loaner or a wishlist ship, sees what is fitted.
 const openAddonsModal = () =>
-  props.editable
+  props.editable &&
+  !(props.vehicle as Vehicle).loaner &&
+  !(props.vehicle as Vehicle).wanted
     ? openEditModal(props.vehicle as Vehicle, {
         tab: model.value?.hasModules
           ? VehicleEditTabsEnum.MODULES
