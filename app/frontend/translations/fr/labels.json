@@ -4321,8 +4321,9 @@
         "ownedModules": "Vos modules",
         "nothingFitted": "Rien d'équipé",
         "owned": "Possédé",
-        "notOwned": "Non possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
+        "unavailableModule": "Module plus disponible",
+        "noFigureChange": "Ne change aucune valeur du vaisseau",
         "loadoutName": "Nom de la configuration",
         "stock": "D'origine",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",
@@ -4338,6 +4339,23 @@
           "upgrades": "Aucune extension n'existe pour ce vaisseau"
         },
         "none": "Aucun"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Vide",
+        "search": "Rechercher",
+        "owned": "Possédé",
+        "stock": "D'origine",
+        "manufacturer": "Fabricant",
+        "sortName": "Nom",
+        "count": "%{count} sur %{total}",
+        "total": {
+          "one": "%{count} option",
+          "other": "%{count} options"
+        },
+        "reset": "Réinitialiser les filtres",
+        "leaveEmpty": "Laisser vide",
+        "noMatches": "Aucun résultat",
+        "close": "Fermer"
       }
     }
   }

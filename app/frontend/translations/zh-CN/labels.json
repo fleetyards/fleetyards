@@ -4321,8 +4321,9 @@
         "ownedModules": "你拥有的模块",
         "nothingFitted": "未装配",
         "owned": "已拥有",
-        "notOwned": "未拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",
+        "unavailableModule": "模块已不可用",
+        "noFigureChange": "不改变舰船的任何数值",
         "loadoutName": "配装名称",
         "stock": "原厂",
         "notFlightReady": "只有可飞行的舰船才能使用配装",
@@ -4338,6 +4339,23 @@
           "upgrades": "该舰船没有可用的附加组件"
         },
         "none": "无"
+      },
+      "loadoutPicker": {
+        "emptySocket": "空",
+        "search": "搜索",
+        "owned": "已拥有",
+        "stock": "原厂",
+        "manufacturer": "制造商",
+        "sortName": "名称",
+        "count": "%{total} 个中的 %{count} 个",
+        "total": {
+          "one": "%{count} 个选项",
+          "other": "%{count} 个选项"
+        },
+        "reset": "重置筛选",
+        "leaveEmpty": "留空",
+        "noMatches": "没有匹配项",
+        "close": "关闭"
       }
     }
   }

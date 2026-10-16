@@ -112,3 +112,49 @@ describe("BaseListToolbarChip", () => {
     expect(await click()).toEqual({ s: "name asc" });
   });
 });
+
+describe("BaseListToolbarChip kept local", () => {
+  const mountLocal = async (sort?: string) => {
+    const router = createRouter({
+      history: createWebHashHistory(),
+      routes: [{ path: "/", name: "list", component: { render: () => null } }],
+    });
+    await router.push({ name: "list" });
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        label: "Range",
+        field: "range",
+        fallback: "range desc",
+        local: true,
+        sort,
+      },
+      plugins: [router],
+    });
+
+    return { wrapper, router };
+  };
+
+  it("cycles the sort it is given and leaves the URL alone", async () => {
+    const { wrapper, router } = await mountLocal();
+
+    expect(wrapper.element.tagName).toBe("BUTTON");
+    expect(wrapper.classes()).toContain("base-list-toolbar-chip--active");
+
+    await wrapper.trigger("click");
+    await wrapper.setProps({ sort: "range asc" });
+    await wrapper.trigger("click");
+
+    expect(wrapper.emitted("update:sort")).toEqual([
+      ["range asc"],
+      [undefined],
+    ]);
+    expect(router.currentRoute.value.query).toEqual({});
+  });
+
+  it("is not lit while another field is sorted", async () => {
+    const { wrapper } = await mountLocal("name asc");
+
+    expect(wrapper.classes()).not.toContain("base-list-toolbar-chip--active");
+  });
+});

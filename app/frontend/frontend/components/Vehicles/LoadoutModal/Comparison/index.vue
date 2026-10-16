@@ -36,8 +36,11 @@ const { metrics, rows } = useFittingDiff();
 const fitted = (mod?: ModelModule) =>
   metrics(props.hullCargo, [...props.others, ...(mod ? [mod] : [])]);
 
+// Only what the swap changes: a figure it leaves alone, such as the hull's own
+// cargo under a medical module, is already in the ship's figures, and repeated
+// here it reads as what each option brings.
 const comparison = computed<FittingRow[]>(() =>
-  rows(fitted(props.from), fitted(props.to)),
+  rows(fitted(props.from), fitted(props.to)).filter((row) => row.deltaLabel),
 );
 
 // Both bars share a scale, so the longer one is the larger value.
@@ -67,7 +70,15 @@ const name = (mod?: ModelModule) =>
       <strong>{{ name(to) }}</strong>
     </p>
 
-    <dl class="loadout-comparison__rows">
+    <p
+      v-if="!unchanged && !comparison.length"
+      class="loadout-comparison__none"
+      data-test="vehicle-loadout-comparison-none"
+    >
+      {{ t("labels.vehicleLoadout.noFigureChange") }}
+    </p>
+
+    <dl v-if="comparison.length" class="loadout-comparison__rows">
       <div
         v-for="row in comparison"
         :key="row.key"
@@ -77,7 +88,6 @@ const name = (mod?: ModelModule) =>
         <dt>
           {{ row.label }}
           <span
-            v-if="row.deltaLabel"
             class="loadout-comparison__delta"
             :class="`loadout-comparison__delta--${row.delta?.tone}`"
           >
@@ -86,11 +96,7 @@ const name = (mod?: ModelModule) =>
         </dt>
         <dd>
           <span class="loadout-comparison__value">{{ row.value }}</span>
-          <span
-            v-if="!unchanged"
-            class="loadout-comparison__bars"
-            aria-hidden="true"
-          >
+          <span class="loadout-comparison__bars" aria-hidden="true">
             <span
               class="loadout-comparison__bar loadout-comparison__bar--before"
               :style="{ width: width(row, row.before) }"

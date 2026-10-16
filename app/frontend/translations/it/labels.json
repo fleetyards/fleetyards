@@ -4321,8 +4321,9 @@
         "ownedModules": "I tuoi moduli",
         "nothingFitted": "Niente montato",
         "owned": "Posseduto",
-        "notOwned": "Non posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
+        "unavailableModule": "Modulo non più disponibile",
+        "noFigureChange": "Non cambia nessun valore della nave",
         "loadoutName": "Nome della configurazione",
         "stock": "Di serie",
         "notFlightReady": "Le configurazioni sono disponibili solo per le navi pronte al volo",
@@ -4338,6 +4339,23 @@
           "upgrades": "Non esistono componenti aggiuntivi per questa nave"
         },
         "none": "Nessuno"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Vuoto",
+        "search": "Cerca",
+        "owned": "Posseduto",
+        "stock": "Di serie",
+        "manufacturer": "Produttore",
+        "sortName": "Nome",
+        "count": "%{count} di %{total}",
+        "total": {
+          "one": "%{count} opzione",
+          "other": "%{count} opzioni"
+        },
+        "reset": "Reimposta filtri",
+        "leaveEmpty": "Lascia vuoto",
+        "noMatches": "Nessun risultato",
+        "close": "Chiudi"
       }
     }
   }

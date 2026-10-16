@@ -4335,8 +4335,9 @@
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
         "owned": "Owned",
-        "notOwned": "Not owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
+        "unavailableModule": "Module no longer available",
+        "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
@@ -4352,6 +4353,23 @@
           "upgrades": "There are no add-ons for this ship"
         },
         "none": "None"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Empty",
+        "search": "Search",
+        "owned": "Owned",
+        "stock": "Stock",
+        "manufacturer": "Manufacturer",
+        "sortName": "Name",
+        "count": "%{count} of %{total}",
+        "total": {
+          "one": "%{count} option",
+          "other": "%{count} options"
+        },
+        "reset": "Reset filters",
+        "leaveEmpty": "Leave empty",
+        "noMatches": "Nothing matches",
+        "close": "Close"
       }
     }
   }

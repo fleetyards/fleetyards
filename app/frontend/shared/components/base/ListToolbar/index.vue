@@ -24,6 +24,8 @@ type Props = {
   selectable?: boolean;
   recordIds?: string[];
   selectionDisabled?: boolean;
+  // Sorts through `v-model:sort` instead of the URL; see the chip.
+  local?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,7 +33,10 @@ const props = withDefaults(defineProps<Props>(), {
   selectable: false,
   recordIds: () => [],
   selectionDisabled: false,
+  local: false,
 });
+
+const sort = defineModel<string | undefined>("sort", { default: undefined });
 
 const selected = defineModel<string[]>("selected", { default: () => [] });
 
@@ -108,6 +113,9 @@ const onSelectAll = (value?: boolean) => {
         :label="column.label"
         :field="String(column.attributeKey || column.name)"
         :fallback="props.defaultSort"
+        :local="props.local"
+        :sort="sort"
+        @update:sort="sort = $event"
       />
     </template>
     <!-- At the far end of the same line, so picking a row does not push the

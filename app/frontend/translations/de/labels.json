@@ -4321,8 +4321,9 @@
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
         "owned": "Im Besitz",
-        "notOwned": "Nicht im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
+        "unavailableModule": "Modul nicht mehr verfügbar",
+        "noFigureChange": "Ändert keine Werte des Schiffs",
         "loadoutName": "Name des Loadouts",
         "stock": "Serienmäßig",
         "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
@@ -4338,6 +4339,23 @@
           "upgrades": "Für dieses Schiff gibt es keine Add-ons"
         },
         "none": "Keine"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Leer",
+        "search": "Suchen",
+        "owned": "Im Besitz",
+        "stock": "Serienmäßig",
+        "manufacturer": "Hersteller",
+        "sortName": "Name",
+        "count": "%{count} von %{total}",
+        "total": {
+          "one": "%{count} Option",
+          "other": "%{count} Optionen"
+        },
+        "reset": "Filter zurücksetzen",
+        "leaveEmpty": "Leer lassen",
+        "noMatches": "Keine Treffer",
+        "close": "Schließen"
       }
     }
   }

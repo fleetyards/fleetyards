@@ -1,7 +1,8 @@
+// Compact enough to sit under a long picker list: one line per figure.
 .loadout-comparison {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 
   &__swap {
     display: flex;
@@ -10,6 +11,7 @@
     gap: 8px;
     margin: 0;
     color: var(--color-text-dim);
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 
@@ -26,15 +28,23 @@
   &__rows {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 6px;
     margin: 0;
   }
 
+  // The figure and its change on the left, the bar and the value after it on
+  // the right, all on one line.
   &__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 45%);
+    align-items: center;
+    gap: 12px;
+
     dt {
       display: flex;
       align-items: baseline;
       gap: 8px;
+      min-width: 0;
       color: var(--color-text-dim);
       font-size: 0.75rem;
       font-weight: 600;
@@ -44,17 +54,21 @@
 
     dd {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      gap: 10px;
       margin: 0;
     }
   }
 
   // Not Orbitron: its slashed zero reads as an empty-set sign on the counts.
   &__value {
+    order: 2;
+    min-width: 56px;
     color: var(--color-text);
-    font-size: 1.15rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
   }
 
   // The compare tool's tones: better and worse where the metric has a
@@ -78,6 +92,7 @@
   &__bars {
     position: relative;
     display: block;
+    flex: 1 1 auto;
     height: 6px;
     border: 1px solid var(--color-edge-soft);
     border-radius: 2px;
@@ -107,9 +122,19 @@
     }
   }
 
-  &__description {
+  &__description,
+  &__none {
     margin: 0;
     color: var(--color-text-dim);
     font-size: 0.85rem;
+  }
+
+  // Two lines of a store paragraph at most, for the same reason the rows keep
+  // to one.
+  &__description {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 }
