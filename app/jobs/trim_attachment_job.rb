@@ -5,12 +5,17 @@ class TrimAttachmentJob
 
   sidekiq_options queue: "preprocessing", retry: 5
 
+  # A job enqueued before the side views were renamed still names them so.
+  def self.current_name(attachment_name)
+    attachment_name.to_s.sub("side_view", "port_view")
+  end
+
   # A crop that never lands must still leave the pending list, or the admin
   # waiting on it sees a view that is processing for good.
   sidekiq_retries_exhausted do |job, _error|
     record_class, record_id, attachment_name = job["args"]
 
-    record_class.safe_constantize&.find_by(id: record_id)&.settle_trim(attachment_name)
+    record_class.safe_constantize&.find_by(id: record_id)&.settle_trim(current_name(attachment_name))
   end
 
   # ActiveStorage uploads the file in its own after_commit, which runs after the
@@ -22,6 +27,7 @@ class TrimAttachmentJob
     record = record_class.safe_constantize&.find_by(id: record_id)
     return if record.nil?
 
+    attachment_name = self.class.current_name(attachment_name)
     trim(record.public_send(attachment_name))
     record.settle_trim(attachment_name)
   end

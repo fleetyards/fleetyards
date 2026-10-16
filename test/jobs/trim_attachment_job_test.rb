@@ -87,6 +87,27 @@ class TrimAttachmentJobTest < ActiveSupport::TestCase
     assert_empty @model.reload.pending_trims
   end
 
+  test "#perform crops a view a job queued before the rename calls a side view" do
+    @model.landed_port_view.attach(io: StringIO.new(padded_png), filename: "port.png", content_type: "image/png")
+    @model.update_columns(pending_trims: pending("landed_port_view"))
+    padded = @model.landed_port_view.blob
+
+    TrimAttachmentJob.new.perform("Model", @model.id, "landed_side_view")
+
+    assert_not_equal padded, @model.reload.landed_port_view.blob
+    assert_empty @model.pending_trims
+  end
+
+  test "a side view crop that ran out of retries leaves the pending list" do
+    @model.update_columns(pending_trims: pending("port_view"))
+
+    TrimAttachmentJob.sidekiq_retries_exhausted_block.call(
+      {"args" => ["Model", @model.id, "side_view"]}, StandardError.new
+    )
+
+    assert_empty @model.reload.pending_trims
+  end
+
   private def pending(*names)
     names.index_with { Time.current.iso8601(6) }
   end
