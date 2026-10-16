@@ -9,7 +9,8 @@ module V1
         type: :object,
         properties: {
           version: {type: :string},
-          codename: {type: :string}
+          codename: {type: :string},
+          announcement: {"$ref": "#/components/schemas/VersionAnnouncement"}
         },
         additionalProperties: false,
         required: %i[version codename]

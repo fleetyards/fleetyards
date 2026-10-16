@@ -116,7 +116,7 @@ module Api
     end
 
     def version
-      render json: {version: Fleetyards::VERSION, codename: Fleetyards::CODENAME}
+      render json: AppVersion.payload
     end
 
     def resource_message(resource, action, state)

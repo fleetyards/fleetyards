@@ -15,6 +15,10 @@
         "subline": "Soutenez-nous directement",
         "otherWays": "Autres façons d'aider"
       },
+      "appUpdate": {
+        "withCodename": "FleetYards %{version} (%{codename}) est en ligne. Rechargez pour y passer.",
+        "plain": "FleetYards %{version} est en ligne. Rechargez pour y passer."
+      },
       "installApp": {
         "eventSignup": "Installez FleetYards comme application pour retrouver vos événements en un geste.",
         "iosIntro": "Sur iPhone et iPad, les applications comme FleetYards s'installent depuis le menu Partager :",

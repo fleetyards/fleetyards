@@ -15,6 +15,10 @@
         "subline": "直接支持我们",
         "otherWays": "其他帮助方式"
       },
+      "appUpdate": {
+        "withCodename": "FleetYards %{version}（%{codename}）已上线。重新加载即可切换。",
+        "plain": "FleetYards %{version} 已上线。重新加载即可切换。"
+      },
       "installApp": {
         "eventSignup": "将 FleetYards 安装为应用，一键返回你的活动。",
         "iosIntro": "在 iPhone 和 iPad 上，可以通过分享菜单安装 FleetYards 这样的应用：",

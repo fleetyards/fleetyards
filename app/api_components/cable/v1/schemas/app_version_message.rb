@@ -3,8 +3,8 @@
 module Cable
   module V1
     module Schemas
-      # Pushed on deploy so a client running older assets can offer a reload.
-      # No REST counterpart: the version is embedded in the page on load.
+      # Pushed on deploy, and on subscribe, so a client running older assets
+      # can offer a reload. Same shape as the REST version endpoint.
       class AppVersionMessage
         include OpenapiRuby::Components::Base
 
@@ -12,7 +12,8 @@ module Cable
           type: :object,
           properties: {
             version: {type: :string},
-            codename: {type: :string}
+            codename: {type: :string},
+            announcement: {"$ref": "#/components/schemas/VersionAnnouncement"}
           },
           additionalProperties: false,
           required: %w[version codename]
