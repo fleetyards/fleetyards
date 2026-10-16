@@ -22,4 +22,12 @@ class Api::V1::VersionTest < ActionDispatch::IntegrationTest
   test "GET /version returns successfully" do
     assert_api_response :get, 200
   end
+
+  test "GET /version carries the newest published announcement with a link" do
+    announcement = create(:announcement, :published, :with_link)
+
+    assert_api_response :get, 200 do
+      assert_equal announcement.title, parsed_body.dig("announcement", "title")
+    end
+  end
 end

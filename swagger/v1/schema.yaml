@@ -41076,11 +41076,29 @@ components:
           type: string
         codename:
           type: string
+        announcement:
+          "$ref": "#/components/schemas/VersionAnnouncement"
       additionalProperties: false
       required:
       - version
       - codename
       title: Version
+    VersionAnnouncement:
+      type: object
+      properties:
+        title:
+          type: string
+        link:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - title
+      - link
+      - publishedAt
+      title: VersionAnnouncement
     Video:
       type: object
       properties:
