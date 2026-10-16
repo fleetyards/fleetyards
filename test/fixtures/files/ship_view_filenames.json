@@ -1,0 +1,162 @@
+[
+  {
+    "name": "maps the four viewpoints",
+    "cases": {
+      "top.png": "topView",
+      "side.png": "portView",
+      "front.png": "frontView",
+      "angled.png": "angledView"
+    }
+  },
+  {
+    "name": "maps a port view, which older exports name side",
+    "cases": {
+      "port.png": "portView",
+      "landed_port_colored.png": "landedPortViewColored",
+      "extended-side.png": "extendedPortView",
+      "sideView.png": "portView",
+      "portViewColored.png": "portViewColored"
+    }
+  },
+  {
+    "name": "maps the colored variants",
+    "cases": {
+      "angled_colored.png": "angledViewColored",
+      "top-colored.webp": "topViewColored"
+    }
+  },
+  {
+    "name": "maps the extended variants",
+    "cases": {
+      "extended_front.png": "extendedFrontView",
+      "extended_angled_colored.png": "extendedAngledViewColored"
+    }
+  },
+  {
+    "name": "maps the holo models",
+    "cases": {
+      "holo.gltf": "holo",
+      "holo.glb": "holo",
+      "extended_holo.gltf": "extendedHolo"
+    }
+  },
+  {
+    "name": "maps the views from behind and below",
+    "cases": {
+      "flight_angled_rear.png": "angledRearView",
+      "angled-rear-colored.png": "angledRearViewColored",
+      "bottom.png": "bottomView",
+      "extended_rear_view.png": "extendedRearView",
+      "landed_starboard_colored.png": "landedStarboardViewColored",
+      "Landed_AngledRear.PNG": "landedAngledRearView"
+    }
+  },
+  {
+    "name": "maps the lite holos of every state",
+    "cases": {
+      "flight_holo_lite.glb": "holoLite",
+      "holo-lite.gltf": "holoLite",
+      "extended_holo_lite.glb": "extendedHoloLite",
+      "landed_holo_lite.glb": "landedHoloLite"
+    }
+  },
+  {
+    "name": "maps the textured holo of the flight state alone",
+    "cases": {
+      "flight_holo_textured.glb": "holoTextured",
+      "holo_textured.glb": "holoTextured",
+      "landed_holo_textured.glb": null
+    }
+  },
+  {
+    "name": "leaves the rest of a 3D export alone",
+    "cases": {
+      "holo.blend": null,
+      "holo.blend1": null,
+      "holo.obj": null,
+      "holo.mtl": null,
+      "holo.png": null
+    }
+  },
+  {
+    "name": "takes a dash or an underscore at every join",
+    "cases": {
+      "landed-top-view-colored.png": "landedTopViewColored",
+      "landed_top_view_colored.png": "landedTopViewColored",
+      "flight-angled_view-colored.png": "angledViewColored",
+      "extended-holo.glb": "extendedHolo",
+      "extended_holo.glb": "extendedHolo"
+    }
+  },
+  {
+    "name": "takes a spelled-out view and any case",
+    "cases": {
+      "top_view.png": "topView",
+      "Extended_Side_View_Colored.PNG": "extendedPortViewColored"
+    }
+  },
+  {
+    "name": "reads through the folder a file was picked from",
+    "cases": {
+      "Carrack/angled.png": "angledView",
+      "crusader/ares-inferno/flight_top.png": "topView"
+    }
+  },
+  {
+    "name": "wants a picture where it expects one",
+    "cases": {
+      "top.gltf": null,
+      "angled": null
+    }
+  },
+  {
+    "name": "leaves anything else alone",
+    "cases": {
+      ".DS_Store": null,
+      "hero.png": null,
+      "export.obj": null,
+      "top_left.png": null
+    }
+  },
+  {
+    "name": "maps a landed holo",
+    "cases": {
+      "landed-holo.glb": "landedHolo",
+      "landed_holo.gltf": "landedHolo",
+      "LandedHolo.glb": "landedHolo"
+    }
+  },
+  {
+    "name": "maps landed views, coloured and not",
+    "cases": {
+      "landed-side.png": "landedPortView",
+      "landed_top_view.png": "landedTopView",
+      "landed angled colored.png": "landedAngledViewColored"
+    }
+  },
+  {
+    "name": "keeps the extended and landed states apart",
+    "cases": {
+      "extended-side.png": "extendedPortView",
+      "landed-side.png": "landedPortView",
+      "side.png": "portView"
+    }
+  },
+  {
+    "name": "maps a flight holo to the default field",
+    "cases": {
+      "flight-holo.glb": "holo",
+      "flight_holo.gltf": "holo",
+      "FlightHolo.glb": "holo"
+    }
+  },
+  {
+    "name": "maps flight views to the default fields, coloured and not",
+    "cases": {
+      "flight-side.png": "portView",
+      "flight_top_view.png": "topView",
+      "flight angled colored.png": "angledViewColored",
+      "Flight_Front_View_Colored.PNG": "frontViewColored"
+    }
+  }
+]
