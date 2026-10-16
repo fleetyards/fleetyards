@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.9.0](https://github.com/fleetyards/fleetyards/compare/v9.8.0...v9.9.0) (2026-10-16)
+
+
+### Features
+
+* **sc_data:** import ship renders from the ship-views bucket ([#5758](https://github.com/fleetyards/fleetyards/issues/5758)) ([dd3b0e6](https://github.com/fleetyards/fleetyards/commit/dd3b0e62bf0633a97d3ac2faa1ec8281aad597f6))
+* **supporters:** let supporters choose whether they are named, under their username ([#5756](https://github.com/fleetyards/fleetyards/issues/5756)) ([8e90ee2](https://github.com/fleetyards/fleetyards/commit/8e90ee291a305d383a2ebc8e231793a612828ac2))
+
+
+### Bug Fixes
+
+* **hangar:** find a buy-back pack of several ships on each ship's page ([#5753](https://github.com/fleetyards/fleetyards/issues/5753)) ([1fae332](https://github.com/fleetyards/fleetyards/commit/1fae332282a26ec2b05ed2146615fd31e7edce92))
+* **sc-data:** serve the interior a load writes, not the payload cached before it ([#5755](https://github.com/fleetyards/fleetyards/issues/5755)) ([b1f364b](https://github.com/fleetyards/fleetyards/commit/b1f364b3030a8a2c14a2ec78b6e40dd537c5fb39))
+
 ## [9.8.0](https://github.com/fleetyards/fleetyards/compare/v9.7.0...v9.8.0) (2026-10-16)
 
 
