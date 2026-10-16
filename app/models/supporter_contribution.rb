@@ -97,6 +97,15 @@ class SupporterContribution < ApplicationRecord
     )
   }
 
+  # Named on the supporters page -- the SQL half of `listed?`, which has to
+  # agree with it.
+  scope :listed, -> {
+    left_joins(:user).where(
+      "users.supporter_listed = TRUE OR " \
+      "(users.supporter_listed IS NULL AND supporter_contributions.anonymous = FALSE)"
+    )
+  }
+
   # A pledge still running is what an admin opens the list to check on, and
   # ordering by start date alone sends it a page further back every month it
   # keeps paying. Selected as a column rather than ordered by the expression
@@ -196,18 +205,33 @@ class SupporterContribution < ApplicationRecord
     name.presence || user&.username || I18n.t("messages.supporter_contributions.anonymous_name")
   end
 
+  # The account's own answer outranks the platform's, and covers every
+  # donation at once. Per row it could not: each Ko-fi payment is a row of its
+  # own, so a monthly supporter would be named again by every new payment.
+  # Unanswered, the row keeps what the platform reported.
+  def listed?
+    preference = user&.supporter_listed
+    return !anonymous? if preference.nil?
+
+    preference
+  end
+
   # Nil whenever the contribution must not be attributed publicly, so callers
   # can fall back to their own anonymous wording.
+  #
+  # A linked account is named by its username, never by the name the payment
+  # platform reported: that is whatever the payer typed at Ko-fi or PayPal, and
+  # often their real name, which the account holder never chose to show here.
   def public_name
-    return if anonymous?
+    return unless listed?
 
-    name.presence || user&.username
+    user&.username || name.presence
   end
 
   # Only usernames with a reachable public hangar, otherwise the profile link
   # we render would land on a 404.
   def public_profile_username
-    return if anonymous?
+    return unless listed?
 
     user&.username if user&.public_hangar?
   end

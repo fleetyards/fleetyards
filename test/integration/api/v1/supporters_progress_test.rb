@@ -65,14 +65,27 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The name a payment platform reported is whatever the payer typed there,
+  # often their real name, so a linked account is shown by its username.
+  test "GET /supporters/progress names a linked contribution by its username, not the payer's name" do
+    user = create(:user, :public_hangar, username: "dorasupports")
+    create(:supporter_contribution, name: "Dora Realname", user:, amount_cents: 600, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 600 }
+
+      assert_equal "dorasupports", entry["displayName"]
+    end
+  end
+
   test "GET /supporters/progress keeps the name but omits the link for a private hangar" do
-    user = create(:user, :private_hangar)
-    create(:supporter_contribution, name: "Dora", user:, amount_cents: 800, started_at: Date.current)
+    user = create(:user, :private_hangar, username: "dora")
+    create(:supporter_contribution, name: "Dora Realname", user:, amount_cents: 800, started_at: Date.current)
 
     assert_api_response :get, 200 do
       entry = parsed_body["contributions"].find { |c| c["amountCents"] == 800 }
 
-      assert_equal "Dora", entry["displayName"]
+      assert_equal "dora", entry["displayName"]
       refute entry.key?("username")
     end
   end
@@ -87,6 +100,31 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_equal [], parsed_body["contributions"]
       assert_equal 900, parsed_body["monthlyTotal"]["amountCents"]
+    end
+  end
+
+  # Every Ko-fi payment is a row of its own, so only an answer on the account
+  # can keep a monthly supporter hidden past the month they chose it in.
+  test "GET /supporters/progress hides every donation of an account that asked not to be listed" do
+    user = create(:user, supporter_listed: false)
+    create(:supporter_contribution, user:, amount_cents: 300, started_at: Date.current)
+    create(:supporter_contribution, user:, amount_cents: 400, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      assert_equal [], parsed_body["contributions"]
+      assert_equal 700, parsed_body["monthlyTotal"]["amountCents"]
+    end
+  end
+
+  test "GET /supporters/progress lists an anonymous donation of an account that asked to be listed" do
+    user = create(:user, :public_hangar, supporter_listed: true)
+    create(:supporter_contribution, :anonymous, name: "Erin", user:, amount_cents: 900, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 900 }
+
+      assert_equal user.username, entry["displayName"]
+      assert_equal user.username, entry["username"]
     end
   end
 

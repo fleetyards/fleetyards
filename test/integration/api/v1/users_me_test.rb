@@ -206,6 +206,21 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     assert_nil user.reload.display_name
   end
 
+  test "PUT /users/me sets and clears whether my donations are listed" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {supporterListed: false} do
+      assert_equal false, parsed_body["supporterListed"]
+    end
+
+    assert_api_response :put, 200, body: {supporterListed: nil} do
+      assert_nil parsed_body["supporterListed"]
+    end
+
+    assert_nil user.reload.supporter_listed
+  end
+
   test "PUT /users/me returns 401 when not signed in" do
     assert_api_response :put, 401, body: {discord: "x"}
   end

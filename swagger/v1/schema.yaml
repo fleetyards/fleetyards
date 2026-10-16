@@ -39667,6 +39667,10 @@ components:
           type: integer
         supporterRecurring:
           type: boolean
+        supporterListed:
+          type:
+          - boolean
+          - 'null'
         supporterUntil:
           type: string
           format: date
@@ -40013,6 +40017,10 @@ components:
           type: boolean
         showOnlineStatus:
           type: boolean
+        supporterListed:
+          type:
+          - boolean
+          - 'null'
         location:
           type:
           - string

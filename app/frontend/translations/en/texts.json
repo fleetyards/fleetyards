@@ -286,7 +286,8 @@
       "settings": {
         "privacy": {
           "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely.",
-          "onlineStatus": "When this is enabled, the members of your fleets and your friends see a dot next to your name while you have FleetYards open. Turning it off hides it from them — nothing else changes, and your last activity is still shown."
+          "onlineStatus": "When this is enabled, the members of your fleets and your friends see a dot next to your name while you have FleetYards open. Turning it off hides it from them — nothing else changes, and your last activity is still shown.",
+          "supporterListed": "Choose whether your donations are named on the supporters page. You are shown by your username, never by the name you entered when paying, and hidden donations still count towards the monthly goal. Left as chosen when donating, each Ko-fi donation keeps the choice you made there and Patreon pledges stay hidden."
         },
         "notifications": {
           "hint": "Pick how each event reaches you. App notifications are collected in your notification center, mail goes to your account's address.",

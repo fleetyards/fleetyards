@@ -233,9 +233,15 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_equal user.username, contribution.public_name
   end
 
-  test "an explicit name wins over the linked username" do
+  test "the linked username wins over the name the platform reported" do
     user = create(:user)
     contribution = create(:supporter_contribution, name: "Alice", user:)
+
+    assert_equal user.username, contribution.public_name
+  end
+
+  test "an unlinked contribution is named by the platform's name" do
+    contribution = create(:supporter_contribution, name: "Alice", user: nil)
 
     assert_equal "Alice", contribution.public_name
   end
@@ -246,6 +252,35 @@ class SupporterContributionTest < ActiveSupport::TestCase
 
     assert_nil contribution.public_name
     assert_nil contribution.public_profile_username
+  end
+
+  test "an unanswered account keeps the platform's choice" do
+    user = create(:user, supporter_listed: nil)
+
+    assert create(:supporter_contribution, user:).listed?
+    refute create(:supporter_contribution, :anonymous, user:).listed?
+  end
+
+  test "the account's answer outranks the platform's choice" do
+    hidden = create(:user, supporter_listed: false)
+    listed = create(:user, supporter_listed: true)
+
+    refute create(:supporter_contribution, user: hidden).listed?
+    assert create(:supporter_contribution, :anonymous, user: listed).listed?
+  end
+
+  test "listed agrees with listed?" do
+    rows = [
+      create(:supporter_contribution, user: nil),
+      create(:supporter_contribution, :anonymous, user: nil, name: "Ann"),
+      create(:supporter_contribution, user: create(:user)),
+      create(:supporter_contribution, :anonymous, user: create(:user)),
+      create(:supporter_contribution, user: create(:user, supporter_listed: false)),
+      create(:supporter_contribution, :anonymous, user: create(:user, supporter_listed: true))
+    ]
+
+    assert_equal rows.select(&:listed?).map(&:id).sort,
+      SupporterContribution.where(id: rows.map(&:id)).listed.pluck(:id).sort
   end
 
   test "the profile link only points at reachable hangars" do

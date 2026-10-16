@@ -45,6 +45,9 @@ module V1
           maintainer: {type: :boolean},
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean},
+          # Null until the supporter answers: each donation then keeps the
+          # visibility its payment platform reported.
+          supporterListed: {type: [:boolean, :null]},
           supporterUntil: {type: :string, format: :date},
           twoFactorRequired: {type: :boolean},
           twoFactorQrCodeUrl: {type: :string},
