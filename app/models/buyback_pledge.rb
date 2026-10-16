@@ -86,14 +86,13 @@ class BuybackPledge < ApplicationRecord
     return none unless model
 
     names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
-    quoted_names = names.map { |name| connection.quote(name) }.join(", ")
     ship = <<~SQL.squish
       lower(trim(regexp_replace(buyback_pledges.contained,
         '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
     SQL
-    listed = <<~SQL.squish
+    listed = sanitize_sql_array([<<~SQL.squish, names])
       EXISTS (SELECT 1 FROM unnest(buyback_pledges.ship_names) AS ship_name
-        WHERE lower(trim(ship_name)) IN (#{quoted_names}))
+        WHERE lower(trim(ship_name)) IN (?))
     SQL
 
     containing = where(kind: %w[ship package])
