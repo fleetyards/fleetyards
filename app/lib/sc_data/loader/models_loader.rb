@@ -135,6 +135,7 @@ module ScData
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
+        update_params = update_interior(model, model_data, update_params)
         # This build's slots, not every game-file slot the model has ever had.
         # Before the cleanup stopped destroying, those were the same set; now a
         # port a build dropped keeps its row, and six derived facts below --
@@ -375,6 +376,23 @@ module ScData
       # cargo space. A `Container` counts as ore only where the hardpoint list
       # files it as an ore pod, so the figure and the list agree: a Raft's cargo
       # pod is a `Container` too. Only where something can be held, and the
+      INTERIOR_FACTS = %w[beds weapon_racks lockers].freeze
+
+      # What the ship's rooms hold. Nothing for a ship whose interior never
+      # placed any of it, but cleared for one whose build has dropped it.
+      private def update_interior(model, model_data, update_params)
+        interior = model_data["interior"] || {}
+
+        INTERIOR_FACTS.each do |fact|
+          value = interior[fact].presence
+          next if value.nil? && model.public_send(fact).blank?
+
+          update_params[fact.to_sym] = value
+        end
+
+        update_params
+      end
+
       # ROC's pods name their volume `storage` rather than `capacity`.
       STORAGE_CONTAINER_KINDS = {"Container" => "ore", "SalvageInternalStorage" => "salvage"}.freeze
 

@@ -18,12 +18,13 @@ class ModelBuild < ApplicationRecord
     mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground crew
     personal_inventory fuel_consumption main_acceleration retro_acceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom storage_containers
+    beds weapon_racks lockers
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
     ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
   ].freeze
 
-  # All six of Model's serialized columns that a build carries, declared
+  # All seven of Model's serialized columns that a build carries, declared
   # together. Missing one is not a quiet loss: `Component` serializes six and I
   # matched one, and the reader handed a raw YAML string to a caller that called
   # `dig` on it. A reader falls through to the column only on nil, and a string
@@ -34,6 +35,7 @@ class ModelBuild < ApplicationRecord
   serialize :external_fuel_tanks, coder: YAML
   serialize :refuel_boom, coder: YAML
   serialize :storage_containers, coder: YAML
+  serialize :weapon_racks, coder: YAML
 
   # Facts that are a shape rather than a number. Two loads of the same export
   # can serialise these differently without anything having changed, so
@@ -42,6 +44,7 @@ class ModelBuild < ApplicationRecord
   STRUCTURED_FACTS = %i[
     hull_parts hull_doors signature_cross_section
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom storage_containers
+    weapon_racks
   ].freeze
 
   # What a patch diff compares. Derived rather than listed, so a numeric fact
@@ -54,7 +57,7 @@ class ModelBuild < ApplicationRecord
   # skips a side without one rather than report the fact appearing on every
   # model at once. Telling those builds apart by timestamp does not work: any
   # later write to the row, an admin correction included, bumps `updated_at`.
-  LATE_FACTS = %i[crew].freeze
+  LATE_FACTS = %i[crew beds lockers].freeze
 
   # What a storage container holds: ore from a mining pod, or salvage.
   STORAGE_KINDS = %w[ore salvage].freeze

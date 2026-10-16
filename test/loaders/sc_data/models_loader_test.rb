@@ -249,6 +249,36 @@ module ScData
         assert_nil never.reload.read_attribute(:storage_containers)
       end
 
+      test "#load_model takes the furniture the ship's rooms hold" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Interior Test")
+        racks = [{"key" => "Weapon_Rack_Test", "count" => 2, "slots" => [{"min_size" => 1, "max_size" => 1, "types" => [{"type" => "WeaponPersonal", "sub_types" => ["Gadget"]}]}]}]
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "interior" => {"beds" => 4, "weapon_racks" => racks, "lockers" => 2}})
+
+        build = loader.load_model(model)
+
+        assert_equal [4, racks, 2], build.values_at(:beds, :weapon_racks, :lockers)
+        assert_equal [4, racks, 2], model.reload.values_at(:beds, :weapon_racks, :lockers)
+      end
+
+      test "#load_model clears furniture a build no longer places, and writes none for a ship without" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        emptied = create(:model, name: "Emptied", beds: 4, lockers: 2, weapon_racks: [{"key" => "Weapon_Rack_Test", "count" => 1, "slots" => []}])
+        never = create(:model, name: "Never")
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(emptied)
+        loader.load_model(never)
+
+        assert_equal [nil, nil, nil], emptied.reload.values_at(:beds, :weapon_racks, :lockers)
+        assert_nil never.reload.read_attribute(:weapon_racks)
+        assert_not never.builds.sole.attribute_present?(:beds)
+      end
+
       test "storage container kinds are the ones a build knows" do
         assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end

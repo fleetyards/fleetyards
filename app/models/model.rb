@@ -30,6 +30,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom storage_containers sales_page_url
+    beds weapon_racks lockers
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -317,6 +318,7 @@ class Model < ApplicationRecord
   serialize :external_fuel_tanks, coder: YAML
   serialize :refuel_boom, coder: YAML
   serialize :storage_containers, coder: YAML
+  serialize :weapon_racks, coder: YAML
 
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
