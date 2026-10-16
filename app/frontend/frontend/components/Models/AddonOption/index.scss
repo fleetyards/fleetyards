@@ -227,10 +227,45 @@ $phone-indent: 106px;
     padding: 0 4px;
   }
 
+  // Over the picture's top corner, so a pill tags the picture instead of
+  // pushing its card taller than the rest of the row.
   .addon-option__meta {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    left: 14px;
     flex-wrap: wrap;
+    justify-content: flex-end;
     width: auto;
-    padding: 0 4px;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  // A pill's fill is a translucent tint made for a panel; over a picture it
+  // vanishes, so here it is mixed into an opaque dark instead.
+  .addon-option__meta .base-pill {
+    background: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 35%,
+      #{$gray-black}
+    );
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.5);
+
+    &--neutral {
+      background: color-mix(in srgb, #{$gray-light} 25%, #{$gray-black});
+    }
+
+    &--success {
+      background: color-mix(in srgb, #{$success} 35%, #{$gray-black});
+    }
+
+    &--warning {
+      background: color-mix(in srgb, #{$warning} 35%, #{$gray-black});
+    }
+
+    &--danger {
+      background: color-mix(in srgb, #{$danger} 35%, #{$gray-black});
+    }
   }
 
   .addon-option__quantity {

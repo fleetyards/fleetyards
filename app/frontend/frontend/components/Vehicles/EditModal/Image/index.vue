@@ -5,11 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useField } from "vee-validate";
+import { useField, useFieldValue } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -121,6 +123,21 @@ const paintPictures = computed<ModelPaint[]>(() =>
     .map((entry) => entry.paint)
     .filter((paint) => paint.media.storeImage),
 );
+
+// The form's paints rather than the saved ones, so a paint ticked on the paints
+// tab reads as owned here before the form is saved.
+const ownedPaintIds = useFieldValue<string[] | undefined>("modelPaintIds");
+
+const paintBadges = (paint: ModelPaint): AddonBadge[] =>
+  ownedPaintIds.value?.includes(paint.id)
+    ? [
+        {
+          key: "owned",
+          label: t("labels.vehicleLoadout.owned"),
+          variant: PillVariantsEnum.SUCCESS,
+        },
+      ]
+    : [];
 
 type Pick = {
   type: NonNullable<VehicleImageChanges["pictureType"]>;
@@ -264,6 +281,7 @@ defineExpose({ changes });
           :image="
             paint.media.storeImage?.smallUrl || paint.media.storeImage?.url
           "
+          :badges="paintBadges(paint)"
           :selected="isPicked(PictureType.MODEL_PAINT, paint.id)"
           stacked
           test-id="vehicle-image-gallery-paint"

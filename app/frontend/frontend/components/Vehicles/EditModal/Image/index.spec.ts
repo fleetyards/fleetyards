@@ -144,9 +144,16 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .findAll('[data-test="vehicle-image-gallery-paint"]')
-        .map((choice) => choice.text()),
+        .findAll(
+          '[data-test="vehicle-image-gallery-paint"] .addon-option__name',
+        )
+        .map((name) => name.text()),
     ).toEqual(["Rust Society", "Stormbringer"]);
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')
+        .map((choice) => choice.find("[data-test='pill']").exists()),
+    ).toEqual([false, true]);
     expect(
       wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
     ).toHaveLength(0);
