@@ -41,6 +41,18 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models leaves the detail-only media to the ship page" do
+    model = create(:model)
+    model.rear_view.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "rear.png")
+
+    assert_api_response :get, 200 do
+      media = parsed_body["items"].find { |item| item["slug"] == model.slug }["media"]
+
+      assert_not media.key?("rearView")
+      assert_not media.key?("holoLite")
+    end
+  end
+
   test "GET /models filters by nameOrDescriptionCont" do
     models = create_list(:model, 6)
 

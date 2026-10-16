@@ -163,6 +163,14 @@ json.media do
   json.brochure do
     json.partial! "api/v1/shared/file", record: model, attr: :brochure
   end
+
+  if local_assigns.fetch(:extended, false)
+    Model::DETAIL_ATTACHMENT_NAMES.each do |name|
+      json.set! name do
+        json.partial! "api/v1/shared/file", record: model, attr: name
+      end
+    end
+  end
 end
 
 json.metrics({})
