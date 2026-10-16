@@ -270,24 +270,18 @@ const socketGroups = computed(() =>
 );
 
 /**
- * The socket the picker fills. It opens on the first empty one, so a new
- * loadout starts where there is something to do; closing the picker clears it
- * until a socket is picked again.
+ * The socket the picker fills. None until one is picked, so the editor opens on
+ * the ship as fitted; picking the active socket again, or pressing outside the
+ * picker, closes it.
  */
 const activeSlot = ref<string>();
 
 const pickerOpen = computed(() => props.editable && !!activeSlot.value);
 
-watch(
-  slots,
-  (all) => {
-    if (!props.editable || activeSlot.value || !all.length) return;
-
-    const fitted = fittedModules.value || {};
-    activeSlot.value = all.find((slot) => !fitted[slot]) ?? all[0];
-  },
-  { immediate: true },
-);
+const onSocketSelect = (slot: string) => {
+  activeSlot.value = activeSlot.value === slot ? undefined : slot;
+  hovered.value = undefined;
+};
 
 const pickerOptions = computed(() =>
   activeSlot.value
@@ -320,20 +314,7 @@ const onPreviewEnd = () => {
   hovered.value = undefined;
 };
 
-const picker = ref<InstanceType<typeof Picker>>();
-
-const pickerHost = ref<HTMLElement>();
-
-// The next socket with nothing in it, after this one and round again.
-const nextEmpty = (from: string, fitted: Record<string, string>) => {
-  const index = slots.value.indexOf(from);
-
-  return [...slots.value.slice(index + 1), ...slots.value.slice(0, index)].find(
-    (slot) => !fitted[slot],
-  );
-};
-
-const onPick = async (moduleId: string | null) => {
+const onPick = (moduleId: string | null) => {
   const slot = activeSlot.value;
   if (!slot) return;
 
@@ -344,20 +325,9 @@ const onPick = async (moduleId: string | null) => {
     delete next[slot];
   }
   fittedModules.value = next;
-  hovered.value = undefined;
 
-  const following = moduleId ? nextEmpty(slot, next) : undefined;
-  if (!following) return;
-
-  // Keyboard users keep their place: the search of the next socket takes the
-  // focus the pick left behind.
-  const hadFocus = !!pickerHost.value?.contains(document.activeElement);
-  activeSlot.value = following;
-
-  if (hadFocus) {
-    await nextTick();
-    picker.value?.focusSearch();
-  }
+  // The pick is the answer the picker was opened for.
+  closePicker();
 };
 
 const closePicker = () => {
@@ -572,7 +542,6 @@ const onSubmit = handleSubmit(async (values) => {
             <AsyncData :async-status="modulesAsyncStatus">
               <template #resolved>
                 <div
-                  ref="pickerHost"
                   class="vehicle-loadout__category"
                   :class="{
                     'vehicle-loadout__category--picking': pickerOpen && !mobile,
@@ -584,14 +553,14 @@ const onSubmit = handleSubmit(async (values) => {
                     data-test="vehicle-loadout-fitted"
                   >
                     <SocketBoard
-                      v-model:active="activeSlot"
+                      :active="activeSlot"
                       :groups="socketGroups"
                       :editable="editable"
+                      @update:active="onSocketSelect"
                     >
                       <template v-if="pickerOpen && mobile" #active>
                         <Picker
                           :key="activeSlot"
-                          ref="picker"
                           :title="moduleSockets.slotLabel(activeSlot || '')"
                           :options="pickerOptions"
                           :selected-id="(fittedModules || {})[activeSlot || '']"
@@ -617,7 +586,6 @@ const onSubmit = handleSubmit(async (values) => {
                   <Picker
                     v-if="pickerOpen && !mobile"
                     :key="activeSlot"
-                    ref="picker"
                     class="vehicle-loadout__picker"
                     :title="moduleSockets.slotLabel(activeSlot || '')"
                     :options="pickerOptions"
