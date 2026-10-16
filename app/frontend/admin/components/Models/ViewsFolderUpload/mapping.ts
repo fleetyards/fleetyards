@@ -91,10 +91,11 @@ const VIEW_ROWS = [
   ],
 ] as const satisfies readonly (readonly ViewField[])[];
 
+const capitalize = (word: string) =>
+  `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+
 const inState = <T extends FolderField>(state: FieldState, field: T): T =>
-  (state === "flight"
-    ? field
-    : `${state}${field.charAt(0).toUpperCase()}${field.slice(1)}`) as T;
+  (state === "flight" ? field : `${state}${capitalize(field)}`) as T;
 
 export const FIELD_SECTIONS: readonly FieldSection[] = (
   ["flight", "extended", "landed"] as const
@@ -162,9 +163,6 @@ const prefixFor = (raw?: string): "extended" | "landed" | undefined => {
 
   return undefined;
 };
-
-const capitalize = (word: string) =>
-  `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
 
 export const fieldFor = (filename: string): FolderField | undefined => {
   // A folder picked through the file input carries its path in the name.
