@@ -76,6 +76,19 @@ describe("LoadoutSocketBoard", () => {
     expect(readOnly.find(".loadout-socket--active").exists()).toBe(false);
   });
 
+  it("renders the caller's panel under the active socket only", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { groups: GROUPS, active: "wing-left", editable: true },
+      slots: { active: () => h("p", { "data-test": "panel" }, "picker") },
+    });
+
+    const panels = wrapper.findAll("[data-test='loadout-socket-board-active']");
+    expect(panels).toHaveLength(1);
+    expect(
+      panels[0].element.previousElementSibling?.getAttribute("data-test"),
+    ).toBe("loadout-socket-wing-left");
+  });
+
   it("walks the sockets with the arrow keys, across groups", async () => {
     const host = document.createElement("div");
     document.body.appendChild(host);

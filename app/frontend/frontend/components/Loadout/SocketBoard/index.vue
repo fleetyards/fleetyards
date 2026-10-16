@@ -71,6 +71,15 @@ const onKeydown = (event: KeyboardEvent) => {
             :editable="editable"
             @select="emit('update:active', socket.id)"
           />
+          <!-- Directly under the socket it fills, for a caller with no room
+               beside the board, such as a phone's width. -->
+          <div
+            v-if="editable && socket.id === active && $slots.active"
+            class="loadout-socket-board__active"
+            data-test="loadout-socket-board-active"
+          >
+            <slot name="active" />
+          </div>
         </li>
       </ul>
     </section>
@@ -99,5 +108,9 @@ const onKeydown = (event: KeyboardEvent) => {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.loadout-socket-board__active {
+  margin-top: 8px;
 }
 </style>
