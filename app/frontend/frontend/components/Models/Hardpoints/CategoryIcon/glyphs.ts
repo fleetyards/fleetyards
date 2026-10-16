@@ -9,8 +9,9 @@ import {
 // The hardpoint icons people already know, redrawn as duotone glyphs on the
 // 512 grid: the part that names the category is the primary layer, its frame
 // or housing the secondary one. Corners are rounded the same way throughout,
-// and the secondary layer is cut back around the primary, so the two never
-// touch.
+// and the secondary layer is cut back around the primary's filled shapes. A
+// stroked line or a rounded polygon carries its own stroke width, which wins
+// over the knockout's, so it is cut out at its own outline instead.
 const GAP = 20;
 
 const line = (stroke: string, width: number, cap = "round") =>
