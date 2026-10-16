@@ -156,6 +156,27 @@ const onFocusOut = (event: FocusEvent) => {
   }
 };
 
+/*
+ * A press anywhere else closes the picker, except on a socket: that one switches
+ * what the picker fills, and closing first would only reopen it a moment later.
+ * Captured, so a control that stops the event on its way up still counts.
+ */
+const onDocumentPointerdown = (event: PointerEvent) => {
+  const target = event.target as Element | null;
+  if (!target || root.value?.contains(target)) return;
+  if (target.closest?.(".loadout-socket")) return;
+
+  emit("close");
+};
+
+onMounted(() => {
+  document.addEventListener("pointerdown", onDocumentPointerdown, true);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("pointerdown", onDocumentPointerdown, true);
+});
+
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key !== "Escape") return;
 

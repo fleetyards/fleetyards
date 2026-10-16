@@ -196,6 +196,27 @@ describe("LoadoutPicker", () => {
     expect(wrapper.emitted("previewEnd")).toHaveLength(1);
   });
 
+  it("closes on a press outside it, but not inside it or on a socket", async () => {
+    const host = document.createElement("div");
+    const socket = document.createElement("button");
+    socket.className = "loadout-socket";
+    document.body.append(host, socket);
+    const wrapper = await mount({}, host);
+    const press = (target: Element) =>
+      target.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+
+    press(wrapper.get("[data-test='loadout-picker-options']").element);
+    press(socket);
+    expect(wrapper.emitted("close")).toBeUndefined();
+
+    press(document.body);
+    expect(wrapper.emitted("close")).toHaveLength(1);
+
+    wrapper.unmount();
+    host.remove();
+    socket.remove();
+  });
+
   it("closes on Escape and from its close button", async () => {
     const wrapper = await mount();
 
