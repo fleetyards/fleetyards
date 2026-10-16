@@ -4339,7 +4339,6 @@
         "noSlots": "Nothing on this ship can be fitted here yet",
         "loadoutName": "Loadout name",
         "stock": "Stock",
-        "unslotted": "Not fittable yet, because the game files do not say which slot they take: %{modules}",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
         "slots": {
           "default": "Module slot",

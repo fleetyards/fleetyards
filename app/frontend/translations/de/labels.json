@@ -4325,7 +4325,6 @@
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
         "loadoutName": "Name des Loadouts",
         "stock": "Serienmäßig",
-        "unslotted": "Noch nicht ausrüstbar, da die Spieldateien nicht angeben, welchen Slot sie belegen: %{modules}",
         "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
         "slots": {
           "default": "Modul-Slot",

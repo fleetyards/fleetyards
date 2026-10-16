@@ -54,12 +54,10 @@ describe("VehicleLoadoutModalFitting", () => {
     );
   });
 
-  it("names the modules that cannot be fitted for want of a slot", async () => {
+  it("leaves out a module the game files give no slot", async () => {
     const wrapper = await mountFitting({ ownedIds: [], editable: true });
 
-    expect(
-      wrapper.get("[data-test='vehicle-loadout-unslotted']").text(),
-    ).toContain("Mystery Module");
+    expect(wrapper.text()).not.toContain("Mystery Module");
   });
 
   it("shows a visitor only what is fitted", async () => {

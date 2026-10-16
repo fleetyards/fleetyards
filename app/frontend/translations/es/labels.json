@@ -4325,7 +4325,6 @@
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "loadoutName": "Nombre de la configuración",
         "stock": "De serie",
-        "unslotted": "Aún no se pueden equipar, porque los archivos del juego no indican qué ranura ocupan: %{modules}",
         "notFlightReady": "Las configuraciones solo están disponibles para naves listas para volar",
         "slots": {
           "default": "Ranura de módulo",

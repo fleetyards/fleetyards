@@ -4325,7 +4325,6 @@
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
         "loadoutName": "Nom de la configuration",
         "stock": "D'origine",
-        "unslotted": "Pas encore équipables, car les fichiers du jeu n'indiquent pas quel emplacement ils occupent : %{modules}",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",
         "slots": {
           "default": "Emplacement de module",

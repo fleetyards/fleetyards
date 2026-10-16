@@ -57,10 +57,6 @@ const slots = computed(() => moduleSlots(props.modules));
 const candidates = (slot: string) =>
   props.modules.filter((mod) => mod.slot === slot);
 
-// The game files never said which slot these take, so there is nowhere to
-// fit them yet.
-const unslotted = computed(() => props.modules.filter((mod) => !mod.slot));
-
 const { slotLabel } = useLoadoutSlotLabel();
 
 const fittedIn = (slot: string) => props.modelValue[slot];
@@ -158,18 +154,6 @@ const visibleSlots = computed(() =>
         />
       </div>
     </fieldset>
-
-    <p
-      v-if="editable && unslotted.length"
-      class="loadout-fitting__hint"
-      data-test="vehicle-loadout-unslotted"
-    >
-      {{
-        t("labels.vehicleLoadout.unslotted", {
-          modules: unslotted.map((mod) => mod.name).join(", "),
-        })
-      }}
-    </p>
   </div>
 </template>
 
@@ -192,12 +176,6 @@ const visibleSlots = computed(() =>
     h4 {
       margin: 0;
     }
-  }
-
-  &__hint {
-    margin: 0;
-    color: var(--color-text-dim);
-    font-size: 13px;
   }
 }
 </style>

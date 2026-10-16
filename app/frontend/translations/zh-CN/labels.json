@@ -4325,7 +4325,6 @@
         "noSlots": "这艘舰船目前还没有可在此装配的内容",
         "loadoutName": "配装名称",
         "stock": "原厂",
-        "unslotted": "暂时无法装配，因为游戏文件未说明它们占用哪个槽位：%{modules}",
         "notFlightReady": "只有可飞行的舰船才能使用配装",
         "slots": {
           "default": "模块槽位",
