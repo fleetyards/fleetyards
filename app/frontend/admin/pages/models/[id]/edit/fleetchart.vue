@@ -56,7 +56,7 @@ const VIEW_BLOCKS: ViewField[][][] = ["flight", "extended", "landed"].map(
   (state) => {
     const fields = VIEW_FIELDS.filter((field) => stateOf(field) === state);
 
-    return Array.from({ length: fields.length / 4 }, (_, row) =>
+    return Array.from({ length: Math.ceil(fields.length / 4) }, (_, row) =>
       fields.slice(row * 4, row * 4 + 4),
     );
   },
