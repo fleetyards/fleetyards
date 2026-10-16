@@ -212,6 +212,25 @@ describe("picking the holo", () => {
     ).toBe("holo");
   });
 
+  it("shows a state's lite export where it has no full one, even off a phone", () => {
+    const subject = model({
+      holo: file("holo"),
+      landedHoloLite: file("landed-lite"),
+    });
+
+    expect(modelStateHolo(subject, ModelStateEnum.LANDED)?.name).toBe(
+      "landed-lite",
+    );
+  });
+
+  it("finds a model's only holo when that one is a lite export", () => {
+    const subject = model({ landedHoloLite: file("landed-lite") });
+
+    expect(modelStateHolo(subject, ModelStateEnum.FLIGHT)?.name).toBe(
+      "landed-lite",
+    );
+  });
+
   // The pose asked for matters more than the file size.
   it("prefers the state's full holo over the flying lite one", () => {
     const subject = model({

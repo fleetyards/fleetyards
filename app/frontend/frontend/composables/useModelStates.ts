@@ -223,20 +223,21 @@ function file(media: ModelMedia, key: keyof ModelMedia): MediaFile | undefined {
 function stateHolo(
   model: Model,
   state: ModelStateEnum,
-  lite: boolean,
+  preferLite: boolean,
 ): MediaFile | undefined {
-  const { holo, holoLite } = STATE_MEDIA[state];
+  const full = file(model.media, STATE_MEDIA[state].holo);
+  const lite = file(model.media, STATE_MEDIA[state].holoLite);
 
-  return (lite && file(model.media, holoLite)) || file(model.media, holo);
+  return preferLite ? lite || full : full || lite;
 }
 
 // The state's own holo, then the flying one -- and then whatever holo the model
 // does have: a hull uploaded landed-first has no flying mesh to fall back to, and
 // the alternative is a 3D view button that opens nothing.
 //
-// `lite` prefers the export without the interior at every step, but never over
-// the right state: a phone is better served by the landed hull it asked for than
-// by a lighter file of the flying one.
+// `lite` decides which of a state's two exports comes first, never whether the
+// other one counts: the pose asked for matters more than the file size, so a
+// desktop showing a state with only a lite export shows that export.
 export function modelStateHolo(
   model: Model,
   state: ModelStateEnum,
