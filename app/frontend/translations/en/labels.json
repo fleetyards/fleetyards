@@ -4352,6 +4352,24 @@
           "upgrades": "There are no add-ons for this ship"
         },
         "none": "None"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Empty",
+        "search": "Search",
+        "owned": "Owned",
+        "stock": "Stock",
+        "manufacturer": "Manufacturer",
+        "sortBy": "Sort by",
+        "sortName": "Name",
+        "count": "%{count} of %{total}",
+        "total": {
+          "one": "%{count} option",
+          "other": "%{count} options"
+        },
+        "reset": "Reset filters",
+        "leaveEmpty": "Leave empty",
+        "noMatches": "Nothing matches",
+        "close": "Close"
       }
     }
   }

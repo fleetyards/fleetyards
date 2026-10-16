@@ -4338,6 +4338,24 @@
           "upgrades": "Für dieses Schiff gibt es keine Add-ons"
         },
         "none": "Keine"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Leer",
+        "search": "Suchen",
+        "owned": "Im Besitz",
+        "stock": "Serienmäßig",
+        "manufacturer": "Hersteller",
+        "sortBy": "Sortieren nach",
+        "sortName": "Name",
+        "count": "%{count} von %{total}",
+        "total": {
+          "one": "%{count} Option",
+          "other": "%{count} Optionen"
+        },
+        "reset": "Filter zurücksetzen",
+        "leaveEmpty": "Leer lassen",
+        "noMatches": "Keine Treffer",
+        "close": "Schließen"
       }
     }
   }

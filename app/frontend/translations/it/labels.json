@@ -4338,6 +4338,24 @@
           "upgrades": "Non esistono componenti aggiuntivi per questa nave"
         },
         "none": "Nessuno"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Vuoto",
+        "search": "Cerca",
+        "owned": "Posseduto",
+        "stock": "Di serie",
+        "manufacturer": "Produttore",
+        "sortBy": "Ordina per",
+        "sortName": "Nome",
+        "count": "%{count} di %{total}",
+        "total": {
+          "one": "%{count} opzione",
+          "other": "%{count} opzioni"
+        },
+        "reset": "Reimposta filtri",
+        "leaveEmpty": "Lascia vuoto",
+        "noMatches": "Nessun risultato",
+        "close": "Chiudi"
       }
     }
   }

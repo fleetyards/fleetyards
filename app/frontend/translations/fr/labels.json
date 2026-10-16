@@ -4338,6 +4338,24 @@
           "upgrades": "Aucune extension n'existe pour ce vaisseau"
         },
         "none": "Aucun"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Vide",
+        "search": "Rechercher",
+        "owned": "Possédé",
+        "stock": "D'origine",
+        "manufacturer": "Fabricant",
+        "sortBy": "Trier par",
+        "sortName": "Nom",
+        "count": "%{count} sur %{total}",
+        "total": {
+          "one": "%{count} option",
+          "other": "%{count} options"
+        },
+        "reset": "Réinitialiser les filtres",
+        "leaveEmpty": "Laisser vide",
+        "noMatches": "Aucun résultat",
+        "close": "Fermer"
       }
     }
   }

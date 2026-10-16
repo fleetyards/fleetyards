@@ -4338,6 +4338,24 @@
           "upgrades": "该舰船没有可用的附加组件"
         },
         "none": "无"
+      },
+      "loadoutPicker": {
+        "emptySocket": "空",
+        "search": "搜索",
+        "owned": "已拥有",
+        "stock": "原厂",
+        "manufacturer": "制造商",
+        "sortBy": "排序方式",
+        "sortName": "名称",
+        "count": "%{total} 个中的 %{count} 个",
+        "total": {
+          "one": "%{count} 个选项",
+          "other": "%{count} 个选项"
+        },
+        "reset": "重置筛选",
+        "leaveEmpty": "留空",
+        "noMatches": "没有匹配项",
+        "close": "关闭"
       }
     }
   }

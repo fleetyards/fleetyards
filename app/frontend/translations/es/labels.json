@@ -4338,6 +4338,24 @@
           "upgrades": "No hay complementos para esta nave"
         },
         "none": "Ninguno"
+      },
+      "loadoutPicker": {
+        "emptySocket": "Vacío",
+        "search": "Buscar",
+        "owned": "En propiedad",
+        "stock": "De serie",
+        "manufacturer": "Fabricante",
+        "sortBy": "Ordenar por",
+        "sortName": "Nombre",
+        "count": "%{count} de %{total}",
+        "total": {
+          "one": "%{count} opción",
+          "other": "%{count} opciones"
+        },
+        "reset": "Restablecer filtros",
+        "leaveEmpty": "Dejar vacío",
+        "noMatches": "Sin resultados",
+        "close": "Cerrar"
       }
     }
   }
