@@ -351,6 +351,7 @@
         "syncMatrix": "Matrix synchronisieren",
         "syncScData": "SC-Daten synchronisieren",
         "importPaints": "Lackierungen importieren",
+        "syncShipViews": "Schiffsansichten synchronisieren",
         "exchangeStoreImage": "RSI-Bild verwenden",
         "images": "Bilder",
         "openTableConfiguration": "Tabellenkonfiguration öffnen"

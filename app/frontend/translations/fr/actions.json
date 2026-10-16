@@ -351,6 +351,7 @@
         "syncMatrix": "Synchroniser la matrice",
         "syncScData": "Synchroniser les données SC",
         "importPaints": "Importer les peintures",
+        "syncShipViews": "Synchroniser les vues du vaisseau",
         "exchangeStoreImage": "Utiliser l'image RSI",
         "images": "Images",
         "openTableConfiguration": "Ouvrir la configuration du tableau"

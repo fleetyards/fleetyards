@@ -181,6 +181,7 @@
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "importPaintsStarted": "Lackierungs-Import gestartet. Du wirst benachrichtigt, sobald er abgeschlossen ist.",
+        "syncShipViewsStarted": "Synchronisierung der Schiffsansichten gestartet. Neue Renderings erscheinen hier, sobald sie verarbeitet sind.",
         "dimensionsDrifted": "Diese Maße weichen von den Spieldateien ab."
       },
       "announcement": {
@@ -542,6 +543,7 @@
           "syncMatrix": "Bist du sicher, dass du die Matrix-Daten für dieses Modell synchronisieren möchtest?",
           "syncScData": "Bist du sicher, dass du die SC-Daten für dieses Modell synchronisieren möchtest?",
           "importPaints": "Bist du sicher, dass du die Lackierungen dieses Modells aus den Hangar-Daten importieren möchtest? Eine Lackierung, die die Quelle für eine ganze Serie angibt, wird für jedes Modell dieser Serie importiert.",
+          "syncShipViews": "Bist du sicher, dass du die Schiffsansichten dieses Modells aus dem Render-Bucket synchronisieren möchtest? Renderings, die von den angehängten abweichen, werden ersetzt.",
           "exchangeStoreImage": "Bist du sicher, dass du das Store-Bild durch das RSI-Bild ersetzen möchtest?",
           "reloadMatrix": "Bist du sicher, dass du die Modell-Matrix neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
           "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",

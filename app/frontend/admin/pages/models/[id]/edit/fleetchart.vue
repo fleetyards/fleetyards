@@ -10,7 +10,9 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type ModelExtended,
   type ModelUpdateInput,
+  useReloadOneModelShipViews,
 } from "@/services/fyAdminApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { type BaseFieldProps, useForm } from "vee-validate";
 import { type Ref } from "vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -31,6 +33,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { displayConfirm, displaySuccess } = useAppNotifications();
 
 useModelMediaUpdates(() => props.model.id);
 
@@ -74,6 +77,27 @@ const onFolderSelected = (fields: Partial<Record<FolderField, string>>) => {
   previews.value = fields;
 };
 
+const syncMutation = useReloadOneModelShipViews({
+  mutation: {
+    onSuccess: () => {
+      displaySuccess({
+        text: t("messages.model.syncShipViewsStarted"),
+      });
+    },
+  },
+});
+
+const syncShipViews = () => {
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.syncShipViews"),
+    onConfirm: async () => {
+      await syncMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
+};
+
 const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
   Object.entries(fields).forEach(([field, signedId]) => {
     setFieldValue(field as FolderField, signedId);
@@ -82,7 +106,13 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
+  <div class="flex items-center justify-between mb-4">
+    <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
+    <Btn :loading="syncMutation.isPending.value" @click="syncShipViews">
+      <i class="fa-duotone fa-cloud-arrow-down" />
+      {{ t("actions.models.syncShipViews") }}
+    </Btn>
+  </div>
   <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <ViewsFolderUpload
       :processing="model.mediaProcessing"

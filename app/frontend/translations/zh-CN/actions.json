@@ -351,6 +351,7 @@
         "syncMatrix": "同步矩阵",
         "syncScData": "同步 SC 数据",
         "importPaints": "导入涂装",
+        "syncShipViews": "同步舰船视图",
         "exchangeStoreImage": "使用 RSI 图片",
         "images": "图片",
         "openTableConfiguration": "打开表格配置"

@@ -6,16 +6,25 @@ module ScData
   # views are cropped and holos measured by the model's own callbacks.
   #
   # Renders go live without review, so every run logs what it attached.
+  #
+  # Given a model, only that ship is synced, and its listing is compared render
+  # by render even when the digest says nothing changed, so a render detached in
+  # the admin comes back.
   class ShipViewsImportJob < ApplicationJob
     sidekiq_options queue: "loaders"
 
-    def perform
+    def perform(model_id = nil)
       return unless ::ScData::ShipViewsStore.configured?
 
       store = ::ScData::ShipViewsStore.new
       ships = store.ships
 
       models = models_for(ships)
+
+      if model_id
+        ships = ships.select { |path, _entry| models[path]&.id == model_id }
+        log(:info, "no renders listed for model #{model_id}") if ships.empty?
+      end
 
       paths_by_model = ships.keys.group_by { |path| models[path]&.id }
       attached = {}
@@ -36,7 +45,7 @@ module ScData
           next
         end
 
-        next if model.ship_views_digest == entry["files"]
+        next if model_id.nil? && model.ship_views_digest == entry["files"]
 
         fields = import(store, model, path, entry["files"])
         attached[model.slug] = fields if fields.any?

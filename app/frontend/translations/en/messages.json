@@ -191,6 +191,7 @@
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Paint import started. You will be notified when it completes.",
+        "syncShipViewsStarted": "Ship views sync started. New renders appear here once they are processed.",
         "dimensionsDrifted": "These dimensions differ from the game files."
       },
       "announcement": {
@@ -552,6 +553,7 @@
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
           "importPaints": "Are you sure you want to import this model's paints from the hangar data? A paint the source names for a whole series is imported for every model of that series.",
+          "syncShipViews": "Are you sure you want to sync this model's ship views from the render bucket? Renders that differ from the attached ones are replaced.",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
           "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",

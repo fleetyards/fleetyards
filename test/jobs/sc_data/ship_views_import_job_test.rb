@@ -47,8 +47,8 @@ module ScData
         .map { |request| request[:params][:key].delete_prefix("ship-views/#{PATH}/") }
     end
 
-    private def perform
-      ::ScData::ShipViewsImportJob.new.perform
+    private def perform(*)
+      ::ScData::ShipViewsImportJob.new.perform(*)
       @model.reload
     end
 
@@ -127,6 +127,15 @@ module ScData
       perform
 
       assert_not @model.top_view.attached?
+    end
+
+    test "syncs one model listed under its RSI slug" do
+      @model.update_columns(slug: "rsi-arrastra", rsi_slug: "arrastra")
+      publish({"flight_top.png" => PNG}, slug: "arrastra")
+
+      perform(@model.id)
+
+      assert @model.top_view.attached?
     end
 
     test "does not fetch a render it imported before" do
@@ -247,6 +256,25 @@ module ScData
       Rails.logger.stubs(:info).with { |message| !message.to_s.start_with?("[sc_data] ShipViewsImportJob") }
 
       perform
+    end
+
+    test "syncs one model even when its listing has not changed" do
+      @model.update!(ship_views_digest: "listing-1")
+      publish({"flight_top.png" => PNG})
+
+      perform(@model.id)
+
+      assert @model.top_view.attached?
+    end
+
+    test "syncs only the given model" do
+      other = create(:model)
+      publish({"flight_top.png" => PNG}, slug: other.slug)
+
+      perform(@model.id)
+
+      assert_not other.reload.top_view.attached?
+      assert_equal ["ship-views/index.json"], @client.api_requests.map { |request| request[:params][:key] }
     end
 
     test "does nothing without a bucket" do
