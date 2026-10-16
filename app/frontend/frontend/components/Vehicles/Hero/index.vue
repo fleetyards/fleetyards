@@ -20,6 +20,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
+import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
@@ -80,9 +81,14 @@ const pictureUrl = computed(
 
 const title = computed(() => props.vehicle.name || props.vehicle.model.name);
 
+// Decided once, as on the ship page: a resize should not swap the file.
+const preferLiteHolo = isLowPowerDevice();
+
 // The ship in flight, the way the ship page opens it.
 const holoModel = computed(() => {
-  const holo = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT);
+  const holo = modelStateHolo(props.vehicle.model, ModelStateEnum.FLIGHT, {
+    lite: preferLiteHolo,
+  });
   const path = holo?.url;
   const length = modelStateMetrics(
     props.vehicle.model,

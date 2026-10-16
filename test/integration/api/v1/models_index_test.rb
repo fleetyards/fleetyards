@@ -41,15 +41,18 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /models leaves the detail-only media to the ship page" do
+  test "GET /models leaves the detail-only media to the ship page and carries the lite holos" do
     model = create(:model)
     model.rear_view.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "rear.png")
+    model.holo_textured.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo_textured.glb")
+    model.holo_lite.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo_lite.glb")
 
     assert_api_response :get, 200 do
       media = parsed_body["items"].find { |item| item["slug"] == model.slug }["media"]
 
       assert_not media.key?("rearView")
-      assert_not media.key?("holoLite")
+      assert_not media.key?("holoTextured")
+      assert_equal "holo_lite.glb", media.dig("holoLite", "name")
     end
   end
 

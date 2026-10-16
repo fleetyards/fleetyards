@@ -195,7 +195,7 @@ module Admin
             :landed_top_view, :landed_side_view, :landed_front_view, :landed_angled_view,
             :landed_top_view_colored, :landed_side_view_colored,
             :landed_front_view_colored, :landed_angled_view_colored,
-            *Model::DETAIL_ATTACHMENT_NAMES
+            *Model::DETAIL_ATTACHMENT_NAMES, *Model::LITE_HOLO_ATTACHMENT_NAMES
           )
         end
       end
