@@ -76,7 +76,12 @@ export type FieldSection = {
 // Each row follows the ship page's cells: angled, plan, end-on, profile.
 const VIEW_ROWS = [
   ["angledView", "topView", "frontView", "portView"],
-  ["angledViewColored", "topViewColored", "frontViewColored", "portViewColored"],
+  [
+    "angledViewColored",
+    "topViewColored",
+    "frontViewColored",
+    "portViewColored",
+  ],
   ["angledRearView", "bottomView", "rearView", "starboardView"],
   [
     "angledRearViewColored",
