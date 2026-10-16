@@ -27,11 +27,11 @@ Every hardpoint category has its own icon from one newly drawn, `currentColor` s
 
 ## Intent Verification
 
-- [ ] **One icon per category**: 42 distinct glyphs, no FA fallbacks, no shared drawings.
-- [ ] **currentColor**: icons follow the theme and text colour, and no grayscale filter remains.
-- [ ] **One mapping**: the hardpoint list, catalogue, loadout modal and power distribution all resolve icons through `categoryIcon`, and the `v-if` chain is gone.
-- [ ] **Spec**: removing any enum entry from the map fails a spec.
-- [ ] **Legibility**: icons read at 22px and 52px.
+- [x] **One icon per category**: 42 distinct glyphs, no FA fallbacks, no shared drawings.
+- [x] **currentColor**: icons follow the theme and text colour, and no grayscale filter remains.
+- [x] **One mapping**: the hardpoint list, catalogue, loadout modal and power distribution all resolve icons through `categoryIcon`, and the `v-if` chain is gone.
+- [x] **Spec**: removing any enum entry from the map fails a spec.
+- [x] **Legibility**: icons read at 22px and 52px.
 
 ## Key files
 
@@ -56,8 +56,11 @@ Every hardpoint category has its own icon from one newly drawn, `currentColor` s
 
 - **2026-10-16** Initial research and plan creation. `Category/index.vue` imports the enum from `fyAdminApi`; switch it to `fyApi`.
 - **2026-10-16** Phase 1 swapped in the renderer before the glyph map, so each commit stays green. Drawing 42 glyphs first would have left the callers on the old union with nothing to render the new one. `turrets-dark.svg` and the legend PNGs are already unused.
+- **2026-10-16** A tab icon is compared by identity: a glyph built inline per render re-registers its `FormTab` every time and Vue stops on "Maximum recursive updates". Glyphs are module constants, so only the FormTabs spec had to hoist one.
+- **2026-10-16** Several drafts drew past the 512 grid (the hook, the maneuvering thrusters, the salvage rays) and clipped in the 22px header. Checked by rendering each glyph with room around it and reading the drawn bounds; all 42 stay inside.
+- **2026-10-16** The loadout modal's missiles tab asked for `missiles`, which is no category; it now uses `missile_racks`.
 
 ## Progress
 - [x] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 2
+- [x] Phase 3
