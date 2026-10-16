@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.8.0](https://github.com/fleetyards/fleetyards/compare/v9.7.0...v9.8.0) (2026-10-16)
+
+
+### Features
+
+* **admin:** keep active recurring supporters first; supporters and notifications in the mobile tab bar ([#5752](https://github.com/fleetyards/fleetyards/issues/5752)) ([df910e5](https://github.com/fleetyards/fleetyards/commit/df910e535dfed0985a16067aa83e8596295cffbf))
+* **models:** group the fleetchart form by state, and call the side view the port view ([#5750](https://github.com/fleetyards/fleetyards/issues/5750)) ([25ef5d2](https://github.com/fleetyards/fleetyards/commit/25ef5d26aa6bdd929ee5fd8252b91a3672c03e45))
+
+
+### Bug Fixes
+
+* **hangar:** lead a wishlist vehicle's breadcrumb through the wishlist ([8a0530e](https://github.com/fleetyards/fleetyards/commit/8a0530e91f177dcd8c8bc57fd54eed72d843f1f1))
+
+
+### Refactorings
+
+* **vehicles:** drop the applied paint and gallery image columns ([#5730](https://github.com/fleetyards/fleetyards/issues/5730)) ([87b4854](https://github.com/fleetyards/fleetyards/commit/87b48548558e60ff902aa0edb3d60a4ed530189a))
+
 ## [9.7.0](https://github.com/fleetyards/fleetyards/compare/v9.6.0...v9.7.0) (2026-10-16)
 
 
