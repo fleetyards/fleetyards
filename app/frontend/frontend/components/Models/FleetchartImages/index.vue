@@ -262,8 +262,11 @@ onMounted(() => {
     >
       <!-- Announced here rather than inside Loader: it is a leaf component
            mounted without a store in several specs, and useI18n needs pinia. -->
+      <!-- Immediate: the views dim at once, and a switch rarely takes the half
+           second a loader otherwise waits, so it would never show. -->
       <Loader
         relative
+        immediate
         :loading="switching"
         role="status"
         :aria-label="t('labels.loading')"

@@ -18,15 +18,6 @@
   }
 }
 
-// The global fade holds every loader back for half a second so a quick load
-// never flashes one. Here the views dim at once, and a switch rarely takes a
-// second, so the delayed loader stayed invisible while the images sat dimmed.
-.fleetchart-views :deep(.loader.fade-enter-active),
-.fleetchart-views :deep(.loader.fade-leave-active) {
-  transition: opacity 200ms ease;
-  transition-delay: 0s;
-}
-
 .fleetchart-views {
   margin: 20px 0;
   display: grid;

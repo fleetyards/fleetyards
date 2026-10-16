@@ -62,6 +62,17 @@
   opacity: 0;
 }
 
+// fade-quick: no delay, for something that answers a click at once
+.fade-quick-enter-active,
+.fade-quick-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.fade-quick-enter-from,
+.fade-quick-leave-to {
+  opacity: 0;
+}
+
 // fade-slow
 .fade-slow-enter-active,
 .fade-slow-leave-active {

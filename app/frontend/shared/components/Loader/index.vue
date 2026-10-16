@@ -11,6 +11,10 @@ type Props = {
   relative?: boolean;
   inline?: boolean;
   progress?: number;
+  // Shown at once. By default a loader waits half a second, so a quick load
+  // never flashes one; where the content around it already reacts to the click,
+  // that wait reads as nothing happening.
+  immediate?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -18,11 +22,12 @@ withDefaults(defineProps<Props>(), {
   fixed: false,
   inline: false,
   progress: undefined,
+  immediate: false,
 });
 </script>
 
 <template>
-  <transition name="fade">
+  <transition :name="immediate ? 'fade-quick' : 'fade'">
     <div
       v-if="loading"
       :class="{

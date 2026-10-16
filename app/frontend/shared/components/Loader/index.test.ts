@@ -13,6 +13,16 @@ describe("BaseLoader", () => {
     expect(wrapper.find("div").exists()).toBe(false);
   });
 
+  it("waits before it shows, unless it is immediate", () => {
+    const transitionName = (immediate: boolean) =>
+      mount(Component, { props: { loading: true, immediate } })
+        .findComponent({ name: "Transition" })
+        .props("name");
+
+    expect(transitionName(false)).toBe("fade");
+    expect(transitionName(true)).toBe("fade-quick");
+  });
+
   it("renders centered loader", () => {
     const wrapper = mount(Component, { propsData: { loading: true } });
     const mainElement = wrapper.find("div");
