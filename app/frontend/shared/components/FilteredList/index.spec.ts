@@ -281,9 +281,8 @@ describe("FilteredList", () => {
     expect(formText()).toBe("{}");
   });
 
-  // App.vue renders the off-canvas panel after the page, and keys its whole
-  // body on the locale: a locale change mounts the page before the target
-  // exists, and a Teleport that missed its target crashes on the next patch.
+  // A Teleport that finds no target on mount never mounts its children, and
+  // crashes patching them on the next render.
   it("finds the off-canvas panel that mounts after it", async () => {
     document.body.innerHTML = "";
 
