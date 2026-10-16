@@ -17631,6 +17631,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StorageContainer"
+        weaponRacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -17693,6 +17697,8 @@ components:
         dimensionsMeasuredAt:
           type: string
           format: date-time
+        lockers:
+          type: integer
       additionalProperties: false
       required:
       - id
@@ -17942,6 +17948,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StorageContainer"
+        weaponRacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -18004,6 +18014,8 @@ components:
         dimensionsMeasuredAt:
           type: string
           format: date-time
+        lockers:
+          type: integer
         baseModelId:
           type: string
           format: uuid
@@ -18243,6 +18255,8 @@ components:
           type:
           - string
           - 'null'
+        beds:
+          type: integer
         fleetchartOffsetLength:
           type: number
         fleetchartOffsetBeam:
@@ -21806,6 +21820,58 @@ components:
       - meta
       - items
       title: Videos
+    WeaponRack:
+      type: object
+      properties:
+        key:
+          type: string
+        count:
+          type: integer
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRackSlot"
+      additionalProperties: false
+      required:
+      - key
+      - count
+      - slots
+      title: WeaponRack
+    WeaponRackSlot:
+      type: object
+      properties:
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRackSlotType"
+        requiredTags:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - minSize
+      - maxSize
+      - types
+      title: WeaponRackSlot
+    WeaponRackSlotType:
+      type: object
+      properties:
+        type:
+          type: string
+        subTypes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - type
+      - subTypes
+      title: WeaponRackSlotType
   securitySchemes:
     BearerAuth:
       type: http

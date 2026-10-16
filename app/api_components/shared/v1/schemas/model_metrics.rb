@@ -15,6 +15,9 @@ module Shared
             cargoLabel: {type: :string},
             personalInventory: {type: :number},
             personalInventoryLabel: {type: [:string, :null]},
+            # Berths, so a bunk counts twice. Absent rather than 0 for an interior
+            # from before its ship's rework, which places no beds at all.
+            beds: {type: :integer},
             fleetchartOffsetLength: {type: :number},
             fleetchartOffsetBeam: {type: :number},
             extendedLength: {type: :number},
