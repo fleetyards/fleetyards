@@ -6,8 +6,7 @@ Working plan for #5747. Decisions live in the issue body. Deleted before the PR 
 The ship page and the API show a ship's beds (by berth) and its weapon-rack slots (type, sub-types, size range, required tags) read from the game files; locker counts are stored and served nowhere public.
 
 ## Open questions
-- What shape the frontend card takes for rack slots (group by type + size range, e.g. "4 × Rifle S2–3") — settle with a visual-test page before wiring the ship page.
-- Which records the Constellations (and other `_GS`/reworked ships) resolve to today — check `sc_key` on the production catalogue. If they sit on the legacy record, the fix is a data migration setting `sc_key` like `20260504120000_set_sc_keys_for_known_models.rb`.
+- None.
 
 ## What changed
 
@@ -74,11 +73,15 @@ The ship page and the API show a ship's beds (by berth) and its weapon-rack slot
 
 ## Discovery Log
 
+- **2026-10-16** Bed anchors are `helperName` attributes on alignment slots, not `Name`. Medical beds are `Bed_*` classes too; told apart by `MedBedComponentParams`.
+- **2026-10-16** Production already loads the `_GS` Constellation records (mass and hull health match `rsi_constellation_*_gs`), so no `sc_key` migration.
+- **2026-10-16** Scratch parse of 4.10.2-live: 1153 models, 515 with an interior — 487 with beds, 257 with racks, 53 with lockers.
 - **2026-10-16** Initial research and plan. Only 4.10.2-live.12913470 has `derived/shiprooms.json` on disk; PTU trees parsed from older raw builds will get no interior keys until re-synced. A parser change needs a re-parse + `bin/scdata push` in the same PR.
 
 ## Progress
-- [ ] Phase 1 — Parser
-- [ ] Phase 2 — Storage and loader
-- [ ] Phase 3 — API
-- [ ] Phase 4 — Frontend
-- [ ] Phase 5 — Reworked records
+- [x] Phase 1 — Parser
+- [x] Phase 2 — Storage and loader
+- [x] Phase 3 — API
+- [x] Phase 4 — Frontend
+- [x] Phase 5 — Reworked records (nothing to change)
+- [ ] Re-parse live + push, `test/contracts` against it
