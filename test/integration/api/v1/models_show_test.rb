@@ -25,6 +25,33 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug serves the beds and weapon racks its rooms hold, and no lockers" do
+    racks = [{"key" => "Weapon_Rack_Test", "count" => 2, "slots" => [
+      {"min_size" => 0, "max_size" => 1, "types" => [{"type" => "WeaponPersonal", "sub_types" => ["Gadget"]}], "required_tags" => ["multitool"]},
+      {"min_size" => 1, "max_size" => 4, "types" => [{"type" => "Cargo", "sub_types" => []}]}
+    ]}]
+    model = create(:model, beds: 4, weapon_racks: racks, lockers: 2)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal 4, parsed_body.dig("metrics", "beds")
+      assert_equal [{"key" => "Weapon_Rack_Test", "count" => 2, "slots" => [
+        {"minSize" => 0, "maxSize" => 1, "types" => [{"type" => "WeaponPersonal", "subTypes" => ["Gadget"]}], "requiredTags" => ["multitool"]},
+        {"minSize" => 1, "maxSize" => 4, "types" => [{"type" => "Cargo", "subTypes" => []}]}
+      ]}], parsed_body["weaponRacks"]
+      assert_not parsed_body.key?("lockers")
+      assert_not parsed_body["metrics"].key?("lockers")
+    end
+  end
+
+  test "GET /models/:slug serves nothing for an interior that places no furniture" do
+    model = create(:model)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_not parsed_body["metrics"].key?("beds")
+      assert_equal [], parsed_body["weaponRacks"]
+    end
+  end
+
   test "GET /models/:slug names the ships that can carry it" do
     carrier = create(:model, name: "Big Carrier")
     create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)

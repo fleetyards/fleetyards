@@ -10,6 +10,10 @@
       "beam": "Rayon",
       "cargo": "Soute",
       "personalInventory": "Inventaire du vaisseau",
+      "beds": {
+        "one": "%{count} lit",
+        "other": "%{count} lits"
+      },
       "crew": "Équipage",
       "speed": "Vitesse",
       "scmSpeed": "Vitesse SCM",

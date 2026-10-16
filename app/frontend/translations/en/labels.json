@@ -1179,6 +1179,7 @@
         "quantumFuelTanks": "Quantum Fuel Tanks",
         "externalFuelTanks": "External Fuel Tanks",
         "orePods": "Ore Pods",
+        "weaponRacks": "Weapon Racks",
         "medicalBedsTier": "Tier %{tier} medical beds",
         "medicalBedsNamed": "%{name} medical beds",
         "respawnBeds": "Respawn beds",
@@ -1407,6 +1408,28 @@
         "maxContainerSub": "largest box that fits",
         "containers": "Container Capacity",
         "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+      },
+      "weaponRacks": {
+        "slots": "Slots",
+        "racks": "Racks",
+        "categories": {
+          "weapon": "Weapon",
+          "gadget": "Gadget",
+          "cargo": "Cargo",
+          "carriable": "Carriable",
+          "armor": "Armor",
+          "other": "Other"
+        },
+        "size": "S%{size}",
+        "sizeRange": "S%{min}–S%{max}",
+        "sizeUpTo": "up to S%{size}",
+        "only": "%{tag} only",
+        "tags": {
+          "multitool": "Multi-Tool",
+          "medical_injection": "Med Pens",
+          "grenade": "Grenades"
+        },
+        "hint": "Slots across every rack on board, by what they take and its size."
       },
       "storageContainers": {
         "total": "Total Capacity",

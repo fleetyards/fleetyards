@@ -34100,6 +34100,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StorageContainer"
+        weaponRacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -34402,6 +34406,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/StorageContainer"
+        weaponRacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRack"
         refuelBoom:
           "$ref": "#/components/schemas/RefuelBoom"
         onSale:
@@ -34715,6 +34723,8 @@ components:
           type:
           - string
           - 'null'
+        beds:
+          type: integer
         fleetchartOffsetLength:
           type: number
         fleetchartOffsetBeam:
@@ -41153,6 +41163,58 @@ components:
       - name
       - damagePerShot
       title: WeaponIndexItem
+    WeaponRack:
+      type: object
+      properties:
+        key:
+          type: string
+        count:
+          type: integer
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRackSlot"
+      additionalProperties: false
+      required:
+      - key
+      - count
+      - slots
+      title: WeaponRack
+    WeaponRackSlot:
+      type: object
+      properties:
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponRackSlotType"
+        requiredTags:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - minSize
+      - maxSize
+      - types
+      title: WeaponRackSlot
+    WeaponRackSlotType:
+      type: object
+      properties:
+        type:
+          type: string
+        subTypes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - type
+      - subTypes
+      title: WeaponRackSlotType
     WishlistItemsList:
       type: array
       items:

@@ -55,6 +55,7 @@ module V1
             quantumFuelTanks: {type: :array, items: ::Shared::V1::Schemas::FuelTank},
             externalFuelTanks: {type: :array, items: ::Shared::V1::Schemas::ExternalFuelTank},
             storageContainers: {type: :array, items: ::Shared::V1::Schemas::StorageContainer},
+            weaponRacks: {type: :array, items: ::Shared::V1::Schemas::WeaponRack},
             refuelBoom: ::Shared::V1::Schemas::RefuelBoom,
 
             onSale: {type: :boolean},

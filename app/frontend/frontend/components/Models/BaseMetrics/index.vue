@@ -122,6 +122,13 @@ const openAvailability = () => {
         <div class="metrics-card__tile__label">{{ t("model.crew") }}</div>
         <div class="metrics-card__tile__value">
           {{ toNumber(model.crew.value || "", "people") }}
+          <span
+            v-if="model.metrics.beds"
+            class="metrics-card__tile__unit"
+            data-test="model-beds"
+          >
+            · {{ t("model.beds", { count: model.metrics.beds }) }}
+          </span>
         </div>
       </div>
       <div class="metrics-card__tile">

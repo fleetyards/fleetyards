@@ -1179,6 +1179,7 @@
         "quantumFuelTanks": "Tanques de combustible Quantum",
         "externalFuelTanks": "Tanques de combustible externos",
         "orePods": "Contenedores de mineral",
+        "weaponRacks": "Armeros",
         "medicalBedsTier": "Camas médicas de nivel %{tier}",
         "medicalBedsNamed": "Camas médicas (%{name})",
         "respawnBeds": "Camas de reaparición",
@@ -1407,6 +1408,28 @@
         "maxContainerSub": "la caja más grande que cabe",
         "containers": "Capacidad de contenedores",
         "hint": "Número máximo de contenedores de cada tamaño que caben en las grillas de carga; la barra muestra qué parte de la capacidad total ocupan."
+      },
+      "weaponRacks": {
+        "slots": "Ranuras",
+        "racks": "Armeros",
+        "categories": {
+          "weapon": "Arma",
+          "gadget": "Dispositivo",
+          "cargo": "Carga",
+          "carriable": "Transportable",
+          "armor": "Armadura",
+          "other": "Otro"
+        },
+        "size": "S%{size}",
+        "sizeRange": "S%{min}–S%{max}",
+        "sizeUpTo": "hasta S%{size}",
+        "only": "solo %{tag}",
+        "tags": {
+          "multitool": "Multiherramienta",
+          "medical_injection": "Medpens",
+          "grenade": "Granadas"
+        },
+        "hint": "Ranuras de todos los armeros a bordo, por lo que admiten y su tamaño."
       },
       "storageContainers": {
         "total": "Capacidad total",

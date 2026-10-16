@@ -1179,6 +1179,7 @@
         "quantumFuelTanks": "Serbatoi carburante Quantum",
         "externalFuelTanks": "Serbatoi di carburante esterni",
         "orePods": "Contenitori di minerale",
+        "weaponRacks": "Rastrelliere per armi",
         "medicalBedsTier": "Letti medici di livello %{tier}",
         "medicalBedsNamed": "Letti medici (%{name})",
         "respawnBeds": "Letti di rinascita",
@@ -1407,6 +1408,28 @@
         "maxContainerSub": "il container più grande che ci sta",
         "containers": "Capacità in container",
         "hint": "Numero massimo di container di ciascuna dimensione che entrano nelle griglie di carico; la barra mostra quanta parte della capacità totale occupano."
+      },
+      "weaponRacks": {
+        "slots": "Slot",
+        "racks": "Rastrelliere",
+        "categories": {
+          "weapon": "Arma",
+          "gadget": "Gadget",
+          "cargo": "Carico",
+          "carriable": "Trasportabile",
+          "armor": "Armatura",
+          "other": "Altro"
+        },
+        "size": "S%{size}",
+        "sizeRange": "S%{min}–S%{max}",
+        "sizeUpTo": "fino a S%{size}",
+        "only": "solo %{tag}",
+        "tags": {
+          "multitool": "Multi-attrezzo",
+          "medical_injection": "Penne mediche",
+          "grenade": "Granate"
+        },
+        "hint": "Slot di tutte le rastrelliere a bordo, per contenuto e dimensione."
       },
       "storageContainers": {
         "total": "Capacità totale",

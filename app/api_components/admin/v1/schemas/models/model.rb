@@ -18,6 +18,9 @@ module Admin
               scBeam: {type: :number},
               scHeight: {type: :number},
               dimensionsMeasuredAt: {type: :string, format: :"date-time"},
+              # Read from the game files but not shown publicly: lockers cannot be
+              # used in game yet.
+              lockers: {type: :integer},
               media: AdminModelMedia
             },
             required: %w[hidden keepCargo active media]

@@ -18,6 +18,7 @@ import ModelPowerDistribution from "@/frontend/components/Models/PowerDistributi
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import ModelStorageContainers from "@/frontend/components/Models/StorageContainers/index.vue";
+import ModelWeaponRacks from "@/frontend/components/Models/WeaponRacks/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
 import {
@@ -295,6 +296,7 @@ useMetricsMasonry(metricsGrid);
         <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
         <ModelExternalFuelTanks :model="model" />
         <ModelStorageContainers :model="model" />
+        <ModelWeaponRacks :model="model" />
         <ModelRefuelBoom :model="model" />
       </div>
       <div v-if="showMetrics" class="hardpoints__credit">
