@@ -47,10 +47,19 @@ const stockImage = computed(
 // anyone can see.
 type Source = "upload" | "gallery" | "paints";
 
+const { isFeatureEnabled } = useFeatures();
+
+// The paints come from the vehicle paints endpoint, part of the vehicle overview,
+// as saving a picture pick is.
+const paintsEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+);
+
 const initialSource = (): Source => {
   if (!props.vehicle.pictureId || props.vehicle.imageUploaded) return "upload";
 
-  return props.vehicle.pictureType === PictureType.MODEL_PAINT
+  return props.vehicle.pictureType === PictureType.MODEL_PAINT &&
+    paintsEnabled.value
     ? "paints"
     : "gallery";
 };
@@ -98,14 +107,12 @@ const loadMoreGallery = () => {
   galleryPage.value += 1;
 };
 
-const { isFeatureEnabled } = useFeatures();
-
-// Every paint of the model joins the gallery with its store image, owned or not:
-// the picture is a look for the ship, not a record of what it owns. The
-// vehicle's own list, because it keeps the current pick after the catalogue
-// hides its paint, and lists owned paints first.
+// Every paint of the model is offered with its store image, owned or not: the
+// picture is a look for the ship, not a record of what it owns. The vehicle's
+// own list, because it keeps the current pick after the catalogue hides its
+// paint, and lists owned paints first.
 const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
-  query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
+  query: { enabled: paintsEnabled },
 });
 
 const paintPictures = computed<ModelPaint[]>(() =>
@@ -210,6 +217,7 @@ defineExpose({ changes });
         {{ t("labels.vehicleOverview.pictureGallery") }}
       </Btn>
       <Btn
+        v-if="paintsEnabled"
         :active="source === 'paints'"
         :aria-pressed="source === 'paints'"
         data-test="vehicle-image-source-paints"

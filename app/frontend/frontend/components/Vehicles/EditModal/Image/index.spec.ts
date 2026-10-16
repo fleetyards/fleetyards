@@ -73,8 +73,10 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   },
 }));
 
+const features = vi.hoisted(() => ({ enabled: true }));
+
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
+  useFeatures: () => ({ isFeatureEnabled: () => features.enabled }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -110,6 +112,7 @@ const submit = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
 describe("VehicleEditModal image tab", () => {
   beforeEach(() => {
     gallery.items = GALLERY;
+    features.enabled = true;
     updateVehicle.mockReset().mockResolvedValue({ id: "vehicle-1" });
   });
 
@@ -226,6 +229,16 @@ describe("VehicleEditModal image tab", () => {
         data: expect.objectContaining({ pictureType: null }),
       }),
     );
+  });
+
+  it("offers no paints segment without the vehicle overview", async () => {
+    features.enabled = false;
+
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(
+      wrapper.find('[data-test="vehicle-image-source-paints"]').exists(),
+    ).toBe(false);
   });
 
   it("picks a paint's picture in place of a gallery picture", async () => {
