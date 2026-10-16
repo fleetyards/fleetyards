@@ -10,6 +10,7 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointCategory from "@/frontend/components/Models/Hardpoints/Category/index.vue";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import { groupBy, sortBy } from "@/shared/utils/Array";
 import {
   type Hardpoint,
@@ -150,7 +151,10 @@ const hasExpandableContent = computed(
           class="module-select-btn"
           :class="{ 'module-select-btn-active': selectedModule }"
         >
-          <i class="fa-duotone fa-puzzle" />
+          <HardpointCategoryIcon
+            :category="HardpointCategoryEnum.MODULE"
+            class="module-select-btn__icon"
+          />
           {{ selectedModule?.name || t("labels.hardpoint.moduleSlotEmpty") }}
         </button>
       </HardpointComponent>
