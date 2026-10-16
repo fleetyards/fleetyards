@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.10.0](https://github.com/fleetyards/fleetyards/compare/v9.9.0...v9.10.0) (2026-10-16)
+
+
+### Features
+
+* **hardpoints:** one duotone icon set for every hardpoint category ([#5759](https://github.com/fleetyards/fleetyards/issues/5759)) ([77ad410](https://github.com/fleetyards/fleetyards/commit/77ad4105213d3238bae79c88bc0eedca7d9e29f5))
+* tell open tabs when a new version is live, with reload and what's new ([#5762](https://github.com/fleetyards/fleetyards/issues/5762)) ([06f8590](https://github.com/fleetyards/fleetyards/commit/06f85907c330ce1da1ddc3695c0eadf287a0c0e0))
+
+
+### Bug Fixes
+
+* **filtered-list:** find the off-canvas panel when it mounts after the list ([#5763](https://github.com/fleetyards/fleetyards/issues/5763)) ([856ad97](https://github.com/fleetyards/fleetyards/commit/856ad971156066a2e92b7ff14ac99c126413e296))
+* **hangar:** find a Packs buy-back on each of its ships' pages ([#5764](https://github.com/fleetyards/fleetyards/issues/5764)) ([753d72e](https://github.com/fleetyards/fleetyards/commit/753d72e9a7352d5b82d8c2a6dbfa581dd9da1957))
+
 ## [9.9.0](https://github.com/fleetyards/fleetyards/compare/v9.8.0...v9.9.0) (2026-10-16)
 
 
