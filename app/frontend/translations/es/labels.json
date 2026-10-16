@@ -4322,6 +4322,7 @@
         "nothingFitted": "Nada equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
+        "unavailableModule": "Módulo ya no disponible",
         "noFigureChange": "No cambia ninguna cifra de la nave",
         "loadoutName": "Nombre de la configuración",
         "stock": "De serie",

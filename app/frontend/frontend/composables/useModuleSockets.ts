@@ -65,19 +65,35 @@ export const useModuleSockets = () => {
     const slots = moduleSlots(modules)
       .filter((slot) => !fittedOnly || !!fitted[slot])
       .map((slot) => {
-        const mod = modules.find((entry) => entry.id === fitted[slot]);
+        const fittedId = fitted[slot];
+        const mod = modules.find((entry) => entry.id === fittedId);
+
+        if (!fittedId) {
+          return { id: slot, label: slotLabel(slot) };
+        }
+
+        // Fitted, but gone from the hull's modules, as a module retired from
+        // the catalogue is: still saved with the loadout, so not shown as empty.
+        if (!mod) {
+          return {
+            id: slot,
+            label: slotLabel(slot),
+            item: {
+              id: fittedId,
+              name: t("labels.vehicleLoadout.unavailableModule"),
+            },
+          };
+        }
 
         return {
           id: slot,
           label: slotLabel(slot),
-          item: mod
-            ? {
-                id: mod.id,
-                name: mod.name,
-                image: mod.media?.storeImage?.smallUrl,
-                figure: figure(mod),
-              }
-            : undefined,
+          item: {
+            id: mod.id,
+            name: mod.name,
+            image: mod.media?.storeImage?.smallUrl,
+            figure: figure(mod),
+          },
         };
       });
 
@@ -104,7 +120,8 @@ export const useModuleSockets = () => {
           name: mod.name,
           image: mod.media?.storeImage?.smallUrl,
           manufacturer: mod.manufacturer?.name,
-          description: contents(mod),
+          // What it holds where its hardpoints say, else the store's words.
+          description: contents(mod) || mod.description,
           owned: ownedIds.includes(mod.id),
           stock: !!mod.stock,
           figure: figure(mod),

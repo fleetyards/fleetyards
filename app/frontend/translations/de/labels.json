@@ -4322,6 +4322,7 @@
         "nothingFitted": "Nichts ausgerüstet",
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
+        "unavailableModule": "Modul nicht mehr verfügbar",
         "noFigureChange": "Ändert keine Werte des Schiffs",
         "loadoutName": "Name des Loadouts",
         "stock": "Serienmäßig",

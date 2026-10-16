@@ -61,6 +61,38 @@ describe("useModuleSockets", () => {
     expect(group.slots[1].item).toBeUndefined();
   });
 
+  it("names a fitted module the hull no longer offers instead of reading empty", () => {
+    const { groups } = useModuleSockets();
+
+    const [group] = groups(MODULES, { hardpoint_rear_module: "retired" });
+
+    expect(group.slots[1].item).toEqual({
+      id: "retired",
+      name: "labels.vehicleLoadout.unavailableModule",
+    });
+  });
+
+  it("falls back to the store's description where hardpoints say nothing", () => {
+    const { options } = useModuleSockets();
+
+    const [rear] = options(
+      [
+        {
+          id: "living",
+          name: "Rear Living Module",
+          slot: "hardpoint_rear_module",
+          description: "Beds and a galley.",
+          media: {},
+        } as unknown as ModelModule,
+      ],
+      "hardpoint_rear_module",
+      undefined,
+      [],
+    );
+
+    expect(rear.description).toBe("Beds and a galley.");
+  });
+
   it("leaves out the empty sockets when asked for what is fitted only", () => {
     const { groups } = useModuleSockets();
 

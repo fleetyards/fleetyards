@@ -4322,6 +4322,7 @@
         "nothingFitted": "未裝配",
         "owned": "已擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
+        "unavailableModule": "模組已不可用",
         "noFigureChange": "不改變艦船的任何數值",
         "loadoutName": "配裝名稱",
         "stock": "原廠",

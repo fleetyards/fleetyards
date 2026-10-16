@@ -4336,6 +4336,7 @@
         "nothingFitted": "Nothing fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
+        "unavailableModule": "Module no longer available",
         "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
         "stock": "Stock",
