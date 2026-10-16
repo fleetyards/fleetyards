@@ -16,6 +16,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
   type Vehicle,
@@ -76,10 +77,15 @@ const editableList = ref<{
   finishCreate: () => void;
 } | null>(null);
 
+const { invalidateVehiclePage } = useVehicleMutations();
+
+// The vehicle carries its active loadout, which the header's stats are read
+// from.
 const invalidateLoadouts = () => {
   void queryClient.invalidateQueries({
     queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
   });
+  void invalidateVehiclePage(props.vehicle);
 };
 
 // Create
@@ -147,7 +153,7 @@ const onDestroy = async (record: VehicleLoadout) => {
 
 // A fleetyards loadout is fitted in the loadout editor, not inline; until the
 // editor is switched on the page keeps to linked builds.
-const { openLoadoutModal } = useVehicleModals();
+const { openLoadoutModal, openLoadoutView } = useVehicleModals();
 
 const { isFeatureEnabled } = useFeatures();
 
@@ -167,6 +173,10 @@ const editFitting = (record: VehicleLoadout) => {
     loadoutId: record.id,
     tab: VehicleLoadoutTabsEnum.MODULES,
   });
+};
+
+const viewFitting = (record: VehicleLoadout) => {
+  openLoadoutView(props.vehicle, { editable: true, loadout: record });
 };
 
 const newFleetyardsLoadout = () => {
@@ -230,6 +240,14 @@ const onActivate = async (record: VehicleLoadout) => {
       </template>
 
       <template #actions="{ item }">
+        <Btn
+          v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+          v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :data-test="`loadout-view-fitting-${item.id}`"
+          @click="viewFitting(item)"
+        >
+          <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+        </Btn>
         <Btn
           v-if="
             fittingEditable && item.kind === VehicleLoadoutKindEnum.FLEETYARDS

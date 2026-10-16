@@ -596,7 +596,8 @@
       "vehicleLoadout": {
         "editLoadout": "Editar equipamiento",
         "newLoadout": "Nuevo equipamiento",
-        "saveLoadout": "Guardar equipamiento"
+        "saveLoadout": "Guardar equipamiento",
+        "viewLoadout": "Ver equipamiento"
       }
     }
   }

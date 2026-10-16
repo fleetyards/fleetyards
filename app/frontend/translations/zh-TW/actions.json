@@ -596,7 +596,8 @@
       "vehicleLoadout": {
         "editLoadout": "編輯配置",
         "newLoadout": "新增配置",
-        "saveLoadout": "儲存配置"
+        "saveLoadout": "儲存配置",
+        "viewLoadout": "查看配置"
       }
     }
   }

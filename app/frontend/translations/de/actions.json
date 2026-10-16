@@ -596,7 +596,8 @@
       "vehicleLoadout": {
         "editLoadout": "Loadout bearbeiten",
         "newLoadout": "Neues Loadout",
-        "saveLoadout": "Loadout speichern"
+        "saveLoadout": "Loadout speichern",
+        "viewLoadout": "Loadout ansehen"
       }
     }
   }

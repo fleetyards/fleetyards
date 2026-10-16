@@ -596,7 +596,8 @@
       "vehicleLoadout": {
         "editLoadout": "Modifier l’équipement",
         "newLoadout": "Nouvel équipement",
-        "saveLoadout": "Enregistrer l’équipement"
+        "saveLoadout": "Enregistrer l’équipement",
+        "viewLoadout": "Voir l’équipement"
       }
     }
   }
