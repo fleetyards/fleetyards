@@ -132,13 +132,17 @@ button.loadout-socket--active:hover {
   font-size: 12px;
 }
 
+// Drawn inward: the socket sits against the edge of the modal's scrolling
+// body, which clips anything that spreads outside it.
 @keyframes loadout-socket-fill {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, #{$success} 60%, transparent);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, #{$success} 90%, transparent);
+    background-color: color-mix(in srgb, #{$success} 18%, #{$gray-darker});
   }
 
   100% {
-    box-shadow: 0 0 0 12px color-mix(in srgb, #{$success} 0%, transparent);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, #{$success} 0%, transparent);
+    background-color: rgba($gray-darker, 0.96);
   }
 }
 
