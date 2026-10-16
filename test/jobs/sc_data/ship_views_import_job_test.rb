@@ -1,0 +1,170 @@
+# frozen_string_literal: true
+
+require "test_helper"
+require "aws-sdk-s3"
+
+module ScData
+  class ShipViewsImportJobTest < ActiveJob::TestCase
+    SETTINGS = {
+      endpoint: "https://example.invalid",
+      access_key_id: "key",
+      secret_access_key: "secret",
+      bucket: "fltyrd-sc"
+    }.freeze
+
+    PATH = "crusader/ares-inferno"
+    PNG = Rails.root.join("test/fixtures/files/test.png").binread
+    HOLO = Rails.root.join("test/fixtures/holo/plain.gltf").binread
+
+    setup do
+      Sidekiq::Worker.clear_all
+
+      @model = create(:model)
+      @objects = {}
+      @client = Aws::S3::Client.new(stub_responses: true)
+      @client.stub_responses(:get_object, ->(context) {
+        body = @objects[context.params[:key].delete_prefix("ship-views/")]
+        body ? {body:} : "NoSuchKey"
+      })
+
+      store = ::ScData::ShipViewsStore.new(client: @client, settings: SETTINGS)
+      ::ScData::ShipViewsStore.stubs(:configured?).returns(true)
+      ::ScData::ShipViewsStore.stubs(:new).returns(store)
+    end
+
+    private def publish(files, digest: "listing-1", slug: @model.slug)
+      @objects["index.json"] = {ships: {PATH => {slug:, files: digest, updatedAt: "2026-10-16T00:00:00Z"}}}.to_json
+      @objects["#{PATH}/files.json"] = {
+        slug:, path: PATH, concept: false,
+        files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] }
+      }.to_json
+      files.each { |name, content| @objects["#{PATH}/#{name}"] = content }
+    end
+
+    private def fetched
+      @client.api_requests
+        .select { |request| request[:operation_name] == :get_object }
+        .map { |request| request[:params][:key].delete_prefix("ship-views/#{PATH}/") }
+    end
+
+    private def perform
+      ::ScData::ShipViewsImportJob.new.perform
+      @model.reload
+    end
+
+    test "attaches each render to its field" do
+      publish({"flight_top.png" => PNG, "landed_side_colored.png" => PNG, "landed_holo.gltf" => HOLO})
+
+      perform
+
+      assert @model.top_view.attached?
+      assert @model.landed_port_view_colored.attached?
+      assert @model.landed_holo.attached?
+      assert_equal "flight_top.png", @model.top_view.filename.to_s
+      assert_equal "listing-1", @model.ship_views_digest
+      assert_equal Digest::MD5.hexdigest(PNG), @model.ship_view_md5s["top_view"]
+    end
+
+    test "crops the views and measures the holos" do
+      publish({"flight_top.png" => PNG, "flight_holo.gltf" => HOLO})
+
+      perform
+
+      assert_equal [["Model", @model.id, "top_view"]], TrimAttachmentJob.jobs.map { |job| job["args"] }
+      assert_equal ["holo"], MeasureHoloJob.jobs.map { |job| job["args"].second }
+    end
+
+    test "skips a ship whose listing has not changed" do
+      @model.update!(ship_views_digest: "listing-1")
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_not @model.top_view.attached?
+      assert_equal ["ship-views/index.json"], @client.api_requests.map { |request| request[:params][:key] }
+    end
+
+    test "skips an unknown slug and carries on" do
+      publish({"flight_top.png" => PNG}, slug: "no-such-ship")
+
+      assert_nothing_raised { perform }
+      assert_not @model.top_view.attached?
+    end
+
+    test "does not fetch a render it imported before" do
+      @model.update!(ship_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      publish({"flight_top.png" => PNG, "flight_front.png" => PNG})
+
+      perform
+
+      assert_equal ["index.json", "files.json", "flight_front.png"], fetched.map { |key| File.basename(key) }
+      assert_not @model.top_view.attached?
+      assert @model.front_view.attached?
+    end
+
+    # A view uploaded through the admin before the bucket existed is the same
+    # file, so the first import leaves it alone.
+    test "does not replace an attachment with the same checksum" do
+      @model.top_view.attach(io: StringIO.new(PNG), filename: "top.png")
+      blob = @model.top_view.blob
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_equal blob, @model.top_view.blob
+      assert_equal Digest::MD5.hexdigest(PNG), @model.ship_view_md5s["top_view"]
+    end
+
+    test "replaces a render that changed" do
+      @model.update!(ship_view_md5s: {"top_view" => "old"}, ship_views_digest: "listing-0")
+      @model.top_view.attach(io: StringIO.new("old"), filename: "top.png")
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_equal Digest::MD5.hexdigest(PNG), Digest::MD5.hexdigest(@model.top_view.download)
+    end
+
+    test "never detaches a field the listing does not mention" do
+      @model.front_view.attach(io: StringIO.new(PNG), filename: "front.png")
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert @model.front_view.attached?
+    end
+
+    test "keeps the old digest when a render does not match its md5" do
+      publish({"flight_top.png" => PNG, "flight_front.png" => PNG})
+      @objects["#{PATH}/flight_top.png"] = "truncated"
+
+      perform
+
+      assert_not @model.top_view.attached?
+      assert @model.front_view.attached?
+      assert_nil @model.ship_views_digest
+    end
+
+    test "logs what it attached" do
+      publish({"flight_top.png" => PNG})
+      Rails.logger.expects(:info).with("[sc_data] ShipViewsImportJob attached #{@model.slug}: top_view")
+      Rails.logger.expects(:info).with("[sc_data] ShipViewsImportJob attached 1 renders to 1 models")
+      Rails.logger.stubs(:info).with { |message| !message.to_s.start_with?("[sc_data] ShipViewsImportJob") }
+
+      perform
+    end
+
+    test "does nothing without a bucket" do
+      ::ScData::ShipViewsStore.stubs(:configured?).returns(false)
+      ::ScData::ShipViewsStore.expects(:new).never
+
+      perform
+    end
+
+    test "is scheduled" do
+      schedule = YAML.safe_load(ERB.new(Rails.root.join("config/sidekiq_schedule.yml").read).result)
+
+      assert_equal "ScData::ShipViewsImportJob", schedule.dig("sc_data_ship_views_import_job", "class")
+    end
+  end
+end
