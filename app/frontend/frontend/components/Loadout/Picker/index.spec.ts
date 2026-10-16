@@ -93,6 +93,17 @@ describe("LoadoutPicker", () => {
     expect(names(wrapper)).toHaveLength(90);
   });
 
+  it("counts the owned and stock options on their filters", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.get("[data-test='loadout-picker-owned']").text()).toContain(
+      "3",
+    );
+    expect(wrapper.get("[data-test='loadout-picker-stock']").text()).toContain(
+      "1",
+    );
+  });
+
   it("keeps owned and stock options together when both are asked for", async () => {
     const wrapper = await mount();
 

@@ -77,9 +77,15 @@ const defaultSort = computed(() => {
 // the URL, which belongs to the page under the modal.
 const sort = ref<string>();
 
-const hasOwned = computed(() => props.options.some((option) => option.owned));
+// Counted like the hangar's category chips, which is what tells these apart
+// from a label as filters.
+const ownedCount = computed(
+  () => props.options.filter((option) => option.owned).length,
+);
 
-const hasStock = computed(() => props.options.some((option) => option.stock));
+const stockCount = computed(
+  () => props.options.filter((option) => option.stock).length,
+);
 
 const manufacturers = computed(() =>
   [
@@ -262,16 +268,18 @@ const accessibleName = (option: LoadoutPickerOption) =>
           clearable
         />
         <Chip
-          v-if="hasOwned"
+          v-if="ownedCount"
           :state="ownedOnly ? ChipStatesEnum.INCLUDED : ChipStatesEnum.NEUTRAL"
+          :count="ownedCount"
           data-test="loadout-picker-owned"
           @toggle="ownedOnly = !ownedOnly"
         >
           {{ t("labels.loadoutPicker.owned") }}
         </Chip>
         <Chip
-          v-if="hasStock"
+          v-if="stockCount"
           :state="stockOnly ? ChipStatesEnum.INCLUDED : ChipStatesEnum.NEUTRAL"
+          :count="stockCount"
           data-test="loadout-picker-stock"
           @toggle="stockOnly = !stockOnly"
         >
