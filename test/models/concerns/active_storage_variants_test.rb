@@ -95,18 +95,18 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
     # Every inline crop is a round trip to storage before the response, and a
     # folder of views ran the save into the proxy's timeout.
     test "a save carrying several signed ids leaves every crop to the job" do
-      @model.update!(top_view: padded_blob.signed_id, side_view: padded_blob.signed_id)
+      @model.update!(top_view: padded_blob.signed_id, port_view: padded_blob.signed_id)
 
-      assert_equal [["Model", @model.id, "side_view"], ["Model", @model.id, "top_view"]],
+      assert_equal [["Model", @model.id, "port_view"], ["Model", @model.id, "top_view"]],
         TrimAttachmentJob.jobs.map { |job| job["args"] }.sort
       refute @model.reload.top_view.blob.metadata["trimmed"]
     end
 
     test "a save that leaves crops to the job lists them as pending" do
-      @model.update!(top_view: padded_blob.signed_id, side_view: padded_blob.signed_id)
+      @model.update!(top_view: padded_blob.signed_id, port_view: padded_blob.signed_id)
 
-      assert_equal %w[side_view top_view], @model.pending_trims.keys.sort
-      assert_equal %w[side_view top_view], @model.reload.live_pending_trims.sort
+      assert_equal %w[port_view top_view], @model.pending_trims.keys.sort
+      assert_equal %w[port_view top_view], @model.reload.live_pending_trims.sort
     end
 
     test "a crop done in the request is never pending" do
@@ -152,21 +152,21 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
     test "a crop past its time is no longer reported as pending" do
       @model.update_columns(pending_trims: {
         "top_view" => 16.minutes.ago.iso8601(6),
-        "side_view" => 1.minute.ago.iso8601(6)
+        "port_view" => 1.minute.ago.iso8601(6)
       })
 
-      assert_equal %w[side_view], @model.live_pending_trims
+      assert_equal %w[port_view], @model.live_pending_trims
     end
 
     test "the sweep drops only the crops past their time" do
       @model.update_columns(pending_trims: {
         "top_view" => 16.minutes.ago.iso8601(6),
-        "side_view" => 1.minute.ago.iso8601(6)
+        "port_view" => 1.minute.ago.iso8601(6)
       })
 
       @model.settle_stale_trims
 
-      assert_equal %w[side_view], @model.reload.pending_trims.keys
+      assert_equal %w[port_view], @model.reload.pending_trims.keys
     end
 
     test "the sweep leaves a record with nothing stale alone" do

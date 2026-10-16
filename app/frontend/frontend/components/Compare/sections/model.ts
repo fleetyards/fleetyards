@@ -70,9 +70,9 @@ export const useModelSections = (
   const views = computed(() =>
     section("views", t("labels.metrics.views"), [
       viewRow(
-        "side-view",
-        t("labels.model.sideView"),
-        (model) => model.media.sideView?.smallUrl,
+        "port-view",
+        t("labels.model.portView"),
+        (model) => model.media.portView?.smallUrl,
       ),
       viewRow(
         "top-view",

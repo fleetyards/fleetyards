@@ -19,12 +19,12 @@ class AdminModelMediaChannelTest < AsyncapiTestCase
   test "broadcasts the views still pending when a crop settles" do
     admin_user = create(:admin_user, resource_access: [:models])
     model = create(:model)
-    model.update_columns(pending_trims: %w[top_view side_view].index_with { Time.current.iso8601(6) })
+    model.update_columns(pending_trims: %w[top_view port_view].index_with { Time.current.iso8601(6) })
 
     payloads = assert_asyncapi_broadcast(params: {admin_user_gid: admin_user.to_gid_param}) do
       model.settle_trim("top_view")
     end
 
-    assert_equal({"modelId" => model.id, "mediaProcessing" => ["sideView"]}, payloads.first)
+    assert_equal({"modelId" => model.id, "mediaProcessing" => ["portView"]}, payloads.first)
   end
 end

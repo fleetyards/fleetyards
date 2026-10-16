@@ -2,27 +2,27 @@ import { type ModelUpdateInput } from "@/services/fyAdminApi";
 
 export const VIEW_FIELDS = [
   "topView",
-  "sideView",
+  "portView",
   "frontView",
   "angledView",
   "topViewColored",
-  "sideViewColored",
+  "portViewColored",
   "frontViewColored",
   "angledViewColored",
   "extendedTopView",
-  "extendedSideView",
+  "extendedPortView",
   "extendedFrontView",
   "extendedAngledView",
   "extendedTopViewColored",
-  "extendedSideViewColored",
+  "extendedPortViewColored",
   "extendedFrontViewColored",
   "extendedAngledViewColored",
   "landedTopView",
-  "landedSideView",
+  "landedPortView",
   "landedFrontView",
   "landedAngledView",
   "landedTopViewColored",
-  "landedSideViewColored",
+  "landedPortViewColored",
   "landedFrontViewColored",
   "landedAngledViewColored",
   "angledRearView",
@@ -75,8 +75,8 @@ export type FieldSection = {
 
 // Each row follows the ship page's cells: angled, plan, end-on, profile.
 const VIEW_ROWS = [
-  ["angledView", "topView", "frontView", "sideView"],
-  ["angledViewColored", "topViewColored", "frontViewColored", "sideViewColored"],
+  ["angledView", "topView", "frontView", "portView"],
+  ["angledViewColored", "topViewColored", "frontViewColored", "portViewColored"],
   ["angledRearView", "bottomView", "rearView", "starboardView"],
   [
     "angledRearViewColored",
@@ -120,13 +120,14 @@ export type MappedFile = {
 // the case and a spelled-out "view" are all optional, so a folder named by hand
 // lands where one named by a script does.
 const VIEW_NAME =
-  /^((?:extended|landed|flight)[-_ ]?)?(top|side|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
 const HOLO_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured))?$/i;
 
 const VIEWPOINTS: Record<string, string> = {
   top: "top",
-  side: "side",
+  side: "port",
+  port: "port",
   front: "front",
   angled: "angled",
   angledrear: "angledRear",

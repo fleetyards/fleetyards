@@ -24,7 +24,7 @@ module Admin
               rsiStoreImage: {type: [:string, :null]},
               fleetchartImage: {type: [:string, :null]},
               topView: {type: [:string, :null]},
-              sideView: {type: [:string, :null]},
+              portView: {type: [:string, :null]},
               angledView: {type: [:string, :null]}
             },
             additionalProperties: false

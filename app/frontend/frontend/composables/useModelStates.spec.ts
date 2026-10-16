@@ -57,7 +57,7 @@ describe("the states a model offers", () => {
 
   it("offers a state that has only images", () => {
     const { availableStates } = useModelStates(
-      model({ extendedSideView: file("ext-side") }),
+      model({ extendedPortView: file("ext-side") }),
     );
 
     expect(availableStates.value).toEqual([
@@ -247,13 +247,13 @@ describe("picking the holo", () => {
 describe("picking a view", () => {
   it("takes the state's pair, coloured and not", () => {
     const subject = model({
-      sideView: file("side"),
-      landedSideView: file("landed-side"),
-      landedSideViewColored: file("landed-side-colored"),
+      portView: file("side"),
+      landedPortView: file("landed-side"),
+      landedPortViewColored: file("landed-side-colored"),
     });
 
     expect(
-      modelStateView(subject, ModelStateEnum.LANDED, ModelViewEnum.SIDE),
+      modelStateView(subject, ModelStateEnum.LANDED, ModelViewEnum.PORT),
     ).toEqual({
       regular: expect.objectContaining({ name: "landed-side" }),
       colored: expect.objectContaining({ name: "landed-side-colored" }),
@@ -266,7 +266,7 @@ describe("picking a view", () => {
     const subject = model({
       frontView: file("front"),
       frontViewColored: file("front-colored"),
-      landedSideView: file("landed-side"),
+      landedPortView: file("landed-side"),
     });
 
     expect(

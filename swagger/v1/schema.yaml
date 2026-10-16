@@ -29747,9 +29747,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         frontViewColored:
           "$ref": "#/components/schemas/MediaFile"
-        sideView:
+        portView:
           "$ref": "#/components/schemas/MediaFile"
-        sideViewColored:
+        portViewColored:
           "$ref": "#/components/schemas/MediaFile"
         topView:
           "$ref": "#/components/schemas/MediaFile"
@@ -29763,9 +29763,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedFrontViewColored:
           "$ref": "#/components/schemas/MediaFile"
-        extendedSideView:
+        extendedPortView:
           "$ref": "#/components/schemas/MediaFile"
-        extendedSideViewColored:
+        extendedPortViewColored:
           "$ref": "#/components/schemas/MediaFile"
         extendedTopView:
           "$ref": "#/components/schemas/MediaFile"
@@ -34600,9 +34600,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedTopViewColored:
           "$ref": "#/components/schemas/MediaFile"
-        extendedSideView:
+        extendedPortView:
           "$ref": "#/components/schemas/MediaFile"
-        extendedSideViewColored:
+        extendedPortViewColored:
           "$ref": "#/components/schemas/MediaFile"
         extendedFrontView:
           "$ref": "#/components/schemas/MediaFile"
@@ -34618,9 +34618,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         landedTopViewColored:
           "$ref": "#/components/schemas/MediaFile"
-        landedSideView:
+        landedPortView:
           "$ref": "#/components/schemas/MediaFile"
-        landedSideViewColored:
+        landedPortViewColored:
           "$ref": "#/components/schemas/MediaFile"
         landedFrontView:
           "$ref": "#/components/schemas/MediaFile"
@@ -34634,9 +34634,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         frontViewColored:
           "$ref": "#/components/schemas/MediaFile"
-        sideView:
+        portView:
           "$ref": "#/components/schemas/MediaFile"
-        sideViewColored:
+        portViewColored:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
@@ -35022,7 +35022,7 @@ components:
       properties:
         angledView:
           "$ref": "#/components/schemas/MediaFile"
-        sideView:
+        portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
@@ -35381,7 +35381,7 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         fleetchartImage:
           type: string
-        sideView:
+        portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
           "$ref": "#/components/schemas/MediaFile"

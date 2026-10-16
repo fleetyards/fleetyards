@@ -18,7 +18,7 @@ module Admin
               hidden: {type: :boolean},
               storeImage: {type: [:string, :null]},
               angledView: {type: [:string, :null]},
-              sideView: {type: [:string, :null]},
+              portView: {type: [:string, :null]},
               topView: {type: [:string, :null]},
               moduleIds: {type: :array, items: {type: :string, format: :uuid}}
             },

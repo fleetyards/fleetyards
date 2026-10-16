@@ -32,8 +32,8 @@ json.media do
   json.front_view do
     json.partial! "api/v1/shared/file", record: model_paint, attr: :front_view
   end
-  json.side_view do
-    json.partial! "api/v1/shared/file", record: model_paint, attr: :side_view
+  json.port_view do
+    json.partial! "api/v1/shared/file", record: model_paint, attr: :port_view
   end
   json.store_image do
     json.partial! "api/v1/shared/file", record: model_paint, attr: :store_image

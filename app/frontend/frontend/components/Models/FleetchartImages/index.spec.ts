@@ -39,7 +39,7 @@ const FLIGHT_VIEWS: Partial<ModelMedia> = {
   angledView: file("angled"),
   topView: file("top"),
   frontView: file("front"),
-  sideView: file("side"),
+  portView: file("side"),
 };
 
 function model(media: Partial<ModelMedia>, id = "carrack"): Model {
@@ -108,7 +108,7 @@ describe("the views themselves", () => {
         ...FLIGHT_VIEWS,
         landedAngledView: file("landed-angled"),
         landedTopView: file("landed-top"),
-        landedSideView: file("landed-side"),
+        landedPortView: file("landed-side"),
       },
       ModelStateEnum.LANDED,
     );
@@ -228,7 +228,7 @@ describe("while the next set of images is loading", () => {
     const wrapper = await mountViews({
       ...FLIGHT_VIEWS,
       landedTopView: file("landed-top"),
-      landedSideView: file("landed-side"),
+      landedPortView: file("landed-side"),
     });
     await settleAll(wrapper);
 
@@ -310,7 +310,7 @@ describe("while the next set of images is loading", () => {
           angledView: file("other-angled"),
           topView: file("other-top"),
           frontView: file("other-front"),
-          sideView: file("other-side"),
+          portView: file("other-side"),
         },
         "polaris",
       ),

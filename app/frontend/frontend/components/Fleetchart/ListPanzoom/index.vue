@@ -444,7 +444,7 @@ const extractMaxWidthFromModel = (
 ) => {
   return Math.max(
     model.media.topView?.width || 0,
-    model.media.sideView?.width || 0,
+    model.media.portView?.width || 0,
     model.media.angledView?.width || 0,
   );
 };
@@ -454,7 +454,7 @@ const extractMaxHeightFromModel = (
 ) => {
   return Math.max(
     model.media.topView?.height || 0,
-    model.media.sideView?.height || 0,
+    model.media.portView?.height || 0,
     model.media.angledView?.height || 0,
   );
 };
@@ -462,7 +462,7 @@ const extractMaxHeightFromModel = (
 const extractMaxHeightFromExtended = (model: Model) => {
   return Math.max(
     model.media.extendedTopView?.height || 0,
-    model.media.extendedSideView?.height || 0,
+    model.media.extendedPortView?.height || 0,
     model.media.extendedAngledView?.height || 0,
   );
 };
@@ -470,7 +470,7 @@ const extractMaxHeightFromExtended = (model: Model) => {
 const extractMaxWidthFromExtended = (model: Model) => {
   return Math.max(
     model.media.extendedTopView?.width || 0,
-    model.media.extendedSideView?.width || 0,
+    model.media.extendedPortView?.width || 0,
     model.media.extendedAngledView?.width || 0,
   );
 };
@@ -482,7 +482,7 @@ const imageMaxHeight = (item: Vehicle | Model | VehiclePublic) => {
   if (
     vehicle.modulePackage &&
     (vehicle.modulePackage.media.topView ||
-      vehicle.modulePackage.media.sideView ||
+      vehicle.modulePackage.media.portView ||
       vehicle.modulePackage.media.angledView)
   ) {
     const height = extractMaxHeightFromModel(vehicle.modulePackage);
@@ -508,7 +508,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
   if (
     vehicle.modulePackage &&
     (vehicle.modulePackage.media.topView ||
-      vehicle.modulePackage.media.sideView ||
+      vehicle.modulePackage.media.portView ||
       vehicle.modulePackage.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(vehicle.modulePackage);

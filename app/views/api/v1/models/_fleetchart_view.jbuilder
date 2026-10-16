@@ -11,10 +11,10 @@ json.slug model.slug
 json.media do
   %i[
     angled_view angled_view_colored front_view front_view_colored
-    side_view side_view_colored top_view top_view_colored
+    port_view port_view_colored top_view top_view_colored
     extended_angled_view extended_angled_view_colored
     extended_front_view extended_front_view_colored
-    extended_side_view extended_side_view_colored
+    extended_port_view extended_port_view_colored
     extended_top_view extended_top_view_colored
   ].each do |view|
     json.set! view do

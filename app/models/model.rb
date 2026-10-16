@@ -340,11 +340,11 @@ class Model < ApplicationRecord
   has_one_attached :rsi_store_image
   has_one_attached :fleetchart_image
   has_one_attached :top_view
-  has_one_attached :side_view
+  has_one_attached :port_view
   has_one_attached :front_view
   has_one_attached :angled_view
   has_one_attached :top_view_colored
-  has_one_attached :side_view_colored
+  has_one_attached :port_view_colored
   has_one_attached :front_view_colored
   has_one_attached :angled_view_colored
   has_one_attached :brochure
@@ -360,11 +360,11 @@ class Model < ApplicationRecord
   has_one_attached :holo
   has_one_attached :extended_holo
   has_one_attached :extended_top_view
-  has_one_attached :extended_side_view
+  has_one_attached :extended_port_view
   has_one_attached :extended_front_view
   has_one_attached :extended_angled_view
   has_one_attached :extended_top_view_colored
-  has_one_attached :extended_side_view_colored
+  has_one_attached :extended_port_view_colored
   has_one_attached :extended_front_view_colored
   has_one_attached :extended_angled_view_colored
 
@@ -372,11 +372,11 @@ class Model < ApplicationRecord
   # wings folded. Mirrors the extended family rather than inventing a shape.
   has_one_attached :landed_holo
   has_one_attached :landed_top_view
-  has_one_attached :landed_side_view
+  has_one_attached :landed_port_view
   has_one_attached :landed_front_view
   has_one_attached :landed_angled_view
   has_one_attached :landed_top_view_colored
-  has_one_attached :landed_side_view_colored
+  has_one_attached :landed_port_view_colored
   has_one_attached :landed_front_view_colored
   has_one_attached :landed_angled_view_colored
 
@@ -409,13 +409,13 @@ class Model < ApplicationRecord
   # so transparent padding around the hull reads as part of the ship. The store
   # images are left alone: they are framed artwork, not measured against
   # anything. See AttachmentTrimmer.
-  trim_attachment :top_view, :side_view, :front_view, :angled_view,
-    :top_view_colored, :side_view_colored, :front_view_colored, :angled_view_colored,
-    :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
-    :extended_top_view_colored, :extended_side_view_colored,
+  trim_attachment :top_view, :port_view, :front_view, :angled_view,
+    :top_view_colored, :port_view_colored, :front_view_colored, :angled_view_colored,
+    :extended_top_view, :extended_port_view, :extended_front_view, :extended_angled_view,
+    :extended_top_view_colored, :extended_port_view_colored,
     :extended_front_view_colored, :extended_angled_view_colored,
-    :landed_top_view, :landed_side_view, :landed_front_view, :landed_angled_view,
-    :landed_top_view_colored, :landed_side_view_colored,
+    :landed_top_view, :landed_port_view, :landed_front_view, :landed_angled_view,
+    :landed_top_view_colored, :landed_port_view_colored,
     :landed_front_view_colored, :landed_angled_view_colored,
     *DETAIL_VIEW_ATTACHMENT_NAMES
 

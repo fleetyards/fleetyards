@@ -66,7 +66,7 @@ const viewUrl = (view: ModelViewEnum) => {
 };
 
 // Each set is drawn in the same four cells, and each cell sizes its view the
-// same way: the plan view (top, bottom) and the profile (side, starboard) span
+// same way: the plan view (top, bottom) and the profile (port, starboard) span
 // the ship's length, and the end-on view (front, rear) is held to the height of
 // the profile beside it.
 type ViewSet = {
@@ -83,7 +83,7 @@ const VIEW_SETS: ViewSet[] = [
     angled: ModelViewEnum.ANGLED,
     plan: ModelViewEnum.TOP,
     end: ModelViewEnum.FRONT,
-    profile: ModelViewEnum.SIDE,
+    profile: ModelViewEnum.PORT,
   },
   {
     key: "rear",

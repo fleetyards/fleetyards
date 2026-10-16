@@ -107,7 +107,7 @@ const hasExtendedItems = computed(() => {
       model.metrics?.extendedLength ||
       model.media?.extendedHolo ||
       model.media?.extendedTopView ||
-      model.media?.extendedSideView ||
+      model.media?.extendedPortView ||
       model.media?.extendedAngledView ||
       model.media?.extendedFrontView,
     );

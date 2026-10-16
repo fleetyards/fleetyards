@@ -19,7 +19,7 @@ export enum ModelViewEnum {
   ANGLED = "angled",
   TOP = "top",
   FRONT = "front",
-  SIDE = "side",
+  PORT = "port",
   ANGLED_REAR = "angledRear",
   BOTTOM = "bottom",
   REAR = "rear",
@@ -37,7 +37,7 @@ export const MODEL_VIEWS = [
   ModelViewEnum.ANGLED,
   ModelViewEnum.TOP,
   ModelViewEnum.FRONT,
-  ModelViewEnum.SIDE,
+  ModelViewEnum.PORT,
 ] as const;
 
 // The same ship seen from behind and below. Only the detail endpoint carries
@@ -84,7 +84,7 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
         regular: "frontView",
         colored: "frontViewColored",
       },
-      [ModelViewEnum.SIDE]: { regular: "sideView", colored: "sideViewColored" },
+      [ModelViewEnum.PORT]: { regular: "portView", colored: "portViewColored" },
       [ModelViewEnum.ANGLED_REAR]: {
         regular: "angledRearView",
         colored: "angledRearViewColored",
@@ -119,9 +119,9 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
         regular: "extendedFrontView",
         colored: "extendedFrontViewColored",
       },
-      [ModelViewEnum.SIDE]: {
-        regular: "extendedSideView",
-        colored: "extendedSideViewColored",
+      [ModelViewEnum.PORT]: {
+        regular: "extendedPortView",
+        colored: "extendedPortViewColored",
       },
       [ModelViewEnum.ANGLED_REAR]: {
         regular: "extendedAngledRearView",
@@ -157,9 +157,9 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
         regular: "landedFrontView",
         colored: "landedFrontViewColored",
       },
-      [ModelViewEnum.SIDE]: {
-        regular: "landedSideView",
-        colored: "landedSideViewColored",
+      [ModelViewEnum.PORT]: {
+        regular: "landedPortView",
+        colored: "landedPortViewColored",
       },
       [ModelViewEnum.ANGLED_REAR]: {
         regular: "landedAngledRearView",

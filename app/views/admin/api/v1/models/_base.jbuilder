@@ -79,11 +79,11 @@ json.media do
   json.extended_top_view_colored do
     json.partial! "api/v1/shared/file", record: model, attr: :extended_top_view_colored
   end
-  json.extended_side_view do
-    json.partial! "api/v1/shared/file", record: model, attr: :extended_side_view
+  json.extended_port_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_port_view
   end
-  json.extended_side_view_colored do
-    json.partial! "api/v1/shared/file", record: model, attr: :extended_side_view_colored
+  json.extended_port_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_port_view_colored
   end
   json.extended_front_view do
     json.partial! "api/v1/shared/file", record: model, attr: :extended_front_view
@@ -110,12 +110,12 @@ json.media do
     json.partial! "api/v1/shared/file", record: model, attr: :landed_top_view_colored
   end
 
-  json.landed_side_view do
-    json.partial! "api/v1/shared/file", record: model, attr: :landed_side_view
+  json.landed_port_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_port_view
   end
 
-  json.landed_side_view_colored do
-    json.partial! "api/v1/shared/file", record: model, attr: :landed_side_view_colored
+  json.landed_port_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_port_view_colored
   end
 
   json.landed_front_view do
@@ -139,11 +139,11 @@ json.media do
   json.front_view_colored do
     json.partial! "api/v1/shared/file", record: model, attr: :front_view_colored
   end
-  json.side_view do
-    json.partial! "api/v1/shared/file", record: model, attr: :side_view
+  json.port_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :port_view
   end
-  json.side_view_colored do
-    json.partial! "api/v1/shared/file", record: model, attr: :side_view_colored
+  json.port_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :port_view_colored
   end
   json.store_image do
     json.partial! "api/v1/shared/file", record: model, attr: :store_image
