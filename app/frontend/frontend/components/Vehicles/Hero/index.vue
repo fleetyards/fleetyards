@@ -22,7 +22,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { type Vehicle } from "@/services/fyApi";
+import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
+import { type Vehicle, VehicleLoadoutKindEnum } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -93,6 +94,16 @@ const holoModel = computed(() => {
   return { path, length, size: holo?.size };
 });
 
+// The stats follow the loadout the ship flies with; a linked build is read on
+// its own site and changes nothing here.
+const { moduleCargo } = useLoadoutModules(
+  () => props.vehicle.model.slug,
+  () =>
+    props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
+      ? props.vehicle.activeLoadout
+      : undefined,
+);
+
 // Remembered per vehicle, apart from the ship page's switch.
 const vehicleViewStore = useVehicleViewStore();
 
@@ -115,7 +126,16 @@ const openFullscreenHolo = () => {
   });
 };
 
-const { openEditModal: openVehicleEdit } = useVehicleModals();
+const { openEditModal: openVehicleEdit, openLoadoutView } = useVehicleModals();
+
+const activeLoadout = computed(() => props.vehicle.activeLoadout);
+
+// The owner gets a way into the editor from the view, as the panel's marker
+// gives it.
+const openActiveLoadout = () =>
+  openLoadoutView(props.vehicle, {
+    editable: !props.vehicle.loaner && !props.vehicle.wanted,
+  });
 
 const openImageModal = () =>
   openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
@@ -217,6 +237,21 @@ const openImageModal = () =>
                   : t("labels.vehicle.saleNotifyOff")
               }}
             </button>
+            <component
+              :is="activeLoadout.url ? 'a' : 'button'"
+              v-if="activeLoadout"
+              :href="activeLoadout.url"
+              :target="activeLoadout.url ? '_blank' : undefined"
+              :rel="activeLoadout.url ? 'noopener' : undefined"
+              :type="activeLoadout.url ? undefined : 'button'"
+              :tabindex="compact ? -1 : undefined"
+              class="vehicle-hero__badge vehicle-hero__badge--toggle vehicle-hero__badge--loadout"
+              data-test="vehicle-badge-loadout"
+              @click="activeLoadout.url || openActiveLoadout()"
+            >
+              <i class="fa-duotone fa-crosshairs" />
+              {{ t("labels.loadout.marker", { name: activeLoadout.name }) }}
+            </component>
             <span v-if="vehicle.loaner" class="vehicle-hero__badge">
               {{ t("labels.vehicle.loaner") }}
             </span>
@@ -280,7 +315,12 @@ const openImageModal = () =>
         </div>
       </div>
     </div>
-    <Specs :model="vehicle.model" overlay class="vehicle-hero__specs" />
+    <Specs
+      :model="vehicle.model"
+      :module-cargo="moduleCargo"
+      overlay
+      class="vehicle-hero__specs"
+    />
   </section>
 </template>
 
@@ -452,6 +492,16 @@ const openImageModal = () =>
 
       &:disabled {
         cursor: progress;
+      }
+    }
+
+    &--loadout {
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        color: #fff;
+        text-decoration: none;
       }
     }
 

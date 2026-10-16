@@ -2,7 +2,12 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
-import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
+import {
+  type Vehicle,
+  BoughtViaEnum,
+  VehicleLoadoutItemTypeEnum,
+  VehicleLoadoutKindEnum,
+} from "@/services/fyApi";
 
 // The viewer pulls three.js in, which the test environment cannot load.
 vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
@@ -17,7 +22,15 @@ vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
   },
 }));
 
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  useModelModules: () => ({
+    data: ref({ items: [{ id: "module-1", metrics: { cargo: 32 } }] }),
+  }),
+}));
+
 const openEditModal = vi.fn();
+const openLoadoutView = vi.fn();
 const mutateAsync = vi.fn().mockResolvedValue({});
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -27,7 +40,7 @@ vi.mock("@/frontend/composables/useVehicleMutations", () => ({
 }));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openEditModal }),
+  useVehicleModals: () => ({ openEditModal, openLoadoutView }),
 }));
 
 const vehicle = {
@@ -45,7 +58,7 @@ const vehicle = {
     name: "Ironclad",
     slug: "ironclad",
     media: {},
-    metrics: { length: 123 },
+    metrics: { length: 123, cargo: 64 },
     speeds: {},
     manufacturer: { id: "manufacturer-1", name: "Drake", slug: "drake" },
   },
@@ -135,6 +148,88 @@ describe("VehicleHero", () => {
 
     expect(wrapper.find('[data-test="vehicle-image-edit"]').exists()).toBe(
       false,
+    );
+  });
+
+  it("counts the active loadout's modules into the stats", async () => {
+    const loadout = (kind: VehicleLoadoutKindEnum) => ({
+      id: "loadout-1",
+      name: "Hauler",
+      active: true,
+      kind,
+      items: [
+        {
+          itemType: VehicleLoadoutItemTypeEnum.MODEL_MODULE,
+          itemId: "module-1",
+          slotPath: "hardpoint_front_module",
+        },
+      ],
+    });
+    const cargo = async (overrides: Partial<Vehicle> = {}) =>
+      (await mount(false, overrides))
+        .findComponent({ name: "VehicleOverviewSpecs" })
+        .props("moduleCargo");
+
+    expect(await cargo()).toBe(0);
+    expect(
+      await cargo({
+        activeLoadout: loadout(VehicleLoadoutKindEnum.FLEETYARDS),
+      } as Partial<Vehicle>),
+    ).toBe(32);
+    expect(
+      await cargo({
+        activeLoadout: loadout(VehicleLoadoutKindEnum.LINK),
+      } as Partial<Vehicle>),
+    ).toBe(0);
+  });
+
+  it("says which loadout the ship flies with and opens it", async () => {
+    const bare = await mount(false);
+    expect(bare.find('[data-test="vehicle-badge-loadout"]').exists()).toBe(
+      false,
+    );
+
+    const activeLoadout = {
+      id: "loadout-1",
+      name: "Hauler",
+      active: true,
+      kind: VehicleLoadoutKindEnum.FLEETYARDS,
+      items: [],
+      createdAt: "2026-10-12T12:00:00Z",
+      updatedAt: "2026-10-12T12:00:00Z",
+    };
+    const wrapper = await mount(false, { activeLoadout } as Partial<Vehicle>);
+    const badge = wrapper.find('[data-test="vehicle-badge-loadout"]');
+
+    expect(badge.text()).toContain("Hauler");
+
+    await badge.trigger("click");
+
+    expect(openLoadoutView).toHaveBeenLastCalledWith(
+      expect.objectContaining({ id: "vehicle-1" }),
+      { editable: true },
+    );
+  });
+
+  it("links a linked loadout's badge to its site", async () => {
+    const wrapper = await mount(false, {
+      activeLoadout: {
+        id: "loadout-2",
+        name: "Erkul build",
+        active: true,
+        kind: VehicleLoadoutKindEnum.LINK,
+        url: "https://www.erkul.games/loadout/abc",
+        urlSource: "erkul",
+        items: [],
+        createdAt: "2026-10-12T12:00:00Z",
+        updatedAt: "2026-10-12T12:00:00Z",
+      },
+    } as Partial<Vehicle>);
+    const badge = wrapper.find('[data-test="vehicle-badge-loadout"]');
+
+    expect(badge.element.tagName).toBe("A");
+    expect(badge.attributes("href")).toBe(
+      "https://www.erkul.games/loadout/abc",
     );
   });
 
