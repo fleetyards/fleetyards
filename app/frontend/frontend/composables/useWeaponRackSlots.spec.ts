@@ -92,6 +92,14 @@ describe("groupRackSlots", () => {
     ]);
   });
 
+  it("files a slot that names no type under other", () => {
+    const groups = groupRackSlots([
+      rack("Untyped", 1, [{ minSize: 0, maxSize: 0, types: [] }]),
+    ]);
+
+    expect(groups[0].categories).toEqual([RackSlotCategory.OTHER]);
+  });
+
   it("gives nothing for no racks", () => {
     expect(groupRackSlots([])).toEqual([]);
   });

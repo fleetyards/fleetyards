@@ -64,7 +64,9 @@ const categoryOf = (type: WeaponRackSlotType): RackSlotCategory => {
 const categoriesOf = (slot: WeaponRackSlot): RackSlotCategory[] => {
   const found = new Set(slot.types.map(categoryOf));
 
-  return CATEGORY_ORDER.filter((category) => found.has(category));
+  return found.size
+    ? CATEGORY_ORDER.filter((category) => found.has(category))
+    : [RackSlotCategory.OTHER];
 };
 
 const restrictionOf = (slot: WeaponRackSlot): RestrictingTag | undefined =>
