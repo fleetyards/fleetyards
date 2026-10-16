@@ -394,7 +394,7 @@
       "vehicleOverview": {
         "noLoadouts": "Noch keine Loadouts. Verknüpfe eins von Erkul oder SPViewer.",
         "locationPrivate": "Nur du siehst, wo dein Schiff steht.",
-        "galleryReplacesUpload": "Ein Bild aus der Galerie ersetzt dein hochgeladenes Bild.",
+        "pickReplacesUpload": "Ein Bild aus der Galerie oder eine Lackierung ersetzt dein hochgeladenes Bild.",
         "galleryEmpty": "Für dieses Schiff gibt es noch keine Galeriebilder."
       },
       "model": {

@@ -210,7 +210,7 @@ defineExpose({ changes });
     />
     <template v-else>
       <p v-if="vehicle.imageUploaded" class="vehicle-edit-image__hint">
-        {{ t("texts.vehicleOverview.galleryReplacesUpload") }}
+        {{ t("texts.vehicleOverview.pickReplacesUpload") }}
       </p>
       <div
         v-if="source === 'paints'"
