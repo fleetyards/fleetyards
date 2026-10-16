@@ -2555,3 +2555,162 @@ PUT /vehicles/{id} removed the optional property `modelImage` from the response 
 PUT /vehicles/{id} removed the optional property `modelImageId` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/modelImage` from the response with the `200` status
 GET /wishlist removed the optional property `items/items/modelImageId` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/extendedSideView` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/extendedSideViewColored` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/landedSideView` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/landedSideViewColored` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/sideView` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/media/sideViewColored` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `modulePackage/media/sideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/extendedSideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/extendedSideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/landedSideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/landedSideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/sideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/sideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/extendedSideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/extendedSideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/landedSideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/landedSideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/sideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/sideViewColored` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/media/sideView` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/extendedSideView` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/landedSideView` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/landedSideViewColored` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/sideView` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/media/sideViewColored` from the response with the `200` status
+GET /hangar removed the optional property `items/items/modulePackage/media/sideView` from the response with the `200` status
+GET /model-paints removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models removed the optional property `items/items/media/extendedSideView` from the response with the `200` status
+GET /models removed the optional property `items/items/media/extendedSideViewColored` from the response with the `200` status
+GET /models removed the optional property `items/items/media/landedSideView` from the response with the `200` status
+GET /models removed the optional property `items/items/media/landedSideViewColored` from the response with the `200` status
+GET /models removed the optional property `items/items/media/sideView` from the response with the `200` status
+GET /models removed the optional property `items/items/media/sideViewColored` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/extendedSideView` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/extendedSideViewColored` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/landedSideView` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/landedSideViewColored` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/sideView` from the response with the `200` status
+GET /models/{slug} removed the optional property `media/sideViewColored` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/extendedSideView` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/landedSideView` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/landedSideViewColored` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/sideView` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/media/sideViewColored` from the response with the `200` status
+GET /models/{slug}/module-packages removed the optional property `items/items/media/sideView` from the response with the `200` status
+GET /models/{slug}/paints removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/extendedSideView` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/landedSideView` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/landedSideViewColored` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/media/sideViewColored` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/extendedSideView` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/landedSideView` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/landedSideViewColored` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/sideView` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/media/sideViewColored` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/extendedSideView` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/landedSideView` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/landedSideViewColored` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models/embed removed the optional property `items/media/sideViewColored` from the response with the `200` status
+GET /models/fleetchart-views removed the optional property `items/media/extendedSideView` from the response with the `200` status
+GET /models/fleetchart-views removed the optional property `items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/fleetchart-views removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models/fleetchart-views removed the optional property `items/media/sideViewColored` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/extendedSideView` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/landedSideView` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/landedSideViewColored` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/sideView` from the response with the `200` status
+GET /models/latest removed the optional property `items/media/sideViewColored` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/extendedSideView` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/extendedSideViewColored` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/landedSideView` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/landedSideViewColored` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/sideView` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/media/sideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/extendedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/extendedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/landedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/landedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/sideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/media/sideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/extendedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/landedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/landedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/sideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/media/sideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/media/sideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/extendedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/landedSideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/landedSideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/sideView` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/media/sideViewColored` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/modulePackage/media/sideView` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/extendedSideView` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/landedSideView` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/landedSideViewColored` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/sideView` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/media/sideViewColored` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/modulePackage/media/sideView` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/extendedSideView` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/landedSideView` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/landedSideViewColored` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/sideView` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/media/sideViewColored` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `modulePackage/media/sideView` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/extendedSideView` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/landedSideView` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/landedSideViewColored` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/sideView` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/media/sideViewColored` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/modulePackage/media/sideView` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/extendedSideView` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/landedSideView` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/landedSideViewColored` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/sideView` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/media/sideViewColored` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/modulePackage/media/sideView` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/extendedSideView` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/extendedSideViewColored` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/landedSideView` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/landedSideViewColored` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/sideView` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/media/sideViewColored` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `modulePackage/media/sideView` from the response with the `200` status
+GET /vehicles/{vehicle_id}/paints removed the optional property `items/paint/media/sideView` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/extendedSideView` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/extendedSideViewColored` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/landedSideView` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/landedSideViewColored` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/sideView` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/media/sideViewColored` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/modulePackage/media/sideView` from the response with the `200` status
+POST /vehicles removed the optional property `model/media/extendedSideView` from the response with the `201` status
+POST /vehicles removed the optional property `model/media/extendedSideViewColored` from the response with the `201` status
+POST /vehicles removed the optional property `model/media/landedSideView` from the response with the `201` status
+POST /vehicles removed the optional property `model/media/landedSideViewColored` from the response with the `201` status
+POST /vehicles removed the optional property `model/media/sideView` from the response with the `201` status
+POST /vehicles removed the optional property `model/media/sideViewColored` from the response with the `201` status
+POST /vehicles removed the optional property `modulePackage/media/sideView` from the response with the `201` status
+PUT /vehicles/{id} removed the optional property `model/media/extendedSideView` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/media/extendedSideViewColored` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/media/landedSideView` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/media/landedSideViewColored` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/media/sideView` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/media/sideViewColored` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `modulePackage/media/sideView` from the response with the `200` status
