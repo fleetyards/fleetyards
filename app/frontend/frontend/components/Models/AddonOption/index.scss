@@ -1,6 +1,6 @@
 // How far the wrapped figures sit in at phone width, so they line up under the
 // name rather than under the thumbnail: the narrow image plus the row's gap.
-$phone-indent: 82px;
+$phone-indent: 106px;
 
 /*
  * A row in a list of addons, shared by the hardpoint slot's module picker, the
@@ -67,8 +67,8 @@ $phone-indent: 82px;
 
 .addon-option__image {
   flex: none;
-  width: 96px;
-  height: 64px;
+  width: 160px;
+  height: 90px;
   object-fit: cover;
   border-radius: $panelContentBorderRadius;
 
@@ -187,8 +187,8 @@ $phone-indent: 82px;
   }
 
   .addon-option__image {
-    width: 72px;
-    height: 48px;
+    width: 96px;
+    height: 54px;
   }
 
   .addon-option__meta {

@@ -376,9 +376,9 @@ defineExpose({ changes });
 
   &__gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 8px;
-    max-height: 420px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    max-height: 560px;
     overflow-y: auto;
   }
 
@@ -410,7 +410,8 @@ defineExpose({ changes });
   &__thumb {
     display: block;
     width: 100%;
-    height: 84px;
+    height: auto;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
   }
 

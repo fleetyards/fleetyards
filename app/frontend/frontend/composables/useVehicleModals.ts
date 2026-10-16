@@ -22,6 +22,7 @@ export const useVehicleModals = () => {
     comlink.emit("open-modal", {
       component: () =>
         import("@/frontend/components/Vehicles/EditModal/index.vue"),
+      wide: true,
       props: {
         vehicle,
         wishlist: options.wishlist ?? vehicle.wanted,

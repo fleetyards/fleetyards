@@ -155,10 +155,10 @@ const toggle = (paint: ModelPaint) =>
     margin-bottom: 10px;
   }
 
-  // Two cards across the edit modal, one on a phone.
+  // Three cards across the edit modal, one on a phone.
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 10px;
 
     .addon-options__empty {
