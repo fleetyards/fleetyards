@@ -17,14 +17,23 @@ module BuybackPledges
 
       updated = BuybackPledge.transaction do
         items.uniq { |item| item[:id].to_s }.sum do |item|
-          user.buyback_pledges.where(rsi_pledge_id: item[:id].to_s).update_all(
+          pledges = user.buyback_pledges.where(rsi_pledge_id: item[:id].to_s)
+          names = ship_names(item)
+
+          # A pack read again only for its ships keeps the price it was bought
+          # back at: the page converts today, and may be gone by now.
+          ships = names.empty? ? 0 : pledges.where.not(details_synced_at: nil).update_all(**names, updated_at: synced_at)
+
+          details = pledges.where(details_synced_at: nil).update_all(
             price: item[:price],
             insurance_months: item[:insurance_months],
             lifetime_insurance: ActiveModel::Type::Boolean.new.cast(item[:lifetime_insurance]) || false,
-            **ship_names(item),
+            **names,
             details_synced_at: synced_at,
             updated_at: synced_at
           )
+
+          ships + details
         end
       end
 

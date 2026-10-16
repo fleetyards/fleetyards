@@ -658,10 +658,42 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       {id: "2", price: 40}
     ]}
 
-    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body do
+      assert_equal({"updated" => 2}, parsed_body)
+    end
 
     assert_equal %w[Pulse Freelancer], pack.reload.ship_names
     assert_equal %w[Gladius], named.reload.ship_names
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details keeps the details of a pack read again for its ships" do
+    user = create(:user)
+    pack = buyback(user, rsi_pledge_id: "1", kind: "package", contained: "2 ships and 4 items",
+      price: 150, insurance_months: 6, details_synced_at: 1.day.ago)
+    gone = buyback(user, rsi_pledge_id: "2", kind: "package", contained: "3 ships",
+      price: 90, lifetime_insurance: true, details_synced_at: 1.day.ago)
+    sign_in user
+
+    body = {items: [
+      {id: "1", price: 162.5, insuranceMonths: 3, shipNames: %w[Pulse Freelancer]},
+      {id: "2", shipNames: []}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body do
+      assert_equal({"updated" => 2}, parsed_body)
+    end
+
+    pack.reload
+
+    assert_equal %w[Pulse Freelancer], pack.ship_names
+    assert_in_delta 150, pack.price
+    assert_equal 6, pack.insurance_months
+
+    gone.reload
+
+    assert_empty gone.ship_names
+    assert_in_delta 90, gone.price
+    assert_predicate gone, :lifetime_insurance?
   end
 
   test "PUT /hangar/sync-rsi-buybacks reads a pack of several ships again for its ships" do
