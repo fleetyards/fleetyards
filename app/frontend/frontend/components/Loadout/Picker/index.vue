@@ -303,7 +303,6 @@ const accessibleName = (option: LoadoutPickerOption) =>
 
       <div class="loadout-picker__sort-row">
         <ListToolbar
-          v-if="sorts.length"
           v-model:sort="sort"
           class="loadout-picker__sort"
           :columns="sortColumns"

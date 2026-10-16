@@ -173,12 +173,17 @@ describe("LoadoutPicker", () => {
     expect(names(wrapper)).toEqual(["Charlie", "Bravo", "Alpha"]);
   });
 
-  it("offers no sort bar where the caller has no figure to sort by", async () => {
+  it("sorts by name alone where the caller has no figure to sort by", async () => {
     const wrapper = await mount();
 
-    expect(wrapper.find("[data-test='loadout-picker-sort']").exists()).toBe(
-      false,
-    );
+    expect(
+      wrapper
+        .findAll("[data-test='loadout-picker-sort'] .base-list-toolbar-chip")
+        .map((chip) => chip.text()),
+    ).toEqual(["Name"]);
+
+    await sortChip(wrapper, "Name")?.trigger("click");
+    expect(names(wrapper)[0]).toBe("Gun 89");
   });
 
   it("marks what the socket holds and picks another", async () => {
