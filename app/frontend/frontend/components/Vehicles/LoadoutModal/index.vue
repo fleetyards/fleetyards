@@ -505,7 +505,7 @@ const onSubmit = handleSubmit(async (values) => {
                   />
                   <div
                     v-else-if="flightReady"
-                    class="vehicle-loadout__comparison vehicle-loadout__empty"
+                    class="vehicle-loadout__empty"
                     data-test="vehicle-loadout-no-slots"
                   >
                     <i class="fa-duotone fa-layer-minus" aria-hidden="true" />

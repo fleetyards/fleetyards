@@ -96,7 +96,12 @@
   }
 
   // Where the comparison would be, on a hull with no slot to fit.
+  // With no slot to compare there is no comparison column: the notice takes
+  // the whole row, above the fitting's own hint, rather than the narrow column
+  // beside it.
   &__empty {
+    grid-column: 1 / -1;
+    order: -1;
     display: flex;
     flex-direction: column;
     align-items: center;
