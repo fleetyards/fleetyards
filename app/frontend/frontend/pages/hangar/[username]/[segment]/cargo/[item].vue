@@ -185,6 +185,9 @@ const crumbs = computed<Crumb[]>(() => [
     to: { name: "hangar" },
     label: t("nav.hangar.index"),
   },
+  ...(vehicle.value?.wanted
+    ? [{ to: { name: "hangar-wishlist" }, label: t("labels.wishlist") }]
+    : []),
   {
     to: cargoRoute.value,
     label: vehicleName.value,
