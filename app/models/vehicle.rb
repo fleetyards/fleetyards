@@ -50,11 +50,6 @@ class Vehicle < ApplicationRecord
   # taking a ship out of their hangar while the sync keeps matching it.
   scope :visible, -> { where(hidden: false, hidden_by_user: false) }
 
-  # Owned paints are `vehicle_paints` now, and a gallery pick is `picture`.
-  # Ignored until the columns are dropped, so the release before this one keeps
-  # reading them while this one boots.
-  self.ignored_columns += ["model_paint_id", "model_image_id"]
-
   belongs_to :model
   belongs_to :user, touch: :hangar_updated_at
   belongs_to :module_package,
