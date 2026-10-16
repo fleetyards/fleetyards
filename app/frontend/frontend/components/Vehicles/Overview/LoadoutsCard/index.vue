@@ -6,21 +6,27 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Vehicle,
   type VehicleLoadout,
+  getVehicleLoadoutsQueryKey,
+  useActivateVehicleLoadout,
   useVehicleLoadouts,
 } from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 
 type Props = {
   vehicle: Vehicle;
 };
 
 const props = defineProps<Props>();
-
-const OTHERS_COUNT = 3;
 
 const { t } = useI18n();
 
@@ -30,17 +36,58 @@ const { data: loadouts, isLoading } = useVehicleLoadouts(
 
 const all = computed<VehicleLoadout[]>(() => loadouts.value || []);
 
-const active = computed(() => all.value.find((loadout) => loadout.active));
+const name = (loadout: VehicleLoadout) =>
+  loadout.name || loadout.urlSource || loadout.url || "";
 
-const others = computed(() =>
-  all.value.filter((loadout) => !loadout.active).slice(0, OTHERS_COUNT),
-);
-
-// A fleetyards loadout is kept here rather than on another site, so it links
-// nowhere and names its kind where a link names its site.
+// A fleetyards loadout is kept here rather than on another site, so it opens
+// here and names its kind where a link names its site.
 const source = (loadout: VehicleLoadout) =>
   loadout.urlSource ||
   (loadout.url ? undefined : t("labels.loadout.fleetyards"));
+
+const icon = (loadout: VehicleLoadout) =>
+  loadout.url ? "fa-duotone fa-link" : "fa-duotone fa-crosshairs";
+
+const badges = (loadout: VehicleLoadout) =>
+  loadout.active
+    ? [
+        {
+          key: "active",
+          label: t("labels.loadout.active"),
+          variant: PillVariantsEnum.SUCCESS,
+        },
+      ]
+    : [];
+
+const queryClient = useQueryClient();
+
+const { invalidateVehiclePage } = useVehicleMutations();
+
+// The vehicle carries its active loadout, which the header's stats and badge
+// are read from.
+const activateMutation = useActivateVehicleLoadout({
+  mutation: {
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+        }),
+        invalidateVehiclePage(props.vehicle),
+      ]),
+  },
+});
+
+const activate = (loadout: VehicleLoadout) => {
+  if (loadout.active || activateMutation.isPending.value) return;
+
+  activateMutation.mutate({ vehicleId: props.vehicle.id, id: loadout.id });
+};
+
+const { openLoadoutView } = useVehicleModals();
+
+const view = (loadout: VehicleLoadout) => {
+  openLoadoutView(props.vehicle, { editable: true, loadout });
+};
 
 const toVehicle = useVehicleRoute();
 
@@ -60,34 +107,46 @@ const loadoutsRoute = computed(() =>
       {{ t("texts.vehicleOverview.noLoadouts") }}
     </p>
 
-    <component
-      :is="active.url ? 'a' : 'div'"
-      v-if="active"
-      :href="active.url"
-      :target="active.url ? '_blank' : undefined"
-      :rel="active.url ? 'noopener' : undefined"
-      class="overview-loadouts__active"
-      data-test="vehicle-overview-active-loadout"
+    <ul
+      v-if="all.length"
+      class="overview-loadouts"
+      :aria-busy="activateMutation.isPending.value"
     >
-      <span class="overview-loadouts__active-label">
-        {{ t("labels.loadout.active") }}
-      </span>
-      <span class="overview-loadouts__name">{{ active.name }}</span>
-      <span class="overview-card-row__aside">{{ source(active) }}</span>
-    </component>
-
-    <ul v-if="others.length" class="overview-card-rows">
-      <li v-for="loadout in others" :key="loadout.id" class="overview-card-row">
-        <a
+      <li
+        v-for="loadout in all"
+        :key="loadout.id"
+        class="overview-loadouts__item"
+      >
+        <AddonOption
+          :name="name(loadout)"
+          :icon="icon(loadout)"
+          :contents="source(loadout)"
+          :badges="badges(loadout)"
+          :selected="loadout.active"
+          :test-id="`vehicle-overview-loadout-${loadout.id}`"
+          class="overview-loadouts__option"
+          @toggle="activate(loadout)"
+        />
+        <Btn
           v-if="loadout.url"
+          v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
           :href="loadout.url"
-          target="_blank"
-          rel="noopener"
+          variant="ghost"
+          :data-test="`vehicle-overview-loadout-${loadout.id}-view`"
         >
-          {{ loadout.name }}
-        </a>
-        <span v-else>{{ loadout.name }}</span>
-        <span class="overview-card-row__aside">{{ source(loadout) }}</span>
+          <i class="fa-duotone fa-arrow-up-right-from-square" />
+        </Btn>
+        <Btn
+          v-else
+          v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
+          variant="ghost"
+          :data-test="`vehicle-overview-loadout-${loadout.id}-view`"
+          @click="view(loadout)"
+        >
+          <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+        </Btn>
       </li>
     </ul>
 
@@ -103,28 +162,49 @@ const loadoutsRoute = computed(() =>
 @import "../card.scss";
 
 .overview-loadouts {
-  &__active {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+
+  &[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  &__item {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    padding: 10px 12px;
-    border: 1px solid rgb(92 184 92 / 0.55);
-    border-radius: 8px;
-    background: rgb(92 184 92 / 0.08);
-    color: inherit;
+    align-items: center;
+    gap: 8px;
   }
 
-  &__active-label {
-    color: #8fd18f;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+  &__option {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px 8px 8px;
+    gap: 12px;
 
-  &__name {
-    color: #fff;
-    font-weight: 600;
+    // The editor's thumbnail is sized for a store image; a card row only
+    // carries the loadout's kind.
+    :deep(.addon-option__image) {
+      width: 40px;
+      height: 40px;
+
+      i,
+      svg {
+        font-size: 18px;
+      }
+    }
+
+    :deep(.addon-option__name) {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    :deep(.addon-option__contents) {
+      font-size: 12px;
+    }
   }
 }
 </style>
