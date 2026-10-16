@@ -296,6 +296,10 @@ const toggleHoloviewer = () => {
 
 const lowPower = useLowPowerDevice();
 
+// Decided once: `lowPower` follows the window width, and a resize across the
+// breakpoint should change the render settings, not download the other file.
+const preferLiteHolo = isLowPowerDevice();
+
 const texturedHolo = ref(false);
 
 // Only the flying pose has a painted export, so another state leaves the switch
@@ -315,7 +319,7 @@ const holoModel = computed(() => {
   const textured = texturedHoloAvailable.value && texturedHolo.value;
   const holo = textured
     ? props.model.media.holoTextured
-    : modelStateHolo(props.model, activeState.value, { lite: lowPower.value });
+    : modelStateHolo(props.model, activeState.value, { lite: preferLiteHolo });
   const path = holo?.url;
   const length = modelStateMetrics(
     props.model,
