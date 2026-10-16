@@ -63,6 +63,16 @@ describe("extractBuybackDetail", () => {
     ).toMatchObject({ shipNames: [] });
   });
 
+  it("names a ship whose manufacturer follows without a space", () => {
+    expect(
+      extractBuybackDetail(
+        detailPage([], "15708", "EUR", [
+          "<span>ship: Pulse</span><span>Manufacturer: Mirai</span>",
+        ]),
+      ),
+    ).toMatchObject({ shipNames: ["Pulse"] });
+  });
+
   it("leaves the ships unknown on a page without a ship listing", () => {
     expect(
       extractBuybackDetail(

@@ -13,7 +13,7 @@ const MONTHS_INSURANCE = /^(\d+)\s+Months?\s+Insurance$/i;
 const LIFETIME_INSURANCE = /^Lifetime\s+Insurance$/i;
 
 // "ship: Shiv Manufacturer: Grey's Market Focus: Heavy Fighter"
-const SHIP_NAME = /^(?:ship:\s*)?(.+?)(?:\s+Manufacturer:.*)?$/i;
+const SHIP_NAME = /^(?:ship:\s*)?(.+?)(?:\s*Manufacturer:.*)?$/i;
 
 // The buy-back page of one pledge (`/pledge/buyback/<id>`). `undefined` when the
 // HTML is not a pledge page at all, such as a login redirect or an error page.
