@@ -109,7 +109,7 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
 }));
 
 // The order the fields are listed in, whatever order the folder was read in.
-const FIELD_ORDER: readonly FolderField[] = FIELD_SECTIONS.flatMap(
+export const FIELD_ORDER: readonly FolderField[] = FIELD_SECTIONS.flatMap(
   (section) => [...section.holos, ...section.views.flat()],
 );
 

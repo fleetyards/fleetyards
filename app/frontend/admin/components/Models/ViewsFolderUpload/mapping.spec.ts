@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { fieldFor, mapFolderFiles } from "./mapping";
+import {
+  FIELD_ORDER,
+  HOLO_FIELDS,
+  VIEW_FIELDS,
+  fieldFor,
+  mapFolderFiles,
+} from "./mapping";
 
 describe("fieldFor", () => {
   it("maps the four viewpoints", () => {
@@ -220,5 +226,15 @@ describe("the flight family", () => {
 
     expect(matched.map((entry) => entry.field)).toEqual(["topView"]);
     expect(ignored).toEqual(["top.png"]);
+  });
+});
+
+// The form draws its inputs from the sections, and the API knows the fields
+// from these lists: a field missing from either has no input, or no column.
+describe("the form's sections", () => {
+  it("hold every field once", () => {
+    expect([...FIELD_ORDER].sort()).toEqual(
+      [...VIEW_FIELDS, ...HOLO_FIELDS].sort(),
+    );
   });
 });

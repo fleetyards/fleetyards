@@ -18,9 +18,8 @@ import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
 import {
   type FolderField,
+  FIELD_ORDER,
   FIELD_SECTIONS,
-  HOLO_FIELDS,
-  VIEW_FIELDS,
 } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useModelMediaUpdates } from "@/admin/composables/useModelMediaUpdates";
@@ -38,19 +37,17 @@ useModelMediaUpdates(() => props.model.id);
 const isProcessing = (field: FolderField) =>
   props.model.mediaProcessing.includes(field);
 
-const FIELDS: readonly FolderField[] = [...HOLO_FIELDS, ...VIEW_FIELDS];
-
 const translationKey = (field: FolderField) =>
   field === "holo" ? "model.defaultHolo" : `model.${field}`;
 
 const { defineField, handleSubmit, meta, setFieldValue } =
   useForm<ModelUpdateInput>({
     initialValues: Object.fromEntries(
-      FIELDS.map((field) => [field, undefined]),
+      FIELD_ORDER.map((field) => [field, undefined]),
     ) as ModelUpdateInput,
   });
 
-const definedFields = FIELDS.map(
+const definedFields = FIELD_ORDER.map(
   (field) => [field, defineField(field)] as const,
 );
 
