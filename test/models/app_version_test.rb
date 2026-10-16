@@ -18,7 +18,7 @@ class AppVersionTest < ActiveSupport::TestCase
     create(:announcement, :published, title: "Without link", published_at: 1.hour.ago)
 
     assert_equal(
-      {title: "Newest", link: newest.link, publishedAt: newest.published_at.utc.iso8601},
+      {title: "Newest", link: newest.absolute_link, publishedAt: newest.published_at.utc.iso8601},
       AppVersion.payload[:announcement]
     )
   end

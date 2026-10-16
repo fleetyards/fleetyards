@@ -22,7 +22,7 @@ class AppVersion
 
     {
       title: announcement.title,
-      link: announcement.link,
+      link: announcement.absolute_link,
       publishedAt: announcement.published_at.utc.iso8601
     }
   end
