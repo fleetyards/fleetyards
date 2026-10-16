@@ -278,9 +278,29 @@ const activeSlot = ref<string>();
 
 const pickerOpen = computed(() => props.editable && !!activeSlot.value);
 
-const onSocketSelect = (slot: string) => {
-  activeSlot.value = activeSlot.value === slot ? undefined : slot;
+const fitted = computed(() => fittedModules.value || {});
+
+const pickerHost = ref<HTMLElement>();
+
+const picker = ref<InstanceType<typeof Picker>>();
+
+const socketButton = (slot: string) =>
+  pickerHost.value?.querySelector<HTMLElement>(
+    `[data-test="loadout-socket-${slot}"]`,
+  );
+
+const onSocketSelect = async (slot: string) => {
+  const opening = activeSlot.value !== slot;
+
+  activeSlot.value = opening ? slot : undefined;
   hovered.value = undefined;
+
+  // On desktop the picker comes after every socket in the page's order, so
+  // the keyboard is handed to it rather than left to tab its way there.
+  if (opening) {
+    await nextTick();
+    picker.value?.focus();
+  }
 };
 
 const pickerOptions = computed(() =>
@@ -288,7 +308,7 @@ const pickerOptions = computed(() =>
     ? moduleSockets.options(
         modules.value,
         activeSlot.value,
-        (fittedModules.value || {})[activeSlot.value],
+        fitted.value[activeSlot.value],
         props.vehicle.modelModuleIds,
       )
     : [],
@@ -296,11 +316,18 @@ const pickerOptions = computed(() =>
 
 const pickerSorts = computed(() => moduleSockets.sorts(pickerOptions.value));
 
+// The phone and the desktop place the picker apart; both take these.
+const pickerBindings = computed(() => ({
+  title: moduleSockets.slotLabel(activeSlot.value || ""),
+  options: pickerOptions.value,
+  selectedId: activeSlot.value ? fitted.value[activeSlot.value] : undefined,
+  sorts: pickerSorts.value,
+}));
+
 /**
- * Pointing at an option previews it in the ship's figures and the comparison
- * for as long as the pointer or focus stays on the list, then both return to
- * what is fitted, so passing over options on the way to one never leaves them
- * on another.
+ * Pointing at an option previews it in the comparison for as long as the
+ * pointer or focus stays on the list, then it returns to what is fitted, so
+ * passing over options on the way to one never leaves it on another.
  */
 const hovered = ref<{ slot: string; moduleId: string | null }>();
 
@@ -318,7 +345,7 @@ const onPick = (moduleId: string | null) => {
   const slot = activeSlot.value;
   if (!slot) return;
 
-  const next = { ...(fittedModules.value || {}) };
+  const next = { ...fitted.value };
   if (moduleId) {
     next[slot] = moduleId;
   } else {
@@ -327,12 +354,34 @@ const onPick = (moduleId: string | null) => {
   fittedModules.value = next;
 
   // The pick is the answer the picker was opened for.
-  closePicker();
+  void closePicker();
 };
 
-const closePicker = () => {
+// Focus inside the picker goes back to the socket it was filling, or it would
+// fall to the page's start with the picker gone. A press outside has already
+// put it where it went.
+const closePicker = async () => {
+  const slot = activeSlot.value;
+  const hadFocus =
+    !!slot &&
+    !!pickerHost.value
+      ?.querySelector(".loadout-picker")
+      ?.contains(document.activeElement);
+
   activeSlot.value = undefined;
   hovered.value = undefined;
+
+  if (hadFocus) {
+    await nextTick();
+    socketButton(slot)?.focus();
+  }
+};
+
+const pickerListeners = {
+  pick: onPick,
+  preview: onPreview,
+  previewEnd: onPreviewEnd,
+  close: closePicker,
 };
 
 // Below this the picker opens under the socket it fills rather than beside the
@@ -345,17 +394,17 @@ const comparison = computed(() => {
     return undefined;
   }
 
+  // Against what the socket holds now, picked but not yet saved included:
+  // the swap the pointer is weighing is from that, not from the last save.
+  const fittedId = fitted.value[slot];
   const moduleId =
-    hovered.value?.slot === slot
-      ? hovered.value.moduleId
-      : (fittedModules.value || {})[slot];
-  const savedId = savedValues().fittedModules[slot];
-  const others = Object.entries(fittedModules.value || {})
+    hovered.value?.slot === slot ? hovered.value.moduleId : fittedId;
+  const others = Object.entries(fitted.value)
     .filter(([path]) => path !== slot)
     .map(([, id]) => id);
 
   return {
-    from: modules.value.find((mod) => mod.id === savedId),
+    from: modules.value.find((mod) => mod.id === fittedId),
     to: modules.value.find((mod) => mod.id === moduleId),
     others: modulesFor(others),
   };
@@ -542,6 +591,7 @@ const onSubmit = handleSubmit(async (values) => {
             <AsyncData :async-status="modulesAsyncStatus">
               <template #resolved>
                 <div
+                  ref="pickerHost"
                   class="vehicle-loadout__category"
                   :class="{
                     'vehicle-loadout__category--picking': pickerOpen && !mobile,
@@ -561,14 +611,9 @@ const onSubmit = handleSubmit(async (values) => {
                       <template v-if="pickerOpen && mobile" #active>
                         <Picker
                           :key="activeSlot"
-                          :title="moduleSockets.slotLabel(activeSlot || '')"
-                          :options="pickerOptions"
-                          :selected-id="(fittedModules || {})[activeSlot || '']"
-                          :sorts="pickerSorts"
-                          @pick="onPick"
-                          @preview="onPreview"
-                          @preview-end="onPreviewEnd"
-                          @close="closePicker"
+                          ref="picker"
+                          v-bind="pickerBindings"
+                          v-on="pickerListeners"
                         >
                           <template v-if="comparison" #comparison>
                             <Comparison
@@ -586,15 +631,10 @@ const onSubmit = handleSubmit(async (values) => {
                   <Picker
                     v-if="pickerOpen && !mobile"
                     :key="activeSlot"
+                    ref="picker"
                     class="vehicle-loadout__picker"
-                    :title="moduleSockets.slotLabel(activeSlot || '')"
-                    :options="pickerOptions"
-                    :selected-id="(fittedModules || {})[activeSlot || '']"
-                    :sorts="pickerSorts"
-                    @pick="onPick"
-                    @preview="onPreview"
-                    @preview-end="onPreviewEnd"
-                    @close="closePicker"
+                    v-bind="pickerBindings"
+                    v-on="pickerListeners"
                   >
                     <template v-if="comparison" #comparison>
                       <Comparison
@@ -605,6 +645,19 @@ const onSubmit = handleSubmit(async (values) => {
                       />
                     </template>
                   </Picker>
+
+                  <p
+                    v-if="
+                      !editable &&
+                      flightReady &&
+                      slots.length &&
+                      !socketGroups.length
+                    "
+                    class="vehicle-loadout__hint"
+                    data-test="vehicle-loadout-nothing-fitted"
+                  >
+                    {{ t("labels.vehicleLoadout.nothingFitted") }}
+                  </p>
 
                   <div
                     v-if="flightReady && !slots.length"

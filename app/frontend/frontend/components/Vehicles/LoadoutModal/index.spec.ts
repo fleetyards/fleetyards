@@ -196,6 +196,26 @@ describe("VehicleLoadoutModal", () => {
     expect(cargoRow().exists()).toBe(false);
   });
 
+  it("compares against what is picked, not what was last saved", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
+    );
+
+    // Picked, not saved: the combat module gives way to the cargo module.
+    await pick(wrapper, 0);
+    await openPicker(wrapper);
+    await wrapper
+      .findAll("[data-test='loadout-picker-option']")[0]
+      .trigger("mouseenter");
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-comparison-swap']").text(),
+    ).toBe("Cargo Module");
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-comparison-cargo']").exists(),
+    ).toBe(false);
+  });
+
   it("shows only what a swap changes, and says when it changes nothing", async () => {
     const wrapper = await mountModal(vehicle(["m1", "m2"]));
 
@@ -701,6 +721,40 @@ describe("VehicleLoadoutModal with several sockets", () => {
         .find(".vehicle-loadout__picker[data-test='loadout-picker']")
         .exists(),
     ).toBe(true);
+  });
+
+  it("says nothing is fitted to a visitor rather than showing a blank tab", async () => {
+    const wrapper = await mountClosed(vehicle(), { editable: false });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-nothing-fitted']").exists(),
+    ).toBe(true);
+  });
+
+  it("hands focus into the picker and back to its socket", async () => {
+    const host = document.createElement("div");
+    document.body.appendChild(host);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle: vehicle(), editable: true },
+      attachTo: host,
+    });
+
+    await socket(wrapper, "hardpoint_front_module").trigger("click");
+    await flushPromises();
+    expect(
+      wrapper
+        .get("[data-test='loadout-picker']")
+        .element.contains(document.activeElement),
+    ).toBe(true);
+
+    await wrapper.get("[data-test='loadout-picker-close']").trigger("click");
+    await flushPromises();
+    expect(document.activeElement?.getAttribute("data-test")).toBe(
+      "loadout-socket-hardpoint_front_module",
+    );
+
+    wrapper.unmount();
+    host.remove();
   });
 
   it("shows a visitor only the filled sockets, and no picker", async () => {
