@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { isNewerVersion } from "@/shared/utils/AppVersion";
 import type {
   AppVersionAnnouncement,
   AppVersionPayload,
@@ -83,7 +84,7 @@ export const useAppStore = defineStore("app", {
       this.online = payload;
     },
     updateVersion(payload: AppVersionPayload = {}) {
-      if (payload && payload.version && this.version !== payload.version) {
+      if (payload.version && isNewerVersion(payload.version, this.version)) {
         this.version = payload.version;
         if (payload.codename) {
           this.codename = payload.codename;
