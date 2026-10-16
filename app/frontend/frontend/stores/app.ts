@@ -1,4 +1,8 @@
 import { defineStore } from "pinia";
+import type {
+  AppVersionAnnouncement,
+  AppVersionPayload,
+} from "@/shared/stores/types";
 
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useOverlayStore } from "@/shared/stores/overlay";
@@ -17,6 +21,7 @@ interface AppState {
   version: string;
   codename: string;
   gitRevision: string;
+  announcement?: AppVersionAnnouncement;
   storeVersion?: string;
   online: boolean;
 }
@@ -26,6 +31,7 @@ export const useAppStore = defineStore("app", {
     version: window.APP_VERSION,
     codename: window.APP_CODENAME,
     gitRevision: window.GIT_REVISION,
+    announcement: undefined,
     storeVersion: undefined,
     online: true,
   }),
@@ -76,13 +82,14 @@ export const useAppStore = defineStore("app", {
     setOnlineStatus(payload: boolean) {
       this.online = payload;
     },
-    updateVersion(payload: { version?: string; codename?: string } = {}) {
+    updateVersion(payload: AppVersionPayload = {}) {
       if (payload && payload.version && this.version !== payload.version) {
         this.version = payload.version;
         if (payload.codename) {
           this.codename = payload.codename;
         }
       }
+      this.announcement = payload.announcement;
     },
   },
   persist: {

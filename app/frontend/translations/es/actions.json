@@ -90,6 +90,10 @@
       "hideLabels": "Ocultar etiquetas",
       "resetZoom": "Restablecer zoom",
       "supportUs": "Apoyar FleetYards.net",
+      "appUpdate": {
+        "reload": "Recargar",
+        "whatsNew": "Novedades"
+      },
       "installApp": {
         "cta": "Instalar app",
         "later": "Ahora no"

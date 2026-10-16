@@ -15,6 +15,10 @@
         "subline": "Support us directly",
         "otherWays": "Other ways to help"
       },
+      "appUpdate": {
+        "withCodename": "FleetYards %{version} (%{codename}) is live. Reload to switch to it.",
+        "plain": "FleetYards %{version} is live. Reload to switch to it."
+      },
       "installApp": {
         "eventSignup": "Install FleetYards as an app to get back to your events in one tap.",
         "iosIntro": "On iPhone and iPad, apps like FleetYards are installed from the share sheet:",

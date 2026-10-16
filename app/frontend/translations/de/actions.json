@@ -90,6 +90,10 @@
       "hideLabels": "Labels verbergen",
       "resetZoom": "Zoom zurücksetzen",
       "supportUs": "FleetYards.net unterstützen",
+      "appUpdate": {
+        "reload": "Neu laden",
+        "whatsNew": "Was ist neu"
+      },
       "installApp": {
         "cta": "App installieren",
         "later": "Nicht jetzt"

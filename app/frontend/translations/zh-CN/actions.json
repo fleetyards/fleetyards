@@ -90,6 +90,10 @@
       "hideLabels": "隐藏标签",
       "resetZoom": "重置缩放",
       "supportUs": "支持FleetYards.net",
+      "appUpdate": {
+        "reload": "重新加载",
+        "whatsNew": "新功能"
+      },
       "installApp": {
         "cta": "安装应用",
         "later": "以后再说"

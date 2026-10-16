@@ -15,6 +15,10 @@
         "subline": "Apóyanos directamente",
         "otherWays": "Otras formas de ayudar"
       },
+      "appUpdate": {
+        "withCodename": "FleetYards %{version} (%{codename}) ya está disponible. Recarga para cambiar a ella.",
+        "plain": "FleetYards %{version} ya está disponible. Recarga para cambiar a ella."
+      },
       "installApp": {
         "eventSignup": "Instala FleetYards como app para volver a tus eventos con un toque.",
         "iosIntro": "En iPhone y iPad, las apps como FleetYards se instalan desde el menú Compartir:",
