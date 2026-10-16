@@ -470,6 +470,7 @@
       "guilded": "Guilded Server",
       "3dView": "3D",
       "3dMap": "Map",
+      "texturedHolo": "Textured",
       "viewInAr": "AR",
       "viewInArHint": "Place it in your room at true size",
       "filter": "Filter",

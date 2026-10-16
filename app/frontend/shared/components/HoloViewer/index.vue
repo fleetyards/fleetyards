@@ -25,6 +25,8 @@ export type HoloModel = {
   length?: number;
   // Bytes, where the file is known: a phone asks before loading a large one.
   size?: number;
+  // Painted and animated: drawn with its own materials, not the holo's.
+  textured?: boolean;
 };
 
 type Props = {

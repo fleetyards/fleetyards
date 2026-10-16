@@ -107,6 +107,22 @@ describe("ViewInArBtn", () => {
     expect(button(wrapper).exists()).toBe(false);
   });
 
+  it("offers AR for the lite holo a phone's 3D view shows, and prepares that one", async () => {
+    const { prepareAr } = await import("@/frontend/utils/arViewer");
+    vi.mocked(prepareAr).mockClear();
+    const lite = "https://fleetyards.test/files/holo_lite.glb";
+
+    const wrapper = await mount({
+      model: model({
+        media: { holo: { url: HOLO }, holoLite: { url: lite } },
+      } as Partial<Model>),
+      displayedHoloUrl: lite,
+    });
+
+    expect(button(wrapper).exists()).toBe(true);
+    expect(prepareAr).toHaveBeenCalledWith(lite);
+  });
+
   it("hides AR for a holo that is not to scale", async () => {
     const wrapper = await mount({ model: model({ holoToScale: false }) });
 

@@ -294,8 +294,28 @@ const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
 
+const lowPower = useLowPowerDevice();
+
+const texturedHolo = ref(false);
+
+// Only the flying pose has a painted export, so another state leaves the switch
+// out rather than offering a button that changes nothing.
+const texturedHoloAvailable = computed(
+  () =>
+    isFeatureEnabled(FeatureFlagName.HOLO_TEXTURED) &&
+    activeState.value === ModelStateEnum.FLIGHT &&
+    !!props.model.media.holoTextured,
+);
+
+const toggleTexturedHolo = () => {
+  texturedHolo.value = !texturedHolo.value;
+};
+
 const holoModel = computed(() => {
-  const holo = modelStateHolo(props.model, activeState.value);
+  const textured = texturedHoloAvailable.value && texturedHolo.value;
+  const holo = textured
+    ? props.model.media.holoTextured
+    : modelStateHolo(props.model, activeState.value, { lite: lowPower.value });
   const path = holo?.url;
   const length = modelStateMetrics(
     props.model,
@@ -310,10 +330,9 @@ const holoModel = computed(() => {
     path,
     length,
     size: holo?.size,
+    textured,
   };
 });
-
-const lowPower = useLowPowerDevice();
 
 // The side preview cannot ask before loading a holo too large for the device,
 // so on such a device it stays the store image; the main 3D view still asks.
@@ -380,6 +399,15 @@ const adiMap = computed(() => {
                 </Btn>
                 <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
                   {{ t("labels.3dView") }}
+                </Btn>
+
+                <Btn
+                  v-if="holoviewerVisible && texturedHoloAvailable"
+                  :active="texturedHolo"
+                  data-test="model-holo-textured"
+                  @click="toggleTexturedHolo"
+                >
+                  {{ t("labels.texturedHolo") }}
                 </Btn>
 
                 <Btn v-if="adiMap" :href="adiMap">

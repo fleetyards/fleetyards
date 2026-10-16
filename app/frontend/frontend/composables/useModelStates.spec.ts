@@ -143,6 +143,37 @@ describe("resolving a persisted state", () => {
   });
 });
 
+describe("what the extra exports offer", () => {
+  it("offers a state whose only holo is the lite export", () => {
+    const { holoStates } = useModelStates(
+      model({ holo: file("holo"), landedHoloLite: file("landed-lite") }),
+    );
+
+    expect(holoStates.value).toEqual([
+      ModelStateEnum.FLIGHT,
+      ModelStateEnum.LANDED,
+    ]);
+  });
+
+  it("offers a state whose only images are from behind", () => {
+    expect(
+      modelHasState(
+        model({ extendedRearView: file("ext-rear") }),
+        ModelStateEnum.EXTENDED,
+      ),
+    ).toBe(true);
+  });
+
+  it("falls back to the flight view from behind like any other", () => {
+    const subject = model({ starboardView: file("starboard") });
+
+    expect(
+      modelStateView(subject, ModelStateEnum.LANDED, ModelViewEnum.STARBOARD)
+        .regular?.name,
+    ).toBe("starboard");
+  });
+});
+
 describe("picking the holo", () => {
   it("takes the state's own holo", () => {
     const subject = model({ holo: file("holo"), landedHolo: file("landed") });
@@ -162,6 +193,35 @@ describe("picking the holo", () => {
     const subject = model({ landedHolo: file("landed") });
 
     expect(modelStateHolo(subject, ModelStateEnum.FLIGHT)?.name).toBe("landed");
+  });
+
+  it("leaves the lite export alone unless asked for it", () => {
+    const subject = model({ holo: file("holo"), holoLite: file("lite") });
+
+    expect(modelStateHolo(subject, ModelStateEnum.FLIGHT)?.name).toBe("holo");
+    expect(
+      modelStateHolo(subject, ModelStateEnum.FLIGHT, { lite: true })?.name,
+    ).toBe("lite");
+  });
+
+  it("takes the full holo where the state has no lite export", () => {
+    const subject = model({ holo: file("holo") });
+
+    expect(
+      modelStateHolo(subject, ModelStateEnum.FLIGHT, { lite: true })?.name,
+    ).toBe("holo");
+  });
+
+  // The pose asked for matters more than the file size.
+  it("prefers the state's full holo over the flying lite one", () => {
+    const subject = model({
+      holoLite: file("lite"),
+      landedHolo: file("landed"),
+    });
+
+    expect(
+      modelStateHolo(subject, ModelStateEnum.LANDED, { lite: true })?.name,
+    ).toBe("landed");
   });
 });
 
