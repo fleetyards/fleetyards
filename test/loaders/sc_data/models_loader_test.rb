@@ -263,6 +263,32 @@ module ScData
         assert_equal [4, racks, 2], model.reload.values_at(:beds, :weapon_racks, :lockers)
       end
 
+      # The earlier import's payload is cached before the load, the way a page
+      # view leaves it: what comes after must not be served from it.
+      test "#load_model serves the furniture the build now places, not the payload cached before it" do
+        with_fragment_caching do
+          loader = ::ScData::Loader::ModelsLoader.new
+          model = create(:model, name: "Rebuilt Interior")
+          create(:model_build, model:, environment: loader.sc_environment, version: loader.sc_version)
+          assert_nil Model.find(model.id).to_jbuilder_hash.dig("metrics", "beds")
+
+          loader.stubs(:update_loadout)
+          loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "interior" => {"beds" => 4}})
+
+          broadcasts = []
+          ActionCable.server.stubs(:broadcast).with do |stream, payload|
+            broadcasts << payload if stream == "models" && payload["id"] == model.id
+            true
+          end
+
+          loader.load_model(Model.find(model.id))
+
+          assert broadcasts.any?, "the model was not broadcast"
+          assert_equal 4, broadcasts.last.dig("metrics", "beds")
+          assert_equal 4, Model.find(model.id).to_jbuilder_hash.dig("metrics", "beds")
+        end
+      end
+
       test "#load_model clears furniture a build no longer places, and writes none for a ship without" do
         loader = ::ScData::Loader::ModelsLoader.new
         emptied = create(:model, name: "Emptied", beds: 4, lockers: 2, weapon_racks: [{"key" => "Weapon_Rack_Test", "count" => 1, "slots" => []}])
