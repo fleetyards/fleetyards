@@ -10,7 +10,10 @@
       "beam": "Beam",
       "cargo": "Cargo",
       "personalInventory": "Ship Inventory",
-      "beds": "Beds",
+      "beds": {
+        "one": "%{count} bed",
+        "other": "%{count} beds"
+      },
       "crew": "Crew",
       "speed": "Speed",
       "scmSpeed": "SCM Speed",

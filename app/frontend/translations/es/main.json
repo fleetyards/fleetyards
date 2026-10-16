@@ -10,7 +10,10 @@
       "beam": "Manga",
       "cargo": "Carga",
       "personalInventory": "Inventario de la nave",
-      "beds": "Camas",
+      "beds": {
+        "one": "%{count} cama",
+        "other": "%{count} camas"
+      },
       "crew": "Tripulación",
       "speed": "Velocidad",
       "scmSpeed": "SCM Speed",

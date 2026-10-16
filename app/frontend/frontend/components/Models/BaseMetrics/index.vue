@@ -123,6 +123,13 @@ const openAvailability = () => {
         <div class="metrics-card__tile__value">
           {{ toNumber(model.crew.value || "", "people") }}
         </div>
+        <div
+          v-if="model.metrics.beds"
+          class="metrics-card__tile__sub"
+          data-test="model-beds"
+        >
+          {{ t("model.beds", { count: model.metrics.beds }) }}
+        </div>
       </div>
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
@@ -138,16 +145,6 @@ const openAvailability = () => {
         <div class="metrics-card__tile__value">
           {{ toNumber(model.metrics.personalInventory) }}
           <span class="metrics-card__tile__unit">SCU</span>
-        </div>
-      </div>
-      <div
-        v-if="model.metrics.beds"
-        class="metrics-card__tile"
-        data-test="model-beds"
-      >
-        <div class="metrics-card__tile__label">{{ t("model.beds") }}</div>
-        <div class="metrics-card__tile__value">
-          {{ toNumber(model.metrics.beds, "integer") }}
         </div>
       </div>
     </div>
@@ -205,10 +202,9 @@ const openAvailability = () => {
 @import "@/shared/components/metricsCard";
 
 .base-panel {
-  // Three dimensions, then mass and crew, then cargo, the ship's own inventory
-  // and its beds: six tracks so the first row splits in three and the others
-  // in two. Inventory and beds are the tiles a ship may lack, and a tile left
-  // alone on its row takes the whole row.
+  // Three dimensions, then mass and crew, then cargo and the ship's own
+  // inventory: six tracks so the first row splits in three and the others in
+  // two. Inventory is the one tile a ship may lack, and cargo then takes its row.
   &__hero {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -221,7 +217,7 @@ const openAvailability = () => {
         grid-column: span 2;
       }
 
-      &:last-child:nth-child(2n + 4) {
+      &:last-child:nth-child(6) {
         grid-column: span 6;
       }
     }
