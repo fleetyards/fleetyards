@@ -1,6 +1,6 @@
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { ModelModule, Vehicle } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -120,7 +120,7 @@ const mountModal = (v: Vehicle, props: Record<string, unknown> = {}) =>
 type Wrapper = Awaited<ReturnType<typeof mountModal>>;
 
 const slotPick = (wrapper: Wrapper, i: number) =>
-  wrapper.findAll("[data-test='vehicle-loadout-slot-module-toggle']")[i];
+  wrapper.findAll("[data-test='loadout-picker-option']")[i];
 
 const save = async (wrapper: Wrapper) => {
   await wrapper.find("form").trigger("submit");
@@ -163,13 +163,13 @@ describe("VehicleLoadoutModal", () => {
     expect(cargoRow()).not.toContain("+32");
 
     await wrapper
-      .findAll("[data-test='vehicle-loadout-slot-module']")[0]
+      .findAll("[data-test='loadout-picker-option']")[0]
       .trigger("mouseenter");
 
     expect(cargoRow()).toContain("+32");
 
     await wrapper
-      .get("[data-test='vehicle-loadout-fitting']")
+      .get("[data-test='loadout-picker-options']")
       .trigger("mouseleave");
 
     expect(cargoRow()).not.toContain("+32");
@@ -194,7 +194,7 @@ describe("VehicleLoadoutModal", () => {
 
     expect(
       wrapper.findAll(
-        "[data-test='vehicle-loadout-slot-module'].addon-option--selected",
+        "[data-test='loadout-picker-option'].loadout-picker__option--selected",
       ),
     ).toHaveLength(1);
   });
@@ -372,7 +372,7 @@ describe("VehicleLoadoutModal", () => {
 
     expect(
       wrapper.findAll(
-        "[data-test='vehicle-loadout-slot-module'].addon-option--selected",
+        "[data-test='loadout-picker-option'].loadout-picker__option--selected",
       ),
     ).toHaveLength(0);
 
@@ -401,7 +401,7 @@ describe("VehicleLoadoutModal", () => {
     expect(
       wrapper.find("[data-test='vehicle-loadout-not-flight-ready']").exists(),
     ).toBe(true);
-    expect(wrapper.find("[data-test='vehicle-loadout-fitting']").exists()).toBe(
+    expect(wrapper.find("[data-test='loadout-picker-options']").exists()).toBe(
       false,
     );
     expect(
@@ -420,7 +420,7 @@ describe("VehicleLoadoutModal", () => {
     await flushPromises();
 
     const selected = wrapper.findAll(
-      "[data-test='vehicle-loadout-slot-module'].addon-option--selected",
+      "[data-test='loadout-picker-option'].loadout-picker__option--selected",
     );
     expect(selected).toHaveLength(1);
     expect(selected[0].text()).toContain("Combat Module");
@@ -497,4 +497,155 @@ it("disables the modules category on a ship that is not flight-ready", async () 
       .find((tab) => tab.props("id") === "modules")
       ?.props("disabled"),
   ).toBe(true);
+});
+
+describe("VehicleLoadoutModal with several sockets", () => {
+  const TWO_SLOTS = [
+    {
+      id: "f1",
+      name: "Front Cargo Module",
+      slug: "front-cargo",
+      slot: "hardpoint_front_module",
+      metrics: { cargo: 36 },
+    },
+    {
+      id: "f2",
+      name: "Front Torpedo Bay",
+      slug: "front-torpedo",
+      slot: "hardpoint_front_module",
+    },
+    {
+      id: "r1",
+      name: "Rear Cargo Module",
+      slug: "rear-cargo",
+      slot: "hardpoint_rear_module",
+      metrics: { cargo: 38 },
+    },
+  ] as unknown as ModelModule[];
+
+  let saved: { items: ModelModule[] };
+
+  beforeEach(() => {
+    saved = modules.value;
+    modules.value = { items: TWO_SLOTS };
+  });
+
+  afterEach(() => {
+    modules.value = saved;
+    vi.unstubAllGlobals();
+    delete (HTMLElement.prototype as Partial<HTMLElement>).scrollTo;
+  });
+
+  const socket = (wrapper: Wrapper, slot: string) =>
+    wrapper.get(`[data-test='loadout-socket-${slot}']`);
+
+  const pickerNames = (wrapper: Wrapper) =>
+    wrapper
+      .findAll("[data-test='loadout-picker-option'] .loadout-picker__name")
+      .map((name) => name.text());
+
+  it("opens on the first empty socket and moves on once it is filled", async () => {
+    const wrapper = await mountModal(
+      vehicle([], { fitted: { hardpoint_front_module: "f1" } }),
+    );
+
+    expect(
+      socket(wrapper, "hardpoint_rear_module").attributes("aria-pressed"),
+    ).toBe("true");
+
+    await socket(wrapper, "hardpoint_front_module").trigger("click");
+    expect(pickerNames(wrapper)).toEqual([
+      "Front Cargo Module",
+      "Front Torpedo Bay",
+    ]);
+
+    await wrapper
+      .findAll("[data-test='loadout-picker-option']")[1]
+      .trigger("click");
+
+    // The rear socket is still empty, so the picker moves there.
+    expect(
+      socket(wrapper, "hardpoint_rear_module").attributes("aria-pressed"),
+    ).toBe("true");
+    expect(
+      socket(wrapper, "hardpoint_front_module")
+        .get("[data-test='loadout-socket-name']")
+        .text(),
+    ).toBe("Front Torpedo Bay");
+  });
+
+  it("stays on a socket that is emptied", async () => {
+    const wrapper = await mountModal(
+      vehicle([], {
+        fitted: {
+          hardpoint_front_module: "f1",
+          hardpoint_rear_module: "r1",
+        },
+      }),
+    );
+
+    await socket(wrapper, "hardpoint_rear_module").trigger("click");
+    await wrapper.get("[data-test='loadout-picker-empty']").trigger("click");
+
+    expect(
+      socket(wrapper, "hardpoint_rear_module").attributes("aria-pressed"),
+    ).toBe("true");
+    expect(socket(wrapper, "hardpoint_rear_module").classes()).toContain(
+      "loadout-socket--empty",
+    );
+  });
+
+  it("closes the picker, and opens it again from a socket", async () => {
+    const wrapper = await mountModal(vehicle());
+
+    await wrapper.get("[data-test='loadout-picker-close']").trigger("click");
+    expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
+
+    await socket(wrapper, "hardpoint_front_module").trigger("click");
+    expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(true);
+  });
+
+  it("opens the picker under the active socket on a phone", async () => {
+    const wrapper = await mountModal(vehicle());
+
+    expect(
+      wrapper
+        .get("[data-test='loadout-socket-board-active']")
+        .find("[data-test='loadout-picker']")
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("puts the picker beside the sockets where there is room", async () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: false })),
+    );
+    // At desktop width the tab strip scrolls its active tab into view, which
+    // jsdom has no implementation of.
+    HTMLElement.prototype.scrollTo = vi.fn();
+    const wrapper = await mountModal(vehicle());
+
+    expect(
+      wrapper.find("[data-test='loadout-socket-board-active']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper
+        .find(".vehicle-loadout__picker[data-test='loadout-picker']")
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("shows a visitor only the filled sockets, and no picker", async () => {
+    const wrapper = await mountModal(
+      vehicle([], { fitted: { hardpoint_rear_module: "r1" } }),
+      { editable: false },
+    );
+
+    expect(wrapper.findAll(".loadout-socket")).toHaveLength(1);
+    expect(socket(wrapper, "hardpoint_rear_module").element.tagName).toBe(
+      "DIV",
+    );
+    expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
+  });
 });

@@ -65,11 +65,13 @@
     max-width: 1100px;
   }
 
-  // The slots and the comparison side by side, as a choice and what it does.
+  // The ship's sockets, and the picker filling the active one beside them
+  // where there is room for both.
   &__category {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
+    align-items: start;
   }
 
   fieldset {
@@ -196,11 +198,6 @@
       display: block;
     }
 
-    &__category {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
-      align-items: start;
-    }
-
     // The ship's figures in the corner, over the backdrop, where the terminal
     // keeps them.
     &__ship {
@@ -228,6 +225,22 @@
   .vehicle-loadout__panel {
     padding-right: 0;
     width: 62%;
+  }
+
+  // A socket wider than this only stretches its name across the ship.
+  .vehicle-loadout__sockets {
+    max-width: 440px;
+  }
+
+  // The picker takes the room: it holds the long list, the sockets only a
+  // name each.
+  .vehicle-loadout__category--picking {
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  }
+
+  .vehicle-loadout__picker {
+    position: sticky;
+    top: 0;
   }
 }
 
