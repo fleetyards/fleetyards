@@ -313,7 +313,7 @@ describe("FilteredList", () => {
       },
     });
 
-    await mountWithDefaults(Layout, {
+    const wrapper = await mountWithDefaults(Layout, {
       initialState: { mobile: { mobile: true } },
       attachTo: document.body,
     });
@@ -325,6 +325,8 @@ describe("FilteredList", () => {
       document.querySelector('#off-canvas-content [data-test="form"]')
         ?.textContent,
     ).toBe("1");
+
+    wrapper.unmount();
   });
 
   it("keeps a list's own view keys through a reset", async () => {
