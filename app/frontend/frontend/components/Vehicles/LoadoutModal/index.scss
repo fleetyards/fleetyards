@@ -40,6 +40,12 @@
     color: var(--color-text);
   }
 
+  :deep(.tab-anchor__content > .duotone-glyph) {
+    flex: none;
+    font-size: 1.375rem;
+    color: var(--color-text);
+  }
+
   /*
    * Most of the strip is components this editor does not cover yet. Drained of
    * colour and pushed well back, so the few tabs that open read as the strip and
@@ -50,11 +56,8 @@
       opacity: 0.35;
     }
 
-    .tab-anchor__icon {
-      filter: grayscale(1);
-    }
-
-    .tab-anchor__content > i {
+    .tab-anchor__content > i,
+    .tab-anchor__content > .duotone-glyph {
       color: $gray-light;
     }
   }

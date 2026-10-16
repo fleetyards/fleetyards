@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { HardpointCategoryEnum } from "@/services/fyApi";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -84,10 +86,14 @@ const accessibleName = computed(() =>
         class="loadout-socket__image"
         loading="lazy"
       />
+      <HardpointCategoryIcon
+        v-else-if="socket.item"
+        :category="HardpointCategoryEnum.MODULE"
+        class="loadout-socket__glyph"
+      />
       <i
         v-else
-        class="loadout-socket__glyph"
-        :class="socket.item ? 'fa-duotone fa-puzzle' : 'fa-light fa-plus'"
+        class="loadout-socket__glyph fa-light fa-plus"
         aria-hidden="true"
       />
     </span>

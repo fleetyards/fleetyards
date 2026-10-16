@@ -23,7 +23,7 @@ import {
   useModeGroups,
 } from "@/frontend/composables/useComponentStats";
 import { useComponentDurability } from "@/frontend/composables/useComponentDurability";
-import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import {
   type Component,
   useBlueprints as useBlueprintsQuery,
@@ -89,8 +89,6 @@ const crumbs = computed<Crumb[]>(() => [
   },
 ]);
 
-const icon = computed(() => categoryIcon(component.value?.category));
-
 // The payload carries the game's own category string ("quantumdrive"). The
 // hardpoint list already names all of them, in every locale, so the label comes
 // from there rather than a second vocabulary -- falling back to the raw key
@@ -153,18 +151,11 @@ watch(
     <BreadCrumbs :crumbs="crumbs" />
 
     <div class="component-page__masthead">
-      <img
-        v-if="icon?.kind === 'svg'"
-        :src="icon.src"
+      <HardpointCategoryIcon
+        v-if="component.category"
+        :category="component.category"
         class="component-page__icon"
-        alt=""
       />
-      <span
-        v-else-if="icon?.kind === 'fa'"
-        class="component-page__icon component-page__icon--glyph"
-      >
-        <i :class="icon.className" />
-      </span>
 
       <div class="component-page__title">
         <h1 class="component-page__name">{{ component.name }}</h1>

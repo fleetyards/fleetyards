@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
-import ComponentCategoryIcon from "@/frontend/components/Components/CategoryIcon/index.vue";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
@@ -81,7 +81,10 @@ const badges = computed<RowListItemBadge[]>(() => {
     :badges="badges"
   >
     <template #leading>
-      <ComponentCategoryIcon :category="component.category" />
+      <HardpointCategoryIcon
+        :category="component.category"
+        class="component-row__icon"
+      />
     </template>
 
     <!-- The name is already the row's link, so it opens the card without

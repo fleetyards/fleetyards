@@ -11,20 +11,10 @@
   }
 
   &__icon {
-    width: 52px;
-    flex: none;
-    margin-top: 2px;
+    --hardpoint-category-icon-size: 52px;
 
-    // The categories the drawn set never got are Font Awesome glyphs, which
-    // need a box to sit in rather than a width to scale to.
-    &--glyph {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 52px;
-      font-size: 34px;
-      color: var(--color-primary, #428bca);
-    }
+    margin-top: 2px;
+    color: var(--color-primary, #428bca);
   }
 
   &__title {

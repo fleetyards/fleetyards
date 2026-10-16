@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import type { Hardpoint } from "@/services/fyApi";
+import { type Hardpoint, HardpointCategoryEnum } from "@/services/fyApi";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -18,14 +19,6 @@ import {
   type FlightMode,
   type PowerFamily,
 } from "@/frontend/composables/powerSim";
-import weaponsIconUrl from "@/images/hardpoints/weapons.svg";
-import shieldGeneratorsIconUrl from "@/images/hardpoints/shield_generators.svg";
-import coolersIconUrl from "@/images/hardpoints/coolers.svg";
-import radarIconUrl from "@/images/hardpoints/radar.svg";
-import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
-import qedIconUrl from "@/images/hardpoints/qed.svg";
-import empIconUrl from "@/images/hardpoints/emp.svg";
-import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -52,24 +45,24 @@ const emit = defineEmits<{
 
 const { t, toNumber } = useI18n();
 
-// The hardpoint icon per family (engine falls back to the thruster glyph); a
-// short text label covers families without a dedicated icon.
-const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
-  weapon: weaponsIconUrl,
-  shield: shieldGeneratorsIconUrl,
-  coolers: coolersIconUrl,
-  radar: radarIconUrl,
-  qdrive: quantumDrivesIconUrl,
-  qed: qedIconUrl,
-  emp: empIconUrl,
-  engine: mainThrustersIconUrl,
+// The hardpoint category whose icon stands for each family; the engine takes the
+// main thruster's. A short text label covers families without one.
+const FAMILY_CATEGORY: Partial<Record<PowerFamily, HardpointCategoryEnum>> = {
+  weapon: HardpointCategoryEnum.WEAPONS,
+  shield: HardpointCategoryEnum.SHIELDGENERATOR,
+  coolers: HardpointCategoryEnum.COOLER,
+  radar: HardpointCategoryEnum.RADAR,
+  qdrive: HardpointCategoryEnum.QUANTUMDRIVE,
+  qed: HardpointCategoryEnum.QUANTUMENFORCEMENTDEVICE,
+  emp: HardpointCategoryEnum.EMP,
+  engine: HardpointCategoryEnum.MAIN_THRUSTERS,
+  lifeSupport: HardpointCategoryEnum.LIFESUPPORT,
+  salvage: HardpointCategoryEnum.SALVAGEMUNCHING,
 };
 
-// FontAwesome fallback for families without a hardpoint SVG. Life support and
-// the beams use a pulse heart and arrows pulling to a center.
+// The beams are no hardpoint category of their own, so they keep Font Awesome's
+// arrows pulling to a center, and mining its gem.
 const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
-  lifeSupport: "fa-heart-pulse",
-  salvage: "fa-bin-recycle",
   miningLaser: "fa-gem",
   tractorBeam: "fa-arrows-to-circle",
   towingbeam: "fa-arrows-to-circle",
@@ -399,10 +392,9 @@ const cellHeight = (span: number) =>
           :aria-label="columnLabel(column)"
           @click="toggleColumn(column)"
         >
-          <img
-            v-if="FAMILY_ICON[column.family]"
-            :src="FAMILY_ICON[column.family]"
-            :alt="columnLabel(column)"
+          <HardpointCategoryIcon
+            v-if="FAMILY_CATEGORY[column.family]"
+            :category="FAMILY_CATEGORY[column.family]"
             class="power-col__icon"
           />
           <i
@@ -718,13 +710,11 @@ const cellHeight = (span: number) =>
   }
 
   &__icon {
-    width: 15px;
-    height: 15px;
-    opacity: 1;
+    --hardpoint-category-icon-size: 17px;
+
+    color: $primary;
   }
 
-  // FA glyphs only fill ~0.875em of their line box, so they need a larger font
-  // size than the SVG icons' 15px to read at the same weight next to them.
   &__fa {
     font-size: 17px;
     line-height: 15px;
@@ -740,10 +730,7 @@ const cellHeight = (span: number) =>
       opacity: 0.5;
     }
 
-    .power-col__icon {
-      opacity: 0.3;
-    }
-
+    .power-col__icon,
     .power-col__fa {
       color: $gray;
       opacity: 0.4;

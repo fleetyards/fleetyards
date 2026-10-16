@@ -47,19 +47,7 @@
   }
 
   &__icon {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
     color: $gray-light;
     margin-right: 9px;
-    font-size: 1.1rem;
-  }
-
-  // SVG icons ship with a hard-coded $primary fill; desaturate it so the icons
-  // read as quiet neutral wayfinding rather than a second accent colour.
-  &__icon--img {
-    object-fit: contain;
-    filter: grayscale(1);
   }
 }

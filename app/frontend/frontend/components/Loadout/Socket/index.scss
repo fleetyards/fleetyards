@@ -78,6 +78,8 @@ button.loadout-socket--active:hover {
 }
 
 .loadout-socket__glyph {
+  --hardpoint-category-icon-size: 18px;
+
   color: var(--color-muted);
   font-size: 18px;
 

@@ -521,14 +521,11 @@ it("orders systems before propulsion and weapons", async () => {
     ["modules", "module"],
     ["quantumDrives", "quantumdrive"],
     ["flightBlades", "controller"],
-    ["missiles", "missiles"],
+    ["missiles", "missile_racks"],
     ["weapons", "weapons"],
   ]) {
     const tab = tabs.find((tab) => tab.props("id") === id)!;
-    const icon = categoryIcon(category)!;
-    expect(tab.props(icon.kind === "svg" ? "iconSrc" : "icon")).toBe(
-      icon.kind === "svg" ? icon.src : icon.className,
-    );
+    expect(tab.props("icon")).toBe(categoryIcon(category));
   }
 });
 

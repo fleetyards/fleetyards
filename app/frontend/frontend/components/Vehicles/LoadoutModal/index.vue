@@ -158,39 +158,31 @@ const fittedModuleIds = computed(() =>
 
 // Components a later version of this editor will cover, shown so the tab strip
 // already says where it is headed.
-const categoryTabIcon = (category: string) => {
-  const icon = categoryIcon(category);
-  return {
-    icon: icon?.kind === "fa" ? icon.className : undefined,
-    iconSrc: icon?.kind === "svg" ? icon.src : undefined,
-  };
-};
-
 const systemTabs = computed(() => [
   {
     id: "radar",
     label: t("labels.vehicleLoadout.tabs.radar"),
-    ...categoryTabIcon("radar"),
+    icon: categoryIcon("radar"),
   },
   {
     id: "coolers",
     label: t("labels.vehicleLoadout.tabs.coolers"),
-    ...categoryTabIcon("cooler"),
+    icon: categoryIcon("cooler"),
   },
   {
     id: "lifeSupport",
     label: t("labels.vehicleLoadout.tabs.lifeSupport"),
-    ...categoryTabIcon("lifesupport"),
+    icon: categoryIcon("lifesupport"),
   },
   {
     id: "powerPlants",
     label: t("labels.vehicleLoadout.tabs.powerPlants"),
-    ...categoryTabIcon("powerplant"),
+    icon: categoryIcon("powerplant"),
   },
   {
     id: "shields",
     label: t("labels.vehicleLoadout.tabs.shields"),
-    ...categoryTabIcon("shieldgenerator"),
+    icon: categoryIcon("shieldgenerator"),
   },
 ]);
 
@@ -198,22 +190,22 @@ const propulsionWeaponTabs = computed(() => [
   {
     id: "quantumDrives",
     label: t("labels.vehicleLoadout.tabs.quantumDrives"),
-    ...categoryTabIcon("quantumdrive"),
+    icon: categoryIcon("quantumdrive"),
   },
   {
     id: "flightBlades",
     label: t("labels.vehicleLoadout.tabs.flightBlades"),
-    ...categoryTabIcon("controller"),
+    icon: categoryIcon("controller"),
   },
   {
     id: "missiles",
     label: t("labels.vehicleLoadout.tabs.missiles"),
-    ...categoryTabIcon("missiles"),
+    icon: categoryIcon("missile_racks"),
   },
   {
     id: "weapons",
     label: t("labels.vehicleLoadout.tabs.weapons"),
-    ...categoryTabIcon("weapons"),
+    icon: categoryIcon("weapons"),
   },
 ]);
 
@@ -573,7 +565,6 @@ const onSubmit = handleSubmit(async (values) => {
             :key="upcoming.id"
             :label="upcoming.label"
             :icon="upcoming.icon"
-            :icon-src="upcoming.iconSrc"
             :hint="t('labels.vehicleLoadout.comingSoon')"
             disabled
           />
@@ -581,7 +572,7 @@ const onSubmit = handleSubmit(async (values) => {
           <FormTab
             :id="VehicleLoadoutTabsEnum.MODULES"
             :label="t('labels.vehicleLoadout.tabs.modules')"
-            :icon="categoryTabIcon('module').icon"
+            :icon="categoryIcon('module')"
             :fields="['fittedModules']"
             :disabled="!flightReady || !vehicle.model.hasModules"
             :hint="modulesHint"
@@ -676,7 +667,6 @@ const onSubmit = handleSubmit(async (values) => {
             :key="upcoming.id"
             :label="upcoming.label"
             :icon="upcoming.icon"
-            :icon-src="upcoming.iconSrc"
             :hint="t('labels.vehicleLoadout.comingSoon')"
             disabled
           />
