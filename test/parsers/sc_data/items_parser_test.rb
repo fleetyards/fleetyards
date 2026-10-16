@@ -69,6 +69,33 @@ module ScData
         assert_equal 'Item Type: Armor\nManufacturer: Aegis Dynamics', parsed["description"]
       end
 
+      test "reads a module's medical beds by tier from the rooms the export places" do
+        write_item("rsi_apollo_module_left_tier_2", name: "@item_NameModule", category: "module", type: "Module")
+        FileUtils.mkdir_p("#{@raw_path}/derived")
+        File.write("#{@raw_path}/derived/shiprooms.json", {
+          items: {
+            "RSI_Apollo_Module_Left_Tier_2" => [
+              {medbedTiers: {"Clinic" => 2}, medbedRespawn: 2},
+              {medbedTiers: {"Hospital" => 1}, medbedRespawn: 0}
+            ]
+          }
+        }.to_json)
+
+        assert_equal(
+          {
+            "tiers" => [{"tier" => 1, "name" => "Hospital", "beds" => 1}, {"tier" => 2, "name" => "Clinic", "beds" => 2}],
+            "respawn_beds" => 2
+          },
+          parsed_item("rsi_apollo_module_left_tier_2")["medical_beds"]
+        )
+      end
+
+      test "gives a module no medical beds where the export has no rooms file" do
+        write_item("rsi_apollo_module_left_tier_2", name: "@item_NameModule", category: "module", type: "Module")
+
+        assert_nil parsed_item("rsi_apollo_module_left_tier_2")["medical_beds"]
+      end
+
       private def parsed
         @parsed ||= begin
           @parser.all

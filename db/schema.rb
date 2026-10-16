@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_16_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1967,6 +1967,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
     t.string "cargo_holds"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "medical_beds"
     t.index ["environment", "version"], name: "index_model_module_builds_on_environment_and_version"
     t.index ["model_module_id", "environment", "version"], name: "index_model_module_builds_on_module_and_build", unique: true
   end
@@ -2005,6 +2006,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_100000) do
     t.decimal "cargo", precision: 15, scale: 2
     t.string "cargo_holds"
     t.decimal "price", precision: 15, scale: 2
+    t.string "medical_beds"
   end
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

@@ -63,6 +63,20 @@ class ModelModuleBuildTest < ActiveSupport::TestCase
   # `before_save`. A reader answering from the build would hand it the previous
   # build's value on the second load and store a capacity the module does not
   # have, so this one is recorded on the build and not read through.
+  test "#medical_beds of a build without beds is none, not what another build left on the column" do
+    model_module = create(:model_module, sc_key: "a_module", medical_beds: {"tiers" => [], "respawn_beds" => 1})
+    create(:model_module_build, model_module:, medical_beds: nil)
+
+    assert_nil model_module.reload.medical_beds
+  end
+
+  test "#medical_beds falls back to the column when no build describes the module" do
+    beds = {"tiers" => [{"tier" => 1, "name" => "Hospital", "beds" => 1}], "respawn_beds" => 1}
+    model_module = create(:model_module, medical_beds: beds)
+
+    assert_equal beds, model_module.reload.medical_beds
+  end
+
   test "#cargo_holds is not read through the build" do
     model_module = create(:model_module, sc_key: "a_module")
     create(:model_module_build, model_module:, cargo_holds: [{"capacity" => 99}])

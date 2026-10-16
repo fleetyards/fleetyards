@@ -37,6 +37,10 @@ class ModelModule < ApplicationRecord
   has_many :docks, as: :parent, dependent: :destroy
 
   serialize :cargo_holds, coder: YAML
+  # The medical beds the module's rooms hold, by tier: `tier` (1 the best),
+  # `name` (the game's Hospital, Clinic, Ambulance), `beds`, and `respawn_beds`
+  # for the ones a player can respawn at.
+  serialize :medical_beds, coder: YAML
 
   # What each build of the game says about this module. Written alongside the
   # columns, so the reads can move over in their own step.
@@ -82,6 +86,12 @@ class ModelModule < ApplicationRecord
 
       value.nil? ? super() : value
     end
+  end
+
+  # From the build alone where there is one: a module without beds in this
+  # build has none, rather than the beds another build left on the column.
+  def medical_beds
+    build ? build.medical_beds : super
   end
 
   has_one_attached :store_image

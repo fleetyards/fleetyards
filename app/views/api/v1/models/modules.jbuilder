@@ -6,7 +6,7 @@ json.items do
     # touches neither the module nor its slots. The locale, because the
     # hardpoints' components carry translated labels.
     json.cache! [
-      "v5", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), Manufacturer.artwork_version
+      "v6", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), Manufacturer.artwork_version
     ] do
       json.partial!("api/v1/model_modules/base", model_module:)
     end

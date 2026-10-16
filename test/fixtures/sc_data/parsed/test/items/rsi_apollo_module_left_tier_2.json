@@ -35,5 +35,15 @@
       "biochemical": 1.0,
       "stun": 1.0
     }
+  },
+  "medical_beds": {
+    "tiers": [
+      {
+        "tier": 2,
+        "name": "Clinic",
+        "beds": 2
+      }
+    ],
+    "respawn_beds": 2
   }
 }

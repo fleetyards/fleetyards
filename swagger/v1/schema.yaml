@@ -34797,11 +34797,41 @@ components:
       - createdAt
       - updatedAt
       title: ModelModule
+    ModelModuleMedicalBeds:
+      type: object
+      properties:
+        tiers:
+          type: array
+          items:
+            type: object
+            properties:
+              tier:
+                type:
+                - integer
+                - 'null'
+              name:
+                type: string
+              beds:
+                type: integer
+            additionalProperties: false
+            required:
+            - tier
+            - name
+            - beds
+        respawnBeds:
+          type: integer
+      additionalProperties: false
+      required:
+      - tiers
+      - respawnBeds
+      title: ModelModuleMedicalBeds
     ModelModuleMetrics:
       type: object
       properties:
         cargo:
           type: number
+        medicalBeds:
+          "$ref": "#/components/schemas/ModelModuleMedicalBeds"
       additionalProperties: false
       title: ModelModuleMetrics
     ModelModulePackage:

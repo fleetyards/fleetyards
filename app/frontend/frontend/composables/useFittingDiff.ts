@@ -21,12 +21,20 @@ export type FittingRow = {
 };
 
 const CARGO = "cargo";
+const RESPAWN_BEDS = "respawn_beds";
+const MEDICAL_BEDS = "medical_beds_tier_";
+const NAMED_MEDICAL_BEDS = "medical_beds_named_";
 
-// Directions as the compare tool sets them: more cargo is better; how many
-// hardpoints of a kind a module brings is neither better nor worse.
+// Directions as the compare tool sets them: more cargo is better, and so are
+// more beds to respawn at; how many hardpoints of a kind a module brings, or
+// beds of a tier, is neither better nor worse.
 const DIRECTIONS: Record<string, CompareDirection | undefined> = {
   [CARGO]: "higher",
+  [RESPAWN_BEDS]: "higher",
 };
+
+const add = (totals: FittingMetrics, key: string, amount: number) =>
+  totals.set(key, (totals.get(key) || 0) + amount);
 
 /**
  * The ship's figures under a fitting and the change from one fitting to
@@ -49,17 +57,42 @@ export const useFittingDiff = () => {
           return;
         }
 
-        totals.set(category, (totals.get(category) || 0) + 1);
+        add(totals, category, 1);
       });
+
+      // A tier the game names but does not rank is kept apart by its name.
+      const medicalBeds = mod.metrics?.medicalBeds;
+      if (medicalBeds) {
+        medicalBeds.tiers.forEach((tier) => {
+          const key =
+            tier.tier === null
+              ? `${NAMED_MEDICAL_BEDS}${tier.name}`
+              : `${MEDICAL_BEDS}${tier.tier}`;
+          add(totals, key, tier.beds);
+        });
+        add(totals, RESPAWN_BEDS, medicalBeds.respawnBeds);
+      }
     });
 
     return totals;
   };
 
-  const labelFor = (key: string) =>
-    key === CARGO
-      ? t("labels.model.cargo")
-      : t(`labels.hardpoint.categories.${key}`);
+  const labelFor = (key: string) => {
+    if (key === CARGO) return t("labels.model.cargo");
+    if (key === RESPAWN_BEDS) return t("labels.model.respawnBeds");
+    if (key.startsWith(MEDICAL_BEDS)) {
+      return t("labels.model.medicalBedsTier", {
+        tier: key.slice(MEDICAL_BEDS.length),
+      });
+    }
+    if (key.startsWith(NAMED_MEDICAL_BEDS)) {
+      return t("labels.model.medicalBedsNamed", {
+        name: key.slice(NAMED_MEDICAL_BEDS.length),
+      });
+    }
+
+    return t(`labels.hardpoint.categories.${key}`);
+  };
 
   const format = (key: string, amount: number) =>
     key === CARGO ? String(toNumber(amount, "cargo")) : String(amount);
