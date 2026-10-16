@@ -30,22 +30,32 @@ export const whatsNewUrl = (
     return releaseUrl(version);
   }
 
-  if (announcement.link.startsWith("http")) {
-    return announcement.link;
-  }
-
-  return `${window.FRONTEND_ENDPOINT}${announcement.link}`;
+  return announcement.link;
 };
 
 export const useAppUpdateNotice = (store: AppUpdateSource) => {
   const notificationsStore = useNotificationsStore();
 
   watch(
-    () => (store.isUpdateAvailable ? store.version : undefined),
-    (version) => {
+    () =>
+      store.isUpdateAvailable
+        ? {
+            version: store.version,
+            codename: store.codename,
+            link: whatsNewUrl(store.version, store.announcement),
+          }
+        : undefined,
+    (notice, previous) => {
+      if (
+        notice?.version === previous?.version &&
+        notice?.link === previous?.link
+      ) {
+        return;
+      }
+
       notificationsStore.hideTagged((tag) => tag === NOTICE_TAG);
 
-      if (!version) {
+      if (!notice) {
         return;
       }
 
@@ -60,9 +70,9 @@ export const useAppUpdateNotice = (store: AppUpdateSource) => {
         tag: NOTICE_TAG,
         component: () => import("@/shared/components/AppUpdateHint/index.vue"),
         componentProps: {
-          version,
-          codename: store.codename,
-          whatsNewUrl: whatsNewUrl(version, store.announcement),
+          version: notice.version,
+          codename: notice.codename,
+          whatsNewUrl: notice.link,
         },
       });
     },

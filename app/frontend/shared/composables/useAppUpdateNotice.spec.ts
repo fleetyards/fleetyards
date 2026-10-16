@@ -10,7 +10,7 @@ import {
 
 const announcement = {
   title: "Fleet events",
-  link: "/fleets/",
+  link: "https://fleetyards.test/fleets/",
   publishedAt: "2026-10-16T12:00:00Z",
 };
 
@@ -33,7 +33,7 @@ describe("whatsNewUrl", () => {
 
   it("points at an announcement published after the tab loaded", () => {
     expect(whatsNewUrl("v9.9.0", announcement, before)).toBe(
-      `${window.FRONTEND_ENDPOINT}/fleets/`,
+      "https://fleetyards.test/fleets/",
     );
   });
 
@@ -41,16 +41,6 @@ describe("whatsNewUrl", () => {
     expect(whatsNewUrl("v9.9.0", announcement, after)).toBe(
       releaseUrl("v9.9.0"),
     );
-  });
-
-  it("keeps an absolute announcement link as it is", () => {
-    expect(
-      whatsNewUrl(
-        "v9.9.0",
-        { ...announcement, link: "https://example.com/news" },
-        before,
-      ),
-    ).toBe("https://example.com/news");
   });
 });
 
@@ -91,5 +81,26 @@ describe("useAppUpdateNotice", () => {
 
     expect(visibleNotices()).toHaveLength(1);
     expect(visibleNotices()[0].componentProps.version).toBe("v9.10.0");
+  });
+
+  it("replaces the notice when the link changes for the same version", async () => {
+    const source = reactive({
+      version: "v9.9.0",
+      codename: "X",
+      isUpdateAvailable: true,
+      announcement: undefined as typeof announcement | undefined,
+    });
+    useAppUpdateNotice(source);
+
+    source.announcement = {
+      ...announcement,
+      publishedAt: new Date(Date.now() + 60_000).toISOString(),
+    };
+    await nextTick();
+
+    expect(visibleNotices()).toHaveLength(1);
+    expect(visibleNotices()[0].componentProps.whatsNewUrl).toBe(
+      announcement.link,
+    );
   });
 });
