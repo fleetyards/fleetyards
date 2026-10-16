@@ -126,6 +126,19 @@ module ScData
         assert_equal "5", parsed_ship["size"]
       end
 
+      test "carries the furniture its rooms hold" do
+        FileUtils.mkdir_p("#{@raw_path}/derived")
+        File.write("#{@raw_path}/#{::ScData::Parser::ShipInteriors::ROOMS_FILE}", JSON.generate({
+          vehicles: {"TEST_Bomber" => {rooms: [{classes: {"Bed_Single_Test" => 2, "Locker_Test" => 1}}]}}
+        }))
+
+        assert_equal({"beds" => 2, "lockers" => 1}, parsed_ship["interior"])
+      end
+
+      test "carries no interior for a ship whose rooms are unknown" do
+        assert_nil parsed_ship["interior"]
+      end
+
       private def parsed_ship
         @parser.all
 

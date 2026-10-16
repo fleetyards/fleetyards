@@ -1,7 +1,7 @@
 # SC Data: Missing Jumpseats on Dropships
 
 **Date:** 2026-04-25
-**Status:** Open finding
+**Status:** Superseded — the rooms export now carries per-ship counts; see [sc-data-ship-interiors.md](sc-data-ship-interiors.md#jump-seats)
 
 ## Problem
 

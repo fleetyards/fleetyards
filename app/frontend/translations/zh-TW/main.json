@@ -10,6 +10,10 @@
       "beam": "寬度",
       "cargo": "貨物",
       "personalInventory": "飛船庫存",
+      "beds": {
+        "one": "%{count} 個床位",
+        "other": "%{count} 個床位"
+      },
       "crew": "船員",
       "speed": "速度",
       "scmSpeed": "SCM速度",

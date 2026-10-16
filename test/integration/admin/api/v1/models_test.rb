@@ -317,6 +317,16 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: model.id}
   end
 
+  test "GET /models/:id serves the lockers the public API leaves out" do
+    model = create(:model, beds: 4, lockers: 2)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: model.id} do
+      assert_equal 2, parsed_body["lockers"]
+      assert_equal 4, parsed_body.dig("metrics", "beds")
+    end
+  end
+
   test "GET /models/:id lists the module slots the game files give the hull" do
     model = create(:model)
     module_component = create(:component, sc_key: "rsi_module", category: "module", component_type: "Module")

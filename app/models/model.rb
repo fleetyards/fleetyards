@@ -30,6 +30,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom storage_containers sales_page_url
+    beds weapon_racks lockers
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -212,6 +213,13 @@ class Model < ApplicationRecord
     end
   end
 
+  # A build's nil is final for these, the way a module's medical beds are: the
+  # column may hold another environment's interior, which a pre-rework build
+  # must not show through.
+  ModelBuild::INTERIOR_FACTS.each do |fact|
+    define_method(fact) { facts ? facts.public_send(fact) : super() }
+  end
+
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
 
@@ -317,6 +325,7 @@ class Model < ApplicationRecord
   serialize :external_fuel_tanks, coder: YAML
   serialize :refuel_boom, coder: YAML
   serialize :storage_containers, coder: YAML
+  serialize :weapon_racks, coder: YAML
 
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true

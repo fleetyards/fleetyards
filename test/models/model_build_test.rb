@@ -7,6 +7,19 @@ class ModelBuildTest < ActiveSupport::TestCase
     @environment = ScData::Source.environment
   end
 
+  test "a build without beds or racks is none, not what another environment left on the column" do
+    model = create(:model, beds: 8, lockers: 2, weapon_racks: [{"key" => "Weapon_Rack_Test", "count" => 1, "slots" => []}])
+    create(:model_build, model:, environment: @environment, version: "1.0.0")
+
+    assert_equal [nil, nil, nil], model.reload.values_at(:beds, :weapon_racks, :lockers)
+  end
+
+  test "beds fall back to the column when no build describes the model" do
+    model = create(:model, beds: 8)
+
+    assert_equal 8, model.reload.beds
+  end
+
   test "a model carries one row per build, not two" do
     model = create(:model)
     create(:model_build, model:, environment: @environment, version: "1.0.0")

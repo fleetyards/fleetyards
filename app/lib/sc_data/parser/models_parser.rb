@@ -51,11 +51,16 @@ module ScData
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
               z: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "z").to_f
             },
+            interior: ship_interiors.for(key).presence,
             loadout:
           }
         end
 
         save_items(ships, folder: "models")
+      end
+
+      private def ship_interiors
+        @ship_interiors ||= ::ScData::Parser::ShipInteriors.new(base_path:, import_path:)
       end
 
       # The ship's own item size, 1 to 6, which is what the game sizes a hull by.
@@ -114,6 +119,7 @@ module ScData
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
               z: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "z").to_f
             },
+            interior: ship_interiors.for(key).presence,
             loadout:
           }
         end

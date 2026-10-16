@@ -5,7 +5,8 @@ import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
-    t: (key: string) => key,
+    t: (key: string, params?: { count?: number }) =>
+      params?.count === undefined ? key : `${key}:${params.count}`,
     toNumber: (value: number | string) => String(value),
     toDollar: (value: number) => String(value),
     toUEC: (value: number) => String(value),
@@ -124,5 +125,26 @@ describe("the cannot-land chip", () => {
     expect(wrapper.find('[data-test="model-cannot-land-chip"]').exists()).toBe(
       false,
     );
+  });
+});
+
+describe("the beds the card shows", () => {
+  it("names the berths behind the crew, in the crew's own figure", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT, { beds: 4 });
+    const crewTile = wrapper
+      .findAll(".metrics-card__tile")
+      .find((tile) => tile.text().includes("model.crew"));
+
+    expect(
+      crewTile
+        ?.get('.metrics-card__tile__value [data-test="model-beds"]')
+        .text(),
+    ).toContain("model.beds:4");
+  });
+
+  it("leaves the crew tile alone for an interior that places no beds", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT);
+
+    expect(wrapper.find('[data-test="model-beds"]').exists()).toBe(false);
   });
 });

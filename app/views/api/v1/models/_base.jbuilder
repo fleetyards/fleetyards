@@ -167,6 +167,7 @@ json.metrics do
   json.cargo_label model.cargo_label
   json.personal_inventory model.personal_inventory.to_f
   json.personal_inventory_label model.personal_inventory_label
+  json.beds model.beds
   json.fleetchart_offset_length (model.fleetchart_offset_length || model.length).to_f
   json.fleetchart_offset_beam (model.fleetchart_offset_beam || model.beam).to_f
   json.extended_length model.extended_length&.to_f
@@ -220,6 +221,7 @@ json.hydrogen_fuel_tanks model.hydrogen_fuel_tanks
 json.quantum_fuel_tanks model.quantum_fuel_tanks
 json.external_fuel_tanks model.external_fuel_tanks
 json.storage_containers model.storage_containers || []
+json.weapon_racks model.weapon_racks || []
 json.refuel_boom model.refuel_boom
 
 json.on_sale model.on_sale

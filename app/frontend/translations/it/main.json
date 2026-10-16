@@ -10,6 +10,10 @@
       "beam": "Raggio",
       "cargo": "Carico",
       "personalInventory": "Inventario della nave",
+      "beds": {
+        "one": "%{count} letto",
+        "other": "%{count} letti"
+      },
       "crew": "Equipaggio",
       "speed": "Velocità",
       "scmSpeed": "Velocità SCM",

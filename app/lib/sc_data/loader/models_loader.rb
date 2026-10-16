@@ -135,6 +135,7 @@ module ScData
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
+        update_params = update_interior(model_data, update_params)
         # This build's slots, not every game-file slot the model has ever had.
         # Before the cleanup stopped destroying, those were the same set; now a
         # port a build dropped keeps its row, and six derived facts below --
@@ -367,6 +368,16 @@ module ScData
         return update_params if fuel_tanks.blank?
 
         update_params[:external_fuel_tanks] = fuel_tanks
+
+        update_params
+      end
+
+      # What the ship's rooms hold, nil for anything they place none of. Written
+      # every load, so a build that drops it clears it.
+      private def update_interior(model_data, update_params)
+        interior = model_data["interior"] || {}
+
+        ModelBuild::INTERIOR_FACTS.each { |fact| update_params[fact] = interior[fact.to_s].presence }
 
         update_params
       end
