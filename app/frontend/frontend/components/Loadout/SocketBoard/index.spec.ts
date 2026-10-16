@@ -79,7 +79,7 @@ describe("LoadoutSocketBoard", () => {
   it("renders the caller's panel under the active socket only", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { groups: GROUPS, active: "wing-left", editable: true },
-      slots: { active: () => h("p", { "data-test": "panel" }, "picker") },
+      slots: { active: () => [h("p", { "data-test": "panel" }, "picker")] },
     });
 
     const panels = wrapper.findAll("[data-test='loadout-socket-board-active']");
