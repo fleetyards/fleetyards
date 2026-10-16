@@ -403,6 +403,7 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Modal
     v-if="vehicle"
+    tabbed
     :title="
       t('headlines.vehicleLoadout', {
         vehicle: vehicle.name || vehicle.model?.name,

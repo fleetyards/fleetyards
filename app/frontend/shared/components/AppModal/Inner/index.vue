@@ -17,6 +17,9 @@ export type ModalProps = {
   // Lays the body out as a column its content can shrink into, for content
   // that scrolls a part of itself rather than letting the whole body scroll.
   fillBody?: boolean;
+  // For a body that opens on a tab strip, whose links carry their own padding
+  // above the labels.
+  tabbed?: boolean;
   // For a dialog that is not the app's modal -- one opened above it -- whose
   // close button must close only itself.
   onClose?: () => void;
@@ -27,6 +30,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   fixed: false,
   loading: false,
   fillBody: false,
+  tabbed: false,
   onClose: undefined,
 });
 
@@ -46,7 +50,7 @@ const close = () => {
   <div class="modal-inner">
     <Panel :outer-spacing="false" :loading="loading">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" :class="{ 'modal-header--tabbed': tabbed }">
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">
             <i class="fa-light fa-times" />
           </a>

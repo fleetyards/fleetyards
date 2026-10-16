@@ -73,6 +73,14 @@
   box-shadow: none;
 }
 
+.modal-header--tabbed {
+  padding-bottom: 0.5rem;
+
+  .modal-title {
+    padding-bottom: 0;
+  }
+}
+
 .modal-body {
   padding: 0;
   overflow: hidden auto;

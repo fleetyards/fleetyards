@@ -236,7 +236,7 @@ const vehicleName = computed(
 </script>
 
 <template>
-  <Modal v-if="vehicle">
+  <Modal v-if="vehicle" tabbed>
     <template #title>
       <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
       <small v-if="vehicle.serial" class="text-muted">
