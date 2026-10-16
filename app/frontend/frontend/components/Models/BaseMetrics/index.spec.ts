@@ -129,15 +129,17 @@ describe("the cannot-land chip", () => {
 });
 
 describe("the beds the card shows", () => {
-  it("names the berths under the crew, in the crew's own tile", () => {
+  it("names the berths behind the crew, in the crew's own figure", () => {
     const wrapper = mountCard(ModelStateEnum.FLIGHT, { beds: 4 });
     const crewTile = wrapper
       .findAll(".metrics-card__tile")
       .find((tile) => tile.text().includes("model.crew"));
 
-    expect(crewTile?.get('[data-test="model-beds"]').text()).toBe(
-      "model.beds:4",
-    );
+    expect(
+      crewTile
+        ?.get('.metrics-card__tile__value [data-test="model-beds"]')
+        .text(),
+    ).toContain("model.beds:4");
   });
 
   it("leaves the crew tile alone for an interior that places no beds", () => {
