@@ -19,6 +19,8 @@ module ScData
         write_bed("Bed_Double_Test", %w[$anchor_bed_left $anchor_bed_right], path: "entities/scitem/ships/usableitems")
         write_bed("Bed_Medical_Test", %w[$anchor_bed], medical: true)
         write_rack
+        write_rack("Cargo_Slot_Test")
+        write_record("entities/scitem/usables", "Locker_Suit_Test", '<SActorUsableParams fragmentTag="locker" />')
       end
 
       teardown do
@@ -57,10 +59,30 @@ module ScData
         ], rack[:slots]
       end
 
-      test "counts lockers from the rooms" do
-        write_rooms({"TEST_Ship" => {}}, contents: {"locker" => 2})
+      test "takes a rack for a rack by what the game calls it, not by its name" do
+        write_rooms({"TEST_Ship" => {"Cargo_Slot_Test" => 2}})
+
+        assert_equal [["Cargo_Slot_Test", 2]], interiors.for("TEST_Ship")[:weapon_racks].map { |rack| rack.values_at(:key, :count) }
+      end
+
+      test "counts lockers" do
+        write_rooms({"TEST_Ship" => {"Locker_Suit_Test" => 2}})
 
         assert_equal 2, interiors.for("TEST_Ship")[:lockers]
+      end
+
+      test "gives a port that names no size the smallest" do
+        write_record("entities/scitem/usables", "Weapon_Rack_Unsized", <<~XML)
+          <SActorUsableParams fragmentTag="weapon_rack" />
+          <SItemPortContainerComponentParams>
+            <Ports>
+              <SItemPortDef Name="$IP_01" />
+            </Ports>
+          </SItemPortContainerComponentParams>
+        XML
+        write_rooms({"TEST_Ship" => {"Weapon_Rack_Unsized" => 1}})
+
+        assert_equal({min_size: 0, max_size: 0, types: []}, interiors.for("TEST_Ship")[:weapon_racks].sole[:slots].sole)
       end
 
       test "gives a ship whose rooms place nothing nothing at all" do
@@ -83,12 +105,12 @@ module ScData
         ::ScData::Parser::ShipInteriors.new(base_path: @base_path, import_path: @import_path)
       end
 
-      private def write_rooms(vehicles, contents: {})
+      private def write_rooms(vehicles)
         FileUtils.mkdir_p("#{@base_path}/derived")
 
         File.write("#{@base_path}/#{::ScData::Parser::ShipInteriors::ROOMS_FILE}", JSON.generate({
           vehicles: vehicles.transform_values do |classes|
-            {rooms: [{container: "objectcontainers/ships/test/test_int.socpak", contents:, classes:}]}
+            {rooms: [{container: "objectcontainers/ships/test/test_int.socpak", classes:}]}
           end
         }))
       end
@@ -98,7 +120,7 @@ module ScData
 
         write_record(path, name, <<~XML)
           #{"<MedBedComponentParams />" if medical}
-          <SActorUsableParams>
+          <SActorUsableParams fragmentTag="bed">
             <alignmentSlots>
               #{slots}
             </alignmentSlots>
@@ -106,8 +128,9 @@ module ScData
         XML
       end
 
-      private def write_rack
-        write_record("entities/scitem/usables", "Weapon_Rack_Test", <<~XML)
+      private def write_rack(name = "Weapon_Rack_Test")
+        write_record("entities/scitem/usables", name, <<~XML)
+          <SActorUsableParams fragmentTag="weapon_rack" />
           <SItemPortContainerComponentParams>
             <Ports>
               <SItemPortDef Name="$IP_rifle_01" MinSize="2" MaxSize="3">

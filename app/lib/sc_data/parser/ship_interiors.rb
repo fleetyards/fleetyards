@@ -10,13 +10,30 @@ module ScData
     # the rework of its ship places none of these entities at all, which is why
     # a vehicle with nothing found gets nothing rather than zeros.
     class ShipInteriors
+      # Written by the exporter from the object containers in `Data.p4k`, which
+      # the raw tree does not carry: the rooms a vehicle or module brings and
+      # what stands in them. Exports before it existed have no file.
       ROOMS_FILE = "derived/shiprooms.json"
       USABLE_PATHS = %w[entities/scitem/usables entities/scitem/ships/usableitems].freeze
 
-      # Each anchor a bed's alignment slots name is a place to lie down. A bunk has a lower and an upper
-      # one, a double bed one per side; the `_tv` anchors are a second pose on
-      # a berth that already has its own.
+      # Each anchor a bed's alignment slots name is a place to lie down. A bunk
+      # has a lower and an upper one, a double bed one per side; the `_tv`
+      # anchors are a second pose on a berth that already has its own.
       BERTH_ANCHOR = /\A\$anchor_bed(_top|_left|_right)?\z/
+
+      # What a usable is, as the export classifies it: by the animation tag its
+      # actor uses, except a medical bed, which carries the component that
+      # treats and respawns. A `Cargo_Slot_*` is a weapon rack by that tag even
+      # though its name says otherwise. The prefixes stand in only when the
+      # record is missing.
+      KINDS = %w[bed weapon_rack locker].freeze
+      KIND_PREFIXES = {"bed_" => "bed", "weapon_rack" => "weapon_rack", "locker_" => "locker"}.freeze
+
+      def self.read_rooms(base_path, section)
+        file = "#{base_path}/#{ROOMS_FILE}"
+        rooms = File.exist?(file) ? JSON.parse(File.read(file))[section] : nil
+        (rooms || {}).transform_keys(&:downcase)
+      end
 
       def initialize(base_path:, import_path:)
         @base_path = base_path
@@ -28,17 +45,12 @@ module ScData
         return {} if rooms.blank?
 
         classes = Hash.new(0)
-        lockers = 0
+        rooms.each { |room| room["classes"]&.each { |name, count| classes[name] += count.to_i } }
+        by_kind = classes.group_by { |name, _count| kind(name) }
 
-        rooms.each do |room|
-          room["classes"]&.each { |name, count| classes[name] += count.to_i }
-          lockers += room.dig("contents", "locker").to_i
-        end
-
-        beds = classes.sum { |name, count| bed?(name) ? berths(name) * count : 0 }
-        weapon_racks = classes.filter_map do |name, count|
-          next unless weapon_rack?(name)
-
+        beds = by_kind.fetch("bed", []).sum { |name, count| berths(name) * count }
+        lockers = by_kind.fetch("locker", []).sum { |_name, count| count }
+        weapon_racks = by_kind.fetch("weapon_rack", []).map do |name, count|
           {key: name, count:, slots: rack_slots(name)}
         end
 
@@ -49,14 +61,13 @@ module ScData
         }.compact
       end
 
-      # A medical bed is a `Bed_` too; what sets it apart is the component
-      # that treats and respawns.
-      private def bed?(name)
-        name.downcase.start_with?("bed_") && !usable(name)&.dig("Components")&.key?("MedBedComponentParams")
-      end
+      private def kind(name)
+        components = usable(name)&.dig("Components")
+        return KIND_PREFIXES.find { |prefix, _kind| name.downcase.start_with?(prefix) }&.last if components.nil?
+        return "medbed" if components.key?("MedBedComponentParams")
 
-      private def weapon_rack?(name)
-        name.downcase.start_with?("weapon_rack")
+        tag = Array.wrap(components["SActorUsableParams"]).first&.dig("fragmentTag")
+        tag if KINDS.include?(tag)
       end
 
       # A bed whose record is missing, or names no anchor, still sleeps one.
@@ -73,8 +84,8 @@ module ScData
 
         Array.wrap(ports).map do |port|
           {
-            min_size: port["MinSize"]&.to_i,
-            max_size: port["MaxSize"]&.to_i,
+            min_size: port["MinSize"].to_i,
+            max_size: port["MaxSize"].to_i,
             types: Array.wrap(port.dig("Types", "SItemPortDefTypes")).map do |type|
               {
                 type: type["Type"],
@@ -118,11 +129,7 @@ module ScData
       end
 
       private def vehicles
-        @vehicles ||= begin
-          file = "#{@base_path}/#{ROOMS_FILE}"
-          rooms = File.exist?(file) ? JSON.parse(File.read(file))["vehicles"] : nil
-          (rooms || {}).transform_keys(&:downcase)
-        end
+        @vehicles ||= self.class.read_rooms(@base_path, "vehicles")
       end
     end
   end

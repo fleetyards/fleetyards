@@ -129,7 +129,7 @@ module ScData
       test "carries the furniture its rooms hold" do
         FileUtils.mkdir_p("#{@raw_path}/derived")
         File.write("#{@raw_path}/#{::ScData::Parser::ShipInteriors::ROOMS_FILE}", JSON.generate({
-          vehicles: {"TEST_Bomber" => {rooms: [{contents: {locker: 1}, classes: {"Bed_Single_Test" => 2}}]}}
+          vehicles: {"TEST_Bomber" => {rooms: [{classes: {"Bed_Single_Test" => 2, "Locker_Test" => 1}}]}}
         }))
 
         assert_equal({"beds" => 2, "lockers" => 1}, parsed_ship["interior"])

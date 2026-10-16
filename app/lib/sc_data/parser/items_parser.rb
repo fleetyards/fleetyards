@@ -1,11 +1,6 @@
 module ScData
   module Parser
     class ItemsParser < ScData::Parser::BaseParser
-      # Written by the exporter from the object containers in `Data.p4k`, which
-      # the raw tree does not carry: the rooms a module brings and what stands
-      # in them. Exports before it existed have no file.
-      SHIP_ROOMS_FILE = "derived/shiprooms.json"
-
       # The game's medical bed tiers, best first: a Hospital bed treats and
       # respawns where an Ambulance bed only stabilises.
       MEDICAL_BED_TIERS = {"Hospital" => 1, "Clinic" => 2, "Ambulance" => 3}.freeze
@@ -94,11 +89,7 @@ module ScData
       end
 
       private def ship_room_items
-        @ship_room_items ||= begin
-          file = "#{base_path}/#{SHIP_ROOMS_FILE}"
-          rooms = File.exist?(file) ? JSON.parse(File.read(file))["items"] : nil
-          (rooms || {}).transform_keys(&:downcase)
-        end
+        @ship_room_items ||= ::ScData::Parser::ShipInteriors.read_rooms(base_path, "items")
       end
 
       # How a ship flies through a jump tunnel lives in a record of its own the
