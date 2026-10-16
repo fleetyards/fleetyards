@@ -158,7 +158,6 @@ const fittedModuleIds = computed(() =>
 
 // Components a later version of this editor will cover, shown so the tab strip
 // already says where it is headed.
-
 const systemTabs = computed(() => [
   {
     id: "radar",
