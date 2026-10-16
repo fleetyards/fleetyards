@@ -35,6 +35,10 @@
     }
   }
 
+  &__icon {
+    --hardpoint-category-icon-size: 1.3em;
+  }
+
   &__section h3 {
     display: flex;
     align-items: center;

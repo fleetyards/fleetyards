@@ -9,7 +9,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
-import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
+import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -20,6 +20,7 @@ import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
+  HardpointCategoryEnum,
   type ModelModule,
   type Vehicle,
   type VehicleLoadout,
@@ -59,7 +60,7 @@ const sections = computed(() =>
     {
       key: "modules",
       label: t("labels.vehicleLoadout.tabs.modules"),
-      icon: categoryIcon("module"),
+      category: HardpointCategoryEnum.MODULE,
       rows: moduleRows.value,
     },
   ].filter((section) => section.rows.length),
@@ -139,9 +140,9 @@ const edit = () => {
         :data-test="`vehicle-loadout-view-${section.key}`"
       >
         <h3>
-          <i
-            v-if="section.icon?.kind === 'fa'"
-            :class="section.icon.className"
+          <HardpointCategoryIcon
+            :category="section.category"
+            class="loadout-view__icon"
           />
           {{ section.label }}
         </h3>

@@ -4,6 +4,10 @@
 // puts between the name and the badges: the figures drop out entirely on a
 // narrow screen rather than squeezing the name, the way the row's own chips do.
 .component-row {
+  &__icon {
+    color: var(--color-primary, #428bca);
+  }
+
   :deep(.component-lead-metric) {
     display: none;
     flex: none;

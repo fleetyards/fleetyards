@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "ComponentCategoryIcon",
+  name: "HardpointCategoryIcon",
 };
 </script>
 
@@ -21,41 +21,41 @@ const icon = computed(() => categoryIcon(props.category));
 </script>
 
 <template>
-  <!-- An empty span rather than nothing when there is no glyph, so the cells
-       below it still line up on one edge. -->
+  <!-- An empty span rather than nothing when there is no glyph, so whatever
+       sits beside it still lines up on one edge. -->
   <img
     v-if="icon?.kind === 'svg'"
     :src="icon.src"
-    class="component-category-icon"
+    class="hardpoint-category-icon"
     alt=""
   />
   <span
     v-else-if="icon?.kind === 'fa'"
-    class="component-category-icon component-category-icon--glyph"
+    class="hardpoint-category-icon hardpoint-category-icon--glyph"
   >
     <i :class="icon.className" />
   </span>
-  <span v-else class="component-category-icon" />
+  <span v-else class="hardpoint-category-icon" />
 </template>
 
-<!-- Sized here rather than by whoever renders it. The table tried to do that
-     through `:deep()` nested under `.components-table` -- a class no element in
-     it actually carries, since the rest are flat BEM children -- so the rule
-     matched nothing and this went out at whatever an unsized `img` and an
-     inherited font-size came to. -->
+<!-- The size comes in as a custom property rather than a class the caller
+     sizes, since a caller's rule and this one would tie on specificity. The
+     colour is the caller's: it inherits. -->
 <style lang="scss" scoped>
-.component-category-icon {
-  width: 24px;
-  height: 24px;
+.hardpoint-category-icon {
+  --size: var(--hardpoint-category-icon-size, 24px);
+
+  width: var(--size);
+  height: var(--size);
   flex: none;
+  object-fit: contain;
 
   &--glyph {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: calc(var(--size) * 0.75);
     line-height: 1;
-    color: var(--color-primary, #428bca);
   }
 }
 </style>
