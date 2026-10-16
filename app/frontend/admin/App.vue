@@ -33,6 +33,9 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import { useAdminPresenceUpdates } from "@/admin/composables/useAdminPresenceUpdates";
 import { useAxiosInterceptors } from "@/admin/composables/useAxiosInterceptors";
+import { useAppUpdateNotice } from "@/shared/composables/useAppUpdateNotice";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { AppVersionChannel } from "@/services/fyCable/channels/AppVersionChannel";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -76,6 +79,13 @@ const pageKey = (viewRoute: { path: string }) =>
   `${locale.value}-${viewRoute.path.replace(/\/$/, "")}`;
 
 const appStore = useAppStore();
+
+useSubscription({
+  channel: AppVersionChannel,
+  received: (data) => appStore.updateVersion(data),
+});
+
+useAppUpdateNotice(appStore);
 
 const mobile = useMobile();
 
