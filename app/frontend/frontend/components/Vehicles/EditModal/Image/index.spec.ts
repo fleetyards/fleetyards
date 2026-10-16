@@ -73,8 +73,10 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   },
 }));
 
+const features = vi.hoisted(() => ({ enabled: true }));
+
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
+  useFeatures: () => ({ isFeatureEnabled: () => features.enabled }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -110,6 +112,7 @@ const submit = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
 describe("VehicleEditModal image tab", () => {
   beforeEach(() => {
     gallery.items = GALLERY;
+    features.enabled = true;
     updateVehicle.mockReset().mockResolvedValue({ id: "vehicle-1" });
   });
 
@@ -130,9 +133,83 @@ describe("VehicleEditModal image tab", () => {
     });
   });
 
-  it("offers the pictures of the paints the ship owns", async () => {
+  it("offers the picture of every paint, owned or not", async () => {
     const wrapper = await mount({
       vehicle: vehicle({ modelPaintIds: ["paint-2"] }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-paints"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')
+        .map((choice) => choice.text()),
+    ).toEqual(["Rust Society", "Stormbringer"]);
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(0);
+  });
+
+  it("keeps the paints out of the model's gallery", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
+    ).toHaveLength(2);
+    expect(
+      wrapper.findAll('[data-test="vehicle-image-gallery-paint"]'),
+    ).toHaveLength(0);
+  });
+
+  it("opens on the paints when the ship shows a paint's picture", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
+    });
+
+    expect(
+      wrapper.find('[data-test="vehicle-image-gallery-paints"]').exists(),
+    ).toBe(true);
+  });
+
+  it("saves the pick of the open segment, not one made in the other", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+    await wrapper
+      .findAll('[data-test="vehicle-image-gallery-choice"]')[1]
+      .trigger("click");
+    await wrapper
+      .find('[data-test="vehicle-image-source-paints"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
+        .attributes("aria-pressed"),
+    ).toBe("true");
+
+    await submit(wrapper);
+
+    expect(updateVehicle).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ pictureType: "Image" }),
+      }),
+    );
+  });
+
+  it("saves nothing for a segment only opened", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
     });
 
     await wrapper
@@ -141,9 +218,27 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .findAll('[data-test="vehicle-image-gallery-paint"]')
-        .map((choice) => choice.text()),
-    ).toEqual(["Stormbringer"]);
+        .find('[data-test="vehicle-image-gallery-none"]')
+        .attributes("aria-pressed"),
+    ).toBe("false");
+
+    await submit(wrapper);
+
+    expect(updateVehicle).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ pictureType: null }),
+      }),
+    );
+  });
+
+  it("offers no paints segment without the vehicle overview", async () => {
+    features.enabled = false;
+
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(
+      wrapper.find('[data-test="vehicle-image-source-paints"]').exists(),
+    ).toBe(false);
   });
 
   it("picks a paint's picture in place of a gallery picture", async () => {
@@ -156,7 +251,10 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-paint"]')
+      .find('[data-test="vehicle-image-source-paints"]')
+      .trigger("click");
+    await wrapper
+      .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
       .trigger("click");
     await submit(wrapper);
 

@@ -393,7 +393,7 @@
       "vehicleOverview": {
         "noLoadouts": "Pas encore de loadout. Ajoutes-en un depuis Erkul ou SPViewer.",
         "locationPrivate": "Toi seul vois où se trouve ton vaisseau.",
-        "galleryReplacesUpload": "Choisir une image de la galerie remplace celle que tu as téléversée.",
+        "pickReplacesUpload": "Choisir une image de la galerie ou une peinture remplace celle que tu as téléversée.",
         "galleryEmpty": "Ce vaisseau n'a pas encore d'images dans la galerie."
       },
       "model": {

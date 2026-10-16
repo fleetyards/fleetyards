@@ -393,7 +393,7 @@
       "vehicleOverview": {
         "noLoadouts": "還沒有配裝。從 Erkul 或 SPViewer 連結一個。",
         "locationPrivate": "只有你能看到你的艦船在哪裡。",
-        "galleryReplacesUpload": "從圖庫選擇圖片會取代你上傳的圖片。",
+        "pickReplacesUpload": "從圖庫或塗裝中選擇圖片會取代你上傳的圖片。",
         "galleryEmpty": "這艘艦船還沒有圖庫圖片。"
       },
       "model": {
