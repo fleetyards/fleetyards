@@ -174,6 +174,60 @@ describe("VehicleEditModal image tab", () => {
     ).toBe(true);
   });
 
+  it("saves the pick of the open segment, not one made in the other", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+    await wrapper
+      .findAll('[data-test="vehicle-image-gallery-choice"]')[1]
+      .trigger("click");
+    await wrapper
+      .find('[data-test="vehicle-image-source-paints"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
+        .attributes("aria-pressed"),
+    ).toBe("true");
+
+    await submit(wrapper);
+
+    expect(updateVehicle).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ pictureType: "Image" }),
+      }),
+    );
+  });
+
+  it("saves nothing for a segment only opened", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ pictureType: "ModelPaint", pictureId: "paint-2" }),
+    });
+
+    await wrapper
+      .find('[data-test="vehicle-image-source-gallery"]')
+      .trigger("click");
+
+    expect(
+      wrapper
+        .find('[data-test="vehicle-image-gallery-none"]')
+        .attributes("aria-pressed"),
+    ).toBe("false");
+
+    await submit(wrapper);
+
+    expect(updateVehicle).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ pictureType: null }),
+      }),
+    );
+  });
+
   it("picks a paint's picture in place of a gallery picture", async () => {
     const wrapper = await mount({
       vehicle: vehicle({

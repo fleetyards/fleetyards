@@ -124,10 +124,31 @@ const savedPick = (): Pick =>
     ? { type: props.vehicle.pictureType, id: props.vehicle.pictureId }
     : null;
 
-const picked = ref<Pick>(savedPick());
+type PickSource = Exclude<Source, "upload">;
+
+// Each pick segment keeps its own pick, and saving uses the open one's, so what
+// is highlighted is what saves. A segment the saved picture is not from starts
+// unset rather than on the standard picture, so merely opening it saves
+// nothing.
+const initialPick = (type: NonNullable<Pick>["type"]): Pick | undefined => {
+  const saved = savedPick();
+
+  return saved === null || saved.type === type ? saved : undefined;
+};
+
+const picks = reactive<Record<PickSource, Pick | undefined>>({
+  gallery: initialPick(PictureType.IMAGE),
+  paints: initialPick(PictureType.MODEL_PAINT),
+});
+
+const picked = computed(() =>
+  source.value === "upload" ? undefined : picks[source.value],
+);
 
 const pick = (choice: Pick) => {
-  picked.value = choice;
+  if (source.value === "upload") return;
+
+  picks[source.value] = choice;
 };
 
 const isPicked = (type: string, id: string) =>
@@ -137,6 +158,8 @@ const isPicked = (type: string, id: string) =>
 // upload drops the pick.
 const changes = (): VehicleImageChanges | undefined => {
   if (source.value !== "upload") {
+    if (picked.value === undefined) return undefined;
+
     const saved = savedPick();
     if (
       !props.vehicle.imageUploaded &&
