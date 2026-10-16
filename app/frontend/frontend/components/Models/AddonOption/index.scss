@@ -29,7 +29,10 @@ $phone-indent: 106px;
     border-color: $panel-inner-border;
   }
 
-  &--selected {
+  // Hover included: `:hover` outranks a plain modifier, so a click on the row
+  // under the pointer would otherwise show no change until it is left.
+  &--selected,
+  &--selected:hover {
     border-color: $success;
   }
 
