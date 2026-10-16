@@ -80,7 +80,9 @@ class BuybackPledge < ApplicationRecord
   # contains it, or an upgrade that leads to it. The list names a pledge's
   # first ship in `contained`, as "Cutlass Black and 2 items", and the detail
   # page every ship in `ship_names`; both are matched against the model's names
-  # at query time.
+  # at query time. The kind is read from the title's prefix, so a pledge titled
+  # without a known one, such as "Origin 325a Fighter", is `other` and may still
+  # hold a ship.
   def self.obtaining_model(slug)
     model = Model.find_by(slug:)
     return none unless model
@@ -95,7 +97,7 @@ class BuybackPledge < ApplicationRecord
         WHERE lower(trim(ship_name)) IN (?))
     SQL
 
-    containing = where(kind: %w[ship package])
+    containing = where(kind: %w[ship package other])
       .where(Arel.sql(ship).in(names).or(Arel::Nodes::Grouping.new(Arel.sql(listed))))
     return containing if model.rsi_id.blank?
 

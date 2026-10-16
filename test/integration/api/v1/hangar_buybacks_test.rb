@@ -415,14 +415,19 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     gladius = create(:model, name: "Gladius", rsi_name: "Gladius")
     pack = buyback(user, kind: "package", name: "Package - Pulse and Freelancer Pack",
       contained: "2 ships and 4 items", ship_names: ["Pulse", " freelancer "])
+    filed_as_other = buyback(user, kind: "other", name: "Packs - Pulse and Freelancer Duo Pack",
+      contained: "2 ships and 2 items", ship_names: ["Freelancer"])
     buyback(user, kind: "paint", name: "Paints - Pulse - Crossfire Paint", contained: "Pulse - Crossfire Paint",
       ship_names: ["Pulse"])
+    buyback(user, kind: "other", name: "Gear - Pulse Flight Jacket", contained: "Pulse Flight Jacket")
     sign_in user
 
-    [pulse, freelancer].each do |model|
-      assert_api_response :get, 200, params: {q: {"modelSlugEq" => model.slug}} do
-        assert_equal [pack.id], parsed_body["items"].pluck("id")
-      end
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => pulse.slug}} do
+      assert_equal [pack.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => freelancer.slug}} do
+      assert_equal [pack.id, filed_as_other.id].sort, parsed_body["items"].pluck("id").sort
     end
 
     assert_api_response :get, 200, params: {q: {"modelSlugEq" => gladius.slug}} do
