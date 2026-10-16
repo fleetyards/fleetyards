@@ -11,7 +11,8 @@ module ScData
     INDEX = "index.json"
     LISTING = "files.json"
 
-    # "<manufacturer>/<slug>" => {"slug", "files", "updatedAt"}
+    # "<manufacturer>/<slug>" => {"slug", "scKey", "files", "updatedAt"}, where
+    # "scKey" is the game-file key, absent for a concept.
     def ships
       read_json(INDEX).fetch("ships", {})
     end

@@ -32,8 +32,8 @@ module ScData
       ::ScData::ShipViewsStore.stubs(:new).returns(store)
     end
 
-    private def publish(files, digest: "listing-1", slug: @model.slug)
-      @objects["index.json"] = {ships: {PATH => {slug:, files: digest, updatedAt: "2026-10-16T00:00:00Z"}}}.to_json
+    private def publish(files, digest: "listing-1", slug: @model.slug, sc_key: nil)
+      @objects["index.json"] = {ships: {PATH => {slug:, scKey: sc_key, files: digest, updatedAt: "2026-10-16T00:00:00Z"}.compact}}.to_json
       @objects["#{PATH}/files.json"] = {
         slug:, path: PATH, concept: false,
         files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] }
@@ -88,6 +88,44 @@ module ScData
       publish({"flight_top.png" => PNG}, slug: "no-such-ship")
 
       assert_nothing_raised { perform }
+      assert_not @model.top_view.attached?
+    end
+
+    test "finds a model by its RSI slug when ours carries the manufacturer" do
+      @model.update_columns(slug: "rsi-arrastra", rsi_slug: "arrastra")
+      publish({"flight_top.png" => PNG}, slug: "arrastra")
+
+      perform
+
+      assert @model.top_view.attached?
+    end
+
+    test "finds a model by its game-file key before its slug" do
+      other = create(:model)
+      @model.update_columns(sc_key: "RSI_Arrastra")
+      publish({"flight_top.png" => PNG}, slug: other.slug, sc_key: "RSI_Arrastra")
+
+      perform
+
+      assert @model.top_view.attached?
+      assert_not other.reload.top_view.attached?
+    end
+
+    test "falls back to the slug for a game-file key no model has" do
+      publish({"flight_top.png" => PNG}, sc_key: "RSI_Unknown")
+
+      perform
+
+      assert @model.top_view.attached?
+    end
+
+    test "matches no model on a game-file key two models share" do
+      @model.update_columns(sc_key: "RSI_Arrastra")
+      create(:model).update_columns(sc_key: "RSI_Arrastra")
+      publish({"flight_top.png" => PNG}, slug: "no-such-ship", sc_key: "RSI_Arrastra")
+
+      perform
+
       assert_not @model.top_view.attached?
     end
 
