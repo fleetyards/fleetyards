@@ -54,7 +54,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Trascina una cartella di viste chiamate top.png, side.png, front.png e angled.png. Suffisso _colored per il set verniciato, prefisso extended_ per quello esteso e landed_ per quello atterrato. Il prefisso flight_, o nessun prefisso, finisce nel set predefinito. Anche holo.gltf viene incluso, con gli stessi prefissi.",
+            "hint": "Trascina una cartella di viste chiamate top.png, side.png, front.png e angled.png. Suffisso _colored per il set verniciato, prefisso extended_ per quello esteso e landed_ per quello atterrato. Il prefisso flight_, o nessun prefisso, finisce nel set predefinito. Anche holo.gltf viene incluso, con gli stessi prefissi. Le viste da dietro e dal basso si chiamano angled_rear.png, bottom.png, rear.png e starboard.png. holo_lite.glb, l'holo senza interni, accetta gli stessi prefissi; holo_textured.glb finisce solo nel set predefinito.",
             "uploading": {
               "one": "Caricamento di un file…",
               "other": "Caricamento di %{count} file…"
