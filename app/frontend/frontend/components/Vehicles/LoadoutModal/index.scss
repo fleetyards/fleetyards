@@ -74,33 +74,12 @@
     align-items: start;
   }
 
-  fieldset {
-    min-width: 0;
-
-    legend {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 4px 10px;
-      width: 100%;
-      margin-bottom: 10px;
-      border: none;
-
-      h3 {
-        margin-bottom: 0;
-      }
-    }
-  }
-
   &__hint {
     color: var(--color-text-dim);
     font-size: 13px;
   }
 
-  // Where the comparison would be, on a hull with no slot to fit.
-  // With no slot to compare there is no comparison column: the notice takes
-  // the whole row, above the fitting's own hint, rather than the narrow column
-  // beside it.
+  // The notice on a hull with no slot to fit, across the whole row.
   &__empty {
     grid-column: 1 / -1;
     order: -1;

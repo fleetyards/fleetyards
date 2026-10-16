@@ -88,7 +88,6 @@ const name = (mod?: ModelModule) =>
         <dt>
           {{ row.label }}
           <span
-            v-if="row.deltaLabel"
             class="loadout-comparison__delta"
             :class="`loadout-comparison__delta--${row.delta?.tone}`"
           >
@@ -97,11 +96,7 @@ const name = (mod?: ModelModule) =>
         </dt>
         <dd>
           <span class="loadout-comparison__value">{{ row.value }}</span>
-          <span
-            v-if="!unchanged"
-            class="loadout-comparison__bars"
-            aria-hidden="true"
-          >
+          <span class="loadout-comparison__bars" aria-hidden="true">
             <span
               class="loadout-comparison__bar loadout-comparison__bar--before"
               :style="{ width: width(row, row.before) }"
