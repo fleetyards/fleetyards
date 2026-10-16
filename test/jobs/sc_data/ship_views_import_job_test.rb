@@ -92,13 +92,16 @@ module ScData
     end
 
     test "does not fetch a render it imported before" do
+      # Cropped since, so its blob no longer carries the listed md5.
+      @model.top_view.attach(io: StringIO.new("cropped"), filename: "flight_top.png")
       @model.update!(ship_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      blob = @model.top_view.blob
       publish({"flight_top.png" => PNG, "flight_front.png" => PNG})
 
       perform
 
       assert_equal ["index.json", "files.json", "flight_front.png"], fetched.map { |key| File.basename(key) }
-      assert_not @model.top_view.attached?
+      assert_equal blob, @model.top_view.blob
       assert @model.front_view.attached?
     end
 
@@ -143,6 +146,60 @@ module ScData
       assert_not @model.top_view.attached?
       assert @model.front_view.attached?
       assert_nil @model.ship_views_digest
+    end
+
+    test "keeps the rest of a ship when one render cannot be fetched" do
+      publish({"flight_top.png" => PNG, "flight_front.png" => PNG})
+      @objects.delete("#{PATH}/flight_top.png")
+      ::ScData::ShipViewsStore.any_instance.stubs(:sleep)
+
+      perform
+
+      assert_not @model.top_view.attached?
+      assert @model.front_view.attached?
+      assert_nil @model.ship_views_digest
+      assert_nil @model.ship_view_md5s["top_view"]
+    end
+
+    test "records nothing when the upload fails" do
+      publish({"flight_top.png" => PNG})
+      ActiveStorage::Blob.any_instance.stubs(:upload_without_unfurling).raises(Aws::S3::Errors::InternalError.new(nil, "down"))
+      Appsignal.expects(:report_error)
+
+      perform
+
+      assert_nil @model.ship_views_digest
+      assert_empty @model.ship_view_md5s
+    end
+
+    test "attaches a field again after it was detached" do
+      publish({"flight_top.png" => PNG})
+      perform
+      @model.top_view.purge
+      @model.update!(ship_views_digest: "listing-0")
+
+      perform
+
+      assert @model.top_view.attached?
+    end
+
+    test "skips a model two folders claim" do
+      publish({"flight_top.png" => PNG})
+      index = JSON.parse(@objects["index.json"])
+      index["ships"]["crusader/ares-inferno-concept"] = index["ships"][PATH]
+      @objects["index.json"] = index.to_json
+
+      perform
+
+      assert_not @model.top_view.attached?
+    end
+
+    test "takes the first name in order when two claim one field" do
+      publish({"flight_side.png" => "side", "flight_port.png" => PNG})
+
+      perform
+
+      assert_equal "flight_port.png", @model.port_view.filename.to_s
     end
 
     test "logs what it attached" do

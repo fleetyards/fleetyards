@@ -13,25 +13,39 @@ module ScData
       return unless ::ScData::ShipViewsStore.configured?
 
       store = ::ScData::ShipViewsStore.new
+      ships = store.ships
+      models = Model.where(slug: ships.values.pluck("slug")).index_by(&:slug)
+      paths_by_slug = ships.group_by { |_path, entry| entry["slug"] }.transform_values { |pairs| pairs.map(&:first) }
       attached = {}
+      unknown = []
 
-      store.ships.each do |path, entry|
-        model = Model.find_by(slug: entry["slug"])
+      ships.each do |path, entry|
+        slug = entry["slug"]
+        model = models[slug]
 
         if model.nil?
-          log(:warn, "no model for #{entry["slug"]} (#{path}), skipped")
+          unknown << slug
+          next
+        end
+
+        # Two folders claiming one model would replace each other's renders on
+        # every run.
+        if paths_by_slug[slug].size > 1
+          log(:warn, "#{slug} is listed under #{paths_by_slug[slug].join(", ")}, skipped")
           next
         end
 
         next if model.ship_views_digest == entry["files"]
 
         fields = import(store, model, path, entry["files"])
-        attached[model.slug] = fields if fields.any?
+        attached[slug] = fields if fields.any?
       rescue => e
         # Left on the old digest, so the next run tries the ship again.
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
+        Appsignal.report_error(e)
       end
 
+      log(:info, "no model for #{unknown.size} ships: #{unknown.join(", ")}") if unknown.any?
       attached.each { |slug, fields| log(:info, "attached #{slug}: #{fields.join(", ")}") }
       log(:info, "attached #{attached.values.sum(&:size)} renders to #{attached.size} models")
     end
@@ -41,8 +55,8 @@ module ScData
       files = []
       complete = true
 
-      renders(store.listing(path)).each do |field, name, md5|
-        next if md5s[field] == md5
+      renders(store.listing(path), path).each do |field, name, md5|
+        next if md5s[field] == md5 && model.public_send(field).attached?
 
         # A render already on the model, through the folder upload or an
         # earlier import that predates the stored digests.
@@ -51,7 +65,14 @@ module ScData
           next
         end
 
-        file = store.fetch(path, name)
+        begin
+          file = store.fetch(path, name)
+        rescue => e
+          log(:warn, "#{path}/#{name} could not be fetched: #{e.class}: #{e.message}")
+          complete = false
+          next
+        end
+
         files << file
 
         if Digest::MD5.file(file.path).hexdigest != md5
@@ -66,10 +87,11 @@ module ScData
 
       fields = model.attachment_changes.keys
 
-      model.ship_view_md5s = md5s
-      # A render that came down wrong is fetched again next run.
-      model.ship_views_digest = digest if complete
+      # ActiveStorage uploads an io in `after_commit`, so the import is only
+      # recorded once `save!` is back and the bytes are in storage. A render
+      # that did not come down is fetched again next run.
       model.save!
+      model.update_columns(ship_view_md5s: md5s, ship_views_digest: (complete ? digest : model.ship_views_digest))
 
       fields
     ensure
@@ -77,12 +99,22 @@ module ScData
     end
 
     # [field, filename, md5] for every render with a field. Two names for one
-    # field -- `side` from an older export beside `port` -- keep the first.
-    private def renders(listing)
-      listing.fetch("files", {})
+    # field -- `side` from an older export beside `port` -- keep the first in
+    # name order.
+    private def renders(listing, path)
+      claimed = listing.fetch("files", {})
+        .sort_by(&:first)
         .map { |name, file| [ShipViewFields.field_for(name), name, file["md5"]] }
         .select(&:first)
-        .uniq(&:first)
+        .group_by(&:first)
+
+      claimed.map do |field, candidates|
+        if candidates.size > 1
+          log(:warn, "#{path}: #{candidates.map(&:second).join(", ")} all map to #{field}, took #{candidates.first.second}")
+        end
+
+        candidates.first
+      end
     end
 
     # ActiveStorage keeps the same MD5, base64-encoded.
