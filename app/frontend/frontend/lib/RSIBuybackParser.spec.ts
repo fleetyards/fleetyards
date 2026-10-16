@@ -129,6 +129,7 @@ describe("extractBuybackPage", () => {
       buybackPage(
         [
           titledArticle("Package - Aurora MR Starter", "1"),
+          titledArticle("Packs - Ironclad Duo Pack", "6"),
           titledArticle("Paints - Sabre - Beyond Paint", "2"),
           titledArticle("Add-Ons - Giocoso Helmet Triple Pack", "3"),
           titledArticle("Subscribers Exclusive - Locker", "4"),
@@ -138,6 +139,7 @@ describe("extractBuybackPage", () => {
     );
 
     expect(page.pledges.map((pledge) => pledge.kind)).toEqual([
+      "package",
       "package",
       "paint",
       "addon",

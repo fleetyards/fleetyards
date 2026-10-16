@@ -8,6 +8,7 @@ import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
   ["Package", BuybackPledgeKindEnum.PACKAGE],
+  ["Packs", BuybackPledgeKindEnum.PACKAGE],
   ["Standalone Ship", BuybackPledgeKindEnum.SHIP],
   ["Upgrade", BuybackPledgeKindEnum.UPGRADE],
   ["Paint", BuybackPledgeKindEnum.PAINT],
