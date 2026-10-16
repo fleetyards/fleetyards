@@ -95,7 +95,7 @@ module Api
       end
 
       private def sync_details_params
-        params.permit(items: %i[id price insurance_months lifetime_insurance])
+        params.permit(items: [:id, :price, :insurance_months, :lifetime_insurance, ship_names: []])
       end
     end
   end

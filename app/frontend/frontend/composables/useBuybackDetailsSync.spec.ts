@@ -177,7 +177,7 @@ describe("useBuybackDetailsSync", () => {
     const { run, status } = useBuybackDetailsSync();
     await run([ship("1")], ["1"], { waitForSlot });
 
-    expect(submitted()).toEqual([{ id: "1" }]);
+    expect(submitted()).toEqual([{ id: "1", shipNames: [] }]);
     expect(status.value).toBe("finished");
   });
 

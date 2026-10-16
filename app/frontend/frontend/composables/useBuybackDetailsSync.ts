@@ -61,11 +61,11 @@ let failures = 0;
 
 let pricing: RSIStorePricing | undefined;
 
-// Reads price and insurance from the RSI buy-back page of each pledge the list
-// sync named as having none yet. Upgrades are priced from our own ship prices
-// and have no such page. A page prices in the account's currency with tax, so
-// the account's store pricing is read first to turn that back into RSI's USD
-// figure, the one every other price here is in.
+// Reads price, insurance and ships from the RSI buy-back page of each pledge
+// the list sync named as having none yet. Upgrades are priced from our own
+// ship prices and have no such page. A page prices in the account's currency
+// with tax, so the account's store pricing is read first to turn that back
+// into RSI's USD figure, the one every other price here is in.
 export const useBuybackDetailsSync = () => {
   const { request } = useSyncExtension();
 
@@ -114,7 +114,7 @@ export const useBuybackDetailsSync = () => {
     // or RSI's markup, and is asked about again.
     if (message?.code === 404) {
       failures = 0;
-      pending.push({ id });
+      pending.push({ id, shipNames: [] });
 
       return false;
     }
@@ -128,7 +128,7 @@ export const useBuybackDetailsSync = () => {
       return recordFailure();
     }
 
-    const { cents, currency, ...insurance } = detail;
+    const { cents, currency, ...details } = detail;
     const usdCents =
       cents === undefined || !currency
         ? undefined
@@ -144,7 +144,7 @@ export const useBuybackDetailsSync = () => {
     failures = 0;
     pending.push({
       id,
-      ...insurance,
+      ...details,
       ...(usdCents === undefined ? {} : { price: usdCents / 100 }),
     });
 

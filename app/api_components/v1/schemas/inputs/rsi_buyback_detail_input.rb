@@ -12,7 +12,8 @@ module V1
             id: {type: :string},
             price: {type: :number, minimum: 0, description: "In USD before tax"},
             insuranceMonths: {type: :integer, minimum: 0},
-            lifetimeInsurance: {type: :boolean}
+            lifetimeInsurance: {type: :boolean},
+            shipNames: {type: :array, items: {type: :string}, description: "Every ship the pledge holds, as its RSI page names them"}
           },
           additionalProperties: false,
           required: %w[id]

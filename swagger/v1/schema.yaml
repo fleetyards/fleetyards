@@ -37983,6 +37983,11 @@ components:
           minimum: 0
         lifetimeInsurance:
           type: boolean
+        shipNames:
+          type: array
+          items:
+            type: string
+          description: Every ship the pledge holds, as its RSI page names them
       additionalProperties: false
       required:
       - id

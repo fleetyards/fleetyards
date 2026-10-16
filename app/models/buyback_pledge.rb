@@ -71,10 +71,16 @@ class BuybackPledge < ApplicationRecord
 
   scope :model_slug_eq, ->(slug) { obtaining_model(slug) }
 
+  # A pack of several ships is listed as "2 ships and 4 items", or "2 ships"
+  # alone, naming none of them, so only its detail page can say which ships it
+  # holds.
+  MULTI_SHIP_SQL = "buyback_pledges.contained ~* '^[0-9]+[[:space:]]+ships\\M'"
+
   # The pledges that would put this ship in the hangar: a ship or package that
-  # contains it, or an upgrade that leads to it. RSI names a pledge's ship only
-  # in `contained`, as "Cutlass Black and 2 items", so that is matched against
-  # the model's names at query time.
+  # contains it, or an upgrade that leads to it. The list names a pledge's
+  # first ship in `contained`, as "Cutlass Black and 2 items", and the detail
+  # page every ship in `ship_names`; both are matched against the model's names
+  # at query time.
   def self.obtaining_model(slug)
     model = Model.find_by(slug:)
     return none unless model
@@ -84,8 +90,13 @@ class BuybackPledge < ApplicationRecord
       lower(trim(regexp_replace(buyback_pledges.contained,
         '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
     SQL
+    listed = sanitize_sql_array([<<~SQL.squish, names])
+      EXISTS (SELECT 1 FROM unnest(buyback_pledges.ship_names) AS ship_name
+        WHERE lower(trim(ship_name)) IN (?))
+    SQL
 
-    containing = where(kind: %w[ship package]).where(Arel.sql(ship).in(names))
+    containing = where(kind: %w[ship package])
+      .where(Arel.sql(ship).in(names).or(Arel::Nodes::Grouping.new(Arel.sql(listed))))
     return containing if model.rsi_id.blank?
 
     containing.or(where(kind: "upgrade", upgrade_to_ship_id: model.rsi_id))

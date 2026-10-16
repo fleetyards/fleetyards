@@ -408,6 +408,28 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds a pack of several ships by the ships its page lists" do
+    user = create(:user)
+    pulse = create(:model, name: "Pulse", rsi_name: "Pulse")
+    freelancer = create(:model, name: "Freelancer", rsi_name: "Freelancer")
+    gladius = create(:model, name: "Gladius", rsi_name: "Gladius")
+    pack = buyback(user, kind: "package", name: "Package - Pulse and Freelancer Pack",
+      contained: "2 ships and 4 items", ship_names: ["Pulse", " freelancer "])
+    buyback(user, kind: "paint", name: "Paints - Pulse - Crossfire Paint", contained: "Pulse - Crossfire Paint",
+      ship_names: ["Pulse"])
+    sign_in user
+
+    [pulse, freelancer].each do |model|
+      assert_api_response :get, 200, params: {q: {"modelSlugEq" => model.slug}} do
+        assert_equal [pack.id], parsed_body["items"].pluck("id")
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => gladius.slug}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end
@@ -622,6 +644,79 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
       assert_empty parsed_body["detailsPending"]
+    end
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details stores the ships a pledge holds" do
+    user = create(:user)
+    pack = buyback(user, rsi_pledge_id: "1", kind: "package", contained: "2 ships and 4 items")
+    named = buyback(user, rsi_pledge_id: "2", ship_names: ["Gladius"])
+    sign_in user
+
+    body = {items: [
+      {id: "1", price: 150, shipNames: ["Pulse", " Freelancer ", "Pulse", ""]},
+      {id: "2", price: 40}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body do
+      assert_equal({"updated" => 2}, parsed_body)
+    end
+
+    assert_equal %w[Pulse Freelancer], pack.reload.ship_names
+    assert_equal %w[Gladius], named.reload.ship_names
+  end
+
+  test "PUT /hangar/sync-rsi-buyback-details keeps the details of a pack read again for its ships" do
+    user = create(:user)
+    pack = buyback(user, rsi_pledge_id: "1", kind: "package", contained: "2 ships and 4 items",
+      price: 150, insurance_months: 6, details_synced_at: 1.day.ago)
+    gone = buyback(user, rsi_pledge_id: "2", kind: "package", contained: "3 ships",
+      price: 90, lifetime_insurance: true, details_synced_at: 1.day.ago)
+    sign_in user
+
+    body = {items: [
+      {id: "1", price: 162.5, insuranceMonths: 3, shipNames: %w[Pulse Freelancer]},
+      {id: "2", shipNames: []}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buyback-details", body: body do
+      assert_equal({"updated" => 2}, parsed_body)
+    end
+
+    pack.reload
+
+    assert_equal %w[Pulse Freelancer], pack.ship_names
+    assert_in_delta 150, pack.price
+    assert_equal 6, pack.insurance_months
+
+    gone.reload
+
+    assert_empty gone.ship_names
+    assert_in_delta 90, gone.price
+    assert_predicate gone, :lifetime_insurance?
+  end
+
+  test "PUT /hangar/sync-rsi-buybacks reads a pack of several ships again for its ships" do
+    user = create(:user)
+    buyback(user, rsi_pledge_id: "1", kind: "package", contained: "2 ships and 4 items",
+      details_synced_at: 1.day.ago)
+    buyback(user, rsi_pledge_id: "2", kind: "package", contained: "2 ships and 4 items",
+      details_synced_at: 1.day.ago, ship_names: %w[Pulse Freelancer])
+    buyback(user, rsi_pledge_id: "3", kind: "package", contained: "Intrepid and 6 items",
+      details_synced_at: 1.day.ago)
+    buyback(user, rsi_pledge_id: "4", kind: "package", contained: "3 ships",
+      details_synced_at: 1.day.ago)
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "package", name: "Package - Pulse and Freelancer Pack", contained: "2 ships and 4 items"},
+      {id: "2", kind: "package", name: "Package - Pulse and Freelancer Pack", contained: "2 ships and 4 items"},
+      {id: "3", kind: "package", name: "Package - Intrepid Starter Pack", contained: "Intrepid and 6 items"},
+      {id: "4", kind: "package", name: "Package - Ships Only Pack", contained: "3 ships"}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal %w[1 4], parsed_body["detailsPending"].sort
     end
   end
 
