@@ -213,6 +213,13 @@ class Model < ApplicationRecord
     end
   end
 
+  # A build's nil is final for these, the way a module's medical beds are: the
+  # column may hold another environment's interior, which a pre-rework build
+  # must not show through.
+  ModelBuild::INTERIOR_FACTS.each do |fact|
+    define_method(fact) { facts ? facts.public_send(fact) : super() }
+  end
+
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
 

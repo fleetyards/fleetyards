@@ -59,6 +59,10 @@ class ModelBuild < ApplicationRecord
   # later write to the row, an admin correction included, bumps `updated_at`.
   LATE_FACTS = %i[crew beds lockers].freeze
 
+  # What a ship's rooms hold. An interior from before its ship's rework places
+  # none of it, so a build's nil here says "none", not "not recorded".
+  INTERIOR_FACTS = %i[beds weapon_racks lockers].freeze
+
   # What a storage container holds: ore from a mining pod, or salvage.
   STORAGE_KINDS = %w[ore salvage].freeze
 
