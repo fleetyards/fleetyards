@@ -31,3 +31,17 @@
     color: var(--color-primary, #428bca);
   }
 }
+
+// The local chip is a button rather than a link: the same look, without the
+// button's own face.
+button.base-list-toolbar-chip {
+  margin: 0;
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
+
+  // Left to the active state, which this element selector would outrank.
+  &:not(.base-list-toolbar-chip--active) {
+    background: transparent;
+  }
+}
