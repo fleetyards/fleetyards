@@ -1,1 +1,26 @@
 #!/bin/sh
+set -e
+
+DEST_FLAG=""
+if [ -n "$KAMAL_DESTINATION" ]; then
+  DEST_FLAG="-d $KAMAL_DESTINATION"
+fi
+
+# Tell open tabs that a new release is live so they can offer a reload. On the
+# primary host only: the job broadcasts to every connection, and one host
+# enqueueing it once is enough. A failure must not fail a deploy that already
+# succeeded, so it only warns after the retries.
+echo "Scheduling the app version broadcast..."
+
+attempt=1
+max_attempts=3
+until kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" \
+  bin/broadcast-version; do
+  if [ "$attempt" -ge "$max_attempts" ]; then
+    echo "Version broadcast failed after $max_attempts attempts." >&2
+    exit 0
+  fi
+  echo "Version broadcast attempt $attempt failed, retrying in 5s..." >&2
+  attempt=$((attempt + 1))
+  sleep 5
+done
