@@ -11,7 +11,7 @@ A daily sidekiq-scheduler job reads `ship-views/index.json`, and for every chang
 ## What changed
 
 ### Phase 1 — Shared filename mapping
-1. Move the `fieldFor` cases out of `mapping.spec.ts` into `test/fixtures/files/ship_view_filenames.json` (`[[filename, field|null], ...]`), read by `mapping.spec.ts` via `readFileSync`.
+1. Move the `fieldFor` cases out of `mapping.spec.ts` into `test/fixtures/files/ship_view_filenames.json` (named groups of `filename → field|null`), read by `mapping.spec.ts` via `readFileSync`.
 2. Port `fieldFor` to Ruby (`app/lib/ship_views/field_mapping.rb` or similar): same regexes, `VIEWPOINTS` (incl. `side` → port), extension lists, `textured` only for flight. Returns the snake_case attachment name.
 3. Minitest reads the same JSON and asserts every case (camelCase field → underscored).
 
@@ -60,10 +60,11 @@ A daily sidekiq-scheduler job reads `ship-views/index.json`, and for every chang
 
 ## Discovery Log
 
+- **2026-10-16** Unknown slugs are checked against the index before `files.json` is read, since the digest lives on the model. A render whose download doesn't match its listed md5 is skipped, and the ship keeps its old digest so the next run retries it. A render whose md5 equals the current blob checksum (uploaded by hand before the bucket existed) is recorded rather than re-attached.
 - **2026-10-16** Initial research and plan creation. Trimming replaces the blob, so the blob checksum doesn't identify the source file for cropped views.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
