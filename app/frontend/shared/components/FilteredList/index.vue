@@ -366,7 +366,10 @@ const toggleFilter = () => {
         </div>
       </div>
       <div class="row">
-        <Teleport to="#off-canvas-content" :disabled="!mobile">
+        <!-- Deferred, so the list does not depend on its layout mounting the
+             off-canvas panel first: a Teleport that finds no target never
+             mounts its children, and Vue crashes patching them later. -->
+        <Teleport to="#off-canvas-content" :disabled="!mobile" defer>
           <transition
             v-if="!mobile"
             name="slide"

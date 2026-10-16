@@ -214,6 +214,10 @@ const setNoScroll = () => {
     }"
     class="app-body"
   >
+    <!-- First, ahead of the page: pages teleport into its body, and on a
+         locale change the whole tree mounts in one pass, in template order.
+         It is fixed-position, so where it sits here changes nothing on screen. -->
+    <OffCanvas />
     <FetchProgressBar />
     <PullToRefresh
       v-if="mobile"
@@ -275,7 +279,6 @@ const setNoScroll = () => {
 
     <AppConfirm />
     <AppModal />
-    <OffCanvas />
     <AppNotifications />
     <AppEnvironment :git-revision="appStore.gitRevision" show-in-production />
   </div>
