@@ -1,6 +1,7 @@
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   type Vehicle,
+  type VehicleLoadout,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
   VehicleLoadoutKindEnum,
@@ -61,7 +62,10 @@ export const useVehicleModals = () => {
   // another is named. A linked build is read on its own site.
   const openLoadoutView = (
     vehicle: Vehicle | VehiclePublic,
-    options: { editable?: boolean; loadout?: VehicleLoadoutMinimal } = {},
+    options: {
+      editable?: boolean;
+      loadout?: VehicleLoadout | VehicleLoadoutMinimal;
+    } = {},
   ) => {
     const active =
       vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS

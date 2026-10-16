@@ -18,18 +18,18 @@ import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
+import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
   type ModelModule,
   type Vehicle,
+  type VehicleLoadout,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
-  VehicleLoadoutItemTypeEnum,
-  useModelModules as useModelModulesQuery,
 } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
-  loadout?: VehicleLoadoutMinimal;
+  loadout?: VehicleLoadout | VehicleLoadoutMinimal;
   // The owner, who gets a way into the editor from here.
   editable?: boolean;
 };
@@ -47,25 +47,9 @@ const { slotLabel } = useLoadoutSlotLabel();
 
 const model = computed(() => props.vehicle.model);
 
-const modelSlug = computed(() => model.value?.slug ?? "");
-
-const { data: modulesData } = useModelModulesQuery(modelSlug);
-
-const modules = computed(() => modulesData.value?.items ?? []);
-
-const items = computed(() => props.loadout?.items ?? []);
-
-const moduleRows = computed(() =>
-  items.value
-    .filter((item) => item.itemType === VehicleLoadoutItemTypeEnum.MODEL_MODULE)
-    .map((item) => ({
-      slotPath: item.slotPath,
-      module: modules.value.find((mod) => mod.id === item.itemId),
-    }))
-    .filter((row): row is { slotPath: string; module: ModelModule } =>
-      Boolean(row.module),
-    )
-    .sort((a, b) => a.slotPath.localeCompare(b.slotPath)),
+const { moduleRows, moduleCargo } = useLoadoutModules(
+  () => model.value?.slug,
+  () => props.loadout,
 );
 
 // One section per category with something fitted, so the view grows with
@@ -79,13 +63,6 @@ const sections = computed(() =>
       rows: moduleRows.value,
     },
   ].filter((section) => section.rows.length),
-);
-
-const moduleCargo = computed(() =>
-  moduleRows.value.reduce(
-    (total, row) => total + (row.module.metrics?.cargo || 0),
-    0,
-  ),
 );
 
 const badges = (mod: ModelModule) =>
