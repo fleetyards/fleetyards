@@ -49,9 +49,13 @@ module BuybackPledges
 
     # A buy-back costs what the pledge was bought for, so its details are read
     # once. An upgrade is priced from our own ship prices and has no buy-back
-    # page, so it is never read.
+    # page, so it is never read. A pack of several ships read before its ships
+    # were stored is read once more for them.
     private def details_pending
-      user.buyback_pledges.where(details_synced_at: nil).where.not(kind: "upgrade")
+      pledges = user.buyback_pledges.where.not(kind: "upgrade")
+
+      pledges.where(details_synced_at: nil)
+        .or(pledges.where(ship_names: nil).where(Arel.sql(BuybackPledge::MULTI_SHIP_SQL)))
     end
 
     # One row per pledge id: a duplicate inside one `upsert_all` is an error in

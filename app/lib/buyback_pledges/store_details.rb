@@ -21,6 +21,7 @@ module BuybackPledges
             price: item[:price],
             insurance_months: item[:insurance_months],
             lifetime_insurance: ActiveModel::Type::Boolean.new.cast(item[:lifetime_insurance]) || false,
+            **ship_names(item),
             details_synced_at: synced_at,
             updated_at: synced_at
           )
@@ -28,6 +29,14 @@ module BuybackPledges
       end
 
       {updated:}
+    end
+
+    # A page read before ship names were sent says nothing about them, so the
+    # stored ones stay, and an unknown pack stays queued for another read.
+    private def ship_names(item)
+      return {} unless item.key?(:ship_names)
+
+      {ship_names: Array(item[:ship_names]).filter_map { |name| name.to_s.squish.presence }.uniq}
     end
   end
 end

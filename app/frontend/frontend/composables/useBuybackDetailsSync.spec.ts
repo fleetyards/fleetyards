@@ -97,7 +97,7 @@ describe("useBuybackDetailsSync", () => {
       ["syncBuybackDetail", { id: "2" }, undefined, expect.any(Function)],
     ]);
     expect(submitted()).toEqual([
-      { id: "2", price: 150, lifetimeInsurance: false },
+      { id: "2", price: 150, lifetimeInsurance: false, shipNames: [] },
     ]);
     expect(status.value).toBe("finished");
   });
@@ -177,7 +177,7 @@ describe("useBuybackDetailsSync", () => {
     const { run, status } = useBuybackDetailsSync();
     await run([ship("1")], ["1"], { waitForSlot });
 
-    expect(submitted()).toEqual([{ id: "1" }]);
+    expect(submitted()).toEqual([{ id: "1", shipNames: [] }]);
     expect(status.value).toBe("finished");
   });
 
