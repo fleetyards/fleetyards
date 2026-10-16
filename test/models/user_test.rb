@@ -132,7 +132,7 @@ class UserTest < ActiveSupport::TestCase
       contribution = create(:supporter_contribution, user: @user, name: "Jo", started_at: Date.current)
 
       assert @user.supporter?
-      assert_equal "Jo", contribution.public_name
+      assert_equal @user.username, contribution.public_name
     end
 
     test "a contribution that ended before this month earns nothing" do

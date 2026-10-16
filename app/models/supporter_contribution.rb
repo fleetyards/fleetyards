@@ -198,10 +198,14 @@ class SupporterContribution < ApplicationRecord
 
   # Nil whenever the contribution must not be attributed publicly, so callers
   # can fall back to their own anonymous wording.
+  #
+  # A linked account is named by its username, never by the name the payment
+  # platform reported: that is whatever the payer typed at Ko-fi or PayPal, and
+  # often their real name, which the account holder never chose to show here.
   def public_name
     return if anonymous?
 
-    name.presence || user&.username
+    user&.username || name.presence
   end
 
   # Only usernames with a reachable public hangar, otherwise the profile link

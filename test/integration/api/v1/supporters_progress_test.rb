@@ -65,14 +65,27 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The name a payment platform reported is whatever the payer typed there,
+  # often their real name, so a linked account is shown by its username.
+  test "GET /supporters/progress names a linked contribution by its username, not the payer's name" do
+    user = create(:user, :public_hangar, username: "dorasupports")
+    create(:supporter_contribution, name: "Dora Realname", user:, amount_cents: 600, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 600 }
+
+      assert_equal "dorasupports", entry["displayName"]
+    end
+  end
+
   test "GET /supporters/progress keeps the name but omits the link for a private hangar" do
-    user = create(:user, :private_hangar)
-    create(:supporter_contribution, name: "Dora", user:, amount_cents: 800, started_at: Date.current)
+    user = create(:user, :private_hangar, username: "dora")
+    create(:supporter_contribution, name: "Dora Realname", user:, amount_cents: 800, started_at: Date.current)
 
     assert_api_response :get, 200 do
       entry = parsed_body["contributions"].find { |c| c["amountCents"] == 800 }
 
-      assert_equal "Dora", entry["displayName"]
+      assert_equal "dora", entry["displayName"]
       refute entry.key?("username")
     end
   end

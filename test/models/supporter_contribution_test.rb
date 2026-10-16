@@ -233,9 +233,15 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_equal user.username, contribution.public_name
   end
 
-  test "an explicit name wins over the linked username" do
+  test "the linked username wins over the name the platform reported" do
     user = create(:user)
     contribution = create(:supporter_contribution, name: "Alice", user:)
+
+    assert_equal user.username, contribution.public_name
+  end
+
+  test "an unlinked contribution is named by the platform's name" do
+    contribution = create(:supporter_contribution, name: "Alice", user: nil)
 
     assert_equal "Alice", contribution.public_name
   end
