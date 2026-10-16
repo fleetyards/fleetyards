@@ -97,7 +97,7 @@ describe("useBuybackDetailsSync", () => {
       ["syncBuybackDetail", { id: "2" }, undefined, expect.any(Function)],
     ]);
     expect(submitted()).toEqual([
-      { id: "2", price: 150, lifetimeInsurance: false, shipNames: [] },
+      { id: "2", price: 150, lifetimeInsurance: false },
     ]);
     expect(status.value).toBe("finished");
   });

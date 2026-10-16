@@ -63,6 +63,14 @@ describe("extractBuybackDetail", () => {
     ).toMatchObject({ shipNames: [] });
   });
 
+  it("leaves the ships unknown on a page without a ship listing", () => {
+    expect(
+      extractBuybackDetail(
+        '<strong class="final-price" data-value="1047" data-currency="EUR"></strong>',
+      ),
+    ).not.toHaveProperty("shipNames");
+  });
+
   it("reads lifetime insurance", () => {
     expect(
       extractBuybackDetail(

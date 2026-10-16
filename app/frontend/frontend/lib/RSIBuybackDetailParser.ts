@@ -5,7 +5,7 @@ export type RSIBuybackDetail = {
   currency?: string;
   insuranceMonths?: number;
   lifetimeInsurance: boolean;
-  shipNames: string[];
+  shipNames?: string[];
 };
 
 const MONTHS_INSURANCE = /^(\d+)\s+Months?\s+Insurance$/i;
@@ -39,9 +39,10 @@ export const extractBuybackDetail = (
     htmlDoc.querySelectorAll(".package-listing.item li"),
   ).map((item) => item.textContent?.trim().replace(/\s+/g, " ") || "");
 
-  const shipNames = Array.from(
-    htmlDoc.querySelectorAll(".package-listing.ship li"),
-  )
+  // Without the listing a pack's ships are unknown, not none, so it is read
+  // again on the next sync rather than stored as holding no ship.
+  const shipListing = htmlDoc.querySelector(".package-listing.ship");
+  const shipNames = Array.from(shipListing?.querySelectorAll("li") ?? [])
     .map((ship) => {
       const text = ship.textContent?.trim().replace(/\s+/g, " ") || "";
 
@@ -64,6 +65,6 @@ export const extractBuybackDetail = (
         ? undefined
         : Math.max(...months),
     lifetimeInsurance,
-    shipNames,
+    ...(shipListing ? { shipNames } : {}),
   };
 };
