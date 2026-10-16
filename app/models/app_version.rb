@@ -11,19 +11,23 @@ class AppVersion
     }.compact
   end
 
+  # Cached because every client resubscribes within seconds of a deploy, and
+  # each subscribe sends this payload.
   def self.latest_announcement
-    announcement = Announcement.status_published
-      .where.not(link: [nil, ""])
-      .where.not(published_at: nil)
-      .order(published_at: :desc)
-      .first
+    Rails.cache.fetch("app_version/latest_announcement", expires_in: 1.minute) do
+      announcement = Announcement.status_published
+        .where.not(link: [nil, ""])
+        .where.not(published_at: nil)
+        .order(published_at: :desc)
+        .first
 
-    return if announcement.blank?
+      next if announcement.blank?
 
-    {
-      title: announcement.title,
-      link: announcement.absolute_link,
-      publishedAt: announcement.published_at.utc.iso8601
-    }
+      {
+        title: announcement.title,
+        link: announcement.absolute_link,
+        publishedAt: announcement.published_at.utc.iso8601
+      }
+    end
   end
 end
