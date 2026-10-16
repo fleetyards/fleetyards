@@ -21,7 +21,7 @@ export interface LoadoutPickerOption {
 export interface LoadoutPickerSort {
   key: string;
   label: string;
-  // Highest first unless the caller says otherwise: most of what a ship is
-  // fitted for reads better larger.
+  // Highest first unless the caller says otherwise, when it is the default
+  // sort: most of what a ship is fitted for reads better larger.
   ascending?: boolean;
 }

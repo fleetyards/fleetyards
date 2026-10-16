@@ -50,33 +50,51 @@
 .loadout-picker__controls {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   padding: 10px 14px 8px;
   border-bottom: 1px solid var(--color-edge-soft);
 }
 
-.loadout-picker__search {
-  margin: 0;
-}
-
-.loadout-picker__filters {
+.loadout-picker__search-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
 }
 
-.loadout-picker__select {
-  flex: 1 1 160px;
+.loadout-picker__search {
+  flex: 1 1 auto;
   min-width: 0;
   margin: 0;
+}
+
+// As tall as the search they sit beside.
+.loadout-picker__search-row .chip {
+  height: var(--field-h, 43px);
+}
+
+.loadout-picker__select {
+  margin: 0;
+}
+
+// The list bar keeps its own spacing below a list; here the controls' gap
+// does that.
+.loadout-picker__controls .loadout-picker__sort {
+  margin: 0;
+}
+
+// The sort chips, and the count right-aligned on the same line.
+.loadout-picker__sort-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .loadout-picker__count {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin: 0;
+  margin: 0 0 0 auto;
   color: var(--color-text-dim);
   font-size: 12px;
 }

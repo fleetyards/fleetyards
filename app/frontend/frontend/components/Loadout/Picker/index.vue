@@ -8,6 +8,8 @@ export default {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
+import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -63,7 +65,17 @@ const manufacturer = ref<string | null>(null);
 
 const NAME_SORT = "name";
 
-const sortKey = ref(props.sorts[0]?.key ?? NAME_SORT);
+// The caller's first figure, the way it reads best, else by name.
+const defaultSort = computed(() => {
+  const first = props.sorts[0];
+  if (!first) return `${NAME_SORT} asc`;
+
+  return `${first.key} ${first.ascending ? "asc" : "desc"}`;
+});
+
+// What the sort bar picked; undefined is the default. Kept here rather than in
+// the URL, which belongs to the page under the modal.
+const sort = ref<string>();
 
 const hasOwned = computed(() => props.options.some((option) => option.owned));
 
@@ -83,9 +95,17 @@ const manufacturerOptions = computed(() =>
   manufacturers.value.map((name) => ({ label: name, value: name })),
 );
 
-const sortOptions = computed(() => [
-  { label: t("labels.loadoutPicker.sortName"), value: NAME_SORT },
-  ...props.sorts.map((sort) => ({ label: sort.label, value: sort.key })),
+const sortColumns = computed<BaseTableCol<LoadoutPickerOption>[]>(() => [
+  {
+    name: NAME_SORT,
+    label: t("labels.loadoutPicker.sortName"),
+    sortable: true,
+  },
+  ...props.sorts.map((entry) => ({
+    name: entry.key,
+    label: entry.label,
+    sortable: true,
+  })),
 ]);
 
 const matchesSearch = (option: LoadoutPickerOption, term: string) =>
@@ -104,21 +124,22 @@ const matchesOwnership = (option: LoadoutPickerOption) => {
 };
 
 const compare = (a: LoadoutPickerOption, b: LoadoutPickerOption) => {
-  if (sortKey.value === NAME_SORT) return a.name.localeCompare(b.name);
+  const [key, direction] = (sort.value || defaultSort.value).split(" ");
+  const sign = direction === "desc" ? -1 : 1;
 
-  const sort = props.sorts.find((entry) => entry.key === sortKey.value);
-  const valueA = a.sortValues?.[sortKey.value];
-  const valueB = b.sortValues?.[sortKey.value];
+  if (key === NAME_SORT) return sign * a.name.localeCompare(b.name);
 
+  const valueA = a.sortValues?.[key];
+  const valueB = b.sortValues?.[key];
+
+  // An option without the figure sorts last either way round.
   if (valueA === undefined && valueB === undefined) {
     return a.name.localeCompare(b.name);
   }
   if (valueA === undefined) return 1;
   if (valueB === undefined) return -1;
 
-  const order = sort?.ascending ? valueA - valueB : valueB - valueA;
-
-  return order || a.name.localeCompare(b.name);
+  return sign * (valueA - valueB) || a.name.localeCompare(b.name);
 };
 
 const visibleOptions = computed(() => {
@@ -225,20 +246,21 @@ const accessibleName = (option: LoadoutPickerOption) =>
     </header>
 
     <div class="loadout-picker__controls">
-      <FormInput
-        v-model="search"
-        name="loadout-picker-search"
-        class="loadout-picker__search"
-        :label="t('labels.loadoutPicker.search')"
-        :placeholder="t('labels.loadoutPicker.search')"
-        icon="fa-light fa-magnifying-glass"
-        data-test="loadout-picker-search"
-        standalone
-        no-label
-        clearable
-      />
-
-      <div class="loadout-picker__filters">
+      <!-- The ownership filters sit beside the search: like it, they narrow
+           the list in one press. -->
+      <div class="loadout-picker__search-row">
+        <FormInput
+          v-model="search"
+          name="loadout-picker-search"
+          class="loadout-picker__search"
+          :label="t('labels.loadoutPicker.search')"
+          :placeholder="t('labels.loadoutPicker.search')"
+          icon="fa-light fa-magnifying-glass"
+          data-test="loadout-picker-search"
+          standalone
+          no-label
+          clearable
+        />
         <Chip
           v-if="hasOwned"
           :state="ownedOnly ? ChipStatesEnum.INCLUDED : ChipStatesEnum.NEUTRAL"
@@ -255,53 +277,55 @@ const accessibleName = (option: LoadoutPickerOption) =>
         >
           {{ t("labels.loadoutPicker.stock") }}
         </Chip>
-        <BaseSelect
-          v-if="manufacturers.length > 1"
-          v-model="manufacturer"
-          name="loadout-picker-manufacturer"
-          class="loadout-picker__select"
-          :options="manufacturerOptions"
-          :label="t('labels.loadoutPicker.manufacturer')"
-          :search-label="t('labels.loadoutPicker.manufacturer')"
-          data-test="loadout-picker-manufacturer"
-          searchable
-          nullable
-          no-label
-        />
-        <BaseSelect
-          v-if="sorts.length"
-          v-model="sortKey"
-          name="loadout-picker-sort"
-          class="loadout-picker__select"
-          :options="sortOptions"
-          :label="t('labels.loadoutPicker.sortBy')"
-          data-test="loadout-picker-sort"
-          unsorted
-          no-label
-        />
       </div>
 
-      <p class="loadout-picker__count" data-test="loadout-picker-count">
-        <template v-if="filtered">
-          {{
-            t("labels.loadoutPicker.count", {
-              count: visibleOptions.length,
-              total: options.length,
-            })
-          }}
-          <button
-            type="button"
-            class="loadout-picker__reset"
-            data-test="loadout-picker-reset"
-            @click="resetFilters"
-          >
-            {{ t("labels.loadoutPicker.reset") }}
-          </button>
-        </template>
-        <template v-else>
-          {{ t("labels.loadoutPicker.total", { count: options.length }) }}
-        </template>
-      </p>
+      <BaseSelect
+        v-if="manufacturers.length > 1"
+        v-model="manufacturer"
+        name="loadout-picker-manufacturer"
+        class="loadout-picker__select"
+        :options="manufacturerOptions"
+        :label="t('labels.loadoutPicker.manufacturer')"
+        :search-label="t('labels.loadoutPicker.manufacturer')"
+        data-test="loadout-picker-manufacturer"
+        searchable
+        nullable
+        no-label
+      />
+
+      <div class="loadout-picker__sort-row">
+        <ListToolbar
+          v-if="sorts.length"
+          v-model:sort="sort"
+          class="loadout-picker__sort"
+          :columns="sortColumns"
+          :default-sort="defaultSort"
+          data-test="loadout-picker-sort"
+          local
+        />
+
+        <p class="loadout-picker__count" data-test="loadout-picker-count">
+          <template v-if="filtered">
+            {{
+              t("labels.loadoutPicker.count", {
+                count: visibleOptions.length,
+                total: options.length,
+              })
+            }}
+            <button
+              type="button"
+              class="loadout-picker__reset"
+              data-test="loadout-picker-reset"
+              @click="resetFilters"
+            >
+              {{ t("labels.loadoutPicker.reset") }}
+            </button>
+          </template>
+          <template v-else>
+            {{ t("labels.loadoutPicker.total", { count: options.length }) }}
+          </template>
+        </p>
+      </div>
     </div>
 
     <ul

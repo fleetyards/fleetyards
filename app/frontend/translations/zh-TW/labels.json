@@ -4344,7 +4344,6 @@
         "owned": "已擁有",
         "stock": "原廠",
         "manufacturer": "製造商",
-        "sortBy": "排序方式",
         "sortName": "名稱",
         "count": "%{total} 個中的 %{count} 個",
         "total": {

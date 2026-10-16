@@ -4344,7 +4344,6 @@
         "owned": "已拥有",
         "stock": "原厂",
         "manufacturer": "制造商",
-        "sortBy": "排序方式",
         "sortName": "名称",
         "count": "%{total} 个中的 %{count} 个",
         "total": {

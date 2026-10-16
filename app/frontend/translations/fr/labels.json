@@ -4344,7 +4344,6 @@
         "owned": "Possédé",
         "stock": "D'origine",
         "manufacturer": "Fabricant",
-        "sortBy": "Trier par",
         "sortName": "Nom",
         "count": "%{count} sur %{total}",
         "total": {

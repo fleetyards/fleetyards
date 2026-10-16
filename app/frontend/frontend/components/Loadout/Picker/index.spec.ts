@@ -42,7 +42,12 @@ const names = (wrapper: Wrapper) =>
 const selectFor = (wrapper: Wrapper, name: string) =>
   wrapper
     .findAllComponents(BaseSelect)
-    .find((select) => select.props("name") === name);
+    .find((select) => (select.props() as { name?: string }).name === name);
+
+const sortChip = (wrapper: Wrapper, label: string) =>
+  wrapper
+    .findAll("[data-test='loadout-picker-sort'] .base-list-toolbar-chip")
+    .find((chip) => chip.text() === label);
 
 describe("LoadoutPicker", () => {
   it("lists every option, by name, with the total", async () => {
@@ -146,12 +151,23 @@ describe("LoadoutPicker", () => {
 
     expect(names(wrapper)).toEqual(["Charlie", "Alpha", "Bravo"]);
 
-    selectFor(wrapper, "loadout-picker-sort")?.vm.$emit(
-      "update:modelValue",
-      "name",
-    );
-    await nextTick();
+    // The default's own field flips to the other direction first.
+    await sortChip(wrapper, "DPS")?.trigger("click");
+    expect(names(wrapper)).toEqual(["Alpha", "Charlie", "Bravo"]);
+
+    await sortChip(wrapper, "Name")?.trigger("click");
     expect(names(wrapper)).toEqual(["Alpha", "Bravo", "Charlie"]);
+
+    await sortChip(wrapper, "Name")?.trigger("click");
+    expect(names(wrapper)).toEqual(["Charlie", "Bravo", "Alpha"]);
+  });
+
+  it("offers no sort bar where the caller has no figure to sort by", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='loadout-picker-sort']").exists()).toBe(
+      false,
+    );
   });
 
   it("marks what the socket holds and picks another", async () => {
@@ -262,7 +278,9 @@ describe("LoadoutPicker", () => {
   it("renders the caller's comparison under the list", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { title: "Left wing", options: MANY },
-      slots: { comparison: () => h("p", { "data-test": "comparison" }, "x") },
+      slots: {
+        comparison: () => [h("p", { "data-test": "comparison" }, "x")],
+      },
     });
 
     expect(

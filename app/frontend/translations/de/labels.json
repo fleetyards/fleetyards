@@ -4344,7 +4344,6 @@
         "owned": "Im Besitz",
         "stock": "Serienmäßig",
         "manufacturer": "Hersteller",
-        "sortBy": "Sortieren nach",
         "sortName": "Name",
         "count": "%{count} von %{total}",
         "total": {
