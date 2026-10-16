@@ -123,7 +123,7 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-gallery"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-choice"]')[1]
+      .findAll('[data-test="vehicle-image-gallery-choice-toggle"]')[1]
       .trigger("click");
     await submit(wrapper);
 
@@ -186,7 +186,7 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-gallery"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-choice"]')[1]
+      .findAll('[data-test="vehicle-image-gallery-choice-toggle"]')[1]
       .trigger("click");
     await wrapper
       .find('[data-test="vehicle-image-source-paints"]')
@@ -194,7 +194,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
+        .findAll('[data-test="vehicle-image-gallery-paint-toggle"]')[1]
         .attributes("aria-pressed"),
     ).toBe("true");
 
@@ -218,7 +218,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .find('[data-test="vehicle-image-gallery-none"]')
+        .find('[data-test="vehicle-image-gallery-none-toggle"]')
         .attributes("aria-pressed"),
     ).toBe("false");
 
@@ -254,7 +254,7 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-paints"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-paint"]')[1]
+      .findAll('[data-test="vehicle-image-gallery-paint-toggle"]')[1]
       .trigger("click");
     await submit(wrapper);
 
@@ -274,7 +274,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none"]')
+      .find('[data-test="vehicle-image-gallery-none-toggle"]')
       .trigger("click");
     await submit(wrapper);
 
@@ -290,7 +290,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none"]')
+      .find('[data-test="vehicle-image-gallery-none-toggle"]')
       .trigger("click");
     await submit(wrapper);
 
@@ -354,7 +354,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none"]')
+      .find('[data-test="vehicle-image-gallery-none-toggle"]')
       .trigger("click");
     await submit(wrapper);
 

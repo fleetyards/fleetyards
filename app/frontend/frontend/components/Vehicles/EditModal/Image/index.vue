@@ -9,6 +9,7 @@ import { useField } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -248,99 +249,50 @@ defineExpose({ changes });
         class="vehicle-edit-image__gallery"
         data-test="vehicle-image-gallery-paints"
       >
-        <button
-          type="button"
-          class="vehicle-edit-image__choice"
-          :class="{
-            'vehicle-edit-image__choice--picked': picked === null,
-          }"
-          :aria-pressed="picked === null"
-          data-test="vehicle-image-gallery-none"
-          @click="pick(null)"
-        >
-          <img
-            v-if="stockImage"
-            :src="stockImage"
-            alt=""
-            class="vehicle-edit-image__thumb"
-          />
-          <span class="vehicle-edit-image__caption">
-            {{ t("labels.vehicleOverview.stockPicture") }}
-          </span>
-        </button>
-        <button
+        <AddonOption
+          :name="t('labels.vehicleOverview.stockPicture')"
+          :image="stockImage"
+          :selected="picked === null"
+          stacked
+          test-id="vehicle-image-gallery-none"
+          @toggle="pick(null)"
+        />
+        <AddonOption
           v-for="paint in paintPictures"
           :key="`paint-${paint.id}`"
-          type="button"
-          class="vehicle-edit-image__choice"
-          :class="{
-            'vehicle-edit-image__choice--picked': isPicked(
-              PictureType.MODEL_PAINT,
-              paint.id,
-            ),
-          }"
-          :aria-pressed="isPicked(PictureType.MODEL_PAINT, paint.id)"
-          :aria-label="paint.name"
-          data-test="vehicle-image-gallery-paint"
-          @click="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
-        >
-          <img
-            :src="
-              paint.media.storeImage?.smallUrl || paint.media.storeImage?.url
-            "
-            alt=""
-            class="vehicle-edit-image__thumb"
-          />
-          <span class="vehicle-edit-image__caption">{{ paint.name }}</span>
-        </button>
+          :name="paint.name"
+          :image="
+            paint.media.storeImage?.smallUrl || paint.media.storeImage?.url
+          "
+          :selected="isPicked(PictureType.MODEL_PAINT, paint.id)"
+          stacked
+          test-id="vehicle-image-gallery-paint"
+          @toggle="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
+        />
       </div>
       <template v-else>
         <div
           class="vehicle-edit-image__gallery"
           data-test="vehicle-image-gallery-images"
         >
-          <button
-            type="button"
-            class="vehicle-edit-image__choice"
-            :class="{
-              'vehicle-edit-image__choice--picked': picked === null,
-            }"
-            :aria-pressed="picked === null"
-            data-test="vehicle-image-gallery-none"
-            @click="pick(null)"
-          >
-            <img
-              v-if="stockImage"
-              :src="stockImage"
-              alt=""
-              class="vehicle-edit-image__thumb"
-            />
-            <span class="vehicle-edit-image__caption">
-              {{ t("labels.vehicleOverview.stockPicture") }}
-            </span>
-          </button>
-          <button
+          <AddonOption
+            :name="t('labels.vehicleOverview.stockPicture')"
+            :image="stockImage"
+            :selected="picked === null"
+            stacked
+            test-id="vehicle-image-gallery-none"
+            @toggle="pick(null)"
+          />
+          <AddonOption
             v-for="galleryImage in galleryImages"
             :key="galleryImage.id"
-            type="button"
-            class="vehicle-edit-image__choice"
-            :class="{
-              'vehicle-edit-image__choice--picked': isPicked(
-                PictureType.IMAGE,
-                galleryImage.id,
-              ),
-            }"
-            :aria-pressed="isPicked(PictureType.IMAGE, galleryImage.id)"
-            :aria-label="galleryImage.caption || vehicle.model.name"
-            data-test="vehicle-image-gallery-choice"
-            @click="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
-          >
-            <img
-              :src="galleryImage.smallUrl || galleryImage.url"
-              alt=""
-              class="vehicle-edit-image__thumb"
-            />
-          </button>
+            :name="galleryImage.caption || vehicle.model.name"
+            :image="galleryImage.smallUrl || galleryImage.url"
+            :selected="isPicked(PictureType.IMAGE, galleryImage.id)"
+            stacked
+            test-id="vehicle-image-gallery-choice"
+            @toggle="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
+          />
         </div>
         <p
           v-if="!galleryLoading && !galleryImages.length"
@@ -376,53 +328,14 @@ defineExpose({ changes });
 
   &__gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 10px;
     max-height: 560px;
     overflow-y: auto;
   }
 
-  &__choice {
-    position: relative;
-    padding: 0;
-    overflow: hidden;
-    border: 2px solid var(--color-edge-soft);
-    border-radius: 6px;
-    background: var(--color-gray-black);
-    color: inherit;
-    cursor: pointer;
-
-    &:hover,
-    &:focus-visible {
-      border-color: var(--color-edge-strong);
-    }
-
-    &--picked,
-    &--picked:hover {
-      border-color: var(--color-gold);
-    }
-  }
-
   &__more {
     margin-top: 8px;
-  }
-
-  &__thumb {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  &__caption {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 4px 8px;
-    background: rgb(0 0 0 / 0.6);
-    font-size: 0.75rem;
   }
 }
 </style>
