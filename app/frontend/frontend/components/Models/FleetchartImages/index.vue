@@ -14,6 +14,7 @@ import {
   ModelStateEnum,
   ModelViewEnum,
   modelStateMetrics,
+  modelStateShowsRearViews,
   modelStateView,
   useModelStates,
 } from "@/frontend/composables/useModelStates";
@@ -43,15 +44,6 @@ const setState = (value: ModelStateEnum) => {
   emit("update:state", value);
 };
 
-const hasImages = computed(() => {
-  return (
-    fleetchartImageAngled.value ||
-    fleetchartImageFront.value ||
-    fleetchartImageTop.value ||
-    fleetchartImageSide.value
-  );
-});
-
 const pickViewUrl = (
   colored: MediaFile | undefined,
   regular: MediaFile | undefined,
@@ -73,27 +65,62 @@ const viewUrl = (view: ModelViewEnum) => {
   return pickViewUrl(colored, regular);
 };
 
-const fleetchartImageAngled = computed(() => viewUrl(ModelViewEnum.ANGLED));
+// Each set is drawn in the same four cells, and each cell sizes its view the
+// same way: the plan view (top, bottom) and the profile (side, starboard) span
+// the ship's length, and the end-on view (front, rear) is held to the height of
+// the profile beside it.
+type ViewSet = {
+  key: string;
+  angled: ModelViewEnum;
+  plan: ModelViewEnum;
+  end: ModelViewEnum;
+  profile: ModelViewEnum;
+};
 
-const fleetchartImageFront = computed(() => viewUrl(ModelViewEnum.FRONT));
+const VIEW_SETS: ViewSet[] = [
+  {
+    key: "front",
+    angled: ModelViewEnum.ANGLED,
+    plan: ModelViewEnum.TOP,
+    end: ModelViewEnum.FRONT,
+    profile: ModelViewEnum.SIDE,
+  },
+  {
+    key: "rear",
+    angled: ModelViewEnum.ANGLED_REAR,
+    plan: ModelViewEnum.BOTTOM,
+    end: ModelViewEnum.REAR,
+    profile: ModelViewEnum.STARBOARD,
+  },
+];
 
-const fleetchartImageTop = computed(() => viewUrl(ModelViewEnum.TOP));
+const viewSets = computed(() =>
+  VIEW_SETS.filter(
+    (set) =>
+      set.key !== "rear" || modelStateShowsRearViews(props.model, props.state),
+  )
+    .map((set) => ({
+      key: set.key,
+      angled: viewUrl(set.angled),
+      plan: viewUrl(set.plan),
+      end: viewUrl(set.end),
+      profile: viewUrl(set.profile),
+    }))
+    .filter((set) => set.angled || set.plan || set.end || set.profile),
+);
 
-const fleetchartImageSide = computed(() => viewUrl(ModelViewEnum.SIDE));
+const hasImages = computed(() => viewSets.value.length > 0);
 
 // The coloured views run to several megabytes each, so switching state leaves the
 // previous set on screen for a beat. Settled by URL rather than by a counter: the
-// four <img> elements stay put across a switch, so each one reports the file it
-// just finished, and an image already in the browser cache reports immediately.
+// <img> elements stay put across a switch, so each one reports the file it just
+// finished, and an image already in the browser cache reports immediately.
 const settledUrls = ref(new Set<string>());
 
 const currentUrls = computed(() =>
-  [
-    fleetchartImageAngled.value,
-    fleetchartImageTop.value,
-    fleetchartImageFront.value,
-    fleetchartImageSide.value,
-  ].filter((url): url is string => Boolean(url)),
+  viewSets.value
+    .flatMap((set) => [set.angled, set.plan, set.end, set.profile])
+    .filter((url): url is string => Boolean(url)),
 );
 
 const loading = computed(() =>
@@ -182,19 +209,31 @@ const modelLength = computed(() => stateMetrics.value.fleetchartLength || 1);
 
 const modelBeam = computed(() => stateMetrics.value.fleetchartBeam || 1);
 
-const sideViewImg = ref<HTMLImageElement | null>(null);
-const sideViewHeight = ref(0);
+const profileImgs: Record<string, HTMLImageElement | null> = {};
+const profileHeights = ref<Record<string, number>>({});
 
-const updateSideViewHeight = () => {
-  if (sideViewImg.value) {
-    sideViewHeight.value = sideViewImg.value.clientHeight;
-  }
+const setProfileImg = (key: string, el: unknown) => {
+  profileImgs[key] = el as HTMLImageElement | null;
+};
+
+const updateProfileHeights = () => {
+  profileHeights.value = Object.fromEntries(
+    Object.entries(profileImgs)
+      .filter(([, img]) => img)
+      .map(([key, img]) => [key, img!.clientHeight]),
+  );
+};
+
+const endStyle = (key: string) => {
+  const height = profileHeights.value[key];
+
+  return height ? { maxHeight: `${height}px` } : {};
 };
 
 onMounted(() => {
   window.addEventListener("resize", () => {
     windowWidth.value = window.innerWidth / 2;
-    updateSideViewHeight();
+    updateProfileHeights();
   });
 });
 </script>
@@ -223,52 +262,57 @@ onMounted(() => {
     >
       <!-- Announced here rather than inside Loader: it is a leaf component
            mounted without a store in several specs, and useI18n needs pinia. -->
+      <!-- Immediate: the views dim at once, and a switch rarely takes the half
+           second a loader otherwise waits, so it would never show. -->
       <Loader
         relative
+        immediate
         :loading="switching"
         role="status"
         :aria-label="t('labels.loading')"
       />
-      <div>
-        <img
-          v-if="fleetchartImageAngled"
-          :src="fleetchartImageAngled"
-          :width="(length > beam ? length : beam) * 1.2"
-          @load="settleImage"
-          @error="settleImage"
-        />
-      </div>
-      <div>
-        <img
-          v-if="fleetchartImageTop"
-          :src="fleetchartImageTop"
-          :width="length"
-          @load="settleImage"
-          @error="settleImage"
-        />
-      </div>
-      <div :class="{ small: mobile }">
-        <img
-          v-if="fleetchartImageFront"
-          :src="fleetchartImageFront"
-          :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
-          @load="settleImage"
-          @error="settleImage"
-        />
-      </div>
-      <div>
-        <img
-          v-if="fleetchartImageSide"
-          ref="sideViewImg"
-          :src="fleetchartImageSide"
-          :width="length"
-          @load="
-            updateSideViewHeight();
-            settleImage($event);
-          "
-          @error="settleImage"
-        />
-      </div>
+      <template v-for="set in viewSets" :key="set.key">
+        <div class="fleetchart-views__cell">
+          <img
+            v-if="set.angled"
+            :src="set.angled"
+            :width="(length > beam ? length : beam) * 1.2"
+            @load="settleImage"
+            @error="settleImage"
+          />
+        </div>
+        <div class="fleetchart-views__cell">
+          <img
+            v-if="set.plan"
+            :src="set.plan"
+            :width="length"
+            @load="settleImage"
+            @error="settleImage"
+          />
+        </div>
+        <div class="fleetchart-views__cell" :class="{ small: mobile }">
+          <img
+            v-if="set.end"
+            :src="set.end"
+            :style="endStyle(set.key)"
+            @load="settleImage"
+            @error="settleImage"
+          />
+        </div>
+        <div class="fleetchart-views__cell">
+          <img
+            v-if="set.profile"
+            :ref="(el) => setProfileImg(set.key, el)"
+            :src="set.profile"
+            :width="length"
+            @load="
+              updateProfileHeights();
+              settleImage($event);
+            "
+            @error="settleImage"
+          />
+        </div>
+      </template>
     </div>
   </div>
 </template>

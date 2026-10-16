@@ -6,8 +6,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useLoader } from "@tresjs/core";
+import { useLoader, useLoop } from "@tresjs/core";
 import {
+  AnimationMixer,
   type Material,
   type Mesh,
   type Texture,
@@ -16,6 +17,7 @@ import {
   Box3,
   Vector3,
   type Group,
+  type AnimationClip,
   MeshPhongMaterial,
   MeshLambertMaterial,
   DefaultLoadingManager,
@@ -91,7 +93,33 @@ const setMaterials = (scene: Group) => {
   });
 };
 
+const mixer = shallowRef<AnimationMixer>();
+
+const { onBeforeRender } = useLoop();
+
+onBeforeRender(({ delta }) => {
+  mixer.value?.update(delta);
+});
+
+const playAnimations = (scene: Group, animations: AnimationClip[]) => {
+  mixer.value?.stopAllAction();
+  mixer.value = undefined;
+
+  if (!animations.length) return;
+
+  mixer.value = new AnimationMixer(scene);
+
+  animations.forEach((clip) => {
+    mixer.value?.clipAction(clip).play();
+  });
+
+  // Into the first frame's pose before the scene is measured and centred: the
+  // bind pose may have the gear or wings somewhere the animation never shows.
+  mixer.value.update(0);
+};
+
 onUnmounted(() => {
+  mixer.value?.stopAllAction();
   material.dispose();
   windowMaterial.dispose();
 });
@@ -115,8 +143,12 @@ const { state } = useLoader(GLTFLoader, props.model.path, {
   },
 });
 
-const setup = (scene: Group) => {
-  setMaterials(scene);
+const setup = (scene: Group, animations: AnimationClip[]) => {
+  if (props.model.textured) {
+    playAnimations(scene, animations);
+  } else {
+    setMaterials(scene);
+  }
 
   const box = new Box3().setFromObject(scene);
   const size = box.getSize(new Vector3());
@@ -143,7 +175,7 @@ watch(
   () => state.value,
   () => {
     if (state.value) {
-      setup(state.value.scene);
+      setup(state.value.scene, state.value.animations);
     }
   },
 );

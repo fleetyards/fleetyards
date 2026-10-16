@@ -16,6 +16,7 @@ import {
 } from "@/frontend/composables/useModelStates";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 
 type Props = {
   model: Model;
@@ -54,10 +55,13 @@ const { modelState } = storeToRefs(useModelsStore());
 
 const { resolveState } = useModelStates(() => props.model);
 
+// Decided once, so a resize does not swap the file under the open viewer.
+const preferLiteHolo = isLowPowerDevice();
+
 // Popped out of the ship page, so it opens on the state that page was left on.
 const holoModel = computed(() => {
   const state = resolveState(modelState.value);
-  const holo = modelStateHolo(props.model, state);
+  const holo = modelStateHolo(props.model, state, { lite: preferLiteHolo });
 
   return {
     path: holo?.url,

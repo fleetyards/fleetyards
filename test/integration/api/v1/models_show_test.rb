@@ -272,4 +272,18 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "GET /models/:slug carries the rear views and the lighter holos" do
+    model = create(:model)
+    model.landed_starboard_view.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "landed_starboard.png")
+    model.holo_lite.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_lite.glb")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      media = parsed_body["media"]
+
+      assert_equal "landed_starboard.png", media.dig("landedStarboardView", "name")
+      assert_equal "flight_holo_lite.glb", media.dig("holoLite", "name")
+      assert_nil media.dig("holoTextured", "url")
+    end
+  end
 end

@@ -10354,6 +10354,62 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holo:
           "$ref": "#/components/schemas/MediaFile"
+        angledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        rearView:
+          "$ref": "#/components/schemas/MediaFile"
+        rearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        holoLite:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedHoloLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
         rsiStoreImage:
@@ -19797,6 +19853,118 @@ components:
           - string
           - 'null'
         landedAngledViewColored:
+          type:
+          - string
+          - 'null'
+        angledRearView:
+          type:
+          - string
+          - 'null'
+        angledRearViewColored:
+          type:
+          - string
+          - 'null'
+        bottomView:
+          type:
+          - string
+          - 'null'
+        bottomViewColored:
+          type:
+          - string
+          - 'null'
+        rearView:
+          type:
+          - string
+          - 'null'
+        rearViewColored:
+          type:
+          - string
+          - 'null'
+        starboardView:
+          type:
+          - string
+          - 'null'
+        starboardViewColored:
+          type:
+          - string
+          - 'null'
+        extendedAngledRearView:
+          type:
+          - string
+          - 'null'
+        extendedAngledRearViewColored:
+          type:
+          - string
+          - 'null'
+        extendedBottomView:
+          type:
+          - string
+          - 'null'
+        extendedBottomViewColored:
+          type:
+          - string
+          - 'null'
+        extendedRearView:
+          type:
+          - string
+          - 'null'
+        extendedRearViewColored:
+          type:
+          - string
+          - 'null'
+        extendedStarboardView:
+          type:
+          - string
+          - 'null'
+        extendedStarboardViewColored:
+          type:
+          - string
+          - 'null'
+        landedAngledRearView:
+          type:
+          - string
+          - 'null'
+        landedAngledRearViewColored:
+          type:
+          - string
+          - 'null'
+        landedBottomView:
+          type:
+          - string
+          - 'null'
+        landedBottomViewColored:
+          type:
+          - string
+          - 'null'
+        landedRearView:
+          type:
+          - string
+          - 'null'
+        landedRearViewColored:
+          type:
+          - string
+          - 'null'
+        landedStarboardView:
+          type:
+          - string
+          - 'null'
+        landedStarboardViewColored:
+          type:
+          - string
+          - 'null'
+        holoLite:
+          type:
+          - string
+          - 'null'
+        extendedHoloLite:
+          type:
+          - string
+          - 'null'
+        landedHoloLite:
+          type:
+          - string
+          - 'null'
+        holoTextured:
           type:
           - string
           - 'null'

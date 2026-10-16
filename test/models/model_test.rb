@@ -810,4 +810,14 @@ class ModelSizeTest < ActiveSupport::TestCase
   test "the filters offer exactly what the column may hold" do
     assert_equal Model::SIZES, Model.size_filters.map(&:value)
   end
+
+  test "a list preloads no detail-only attachment" do
+    preloaded = Model.list_attachment_preloads.map { |preload| preload.keys.first }
+
+    assert_includes preloaded, :angled_view_attachment
+    assert_includes preloaded, :holo_lite_attachment
+    Model::DETAIL_ATTACHMENT_NAMES.each do |name|
+      assert_not_includes preloaded, :"#{name}_attachment"
+    end
+  end
 end

@@ -53,7 +53,16 @@ const quickLook = usesQuickLook();
 // Quick Look prepares on the tap, so the button stands on the cheap check alone.
 const deferred = ref(false);
 
-const holoUrl = computed(() => props.model.media.holo?.url);
+// The flight holo, or its lite export where the 3D view shows that one: the
+// same hull in the same units, minus the interior, so the measurement of the
+// one vouches for the other -- and a phone converts the lighter file.
+const holoUrl = computed(() => {
+  const { holo, holoLite } = props.model.media;
+
+  return [holo?.url, holoLite?.url].find(
+    (url) => !!url && url === props.displayedHoloUrl,
+  );
+});
 
 // Only a holo exported in meters can be placed at true size.
 const { isFeatureEnabled } = useFeatures();
@@ -63,7 +72,6 @@ const candidate = computed(
     isFeatureEnabled(FeatureFlagName.HOLO_AR) &&
     props.active &&
     !!holoUrl.value &&
-    props.displayedHoloUrl === holoUrl.value &&
     !!props.model.holoToScale &&
     mayHaveAr(),
 );

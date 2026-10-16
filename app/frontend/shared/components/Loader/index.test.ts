@@ -13,6 +13,21 @@ describe("BaseLoader", () => {
     expect(wrapper.find("div").exists()).toBe(false);
   });
 
+  it("waits before it shows, unless it is immediate", () => {
+    const transitionNames = (immediate: boolean) =>
+      mount(Component, { props: { loading: true, immediate, progress: 40 } })
+        .findAllComponents({ name: "Transition" })
+        .map((transition) => transition.props("name"));
+
+    expect(transitionNames(false)).toEqual(["fade", "fade", "fade"]);
+    // The progress bars too, or they would trail the cubes by half a second.
+    expect(transitionNames(true)).toEqual([
+      "fade-quick",
+      "fade-quick",
+      "fade-quick",
+    ]);
+  });
+
   it("renders centered loader", () => {
     const wrapper = mount(Component, { propsData: { loading: true } });
     const mainElement = wrapper.find("div");

@@ -54,7 +54,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Lege hier einen Ordner mit Ansichten namens top.png, side.png, front.png und angled.png ab. Suffix _colored für den lackierten Satz, Präfix extended_ für die ausgefahrene und landed_ für die gelandete Variante. Das Präfix flight_ oder gar kein Präfix landet im Standardsatz. holo.gltf wird mit denselben Präfixen ebenfalls übernommen.",
+            "hint": "Lege hier einen Ordner mit Ansichten namens top.png, side.png, front.png und angled.png ab. Suffix _colored für den lackierten Satz, Präfix extended_ für die ausgefahrene und landed_ für die gelandete Variante. Das Präfix flight_ oder gar kein Präfix landet im Standardsatz. holo.gltf wird mit denselben Präfixen ebenfalls übernommen. Die Ansichten von hinten und unten heißen angled_rear.png, bottom.png, rear.png und starboard.png. holo_lite.glb, das Holo ohne Innenraum, nimmt dieselben Präfixe; holo_textured.glb landet nur im Standardsatz.",
             "uploading": {
               "one": "Eine Datei wird hochgeladen…",
               "other": "%{count} Dateien werden hochgeladen…"

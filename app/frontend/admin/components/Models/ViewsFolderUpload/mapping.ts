@@ -25,12 +25,40 @@ export const VIEW_FIELDS = [
   "landedSideViewColored",
   "landedFrontViewColored",
   "landedAngledViewColored",
+  "angledRearView",
+  "bottomView",
+  "rearView",
+  "starboardView",
+  "angledRearViewColored",
+  "bottomViewColored",
+  "rearViewColored",
+  "starboardViewColored",
+  "extendedAngledRearView",
+  "extendedBottomView",
+  "extendedRearView",
+  "extendedStarboardView",
+  "extendedAngledRearViewColored",
+  "extendedBottomViewColored",
+  "extendedRearViewColored",
+  "extendedStarboardViewColored",
+  "landedAngledRearView",
+  "landedBottomView",
+  "landedRearView",
+  "landedStarboardView",
+  "landedAngledRearViewColored",
+  "landedBottomViewColored",
+  "landedRearViewColored",
+  "landedStarboardViewColored",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export const HOLO_FIELDS = [
   "holo",
   "extendedHolo",
   "landedHolo",
+  "holoLite",
+  "extendedHoloLite",
+  "landedHoloLite",
+  "holoTextured",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export type ViewField = (typeof VIEW_FIELDS)[number];
@@ -49,11 +77,24 @@ export type MappedFile = {
 };
 
 // top.png, angled_colored.png, extended-side.png, landed-holo.glb,
-// flight_top.png. The separator, the case and a spelled-out "view" are all
-// optional, so a folder named by hand lands where one named by a script does.
+// flight_top.png, flight_angled_rear.png, landed_holo_lite.glb. The separator,
+// the case and a spelled-out "view" are all optional, so a folder named by hand
+// lands where one named by a script does.
 const VIEW_NAME =
-  /^((?:extended|landed|flight)[-_ ]?)?(top|side|front|angled)([-_ ]?view)?([-_ ]?colored)?$/i;
-const HOLO_NAME = /^((?:extended|landed|flight)[-_ ]?)?holo$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?(top|side|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
+const HOLO_NAME =
+  /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured))?$/i;
+
+const VIEWPOINTS: Record<string, string> = {
+  top: "top",
+  side: "side",
+  front: "front",
+  angled: "angled",
+  angledrear: "angledRear",
+  bottom: "bottom",
+  rear: "rear",
+  starboard: "starboard",
+};
 
 // The name alone is not enough: a Blender export drops holo.blend, holo.obj and
 // holo.mtl beside the glTF, and every one of them answers to "holo".
@@ -78,7 +119,7 @@ const prefixFor = (raw?: string): "extended" | "landed" | undefined => {
 };
 
 const capitalize = (word: string) =>
-  `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
+  `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
 
 export const fieldFor = (filename: string): FolderField | undefined => {
   // A folder picked through the file input carries its path in the name.
@@ -94,8 +135,16 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     }
 
     const prefix = prefixFor(holo[1]);
+    const variant = holo[2]?.toLowerCase();
 
-    return (prefix ? `${prefix}Holo` : "holo") as HoloField;
+    // Only the flying pose is exported painted.
+    if (variant === "textured" && prefix) {
+      return undefined;
+    }
+
+    const base = prefix ? `${prefix}Holo` : "holo";
+
+    return (variant ? `${base}${capitalize(variant)}` : base) as HoloField;
   }
 
   const view = VIEW_NAME.exec(stem);
@@ -104,12 +153,14 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     return undefined;
   }
 
-  const [, state, viewpoint, , colored] = view;
+  const [, state, rawViewpoint, , colored] = view;
   const prefix = prefixFor(state);
+  const viewpoint =
+    VIEWPOINTS[rawViewpoint.toLowerCase().replace(/[-_ ]/g, "")];
 
   const base = prefix
     ? `${prefix}${capitalize(viewpoint)}View`
-    : `${viewpoint.toLowerCase()}View`;
+    : `${viewpoint}View`;
 
   return (colored ? `${base}Colored` : base) as ViewField;
 };

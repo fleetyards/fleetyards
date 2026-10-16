@@ -26,7 +26,9 @@
   gap: 20px;
   position: relative;
 
-  > div {
+  // A class rather than `> div`: the loader is a child of the grid too, and as a
+  // flex box its four cubes lay out in a line instead of folding as a square.
+  .fleetchart-views__cell {
     display: flex;
     justify-content: center;
     align-items: center;

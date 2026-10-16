@@ -23852,6 +23852,7 @@ components:
       - fleet_tours
       - hangar_inventories
       - holo_ar
+      - holo_textured
       - loadout_editor
       - oauth-applications
       - oauth-bluesky
@@ -23874,6 +23875,7 @@ components:
       - FLEET_TOURS
       - HANGAR_INVENTORIES
       - HOLO_AR
+      - HOLO_TEXTURED
       - LOADOUT_EDITOR
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
@@ -34643,6 +34645,62 @@ components:
         topViewColored:
           "$ref": "#/components/schemas/MediaFile"
         holo:
+          "$ref": "#/components/schemas/MediaFile"
+        angledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        rearView:
+          "$ref": "#/components/schemas/MediaFile"
+        rearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedBottomViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedRearViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedStarboardViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        holoLite:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedHoloLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
           "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"

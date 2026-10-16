@@ -122,6 +122,55 @@ describe("the views themselves", () => {
     ]);
   });
 
+  it("draws the views from behind below the others when the ship has them", async () => {
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      angledRearView: file("angled-rear"),
+      bottomView: file("bottom"),
+      rearView: file("rear"),
+      starboardView: file("starboard"),
+    });
+
+    expect(sources(wrapper)).toEqual([
+      "https://cdn.test/angled?large",
+      "https://cdn.test/top?large",
+      "https://cdn.test/front?large",
+      "https://cdn.test/side?large",
+      "https://cdn.test/angled-rear?large",
+      "https://cdn.test/bottom?large",
+      "https://cdn.test/rear?large",
+      "https://cdn.test/starboard?large",
+    ]);
+  });
+
+  it("leaves no empty cells for a ship without the views from behind", async () => {
+    const wrapper = await mountViews(FLIGHT_VIEWS);
+
+    expect(wrapper.findAll(".fleetchart-views__cell")).toHaveLength(4);
+  });
+
+  it("leaves the flying views from behind out under a state's own views", async () => {
+    const wrapper = await mountViews(
+      {
+        ...FLIGHT_VIEWS,
+        rearView: file("rear"),
+        landedTopView: file("landed-top"),
+      },
+      ModelStateEnum.LANDED,
+    );
+
+    expect(sources(wrapper)).not.toContain("https://cdn.test/rear?large");
+  });
+
+  it("keeps the flying views from behind for a state that only has figures", async () => {
+    const wrapper = await mountViews(
+      { ...FLIGHT_VIEWS, rearView: file("rear") },
+      ModelStateEnum.LANDED,
+    );
+
+    expect(sources(wrapper)).toContain("https://cdn.test/rear?large");
+  });
+
   it("takes the medium variant on a phone", async () => {
     setViewportWidth(500);
 

@@ -20,6 +20,10 @@ export enum ModelViewEnum {
   TOP = "top",
   FRONT = "front",
   SIDE = "side",
+  ANGLED_REAR = "angledRear",
+  BOTTOM = "bottom",
+  REAR = "rear",
+  STARBOARD = "starboard",
 }
 
 // The order the selector offers them in, and the order a fallback walks back to.
@@ -36,10 +40,22 @@ export const MODEL_VIEWS = [
   ModelViewEnum.SIDE,
 ] as const;
 
+// The same ship seen from behind and below. Only the detail endpoint carries
+// these, so a ship from a list never has them.
+export const MODEL_REAR_VIEWS = [
+  ModelViewEnum.ANGLED_REAR,
+  ModelViewEnum.BOTTOM,
+  ModelViewEnum.REAR,
+  ModelViewEnum.STARBOARD,
+] as const;
+
+const ALL_MODEL_VIEWS = [...MODEL_VIEWS, ...MODEL_REAR_VIEWS];
+
 type ViewKeys = { regular: keyof ModelMedia; colored: keyof ModelMedia };
 
 type StateMedia = {
   holo: keyof ModelMedia;
+  holoLite: keyof ModelMedia;
   views: Record<ModelViewEnum, ViewKeys>;
 };
 
@@ -57,6 +73,7 @@ type StateMetrics = {
 const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
   [ModelStateEnum.FLIGHT]: {
     holo: "holo",
+    holoLite: "holoLite",
     views: {
       [ModelViewEnum.ANGLED]: {
         regular: "angledView",
@@ -68,10 +85,27 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
         colored: "frontViewColored",
       },
       [ModelViewEnum.SIDE]: { regular: "sideView", colored: "sideViewColored" },
+      [ModelViewEnum.ANGLED_REAR]: {
+        regular: "angledRearView",
+        colored: "angledRearViewColored",
+      },
+      [ModelViewEnum.BOTTOM]: {
+        regular: "bottomView",
+        colored: "bottomViewColored",
+      },
+      [ModelViewEnum.REAR]: {
+        regular: "rearView",
+        colored: "rearViewColored",
+      },
+      [ModelViewEnum.STARBOARD]: {
+        regular: "starboardView",
+        colored: "starboardViewColored",
+      },
     },
   },
   [ModelStateEnum.EXTENDED]: {
     holo: "extendedHolo",
+    holoLite: "extendedHoloLite",
     views: {
       [ModelViewEnum.ANGLED]: {
         regular: "extendedAngledView",
@@ -89,10 +123,27 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
         regular: "extendedSideView",
         colored: "extendedSideViewColored",
       },
+      [ModelViewEnum.ANGLED_REAR]: {
+        regular: "extendedAngledRearView",
+        colored: "extendedAngledRearViewColored",
+      },
+      [ModelViewEnum.BOTTOM]: {
+        regular: "extendedBottomView",
+        colored: "extendedBottomViewColored",
+      },
+      [ModelViewEnum.REAR]: {
+        regular: "extendedRearView",
+        colored: "extendedRearViewColored",
+      },
+      [ModelViewEnum.STARBOARD]: {
+        regular: "extendedStarboardView",
+        colored: "extendedStarboardViewColored",
+      },
     },
   },
   [ModelStateEnum.LANDED]: {
     holo: "landedHolo",
+    holoLite: "landedHoloLite",
     views: {
       [ModelViewEnum.ANGLED]: {
         regular: "landedAngledView",
@@ -109,6 +160,22 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
       [ModelViewEnum.SIDE]: {
         regular: "landedSideView",
         colored: "landedSideViewColored",
+      },
+      [ModelViewEnum.ANGLED_REAR]: {
+        regular: "landedAngledRearView",
+        colored: "landedAngledRearViewColored",
+      },
+      [ModelViewEnum.BOTTOM]: {
+        regular: "landedBottomView",
+        colored: "landedBottomViewColored",
+      },
+      [ModelViewEnum.REAR]: {
+        regular: "landedRearView",
+        colored: "landedRearViewColored",
+      },
+      [ModelViewEnum.STARBOARD]: {
+        regular: "landedStarboardView",
+        colored: "landedStarboardViewColored",
       },
     },
   },
@@ -153,19 +220,33 @@ function file(media: ModelMedia, key: keyof ModelMedia): MediaFile | undefined {
   return typeof value === "string" ? undefined : value;
 }
 
+function stateHolo(
+  model: Model,
+  state: ModelStateEnum,
+  preferLite: boolean,
+): MediaFile | undefined {
+  const full = file(model.media, STATE_MEDIA[state].holo);
+  const lite = file(model.media, STATE_MEDIA[state].holoLite);
+
+  return preferLite ? lite || full : full || lite;
+}
+
 // The state's own holo, then the flying one -- and then whatever holo the model
 // does have: a hull uploaded landed-first has no flying mesh to fall back to, and
 // the alternative is a 3D view button that opens nothing.
+//
+// `lite` decides which of a state's two exports comes first, never whether the
+// other one counts: the pose asked for matters more than the file size, so a
+// desktop showing a state with only a lite export shows that export.
 export function modelStateHolo(
   model: Model,
   state: ModelStateEnum,
+  { lite = false }: { lite?: boolean } = {},
 ): MediaFile | undefined {
   return (
-    file(model.media, STATE_MEDIA[state].holo) ||
-    model.media.holo ||
-    MODEL_STATES.map((other) =>
-      file(model.media, STATE_MEDIA[other].holo),
-    ).find(Boolean)
+    stateHolo(model, state, lite) ||
+    stateHolo(model, ModelStateEnum.FLIGHT, lite) ||
+    MODEL_STATES.map((other) => stateHolo(model, other, lite)).find(Boolean)
   );
 }
 
@@ -192,6 +273,36 @@ export function modelStateView(
     regular: file(model.media, fallback.regular),
     colored: file(model.media, fallback.colored),
   };
+}
+
+function hasOwnViews(
+  model: Model,
+  state: ModelStateEnum,
+  views: readonly ModelViewEnum[],
+): boolean {
+  const keys = STATE_MEDIA[state].views;
+
+  return views.some(
+    (view) =>
+      file(model.media, keys[view].regular) ||
+      file(model.media, keys[view].colored),
+  );
+}
+
+// A state with its own views from the front but none from behind leaves the rear
+// row out: a landed front row over a flying rear row draws one ship in two poses.
+// Inside a row, a missing view still falls back to the flight one, as the front
+// row always has, and a state with rear views but no front ones keeps the flight
+// front row -- neither is a set the export produces.
+export function modelStateShowsRearViews(
+  model: Model,
+  state: ModelStateEnum,
+): boolean {
+  return (
+    state === ModelStateEnum.FLIGHT ||
+    hasOwnViews(model, state, MODEL_REAR_VIEWS) ||
+    !hasOwnViews(model, state, MODEL_VIEWS)
+  );
 }
 
 // Each figure falls back on its own: a landed holo measures all three, but a
@@ -226,11 +337,12 @@ export function modelStateMetrics(model: Model, state: ModelStateEnum) {
 }
 
 function hasStateMedia(model: Model, state: ModelStateEnum): boolean {
-  const { holo, views } = STATE_MEDIA[state];
+  const { holo, holoLite, views } = STATE_MEDIA[state];
 
   return Boolean(
     file(model.media, holo) ||
-    MODEL_VIEWS.some(
+    file(model.media, holoLite) ||
+    ALL_MODEL_VIEWS.some(
       (view) =>
         file(model.media, views[view].regular) ||
         file(model.media, views[view].colored),
@@ -263,7 +375,7 @@ export function modelHasState(model: Model, state: ModelStateEnum): boolean {
 
 export const useModelStates = (model: MaybeRefOrGetter<Model | undefined>) => {
   // What the views toggle offers: a state with any image or a measurement of its
-  // own has something to show across the four views and the dimension tiles.
+  // own has something to show across the views and the dimension tiles.
   const availableStates = computed<ModelStateEnum[]>(() => {
     const value = toValue(model);
 
@@ -284,7 +396,10 @@ export const useModelStates = (model: MaybeRefOrGetter<Model | undefined>) => {
     }
 
     return MODEL_STATES.filter((state) =>
-      file(value.media, STATE_MEDIA[state].holo),
+      Boolean(
+        file(value.media, STATE_MEDIA[state].holo) ||
+        file(value.media, STATE_MEDIA[state].holoLite),
+      ),
     );
   });
 

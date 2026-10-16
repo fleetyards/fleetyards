@@ -11,18 +11,25 @@ type Props = {
   relative?: boolean;
   inline?: boolean;
   progress?: number;
+  // Shown at once. By default a loader waits half a second, so a quick load
+  // never flashes one; where the content around it already reacts to the click,
+  // that wait reads as nothing happening.
+  immediate?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   loading: false,
   fixed: false,
   inline: false,
   progress: undefined,
+  immediate: false,
 });
+
+const transition = computed(() => (props.immediate ? "fade-quick" : "fade"));
 </script>
 
 <template>
-  <transition name="fade">
+  <transition :name="transition">
     <div
       v-if="loading"
       :class="{
@@ -38,7 +45,7 @@ withDefaults(defineProps<Props>(), {
       <div class="cube4 cube"></div>
       <div class="cube3 cube"></div>
 
-      <transition name="fade">
+      <transition :name="transition">
         <div
           v-if="progress != null && progress < 100"
           class="progress progress-left"
@@ -46,7 +53,7 @@ withDefaults(defineProps<Props>(), {
         ></div>
       </transition>
 
-      <transition name="fade">
+      <transition :name="transition">
         <div
           v-if="progress != null && progress < 100"
           class="progress progress-right"

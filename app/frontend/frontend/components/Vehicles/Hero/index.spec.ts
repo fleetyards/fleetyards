@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
+import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
 import {
   type Vehicle,
@@ -11,7 +12,8 @@ import {
 
 // The viewer pulls three.js in, which the test environment cannot load.
 vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
-  default: { name: "HoloViewer", template: "<div />" },
+  __esModule: true,
+  default: { name: "HoloViewer", props: ["models"], template: "<div />" },
 }));
 
 vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
@@ -98,6 +100,43 @@ const mount = (compact: boolean, overrides: Partial<Vehicle> = {}) =>
   });
 
 describe("VehicleHero", () => {
+  describe("the holo", () => {
+    const withHolos = {
+      model: {
+        ...vehicle.model,
+        media: {
+          holo: { url: "https://example.test/holo.glb" },
+          holoLite: { url: "https://example.test/holo_lite.glb" },
+        },
+      },
+    } as Partial<Vehicle>;
+
+    // The testing store stubs its actions, so the 3D view starts open.
+    const shownHolo = async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { vehicle: { ...vehicle, ...withHolos }, compact: false },
+        plugins: [router],
+        initialState: { vehicleView: { holoVehicleIds: [vehicle.id] } },
+      });
+      await flushPromises();
+
+      return wrapper.findComponent({ name: "HoloViewer" }).props("models")[0]
+        .path;
+    };
+
+    it("loads the lite export on a phone", async () => {
+      setViewport(true);
+
+      expect(await shownHolo()).toBe("https://example.test/holo_lite.glb");
+    });
+
+    it("loads the full holo elsewhere", async () => {
+      setViewport(false);
+
+      expect(await shownHolo()).toBe("https://example.test/holo.glb");
+    });
+  });
+
   it("names the ship and where it is", async () => {
     const wrapper = await mount(false);
 

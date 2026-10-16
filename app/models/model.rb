@@ -313,7 +313,13 @@ class Model < ApplicationRecord
       {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db,
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
-    ] + attachment_preloads
+    ] + list_attachment_preloads
+  end
+
+  def self.list_attachment_preloads
+    detail_only = DETAIL_ATTACHMENT_NAMES.map { |name| :"#{name}_attachment" }
+
+    attachment_preloads.reject { |preload| detail_only.include?(preload.keys.first) }
   end
 
   enum :dock_size,
@@ -374,6 +380,31 @@ class Model < ApplicationRecord
   has_one_attached :landed_front_view_colored
   has_one_attached :landed_angled_view_colored
 
+  # Only the ship page shows these, so a list neither preloads nor renders them:
+  # the views are already about half the bytes of a model in one.
+  DETAIL_VIEW_ATTACHMENT_NAMES = %i[
+    angled_rear_view angled_rear_view_colored bottom_view bottom_view_colored
+    rear_view rear_view_colored starboard_view starboard_view_colored
+    extended_angled_rear_view extended_angled_rear_view_colored
+    extended_bottom_view extended_bottom_view_colored
+    extended_rear_view extended_rear_view_colored
+    extended_starboard_view extended_starboard_view_colored
+    landed_angled_rear_view landed_angled_rear_view_colored
+    landed_bottom_view landed_bottom_view_colored
+    landed_rear_view landed_rear_view_colored
+    landed_starboard_view landed_starboard_view_colored
+  ].freeze
+
+  # `holo_textured` is the painted, animated flight holo.
+  DETAIL_ATTACHMENT_NAMES = (DETAIL_VIEW_ATTACHMENT_NAMES + %i[holo_textured]).freeze
+
+  # The same export without the interior, for devices that cannot load the full
+  # one. Lists carry these beside `holo`: a vehicle in the hangar opens its holo
+  # from the list's copy of the model.
+  LITE_HOLO_ATTACHMENT_NAMES = %i[holo_lite extended_holo_lite landed_holo_lite].freeze
+
+  (DETAIL_ATTACHMENT_NAMES + LITE_HOLO_ATTACHMENT_NAMES).each { |name| has_one_attached name }
+
   # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
   # so transparent padding around the hull reads as part of the ship. The store
   # images are left alone: they are framed artwork, not measured against
@@ -385,7 +416,8 @@ class Model < ApplicationRecord
     :extended_front_view_colored, :extended_angled_view_colored,
     :landed_top_view, :landed_side_view, :landed_front_view, :landed_angled_view,
     :landed_top_view_colored, :landed_side_view_colored,
-    :landed_front_view_colored, :landed_angled_view_colored
+    :landed_front_view_colored, :landed_angled_view_colored,
+    *DETAIL_VIEW_ATTACHMENT_NAMES
 
   # Which holo describes which set of columns. A ship is measured from the file
   # that shows it in that state, so attaching one is what fills them -- no task

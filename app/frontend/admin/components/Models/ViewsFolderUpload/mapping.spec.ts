@@ -27,6 +27,31 @@ describe("fieldFor", () => {
     expect(fieldFor("extended_holo.gltf")).toBe("extendedHolo");
   });
 
+  it("maps the views from behind and below", () => {
+    expect(fieldFor("flight_angled_rear.png")).toBe("angledRearView");
+    expect(fieldFor("angled-rear-colored.png")).toBe("angledRearViewColored");
+    expect(fieldFor("bottom.png")).toBe("bottomView");
+    expect(fieldFor("extended_rear_view.png")).toBe("extendedRearView");
+    expect(fieldFor("landed_starboard_colored.png")).toBe(
+      "landedStarboardViewColored",
+    );
+    expect(fieldFor("Landed_AngledRear.PNG")).toBe("landedAngledRearView");
+  });
+
+  it("maps the lite holos of every state", () => {
+    expect(fieldFor("flight_holo_lite.glb")).toBe("holoLite");
+    expect(fieldFor("holo-lite.gltf")).toBe("holoLite");
+    expect(fieldFor("extended_holo_lite.glb")).toBe("extendedHoloLite");
+    expect(fieldFor("landed_holo_lite.glb")).toBe("landedHoloLite");
+  });
+
+  // Only the flying pose is exported painted, so a prefixed one has nowhere to go.
+  it("maps the textured holo of the flight state alone", () => {
+    expect(fieldFor("flight_holo_textured.glb")).toBe("holoTextured");
+    expect(fieldFor("holo_textured.glb")).toBe("holoTextured");
+    expect(fieldFor("landed_holo_textured.glb")).toBeUndefined();
+  });
+
   // A Blender export drops these beside the glTF, and every one of them answers
   // to "holo".
   it("leaves the rest of a 3D export alone", () => {
