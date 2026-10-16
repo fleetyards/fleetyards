@@ -493,7 +493,7 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "Seite",
+          "port": "Backbord",
           "top": "Oben",
           "angled": "Schräg",
           "front": "Front"

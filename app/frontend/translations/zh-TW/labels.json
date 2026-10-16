@@ -493,7 +493,7 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "側面",
+          "port": "左舷",
           "top": "頂部",
           "angled": "斜角",
           "front": "正面"

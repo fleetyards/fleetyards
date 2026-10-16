@@ -3,7 +3,7 @@ import { type Transform } from "panzoom";
 
 export enum FleetchartViewpoints {
   TOP = "top",
-  SIDE = "side",
+  PORT = "port",
   ANGLED = "angled",
   FRONT = "front",
 }
@@ -80,7 +80,16 @@ export const useFleetchartStore = defineStore("fleetchart", {
       return (namespace: string) => state.scale[namespace] || 1;
     },
     fleetchartViewpoint: (state) => {
-      return (namespace: string) => state.viewpoint[namespace] || "side";
+      return (namespace: string) => {
+        const viewpoint = state.viewpoint[namespace];
+
+        // The port viewpoint was persisted as "side" before it was renamed.
+        if (!viewpoint || (viewpoint as string) === "side") {
+          return FleetchartViewpoints.PORT;
+        }
+
+        return viewpoint;
+      };
     },
     fleetchartZoomData: (state) => {
       return (namespace: string) => state.zoomData[namespace] || {};

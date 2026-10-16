@@ -124,8 +124,8 @@ const viewpointTop = computed(() => {
   return props.viewpoint === "top";
 });
 
-const viewpointSide = computed(() => {
-  return props.viewpoint === "side";
+const viewpointPort = computed(() => {
+  return props.viewpoint === "port";
 });
 
 const viewpointAngled = computed(() => {
@@ -253,7 +253,7 @@ const extractImageFromModel = (
     return topView(model);
   }
 
-  if (viewpointSide.value && model.media.portView) {
+  if (viewpointPort.value && model.media.portView) {
     return portView(model);
   }
 
@@ -291,7 +291,7 @@ const extractImageHeightFromModel = (
     return model.media.topView.height;
   }
 
-  if (viewpointSide.value && model.media.portView) {
+  if (viewpointPort.value && model.media.portView) {
     return model.media.portView.height;
   }
 
@@ -309,7 +309,7 @@ const extractImageWidthFromModel = (
     return model.media.topView.width;
   }
 
-  if (viewpointSide.value && model.media.portView) {
+  if (viewpointPort.value && model.media.portView) {
     return model.media.portView.width;
   }
 

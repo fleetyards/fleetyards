@@ -493,7 +493,7 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "Lato",
+          "port": "Sinistra",
           "top": "Alto",
           "angled": "Angolato",
           "front": "Fronte"

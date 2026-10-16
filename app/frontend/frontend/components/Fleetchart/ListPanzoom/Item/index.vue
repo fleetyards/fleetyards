@@ -28,7 +28,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  viewpoint: FleetchartViewpoints.SIDE,
+  viewpoint: FleetchartViewpoints.PORT,
   showLabel: false,
   showStatus: false,
   sizeMultiplicator: 1,
@@ -48,7 +48,7 @@ const imageByViewpoint = computed<MediaFile | undefined>(() => {
     return frontView.value;
   }
 
-  if (props.viewpoint === "side") {
+  if (props.viewpoint === "port") {
     return portView.value;
   }
 

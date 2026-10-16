@@ -493,7 +493,7 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "Lateral",
+          "port": "Babor",
           "top": "Superior",
           "angled": "Angular",
           "front": "Frontal"
