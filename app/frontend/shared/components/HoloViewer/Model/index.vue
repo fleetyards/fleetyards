@@ -112,6 +112,10 @@ const playAnimations = (scene: Group, animations: AnimationClip[]) => {
   animations.forEach((clip) => {
     mixer.value?.clipAction(clip).play();
   });
+
+  // Into the first frame's pose before the scene is measured and centred: the
+  // bind pose may have the gear or wings somewhere the animation never shows.
+  mixer.value.update(0);
 };
 
 onUnmounted(() => {
