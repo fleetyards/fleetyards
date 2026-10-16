@@ -205,7 +205,9 @@ onBeforeUnmount(() => {
 });
 
 const onKeydown = (event: KeyboardEvent) => {
-  if (event.key !== "Escape") return;
+  // A control inside that answered Escape itself, such as an open dropdown,
+  // keeps it: the press closed that, not the picker.
+  if (event.key !== "Escape" || event.defaultPrevented) return;
 
   event.stopPropagation();
   emit("close");
@@ -215,7 +217,11 @@ const focusSearch = () => {
   root.value?.querySelector<HTMLInputElement>("input")?.focus();
 };
 
-defineExpose({ focusSearch, resetFilters });
+const focus = () => {
+  root.value?.focus();
+};
+
+defineExpose({ focus, focusSearch, resetFilters });
 
 const accessibleName = (option: LoadoutPickerOption) =>
   [
@@ -236,6 +242,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
     class="loadout-picker"
     data-test="loadout-picker"
     :aria-label="title"
+    tabindex="-1"
     @keydown="onKeydown"
   >
     <header class="loadout-picker__header">

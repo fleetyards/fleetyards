@@ -249,6 +249,22 @@ describe("LoadoutPicker", () => {
     socket.remove();
   });
 
+  it("leaves an Escape a control inside already answered", async () => {
+    const wrapper = await mount();
+    const event = new KeyboardEvent("keydown", {
+      key: "Escape",
+      bubbles: true,
+      cancelable: true,
+    });
+    event.preventDefault();
+
+    wrapper
+      .get("[data-test='loadout-picker-search'] input")
+      .element.dispatchEvent(event);
+
+    expect(wrapper.emitted("close")).toBeUndefined();
+  });
+
   it("closes on Escape and from its close button", async () => {
     const wrapper = await mount();
 
