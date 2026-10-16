@@ -10,7 +10,7 @@ const ALIASES: Record<string, HardpointCategoryEnum> = {
 };
 
 const isCategory = (category: string): category is HardpointCategoryEnum =>
-  category in HARDPOINT_GLYPHS;
+  Object.hasOwn(HARDPOINT_GLYPHS, category);
 
 // A category a patch introduces before the enum knows it gets the unknown
 // glyph, which says exactly that rather than leaving a gap.

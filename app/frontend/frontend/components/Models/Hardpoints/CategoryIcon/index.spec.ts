@@ -33,6 +33,12 @@ describe("HardpointCategoryIcon", () => {
     );
   });
 
+  it("does not mistake an inherited key for a category", () => {
+    expect(categoryIcon("constructor")).toBe(
+      HARDPOINT_GLYPHS[HardpointCategoryEnum.UNKNOWN],
+    );
+  });
+
   it("renders the glyph", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { category: "radar" },
