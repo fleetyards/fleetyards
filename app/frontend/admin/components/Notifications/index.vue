@@ -8,7 +8,6 @@ export default {
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAdminNotificationsUnreadCount as useAdminNotificationsUnreadCountQuery } from "@/services/fyAdminApi";
-import { useAdminNotificationUpdates } from "@/admin/composables/useAdminNotificationUpdates";
 
 type Props = {
   authenticated?: boolean;
@@ -32,8 +31,6 @@ const active = computed(
 );
 
 const enabled = computed(() => props.authenticated);
-
-useAdminNotificationUpdates(enabled);
 
 const { data: unreadCount } = useAdminNotificationsUnreadCountQuery({
   query: { enabled, refetchInterval: 60_000 },

@@ -11,6 +11,7 @@ import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import AdminNotificationsNav from "@/admin/components/Notifications/index.vue";
+import { useAdminNotificationUpdates } from "@/admin/composables/useAdminNotificationUpdates";
 import { routes } from "@/admin/pages/routes";
 import { type RouteRecordRaw } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -39,6 +40,12 @@ const { isAuthenticated, currentUser, resourceAccess } =
 const hasAccessTo = (access?: string[]) => {
   return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
 };
+
+// Here rather than in the notifications row, which the mobile tab bar renders a
+// second time while this nav is still mounted behind it.
+useAdminNotificationUpdates(
+  computed(() => isAuthenticated.value && !!sessionStore.currentUser),
+);
 
 /*
  * Nineteen sections stood side by side, with Maintenance the only group. Grouped
