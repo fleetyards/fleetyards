@@ -9,7 +9,8 @@ module ScData
   #
   # Given a model, only that ship is synced, and its listing is compared render
   # by render even when the digest says nothing changed, so a render detached in
-  # the admin comes back.
+  # the admin comes back. A view uploaded by hand is kept: the stored md5s still
+  # name the render it replaced.
   class ShipViewsImportJob < ApplicationJob
     sidekiq_options queue: "loaders"
 

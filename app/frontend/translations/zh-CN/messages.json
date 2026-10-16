@@ -543,7 +543,7 @@
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
           "importPaints": "确定要从机库数据导入此型号的涂装吗? 如果来源将某个涂装标记为整个系列共用，则会为该系列的每个型号都导入一份。",
-          "syncShipViews": "确定要从渲染存储桶同步此型号的舰船视图吗？与已附加文件不同的渲染图将被替换。",
+          "syncShipViews": "确定要从渲染存储桶同步此型号的舰船视图吗？新的和已更改的渲染图会被附加，已移除的会恢复。手动上传的视图将保留。",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
           "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",
