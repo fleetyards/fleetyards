@@ -101,9 +101,9 @@ provide(
 
 const modelState = ref(ModelStateEnum.FLIGHT);
 
-// The Mk V Centaurus' racks as the game files place them: an armoury, a two-way
-// rack and two gadget hooks, plus a smuggling stash from the Ironclad to show a
-// slot that takes cargo and armour.
+// Racks modelled on the Mk V Centaurus' armoury and gadget hooks, one of them
+// kept for multitools the way the Clipper's are, plus the Ironclad's smuggling
+// stash for a slot that takes cargo and armour.
 const sampleWeaponRacks: WeaponRack[] = [
   {
     key: "Weapon_Rack_RSI_Perseus_19_Slot",
