@@ -275,6 +275,34 @@ export function modelStateView(
   };
 }
 
+function hasOwnViews(
+  model: Model,
+  state: ModelStateEnum,
+  views: readonly ModelViewEnum[],
+): boolean {
+  const keys = STATE_MEDIA[state].views;
+
+  return views.some(
+    (view) =>
+      file(model.media, keys[view].regular) ||
+      file(model.media, keys[view].colored),
+  );
+}
+
+// The views from behind borrow the flight set only as a whole row, and only
+// where the views above them are the flight set too: a landed front row over a
+// flying rear row draws one ship in two poses.
+export function modelStateShowsRearViews(
+  model: Model,
+  state: ModelStateEnum,
+): boolean {
+  return (
+    state === ModelStateEnum.FLIGHT ||
+    hasOwnViews(model, state, MODEL_REAR_VIEWS) ||
+    !hasOwnViews(model, state, MODEL_VIEWS)
+  );
+}
+
 // Each figure falls back on its own: a landed holo measures all three, but a
 // state entered by hand may carry only the one that differs.
 export function modelStateMetrics(model: Model, state: ModelStateEnum) {

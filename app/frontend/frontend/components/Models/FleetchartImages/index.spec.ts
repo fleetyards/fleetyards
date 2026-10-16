@@ -149,6 +149,28 @@ describe("the views themselves", () => {
     expect(wrapper.findAll(".fleetchart-views > div")).toHaveLength(4);
   });
 
+  it("leaves the flying views from behind out under a state's own views", async () => {
+    const wrapper = await mountViews(
+      {
+        ...FLIGHT_VIEWS,
+        rearView: file("rear"),
+        landedTopView: file("landed-top"),
+      },
+      ModelStateEnum.LANDED,
+    );
+
+    expect(sources(wrapper)).not.toContain("https://cdn.test/rear?large");
+  });
+
+  it("keeps the flying views from behind for a state that only has figures", async () => {
+    const wrapper = await mountViews(
+      { ...FLIGHT_VIEWS, rearView: file("rear") },
+      ModelStateEnum.LANDED,
+    );
+
+    expect(sources(wrapper)).toContain("https://cdn.test/rear?large");
+  });
+
   it("takes the medium variant on a phone", async () => {
     setViewportWidth(500);
 

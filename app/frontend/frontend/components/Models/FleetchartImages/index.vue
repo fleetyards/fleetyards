@@ -14,6 +14,7 @@ import {
   ModelStateEnum,
   ModelViewEnum,
   modelStateMetrics,
+  modelStateShowsRearViews,
   modelStateView,
   useModelStates,
 } from "@/frontend/composables/useModelStates";
@@ -94,13 +95,18 @@ const VIEW_SETS: ViewSet[] = [
 ];
 
 const viewSets = computed(() =>
-  VIEW_SETS.map((set) => ({
-    key: set.key,
-    angled: viewUrl(set.angled),
-    plan: viewUrl(set.plan),
-    end: viewUrl(set.end),
-    profile: viewUrl(set.profile),
-  })).filter((set) => set.angled || set.plan || set.end || set.profile),
+  VIEW_SETS.filter(
+    (set) =>
+      set.key !== "rear" || modelStateShowsRearViews(props.model, props.state),
+  )
+    .map((set) => ({
+      key: set.key,
+      angled: viewUrl(set.angled),
+      plan: viewUrl(set.plan),
+      end: viewUrl(set.end),
+      profile: viewUrl(set.profile),
+    }))
+    .filter((set) => set.angled || set.plan || set.end || set.profile),
 );
 
 const hasImages = computed(() => viewSets.value.length > 0);
