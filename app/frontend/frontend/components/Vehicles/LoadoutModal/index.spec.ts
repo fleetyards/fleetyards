@@ -58,6 +58,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
     invalidateHangarQueries: () => Promise.resolve(),
+    invalidateVehiclePage: () => Promise.resolve(),
   }),
 }));
 

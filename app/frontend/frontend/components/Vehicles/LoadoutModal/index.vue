@@ -37,7 +37,6 @@ import {
   VehicleLoadoutKindEnum,
   activateVehicleLoadout,
   createVehicleLoadout,
-  getShowVehicleQueryKey,
   getVehicleLoadoutsQueryKey,
   updateVehicleLoadout,
   useModelModules as useModelModulesQuery,
@@ -416,7 +415,8 @@ const queryClient = useQueryClient();
 
 const { displayAlert } = useAppNotifications();
 
-const { invalidateHangarQueries } = useVehicleMutations();
+const { invalidateHangarQueries, invalidateVehiclePage } =
+  useVehicleMutations();
 
 const saving = ref(false);
 
@@ -486,9 +486,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     await Promise.all([
       invalidateHangarQueries(),
-      queryClient.invalidateQueries({
-        queryKey: getShowVehicleQueryKey(props.vehicle.id),
-      }),
+      invalidateVehiclePage(props.vehicle),
       queryClient.invalidateQueries({
         queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
       }),
