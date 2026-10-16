@@ -162,12 +162,16 @@ module ScData
         # which is the same moment said in terms of what is actually true.
         update_params[:production_status] = "flight-ready" if model.build.blank?
 
-        apply(model, update_params.merge(update_reason: :sc_data_loader))
-
-        # Dual-write. Built from `update_params` before the reason is merged in:
-        # `update_reason` is an `attr_accessor` on Model for paper_trail's meta,
-        # not a column, so it has nowhere to land here.
+        # Dual-write, the build first. Saving the model broadcasts its payload,
+        # which renders -- and caches, under the key the save just bumped --
+        # whatever the build says at that moment; a build written after it
+        # leaves that payload stale until the model changes again. Built from
+        # `update_params` before the reason is merged in: `update_reason` is an
+        # `attr_accessor` on Model for paper_trail's meta, not a column, so it
+        # has nowhere to land on the build.
         build = apply_build(model, update_params.slice(*ModelBuild::FACTS))
+
+        apply(model, update_params.merge(update_reason: :sc_data_loader))
 
         # Recorded now because the build it is measured against is pruned after
         # three patches. Waiting until someone asks means there is nothing left

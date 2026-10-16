@@ -263,6 +263,22 @@ module ScData
         assert_equal [4, racks, 2], model.reload.values_at(:beds, :weapon_racks, :lockers)
       end
 
+      test "#load_model broadcasts the furniture the build now places, not the build it is replacing" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Rebuilt Interior")
+        create(:model_build, model:, environment: loader.sc_environment, version: loader.sc_version)
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => [], "interior" => {"beds" => 4}})
+
+        broadcast = nil
+        ActionCable.server.stubs(:broadcast).with { |stream, payload| broadcast = payload if stream == "models" && payload["id"] == model.id }
+
+        loader.load_model(Model.find(model.id))
+
+        assert_equal 4, broadcast.dig("metrics", "beds")
+      end
+
       test "#load_model clears furniture a build no longer places, and writes none for a ship without" do
         loader = ::ScData::Loader::ModelsLoader.new
         emptied = create(:model, name: "Emptied", beds: 4, lockers: 2, weapon_racks: [{"key" => "Weapon_Rack_Test", "count" => 1, "slots" => []}])
