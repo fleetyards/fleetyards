@@ -152,6 +152,7 @@ watch(
 
     <div class="component-page__masthead">
       <HardpointCategoryIcon
+        v-if="component.category"
         :category="component.category"
         class="component-page__icon"
       />
