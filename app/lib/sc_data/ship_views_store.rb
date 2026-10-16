@@ -41,7 +41,7 @@ module ScData
     end
 
     private def read_json(path)
-      JSON.parse(client.get_object(bucket:, key: key_for(path)).body.read)
+      JSON.parse(with_retries { client.get_object(bucket:, key: key_for(path)).body.read })
     end
   end
 end
