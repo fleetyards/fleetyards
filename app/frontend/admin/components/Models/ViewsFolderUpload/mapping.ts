@@ -65,8 +65,47 @@ export type ViewField = (typeof VIEW_FIELDS)[number];
 export type HoloField = (typeof HOLO_FIELDS)[number];
 export type FolderField = ViewField | HoloField;
 
+export type FieldState = "flight" | "extended" | "landed";
+
+export type FieldSection = {
+  state: FieldState;
+  holos: HoloField[];
+  views: ViewField[][];
+};
+
+// Each row follows the ship page's cells: angled, plan, end-on, profile.
+const VIEW_ROWS = [
+  ["angledView", "topView", "frontView", "sideView"],
+  ["angledViewColored", "topViewColored", "frontViewColored", "sideViewColored"],
+  ["angledRearView", "bottomView", "rearView", "starboardView"],
+  [
+    "angledRearViewColored",
+    "bottomViewColored",
+    "rearViewColored",
+    "starboardViewColored",
+  ],
+] as const satisfies readonly (readonly ViewField[])[];
+
+const inState = <T extends FolderField>(state: FieldState, field: T): T =>
+  (state === "flight"
+    ? field
+    : `${state}${field.charAt(0).toUpperCase()}${field.slice(1)}`) as T;
+
+export const FIELD_SECTIONS: readonly FieldSection[] = (
+  ["flight", "extended", "landed"] as const
+).map((state) => ({
+  state,
+  holos: (state === "flight"
+    ? (["holo", "holoLite", "holoTextured"] as const)
+    : (["holo", "holoLite"] as const)
+  ).map((field) => inState(state, field)),
+  views: VIEW_ROWS.map((row) => row.map((field) => inState(state, field))),
+}));
+
 // The order the fields are listed in, whatever order the folder was read in.
-const FIELD_ORDER: readonly FolderField[] = [...VIEW_FIELDS, ...HOLO_FIELDS];
+const FIELD_ORDER: readonly FolderField[] = FIELD_SECTIONS.flatMap(
+  (section) => [...section.holos, ...section.views.flat()],
+);
 
 export const isHoloField = (field: FolderField): field is HoloField =>
   (HOLO_FIELDS as readonly string[]).includes(field);

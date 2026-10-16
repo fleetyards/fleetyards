@@ -120,7 +120,8 @@ describe("mapFolderFiles", () => {
     expect(ignored).toEqual(["top_view.png"]);
   });
 
-  // However the folder was read: base set, colored set, extended set, holos.
+  // However the folder was read: state by state, holos before views, in the
+  // form's order.
   it("lists the fields in a fixed order", () => {
     const { matched } = map([
       "Carrack/front-colored.png",
@@ -132,12 +133,12 @@ describe("mapFolderFiles", () => {
     ]);
 
     expect(matched.map((entry) => entry.field)).toEqual([
-      "topView",
+      "holo",
       "angledView",
+      "topView",
       "topViewColored",
       "frontViewColored",
       "extendedTopView",
-      "holo",
     ]);
   });
 
@@ -153,12 +154,12 @@ describe("mapFolderFiles", () => {
     ]);
 
     expect(matched.map((entry) => entry.field)).toEqual([
-      "topView",
-      "sideView",
-      "frontView",
-      "angledView",
-      "angledViewColored",
       "holo",
+      "angledView",
+      "topView",
+      "frontView",
+      "sideView",
+      "angledViewColored",
     ]);
     expect(ignored).toEqual(["holo.blend"]);
   });
