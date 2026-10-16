@@ -71,9 +71,10 @@ class BuybackPledge < ApplicationRecord
 
   scope :model_slug_eq, ->(slug) { obtaining_model(slug) }
 
-  # A pack of several ships is listed as "2 ships and 4 items", naming none of
-  # them, so only its detail page can say which ships it holds.
-  MULTI_SHIP_SQL = "buyback_pledges.contained ~* '^[0-9]+[[:space:]]+ships[[:space:]]'"
+  # A pack of several ships is listed as "2 ships and 4 items", or "2 ships"
+  # alone, naming none of them, so only its detail page can say which ships it
+  # holds.
+  MULTI_SHIP_SQL = "buyback_pledges.contained ~* '^[0-9]+[[:space:]]+ships\\M'"
 
   # The pledges that would put this ship in the hangar: a ship or package that
   # contains it, or an upgrade that leads to it. The list names a pledge's

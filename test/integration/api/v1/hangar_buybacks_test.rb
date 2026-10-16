@@ -704,16 +704,19 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       details_synced_at: 1.day.ago, ship_names: %w[Pulse Freelancer])
     buyback(user, rsi_pledge_id: "3", kind: "package", contained: "Intrepid and 6 items",
       details_synced_at: 1.day.ago)
+    buyback(user, rsi_pledge_id: "4", kind: "package", contained: "3 ships",
+      details_synced_at: 1.day.ago)
     sign_in user
 
     body = {items: [
       {id: "1", kind: "package", name: "Package - Pulse and Freelancer Pack", contained: "2 ships and 4 items"},
       {id: "2", kind: "package", name: "Package - Pulse and Freelancer Pack", contained: "2 ships and 4 items"},
-      {id: "3", kind: "package", name: "Package - Intrepid Starter Pack", contained: "Intrepid and 6 items"}
+      {id: "3", kind: "package", name: "Package - Intrepid Starter Pack", contained: "Intrepid and 6 items"},
+      {id: "4", kind: "package", name: "Package - Ships Only Pack", contained: "3 ships"}
     ]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
-      assert_equal %w[1], parsed_body["detailsPending"]
+      assert_equal %w[1 4], parsed_body["detailsPending"].sort
     end
   end
 
