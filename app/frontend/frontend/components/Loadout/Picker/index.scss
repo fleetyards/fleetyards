@@ -1,0 +1,269 @@
+/*
+ * The candidates for one socket: a search and filters over a dense list, built
+ * for a weapon slot's dozens of options rather than a module slot's handful.
+ * Like the sockets it sits over the ship's picture, so it brings its own glass.
+ */
+.loadout-picker {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-height: min(72dvh, 760px);
+  background: rgb(10 12 14 / 0.86);
+  border: 1px solid var(--color-primary, #428bca);
+  border-radius: $panel-border-radius;
+  box-shadow: 0 0 24px
+    color-mix(in srgb, var(--color-primary, #428bca) 25%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.loadout-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 0;
+}
+
+.loadout-picker__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+
+  i {
+    color: var(--color-primary, #428bca);
+  }
+}
+
+.loadout-picker__close {
+  margin: 0;
+  padding: 4px 8px;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+  }
+}
+
+.loadout-picker__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--color-edge-soft);
+}
+
+.loadout-picker__search {
+  margin: 0;
+}
+
+.loadout-picker__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.loadout-picker__select {
+  flex: 1 1 160px;
+  min-width: 0;
+  margin: 0;
+}
+
+.loadout-picker__count {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-text-dim);
+  font-size: 12px;
+}
+
+.loadout-picker__reset {
+  margin: 0;
+  padding: 0;
+  color: var(--color-primary-tint, #92bce0);
+  font-size: 12px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.loadout-picker__options {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+
+.loadout-picker__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 6px 10px 6px 6px;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $panelContentBorderRadius;
+  cursor: pointer;
+  transition:
+    background-color $transition-base-speed,
+    border-color $transition-base-speed;
+
+  &:hover,
+  &:focus-visible {
+    background: rgb(255 255 255 / 0.05);
+    border-color: var(--color-edge-soft);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
+  }
+}
+
+// `:hover` included, for the reason the addon row gives: it outranks a plain
+// modifier, and a pick under the pointer would show no change.
+.loadout-picker__option--selected,
+.loadout-picker__option--selected:hover {
+  background: color-mix(in srgb, #{$success} 10%, transparent);
+  border-color: color-mix(in srgb, #{$success} 60%, transparent);
+}
+
+.loadout-picker__image {
+  flex: none;
+  width: 72px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 3px;
+
+  &--glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-muted);
+    font-size: 16px;
+    background: rgb(0 0 0 / 0.45);
+    border: 1px dashed var(--color-edge-soft);
+  }
+}
+
+.loadout-picker__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.loadout-picker__name {
+  overflow: hidden;
+  color: $text-color;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.loadout-picker__meta {
+  overflow: hidden;
+  color: var(--color-text-dim);
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.loadout-picker__badges {
+  display: flex;
+  flex: none;
+
+  .base-pill {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+}
+
+.loadout-picker__figure {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 56px;
+  color: $text-color;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.loadout-picker__delta {
+  font-size: 11px;
+
+  &--better {
+    color: var(--color-success, #{$success});
+  }
+
+  &--worse {
+    color: var(--color-danger, #{$danger});
+  }
+
+  &--even {
+    color: var(--color-text-dim);
+  }
+}
+
+.loadout-picker__check {
+  flex: none;
+  color: $success;
+}
+
+.loadout-picker__no-matches {
+  padding: 16px 8px;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
+.loadout-picker__comparison {
+  flex: none;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--color-edge-soft);
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .loadout-picker {
+    max-height: none;
+  }
+
+  .loadout-picker__options {
+    max-height: 60dvh;
+  }
+
+  .loadout-picker__badges {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadout-picker__option {
+    transition: none;
+  }
+}
