@@ -238,9 +238,13 @@
     grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
   }
 
-  .vehicle-loadout__picker {
+  // No taller than the modal's body below the tab strip: the modal's title and
+  // tabs above it, its footer bar below. Taller, the body scrolls to reach the
+  // picker's end instead of the picker scrolling its list.
+  .vehicle-loadout__category .vehicle-loadout__picker {
     position: sticky;
     top: 0;
+    max-height: calc(100dvh - 340px);
   }
 }
 

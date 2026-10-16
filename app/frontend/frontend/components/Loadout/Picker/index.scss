@@ -118,7 +118,8 @@
   flex: 1 1 auto;
   flex-direction: column;
   gap: 4px;
-  min-height: 0;
+  // Keeps a few rows in view however much the comparison below needs.
+  min-height: 120px;
   margin: 0;
   padding: 8px;
   overflow-y: auto;
@@ -254,9 +255,11 @@
   text-align: center;
 }
 
+// Pinned under the list: a long list gives up rows to it rather than the
+// picker growing past its frame.
 .loadout-picker__comparison {
   flex: none;
-  padding: 12px 14px 14px;
+  padding: 10px 14px 12px;
   border-top: 1px solid var(--color-edge-soft);
 }
 
