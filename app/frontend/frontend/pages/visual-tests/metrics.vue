@@ -53,12 +53,15 @@ import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.v
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
+import ModelWeaponRacks from "@/frontend/components/Models/WeaponRacks/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
   HardpointSourceEnum,
   useModel as useModelQuery,
   useModelHardpoints as useModelHardpointsQuery,
   type Hardpoint,
+  type Model,
+  type WeaponRack,
 } from "@/services/fyApi";
 
 // An in-game combat ship, so the combat, survivability and hull cards all have
@@ -97,6 +100,66 @@ provide(
 );
 
 const modelState = ref(ModelStateEnum.FLIGHT);
+
+// The Mk V Centaurus' racks as the game files place them: an armoury, a two-way
+// rack and two gadget hooks, plus a smuggling stash from the Ironclad to show a
+// slot that takes cargo and armour.
+const sampleWeaponRacks: WeaponRack[] = [
+  {
+    key: "Weapon_Rack_RSI_Perseus_19_Slot",
+    count: 1,
+    slots: [
+      ...Array.from({ length: 6 }, () => ({
+        minSize: 2,
+        maxSize: 4,
+        types: [{ type: "WeaponPersonal", subTypes: [] }],
+      })),
+      ...Array.from({ length: 6 }, () => ({
+        minSize: 1,
+        maxSize: 1,
+        types: [{ type: "WeaponPersonal", subTypes: ["Medium", "Small"] }],
+      })),
+      ...Array.from({ length: 7 }, () => ({
+        minSize: 1,
+        maxSize: 2,
+        types: [{ type: "WeaponPersonal", subTypes: ["Gadget"] }],
+      })),
+    ],
+  },
+  {
+    key: "Weapon_Rack_1_Slot_RSI_GadgetLarge",
+    count: 2,
+    slots: [
+      {
+        minSize: 2,
+        maxSize: 2,
+        types: [{ type: "WeaponPersonal", subTypes: ["Gadget"] }],
+        requiredTags: ["multitool"],
+      },
+    ],
+  },
+  {
+    key: "Weapon_Rack_1_Slot_DRAK_Ironclad_Smuggling",
+    count: 4,
+    slots: [
+      {
+        minSize: 1,
+        maxSize: 4,
+        types: [
+          { type: "Cargo", subTypes: [] },
+          { type: "Misc", subTypes: [] },
+          { type: "Char_Armor_Torso", subTypes: [] },
+        ],
+      },
+    ],
+  },
+];
+
+const rackModel = computed(
+  () =>
+    model.value &&
+    ({ ...model.value, weaponRacks: sampleWeaponRacks } as Model),
+);
 
 const sampleMetrics = [
   { id: "length", label: "Length", value: "128.0 m" },
@@ -318,6 +381,14 @@ const sampleMetrics = [
   <Heading :level="HeadingLevelEnum.H2">Model Metrics | Cargo</Heading>
   <p>Container capacity per size, derived from the model's cargo holds.</p>
   <ModelCargoMetrics v-if="model" :model="model" />
+
+  <Heading :level="HeadingLevelEnum.H2">Model Metrics | Weapon Racks</Heading>
+  <p>Every rack slot on board, by what it takes and how large.</p>
+  <div v-if="rackModel" class="row" data-test="visual-weapon-racks">
+    <div class="col-12 col-lg-6">
+      <ModelWeaponRacks :model="rackModel" />
+    </div>
+  </div>
 
   <Heading :level="HeadingLevelEnum.H2"
     >Model Metrics | Combat & Survivability</Heading

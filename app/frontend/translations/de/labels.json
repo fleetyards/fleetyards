@@ -1178,6 +1178,7 @@
         "quantumFuelTanks": "Quantum-Treibstofftanks",
         "externalFuelTanks": "Externe Treibstofftanks",
         "orePods": "Erzbehälter",
+        "weaponRacks": "Waffenständer",
         "medicalBedsTier": "Medizinische Betten Stufe %{tier}",
         "medicalBedsNamed": "Medizinische Betten (%{name})",
         "respawnBeds": "Respawn-Betten",
@@ -1378,6 +1379,28 @@
         "maxContainerSub": "größte passende Box",
         "containers": "Containerkapazität",
         "hint": "Maximale Anzahl an Containern jeder Größe, die auf die Frachtraster passen; der Balken zeigt, welchen Anteil der Gesamtkapazität das ausfüllt."
+      },
+      "weaponRacks": {
+        "slots": "Plätze",
+        "racks": "Ständer",
+        "categories": {
+          "weapon": "Waffe",
+          "gadget": "Gadget",
+          "cargo": "Fracht",
+          "carriable": "Tragbares",
+          "armor": "Rüstung",
+          "other": "Sonstiges"
+        },
+        "size": "S%{size}",
+        "sizeRange": "S%{min}–S%{max}",
+        "sizeUpTo": "bis S%{size}",
+        "only": "nur %{tag}",
+        "tags": {
+          "multitool": "Multi-Tool",
+          "medical_injection": "Medi-Pens",
+          "grenade": "Granaten"
+        },
+        "hint": "Plätze aller Ständer an Bord, nach Inhalt und Größe."
       },
       "storageContainers": {
         "total": "Gesamtkapazität",

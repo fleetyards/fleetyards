@@ -1178,6 +1178,7 @@
         "quantumFuelTanks": "量子燃料箱",
         "externalFuelTanks": "外挂燃料箱",
         "orePods": "矿石舱",
+        "weaponRacks": "武器架",
         "medicalBedsTier": "%{tier} 级医疗床",
         "medicalBedsNamed": "%{name}医疗床",
         "respawnBeds": "重生床位",
@@ -1378,6 +1379,28 @@
         "maxContainerSub": "可容纳的最大箱体",
         "containers": "集装箱容量",
         "hint": "每种尺寸的集装箱在货物网格中可容纳的最大数量；进度条显示其占总容量的比例。"
+      },
+      "weaponRacks": {
+        "slots": "槽位",
+        "racks": "武器架",
+        "categories": {
+          "weapon": "武器",
+          "gadget": "小工具",
+          "cargo": "货物",
+          "carriable": "可携带物品",
+          "armor": "护甲",
+          "other": "其他"
+        },
+        "size": "S%{size}",
+        "sizeRange": "S%{min}–S%{max}",
+        "sizeUpTo": "最高 S%{size}",
+        "only": "仅限%{tag}",
+        "tags": {
+          "multitool": "多功能工具",
+          "medical_injection": "医疗笔",
+          "grenade": "手雷"
+        },
+        "hint": "船上所有武器架的槽位，按可放置物品和尺寸分组。"
       },
       "storageContainers": {
         "total": "总容量",
