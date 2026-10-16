@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 
 type Props = {
@@ -13,29 +14,15 @@ type Props = {
 
 const props = defineProps<Props>();
 
-// Resolved once into a local, which is the whole reason this is a component.
-// `CategoryIcon` is a discriminated union, and TypeScript cannot narrow it
-// across two calls -- a template that asked `categoryIcon(x)?.kind === 'svg'`
-// and then read `categoryIcon(x)?.src` was reading `src` off the union.
-const icon = computed(() => categoryIcon(props.category));
+const glyph = computed(() => categoryIcon(props.category));
 </script>
 
 <template>
-  <!-- An empty span rather than nothing when there is no glyph, so whatever
-       sits beside it still lines up on one edge. -->
-  <img
-    v-if="icon?.kind === 'svg'"
-    :src="icon.src"
-    class="hardpoint-category-icon"
-    alt=""
-  />
-  <span
-    v-else-if="icon?.kind === 'fa'"
-    class="hardpoint-category-icon hardpoint-category-icon--glyph"
-  >
-    <i :class="icon.className" />
+  <!-- The box stays when there is no glyph, so whatever sits beside it still
+       lines up on one edge. -->
+  <span class="hardpoint-category-icon">
+    <DuotoneGlyph v-if="glyph" :glyph="glyph" />
   </span>
-  <span v-else class="hardpoint-category-icon" />
 </template>
 
 <!-- The size comes in as a custom property rather than a class the caller
@@ -45,17 +32,17 @@ const icon = computed(() => categoryIcon(props.category));
 .hardpoint-category-icon {
   --size: var(--hardpoint-category-icon-size, 24px);
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: var(--size);
   height: var(--size);
   flex: none;
-  object-fit: contain;
+  font-size: var(--size);
+  line-height: 1;
 
-  &--glyph {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(var(--size) * 0.75);
-    line-height: 1;
+  :deep(.duotone-glyph) {
+    vertical-align: 0;
   }
 }
 </style>

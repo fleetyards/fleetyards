@@ -55,6 +55,10 @@ beforeEach(() => {
   setViewport(false);
 });
 
+// A constant, as a glyph always is: a fresh object per render re-registers
+// the tab every time and never settles.
+const GLYPH = { secondary: "<rect/>", primary: "<rect/>" };
+
 describe("FormTabs", () => {
   it("renders", async () => {
     const wrapper = await mountInForm(() =>
@@ -200,7 +204,7 @@ describe("FormTabs", () => {
             ),
             h(
               FormTab,
-              { id: "two", label: "Two", iconSrc: "/radar.svg" },
+              { id: "two", label: "Two", icon: GLYPH },
               () => "Second",
             ),
           ],
@@ -214,7 +218,7 @@ describe("FormTabs", () => {
       "true",
     );
     expect(tabs[1].attributes("aria-label")).toBe("Two");
-    expect(tabs[1].find("img").attributes("src")).toBe("/radar.svg");
+    expect(tabs[1].find(".duotone-glyph").exists()).toBe(true);
     expect(tabs[1].classes()).toContain("tab-anchor--compact");
     await tabs[1].trigger("mouseenter");
     expect(document.body.querySelector("[data-tooltip]")?.textContent).toBe(

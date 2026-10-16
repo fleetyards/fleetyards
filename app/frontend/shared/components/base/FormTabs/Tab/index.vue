@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { toRef } from "vue";
 import { formTabsContextKey } from "@/shared/components/base/FormTabs/types";
+import type { Icon } from "@/shared/components/DuotoneGlyph/glyph";
 
 type Props = {
   id: string;
@@ -14,8 +15,7 @@ type Props = {
   fields?: string[];
   disabled?: boolean;
   hidden?: boolean;
-  icon?: string;
-  iconSrc?: string;
+  icon?: Icon;
   hint?: string;
 };
 
@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   hidden: false,
   icon: undefined,
-  iconSrc: undefined,
   hint: undefined,
 });
 
@@ -55,7 +54,6 @@ context.registerTab({
   disabled: toRef(props, "disabled"),
   hidden: toRef(props, "hidden"),
   icon: toRef(props, "icon"),
-  iconSrc: toRef(props, "iconSrc"),
   hint: toRef(props, "hint"),
 });
 

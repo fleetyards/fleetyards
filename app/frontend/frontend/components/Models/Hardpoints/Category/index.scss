@@ -50,10 +50,4 @@
     color: $gray-light;
     margin-right: 9px;
   }
-
-  // SVG icons ship with a hard-coded $primary fill; desaturate it so the icons
-  // read as quiet neutral wayfinding rather than a second accent colour.
-  img.hardpoint-category__icon {
-    filter: grayscale(1);
-  }
 }

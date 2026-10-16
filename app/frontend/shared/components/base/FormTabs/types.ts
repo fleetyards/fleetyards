@@ -1,4 +1,5 @@
 import type { ComputedRef, InjectionKey, Ref } from "vue";
+import type { Icon } from "@/shared/components/DuotoneGlyph/glyph";
 
 export type FormTabRegistration = {
   id: string;
@@ -6,8 +7,7 @@ export type FormTabRegistration = {
   fields: Ref<string[]>;
   disabled: Ref<boolean>;
   hidden: Ref<boolean>;
-  icon: Ref<string | undefined>;
-  iconSrc: Ref<string | undefined>;
+  icon: Ref<Icon | undefined>;
   hint: Ref<string | undefined>;
 };
 
