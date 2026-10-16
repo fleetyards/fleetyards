@@ -97,6 +97,23 @@ class SupporterContribution < ApplicationRecord
     )
   }
 
+  # A pledge still running is what an admin opens the list to check on, and
+  # ordering by start date alone sends it a page further back every month it
+  # keeps paying. Selected as a column rather than ordered by the expression
+  # because the admin list is a DISTINCT query, which only orders by what it
+  # selects. Applied after ransack, which replaces any order it is handed.
+  scope :active_recurring_first, ->(date = Date.current) {
+    month_start = date.beginning_of_month
+    month_end = date.end_of_month
+    active = sanitize_sql_array([
+      "(recurring = TRUE AND started_at <= ? AND (ended_at IS NULL OR ended_at >= ?))",
+      month_end, month_start
+    ])
+
+    select(arel_table[Arel.star], Arel.sql("#{active} AS active_recurring"))
+      .reorder(Arel.sql("active_recurring DESC"), *order_values)
+  }
+
   # Stored trimmed and downcased so every lookup can compare it directly. The
   # platforms are not careful about this -- Patreon hands back names like
   # "Elfwyn " -- and an address with a stray space matches nothing, silently.

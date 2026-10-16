@@ -327,6 +327,29 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  test "GET /supporter-contributions keeps active recurring contributions on the first page" do
+    active = create(:supporter_contribution, :recurring, started_at: 2.years.ago)
+    create(:supporter_contribution, :recurring, started_at: 2.years.ago, ended_at: 1.year.ago)
+    create_list(:supporter_contribution, 2)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {perPage: "1"} do
+      assert_equal [active.id], parsed_body["items"].pluck("id")
+      assert_equal 4, parsed_body.dig("meta", "pagination", "totalCount")
+    end
+  end
+
+  test "GET /supporter-contributions sorts within the active recurring contributions" do
+    older = create(:supporter_contribution, :recurring, started_at: 2.years.ago)
+    newer = create(:supporter_contribution, :recurring, started_at: 1.year.ago)
+    one_off = create(:supporter_contribution, started_at: 3.years.ago)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["startedAt asc"]}} do
+      assert_equal [older.id, newer.id, one_off.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /supporter-contributions filters by recurringEq" do
     create_list(:supporter_contribution, 2)
     create_list(:supporter_contribution, 3, :recurring)

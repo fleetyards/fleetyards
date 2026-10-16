@@ -19,6 +19,7 @@ module Admin
           q = SupporterContribution.ransack(supporter_contribution_query_params)
 
           @supporter_contributions = q.result(distinct: true)
+            .active_recurring_first
             .includes(:user, :fleet, :fleet_subscriptions)
             .page(page_params)
             .per(per_page(SupporterContribution))

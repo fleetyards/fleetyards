@@ -7,9 +7,11 @@ export default {
 <script lang="ts" setup>
 import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vue";
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
+import AdminNotificationsNav from "@/admin/components/Notifications/index.vue";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
 import { routes } from "@/admin/pages/routes";
+import { checkAccess } from "@/shared/utils/Access";
 
 const mobileRoutes = computed(() => {
   return routes
@@ -27,7 +29,12 @@ const route = useRoute();
 
 const sessionStore = useSessionStore();
 
-const { isAuthenticated } = storeToRefs(sessionStore);
+const { isAuthenticated, currentUser, resourceAccess } =
+  storeToRefs(sessionStore);
+
+const hasAccessTo = (access?: string[]) => {
+  return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
+};
 </script>
 
 <template>
@@ -38,7 +45,12 @@ const { isAuthenticated } = storeToRefs(sessionStore);
       :routes="mobileRoutes"
       :current-route="route"
       :authenticated="isAuthenticated"
+      :has-access-to="hasAccessTo"
       hide-submenus
+    />
+    <AdminNotificationsNav
+      v-if="isAuthenticated && currentUser"
+      :authenticated="isAuthenticated"
     />
   </AppNavigationMobile>
 </template>
