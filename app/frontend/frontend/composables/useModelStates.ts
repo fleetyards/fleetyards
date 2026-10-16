@@ -289,9 +289,11 @@ function hasOwnViews(
   );
 }
 
-// The views from behind borrow the flight set only as a whole row, and only
-// where the views above them are the flight set too: a landed front row over a
-// flying rear row draws one ship in two poses.
+// A state with its own views from the front but none from behind leaves the rear
+// row out: a landed front row over a flying rear row draws one ship in two poses.
+// Inside a row, a missing view still falls back to the flight one, as the front
+// row always has, and a state with rear views but no front ones keeps the flight
+// front row -- neither is a set the export produces.
 export function modelStateShowsRearViews(
   model: Model,
   state: ModelStateEnum,
