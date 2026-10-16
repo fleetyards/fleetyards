@@ -62,10 +62,10 @@ let failures = 0;
 let pricing: RSIStorePricing | undefined;
 
 // Reads price, insurance and ships from the RSI buy-back page of each pledge
-// the list sync named as having none yet. Upgrades are priced from our own ship prices
-// and have no such page. A page prices in the account's currency with tax, so
-// the account's store pricing is read first to turn that back into RSI's USD
-// figure, the one every other price here is in.
+// the list sync named as having none yet. Upgrades are priced from our own
+// ship prices and have no such page. A page prices in the account's currency
+// with tax, so the account's store pricing is read first to turn that back
+// into RSI's USD figure, the one every other price here is in.
 export const useBuybackDetailsSync = () => {
   const { request } = useSyncExtension();
 
