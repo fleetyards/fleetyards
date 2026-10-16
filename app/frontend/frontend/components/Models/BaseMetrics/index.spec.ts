@@ -126,3 +126,17 @@ describe("the cannot-land chip", () => {
     );
   });
 });
+
+describe("the beds the card shows", () => {
+  it("counts the berths the ship's rooms hold", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT, { beds: 4 });
+
+    expect(wrapper.get('[data-test="model-beds"]').text()).toContain("4");
+  });
+
+  it("shows no tile for an interior that places no beds", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT);
+
+    expect(wrapper.find('[data-test="model-beds"]').exists()).toBe(false);
+  });
+});

@@ -10,6 +10,7 @@
       "beam": "Rayon",
       "cargo": "Soute",
       "personalInventory": "Inventaire du vaisseau",
+      "beds": "Lits",
       "crew": "Équipage",
       "speed": "Vitesse",
       "scmSpeed": "Vitesse SCM",
