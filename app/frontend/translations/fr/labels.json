@@ -4322,6 +4322,7 @@
         "nothingFitted": "Rien d'équipé",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
+        "noFigureChange": "Ne change aucune valeur du vaisseau",
         "loadoutName": "Nom de la configuration",
         "stock": "D'origine",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",

@@ -107,7 +107,8 @@
     }
   }
 
-  &__description {
+  &__description,
+  &__none {
     margin: 0;
     color: var(--color-text-dim);
     font-size: 0.85rem;

@@ -175,25 +175,41 @@ describe("VehicleLoadoutModal", () => {
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
     );
     const cargoRow = () =>
-      wrapper.get("[data-test='vehicle-loadout-comparison-cargo']").text();
+      wrapper.find("[data-test='vehicle-loadout-comparison-cargo']");
 
     // The slot's own fitting, before anything is pointed at: no swap to show.
     expect(
       wrapper.get("[data-test='vehicle-loadout-comparison-swap']").text(),
     ).toBe("Combat Module");
-    expect(cargoRow()).not.toContain("+32");
+    expect(cargoRow().exists()).toBe(false);
 
     await wrapper
       .findAll("[data-test='loadout-picker-option']")[0]
       .trigger("mouseenter");
 
-    expect(cargoRow()).toContain("+32");
+    expect(cargoRow().text()).toContain("+32");
 
     await wrapper
       .get("[data-test='loadout-picker-options']")
       .trigger("mouseleave");
 
-    expect(cargoRow()).not.toContain("+32");
+    expect(cargoRow().exists()).toBe(false);
+  });
+
+  it("shows only what a swap changes, and says when it changes nothing", async () => {
+    const wrapper = await mountModal(vehicle(["m1", "m2"]));
+
+    // The combat module carries no cargo: the hull's own stays as it is.
+    await wrapper
+      .findAll("[data-test='loadout-picker-option']")[1]
+      .trigger("mouseenter");
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-comparison-cargo']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-comparison-none']").exists(),
+    ).toBe(true);
   });
 
   it("says so when the hull has no slot to fit", async () => {

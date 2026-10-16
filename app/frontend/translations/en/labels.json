@@ -4336,6 +4336,7 @@
         "nothingFitted": "Nothing fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
+        "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",

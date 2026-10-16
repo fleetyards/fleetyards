@@ -4322,6 +4322,7 @@
         "nothingFitted": "Niente montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
+        "noFigureChange": "Non cambia nessun valore della nave",
         "loadoutName": "Nome della configurazione",
         "stock": "Di serie",
         "notFlightReady": "Le configurazioni sono disponibili solo per le navi pronte al volo",

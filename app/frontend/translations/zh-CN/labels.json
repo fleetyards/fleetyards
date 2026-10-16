@@ -4322,6 +4322,7 @@
         "nothingFitted": "未装配",
         "owned": "已拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",
+        "noFigureChange": "不改变舰船的任何数值",
         "loadoutName": "配装名称",
         "stock": "原厂",
         "notFlightReady": "只有可飞行的舰船才能使用配装",
