@@ -2,6 +2,89 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.7.0](https://github.com/fleetyards/fleetyards/compare/v9.6.0...v9.7.0) (2026-10-16)
+
+
+### Features
+
+* **admin:** filter vehicles by image source ([#5699](https://github.com/fleetyards/fleetyards/issues/5699)) ([ded7442](https://github.com/fleetyards/fleetyards/commit/ded7442aaf8fbe13879374defe4e1354a1618768))
+* **admin:** set a module's slot on a hull ([#5724](https://github.com/fleetyards/fleetyards/issues/5724)) ([af536b1](https://github.com/fleetyards/fleetyards/commit/af536b1f1b508c47b4225b269f0e42eda1495a3b))
+* **buyback-sync:** keep the background card up with the result once the sync ends ([#5705](https://github.com/fleetyards/fleetyards/issues/5705)) ([d6672fe](https://github.com/fleetyards/fleetyards/commit/d6672fe69dacae7b1037a1a9149fea1868f81558))
+* **fleetchart:** pick the screen height to fit the fleet by default ([#5709](https://github.com/fleetyards/fleetyards/issues/5709)) ([94294b9](https://github.com/fleetyards/fleetyards/commit/94294b9b298d431d97e83a39c5fcf92bdc0bdc6d))
+* **hangar:** make a wishlist ship's detail page read-only ([#5698](https://github.com/fleetyards/fleetyards/issues/5698)) ([7853130](https://github.com/fleetyards/fleetyards/commit/7853130ccc0f98f794c6cd061967037745f9ca9c))
+* **hangar:** show the ways to get a wishlist ship ([#5702](https://github.com/fleetyards/fleetyards/issues/5702)) ([801ad07](https://github.com/fleetyards/fleetyards/commit/801ad071374de30143105026b2573c58079c9917))
+* **hangar:** sync CCUs into a separate pledge items tab ([#5696](https://github.com/fleetyards/fleetyards/issues/5696)) ([65b17be](https://github.com/fleetyards/fleetyards/commit/65b17be9961f125bbc97339f7f52d87670217c0c))
+* **loadouts:** fill slots through sockets and a picker ([#5741](https://github.com/fleetyards/fleetyards/issues/5741)) ([12021d9](https://github.com/fleetyards/fleetyards/commit/12021d9722b0b4c664f411c4c7c0c56586565be3))
+* **loadouts:** fit one owned module per slot ([#5711](https://github.com/fleetyards/fleetyards/issues/5711)) ([03fa450](https://github.com/fleetyards/fleetyards/commit/03fa45061c271fe7756c227444a662af3a165af5))
+* **loadouts:** open a fleetyards loadout from the loadouts tab ([8a1f547](https://github.com/fleetyards/fleetyards/commit/8a1f547d720b9bbfea5a4154d1f4c881a020aafe))
+* **loadouts:** tell the Apollo's medical modules apart by their beds ([#5738](https://github.com/fleetyards/fleetyards/issues/5738)) ([41df7ba](https://github.com/fleetyards/fleetyards/commit/41df7ba434196ee03df4d3bacef2777fd25cbc26))
+* **models:** rear views, lite holos and a textured holo ([#5749](https://github.com/fleetyards/fleetyards/issues/5749)) ([ce24763](https://github.com/fleetyards/fleetyards/commit/ce24763f2fceab1830bfeb682d5c14fb323e6d43))
+* **models:** show a ship's beds and weapon racks from the game files ([#5748](https://github.com/fleetyards/fleetyards/issues/5748)) ([35e3743](https://github.com/fleetyards/fleetyards/commit/35e3743a7c8275fe4c09953559425f2a8cf6e853))
+* **ships:** ore pods and salvage storage as their own figure ([#5726](https://github.com/fleetyards/fleetyards/issues/5726)) ([e7de863](https://github.com/fleetyards/fleetyards/commit/e7de86336f485e2f217684a36859f778bedee34a))
+* **vehicles:** owned paints, and paint pictures in the vehicle gallery ([#5729](https://github.com/fleetyards/fleetyards/issues/5729)) ([8398b07](https://github.com/fleetyards/fleetyards/commit/8398b070afae4ede252ece183d2cf62189793a02))
+* **vehicles:** show the active loadout in the vehicle header ([025a05b](https://github.com/fleetyards/fleetyards/commit/025a05bf29c7d589c59a8e7e37456182a9dcf69a))
+* **vehicles:** switch loadouts from the overview card ([4071b6d](https://github.com/fleetyards/fleetyards/commit/4071b6dc377aed67126f3c58504b011db88f02b3))
+* **vehicles:** tag picture cards over the picture, and mark owned paints among the picture choices ([942623e](https://github.com/fleetyards/fleetyards/commit/942623eb2165f6678b1e910d8589a5496840d1aa))
+
+
+### Bug Fixes
+
+* **addons:** keep a selected row's border while the pointer is over it ([726b907](https://github.com/fleetyards/fleetyards/commit/726b9079ee890ca48c8abec3120fb6aaf63fff68))
+* **fleet-events:** take published_at from open_at on the first publish ([#5712](https://github.com/fleetyards/fleetyards/issues/5712)) ([28ff2d8](https://github.com/fleetyards/fleetyards/commit/28ff2d8fba54e1e05a87bfc6259c72206499ed1c))
+* **fleetchart:** keep the PNG export within the browser's canvas limit ([#5707](https://github.com/fleetyards/fleetyards/issues/5707)) ([f22a392](https://github.com/fleetyards/fleetyards/commit/f22a392bcd6938e39d47d651b98eeb19df303f13))
+* **fleets:** show a public fleet to a signed-in non-member ([#5708](https://github.com/fleetyards/fleetyards/issues/5708)) ([6785fb6](https://github.com/fleetyards/fleetyards/commit/6785fb6044c6264635385bb1f6ef5164c75e06a5))
+* **hardpoints:** categorise empty paint slots ([#5725](https://github.com/fleetyards/fleetyards/issues/5725)) ([b466d3e](https://github.com/fleetyards/fleetyards/commit/b466d3e1cd1ccce28f03169ce817b78d9991aabe))
+* **lists:** tell an empty list filtered by a top-level param from an empty one ([#5723](https://github.com/fleetyards/fleetyards/issues/5723)) ([697ad83](https://github.com/fleetyards/fleetyards/commit/697ad83d3a19a002ee70e74c526dbc32f5764e3b))
+* **loadouts:** give the no-slots notice the whole row ([afca458](https://github.com/fleetyards/fleetyards/commit/afca4581870c7141376c50fe8d0d4567489802e2))
+* **loadouts:** leave unslotted modules out instead of naming them ([64dc0fc](https://github.com/fleetyards/fleetyards/commit/64dc0fc854547a255dcaaf6d02770fe9c72cbb2f))
+* **loadouts:** no loadout editor on ships that are not flight ready ([#5733](https://github.com/fleetyards/fleetyards/issues/5733)) ([1635a5d](https://github.com/fleetyards/fleetyards/commit/1635a5d1e125eef63b710bb54d3ca3ef63cea269))
+* **loadouts:** refresh a serial-addressed vehicle page after saving ([82caee7](https://github.com/fleetyards/fleetyards/commit/82caee72a92be926f64a3e935938814218ec39dd))
+* **modal:** close the gap between a tabbed modal's title and its tabs ([31e2767](https://github.com/fleetyards/fleetyards/commit/31e2767c7b66c066a984e4b8caa41cb34493af51))
+* **models:** add the Skylark as a snub craft of the Constellation Mk V ([#5700](https://github.com/fleetyards/fleetyards/issues/5700)) ([cea8174](https://github.com/fleetyards/fleetyards/commit/cea817407f5a21353c7cb76126902e2397be5ab5))
+* **models:** flight-ready cargo from the game-file holds ([#5720](https://github.com/fleetyards/fleetyards/issues/5720)) ([9c7d1ed](https://github.com/fleetyards/fleetyards/commit/9c7d1ed722115e97c1744f5f15a6515220d3b12f))
+* **notifications:** add space between header and content ([8590c4b](https://github.com/fleetyards/fleetyards/commit/8590c4b6303d2613b760960dad741a68644527ff))
+* **notifications:** clarify push availability across devices ([fb31f72](https://github.com/fleetyards/fleetyards/commit/fb31f72e9189c8d4d18415ab902e57e43b44c59d))
+* **plaque:** save a new plaque in the style it was shown in ([#5701](https://github.com/fleetyards/fleetyards/issues/5701)) ([eed1ab1](https://github.com/fleetyards/fleetyards/commit/eed1ab1846cce0d565ae39e0c3a414fe6c9dc1c1))
+* **rows:** wrap a row that does not fit at any width ([#5706](https://github.com/fleetyards/fleetyards/issues/5706)) ([d8b84d2](https://github.com/fleetyards/fleetyards/commit/d8b84d227e3bb6dd0967921fca1b42b6e8999d83))
+* **tabs:** align active underline with separator ([a24603d](https://github.com/fleetyards/fleetyards/commit/a24603d06a46c13e2e66857e58b74bb65112d0aa))
+* **tabs:** smooth hover and active indicator transitions ([e103d5d](https://github.com/fleetyards/fleetyards/commit/e103d5d1ed893bdb6508ee20068a15a18a1351fb))
+* **uploads:** type an untyped glTF by its extension ([#5736](https://github.com/fleetyards/fleetyards/issues/5736)) ([af097a9](https://github.com/fleetyards/fleetyards/commit/af097a9c10641cad2aa16571a9e8ddc5f34fbc2d))
+* **vehicles:** a wider vehicle editor with larger picture and module previews ([b400bc5](https://github.com/fleetyards/fleetyards/commit/b400bc56a325f73cb4a0efd863593f5881676b08))
+* **vehicles:** drop the fitted and owned pills from the vehicle editor ([de91d3b](https://github.com/fleetyards/fleetyards/commit/de91d3bbbbab808e6ba9682d1912949e1cfac05f))
+* **vehicles:** pick a vehicle picture from the same cards as paints ([77a0ea3](https://github.com/fleetyards/fleetyards/commit/77a0ea3603db40a2546ebf28fca008d826e48c42))
+* **vehicles:** pick a vehicle picture from upload, gallery or any paint ([#5737](https://github.com/fleetyards/fleetyards/issues/5737)) ([eba1913](https://github.com/fleetyards/fleetyards/commit/eba1913d53af216239fa3a667caf9e1a93566f1b))
+* **vehicles:** pick paints from the same rows as modules, with a larger picture ([#5735](https://github.com/fleetyards/fleetyards/issues/5735)) ([0eb3c60](https://github.com/fleetyards/fleetyards/commit/0eb3c601b3163126faf3d3c385926022321c6126))
+
+
+### Refactorings
+
+* **loadouts:** share fitted-module lookup and cargo between views ([973b255](https://github.com/fleetyards/fleetyards/commit/973b255cd2b46c843c446d60eabcd19dbfcb0479))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5704](https://github.com/fleetyards/fleetyards/issues/5704)) ([a3b04a4](https://github.com/fleetyards/fleetyards/commit/a3b04a4a02f76662fa12f3ffb68ce4fdc52dc57b))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.1 to 6.3.2 ([#5745](https://github.com/fleetyards/fleetyards/issues/5745)) ([5fb5cf0](https://github.com/fleetyards/fleetyards/commit/5fb5cf08329badf72d776b459f64ad167e3a8d27))
+* **deps-dev:** bump @types/node from 26.6.4 to 26.6.5 ([#5692](https://github.com/fleetyards/fleetyards/issues/5692)) ([eed1207](https://github.com/fleetyards/fleetyards/commit/eed1207e5ad17396390d514051aa643fbf054bd5))
+* **deps-dev:** bump @typescript-eslint/parser from 8.71.1 to 8.71.2 ([#5744](https://github.com/fleetyards/fleetyards/issues/5744)) ([5ac07d8](https://github.com/fleetyards/fleetyards/commit/5ac07d8e59ac48a0a025e895ff712c8d3b949018))
+* **deps-dev:** bump @vitejs/plugin-vue from 6.0.9 to 6.0.10 ([#5682](https://github.com/fleetyards/fleetyards/issues/5682)) ([b9968ab](https://github.com/fleetyards/fleetyards/commit/b9968ab329e83f5de15e3ee20b717d8ed9011d3f))
+* **deps-dev:** bump bullet from 8.2.0 to 8.3.0 ([#5681](https://github.com/fleetyards/fleetyards/issues/5681)) ([b37682c](https://github.com/fleetyards/fleetyards/commit/b37682c9769fe319b4f54e9ce759682aef8f664b))
+* **deps-dev:** bump knip from 6.40.0 to 6.41.0 ([#5690](https://github.com/fleetyards/fleetyards/issues/5690)) ([1473363](https://github.com/fleetyards/fleetyards/commit/1473363e6e57530ecf1aefcf31a29083cdbf31a0))
+* **deps-dev:** bump orval from 8.40.0 to 8.41.0 ([#5693](https://github.com/fleetyards/fleetyards/issues/5693)) ([64def43](https://github.com/fleetyards/fleetyards/commit/64def43ca57baa34e1f3c09b96d2c0433dffdfe2))
+* **deps-dev:** bump prettier from 3.9.9 to 3.9.10 ([#5685](https://github.com/fleetyards/fleetyards/issues/5685)) ([8476b77](https://github.com/fleetyards/fleetyards/commit/8476b77b34dc7e0b2ac684ff42dc15bcc0c4e23a))
+* **deps-dev:** bump vitest from 5.0.3 to 5.0.4 ([#5746](https://github.com/fleetyards/fleetyards/issues/5746)) ([2a18519](https://github.com/fleetyards/fleetyards/commit/2a18519de43faf4a821cdafa4b9265077debbcaf))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.12 to 3.3.13 ([#5687](https://github.com/fleetyards/fleetyards/issues/5687)) ([46b5851](https://github.com/fleetyards/fleetyards/commit/46b5851b6b32b9868baa823056812ba155cff6d9))
+* **deps-dev:** bump vue-tsc from 3.3.11 to 3.3.13 ([#5683](https://github.com/fleetyards/fleetyards/issues/5683)) ([dca4f9a](https://github.com/fleetyards/fleetyards/commit/dca4f9a3697e8786c273c00d3abb496ab4837907))
+* **deps-dev:** bump webmock from 3.26.4 to 3.29.0 ([#5686](https://github.com/fleetyards/fleetyards/issues/5686)) ([b119952](https://github.com/fleetyards/fleetyards/commit/b119952e65c36e8c397bb19e77dc07d857caaca9))
+* **deps-dev:** bump webmock from 3.29.0 to 3.30.0 ([#5742](https://github.com/fleetyards/fleetyards/issues/5742)) ([6cb19da](https://github.com/fleetyards/fleetyards/commit/6cb19da04ea83e1e11dab2b04a1a0848d564ff77))
+* **deps:** bump @event-calendar/core from 5.17.0 to 5.17.1 ([#5691](https://github.com/fleetyards/fleetyards/issues/5691)) ([f3ed800](https://github.com/fleetyards/fleetyards/commit/f3ed8000469cb52f9aec629a576f01e65306be2c))
+* **deps:** bump @google/model-viewer from 4.3.1 to 4.4.0 ([#5689](https://github.com/fleetyards/fleetyards/issues/5689)) ([f5a83c8](https://github.com/fleetyards/fleetyards/commit/f5a83c8135f9ad48307a263029cdb99749e43860))
+* **deps:** bump @tanstack/vue-query from 5.104.1 to 5.104.2 ([#5703](https://github.com/fleetyards/fleetyards/issues/5703)) ([23a9537](https://github.com/fleetyards/fleetyards/commit/23a953747fefbb53062e2e829c3009029b1ac961))
+* **deps:** bump appsignal from 5.0.3 to 5.0.4 ([#5684](https://github.com/fleetyards/fleetyards/issues/5684)) ([fc0d110](https://github.com/fleetyards/fleetyards/commit/fc0d1104eac9826dc8405d4901a7362e23d42890))
+* **deps:** bump swagger-ui-dist from 5.33.1 to 5.33.2 ([#5743](https://github.com/fleetyards/fleetyards/issues/5743)) ([0e81d66](https://github.com/fleetyards/fleetyards/commit/0e81d666e12d8f79fde2ce5e2a65e792a814ec88))
+* **deps:** bump uuid from 14.0.2 to 14.0.3 ([#5694](https://github.com/fleetyards/fleetyards/issues/5694)) ([e51b2cd](https://github.com/fleetyards/fleetyards/commit/e51b2cdee974fbd614d04728a36712001ebd528d))
+* **sc_data:** bump live to 4.10.2-live.12913470 ([#5734](https://github.com/fleetyards/fleetyards/issues/5734)) ([7384d2c](https://github.com/fleetyards/fleetyards/commit/7384d2cfc3ddb6ec7aac4947acbaee86362eb2de))
+
 ## [9.6.0](https://github.com/fleetyards/fleetyards/compare/v9.5.0...v9.6.0) (2026-10-14)
 
 
