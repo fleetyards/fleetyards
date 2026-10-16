@@ -47,30 +47,19 @@ const HOLO_ROWS: HoloField[][] = [
   ["holoTextured"],
 ];
 
-const viewRow = (
-  prefix: "" | "extended" | "landed",
-  viewpoints: string[],
-  colored: boolean,
-) =>
-  viewpoints.map((viewpoint) => {
-    const view = prefix
-      ? `${prefix}${viewpoint.charAt(0).toUpperCase()}${viewpoint.slice(1)}View`
-      : `${viewpoint}View`;
+const stateOf = (field: ViewField) =>
+  ["extended", "landed"].find((state) => field.startsWith(state)) ?? "flight";
 
-    return (colored ? `${view}Colored` : view) as ViewField;
-  });
+// One block per state, in rows of four: VIEW_FIELDS lists each state's views
+// from the front, then from behind and below, each plain and then coloured.
+const VIEW_BLOCKS: ViewField[][][] = ["flight", "extended", "landed"].map(
+  (state) => {
+    const fields = VIEW_FIELDS.filter((field) => stateOf(field) === state);
 
-// One block per state: the four views from the front, then the four from
-// behind and below, each plain and then coloured.
-const VIEW_BLOCKS: ViewField[][][] = (["", "extended", "landed"] as const).map(
-  (prefix) =>
-    [
-      ["top", "side", "front", "angled"],
-      ["bottom", "starboard", "rear", "angledRear"],
-    ].flatMap((viewpoints) => [
-      viewRow(prefix, viewpoints, false),
-      viewRow(prefix, viewpoints, true),
-    ]),
+    return Array.from({ length: fields.length / 4 }, (_, row) =>
+      fields.slice(row * 4, row * 4 + 4),
+    );
+  },
 );
 
 const translationKey = (field: FolderField) =>
