@@ -254,6 +254,35 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_nil contribution.public_profile_username
   end
 
+  test "an unanswered account keeps the platform's choice" do
+    user = create(:user, supporter_listed: nil)
+
+    assert create(:supporter_contribution, user:).listed?
+    refute create(:supporter_contribution, :anonymous, user:).listed?
+  end
+
+  test "the account's answer outranks the platform's choice" do
+    hidden = create(:user, supporter_listed: false)
+    listed = create(:user, supporter_listed: true)
+
+    refute create(:supporter_contribution, user: hidden).listed?
+    assert create(:supporter_contribution, :anonymous, user: listed).listed?
+  end
+
+  test "listed agrees with listed?" do
+    rows = [
+      create(:supporter_contribution, user: nil),
+      create(:supporter_contribution, :anonymous, user: nil, name: "Ann"),
+      create(:supporter_contribution, user: create(:user)),
+      create(:supporter_contribution, :anonymous, user: create(:user)),
+      create(:supporter_contribution, user: create(:user, supporter_listed: false)),
+      create(:supporter_contribution, :anonymous, user: create(:user, supporter_listed: true))
+    ]
+
+    assert_equal rows.select(&:listed?).map(&:id).sort,
+      SupporterContribution.where(id: rows.map(&:id)).listed.pluck(:id).sort
+  end
+
   test "the profile link only points at reachable hangars" do
     public_user = create(:user, :public_hangar)
     private_user = create(:user, :private_hangar)

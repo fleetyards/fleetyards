@@ -103,6 +103,31 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Every Ko-fi payment is a row of its own, so only an answer on the account
+  # can keep a monthly supporter hidden past the month they chose it in.
+  test "GET /supporters/progress hides every donation of an account that asked not to be listed" do
+    user = create(:user, supporter_listed: false)
+    create(:supporter_contribution, user:, amount_cents: 300, started_at: Date.current)
+    create(:supporter_contribution, user:, amount_cents: 400, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      assert_equal [], parsed_body["contributions"]
+      assert_equal 700, parsed_body["monthlyTotal"]["amountCents"]
+    end
+  end
+
+  test "GET /supporters/progress lists an anonymous donation of an account that asked to be listed" do
+    user = create(:user, :public_hangar, supporter_listed: true)
+    create(:supporter_contribution, :anonymous, name: "Erin", user:, amount_cents: 900, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 900 }
+
+      assert_equal user.username, entry["displayName"]
+      assert_equal user.username, entry["username"]
+    end
+  end
+
   test "GET /supporters/progress works without an active goal" do
     assert_api_response :get, 200 do
       assert_nil parsed_body["goal"]

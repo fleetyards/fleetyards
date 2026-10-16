@@ -30,6 +30,7 @@ module V1
             hideOwner: {type: :boolean},
             tracking: {type: :boolean},
             showOnlineStatus: {type: :boolean},
+            supporterListed: {type: [:boolean, :null]},
             location: {type: [:string, :null]},
             # One of our places the current system text names, where it is one.
             currentLocationId: {type: [:string, :null], format: :uuid},

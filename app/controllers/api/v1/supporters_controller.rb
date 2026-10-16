@@ -16,7 +16,7 @@ module Api
         # column of identical "Anonymous" entries tells a reader nothing anyway.
         # The money still counts: @monthly_total is deliberately unfiltered.
         @contributions = SupporterContribution.active_now(today)
-          .where(anonymous: false)
+          .listed
           .includes(:user)
           .order(started_at: :desc, created_at: :desc)
       end
