@@ -14,13 +14,18 @@ describe("BaseLoader", () => {
   });
 
   it("waits before it shows, unless it is immediate", () => {
-    const transitionName = (immediate: boolean) =>
-      mount(Component, { props: { loading: true, immediate } })
-        .findComponent({ name: "Transition" })
-        .props("name");
+    const transitionNames = (immediate: boolean) =>
+      mount(Component, { props: { loading: true, immediate, progress: 40 } })
+        .findAllComponents({ name: "Transition" })
+        .map((transition) => transition.props("name"));
 
-    expect(transitionName(false)).toBe("fade");
-    expect(transitionName(true)).toBe("fade-quick");
+    expect(transitionNames(false)).toEqual(["fade", "fade", "fade"]);
+    // The progress bars too, or they would trail the cubes by half a second.
+    expect(transitionNames(true)).toEqual([
+      "fade-quick",
+      "fade-quick",
+      "fade-quick",
+    ]);
   });
 
   it("renders centered loader", () => {

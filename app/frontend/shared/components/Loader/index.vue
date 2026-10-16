@@ -17,17 +17,19 @@ type Props = {
   immediate?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   loading: false,
   fixed: false,
   inline: false,
   progress: undefined,
   immediate: false,
 });
+
+const transition = computed(() => (props.immediate ? "fade-quick" : "fade"));
 </script>
 
 <template>
-  <transition :name="immediate ? 'fade-quick' : 'fade'">
+  <transition :name="transition">
     <div
       v-if="loading"
       :class="{
@@ -43,7 +45,7 @@ withDefaults(defineProps<Props>(), {
       <div class="cube4 cube"></div>
       <div class="cube3 cube"></div>
 
-      <transition name="fade">
+      <transition :name="transition">
         <div
           v-if="progress != null && progress < 100"
           class="progress progress-left"
@@ -51,7 +53,7 @@ withDefaults(defineProps<Props>(), {
         ></div>
       </transition>
 
-      <transition name="fade">
+      <transition :name="transition">
         <div
           v-if="progress != null && progress < 100"
           class="progress progress-right"
