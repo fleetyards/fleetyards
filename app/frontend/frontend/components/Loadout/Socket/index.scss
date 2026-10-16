@@ -38,15 +38,12 @@ button.loadout-socket {
   border-style: dashed;
 }
 
-// The socket the picker is filling: the tab strip's primary rail, down its
-// leading edge. The padding gives back what the wider border takes, so the
-// contents do not shift when the socket becomes active.
+// The socket the picker is filling: its frame in the primary colour, as a
+// selected row's frame turns, at the same width so nothing shifts.
 .loadout-socket--active,
 button.loadout-socket--active:hover {
-  padding-left: 10px;
   border-color: var(--color-primary, #428bca);
   border-style: solid;
-  border-left-width: 3px;
 }
 
 .loadout-socket--filled {
