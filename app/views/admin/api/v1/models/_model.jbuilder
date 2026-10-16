@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ["v6", model, Manufacturer.artwork_version, local_assigns.fetch(:extended, false)] do
+json.cache! ["v7", model, Manufacturer.artwork_version, local_assigns.fetch(:extended, false)] do
   json.partial!("admin/api/v1/models/base", model:, extended: local_assigns.fetch(:extended, false))
 end
 

@@ -31,7 +31,7 @@ const summary = (subject: VueWrapper) =>
 describe("ViewsFolderUpload", () => {
   // A page opened while the crops run has no folder of its own to list.
   it("lists the views the model is still cropping", async () => {
-    const subject = await mount(["topView", "sideView"]);
+    const subject = await mount(["topView", "portView"]);
 
     expect(summary(subject).exists()).toBe(true);
     expect(subject.findAll(".views-folder-upload__matched li")).toHaveLength(2);

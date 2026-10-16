@@ -59,7 +59,7 @@ module Admin
             :name, :description, :model_id, :active, :hidden, :on_sale,
             :pledge_price, :production_status, :production_note, :store_url,
             :store_image, :rsi_store_image, :fleetchart_image,
-            :top_view, :side_view, :angled_view
+            :top_view, :port_view, :angled_view
           )
         end
 

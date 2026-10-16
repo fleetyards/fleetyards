@@ -65,7 +65,7 @@ module Admin
           @model_module_package_params ||= params.permit(
             :name, :description, :model_id, :pledge_price,
             :active, :hidden,
-            :store_image, :angled_view, :side_view, :top_view
+            :store_image, :angled_view, :port_view, :top_view
           )
         end
 

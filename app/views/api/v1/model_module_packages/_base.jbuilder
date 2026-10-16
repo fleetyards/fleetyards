@@ -14,8 +14,8 @@ json.media do
   json.front_view do
     json.partial! "api/v1/shared/file", record: module_package, attr: :front_view
   end
-  json.side_view do
-    json.partial! "api/v1/shared/file", record: module_package, attr: :side_view
+  json.port_view do
+    json.partial! "api/v1/shared/file", record: module_package, attr: :port_view
   end
   json.store_image do
     json.partial! "api/v1/shared/file", record: module_package, attr: :store_image

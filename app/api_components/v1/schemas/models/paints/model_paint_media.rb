@@ -13,7 +13,7 @@ module V1
               angledView: ::Shared::V1::Schemas::MediaFile,
               fleetchartImage: {type: :string},
               # frontView: ::Shared::V1::Schemas::MediaFile,
-              sideView: ::Shared::V1::Schemas::MediaFile,
+              portView: ::Shared::V1::Schemas::MediaFile,
               storeImage: ::Shared::V1::Schemas::MediaFile,
               topView: ::Shared::V1::Schemas::MediaFile
             },

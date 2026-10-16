@@ -70,7 +70,7 @@ const effectiveModel = computed<Model>(() => {
     media: {
       ...m.media,
       topView: m.media.extendedTopView ?? m.media.topView,
-      sideView: m.media.extendedSideView ?? m.media.sideView,
+      portView: m.media.extendedPortView ?? m.media.portView,
       angledView: m.media.extendedAngledView ?? m.media.angledView,
       frontView: m.media.extendedFrontView ?? m.media.frontView,
     },
@@ -108,7 +108,7 @@ const image = computed(() => {
   if (
     modulePackage.value &&
     (modulePackage.value.media.topView ||
-      modulePackage.value.media.sideView ||
+      modulePackage.value.media.portView ||
       modulePackage.value.media.angledView)
   ) {
     const url = extractImageFromModel(modulePackage.value);
@@ -124,8 +124,8 @@ const viewpointTop = computed(() => {
   return props.viewpoint === "top";
 });
 
-const viewpointSide = computed(() => {
-  return props.viewpoint === "side";
+const viewpointPort = computed(() => {
+  return props.viewpoint === "port";
 });
 
 const viewpointAngled = computed(() => {
@@ -186,7 +186,7 @@ const sourceImageHeightMax = computed(() => {
   if (
     modulePackage.value &&
     (modulePackage.value.media.topView ||
-      modulePackage.value.media.sideView ||
+      modulePackage.value.media.portView ||
       modulePackage.value.media.angledView)
   ) {
     const height = extractMaxHeightFromModel(modulePackage.value);
@@ -202,7 +202,7 @@ const sourceImageHeight = computed(() => {
   if (
     modulePackage.value &&
     (modulePackage.value.media.topView ||
-      modulePackage.value.media.sideView ||
+      modulePackage.value.media.portView ||
       modulePackage.value.media.angledView)
   ) {
     const height = extractImageHeightFromModel(modulePackage.value);
@@ -218,7 +218,7 @@ const sourceImageWidth = computed(() => {
   if (
     modulePackage.value &&
     (modulePackage.value.media.topView ||
-      modulePackage.value.media.sideView ||
+      modulePackage.value.media.portView ||
       modulePackage.value.media.angledView)
   ) {
     const height = extractImageWidthFromModel(modulePackage.value);
@@ -234,7 +234,7 @@ const sourceImageWidthMax = computed(() => {
   if (
     modulePackage.value &&
     (modulePackage.value.media.topView ||
-      modulePackage.value.media.sideView ||
+      modulePackage.value.media.portView ||
       modulePackage.value.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(modulePackage.value);
@@ -253,8 +253,8 @@ const extractImageFromModel = (
     return topView(model);
   }
 
-  if (viewpointSide.value && model.media.sideView) {
-    return sideView(model);
+  if (viewpointPort.value && model.media.portView) {
+    return portView(model);
   }
 
   if (viewpointAngled.value && model.media.angledView) {
@@ -269,7 +269,7 @@ const extractMaxWidthFromModel = (
 ) => {
   return Math.max(
     model.media.topView?.width || 0,
-    model.media.sideView?.width || 0,
+    model.media.portView?.width || 0,
     model.media.angledView?.width || 0,
   );
 };
@@ -279,7 +279,7 @@ const extractMaxHeightFromModel = (
 ) => {
   return Math.max(
     model.media.topView?.height || 0,
-    model.media.sideView?.height || 0,
+    model.media.portView?.height || 0,
     model.media.angledView?.height || 0,
   );
 };
@@ -291,8 +291,8 @@ const extractImageHeightFromModel = (
     return model.media.topView.height;
   }
 
-  if (viewpointSide.value && model.media.sideView) {
-    return model.media.sideView.height;
+  if (viewpointPort.value && model.media.portView) {
+    return model.media.portView.height;
   }
 
   if (viewpointAngled.value && model.media.angledView) {
@@ -309,8 +309,8 @@ const extractImageWidthFromModel = (
     return model.media.topView.width;
   }
 
-  if (viewpointSide.value && model.media.sideView) {
-    return model.media.sideView.width;
+  if (viewpointPort.value && model.media.portView) {
+    return model.media.portView.width;
   }
 
   if (viewpointAngled.value && model.media.angledView) {
@@ -330,14 +330,14 @@ const topView = (model: Model | ModelPaint | ModelModulePackage) => {
   return model.media.topView?.largeUrl;
 };
 
-const sideView = (model: Model | ModelPaint | ModelModulePackage) => {
+const portView = (model: Model | ModelPaint | ModelModulePackage) => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return model.media.sideView?.url;
+    return model.media.portView?.url;
   }
 
-  return model.media.sideView?.largeUrl;
+  return model.media.portView?.largeUrl;
 };
 
 const angledView = (model: Model | ModelPaint | ModelModulePackage) => {

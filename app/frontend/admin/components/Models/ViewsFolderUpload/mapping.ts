@@ -2,27 +2,27 @@ import { type ModelUpdateInput } from "@/services/fyAdminApi";
 
 export const VIEW_FIELDS = [
   "topView",
-  "sideView",
+  "portView",
   "frontView",
   "angledView",
   "topViewColored",
-  "sideViewColored",
+  "portViewColored",
   "frontViewColored",
   "angledViewColored",
   "extendedTopView",
-  "extendedSideView",
+  "extendedPortView",
   "extendedFrontView",
   "extendedAngledView",
   "extendedTopViewColored",
-  "extendedSideViewColored",
+  "extendedPortViewColored",
   "extendedFrontViewColored",
   "extendedAngledViewColored",
   "landedTopView",
-  "landedSideView",
+  "landedPortView",
   "landedFrontView",
   "landedAngledView",
   "landedTopViewColored",
-  "landedSideViewColored",
+  "landedPortViewColored",
   "landedFrontViewColored",
   "landedAngledViewColored",
   "angledRearView",
@@ -65,8 +65,53 @@ export type ViewField = (typeof VIEW_FIELDS)[number];
 export type HoloField = (typeof HOLO_FIELDS)[number];
 export type FolderField = ViewField | HoloField;
 
+export type FieldState = "flight" | "extended" | "landed";
+
+export type FieldSection = {
+  state: FieldState;
+  holos: HoloField[];
+  views: ViewField[][];
+};
+
+// Each row follows the ship page's cells: angled, plan, end-on, profile.
+const VIEW_ROWS = [
+  ["angledView", "topView", "frontView", "portView"],
+  [
+    "angledViewColored",
+    "topViewColored",
+    "frontViewColored",
+    "portViewColored",
+  ],
+  ["angledRearView", "bottomView", "rearView", "starboardView"],
+  [
+    "angledRearViewColored",
+    "bottomViewColored",
+    "rearViewColored",
+    "starboardViewColored",
+  ],
+] as const satisfies readonly (readonly ViewField[])[];
+
+const capitalize = (word: string) =>
+  `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+
+const inState = <T extends FolderField>(state: FieldState, field: T): T =>
+  (state === "flight" ? field : `${state}${capitalize(field)}`) as T;
+
+export const FIELD_SECTIONS: readonly FieldSection[] = (
+  ["flight", "extended", "landed"] as const
+).map((state) => ({
+  state,
+  holos: (state === "flight"
+    ? (["holo", "holoLite", "holoTextured"] as const)
+    : (["holo", "holoLite"] as const)
+  ).map((field) => inState(state, field)),
+  views: VIEW_ROWS.map((row) => row.map((field) => inState(state, field))),
+}));
+
 // The order the fields are listed in, whatever order the folder was read in.
-const FIELD_ORDER: readonly FolderField[] = [...VIEW_FIELDS, ...HOLO_FIELDS];
+export const FIELD_ORDER: readonly FolderField[] = FIELD_SECTIONS.flatMap(
+  (section) => [...section.holos, ...section.views.flat()],
+);
 
 export const isHoloField = (field: FolderField): field is HoloField =>
   (HOLO_FIELDS as readonly string[]).includes(field);
@@ -81,13 +126,14 @@ export type MappedFile = {
 // the case and a spelled-out "view" are all optional, so a folder named by hand
 // lands where one named by a script does.
 const VIEW_NAME =
-  /^((?:extended|landed|flight)[-_ ]?)?(top|side|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
 const HOLO_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured))?$/i;
 
 const VIEWPOINTS: Record<string, string> = {
   top: "top",
-  side: "side",
+  side: "port",
+  port: "port",
   front: "front",
   angled: "angled",
   angledrear: "angledRear",
@@ -117,9 +163,6 @@ const prefixFor = (raw?: string): "extended" | "landed" | undefined => {
 
   return undefined;
 };
-
-const capitalize = (word: string) =>
-  `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
 
 export const fieldFor = (filename: string): FolderField | undefined => {
   // A folder picked through the file input carries its path in the name.

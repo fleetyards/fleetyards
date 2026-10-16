@@ -28,7 +28,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  viewpoint: FleetchartViewpoints.SIDE,
+  viewpoint: FleetchartViewpoints.PORT,
   showLabel: false,
   showStatus: false,
   sizeMultiplicator: 1,
@@ -48,8 +48,8 @@ const imageByViewpoint = computed<MediaFile | undefined>(() => {
     return frontView.value;
   }
 
-  if (props.viewpoint === "side") {
-    return sideView.value;
+  if (props.viewpoint === "port") {
+    return portView.value;
   }
 
   return topView.value;
@@ -129,29 +129,29 @@ const frontView = computed(() => {
   return model.value.media.frontView;
 });
 
-const sideView = computed(() => {
-  if (modulePackage.value && modulePackage.value.media.sideView) {
-    // if (props.colored && modulePackage.value.media.sideViewColored) {
-    //   return modulePackage.value.media.sideViewColored;
+const portView = computed(() => {
+  if (modulePackage.value && modulePackage.value.media.portView) {
+    // if (props.colored && modulePackage.value.media.portViewColored) {
+    //   return modulePackage.value.media.portViewColored;
     // }
 
-    return modulePackage.value.media.sideView;
+    return modulePackage.value.media.portView;
   }
 
   if (props.extended) {
-    if (props.colored && model.value.media.extendedSideViewColored) {
-      return model.value.media.extendedSideViewColored;
+    if (props.colored && model.value.media.extendedPortViewColored) {
+      return model.value.media.extendedPortViewColored;
     }
-    if (model.value.media.extendedSideView) {
-      return model.value.media.extendedSideView;
+    if (model.value.media.extendedPortView) {
+      return model.value.media.extendedPortView;
     }
   }
 
-  if (props.colored && model.value.media.sideViewColored) {
-    return model.value.media.sideViewColored;
+  if (props.colored && model.value.media.portViewColored) {
+    return model.value.media.portViewColored;
   }
 
-  return model.value.media.sideView;
+  return model.value.media.portView;
 });
 
 const topView = computed(() => {
@@ -248,7 +248,7 @@ const sourceImageHeightMax = computed(() =>
   Math.max(
     ...([
       angledView.value?.height,
-      sideView.value?.height,
+      portView.value?.height,
       topView.value?.height,
     ].filter(Boolean) as number[]),
   ),
@@ -260,7 +260,7 @@ const sourceImageWidthMax = computed(() =>
   Math.max(
     ...([
       angledView.value?.width,
-      sideView.value?.width,
+      portView.value?.width,
       topView.value?.width,
     ].filter(Boolean) as number[]),
   ),

@@ -13,8 +13,8 @@ json.media do
   json.angled_view do
     json.partial! "api/v1/shared/file", record: model_module_package, attr: :angled_view
   end
-  json.side_view do
-    json.partial! "api/v1/shared/file", record: model_module_package, attr: :side_view
+  json.port_view do
+    json.partial! "api/v1/shared/file", record: model_module_package, attr: :port_view
   end
   json.store_image do
     json.partial! "api/v1/shared/file", record: model_module_package, attr: :store_image

@@ -18,10 +18,8 @@ import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
 import {
   type FolderField,
-  type HoloField,
-  type ViewField,
-  HOLO_FIELDS,
-  VIEW_FIELDS,
+  FIELD_ORDER,
+  FIELD_SECTIONS,
 } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useModelMediaUpdates } from "@/admin/composables/useModelMediaUpdates";
@@ -39,40 +37,17 @@ useModelMediaUpdates(() => props.model.id);
 const isProcessing = (field: FolderField) =>
   props.model.mediaProcessing.includes(field);
 
-const FIELDS: readonly FolderField[] = [...HOLO_FIELDS, ...VIEW_FIELDS];
-
-const HOLO_ROWS: HoloField[][] = [
-  ["holo", "extendedHolo", "landedHolo"],
-  ["holoLite", "extendedHoloLite", "landedHoloLite"],
-  ["holoTextured"],
-];
-
-const stateOf = (field: ViewField) =>
-  ["extended", "landed"].find((state) => field.startsWith(state)) ?? "flight";
-
-// One block per state, in rows of four: VIEW_FIELDS lists each state's views
-// from the front, then from behind and below, each plain and then coloured.
-const VIEW_BLOCKS: ViewField[][][] = ["flight", "extended", "landed"].map(
-  (state) => {
-    const fields = VIEW_FIELDS.filter((field) => stateOf(field) === state);
-
-    return Array.from({ length: Math.ceil(fields.length / 4) }, (_, row) =>
-      fields.slice(row * 4, row * 4 + 4),
-    );
-  },
-);
-
 const translationKey = (field: FolderField) =>
   field === "holo" ? "model.defaultHolo" : `model.${field}`;
 
 const { defineField, handleSubmit, meta, setFieldValue } =
   useForm<ModelUpdateInput>({
     initialValues: Object.fromEntries(
-      FIELDS.map((field) => [field, undefined]),
+      FIELD_ORDER.map((field) => [field, undefined]),
     ) as ModelUpdateInput,
   });
 
-const definedFields = FIELDS.map(
+const definedFields = FIELD_ORDER.map(
   (field) => [field, defineField(field)] as const,
 );
 
@@ -115,28 +90,36 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
       @mapped="onFolderMapped"
     />
 
-    <hr />
+    <section
+      v-for="section in FIELD_SECTIONS"
+      :key="section.state"
+      class="fleetchart-section"
+    >
+      <Heading level="h2" size="lg">
+        {{ t(`labels.model.state.${section.state}`) }}
+      </Heading>
 
-    <div v-for="(row, index) in HOLO_ROWS" :key="index" class="row">
-      <div v-for="field in row" :key="field" class="col-12 col-md-4">
-        <FormFileInput
-          v-model="values[field]"
-          :file="model.media[field]"
-          :translation-key="translationKey(field)"
-          v-bind="fieldProps[field]"
-          :name="field"
-          :preview-src="previews[field]"
-          :allowed-types="AllowedFileTypes.HOLO"
-          clearable
-        />
+      <div class="row">
+        <div
+          v-for="field in section.holos"
+          :key="field"
+          class="col-12 col-sm-6 col-md-3"
+        >
+          <FormFileInput
+            v-model="values[field]"
+            :file="model.media[field]"
+            :translation-key="translationKey(field)"
+            v-bind="fieldProps[field]"
+            :name="field"
+            :preview-src="previews[field]"
+            :allowed-types="AllowedFileTypes.HOLO"
+            clearable
+          />
+        </div>
       </div>
-    </div>
 
-    <template v-for="(block, blockIndex) in VIEW_BLOCKS" :key="blockIndex">
-      <hr />
-
-      <div v-for="(row, rowIndex) in block" :key="rowIndex" class="row">
-        <div v-for="field in row" :key="field" class="col-12 col-md-4">
+      <div v-for="(row, index) in section.views" :key="index" class="row">
+        <div v-for="field in row" :key="field" class="col-12 col-sm-6 col-md-3">
           <FormFileInput
             v-model="values[field]"
             :file="model.media[field]"
@@ -151,6 +134,12 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
           />
         </div>
       </div>
-    </template>
+    </section>
   </ModelForm>
 </template>
+
+<style lang="scss" scoped>
+.fleetchart-section {
+  margin-top: 2.5rem;
+}
+</style>

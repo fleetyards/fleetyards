@@ -1,12 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { fieldFor, mapFolderFiles } from "./mapping";
+import {
+  FIELD_ORDER,
+  HOLO_FIELDS,
+  VIEW_FIELDS,
+  fieldFor,
+  mapFolderFiles,
+} from "./mapping";
 
 describe("fieldFor", () => {
   it("maps the four viewpoints", () => {
     expect(fieldFor("top.png")).toBe("topView");
-    expect(fieldFor("side.png")).toBe("sideView");
+    expect(fieldFor("side.png")).toBe("portView");
     expect(fieldFor("front.png")).toBe("frontView");
     expect(fieldFor("angled.png")).toBe("angledView");
+  });
+
+  it("maps a port view, which older exports name side", () => {
+    expect(fieldFor("port.png")).toBe("portView");
+    expect(fieldFor("landed_port_colored.png")).toBe("landedPortViewColored");
+    expect(fieldFor("extended-side.png")).toBe("extendedPortView");
+    expect(fieldFor("sideView.png")).toBe("portView");
+    expect(fieldFor("portViewColored.png")).toBe("portViewColored");
   });
 
   it("maps the colored variants", () => {
@@ -81,7 +95,7 @@ describe("fieldFor", () => {
   it("takes a spelled-out view and any case", () => {
     expect(fieldFor("top_view.png")).toBe("topView");
     expect(fieldFor("Extended_Side_View_Colored.PNG")).toBe(
-      "extendedSideViewColored",
+      "extendedPortViewColored",
     );
   });
 
@@ -120,7 +134,8 @@ describe("mapFolderFiles", () => {
     expect(ignored).toEqual(["top_view.png"]);
   });
 
-  // However the folder was read: base set, colored set, extended set, holos.
+  // However the folder was read: state by state, holos before views, in the
+  // form's order.
   it("lists the fields in a fixed order", () => {
     const { matched } = map([
       "Carrack/front-colored.png",
@@ -132,12 +147,12 @@ describe("mapFolderFiles", () => {
     ]);
 
     expect(matched.map((entry) => entry.field)).toEqual([
-      "topView",
+      "holo",
       "angledView",
+      "topView",
       "topViewColored",
       "frontViewColored",
       "extendedTopView",
-      "holo",
     ]);
   });
 
@@ -153,12 +168,12 @@ describe("mapFolderFiles", () => {
     ]);
 
     expect(matched.map((entry) => entry.field)).toEqual([
-      "topView",
-      "sideView",
-      "frontView",
-      "angledView",
-      "angledViewColored",
       "holo",
+      "angledView",
+      "topView",
+      "frontView",
+      "portView",
+      "angledViewColored",
     ]);
     expect(ignored).toEqual(["holo.blend"]);
   });
@@ -172,7 +187,7 @@ describe("the landed family", () => {
   });
 
   it("maps landed views, coloured and not", () => {
-    expect(fieldFor("landed-side.png")).toBe("landedSideView");
+    expect(fieldFor("landed-side.png")).toBe("landedPortView");
     expect(fieldFor("landed_top_view.png")).toBe("landedTopView");
     expect(fieldFor("landed angled colored.png")).toBe(
       "landedAngledViewColored",
@@ -181,9 +196,9 @@ describe("the landed family", () => {
 
   // The two prefixes share a regex, so the one that matched has to decide.
   it("keeps the two states apart", () => {
-    expect(fieldFor("extended-side.png")).toBe("extendedSideView");
-    expect(fieldFor("landed-side.png")).toBe("landedSideView");
-    expect(fieldFor("side.png")).toBe("sideView");
+    expect(fieldFor("extended-side.png")).toBe("extendedPortView");
+    expect(fieldFor("landed-side.png")).toBe("landedPortView");
+    expect(fieldFor("side.png")).toBe("portView");
   });
 });
 
@@ -195,7 +210,7 @@ describe("the flight family", () => {
   });
 
   it("maps flight views to the default fields, coloured and not", () => {
-    expect(fieldFor("flight-side.png")).toBe("sideView");
+    expect(fieldFor("flight-side.png")).toBe("portView");
     expect(fieldFor("flight_top_view.png")).toBe("topView");
     expect(fieldFor("flight angled colored.png")).toBe("angledViewColored");
     expect(fieldFor("Flight_Front_View_Colored.PNG")).toBe("frontViewColored");
@@ -211,5 +226,15 @@ describe("the flight family", () => {
 
     expect(matched.map((entry) => entry.field)).toEqual(["topView"]);
     expect(ignored).toEqual(["top.png"]);
+  });
+});
+
+// The form draws its inputs from the sections, and the API knows the fields
+// from these lists: a field missing from either has no input, or no column.
+describe("the form's sections", () => {
+  it("hold every field once", () => {
+    expect([...FIELD_ORDER].sort()).toEqual(
+      [...VIEW_FIELDS, ...HOLO_FIELDS].sort(),
+    );
   });
 });

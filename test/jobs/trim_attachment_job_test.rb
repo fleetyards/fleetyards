@@ -49,11 +49,11 @@ class TrimAttachmentJobTest < ActiveSupport::TestCase
 
   test "#perform takes the view off the pending list" do
     @model.top_view.attach(io: StringIO.new(padded_png), filename: "top.png", content_type: "image/png")
-    @model.update_columns(pending_trims: pending("top_view", "side_view"))
+    @model.update_columns(pending_trims: pending("top_view", "port_view"))
 
     TrimAttachmentJob.new.perform("Model", @model.id, "top_view")
 
-    assert_equal %w[side_view], @model.reload.pending_trims.keys
+    assert_equal %w[port_view], @model.reload.pending_trims.keys
   end
 
   test "#perform takes an attachment that has gone off the pending list" do
@@ -67,13 +67,13 @@ class TrimAttachmentJobTest < ActiveSupport::TestCase
   test "#perform tells admins with access to models what is still pending" do
     admin_user = create(:admin_user, resource_access: [:models])
     create(:admin_user, resource_access: [:users])
-    @model.update_columns(pending_trims: pending("top_view", "side_view"))
+    @model.update_columns(pending_trims: pending("top_view", "port_view"))
 
     assert_broadcasts(AdminModelMediaChannel.broadcasting_for(admin_user), 1) do
       TrimAttachmentJob.new.perform("Model", @model.id, "top_view")
     end
 
-    assert_equal({"modelId" => @model.id, "mediaProcessing" => ["sideView"]},
+    assert_equal({"modelId" => @model.id, "mediaProcessing" => ["portView"]},
       broadcasts(AdminModelMediaChannel.broadcasting_for(admin_user)).map { |message| JSON.parse(message) }.first)
   end
 
@@ -82,6 +82,27 @@ class TrimAttachmentJobTest < ActiveSupport::TestCase
 
     TrimAttachmentJob.sidekiq_retries_exhausted_block.call(
       {"args" => ["Model", @model.id, "top_view"]}, StandardError.new
+    )
+
+    assert_empty @model.reload.pending_trims
+  end
+
+  test "#perform crops a view a job queued before the rename calls a side view" do
+    @model.landed_port_view.attach(io: StringIO.new(padded_png), filename: "port.png", content_type: "image/png")
+    @model.update_columns(pending_trims: pending("landed_port_view"))
+    padded = @model.landed_port_view.blob
+
+    TrimAttachmentJob.new.perform("Model", @model.id, "landed_side_view")
+
+    assert_not_equal padded, @model.reload.landed_port_view.blob
+    assert_empty @model.pending_trims
+  end
+
+  test "a side view crop that ran out of retries leaves the pending list" do
+    @model.update_columns(pending_trims: pending("port_view"))
+
+    TrimAttachmentJob.sidekiq_retries_exhausted_block.call(
+      {"args" => ["Model", @model.id, "side_view"]}, StandardError.new
     )
 
     assert_empty @model.reload.pending_trims
