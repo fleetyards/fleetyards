@@ -269,7 +269,7 @@ onMounted(() => {
         :aria-label="t('labels.loading')"
       />
       <template v-for="set in viewSets" :key="set.key">
-        <div>
+        <div class="fleetchart-views__cell">
           <img
             v-if="set.angled"
             :src="set.angled"
@@ -278,7 +278,7 @@ onMounted(() => {
             @error="settleImage"
           />
         </div>
-        <div>
+        <div class="fleetchart-views__cell">
           <img
             v-if="set.plan"
             :src="set.plan"
@@ -287,7 +287,7 @@ onMounted(() => {
             @error="settleImage"
           />
         </div>
-        <div :class="{ small: mobile }">
+        <div class="fleetchart-views__cell" :class="{ small: mobile }">
           <img
             v-if="set.end"
             :src="set.end"
@@ -296,7 +296,7 @@ onMounted(() => {
             @error="settleImage"
           />
         </div>
-        <div>
+        <div class="fleetchart-views__cell">
           <img
             v-if="set.profile"
             :ref="(el) => setProfileImg(set.key, el)"

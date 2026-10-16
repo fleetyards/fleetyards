@@ -146,7 +146,7 @@ describe("the views themselves", () => {
   it("leaves no empty cells for a ship without the views from behind", async () => {
     const wrapper = await mountViews(FLIGHT_VIEWS);
 
-    expect(wrapper.findAll(".fleetchart-views > div")).toHaveLength(4);
+    expect(wrapper.findAll(".fleetchart-views__cell")).toHaveLength(4);
   });
 
   it("leaves the flying views from behind out under a state's own views", async () => {

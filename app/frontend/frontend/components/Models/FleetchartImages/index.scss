@@ -21,8 +21,6 @@
 // The global fade holds every loader back for half a second so a quick load
 // never flashes one. Here the views dim at once, and a switch rarely takes a
 // second, so the delayed loader stayed invisible while the images sat dimmed.
-// Deep, because the loader's root sits under its own <transition> and carries
-// only the Loader's scope id.
 .fleetchart-views :deep(.loader.fade-enter-active),
 .fleetchart-views :deep(.loader.fade-leave-active) {
   transition: opacity 200ms ease;
@@ -37,7 +35,9 @@
   gap: 20px;
   position: relative;
 
-  > div {
+  // A class rather than `> div`: the loader is a child of the grid too, and as a
+  // flex box its four cubes lay out in a line instead of folding as a square.
+  .fleetchart-views__cell {
     display: flex;
     justify-content: center;
     align-items: center;
