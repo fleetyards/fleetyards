@@ -106,12 +106,6 @@ const accessibleName = computed(() =>
         {{ socket.item.figure }}
       </span>
     </span>
-
-    <i
-      v-if="editable"
-      class="fa-light fa-chevron-right loadout-socket__chevron"
-      aria-hidden="true"
-    />
   </component>
 </template>
 

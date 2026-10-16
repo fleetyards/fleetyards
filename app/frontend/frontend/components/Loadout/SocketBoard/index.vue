@@ -104,7 +104,7 @@ const onKeydown = (event: KeyboardEvent) => {
 .loadout-socket-board__sockets {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;

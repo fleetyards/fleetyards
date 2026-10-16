@@ -191,10 +191,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
     @keydown="onKeydown"
   >
     <header class="loadout-picker__header">
-      <h4 class="loadout-picker__title">
-        <i class="fa-light fa-arrow-left-to-bracket" aria-hidden="true" />
-        {{ title }}
-      </h4>
+      <h4 class="loadout-picker__title">{{ title }}</h4>
       <button
         type="button"
         class="loadout-picker__close"

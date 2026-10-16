@@ -1,19 +1,18 @@
 /*
  * The candidates for one socket: a search and filters over a dense list, built
  * for a weapon slot's dozens of options rather than a module slot's handful.
- * Like the sockets it sits over the ship's picture, so it brings its own glass.
+ * The app's own panel, solid like the sockets, lifted off the ship's picture by
+ * a shadow rather than a glow.
  */
 .loadout-picker {
   display: flex;
   flex-direction: column;
   min-width: 0;
   max-height: min(72dvh, 760px);
-  background: rgb(10 12 14 / 0.86);
-  border: 1px solid var(--color-primary, #428bca);
+  background: rgba($gray-darker, 0.96);
+  border: 1px solid var(--color-edge-soft);
   border-radius: $panel-border-radius;
-  box-shadow: 0 0 24px
-    color-mix(in srgb, var(--color-primary, #428bca) 25%, transparent);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
 }
 
 .loadout-picker__header {
@@ -25,15 +24,10 @@
 }
 
 .loadout-picker__title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   margin: 0;
+  color: $text-color;
   font-size: 16px;
-
-  i {
-    color: var(--color-primary, #428bca);
-  }
+  font-weight: 600;
 }
 
 .loadout-picker__close {
@@ -125,7 +119,7 @@
   text-align: left;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: $panelContentBorderRadius;
+  border-radius: 6px;
   cursor: pointer;
   transition:
     background-color $transition-base-speed,
@@ -156,7 +150,7 @@
   width: 72px;
   height: 40px;
   object-fit: cover;
-  border-radius: 3px;
+  border-radius: 6px;
 
   &--glyph {
     display: flex;
@@ -164,7 +158,7 @@
     justify-content: center;
     color: var(--color-muted);
     font-size: 16px;
-    background: rgb(0 0 0 / 0.45);
+    background: transparent;
     border: 1px dashed var(--color-edge-soft);
   }
 }
