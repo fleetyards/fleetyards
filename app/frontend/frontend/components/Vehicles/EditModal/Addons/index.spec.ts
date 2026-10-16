@@ -132,10 +132,10 @@ describe("VehicleLoadoutModalAddons", () => {
     expect(wrapper.find(".addon-option__figure").exists()).toBe(true);
   });
 
-  it("marks a fitted row with a pill while editing", async () => {
+  it("marks a fitted row by selecting it, without a pill, while editing", async () => {
     const wrapper = await mount({ modelValue: ["m1"] });
 
-    expect(wrapper.findAll("[data-test='pill']")).toHaveLength(1);
+    expect(wrapper.findAll("[data-test='pill']")).toHaveLength(0);
     expect(rows(wrapper)[0].classes()).toContain("addon-option--selected");
   });
 

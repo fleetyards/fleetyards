@@ -26,7 +26,7 @@ type Props = {
   badges?: AddonBadge[];
   selected?: boolean;
   // How many copies are fitted. Only ever shown above one — a stepper reading
-  // "1" on every fitted row is noise, and the fitted pill already says it.
+  // "1" on every fitted row is noise, and the selected row already says it.
   count?: number;
   quantities?: boolean;
   editable?: boolean;

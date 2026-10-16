@@ -86,22 +86,14 @@ const summary = (addon: Addon) => {
 };
 
 /*
- * Read-only, every row on screen is one the ship carries, so a "fitted" pill on
- * each of them says nothing — the same reason a production-status pill is only
- * drawn where it is a warning. What is worth saying there is how many copies,
- * which editing reads off the stepper instead.
+ * No pill says the ship has a row: while editing the selected row says it, and
+ * read-only every row on screen is one the ship carries -- the same reason a
+ * production-status pill is only drawn where it is a warning. What is worth
+ * saying read-only is how many copies, which editing reads off the stepper.
  */
 const badges = (addon: Addon): AddonBadge[] => {
   const list: AddonBadge[] = [];
   const count = countFor(addon.id);
-
-  if (count && props.editable) {
-    list.push({
-      key: "fitted",
-      label: t("addon.fitted"),
-      variant: PillVariantsEnum.SUCCESS,
-    });
-  }
 
   if (count > 1 && !props.editable) {
     list.push({ key: "copies", label: t("addon.copies", { count }) });

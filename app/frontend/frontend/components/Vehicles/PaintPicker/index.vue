@@ -73,14 +73,6 @@ const pledged = (paint: ModelPaint) => props.pledgedIds.includes(paint.id);
 const badges = (paint: ModelPaint): AddonBadge[] => {
   const list: AddonBadge[] = [];
 
-  if (owned(paint)) {
-    list.push({
-      key: "owned",
-      label: t("labels.vehicleLoadout.owned"),
-      variant: PillVariantsEnum.SUCCESS,
-    });
-  }
-
   if (pledged(paint)) {
     list.push({
       key: "pledged",
