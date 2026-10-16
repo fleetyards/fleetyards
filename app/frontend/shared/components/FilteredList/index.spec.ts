@@ -281,6 +281,53 @@ describe("FilteredList", () => {
     expect(formText()).toBe("{}");
   });
 
+  // App.vue renders the off-canvas panel after the page, and keys its whole
+  // body on the locale: a locale change mounts the page before the target
+  // exists, and a Teleport that missed its target crashes on the next patch.
+  it("finds the off-canvas panel that mounts after it", async () => {
+    document.body.innerHTML = "";
+
+    const FilterForm = defineComponent({
+      props: { count: { type: Number, required: true } },
+      setup(props) {
+        return () => h("span", { "data-test": "form" }, String(props.count));
+      },
+    });
+
+    const count = ref(0);
+
+    const Layout = defineComponent({
+      setup() {
+        return () => [
+          h(
+            ListComponent,
+            {
+              name: "test-list",
+              records: [],
+              asyncStatus: loaded(),
+              isFilterSelected: count.value > 0,
+            },
+            { filter: () => h(FilterForm, { count: count.value }) },
+          ),
+          h("div", { id: "off-canvas-content" }),
+        ];
+      },
+    });
+
+    await mountWithDefaults(Layout, {
+      initialState: { mobile: { mobile: true } },
+      attachTo: document.body,
+    });
+
+    count.value = 1;
+    await flushPromises();
+
+    expect(
+      document.querySelector('#off-canvas-content [data-test="form"]')
+        ?.textContent,
+    ).toBe("1");
+  });
+
   it("keeps a list's own view keys through a reset", async () => {
     await router.push({
       name: "ships",

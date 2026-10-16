@@ -366,7 +366,11 @@ const toggleFilter = () => {
         </div>
       </div>
       <div class="row">
-        <Teleport to="#off-canvas-content" :disabled="!mobile">
+        <!-- Deferred: the off-canvas panel renders after the page in App.vue,
+             so a page mounted in the same pass as the panel - every locale
+             change remounts both - would find no target, and Vue then crashes
+             patching children it never mounted. -->
+        <Teleport to="#off-canvas-content" :disabled="!mobile" defer>
           <transition
             v-if="!mobile"
             name="slide"
