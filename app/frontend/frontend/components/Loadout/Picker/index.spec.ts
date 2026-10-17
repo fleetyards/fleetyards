@@ -2,7 +2,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import type { LoadoutPickerOption, LoadoutPickerSort } from "./types";
+import type {
+  LoadoutPickerFacet,
+  LoadoutPickerOption,
+  LoadoutPickerSort,
+} from "./types";
 
 const MANUFACTURERS = ["Behring", "Klaus & Werner", "Hurston Dynamics"];
 
