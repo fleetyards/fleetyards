@@ -181,6 +181,7 @@
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Importazione delle verniciature avviata. Riceverai una notifica al termine.",
+        "syncShipViewsStarted": "Sincronizzazione delle viste della nave avviata. I nuovi render appariranno qui una volta elaborati.",
         "dimensionsDrifted": "Queste dimensioni differiscono dai file di gioco."
       },
       "announcement": {
@@ -542,6 +543,7 @@
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
           "importPaints": "Sei sicuro di voler importare le verniciature di questo modello dai dati dell'hangar? Una verniciatura che la fonte indica per un'intera serie viene importata per ogni modello di quella serie.",
+          "syncShipViews": "Sei sicuro di voler sincronizzare le viste della nave di questo modello dal bucket dei render? I render nuovi e modificati vengono allegati e quelli rimossi tornano. Le viste caricate a mano vengono mantenute.",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
           "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",

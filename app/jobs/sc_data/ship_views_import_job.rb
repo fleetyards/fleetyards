@@ -6,39 +6,50 @@ module ScData
   # views are cropped and holos measured by the model's own callbacks.
   #
   # Renders go live without review, so every run logs what it attached.
+  #
+  # Given a model, only that ship is synced, and its listing is compared render
+  # by render even when the digest says nothing changed, so a render detached in
+  # the admin comes back. A view uploaded by hand is kept: the stored md5s still
+  # name the render it replaced.
   class ShipViewsImportJob < ApplicationJob
     sidekiq_options queue: "loaders"
 
-    def perform
+    def perform(model_id = nil)
       return unless ::ScData::ShipViewsStore.configured?
 
       store = ::ScData::ShipViewsStore.new
       ships = store.ships
-      models = Model.where(slug: ships.values.pluck("slug")).index_by(&:slug)
-      paths_by_slug = ships.group_by { |_path, entry| entry["slug"] }.transform_values { |pairs| pairs.map(&:first) }
+
+      models = models_for(ships)
+
+      if model_id
+        ships = ships.select { |path, _entry| models[path]&.id == model_id }
+        log(:info, "no renders listed for model #{model_id}") if ships.empty?
+      end
+
+      paths_by_model = ships.keys.group_by { |path| models[path]&.id }
       attached = {}
       unknown = []
 
       ships.each do |path, entry|
-        slug = entry["slug"]
-        model = models[slug]
+        model = models[path]
 
         if model.nil?
-          unknown << slug
+          unknown << (entry["scKey"] || entry["slug"])
           next
         end
 
         # Two folders claiming one model would replace each other's renders on
         # every run.
-        if paths_by_slug[slug].size > 1
-          log(:warn, "#{slug} is listed under #{paths_by_slug[slug].join(", ")}, skipped")
+        if paths_by_model[model.id].size > 1
+          log(:warn, "#{model.slug} is listed under #{paths_by_model[model.id].join(", ")}, skipped")
           next
         end
 
-        next if model.ship_views_digest == entry["files"]
+        next if model_id.nil? && model.ship_views_digest == entry["files"]
 
         fields = import(store, model, path, entry["files"])
-        attached[slug] = fields if fields.any?
+        attached[model.slug] = fields if fields.any?
       rescue => e
         # Left on the old digest, so the next run tries the ship again.
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
@@ -48,6 +59,30 @@ module ScData
       log(:info, "no model for #{unknown.size} ships: #{unknown.join(", ")}") if unknown.any?
       attached.each { |slug, fields| log(:info, "attached #{slug}: #{fields.join(", ")}") }
       log(:info, "attached #{attached.values.sum(&:size)} renders to #{attached.size} models")
+    end
+
+    # The path of every ship with a model. The game-file key is the stable
+    # name; concepts have none, and are matched by slug. sc-tools uses the RSI
+    # slug, where ours carries the manufacturer when two ships share a name
+    # (`arrastra` is `rsi-arrastra`).
+    private def models_for(ships)
+      by_sc_key = unique_by(:sc_key, ships.values.pluck("scKey").compact)
+      by_slug = Model.where(slug: ships.values.pluck("slug")).index_by(&:slug)
+      by_rsi_slug = unique_by(:rsi_slug, ships.values.pluck("slug") - by_slug.keys)
+
+      ships.to_h do |path, entry|
+        [path, by_sc_key[entry["scKey"]] || by_slug[entry["slug"]] || by_rsi_slug[entry["slug"]]]
+      end
+    end
+
+    # Neither column is unique, and a value two models share names neither.
+    private def unique_by(column, values)
+      return {} if values.empty?
+
+      Model.where(column => values)
+        .group_by(&column)
+        .filter_map { |value, models| [value, models.first] if models.one? }
+        .to_h
     end
 
     private def import(store, model, path, digest)

@@ -181,6 +181,7 @@
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "塗裝匯入已開始。完成後會通知您。",
+        "syncShipViewsStarted": "艦船視圖同步已開始。新的渲染圖處理完成後會顯示在這裡。",
         "dimensionsDrifted": "這些尺寸與遊戲檔案不一致。"
       },
       "announcement": {
@@ -542,6 +543,7 @@
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
           "importPaints": "確定要從機庫資料匯入此型號的塗裝嗎？來源若將某個塗裝標示為整個系列共用，該系列的每個型號都會匯入這個塗裝。",
+          "syncShipViews": "確定要從渲染儲存桶同步此型號的艦船視圖嗎？新的和已變更的渲染圖會被附加，已移除的會恢復。手動上傳的視圖將保留。",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
           "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",

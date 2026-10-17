@@ -5,7 +5,8 @@ module Admin
     module V1
       class ModelsController < ::Admin::Api::BaseController
         before_action :set_model,
-          only: %i[show update destroy use_rsi_image reload_one reload_one_matrix reload_one_scdata reload_one_paints]
+          only: %i[show update destroy use_rsi_image reload_one reload_one_matrix reload_one_scdata reload_one_paints
+            reload_one_ship_views]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.model", slug: params[:slug]))
@@ -144,6 +145,12 @@ module Admin
 
         def reload_one_paints
           Loaders::PaintsImportJob.perform_async(current_admin_user.id, @model.id)
+
+          render json: {message: "Jobs enqueued"}, status: :ok
+        end
+
+        def reload_one_ship_views
+          ::ScData::ShipViewsImportJob.perform_async(@model.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
