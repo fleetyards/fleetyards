@@ -23,7 +23,7 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
         description: "The ship the slot is on, whose tags a part may demand"
       parameter name: "ancestorIds", in: :query, required: false,
         schema: {type: :array, items: {type: :string, format: :uuid}}, style: :form, explode: true,
-        description: "The ports above the slot, whose tags a part may demand too"
+        description: "The ports above the slot, whose tags a part may demand too; read only with modelSlug"
 
       response(200, "successful") do
         schema ::V1::Schemas::Loadouts::LoadoutOptionList
