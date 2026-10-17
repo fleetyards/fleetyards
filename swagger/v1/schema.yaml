@@ -12439,6 +12439,15 @@ paths:
       tags:
       - Hardpoints
       operationId: hardpointLoadoutOptions
+      parameters:
+      - name: stockId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: What the slot came with, which a port inside a part does not
+          know itself
       responses:
         '200':
           description: successful

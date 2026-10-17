@@ -35,7 +35,7 @@ class LoadoutSlots
     end
 
     def fits?(component)
-      LoadoutSlots.fits?(port, component)
+      LoadoutSlots.fits?(port, component, stock)
     end
   end
 
@@ -46,14 +46,16 @@ class LoadoutSlots
   #
   # `candidates` keeps each kind's catalogue query for the next port asking the
   # same, so a whole tree costs a query per kind of part rather than per slot.
-  def self.options(port, candidates = {})
+  # `stock` is what the slot came with, which a port inside a part does not
+  # know itself: the ship's copy of the port holds it.
+  def self.options(port, candidates = {}, stock: port.facts.component)
     facts = port.facts
-    types = types_taken(facts)
+    types = types_taken(facts, stock)
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
 
     kind = types.any? ? [:component_type, types.sort] : [:category, facts.category]
-    # The served build resolved once per tree: asking it again per kind of part
-    # was most of a tree's queries.
+    # Resolving the served build costs queries of its own, so a tree resolves
+    # it once for every kind of part it asks about.
     source = (candidates[:source] ||= Component.served_source)
     candidates[kind] ||= Component.joins(Component.current_facts_join(source)).catalogued
       .where(Component.fact_sql(kind.first).in(Array(kind.last)))
@@ -61,7 +63,7 @@ class LoadoutSlots
       .order(Component.fact_sql(:name))
       .to_a
 
-    distinct(candidates[kind].select { |component| fits?(port, component) }, facts.component)
+    distinct(candidates[kind].select { |component| fits?(port, component, stock) }, stock)
   end
 
   # The game files carry one part several times over -- a gas-cloud-resistant
@@ -77,9 +79,9 @@ class LoadoutSlots
 
   # A port that names no types (68 life-support slots, among others) is matched
   # on the category the slot was filed under instead.
-  def self.fits?(port, component)
+  def self.fits?(port, component, stock = port.facts.component)
     facts = port.facts
-    types = types_taken(facts)
+    types = types_taken(facts, stock)
     kind_matches = types.any? ? types.include?(component.component_type) : component.category == facts.category
     return false unless kind_matches
 
@@ -88,16 +90,16 @@ class LoadoutSlots
     return false if facts.min_size && size < facts.min_size
     return false if facts.max_size && size > facts.max_size
 
-    facts.category != "controller" || same_blade_family?(facts.component, component)
+    facts.category != "controller" || same_blade_family?(stock, component)
   end
 
   # A port naming a mount and a gun both takes the mount: the gun goes in the
   # mount's own port. Only where the ship came with a bare gun there does the
   # slot keep taking guns.
-  def self.types_taken(facts)
+  def self.types_taken(facts, stock = facts.component)
     types = Array(facts.types).compact_blank
     return types unless types.include?("Turret") && types.size > 1
-    return types if facts.component.present? && facts.component.component_type != "Turret"
+    return types if stock.present? && stock.component_type != "Turret"
 
     ["Turret"]
   end
@@ -165,8 +167,11 @@ class LoadoutSlots
   def swappable?(slot)
     return false unless slot.editable?
 
-    @swappable.fetch(slot.port.id) do
-      @swappable[slot.port.id] = LoadoutSlots.options(slot.port, @candidates)
+    # By port and stock: two mounts share one port record but can hold
+    # different guns.
+    key = [slot.port.id, slot.stock&.id]
+    @swappable.fetch(key) do
+      @swappable[key] = LoadoutSlots.options(slot.port, @candidates, stock: slot.stock)
         .any? { |component| component.id != slot.stock&.id }
     end
   end

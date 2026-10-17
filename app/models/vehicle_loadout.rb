@@ -120,14 +120,16 @@ class VehicleLoadout < ApplicationRecord
     empties_fit
   end
 
-  # A slot can be emptied where a part can be fitted: a component slot a player
-  # fits, which the game does not lock. A module slot is empty by leaving it out.
+  # A slot can be emptied where a part can be fitted and there is one to take
+  # out: a component slot a player fits, holding a stock part, which the game
+  # does not lock. A module slot is empty by leaving it out.
   private def empties_fit
     item_list.select { |item| item[:item_type] == VehicleLoadoutItem::EMPTY }.each do |item|
       slot = loadout_slots[item[:slot_path]]
       if slot.nil? || slot.module_slot? || !loadout_slots.fittable?(item[:slot_path])
         next errors.add(:items, :slot_unknown)
       end
+      next errors.add(:items, :nothing_to_empty) if slot.stock.nil?
 
       errors.add(:items, :slot_not_editable) unless slot.editable?
     end
