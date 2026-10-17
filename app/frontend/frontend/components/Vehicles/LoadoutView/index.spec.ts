@@ -17,8 +17,11 @@ const resolved = () => ({
   error: ref(undefined),
 });
 
+const loadoutSlots = ref<unknown[]>([]);
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
+  useVehicleLoadoutSlots: () => ({ data: loadoutSlots, ...resolved() }),
   useModelModules: () => ({
     data: ref({
       items: [
@@ -171,5 +174,43 @@ describe("VehicleLoadoutView", () => {
     expect(
       wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
     ).toBe(false);
+  });
+});
+
+describe("VehicleLoadoutView components", () => {
+  it("lists the parts swapped in, by category, for the owner", async () => {
+    loadoutSlots.value = [
+      {
+        name: "hardpoint_gun_nose",
+        hardpointId: "hull-nose",
+        category: "weapon_mounts",
+        types: ["Turret"],
+        editable: true,
+        stock: { id: "g1", name: "Stock Gimbal" },
+        slots: [
+          {
+            name: "hardpoint_class_2",
+            hardpointId: "port",
+            category: "weapons",
+            types: ["WeaponGun"],
+            editable: true,
+            stock: { id: "gun1", name: "Stock Gun" },
+            fitted: { id: "gun2", name: "Other Gun", size: "3" },
+            slots: [],
+          },
+        ],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    const section = wrapper.get("[data-test='vehicle-loadout-view-weapons']");
+    expect(section.text()).toContain("Gun Nose › Class 2");
+    expect(section.text()).toContain("Other Gun");
+    expect(section.text()).not.toContain("Stock Gimbal");
+
+    loadoutSlots.value = [];
   });
 });
