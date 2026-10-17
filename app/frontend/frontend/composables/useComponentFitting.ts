@@ -165,9 +165,15 @@ export const useComponentFitting = () => {
     }
 
     const difference = after - before;
+    const percent = before
+      ? Math.round(Math.abs(difference / before) * 100)
+      : 0;
+    // A move too small to read as one is no move: "+0%" says nothing.
+    if (before && percent === 0) return {};
+
     const better = lowerIsBetter(key) ? difference < 0 : difference > 0;
     const deltaLabel = before
-      ? `${difference > 0 ? "+" : "−"}${Math.round(Math.abs(difference / before) * 100)}%`
+      ? `${difference > 0 ? "+" : "−"}${percent}%`
       : `${difference > 0 ? "+" : "−"}${String(toNumber(Math.abs(difference)))}`;
 
     return { deltaLabel, tone: better ? "better" : "worse" };
@@ -482,75 +488,6 @@ export const useComponentFitting = () => {
     });
   };
 
-  // The whole-ship figures each tab moves, power-plant figures on the power
-  // plants' tab and so on; every tab shows what its parts draw.
-  const SHIP_FIGURES: Record<string, string[]> = {
-    powerPlants: ["pips", "power", "cooling", "em", "ir"],
-    coolers: ["cooling", "ir", "power"],
-    radar: ["aimAssist", "power", "em"],
-  };
-
-  // Every whole-ship figure, for a caller listing what any tab moved.
-  const ALL_SHIP_FIGURES = "*";
-
-  const shipFigures = (
-    now: LoadoutSimResult,
-    saved: LoadoutSimResult,
-    tabId: string,
-  ): FigureChange[] => {
-    const used = (sim: LoadoutSimResult) => sim.totalSegments - sim.remaining;
-    const compact = (value: number) =>
-      value >= 1000
-        ? `${String(toNumber(Math.round(value / 100) / 10))}k`
-        : String(toNumber(Math.round(value)));
-
-    const figures: Record<string, () => FigureChange> = {
-      pips: () => ({
-        key: "pips",
-        label: t("labels.hardpoint.powerPlants.pips"),
-        value: String(now.totalSegments),
-        ...change("pips", saved.totalSegments, now.totalSegments),
-      }),
-      power: () => ({
-        key: "powerConsumption",
-        label: t("labels.hardpoint.powerConsumption"),
-        value: `${used(now)} / ${now.totalSegments}`,
-        ...change("powerConsumption", used(saved), used(now)),
-      }),
-      cooling: () => ({
-        key: "coolingLoad",
-        label: t("labels.power.cooling"),
-        value: `${Math.round(now.coolingRatio * 100)}%`,
-        ...change("signature", saved.coolingRatio, now.coolingRatio),
-      }),
-      em: () => ({
-        key: "signatureEm",
-        label: t("labels.hardpoint.signatureEm"),
-        value: compact(now.emittedEm),
-        ...change("signatureEm", saved.emittedEm, now.emittedEm),
-      }),
-      ir: () => ({
-        key: "signatureIr",
-        label: t("labels.hardpoint.signatureIr"),
-        value: compact(now.emittedIr),
-        ...change("signatureIr", saved.emittedIr, now.emittedIr),
-      }),
-      aimAssist: () => ({
-        key: "aimAssist",
-        label: t("labels.power.aimAssist"),
-        value: `${String(toNumber(Math.round(now.aimAssist)))} m`,
-        ...change("aimAssist", saved.aimAssist, now.aimAssist),
-      }),
-    };
-
-    const keys =
-      tabId === ALL_SHIP_FIGURES
-        ? Object.keys(figures)
-        : (SHIP_FIGURES[tabId] ?? ["power"]);
-
-    return keys.map((key) => figures[key]());
-  };
-
   // The parts a slot takes, each with its headline figure and how far that
   // moves from what the slot holds now.
   const options = (
@@ -680,7 +617,5 @@ export const useComponentFitting = () => {
     stats,
     tabFigures,
     graft,
-    shipFigures,
-    ALL_SHIP_FIGURES,
   };
 };

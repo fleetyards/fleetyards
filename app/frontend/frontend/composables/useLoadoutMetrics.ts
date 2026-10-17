@@ -58,15 +58,19 @@ export const useLoadoutMetrics = () => {
     after: number,
     lowerIsBetter = false,
   ): Pick<LoadoutMetric, "deltaLabel" | "tone"> => {
-    if (Math.round(before * 100) === Math.round(after * 100)) return {};
-
     const difference = after - before;
+    const percent = before
+      ? Math.round(Math.abs(difference / before) * 100)
+      : 0;
+    // A move too small to read as one is no move: "+0%" says nothing.
+    if (before ? percent === 0 : Math.round(difference) === 0) return {};
+
     const sign = difference > 0 ? "+" : "−";
     const better = lowerIsBetter ? difference < 0 : difference > 0;
 
     return {
       deltaLabel: before
-        ? `${sign}${Math.round(Math.abs(difference / before) * 100)}%`
+        ? `${sign}${percent}%`
         : `${sign}${number(Math.abs(difference))}`,
       tone: better ? "better" : "worse",
     };

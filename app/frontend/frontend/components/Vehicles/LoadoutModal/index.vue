@@ -20,8 +20,9 @@ import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
 import LoadoutMetrics from "./Metrics/index.vue";
-import { simulateLoadoutPower } from "@/frontend/composables/useLoadoutSim";
 import {
+  type LoadoutMetric,
+  type LoadoutMetricsCard,
   TAB_METRICS,
   useLoadoutMetrics,
 } from "@/frontend/composables/useLoadoutMetrics";
@@ -37,7 +38,6 @@ import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
 import {
   COMPONENT_TABS,
   type ComponentTab,
-  type FigureChange,
   EMPTIED,
   slotName,
   useComponentFitting,
@@ -361,23 +361,67 @@ const bladeIn = (tree: typeof componentTree.value) =>
 
 const { metrics: loadoutMetrics } = useLoadoutMetrics();
 
+const now = computed(() => ({
+  hardpoints: fittedHardpoints.value,
+  blade: bladeIn(componentTree.value),
+}));
+
+const saved = computed(() => ({
+  hardpoints: savedHardpoints.value,
+  blade: bladeIn(savedTree.value),
+}));
+
+const cardMetrics = (card: LoadoutMetricsCard) =>
+  modelHardpoints.value?.length
+    ? loadoutMetrics(
+        card,
+        now.value,
+        saved.value,
+        model.value?.metrics.weaponPoolSize,
+      )
+    : [];
+
+// The tabs whose parts' own figure no card leads with -- a radar's assist
+// range, a drive's speed -- which their tab shows ahead of the card's.
+const OWN_FIGURE_TABS = ["radar", "coolers", "lifeSupport", "quantumDrives"];
+
+// Draw and signatures are the power card's to show, summed for the whole ship.
+const CARD_FIGURES = new Set([
+  "powerConsumption",
+  "signatureEm",
+  "signatureIr",
+]);
+
+const ownFigures = (tabId: string): LoadoutMetric[] => {
+  const tab = componentTabs.value[tabId];
+  if (!tab || !OWN_FIGURE_TABS.includes(tabId)) return [];
+
+  return fitting
+    .tabFigures(componentTree.value, savedTree.value, tab)
+    .filter((figure) => !CARD_FIGURES.has(figure.key))
+    .map(({ key, label, value, deltaLabel, tone }) => ({
+      key,
+      label,
+      value,
+      deltaLabel,
+      tone,
+    }));
+};
+
+const openCard = computed(() =>
+  currentTab.value ? TAB_METRICS[currentTab.value] : undefined,
+);
+
 // The open tab's card, cut down to its leading figures, each with how far it
 // moved from the saved loadout.
 const tabMetrics = computed(() => {
-  const card = currentTab.value ? TAB_METRICS[currentTab.value] : undefined;
-  if (!card || !modelHardpoints.value?.length) return undefined;
+  if (!currentTab.value || !openCard.value || !modelHardpoints.value?.length) {
+    return undefined;
+  }
 
   return {
     title: t(`labels.vehicleLoadout.tabs.${currentTab.value}`),
-    metrics: loadoutMetrics(
-      card,
-      {
-        hardpoints: fittedHardpoints.value,
-        blade: bladeIn(componentTree.value),
-      },
-      { hardpoints: savedHardpoints.value, blade: bladeIn(savedTree.value) },
-      model.value?.metrics.weaponPoolSize,
-    ),
+    metrics: [...ownFigures(currentTab.value), ...cardMetrics(openCard.value)],
   };
 });
 
@@ -391,66 +435,35 @@ const moduleFigures = computed(() =>
   ),
 );
 
-const asRow = (figure: FigureChange) => ({
-  key: figure.key,
-  label: figure.label,
-  value: figure.value,
-  deltaLabel: figure.deltaLabel,
-  delta: figure.tone ? { tone: figure.tone } : undefined,
-});
-
 /**
- * The ship's figures under the fitting as it stands, each with its change
- * against the loadout as saved: the open tab's own -- what its parts add up to
- * and the whole-ship figures they move -- and after them anything another tab's
- * changes moved, so a swap is never out of sight on the tab it was not made on.
+ * What the open tab does not show that moved against the saved loadout: the
+ * other cards' figures, the other tabs' own, and cargo -- one line each, in the
+ * same words the tiles use, so a swap is never out of sight on the tab it was
+ * not made on.
  */
-const shipFigures = computed(() => {
-  const open = currentTab.value
-    ? componentTabs.value[currentTab.value]
-    : undefined;
-  const simulated = !!modelHardpoints.value?.length;
-
-  const own = open
-    ? [
-        ...fitting.tabFigures(componentTree.value, savedTree.value, open),
-        ...(simulated
-          ? fitting.shipFigures(powerNow.value, powerSaved.value, open.id)
-          : []),
-      ].map(asRow)
-    : moduleFigures.value;
-
-  const moved = [
-    ...(open ? moduleFigures.value.filter((row) => row.deltaLabel) : []),
-    ...COMPONENT_TABS.filter((tab) => tab.id !== open?.id)
-      .flatMap((tab) =>
-        fitting.tabFigures(componentTree.value, savedTree.value, tab),
-      )
-      .filter((figure) => figure.deltaLabel)
-      .map(asRow),
-    ...(simulated
-      ? fitting
-          .shipFigures(
-            powerNow.value,
-            powerSaved.value,
-            fitting.ALL_SHIP_FIGURES,
-          )
-          .filter((figure) => figure.deltaLabel)
-          .map(asRow)
-      : []),
-  ];
-
-  const all = [...own, ...moved];
-
-  return all.filter(
-    (row, index) => all.findIndex((other) => other.key === row.key) === index,
+const changedFigures = computed<LoadoutMetric[]>(() => {
+  const cards = [...new Set(Object.values(TAB_METRICS))].filter(
+    (card) => card !== openCard.value,
   );
-});
 
-// Under a card, only what moved: the card already shows where the ship stands.
-const changedFigures = computed(() =>
-  shipFigures.value.filter((figure) => figure.deltaLabel),
-);
+  return [
+    ...(currentTab.value === VehicleLoadoutTabsEnum.MODULES
+      ? []
+      : moduleFigures.value
+          .filter((row) => row.deltaLabel)
+          .map((row) => ({
+            key: row.key,
+            label: row.label,
+            value: row.value,
+            deltaLabel: row.deltaLabel,
+            tone: row.delta?.tone,
+          }))),
+    ...cards.flatMap(cardMetrics),
+    ...OWN_FIGURE_TABS.filter((id) => id !== currentTab.value).flatMap(
+      ownFigures,
+    ),
+  ].filter((figure) => figure.deltaLabel);
+});
 
 const slots = computed(() => moduleSlots(modules.value));
 
@@ -863,15 +876,9 @@ const onSubmit = handleSubmit(async (values) => {
           class="vehicle-loadout__card"
         />
 
-        <p
-          v-if="tabMetrics && changedFigures.length"
-          class="vehicle-loadout__changes-title"
-        >
-          {{ t("labels.loadoutPicker.changed") }}
-        </p>
-        <dl class="vehicle-loadout__figures">
+        <dl v-if="!tabMetrics" class="vehicle-loadout__figures">
           <div
-            v-for="figure in tabMetrics ? changedFigures : shipFigures"
+            v-for="figure in moduleFigures"
             :key="figure.key"
             class="vehicle-loadout__figure"
             :data-test="`vehicle-loadout-figure-${figure.key}`"
@@ -889,6 +896,35 @@ const onSubmit = handleSubmit(async (values) => {
             </dd>
           </div>
         </dl>
+
+        <section
+          v-if="changedFigures.length"
+          class="vehicle-loadout__changes"
+          data-test="vehicle-loadout-changes"
+        >
+          <h4 class="vehicle-loadout__changes-title">
+            {{ t("labels.loadoutPicker.changed") }}
+          </h4>
+          <dl class="vehicle-loadout__changes-list">
+            <div
+              v-for="figure in changedFigures"
+              :key="figure.key"
+              class="vehicle-loadout__change"
+              :data-test="`vehicle-loadout-change-${figure.key}`"
+            >
+              <dt>{{ figure.label }}</dt>
+              <dd>
+                {{ figure.value }}
+                <span
+                  class="vehicle-loadout__figure-delta"
+                  :class="`vehicle-loadout__figure-delta--${figure.tone}`"
+                >
+                  {{ figure.deltaLabel }}
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </section>
       </aside>
 
       <div class="vehicle-loadout__panel">
