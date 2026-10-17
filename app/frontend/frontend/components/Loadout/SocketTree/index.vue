@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import type { Ref } from "vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import Socket from "@/frontend/components/Loadout/Socket/index.vue";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
@@ -29,8 +30,15 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// What sits inside every part shows until its row's chevron folds it away.
+// What sits inside every part shows until its row's chevron folds it away, or
+// the board folds them all; a row's own choice is cleared each time it does.
+const folded = inject<Ref<boolean>>("loadoutSocketsFolded", ref(false));
+
 const toggled = ref<Record<string, boolean>>({});
+
+watch(folded, () => {
+  toggled.value = {};
+});
 
 // Groups split out to fit their slots one by one.
 const split = ref<Record<string, boolean>>({});
@@ -44,7 +52,7 @@ const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
 // The socket being filled stays in sight, whichever way its parent was folded.
 const expanded = (socket: LoadoutSocketSlot) =>
   (!!props.active && contains(socket, props.active)) ||
-  (toggled.value[socket.id] ?? true);
+  (toggled.value[socket.id] ?? !folded.value);
 
 const toggle = (socket: LoadoutSocketSlot) => {
   toggled.value = { ...toggled.value, [socket.id]: !expanded(socket) };
