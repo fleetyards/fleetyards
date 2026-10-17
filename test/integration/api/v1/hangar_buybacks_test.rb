@@ -163,6 +163,18 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks lists the ones RSI still offers first, each cheapest first" do
+    user = create(:user)
+    pricey = buyback(user, price: 120)
+    withdrawn = buyback(user, price: 10, available: false)
+    cheap = buyback(user, price: 60)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["available desc", "price asc"]}} do
+      assert_equal [cheap.id, pricey.id, withdrawn.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar/buybacks sorts by name, then by reclaim date for the same name" do
     user = create(:user)
     cutlass_older = buyback(user, reclaimed_on: Date.new(2023, 11, 26))

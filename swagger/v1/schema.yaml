@@ -20931,6 +20931,8 @@ components:
       - name desc
       - price asc
       - price desc
+      - available asc
+      - available desc
       x-enumNames:
       - RECLAIMED_ON_ASC
       - RECLAIMED_ON_DESC
