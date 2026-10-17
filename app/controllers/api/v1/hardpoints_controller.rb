@@ -15,8 +15,9 @@ module Api
         stock = params[:stock_id].present? ? Component.find_by(id: params[:stock_id]) : hardpoint.facts.component
 
         # The ship it is for, whose tags a part may demand.
-        model = Model.find_by(slug: params[:model_slug]) if params[:model_slug].present?
-        ship_tags = LoadoutSlots.ship_tags_for(model) if model
+        if params[:model_slug].present?
+          ship_tags = LoadoutSlots.ship_tags_for(Model.find_by!(slug: params[:model_slug]))
+        end
 
         @options = LoadoutSlots.options(hardpoint, stock:, ship_tags:)
         @ports = Hardpoint.in_build.where(parent_type: "Component", parent_id: @options.map(&:id))

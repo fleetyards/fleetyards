@@ -86,6 +86,13 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options returns 404 for an unknown ship" do
+    slot = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_gun", source: :game_files,
+      types: %w[WeaponGun], min_size: 2, max_size: 2)
+
+    assert_api_response :get, 404, path_params: {id: slot.id}, params: {modelSlug: "no-such-ship"}
+  end
+
   test "GET /hardpoints/:id/loadout-options returns 404 for an unknown hardpoint" do
     assert_api_response :get, 404, path_params: {id: SecureRandom.uuid}
   end
