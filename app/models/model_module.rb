@@ -3,6 +3,7 @@
 class ModelModule < ApplicationRecord
   include ActiveStorageVariants
   include DerivedCargoHolds
+  include LoadoutFittable
 
   paginates_per 24
 
@@ -25,10 +26,6 @@ class ModelModule < ApplicationRecord
     dependent: :destroy
   has_many :models, through: :module_hardpoints
   has_many :model_module_package_items, dependent: :destroy
-  # Polymorphic, so no foreign key removes these with the module; destroyed so
-  # each loadout it was fitted in is touched, along with what sat inside it.
-  has_many :vehicle_loadout_items, as: :item, dependent: nil
-  before_destroy :unfit_everywhere
   has_many :model_module_packages, through: :model_module_package_items
 
   has_many :item_prices, as: :item, dependent: :destroy
@@ -153,14 +150,5 @@ class ModelModule < ApplicationRecord
 
   private def touch_models
     models.update_all(updated_at: Time.zone.now)
-  end
-
-  private def unfit_everywhere
-    vehicle_loadout_items.find_each do |item|
-      VehicleLoadoutItem.where(vehicle_loadout_id: item.vehicle_loadout_id)
-        .where("slot_path LIKE ?", "#{VehicleLoadoutItem.sanitize_sql_like(item.slot_path)}/%")
-        .destroy_all
-      item.destroy!
-    end
   end
 end
