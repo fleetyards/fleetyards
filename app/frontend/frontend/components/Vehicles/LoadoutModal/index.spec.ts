@@ -1253,6 +1253,86 @@ describe("VehicleLoadoutModal component tabs", () => {
     modules.value = saved;
   });
 
+  it("leaves out ports for parts no loadout fits, but keeps a drive's jump drive", async () => {
+    hullSlots.value = [
+      {
+        name: "hardpoint_radar",
+        hardpointId: "hull-radar",
+        category: "radar",
+        types: ["Radar"],
+        editable: true,
+        stock: { id: "r1", name: "Capston", size: "1" },
+        slots: [
+          {
+            name: "batteryport",
+            hardpointId: "battery",
+            types: ["Battery"],
+            editable: true,
+            slots: [],
+          },
+        ],
+      },
+      {
+        name: "hardpoint_quantum_drive",
+        hardpointId: "hull-qd",
+        category: "quantumdrive",
+        types: ["QuantumDrive"],
+        editable: true,
+        stock: { id: "q1", name: "Atlas", size: "1" },
+        slots: [
+          {
+            name: "hardpoint_jump_drive",
+            hardpointId: "jump",
+            types: ["JumpDrive"],
+            editable: true,
+            stock: { id: "j1", name: "Explorer", size: "1" },
+            slots: [],
+          },
+        ],
+      },
+    ];
+    const radar = await mountClosed(vehicle(), { tab: "radar" });
+    await flushPromises();
+    expect(
+      radar
+        .find("[data-test='loadout-socket-hardpoint_radar/batteryport']")
+        .exists(),
+    ).toBe(false);
+
+    const quantum = await mountClosed(vehicle(), { tab: "quantumDrives" });
+    await flushPromises();
+    expect(
+      socket(quantum, "hardpoint_quantum_drive/hardpoint_jump_drive").text(),
+    ).toContain("Explorer");
+  });
+
+  it("keeps a tab open on a slot the game locks, and disables the slot", async () => {
+    hullSlots.value = [
+      {
+        ...shieldSlot("hardpoint_lifesupport", {
+          id: "ls",
+          name: "ComfortAir",
+          size: "1",
+        }),
+        category: "lifesupport",
+        types: ["LifeSupportGenerator"],
+        editable: false,
+      },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "lifeSupport" });
+    await flushPromises();
+
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .find((tab) => tab.props("id") === "lifeSupport")
+        ?.props("disabled"),
+    ).toBe(false);
+    expect(
+      socket(wrapper, "hardpoint_lifesupport").attributes("role"),
+    ).toBeUndefined();
+  });
+
   it("disables a category the ship has no slots for", async () => {
     const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
     await flushPromises();
