@@ -666,7 +666,15 @@ export const useComponentFitting = () => {
         ...original,
         id: original?.id ?? entry.slot.hardpointId,
         name: entry.slot.name,
-        category: entry.slot.category ?? original?.category,
+        // A port inside a part names no category of its own; the ship's copy
+        // does, and failing that the part in it, which is what the figures
+        // read a gun or a shield by.
+        category:
+          entry.slot.category &&
+          entry.slot.category !== HardpointCategoryEnum.UNKNOWN
+            ? entry.slot.category
+            : (original?.category ??
+              (entry.content?.category as HardpointCategoryEnum | undefined)),
         minSize: entry.slot.minSize,
         maxSize: entry.slot.maxSize,
         component: entry.content as Component | undefined,
