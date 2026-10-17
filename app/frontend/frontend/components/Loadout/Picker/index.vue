@@ -359,6 +359,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
           class="loadout-picker__filter-toggle"
           :active="filtersOpen"
           :aria-expanded="filtersOpen"
+          v-tooltip="t('labels.filter')"
           :aria-label="t('labels.filter')"
           data-test="loadout-picker-filters-toggle"
           @click="filtersOpen = !filtersOpen"
