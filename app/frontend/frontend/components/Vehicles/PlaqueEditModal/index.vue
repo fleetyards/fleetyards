@@ -46,7 +46,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const DEDICATION_LIMIT = 280;
+const DEDICATION_LIMIT = 150;
 const LINE_LIMIT = 100;
 const CAPTAIN_LIMIT = 50;
 

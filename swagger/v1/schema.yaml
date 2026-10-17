@@ -41212,7 +41212,7 @@ components:
           type:
           - string
           - 'null'
-          maxLength: 280
+          maxLength: 150
         launchedOn:
           type:
           - string

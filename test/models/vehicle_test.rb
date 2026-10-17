@@ -824,6 +824,11 @@ class VehicleModelImageTest < ActiveSupport::TestCase
     assert_nil vehicle.launch_port
   end
 
+  test "keeps a dedication to a line or two" do
+    assert build(:vehicle, dedication: "a" * Vehicle::DEDICATION_LIMIT).valid?
+    assert_not build(:vehicle, dedication: "a" * (Vehicle::DEDICATION_LIMIT + 1)).valid?
+  end
+
   test "accepts only the lore's operations groups" do
     assert build(:vehicle, operations_group: "nine_tails").valid?
     assert_not build(:vehicle, operations_group: "vanduul_clan").valid?

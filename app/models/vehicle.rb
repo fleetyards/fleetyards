@@ -109,7 +109,7 @@ class Vehicle < ApplicationRecord
   # launch is history, not where the ship sits now.
   links_location :launch_port, foreign_key: :launch_port_location_id, as: :launch_port_location
   validates :launch_port_location, presence: true, if: :launch_port_location_id?
-  DEDICATION_LIMIT = 280
+  DEDICATION_LIMIT = 150
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
