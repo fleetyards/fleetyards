@@ -127,13 +127,21 @@ const savedItems = (type: VehicleLoadoutItemTypeEnum) =>
   Object.fromEntries(
     (editedLoadout.value?.items || [])
       .filter((item) => item.itemType === type)
-      .map((item) => [item.slotPath, item.itemId]),
+      .map((item) => [item.slotPath, item.itemId ?? EMPTIED]),
   );
 
 const savedValues = (): LoadoutValues => ({
   loadoutName: editedLoadout.value?.name ?? "",
   fittedModules: savedItems(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
-  fittedComponents: savedItems(VehicleLoadoutItemTypeEnum.COMPONENT),
+  fittedComponents: {
+    ...savedItems(VehicleLoadoutItemTypeEnum.COMPONENT),
+    ...Object.fromEntries(
+      Object.keys(savedItems(VehicleLoadoutItemTypeEnum.EMPTY)).map((path) => [
+        path,
+        EMPTIED,
+      ]),
+    ),
+  },
 });
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
@@ -516,9 +524,7 @@ const pickerBindings = computed(() => {
       options: pickerOptions.value,
       selectedId: component.content?.id,
       sorts: pickerSorts.value,
-      // A slot with a stock part goes back to it by picking it; only an empty
-      // one can be left empty.
-      clearable: !component.slot.stock,
+      clearable: true,
     };
   }
 
@@ -719,12 +725,22 @@ const onSubmit = handleSubmit(async (values) => {
       itemId,
     }));
 
+  const components = fittedComponentsToSave(values);
+
   const items = [
     ...asItems(values.fittedModules, VehicleLoadoutItemTypeEnum.MODEL_MODULE),
     ...asItems(
-      fittedComponentsToSave(values),
+      Object.fromEntries(
+        Object.entries(components).filter(([, id]) => id !== EMPTIED),
+      ),
       VehicleLoadoutItemTypeEnum.COMPONENT,
     ),
+    ...Object.entries(components)
+      .filter(([, id]) => id === EMPTIED)
+      .map(([slotPath]) => ({
+        slotPath,
+        itemType: VehicleLoadoutItemTypeEnum.EMPTY,
+      })),
   ];
   // A cleared name goes back to the default the server gives.
   const name = values.loadoutName.trim();
