@@ -56,6 +56,7 @@ const accessibleName = computed(() =>
     props.socket.size,
     props.socket.item?.name || t("labels.loadoutPicker.emptySocket"),
     props.socket.item?.figure,
+    props.socket.changed ? t("labels.loadoutPicker.changed") : undefined,
   ]
     .filter(Boolean)
     .join(", "),
@@ -70,6 +71,8 @@ const accessibleName = computed(() =>
     :class="{
       'loadout-socket--active': active,
       'loadout-socket--empty': !socket.item,
+      'loadout-socket--occupied': !!socket.item,
+      'loadout-socket--changed': socket.changed,
       'loadout-socket--filled': justFilled,
       'loadout-socket--static': !editable,
     }"
@@ -104,6 +107,12 @@ const accessibleName = computed(() =>
         <span v-if="socket.size" class="loadout-socket__size">
           {{ socket.size }}
         </span>
+        <span
+          v-if="socket.changed"
+          class="loadout-socket__changed"
+          :title="t('labels.loadoutPicker.changed')"
+          data-test="loadout-socket-changed"
+        />
       </span>
       <span class="loadout-socket__name" data-test="loadout-socket-name">
         {{ socket.item?.name || t("labels.loadoutPicker.emptySocket") }}
