@@ -133,6 +133,15 @@ class ImportTest < ActiveSupport::TestCase
     assert_equal [stuck.id], Import.stuck.pluck(:id)
   end
 
+  test "the abandoned scope adds runs whose job never started within the hour" do
+    stuck = create(:import, aasm_state: "started", started_at: 5.hours.ago)
+    lost = create(:import, aasm_state: "created", created_at: 2.hours.ago)
+    create(:import, aasm_state: "created")
+    create(:import, aasm_state: "started", started_at: 2.minutes.ago)
+
+    assert_equal [stuck.id, lost.id].sort, Import.abandoned.pluck(:id).sort
+  end
+
   test "cleanup! records the timestamp and who did it" do
     admin_user = create(:admin_user)
     record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago)

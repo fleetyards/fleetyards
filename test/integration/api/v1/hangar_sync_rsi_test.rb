@@ -256,6 +256,17 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_includes stuck.info, "Superseded by a new run"
   end
 
+  test "PUT /hangar/sync-rsi-hangar writes off a sync whose job never started" do
+    user = create(:user)
+    sign_in user
+    lost = Imports::HangarSync.create!(user:, input: [], created_at: 2.hours.ago)
+
+    put "/api/v1/hangar/sync-rsi-hangar", params: {items: []}, as: :json
+
+    assert_response :ok
+    assert_predicate lost.reload, :failed?
+  end
+
   test "PUT /hangar/sync-rsi-hangar still refuses while a sync is running" do
     user = create(:user)
     sign_in user

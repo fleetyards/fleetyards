@@ -36,6 +36,30 @@ class Api::V1::HangarSyncRsiStatusTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200
   end
 
+  test "GET /hangar/sync-rsi-hangar/status reports a running sync as active" do
+    user = create(:user)
+    sign_in user
+    Imports::HangarSync.create!(user:, input: [], aasm_state: "started", started_at: 5.minutes.ago)
+
+    get "/api/v1/hangar/sync-rsi-hangar/status", as: :json
+
+    assert_response :ok
+    assert response.parsed_body["active"]
+  end
+
+  # The sync button stays disabled while the status says active, and the
+  # request it sends is what writes the abandoned run off.
+  test "GET /hangar/sync-rsi-hangar/status reports an abandoned sync as over" do
+    user = create(:user)
+    sign_in user
+    Imports::HangarSync.create!(user:, input: [], aasm_state: "started", started_at: 2.hours.ago)
+
+    get "/api/v1/hangar/sync-rsi-hangar/status", as: :json
+
+    assert_response :ok
+    assert_not response.parsed_body["active"]
+  end
+
   test "GET /hangar/sync-rsi-hangar/status returns 401 when not signed in" do
     assert_api_response :get, 401
   end
