@@ -18,6 +18,8 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
+import ComponentComparison from "./ComponentComparison/index.vue";
+import { simulateLoadoutPower } from "@/frontend/composables/useLoadoutSim";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -27,6 +29,12 @@ import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations"
 import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
 import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
+import {
+  COMPONENT_TABS,
+  type ComponentTab,
+  slotName,
+  useComponentFitting,
+} from "@/frontend/composables/useComponentFitting";
 import { useMobile } from "@/shared/composables/useMobile";
 import {
   type Vehicle,
@@ -39,7 +47,12 @@ import {
   createVehicleLoadout,
   getVehicleLoadoutsQueryKey,
   updateVehicleLoadout,
+  useHardpointLoadoutOptions,
+  HardpointSourceEnum,
+  useModelHardpoints,
+  useModelLoadoutSlots,
   useModelModules as useModelModulesQuery,
+  useVehicleLoadoutSlots,
   useVehicleLoadouts,
 } from "@/services/fyApi";
 
@@ -70,6 +83,9 @@ const { t } = useI18n();
 type LoadoutValues = {
   loadoutName: string;
   fittedModules: Record<string, string>;
+  // Only parts that differ from the slot's stock one: a slot left alone keeps
+  // the part it came with.
+  fittedComponents: Record<string, string>;
 };
 
 const { data: loadoutsData, isPending: loadoutsPending } = useVehicleLoadouts(
@@ -105,15 +121,17 @@ const loadoutPending = computed(
   () => props.editable && !props.newLoadout && loadoutsPending.value,
 );
 
+const savedItems = (type: VehicleLoadoutItemTypeEnum) =>
+  Object.fromEntries(
+    (editedLoadout.value?.items || [])
+      .filter((item) => item.itemType === type)
+      .map((item) => [item.slotPath, item.itemId]),
+  );
+
 const savedValues = (): LoadoutValues => ({
   loadoutName: editedLoadout.value?.name ?? "",
-  fittedModules: Object.fromEntries(
-    (editedLoadout.value?.items || [])
-      .filter(
-        (item) => item.itemType === VehicleLoadoutItemTypeEnum.MODEL_MODULE,
-      )
-      .map((item) => [item.slotPath, item.itemId]),
-  ),
+  fittedModules: savedItems(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
+  fittedComponents: savedItems(VehicleLoadoutItemTypeEnum.COMPONENT),
 });
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
@@ -138,6 +156,8 @@ watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
 
 const [fittedModules] = defineField("fittedModules");
 
+const [fittedComponents] = defineField("fittedComponents");
+
 const model = computed(() => props.vehicle.model);
 
 const modelSlug = computed(() => model.value?.slug ?? "");
@@ -156,58 +176,93 @@ const fittedModuleIds = computed(() =>
   Object.values(fittedModules.value || {}),
 );
 
-// Components a later version of this editor will cover, shown so the tab strip
-// already says where it is headed.
-const systemTabs = computed(() => [
-  {
-    id: "radar",
-    label: t("labels.vehicleLoadout.tabs.radar"),
-    icon: categoryIcon("radar"),
-  },
-  {
-    id: "coolers",
-    label: t("labels.vehicleLoadout.tabs.coolers"),
-    icon: categoryIcon("cooler"),
-  },
-  {
-    id: "lifeSupport",
-    label: t("labels.vehicleLoadout.tabs.lifeSupport"),
-    icon: categoryIcon("lifesupport"),
-  },
-  {
-    id: "powerPlants",
-    label: t("labels.vehicleLoadout.tabs.powerPlants"),
-    icon: categoryIcon("powerplant"),
-  },
-  {
-    id: "shields",
-    label: t("labels.vehicleLoadout.tabs.shields"),
-    icon: categoryIcon("shieldgenerator"),
-  },
+const fitting = useComponentFitting();
+
+const { data: hullSlots, ...hullSlotsAsyncStatus } = useModelLoadoutSlots(
+  modelSlug,
+  { query: { enabled: flightReady } },
+);
+
+// The saved loadout's own tree names the parts fitted in it, and the slots a
+// swapped-in part brings.
+const { data: savedSlots } = useVehicleLoadoutSlots(
+  () => props.vehicle.id,
+  () => editedLoadout.value?.id ?? "",
+  { query: { enabled: () => !!editedLoadout.value?.id } },
+);
+
+watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
+watch(savedSlots, (slots) => fitting.learn(slots), { immediate: true });
+
+const componentTree = computed(() =>
+  fitting.resolve(hullSlots.value ?? [], fittedComponents.value || {}),
+);
+
+const SYSTEM_TAB_IDS = [
+  "radar",
+  "coolers",
+  "lifeSupport",
+  "powerPlants",
+  "shields",
+];
+
+const TAB_ICONS: Record<string, string> = {
+  radar: "radar",
+  coolers: "cooler",
+  lifeSupport: "lifesupport",
+  powerPlants: "powerplant",
+  shields: "shieldgenerator",
+  quantumDrives: "quantumdrive",
+  flightBlades: "controller",
+  missiles: "missile_racks",
+  weapons: "weapons",
+};
+
+const componentTab = (tab: ComponentTab) => ({
+  ...tab,
+  label: t(`labels.vehicleLoadout.tabs.${tab.id}`),
+  icon: categoryIcon(TAB_ICONS[tab.id]),
+  groups: fitting.groups(componentTree.value, tab, {
+    fittedOnly: !props.editable,
+  }),
+  available: fitting.hasSlots(componentTree.value, tab),
+});
+
+const systemTabs = computed(() =>
+  COMPONENT_TABS.filter((tab) => SYSTEM_TAB_IDS.includes(tab.id)).map(
+    componentTab,
+  ),
+);
+
+const propulsionWeaponTabs = computed(() =>
+  COMPONENT_TABS.filter((tab) => !SYSTEM_TAB_IDS.includes(tab.id)).map(
+    componentTab,
+  ),
+);
+
+// The ship's systems, then its modules, then what moves and arms it.
+const tabs = computed(() => [
+  ...systemTabs.value,
+  { id: VehicleLoadoutTabsEnum.MODULES },
+  ...propulsionWeaponTabs.value,
 ]);
 
-const propulsionWeaponTabs = computed(() => [
-  {
-    id: "quantumDrives",
-    label: t("labels.vehicleLoadout.tabs.quantumDrives"),
-    icon: categoryIcon("quantumdrive"),
-  },
-  {
-    id: "flightBlades",
-    label: t("labels.vehicleLoadout.tabs.flightBlades"),
-    icon: categoryIcon("controller"),
-  },
-  {
-    id: "missiles",
-    label: t("labels.vehicleLoadout.tabs.missiles"),
-    icon: categoryIcon("missile_racks"),
-  },
-  {
-    id: "weapons",
-    label: t("labels.vehicleLoadout.tabs.weapons"),
-    icon: categoryIcon("weapons"),
-  },
-]);
+const componentTabs = computed(() =>
+  Object.fromEntries(
+    [...systemTabs.value, ...propulsionWeaponTabs.value].map((tab) => [
+      tab.id,
+      tab,
+    ]),
+  ),
+);
+
+const componentHint = (tab: { available: boolean }) => {
+  if (!flightReady.value) {
+    return t("labels.vehicleLoadout.notFlightReady");
+  }
+
+  return tab.available ? undefined : t("labels.vehicleLoadout.noSlots");
+};
 
 // The ship as a backdrop rather than a picture beside the controls: the
 // angled view, coloured where there is one.
@@ -238,17 +293,80 @@ const modulesHint = computed(() => {
 
 const { metrics, rows } = useFittingDiff();
 
-// The ship's figures under the fitting as it stands, each with its change
-// against the loadout as saved.
-const shipFigures = computed(() =>
-  rows(
-    metrics(
-      hullCargo.value,
-      modulesFor(Object.values(savedValues().fittedModules)),
-    ),
-    metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
-  ),
+// The tab on show, as FormTabs settles it: the one asked for while it can be
+// opened, else the first that can.
+const pickedTab = ref<string | undefined>(props.tab);
+
+const tabEnabled = (id: string) =>
+  flightReady.value &&
+  (id === VehicleLoadoutTabsEnum.MODULES
+    ? !!props.vehicle.model.hasModules
+    : !!componentTabs.value[id]?.available);
+
+const currentTab = computed(() =>
+  pickedTab.value && tabEnabled(pickedTab.value)
+    ? pickedTab.value
+    : tabs.value.find((entry) => tabEnabled(entry.id))?.id,
 );
+
+const { data: modelHardpoints } = useModelHardpoints(
+  modelSlug,
+  { source: HardpointSourceEnum.GAME_FILES },
+  { query: { enabled: flightReady } },
+);
+
+const savedTree = computed(() =>
+  fitting.resolve(hullSlots.value ?? [], savedValues().fittedComponents),
+);
+
+// Power, cooling and signatures for the whole ship, worked out as the ship page
+// works them out, for the fitting as it stands and as saved.
+const simulate = (tree: typeof componentTree.value) =>
+  simulateLoadoutPower(
+    fitting.graft(modelHardpoints.value ?? [], tree),
+    model.value?.metrics.weaponPoolSize,
+  );
+
+const powerNow = computed(() => simulate(componentTree.value));
+
+const powerSaved = computed(() => simulate(savedTree.value));
+
+// The ship's figures under the fitting as it stands, each with its change
+// against the loadout as saved: what the open tab's parts add up to, and the
+// whole-ship figures they move.
+const shipFigures = computed(() => {
+  const tab = currentTab.value && componentTabs.value[currentTab.value];
+
+  if (!tab) {
+    return rows(
+      metrics(
+        hullCargo.value,
+        modulesFor(Object.values(savedValues().fittedModules)),
+      ),
+      metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
+    );
+  }
+
+  const figures = [
+    ...fitting.tabFigures(componentTree.value, savedTree.value, tab),
+    ...(modelHardpoints.value?.length
+      ? fitting.shipFigures(powerNow.value, powerSaved.value, tab.id)
+      : []),
+  ];
+
+  return figures
+    .filter(
+      (figure, index) =>
+        figures.findIndex((other) => other.key === figure.key) === index,
+    )
+    .map((figure) => ({
+      key: figure.key,
+      label: figure.label,
+      value: figure.value,
+      deltaLabel: figure.deltaLabel,
+      delta: figure.tone ? { tone: figure.tone } : undefined,
+    }));
+});
 
 const slots = computed(() => moduleSlots(modules.value));
 
@@ -267,23 +385,45 @@ const socketGroups = computed(() =>
  */
 const activeSlot = ref<string>();
 
+// Whether the active socket is a module slot or a component one, and for a
+// component, the tab it was opened from.
+const activeKind = ref<"module" | "component">("module");
+
+const activeTab = ref<string>();
+
 const pickerOpen = computed(() => props.editable && !!activeSlot.value);
+
+const pickerOpenFor = (tabId: string) =>
+  pickerOpen.value &&
+  activeKind.value === "component" &&
+  activeTab.value === tabId;
 
 const fitted = computed(() => fittedModules.value || {});
 
-const pickerHost = ref<HTMLElement>();
+const formRoot = ref<HTMLElement>();
 
 const picker = ref<InstanceType<typeof Picker>>();
 
+// One picker shows at a time, in whichever tab is open.
+const setPicker = (instance: unknown) => {
+  if (instance) picker.value = instance as InstanceType<typeof Picker>;
+};
+
 const socketButton = (slot: string) =>
-  pickerHost.value?.querySelector<HTMLElement>(
+  formRoot.value?.querySelector<HTMLElement>(
     `[data-test="loadout-socket-${slot}"]`,
   );
 
-const onSocketSelect = async (slot: string) => {
-  const opening = activeSlot.value !== slot;
+const onSocketSelect = async (
+  slot: string,
+  kind: "module" | "component" = "module",
+  tabId?: string,
+) => {
+  const opening = activeSlot.value !== slot || activeKind.value !== kind;
 
   activeSlot.value = opening ? slot : undefined;
+  activeKind.value = kind;
+  activeTab.value = tabId;
   hovered.value = undefined;
 
   // On desktop the picker comes after every socket in the page's order, so
@@ -294,26 +434,64 @@ const onSocketSelect = async (slot: string) => {
   }
 };
 
-const pickerOptions = computed(() =>
-  activeSlot.value
+const activeComponentSlot = computed(() =>
+  activeKind.value === "component" && activeSlot.value
+    ? fitting.find(componentTree.value, activeSlot.value)
+    : undefined,
+);
+
+const { data: componentOptions } = useHardpointLoadoutOptions(
+  () => activeComponentSlot.value?.slot.hardpointId ?? "",
+  { query: { enabled: () => !!activeComponentSlot.value } },
+);
+
+const pickerOptions = computed(() => {
+  if (activeComponentSlot.value) {
+    return fitting.options(
+      componentOptions.value ?? [],
+      activeComponentSlot.value.slot,
+      activeComponentSlot.value.content,
+    );
+  }
+
+  return activeSlot.value
     ? moduleSockets.options(
         modules.value,
         activeSlot.value,
         fitted.value[activeSlot.value],
         props.vehicle.modelModuleIds,
       )
-    : [],
+    : [];
+});
+
+const pickerSorts = computed(() =>
+  activeComponentSlot.value ? [] : moduleSockets.sorts(pickerOptions.value),
 );
 
-const pickerSorts = computed(() => moduleSockets.sorts(pickerOptions.value));
-
 // The phone and the desktop place the picker apart; both take these.
-const pickerBindings = computed(() => ({
-  title: moduleSockets.slotLabel(activeSlot.value || ""),
-  options: pickerOptions.value,
-  selectedId: activeSlot.value ? fitted.value[activeSlot.value] : undefined,
-  sorts: pickerSorts.value,
-}));
+const pickerBindings = computed(() => {
+  const component = activeComponentSlot.value;
+
+  if (component) {
+    return {
+      title: slotName(component.slot.name),
+      options: pickerOptions.value,
+      selectedId: component.content?.id,
+      sorts: pickerSorts.value,
+      // A slot with a stock part goes back to it by picking it; only an empty
+      // one can be left empty.
+      clearable: !component.slot.stock,
+    };
+  }
+
+  return {
+    title: moduleSockets.slotLabel(activeSlot.value || ""),
+    options: pickerOptions.value,
+    selectedId: activeSlot.value ? fitted.value[activeSlot.value] : undefined,
+    sorts: pickerSorts.value,
+    clearable: true,
+  };
+});
 
 /**
  * Pointing at an option previews it in the comparison for as long as the
@@ -332,17 +510,41 @@ const onPreviewEnd = () => {
   hovered.value = undefined;
 };
 
-const onPick = (moduleId: string | null) => {
+const onPick = (itemId: string | null) => {
   const slot = activeSlot.value;
   if (!slot) return;
 
+  const component = activeComponentSlot.value;
+  if (component) {
+    const option = componentOptions.value?.find(
+      (entry) => entry.component.id === itemId,
+    );
+    if (option) fitting.learnOption(component.path, option);
+
+    fittedComponents.value = fitting.pick(
+      fittedComponents.value || {},
+      component,
+      itemId,
+    );
+
+    void closePicker();
+    return;
+  }
+
   const next = { ...fitted.value };
-  if (moduleId) {
-    next[slot] = moduleId;
+  if (itemId) {
+    next[slot] = itemId;
   } else {
     delete next[slot];
   }
   fittedModules.value = next;
+
+  // What sat inside the module went with it.
+  fittedComponents.value = Object.fromEntries(
+    Object.entries(fittedComponents.value || {}).filter(
+      ([path]) => !path.startsWith(`${slot}/`),
+    ),
+  );
 
   // The pick is the answer the picker was opened for.
   void closePicker();
@@ -355,7 +557,7 @@ const closePicker = async () => {
   const slot = activeSlot.value;
   const hadFocus =
     !!slot &&
-    !!pickerHost.value
+    !!formRoot.value
       ?.querySelector(".loadout-picker")
       ?.contains(document.activeElement);
 
@@ -379,9 +581,33 @@ const pickerListeners = {
 // board, where a phone has no room for it.
 const mobile = useMobile();
 
+// Against what the slot holds now, picked but not yet saved included, as the
+// module comparison reads it.
+const componentComparison = computed(() => {
+  const entry = activeComponentSlot.value;
+  if (!entry) return undefined;
+
+  const hoveredId =
+    hovered.value?.slot === entry.path ? hovered.value.moduleId : undefined;
+  const to =
+    hoveredId === undefined
+      ? entry.content
+      : hoveredId
+        ? (componentOptions.value?.find(
+            (option) => option.component.id === hoveredId,
+          )?.component ?? entry.content)
+        : undefined;
+
+  return {
+    from: entry.content,
+    to,
+    rows: fitting.compare(entry.content, to, entry.slot.category),
+  };
+});
+
 const comparison = computed(() => {
   const slot = activeSlot.value;
-  if (!slot) {
+  if (!slot || activeKind.value !== "module") {
     return undefined;
   }
 
@@ -410,6 +636,25 @@ const { displayAlert } = useAppNotifications();
 const { invalidateHangarQueries, invalidateVehiclePage } =
   useVehicleMutations();
 
+/**
+ * The parts the tree still reaches, and those inside a fitted module, which
+ * this editor does not list yet and keeps as they are while the module stays.
+ */
+const fittedComponentsToSave = (values: LoadoutValues) => {
+  const components = values.fittedComponents || {};
+  const moduleSlots = Object.keys(values.fittedModules);
+  const insideModule = Object.fromEntries(
+    Object.entries(components).filter(([path]) =>
+      moduleSlots.some((slot) => path.startsWith(`${slot}/`)),
+    ),
+  );
+
+  return {
+    ...fitting.reachable(componentTree.value, components),
+    ...insideModule,
+  };
+};
+
 const saving = ref(false);
 
 // Created by a save whose activation then failed: the retry finishes that one
@@ -426,35 +671,26 @@ const onSubmit = handleSubmit(async (values) => {
     return;
   }
 
-  const items: VehicleLoadoutItemInput[] = Object.entries(
-    values.fittedModules,
-  ).map(([slotPath, itemId]) => ({
-    slotPath,
-    itemType: VehicleLoadoutItemTypeEnum.MODEL_MODULE,
-    itemId,
-  }));
-  // A cleared name goes back to the default the server gives.
-  const name = values.loadoutName.trim();
-  const target = createdLoadout.value ?? editedLoadout.value;
-
-  // What this editor does not show yet stays, as long as the slot it sits in
-  // is still fitted.
-  const fittedPaths = items.map((item) => item.slotPath);
-  const kept = (target?.items || []).filter(
-    (item) =>
-      item.itemType !== VehicleLoadoutItemTypeEnum.MODEL_MODULE &&
-      (!item.slotPath.includes("/") ||
-        fittedPaths.includes(
-          item.slotPath.slice(0, item.slotPath.lastIndexOf("/")),
-        )),
-  );
-  items.push(
-    ...kept.map(({ slotPath, itemType, itemId }) => ({
+  const asItems = (
+    fitted: Record<string, string>,
+    itemType: VehicleLoadoutItemTypeEnum,
+  ): VehicleLoadoutItemInput[] =>
+    Object.entries(fitted).map(([slotPath, itemId]) => ({
       slotPath,
       itemType,
       itemId,
-    })),
-  );
+    }));
+
+  const items = [
+    ...asItems(values.fittedModules, VehicleLoadoutItemTypeEnum.MODEL_MODULE),
+    ...asItems(
+      fittedComponentsToSave(values),
+      VehicleLoadoutItemTypeEnum.COMPONENT,
+    ),
+  ];
+  // A cleared name goes back to the default the server gives.
+  const name = values.loadoutName.trim();
+  const target = createdLoadout.value ?? editedLoadout.value;
 
   saving.value = true;
 
@@ -511,6 +747,7 @@ const onSubmit = handleSubmit(async (values) => {
   >
     <form
       :id="`vehicle-loadout-${vehicle.id}`"
+      ref="formRoot"
       class="vehicle-loadout"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
@@ -555,121 +792,189 @@ const onSubmit = handleSubmit(async (values) => {
 
         <FormTabs
           :default-tab="tab"
+          @update:active-tab="(id) => (pickedTab = id)"
           :sync-url="false"
           horizontal
           active-label-only
         >
-          <FormTab
-            v-for="upcoming in systemTabs"
-            :id="upcoming.id"
-            :key="upcoming.id"
-            :label="upcoming.label"
-            :icon="upcoming.icon"
-            :hint="t('labels.vehicleLoadout.comingSoon')"
-            disabled
-          />
-
-          <FormTab
-            :id="VehicleLoadoutTabsEnum.MODULES"
-            :label="t('labels.vehicleLoadout.tabs.modules')"
-            :icon="categoryIcon('module')"
-            :fields="['fittedModules']"
-            :disabled="!flightReady || !vehicle.model.hasModules"
-            :hint="modulesHint"
-          >
-            <AsyncData :async-status="modulesAsyncStatus">
-              <template #resolved>
-                <div
-                  ref="pickerHost"
-                  class="vehicle-loadout__category"
-                  :class="{
-                    'vehicle-loadout__category--picking': pickerOpen && !mobile,
-                  }"
-                >
+          <template v-for="tab in tabs" :key="tab.id">
+            <FormTab
+              v-if="tab.id === VehicleLoadoutTabsEnum.MODULES"
+              :id="VehicleLoadoutTabsEnum.MODULES"
+              :label="t('labels.vehicleLoadout.tabs.modules')"
+              :icon="categoryIcon('module')"
+              :fields="['fittedModules']"
+              :disabled="!flightReady || !vehicle.model.hasModules"
+              :hint="modulesHint"
+            >
+              <AsyncData :async-status="modulesAsyncStatus">
+                <template #resolved>
                   <div
-                    v-if="flightReady && slots.length"
-                    class="vehicle-loadout__sockets"
-                    data-test="vehicle-loadout-fitted"
+                    class="vehicle-loadout__category"
+                    :class="{
+                      'vehicle-loadout__category--picking':
+                        pickerOpen && activeKind === 'module' && !mobile,
+                    }"
                   >
-                    <SocketBoard
-                      :active="activeSlot"
-                      :groups="socketGroups"
-                      :editable="editable"
-                      @update:active="onSocketSelect"
+                    <div
+                      v-if="flightReady && slots.length"
+                      class="vehicle-loadout__sockets"
+                      data-test="vehicle-loadout-fitted"
                     >
-                      <template v-if="pickerOpen && mobile" #active>
-                        <Picker
-                          :key="activeSlot"
-                          ref="picker"
-                          v-bind="pickerBindings"
-                          v-on="pickerListeners"
+                      <SocketBoard
+                        :active="
+                          activeKind === 'module' ? activeSlot : undefined
+                        "
+                        :groups="socketGroups"
+                        :editable="editable"
+                        @update:active="
+                          (slot) => onSocketSelect(slot, 'module')
+                        "
+                      >
+                        <template
+                          v-if="pickerOpen && activeKind === 'module' && mobile"
+                          #active
                         >
-                          <template v-if="comparison" #comparison>
-                            <Comparison
-                              :hull-cargo="hullCargo"
-                              :others="comparison.others"
-                              :from="comparison.from"
-                              :to="comparison.to"
-                            />
-                          </template>
-                        </Picker>
+                          <Picker
+                            :key="activeSlot"
+                            :ref="setPicker"
+                            v-bind="pickerBindings"
+                            v-on="pickerListeners"
+                          >
+                            <template v-if="comparison" #comparison>
+                              <Comparison
+                                :hull-cargo="hullCargo"
+                                :others="comparison.others"
+                                :from="comparison.from"
+                                :to="comparison.to"
+                              />
+                            </template>
+                          </Picker>
+                        </template>
+                      </SocketBoard>
+                    </div>
+
+                    <Picker
+                      v-if="pickerOpen && activeKind === 'module' && !mobile"
+                      :key="activeSlot"
+                      :ref="setPicker"
+                      class="vehicle-loadout__picker"
+                      v-bind="pickerBindings"
+                      v-on="pickerListeners"
+                    >
+                      <template v-if="comparison" #comparison>
+                        <Comparison
+                          :hull-cargo="hullCargo"
+                          :others="comparison.others"
+                          :from="comparison.from"
+                          :to="comparison.to"
+                        />
                       </template>
-                    </SocketBoard>
+                    </Picker>
+
+                    <p
+                      v-if="
+                        !editable &&
+                        flightReady &&
+                        slots.length &&
+                        !socketGroups.length
+                      "
+                      class="vehicle-loadout__hint"
+                      data-test="vehicle-loadout-nothing-fitted"
+                    >
+                      {{ t("labels.vehicleLoadout.nothingFitted") }}
+                    </p>
+
+                    <div
+                      v-if="flightReady && !slots.length"
+                      class="vehicle-loadout__empty"
+                      data-test="vehicle-loadout-no-slots"
+                    >
+                      <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
+                      <p>{{ t("labels.vehicleLoadout.noSlots") }}</p>
+                    </div>
                   </div>
-
-                  <Picker
-                    v-if="pickerOpen && !mobile"
-                    :key="activeSlot"
-                    ref="picker"
-                    class="vehicle-loadout__picker"
-                    v-bind="pickerBindings"
-                    v-on="pickerListeners"
-                  >
-                    <template v-if="comparison" #comparison>
-                      <Comparison
-                        :hull-cargo="hullCargo"
-                        :others="comparison.others"
-                        :from="comparison.from"
-                        :to="comparison.to"
-                      />
-                    </template>
-                  </Picker>
-
-                  <p
-                    v-if="
-                      !editable &&
-                      flightReady &&
-                      slots.length &&
-                      !socketGroups.length
-                    "
-                    class="vehicle-loadout__hint"
-                    data-test="vehicle-loadout-nothing-fitted"
-                  >
-                    {{ t("labels.vehicleLoadout.nothingFitted") }}
-                  </p>
-
+                </template>
+              </AsyncData>
+            </FormTab>
+            <FormTab
+              v-else
+              :id="tab.id"
+              :label="componentTabs[tab.id].label"
+              :icon="componentTabs[tab.id].icon"
+              :fields="['fittedComponents']"
+              :disabled="!flightReady || !componentTabs[tab.id].available"
+              :hint="componentHint(componentTabs[tab.id])"
+            >
+              <AsyncData :async-status="hullSlotsAsyncStatus">
+                <template #resolved>
                   <div
-                    v-if="flightReady && !slots.length"
-                    class="vehicle-loadout__empty"
-                    data-test="vehicle-loadout-no-slots"
+                    class="vehicle-loadout__category"
+                    :class="{
+                      'vehicle-loadout__category--picking':
+                        pickerOpenFor(tab.id) && !mobile,
+                    }"
                   >
-                    <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
-                    <p>{{ t("labels.vehicleLoadout.noSlots") }}</p>
-                  </div>
-                </div>
-              </template>
-            </AsyncData>
-          </FormTab>
+                    <div
+                      v-if="componentTabs[tab.id].groups.length"
+                      class="vehicle-loadout__sockets"
+                      :data-test="`vehicle-loadout-${tab.id}`"
+                    >
+                      <SocketBoard
+                        :active="
+                          activeKind === 'component' ? activeSlot : undefined
+                        "
+                        :groups="componentTabs[tab.id].groups"
+                        :editable="editable"
+                        @update:active="
+                          (slot) => onSocketSelect(slot, 'component', tab.id)
+                        "
+                      >
+                        <template
+                          v-if="pickerOpenFor(tab.id) && mobile"
+                          #active
+                        >
+                          <Picker
+                            :key="activeSlot"
+                            :ref="setPicker"
+                            v-bind="pickerBindings"
+                            v-on="pickerListeners"
+                          >
+                            <template v-if="componentComparison" #comparison>
+                              <ComponentComparison
+                                v-bind="componentComparison"
+                              />
+                            </template>
+                          </Picker>
+                        </template>
+                      </SocketBoard>
+                    </div>
 
-          <FormTab
-            v-for="upcoming in propulsionWeaponTabs"
-            :id="upcoming.id"
-            :key="upcoming.id"
-            :label="upcoming.label"
-            :icon="upcoming.icon"
-            :hint="t('labels.vehicleLoadout.comingSoon')"
-            disabled
-          />
+                    <Picker
+                      v-if="pickerOpenFor(tab.id) && !mobile"
+                      :key="activeSlot"
+                      :ref="setPicker"
+                      class="vehicle-loadout__picker"
+                      v-bind="pickerBindings"
+                      v-on="pickerListeners"
+                    >
+                      <template v-if="componentComparison" #comparison>
+                        <ComponentComparison v-bind="componentComparison" />
+                      </template>
+                    </Picker>
+
+                    <p
+                      v-if="!componentTabs[tab.id].groups.length"
+                      class="vehicle-loadout__hint"
+                      :data-test="`vehicle-loadout-${tab.id}-nothing-fitted`"
+                    >
+                      {{ t("labels.vehicleLoadout.nothingFitted") }}
+                    </p>
+                  </div>
+                </template>
+              </AsyncData>
+            </FormTab>
+          </template>
         </FormTabs>
       </div>
     </form>
