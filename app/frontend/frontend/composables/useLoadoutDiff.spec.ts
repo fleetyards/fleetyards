@@ -60,7 +60,7 @@ describe("useLoadoutDiff", () => {
   });
 
   it("adds the fitted modules to the hull's figures", () => {
-    const { metrics } = useLoadoutDiff();
+    const { metrics } = useModuleDiff();
 
     expect(Object.fromEntries(metrics(100, [cargo, torpedoes]))).toEqual({
       cargo: 132,

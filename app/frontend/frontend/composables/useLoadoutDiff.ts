@@ -76,7 +76,7 @@ export interface LoadoutMeasure {
 // card's, each tab's own, and every figure that moved.
 export interface LoadoutDiff {
   modules: LoadoutMetric[];
-  cards: Partial<Record<LoadoutMetricsCard, LoadoutMetric[]>>;
+  cards: Record<LoadoutMetricsCard, LoadoutMetric[]>;
   tabs: Record<string, LoadoutMetric[]>;
   changed: LoadoutMetric[];
 }
@@ -244,27 +244,31 @@ export const useLoadoutDiff = (fitting = useComponentFitting()) => {
           ? cardMetrics(card, after.ship, before.ship)
           : [],
       ]),
-    ) as Partial<Record<LoadoutMetricsCard, LoadoutMetric[]>>;
+    ) as Record<LoadoutMetricsCard, LoadoutMetric[]>;
 
-    const own = (tab: ComponentTab) =>
-      OWN_FIGURE_TABS.includes(tab.id)
-        ? fitting
-            .tabFigures(after.tree, before.tree, tab)
-            .filter((figure) => !CARD_FIGURES.has(figure.key))
-            .map(asMetric)
-        : [];
+    const own = Object.fromEntries(
+      tabs.map((tab) => [
+        tab.id,
+        OWN_FIGURE_TABS.includes(tab.id)
+          ? fitting
+              .tabFigures(after.tree, before.tree, tab)
+              .filter((figure) => !CARD_FIGURES.has(figure.key))
+              .map(asMetric)
+          : [],
+      ]),
+    );
 
     const tabFigures = Object.fromEntries(
       tabs.map((tab) => [
         tab.id,
-        [...own(tab), ...(cards[TAB_METRICS[tab.id]] ?? [])],
+        [...own[tab.id], ...(cards[TAB_METRICS[tab.id]] ?? [])],
       ]),
     );
 
     const all = [
       ...modules,
-      ...CARDS.flatMap((card) => cards[card] ?? []),
-      ...tabs.flatMap(own),
+      ...CARDS.flatMap((card) => cards[card]),
+      ...Object.values(own).flat(),
     ].filter((figure) => figure.deltaLabel);
 
     return {
@@ -278,5 +282,5 @@ export const useLoadoutDiff = (fitting = useComponentFitting()) => {
     };
   };
 
-  return { metrics, rows, measure, diff };
+  return { measure, diff };
 };
