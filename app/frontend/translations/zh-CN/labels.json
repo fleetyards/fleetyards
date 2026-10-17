@@ -4410,6 +4410,8 @@
         },
         "reset": "重置筛选",
         "leaveEmpty": "留空",
+        "fixedByShip": "舰船固定部件",
+        "noOtherPart": "没有其他可用部件",
         "changed": "已更改",
         "noMatches": "没有匹配项",
         "close": "关闭"

@@ -453,6 +453,11 @@ export const useComponentFitting = () => {
       // Shown for what sits inside it, but nothing else fits it: the game locks
       // it, or the part it came with is the only one made for it.
       locked: !entry.slot.editable || entry.slot.swappable === false,
+      lockedBy: !entry.slot.editable
+        ? "ship"
+        : entry.slot.swappable === false
+          ? "noAlternatives"
+          : undefined,
       changed:
         !!saved && find(saved, entry.path)?.content?.id !== entry.content?.id,
       item: entry.content
