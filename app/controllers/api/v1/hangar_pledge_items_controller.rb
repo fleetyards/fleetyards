@@ -30,14 +30,13 @@ module Api
         authorize! with: ::HangarPledgeItemPolicy, to: :index?
 
         normalize_sort_params(pledge_item_query_params)
-        sorts = sorting_params(HangarPledgeItem, pledge_item_query_params.delete("sorts"), [])
+        sorts = sorting_params(HangarPledgeItem, pledge_item_query_params.delete("sorts"))
 
         @q = authorized_scope(scope, with: ::HangarPledgeItemPolicy).ransack(pledge_item_query_params)
-        @q.sorts = sorts
         # The hangar order breaks ties within a requested sort, and is the
         # whole order without one.
         @hangar_pledge_items = @q.result
-          .order(HangarPledgeItem.hangar_order)
+          .order(*HangarPledgeItem.sort_order(sorts), HangarPledgeItem.hangar_order)
           .page(page_params)
           .per(per_page(HangarPledgeItem))
 

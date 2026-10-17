@@ -20938,6 +20938,8 @@ components:
       - NAME_DESC
       - PRICE_ASC
       - PRICE_DESC
+      - AVAILABLE_ASC
+      - AVAILABLE_DESC
       title: BuybackPledgeSortingEnum
     BuybackPledges:
       type: object
@@ -30926,11 +30928,11 @@ components:
     HangarPledgeItemSortingEnum:
       type: string
       enum:
-      - pledgeValue asc
-      - pledgeValue desc
+      - meltValue asc
+      - meltValue desc
       x-enumNames:
-      - PLEDGE_VALUE_ASC
-      - PLEDGE_VALUE_DESC
+      - MELT_VALUE_ASC
+      - MELT_VALUE_DESC
       title: HangarPledgeItemSortingEnum
     HangarPledgeItems:
       type: object

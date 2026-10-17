@@ -10,7 +10,8 @@ class HangarPledgeItem < ApplicationRecord
 
   KINDS = %w[paint flair equipment ccu].freeze
 
-  ALLOWED_SORTING_PARAMS = ["pledgeValue asc", "pledgeValue desc"].freeze
+  DEFAULT_SORTING_PARAMS = [].freeze
+  ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
 
   belongs_to :user
 
@@ -66,6 +67,20 @@ class HangarPledgeItem < ApplicationRecord
     SQL
   end
 
+  # Items without a melt value of their own go last in either direction, rather
+  # than first on a descending sort as Postgres would place them.
+  def self.sort_order(sorts)
+    sorts.map do |sort|
+      attribute, direction = sort.split
+      raise ArgumentError, "unknown sort #{sort}" unless attribute == "melt_value" && %w[asc desc].include?(direction)
+
+      Arel.sql(<<~SQL.squish)
+        CASE WHEN hangar_pledge_items.pledge_item_count = hangar_pledge_items.quantity
+          THEN hangar_pledge_items.pledge_value END #{direction.upcase} NULLS LAST
+      SQL
+    end
+  end
+
   # Melting returns what the whole pledge is worth, so an item has a melt value
   # of its own only when it is all the pledge holds. RSI lists a poster held
   # twice as two items, which the sync stores as one row.
@@ -78,7 +93,7 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[meltable name pledge_value]
+    %w[meltable name]
   end
 
   def self.ransackable_scopes(_auth_object = nil)
