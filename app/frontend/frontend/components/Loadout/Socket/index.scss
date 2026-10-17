@@ -18,14 +18,15 @@
   border-radius: $panel-border-radius;
   transition:
     border-color $transition-base-speed,
-    background-color $transition-base-speed;
+    background-color $transition-base-speed,
+    transform 0.12s ease-out;
 }
 
 button.loadout-socket {
   cursor: pointer;
 
-  &:hover {
-    border-color: var(--color-edge-strong);
+  &:active {
+    transform: scale(0.98);
   }
 
   &:focus-visible {
@@ -45,9 +46,14 @@ button.loadout-socket {
   border-color: var(--color-success, #{$success});
 }
 
-.loadout-socket--changed,
-button.loadout-socket--changed:hover {
+.loadout-socket--changed {
   border-color: var(--color-warning, #{$warning});
+}
+
+// Pointing at a socket frames it in the primary colour whatever it holds, the
+// colour the socket being filled takes.
+button.loadout-socket:hover {
+  border-color: var(--color-primary, #428bca);
 }
 
 // The socket the picker is filling, whatever it holds: its frame in the
@@ -220,6 +226,10 @@ button.loadout-socket--active:hover {
 @media (prefers-reduced-motion: reduce) {
   .loadout-socket {
     transition: none;
+  }
+
+  button.loadout-socket:active {
+    transform: none;
   }
 
   .loadout-socket--filled,
