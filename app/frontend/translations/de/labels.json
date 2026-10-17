@@ -4379,18 +4379,18 @@
         "ownedModules": "Deine Module",
         "nothingFitted": "Nichts ausgerüstet",
         "refused": {
-            "title": "Passt seit einem Spielupdate nicht mehr",
-            "removedOnSave": "Beim Speichern wird das aus dem Loadout entfernt.",
-            "editToReplace": "Bearbeite das Loadout, um es zu ersetzen.",
-            "badge": "Passt nicht mehr",
-            "reasons": {
-                "slot_unknown": "das Schiff hat diesen Slot nicht mehr",
-                "parent_not_fitted": "worin es saß, gibt es nicht mehr",
-                "module_not_in_slot": "das Modul passt nicht mehr in diesen Slot",
-                "component_not_in_slot": "passt nicht mehr in diesen Slot",
-                "slot_not_editable": "das Schiff legt diesen Slot jetzt fest",
-                "nothing_to_empty": "der Slot hat kein Teil mehr zum Entfernen"
-            }
+          "title": "Passt seit einem Spielupdate nicht mehr",
+          "removedOnSave": "Beim Speichern wird das aus dem Loadout entfernt.",
+          "editToReplace": "Bearbeite das Loadout, um es zu ersetzen.",
+          "badge": "Passt nicht mehr",
+          "reasons": {
+            "slot_unknown": "das Schiff hat diesen Slot nicht mehr",
+            "parent_not_fitted": "worin es saß, gibt es nicht mehr",
+            "module_not_in_slot": "das Modul passt nicht mehr in diesen Slot",
+            "component_not_in_slot": "passt nicht mehr in diesen Slot",
+            "slot_not_editable": "das Schiff legt diesen Slot jetzt fest",
+            "nothing_to_empty": "der Slot hat kein Teil mehr zum Entfernen"
+          }
         },
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",

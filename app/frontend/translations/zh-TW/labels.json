@@ -4379,18 +4379,18 @@
         "ownedModules": "你擁有的模組",
         "nothingFitted": "未裝配",
         "refused": {
-            "title": "遊戲更新後已不再適配",
-            "removedOnSave": "儲存時會將這些從配置中移除。",
-            "editToReplace": "編輯配置以替換它們。",
-            "badge": "已不再適配",
-            "reasons": {
-                "slot_unknown": "飛船已沒有此槽位",
-                "parent_not_fitted": "其所在的部件已不存在",
-                "module_not_in_slot": "該模組已不適配此槽位",
-                "component_not_in_slot": "已不適配此槽位",
-                "slot_not_editable": "飛船現已鎖定此槽位",
-                "nothing_to_empty": "此槽位已沒有可移除的部件"
-            }
+          "title": "遊戲更新後已不再適配",
+          "removedOnSave": "儲存時會將這些從配置中移除。",
+          "editToReplace": "編輯配置以替換它們。",
+          "badge": "已不再適配",
+          "reasons": {
+            "slot_unknown": "飛船已沒有此槽位",
+            "parent_not_fitted": "其所在的部件已不存在",
+            "module_not_in_slot": "該模組已不適配此槽位",
+            "component_not_in_slot": "已不適配此槽位",
+            "slot_not_editable": "飛船現已鎖定此槽位",
+            "nothing_to_empty": "此槽位已沒有可移除的部件"
+          }
         },
         "owned": "已擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
