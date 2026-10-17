@@ -20931,6 +20931,8 @@ components:
       - name desc
       - price asc
       - price desc
+      - available asc
+      - available desc
       x-enumNames:
       - RECLAIMED_ON_ASC
       - RECLAIMED_ON_DESC
@@ -20938,6 +20940,8 @@ components:
       - NAME_DESC
       - PRICE_ASC
       - PRICE_DESC
+      - AVAILABLE_ASC
+      - AVAILABLE_DESC
       title: BuybackPledgeSortingEnum
     BuybackPledges:
       type: object
@@ -30914,9 +30918,24 @@ components:
         withValue:
           type: boolean
           description: Only items whose pledge melts for more than nothing
+        s:
+          "$ref": "#/components/schemas/HangarPledgeItemSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPledgeItemSortingEnum"
       additionalProperties: false
       example: {}
       title: HangarPledgeItemQuery
+    HangarPledgeItemSortingEnum:
+      type: string
+      enum:
+      - meltValue asc
+      - meltValue desc
+      x-enumNames:
+      - MELT_VALUE_ASC
+      - MELT_VALUE_DESC
+      title: HangarPledgeItemSortingEnum
     HangarPledgeItems:
       type: object
       properties:

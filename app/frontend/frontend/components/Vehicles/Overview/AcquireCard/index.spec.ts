@@ -7,7 +7,9 @@ import {
   type HangarPledgeItem,
   type Vehicle,
   BuybackPledgeKindEnum,
+  BuybackPledgeSortingEnum,
   HangarPledgeItemKindEnum,
+  HangarPledgeItemSortingEnum,
 } from "@/services/fyApi";
 
 const NOW = "2026-10-15T12:00:00Z";
@@ -71,6 +73,7 @@ const upgrade = (
   standalone: true,
   meltable: true,
   pledgeValue: 85,
+  meltValue: 85,
   createdAt: NOW,
   updatedAt: NOW,
   ...overrides,
@@ -103,14 +106,23 @@ const mount = () =>
   mountWithDefaults(Component, { props: { vehicle }, plugins: [router] });
 
 describe("VehicleOverviewAcquireCard", () => {
-  it("asks for the buy-backs and upgrades that lead to the ship", async () => {
+  it("asks for the cheapest buy-backs and upgrades that lead to the ship", async () => {
     await mount();
 
     expect(params.buybacks).toMatchObject({
-      q: { modelSlugEq: "cutlass-black" },
+      q: {
+        modelSlugEq: "cutlass-black",
+        sorts: [
+          BuybackPledgeSortingEnum.AVAILABLE_DESC,
+          BuybackPledgeSortingEnum.PRICE_ASC,
+        ],
+      },
     });
     expect(params.upgrades).toMatchObject({
-      q: { upgradeToModelSlugEq: "cutlass-black" },
+      q: {
+        upgradeToModelSlugEq: "cutlass-black",
+        s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,
+      },
     });
   });
 
@@ -158,6 +170,28 @@ describe("VehicleOverviewAcquireCard", () => {
     ]);
 
     buybacks.value = [];
+    upgrades.value = [];
+  });
+
+  it("prices an upgrade by its own value, not the pledge it came in", async () => {
+    upgrades.value = [
+      upgrade({ id: "own", meltValue: 40, pledgeValue: 40 }),
+      upgrade({
+        id: "bundled",
+        standalone: false,
+        meltValue: undefined,
+        pledgeValue: 500,
+      }),
+    ];
+
+    const wrapper = await mount();
+    const rows = wrapper.findAll(
+      '[data-test="vehicle-overview-acquire-upgrade"]',
+    );
+
+    expect(rows[0].text()).toContain("40");
+    expect(rows[1].text()).not.toContain("500");
+
     upgrades.value = [];
   });
 

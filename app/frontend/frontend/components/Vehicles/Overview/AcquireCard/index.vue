@@ -13,6 +13,8 @@ import {
   type BuybackPledge,
   type HangarPledgeItem,
   type Vehicle,
+  BuybackPledgeSortingEnum,
+  HangarPledgeItemSortingEnum,
   useHangarBuybacks,
   useHangarUpgrades,
 } from "@/services/fyApi";
@@ -32,14 +34,23 @@ const slug = computed(() => props.vehicle.model.slug);
 
 const { data: buybacks, isLoading: buybacksLoading } = useHangarBuybacks(
   () => ({
-    q: { modelSlugEq: slug.value },
+    q: {
+      modelSlugEq: slug.value,
+      sorts: [
+        BuybackPledgeSortingEnum.AVAILABLE_DESC,
+        BuybackPledgeSortingEnum.PRICE_ASC,
+      ],
+    },
     perPage: String(PREVIEW_COUNT),
   }),
 );
 
 const { data: upgrades, isLoading: upgradesLoading } = useHangarUpgrades(
   () => ({
-    q: { upgradeToModelSlugEq: slug.value },
+    q: {
+      upgradeToModelSlugEq: slug.value,
+      s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,
+    },
     perPage: String(PREVIEW_COUNT),
   }),
 );
@@ -123,10 +134,10 @@ const upgradesRoute = computed(() => ({
             </small>
           </span>
           <span
-            v-if="price(upgrade.pledgeValue)"
+            v-if="price(upgrade.meltValue)"
             class="overview-card-row__aside"
           >
-            {{ price(upgrade.pledgeValue) }}
+            {{ price(upgrade.meltValue) }}
           </span>
         </li>
       </ul>

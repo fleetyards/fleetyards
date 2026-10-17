@@ -216,6 +216,23 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/upgrades sorts by melt value, items without one last either way" do
+    user = create(:user)
+    pricey = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Hull C", pledge_value: 300, pledge_item_count: 1)
+    bundled = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter", pledge_value: 500, pledge_item_count: 4)
+    unknown = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Vulture", pledge_value: nil, pledge_item_count: 1)
+    cheap = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Avenger", pledge_value: 15, pledge_item_count: 1)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {s: "meltValue asc"}} do
+      assert_equal [cheap.id, pricey.id], parsed_body["items"].pluck("id").first(2)
+      assert_equal [bundled.id, unknown.id].sort, parsed_body["items"].pluck("id").last(2).sort
+    end
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {s: "meltValue desc"}} do
+      assert_equal [pricey.id, cheap.id], parsed_body["items"].pluck("id").first(2)
+    end
+  end
+
   test "GET /hangar/upgrades needs a signed-in user" do
     assert_api_response :get, 401, api_path: "/hangar/upgrades"
   end

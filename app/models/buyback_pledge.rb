@@ -11,7 +11,8 @@ class BuybackPledge < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["reclaimed_on desc"].freeze
   ALLOWED_SORTING_PARAMS = [
-    "reclaimedOn asc", "reclaimedOn desc", "name asc", "name desc", "price asc", "price desc"
+    "reclaimedOn asc", "reclaimedOn desc", "name asc", "name desc", "price asc", "price desc",
+    "available asc", "available desc"
   ].freeze
 
   belongs_to :user
@@ -143,7 +144,7 @@ class BuybackPledge < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[kind name price reclaimed_on]
+    %w[available kind name price reclaimed_on]
   end
 
   def self.ransackable_associations(_auth_object = nil)

@@ -10,6 +10,9 @@ class HangarPledgeItem < ApplicationRecord
 
   KINDS = %w[paint flair equipment ccu].freeze
 
+  DEFAULT_SORTING_PARAMS = [].freeze
+  ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
+
   belongs_to :user
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
@@ -62,6 +65,20 @@ class HangarPledgeItem < ApplicationRecord
       hangar_pledge_items.name ASC,
       hangar_pledge_items.id ASC
     SQL
+  end
+
+  # Items without a melt value of their own go last in either direction, rather
+  # than first on a descending sort as Postgres would place them.
+  def self.sort_order(sorts)
+    sorts.map do |sort|
+      attribute, direction = sort.split
+      raise ArgumentError, "unknown sort #{sort}" unless attribute == "melt_value" && %w[asc desc].include?(direction)
+
+      Arel.sql(<<~SQL.squish)
+        CASE WHEN hangar_pledge_items.pledge_item_count = hangar_pledge_items.quantity
+          THEN hangar_pledge_items.pledge_value END #{direction.upcase} NULLS LAST
+      SQL
+    end
   end
 
   # Melting returns what the whole pledge is worth, so an item has a melt value
