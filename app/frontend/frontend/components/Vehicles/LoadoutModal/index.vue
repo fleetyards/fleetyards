@@ -447,34 +447,32 @@ const moduleFigures = computed(() =>
   ),
 );
 
+const moduleMetrics = computed<LoadoutMetric[]>(() =>
+  moduleFigures.value.map((row) => ({
+    key: row.key,
+    label: row.label,
+    value: row.value,
+    deltaLabel: row.deltaLabel,
+    tone: row.delta?.tone,
+  })),
+);
+
 /**
- * What the open tab does not show that moved against the saved loadout: the
- * other cards' figures, the other tabs' own, and cargo -- one line each, in the
- * same words the tiles use, so a swap is never out of sight on the tab it was
- * not made on.
+ * Everything the changes moved against the saved loadout, on every tab: a
+ * summary of all that was done, in the words the tiles use, so a swap is never
+ * out of sight on the tab it was not made on.
  */
 const changedFigures = computed<LoadoutMetric[]>(() => {
-  const cards = [...new Set(Object.values(TAB_METRICS))].filter(
-    (card) => card !== openCard.value,
-  );
-
-  return [
-    ...(currentTab.value === VehicleLoadoutTabsEnum.MODULES
-      ? []
-      : moduleFigures.value
-          .filter((row) => row.deltaLabel)
-          .map((row) => ({
-            key: row.key,
-            label: row.label,
-            value: row.value,
-            deltaLabel: row.deltaLabel,
-            tone: row.delta?.tone,
-          }))),
-    ...cards.flatMap(cardMetrics),
-    ...OWN_FIGURE_TABS.filter((id) => id !== currentTab.value).flatMap(
-      ownFigures,
-    ),
+  const all = [
+    ...moduleMetrics.value,
+    ...[...new Set(Object.values(TAB_METRICS))].flatMap(cardMetrics),
+    ...OWN_FIGURE_TABS.flatMap(ownFigures),
   ].filter((figure) => figure.deltaLabel);
+
+  return all.filter(
+    (figure, index) =>
+      all.findIndex((other) => other.key === figure.key) === index,
+  );
 });
 
 const slots = computed(() => moduleSlots(modules.value));
