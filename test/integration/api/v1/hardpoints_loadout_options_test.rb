@@ -18,6 +18,9 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
       parameter name: "stockId", in: :query, required: false,
         schema: {type: :string, format: :uuid},
         description: "What the slot came with, which a port inside a part does not know itself"
+      parameter name: "modelSlug", in: :query, required: false,
+        schema: {type: :string},
+        description: "The ship the slot is on, whose tags a part may demand"
 
       response(200, "successful") do
         schema ::V1::Schemas::Loadouts::LoadoutOptionList
@@ -67,6 +70,19 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {id: port.id}, params: {stockId: gun.id} do
       assert_includes parsed_body.map { |option| option.dig("component", "name") }, "Gun"
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options leaves out parts that demand another ship's tag" do
+    model = create(:model)
+    slot = create(:hardpoint, parent: model, sc_name: "hardpoint_gun", source: :game_files,
+      types: %w[WeaponGun], min_size: 2, max_size: 2)
+    create(:component, name: "Plain Gun", component_type: "WeaponGun", category: "weapons", size: "2")
+    create(:component, name: "Taurus Beam", component_type: "WeaponGun", category: "weapons", size: "2",
+      required_tags: ["Taurus_TractorBeam"])
+
+    assert_api_response :get, 200, path_params: {id: slot.id}, params: {modelSlug: model.slug} do
+      assert_equal ["Plain Gun"], parsed_body.map { |option| option.dig("component", "name") }
     end
   end
 
