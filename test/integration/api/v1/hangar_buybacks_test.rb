@@ -447,6 +447,17 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds a ship pledge holding nothing but lifetime insurance" do
+    user = create(:user)
+    atls_geo = create(:model, name: "ATLS GEO", rsi_name: "ATLS GEO")
+    pledge = buyback(user, name: "Standalone Ships - ATLS GEO", contained: "ATLS GEO and Lifetime Insurance")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => atls_geo.slug}} do
+      assert_equal [pledge.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar/buybacks finds a pack by the name RSI gives a ship" do
     user = create(:user)
     c2 = create(:model, name: "C2 Hercules", rsi_name: "C2 Hercules")

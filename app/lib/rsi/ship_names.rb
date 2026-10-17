@@ -59,7 +59,14 @@ module Rsi
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit",
-      "Gladius Dunlevy" => "Dunlevy"
+      "Gladius Dunlevy" => "Dunlevy",
+      "Constellation Phoenix" => "Constellation Mk IV Phoenix",
+      "Vanduul Blade" => "Blade",
+      "X1 - FORCE" => "X1 Force",
+      "X1 - VELOCITY" => "X1 Velocity",
+      "Ballista Dunestalker" => "Ballista",
+      "Ballista Snowblind" => "Ballista",
+      "Mustang Alpha Vindicator" => "Mustang Alpha"
     }.freeze
 
     # Every name an RSI pledge page may give a ship we call one of `names`,
