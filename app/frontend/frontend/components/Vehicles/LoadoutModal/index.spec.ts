@@ -424,6 +424,38 @@ describe("VehicleLoadoutModal", () => {
     });
   });
 
+  it("saves the fitting as a new loadout beside the one opened", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Gunship",
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1", "m2"]), {
+      loadoutId: "l2",
+    });
+    await flushPromises();
+
+    await pick(wrapper, 1);
+    await wrapper
+      .get("[data-test='vehicle-loadout-save-as-new']")
+      .trigger("click");
+    await flushPromises();
+
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+    expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
+      kind: "fleetyards",
+      name: "",
+      items: [
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
+      ],
+    });
+  });
+
   it("edits the saved loadout it was opened for, without activating it", async () => {
     loadouts.value = [
       {
