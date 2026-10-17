@@ -3,7 +3,7 @@
 module V1
   module Schemas
     module Loadouts
-      # What a loadout slot holds or could hold, named without the full catalogue
+      # What a loadout slot holds or could hold, without the full catalogue
       # record: a slot tree carries one per slot, and the full record nests its
       # own ports all the way down.
       class LoadoutComponentRef
@@ -20,7 +20,12 @@ module V1
             subType: {type: :string},
             size: {type: :string},
             grade: {type: :string},
-            itemClass: ::Shared::V1::Schemas::Enums::ComponentItemClassEnum
+            gradeLabel: {type: :string},
+            itemClass: ::Shared::V1::Schemas::Enums::ComponentItemClassEnum,
+            itemClassLabel: {type: :string},
+            # What the ship page reads a part's figures from, so a loadout ranks
+            # parts on the same ones.
+            typeData: ::Shared::V1::Schemas::Component::TYPE_DATA
           },
           additionalProperties: false,
           required: %w[id name]

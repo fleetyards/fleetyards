@@ -43,16 +43,25 @@ class LoadoutSlots
   # in SQL, so a type the build changed is read as the build has it, then checked
   # once more in Ruby the way a save is. A port that names neither types nor a
   # category has nothing to match on and takes nothing.
-  def self.options(port)
+  #
+  # `candidates` keeps each kind's catalogue query for the next port asking the
+  # same, so a whole tree costs a query per kind of part rather than per slot.
+  def self.options(port, candidates = {})
     facts = port.facts
     types = Array(facts.types).compact_blank
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
 
-    kind = types.any? ? Component.fact_sql(:component_type).in(types) : Component.fact_sql(:category).eq(facts.category)
-    Component.with_facts.catalogued.where(kind)
+    kind = types.any? ? [:component_type, types.sort] : [:category, facts.category]
+    # The served build resolved once per tree: asking it again per kind of part
+    # was most of a tree's queries.
+    source = (candidates[:source] ||= Component.served_source)
+    candidates[kind] ||= Component.joins(Component.current_facts_join(source)).catalogued
+      .where(Component.fact_sql(kind.first).in(Array(kind.last)))
       .includes(:build, :last_build)
       .order(Component.fact_sql(:name))
-      .select { |component| fits?(port, component) }
+      .to_a
+
+    candidates[kind].select { |component| fits?(port, component) }
   end
 
   # A port that names no types (68 life-support slots, among others) is matched
@@ -65,8 +74,18 @@ class LoadoutSlots
 
     size = Integer(component.size, exception: false)
     return false if size.nil?
+    return false if facts.min_size && size < facts.min_size
+    return false if facts.max_size && size > facts.max_size
 
-    (facts.min_size.nil? || size >= facts.min_size) && (facts.max_size.nil? || size <= facts.max_size)
+    facts.category != "controller" || same_blade_family?(facts.component, component)
+  end
+
+  # A flight blade is made for one ship: it names that ship's blade in its tags,
+  # and only blades sharing a tag with the one the slot came with fit. The
+  # port's own tags cannot say so -- a variant's port carries its base ship's
+  # tag while its blades carry the variant's.
+  def self.same_blade_family?(stock, component)
+    stock.present? && Array(stock.tags).intersect?(Array(component.tags))
   end
 
   # The hull slots a player fits: the systems, the weapons and what holds them,
@@ -91,6 +110,8 @@ class LoadoutSlots
     @items = items.index_by { |item| item[:slot_path] }
     @below = {}
     @ports = {}
+    @candidates = {}
+    @swappable = {}
   end
 
   def [](path)
@@ -115,6 +136,17 @@ class LoadoutSlots
       Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
         Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
     end.tap { |slots| prefetch_below(slots) }
+  end
+
+  # Whether anything but the part the slot came with fits it, so a slot with
+  # nothing to choose from is not offered as a choice.
+  def swappable?(slot)
+    return false unless slot.editable?
+
+    @swappable.fetch(slot.port.id) do
+      @swappable[slot.port.id] = LoadoutSlots.options(slot.port, @candidates)
+        .any? { |component| component.id != slot.stock&.id }
+    end
   end
 
   # Whether the slot at `path` hangs off a hull slot a player fits at all.

@@ -32826,8 +32826,38 @@ components:
           type: string
         grade:
           type: string
+        gradeLabel:
+          type: string
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
+        itemClassLabel:
+          type: string
+        typeData:
+          anyOf:
+          - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentJumpDrive"
+          - "$ref": "#/components/schemas/ComponentArmor"
+          - "$ref": "#/components/schemas/CargoHold"
+          - "$ref": "#/components/schemas/FuelTank"
+          - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentMissile"
+          - "$ref": "#/components/schemas/ComponentBomb"
+          - "$ref": "#/components/schemas/ComponentMissileRack"
+          - "$ref": "#/components/schemas/ComponentTractorBeam"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentRadar"
+          - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentShieldController"
+          - "$ref": "#/components/schemas/ComponentMissileController"
+          - "$ref": "#/components/schemas/ComponentTurret"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
+          - "$ref": "#/components/schemas/ComponentMiningModule"
+          - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentEmp"
+          - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
+          - "$ref": "#/components/schemas/ComponentLifeSupport"
       additionalProperties: false
       required:
       - id
@@ -32876,6 +32906,9 @@ components:
         editable:
           type: boolean
           description: False where the game locks the part in place
+        swappable:
+          type: boolean
+          description: Whether anything but the stock part fits
         stock:
           "$ref": "#/components/schemas/LoadoutComponentRef"
         fitted:

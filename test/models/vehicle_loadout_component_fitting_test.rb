@@ -118,6 +118,29 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert loadout.save, loadout.errors.full_messages.to_sentence
   end
 
+  test "fits only a flight blade made for the ship's own" do
+    own = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["RSI_Aurora_mk2_Blade"])
+    sibling = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["RSI_Aurora_mk2_Blade"])
+    foreign = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["ANVL_Hornet_F7C_Blade"])
+    port(@model, "hardpoint_controller_flight", min_size: 1, max_size: 1, component: own)
+
+    assert fleetyards_loadout(fit(["hardpoint_controller_flight", sibling])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_controller_flight", foreign])), :component_not_in_slot
+  end
+
+  test "a slot only its stock part fits is not offered as a choice" do
+    alone = create(:component, component_type: "Radar", category: "radar", size: "1")
+    port(@model, "hardpoint_radar", types: ["Radar"], min_size: 1, max_size: 1, component: alone)
+
+    slots = LoadoutSlots.new(@model)
+
+    assert_not slots.swappable?(slots["hardpoint_radar"])
+    assert slots.swappable?(slots["hardpoint_gun_nose"])
+  end
+
   test "a component removed from the catalogue is unfitted with what sat inside it" do
     loadout = fleetyards_loadout(fit(
       ["hardpoint_power_plant", @plant],
