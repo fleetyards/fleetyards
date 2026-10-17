@@ -294,3 +294,28 @@
   justify-content: center;
   padding: 24px 0;
 }
+
+// The options arrive together and settle in one after another, rather than
+// popping into a list that was a spinner a moment before.
+.loadout-picker__entry {
+  animation: loadout-picker-entry 0.22s ease-out both;
+  animation-delay: calc(var(--entry-index, 0) * 18ms);
+}
+
+@keyframes loadout-picker-entry {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadout-picker__entry {
+    animation: none;
+  }
+}

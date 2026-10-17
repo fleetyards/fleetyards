@@ -380,7 +380,12 @@ const accessibleName = (option: LoadoutPickerOption) =>
           />
         </button>
       </li>
-      <li v-for="option in loading ? [] : visibleOptions" :key="option.id">
+      <li
+        v-for="(option, index) in loading ? [] : visibleOptions"
+        :key="option.id"
+        class="loadout-picker__entry"
+        :style="{ '--entry-index': Math.min(index, 12) }"
+      >
         <button
           type="button"
           class="loadout-picker__option"
