@@ -821,6 +821,13 @@ const fittedComponentsToSave = (values: LoadoutValues) => {
 
 const saving = ref(false);
 
+// Against the loadout as saved: the fitting, or its name. Undoing a pick
+// undoes the change.
+const changed = computed(() => meta.value.dirty);
+
+// A saved loadout needs a change to save; a new one saves the ship as it is.
+const savable = computed(() => !editedLoadout.value || changed.value);
+
 // Created by a save whose activation then failed: the retry finishes that one
 // rather than creating another beside it.
 const createdLoadout = ref<VehicleLoadout>();
@@ -832,7 +839,12 @@ const createdLoadout = ref<VehicleLoadout>();
  * the loadouts page.
  */
 const save = async (values: LoadoutValues, asNew: boolean) => {
-  if (!props.editable || !flightReady.value || loadoutPending.value) {
+  if (
+    !props.editable ||
+    !flightReady.value ||
+    loadoutPending.value ||
+    !(asNew ? changed.value : savable.value)
+  ) {
     return;
   }
 
@@ -1205,13 +1217,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
         :loading="saving"
-        :disabled="!flightReady || loadoutPending"
+        :disabled="!flightReady || loadoutPending || !savable"
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}
       </Btn>
       <Btn
-        v-if="editedLoadout"
+        v-if="editedLoadout && changed"
         :loading="saving"
         :disabled="!flightReady || loadoutPending"
         data-test="vehicle-loadout-save-as-new"
