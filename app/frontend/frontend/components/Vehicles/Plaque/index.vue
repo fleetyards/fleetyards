@@ -30,6 +30,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t, currentLocale } = useI18n();
 
+const verseTooltip = computed(() =>
+  props.vehicle.dedicationVerse
+    ? { content: props.vehicle.dedicationVerse, multiline: true }
+    : false,
+);
+
 const manufacturer = computed(() => props.vehicle.model.manufacturer);
 
 const maker = computed(() => plaqueMakerFor(props.vehicle));
@@ -261,9 +267,16 @@ const lines = computed(() =>
           </ul>
         </section>
       </div>
+      <!--
+        The verse is not drawn on the plaque, so the picture of it stays the
+        plate itself; the dedication opens it on hover, tap or focus.
+      -->
       <blockquote
         v-if="vehicle.dedication"
+        v-tooltip="verseTooltip"
         class="vehicle-plaque__quote"
+        :class="{ 'vehicle-plaque__quote--verse': !!verseTooltip }"
+        :tabindex="verseTooltip ? 0 : undefined"
         data-test="vehicle-plaque-dedication"
       >
         “{{ vehicle.dedication }}”
@@ -410,6 +423,10 @@ const lines = computed(() =>
     font-weight: 600;
     line-height: 1.4;
     overflow-wrap: anywhere;
+
+    &--verse {
+      cursor: help;
+    }
   }
 }
 

@@ -112,6 +112,10 @@ class Vehicle < ApplicationRecord
   DEDICATION_LIMIT = 150
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
+  # The verse or blessing given with the dedication. It is not drawn on the plaque;
+  # the dedication shows it on hover or tap.
+  DEDICATION_VERSE_LIMIT = 500
+  validates :dedication_verse, length: {maximum: DEDICATION_VERSE_LIMIT}
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
   # Who the plaque names as captain, in place of the owner's display name.
   normalizes :plaque_captain, with: ->(name) { name.squish.presence }
@@ -129,7 +133,7 @@ class Vehicle < ApplicationRecord
   PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
-  PLAQUE_ATTRS = %w[dedication launched_on launch_port launch_port_location_id affiliation operations_group].freeze
+  PLAQUE_ATTRS = %w[dedication dedication_verse launched_on launch_port launch_port_location_id affiliation operations_group].freeze
 
   # The plaque as a picture, for the link preview of a shared plaque. The server
   # cannot draw the plaque, so the owner's browser renders it on every save.
@@ -192,7 +196,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style].freeze
+  NULL_ATTRS = %w[name serial dedication dedication_verse launch_port affiliation operations_group plaque_style].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},

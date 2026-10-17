@@ -816,9 +816,10 @@ class VehicleModelImageTest < ActiveSupport::TestCase
   end
 
   test "stores a blank dedication plaque line as nil" do
-    vehicle = create(:vehicle, dedication: " ", affiliation: "", operations_group: "", launch_port: "")
+    vehicle = create(:vehicle, dedication: " ", dedication_verse: " ", affiliation: "", operations_group: "", launch_port: "")
 
     assert_nil vehicle.dedication
+    assert_nil vehicle.dedication_verse
     assert_nil vehicle.affiliation
     assert_nil vehicle.operations_group
     assert_nil vehicle.launch_port

@@ -4287,6 +4287,8 @@
         "operationsGroup": "Équipe des opérations",
         "title": "Plaque de dédicace",
         "dedication": "Dédicace",
+        "dedicationVerse": "Vers de dédicace",
+        "dedicationVerseInfo": "Facultatif. Quelques vers ou une bénédiction, affichés au survol ou au toucher de la dédicace.",
         "launchedOn": "Date de lancement",
         "launchPort": "Port de lancement",
         "affiliation": "Affiliation"

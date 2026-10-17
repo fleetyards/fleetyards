@@ -139,6 +139,28 @@ describe("VehiclePlaqueEditModal", () => {
     );
   });
 
+  it("saves the verse with the plaque", async () => {
+    mutateAsync.mockClear();
+    const wrapper = await mount(true);
+
+    await wrapper
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("To boldly go");
+    await wrapper
+      .find('[data-test="vehicle-plaque-dedication-verse-input"] textarea')
+      .setValue("When the charts run out,\nlook for the light.");
+    await wrapper.find("#vehicle-plaque-form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          dedicationVerse: "When the charts run out,\nlook for the light.",
+        }),
+      }),
+    );
+  });
+
   it("leaves an existing plaque's style out when it is not changed", async () => {
     mutateAsync.mockClear();
     const wrapper = await mountWithDefaults<typeof Component>(Component, {

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 json.dedication vehicle.dedication
+json.dedication_verse vehicle.dedication_verse
 json.launched_on vehicle.launched_on
 json.launch_port vehicle.launch_port
 json.partial! "api/v1/locations/linked", key: :launch_port_location, location: vehicle.launch_port_location

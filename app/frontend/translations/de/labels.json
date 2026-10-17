@@ -4287,6 +4287,8 @@
         "operationsGroup": "Einsatzcrew",
         "title": "Widmungstafel",
         "dedication": "Widmung",
+        "dedicationVerse": "Widmungsvers",
+        "dedicationVerseInfo": "Optional. Ein paar Verszeilen oder ein Segen, angezeigt, wenn jemand über die Widmung fährt oder sie antippt.",
         "launchedOn": "Stapellauf",
         "launchPort": "Starthafen",
         "affiliation": "Zugehörigkeit"

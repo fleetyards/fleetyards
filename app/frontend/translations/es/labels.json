@@ -4287,6 +4287,8 @@
         "operationsGroup": "Equipo de operaciones",
         "title": "Placa de dedicatoria",
         "dedication": "Dedicatoria",
+        "dedicationVerse": "Verso de dedicatoria",
+        "dedicationVerseInfo": "Opcional. Unos versos o una bendición que se muestran al pasar el cursor sobre la dedicatoria o tocarla.",
         "launchedOn": "Fecha de botadura",
         "launchPort": "Puerto de botadura",
         "affiliation": "Afiliación"

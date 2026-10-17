@@ -40344,6 +40344,10 @@ components:
           type:
           - string
           - 'null'
+        dedicationVerse:
+          type:
+          - string
+          - 'null'
         launchedOn:
           type:
           - string
@@ -40968,6 +40972,10 @@ components:
           type:
           - string
           - 'null'
+        dedicationVerse:
+          type:
+          - string
+          - 'null'
         launchedOn:
           type:
           - string
@@ -41213,6 +41221,11 @@ components:
           - string
           - 'null'
           maxLength: 150
+        dedicationVerse:
+          type:
+          - string
+          - 'null'
+          maxLength: 500
         launchedOn:
           type:
           - string

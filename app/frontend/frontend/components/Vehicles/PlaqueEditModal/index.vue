@@ -47,6 +47,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const DEDICATION_LIMIT = 150;
+const DEDICATION_VERSE_LIMIT = 500;
 const LINE_LIMIT = 100;
 const CAPTAIN_LIMIT = 50;
 
@@ -84,6 +85,7 @@ const keptStyle =
 const validationSchema = {
   // Without one there is no plaque, and the other lines would save to nothing.
   dedication: `required|max:${DEDICATION_LIMIT}`,
+  dedicationVerse: `max:${DEDICATION_VERSE_LIMIT}`,
   launchPort: `max:${LINE_LIMIT}`,
   affiliation: `max:${LINE_LIMIT}`,
   plaqueCaptain: `max:${CAPTAIN_LIMIT}`,
@@ -95,6 +97,7 @@ const { defineField, handleSubmit } = useForm({
   keepValuesOnUnmount: true,
   initialValues: {
     dedication: props.vehicle.dedication ?? "",
+    dedicationVerse: props.vehicle.dedicationVerse ?? "",
     launchedOn: props.vehicle.launchedOn ?? null,
     launchPort: props.vehicle.launchPort ?? "",
     launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
@@ -110,6 +113,7 @@ const { defineField, handleSubmit } = useForm({
 });
 
 const [dedication] = defineField("dedication");
+const [dedicationVerse] = defineField("dedicationVerse");
 const [launchedOn] = defineField("launchedOn");
 const [launchPort] = defineField("launchPort");
 const [launchPortLocationId] = defineField("launchPortLocationId");
@@ -169,6 +173,7 @@ const pickStyle = (option: {
 const preview = computed<Vehicle>(() => ({
   ...props.vehicle,
   dedication: dedication.value || null,
+  dedicationVerse: dedicationVerse.value || null,
   launchedOn: launchedOn.value || null,
   launchPort: launchPort.value || null,
   affiliation: affiliation.value || null,
@@ -255,6 +260,7 @@ const removePlaque = async () => {
       id: props.vehicle.id,
       data: {
         dedication: null,
+        dedicationVerse: null,
         launchedOn: null,
         launchPort: null,
         launchPortLocationId: null,
@@ -276,6 +282,7 @@ const onSubmit = handleSubmit(async (values) => {
       // Null rather than left out: a cleared field clears the line.
       data: {
         dedication: values.dedication || null,
+        dedicationVerse: values.dedicationVerse || null,
         launchedOn: values.launchedOn || null,
         launchPort: values.launchPort || null,
         launchPortLocationId: values.launchPortLocationId ?? null,
@@ -405,6 +412,15 @@ const onSubmit = handleSubmit(async (values) => {
                 :rules="validationSchema.dedication"
                 :maxlength="DEDICATION_LIMIT"
                 data-test="vehicle-plaque-dedication-input"
+              />
+              <FormTextarea
+                v-model="dedicationVerse"
+                name="dedicationVerse"
+                :label="t('labels.vehiclePlaque.dedicationVerse')"
+                :info="t('labels.vehiclePlaque.dedicationVerseInfo')"
+                :rules="validationSchema.dedicationVerse"
+                :maxlength="DEDICATION_VERSE_LIMIT"
+                data-test="vehicle-plaque-dedication-verse-input"
               />
               <FormDatePicker
                 v-model="launchedOn"

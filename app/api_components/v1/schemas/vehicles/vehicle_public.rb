@@ -19,6 +19,7 @@ module V1
             publicLogEntriesCount: {type: :integer},
             # The dedication plaque, sent only for a public vehicle.
             dedication: {type: [:string, :null]},
+            dedicationVerse: {type: [:string, :null]},
             launchedOn: {type: [:string, :null], format: :date},
             launchPort: {type: [:string, :null]},
             launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

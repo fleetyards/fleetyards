@@ -20,6 +20,7 @@ module V1
             location: {type: [:string, :null]},
             locationId: {type: [:string, :null], format: :uuid},
             dedication: {type: [:string, :null], maxLength: ::Vehicle::DEDICATION_LIMIT},
+            dedicationVerse: {type: [:string, :null], maxLength: ::Vehicle::DEDICATION_VERSE_LIMIT},
             launchedOn: {type: [:string, :null], format: :date},
             launchPort: {type: [:string, :null], maxLength: ::Vehicle::PLAQUE_LINE_LIMIT},
             launchPortLocationId: {type: [:string, :null], format: :uuid},

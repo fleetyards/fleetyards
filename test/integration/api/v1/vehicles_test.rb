@@ -496,9 +496,10 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {
       dedication: "To boldly go", launchedOn: "2026-10-12", launchPortLocationId: port.id, affiliation: "Maru Inc.", operationsGroup: "uee",
-      plaqueCaptain: "Torlek Maru"
+      plaqueCaptain: "Torlek Maru", dedicationVerse: "Fair winds,\nand following seas."
     } do
       assert_equal "To boldly go", parsed_body["dedication"]
+      assert_equal "Fair winds,\nand following seas.", parsed_body["dedicationVerse"]
       assert_equal "2026-10-12", parsed_body["launchedOn"]
       assert_equal "Port Olisar", parsed_body["launchPort"]
       assert_equal port.id, parsed_body.dig("launchPortLocation", "id")
