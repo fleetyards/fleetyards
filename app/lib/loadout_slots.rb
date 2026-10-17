@@ -103,7 +103,8 @@ class LoadoutSlots
   # carries its base ship's tags while its stock part carries the variant's (a
   # Vanguard Hoplite's blade port demands the Vanguard blade, its stock blade
   # names the Hoplite's), so where the stock part does not meet the port's tags
-  # the stock part's own tags stand in for them.
+  # the stock part's own tags stand in for them -- unless it has none worth
+  # reading, which would leave the port open to any ship's part.
   #
   # A part's required tags have to be met by the port or the ship: a Taurus
   # tractor beam demands the Taurus's tag and fits no other ship's gun port.
@@ -113,7 +114,8 @@ class LoadoutSlots
   def self.tags_fit?(facts, component, stock, ship_tags)
     required = Array(facts.required_tags).compact_blank
     if stock && (required - Array(stock.tags)).any?
-      required = Array(stock.tags).compact_blank - GENERIC_TAGS
+      own = Array(stock.tags).compact_blank - GENERIC_TAGS
+      required = own if own.any?
     end
     return false if (required - Array(component.tags)).any?
     return true if ship_tags.nil?
@@ -122,12 +124,17 @@ class LoadoutSlots
   end
 
   # What the ship provides a part, read off what its stock parts demand: every
-  # stock part fits in the game, so the tags they require are there to be met.
+  # stock part fits in the game, so the tags they require that their own port
+  # does not provide are there to be met. A tag a port provides stays with that
+  # port; the Taurus's tractor beam port is how its beam fits, not the ship.
   def self.ship_tags_for(model)
     tags = Set.new
     level = model.hardpoints.game_files.in_build.includes(PRELOAD).to_a
     while level.any?
-      level.each { |hardpoint| tags.merge(Array(hardpoint.facts.component&.required_tags).compact_blank) }
+      level.each do |hardpoint|
+        facts = hardpoint.facts
+        tags.merge(Array(facts.component&.required_tags).compact_blank - Array(facts.port_tags))
+      end
       level = Hardpoint.game_files.in_build
         .where(parent_type: "Hardpoint", parent_id: level.map(&:id))
         .includes(PRELOAD).to_a
