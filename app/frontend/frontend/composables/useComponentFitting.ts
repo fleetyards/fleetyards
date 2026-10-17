@@ -297,10 +297,11 @@ export const useComponentFitting = () => {
   const socket = (
     entry: FittedSlot,
     fittedOnly: boolean,
+    saved?: FittedSlot[],
   ): LoadoutSocketSlot | undefined => {
     const children = entry.children
       .filter(changeable)
-      .map((child) => socket(child, fittedOnly))
+      .map((child) => socket(child, fittedOnly, saved))
       .filter((child): child is LoadoutSocketSlot => !!child);
 
     if (fittedOnly && !entry.content && !children.length) return undefined;
@@ -312,6 +313,8 @@ export const useComponentFitting = () => {
       // Shown for what sits inside it, but nothing else fits it: the game locks
       // it, or the part it came with is the only one made for it.
       locked: !entry.slot.editable || entry.slot.swappable === false,
+      changed:
+        !!saved && find(saved, entry.path)?.content?.id !== entry.content?.id,
       item: entry.content
         ? {
             id: entry.content.id,
@@ -329,11 +332,14 @@ export const useComponentFitting = () => {
   const groups = (
     tree: FittedSlot[],
     tab: ComponentTab,
-    { fittedOnly = false } = {},
+    {
+      fittedOnly = false,
+      saved,
+    }: { fittedOnly?: boolean; saved?: FittedSlot[] } = {},
   ): LoadoutSocketGroup[] =>
     roots(tree, tab)
       .filter(changeable)
-      .map((root) => socket(root, fittedOnly))
+      .map((root) => socket(root, fittedOnly, saved))
       .filter((slot): slot is LoadoutSocketSlot => !!slot)
       .map((slot) => ({ key: slot.id, slots: [slot] }));
 

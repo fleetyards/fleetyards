@@ -4410,6 +4410,7 @@
         },
         "reset": "Filter zurücksetzen",
         "leaveEmpty": "Leer lassen",
+        "changed": "Geändert",
         "noMatches": "Keine Treffer",
         "close": "Schließen"
       }

@@ -20,6 +20,8 @@ export interface LoadoutSocketSlot {
   // Shown, but nothing can be picked for it: the game locks it, or nothing
   // other than what it holds fits.
   locked?: boolean;
+  // Holds something other than the saved loadout has there.
+  changed?: boolean;
   // What sits inside the item, shown under it the way a ship page nests a
   // turret's guns.
   children?: LoadoutSocketSlot[];

@@ -4410,6 +4410,7 @@
         },
         "reset": "重設篩選",
         "leaveEmpty": "留空",
+        "changed": "已變更",
         "noMatches": "沒有符合項目",
         "close": "關閉"
       }

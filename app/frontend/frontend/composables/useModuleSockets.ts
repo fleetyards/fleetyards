@@ -60,16 +60,20 @@ export const useModuleSockets = () => {
   const groups = (
     modules: ModelModule[],
     fitted: Record<string, string>,
-    { fittedOnly = false } = {},
+    {
+      fittedOnly = false,
+      saved,
+    }: { fittedOnly?: boolean; saved?: Record<string, string> } = {},
   ): LoadoutSocketGroup[] => {
     const slots = moduleSlots(modules)
       .filter((slot) => !fittedOnly || !!fitted[slot])
       .map((slot) => {
         const fittedId = fitted[slot];
         const mod = modules.find((entry) => entry.id === fittedId);
+        const changed = !!saved && (saved[slot] ?? null) !== (fittedId ?? null);
 
         if (!fittedId) {
-          return { id: slot, label: slotLabel(slot) };
+          return { id: slot, label: slotLabel(slot), changed };
         }
 
         // Fitted, but gone from the hull's modules, as a module retired from
@@ -78,6 +82,7 @@ export const useModuleSockets = () => {
           return {
             id: slot,
             label: slotLabel(slot),
+            changed,
             item: {
               id: fittedId,
               name: t("labels.vehicleLoadout.unavailableModule"),
@@ -88,6 +93,7 @@ export const useModuleSockets = () => {
         return {
           id: slot,
           label: slotLabel(slot),
+          changed,
           item: {
             id: mod.id,
             name: mod.name,
