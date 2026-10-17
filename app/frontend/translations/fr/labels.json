@@ -4392,6 +4392,7 @@
             "nothing_to_empty": "l'emplacement ne contient plus de pièce à retirer"
           }
         },
+        "againstStock": "Changements par rapport au vaisseau d'origine",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
         "unavailableModule": "Module plus disponible",

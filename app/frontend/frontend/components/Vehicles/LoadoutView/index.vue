@@ -16,6 +16,7 @@ import {
 } from "@/shared/components/base/Alert/types";
 import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
+import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -27,17 +28,24 @@ import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
   COMPONENT_TABS,
+  EMPTIED,
   slotName,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
+import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
 import {
   HardpointCategoryEnum,
+  HardpointSourceEnum,
   type LoadoutSlot,
   type ModelModule,
+  ModelProductionStatusEnum,
   type Vehicle,
   type VehicleLoadout,
+  VehicleLoadoutItemTypeEnum,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
+  useModelHardpoints,
+  useModelLoadoutSlots,
   useVehicleLoadoutSlots,
 } from "@/services/fyApi";
 
@@ -66,7 +74,9 @@ const { moduleRows, moduleCargo } = useLoadoutModules(
   () => props.loadout,
 );
 
-const { componentFigure } = useComponentFitting();
+const fitting = useComponentFitting();
+
+const { componentFigure } = fitting;
 
 // The parts swapped in or taken out, read off the loadout's slot tree. Only the owner can
 // read that tree, so only the owner sees them.
@@ -100,6 +110,66 @@ const refusedBadges = (slotPath: string) => {
       ]
     : [];
 };
+
+// What the loadout changes on the ship as the game files deliver it, worked out
+// by the editor's own diff. The parts in it are known only from the owner's
+// slot tree, so a visitor sees what the modules change.
+const flightReady = computed(
+  () =>
+    model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
+);
+
+const { data: hullSlots } = useModelLoadoutSlots(
+  () => model.value?.slug ?? "",
+  { query: { enabled: () => props.editable && flightReady.value } },
+);
+
+const { data: modelHardpoints } = useModelHardpoints(
+  () => model.value?.slug ?? "",
+  { source: HardpointSourceEnum.GAME_FILES },
+  { query: { enabled: () => props.editable && flightReady.value } },
+);
+
+watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
+watch(loadoutSlots, (slots) => fitting.learn(slots), { immediate: true });
+watch(
+  moduleRows,
+  (rows) => fitting.learnModules(rows.map((row) => row.module)),
+  { immediate: true },
+);
+
+const fittedValues = computed(() =>
+  Object.fromEntries(
+    (props.loadout?.items ?? []).map((item) => [
+      item.slotPath,
+      item.itemType === VehicleLoadoutItemTypeEnum.EMPTY
+        ? EMPTIED
+        : (item.itemId ?? EMPTIED),
+    ]),
+  ),
+);
+
+const loadoutDiff = useLoadoutDiff(fitting);
+
+const changesFromStock = computed(() => {
+  const loadout = (modules: ModelModule[], values: Record<string, string>) =>
+    loadoutDiff.measure({
+      hullCargo: model.value?.metrics.cargo || 0,
+      modules,
+      hardpoints: modelHardpoints.value ?? [],
+      tree: fitting.resolve(hullSlots.value ?? [], values),
+      weaponPoolSize: model.value?.metrics.weaponPoolSize,
+    });
+
+  return loadoutDiff.diff(
+    loadout([], {}),
+    loadout(
+      moduleRows.value.map((row) => row.module),
+      fittedValues.value,
+    ),
+    COMPONENT_TABS,
+  ).changed;
+});
 
 type ComponentRow = { slotPath: string; label: string; slot: LoadoutSlot };
 
@@ -249,6 +319,13 @@ const edit = () => {
           </li>
         </ul>
       </Alert>
+
+      <LoadoutChanges
+        v-if="changesFromStock.length"
+        :title="t('labels.vehicleLoadout.againstStock')"
+        :figures="changesFromStock"
+        test-id="vehicle-loadout-view-changes"
+      />
 
       <section
         v-for="section in sections"

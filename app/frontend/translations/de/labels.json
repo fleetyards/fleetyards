@@ -4392,6 +4392,7 @@
             "nothing_to_empty": "der Slot hat kein Teil mehr zum Entfernen"
           }
         },
+        "againstStock": "Änderungen gegenüber dem Serienschiff",
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
         "unavailableModule": "Modul nicht mehr verfügbar",

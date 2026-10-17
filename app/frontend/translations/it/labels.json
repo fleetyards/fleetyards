@@ -4392,6 +4392,7 @@
             "nothing_to_empty": "lo slot non contiene più un componente da rimuovere"
           }
         },
+        "againstStock": "Modifiche rispetto alla nave di serie",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
         "unavailableModule": "Modulo non più disponibile",
