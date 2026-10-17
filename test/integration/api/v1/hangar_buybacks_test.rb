@@ -476,7 +476,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     mercury = create(:model, name: "Mercury Star Runner", rsi_name: "Mercury")
     cutter = create(:model, name: "Cutter", rsi_name: "Cutter")
     upgraded = buyback(user, name: "Standalone Ship - Terrapin", upgraded: true,
-      contained: "Mercury Star Runner and 3 items", ship_names: ["Mercury Star Runner"])
+      contained: "Mercury Star Runner and 3 items")
     painted = buyback(user, name: "Standalone Ship - Cutter plus Groundswell Paint", upgraded: true,
       contained: "Cutter Scout and 3 items")
     dashed = buyback(user, name: "Standalone Ship - Cutter – IAE", upgraded: true, contained: "Cutter Scout and 2 items")
@@ -494,6 +494,35 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, params: {q: {"modelSlugEq" => mercury.slug}} do
       assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /hangar/buybacks finds an upgraded pledge by the ships its page lists" do
+    user = create(:user)
+    hundred = create(:model, name: "100i", rsi_name: "100i")
+    c1 = create(:model, name: "C1 Spirit", rsi_name: "C1 Spirit")
+    mercury = create(:model, name: "Mercury Star Runner", rsi_name: "Mercury")
+    c2 = create(:model, name: "C2 Hercules", rsi_name: "C2 Hercules")
+    ship = buyback(user, name: "Standalone Ships - 100i - 10 Year", upgraded: true,
+      contained: "C1 Spirit and 4 items", ship_names: ["100i"])
+    pack = buyback(user, kind: "package", name: "Package - Best in Show 2951 Complete Pack", upgraded: true,
+      contained: "4 ships and 8 items", ship_names: ["Mercury Star Runner", "Hercules Starlifter C2"])
+    buyback(user, kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
+      contained: "C1 Spirit and 5 items")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => hundred.slug}} do
+      assert_equal [ship.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => c1.slug}} do
+      assert_empty parsed_body["items"]
+    end
+
+    [mercury, c2].each do |model|
+      assert_api_response :get, 200, params: {q: {"modelSlugEq" => model.slug}} do
+        assert_equal [pack.id], parsed_body["items"].pluck("id")
+      end
     end
   end
 
