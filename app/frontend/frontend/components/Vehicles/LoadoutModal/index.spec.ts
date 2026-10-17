@@ -35,6 +35,7 @@ const hullSlots = ref<unknown[]>([]);
 const savedSlots = ref<unknown[]>([]);
 const componentOptions = ref<unknown[]>([]);
 const optionsStale = ref(false);
+let optionsParams: () => Record<string, unknown> = () => ({});
 const modelHardpoints = ref<unknown[]>([]);
 
 const resolved = () => ({
@@ -63,11 +64,18 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useVehicleLoadoutSlots: () => ({ data: savedSlots, ...resolved() }),
   useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
-  useHardpointLoadoutOptions: () => ({
-    data: componentOptions,
-    ...resolved(),
-    isPlaceholderData: optionsStale,
-  }),
+  useHardpointLoadoutOptions: (
+    _id: unknown,
+    params: () => Record<string, unknown>,
+  ) => {
+    optionsParams = params;
+
+    return {
+      data: componentOptions,
+      ...resolved(),
+      isPlaceholderData: optionsStale,
+    };
+  },
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
   activateVehicleLoadout: (...args: unknown[]) =>
@@ -985,6 +993,18 @@ describe("VehicleLoadoutModal component tabs", () => {
     expect(savedItems()).toEqual([
       { slotPath: "hardpoint_gun_nose", itemType: "Component", itemId: "g2" },
     ]);
+  });
+
+  it("asks for a slot's options with the ports above it", async () => {
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await socket(wrapper, "hardpoint_gun_nose/hardpoint_class_2").trigger(
+      "click",
+    );
+    await flushPromises();
+
+    expect(optionsParams().ancestorIds).toEqual(["hull-nose"]);
   });
 
   it("marks a slot that differs from the saved loadout as changed", async () => {
