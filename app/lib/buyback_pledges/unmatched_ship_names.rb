@@ -20,7 +20,7 @@ module BuybackPledges
     end
 
     private def names
-      listed = BuybackPledge.where(upgraded: false).where.not(ship_names: nil).pluck(:ship_names).flatten
+      listed = BuybackPledge.where.not(ship_names: nil).pluck(:ship_names).flatten
       contained = BuybackPledge.where(kind: "ship", upgraded: false).where.not(contained: nil).pluck(:contained)
         .map { |value| value.sub(FIRST_SHIP, "") }
         .grep_v(COUNTED)

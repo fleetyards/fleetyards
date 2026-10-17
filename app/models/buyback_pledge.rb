@@ -85,11 +85,12 @@ class BuybackPledge < ApplicationRecord
   # prefix, so a pledge titled without a known one, such as "Origin 325a
   # Fighter", is `other` and may still hold a ship.
   #
-  # An upgraded pledge lists the ship it was upgraded to, but buying it back
-  # returns the pledge as first bought. Only its title names that ship, as
+  # An upgraded pledge is listed with the ship it was upgraded to, but buying it
+  # back returns the pledge as first bought, and its detail page lists that.
+  # So `contained` is ignored for it. Its title names a ship as bought too, as
   # "Standalone Ship - Terrapin" or "Standalone Ship - Cutter plus Groundswell
-  # Paint"; a package's title names none, so an upgraded package matches no
-  # ship rather than the wrong one.
+  # Paint", which finds it before or without a detail page; a package's names
+  # none.
   def self.obtaining_model(slug)
     model = Model.find_by(slug:)
     return none unless model
@@ -110,10 +111,10 @@ class BuybackPledge < ApplicationRecord
     SQL
 
     containing = where(kind: %w[ship package other])
-    as_listed = containing.where(upgraded: false)
-      .where(Arel.sql(ship).in(names).or(Arel::Nodes::Grouping.new(Arel.sql(listed))))
-    as_bought = containing.where(upgraded: true, kind: "ship").where(Arel.sql(titled).in(names))
-    matching = as_listed.or(as_bought)
+    as_listed = containing.where(Arel.sql(listed))
+    as_contained = containing.where(upgraded: false).where(Arel.sql(ship).in(names))
+    as_titled = containing.where(upgraded: true, kind: "ship").where(Arel.sql(titled).in(names))
+    matching = as_listed.or(as_contained).or(as_titled)
     return matching if model.rsi_id.blank?
 
     matching.or(where(kind: "upgrade", upgrade_to_ship_id: model.rsi_id))
