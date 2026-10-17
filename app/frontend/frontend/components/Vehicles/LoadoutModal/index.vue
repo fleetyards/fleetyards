@@ -427,6 +427,13 @@ const openCard = computed(() =>
 // The open tab's card, cut down to its leading figures, each with how far it
 // moved from the saved loadout.
 const tabMetrics = computed(() => {
+  if (currentTab.value === VehicleLoadoutTabsEnum.MODULES) {
+    return {
+      title: t("labels.vehicleLoadout.tabs.modules"),
+      metrics: moduleMetrics.value,
+    };
+  }
+
   if (!currentTab.value || !openCard.value || !modelHardpoints.value?.length) {
     return undefined;
   }
@@ -938,27 +945,6 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="tabMetrics"
           class="vehicle-loadout__card"
         />
-
-        <dl v-if="!tabMetrics" class="vehicle-loadout__figures">
-          <div
-            v-for="figure in moduleFigures"
-            :key="figure.key"
-            class="vehicle-loadout__figure"
-            :data-test="`vehicle-loadout-figure-${figure.key}`"
-          >
-            <dt>{{ figure.label }}</dt>
-            <dd>
-              {{ figure.value }}
-              <span
-                v-if="figure.deltaLabel"
-                class="vehicle-loadout__figure-delta"
-                :class="`vehicle-loadout__figure-delta--${figure.delta?.tone}`"
-              >
-                {{ figure.deltaLabel }}
-              </span>
-            </dd>
-          </div>
-        </dl>
 
         <section
           v-if="changedFigures.length"
