@@ -208,6 +208,15 @@ export const useComponentFitting = () => {
     return primary ? `${primary.value} ${primary.label}` : undefined;
   };
 
+  const headlineOf = (
+    component: LoadoutComponentRef,
+    category?: HardpointCategoryEnum,
+  ) => {
+    const primary = stats(component, category).find((stat) => stat.primary);
+
+    return primary ? { value: primary.value, label: primary.label } : undefined;
+  };
+
   const componentFigure = (component?: LoadoutComponentRef) => {
     if (!component) return undefined;
 
@@ -321,6 +330,7 @@ export const useComponentFitting = () => {
             name: entry.content.name,
             figure: componentFigure(entry.content),
             category: entry.slot.category,
+            headline: headlineOf(entry.content, entry.slot.category),
           }
         : undefined,
       children,

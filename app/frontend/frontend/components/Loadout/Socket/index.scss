@@ -34,20 +34,29 @@ button.loadout-socket {
   }
 }
 
-// Three states told apart by the frame alone, at one width: dashed while
-// empty, solid once filled, and in the warning colour where the slot differs
-// from the saved loadout.
+// Three states told apart by the frame, at one width: dashed while empty, the
+// success colour an add-on row's selected frame takes once filled, and the
+// warning colour where the slot differs from the saved loadout.
 .loadout-socket--empty {
   border-style: dashed;
 }
 
 .loadout-socket--occupied {
-  border-color: var(--color-edge-strong);
+  border-color: var(--color-success, #{$success});
 }
 
 .loadout-socket--changed,
 button.loadout-socket--changed:hover {
   border-color: var(--color-warning, #{$warning});
+}
+
+// The socket the picker is filling, whatever it holds: its frame in the
+// primary colour, as a selected row's frame turns, at the same width so
+// nothing shifts.
+.loadout-socket--active,
+button.loadout-socket--active:hover {
+  border-color: var(--color-primary, #428bca);
+  border-style: solid;
 }
 
 .loadout-socket__changed {
@@ -58,13 +67,6 @@ button.loadout-socket--changed:hover {
   border-radius: 50%;
 }
 
-// The socket the picker is filling: its frame in the primary colour, as a
-// selected row's frame turns, at the same width so nothing shifts.
-.loadout-socket--active,
-button.loadout-socket--active:hover {
-  border-color: var(--color-primary, #428bca);
-  border-style: solid;
-}
 
 .loadout-socket--filled {
   animation: loadout-socket-fill 0.7s ease-out;
@@ -102,6 +104,11 @@ button.loadout-socket--active:hover {
 
   color: var(--color-muted);
   font-size: 18px;
+
+  // A part in the socket lights its glyph; the empty one's plus stays quiet.
+  .loadout-socket--occupied & {
+    color: var(--color-success, #{$success});
+  }
 
   .loadout-socket--active & {
     color: var(--color-primary, #428bca);
@@ -143,6 +150,12 @@ button.loadout-socket--active:hover {
   white-space: nowrap;
   text-overflow: ellipsis;
 
+  // A fitted part's name reads as a row's title does.
+  .loadout-socket--occupied & {
+    color: var(--color-lifted);
+    font-weight: 600;
+  }
+
   .loadout-socket--empty & {
     color: var(--color-text-dim);
     font-style: italic;
@@ -152,6 +165,30 @@ button.loadout-socket--active:hover {
 .loadout-socket__figure {
   color: var(--color-text-dim);
   font-size: 12px;
+}
+
+// The ship page's gold headline: the figure first, its label under it.
+.loadout-socket__headline {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: auto;
+  text-align: right;
+}
+
+.loadout-socket__headline-value {
+  color: $gold;
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.loadout-socket__headline-label {
+  color: var(--color-text-dim);
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 // Drawn inward: the socket sits against the edge of the modal's scrolling

@@ -56,6 +56,9 @@ const accessibleName = computed(() =>
     props.socket.size,
     props.socket.item?.name || t("labels.loadoutPicker.emptySocket"),
     props.socket.item?.figure,
+    props.socket.item?.headline
+      ? `${props.socket.item.headline.value} ${props.socket.item.headline.label}`
+      : undefined,
     props.socket.changed ? t("labels.loadoutPicker.changed") : undefined,
   ]
     .filter(Boolean)
@@ -119,6 +122,19 @@ const accessibleName = computed(() =>
       </span>
       <span v-if="socket.item?.figure" class="loadout-socket__figure">
         {{ socket.item.figure }}
+      </span>
+    </span>
+
+    <span
+      v-if="socket.item?.headline"
+      class="loadout-socket__headline"
+      data-test="loadout-socket-headline"
+    >
+      <span class="loadout-socket__headline-value">
+        {{ socket.item.headline.value }}
+      </span>
+      <span class="loadout-socket__headline-label">
+        {{ socket.item.headline.label }}
       </span>
     </span>
   </component>
