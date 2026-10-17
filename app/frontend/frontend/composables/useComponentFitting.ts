@@ -634,11 +634,19 @@ export const useComponentFitting = () => {
     tab: ComponentTab,
   ): FigureChange[] => {
     const totals = (entries: FittedSlot[]) => {
-      const sums = new Map<string, { label: string; values: number[] }>();
+      const sums = new Map<
+        string,
+        { label: string; values: number[]; shown: string; format?: string }
+      >();
       parts(roots(entries, tab)).forEach((entry) =>
         stats(entry.content, entry.slot.category).forEach((stat) => {
           const key = stat.key ?? "";
-          const total = sums.get(key) ?? { label: stat.label, values: [] };
+          const total = sums.get(key) ?? {
+            label: stat.label,
+            values: [],
+            shown: stat.value,
+            format: stat.format,
+          };
           total.values.push(stat.raw as number);
           sums.set(key, total);
         }),
@@ -649,13 +657,25 @@ export const useComponentFitting = () => {
           .filter(
             ([key, total]) => ADDITIVE.has(key) || total.values.length === 1,
           )
-          .map(([key, total]) => [
-            key,
-            {
-              label: total.label,
-              value: total.values.reduce((sum, value) => sum + value, 0),
-            },
-          ]),
+          .map(([key, total]) => {
+            const value = total.values.reduce((sum, entry) => sum + entry, 0);
+
+            // One part's figure reads as the ship page reads it; a sum takes the
+            // same number format -- km/s, seconds -- rather than a bare number.
+            return [
+              key,
+              {
+                label: total.label,
+                value,
+                shown:
+                  total.values.length === 1
+                    ? total.shown
+                    : String(
+                        toNumber(Math.round(value * 100) / 100, total.format),
+                      ),
+              },
+            ];
+          }),
       );
     };
 
@@ -665,7 +685,7 @@ export const useComponentFitting = () => {
     return [...now].map(([key, total]) => ({
       key,
       label: total.label,
-      value: String(toNumber(Math.round(total.value * 100) / 100)),
+      value: total.shown,
       before: was.get(key)?.value,
       after: total.value,
       ...change(key, was.get(key)?.value, total.value),
