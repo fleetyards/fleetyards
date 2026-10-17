@@ -13,6 +13,8 @@ import {
   type BuybackPledge,
   type HangarPledgeItem,
   type Vehicle,
+  BuybackPledgeSortingEnum,
+  HangarPledgeItemSortingEnum,
   useHangarBuybacks,
   useHangarUpgrades,
 } from "@/services/fyApi";
@@ -32,14 +34,17 @@ const slug = computed(() => props.vehicle.model.slug);
 
 const { data: buybacks, isLoading: buybacksLoading } = useHangarBuybacks(
   () => ({
-    q: { modelSlugEq: slug.value },
+    q: { modelSlugEq: slug.value, s: BuybackPledgeSortingEnum.PRICE_ASC },
     perPage: String(PREVIEW_COUNT),
   }),
 );
 
 const { data: upgrades, isLoading: upgradesLoading } = useHangarUpgrades(
   () => ({
-    q: { upgradeToModelSlugEq: slug.value },
+    q: {
+      upgradeToModelSlugEq: slug.value,
+      s: HangarPledgeItemSortingEnum.PLEDGE_VALUE_ASC,
+    },
     perPage: String(PREVIEW_COUNT),
   }),
 );
@@ -67,6 +72,21 @@ const price = (value?: number) =>
     ? undefined
     : formatCents(Math.round(value * 100), "USD");
 
+const cheapest = (values: (number | undefined | null)[]) =>
+  Math.min(...values.map((value) => value ?? Infinity));
+
+// A buy-back that cannot be bought right now is no way to get the ship, so it
+// does not decide the order. On a tie the upgrade, already in the hangar, wins.
+const sections = computed(() =>
+  cheapest(
+    buybackItems.value
+      .filter((buyback) => buyback.available)
+      .map((buyback) => buyback.price),
+  ) < cheapest(upgradeItems.value.map((upgrade) => upgrade.pledgeValue))
+    ? (["buybacks", "upgrades"] as const)
+    : (["upgrades", "buybacks"] as const),
+);
+
 // The lists' own filters, so the footer lands on exactly these.
 const buybacksRoute = computed(() => ({
   name: "hangar-buybacks",
@@ -87,118 +107,122 @@ const upgradesRoute = computed(() => ({
     variant="slim"
     data-test="vehicle-overview-acquire"
   >
-    <!-- An upgrade already in the hangar costs nothing more, so it comes
-         before anything that has to be bought back. -->
-    <section
-      v-if="upgradeCount"
-      class="overview-acquire__section"
-      data-test="vehicle-overview-acquire-upgrades"
-    >
-      <h3 class="overview-acquire__heading">
-        {{ t("nav.hangar.upgrades") }}
-      </h3>
-      <ul class="overview-card-rows">
-        <li
-          v-for="upgrade in upgradeItems"
-          :key="upgrade.id"
-          class="overview-card-row"
-          data-test="vehicle-overview-acquire-upgrade"
-        >
-          <span class="overview-acquire__name">
-            <a
-              :href="rsiHangarUrl(upgrade)"
-              target="_blank"
-              rel="noopener"
-              class="overview-acquire__link"
-              data-test="vehicle-overview-acquire-upgrade-link"
-            >
-              {{ upgrade.name }}
-              <i
-                class="fa-light fa-arrow-up-right-from-square"
-                aria-hidden="true"
-              />
-            </a>
-            <small v-if="upgrade.quantity > 1" class="overview-acquire__note">
-              ×{{ upgrade.quantity }}
-            </small>
-          </span>
-          <span
-            v-if="price(upgrade.pledgeValue)"
-            class="overview-card-row__aside"
+    <template v-for="section in sections" :key="section">
+      <section
+        v-if="section === 'upgrades' && upgradeCount"
+        class="overview-acquire__section"
+        data-test="vehicle-overview-acquire-upgrades"
+      >
+        <h3 class="overview-acquire__heading">
+          {{ t("nav.hangar.upgrades") }}
+        </h3>
+        <ul class="overview-card-rows">
+          <li
+            v-for="upgrade in upgradeItems"
+            :key="upgrade.id"
+            class="overview-card-row"
+            data-test="vehicle-overview-acquire-upgrade"
           >
-            {{ price(upgrade.pledgeValue) }}
-          </span>
-        </li>
-      </ul>
-    </section>
-
-    <section
-      v-if="buybackCount"
-      class="overview-acquire__section"
-      data-test="vehicle-overview-acquire-buybacks"
-    >
-      <h3 class="overview-acquire__heading">
-        {{ t("labels.buybacks.name") }}
-      </h3>
-      <ul class="overview-card-rows">
-        <li
-          v-for="buyback in buybackItems"
-          :key="buyback.id"
-          class="overview-card-row"
-          :class="{ 'overview-acquire__row--unavailable': !buyback.available }"
-          data-test="vehicle-overview-acquire-buyback"
-        >
-          <span class="overview-acquire__name">
-            <a
-              v-if="buyback.available"
-              :href="buybackRsiUrl(buyback)"
-              target="_blank"
-              rel="noopener"
-              class="overview-acquire__link"
-              data-test="vehicle-overview-acquire-buyback-link"
-            >
-              {{ buyback.name }}
-              <i
-                class="fa-light fa-arrow-up-right-from-square"
-                aria-hidden="true"
-              />
-            </a>
-            <template v-else>
-              {{ buyback.name }}
-              <small class="overview-acquire__note">
-                {{ t("labels.buybacks.notAvailable") }}
+            <span class="overview-acquire__name">
+              <a
+                :href="rsiHangarUrl(upgrade)"
+                target="_blank"
+                rel="noopener"
+                class="overview-acquire__link"
+                data-test="vehicle-overview-acquire-upgrade-link"
+              >
+                {{ upgrade.name }}
+                <i
+                  class="fa-light fa-arrow-up-right-from-square"
+                  aria-hidden="true"
+                />
+              </a>
+              <small v-if="upgrade.quantity > 1" class="overview-acquire__note">
+                ×{{ upgrade.quantity }}
               </small>
-            </template>
-          </span>
-          <span v-if="price(buyback.price)" class="overview-card-row__aside">
-            {{ price(buyback.price) }}
-          </span>
-        </li>
-      </ul>
-    </section>
+            </span>
+            <span
+              v-if="price(upgrade.pledgeValue)"
+              class="overview-card-row__aside"
+            >
+              {{ price(upgrade.pledgeValue) }}
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section
+        v-else-if="section === 'buybacks' && buybackCount"
+        class="overview-acquire__section"
+        data-test="vehicle-overview-acquire-buybacks"
+      >
+        <h3 class="overview-acquire__heading">
+          {{ t("labels.buybacks.name") }}
+        </h3>
+        <ul class="overview-card-rows">
+          <li
+            v-for="buyback in buybackItems"
+            :key="buyback.id"
+            class="overview-card-row"
+            :class="{
+              'overview-acquire__row--unavailable': !buyback.available,
+            }"
+            data-test="vehicle-overview-acquire-buyback"
+          >
+            <span class="overview-acquire__name">
+              <a
+                v-if="buyback.available"
+                :href="buybackRsiUrl(buyback)"
+                target="_blank"
+                rel="noopener"
+                class="overview-acquire__link"
+                data-test="vehicle-overview-acquire-buyback-link"
+              >
+                {{ buyback.name }}
+                <i
+                  class="fa-light fa-arrow-up-right-from-square"
+                  aria-hidden="true"
+                />
+              </a>
+              <template v-else>
+                {{ buyback.name }}
+                <small class="overview-acquire__note">
+                  {{ t("labels.buybacks.notAvailable") }}
+                </small>
+              </template>
+            </span>
+            <span v-if="price(buyback.price)" class="overview-card-row__aside">
+              {{ price(buyback.price) }}
+            </span>
+          </li>
+        </ul>
+      </section>
+    </template>
 
     <template #footer>
       <div class="overview-acquire__footer">
-        <router-link
-          v-if="upgradeCount"
-          :to="upgradesRoute"
-          class="overview-card-footer-link"
-          data-test="vehicle-overview-acquire-all-upgrades"
-        >
-          {{
-            t("actions.vehicleOverview.allUpgrades", { count: upgradeCount })
-          }}
-        </router-link>
-        <router-link
-          v-if="buybackCount"
-          :to="buybacksRoute"
-          class="overview-card-footer-link"
-          data-test="vehicle-overview-acquire-all-buybacks"
-        >
-          {{
-            t("actions.vehicleOverview.allBuybacks", { count: buybackCount })
-          }}
-        </router-link>
+        <template v-for="section in sections" :key="section">
+          <router-link
+            v-if="section === 'upgrades' && upgradeCount"
+            :to="upgradesRoute"
+            class="overview-card-footer-link"
+            data-test="vehicle-overview-acquire-all-upgrades"
+          >
+            {{
+              t("actions.vehicleOverview.allUpgrades", { count: upgradeCount })
+            }}
+          </router-link>
+          <router-link
+            v-else-if="section === 'buybacks' && buybackCount"
+            :to="buybacksRoute"
+            class="overview-card-footer-link"
+            data-test="vehicle-overview-acquire-all-buybacks"
+          >
+            {{
+              t("actions.vehicleOverview.allBuybacks", { count: buybackCount })
+            }}
+          </router-link>
+        </template>
       </div>
     </template>
   </MetricsCard>
