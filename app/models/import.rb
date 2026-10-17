@@ -176,9 +176,9 @@ class Import < ApplicationRecord
   # after all carries on working and then raises on its own `finish!`, because
   # the transition it expects is no longer there -- which is why this is the
   # admin's call and never a sweeper.
-  def cleanup!(admin_user: nil)
+  def cleanup!(admin_user: nil, note: cleanup_note(admin_user))
     self.skip_admin_notice = true
-    self.info = [info.presence, cleanup_note(admin_user)].compact.join(" -- ")
+    self.info = [info.presence, note].compact.join(" -- ")
 
     # Validations belong to the run, not to the record of it: an abandoned
     # `Imports::HangarImport` whose attached file has since gone is exactly the

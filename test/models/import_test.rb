@@ -145,6 +145,14 @@ class ImportTest < ActiveSupport::TestCase
     assert_includes record.info, admin_user.username
   end
 
+  test "cleanup! records the note it is given in place of the admin's" do
+    record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago)
+
+    record.cleanup!(note: "Superseded")
+
+    assert_equal "Superseded", record.reload.info
+  end
+
   test "cleanup! keeps whatever the run had already reported" do
     record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago,
       info: "142 models read")
