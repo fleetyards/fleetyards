@@ -19,7 +19,15 @@ import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
-import { simulateLoadoutPower } from "@/frontend/composables/useLoadoutSim";
+import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
+import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
+import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index.vue";
+import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
+import {
+  type PortOverrides,
+  simulateLoadoutPower,
+} from "@/frontend/composables/useLoadoutSim";
+import type { FlightMode } from "@/frontend/composables/powerSim";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -50,6 +58,8 @@ import {
   getVehicleLoadoutsQueryKey,
   updateVehicleLoadout,
   useHardpointLoadoutOptions,
+  type ComponentController,
+  HardpointCategoryEnum,
   HardpointSourceEnum,
   useModelHardpoints,
   useModelLoadoutSlots,
@@ -340,6 +350,70 @@ const simulate = (tree: typeof componentTree.value) =>
 
 const powerNow = computed(() => simulate(componentTree.value));
 
+// The ship's hardpoints with the fitting in them, for the metrics cards the
+// ship page shows above its hardpoint list.
+const fittedHardpoints = computed(() =>
+  fitting.graft(modelHardpoints.value ?? [], componentTree.value),
+);
+
+// The cards read the pip choices and the ratios the power card works out, as
+// they do on the ship page.
+const powerOverrides = ref<PortOverrides>({});
+const flightMode = ref<FlightMode>("SCM");
+
+const fittedPower = computed(() =>
+  simulateLoadoutPower(
+    fittedHardpoints.value,
+    model.value?.metrics.weaponPoolSize,
+    flightMode.value,
+    powerOverrides.value,
+  ),
+);
+
+provide(
+  "weaponPoolSize",
+  computed(() => model.value?.metrics.weaponPoolSize),
+);
+provide("powerOverrides", powerOverrides);
+provide(
+  "shieldPoolRatio",
+  computed(() => fittedPower.value.shieldPoolRatio),
+);
+provide(
+  "enginePowerRatio",
+  computed(() => fittedPower.value.enginePowerRatio),
+);
+provide(
+  "quantumFuelTankSize",
+  computed(() => model.value?.metrics.quantumFuelTankSize),
+);
+
+// The card each tab reads its parts' effect from; the modules tab keeps its
+// figures.
+const TAB_CARDS: Record<string, "power" | "defense" | "combat" | "flight"> = {
+  radar: "power",
+  coolers: "power",
+  lifeSupport: "power",
+  powerPlants: "power",
+  quantumDrives: "power",
+  shields: "defense",
+  missiles: "combat",
+  weapons: "combat",
+  flightBlades: "flight",
+};
+
+const card = computed(() =>
+  currentTab.value ? TAB_CARDS[currentTab.value] : undefined,
+);
+
+// The flight blade fitted now, whose boost the flight card reads.
+const fittedBlade = computed(
+  () =>
+    componentTree.value.find(
+      (entry) => entry.slot.category === HardpointCategoryEnum.CONTROLLER,
+    )?.content?.typeData as ComponentController | undefined,
+);
+
 const powerSaved = computed(() => simulate(savedTree.value));
 
 const moduleFigures = computed(() =>
@@ -407,6 +481,11 @@ const shipFigures = computed(() => {
     (row, index) => all.findIndex((other) => other.key === row.key) === index,
   );
 });
+
+// Under a card, only what moved: the card already shows where the ship stands.
+const changedFigures = computed(() =>
+  shipFigures.value.filter((figure) => figure.deltaLabel),
+);
 
 const slots = computed(() => moduleSlots(modules.value));
 
@@ -813,9 +892,41 @@ const onSubmit = handleSubmit(async (values) => {
           <span v-html="vehicle.model.manufacturer?.name" />
           <strong>{{ vehicle.model.name }}</strong>
         </p>
+        <div v-if="card" class="vehicle-loadout__card">
+          <ModelPowerDistribution
+            v-if="card === 'power'"
+            v-model="powerOverrides"
+            v-model:mode="flightMode"
+            :hardpoints="fittedHardpoints"
+            :weapon-pool-size="vehicle.model.metrics?.weaponPoolSize"
+            :cross-section="vehicle.model.metrics?.signatureCrossSection"
+          />
+          <ModelDefenseMetrics
+            v-else-if="card === 'defense'"
+            :hardpoints="fittedHardpoints"
+            :model-name="vehicle.model.name"
+          />
+          <ModelCombatMetrics
+            v-else-if="card === 'combat'"
+            :hardpoints="fittedHardpoints"
+            :model-name="vehicle.model.name"
+          />
+          <ModelFlightMetrics
+            v-else-if="card === 'flight'"
+            :model="vehicle.model"
+            :boost-capacitor="fittedBlade?.boostCapacitor"
+          />
+        </div>
+
+        <p
+          v-if="card && changedFigures.length"
+          class="vehicle-loadout__changes-title"
+        >
+          {{ t("labels.loadoutPicker.changed") }}
+        </p>
         <dl class="vehicle-loadout__figures">
           <div
-            v-for="figure in shipFigures"
+            v-for="figure in card ? changedFigures : shipFigures"
             :key="figure.key"
             class="vehicle-loadout__figure"
             :data-test="`vehicle-loadout-figure-${figure.key}`"
