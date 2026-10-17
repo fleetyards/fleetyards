@@ -1207,29 +1207,6 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
   });
 
-  it("lists up to four identical slots one by one on a desktop", async () => {
-    vi.stubGlobal(
-      "matchMedia",
-      vi.fn(() => ({ matches: false })),
-    );
-    const allStop = { id: "as", name: "AllStop", size: "1" };
-    hullSlots.value = [
-      shieldSlot("hardpoint_shield_generator_left", allStop),
-      shieldSlot("hardpoint_shield_generator_right", allStop),
-    ];
-    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
-    await flushPromises();
-
-    expect(socket(wrapper, "hardpoint_shield_generator_left").text()).toContain(
-      "AllStop",
-    );
-    expect(
-      socket(wrapper, "hardpoint_shield_generator_right").text(),
-    ).toContain("AllStop");
-
-    vi.unstubAllGlobals();
-  });
-
   it("keeps apart slots with the same parts under different names inside", async () => {
     const turret = (name: string, inner: string) => ({
       name,
@@ -1258,7 +1235,62 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
   });
 
-  it("stacks any identical slots on a phone", async () => {
+  it("stacks inside a stack, and a pick there fills it under every member", async () => {
+    const gimbal = (name: string) => ({
+      name,
+      hardpointId: `port-${name}`,
+      category: "weapon_mounts",
+      minSize: 3,
+      maxSize: 3,
+      types: ["Turret"],
+      editable: false,
+      stock: STOCK_GIMBAL,
+      slots: [gunPort("hardpoint_class_2", STOCK_GUN)],
+    });
+    const turret = (name: string) => ({
+      name,
+      hardpointId: `hull-${name}`,
+      category: "turret",
+      minSize: 3,
+      maxSize: 3,
+      types: ["Turret"],
+      editable: false,
+      stock: { id: "rt", name: "Remote Turret", size: "3" },
+      slots: [gimbal("turret_left"), gimbal("turret_right")],
+    });
+    hullSlots.value = [
+      turret("hardpoint_remote_turret_left"),
+      turret("hardpoint_remote_turret_right"),
+    ];
+    componentOptions.value = [
+      { component: STOCK_GUN, slots: [] },
+      { component: OTHER_GUN, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(
+      socket(wrapper, "hardpoint_remote_turret_left#stack").text(),
+    ).toContain("2");
+
+    await choose(
+      wrapper,
+      "hardpoint_remote_turret_left/turret_left/hardpoint_class_2",
+      "Other Gun",
+    );
+    await save(wrapper);
+
+    expect(
+      (savedItems() as { slotPath: string }[]).map((item) => item.slotPath),
+    ).toEqual([
+      "hardpoint_remote_turret_left/turret_left/hardpoint_class_2",
+      "hardpoint_remote_turret_left/turret_right/hardpoint_class_2",
+      "hardpoint_remote_turret_right/turret_left/hardpoint_class_2",
+      "hardpoint_remote_turret_right/turret_right/hardpoint_class_2",
+    ]);
+  });
+
+  it("stacks even two identical slots", async () => {
     const allStop = { id: "as", name: "AllStop", size: "1" };
     hullSlots.value = [
       shieldSlot("hardpoint_shield_generator_left", allStop),

@@ -199,10 +199,7 @@ const fittedModuleIds = computed(() =>
 // board, where a phone has no room for it.
 const mobile = useMobile();
 
-// A phone stacks any identical slots; a desktop only from five.
-const fitting = useComponentFitting({
-  stackFrom: () => (mobile.value ? 2 : 5),
-});
+const fitting = useComponentFitting();
 
 const { data: hullSlots, ...hullSlotsAsyncStatus } = useModelLoadoutSlots(
   modelSlug,

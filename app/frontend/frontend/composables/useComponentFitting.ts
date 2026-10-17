@@ -1,4 +1,3 @@
-import type { MaybeRefOrGetter } from "vue";
 import type {
   LoadoutSocketGroup,
   LoadoutSocketSlot,
@@ -190,13 +189,7 @@ const sizeLabel = (slot: LoadoutSlot) => {
  *
  * A slot nothing is fitted to keeps its stock part, as the server reads it.
  */
-/**
- * `stackFrom` is how many identical slots it takes to stack them: a handful
- * reads well enough one by one on a desktop, where a phone has no room for it.
- */
-export const useComponentFitting = ({
-  stackFrom = 5,
-}: { stackFrom?: MaybeRefOrGetter<number> } = {}) => {
+export const useComponentFitting = () => {
   const { t, toNumber } = useI18n();
 
   const statsFor = useHardpointStatsFor();
@@ -444,12 +437,10 @@ export const useComponentFitting = ({
     fittedOnly: boolean,
     saved?: FittedSlot[],
   ): LoadoutSocketSlot | undefined => {
-    const children = grouped(
-      entry.children
-        .filter(changeable)
-        .map((child) => socket(child, fittedOnly, saved))
-        .filter((child): child is LoadoutSocketSlot => !!child),
-    );
+    const children = entry.children
+      .filter(changeable)
+      .map((child) => socket(child, fittedOnly, saved))
+      .filter((child): child is LoadoutSocketSlot => !!child);
 
     if (fittedOnly && !entry.content && !children.length) return undefined;
 
@@ -499,49 +490,57 @@ export const useComponentFitting = ({
       ]),
     ]);
 
-  // A slot the group stands for, under each member: what sits inside the first
-  // of them sits, by the same relative path, inside every other.
-  const across = (
-    slot: LoadoutSocketSlot,
-    from: string,
-    members: string[],
-  ): LoadoutSocketSlot => ({
-    ...slot,
-    members: members.flatMap((member) =>
-      (slot.members ?? [slot.id]).map(
-        (path) => `${member}${path.slice(from.length)}`,
-      ),
-    ),
-    children: slot.children?.map((child) => across(child, from, members)),
-    stack: slot.stack?.map((one) => across(one, from, members)),
-  });
-
   /**
-   * Five or more identical siblings as one row with a count, the way a ship
-   * page stacks identical mounts: a pick on it fills every one, and the slots stay one by
-   * one in its stack for fitting each alone.
+   * Identical siblings as one row with a count, the way a ship page stacks
+   * identical mounts: a pick on it fills every one -- four shield generators
+   * in one go -- and the slots stay one by one in its stack for fitting each
+   * alone.
+   *
+   * Worked top down, so a row under a stack stands for its slot under every
+   * member of that stack: `parents` are the paths the row above stands for,
+   * and `from` the path of the one this row was built under.
    */
-  const grouped = (slots: LoadoutSocketSlot[]): LoadoutSocketSlot[] => {
+  const stacked = (
+    slots: LoadoutSocketSlot[],
+    parents: string[] = [""],
+    from = "",
+  ): LoadoutSocketSlot[] => {
     const bySignature = new Map<string, LoadoutSocketSlot[]>();
     slots.forEach((slot) => {
       const key = signature(slot);
       bySignature.set(key, [...(bySignature.get(key) ?? []), slot]);
     });
 
-    return [...bySignature.values()].flatMap((same) => {
-      if (same.length < toValue(stackFrom)) return same;
+    const membersOf = (same: LoadoutSocketSlot[]) =>
+      parents.flatMap((parent) =>
+        same.map((slot) => `${parent}${slot.id.slice(from.length)}`),
+      );
 
+    const alone = (slot: LoadoutSocketSlot): LoadoutSocketSlot => {
+      const members = membersOf([slot]);
+
+      return {
+        ...slot,
+        members,
+        children: stacked(slot.children ?? [], members, slot.id),
+      };
+    };
+
+    return [...bySignature.values()].flatMap((same) => {
       const [first] = same;
-      const members = same.map((slot) => slot.id);
+      const members = membersOf(same);
+      if (same.length < 2) return same.map(alone);
 
       return [
         {
-          ...across(first, first.id, members),
-          // Its own id: the first slot's path is also the first row of its stack,
-          // and the two have to be told apart while one of them is open.
+          ...first,
+          // Its own id: the first slot's path is also the first row of its
+          // stack, and the two have to be told apart while one of them is open.
           id: `${first.id}${GROUP_SUFFIX}`,
+          members,
           changed: same.some((slot) => slot.changed),
-          stack: same,
+          children: stacked(first.children ?? [], members, first.id),
+          stack: same.map(alone),
         },
       ];
     });
@@ -558,12 +557,12 @@ export const useComponentFitting = ({
       saved,
     }: { fittedOnly?: boolean; saved?: FittedSlot[] } = {},
   ): LoadoutSocketGroup[] => {
-    const slots = grouped(
-      roots(tree, tab)
-        .filter(changeable)
-        .map((root) => socket(root, fittedOnly, saved))
-        .filter((slot): slot is LoadoutSocketSlot => !!slot),
-    );
+    const sockets = roots(tree, tab)
+      .filter(changeable)
+      .map((root) => socket(root, fittedOnly, saved))
+      .filter((slot): slot is LoadoutSocketSlot => !!slot);
+
+    const slots = stacked(sockets);
 
     return slots.length ? [{ key: tab.id, slots }] : [];
   };
@@ -573,7 +572,7 @@ export const useComponentFitting = ({
    * and the parts it comes with, read the way the ship page reads them.
    */
   const moduleContents = (mod: ModelModule): LoadoutSocketSlot[] =>
-    grouped(
+    stacked(
       (mod.hardpoints ?? [])
         .map(toSlot)
         .filter(shown)
@@ -597,11 +596,9 @@ export const useComponentFitting = ({
                   stats: rowStats(port.stock, port.category),
                 }
               : undefined,
-            children: grouped(
-              port.slots
-                .filter(shown)
-                .map((child) => toRow(child, `${path}/${child.name}`)),
-            ),
+            children: port.slots
+              .filter(shown)
+              .map((child) => toRow(child, `${path}/${child.name}`)),
             members: [path],
           });
 
