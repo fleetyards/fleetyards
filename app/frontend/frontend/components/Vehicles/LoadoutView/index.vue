@@ -133,7 +133,11 @@ const { data: modelHardpoints } = useModelHardpoints(
 // Every module the model takes, the stock ones among them: the stock ship is
 // measured with those, and a module the loadout swapped out still has its
 // slots known.
-const { data: allModules } = useModelModules(() => model.value?.slug ?? "");
+const { data: allModules } = useModelModules(
+  () => model.value?.slug ?? "",
+  undefined,
+  { query: { enabled: () => !!model.value?.slug } },
+);
 
 const modelModules = computed(() => allModules.value?.items ?? []);
 
