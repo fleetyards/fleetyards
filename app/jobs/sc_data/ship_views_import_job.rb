@@ -9,8 +9,8 @@ module ScData
   #
   # Given a model, only that ship is synced, and its listing is compared render
   # by render even when the digest says nothing changed, so a render detached in
-  # the admin comes back. A view uploaded by hand is kept: the stored md5s still
-  # name the render it replaced.
+  # the admin comes back. A view uploaded by hand over an imported render is
+  # kept: the stored md5s still name the render it replaced.
   class ShipViewsImportJob < ApplicationJob
     sidekiq_options queue: "loaders"
 
@@ -35,7 +35,7 @@ module ScData
         model = models[path]
 
         if model.nil?
-          unknown << (entry["scKey"] || entry["slug"])
+          unknown << entry["slug"]
           next
         end
 
@@ -66,9 +66,10 @@ module ScData
     # slug, where ours carries the manufacturer when two ships share a name
     # (`arrastra` is `rsi-arrastra`).
     private def models_for(ships)
+      slugs = ships.values.pluck("slug")
       by_sc_key = unique_by(:sc_key, ships.values.pluck("scKey").compact)
-      by_slug = Model.where(slug: ships.values.pluck("slug")).index_by(&:slug)
-      by_rsi_slug = unique_by(:rsi_slug, ships.values.pluck("slug") - by_slug.keys)
+      by_slug = Model.where(slug: slugs).index_by(&:slug)
+      by_rsi_slug = unique_by(:rsi_slug, slugs - by_slug.keys)
 
       ships.to_h do |path, entry|
         [path, by_sc_key[entry["scKey"]] || by_slug[entry["slug"]] || by_rsi_slug[entry["slug"]]]

@@ -543,7 +543,7 @@
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
           "importPaints": "Êtes-vous sûr de vouloir importer les peintures de ce modèle depuis les données du hangar ? Une peinture que la source attribue à toute une série est importée pour chaque modèle de cette série.",
-          "syncShipViews": "Êtes-vous sûr de vouloir synchroniser les vues du vaisseau de ce modèle depuis le bucket de rendus ? Les rendus nouveaux et modifiés sont attachés, et ceux supprimés reviennent. Les vues téléversées à la main sont conservées.",
+          "syncShipViews": "Êtes-vous sûr de vouloir synchroniser les vues du vaisseau de ce modèle depuis le bucket de rendus ? Les rendus nouveaux et modifiés sont attachés, et ceux supprimés reviennent. Une vue téléversée à la main par-dessus un rendu importé est conservée.",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
           "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",
