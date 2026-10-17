@@ -3,6 +3,7 @@ import type {
   LoadoutSocketSlot,
 } from "@/frontend/components/Loadout/Socket/types";
 import type {
+  LoadoutPickerFacet,
   LoadoutPickerOption,
   LoadoutPickerSort,
 } from "@/frontend/components/Loadout/Picker/types";
@@ -716,13 +717,40 @@ export const useComponentFitting = () => {
             ? { label: primary.deltaLabel, tone: primary.tone }
             : undefined,
         sortValues: sortValues(component, slot.category),
+        facets: facetValues(component),
       };
     });
 
-  const SIZE_SORT = "size";
+  const spaced = (value?: unknown) =>
+    typeof value === "string"
+      ? value.replace(/([a-z])([A-Z])/g, "$1 $2")
+      : undefined;
+
+  // A gun by its class -- laser repeater, ballistic cannon -- where its data
+  // names one, any other part by its type; a missile by what it tracks.
+  const facetValues = (component: LoadoutComponentRef) => {
+    const data = (component.typeData ?? {}) as Record<string, unknown>;
+
+    return {
+      type: spaced(data.weaponClass) ?? typeName(component),
+      tracking: spaced(data.trackingSignal),
+      grade: component.gradeLabel,
+      class: component.itemClassLabel,
+    };
+  };
+
+  // The filters a slot's parts offer; the picker leaves out any its parts do
+  // not differ on.
+  const facets = (): LoadoutPickerFacet[] => [
+    { key: "type", label: t("labels.loadoutPicker.type") },
+    { key: "tracking", label: t("labels.hardpoint.missiles.trackingSignal") },
+    { key: "grade", label: t("labels.component.grade") },
+    { key: "class", label: t("labels.component.itemClass") },
+  ];
+
   const GRADE_SORT = "grade";
 
-  // Every figure a part is ranked on, then its size and grade; a grade sorts A
+  // Every figure a part is ranked on, then its grade; a grade sorts A
   // first, as the letter reads.
   const sortValues = (
     component: LoadoutComponentRef,
@@ -731,8 +759,6 @@ export const useComponentFitting = () => {
     const values: Record<string, number> = Object.fromEntries(
       stats(component, category).map((stat) => [stat.key, stat.raw as number]),
     );
-    const size = Number(component.size);
-    if (Number.isFinite(size)) values[SIZE_SORT] = size;
     if (component.gradeLabel) {
       values[GRADE_SORT] = component.gradeLabel.charCodeAt(0);
     }
@@ -741,9 +767,9 @@ export const useComponentFitting = () => {
   };
 
   /**
-   * The sorts a slot's parts offer: the figures the ship page ranks that kind
-   * of part on, its headline first so the list opens best first, then size and
-   * grade. A figure that reads better smaller sorts smallest first.
+   * The sorts a slot's parts offer: the headline the ship page ranks that kind
+   * of part on, so the list opens best first, the two figures its row shows
+   * next, and grade. A figure that reads better smaller sorts smallest first.
    */
   const sorts = (
     candidates: LoadoutOption[],
@@ -759,12 +785,11 @@ export const useComponentFitting = () => {
     );
 
     return [
-      ...[...figures].map(([key, label]) => ({
+      ...[...figures].slice(0, 3).map(([key, label]) => ({
         key,
         label,
         ascending: lowerIsBetter(key),
       })),
-      { key: SIZE_SORT, label: t("labels.hardpoint.size") },
       { key: GRADE_SORT, label: t("labels.component.grade"), ascending: true },
     ];
   };
@@ -815,6 +840,7 @@ export const useComponentFitting = () => {
     find,
     options,
     sorts,
+    facets,
     pick,
     reachable,
     components,

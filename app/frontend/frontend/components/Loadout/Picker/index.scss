@@ -84,14 +84,24 @@
 
 // The list bar keeps its own spacing below a list; here the controls' gap
 // does that.
+// One line of sort chips, scrolled sideways rather than wrapped under itself.
 .loadout-picker__controls .loadout-picker__sort {
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
   margin: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  > * {
+    flex: none;
+  }
 }
 
 // The sort chips, and the count right-aligned on the same line.
 .loadout-picker__sort-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px;
 }
@@ -318,4 +328,47 @@
   .loadout-picker__entry {
     animation: none;
   }
+}
+
+// The filter button beside the search: the app's button, its icon alone, with
+// how many filters it holds.
+.loadout-picker__filter-toggle {
+  flex: none;
+}
+
+.loadout-picker__filter-count {
+  min-width: 18px;
+  padding: 0 5px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  background: var(--color-primary, #428bca);
+  border-radius: 999px;
+}
+
+.loadout-picker__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loadout-picker__facet {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loadout-picker__facet-label {
+  color: var(--color-text-dim);
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.loadout-picker__facet-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
