@@ -73,6 +73,7 @@ const onKeydown = (event: KeyboardEvent) => {
     <Btn
       v-if="nests"
       class="loadout-socket-board__fold"
+      v-tooltip="t(folded ? 'labels.expand' : 'labels.collapse')"
       :aria-label="t(folded ? 'labels.expand' : 'labels.collapse')"
       :aria-pressed="folded"
       data-test="loadout-socket-board-fold"
