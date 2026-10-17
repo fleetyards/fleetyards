@@ -83,11 +83,12 @@ const { problems, reason, describe } = useLoadoutProblems(
   () => props.editable,
 );
 
-const refusedAt = (slotPath: string) =>
-  problems.value.find((problem) => problem.slotPath === slotPath);
+const refusedAt = computed(
+  () => new Map(problems.value.map((problem) => [problem.slotPath, problem])),
+);
 
 const refusedBadges = (slotPath: string) => {
-  const problem = refusedAt(slotPath);
+  const problem = refusedAt.value.get(slotPath);
 
   return problem
     ? [
