@@ -284,6 +284,9 @@ const lines = computed(() =>
         data-test="vehicle-plaque-dedication"
       >
         “{{ vehicle.dedication }}”
+        <span v-if="vehicle.dedicationVerse" class="sr-only">{{
+          vehicle.dedicationVerse
+        }}</span>
       </blockquote>
     </figure>
   </div>

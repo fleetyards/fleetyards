@@ -110,7 +110,7 @@ describe("VehiclePlaque", () => {
     expect(line(wrapper, "captain")).toBe("Captain Maru");
   });
 
-  it("lets the dedication open its verse, which the plaque does not draw", async () => {
+  it("lets the dedication open its verse, and reads it out to a screen reader", async () => {
     const wrapper = await mount({
       vehicle: vehicle({
         dedication: "To boldly go",
@@ -121,7 +121,7 @@ describe("VehiclePlaque", () => {
 
     expect(quote.attributes("tabindex")).toBe("0");
     expect(quote.classes()).toContain("vehicle-plaque__quote--verse");
-    expect(wrapper.text()).not.toContain("look for the light");
+    expect(quote.find(".sr-only").text()).toContain("look for the light");
   });
 
   it("leaves a dedication without a verse out of the tab order", async () => {
