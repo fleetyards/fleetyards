@@ -344,7 +344,7 @@ describe("v-tooltip", () => {
     await nextFrame();
 
     const [tooltip] = visibleTooltips();
-    expect(tooltip.style.whiteSpace).toBe("normal");
+    expect(tooltip.style.whiteSpace).toBe("pre-line");
     expect(tooltip.style.maxWidth).toBe("280px");
   });
 });

@@ -49,8 +49,9 @@ const MULTILINE_MAX_WIDTH = 280;
 // the label needs. `multiline` is for the few that carry a sentence instead:
 // nothing here ever shrinks a tooltip to fit, it only slides it back inside the
 // viewport, so a long one runs off the side of the window rather than wrapping.
+// It keeps the line breaks it was written with, so a verse reads as one.
 function applyLineLayout(el: HTMLElement, options: TooltipOptions) {
-  el.style.whiteSpace = options.multiline ? "normal" : "nowrap";
+  el.style.whiteSpace = options.multiline ? "pre-line" : "nowrap";
   el.style.maxWidth = options.multiline ? `${MULTILINE_MAX_WIDTH}px` : "";
 }
 
