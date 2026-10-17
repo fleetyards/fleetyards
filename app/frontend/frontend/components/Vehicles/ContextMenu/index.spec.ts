@@ -200,6 +200,16 @@ describe("VehicleContextMenu", () => {
     ]);
   });
 
+  it("offers loadout editing on a flight-ready ship without modules", async () => {
+    enabledFlags.value = [
+      ...enabledFlags.value,
+      FeatureFlagName.LOADOUT_EDITOR,
+    ];
+    await mount({ vehicle: vehicle() });
+
+    expect(items()).toContain("vehicle-loadout");
+  });
+
   it("offers no loadout editing until the editor is switched on", async () => {
     await mount({
       vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
