@@ -9,6 +9,12 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
+import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
@@ -69,6 +75,30 @@ const { data: loadoutSlots } = useVehicleLoadoutSlots(
   () => props.loadout?.id ?? "",
   { query: { enabled: () => props.editable && !!props.loadout?.id } },
 );
+
+// Only the owner can read what the build refuses, as with the slot tree.
+const { problems, reason, describe } = useLoadoutProblems(
+  () => props.vehicle.id,
+  () => props.loadout?.id,
+  () => props.editable,
+);
+
+const refusedAt = (slotPath: string) =>
+  problems.value.find((problem) => problem.slotPath === slotPath);
+
+const refusedBadges = (slotPath: string) => {
+  const problem = refusedAt(slotPath);
+
+  return problem
+    ? [
+        {
+          key: "refused",
+          label: `${t("labels.vehicleLoadout.refused.badge")}: ${reason(problem)}`,
+          variant: PillVariantsEnum.DANGER,
+        },
+      ]
+    : [];
+};
 
 type ComponentRow = { slotPath: string; label: string; slot: LoadoutSlot };
 
@@ -133,8 +163,8 @@ const fittedComponentSections = computed(() =>
   componentSections.value.filter((section) => section.rows.length),
 );
 
-const badges = (mod: ModelModule) =>
-  mod.stock
+const badges = (mod: ModelModule, slotPath: string) => [
+  ...(mod.stock
     ? [
         {
           key: "stock",
@@ -142,7 +172,9 @@ const badges = (mod: ModelModule) =>
           variant: PillVariantsEnum.NEUTRAL,
         },
       ]
-    : [];
+    : []),
+  ...refusedBadges(slotPath),
+];
 
 const previewImage = computed(
   () =>
@@ -200,6 +232,23 @@ const edit = () => {
         </div>
       </div>
 
+      <Alert
+        v-if="problems.length"
+        :variant="AlertVariantsEnum.WARNING"
+        :size="AlertSizesEnum.COMPACT"
+        :title="t('labels.vehicleLoadout.refused.title')"
+        data-test="vehicle-loadout-view-refused"
+      >
+        <p v-if="editVisible">
+          {{ t("labels.vehicleLoadout.refused.editToReplace") }}
+        </p>
+        <ul class="loadout-view__refused">
+          <li v-for="problem in problems" :key="problem.slotPath">
+            {{ describe(problem) }}
+          </li>
+        </ul>
+      </Alert>
+
       <section
         v-for="section in sections"
         :key="section.key"
@@ -225,7 +274,7 @@ const edit = () => {
                 :name="row.module.name"
                 :image="row.module.media?.storeImage?.smallUrl"
                 :contents="row.module.description || contents(row.module)"
-                :badges="badges(row.module)"
+                :badges="badges(row.module, row.slotPath)"
                 :editable="false"
                 test-id="vehicle-loadout-view-item"
               />
@@ -260,7 +309,7 @@ const edit = () => {
                   row.slot.fitted?.name || t('labels.loadoutPicker.emptySocket')
                 "
                 :contents="componentFigure(row.slot.fitted)"
-                :badges="[]"
+                :badges="refusedBadges(row.slotPath)"
                 :editable="false"
                 test-id="vehicle-loadout-view-component"
               />
