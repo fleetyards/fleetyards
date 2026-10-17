@@ -31,7 +31,7 @@ withDefaults(defineProps<Props>(), {
       >
         <dt>{{ figure.label }}</dt>
         <dd>
-          {{ figure.value }}
+          {{ figure.unit ? `${figure.value} ${figure.unit}` : figure.value }}
           <span
             class="loadout-changes__delta"
             :class="`loadout-changes__delta--${figure.tone}`"
