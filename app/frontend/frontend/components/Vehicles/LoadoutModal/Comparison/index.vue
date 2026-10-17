@@ -9,7 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import {
   type FittingRow,
-  useLoadoutDiff,
+  useModuleDiff,
 } from "@/frontend/composables/useLoadoutDiff";
 import { type ModelModule } from "@/services/fyApi";
 
@@ -31,7 +31,7 @@ const { t } = useI18n();
 
 const { contents } = useModuleContents();
 
-const { metrics, rows } = useLoadoutDiff();
+const { metrics, rows } = useModuleDiff();
 
 const fitted = (mod?: ModelModule) =>
   metrics(props.hullCargo, [...props.others, ...(mod ? [mod] : [])]);

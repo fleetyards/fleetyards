@@ -95,20 +95,13 @@ const CARD_FIGURES = new Set([
 ]);
 
 /**
- * The ship's figures under a fitting and the change from one fitting to
- * another, read the way the compare tool reads two ships: a value, a signed
- * difference and whether that is better or worse. Cargo is the hull's hold
- * plus what the modules carry; hardpoints are what the modules bring.
- * Components are measured by the ship page's own stats -- power, cooling,
- * shields, damage, speed -- so every view of a loadout reads what the ship
- * page would.
- *
- * `fitting` is the caller's, whose trees these are.
+ * What modules add up to on the ship and the change from one set to another,
+ * read the way the compare tool reads two ships: a value, a signed difference
+ * and whether that is better or worse. Cargo is the hull's hold plus what the
+ * modules carry; hardpoints are what the modules bring.
  */
-export const useLoadoutDiff = (fitting = useComponentFitting()) => {
+export const useModuleDiff = () => {
   const { t, toNumber } = useI18n();
-
-  const { measure: measureShip, metrics: cardMetrics } = useLoadoutMetrics();
 
   const metrics = (hullCargo: number, modules: ModelModule[]) => {
     const totals: FittingMetrics = new Map([[CARGO, hullCargo]]);
@@ -190,6 +183,22 @@ export const useLoadoutDiff = (fitting = useComponentFitting()) => {
             : undefined,
         };
       });
+
+  return { metrics, rows };
+};
+
+/**
+ * The ship's figures under a whole fitting and the change from one fitting to
+ * another: the modules' as `useModuleDiff` reads them, and the components'
+ * by the ship page's own stats -- power, cooling, shields, damage, speed -- so
+ * every view of a loadout reads what the ship page would.
+ *
+ * `fitting` is the caller's, whose trees these are.
+ */
+export const useLoadoutDiff = (fitting = useComponentFitting()) => {
+  const { metrics, rows } = useModuleDiff();
+
+  const { measure: measureShip, metrics: cardMetrics } = useLoadoutMetrics();
 
   // The flight blade a tree holds, whose speeds the flight figures read.
   const bladeIn = (tree: FittedSlot[]) =>

@@ -4,7 +4,7 @@ import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel"
 import {
   CARGO,
   type FittingRow,
-  useLoadoutDiff,
+  useModuleDiff,
 } from "@/frontend/composables/useLoadoutDiff";
 import { moduleSlots } from "@/frontend/components/Vehicles/LoadoutModal/moduleSlots";
 import type {
@@ -29,7 +29,7 @@ export const useModuleSockets = () => {
 
   const { slotLabel } = useLoadoutSlotLabel();
 
-  const { metrics, rows } = useLoadoutDiff();
+  const { metrics, rows } = useModuleDiff();
 
   // Only what the module itself brings: the hull's own cargo would make every
   // module read the same.
