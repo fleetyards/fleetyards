@@ -426,146 +426,152 @@ const accessibleName = (option: LoadoutPickerOption) =>
           data-test="loadout-picker-sort"
           local
         />
-
-        <p class="loadout-picker__count" data-test="loadout-picker-count">
-          <template v-if="filtered">
-            {{
-              t("labels.loadoutPicker.count", {
-                count: visibleOptions.length,
-                total: options.length,
-              })
-            }}
-            <button
-              type="button"
-              class="loadout-picker__reset"
-              data-test="loadout-picker-reset"
-              @click="resetFilters"
-            >
-              {{ t("labels.loadoutPicker.reset") }}
-            </button>
-          </template>
-          <template v-else>
-            {{ t("labels.loadoutPicker.total", { count: options.length }) }}
-          </template>
-        </p>
       </div>
     </div>
 
-    <ul
-      ref="list"
-      class="loadout-picker__options"
-      data-test="loadout-picker-options"
-      @mouseleave="emit('previewEnd')"
-      @focusout="onFocusOut"
-    >
-      <li v-if="clearable">
-        <button
-          type="button"
-          class="loadout-picker__option loadout-picker__option--empty"
-          :class="{ 'loadout-picker__option--selected': !selectedId }"
-          :aria-pressed="!selectedId"
-          data-test="loadout-picker-empty"
-          @mouseenter="emit('preview', null)"
-          @focusin="emit('preview', null)"
-          @click="emit('pick', null)"
-        >
-          <span class="loadout-picker__image loadout-picker__image--glyph">
-            <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
-          </span>
-          <span class="loadout-picker__body">
-            <span class="loadout-picker__name">
-              {{ t("labels.loadoutPicker.leaveEmpty") }}
-            </span>
-          </span>
-          <i
-            v-if="!selectedId"
-            class="fa-solid fa-circle-check loadout-picker__check"
-            aria-hidden="true"
-          />
-        </button>
-      </li>
-      <li
-        v-for="(option, index) in loading ? [] : visibleOptions"
-        :key="option.id"
-        class="loadout-picker__entry"
-        :style="{ '--entry-index': Math.min(index, 12) }"
-      >
-        <button
-          type="button"
-          class="loadout-picker__option"
-          :class="{
-            'loadout-picker__option--selected': option.id === selectedId,
-          }"
-          :aria-pressed="option.id === selectedId"
-          :aria-label="accessibleName(option)"
-          data-test="loadout-picker-option"
-          @mouseenter="emit('preview', option.id)"
-          @focusin="emit('preview', option.id)"
-          @click="emit('pick', option.id)"
-        >
-          <img
-            :src="imageFor(option)"
-            alt=""
-            class="loadout-picker__image"
-            loading="lazy"
-          />
-          <span class="loadout-picker__body">
-            <span class="loadout-picker__name">{{ option.name }}</span>
-            <span
-              v-if="option.manufacturer || option.description"
-              class="loadout-picker__meta"
-            >
-              {{
-                [option.manufacturer, option.description]
-                  .filter(Boolean)
-                  .join(" · ")
-              }}
-            </span>
-          </span>
-          <span class="loadout-picker__badges">
-            <Pill v-if="option.owned" :variant="PillVariantsEnum.SUCCESS">
-              {{ t("labels.loadoutPicker.owned") }}
-            </Pill>
-            <Pill v-else-if="option.stock" :variant="PillVariantsEnum.NEUTRAL">
-              {{ t("labels.loadoutPicker.stock") }}
-            </Pill>
-          </span>
-          <span
-            v-if="option.figure || option.delta"
-            class="loadout-picker__figure"
+    <!-- The count floats over the list's top corner rather than taking a
+         line of the controls, where it wrapped beside the sort chips. -->
+    <div class="loadout-picker__list">
+      <p class="loadout-picker__count" data-test="loadout-picker-count">
+        <template v-if="filtered">
+          {{
+            t("labels.loadoutPicker.count", {
+              count: visibleOptions.length,
+              total: options.length,
+            })
+          }}
+          <button
+            type="button"
+            class="loadout-picker__reset"
+            data-test="loadout-picker-reset"
+            @click="resetFilters"
           >
-            <span v-if="option.figure">{{ option.figure }}</span>
-            <span
-              v-if="option.delta"
-              class="loadout-picker__delta"
-              :class="`loadout-picker__delta--${option.delta.tone}`"
-              data-test="loadout-picker-delta"
-            >
-              {{ option.delta.label }}
+            {{ t("labels.loadoutPicker.reset") }}
+          </button>
+        </template>
+        <template v-else>
+          {{ t("labels.loadoutPicker.total", { count: options.length }) }}
+        </template>
+      </p>
+      <ul
+        ref="list"
+        class="loadout-picker__options"
+        data-test="loadout-picker-options"
+        @mouseleave="emit('previewEnd')"
+        @focusout="onFocusOut"
+      >
+        <li v-if="clearable">
+          <button
+            type="button"
+            class="loadout-picker__option loadout-picker__option--empty"
+            :class="{ 'loadout-picker__option--selected': !selectedId }"
+            :aria-pressed="!selectedId"
+            data-test="loadout-picker-empty"
+            @mouseenter="emit('preview', null)"
+            @focusin="emit('preview', null)"
+            @click="emit('pick', null)"
+          >
+            <span class="loadout-picker__image loadout-picker__image--glyph">
+              <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
             </span>
-          </span>
-          <i
-            v-if="option.id === selectedId"
-            class="fa-solid fa-circle-check loadout-picker__check"
-            aria-hidden="true"
-          />
-        </button>
-      </li>
-      <li
-        v-if="loading"
-        class="loadout-picker__loading"
-        data-test="loadout-picker-loading"
-      >
-        <Loader loading inline immediate />
-      </li>
-      <li
-        v-else-if="!visibleOptions.length"
-        class="loadout-picker__no-matches"
-        data-test="loadout-picker-no-matches"
-      >
-        {{ t("labels.loadoutPicker.noMatches") }}
-      </li>
-    </ul>
+            <span class="loadout-picker__body">
+              <span class="loadout-picker__name">
+                {{ t("labels.loadoutPicker.leaveEmpty") }}
+              </span>
+            </span>
+            <i
+              v-if="!selectedId"
+              class="fa-solid fa-circle-check loadout-picker__check"
+              aria-hidden="true"
+            />
+          </button>
+        </li>
+        <li
+          v-for="(option, index) in loading ? [] : visibleOptions"
+          :key="option.id"
+          class="loadout-picker__entry"
+          :style="{ '--entry-index': Math.min(index, 12) }"
+        >
+          <button
+            type="button"
+            class="loadout-picker__option"
+            :class="{
+              'loadout-picker__option--selected': option.id === selectedId,
+            }"
+            :aria-pressed="option.id === selectedId"
+            :aria-label="accessibleName(option)"
+            data-test="loadout-picker-option"
+            @mouseenter="emit('preview', option.id)"
+            @focusin="emit('preview', option.id)"
+            @click="emit('pick', option.id)"
+          >
+            <img
+              :src="imageFor(option)"
+              alt=""
+              class="loadout-picker__image"
+              loading="lazy"
+            />
+            <span class="loadout-picker__body">
+              <span class="loadout-picker__name">{{ option.name }}</span>
+              <span
+                v-if="option.manufacturer || option.description"
+                class="loadout-picker__meta"
+              >
+                {{
+                  [option.manufacturer, option.description]
+                    .filter(Boolean)
+                    .join(" · ")
+                }}
+              </span>
+            </span>
+            <span class="loadout-picker__badges">
+              <Pill v-if="option.owned" :variant="PillVariantsEnum.SUCCESS">
+                {{ t("labels.loadoutPicker.owned") }}
+              </Pill>
+              <Pill
+                v-else-if="option.stock"
+                :variant="PillVariantsEnum.NEUTRAL"
+              >
+                {{ t("labels.loadoutPicker.stock") }}
+              </Pill>
+            </span>
+            <span
+              v-if="option.figure || option.delta"
+              class="loadout-picker__figure"
+            >
+              <span v-if="option.figure">{{ option.figure }}</span>
+              <span
+                v-if="option.delta"
+                class="loadout-picker__delta"
+                :class="`loadout-picker__delta--${option.delta.tone}`"
+                data-test="loadout-picker-delta"
+              >
+                {{ option.delta.label }}
+              </span>
+            </span>
+            <i
+              v-if="option.id === selectedId"
+              class="fa-solid fa-circle-check loadout-picker__check"
+              aria-hidden="true"
+            />
+          </button>
+        </li>
+        <li
+          v-if="loading"
+          class="loadout-picker__loading"
+          data-test="loadout-picker-loading"
+        >
+          <Loader loading inline immediate />
+        </li>
+        <li
+          v-else-if="!visibleOptions.length"
+          class="loadout-picker__no-matches"
+          data-test="loadout-picker-no-matches"
+        >
+          {{ t("labels.loadoutPicker.noMatches") }}
+        </li>
+      </ul>
+    </div>
 
     <div v-if="$slots.comparison" class="loadout-picker__comparison">
       <slot name="comparison" />
