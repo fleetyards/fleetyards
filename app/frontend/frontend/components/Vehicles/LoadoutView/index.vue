@@ -62,7 +62,7 @@ const { moduleRows, moduleCargo } = useLoadoutModules(
 
 const { componentFigure } = useComponentFitting();
 
-// The parts swapped in, read off the loadout's slot tree. Only the owner can
+// The parts swapped in or taken out, read off the loadout's slot tree. Only the owner can
 // read that tree, so only the owner sees them.
 const { data: loadoutSlots } = useVehicleLoadoutSlots(
   () => props.vehicle.id,
@@ -82,7 +82,7 @@ const swappedIn = (
     const label = rootLabel
       ? `${rootLabel} › ${slotName(slot.name)}`
       : slotName(slot.name);
-    const own = slot.fitted ? [{ slotPath, label, slot }] : [];
+    const own = slot.fitted || slot.emptied ? [{ slotPath, label, slot }] : [];
 
     return [
       ...own,
@@ -243,7 +243,9 @@ const edit = () => {
             <dt>{{ row.label }}</dt>
             <dd>
               <AddonOption
-                :name="row.slot.fitted?.name || ''"
+                :name="
+                  row.slot.fitted?.name || t('labels.loadoutPicker.emptySocket')
+                "
                 :contents="componentFigure(row.slot.fitted)"
                 :badges="[]"
                 :editable="false"

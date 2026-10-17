@@ -56,6 +56,9 @@ export interface FittedSlot {
   children: FittedSlot[];
 }
 
+// A slot whose stock part the loadout took out, in a fitting keyed by path.
+export const EMPTIED = "";
+
 export const slotName = (name: string) =>
   name
     .replace(/^hardpoint_/, "")
@@ -251,7 +254,9 @@ export const useComponentFitting = () => {
       remember(slot.stock);
       remember(slot.fitted);
 
-      const partId = slot.fitted?.id ?? slot.stock?.id;
+      const partId = slot.emptied
+        ? undefined
+        : (slot.fitted?.id ?? slot.stock?.id);
       if (partId) learnBelow(path, partId, slot.slots);
 
       learn(slot.slots, path);
@@ -271,7 +276,9 @@ export const useComponentFitting = () => {
   ): FittedSlot[] =>
     slots.map((slot) => {
       const path = parentPath ? `${parentPath}/${slot.name}` : slot.name;
-      const partId = fitted[path] ?? slot.stock?.id;
+      // A path the loadout emptied holds EMPTIED, which reads as no part.
+      const partId =
+        path in fitted ? fitted[path] || undefined : slot.stock?.id;
 
       return {
         path,
@@ -589,7 +596,8 @@ export const useComponentFitting = () => {
   };
 
   /**
-   * The fitting after a pick: the stock part, or nothing, clears the slot; and
+   * The fitting after a pick: the stock part goes back to being the slot's own,
+   * nothing takes the stock part out; and
    * whatever sat below the slot goes, since the slots below belong to the part
    * that was there.
    */
@@ -606,6 +614,8 @@ export const useComponentFitting = () => {
 
     if (componentId && componentId !== entry.slot.stock?.id) {
       next[entry.path] = componentId;
+    } else if (!componentId && entry.slot.stock) {
+      next[entry.path] = EMPTIED;
     } else {
       delete next[entry.path];
     }

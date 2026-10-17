@@ -923,6 +923,34 @@ describe("VehicleLoadoutModal component tabs", () => {
     expect(socket(wrapper, gun).classes()).toContain("loadout-socket--changed");
   });
 
+  it("empties a slot that came with a part, and what sat inside it goes", async () => {
+    componentOptions.value = [{ component: STOCK_GIMBAL, slots: [] }];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await socket(wrapper, "hardpoint_gun_nose").trigger("click");
+    await flushPromises();
+    await wrapper.get("[data-test='loadout-picker-empty']").trigger("click");
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_gun_nose").text()).toContain(
+      "labels.loadoutPicker.emptySocket",
+    );
+    expect(
+      wrapper
+        .find(
+          "[data-test='loadout-socket-hardpoint_gun_nose/hardpoint_class_2']",
+        )
+        .exists(),
+    ).toBe(false);
+
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([
+      { slotPath: "hardpoint_gun_nose", itemType: "Empty" },
+    ]);
+  });
+
   it("picking the stock part again clears the slot", async () => {
     componentOptions.value = [
       { component: STOCK_GUN, slots: [] },
