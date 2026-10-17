@@ -34,19 +34,20 @@ button.loadout-socket {
   }
 }
 
-// Three states at a glance: an empty socket's dashed frame, a filled one's
-// rail, and the warning colour where the slot differs from the saved loadout.
+// Three states told apart by the frame alone, at one width: dashed while
+// empty, solid once filled, and in the warning colour where the slot differs
+// from the saved loadout.
 .loadout-socket--empty {
   border-style: dashed;
 }
 
 .loadout-socket--occupied {
-  box-shadow: inset 3px 0 0 var(--color-text-dim);
+  border-color: var(--color-edge-strong);
 }
 
-.loadout-socket--changed {
+.loadout-socket--changed,
+button.loadout-socket--changed:hover {
   border-color: var(--color-warning, #{$warning});
-  box-shadow: inset 3px 0 0 var(--color-warning, #{$warning});
 }
 
 .loadout-socket__changed {
