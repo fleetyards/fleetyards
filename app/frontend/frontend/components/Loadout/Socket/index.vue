@@ -76,7 +76,9 @@ const accessibleName = computed(() =>
       ? `${props.socket.item.headline.value} ${props.socket.item.headline.label}`
       : undefined,
     props.socket.changed ? t("labels.loadoutPicker.changed") : undefined,
-    props.socket.refused,
+    props.socket.refused
+      ? `${t("labels.vehicleLoadout.refused.badge")}: ${props.socket.refused}`
+      : undefined,
     lockedLabel.value,
   ]
     .filter(Boolean)
