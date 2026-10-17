@@ -173,10 +173,15 @@ class LoadoutSlots
   # Whether anything sits in the slot at `path` -- fitted there, or its stock
   # component left in place -- so a slot beneath it exists.
   def occupied?(path)
-    return true if @items.key?(path)
+    return !emptied?(path) if @items.key?(path)
 
     slot = self[path]
     slot.present? && !slot.module_slot? && slot.stock.present?
+  end
+
+  # Taken out by the loadout, stock part and all.
+  def emptied?(path)
+    @items[path]&.dig(:item_type) == VehicleLoadoutItem::EMPTY
   end
 
   def fitted(path)
@@ -252,7 +257,7 @@ class LoadoutSlots
 
   private def records
     @records ||= @items.values.group_by { |item| item[:item_type] }.to_h do |type, items|
-      klass = VehicleLoadoutItem::ITEM_TYPES.include?(type) ? type.constantize : nil
+      klass = (VehicleLoadoutItem::ITEM_TYPES - [VehicleLoadoutItem::EMPTY]).include?(type) ? type.constantize : nil
       scope = (klass == Component) ? klass.includes(:build, :last_build) : klass
       found = klass ? scope.where(id: items.pluck(:item_id)).index_by(&:id) : {}
       [type, found]

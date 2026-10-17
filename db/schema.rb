@@ -2713,7 +2713,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_17_143000) do
     t.uuid "vehicle_loadout_id", null: false
     t.string "slot_path", null: false
     t.string "item_type", null: false
-    t.uuid "item_id", null: false
+    t.uuid "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_vehicle_loadout_items_on_item"

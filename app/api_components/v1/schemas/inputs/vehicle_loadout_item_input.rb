@@ -11,10 +11,10 @@ module V1
           properties: {
             slotPath: {type: :string, description: "Hardpoint names from the hull down, joined by /"},
             itemType: ::V1::Schemas::Enums::VehicleLoadoutItemTypeEnum,
-            itemId: {type: :string, format: :uuid}
+            itemId: {type: :string, format: :uuid, description: "Left out on an Empty item, which holds nothing"}
           },
           additionalProperties: false,
-          required: %w[slotPath itemType itemId]
+          required: %w[slotPath itemType]
         })
       end
     end
