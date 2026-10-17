@@ -25,6 +25,38 @@ const mount = (
 ) => mountWithDefaults(Component, { props, attachTo });
 
 describe("LoadoutSocketBoard", () => {
+  it("folds every socket's contents at once, offered only where any nest", async () => {
+    const nested: LoadoutSocketGroup[] = [
+      {
+        key: "turrets",
+        slots: [
+          {
+            id: "turret",
+            label: "Turret",
+            children: [{ id: "turret/gun", label: "Gun" }],
+          },
+        ],
+      },
+    ];
+    const wrapper = await mount({ groups: nested, editable: true });
+    const gun = () =>
+      wrapper.get("[data-test='loadout-socket-turret/gun']")
+        .element as HTMLElement;
+
+    expect(gun().closest("[style*='display: none']")).toBeNull();
+
+    await wrapper
+      .get("[data-test='loadout-socket-board-fold']")
+      .trigger("click");
+
+    expect(gun().closest("[style*='display: none']")).not.toBeNull();
+
+    const flat = await mount({ groups: GROUPS, editable: true });
+    expect(flat.find("[data-test='loadout-socket-board-fold']").exists()).toBe(
+      false,
+    );
+  });
+
   it("lists every socket under its group's heading", async () => {
     const wrapper = await mount({ groups: GROUPS });
 

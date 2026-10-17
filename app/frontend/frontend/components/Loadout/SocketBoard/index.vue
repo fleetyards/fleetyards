@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import SocketTree from "@/frontend/components/Loadout/SocketTree/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -23,6 +25,19 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   "update:active": [slotId: string];
 }>();
+
+const { t } = useI18n();
+
+// Folds every socket's contents at once, for a ship whose board runs long; a
+// row's own chevron still opens or folds it alone afterwards.
+const folded = ref(false);
+provide("loadoutSocketsFolded", folded);
+
+const nests = computed(() =>
+  props.groups.some((group) =>
+    group.slots.some((slot) => !!slot.children?.length),
+  ),
+);
 
 const root = ref<HTMLElement>();
 
@@ -55,6 +70,20 @@ const onKeydown = (event: KeyboardEvent) => {
     data-test="loadout-socket-board"
     @keydown="onKeydown"
   >
+    <Btn
+      v-if="nests"
+      class="loadout-socket-board__fold"
+      :aria-label="t(folded ? 'labels.expand' : 'labels.collapse')"
+      :aria-pressed="folded"
+      data-test="loadout-socket-board-fold"
+      @click="folded = !folded"
+    >
+      <i
+        class="fa-light"
+        :class="folded ? 'fa-arrows-from-line' : 'fa-arrows-to-line'"
+        aria-hidden="true"
+      />
+    </Btn>
     <section
       v-for="group in groups"
       :key="group.key"
@@ -79,6 +108,10 @@ const onKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
+.loadout-socket-board__fold {
+  align-self: flex-end;
+}
+
 .loadout-socket-board {
   display: flex;
   flex-direction: column;
