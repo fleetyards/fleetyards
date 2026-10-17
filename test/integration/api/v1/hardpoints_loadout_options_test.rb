@@ -15,6 +15,10 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
       tags "Hardpoints"
       produces "application/json"
 
+      parameter name: "stockId", in: :query, required: false,
+        schema: {type: :string, format: :uuid},
+        description: "What the slot came with, which a port inside a part does not know itself"
+
       response(200, "successful") do
         schema ::V1::Schemas::Loadouts::LoadoutOptionList
       end
@@ -52,6 +56,17 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {id: slot.id} do
       assert_equal ["AllStop"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options offers guns where the slot came with a bare gun" do
+    mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
+    port = create(:hardpoint, parent: mount, sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[Turret WeaponGun], min_size: 3, max_size: 3)
+    gun = create(:component, name: "Gun", component_type: "WeaponGun", category: "weapons", size: "3")
+
+    assert_api_response :get, 200, path_params: {id: port.id}, params: {stockId: gun.id} do
+      assert_includes parsed_body.map { |option| option.dig("component", "name") }, "Gun"
     end
   end
 

@@ -160,6 +160,24 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert loadout.slots.emptied?("hardpoint_gun_nose")
   end
 
+  test "a port inside a part that came with a bare gun keeps taking guns" do
+    mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
+    port(mount, "hardpoint_weapon", types: %w[Turret WeaponGun], min_size: 2, max_size: 3)
+    hull = port(@model, "hardpoint_ball_turret", types: %w[Turret], min_size: 4, max_size: 4, component: mount)
+    port(hull, "hardpoint_weapon", min_size: 3, max_size: 3, component: @gun)
+
+    loadout = fleetyards_loadout(fit(["hardpoint_ball_turret/hardpoint_weapon", @small_gun]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+  end
+
+  test "cannot empty a slot that holds nothing" do
+    loadout = fleetyards_loadout(fit(["hardpoint_gun_nose", @other_gimbal]) +
+      [{slot_path: "hardpoint_gun_nose/hardpoint_gun", item_type: "Empty"}])
+
+    assert_refused loadout, :nothing_to_empty
+  end
+
   test "cannot empty a slot the game locks" do
     assert_refused fleetyards_loadout([{slot_path: "hardpoint_gun_wing", item_type: "Empty"}]), :slot_not_editable
   end

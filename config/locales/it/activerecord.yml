@@ -319,6 +319,7 @@ it:
               slot_unknown: "devono indicare uno slot della nave"
               component_not_in_slot: "devono corrispondere al tipo e alla dimensione del loro slot"
               slot_not_editable: "non possono sostituire un pezzo che lo slot tiene bloccato"
+              nothing_to_empty: "possono svuotare solo uno slot che contiene un pezzo"
         payout_entry:
           attributes:
             entry_type:
