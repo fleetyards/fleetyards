@@ -32913,6 +32913,9 @@ components:
           "$ref": "#/components/schemas/LoadoutComponentRef"
         fitted:
           "$ref": "#/components/schemas/LoadoutComponentRef"
+        emptied:
+          type: boolean
+          description: The loadout took the stock part out
         slots:
           type: array
           items:
@@ -40708,11 +40711,11 @@ components:
         itemId:
           type: string
           format: uuid
+          description: Left out on an Empty item, which holds nothing
       additionalProperties: false
       required:
       - slotPath
       - itemType
-      - itemId
       title: VehicleLoadoutItem
     VehicleLoadoutItemInput:
       type: object
@@ -40725,20 +40728,22 @@ components:
         itemId:
           type: string
           format: uuid
+          description: Left out on an Empty item, which holds nothing
       additionalProperties: false
       required:
       - slotPath
       - itemType
-      - itemId
       title: VehicleLoadoutItemInput
     VehicleLoadoutItemTypeEnum:
       type: string
       enum:
       - ModelModule
       - Component
+      - Empty
       x-enumNames:
       - MODEL_MODULE
       - COMPONENT
+      - EMPTY
       title: VehicleLoadoutItemTypeEnum
     VehicleLoadoutKindEnum:
       type: string

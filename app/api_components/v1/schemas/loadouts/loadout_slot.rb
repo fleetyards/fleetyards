@@ -19,6 +19,7 @@ module V1
             swappable: {type: :boolean, description: "Whether anything but the stock part fits"},
             stock: ::V1::Schemas::Loadouts::LoadoutComponentRef,
             fitted: ::V1::Schemas::Loadouts::LoadoutComponentRef,
+            emptied: {type: :boolean, description: "The loadout took the stock part out"},
             slots: {type: :array, items: ::V1::Schemas::Loadouts::LoadoutSlot}
           },
           additionalProperties: false,

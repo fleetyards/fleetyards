@@ -18,6 +18,8 @@ if slot.stock.present?
   json.stock { json.partial! "api/v1/loadout_slots/component", component: slot.stock }
 end
 
+json.emptied true if loadout_slots&.emptied?(slot.path)
+
 fitted = loadout_slots&.fitted(slot.path)
 if fitted.is_a?(Component)
   json.fitted { json.partial! "api/v1/loadout_slots/component", component: fitted }

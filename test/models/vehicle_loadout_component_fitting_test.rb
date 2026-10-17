@@ -148,6 +148,22 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert slots.swappable?(slots["hardpoint_gun_nose"])
   end
 
+  test "takes a slot's stock part out, leaving nothing below it" do
+    empty = {slot_path: "hardpoint_gun_nose", item_type: "Empty", item_id: nil}
+    loadout = fleetyards_loadout([empty])
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    assert_equal [["Empty", nil]], loadout.items.pluck(:item_type, :item_id)
+    assert_refused fleetyards_loadout([empty] + fit(["hardpoint_gun_nose/hardpoint_class_2", @gun])),
+      :parent_not_fitted
+    assert_not loadout.slots["hardpoint_gun_nose"].nil?
+    assert loadout.slots.emptied?("hardpoint_gun_nose")
+  end
+
+  test "cannot empty a slot the game locks" do
+    assert_refused fleetyards_loadout([{slot_path: "hardpoint_gun_wing", item_type: "Empty"}]), :slot_not_editable
+  end
+
   test "a component removed from the catalogue is unfitted with what sat inside it" do
     loadout = fleetyards_loadout(fit(
       ["hardpoint_power_plant", @plant],
