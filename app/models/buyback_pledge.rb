@@ -105,7 +105,7 @@ class BuybackPledge < ApplicationRecord
     titled = <<~SQL.squish
       lower(trim(regexp_replace(
         regexp_replace(buyback_pledges.name, '^Standalone Ships?[[:space:]]+-[[:space:]]+', '', 'i'),
-        '[[:space:]]+(-|plus)[[:space:]]+.*$', '', 'i')))
+        '[[:space:]]+(-|–|plus)[[:space:]]+.*$', '', 'i')))
     SQL
 
     containing = where(kind: %w[ship package other])

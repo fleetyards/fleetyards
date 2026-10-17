@@ -456,6 +456,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       contained: "Mercury Star Runner and 3 items", ship_names: ["Mercury Star Runner"])
     painted = buyback(user, name: "Standalone Ship - Cutter plus Groundswell Paint", upgraded: true,
       contained: "Cutter Scout and 3 items")
+    dashed = buyback(user, name: "Standalone Ship - Cutter – IAE", upgraded: true, contained: "Cutter Scout and 2 items")
     buyback(user, kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
       contained: "Mercury Star Runner and 5 items")
     sign_in user
@@ -465,7 +466,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
 
     assert_api_response :get, 200, params: {q: {"modelSlugEq" => cutter.slug}} do
-      assert_equal [painted.id], parsed_body["items"].pluck("id")
+      assert_equal [painted.id, dashed.id].sort, parsed_body["items"].pluck("id").sort
     end
 
     assert_api_response :get, 200, params: {q: {"modelSlugEq" => mercury.slug}} do
