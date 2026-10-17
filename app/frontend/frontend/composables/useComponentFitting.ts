@@ -11,11 +11,11 @@ import {
   type HardpointStat,
   useHardpointStatsFor,
 } from "@/frontend/composables/useHardpointStats";
-import type { LoadoutSimResult } from "@/frontend/composables/useLoadoutSim";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Component,
   type Hardpoint,
+  type ModelModule,
   HardpointCategoryEnum,
   type LoadoutComponentRef,
   type LoadoutOption,
@@ -263,6 +263,31 @@ export const useComponentFitting = () => {
     });
   };
 
+  // A module's ports, from the module list the editor already holds: the
+  // hull's tree only knows a module's slots once a loadout has saved it there.
+  const toSlot = (hardpoint: Hardpoint): LoadoutSlot => {
+    const stock = hardpoint.component as LoadoutComponentRef | undefined;
+    remember(stock);
+
+    return {
+      name: hardpoint.name,
+      hardpointId: hardpoint.id,
+      category: hardpoint.category,
+      minSize: hardpoint.minSize,
+      maxSize: hardpoint.maxSize,
+      types: hardpoint.types ?? [],
+      editable: true,
+      stock,
+      slots: (hardpoint.hardpoints ?? []).map(toSlot),
+    };
+  };
+
+  const learnModules = (modules: ModelModule[]) =>
+    modules.forEach((mod) => {
+      if (mod.slot)
+        learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
+    });
+
   const learnOption = (path: string, option: LoadoutOption) => {
     remember(option.component);
     option.slots.forEach((slot) => remember(slot.stock));
@@ -290,11 +315,18 @@ export const useComponentFitting = () => {
       };
     });
 
-  const roots = (tree: FittedSlot[], tab: ComponentTab) =>
-    tree.filter(
-      (entry) =>
-        entry.slot.category && tab.categories.includes(entry.slot.category),
-    );
+  // The slots a tab lists: the hull's own of its categories, and those inside
+  // a fitted module -- a combat module's shield is the shields tab's.
+  const roots = (tree: FittedSlot[], tab: ComponentTab): FittedSlot[] =>
+    tree.flatMap((entry) => {
+      if (entry.slot.category === HardpointCategoryEnum.MODULE) {
+        return roots(entry.children, tab);
+      }
+
+      return entry.slot.category && tab.categories.includes(entry.slot.category)
+        ? [entry]
+        : [];
+    });
 
   // Whether a slot or anything below it can be changed, so a locked mount
   // still shows the guns inside it.
@@ -632,6 +664,7 @@ export const useComponentFitting = () => {
 
   return {
     learn,
+    learnModules,
     learnOption,
     resolve,
     groups,
