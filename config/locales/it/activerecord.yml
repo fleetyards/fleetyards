@@ -312,10 +312,13 @@ it:
               not_flight_ready: "Le configurazioni sono disponibili solo per le navi pronte al volo"
             items:
               not_fleetyards: "possono essere montati solo in una configurazione Fleetyards"
-              slot_taken: "possono contenere un solo modulo per slot"
+              slot_taken: "possono contenere un solo elemento per slot"
               module_not_in_slot: "devono adattarsi allo slot in cui sono inseriti"
-              item_type_not_supported: "per ora contengono solo moduli"
+              item_type_not_supported: "possono essere solo moduli o componenti"
               parent_not_fitted: "devono trovarsi in uno slot montato"
+              slot_unknown: "devono indicare uno slot della nave"
+              component_not_in_slot: "devono corrispondere al tipo e alla dimensione del loro slot"
+              slot_not_editable: "non possono sostituire un pezzo che lo slot tiene bloccato"
         payout_entry:
           attributes:
             entry_type:

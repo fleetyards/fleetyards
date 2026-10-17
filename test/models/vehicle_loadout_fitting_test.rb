@@ -69,8 +69,8 @@ class VehicleLoadoutFittingTest < ActiveSupport::TestCase
     assert loadout.errors.of_kind?(:items, :parent_not_fitted)
   end
 
-  test "refuses anything but a module for now" do
-    loadout = fleetyards_loadout([{slot_path: "hardpoint_weapon", item_type: "Component", item_id: SecureRandom.uuid}])
+  test "refuses anything but a module or a component" do
+    loadout = fleetyards_loadout([{slot_path: "hardpoint_weapon", item_type: "Equipment", item_id: SecureRandom.uuid}])
 
     assert_not loadout.save
     assert loadout.errors.of_kind?(:items, :item_type_not_supported)

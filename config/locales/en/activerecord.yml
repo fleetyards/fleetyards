@@ -313,10 +313,13 @@ en:
               not_flight_ready: "Loadouts are only available for flight-ready ships"
             items:
               not_fleetyards: "can only be fitted to a fleetyards loadout"
-              slot_taken: "can hold only one module per slot"
+              slot_taken: "can hold only one item per slot"
               module_not_in_slot: "must each fit the slot they are placed in"
-              item_type_not_supported: "only holds modules for now"
+              item_type_not_supported: "can only be modules or components"
               parent_not_fitted: "must sit in a slot that is fitted"
+              slot_unknown: "must each name a slot the ship has"
+              component_not_in_slot: "must each match the type and size of their slot"
+              slot_not_editable: "cannot replace a part the slot locks in place"
         fleet_subscription:
           attributes:
             ended_at:

@@ -1,0 +1,114 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
+class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
+  setup do
+    @model = create(:model, production_status: "flight-ready")
+    @vehicle = create(:vehicle, model: @model)
+
+    @plant = create(:component, component_type: "PowerPlant", category: "powerplant", size: "1")
+    @big_plant = create(:component, component_type: "PowerPlant", category: "powerplant", size: "2")
+    @life_support = create(:component, component_type: "LifeSupportGenerator", category: "lifesupport", size: "1")
+    @cooler = create(:component, component_type: "Cooler", category: "cooler", size: "1")
+    @gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3")
+    @small_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "2")
+    @big_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "4")
+
+    # A mount and the gun port it offers, with the ship's own copy of that port
+    # below the hull slot holding the gun it comes with.
+    @gimbal = create(:component, component_type: "Turret", category: "weapon_mounts", size: "3")
+    port(@gimbal, "hardpoint_class_2", types: ["WeaponGun"], min_size: 2, max_size: 3)
+    @other_gimbal = create(:component, component_type: "Turret", category: "weapon_mounts", size: "3")
+    port(@other_gimbal, "hardpoint_gun", types: ["WeaponGun"], min_size: 3, max_size: 3)
+
+    port(@model, "hardpoint_power_plant", types: ["PowerPlant"], min_size: 1, max_size: 1, component: @plant)
+    port(@model, "hardpoint_life_support", types: [], min_size: 1, max_size: 1, component: @life_support)
+    nose = port(@model, "hardpoint_gun_nose", types: %w[Turret WeaponGun], min_size: 3, max_size: 3, component: @gimbal)
+    port(nose, "hardpoint_class_2", min_size: 3, max_size: 3, component: @gun)
+    locked = port(@model, "hardpoint_gun_wing", types: %w[Turret], min_size: 3, max_size: 3,
+      component: @gimbal, flags: ["uneditable"])
+    port(locked, "hardpoint_class_2", min_size: 3, max_size: 3, component: @gun)
+    port(@model, "hardpoint_empty", types: ["Turret"], min_size: 3, max_size: 3)
+  end
+
+  def port(parent, name, **attributes)
+    create(:hardpoint, parent:, sc_name: name, source: :game_files, **attributes)
+  end
+
+  def fit(*pairs)
+    pairs.map { |slot, component| {slot_path: slot, item_type: "Component", item_id: component.id} }
+  end
+
+  def fleetyards_loadout(items)
+    VehicleLoadout.new(vehicle: @vehicle, kind: "fleetyards", item_list: items)
+  end
+
+  def assert_refused(loadout, kind)
+    assert_not loadout.save
+    assert loadout.errors.of_kind?(:items, kind), loadout.errors.details.inspect
+  end
+
+  test "fits a component whose type and size the slot takes" do
+    loadout = fleetyards_loadout(fit(["hardpoint_power_plant", @plant]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    assert_equal [["Component", @plant.id]], loadout.items.pluck(:item_type, :item_id)
+  end
+
+  test "refuses a component of the wrong size or type" do
+    assert_refused fleetyards_loadout(fit(["hardpoint_power_plant", @big_plant])), :component_not_in_slot
+    assert_refused fleetyards_loadout(fit(["hardpoint_power_plant", @cooler])), :component_not_in_slot
+  end
+
+  test "matches a slot that names no types on its category" do
+    assert fleetyards_loadout(fit(["hardpoint_life_support", @life_support])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_life_support", @cooler])), :component_not_in_slot
+  end
+
+  test "fits a gun into the stock mount without fitting the mount" do
+    loadout = fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", @gun]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+  end
+
+  test "reads the size range of a port from the mount, not from the ship's copy" do
+    assert fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", @small_gun])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", @big_gun])), :component_not_in_slot
+  end
+
+  test "a swapped mount brings its own ports" do
+    loadout = fleetyards_loadout(fit(["hardpoint_gun_nose", @other_gimbal], ["hardpoint_gun_nose/hardpoint_gun", @gun]))
+    stale = fleetyards_loadout(fit(["hardpoint_gun_nose", @other_gimbal], ["hardpoint_gun_nose/hardpoint_class_2", @gun]))
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    assert_refused stale, :slot_unknown
+  end
+
+  test "a locked slot keeps its part but what sits inside it can change" do
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_wing", @other_gimbal])), :slot_not_editable
+    assert fleetyards_loadout(fit(["hardpoint_gun_wing", @gimbal])).save
+    assert fleetyards_loadout(fit(["hardpoint_gun_wing/hardpoint_class_2", @small_gun])).save
+  end
+
+  test "refuses a slot the ship does not have" do
+    assert_refused fleetyards_loadout(fit(["hardpoint_nowhere", @plant])), :slot_unknown
+  end
+
+  test "refuses a slot below one that is empty and has no stock part" do
+    assert_refused fleetyards_loadout(fit(["hardpoint_empty/hardpoint_gun", @gun])), :parent_not_fitted
+  end
+
+  test "a component removed from the catalogue is unfitted with what sat inside it" do
+    loadout = fleetyards_loadout(fit(
+      ["hardpoint_power_plant", @plant],
+      ["hardpoint_gun_nose", @other_gimbal],
+      ["hardpoint_gun_nose/hardpoint_gun", @gun]
+    ))
+    loadout.save!
+
+    @other_gimbal.destroy!
+
+    assert_equal ["hardpoint_power_plant"], loadout.reload.items.pluck(:slot_path)
+  end
+end

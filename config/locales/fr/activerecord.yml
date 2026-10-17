@@ -312,10 +312,13 @@ fr:
               not_flight_ready: "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler"
             items:
               not_fleetyards: "ne peuvent être équipés que dans une configuration Fleetyards"
-              slot_taken: "ne peuvent contenir qu'un module par emplacement"
+              slot_taken: "ne peuvent contenir qu'un élément par emplacement"
               module_not_in_slot: "doivent chacun correspondre à l'emplacement où ils sont placés"
-              item_type_not_supported: "ne contiennent que des modules pour l'instant"
+              item_type_not_supported: "ne peuvent être que des modules ou des composants"
               parent_not_fitted: "doivent se trouver dans un emplacement équipé"
+              slot_unknown: "doivent chacun désigner un emplacement du vaisseau"
+              component_not_in_slot: "doivent chacun correspondre au type et à la taille de leur emplacement"
+              slot_not_editable: "ne peuvent pas remplacer une pièce que l'emplacement verrouille"
         payout_entry:
           attributes:
             entry_type:

@@ -48,6 +48,7 @@ class VehicleLoadout < ApplicationRecord
       item = item.to_h.symbolize_keys
       {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s}
     end
+    @loadout_slots = nil
   end
 
   scope :active, -> { where(active: true) }
@@ -100,13 +101,34 @@ class VehicleLoadout < ApplicationRecord
       return errors.add(:items, :item_type_not_supported)
     end
 
-    # A hardpoint inside a module or a turret only exists while that is fitted.
+    # A hardpoint inside a module or a turret only exists while something sits
+    # in it: fitted there, or, for a component slot, the stock part left in.
     nested = paths.select { |path| path.include?("/") }
-    if nested.any? { |path| paths.exclude?(path.rpartition("/").first) }
+    if nested.any? { |path| !loadout_slots.occupied?(path.rpartition("/").first) }
       errors.add(:items, :parent_not_fitted)
     end
 
     modules_fit
+    components_fit
+  end
+
+  # A component goes in any slot, on the hull or below, whose port takes its
+  # type and size in the build we are on. Whether anybody owns it does not
+  # matter, as for modules. A slot the game locks takes only what it came with.
+  private def components_fit
+    item_list.select { |item| item[:item_type] == "Component" }.each do |item|
+      slot = loadout_slots[item[:slot_path]]
+      next errors.add(:items, :slot_unknown) if slot.nil?
+
+      component = loadout_slots.fitted(item[:slot_path])
+      next errors.add(:items, :component_not_in_slot) if component.nil? || !slot.fits?(component)
+
+      errors.add(:items, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
+    end
+  end
+
+  private def loadout_slots
+    @loadout_slots ||= LoadoutSlots.new(vehicle.model, item_list)
   end
 
   # A module goes in a slot on the hull itself, named by the module hardpoint,
@@ -131,6 +153,7 @@ class VehicleLoadout < ApplicationRecord
     items.delete_all
     items.insert_all!(item_list) if item_list.any?
     @item_list = nil
+    @loadout_slots = nil
     touch
   end
 
