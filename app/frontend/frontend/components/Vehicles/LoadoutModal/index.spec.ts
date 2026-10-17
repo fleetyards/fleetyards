@@ -1158,9 +1158,12 @@ describe("VehicleLoadoutModal component tabs", () => {
     const allStop = { id: "as", name: "AllStop", size: "1" };
     const better = { id: "fr", name: "FR-66", size: "1" };
     hullSlots.value = [
-      shieldSlot("hardpoint_shield_generator_left", allStop),
-      shieldSlot("hardpoint_shield_generator_right", allStop),
-    ];
+      "hardpoint_shield_generator_left",
+      "hardpoint_shield_generator_right",
+      "hardpoint_shield_generator_top",
+      "hardpoint_shield_generator_bottom",
+      "hardpoint_shield_generator_rear",
+    ].map((name) => shieldSlot(name, allStop));
     componentOptions.value = [
       { component: allStop, slots: [] },
       { component: better, slots: [] },
@@ -1169,7 +1172,7 @@ describe("VehicleLoadoutModal component tabs", () => {
     await flushPromises();
 
     const row = socket(wrapper, "hardpoint_shield_generator_left#stack");
-    expect(row.text()).toContain("2");
+    expect(row.text()).toContain("5");
     expect(
       wrapper
         .find("[data-test='loadout-socket-hardpoint_shield_generator_right']")
@@ -1193,18 +1196,52 @@ describe("VehicleLoadoutModal component tabs", () => {
     await flushPromises();
     await save(wrapper);
 
-    expect(savedItems()).toEqual([
-      {
-        slotPath: "hardpoint_shield_generator_left",
-        itemType: "Component",
-        itemId: "fr",
-      },
-      {
-        slotPath: "hardpoint_shield_generator_right",
-        itemType: "Component",
-        itemId: "fr",
-      },
-    ]);
+    expect(savedItems()).toEqual(
+      [
+        "hardpoint_shield_generator_left",
+        "hardpoint_shield_generator_right",
+        "hardpoint_shield_generator_top",
+        "hardpoint_shield_generator_bottom",
+        "hardpoint_shield_generator_rear",
+      ].map((slotPath) => ({ slotPath, itemType: "Component", itemId: "fr" })),
+    );
+  });
+
+  it("lists up to four identical slots one by one on a desktop", async () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: false })),
+    );
+    const allStop = { id: "as", name: "AllStop", size: "1" };
+    hullSlots.value = [
+      shieldSlot("hardpoint_shield_generator_left", allStop),
+      shieldSlot("hardpoint_shield_generator_right", allStop),
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_shield_generator_left").text()).toContain(
+      "AllStop",
+    );
+    expect(
+      socket(wrapper, "hardpoint_shield_generator_right").text(),
+    ).toContain("AllStop");
+
+    vi.unstubAllGlobals();
+  });
+
+  it("stacks any identical slots on a phone", async () => {
+    const allStop = { id: "as", name: "AllStop", size: "1" };
+    hullSlots.value = [
+      shieldSlot("hardpoint_shield_generator_left", allStop),
+      shieldSlot("hardpoint_shield_generator_right", allStop),
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
+    await flushPromises();
+
+    expect(
+      socket(wrapper, "hardpoint_shield_generator_left#stack").text(),
+    ).toContain("2");
   });
 
   it("shows a spinner, not the last slot's parts, while a slot's parts load", async () => {
