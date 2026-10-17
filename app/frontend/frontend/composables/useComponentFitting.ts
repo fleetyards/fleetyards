@@ -451,6 +451,9 @@ export const useComponentFitting = () => {
     radar: ["aimAssist", "power", "em"],
   };
 
+  // Every whole-ship figure, for a caller listing what any tab moved.
+  const ALL_SHIP_FIGURES = "*";
+
   const shipFigures = (
     now: LoadoutSimResult,
     saved: LoadoutSimResult,
@@ -501,7 +504,12 @@ export const useComponentFitting = () => {
       }),
     };
 
-    return (SHIP_FIGURES[tabId] ?? ["power"]).map((key) => figures[key]());
+    const keys =
+      tabId === ALL_SHIP_FIGURES
+        ? Object.keys(figures)
+        : (SHIP_FIGURES[tabId] ?? ["power"]);
+
+    return keys.map((key) => figures[key]());
   };
 
   // The parts a slot takes, each with its headline figure and how far that
@@ -630,5 +638,6 @@ export const useComponentFitting = () => {
     tabFigures,
     graft,
     shipFigures,
+    ALL_SHIP_FIGURES,
   };
 };
