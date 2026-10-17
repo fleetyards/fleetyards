@@ -28,7 +28,7 @@ import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
   COMPONENT_TABS,
-  EMPTIED,
+  loadoutValues,
   slotName,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
@@ -41,11 +41,11 @@ import {
   ModelProductionStatusEnum,
   type Vehicle,
   type VehicleLoadout,
-  VehicleLoadoutItemTypeEnum,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
   useModelHardpoints,
   useModelLoadoutSlots,
+  useModelModules,
   useVehicleLoadoutSlots,
 } from "@/services/fyApi";
 
@@ -130,29 +130,21 @@ const { data: modelHardpoints } = useModelHardpoints(
   { query: { enabled: () => props.editable && flightReady.value } },
 );
 
+// Every module the model takes, the stock ones among them: the stock ship is
+// measured with those, and a module the loadout swapped out still has its
+// slots known.
+const { data: allModules } = useModelModules(() => model.value?.slug ?? "");
+
+const modelModules = computed(() => allModules.value?.items ?? []);
+
 watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
 watch(loadoutSlots, (slots) => fitting.learn(slots), { immediate: true });
-watch(
-  moduleRows,
-  (rows) => fitting.learnModules(rows.map((row) => row.module)),
-  { immediate: true },
-);
-
-const fittedValues = computed(() =>
-  Object.fromEntries(
-    (props.loadout?.items ?? []).map((item) => [
-      item.slotPath,
-      item.itemType === VehicleLoadoutItemTypeEnum.EMPTY
-        ? EMPTIED
-        : (item.itemId ?? EMPTIED),
-    ]),
-  ),
-);
+watch(modelModules, (list) => fitting.learnModules(list), { immediate: true });
 
 const loadoutDiff = useLoadoutDiff(fitting);
 
 const changesFromStock = computed(() => {
-  const loadout = (modules: ModelModule[], values: Record<string, string>) =>
+  const measure = (modules: ModelModule[], values: Record<string, string>) =>
     loadoutDiff.measure({
       hullCargo: model.value?.metrics.cargo || 0,
       modules,
@@ -161,11 +153,19 @@ const changesFromStock = computed(() => {
       weaponPoolSize: model.value?.metrics.weaponPoolSize,
     });
 
+  const stockModules = modelModules.value.filter((mod) => mod.stock);
+  const { modules, components } = loadoutValues(props.loadout?.items);
+
   return loadoutDiff.diff(
-    loadout([], {}),
-    loadout(
+    measure(
+      stockModules,
+      Object.fromEntries(
+        stockModules.flatMap((mod) => (mod.slot ? [[mod.slot, mod.id]] : [])),
+      ),
+    ),
+    measure(
       moduleRows.value.map((row) => row.module),
-      fittedValues.value,
+      { ...modules, ...components },
     ),
     COMPONENT_TABS,
   ).changed;

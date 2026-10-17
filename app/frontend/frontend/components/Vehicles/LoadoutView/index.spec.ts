@@ -21,6 +21,8 @@ const loadoutSlots = ref<unknown[]>([]);
 const loadoutProblems = ref<unknown[]>([]);
 const hullSlots = ref<unknown[]>([]);
 const modelHardpoints = ref<unknown[]>([]);
+// Whether the cargo module is the one the ship comes with.
+const cargoStock = ref(false);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -36,6 +38,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           name: "Cargo Module",
           slot: "hardpoint_front_module",
           metrics: { cargo: 32 },
+          stock: cargoStock.value,
         },
         { id: "m2", name: "Living Module", slot: "hardpoint_rear_module" },
         { id: "m3", name: "Spare Module", slot: "hardpoint_rear_module" },
@@ -114,6 +117,20 @@ describe("VehicleLoadoutView", () => {
     expect(
       wrapper.get("[data-test='vehicle-loadout-view-changes-cargo']").text(),
     ).toContain("+32");
+  });
+
+  it("counts no change for the module the ship comes with", async () => {
+    cargoStock.value = true;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout },
+    });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-changes-cargo']").exists(),
+    ).toBe(false);
+
+    cargoStock.value = false;
   });
 
   it("sums up what a swapped part changes, by the editor's figures, for the owner", async () => {
