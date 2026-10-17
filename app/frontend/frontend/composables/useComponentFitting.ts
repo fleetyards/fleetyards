@@ -62,6 +62,63 @@ export const EMPTIED = "";
 // Marks a stacked row's id, which is otherwise its first slot's path.
 export const GROUP_SUFFIX = "#stack";
 
+// The kinds of part a loadout fits. A port for anything else -- a cargo rack,
+// a battery, a door -- is the shipwright's, and only shows where a part a
+// loadout fits sits below it.
+const FITTED_TYPES = new Set([
+  "WeaponGun",
+  "WeaponMining",
+  "Turret",
+  "TurretBase",
+  "UtilityTurret",
+  "MissileLauncher",
+  "BombLauncher",
+  "Missile",
+  "Bomb",
+  "Shield",
+  "PowerPlant",
+  "Cooler",
+  "QuantumDrive",
+  "JumpDrive",
+  "Radar",
+  "LifeSupportGenerator",
+  "FlightController",
+  "Module",
+  "EMP",
+  "QuantumInterdictionGenerator",
+  "TractorBeam",
+]);
+
+const FITTED_CATEGORIES = new Set<string>([
+  HardpointCategoryEnum.RADAR,
+  HardpointCategoryEnum.COOLER,
+  HardpointCategoryEnum.LIFESUPPORT,
+  HardpointCategoryEnum.POWERPLANT,
+  HardpointCategoryEnum.SHIELDGENERATOR,
+  HardpointCategoryEnum.QUANTUMDRIVE,
+  HardpointCategoryEnum.JUMPDRIVE,
+  HardpointCategoryEnum.CONTROLLER,
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.WEAPON_MOUNTS,
+  HardpointCategoryEnum.TURRET,
+  HardpointCategoryEnum.MISSILE_RACKS,
+  HardpointCategoryEnum.MODULE,
+]);
+
+// A port whose types name none of those, or, naming no types at all, whose
+// category is none of the loadout's.
+const takesAPart = (slot: LoadoutSlot) => {
+  const types = slot.types.filter(Boolean);
+
+  return types.length
+    ? types.some((type) => FITTED_TYPES.has(type))
+    : !!slot.category && FITTED_CATEGORIES.has(slot.category);
+};
+
+// Shown under a module: a port a loadout fits, or one that holds such ports.
+const shown = (slot: LoadoutSlot): boolean =>
+  takesAPart(slot) || slot.slots.some(shown);
+
 export const slotName = (name: string) =>
   name
     .replace(/^hardpoint_/, "")
@@ -345,8 +402,11 @@ export const useComponentFitting = () => {
 
   // Whether a slot or anything below it can be changed, so a locked mount
   // still shows the guns inside it.
+  // Every slot for a part a loadout fits, locked or not -- a slot nothing
+  // else fits is shown and disabled rather than left out -- and any slot such
+  // a slot sits in.
   const changeable = (entry: FittedSlot): boolean =>
-    entry.slot.editable || entry.children.some(changeable);
+    takesAPart(entry.slot) || entry.children.some(changeable);
 
   const find = (tree: FittedSlot[], path: string): FittedSlot | undefined => {
     for (const entry of tree) {
@@ -495,31 +555,39 @@ export const useComponentFitting = () => {
    */
   const moduleContents = (mod: ModelModule): LoadoutSocketSlot[] =>
     grouped(
-      (mod.hardpoints ?? []).map(toSlot).map((slot) => {
-        const toRow = (port: LoadoutSlot, path: string): LoadoutSocketSlot => ({
-          id: path,
-          label: slotName(port.name),
-          size: sizeLabel(port),
-          maxSize: port.maxSize,
-          locked: true,
-          item: port.stock
-            ? {
-                id: port.stock.id,
-                name: port.stock.name,
-                figure: componentFigure(port.stock),
-                category: glyphCategory(port.category, port.stock),
-                headline: headlineOf(port.stock, port.category),
-                stats: rowStats(port.stock, port.category),
-              }
-            : undefined,
-          children: grouped(
-            port.slots.map((child) => toRow(child, `${path}/${child.name}`)),
-          ),
-          members: [path],
-        });
+      (mod.hardpoints ?? [])
+        .map(toSlot)
+        .filter(shown)
+        .map((slot) => {
+          const toRow = (
+            port: LoadoutSlot,
+            path: string,
+          ): LoadoutSocketSlot => ({
+            id: path,
+            label: slotName(port.name),
+            size: sizeLabel(port),
+            maxSize: port.maxSize,
+            locked: true,
+            item: port.stock
+              ? {
+                  id: port.stock.id,
+                  name: port.stock.name,
+                  figure: componentFigure(port.stock),
+                  category: glyphCategory(port.category, port.stock),
+                  headline: headlineOf(port.stock, port.category),
+                  stats: rowStats(port.stock, port.category),
+                }
+              : undefined,
+            children: grouped(
+              port.slots
+                .filter(shown)
+                .map((child) => toRow(child, `${path}/${child.name}`)),
+            ),
+            members: [path],
+          });
 
-        return toRow(slot, `${mod.slot}/${slot.name}`);
-      }),
+          return toRow(slot, `${mod.slot}/${slot.name}`);
+        }),
     );
 
   const hasSlots = (tree: FittedSlot[], tab: ComponentTab) =>
