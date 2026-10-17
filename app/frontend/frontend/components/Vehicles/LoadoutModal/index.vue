@@ -32,6 +32,8 @@ import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
 import {
   COMPONENT_TABS,
   type ComponentTab,
+  type FigureChange,
+  EMPTIED,
   slotName,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
@@ -332,41 +334,70 @@ const powerNow = computed(() => simulate(componentTree.value));
 
 const powerSaved = computed(() => simulate(savedTree.value));
 
-// The ship's figures under the fitting as it stands, each with its change
-// against the loadout as saved: what the open tab's parts add up to, and the
-// whole-ship figures they move.
+const moduleFigures = computed(() =>
+  rows(
+    metrics(
+      hullCargo.value,
+      modulesFor(Object.values(savedValues().fittedModules)),
+    ),
+    metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
+  ),
+);
+
+const asRow = (figure: FigureChange) => ({
+  key: figure.key,
+  label: figure.label,
+  value: figure.value,
+  deltaLabel: figure.deltaLabel,
+  delta: figure.tone ? { tone: figure.tone } : undefined,
+});
+
+/**
+ * The ship's figures under the fitting as it stands, each with its change
+ * against the loadout as saved: the open tab's own -- what its parts add up to
+ * and the whole-ship figures they move -- and after them anything another tab's
+ * changes moved, so a swap is never out of sight on the tab it was not made on.
+ */
 const shipFigures = computed(() => {
-  const tab = currentTab.value && componentTabs.value[currentTab.value];
+  const open = currentTab.value
+    ? componentTabs.value[currentTab.value]
+    : undefined;
+  const simulated = !!modelHardpoints.value?.length;
 
-  if (!tab) {
-    return rows(
-      metrics(
-        hullCargo.value,
-        modulesFor(Object.values(savedValues().fittedModules)),
-      ),
-      metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
-    );
-  }
+  const own = open
+    ? [
+        ...fitting.tabFigures(componentTree.value, savedTree.value, open),
+        ...(simulated
+          ? fitting.shipFigures(powerNow.value, powerSaved.value, open.id)
+          : []),
+      ].map(asRow)
+    : moduleFigures.value;
 
-  const figures = [
-    ...fitting.tabFigures(componentTree.value, savedTree.value, tab),
-    ...(modelHardpoints.value?.length
-      ? fitting.shipFigures(powerNow.value, powerSaved.value, tab.id)
+  const moved = [
+    ...(open ? moduleFigures.value.filter((row) => row.deltaLabel) : []),
+    ...COMPONENT_TABS.filter((tab) => tab.id !== open?.id)
+      .flatMap((tab) =>
+        fitting.tabFigures(componentTree.value, savedTree.value, tab),
+      )
+      .filter((figure) => figure.deltaLabel)
+      .map(asRow),
+    ...(simulated
+      ? fitting
+          .shipFigures(
+            powerNow.value,
+            powerSaved.value,
+            fitting.ALL_SHIP_FIGURES,
+          )
+          .filter((figure) => figure.deltaLabel)
+          .map(asRow)
       : []),
   ];
 
-  return figures
-    .filter(
-      (figure, index) =>
-        figures.findIndex((other) => other.key === figure.key) === index,
-    )
-    .map((figure) => ({
-      key: figure.key,
-      label: figure.label,
-      value: figure.value,
-      deltaLabel: figure.deltaLabel,
-      delta: figure.tone ? { tone: figure.tone } : undefined,
-    }));
+  const all = [...own, ...moved];
+
+  return all.filter(
+    (row, index) => all.findIndex((other) => other.key === row.key) === index,
+  );
 });
 
 const slots = computed(() => moduleSlots(modules.value));
