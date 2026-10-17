@@ -4412,6 +4412,7 @@
         },
         "reset": "重設篩選",
         "leaveEmpty": "留空",
+        "type": "類型",
         "fixedByShip": "艦船固定部件",
         "noOtherPart": "沒有其他可用部件",
         "changed": "已變更",

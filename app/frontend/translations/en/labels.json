@@ -4426,6 +4426,7 @@
         },
         "reset": "Reset filters",
         "leaveEmpty": "Leave empty",
+        "type": "Type",
         "fixedByShip": "Fixed by the ship",
         "noOtherPart": "No other part fits",
         "changed": "Changed",

@@ -4412,6 +4412,7 @@
         },
         "reset": "Filter zurücksetzen",
         "leaveEmpty": "Leer lassen",
+        "type": "Typ",
         "fixedByShip": "Fest verbaut",
         "noOtherPart": "Kein anderes Teil passt",
         "changed": "Geändert",

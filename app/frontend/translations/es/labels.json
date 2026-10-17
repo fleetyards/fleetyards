@@ -4412,6 +4412,7 @@
         },
         "reset": "Restablecer filtros",
         "leaveEmpty": "Dejar vacío",
+        "type": "Tipo",
         "fixedByShip": "Fijo en la nave",
         "noOtherPart": "Ninguna otra pieza encaja",
         "changed": "Cambiado",
