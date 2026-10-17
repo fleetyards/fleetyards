@@ -465,7 +465,12 @@ const pickerOptions = computed(() => {
 });
 
 const pickerSorts = computed(() =>
-  activeComponentSlot.value ? [] : moduleSockets.sorts(pickerOptions.value),
+  activeComponentSlot.value
+    ? fitting.sorts(
+        componentOptions.value ?? [],
+        activeComponentSlot.value.slot,
+      )
+    : moduleSockets.sorts(pickerOptions.value),
 );
 
 // The phone and the desktop place the picker apart; both take these.

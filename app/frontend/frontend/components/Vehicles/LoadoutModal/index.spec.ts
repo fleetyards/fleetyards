@@ -26,6 +26,11 @@ const modules = ref<{ items: ModelModule[] }>({
 
 const loadouts = ref<unknown[]>([]);
 
+// The tab strip scrolls its active tab into view after a render, which jsdom
+// cannot; on Element, so a spec that stubs and restores HTMLElement's own does
+// not take it away from a scroll still pending.
+Element.prototype.scrollTo = vi.fn();
+
 const hullSlots = ref<unknown[]>([]);
 const savedSlots = ref<unknown[]>([]);
 const componentOptions = ref<unknown[]>([]);
@@ -910,6 +915,48 @@ describe("VehicleLoadoutModal component tabs", () => {
     await save(wrapper);
 
     expect(savedItems()).toEqual([]);
+  });
+
+  it("lists a slot's parts best first by the figure that ranks them", async () => {
+    const shield = (id: string, name: string, maxHealth: number) => ({
+      id,
+      name,
+      size: "1",
+      category: "shieldgenerator",
+      type: "Shield",
+      typeData: { maxHealth, maxRegen: 100 },
+    });
+    hullSlots.value = [
+      {
+        name: "hardpoint_shield_generator",
+        hardpointId: "hull-shield",
+        category: "shieldgenerator",
+        minSize: 1,
+        maxSize: 1,
+        types: ["Shield"],
+        editable: true,
+        swappable: true,
+        stock: shield("s1", "Weak Shield", 1000),
+        slots: [],
+      },
+    ];
+    componentOptions.value = [
+      { component: shield("s1", "Weak Shield", 1000), slots: [] },
+      { component: shield("s2", "Strong Shield", 3000), slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
+    await flushPromises();
+
+    await socket(wrapper, "hardpoint_shield_generator").trigger("click");
+    await flushPromises();
+
+    const names = wrapper
+      .findAll("[data-test='loadout-picker-option'] .loadout-picker__name")
+      .map((name) => name.text());
+    expect(names).toEqual(["Strong Shield", "Weak Shield"]);
+    expect(wrapper.get("[data-test='loadout-picker-option']").text()).toContain(
+      "+200%",
+    );
   });
 
   it("disables a category the ship has no slots for", async () => {
