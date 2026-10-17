@@ -602,6 +602,7 @@
         "editLoadout": "Edit loadout",
         "newLoadout": "New loadout",
         "saveLoadout": "Save loadout",
+        "saveAsNewLoadout": "Save as new loadout",
         "viewLoadout": "View loadout"
       }
     }

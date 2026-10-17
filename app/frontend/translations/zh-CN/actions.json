@@ -602,6 +602,7 @@
         "editLoadout": "编辑配置",
         "newLoadout": "新建配置",
         "saveLoadout": "保存配置",
+        "saveAsNewLoadout": "另存为新配置",
         "viewLoadout": "查看配置"
       }
     }
