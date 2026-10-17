@@ -97,6 +97,11 @@ class VehicleLoadout < ApplicationRecord
     errors.add(:base, :not_flight_ready)
   end
 
+  # Why the build in force refuses an item, one per item.
+  ITEM_PROBLEMS = %w[
+    parent_not_fitted module_not_in_slot slot_unknown component_not_in_slot slot_not_editable nothing_to_empty
+  ].freeze
+
   # The saved items the build in force refuses, each with the reason a save
   # would give: a loadout floats with the build, so one that fitted when it was
   # saved can stop fitting when a new build changes a slot.
