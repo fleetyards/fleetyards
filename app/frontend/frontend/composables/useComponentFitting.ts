@@ -13,6 +13,7 @@ import {
   useHardpointStatsFor,
 } from "@/frontend/composables/useHardpointStats";
 import { useI18n } from "@/shared/composables/useI18n";
+import { figureDelta } from "@/frontend/composables/figureDelta";
 import {
   type Component,
   type Hardpoint,
@@ -149,11 +150,19 @@ export interface FigureChange {
   tone?: CompareDeltaTone;
 }
 
-// Times, delays, draws, signatures and fuel read better smaller; everything
-// else a part is ranked on reads better larger.
-const LOWER_IS_BETTER = /(time|delay|consumption|signature|spread|heat|cost)$/i;
+// Times, delays, cooldowns, draws, fuel burn, signatures, spread and heat read
+// better smaller; everything else a part is ranked on reads better larger. A
+// key reads as `group.figure` -- `quantumDrives.spoolUpTime`, `signatureEm` --
+// so the figure's own name decides.
+export const lowerIsBetter = (key: string) => {
+  const figure = key.slice(key.lastIndexOf(".") + 1);
 
-const lowerIsBetter = (key: string) => LOWER_IS_BETTER.test(key);
+  return (
+    /^signature/i.test(figure) ||
+    /(time|delay|cooldown|consumption|cost|decay|burn)$/i.test(figure) ||
+    /(spread|heat)/i.test(figure)
+  );
+};
 
 // What the ship has of it across every slot, as opposed to a speed or a time,
 // which a second part does not add to.
@@ -220,25 +229,10 @@ export const useComponentFitting = () => {
     key: string,
     before?: number,
     after?: number,
-  ): Pick<FigureChange, "deltaLabel" | "tone"> => {
-    if (before === undefined || after === undefined || before === after) {
-      return {};
-    }
-
-    const difference = after - before;
-    const percent = before
-      ? Math.round(Math.abs(difference / before) * 100)
-      : 0;
-    // A move too small to read as one is no move: "+0%" says nothing.
-    if (before && percent === 0) return {};
-
-    const better = lowerIsBetter(key) ? difference < 0 : difference > 0;
-    const deltaLabel = before
-      ? `${difference > 0 ? "+" : "−"}${percent}%`
-      : `${difference > 0 ? "+" : "−"}${String(toNumber(Math.abs(difference)))}`;
-
-    return { deltaLabel, tone: better ? "better" : "worse" };
-  };
+  ): Pick<FigureChange, "deltaLabel" | "tone"> =>
+    figureDelta(before, after, lowerIsBetter(key), (value) =>
+      String(toNumber(value)),
+    );
 
   // Every figure either part is ranked on, from what the slot holds to what it
   // would hold.
