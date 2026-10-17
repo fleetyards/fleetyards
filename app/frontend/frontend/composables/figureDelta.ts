@@ -20,7 +20,12 @@ export const figureDelta = (
 
   const difference = after - before;
   const percent = before ? Math.round(Math.abs(difference / before) * 100) : 0;
-  if (before ? percent === 0 : Math.abs(difference) < 0.005) return {};
+  // From nothing, a move counts once it reads as one in the caller's format:
+  // a whole-number figure going from 0 to 0.3 is no "+0".
+  const shown = before
+    ? percent !== 0
+    : formatDifference(Math.abs(difference)) !== formatDifference(0);
+  if (!shown) return {};
 
   const sign = difference > 0 ? "+" : "−";
   const better = lowerIsBetter ? difference < 0 : difference > 0;
