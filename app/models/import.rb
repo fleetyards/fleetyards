@@ -48,6 +48,30 @@ class Import < ApplicationRecord
 
   scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
 
+  # `stuck`, plus a row that never left `created`: its job was lost before a
+  # worker took it (a failed enqueue, an evicted queue), and nothing will start
+  # it. An hour in the queue is far past any real wait.
+  scope :abandoned, -> {
+    stuck.or(where(aasm_state: "created").where(created_at: ...STUCK_AFTER.ago))
+  }
+
+  # A worker killed mid-run (an OOM, a host restart) takes the job with it, and
+  # the row stays `started` with nothing left to finish or fail it. For the
+  # user-facing types the already-running guard would then refuse every later
+  # run from that user until an admin cleared the row by hand, so a new run
+  # writes it off instead. Only rows past `STUCK_AFTER` go: a real run finishes
+  # in seconds, and one that is merely slow must not be pulled out from under
+  # itself.
+  def self.release_abandoned!(user_id)
+    where(user_id:).abandoned.find_each do |import|
+      import.cleanup!(note: "Superseded by a new run: the job stopped reporting.")
+    end
+  end
+
+  def abandoned?
+    self.class.abandoned.exists?(id)
+  end
+
   # Only a finished run is left out: a no-op that was cancelled or failed is
   # still news to the user, and so is one that could not read every RSI page.
   # COALESCE because a missing key makes the condition NULL, and NOT NULL would
@@ -174,11 +198,12 @@ class Import < ApplicationRecord
 
   # Nothing here reaches the job. A Sidekiq process that turns out to be alive
   # after all carries on working and then raises on its own `finish!`, because
-  # the transition it expects is no longer there -- which is why this is the
-  # admin's call and never a sweeper.
-  def cleanup!(admin_user: nil)
+  # the transition it expects is no longer there -- which is why this is never
+  # a sweeper: an admin calls it, or a user's new run does for that user's own
+  # rows past `STUCK_AFTER`.
+  def cleanup!(admin_user: nil, note: cleanup_note(admin_user))
     self.skip_admin_notice = true
-    self.info = [info.presence, cleanup_note(admin_user)].compact.join(" -- ")
+    self.info = [info.presence, note].compact.join(" -- ")
 
     # Validations belong to the run, not to the record of it: an abandoned
     # `Imports::HangarImport` whose attached file has since gone is exactly the

@@ -73,6 +73,8 @@ module Api
       def import
         authorize! to: :update?, with: ::HangarPolicy
 
+        Imports::HangarImport.release_abandoned!(current_resource_owner.id)
+
         if running_hangar_import?(Imports::HangarImport)
           render json: ValidationError.new("hangar.import", message: I18n.t("messages.hangar_import.already_running")), status: :conflict
           return
@@ -124,6 +126,8 @@ module Api
           return
         end
 
+        Imports::HangarSync.release_abandoned!(current_resource_owner.id)
+
         if running_hangar_import?(Imports::HangarSync)
           render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.already_running")), status: :conflict
           return
@@ -159,7 +163,9 @@ module Api
           .order(created_at: :desc)
           .first
 
-        active = latest_import&.aasm_state&.in?(%w[created started]) || false
+        # An abandoned run is reported as over, or the sync button stays disabled
+        # and the user can never send the request that writes it off.
+        active = (latest_import&.running? && !latest_import.abandoned?) || false
         status = latest_import&.aasm_state
         result = nil
 

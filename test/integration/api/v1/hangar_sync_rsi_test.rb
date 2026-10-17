@@ -244,6 +244,52 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_equal [], Imports::HangarSync.find_by(user_id: user.id).input
   end
 
+  test "PUT /hangar/sync-rsi-hangar writes off a sync whose job stopped reporting" do
+    user = create(:user)
+    sign_in user
+    stuck = Imports::HangarSync.create!(user:, input: [], aasm_state: "started", started_at: 2.hours.ago)
+
+    put "/api/v1/hangar/sync-rsi-hangar", params: {items: []}, as: :json
+
+    assert_response :ok
+    assert_predicate stuck.reload, :failed?
+    assert_includes stuck.info, "Superseded by a new run"
+  end
+
+  test "PUT /hangar/sync-rsi-hangar writes off a sync whose job never started" do
+    user = create(:user)
+    sign_in user
+    lost = Imports::HangarSync.create!(user:, input: [], created_at: 2.hours.ago)
+
+    put "/api/v1/hangar/sync-rsi-hangar", params: {items: []}, as: :json
+
+    assert_response :ok
+    assert_predicate lost.reload, :failed?
+  end
+
+  test "PUT /hangar/sync-rsi-hangar still refuses while a sync is running" do
+    user = create(:user)
+    sign_in user
+    running = Imports::HangarSync.create!(user:, input: [], aasm_state: "started", started_at: 5.minutes.ago)
+
+    assert_no_difference -> { HangarSyncJob.jobs.size } do
+      put "/api/v1/hangar/sync-rsi-hangar", params: {items: []}, as: :json
+    end
+
+    assert_response :conflict
+    assert_predicate running.reload, :started?
+  end
+
+  test "PUT /hangar/sync-rsi-hangar leaves somebody else's stuck sync alone" do
+    sign_in create(:user)
+    stuck = Imports::HangarSync.create!(user: create(:user), input: [], aasm_state: "started", started_at: 2.hours.ago)
+
+    put "/api/v1/hangar/sync-rsi-hangar", params: {items: []}, as: :json
+
+    assert_response :ok
+    assert_predicate stuck.reload, :started?
+  end
+
   test "PUT /hangar/sync-rsi-hangar returns 400 for missing body" do
     user = create(:user)
     sign_in user
