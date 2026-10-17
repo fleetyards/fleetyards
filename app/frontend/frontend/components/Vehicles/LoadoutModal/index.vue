@@ -13,6 +13,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
@@ -212,6 +213,16 @@ const { data: savedSlots } = useVehicleLoadoutSlots(
 watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
 watch(savedSlots, (slots) => fitting.learn(slots), { immediate: true });
 watch(modules, (list) => fitting.learnModules(list), { immediate: true });
+
+// Opening on a ship, until its slots and modules are in: one loader in the
+// middle of the editor rather than one at the start of a tab.
+const initialising = computed(
+  () =>
+    loadoutPending.value ||
+    (flightReady.value &&
+      (hullSlotsAsyncStatus.isPending.value ||
+        modulesAsyncStatus.isPending.value)),
+);
 
 const componentTree = computed(() =>
   fitting.resolve(hullSlots.value ?? [], {
@@ -909,6 +920,13 @@ const onSubmit = handleSubmit(async (values) => {
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"
     >
+      <Loader
+        :loading="initialising"
+        relative
+        immediate
+        data-test="vehicle-loadout-loading"
+      />
+
       <aside class="vehicle-loadout__ship" data-test="vehicle-loadout-ship">
         <p class="vehicle-loadout__model">
           <!-- eslint-disable-next-line vue/no-v-html -->
@@ -998,7 +1016,10 @@ const onSubmit = handleSubmit(async (values) => {
               :disabled="!flightReady || !vehicle.model.hasModules"
               :hint="modulesHint"
             >
-              <AsyncData :async-status="modulesAsyncStatus">
+              <AsyncData
+                :async-status="modulesAsyncStatus"
+                :show-spinner="false"
+              >
                 <template #resolved>
                   <div
                     class="vehicle-loadout__category"
@@ -1097,7 +1118,10 @@ const onSubmit = handleSubmit(async (values) => {
               :disabled="!flightReady || !componentTabs[tab.id].available"
               :hint="componentHint(componentTabs[tab.id])"
             >
-              <AsyncData :async-status="hullSlotsAsyncStatus">
+              <AsyncData
+                :async-status="hullSlotsAsyncStatus"
+                :show-spinner="false"
+              >
                 <template #resolved>
                   <div
                     class="vehicle-loadout__category"
