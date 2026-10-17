@@ -20,6 +20,7 @@ import {
   AlertVariantsEnum,
 } from "@/shared/components/base/Alert/types";
 import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
@@ -778,23 +779,46 @@ const onPick = (itemId: string | null) => {
     return;
   }
 
-  const next = { ...fitted.value };
-  if (itemId) {
-    next[slot] = itemId;
-  } else {
-    delete next[slot];
+  const swap = () => {
+    const next = { ...fitted.value };
+    if (itemId) {
+      next[slot] = itemId;
+    } else {
+      delete next[slot];
+    }
+    fittedModules.value = next;
+
+    // What sat inside the module went with it.
+    fittedComponents.value = Object.fromEntries(
+      Object.entries(fittedComponents.value || {}).filter(
+        ([path]) => !path.startsWith(`${slot}/`),
+      ),
+    );
+
+    // The pick is the answer the picker was opened for.
+    void closePicker();
+  };
+
+  // Parts fitted inside the module go with it and are not brought back by
+  // picking it again, so taking them out is asked first.
+  const inside = Object.entries(fittedComponents.value || {}).filter(
+    ([path, id]) => path.startsWith(`${slot}/`) && id !== EMPTIED,
+  ).length;
+  if (!inside) {
+    swap();
+    return;
   }
-  fittedModules.value = next;
 
-  // What sat inside the module went with it.
-  fittedComponents.value = Object.fromEntries(
-    Object.entries(fittedComponents.value || {}).filter(
-      ([path]) => !path.startsWith(`${slot}/`),
-    ),
-  );
-
-  // The pick is the answer the picker was opened for.
-  void closePicker();
+  displayConfirm({
+    text: t("messages.confirm.vehicleLoadout.moduleContents", {
+      count: inside,
+    }),
+    confirmText: itemId
+      ? t("actions.vehicleLoadout.swapModule")
+      : t("actions.vehicleLoadout.removeModule"),
+    tone: AppConfirmTonesEnum.WARNING,
+    onConfirm: swap,
+  });
 };
 
 // Focus inside the picker goes back to the socket it was filling, or it would
@@ -874,7 +898,7 @@ const comlink = useComlink();
 
 const queryClient = useQueryClient();
 
-const { displayAlert } = useAppNotifications();
+const { displayAlert, displayConfirm } = useAppNotifications();
 
 const { invalidateHangarQueries, invalidateVehiclePage } =
   useVehicleMutations();

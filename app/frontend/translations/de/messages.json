@@ -488,6 +488,12 @@
         "confirmReset": "Möchtest du wirklich alle Schiffe und Container-Einstellungen zurücksetzen?"
       },
       "confirm": {
+        "vehicleLoadout": {
+          "moduleContents": {
+            "one": "Das in diesem Modul ausgerüstete Teil wird mit entfernt.",
+            "other": "Die %{count} in diesem Modul ausgerüsteten Teile werden mit entfernt."
+          }
+        },
         "vehicle": {
           "destroy": "Bist du sicher, dass du dieses Schiff aus deinem Hangar entfernen möchtest?"
         },

@@ -599,6 +599,8 @@
         "showPublic": "Captain's Log"
       },
       "vehicleLoadout": {
+        "swapModule": "Swap module",
+        "removeModule": "Remove module",
         "editLoadout": "Edit loadout",
         "newLoadout": "New loadout",
         "saveLoadout": "Save loadout",

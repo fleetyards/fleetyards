@@ -91,8 +91,14 @@ vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   }),
 }));
 
+const comlinkEmit = vi.fn();
+
 vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit: vi.fn(), on: vi.fn(), off: vi.fn() }),
+  useComlink: () => ({
+    emit: (...args: unknown[]) => comlinkEmit(...args),
+    on: vi.fn(),
+    off: vi.fn(),
+  }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -203,6 +209,7 @@ beforeEach(() => {
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
   activateVehicleLoadout.mockClear();
+  comlinkEmit.mockClear();
 });
 
 describe("VehicleLoadoutModal", () => {
@@ -1331,6 +1338,129 @@ describe("VehicleLoadoutModal component tabs", () => {
     ).toContain("Module Shield");
 
     modules.value = saved;
+  });
+
+  describe("swapping a module with parts fitted in it", () => {
+    const shieldPath = "hardpoint_module/hardpoint_shield_generator_module";
+    let saved: typeof modules.value;
+
+    beforeEach(() => {
+      saved = modules.value;
+      modules.value = {
+        items: [
+          {
+            id: "m1",
+            name: "Combat Module",
+            slug: "combat",
+            slot: "hardpoint_module",
+            hardpoints: [
+              {
+                id: "module-shield",
+                name: "hardpoint_shield_generator_module",
+                category: "shieldgenerator",
+                minSize: 1,
+                maxSize: 1,
+                types: ["Shield"],
+                component: { id: "ms", name: "Module Shield", size: "1" },
+                hardpoints: [],
+              },
+            ],
+          },
+          {
+            id: "m2",
+            name: "Cargo Module",
+            slug: "cargo",
+            slot: "hardpoint_module",
+            hardpoints: [],
+          },
+        ] as unknown as ModelModule[],
+      };
+      hullSlots.value = [
+        {
+          name: "hardpoint_module",
+          hardpointId: "hull-module",
+          category: "module",
+          types: ["Module"],
+          editable: true,
+          slots: [],
+        },
+      ];
+    });
+
+    afterEach(() => {
+      modules.value = saved;
+    });
+
+    const mountFitted = (shieldId: string) =>
+      mountClosed(
+        vehicle(["m1", "m2"], {
+          activeLoadout: {
+            id: "l1",
+            name: "Hauler",
+            kind: "fleetyards",
+            active: true,
+            items: [
+              {
+                slotPath: "hardpoint_module",
+                itemType: "ModelModule",
+                itemId: "m1",
+              },
+              { slotPath: shieldPath, itemType: "Component", itemId: shieldId },
+            ],
+          },
+        }),
+        { tab: "modules" },
+      );
+
+    const pickModule = async (wrapper: Wrapper, name: string) => {
+      await socket(wrapper, "hardpoint_module").trigger("click");
+      await flushPromises();
+      await wrapper
+        .findAll("[data-test='loadout-picker-option']")
+        .find((option) => option.text().includes(name))!
+        .trigger("click");
+      await flushPromises();
+    };
+
+    const confirms = () =>
+      comlinkEmit.mock.calls.filter(([event]) => event === "show-confirm");
+
+    it("asks first, and swaps only once confirmed", async () => {
+      const wrapper = await mountFitted("better-shield");
+      await flushPromises();
+
+      await pickModule(wrapper, "Cargo Module");
+
+      expect(confirms()).toHaveLength(1);
+      expect(socket(wrapper, "hardpoint_module").text()).toContain(
+        "Combat Module",
+      );
+
+      (confirms()[0][1] as { onConfirm: () => void }).onConfirm();
+      await flushPromises();
+      await save(wrapper);
+
+      expect(socket(wrapper, "hardpoint_module").text()).toContain(
+        "Cargo Module",
+      );
+      expect(savedItems()).toEqual([
+        { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
+      ]);
+    });
+
+    it("keeps the module and its parts when the same module is picked again", async () => {
+      const wrapper = await mountFitted("better-shield");
+      await flushPromises();
+
+      await pickModule(wrapper, "Combat Module");
+
+      expect(confirms()).toHaveLength(0);
+      expect(
+        wrapper
+          .get("[data-test='vehicle-loadout-save']")
+          .attributes("disabled"),
+      ).toBeDefined();
+    });
   });
 
   const shieldSlot = (name: string, stock: unknown) => ({

@@ -599,6 +599,8 @@
         "showPublic": "舰长日志"
       },
       "vehicleLoadout": {
+        "swapModule": "更换模块",
+        "removeModule": "移除模块",
         "editLoadout": "编辑配置",
         "newLoadout": "新建配置",
         "saveLoadout": "保存配置",
