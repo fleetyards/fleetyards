@@ -88,7 +88,7 @@ const accessibleName = computed(() =>
       />
       <HardpointCategoryIcon
         v-else-if="socket.item"
-        :category="HardpointCategoryEnum.MODULE"
+        :category="socket.item.category || HardpointCategoryEnum.MODULE"
         class="loadout-socket__glyph"
       />
       <i

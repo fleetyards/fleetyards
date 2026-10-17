@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Socket from "@/frontend/components/Loadout/Socket/index.vue";
+import SocketTree from "@/frontend/components/Loadout/SocketTree/index.vue";
 import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -63,25 +63,16 @@ const onKeydown = (event: KeyboardEvent) => {
       <h4 v-if="group.label" class="loadout-socket-board__heading">
         {{ group.label }}
       </h4>
-      <ul class="loadout-socket-board__sockets">
-        <li v-for="socket in group.slots" :key="socket.id">
-          <Socket
-            :socket="socket"
-            :active="editable && socket.id === active"
-            :editable="editable"
-            @select="emit('update:active', socket.id)"
-          />
-          <!-- Directly under the socket it fills, for a caller with no room
-               beside the board, such as a phone's width. -->
-          <div
-            v-if="editable && socket.id === active && $slots.active"
-            class="loadout-socket-board__active"
-            data-test="loadout-socket-board-active"
-          >
-            <slot name="active" />
-          </div>
-        </li>
-      </ul>
+      <SocketTree
+        :slots="group.slots"
+        :active="active"
+        :editable="editable"
+        @select="(id) => emit('update:active', id)"
+      >
+        <template v-if="$slots.active" #active>
+          <slot name="active" />
+        </template>
+      </SocketTree>
     </section>
   </div>
 </template>
@@ -99,18 +90,5 @@ const onKeydown = (event: KeyboardEvent) => {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.loadout-socket-board__sockets {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.loadout-socket-board__active {
-  margin-top: 8px;
 }
 </style>
