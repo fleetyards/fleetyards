@@ -14,6 +14,7 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -31,12 +32,16 @@ type Props = {
   sorts?: LoadoutPickerSort[];
   // Offers a choice that leaves the socket empty.
   clearable?: boolean;
+  // The options are on their way: none are shown, only a spinner, so a list
+  // that belongs to another socket never stands in for them.
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selectedId: undefined,
   sorts: () => [],
   clearable: true,
+  loading: false,
 });
 
 const emit = defineEmits<{
@@ -375,7 +380,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
           />
         </button>
       </li>
-      <li v-for="option in visibleOptions" :key="option.id">
+      <li v-for="option in loading ? [] : visibleOptions" :key="option.id">
         <button
           type="button"
           class="loadout-picker__option"
@@ -438,7 +443,14 @@ const accessibleName = (option: LoadoutPickerOption) =>
         </button>
       </li>
       <li
-        v-if="!visibleOptions.length"
+        v-if="loading"
+        class="loadout-picker__loading"
+        data-test="loadout-picker-loading"
+      >
+        <Loader loading inline immediate />
+      </li>
+      <li
+        v-else-if="!visibleOptions.length"
         class="loadout-picker__no-matches"
         data-test="loadout-picker-no-matches"
       >
