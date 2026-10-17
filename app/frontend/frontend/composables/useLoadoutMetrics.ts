@@ -1,7 +1,17 @@
 import type { CompareDeltaTone } from "@/frontend/components/Compare/delta";
-import { computeLoadoutStats } from "@/frontend/composables/useLoadoutStats";
-import { computeShieldStats } from "@/frontend/composables/useShieldStats";
-import { simulateLoadoutPower } from "@/frontend/composables/useLoadoutSim";
+import { figureDelta } from "@/frontend/composables/figureDelta";
+import {
+  type LoadoutStats,
+  computeLoadoutStats,
+} from "@/frontend/composables/useLoadoutStats";
+import {
+  type ShieldStats,
+  computeShieldStats,
+} from "@/frontend/composables/useShieldStats";
+import {
+  type LoadoutSimResult,
+  simulateLoadoutPower,
+} from "@/frontend/composables/useLoadoutSim";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { ComponentController, Hardpoint } from "@/services/fyApi";
 
@@ -38,10 +48,19 @@ interface Fitting {
   blade?: ComponentController;
 }
 
+// What the cards read off one fitting, worked out once for all of them.
+export interface FittingMeasure {
+  power: LoadoutSimResult;
+  shields: ShieldStats;
+  combat: LoadoutStats;
+  blade?: ComponentController;
+}
+
 /**
  * The figures the ship page's metrics cards lead with -- power and heat,
- * shields, damage, speed -- worked out by the same code the cards use, for the
- * fitting as it stands and as saved, so each can say how far it moved.
+ * shields, damage, speed -- worked out by the same code the cards use. A
+ * fitting is measured once, so the saved one need not be measured again on
+ * every pick, and two measures compared card by card.
  */
 export const useLoadoutMetrics = () => {
   const { t, toNumber } = useI18n();
@@ -53,33 +72,24 @@ export const useLoadoutMetrics = () => {
       ? `${String(toNumber(Math.round(value / 100) / 10))}k`
       : number(value);
 
-  const delta = (
-    before: number,
-    after: number,
-    lowerIsBetter = false,
-  ): Pick<LoadoutMetric, "deltaLabel" | "tone"> => {
-    const difference = after - before;
-    const percent = before
-      ? Math.round(Math.abs(difference / before) * 100)
-      : 0;
-    // A move too small to read as one is no move: "+0%" says nothing.
-    if (before ? percent === 0 : Math.round(difference) === 0) return {};
+  const delta = (before: number, after: number, lowerIsBetter = false) =>
+    figureDelta(before, after, lowerIsBetter, number);
 
-    const sign = difference > 0 ? "+" : "−";
-    const better = lowerIsBetter ? difference < 0 : difference > 0;
+  const measure = (fitting: Fitting, poolSize?: number): FittingMeasure => {
+    const power = simulateLoadoutPower(fitting.hardpoints, poolSize);
 
     return {
-      deltaLabel: before
-        ? `${sign}${percent}%`
-        : `${sign}${number(Math.abs(difference))}`,
-      tone: better ? "better" : "worse",
+      power,
+      shields: computeShieldStats(fitting.hardpoints, power.shieldPoolRatio),
+      combat: computeLoadoutStats(fitting.hardpoints, poolSize),
+      blade: fitting.blade,
     };
   };
 
-  const power = (now: Fitting, saved: Fitting, poolSize?: number) => {
-    const after = simulateLoadoutPower(now.hardpoints, poolSize);
-    const before = simulateLoadoutPower(saved.hardpoints, poolSize);
-    const used = (sim: typeof after) => sim.totalSegments - sim.remaining;
+  const power = (now: FittingMeasure, saved: FittingMeasure) => {
+    const after = now.power;
+    const before = saved.power;
+    const used = (sim: LoadoutSimResult) => sim.totalSegments - sim.remaining;
 
     return [
       {
@@ -121,11 +131,9 @@ export const useLoadoutMetrics = () => {
     ];
   };
 
-  const defense = (now: Fitting, saved: Fitting, poolSize?: number) => {
-    const ratio = (fitting: Fitting) =>
-      simulateLoadoutPower(fitting.hardpoints, poolSize).shieldPoolRatio;
-    const after = computeShieldStats(now.hardpoints, ratio(now));
-    const before = computeShieldStats(saved.hardpoints, ratio(saved));
+  const defense = (now: FittingMeasure, saved: FittingMeasure) => {
+    const after = now.shields;
+    const before = saved.shields;
 
     return [
       {
@@ -145,9 +153,9 @@ export const useLoadoutMetrics = () => {
     ];
   };
 
-  const combat = (now: Fitting, saved: Fitting, poolSize?: number) => {
-    const after = computeLoadoutStats(now.hardpoints, poolSize);
-    const before = computeLoadoutStats(saved.hardpoints, poolSize);
+  const combat = (now: FittingMeasure, saved: FittingMeasure) => {
+    const after = now.combat;
+    const before = saved.combat;
 
     return [
       {
@@ -181,7 +189,7 @@ export const useLoadoutMetrics = () => {
     ];
   };
 
-  const flight = (now: Fitting, saved: Fitting) => {
+  const flight = (now: FittingMeasure, saved: FittingMeasure) => {
     const speeds: [string, string, keyof ComponentController][] = [
       ["scmSpeed", t("model.scmSpeed"), "scmSpeed"],
       ["boostSpeed", t("labels.flight.boost"), "scmSpeedBoosted"],
@@ -206,21 +214,20 @@ export const useLoadoutMetrics = () => {
 
   const metrics = (
     card: LoadoutMetricsCard,
-    now: Fitting,
-    saved: Fitting,
-    poolSize?: number,
+    now: FittingMeasure,
+    saved: FittingMeasure,
   ): LoadoutMetric[] => {
     switch (card) {
       case "power":
-        return power(now, saved, poolSize);
+        return power(now, saved);
       case "defense":
-        return defense(now, saved, poolSize);
+        return defense(now, saved);
       case "combat":
-        return combat(now, saved, poolSize);
+        return combat(now, saved);
       case "flight":
         return flight(now, saved);
     }
   };
 
-  return { metrics };
+  return { measure, metrics };
 };

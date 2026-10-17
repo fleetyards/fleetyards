@@ -375,7 +375,7 @@ const bladeIn = (tree: typeof componentTree.value) =>
   tree.find((entry) => entry.slot.category === HardpointCategoryEnum.CONTROLLER)
     ?.content?.typeData as ComponentController | undefined;
 
-const { metrics: loadoutMetrics } = useLoadoutMetrics();
+const { measure, metrics: loadoutMetrics } = useLoadoutMetrics();
 
 const now = computed(() => ({
   hardpoints: fittedHardpoints.value,
@@ -387,15 +387,32 @@ const saved = computed(() => ({
   blade: bladeIn(savedTree.value),
 }));
 
-const cardMetrics = (card: LoadoutMetricsCard) =>
-  modelHardpoints.value?.length
-    ? loadoutMetrics(
+// Each fitting measured once, and the saved one only when it changes, rather
+// than both again for every card on every pick.
+const measuredNow = computed(() =>
+  measure(now.value, model.value?.metrics.weaponPoolSize),
+);
+
+const measuredSaved = computed(() =>
+  measure(saved.value, model.value?.metrics.weaponPoolSize),
+);
+
+const CARDS = [...new Set(Object.values(TAB_METRICS))];
+
+const allCardMetrics = computed(
+  () =>
+    Object.fromEntries(
+      CARDS.map((card) => [
         card,
-        now.value,
-        saved.value,
-        model.value?.metrics.weaponPoolSize,
-      )
-    : [];
+        modelHardpoints.value?.length
+          ? loadoutMetrics(card, measuredNow.value, measuredSaved.value)
+          : [],
+      ]),
+    ) as Record<LoadoutMetricsCard, LoadoutMetric[]>,
+);
+
+const cardMetrics = (card: LoadoutMetricsCard) =>
+  allCardMetrics.value[card] ?? [];
 
 // The tabs whose parts' own figure no card leads with -- a radar's assist
 // range, a drive's speed -- which their tab shows ahead of the card's.
@@ -476,7 +493,7 @@ const moduleMetrics = computed<LoadoutMetric[]>(() =>
 const changedFigures = computed<LoadoutMetric[]>(() => {
   const all = [
     ...moduleMetrics.value,
-    ...[...new Set(Object.values(TAB_METRICS))].flatMap(cardMetrics),
+    ...CARDS.flatMap(cardMetrics),
     ...OWN_FIGURE_TABS.flatMap(ownFigures),
   ].filter((figure) => figure.deltaLabel);
 
