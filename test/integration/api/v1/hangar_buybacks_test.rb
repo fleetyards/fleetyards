@@ -447,6 +447,32 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds an upgraded pledge by the ship it was bought as" do
+    user = create(:user)
+    terrapin = create(:model, name: "Terrapin", rsi_name: "Terrapin")
+    mercury = create(:model, name: "Mercury Star Runner", rsi_name: "Mercury")
+    cutter = create(:model, name: "Cutter", rsi_name: "Cutter")
+    upgraded = buyback(user, name: "Standalone Ship - Terrapin", upgraded: true,
+      contained: "Mercury Star Runner and 3 items", ship_names: ["Mercury Star Runner"])
+    painted = buyback(user, name: "Standalone Ship - Cutter plus Groundswell Paint", upgraded: true,
+      contained: "Cutter Scout and 3 items")
+    buyback(user, kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
+      contained: "Mercury Star Runner and 5 items")
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => terrapin.slug}} do
+      assert_equal [upgraded.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => cutter.slug}} do
+      assert_equal [painted.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => mercury.slug}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end
