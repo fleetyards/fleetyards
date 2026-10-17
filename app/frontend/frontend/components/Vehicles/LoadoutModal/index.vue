@@ -19,15 +19,12 @@ import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
-import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
-import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
-import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index.vue";
-import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
+import LoadoutMetrics from "./Metrics/index.vue";
+import { simulateLoadoutPower } from "@/frontend/composables/useLoadoutSim";
 import {
-  type PortOverrides,
-  simulateLoadoutPower,
-} from "@/frontend/composables/useLoadoutSim";
-import type { FlightMode } from "@/frontend/composables/powerSim";
+  TAB_METRICS,
+  useLoadoutMetrics,
+} from "@/frontend/composables/useLoadoutMetrics";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -350,71 +347,44 @@ const simulate = (tree: typeof componentTree.value) =>
 
 const powerNow = computed(() => simulate(componentTree.value));
 
-// The ship's hardpoints with the fitting in them, for the metrics cards the
-// ship page shows above its hardpoint list.
+const powerSaved = computed(() => simulate(savedTree.value));
+
+// The ship's hardpoints with the fitting in them, and with the saved one, for
+// the figures the ship page's metrics cards lead with.
 const fittedHardpoints = computed(() =>
   fitting.graft(modelHardpoints.value ?? [], componentTree.value),
 );
 
-// The cards read the pip choices and the ratios the power card works out, as
-// they do on the ship page.
-const powerOverrides = ref<PortOverrides>({});
-const flightMode = ref<FlightMode>("SCM");
-
-const fittedPower = computed(() =>
-  simulateLoadoutPower(
-    fittedHardpoints.value,
-    model.value?.metrics.weaponPoolSize,
-    flightMode.value,
-    powerOverrides.value,
-  ),
+const savedHardpoints = computed(() =>
+  fitting.graft(modelHardpoints.value ?? [], savedTree.value),
 );
 
-provide(
-  "weaponPoolSize",
-  computed(() => model.value?.metrics.weaponPoolSize),
-);
-provide("powerOverrides", powerOverrides);
-provide(
-  "shieldPoolRatio",
-  computed(() => fittedPower.value.shieldPoolRatio),
-);
-provide(
-  "enginePowerRatio",
-  computed(() => fittedPower.value.enginePowerRatio),
-);
-provide(
-  "quantumFuelTankSize",
-  computed(() => model.value?.metrics.quantumFuelTankSize),
-);
+// The flight blade a tree holds, whose speeds the flight figures read.
+const bladeIn = (tree: typeof componentTree.value) =>
+  tree.find((entry) => entry.slot.category === HardpointCategoryEnum.CONTROLLER)
+    ?.content?.typeData as ComponentController | undefined;
 
-// The card each tab reads its parts' effect from; the modules tab keeps its
-// figures.
-const TAB_CARDS: Record<string, "power" | "defense" | "combat" | "flight"> = {
-  radar: "power",
-  coolers: "power",
-  lifeSupport: "power",
-  powerPlants: "power",
-  quantumDrives: "power",
-  shields: "defense",
-  missiles: "combat",
-  weapons: "combat",
-  flightBlades: "flight",
-};
+const { metrics: loadoutMetrics } = useLoadoutMetrics();
 
-const card = computed(() =>
-  currentTab.value ? TAB_CARDS[currentTab.value] : undefined,
-);
+// The open tab's card, cut down to its leading figures, each with how far it
+// moved from the saved loadout.
+const tabMetrics = computed(() => {
+  const card = currentTab.value ? TAB_METRICS[currentTab.value] : undefined;
+  if (!card || !modelHardpoints.value?.length) return undefined;
 
-// The flight blade fitted now, whose boost the flight card reads.
-const fittedBlade = computed(
-  () =>
-    componentTree.value.find(
-      (entry) => entry.slot.category === HardpointCategoryEnum.CONTROLLER,
-    )?.content?.typeData as ComponentController | undefined,
-);
-
-const powerSaved = computed(() => simulate(savedTree.value));
+  return {
+    title: t(`labels.vehicleLoadout.tabs.${currentTab.value}`),
+    metrics: loadoutMetrics(
+      card,
+      {
+        hardpoints: fittedHardpoints.value,
+        blade: bladeIn(componentTree.value),
+      },
+      { hardpoints: savedHardpoints.value, blade: bladeIn(savedTree.value) },
+      model.value?.metrics.weaponPoolSize,
+    ),
+  };
+});
 
 const moduleFigures = computed(() =>
   rows(
@@ -892,41 +862,21 @@ const onSubmit = handleSubmit(async (values) => {
           <span v-html="vehicle.model.manufacturer?.name" />
           <strong>{{ vehicle.model.name }}</strong>
         </p>
-        <div v-if="card" class="vehicle-loadout__card">
-          <ModelPowerDistribution
-            v-if="card === 'power'"
-            v-model="powerOverrides"
-            v-model:mode="flightMode"
-            :hardpoints="fittedHardpoints"
-            :weapon-pool-size="vehicle.model.metrics?.weaponPoolSize"
-            :cross-section="vehicle.model.metrics?.signatureCrossSection"
-          />
-          <ModelDefenseMetrics
-            v-else-if="card === 'defense'"
-            :hardpoints="fittedHardpoints"
-            :model-name="vehicle.model.name"
-          />
-          <ModelCombatMetrics
-            v-else-if="card === 'combat'"
-            :hardpoints="fittedHardpoints"
-            :model-name="vehicle.model.name"
-          />
-          <ModelFlightMetrics
-            v-else-if="card === 'flight'"
-            :model="vehicle.model"
-            :boost-capacitor="fittedBlade?.boostCapacitor"
-          />
-        </div>
+        <LoadoutMetrics
+          v-if="tabMetrics"
+          v-bind="tabMetrics"
+          class="vehicle-loadout__card"
+        />
 
         <p
-          v-if="card && changedFigures.length"
+          v-if="tabMetrics && changedFigures.length"
           class="vehicle-loadout__changes-title"
         >
           {{ t("labels.loadoutPicker.changed") }}
         </p>
         <dl class="vehicle-loadout__figures">
           <div
-            v-for="figure in card ? changedFigures : shipFigures"
+            v-for="figure in tabMetrics ? changedFigures : shipFigures"
             :key="figure.key"
             class="vehicle-loadout__figure"
             :data-test="`vehicle-loadout-figure-${figure.key}`"

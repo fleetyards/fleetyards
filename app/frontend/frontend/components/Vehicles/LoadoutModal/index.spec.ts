@@ -34,6 +34,7 @@ Element.prototype.scrollTo = vi.fn();
 const hullSlots = ref<unknown[]>([]);
 const savedSlots = ref<unknown[]>([]);
 const componentOptions = ref<unknown[]>([]);
+const modelHardpoints = ref<unknown[]>([]);
 
 const resolved = () => ({
   isPending: ref(false),
@@ -60,6 +61,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useVehicleLoadoutSlots: () => ({ data: savedSlots, ...resolved() }),
+  useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
   useHardpointLoadoutOptions: () => ({
     data: componentOptions,
     ...resolved(),
@@ -172,6 +174,7 @@ beforeEach(() => {
   hullSlots.value = [];
   savedSlots.value = [];
   componentOptions.value = [];
+  modelHardpoints.value = [];
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
   activateVehicleLoadout.mockClear();
@@ -1008,18 +1011,33 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
   });
 
-  it("shows the ship page's card for the open tab", async () => {
+  it("leads the ship's figures with the open tab's card, cut down", async () => {
+    modelHardpoints.value = [
+      {
+        id: "hp-power",
+        name: "hardpoint_power_plant",
+        category: "powerplant",
+        component: {
+          id: "pp",
+          name: "Plant",
+          size: "1",
+          type: "PowerPlant",
+          typeData: { powerBase: 12 },
+        },
+        hardpoints: [],
+      },
+    ];
     const weapons = await mountClosed(vehicle(), { tab: "weapons" });
     await flushPromises();
 
-    expect(weapons.findComponent({ name: "ModelCombatMetrics" }).exists()).toBe(
-      true,
-    );
+    expect(
+      weapons.find("[data-test='vehicle-loadout-metric-dps']").exists(),
+    ).toBe(true);
 
     const modules = await mountClosed(vehicle(["m1"]), { tab: "modules" });
     await flushPromises();
 
-    expect(modules.findComponent({ name: "ModelCombatMetrics" }).exists()).toBe(
+    expect(modules.find("[data-test='vehicle-loadout-metrics']").exists()).toBe(
       false,
     );
     expect(
