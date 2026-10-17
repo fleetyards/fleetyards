@@ -24,6 +24,8 @@ export interface LoadoutSocketSlot {
   size?: string;
   // The size badge a ship page's hardpoint row leads with.
   maxSize?: number;
+  // What the slot takes, which identical-looking slots stack only if they share.
+  kind?: string;
   item?: LoadoutSocketItem;
   // Shown, but nothing can be picked for it: the game locks it, or nothing
   // other than what it holds fits.
