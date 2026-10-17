@@ -30,6 +30,15 @@ class BuybackPledges::UnmatchedShipNamesTest < ActiveSupport::TestCase
     assert_empty BuybackPledges::UnmatchedShipNames.new.run
   end
 
+  test "matches the names RSI gives ships it renamed or edition-named" do
+    create(:model, name: "Constellation Mk IV Phoenix", rsi_name: "Constellation Mk IV Phoenix")
+    create(:model, name: "X1 Force", rsi_name: "X1 Force")
+    buyback(contained: "Constellation Phoenix and 2 items")
+    buyback(contained: "X1 - FORCE and 2 items")
+
+    assert_empty BuybackPledges::UnmatchedShipNames.new.run
+  end
+
   test "skips the contents of anything but a ship pledge" do
     buyback(kind: "other", contained: "Pulse Flight Jacket")
     buyback(kind: "ship", contained: "2 ships and 2 items")
