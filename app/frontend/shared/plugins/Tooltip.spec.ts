@@ -347,4 +347,20 @@ describe("v-tooltip", () => {
     expect(tooltip.style.whiteSpace).toBe("normal");
     expect(tooltip.style.maxWidth).toBe("280px");
   });
+
+  it("keeps the line breaks of a verse when asked to", async () => {
+    const { el } = mountAnchor({
+      content: {
+        content: "Fair winds,\nand following seas.",
+        multiline: true,
+        preserveLineBreaks: true,
+      },
+    });
+
+    el.dispatchEvent(new Event("mouseenter"));
+    await nextFrame();
+
+    const [tooltip] = visibleTooltips();
+    expect(tooltip.style.whiteSpace).toBe("pre-line");
+  });
 });

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_16_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_17_143000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2811,6 +2811,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_16_190000) do
     t.boolean "hidden_by_user", default: false, null: false
     t.string "picture_type"
     t.uuid "picture_id"
+    t.text "dedication_verse"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"

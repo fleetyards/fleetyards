@@ -109,9 +109,16 @@ class Vehicle < ApplicationRecord
   # launch is history, not where the ship sits now.
   links_location :launch_port, foreign_key: :launch_port_location_id, as: :launch_port_location
   validates :launch_port_location, presence: true, if: :launch_port_location_id?
-  DEDICATION_LIMIT = 280
+  DEDICATION_LIMIT = 150
   PLAQUE_LINE_LIMIT = 100
   validates :dedication, length: {maximum: DEDICATION_LIMIT}
+  # The verse or blessing given with the dedication. It is not drawn on the
+  # plaque, so editing it keeps a supporter style; the dedication shows it on
+  # hover or tap, and it goes when the dedication does.
+  DEDICATION_VERSE_LIMIT = 500
+  normalizes :dedication_verse, with: ->(verse) { verse.strip.presence }
+  validates :dedication_verse, length: {maximum: DEDICATION_VERSE_LIMIT}
+  before_save :drop_dedication_verse, if: -> { dedication.blank? && dedication_verse.present? }
   validates :affiliation, :launch_port, length: {maximum: PLAQUE_LINE_LIMIT}
   # Who the plaque names as captain, in place of the owner's display name.
   normalizes :plaque_captain, with: ->(name) { name.squish.presence }
@@ -993,6 +1000,10 @@ class Vehicle < ApplicationRecord
 
   private def drop_supporter_plaque_style
     self.plaque_style = DEFAULT_PLAQUE_STYLE
+  end
+
+  private def drop_dedication_verse
+    self.dedication_verse = nil
   end
 
   protected def nil_if_blank

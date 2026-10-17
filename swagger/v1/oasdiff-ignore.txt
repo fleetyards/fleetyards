@@ -2733,3 +2733,4 @@ GET /vehicles/{vehicle_id}/loadouts/{id} added the new `Component` enum value to
 PUT /vehicles/{vehicle_id}/loadouts/{id} added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Component` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`
+PUT /vehicles/{id} the `dedication` request property's maxLength was decreased to `150`

@@ -34,6 +34,7 @@ module V1
             location: {type: [:string, :null]},
             linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             dedication: {type: [:string, :null]},
+            dedicationVerse: {type: [:string, :null]},
             launchedOn: {type: [:string, :null], format: :date},
             launchPort: {type: [:string, :null]},
             launchPortLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

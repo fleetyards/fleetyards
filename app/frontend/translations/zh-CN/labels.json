@@ -4287,6 +4287,8 @@
         "operationsGroup": "行动组",
         "title": "命名铭牌",
         "dedication": "献词",
+        "dedicationVerse": "献词诗句",
+        "dedicationVerseInfo": "可选。几行诗句或祝福，鼠标悬停或点按献词时显示。",
         "launchedOn": "下水日期",
         "launchPort": "下水港口",
         "affiliation": "所属"

@@ -5078,6 +5078,10 @@ components:
           type:
           - string
           - 'null'
+        dedicationVerse:
+          type:
+          - string
+          - 'null'
         launchedOn:
           type:
           - string

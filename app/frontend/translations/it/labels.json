@@ -4287,6 +4287,8 @@
         "operationsGroup": "Squadra operativa",
         "title": "Targa di dedica",
         "dedication": "Dedica",
+        "dedicationVerse": "Versi di dedica",
+        "dedicationVerseInfo": "Facoltativo. Alcuni versi o una benedizione, mostrati passando sopra la dedica o toccandola.",
         "launchedOn": "Data del varo",
         "launchPort": "Porto del varo",
         "affiliation": "Affiliazione"

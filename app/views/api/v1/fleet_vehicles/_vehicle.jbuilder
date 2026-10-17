@@ -3,7 +3,7 @@
 # Owner contact links live here rather than in the shared public partial: this
 # list is scoped to fleet members by FleetVehiclePolicy, while the same partial
 # also renders public hangars, where an owner shares a name and nothing more.
-json.cache! ["v10-fleet", vehicle.model, vehicle.model&.facts, ::ScData::Source.current, Manufacturer.artwork_version, vehicle.user, vehicle, vehicle.launch_port_location&.link_cache_key, vehicle.model&.manufacturer, (vehicle.effective_plaque_style if vehicle.dedication.present?), I18n.locale] do
+json.cache! ["v11-fleet", vehicle.model, vehicle.model&.facts, ::ScData::Source.current, Manufacturer.artwork_version, vehicle.user, vehicle, vehicle.launch_port_location&.link_cache_key, vehicle.model&.manufacturer, (vehicle.effective_plaque_style if vehicle.dedication.present?), I18n.locale] do
   json.partial!("api/v1/public/vehicles/base", vehicle:)
 
   unless vehicle.user.hide_owner?

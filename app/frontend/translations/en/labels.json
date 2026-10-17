@@ -4301,6 +4301,8 @@
         "operationsGroup": "Operations crew",
         "title": "Dedication plaque",
         "dedication": "Dedication",
+        "dedicationVerse": "Dedication verse",
+        "dedicationVerseInfo": "Optional. A few lines of verse or a blessing, shown when someone hovers over or taps the dedication.",
         "launchedOn": "Launch date",
         "launchPort": "Launch port",
         "affiliation": "Affiliation"

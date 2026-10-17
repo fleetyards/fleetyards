@@ -824,6 +824,38 @@ class VehicleModelImageTest < ActiveSupport::TestCase
     assert_nil vehicle.launch_port
   end
 
+  test "keeps a dedication to a line or two" do
+    assert build(:vehicle, dedication: "a" * Vehicle::DEDICATION_LIMIT).valid?
+    assert_not build(:vehicle, dedication: "a" * (Vehicle::DEDICATION_LIMIT + 1)).valid?
+  end
+
+  test "trims the blank lines around a dedication verse" do
+    vehicle = create(:vehicle, dedication: "To boldly go", dedication_verse: "\nFair winds,\nand following seas.\n\n")
+
+    assert_equal "Fair winds,\nand following seas.", vehicle.dedication_verse
+    assert_nil create(:vehicle, dedication: "To boldly go", dedication_verse: " \n ").dedication_verse
+  end
+
+  test "keeps a dedication verse to #{Vehicle::DEDICATION_VERSE_LIMIT} characters" do
+    assert build(:vehicle, dedication_verse: "a" * Vehicle::DEDICATION_VERSE_LIMIT).valid?
+    assert_not build(:vehicle, dedication_verse: "a" * (Vehicle::DEDICATION_VERSE_LIMIT + 1)).valid?
+  end
+
+  test "drops the dedication verse with the dedication" do
+    vehicle = create(:vehicle, dedication: "To boldly go", dedication_verse: "Fair winds")
+    vehicle.update!(dedication: nil)
+
+    assert_nil vehicle.reload.dedication_verse
+  end
+
+  test "keeps a supporter style when only the dedication verse changes" do
+    vehicle = create(:vehicle, dedication: "To boldly go")
+    vehicle.update_column(:plaque_style, "carbon")
+    vehicle.update!(dedication_verse: "Fair winds")
+
+    assert_equal "carbon", vehicle.reload.plaque_style
+  end
+
   test "accepts only the lore's operations groups" do
     assert build(:vehicle, operations_group: "nine_tails").valid?
     assert_not build(:vehicle, operations_group: "vanduul_clan").valid?

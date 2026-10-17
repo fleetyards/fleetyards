@@ -110,6 +110,30 @@ describe("VehiclePlaque", () => {
     expect(line(wrapper, "captain")).toBe("Captain Maru");
   });
 
+  it("lets the dedication open its verse, and reads it out to a screen reader", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({
+        dedication: "To boldly go",
+        dedicationVerse: "When the charts run out,\nlook for the light.",
+      }),
+    });
+    const quote = wrapper.find('[data-test="vehicle-plaque-dedication"]');
+
+    expect(quote.attributes("tabindex")).toBe("0");
+    expect(quote.classes()).toContain("vehicle-plaque__quote--verse");
+    expect(quote.find(".sr-only").text()).toContain("look for the light");
+  });
+
+  it("leaves a dedication without a verse out of the tab order", async () => {
+    const wrapper = await mount({
+      vehicle: vehicle({ dedication: "To boldly go" }),
+    });
+    const quote = wrapper.find('[data-test="vehicle-plaque-dedication"]');
+
+    expect(quote.attributes("tabindex")).toBeUndefined();
+    expect(quote.classes()).not.toContain("vehicle-plaque__quote--verse");
+  });
+
   it("names an unnamed ship after its model and leaves out lines with nothing to say", async () => {
     const wrapper = await mount({
       vehicle: vehicle({ dedication: "To boldly go" }),

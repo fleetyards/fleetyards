@@ -4287,6 +4287,8 @@
         "operationsGroup": "行動組",
         "title": "命名銘牌",
         "dedication": "獻詞",
+        "dedicationVerse": "獻詞詩句",
+        "dedicationVerseInfo": "選填。幾行詩句或祝福，滑鼠懸停或點按獻詞時顯示。",
         "launchedOn": "下水日期",
         "launchPort": "下水港口",
         "affiliation": "所屬"

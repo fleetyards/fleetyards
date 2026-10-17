@@ -27,6 +27,8 @@ const vehicle = (
     name: "Contorta",
     serial: "L8-4261-HA",
     dedication: "Built rough, flown far, and never once turned back.",
+    dedicationVerse:
+      "When the charts run out and the lanes go dark,\nlook for the one light that holds its place.\nMay she carry her cargo through every blockade,\nher crew through every storm,\nand every soul aboard home again.",
     launchedOn: "2024-11-29",
     launchPort: "Grim HEX",
     affiliation: "MARU Inc.",
