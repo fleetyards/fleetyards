@@ -1,3 +1,4 @@
+import type { MaybeRefOrGetter } from "vue";
 import type {
   LoadoutSocketGroup,
   LoadoutSocketSlot,
@@ -189,7 +190,13 @@ const sizeLabel = (slot: LoadoutSlot) => {
  *
  * A slot nothing is fitted to keeps its stock part, as the server reads it.
  */
-export const useComponentFitting = () => {
+/**
+ * `stackFrom` is how many identical slots it takes to stack them: a handful
+ * reads well enough one by one on a desktop, where a phone has no room for it.
+ */
+export const useComponentFitting = ({
+  stackFrom = 5,
+}: { stackFrom?: MaybeRefOrGetter<number> } = {}) => {
   const { t, toNumber } = useI18n();
 
   const statsFor = useHardpointStatsFor();
@@ -506,8 +513,8 @@ export const useComponentFitting = () => {
   });
 
   /**
-   * Identical siblings as one row with a count, the way a ship page stacks
-   * identical mounts: a pick on it fills every one, and the slots stay one by
+   * Five or more identical siblings as one row with a count, the way a ship
+   * page stacks identical mounts: a pick on it fills every one, and the slots stay one by
    * one in its stack for fitting each alone.
    */
   const grouped = (slots: LoadoutSocketSlot[]): LoadoutSocketSlot[] => {
@@ -517,20 +524,22 @@ export const useComponentFitting = () => {
       bySignature.set(key, [...(bySignature.get(key) ?? []), slot]);
     });
 
-    return [...bySignature.values()].map((same) => {
-      if (same.length === 1) return same[0];
+    return [...bySignature.values()].flatMap((same) => {
+      if (same.length < toValue(stackFrom)) return same;
 
       const [first] = same;
       const members = same.map((slot) => slot.id);
 
-      return {
-        ...across(first, first.id, members),
-        // Its own id: the first slot's path is also the first row of its stack,
-        // and the two have to be told apart while one of them is open.
-        id: `${first.id}${GROUP_SUFFIX}`,
-        changed: same.some((slot) => slot.changed),
-        stack: same,
-      };
+      return [
+        {
+          ...across(first, first.id, members),
+          // Its own id: the first slot's path is also the first row of its stack,
+          // and the two have to be told apart while one of them is open.
+          id: `${first.id}${GROUP_SUFFIX}`,
+          changed: same.some((slot) => slot.changed),
+          stack: same,
+        },
+      ];
     });
   };
 

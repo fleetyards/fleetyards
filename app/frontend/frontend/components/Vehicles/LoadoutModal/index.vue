@@ -195,7 +195,14 @@ const fittedModuleIds = computed(() =>
   Object.values(fittedModules.value || {}),
 );
 
-const fitting = useComponentFitting();
+// Below this the picker opens under the socket it fills rather than beside the
+// board, where a phone has no room for it.
+const mobile = useMobile();
+
+// A phone stacks any identical slots; a desktop only from five.
+const fitting = useComponentFitting({
+  stackFrom: () => (mobile.value ? 2 : 5),
+});
 
 const { data: hullSlots, ...hullSlotsAsyncStatus } = useModelLoadoutSlots(
   modelSlug,
@@ -740,10 +747,6 @@ const pickerListeners = {
   previewEnd: onPreviewEnd,
   close: closePicker,
 };
-
-// Below this the picker opens under the socket it fills rather than beside the
-// board, where a phone has no room for it.
-const mobile = useMobile();
 
 // Against what the slot holds now, picked but not yet saved included, as the
 // module comparison reads it.
