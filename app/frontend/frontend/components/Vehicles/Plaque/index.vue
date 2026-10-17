@@ -32,7 +32,11 @@ const { t, currentLocale } = useI18n();
 
 const verseTooltip = computed(() =>
   props.vehicle.dedicationVerse
-    ? { content: props.vehicle.dedicationVerse, multiline: true }
+    ? {
+        content: props.vehicle.dedicationVerse,
+        multiline: true,
+        preserveLineBreaks: true,
+      }
     : false,
 );
 

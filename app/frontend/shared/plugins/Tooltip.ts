@@ -7,6 +7,7 @@ interface TooltipOptions {
   popperClass?: string;
   html?: boolean;
   multiline?: boolean;
+  preserveLineBreaks?: boolean;
 }
 
 function parseBinding(binding: DirectiveBinding): TooltipOptions {
@@ -20,6 +21,7 @@ function parseBinding(binding: DirectiveBinding): TooltipOptions {
       popperClass: binding.value.popperClass,
       html: binding.value.html,
       multiline: binding.value.multiline,
+      preserveLineBreaks: binding.value.preserveLineBreaks,
     };
   }
 
@@ -49,9 +51,13 @@ const MULTILINE_MAX_WIDTH = 280;
 // the label needs. `multiline` is for the few that carry a sentence instead:
 // nothing here ever shrinks a tooltip to fit, it only slides it back inside the
 // viewport, so a long one runs off the side of the window rather than wrapping.
-// It keeps the line breaks it was written with, so a verse reads as one.
+// `preserveLineBreaks` keeps the breaks the text was written with, for a verse.
 function applyLineLayout(el: HTMLElement, options: TooltipOptions) {
-  el.style.whiteSpace = options.multiline ? "pre-line" : "nowrap";
+  if (options.multiline) {
+    el.style.whiteSpace = options.preserveLineBreaks ? "pre-line" : "normal";
+  } else {
+    el.style.whiteSpace = "nowrap";
+  }
   el.style.maxWidth = options.multiline ? `${MULTILINE_MAX_WIDTH}px` : "";
 }
 
