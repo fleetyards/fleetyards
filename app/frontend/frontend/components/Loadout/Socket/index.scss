@@ -1,85 +1,66 @@
 /*
- * One slot of the ship, drawn as a socket the picked item sits in. It is the
- * app's own panel, solid rather than glass: it sits over the ship's picture,
- * and a translucent one let the picture show through its text.
+ * One slot of the ship, drawn as the ship page draws a hardpoint row, a step
+ * roomier so it reads as something to press. Its frame tells the slot's state:
+ * dashed while empty, the success colour once filled, the warning colour where
+ * it differs from the saved loadout, the primary colour while pointed at or
+ * being filled.
  */
 .loadout-socket {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  margin: 0;
-  padding: 10px 12px;
-  color: inherit;
-  text-align: left;
-  background: rgba($gray-darker, 0.96);
-  border: 1px solid var(--color-edge-soft);
-  border-radius: $panel-border-radius;
-  transition:
-    border-color $transition-base-speed,
-    background-color $transition-base-speed,
-    transform 0.12s ease-out;
-}
+  margin-bottom: 0;
 
-button.loadout-socket {
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.98);
+  :deep(.hardpoint-item__inner) {
+    min-height: 64px;
+    padding: 12px 14px 12px 18px;
+    transition:
+      border-color $transition-base-speed,
+      background-color $transition-base-speed,
+      transform 0.12s ease-out;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--color-primary, #428bca);
-    outline-offset: 2px;
+  &[role="button"] {
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+
+      > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
+        outline: 2px solid var(--color-primary, #428bca);
+        outline-offset: 2px;
+      }
+    }
+
+    &:active > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
+      transform: scale(0.98);
+    }
   }
 }
 
-// Three states told apart by the frame, at one width: dashed while empty, the
-// success colour an add-on row's selected frame takes once filled, and the
-// warning colour where the slot differs from the saved loadout.
-.loadout-socket--empty {
+.loadout-socket--empty
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   border-style: dashed;
 }
 
-.loadout-socket--occupied {
+.loadout-socket--occupied
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   border-color: var(--color-success, #{$success});
 }
 
-.loadout-socket--changed {
+.loadout-socket--changed
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   border-color: var(--color-warning, #{$warning});
 }
 
-// Pointing at a socket frames it in the primary colour whatever it holds, the
-// colour the socket being filled takes.
-button.loadout-socket:hover {
-  border-color: var(--color-primary, #428bca);
-}
-
-// The socket the picker is filling, whatever it holds: its frame in the
-// primary colour, as a selected row's frame turns, at the same width so
-// nothing shifts.
-.loadout-socket--active,
-button.loadout-socket--active:hover {
+.loadout-socket[role="button"]
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner:hover),
+.loadout-socket--active
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   border-color: var(--color-primary, #428bca);
   border-style: solid;
 }
 
-.loadout-socket__changed {
-  flex: none;
-  width: 7px;
-  height: 7px;
-  background: var(--color-warning, #{$warning});
-  border-radius: 50%;
-}
-
-
-.loadout-socket--filled {
+.loadout-socket--filled
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   animation: loadout-socket-fill 0.7s ease-out;
-
-  .loadout-socket__frame {
-    animation: loadout-socket-seat 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-  }
 }
 
 .loadout-socket__frame {
@@ -87,8 +68,8 @@ button.loadout-socket--active:hover {
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 88px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
   background: $gray-dark;
   border-radius: 6px;
@@ -111,19 +92,14 @@ button.loadout-socket--active:hover {
   color: var(--color-muted);
   font-size: 18px;
 
-  // A part in the socket lights its glyph; the empty one's plus stays quiet.
   .loadout-socket--occupied & {
     color: var(--color-success, #{$success});
-  }
-
-  .loadout-socket--active & {
-    color: var(--color-primary, #428bca);
   }
 }
 
 .loadout-socket__body {
   display: flex;
-  flex: 1;
+  flex: 1 1 140px;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
@@ -135,18 +111,14 @@ button.loadout-socket--active:hover {
   gap: 6px;
   color: var(--color-text-dim);
   font-size: 12px;
-
-  .loadout-socket--active & {
-    color: var(--color-primary-tint, #92bce0);
-  }
 }
 
-.loadout-socket__size {
-  padding: 0 5px;
-  color: $text-color;
-  font-size: 11px;
-  border: 1px solid var(--color-edge-soft);
-  border-radius: 3px;
+.loadout-socket__changed {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--color-warning, #{$warning});
+  border-radius: 50%;
 }
 
 .loadout-socket__name {
@@ -156,7 +128,6 @@ button.loadout-socket--active:hover {
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  // A fitted part's name reads as a row's title does.
   .loadout-socket--occupied & {
     color: var(--color-lifted);
     font-weight: 600;
@@ -173,67 +144,28 @@ button.loadout-socket--active:hover {
   font-size: 12px;
 }
 
-// The ship page's gold headline: the figure first, its label under it.
-.loadout-socket__headline {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-left: auto;
-  text-align: right;
-}
-
-.loadout-socket__headline-value {
-  color: $gold;
-  font-size: 15px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.loadout-socket__headline-label {
-  color: var(--color-text-dim);
-  font-size: 11px;
-  white-space: nowrap;
-}
-
 // Drawn inward: the socket sits against the edge of the modal's scrolling
 // body, which clips anything that spreads outside it.
 @keyframes loadout-socket-fill {
   0% {
     box-shadow: inset 0 0 0 2px color-mix(in srgb, #{$success} 90%, transparent);
-    background-color: color-mix(in srgb, #{$success} 18%, #{$gray-darker});
   }
 
   100% {
     box-shadow: inset 0 0 0 2px color-mix(in srgb, #{$success} 0%, transparent);
-    background-color: rgba($gray-darker, 0.96);
-  }
-}
-
-@keyframes loadout-socket-seat {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loadout-socket {
+  .loadout-socket :deep(.hardpoint-item__inner) {
     transition: none;
   }
 
-  button.loadout-socket:active {
-    transform: none;
-  }
-
-  .loadout-socket--filled,
-  .loadout-socket--filled .loadout-socket__frame {
+  .loadout-socket--filled
+    > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner),
+  .loadout-socket[role="button"]:active
+    > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
     animation: none;
+    transform: none;
   }
 }

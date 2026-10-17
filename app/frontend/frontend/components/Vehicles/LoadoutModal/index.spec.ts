@@ -34,6 +34,7 @@ Element.prototype.scrollTo = vi.fn();
 const hullSlots = ref<unknown[]>([]);
 const savedSlots = ref<unknown[]>([]);
 const componentOptions = ref<unknown[]>([]);
+const optionsStale = ref(false);
 const modelHardpoints = ref<unknown[]>([]);
 
 const resolved = () => ({
@@ -65,6 +66,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useHardpointLoadoutOptions: () => ({
     data: componentOptions,
     ...resolved(),
+    isPlaceholderData: optionsStale,
   }),
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
@@ -141,7 +143,7 @@ type Wrapper = Awaited<ReturnType<typeof mountClosed>>;
 const openPicker = async (wrapper: Wrapper) => {
   if (wrapper.find("[data-test='loadout-picker']").exists()) return;
 
-  const socketButton = wrapper.find("button.loadout-socket");
+  const socketButton = wrapper.find("[data-loadout-socket][role='button']");
   if (socketButton.exists()) await socketButton.trigger("click");
 };
 
@@ -174,6 +176,7 @@ beforeEach(() => {
   hullSlots.value = [];
   savedSlots.value = [];
   componentOptions.value = [];
+  optionsStale.value = false;
   modelHardpoints.value = [];
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
@@ -1091,6 +1094,161 @@ describe("VehicleLoadoutModal component tabs", () => {
         "hardpoint_module/hardpoint_shield_generator_module",
       ).text(),
     ).toContain("Module Shield");
+
+    modules.value = saved;
+  });
+
+  const shieldSlot = (name: string, stock: unknown) => ({
+    name,
+    hardpointId: `hull-${name}`,
+    category: "shieldgenerator",
+    minSize: 1,
+    maxSize: 1,
+    types: ["Shield"],
+    editable: true,
+    swappable: true,
+    stock,
+    slots: [],
+  });
+
+  it("stacks identical slots with a count, and a pick fills every one", async () => {
+    const allStop = { id: "as", name: "AllStop", size: "1" };
+    const better = { id: "fr", name: "FR-66", size: "1" };
+    hullSlots.value = [
+      shieldSlot("hardpoint_shield_generator_left", allStop),
+      shieldSlot("hardpoint_shield_generator_right", allStop),
+    ];
+    componentOptions.value = [
+      { component: allStop, slots: [] },
+      { component: better, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
+    await flushPromises();
+
+    const row = socket(wrapper, "hardpoint_shield_generator_left#stack");
+    expect(row.text()).toContain("2");
+    expect(
+      wrapper
+        .find("[data-test='loadout-socket-hardpoint_shield_generator_right']")
+        .exists(),
+    ).toBe(false);
+
+    await row.trigger("click");
+    await flushPromises();
+
+    // Open, the stack stays one row rather than splitting around its first slot.
+    expect(
+      wrapper
+        .find("[data-test='loadout-socket-hardpoint_shield_generator_left']")
+        .exists(),
+    ).toBe(false);
+
+    await wrapper
+      .findAll("[data-test='loadout-picker-option']")
+      .find((option) => option.text().includes("FR-66"))!
+      .trigger("click");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([
+      {
+        slotPath: "hardpoint_shield_generator_left",
+        itemType: "Component",
+        itemId: "fr",
+      },
+      {
+        slotPath: "hardpoint_shield_generator_right",
+        itemType: "Component",
+        itemId: "fr",
+      },
+    ]);
+  });
+
+  it("shows a spinner, not the last slot's parts, while a slot's parts load", async () => {
+    componentOptions.value = [{ component: OTHER_GUN, slots: [] }];
+    optionsStale.value = true;
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await socket(wrapper, "hardpoint_gun_nose/hardpoint_class_2").trigger(
+      "click",
+    );
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='loadout-picker-loading']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.findAll("[data-test='loadout-picker-option']")).toHaveLength(
+      0,
+    );
+  });
+
+  it("lists under a module what it brings, a rack's missile slots included", async () => {
+    const saved = modules.value;
+    modules.value = {
+      items: [
+        {
+          id: "m1",
+          name: "Combat Module",
+          slug: "combat",
+          slot: "hardpoint_module",
+          hardpoints: [
+            {
+              id: "module-rack",
+              name: "hardpoint_missile_rack",
+              category: "missile_racks",
+              minSize: 2,
+              maxSize: 2,
+              types: ["MissileLauncher"],
+              component: {
+                id: "rack",
+                name: "Module Rack",
+                size: "2",
+                hardpoints: [
+                  {
+                    id: "rack-port",
+                    name: "missile_01_attach",
+                    category: "weapons",
+                    minSize: 1,
+                    maxSize: 1,
+                    types: ["Missile"],
+                    component: { id: "ms", name: "Spark I", size: "1" },
+                    hardpoints: [],
+                  },
+                ],
+              },
+              hardpoints: [],
+            },
+          ],
+        },
+      ] as unknown as ModelModule[],
+    };
+    hullSlots.value = [
+      {
+        name: "hardpoint_module",
+        hardpointId: "hull-module",
+        category: "module",
+        types: ["Module"],
+        editable: true,
+        slots: [],
+      },
+    ];
+    const fitted = vehicle(["m1"], { fitted: { hardpoint_module: "m1" } });
+
+    const modulesTab = await mountClosed(fitted, { tab: "modules" });
+    await flushPromises();
+    expect(socket(modulesTab, "hardpoint_module").text()).toContain(
+      "Module Rack",
+    );
+
+    const missiles = await mountClosed(fitted, { tab: "missiles" });
+    await flushPromises();
+    expect(
+      socket(
+        missiles,
+        "hardpoint_module/hardpoint_missile_rack/missile_01_attach",
+      ).text(),
+    ).toContain("Spark I");
 
     modules.value = saved;
   });

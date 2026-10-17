@@ -1,3 +1,4 @@
+import type { HardpointStat } from "@/frontend/composables/useHardpointStats";
 import type { HardpointCategoryEnum } from "@/services/fyApi";
 
 // What a socket holds, as the socket shows it: no slot type's own record, so
@@ -13,12 +14,16 @@ export interface LoadoutSocketItem {
   // The one figure the part is fitted for, set in gold at the socket's end the
   // way a ship page's hardpoint row sets its headline.
   headline?: { value: string; label: string };
+  // The figures a ship page's hardpoint row shows beside its headline.
+  stats?: HardpointStat[];
 }
 
 export interface LoadoutSocketSlot {
   id: string;
   label: string;
   size?: string;
+  // The size badge a ship page's hardpoint row leads with.
+  maxSize?: number;
   item?: LoadoutSocketItem;
   // Shown, but nothing can be picked for it: the game locks it, or nothing
   // other than what it holds fits.
@@ -28,6 +33,11 @@ export interface LoadoutSocketSlot {
   // What sits inside the item, shown under it the way a ship page nests a
   // turret's guns.
   children?: LoadoutSocketSlot[];
+  // Every slot this socket stands for: identical siblings are shown once with
+  // a count, as a ship page stacks identical mounts, and a pick fills them all.
+  members?: string[];
+  // The same slots one by one, for when a group is split out to fit each alone.
+  stack?: LoadoutSocketSlot[];
 }
 
 export interface LoadoutSocketGroup {

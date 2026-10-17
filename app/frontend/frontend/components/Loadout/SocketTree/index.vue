@@ -30,9 +30,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// The board's view, as the ship page's hardpoints have it: compact folds every
-// socket's contents away, expanded opens them all, and each socket's own
-// chevron overrides either until the view changes again.
+// The board's view, as the ship page's hardpoints have it: expanded shows what
+// sits inside every part, compact folds it away, and a row's own chevron
+// overrides either until the view changes again.
 const density = inject<Ref<"compact" | "expanded">>(
   "loadoutSocketDensity",
   ref("expanded"),
@@ -40,24 +40,44 @@ const density = inject<Ref<"compact" | "expanded">>(
 
 const toggled = ref<Record<string, boolean>>({});
 
+// Groups split out to fit their slots one by one.
+const split = ref<Record<string, boolean>>({});
+
 watch(density, () => {
   toggled.value = {};
 });
 
-// The socket being filled stays in sight, whichever way its parent was folded.
-const holdsActive = (socket: LoadoutSocketSlot): boolean =>
-  !!props.active &&
+const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
   (socket.children ?? []).some(
-    (child) => child.id === props.active || holdsActive(child),
-  );
+    (child) => child.id === id || contains(child, id),
+  ) ||
+  (socket.stack ?? []).some((slot) => slot.id === id || contains(slot, id));
 
+// The socket being filled stays in sight, whichever way its parent was folded.
 const expanded = (socket: LoadoutSocketSlot) =>
-  holdsActive(socket) ||
+  (!!props.active && contains(socket, props.active)) ||
   (toggled.value[socket.id] ?? density.value === "expanded");
 
 const toggle = (socket: LoadoutSocketSlot) => {
   toggled.value = { ...toggled.value, [socket.id]: !expanded(socket) };
 };
+
+const isSplit = (socket: LoadoutSocketSlot) =>
+  !!socket.stack?.length &&
+  (split.value[socket.id] ||
+    socket.stack.some((slot) => slot.id === props.active));
+
+const toggleSplit = (socket: LoadoutSocketSlot) => {
+  split.value = { ...split.value, [socket.id]: !split.value[socket.id] };
+};
+
+// A split group shows its slots in its place, each a row of its own.
+const rows = computed(() =>
+  props.slots.flatMap((socket) => (isSplit(socket) ? socket.stack! : [socket])),
+);
+
+const groupOf = (row: LoadoutSocketSlot) =>
+  props.slots.find((socket) => socket.stack?.includes(row));
 </script>
 
 <template>
@@ -65,58 +85,84 @@ const toggle = (socket: LoadoutSocketSlot) => {
     class="loadout-socket-tree"
     :class="{ 'loadout-socket-tree--nested': nested }"
   >
-    <li v-for="socket in slots" :key="socket.id">
-      <div class="loadout-socket-tree__row">
-        <Socket
-          :socket="socket"
-          :active="editable && socket.id === active"
-          :editable="editable && !socket.locked"
-          @select="emit('select', socket.id)"
-        />
-        <button
-          v-if="socket.children?.length"
-          type="button"
-          class="loadout-socket-tree__toggle"
-          :aria-expanded="expanded(socket)"
-          :aria-label="
-            t(expanded(socket) ? 'labels.collapse' : 'labels.expand')
+    <li v-for="socket in rows" :key="socket.id">
+      <Socket
+        :socket="socket"
+        :active="editable && socket.id === active"
+        :editable="editable && !socket.locked"
+        @select="emit('select', socket.id)"
+      >
+        <template
+          v-if="
+            socket.stack?.length || groupOf(socket) || socket.children?.length
           "
-          :data-test="`loadout-socket-toggle-${socket.id}`"
-          @click="toggle(socket)"
+          #actions
         >
-          <i
-            class="fa-solid"
-            :class="expanded(socket) ? 'fa-chevron-up' : 'fa-chevron-down'"
-            aria-hidden="true"
-          />
-        </button>
-      </div>
+          <span class="loadout-socket-tree__controls">
+            <button
+              v-if="socket.stack?.length || groupOf(socket)"
+              type="button"
+              class="loadout-socket-tree__toggle"
+              :aria-expanded="!!groupOf(socket)"
+              :aria-label="
+                t(groupOf(socket) ? 'labels.collapse' : 'labels.expand')
+              "
+              :data-test="`loadout-socket-split-${socket.id}`"
+              @click.stop="toggleSplit(groupOf(socket) || socket)"
+            >
+              <i
+                class="fa-solid"
+                :class="groupOf(socket) ? 'fa-compress' : 'fa-layer-group'"
+                aria-hidden="true"
+              />
+            </button>
+            <button
+              v-if="socket.children?.length"
+              type="button"
+              class="loadout-socket-tree__toggle"
+              :aria-expanded="expanded(socket)"
+              :aria-label="
+                t(expanded(socket) ? 'labels.collapse' : 'labels.expand')
+              "
+              :data-test="`loadout-socket-toggle-${socket.id}`"
+              @click.stop="toggle(socket)"
+            >
+              <i
+                class="fa-solid"
+                :class="expanded(socket) ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"
+              />
+            </button>
+          </span>
+        </template>
+        <template v-if="socket.children?.length" #children>
+          <Collapsed :visible="expanded(socket)" :duration="200">
+            <LoadoutSocketTree
+              :slots="socket.children"
+              :active="active"
+              :editable="editable"
+              nested
+              @select="(id) => emit('select', id)"
+            >
+              <template v-if="$slots.active" #active>
+                <slot name="active" />
+              </template>
+            </LoadoutSocketTree>
+          </Collapsed>
+        </template>
+      </Socket>
       <!-- Directly under the socket it fills, for a caller with no room
            beside the board, such as a phone's width. -->
+      <!-- A press inside the picker is the picker's: under a nested socket it
+           sits inside the parent's row, which would take the click as its own. -->
       <div
         v-if="editable && socket.id === active && $slots.active"
         class="loadout-socket-tree__active"
         data-test="loadout-socket-board-active"
+        @click.stop
       >
         <slot name="active" />
       </div>
-      <Collapsed
-        v-if="socket.children?.length"
-        :visible="expanded(socket)"
-        :duration="200"
-      >
-        <LoadoutSocketTree
-          :slots="socket.children"
-          :active="active"
-          :editable="editable"
-          nested
-          @select="(id) => emit('select', id)"
-        >
-          <template v-if="$slots.active" #active>
-            <slot name="active" />
-          </template>
-        </LoadoutSocketTree>
-      </Collapsed>
     </li>
   </ul>
 </template>
@@ -131,14 +177,14 @@ const toggle = (socket: LoadoutSocketSlot) => {
   list-style: none;
 }
 
-.loadout-socket-tree__row {
+.loadout-socket-tree__controls {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
-// The ship page's row control: a fixed square beside the socket, so every
-// socket's edge lines up whether it holds anything or not.
+// The ship page's row control: a fixed square in the row's rail, so it sits in
+// the same place on every row.
 .loadout-socket-tree__toggle {
   flex: none;
   display: flex;
