@@ -1230,6 +1230,34 @@ describe("VehicleLoadoutModal component tabs", () => {
     vi.unstubAllGlobals();
   });
 
+  it("keeps apart slots with the same parts under different names inside", async () => {
+    const turret = (name: string, inner: string) => ({
+      name,
+      hardpointId: `hull-${name}`,
+      category: "turret",
+      minSize: 3,
+      maxSize: 3,
+      types: ["Turret"],
+      editable: true,
+      swappable: true,
+      stock: STOCK_GIMBAL,
+      slots: [gunPort(inner, STOCK_GUN)],
+    });
+    hullSlots.value = [
+      turret("hardpoint_turret_left", "turret_left"),
+      turret("hardpoint_turret_right", "duel_turret_left"),
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_turret_left").text()).toContain(
+      "Stock Gimbal",
+    );
+    expect(socket(wrapper, "hardpoint_turret_right").text()).toContain(
+      "Stock Gimbal",
+    );
+  });
+
   it("stacks any identical slots on a phone", async () => {
     const allStop = { id: "as", name: "AllStop", size: "1" };
     hullSlots.value = [
