@@ -355,9 +355,14 @@ export const useComponentFitting = () => {
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
     });
 
+  // What an option brings, unless the slot already knows that part: the trees
+  // describe a part as the ship holds it, stock parts inside included, where
+  // an option only names its empty ports.
   const learnOption = (path: string, option: LoadoutOption) => {
     remember(option.component);
     option.slots.forEach((slot) => remember(slot.stock));
+    if (below.value[path]?.[option.component.id]) return;
+
     learnBelow(path, option.component.id, option.slots);
   };
 
@@ -809,6 +814,10 @@ export const useComponentFitting = () => {
     entry: FittedSlot,
     componentId: string | null,
   ) => {
+    // The part already there, picked again, changes nothing -- what was fitted
+    // inside it stays.
+    if ((componentId ?? undefined) === entry.content?.id) return fitted;
+
     const next = Object.fromEntries(
       Object.entries(fitted).filter(
         ([path]) => !path.startsWith(`${entry.path}/`),
