@@ -21,6 +21,9 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
       parameter name: "modelSlug", in: :query, required: false,
         schema: {type: :string},
         description: "The ship the slot is on, whose tags a part may demand"
+      parameter name: "ancestorIds", in: :query, required: false,
+        schema: {type: :array, items: {type: :string, format: :uuid}}, style: :form, explode: true,
+        description: "The ports above the slot, whose tags a part may demand too; read only with modelSlug"
 
       response(200, "successful") do
         schema ::V1::Schemas::Loadouts::LoadoutOptionList
@@ -83,6 +86,23 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {id: slot.id}, params: {modelSlug: model.slug} do
       assert_equal ["Plain Gun"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options offers a part the tags of a port above the slot meet" do
+    model = create(:model)
+    mount = create(:hardpoint, parent: model, sc_name: "hardpoint_gun_nose", source: :game_files,
+      types: %w[Turret], min_size: 3, max_size: 3, port_tags: ["VanguardNose"])
+    slot = create(:hardpoint, parent: mount, sc_name: "hardpoint_class_2", source: :game_files,
+      types: %w[WeaponGun], min_size: 2, max_size: 2)
+    create(:component, name: "Nose Gun", component_type: "WeaponGun", category: "weapons", size: "2",
+      required_tags: ["VanguardNose"])
+
+    assert_api_response :get, 200, path_params: {id: slot.id}, params: {modelSlug: model.slug, ancestorIds: [mount.id]} do
+      assert_equal ["Nose Gun"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+    assert_api_response :get, 200, path_params: {id: slot.id}, params: {modelSlug: model.slug} do
+      assert_empty parsed_body
     end
   end
 

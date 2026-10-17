@@ -85,6 +85,34 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused stale, :slot_unknown
   end
 
+  test "a tag a port above provides counts for what sits below it, not for the ship" do
+    nose = Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_gun_nose")
+    nose.build.update!(port_tags: ["VanguardNose"])
+    nose_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      required_tags: ["VanguardNose"])
+    Hardpoint.find_by!(parent: nose, sc_name: "hardpoint_class_2").build.update!(component: nose_gun)
+    other_nose_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      required_tags: ["VanguardNose"])
+
+    assert fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", other_nose_gun])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_wing/hardpoint_class_2", other_nose_gun])),
+      :component_not_in_slot
+  end
+
+  test "a tag a stock mount's own port provides counts below it, not for the ship" do
+    Hardpoint.find_by!(parent: @gimbal, sc_name: "hardpoint_class_2").build.update!(port_tags: ["Merlin_Nose"])
+    merlin_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      required_tags: ["Merlin_Nose"])
+    nose = Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_gun_nose")
+    Hardpoint.find_by!(parent: nose, sc_name: "hardpoint_class_2").build.update!(component: merlin_gun)
+    port(@model, "hardpoint_gun_tail", types: ["WeaponGun"], min_size: 3, max_size: 3, component: @gun)
+    other_merlin_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      required_tags: ["Merlin_Nose"])
+
+    assert fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", other_merlin_gun])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_tail", other_merlin_gun])), :component_not_in_slot
+  end
+
   test "a mount slot takes mounts, not the guns that go inside them" do
     assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose", @gun])), :component_not_in_slot
 

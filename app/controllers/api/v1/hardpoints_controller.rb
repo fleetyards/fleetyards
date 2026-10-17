@@ -14,12 +14,15 @@ module Api
         # caller, holding the slot, says.
         stock = params[:stock_id].present? ? Component.find_by(id: params[:stock_id]) : hardpoint.facts.component
 
-        # The ship it is for, whose tags a part may demand.
+        # The ship it is for and the ports above the slot, whose tags a part may
+        # demand.
         if params[:model_slug].present?
-          ship_tags = LoadoutSlots.ship_tags_for(Model.find_by!(slug: params[:model_slug]))
+          above = Hardpoint.where(id: Array(params[:ancestor_ids])).includes(LoadoutSlots::PRELOAD)
+          provided = LoadoutSlots.ship_tags_for(Model.find_by!(slug: params[:model_slug])) |
+            above.flat_map { |port| LoadoutSlots.port_tags(port) }
         end
 
-        @options = LoadoutSlots.options(hardpoint, stock:, ship_tags:)
+        @options = LoadoutSlots.options(hardpoint, stock:, provided:)
         @ports = Hardpoint.in_build.where(parent_type: "Component", parent_id: @options.map(&:id))
           .includes(Hardpoint::RENDERED)
           .group_by(&:parent_id)
