@@ -228,6 +228,12 @@
     top: 0;
     max-height: calc(100dvh - 340px);
   }
+
+  // The room the picker takes, held while it is closed too, or the modal grows
+  // and the footer jumps each time it opens.
+  .vehicle-loadout__category {
+    min-height: calc(100dvh - 340px);
+  }
 }
 
 // In the footer, beside the save it names: as wide as a name needs, no wider,

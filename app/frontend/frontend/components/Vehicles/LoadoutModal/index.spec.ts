@@ -26,6 +26,10 @@ const modules = ref<{ items: ModelModule[] }>({
 
 const loadouts = ref<unknown[]>([]);
 
+const hullSlots = ref<unknown[]>([]);
+const savedSlots = ref<unknown[]>([]);
+const componentOptions = ref<unknown[]>([]);
+
 const resolved = () => ({
   isPending: ref(false),
   isFetching: ref(false),
@@ -49,6 +53,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useModelModules: () => ({ data: modules, ...resolved() }),
   useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
+  useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
+  useVehicleLoadoutSlots: () => ({ data: savedSlots, ...resolved() }),
+  useHardpointLoadoutOptions: () => ({
+    data: componentOptions,
+    ...resolved(),
+  }),
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
   activateVehicleLoadout: (...args: unknown[]) =>
@@ -154,6 +164,9 @@ const cargo = (wrapper: Wrapper) =>
 
 beforeEach(() => {
   loadouts.value = [];
+  hullSlots.value = [];
+  savedSlots.value = [];
+  componentOptions.value = [];
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
   activateVehicleLoadout.mockClear();
@@ -766,5 +779,148 @@ describe("VehicleLoadoutModal with several sockets", () => {
       "DIV",
     );
     expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
+  });
+});
+
+describe("VehicleLoadoutModal component tabs", () => {
+  const STOCK_GIMBAL = { id: "g1", name: "Stock Gimbal", size: "3" };
+  const STOCK_GUN = { id: "gun1", name: "Stock Gun", size: "3" };
+  const OTHER_GUN = { id: "gun2", name: "Other Gun", size: "2" };
+  const OTHER_GIMBAL = { id: "g2", name: "Other Gimbal", size: "3" };
+
+  const gunPort = (name: string, stock?: unknown) => ({
+    name,
+    hardpointId: `port-${name}`,
+    category: "weapons",
+    minSize: 2,
+    maxSize: 3,
+    types: ["WeaponGun"],
+    editable: true,
+    stock,
+    slots: [],
+  });
+
+  beforeEach(() => {
+    hullSlots.value = [
+      {
+        name: "hardpoint_gun_nose",
+        hardpointId: "hull-nose",
+        category: "weapon_mounts",
+        minSize: 3,
+        maxSize: 3,
+        types: ["Turret"],
+        editable: true,
+        stock: STOCK_GIMBAL,
+        slots: [gunPort("hardpoint_class_2", STOCK_GUN)],
+      },
+    ];
+  });
+
+  const socket = (wrapper: Wrapper, path: string) =>
+    wrapper.get(`[data-test='loadout-socket-${path}']`);
+
+  const choose = async (wrapper: Wrapper, path: string, name: string) => {
+    await socket(wrapper, path).trigger("click");
+    await flushPromises();
+
+    const option = wrapper
+      .findAll("[data-test='loadout-picker-option']")
+      .find((entry) => entry.text().includes(name));
+    await option!.trigger("click");
+    await flushPromises();
+  };
+
+  const savedItems = () =>
+    (updateVehicleLoadout.mock.calls.at(-1)?.[2] as { items: unknown[] })
+      ?.items ??
+    (createVehicleLoadout.mock.calls.at(-1)?.[1] as { items: unknown[] })
+      ?.items;
+
+  it("lists a mount and the gun inside it with their stock parts", async () => {
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_gun_nose").text()).toContain(
+      "Stock Gimbal",
+    );
+    expect(
+      socket(wrapper, "hardpoint_gun_nose/hardpoint_class_2").text(),
+    ).toContain("Stock Gun");
+  });
+
+  it("saves a gun fitted into the stock mount by its slot path", async () => {
+    componentOptions.value = [
+      { component: STOCK_GUN, slots: [] },
+      { component: OTHER_GUN, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await choose(wrapper, "hardpoint_gun_nose/hardpoint_class_2", "Other Gun");
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([
+      {
+        slotPath: "hardpoint_gun_nose/hardpoint_class_2",
+        itemType: "Component",
+        itemId: "gun2",
+      },
+    ]);
+  });
+
+  it("a swapped mount brings its own empty ports and drops the old gun", async () => {
+    componentOptions.value = [
+      { component: OTHER_GUN, slots: [] },
+      { component: OTHER_GIMBAL, slots: [gunPort("hardpoint_gun")] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await choose(wrapper, "hardpoint_gun_nose/hardpoint_class_2", "Other Gun");
+    await choose(wrapper, "hardpoint_gun_nose", "Other Gimbal");
+
+    expect(
+      wrapper
+        .find(
+          "[data-test='loadout-socket-hardpoint_gun_nose/hardpoint_class_2']",
+        )
+        .exists(),
+    ).toBe(false);
+    expect(
+      socket(wrapper, "hardpoint_gun_nose/hardpoint_gun").text(),
+    ).toContain("labels.loadoutPicker.emptySocket");
+
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([
+      { slotPath: "hardpoint_gun_nose", itemType: "Component", itemId: "g2" },
+    ]);
+  });
+
+  it("picking the stock part again clears the slot", async () => {
+    componentOptions.value = [
+      { component: STOCK_GUN, slots: [] },
+      { component: OTHER_GUN, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await choose(wrapper, "hardpoint_gun_nose/hardpoint_class_2", "Other Gun");
+    await choose(wrapper, "hardpoint_gun_nose/hardpoint_class_2", "Stock Gun");
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([]);
+  });
+
+  it("disables a category the ship has no slots for", async () => {
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(
+      wrapper
+        .findAllComponents({ name: "FormTab" })
+        .find((tab) => tab.props("id") === "shields")
+        ?.props("disabled"),
+    ).toBe(true);
   });
 });
