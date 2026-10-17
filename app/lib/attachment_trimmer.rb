@@ -53,7 +53,13 @@ class AttachmentTrimmer
 
     require "vips"
 
-    image = Vips::Image.new_from_buffer(blob.download, "")
+    # Read from a tempfile rather than a downloaded string: a colored render runs
+    # to 40 MB, and holding it in the heap beside its decode is what the worker
+    # cannot afford with several crops running at once.
+    blob.open { |file| crop(Vips::Image.new_from_file(file.path)) }
+  end
+
+  def crop(image)
     return unless image.has_alpha?
 
     left, top, width, height = image[image.bands - 1]
