@@ -479,7 +479,8 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
       contained: "Mercury Star Runner and 3 items")
     painted = buyback(user, name: "Standalone Ship - Cutter plus Groundswell Paint", upgraded: true,
       contained: "Cutter Scout and 3 items")
-    dashed = buyback(user, name: "Standalone Ship - Cutter – IAE", upgraded: true, contained: "Cutter Scout and 2 items")
+    dashed = buyback(user, name: "Standalone Ship - Cutter – IAE", upgraded: true, contained: "Cutter Scout and 2 items",
+      ship_names: [])
     buyback(user, kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
       contained: "Mercury Star Runner and 5 items")
     sign_in user
