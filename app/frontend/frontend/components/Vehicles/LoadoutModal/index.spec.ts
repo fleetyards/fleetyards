@@ -1357,6 +1357,45 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
   });
 
+  it("counts a gun whose port names no category in the weapon figures", async () => {
+    const gun = {
+      id: "gun-dps",
+      name: "Damage Gun",
+      size: "3",
+      category: "weapons",
+      type: "WeaponGun",
+      typeData: { fireRate: 600, damagePerShot: { energy: 10 } },
+    };
+    hullSlots.value = [
+      {
+        name: "hardpoint_gun_nose",
+        hardpointId: "hull-nose",
+        category: "weapon_mounts",
+        minSize: 3,
+        maxSize: 3,
+        types: ["Turret"],
+        editable: true,
+        stock: STOCK_GIMBAL,
+        slots: [{ ...gunPort("hardpoint_class_2", gun), category: "unknown" }],
+      },
+    ];
+    modelHardpoints.value = [
+      {
+        id: "hp-nose",
+        name: "hardpoint_gun_nose",
+        category: "weapon_mounts",
+        component: STOCK_GIMBAL,
+        hardpoints: [],
+      },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-metric-dps']").text(),
+    ).toContain("100");
+  });
+
   it("disables a category the ship has no slots for", async () => {
     const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
     await flushPromises();
