@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import type { Ref } from "vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import Socket from "@/frontend/components/Loadout/Socket/index.vue";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
@@ -30,22 +29,11 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// The board's view, as the ship page's hardpoints have it: expanded shows what
-// sits inside every part, compact folds it away, and a row's own chevron
-// overrides either until the view changes again.
-const density = inject<Ref<"compact" | "expanded">>(
-  "loadoutSocketDensity",
-  ref("expanded"),
-);
-
+// What sits inside every part shows until its row's chevron folds it away.
 const toggled = ref<Record<string, boolean>>({});
 
 // Groups split out to fit their slots one by one.
 const split = ref<Record<string, boolean>>({});
-
-watch(density, () => {
-  toggled.value = {};
-});
 
 const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
   (socket.children ?? []).some(
@@ -56,7 +44,7 @@ const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
 // The socket being filled stays in sight, whichever way its parent was folded.
 const expanded = (socket: LoadoutSocketSlot) =>
   (!!props.active && contains(socket, props.active)) ||
-  (toggled.value[socket.id] ?? density.value === "expanded");
+  (toggled.value[socket.id] ?? true);
 
 const toggle = (socket: LoadoutSocketSlot) => {
   toggled.value = { ...toggled.value, [socket.id]: !expanded(socket) };
