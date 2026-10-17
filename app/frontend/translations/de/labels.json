@@ -4410,6 +4410,8 @@
         },
         "reset": "Filter zurücksetzen",
         "leaveEmpty": "Leer lassen",
+        "fixedByShip": "Fest verbaut",
+        "noOtherPart": "Kein anderes Teil passt",
         "changed": "Geändert",
         "noMatches": "Keine Treffer",
         "close": "Schließen"

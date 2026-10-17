@@ -4410,6 +4410,8 @@
         },
         "reset": "Reimposta filtri",
         "leaveEmpty": "Lascia vuoto",
+        "fixedByShip": "Fisso sulla nave",
+        "noOtherPart": "Nessun altro pezzo è compatibile",
         "changed": "Modificato",
         "noMatches": "Nessun risultato",
         "close": "Chiudi"

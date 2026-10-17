@@ -169,3 +169,22 @@
     transform: none;
   }
 }
+
+// Why a press does nothing, where the socket cannot change.
+.loadout-socket--locked {
+  cursor: not-allowed;
+}
+
+.loadout-socket__locked {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  color: var(--color-text-dim);
+  font-size: 12px;
+
+  i {
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+}
