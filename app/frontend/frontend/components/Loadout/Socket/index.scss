@@ -50,6 +50,11 @@
   border-color: var(--color-warning, #{$warning});
 }
 
+.loadout-socket--refused
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
+  border-color: var(--color-danger, #{$danger});
+}
+
 .loadout-socket[role="button"]
   > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner:hover),
 .loadout-socket--active
@@ -185,6 +190,19 @@
 
   i {
     color: var(--color-muted);
+    font-size: 10px;
+  }
+}
+
+.loadout-socket__refused {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  color: var(--color-danger, #{$danger});
+  font-size: 12px;
+
+  i {
     font-size: 10px;
   }
 }

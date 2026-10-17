@@ -14,6 +14,12 @@ import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
+import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
@@ -177,6 +183,27 @@ const [fittedModules] = defineField("fittedModules");
 
 const [fittedComponents] = defineField("fittedComponents");
 
+const loadoutProblems = useLoadoutProblems(
+  () => props.vehicle.id,
+  () => editedLoadout.value?.id,
+  () => props.editable,
+);
+
+// The refused items the fitting still holds: picking something else for the
+// slot settles one, and a save takes out the rest.
+const refusedItems = computed(() =>
+  loadoutProblems.problems.value.filter((problem) => {
+    if (problem.itemType === VehicleLoadoutItemTypeEnum.MODEL_MODULE) {
+      return fittedModules.value?.[problem.slotPath] === problem.itemId;
+    }
+
+    const held = fittedComponents.value?.[problem.slotPath];
+    return problem.itemType === VehicleLoadoutItemTypeEnum.EMPTY
+      ? held === EMPTIED
+      : held === problem.itemId;
+  }),
+);
+
 const model = computed(() => props.vehicle.model);
 
 const modelSlug = computed(() => model.value?.slug ?? "");
@@ -259,10 +286,13 @@ const componentTab = (tab: ComponentTab) => ({
   ...tab,
   label: t(`labels.vehicleLoadout.tabs.${tab.id}`),
   icon: categoryIcon(TAB_ICONS[tab.id]),
-  groups: fitting.groups(componentTree.value, tab, {
-    fittedOnly: !props.editable,
-    saved: props.editable ? savedTree.value : undefined,
-  }),
+  groups: loadoutProblems.markRefused(
+    fitting.groups(componentTree.value, tab, {
+      fittedOnly: !props.editable,
+      saved: props.editable ? savedTree.value : undefined,
+    }),
+    refusedItems.value,
+  ),
   available: fitting.hasSlots(componentTree.value, tab),
 });
 
@@ -508,11 +538,14 @@ const slots = computed(() => moduleSlots(modules.value));
 const moduleSockets = useModuleSockets();
 
 const socketGroups = computed(() =>
-  moduleSockets.groups(modules.value, fittedModules.value || {}, {
-    fittedOnly: !props.editable,
-    saved: props.editable ? savedValues().fittedModules : undefined,
-    contents: fitting.moduleContents,
-  }),
+  loadoutProblems.markRefused(
+    moduleSockets.groups(modules.value, fittedModules.value || {}, {
+      fittedOnly: !props.editable,
+      saved: props.editable ? savedValues().fittedModules : undefined,
+      contents: fitting.moduleContents,
+    }),
+    refusedItems.value,
+  ),
 );
 
 /**
@@ -864,8 +897,11 @@ const saving = ref(false);
 // undoes the change.
 const changed = computed(() => meta.value.dirty);
 
-// A saved loadout needs a change to save; a new one saves the ship as it is.
-const savable = computed(() => !editedLoadout.value || changed.value);
+// A saved loadout needs a change to save, or an item the build refuses to take
+// out; a new one saves the ship as it is.
+const savable = computed(
+  () => !editedLoadout.value || changed.value || !!refusedItems.value.length,
+);
 
 // Created by a save whose activation then failed: the retry finishes that one
 // rather than creating another beside it.
@@ -899,6 +935,10 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
 
   const components = fittedComponentsToSave(values);
 
+  const refusedPaths = new Set(
+    refusedItems.value.map((problem) => problem.slotPath),
+  );
+
   const items = [
     ...asItems(values.fittedModules, VehicleLoadoutItemTypeEnum.MODEL_MODULE),
     ...asItems(
@@ -913,7 +953,7 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
         slotPath,
         itemType: VehicleLoadoutItemTypeEnum.EMPTY,
       })),
-  ];
+  ].filter((item) => !refusedPaths.has(item.slotPath));
   // A cleared name goes back to the default the server gives, and so does the
   // opened loadout's own name on a copy of it, which would clash.
   const typed = values.loadoutName.trim();
@@ -1044,6 +1084,21 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         >
           {{ t("labels.vehicleLoadout.notFlightReady") }}
         </p>
+
+        <Alert
+          v-if="refusedItems.length"
+          :variant="AlertVariantsEnum.WARNING"
+          :size="AlertSizesEnum.COMPACT"
+          :title="t('labels.vehicleLoadout.refused.title')"
+          data-test="vehicle-loadout-refused"
+        >
+          <p>{{ t("labels.vehicleLoadout.refused.removedOnSave") }}</p>
+          <ul class="vehicle-loadout__refused">
+            <li v-for="problem in refusedItems" :key="problem.slotPath">
+              {{ loadoutProblems.describe(problem) }}
+            </li>
+          </ul>
+        </Alert>
 
         <FormTabs
           :default-tab="tab"

@@ -33,6 +33,7 @@ Element.prototype.scrollTo = vi.fn();
 
 const hullSlots = ref<unknown[]>([]);
 const savedSlots = ref<unknown[]>([]);
+const loadoutProblems = ref<unknown[]>([]);
 const componentOptions = ref<unknown[]>([]);
 const optionsStale = ref(false);
 let optionsParams: () => Record<string, unknown> = () => ({});
@@ -63,6 +64,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useVehicleLoadouts: () => ({ data: loadouts, ...resolved() }),
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useVehicleLoadoutSlots: () => ({ data: savedSlots, ...resolved() }),
+  useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
   useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
   useHardpointLoadoutOptions: (
     _id: unknown,
@@ -194,6 +196,7 @@ beforeEach(() => {
   loadouts.value = [];
   hullSlots.value = [];
   savedSlots.value = [];
+  loadoutProblems.value = [];
   componentOptions.value = [];
   optionsStale.value = false;
   modelHardpoints.value = [];
@@ -1005,6 +1008,94 @@ describe("VehicleLoadoutModal component tabs", () => {
     await flushPromises();
 
     expect(optionsParams().ancestorIds).toEqual(["hull-nose"]);
+  });
+
+  describe("with items a new build refuses", () => {
+    const gun = "hardpoint_gun_nose/hardpoint_class_2";
+
+    beforeEach(() => {
+      loadouts.value = [
+        {
+          id: "l2",
+          name: "Gunship",
+          kind: "fleetyards",
+          active: false,
+          updatedAt: "2026-10-01T00:00:00Z",
+          items: [
+            { slotPath: gun, itemType: "Component", itemId: "gun2" },
+            { slotPath: "hardpoint_gone", itemType: "Component", itemId: "x1" },
+          ],
+        },
+      ];
+      loadoutProblems.value = [
+        {
+          slotPath: gun,
+          itemType: "Component",
+          itemId: "gun2",
+          itemName: "Other Gun",
+          code: "component_not_in_slot",
+        },
+        {
+          slotPath: "hardpoint_gone",
+          itemType: "Component",
+          itemId: "x1",
+          itemName: "Gone Gun",
+          code: "slot_unknown",
+        },
+      ];
+      componentOptions.value = [
+        { component: STOCK_GUN, slots: [] },
+        { component: OTHER_GUN, slots: [] },
+        { component: { id: "gun3", name: "Third Gun", size: "3" }, slots: [] },
+      ];
+    });
+
+    it("marks them, lists them, and a save takes them out", async () => {
+      const wrapper = await mountClosed(vehicle(), {
+        tab: "weapons",
+        loadoutId: "l2",
+      });
+      await flushPromises();
+
+      expect(socket(wrapper, gun).classes()).toContain(
+        "loadout-socket--refused",
+      );
+      const notice = wrapper.get("[data-test='vehicle-loadout-refused']");
+      expect(notice.text()).toContain("Other Gun");
+      expect(notice.text()).toContain("Gone Gun");
+      expect(
+        wrapper
+          .get("[data-test='vehicle-loadout-save']")
+          .attributes("disabled"),
+      ).toBeUndefined();
+
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([]);
+    });
+
+    it("settles one once its slot holds something else", async () => {
+      const wrapper = await mountClosed(vehicle(), {
+        tab: "weapons",
+        loadoutId: "l2",
+      });
+      await flushPromises();
+
+      await choose(wrapper, gun, "Third Gun");
+
+      expect(socket(wrapper, gun).classes()).not.toContain(
+        "loadout-socket--refused",
+      );
+      const notice = wrapper.get("[data-test='vehicle-loadout-refused']");
+      expect(notice.text()).not.toContain("Other Gun");
+      expect(notice.text()).toContain("Gone Gun");
+
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        { slotPath: gun, itemType: "Component", itemId: "gun3" },
+      ]);
+    });
   });
 
   it("marks a slot that differs from the saved loadout as changed", async () => {
