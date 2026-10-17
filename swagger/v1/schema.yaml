@@ -12448,6 +12448,12 @@ paths:
           format: uuid
         description: What the slot came with, which a port inside a part does not
           know itself
+      - name: modelSlug
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The ship the slot is on, whose tags a part may demand
       responses:
         '200':
           description: successful
