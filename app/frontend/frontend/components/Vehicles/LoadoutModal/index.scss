@@ -134,13 +134,11 @@
     margin: 0;
   }
 
-  // The ship page's card for the open tab, read the way it reads there.
+  // The open tab's leading figures, across the column's whole width: the
+  // column lines its title up on the right and would shrink them to fit.
   &__card {
+    align-self: stretch;
     text-align: left;
-
-    > * {
-      margin: 0;
-    }
   }
 
   &__changes-title {
