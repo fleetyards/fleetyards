@@ -42,6 +42,7 @@ import {
   COMPONENT_TABS,
   type ComponentTab,
   EMPTIED,
+  loadoutValues,
   slotName,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
@@ -131,26 +132,15 @@ const loadoutPending = computed(
   () => props.editable && !props.newLoadout && loadoutsPending.value,
 );
 
-const savedItems = (type: VehicleLoadoutItemTypeEnum) =>
-  Object.fromEntries(
-    (editedLoadout.value?.items || [])
-      .filter((item) => item.itemType === type)
-      .map((item) => [item.slotPath, item.itemId ?? EMPTIED]),
-  );
+const savedValues = (): LoadoutValues => {
+  const { modules, components } = loadoutValues(editedLoadout.value?.items);
 
-const savedValues = (): LoadoutValues => ({
-  loadoutName: editedLoadout.value?.name ?? "",
-  fittedModules: savedItems(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
-  fittedComponents: {
-    ...savedItems(VehicleLoadoutItemTypeEnum.COMPONENT),
-    ...Object.fromEntries(
-      Object.keys(savedItems(VehicleLoadoutItemTypeEnum.EMPTY)).map((path) => [
-        path,
-        EMPTIED,
-      ]),
-    ),
-  },
-});
+  return {
+    loadoutName: editedLoadout.value?.name ?? "",
+    fittedModules: modules,
+    fittedComponents: components,
+  };
+};
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
   initialValues: savedValues(),
