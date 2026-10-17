@@ -39,16 +39,20 @@ class LoadoutSlots
     end
   end
 
-  # The catalogue components a port takes, best first by name. A port that names
-  # neither types nor a category has nothing to match on and takes nothing.
+  # The catalogue components a port takes, by name. Matched on the build's facts
+  # in SQL, so a type the build changed is read as the build has it, then checked
+  # once more in Ruby the way a save is. A port that names neither types nor a
+  # category has nothing to match on and takes nothing.
   def self.options(port)
     facts = port.facts
     types = Array(facts.types).compact_blank
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
 
-    scope = Component.current_version.named.order(:name)
-    scope = types.any? ? scope.where(component_type: types) : scope.where(category: facts.category)
-    scope.select { |component| fits?(port, component) }
+    kind = types.any? ? Component.fact_sql(:component_type).in(types) : Component.fact_sql(:category).eq(facts.category)
+    Component.with_facts.catalogued.where(kind)
+      .includes(:build, :last_build)
+      .order(Component.fact_sql(:name))
+      .select { |component| fits?(port, component) }
   end
 
   # A port that names no types (68 life-support slots, among others) is matched
@@ -72,10 +76,6 @@ class LoadoutSlots
     radar cooler lifesupport powerplant shieldgenerator quantumdrive controller
     weapons weapon_mounts turret missile_racks module
   ].freeze
-
-  # Shield, missile and weapon controllers are ship internals; the flight blade
-  # is the one controller a player swaps.
-  FITTED_CONTROLLER_TYPES = Component::CATALOGUED_CONTROLLER_TYPES
 
   # `items` are `{slot_path:, item_type:, item_id:}` hashes, as a loadout's
   # `item_list` holds them.
@@ -102,9 +102,17 @@ class LoadoutSlots
       next false unless HULL_CATEGORIES.include?(slot.facts.category)
       next true unless slot.facts.category == "controller"
 
-      FITTED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
-        Array(slot.facts.types).intersect?(FITTED_CONTROLLER_TYPES)
+      # Shield, missile and weapon controllers are ship internals; the flight
+      # blade is the one controller a player swaps, as in the catalogue.
+      Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
+        Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
     end
+  end
+
+  # Whether the slot at `path` hangs off a hull slot a player fits at all.
+  def fittable?(path)
+    @fittable_roots ||= fittable_hull.map(&:name).to_set
+    @fittable_roots.include?(path.partition("/").first)
   end
 
   def children(slot)

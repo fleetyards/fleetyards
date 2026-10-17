@@ -117,16 +117,19 @@ class VehicleLoadout < ApplicationRecord
     components_fit
   end
 
-  # A component goes in any slot, on the hull or below, whose port takes its
-  # type and size in the build we are on. Whether anybody owns it does not
-  # matter, as for modules. A slot the game locks takes only what it came with.
+  # A component goes in any slot below a hull slot a player fits, whose port
+  # takes its type and size in the build we are on. Whether anybody owns it does
+  # not matter, as for modules, but it has to be a part the catalogue offers in
+  # this build -- or the one the slot came with. A slot the game locks takes
+  # only that.
   private def components_fit
     item_list.select { |item| item[:item_type] == "Component" }.each do |item|
       slot = loadout_slots[item[:slot_path]]
-      next errors.add(:items, :slot_unknown) if slot.nil?
+      next errors.add(:items, :slot_unknown) if slot.nil? || !loadout_slots.fittable?(item[:slot_path])
 
       component = loadout_slots.fitted(item[:slot_path])
-      next errors.add(:items, :component_not_in_slot) if component.nil? || !slot.fits?(component)
+      offered = component.present? && (component.id == slot.stock&.id || (!component.retired? && component.catalogued?))
+      next errors.add(:items, :component_not_in_slot) unless offered && slot.fits?(component)
 
       errors.add(:items, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
     end

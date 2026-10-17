@@ -99,6 +99,19 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused fleetyards_loadout(fit(["hardpoint_empty/hardpoint_gun", @gun])), :parent_not_fitted
   end
 
+  test "refuses a slot the player does not fit, like a door" do
+    door = create(:component, component_type: "Door", category: "doors", size: "1")
+    port(@model, "hardpoint_door", component: door)
+
+    assert_refused fleetyards_loadout(fit(["hardpoint_door", door])), :slot_unknown
+  end
+
+  test "refuses a part the build no longer carries, unless the slot came with it" do
+    retired = create(:component, :without_build, component_type: "PowerPlant", category: "powerplant", size: "1")
+
+    assert_refused fleetyards_loadout(fit(["hardpoint_power_plant", retired])), :component_not_in_slot
+  end
+
   test "a component removed from the catalogue is unfitted with what sat inside it" do
     loadout = fleetyards_loadout(fit(
       ["hardpoint_power_plant", @plant],
