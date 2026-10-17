@@ -602,6 +602,7 @@
         "editLoadout": "Modifier l’équipement",
         "newLoadout": "Nouvel équipement",
         "saveLoadout": "Enregistrer l’équipement",
+        "saveAsNewLoadout": "Enregistrer comme nouvel équipement",
         "viewLoadout": "Voir l’équipement"
       }
     }

@@ -602,6 +602,7 @@
         "editLoadout": "Loadout bearbeiten",
         "newLoadout": "Neues Loadout",
         "saveLoadout": "Loadout speichern",
+        "saveAsNewLoadout": "Als neues Loadout speichern",
         "viewLoadout": "Loadout ansehen"
       }
     }

@@ -826,11 +826,12 @@ const saving = ref(false);
 const createdLoadout = ref<VehicleLoadout>();
 
 /**
- * Writes the loadout being edited, or a new one. A new loadout is switched on
+ * Writes the loadout being edited, or a new one -- also on request beside the
+ * one opened, which then stays as it was saved. A new loadout is switched on
  * only when nothing else is: replacing an active build stays a choice made on
  * the loadouts page.
  */
-const onSubmit = handleSubmit(async (values) => {
+const save = async (values: LoadoutValues, asNew: boolean) => {
   if (!props.editable || !flightReady.value || loadoutPending.value) {
     return;
   }
@@ -862,9 +863,13 @@ const onSubmit = handleSubmit(async (values) => {
         itemType: VehicleLoadoutItemTypeEnum.EMPTY,
       })),
   ];
-  // A cleared name goes back to the default the server gives.
-  const name = values.loadoutName.trim();
-  const target = createdLoadout.value ?? editedLoadout.value;
+  // A cleared name goes back to the default the server gives, and so does the
+  // opened loadout's own name on a copy of it, which would clash.
+  const typed = values.loadoutName.trim();
+  const name = asNew && typed === editedLoadout.value?.name ? "" : typed;
+  const target = asNew
+    ? createdLoadout.value
+    : (createdLoadout.value ?? editedLoadout.value);
 
   saving.value = true;
 
@@ -906,7 +911,11 @@ const onSubmit = handleSubmit(async (values) => {
   } finally {
     saving.value = false;
   }
-});
+};
+
+const onSubmit = handleSubmit((values) => save(values, false));
+
+const onSaveAsNew = handleSubmit((values) => save(values, true));
 </script>
 
 <template>
@@ -1200,6 +1209,15 @@ const onSubmit = handleSubmit(async (values) => {
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}
+      </Btn>
+      <Btn
+        v-if="editedLoadout"
+        :loading="saving"
+        :disabled="!flightReady || loadoutPending"
+        data-test="vehicle-loadout-save-as-new"
+        @click="onSaveAsNew"
+      >
+        {{ t("actions.vehicleLoadout.saveAsNewLoadout") }}
       </Btn>
     </template>
   </Modal>
