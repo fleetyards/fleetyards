@@ -20,12 +20,19 @@ import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
+  COMPONENT_TABS,
+  slotName,
+  useComponentFitting,
+} from "@/frontend/composables/useComponentFitting";
+import {
   HardpointCategoryEnum,
+  type LoadoutSlot,
   type ModelModule,
   type Vehicle,
   type VehicleLoadout,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
+  useVehicleLoadoutSlots,
 } from "@/services/fyApi";
 
 type Props = {
@@ -53,6 +60,62 @@ const { moduleRows, moduleCargo } = useLoadoutModules(
   () => props.loadout,
 );
 
+const { componentFigure } = useComponentFitting();
+
+// The parts swapped in or taken out, read off the loadout's slot tree. Only the owner can
+// read that tree, so only the owner sees them.
+const { data: loadoutSlots } = useVehicleLoadoutSlots(
+  () => props.vehicle.id,
+  () => props.loadout?.id ?? "",
+  { query: { enabled: () => props.editable && !!props.loadout?.id } },
+);
+
+type ComponentRow = { slotPath: string; label: string; slot: LoadoutSlot };
+
+const swappedIn = (
+  slots: LoadoutSlot[],
+  rootLabel?: string,
+  parentPath?: string,
+): ComponentRow[] =>
+  slots.flatMap((slot) => {
+    const slotPath = parentPath ? `${parentPath}/${slot.name}` : slot.name;
+    const label = rootLabel
+      ? `${rootLabel} › ${slotName(slot.name)}`
+      : slotName(slot.name);
+    const own = slot.fitted || slot.emptied ? [{ slotPath, label, slot }] : [];
+
+    return [
+      ...own,
+      ...swappedIn(slot.slots, rootLabel ?? slotName(slot.name), slotPath),
+    ];
+  });
+
+// A tab's slots, as the editor lists them: the hull's of its categories, and
+// those inside a fitted module, under the module slot's path.
+const tabSlots = (
+  slots: LoadoutSlot[],
+  categories: HardpointCategoryEnum[],
+  parentPath?: string,
+): ComponentRow[] =>
+  slots.flatMap((slot) => {
+    const slotPath = parentPath ? `${parentPath}/${slot.name}` : slot.name;
+    if (slot.category === HardpointCategoryEnum.MODULE) {
+      return tabSlots(slot.slots, categories, slotPath);
+    }
+    if (!slot.category || !categories.includes(slot.category)) return [];
+
+    return swappedIn([slot], undefined, parentPath);
+  });
+
+const componentSections = computed(() =>
+  COMPONENT_TABS.map((tab) => ({
+    key: tab.id,
+    label: t(`labels.vehicleLoadout.tabs.${tab.id}`),
+    category: tab.categories[0],
+    rows: tabSlots(loadoutSlots.value ?? [], tab.categories),
+  })),
+);
+
 // One section per category with something fitted, so the view grows with
 // the categories rather than listing the ones still to come.
 const sections = computed(() =>
@@ -64,6 +127,10 @@ const sections = computed(() =>
       rows: moduleRows.value,
     },
   ].filter((section) => section.rows.length),
+);
+
+const fittedComponentSections = computed(() =>
+  componentSections.value.filter((section) => section.rows.length),
 );
 
 const badges = (mod: ModelModule) =>
@@ -167,8 +234,43 @@ const edit = () => {
         </dl>
       </section>
 
+      <section
+        v-for="section in fittedComponentSections"
+        :key="section.key"
+        class="loadout-view__section"
+        :data-test="`vehicle-loadout-view-${section.key}`"
+      >
+        <h3>
+          <HardpointCategoryIcon
+            :category="section.category"
+            class="loadout-view__icon"
+          />
+          {{ section.label }}
+        </h3>
+        <dl class="loadout-view__slots">
+          <div
+            v-for="row in section.rows"
+            :key="row.slotPath"
+            class="loadout-view__slot"
+          >
+            <dt>{{ row.label }}</dt>
+            <dd>
+              <AddonOption
+                :name="
+                  row.slot.fitted?.name || t('labels.loadoutPicker.emptySocket')
+                "
+                :contents="componentFigure(row.slot.fitted)"
+                :badges="[]"
+                :editable="false"
+                test-id="vehicle-loadout-view-component"
+              />
+            </dd>
+          </div>
+        </dl>
+      </section>
+
       <p
-        v-if="!sections.length"
+        v-if="!sections.length && !fittedComponentSections.length"
         class="loadout-view__empty"
         data-test="vehicle-loadout-view-empty"
       >

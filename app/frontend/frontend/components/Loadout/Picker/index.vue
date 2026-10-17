@@ -14,10 +14,13 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import Loader from "@/shared/components/Loader/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import type {
+  LoadoutPickerFacet,
   LoadoutPickerOption,
   LoadoutPickerSort,
 } from "@/frontend/components/Loadout/Picker/types";
@@ -31,12 +34,18 @@ type Props = {
   sorts?: LoadoutPickerSort[];
   // Offers a choice that leaves the socket empty.
   clearable?: boolean;
+  // The options are on their way: none are shown, only a spinner, so a list
+  // that belongs to another socket never stands in for them.
+  loading?: boolean;
+  facets?: LoadoutPickerFacet[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selectedId: undefined,
   sorts: () => [],
   clearable: true,
+  loading: false,
+  facets: () => [],
 });
 
 const emit = defineEmits<{
@@ -129,6 +138,57 @@ const matchesOwnership = (option: LoadoutPickerOption) => {
   );
 };
 
+// The filters behind the filter button, a chip per value. A facet whose
+// options all share one value narrows nothing and is left out.
+const filtersOpen = ref(false);
+
+const facetPicks = ref<Record<string, string[]>>({});
+
+const facetGroups = computed(() =>
+  props.facets
+    .map((facet) => {
+      const counts = new Map<string, number>();
+      props.options.forEach((option) => {
+        const value = option.facets?.[facet.key];
+        if (value) counts.set(value, (counts.get(value) ?? 0) + 1);
+      });
+
+      return {
+        ...facet,
+        values: [...counts]
+          .map(([value, count]) => ({ value, count }))
+          .sort((a, b) => a.value.localeCompare(b.value)),
+      };
+    })
+    .filter((facet) => facet.values.length > 1),
+);
+
+const facetPickCount = computed(
+  () =>
+    Object.values(facetPicks.value).flat().length +
+    (manufacturer.value ? 1 : 0),
+);
+
+const toggleFacet = (key: string, value: string) => {
+  const picked = facetPicks.value[key] ?? [];
+  facetPicks.value = {
+    ...facetPicks.value,
+    [key]: picked.includes(value)
+      ? picked.filter((entry) => entry !== value)
+      : [...picked, value],
+  };
+};
+
+const facetPicked = (key: string, value: string) =>
+  !!facetPicks.value[key]?.includes(value);
+
+// Values of one facet widen each other; facets narrow each other.
+const matchesFacets = (option: LoadoutPickerOption) =>
+  Object.entries(facetPicks.value).every(
+    ([key, values]) =>
+      !values.length || values.includes(option.facets?.[key] ?? ""),
+  );
+
 const compare = (a: LoadoutPickerOption, b: LoadoutPickerOption) => {
   const [key, direction] = (sort.value || defaultSort.value).split(" ");
   const sign = direction === "desc" ? -1 : 1;
@@ -155,6 +215,7 @@ const visibleOptions = computed(() => {
     .filter(
       (option) =>
         matchesSearch(option, term) &&
+        matchesFacets(option) &&
         matchesOwnership(option) &&
         (!manufacturer.value || option.manufacturer === manufacturer.value),
     )
@@ -170,6 +231,7 @@ const resetFilters = () => {
   ownedOnly.value = false;
   stockOnly.value = false;
   manufacturer.value = null;
+  facetPicks.value = {};
 };
 
 const root = ref<HTMLElement>();
@@ -292,21 +354,69 @@ const accessibleName = (option: LoadoutPickerOption) =>
         >
           {{ t("labels.loadoutPicker.stock") }}
         </Chip>
+        <Btn
+          v-if="facetGroups.length || manufacturers.length > 1"
+          class="loadout-picker__filter-toggle"
+          :active="filtersOpen"
+          :aria-expanded="filtersOpen"
+          v-tooltip="t('labels.filter')"
+          :aria-label="t('labels.filter')"
+          data-test="loadout-picker-filters-toggle"
+          @click="filtersOpen = !filtersOpen"
+        >
+          <i class="fa-light fa-filter" aria-hidden="true" />
+          <span
+            v-if="facetPickCount"
+            class="loadout-picker__filter-count"
+            data-test="loadout-picker-filters-count"
+          >
+            {{ facetPickCount }}
+          </span>
+        </Btn>
       </div>
 
-      <BaseSelect
-        v-if="manufacturers.length > 1"
-        v-model="manufacturer"
-        name="loadout-picker-manufacturer"
-        class="loadout-picker__select"
-        :options="manufacturerOptions"
-        :label="t('labels.loadoutPicker.manufacturer')"
-        :search-label="t('labels.loadoutPicker.manufacturer')"
-        data-test="loadout-picker-manufacturer"
-        searchable
-        nullable
-        no-label
-      />
+      <div
+        v-if="filtersOpen"
+        class="loadout-picker__filters"
+        data-test="loadout-picker-filters"
+      >
+        <BaseSelect
+          v-if="manufacturers.length > 1"
+          v-model="manufacturer"
+          name="loadout-picker-manufacturer"
+          class="loadout-picker__select"
+          :options="manufacturerOptions"
+          :label="t('labels.loadoutPicker.manufacturer')"
+          :search-label="t('labels.loadoutPicker.manufacturer')"
+          data-test="loadout-picker-manufacturer"
+          searchable
+          nullable
+          no-label
+        />
+        <div
+          v-for="facet in facetGroups"
+          :key="facet.key"
+          class="loadout-picker__facet"
+          :data-test="`loadout-picker-facet-${facet.key}`"
+        >
+          <span class="loadout-picker__facet-label">{{ facet.label }}</span>
+          <div class="loadout-picker__facet-values">
+            <Chip
+              v-for="entry in facet.values"
+              :key="entry.value"
+              :state="
+                facetPicked(facet.key, entry.value)
+                  ? ChipStatesEnum.INCLUDED
+                  : ChipStatesEnum.NEUTRAL
+              "
+              :count="entry.count"
+              @toggle="toggleFacet(facet.key, entry.value)"
+            >
+              {{ entry.value }}
+            </Chip>
+          </div>
+        </div>
+      </div>
 
       <div class="loadout-picker__sort-row">
         <ListToolbar
@@ -317,134 +427,152 @@ const accessibleName = (option: LoadoutPickerOption) =>
           data-test="loadout-picker-sort"
           local
         />
-
-        <p class="loadout-picker__count" data-test="loadout-picker-count">
-          <template v-if="filtered">
-            {{
-              t("labels.loadoutPicker.count", {
-                count: visibleOptions.length,
-                total: options.length,
-              })
-            }}
-            <button
-              type="button"
-              class="loadout-picker__reset"
-              data-test="loadout-picker-reset"
-              @click="resetFilters"
-            >
-              {{ t("labels.loadoutPicker.reset") }}
-            </button>
-          </template>
-          <template v-else>
-            {{ t("labels.loadoutPicker.total", { count: options.length }) }}
-          </template>
-        </p>
       </div>
     </div>
 
-    <ul
-      ref="list"
-      class="loadout-picker__options"
-      data-test="loadout-picker-options"
-      @mouseleave="emit('previewEnd')"
-      @focusout="onFocusOut"
-    >
-      <li v-if="clearable">
-        <button
-          type="button"
-          class="loadout-picker__option loadout-picker__option--empty"
-          :class="{ 'loadout-picker__option--selected': !selectedId }"
-          :aria-pressed="!selectedId"
-          data-test="loadout-picker-empty"
-          @mouseenter="emit('preview', null)"
-          @focusin="emit('preview', null)"
-          @click="emit('pick', null)"
-        >
-          <span class="loadout-picker__image loadout-picker__image--glyph">
-            <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
-          </span>
-          <span class="loadout-picker__body">
-            <span class="loadout-picker__name">
-              {{ t("labels.loadoutPicker.leaveEmpty") }}
-            </span>
-          </span>
-          <i
-            v-if="!selectedId"
-            class="fa-solid fa-circle-check loadout-picker__check"
-            aria-hidden="true"
-          />
-        </button>
-      </li>
-      <li v-for="option in visibleOptions" :key="option.id">
-        <button
-          type="button"
-          class="loadout-picker__option"
-          :class="{
-            'loadout-picker__option--selected': option.id === selectedId,
-          }"
-          :aria-pressed="option.id === selectedId"
-          :aria-label="accessibleName(option)"
-          data-test="loadout-picker-option"
-          @mouseenter="emit('preview', option.id)"
-          @focusin="emit('preview', option.id)"
-          @click="emit('pick', option.id)"
-        >
-          <img
-            :src="imageFor(option)"
-            alt=""
-            class="loadout-picker__image"
-            loading="lazy"
-          />
-          <span class="loadout-picker__body">
-            <span class="loadout-picker__name">{{ option.name }}</span>
-            <span
-              v-if="option.manufacturer || option.description"
-              class="loadout-picker__meta"
-            >
-              {{
-                [option.manufacturer, option.description]
-                  .filter(Boolean)
-                  .join(" · ")
-              }}
-            </span>
-          </span>
-          <span class="loadout-picker__badges">
-            <Pill v-if="option.owned" :variant="PillVariantsEnum.SUCCESS">
-              {{ t("labels.loadoutPicker.owned") }}
-            </Pill>
-            <Pill v-else-if="option.stock" :variant="PillVariantsEnum.NEUTRAL">
-              {{ t("labels.loadoutPicker.stock") }}
-            </Pill>
-          </span>
-          <span
-            v-if="option.figure || option.delta"
-            class="loadout-picker__figure"
+    <!-- The count floats over the list's top corner rather than taking a
+         line of the controls, where it wrapped beside the sort chips. -->
+    <div class="loadout-picker__list">
+      <p class="loadout-picker__count" data-test="loadout-picker-count">
+        <template v-if="filtered">
+          {{
+            t("labels.loadoutPicker.count", {
+              count: visibleOptions.length,
+              total: options.length,
+            })
+          }}
+          <button
+            type="button"
+            class="loadout-picker__reset"
+            data-test="loadout-picker-reset"
+            @click="resetFilters"
           >
-            <span v-if="option.figure">{{ option.figure }}</span>
-            <span
-              v-if="option.delta"
-              class="loadout-picker__delta"
-              :class="`loadout-picker__delta--${option.delta.tone}`"
-              data-test="loadout-picker-delta"
-            >
-              {{ option.delta.label }}
-            </span>
-          </span>
-          <i
-            v-if="option.id === selectedId"
-            class="fa-solid fa-circle-check loadout-picker__check"
-            aria-hidden="true"
-          />
-        </button>
-      </li>
-      <li
-        v-if="!visibleOptions.length"
-        class="loadout-picker__no-matches"
-        data-test="loadout-picker-no-matches"
+            {{ t("labels.loadoutPicker.reset") }}
+          </button>
+        </template>
+        <template v-else>
+          {{ t("labels.loadoutPicker.total", { count: options.length }) }}
+        </template>
+      </p>
+      <ul
+        ref="list"
+        class="loadout-picker__options"
+        data-test="loadout-picker-options"
+        @mouseleave="emit('previewEnd')"
+        @focusout="onFocusOut"
       >
-        {{ t("labels.loadoutPicker.noMatches") }}
-      </li>
-    </ul>
+        <li v-if="clearable">
+          <button
+            type="button"
+            class="loadout-picker__option loadout-picker__option--empty"
+            :class="{ 'loadout-picker__option--selected': !selectedId }"
+            :aria-pressed="!selectedId"
+            data-test="loadout-picker-empty"
+            @mouseenter="emit('preview', null)"
+            @focusin="emit('preview', null)"
+            @click="emit('pick', null)"
+          >
+            <span class="loadout-picker__image loadout-picker__image--glyph">
+              <i class="fa-duotone fa-layer-minus" aria-hidden="true" />
+            </span>
+            <span class="loadout-picker__body">
+              <span class="loadout-picker__name">
+                {{ t("labels.loadoutPicker.leaveEmpty") }}
+              </span>
+            </span>
+            <i
+              v-if="!selectedId"
+              class="fa-solid fa-circle-check loadout-picker__check"
+              aria-hidden="true"
+            />
+          </button>
+        </li>
+        <li
+          v-for="(option, index) in loading ? [] : visibleOptions"
+          :key="option.id"
+          class="loadout-picker__entry"
+          :style="{ '--entry-index': Math.min(index, 12) }"
+        >
+          <button
+            type="button"
+            class="loadout-picker__option"
+            :class="{
+              'loadout-picker__option--selected': option.id === selectedId,
+            }"
+            :aria-pressed="option.id === selectedId"
+            :aria-label="accessibleName(option)"
+            data-test="loadout-picker-option"
+            @mouseenter="emit('preview', option.id)"
+            @focusin="emit('preview', option.id)"
+            @click="emit('pick', option.id)"
+          >
+            <img
+              :src="imageFor(option)"
+              alt=""
+              class="loadout-picker__image"
+              loading="lazy"
+            />
+            <span class="loadout-picker__body">
+              <span class="loadout-picker__name">{{ option.name }}</span>
+              <span
+                v-if="option.manufacturer || option.description"
+                class="loadout-picker__meta"
+              >
+                {{
+                  [option.manufacturer, option.description]
+                    .filter(Boolean)
+                    .join(" · ")
+                }}
+              </span>
+            </span>
+            <span class="loadout-picker__badges">
+              <Pill v-if="option.owned" :variant="PillVariantsEnum.SUCCESS">
+                {{ t("labels.loadoutPicker.owned") }}
+              </Pill>
+              <Pill
+                v-else-if="option.stock"
+                :variant="PillVariantsEnum.NEUTRAL"
+              >
+                {{ t("labels.loadoutPicker.stock") }}
+              </Pill>
+            </span>
+            <span
+              v-if="option.figure || option.delta"
+              class="loadout-picker__figure"
+            >
+              <span v-if="option.figure">{{ option.figure }}</span>
+              <span
+                v-if="option.delta"
+                class="loadout-picker__delta"
+                :class="`loadout-picker__delta--${option.delta.tone}`"
+                data-test="loadout-picker-delta"
+              >
+                {{ option.delta.label }}
+              </span>
+            </span>
+            <i
+              v-if="option.id === selectedId"
+              class="fa-solid fa-circle-check loadout-picker__check"
+              aria-hidden="true"
+            />
+          </button>
+        </li>
+        <li
+          v-if="loading"
+          class="loadout-picker__loading"
+          data-test="loadout-picker-loading"
+        >
+          <Loader loading inline immediate />
+        </li>
+        <li
+          v-else-if="!visibleOptions.length"
+          class="loadout-picker__no-matches"
+          data-test="loadout-picker-no-matches"
+        >
+          {{ t("labels.loadoutPicker.noMatches") }}
+        </li>
+      </ul>
+    </div>
 
     <div v-if="$slots.comparison" class="loadout-picker__comparison">
       <slot name="comparison" />

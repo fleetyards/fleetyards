@@ -4410,6 +4410,10 @@
         },
         "reset": "Réinitialiser les filtres",
         "leaveEmpty": "Laisser vide",
+        "type": "Type",
+        "fixedByShip": "Fixé sur le vaisseau",
+        "noOtherPart": "Aucune autre pièce ne convient",
+        "changed": "Modifié",
         "noMatches": "Aucun résultat",
         "close": "Fermer"
       }

@@ -16,6 +16,15 @@ export interface LoadoutPickerOption {
   delta?: { label: string; tone: CompareDeltaTone };
   // A value per sort key the caller offers; options without one sort last.
   sortValues?: Record<string, number>;
+  // A value per filter the caller offers, such as a weapon's type or a grade.
+  facets?: Record<string, string | undefined>;
+}
+
+// A filter the caller offers over its options' `facets`, shown behind the
+// picker's filter button as a chip per value.
+export interface LoadoutPickerFacet {
+  key: string;
+  label: string;
 }
 
 export interface LoadoutPickerSort {

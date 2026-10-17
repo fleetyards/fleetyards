@@ -12439,6 +12439,21 @@ paths:
       tags:
       - Hardpoints
       operationId: hardpointLoadoutOptions
+      parameters:
+      - name: stockId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: What the slot came with, which a port inside a part does not
+          know itself
+      - name: modelSlug
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The ship the slot is on, whose tags a part may demand
       responses:
         '200':
           description: successful
@@ -32845,8 +32860,38 @@ components:
           type: string
         grade:
           type: string
+        gradeLabel:
+          type: string
         itemClass:
           "$ref": "#/components/schemas/ComponentItemClassEnum"
+        itemClassLabel:
+          type: string
+        typeData:
+          anyOf:
+          - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentJumpDrive"
+          - "$ref": "#/components/schemas/ComponentArmor"
+          - "$ref": "#/components/schemas/CargoHold"
+          - "$ref": "#/components/schemas/FuelTank"
+          - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentMissile"
+          - "$ref": "#/components/schemas/ComponentBomb"
+          - "$ref": "#/components/schemas/ComponentMissileRack"
+          - "$ref": "#/components/schemas/ComponentTractorBeam"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentRadar"
+          - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentShieldController"
+          - "$ref": "#/components/schemas/ComponentMissileController"
+          - "$ref": "#/components/schemas/ComponentTurret"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
+          - "$ref": "#/components/schemas/ComponentMiningModule"
+          - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentEmp"
+          - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
+          - "$ref": "#/components/schemas/ComponentLifeSupport"
       additionalProperties: false
       required:
       - id
@@ -32895,10 +32940,16 @@ components:
         editable:
           type: boolean
           description: False where the game locks the part in place
+        swappable:
+          type: boolean
+          description: Whether anything but the stock part fits
         stock:
           "$ref": "#/components/schemas/LoadoutComponentRef"
         fitted:
           "$ref": "#/components/schemas/LoadoutComponentRef"
+        emptied:
+          type: boolean
+          description: The loadout took the stock part out
         slots:
           type: array
           items:
@@ -40694,11 +40745,11 @@ components:
         itemId:
           type: string
           format: uuid
+          description: Left out on an Empty item, which holds nothing
       additionalProperties: false
       required:
       - slotPath
       - itemType
-      - itemId
       title: VehicleLoadoutItem
     VehicleLoadoutItemInput:
       type: object
@@ -40711,20 +40762,22 @@ components:
         itemId:
           type: string
           format: uuid
+          description: Left out on an Empty item, which holds nothing
       additionalProperties: false
       required:
       - slotPath
       - itemType
-      - itemId
       title: VehicleLoadoutItemInput
     VehicleLoadoutItemTypeEnum:
       type: string
       enum:
       - ModelModule
       - Component
+      - Empty
       x-enumNames:
       - MODEL_MODULE
       - COMPONENT
+      - EMPTY
       title: VehicleLoadoutItemTypeEnum
     VehicleLoadoutKindEnum:
       type: string

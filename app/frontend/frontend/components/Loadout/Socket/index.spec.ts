@@ -8,6 +8,7 @@ const EMPTY: LoadoutSocketSlot = { id: "left", label: "Left module slot" };
 const FILLED: LoadoutSocketSlot = {
   ...EMPTY,
   size: "S3",
+  maxSize: 3,
   item: { id: "tier-1", name: "Tier 1 Module Left", figure: "4 beds" },
 };
 
@@ -44,13 +45,13 @@ describe("LoadoutSocket", () => {
   it("is a button that selects itself only while editable", async () => {
     const editable = await mount({ socket: EMPTY, editable: true });
 
-    expect(editable.element.tagName).toBe("BUTTON");
+    expect(editable.attributes("role")).toBe("button");
     await editable.trigger("click");
     expect(editable.emitted("select")).toHaveLength(1);
 
     const readOnly = await mount({ socket: EMPTY });
 
-    expect(readOnly.element.tagName).toBe("DIV");
+    expect(readOnly.attributes("role")).toBeUndefined();
     await readOnly.trigger("click");
     expect(readOnly.emitted("select")).toBeUndefined();
   });

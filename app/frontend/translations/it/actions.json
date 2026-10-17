@@ -602,6 +602,7 @@
         "editLoadout": "Modifica equipaggiamento",
         "newLoadout": "Nuovo equipaggiamento",
         "saveLoadout": "Salva equipaggiamento",
+        "saveAsNewLoadout": "Salva come nuovo equipaggiamento",
         "viewLoadout": "Visualizza equipaggiamento"
       }
     }

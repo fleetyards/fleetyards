@@ -46,7 +46,9 @@ class VehicleLoadout < ApplicationRecord
   def item_list=(list)
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
-      {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s.downcase}
+      item_type = item[:item_type].to_s
+      item_id = (item_type == VehicleLoadoutItem::EMPTY) ? nil : item[:item_id].to_s.downcase
+      {slot_path: item[:slot_path].to_s, item_type:, item_id:}
     end
     @loadout_slots = nil
   end
@@ -115,6 +117,22 @@ class VehicleLoadout < ApplicationRecord
 
     modules_fit
     components_fit
+    empties_fit
+  end
+
+  # A slot can be emptied where a part can be fitted and there is one to take
+  # out: a component slot a player fits, holding a stock part, which the game
+  # does not lock. A module slot is empty by leaving it out.
+  private def empties_fit
+    item_list.select { |item| item[:item_type] == VehicleLoadoutItem::EMPTY }.each do |item|
+      slot = loadout_slots[item[:slot_path]]
+      if slot.nil? || slot.module_slot? || !loadout_slots.fittable?(item[:slot_path])
+        next errors.add(:items, :slot_unknown)
+      end
+      next errors.add(:items, :nothing_to_empty) if slot.stock.nil?
+
+      errors.add(:items, :slot_not_editable) unless slot.editable?
+    end
   end
 
   # A component goes in any slot below a hull slot a player fits, whose port
@@ -129,7 +147,7 @@ class VehicleLoadout < ApplicationRecord
 
       component = loadout_slots.fitted(item[:slot_path])
       offered = component.present? && (component.id == slot.stock&.id || (!component.retired? && component.catalogued?))
-      next errors.add(:items, :component_not_in_slot) unless offered && slot.fits?(component)
+      next errors.add(:items, :component_not_in_slot) unless offered && loadout_slots.fits?(slot, component)
 
       errors.add(:items, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
     end

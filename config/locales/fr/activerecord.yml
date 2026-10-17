@@ -319,6 +319,7 @@ fr:
               slot_unknown: "doivent chacun désigner un emplacement du vaisseau"
               component_not_in_slot: "doivent chacun correspondre au type et à la taille de leur emplacement"
               slot_not_editable: "ne peuvent pas remplacer une pièce que l'emplacement verrouille"
+              nothing_to_empty: "ne peuvent vider qu'un emplacement qui contient une pièce"
         payout_entry:
           attributes:
             entry_type:

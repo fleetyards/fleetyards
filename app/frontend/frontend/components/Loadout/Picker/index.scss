@@ -84,14 +84,24 @@
 
 // The list bar keeps its own spacing below a list; here the controls' gap
 // does that.
+// One line of sort chips, scrolled sideways rather than wrapped under itself.
 .loadout-picker__controls .loadout-picker__sort {
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
   margin: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  > * {
+    flex: none;
+  }
 }
 
 // The sort chips, and the count right-aligned on the same line.
 .loadout-picker__sort-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px;
 }
@@ -287,4 +297,105 @@
   .loadout-picker__option {
     transition: none;
   }
+}
+
+.loadout-picker__loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+// The options arrive together and settle in one after another, rather than
+// popping into a list that was a spinner a moment before.
+.loadout-picker__entry {
+  animation: loadout-picker-entry 0.22s ease-out both;
+  animation-delay: calc(var(--entry-index, 0) * 18ms);
+}
+
+@keyframes loadout-picker-entry {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadout-picker__entry {
+    animation: none;
+  }
+}
+
+// The filter button beside the search: the app's button, its icon alone, with
+// how many filters it holds.
+.loadout-picker__filter-toggle {
+  flex: none;
+}
+
+.loadout-picker__filter-count {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  background: var(--color-primary, #428bca);
+  border-radius: 50%;
+}
+
+.loadout-picker__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loadout-picker__facet {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loadout-picker__facet-label {
+  color: var(--color-text-dim);
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.loadout-picker__facet-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+// The list's frame, so the count can float over its top corner.
+.loadout-picker__list {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.loadout-picker__list > .loadout-picker__count {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  z-index: 1;
+  margin: 0;
+  padding: 2px 8px;
+  white-space: nowrap;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 999px;
 }

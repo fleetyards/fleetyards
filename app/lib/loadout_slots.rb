@@ -34,8 +34,8 @@ class LoadoutSlots
       Array(facts.flags).none? { |flag| flag.to_s.casecmp?("uneditable") }
     end
 
-    def fits?(component)
-      LoadoutSlots.fits?(port, component)
+    def fits?(component, ship_tags = nil)
+      LoadoutSlots.fits?(port, component, stock, ship_tags)
     end
   end
 
@@ -43,30 +43,114 @@ class LoadoutSlots
   # in SQL, so a type the build changed is read as the build has it, then checked
   # once more in Ruby the way a save is. A port that names neither types nor a
   # category has nothing to match on and takes nothing.
-  def self.options(port)
+  #
+  # `candidates` keeps each kind's catalogue query for the next port asking the
+  # same, so a whole tree costs a query per kind of part rather than per slot.
+  # `stock` is what the slot came with, which a port inside a part does not
+  # know itself: the ship's copy of the port holds it.
+  def self.options(port, candidates = {}, stock: port.facts.component, ship_tags: nil)
     facts = port.facts
-    types = Array(facts.types).compact_blank
+    types = types_taken(facts, stock)
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
 
-    kind = types.any? ? Component.fact_sql(:component_type).in(types) : Component.fact_sql(:category).eq(facts.category)
-    Component.with_facts.catalogued.where(kind)
+    kind = types.any? ? [:component_type, types.sort] : [:category, facts.category]
+    # Resolving the served build costs queries of its own, so a tree resolves
+    # it once for every kind of part it asks about.
+    source = (candidates[:source] ||= Component.served_source)
+    candidates[kind] ||= Component.joins(Component.current_facts_join(source)).catalogued
+      .where(Component.fact_sql(kind.first).in(Array(kind.last)))
       .includes(:build, :last_build)
       .order(Component.fact_sql(:name))
-      .select { |component| fits?(port, component) }
+      .to_a
+
+    distinct(candidates[kind].select { |component| fits?(port, component, stock, ship_tags) }, stock)
+  end
+
+  # The game files carry one part several times over -- a gas-cloud-resistant
+  # AllStop, a gimbal mount per ship that uses it -- under one name and with
+  # the same figures. A picker offers each once: the slot's own part where it
+  # is one of them, else the plainest key.
+  def self.distinct(components, stock = nil)
+    components
+      .group_by { |component| [component.name, component.size, component.grade, component.item_class, component.type_data.to_h] }
+      .values
+      .map { |same| same.find { |component| component.id == stock&.id } || same.min_by { |component| [component.sc_key.to_s.length, component.sc_key.to_s] } }
   end
 
   # A port that names no types (68 life-support slots, among others) is matched
   # on the category the slot was filed under instead.
-  def self.fits?(port, component)
+  def self.fits?(port, component, stock = port.facts.component, ship_tags = nil)
     facts = port.facts
-    types = Array(facts.types).compact_blank
+    types = types_taken(facts, stock)
     kind_matches = types.any? ? types.include?(component.component_type) : component.category == facts.category
     return false unless kind_matches
 
     size = Integer(component.size, exception: false)
     return false if size.nil?
+    return false if facts.min_size && size < facts.min_size
+    return false if facts.max_size && size > facts.max_size
 
-    (facts.min_size.nil? || size >= facts.min_size) && (facts.max_size.nil? || size <= facts.max_size)
+    component.id == stock&.id || tags_fit?(facts, component, stock, ship_tags)
+  end
+
+  # Tags the game puts on nearly everything, which say nothing about a fit.
+  GENERIC_TAGS = %w[flightReady].freeze
+
+  # The game's tag rules, both ways round.
+  #
+  # The port's required tags have to be on the part -- how a ship's flight
+  # blade port takes that ship's blades and no other's. A variant's port
+  # carries its base ship's tags while its stock part carries the variant's (a
+  # Vanguard Hoplite's blade port demands the Vanguard blade, its stock blade
+  # names the Hoplite's), so where the stock part does not meet the port's tags
+  # the stock part's own tags stand in for them -- unless it has none worth
+  # reading, which would leave the port open to any ship's part.
+  #
+  # A part's required tags have to be met by the port or the ship: a Taurus
+  # tractor beam demands the Taurus's tag and fits no other ship's gun port.
+  # The game files name no ship's tags, so `ship_tags` are what its stock parts
+  # demand, which the game evidently meets; without them only the port's side
+  # is checked.
+  def self.tags_fit?(facts, component, stock, ship_tags)
+    required = Array(facts.required_tags).compact_blank
+    if stock && (required - Array(stock.tags)).any?
+      own = Array(stock.tags).compact_blank - GENERIC_TAGS
+      required = own if own.any?
+    end
+    return false if (required - Array(component.tags)).any?
+    return true if ship_tags.nil?
+
+    (Array(component.required_tags).compact_blank - Array(facts.port_tags) - ship_tags.to_a).empty?
+  end
+
+  # What the ship provides a part, read off what its stock parts demand: every
+  # stock part fits in the game, so the tags they require that their own port
+  # does not provide are there to be met. A tag a port provides stays with that
+  # port; the Taurus's tractor beam port is how its beam fits, not the ship.
+  def self.ship_tags_for(model)
+    tags = Set.new
+    level = model.hardpoints.game_files.in_build.includes(PRELOAD).to_a
+    while level.any?
+      level.each do |hardpoint|
+        facts = hardpoint.facts
+        tags.merge(Array(facts.component&.required_tags).compact_blank - Array(facts.port_tags))
+      end
+      level = Hardpoint.game_files.in_build
+        .where(parent_type: "Hardpoint", parent_id: level.map(&:id))
+        .includes(PRELOAD).to_a
+    end
+    tags
+  end
+
+  # A port naming a mount and a gun both takes the mount: the gun goes in the
+  # mount's own port. Only where the ship came with a bare gun there does the
+  # slot keep taking guns.
+  def self.types_taken(facts, stock = facts.component)
+    types = Array(facts.types).compact_blank
+    return types unless types.include?("Turret") && types.size > 1
+    return types if stock.present? && stock.component_type != "Turret"
+
+    ["Turret"]
   end
 
   # The hull slots a player fits: the systems, the weapons and what holds them,
@@ -91,6 +175,16 @@ class LoadoutSlots
     @items = items.index_by { |item| item[:slot_path] }
     @below = {}
     @ports = {}
+    @candidates = {}
+    @swappable = {}
+  end
+
+  def ship_tags
+    @ship_tags ||= LoadoutSlots.ship_tags_for(@model)
+  end
+
+  def fits?(slot, component)
+    slot.fits?(component, ship_tags)
   end
 
   def [](path)
@@ -117,6 +211,20 @@ class LoadoutSlots
     end.tap { |slots| prefetch_below(slots) }
   end
 
+  # Whether anything but the part the slot came with fits it, so a slot with
+  # nothing to choose from is not offered as a choice.
+  def swappable?(slot)
+    return false unless slot.editable?
+
+    # By port and stock: two mounts share one port record but can hold
+    # different guns.
+    key = [slot.port.id, slot.stock&.id]
+    @swappable.fetch(key) do
+      @swappable[key] = LoadoutSlots.options(slot.port, @candidates, stock: slot.stock, ship_tags:)
+        .any? { |component| component.id != slot.stock&.id }
+    end
+  end
+
   # Whether the slot at `path` hangs off a hull slot a player fits at all.
   def fittable?(path)
     @fittable_roots ||= fittable_hull.map(&:name).to_set
@@ -130,10 +238,15 @@ class LoadoutSlots
   # Whether anything sits in the slot at `path` -- fitted there, or its stock
   # component left in place -- so a slot beneath it exists.
   def occupied?(path)
-    return true if @items.key?(path)
+    return !emptied?(path) if @items.key?(path)
 
     slot = self[path]
     slot.present? && !slot.module_slot? && slot.stock.present?
+  end
+
+  # Taken out by the loadout, stock part and all.
+  def emptied?(path)
+    @items[path]&.dig(:item_type) == VehicleLoadoutItem::EMPTY
   end
 
   def fitted(path)
@@ -209,7 +322,7 @@ class LoadoutSlots
 
   private def records
     @records ||= @items.values.group_by { |item| item[:item_type] }.to_h do |type, items|
-      klass = VehicleLoadoutItem::ITEM_TYPES.include?(type) ? type.constantize : nil
+      klass = (VehicleLoadoutItem::ITEM_TYPES - [VehicleLoadoutItem::EMPTY]).include?(type) ? type.constantize : nil
       scope = (klass == Component) ? klass.includes(:build, :last_build) : klass
       found = klass ? scope.where(id: items.pluck(:item_id)).index_by(&:id) : {}
       [type, found]

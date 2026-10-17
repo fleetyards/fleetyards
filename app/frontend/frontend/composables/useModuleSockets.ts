@@ -6,7 +6,10 @@ import {
   useFittingDiff,
 } from "@/frontend/composables/useFittingDiff";
 import { moduleSlots } from "@/frontend/components/Vehicles/LoadoutModal/moduleSlots";
-import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
+import type {
+  LoadoutSocketGroup,
+  LoadoutSocketSlot,
+} from "@/frontend/components/Loadout/Socket/types";
 import type {
   LoadoutPickerOption,
   LoadoutPickerSort,
@@ -60,16 +63,26 @@ export const useModuleSockets = () => {
   const groups = (
     modules: ModelModule[],
     fitted: Record<string, string>,
-    { fittedOnly = false } = {},
+    {
+      fittedOnly = false,
+      saved,
+      contents,
+    }: {
+      fittedOnly?: boolean;
+      saved?: Record<string, string>;
+      // What a module brings, shown under it: its slots and the parts in them.
+      contents?: (mod: ModelModule) => LoadoutSocketSlot[];
+    } = {},
   ): LoadoutSocketGroup[] => {
     const slots = moduleSlots(modules)
       .filter((slot) => !fittedOnly || !!fitted[slot])
       .map((slot) => {
         const fittedId = fitted[slot];
         const mod = modules.find((entry) => entry.id === fittedId);
+        const changed = !!saved && (saved[slot] ?? null) !== (fittedId ?? null);
 
         if (!fittedId) {
-          return { id: slot, label: slotLabel(slot) };
+          return { id: slot, label: slotLabel(slot), changed };
         }
 
         // Fitted, but gone from the hull's modules, as a module retired from
@@ -78,6 +91,7 @@ export const useModuleSockets = () => {
           return {
             id: slot,
             label: slotLabel(slot),
+            changed,
             item: {
               id: fittedId,
               name: t("labels.vehicleLoadout.unavailableModule"),
@@ -88,6 +102,8 @@ export const useModuleSockets = () => {
         return {
           id: slot,
           label: slotLabel(slot),
+          changed,
+          children: contents?.(mod),
           item: {
             id: mod.id,
             name: mod.name,

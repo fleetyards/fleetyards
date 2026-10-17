@@ -10,8 +10,16 @@ module Api
       # query rather than one per candidate.
       def loadout_options
         hardpoint = Hardpoint.find(params[:id])
+        # A port inside a part does not know what the slot came with; the
+        # caller, holding the slot, says.
+        stock = params[:stock_id].present? ? Component.find_by(id: params[:stock_id]) : hardpoint.facts.component
 
-        @options = LoadoutSlots.options(hardpoint)
+        # The ship it is for, whose tags a part may demand.
+        if params[:model_slug].present?
+          ship_tags = LoadoutSlots.ship_tags_for(Model.find_by!(slug: params[:model_slug]))
+        end
+
+        @options = LoadoutSlots.options(hardpoint, stock:, ship_tags:)
         @ports = Hardpoint.in_build.where(parent_type: "Component", parent_id: @options.map(&:id))
           .includes(Hardpoint::RENDERED)
           .group_by(&:parent_id)
