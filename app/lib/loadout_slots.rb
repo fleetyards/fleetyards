@@ -38,6 +38,12 @@ class LoadoutSlots
     def fits?(component, provided)
       LoadoutSlots.fits?(port, component, stock, provided)
     end
+
+    # The tags the slot provides what sits in it and below: the part's own port
+    # and the ship's copy of it do not always carry the same ones.
+    def port_tags
+      LoadoutSlots.port_tags(port) | (instance ? LoadoutSlots.port_tags(instance) : [])
+    end
   end
 
   # The catalogue components a port takes, by name. Matched on the build's facts
@@ -130,21 +136,37 @@ class LoadoutSlots
   # port nor a port above it provides are there to be met. A tag a port provides
   # stays with that port and what sits below it; the Taurus's tractor beam port
   # is how its beam fits, not the ship.
+  #
+  # Below the hull, a stock part's own port can carry tags the ship's copy of it
+  # does not (a Merlin's nose gun port), so both count.
   def self.ship_tags_for(model)
     tags = Set.new
     above = {}
+    own = {}
     level = model.hardpoints.game_files.in_build.includes(PRELOAD).to_a
     while level.any?
       level.each do |hardpoint|
-        facts = hardpoint.facts
-        above[hardpoint.id] = above.fetch(hardpoint.parent_id, []) + port_tags(hardpoint)
-        tags.merge(Array(facts.component&.required_tags).compact_blank - above[hardpoint.id])
+        provided = port_tags(hardpoint) | own.fetch([hardpoint.parent_id, hardpoint.sc_name], [])
+        above[hardpoint.id] = above.fetch(hardpoint.parent_id, []) | provided
+        tags.merge(Array(hardpoint.facts.component&.required_tags).compact_blank - above[hardpoint.id])
       end
+      own = own_port_tags(level)
       level = Hardpoint.game_files.in_build
         .where(parent_type: "Hardpoint", parent_id: level.map(&:id))
         .includes(PRELOAD).to_a
     end
     tags
+  end
+
+  # The tags each stock part's own ports carry, by the ship's hardpoint holding
+  # the part and the port's name.
+  def self.own_port_tags(level)
+    parts = level.filter_map { |hardpoint| [hardpoint.id, hardpoint.facts.component&.id] if hardpoint.facts.component }
+    ports = Hardpoint.in_build.where(parent_type: "Component", parent_id: parts.map(&:last).uniq)
+      .includes(PRELOAD).group_by(&:parent_id)
+    parts.each_with_object({}) do |(holder_id, part_id), tags|
+      ports.fetch(part_id, []).each { |port| tags[[holder_id, port.sc_name]] = port_tags(port) }
+    end
   end
 
   def self.port_tags(port)
@@ -186,6 +208,7 @@ class LoadoutSlots
     @ports = {}
     @candidates = {}
     @swappable = {}
+    @provided = {}
   end
 
   def ship_tags
@@ -196,12 +219,16 @@ class LoadoutSlots
     slot.fits?(component, provided(slot))
   end
 
-  # The tags a part in `slot` may demand: the ship's, and those of the ports
-  # above it.
+  # The tags a part in `slot` may demand: the ship's, and those of its port and
+  # every port above it.
   def provided(slot)
-    names = slot.path.split("/")
-    above = (1...names.size).filter_map { |depth| self[names.first(depth).join("/")] }
-    ship_tags | above.flat_map { |port| LoadoutSlots.port_tags(port.port) }
+    parent_path = slot.path.rpartition("/").first
+    above = if parent_path.empty?
+      ship_tags
+    else
+      @provided[parent_path] ||= self[parent_path]&.then { |parent| provided(parent) } || ship_tags
+    end
+    above | slot.port_tags
   end
 
   def [](path)
