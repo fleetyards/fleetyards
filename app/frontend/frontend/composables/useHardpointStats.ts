@@ -64,8 +64,9 @@ export type HardpointStat = {
   // shows the figure.
   row?: number;
   // The number behind `value`, where it is one, so two parts can be compared
-  // on it.
+  // on it, and the format `value` was written in, so a sum of them can be too.
   raw?: number;
+  format?: string;
 };
 
 const ROW_STATS = {
@@ -181,6 +182,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
     value: String(toNumber(Math.round(value), format)),
     primary,
     raw: value,
+    format,
   });
 
   // One decimal, not rounded to a whole second: spool, cooldown and
@@ -190,6 +192,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, "seconds")),
     raw: value,
+    format: "seconds",
   });
 
   // For figures the one-decimal stat format would misstate -- a 0.25 km/s²
@@ -571,6 +574,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, format)),
     raw: value,
+    format,
   });
 
   // One figure when both ends agree, which most blast radii do. Compared at
