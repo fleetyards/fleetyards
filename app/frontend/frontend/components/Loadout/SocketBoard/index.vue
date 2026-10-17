@@ -6,6 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import SocketTree from "@/frontend/components/Loadout/SocketTree/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -23,6 +26,19 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   "update:active": [slotId: string];
 }>();
+
+const { t } = useI18n();
+
+// Compact or expanded, as the ship page's hardpoint list offers it, for a
+// board where some socket holds others.
+const density = ref<"compact" | "expanded">("compact");
+provide("loadoutSocketDensity", density);
+
+const nests = computed(() =>
+  props.groups.some((group) =>
+    group.slots.some((slot) => !!slot.children?.length),
+  ),
+);
 
 const root = ref<HTMLElement>();
 
@@ -54,6 +70,29 @@ const onKeydown = (event: KeyboardEvent) => {
     data-test="loadout-socket-board"
     @keydown="onKeydown"
   >
+    <BtnGroup
+      v-if="nests"
+      segmented
+      class="loadout-socket-board__view"
+      :aria-label="t('labels.hardpoint.density.title')"
+    >
+      <Btn
+        :active="density === 'compact'"
+        :aria-pressed="density === 'compact'"
+        data-test="loadout-socket-board-compact"
+        @click="density = 'compact'"
+      >
+        {{ t("labels.hardpoint.density.compact") }}
+      </Btn>
+      <Btn
+        :active="density === 'expanded'"
+        :aria-pressed="density === 'expanded'"
+        data-test="loadout-socket-board-expanded"
+        @click="density = 'expanded'"
+      >
+        {{ t("labels.hardpoint.density.expanded") }}
+      </Btn>
+    </BtnGroup>
     <section
       v-for="group in groups"
       :key="group.key"
@@ -82,6 +121,10 @@ const onKeydown = (event: KeyboardEvent) => {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+.loadout-socket-board__view {
+  align-self: flex-start;
 }
 
 .loadout-socket-board__heading {
