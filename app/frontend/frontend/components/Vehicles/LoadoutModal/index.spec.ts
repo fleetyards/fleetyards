@@ -902,6 +902,27 @@ describe("VehicleLoadoutModal component tabs", () => {
     ]);
   });
 
+  it("marks a slot that differs from the saved loadout as changed", async () => {
+    componentOptions.value = [
+      { component: STOCK_GUN, slots: [] },
+      { component: OTHER_GUN, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    const gun = "hardpoint_gun_nose/hardpoint_class_2";
+    expect(socket(wrapper, gun).classes()).toContain(
+      "loadout-socket--occupied",
+    );
+    expect(socket(wrapper, gun).classes()).not.toContain(
+      "loadout-socket--changed",
+    );
+
+    await choose(wrapper, gun, "Other Gun");
+
+    expect(socket(wrapper, gun).classes()).toContain("loadout-socket--changed");
+  });
+
   it("picking the stock part again clears the slot", async () => {
     componentOptions.value = [
       { component: STOCK_GUN, slots: [] },

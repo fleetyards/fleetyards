@@ -34,8 +34,27 @@ button.loadout-socket {
   }
 }
 
+// Three states at a glance: an empty socket's dashed frame, a filled one's
+// rail, and the warning colour where the slot differs from the saved loadout.
 .loadout-socket--empty {
   border-style: dashed;
+}
+
+.loadout-socket--occupied {
+  box-shadow: inset 3px 0 0 var(--color-text-dim);
+}
+
+.loadout-socket--changed {
+  border-color: var(--color-warning, #{$warning});
+  box-shadow: inset 3px 0 0 var(--color-warning, #{$warning});
+}
+
+.loadout-socket__changed {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--color-warning, #{$warning});
+  border-radius: 50%;
 }
 
 // The socket the picker is filling: its frame in the primary colour, as a

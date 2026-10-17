@@ -224,6 +224,7 @@ const componentTab = (tab: ComponentTab) => ({
   icon: categoryIcon(TAB_ICONS[tab.id]),
   groups: fitting.groups(componentTree.value, tab, {
     fittedOnly: !props.editable,
+    saved: props.editable ? savedTree.value : undefined,
   }),
   available: fitting.hasSlots(componentTree.value, tab),
 });
@@ -375,6 +376,7 @@ const moduleSockets = useModuleSockets();
 const socketGroups = computed(() =>
   moduleSockets.groups(modules.value, fittedModules.value || {}, {
     fittedOnly: !props.editable,
+    saved: props.editable ? savedValues().fittedModules : undefined,
   }),
 );
 

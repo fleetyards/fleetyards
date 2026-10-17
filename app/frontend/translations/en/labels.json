@@ -4426,6 +4426,7 @@
         },
         "reset": "Reset filters",
         "leaveEmpty": "Leave empty",
+        "changed": "Changed",
         "noMatches": "Nothing matches",
         "close": "Close"
       }
