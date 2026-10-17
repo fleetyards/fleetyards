@@ -1331,6 +1331,30 @@ describe("VehicleLoadoutModal component tabs", () => {
     expect(
       socket(wrapper, "hardpoint_lifesupport").attributes("role"),
     ).toBeUndefined();
+    expect(socket(wrapper, "hardpoint_lifesupport").text()).toContain(
+      "labels.loadoutPicker.fixedByShip",
+    );
+  });
+
+  it("says on a slot that nothing but its stock part fits", async () => {
+    hullSlots.value = [
+      {
+        ...shieldSlot("hardpoint_lifesupport", {
+          id: "ls",
+          name: "ComfortAir",
+          size: "1",
+        }),
+        category: "lifesupport",
+        types: ["LifeSupportGenerator"],
+        swappable: false,
+      },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "lifeSupport" });
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_lifesupport").text()).toContain(
+      "labels.loadoutPicker.noOtherPart",
+    );
   });
 
   it("disables a category the ship has no slots for", async () => {

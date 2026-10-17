@@ -55,6 +55,16 @@ onBeforeUnmount(() => clearTimeout(fillTimer));
 
 const count = computed(() => props.socket.members?.length ?? 1);
 
+const lockedLabel = computed(() => {
+  if (props.socket.lockedBy === "ship") {
+    return t("labels.loadoutPicker.fixedByShip");
+  }
+
+  return props.socket.lockedBy === "noAlternatives"
+    ? t("labels.loadoutPicker.noOtherPart")
+    : undefined;
+});
+
 const accessibleName = computed(() =>
   [
     props.socket.label,
@@ -66,6 +76,7 @@ const accessibleName = computed(() =>
       ? `${props.socket.item.headline.value} ${props.socket.item.headline.label}`
       : undefined,
     props.socket.changed ? t("labels.loadoutPicker.changed") : undefined,
+    lockedLabel.value,
   ]
     .filter(Boolean)
     .join(", "),
@@ -90,11 +101,12 @@ const select = (event: Event) => {
       'loadout-socket--changed': socket.changed,
       'loadout-socket--filled': justFilled,
       'loadout-socket--static': !editable,
+      'loadout-socket--locked': !!lockedLabel,
     }"
     :role="editable ? 'button' : undefined"
     :tabindex="editable ? 0 : undefined"
     :aria-pressed="editable ? active : undefined"
-    :aria-label="editable ? accessibleName : undefined"
+    :aria-label="editable || lockedLabel ? accessibleName : undefined"
     :data-test="`loadout-socket-${socket.id}`"
     data-loadout-socket
     @click="select"
@@ -140,6 +152,14 @@ const select = (event: Event) => {
         </span>
         <span v-if="socket.item?.figure" class="loadout-socket__figure">
           {{ socket.item.figure }}
+        </span>
+        <span
+          v-if="lockedLabel"
+          class="loadout-socket__locked"
+          data-test="loadout-socket-locked"
+        >
+          <i class="fa-solid fa-lock" aria-hidden="true" />
+          {{ lockedLabel }}
         </span>
       </span>
       <HardpointHeadline
