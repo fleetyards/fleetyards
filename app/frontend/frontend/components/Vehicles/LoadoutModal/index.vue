@@ -28,6 +28,7 @@ import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
 import LoadoutMetrics from "./Metrics/index.vue";
+import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -946,34 +947,12 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           class="vehicle-loadout__card"
         />
 
-        <section
+        <LoadoutChanges
           v-if="changedFigures.length"
-          class="vehicle-loadout__changes"
-          data-test="vehicle-loadout-changes"
-        >
-          <h4 class="vehicle-loadout__changes-title">
-            {{ t("labels.loadoutPicker.changed") }}
-          </h4>
-          <dl class="vehicle-loadout__changes-list">
-            <div
-              v-for="figure in changedFigures"
-              :key="figure.key"
-              class="vehicle-loadout__change"
-              :data-test="`vehicle-loadout-change-${figure.key}`"
-            >
-              <dt>{{ figure.label }}</dt>
-              <dd>
-                {{ figure.value }}
-                <span
-                  class="vehicle-loadout__figure-delta"
-                  :class="`vehicle-loadout__figure-delta--${figure.tone}`"
-                >
-                  {{ figure.deltaLabel }}
-                </span>
-              </dd>
-            </div>
-          </dl>
-        </section>
+          :title="t('labels.loadoutPicker.changed')"
+          :figures="changedFigures"
+          test-id="vehicle-loadout-changes"
+        />
       </aside>
 
       <div class="vehicle-loadout__panel">
