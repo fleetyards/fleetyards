@@ -97,6 +97,14 @@ class VehicleLoadout < ApplicationRecord
     errors.add(:base, :not_flight_ready)
   end
 
+  # The saved items the build in force refuses, each with the reason a save
+  # would give: a loadout floats with the build, so one that fitted when it was
+  # saved can stop fitting when a new build changes a slot.
+  def item_problems
+    list = items.map { |item| item.slice(:slot_path, :item_type, :item_id).symbolize_keys }
+    refused_items(list, LoadoutSlots.new(vehicle.model, list))
+  end
+
   private def item_list_fits
     return if item_list.empty?
     return errors.add(:items, :not_fleetyards) unless kind_fleetyards?
@@ -108,30 +116,41 @@ class VehicleLoadout < ApplicationRecord
       return errors.add(:items, :item_type_not_supported)
     end
 
+    refused_items(item_list, loadout_slots).pluck(:code).uniq.each { |code| errors.add(:items, code) }
+  end
+
+  # Every item that does not fit, as `{slot_path:, item_type:, item_id:, code:}`,
+  # one reason per item: the first check it fails.
+  private def refused_items(list, slots)
+    reasons = {}
+    refuse = ->(item, code) { reasons[item] ||= code }
+
     # A hardpoint inside a module or a turret only exists while something sits
     # in it: fitted there, or, for a component slot, the stock part left in.
-    nested = paths.select { |path| path.include?("/") }
-    if nested.any? { |path| !loadout_slots.occupied?(path.rpartition("/").first) }
-      errors.add(:items, :parent_not_fitted)
+    list.each do |item|
+      path = item[:slot_path]
+      refuse.call(item, :parent_not_fitted) if path.include?("/") && !slots.occupied?(path.rpartition("/").first)
     end
 
-    modules_fit
-    components_fit
-    empties_fit
+    modules_fit(list, &refuse)
+    components_fit(list, slots, &refuse)
+    empties_fit(list, slots, &refuse)
+
+    list.filter_map { |item| item.merge(code: reasons[item]) if reasons[item] }
   end
 
   # A slot can be emptied where a part can be fitted and there is one to take
   # out: a component slot a player fits, holding a stock part, which the game
   # does not lock. A module slot is empty by leaving it out.
-  private def empties_fit
-    item_list.select { |item| item[:item_type] == VehicleLoadoutItem::EMPTY }.each do |item|
-      slot = loadout_slots[item[:slot_path]]
-      if slot.nil? || slot.module_slot? || !loadout_slots.fittable?(item[:slot_path])
-        next errors.add(:items, :slot_unknown)
+  private def empties_fit(list, slots)
+    list.select { |item| item[:item_type] == VehicleLoadoutItem::EMPTY }.each do |item|
+      slot = slots[item[:slot_path]]
+      if slot.nil? || slot.module_slot? || !slots.fittable?(item[:slot_path])
+        next yield(item, :slot_unknown)
       end
-      next errors.add(:items, :nothing_to_empty) if slot.stock.nil?
+      next yield(item, :nothing_to_empty) if slot.stock.nil?
 
-      errors.add(:items, :slot_not_editable) unless slot.editable?
+      yield(item, :slot_not_editable) unless slot.editable?
     end
   end
 
@@ -140,16 +159,16 @@ class VehicleLoadout < ApplicationRecord
   # not matter, as for modules, but it has to be a part the catalogue offers in
   # this build -- or the one the slot came with. A slot the game locks takes
   # only that.
-  private def components_fit
-    item_list.select { |item| item[:item_type] == "Component" }.each do |item|
-      slot = loadout_slots[item[:slot_path]]
-      next errors.add(:items, :slot_unknown) if slot.nil? || !loadout_slots.fittable?(item[:slot_path])
+  private def components_fit(list, slots)
+    list.select { |item| item[:item_type] == "Component" }.each do |item|
+      slot = slots[item[:slot_path]]
+      next yield(item, :slot_unknown) if slot.nil? || !slots.fittable?(item[:slot_path])
 
-      component = loadout_slots.fitted(item[:slot_path])
+      component = slots.fitted(item[:slot_path])
       offered = component.present? && (component.id == slot.stock&.id || (!component.retired? && component.catalogued?))
-      next errors.add(:items, :component_not_in_slot) unless offered && loadout_slots.fits?(slot, component)
+      next yield(item, :component_not_in_slot) unless offered && slots.fits?(slot, component)
 
-      errors.add(:items, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
+      yield(item, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
     end
   end
 
@@ -160,15 +179,14 @@ class VehicleLoadout < ApplicationRecord
   # A module goes in a slot on the hull itself, named by the module hardpoint,
   # so one whose slot the game files never revealed matches none and cannot be
   # fitted. Whether the ship owns it does not matter: a loadout is a plan.
-  private def modules_fit
-    modules = item_list.select { |item| item[:item_type] == "ModelModule" }
+  private def modules_fit(list)
+    modules = list.select { |item| item[:item_type] == "ModelModule" }
     return if modules.empty?
 
-    module_ids = modules.pluck(:item_id)
-    fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: module_ids)
+    fitting = ModuleHardpoint.where(model_id: vehicle.model_id, model_module_id: modules.pluck(:item_id))
       .pluck(:model_module_id, :slot)
-    unless modules.all? { |item| fitting.include?([item[:item_id], item[:slot_path]]) }
-      errors.add(:items, :module_not_in_slot)
+    modules.each do |item|
+      yield(item, :module_not_in_slot) unless fitting.include?([item[:item_id], item[:slot_path]])
     end
   end
 
