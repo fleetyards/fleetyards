@@ -79,8 +79,8 @@ const onKeydown = (event: KeyboardEvent) => {
       @click="folded = !folded"
     >
       <i
-        class="fa-light"
-        :class="folded ? 'fa-arrows-from-line' : 'fa-arrows-to-line'"
+        class="fa-solid"
+        :class="folded ? 'fa-chevron-down' : 'fa-chevron-up'"
         aria-hidden="true"
       />
     </Btn>
