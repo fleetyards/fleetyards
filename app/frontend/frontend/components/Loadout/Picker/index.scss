@@ -288,3 +288,9 @@
     transition: none;
   }
 }
+
+.loadout-picker__loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
