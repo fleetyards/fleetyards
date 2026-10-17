@@ -168,8 +168,19 @@ const save = async (wrapper: Wrapper) => {
   await flushPromises();
 };
 
-const cargo = (wrapper: Wrapper) =>
-  wrapper.get("[data-test='vehicle-loadout-figure-cargo'] dd").text();
+const cargo = (wrapper: Wrapper) => {
+  const tile = "[data-test='vehicle-loadout-metric-cargo']";
+  const delta = wrapper.find(
+    `${tile} [data-test='vehicle-loadout-metric-delta']`,
+  );
+
+  return [
+    wrapper.get(`${tile} .metrics-card__tile__value`).text(),
+    delta.exists() ? delta.text() : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
+};
 
 beforeEach(() => {
   loadouts.value = [];
@@ -1040,11 +1051,11 @@ describe("VehicleLoadoutModal component tabs", () => {
     const modules = await mountClosed(vehicle(["m1"]), { tab: "modules" });
     await flushPromises();
 
-    expect(modules.find("[data-test='vehicle-loadout-metrics']").exists()).toBe(
-      false,
-    );
     expect(
-      modules.find("[data-test='vehicle-loadout-figure-cargo']").exists(),
+      modules.find("[data-test='vehicle-loadout-metric-dps']").exists(),
+    ).toBe(false);
+    expect(
+      modules.find("[data-test='vehicle-loadout-metric-cargo']").exists(),
     ).toBe(true);
   });
 
