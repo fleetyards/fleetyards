@@ -4376,6 +4376,20 @@
         "comingSoon": "即将推出",
         "ownedModules": "你拥有的模块",
         "nothingFitted": "未装配",
+        "refused": {
+            "title": "游戏更新后已不再适配",
+            "removedOnSave": "保存时会将这些从配置中移除。",
+            "editToReplace": "编辑配置以替换它们。",
+            "badge": "已不再适配",
+            "reasons": {
+                "slot_unknown": "飞船已没有此槽位",
+                "parent_not_fitted": "其所在的部件已不存在",
+                "module_not_in_slot": "该模块已不适配此槽位",
+                "component_not_in_slot": "已不适配此槽位",
+                "slot_not_editable": "飞船现已锁定此槽位",
+                "nothing_to_empty": "此槽位已没有可移除的部件"
+            }
+        },
         "owned": "已拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",
         "unavailableModule": "模块已不可用",

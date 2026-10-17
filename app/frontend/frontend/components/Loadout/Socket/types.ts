@@ -35,6 +35,8 @@ export interface LoadoutSocketSlot {
   lockedBy?: "ship" | "noAlternatives";
   // Holds something other than the saved loadout has there.
   changed?: boolean;
+  // Why the build in force refuses what the saved loadout has here.
+  refused?: string;
   // What sits inside the item, shown under it the way a ship page nests a
   // turret's guns.
   children?: LoadoutSocketSlot[];

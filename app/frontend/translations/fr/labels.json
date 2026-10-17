@@ -4376,6 +4376,20 @@
         "comingSoon": "Bientôt disponible",
         "ownedModules": "Vos modules",
         "nothingFitted": "Rien d'équipé",
+        "refused": {
+            "title": "Ne convient plus depuis une mise à jour du jeu",
+            "removedOnSave": "L'enregistrement retire ces éléments du loadout.",
+            "editToReplace": "Modifiez le loadout pour les remplacer.",
+            "badge": "Ne convient plus",
+            "reasons": {
+                "slot_unknown": "le vaisseau n'a plus cet emplacement",
+                "parent_not_fitted": "ce qui le contenait a disparu",
+                "module_not_in_slot": "le module ne convient plus à cet emplacement",
+                "component_not_in_slot": "ne convient plus à cet emplacement",
+                "slot_not_editable": "le vaisseau fixe désormais cet emplacement",
+                "nothing_to_empty": "l'emplacement ne contient plus de pièce à retirer"
+            }
+        },
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
         "unavailableModule": "Module plus disponible",
