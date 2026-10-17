@@ -486,13 +486,17 @@ export const useComponentFitting = ({
   };
 
   // What makes two sibling slots the same row: the part in them, the room they
-  // offer, and the same again all the way down.
+  // offer, and the same again all the way down, under the same names -- a pick
+  // on the stack reaches each member's slots by the first member's paths.
   const signature = (slot: LoadoutSocketSlot): string =>
     JSON.stringify([
       slot.item?.id,
       slot.size,
       slot.locked,
-      (slot.children ?? []).map(signature),
+      (slot.children ?? []).map((child) => [
+        child.id.slice(child.id.lastIndexOf("/") + 1),
+        signature(child),
+      ]),
     ]);
 
   // A slot the group stands for, under each member: what sits inside the first
