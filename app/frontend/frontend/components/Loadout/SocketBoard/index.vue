@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import SocketTree from "@/frontend/components/Loadout/SocketTree/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
 
@@ -70,8 +69,9 @@ const onKeydown = (event: KeyboardEvent) => {
     data-test="loadout-socket-board"
     @keydown="onKeydown"
   >
-    <Btn
+    <button
       v-if="nests"
+      type="button"
       class="loadout-socket-board__fold"
       v-tooltip="t(folded ? 'labels.expand' : 'labels.collapse')"
       :aria-label="t(folded ? 'labels.expand' : 'labels.collapse')"
@@ -84,7 +84,7 @@ const onKeydown = (event: KeyboardEvent) => {
         :class="folded ? 'fa-chevron-down' : 'fa-chevron-up'"
         aria-hidden="true"
       />
-    </Btn>
+    </button>
     <section
       v-for="group in groups"
       :key="group.key"
@@ -109,8 +109,35 @@ const onKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
+// The rows' own control, the same small square, folding them all.
 .loadout-socket-board__fold {
+  display: flex;
+  flex: none;
   align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: $gray-light;
+  font-size: 11px;
+  background: none;
+  border: 1px solid rgba($gray-light, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    color: lighten($text-color, 15%);
+    border-color: rgba($gray-light, 0.6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
 }
 
 .loadout-socket-board {
