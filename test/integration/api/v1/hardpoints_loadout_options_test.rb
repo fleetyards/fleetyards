@@ -42,6 +42,19 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options offers a part the game files repeat once" do
+    slot = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_shield", source: :game_files,
+      types: %w[Shield], min_size: 1, max_size: 1)
+    create(:component, name: "AllStop", sc_key: "shld_godi_s01_allstop_scitem", component_type: "Shield",
+      category: "shieldgenerator", size: "1", grade: "3", type_data: {max_health: 3168})
+    create(:component, name: "AllStop", sc_key: "shld_godi_s01_allstop_scitem_resistgasclouds", component_type: "Shield",
+      category: "shieldgenerator", size: "1", grade: "3", type_data: {max_health: 3168})
+
+    assert_api_response :get, 200, path_params: {id: slot.id} do
+      assert_equal ["AllStop"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options returns 404 for an unknown hardpoint" do
     assert_api_response :get, 404, path_params: {id: SecureRandom.uuid}
   end

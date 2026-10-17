@@ -61,7 +61,18 @@ class LoadoutSlots
       .order(Component.fact_sql(:name))
       .to_a
 
-    candidates[kind].select { |component| fits?(port, component) }
+    distinct(candidates[kind].select { |component| fits?(port, component) }, facts.component)
+  end
+
+  # The game files carry one part several times over -- a gas-cloud-resistant
+  # AllStop, a gimbal mount per ship that uses it -- under one name and with
+  # the same figures. A picker offers each once: the slot's own part where it
+  # is one of them, else the plainest key.
+  def self.distinct(components, stock = nil)
+    components
+      .group_by { |component| [component.name, component.size, component.grade, component.item_class, component.type_data.to_h] }
+      .values
+      .map { |same| same.find { |component| component.id == stock&.id } || same.min_by { |component| [component.sc_key.to_s.length, component.sc_key.to_s] } }
   end
 
   # A port that names no types (68 life-support slots, among others) is matched
