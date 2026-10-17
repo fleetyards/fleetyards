@@ -771,6 +771,13 @@ const onPick = (itemId: string | null) => {
     return;
   }
 
+  // The module the slot already holds: nothing changes, and what sits in it
+  // stays.
+  if ((itemId ?? undefined) === fitted.value[slot]) {
+    void closePicker();
+    return;
+  }
+
   const next = { ...fitted.value };
   if (itemId) {
     next[slot] = itemId;
