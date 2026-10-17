@@ -81,6 +81,13 @@ const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
   .metrics-card__section-label {
     margin: 0;
   }
+
+  // The card lets a label take a tile's spare height so values line up when a
+  // label wraps; here a change line under one value would push its neighbour's
+  // value down instead, so each value sits right under its label.
+  .metrics-card__tile__label {
+    flex-grow: 0;
+  }
 }
 
 .loadout-metrics__delta {
