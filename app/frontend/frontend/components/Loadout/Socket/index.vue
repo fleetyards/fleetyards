@@ -76,6 +76,9 @@ const accessibleName = computed(() =>
       ? `${props.socket.item.headline.value} ${props.socket.item.headline.label}`
       : undefined,
     props.socket.changed ? t("labels.loadoutPicker.changed") : undefined,
+    props.socket.refused
+      ? `${t("labels.vehicleLoadout.refused.badge")}: ${props.socket.refused}`
+      : undefined,
     lockedLabel.value,
   ]
     .filter(Boolean)
@@ -99,6 +102,7 @@ const select = (event: Event) => {
       'loadout-socket--empty': !socket.item,
       'loadout-socket--occupied': !!socket.item,
       'loadout-socket--changed': socket.changed,
+      'loadout-socket--refused': !!socket.refused,
       'loadout-socket--filled': justFilled,
       'loadout-socket--static': !editable,
       'loadout-socket--locked': !!lockedLabel,
@@ -152,6 +156,14 @@ const select = (event: Event) => {
         </span>
         <span v-if="socket.item?.figure" class="loadout-socket__figure">
           {{ socket.item.figure }}
+        </span>
+        <span
+          v-if="socket.refused"
+          class="loadout-socket__refused"
+          data-test="loadout-socket-refused"
+        >
+          <i class="fa-solid fa-triangle-exclamation" aria-hidden="true" />
+          {{ t("labels.vehicleLoadout.refused.badge") }}: {{ socket.refused }}
         </span>
         <span
           v-if="lockedLabel"

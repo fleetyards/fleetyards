@@ -3,6 +3,7 @@ resources :vehicles, only: [] do
     member do
       put :activate
       get :slots
+      get :problems
     end
   end
 end

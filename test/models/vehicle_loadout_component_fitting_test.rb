@@ -113,6 +113,25 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused fleetyards_loadout(fit(["hardpoint_gun_tail", other_merlin_gun])), :component_not_in_slot
   end
 
+  test "names what taking out a refused mount strands, as a save would see it" do
+    loadout = fleetyards_loadout(fit(["hardpoint_gun_nose", @other_gimbal], ["hardpoint_gun_nose/hardpoint_gun", @gun]))
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_gun_nose").build.update!(types: %w[WeaponGun])
+
+    assert_equal [
+      ["hardpoint_gun_nose", :component_not_in_slot],
+      ["hardpoint_gun_nose/hardpoint_gun", :slot_unknown]
+    ], loadout.reload.item_problems.map { |problem| problem.values_at(:slot_path, :code) }
+  end
+
+  test "a save names every reason an item is refused" do
+    loadout = fleetyards_loadout(fit(["hardpoint_empty/hardpoint_class_2", @big_gun]))
+
+    assert_not loadout.save
+    assert loadout.errors.of_kind?(:items, :parent_not_fitted)
+    assert loadout.errors.of_kind?(:items, :slot_unknown)
+  end
+
   test "a mount slot takes mounts, not the guns that go inside them" do
     assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose", @gun])), :component_not_in_slot
 

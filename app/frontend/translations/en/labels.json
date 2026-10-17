@@ -4392,6 +4392,20 @@
         "comingSoon": "Coming soon",
         "ownedModules": "Modules you own",
         "nothingFitted": "Nothing fitted",
+        "refused": {
+          "title": "No longer fits since a game update",
+          "removedOnSave": "Saving takes these out of the loadout.",
+          "editToReplace": "Edit the loadout to replace them.",
+          "badge": "No longer fits",
+          "reasons": {
+            "slot_unknown": "the ship no longer has this slot",
+            "parent_not_fitted": "what it sat in is gone",
+            "module_not_in_slot": "the module no longer fits this slot",
+            "component_not_in_slot": "no longer fits this slot",
+            "slot_not_editable": "the ship now fixes this slot",
+            "nothing_to_empty": "the slot no longer holds a part to take out"
+          }
+        },
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
         "unavailableModule": "Module no longer available",

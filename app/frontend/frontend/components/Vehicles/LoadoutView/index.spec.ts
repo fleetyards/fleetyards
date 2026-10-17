@@ -18,10 +18,12 @@ const resolved = () => ({
 });
 
 const loadoutSlots = ref<unknown[]>([]);
+const loadoutProblems = ref<unknown[]>([]);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useVehicleLoadoutSlots: () => ({ data: loadoutSlots, ...resolved() }),
+  useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
   useModelModules: () => ({
     data: ref({
       items: [
@@ -178,6 +180,39 @@ describe("VehicleLoadoutView", () => {
 });
 
 describe("VehicleLoadoutView components", () => {
+  it("tells the owner which items a new build refuses, and marks the ones still listed", async () => {
+    loadoutProblems.value = [
+      {
+        slotPath: "hardpoint_rear_module",
+        itemType: "ModelModule",
+        itemId: "m2",
+        itemName: "Living Module",
+        code: "module_not_in_slot",
+      },
+      {
+        slotPath: "hardpoint_gone",
+        itemType: "Component",
+        itemId: "x1",
+        itemName: "Gone Gun",
+        code: "slot_unknown",
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    const notice = wrapper.get("[data-test='vehicle-loadout-view-refused']");
+    expect(notice.text()).toContain("Living Module");
+    expect(notice.text()).toContain("Gone Gun");
+    const living = wrapper
+      .findAll("[data-test='vehicle-loadout-view-item']")
+      .find((row) => row.text().includes("Living Module"));
+    expect(living?.text()).toContain("No longer fits");
+
+    loadoutProblems.value = [];
+  });
+
   it("lists the parts swapped in, by category, for the owner", async () => {
     loadoutSlots.value = [
       {
