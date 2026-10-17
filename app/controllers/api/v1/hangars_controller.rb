@@ -299,6 +299,8 @@ module Api
       end
 
       private def running_hangar_import?(klass)
+        klass.release_stuck!(current_resource_owner.id)
+
         klass.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
       end
 

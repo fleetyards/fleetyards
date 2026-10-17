@@ -90,6 +90,19 @@ class Api::V1::HangarImportTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 409, body: {import: upload_blob("hangar_import.json").signed_id}
   end
 
+  test "PUT /hangar/import writes off an import whose job stopped reporting" do
+    user = create(:user)
+    sign_in user
+    stuck = create(:import, type: "Imports::HangarImport", user:, aasm_state: "started", started_at: 2.hours.ago)
+
+    assert_api_response :put, 200, body: {import: upload_blob("hangar_import.json").signed_id}
+
+    stuck = Import.find(stuck.id)
+
+    assert_predicate stuck, :failed?
+    assert_includes stuck.info, "Superseded by a new run"
+  end
+
   # The 400 path saves the record before it reads the file, so a run that finds
   # nothing must not leave a `created` row behind the already-running guard.
   test "PUT /hangar/import leaves no blocking row after an empty import" do

@@ -48,6 +48,19 @@ class Import < ApplicationRecord
 
   scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
 
+  # A worker killed mid-run (an OOM, a host restart) takes the job with it, and
+  # the row stays `started` with nothing left to finish or fail it. For the
+  # user-facing types the already-running guard would then refuse every later
+  # run from that user until an admin cleared the row by hand, so a new run
+  # writes it off instead. Only rows past `STUCK_AFTER` go: a real run finishes
+  # in seconds, and one that is merely slow must not be pulled out from under
+  # itself.
+  def self.release_stuck!(user_id)
+    where(user_id:).stuck.find_each do |import|
+      import.cleanup!(note: "Superseded by a new run: the job stopped reporting.")
+    end
+  end
+
   # Only a finished run is left out: a no-op that was cancelled or failed is
   # still news to the user, and so is one that could not read every RSI page.
   # COALESCE because a missing key makes the condition NULL, and NOT NULL would
