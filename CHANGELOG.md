@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.12.0](https://github.com/fleetyards/fleetyards/compare/v9.11.0...v9.12.0) (2026-10-17)
+
+
+### Features
+
+* **hangar:** add a dedication verse shown over the plaque's dedication ([#5779](https://github.com/fleetyards/fleetyards/issues/5779)) ([4df59bc](https://github.com/fleetyards/fleetyards/commit/4df59bc3e4edd1b0873067c8daefb7f592bb7ce4))
+* **loadouts:** fit components per hardpoint by type and size ([#5773](https://github.com/fleetyards/fleetyards/issues/5773)) ([5de613c](https://github.com/fleetyards/fleetyards/commit/5de613c5fc2bf7f4b85109b6614e5707a5991a93))
+
+
+### Bug Fixes
+
+* **hangar:** find an upgraded buy-back by the ships its page lists ([#5776](https://github.com/fleetyards/fleetyards/issues/5776)) ([540802e](https://github.com/fleetyards/fleetyards/commit/540802e42a4572ae12195e335f16aab0b42c8db2))
+
 ## [9.11.0](https://github.com/fleetyards/fleetyards/compare/v9.10.0...v9.11.0) (2026-10-17)
 
 
