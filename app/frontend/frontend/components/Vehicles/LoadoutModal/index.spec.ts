@@ -1045,6 +1045,56 @@ describe("VehicleLoadoutModal component tabs", () => {
     ).toBe(true);
   });
 
+  it("lists the slots a fitted module brings in their category's tab", async () => {
+    const saved = modules.value;
+    modules.value = {
+      items: [
+        {
+          id: "m1",
+          name: "Combat Module",
+          slug: "combat",
+          slot: "hardpoint_module",
+          hardpoints: [
+            {
+              id: "module-shield",
+              name: "hardpoint_shield_generator_module",
+              category: "shieldgenerator",
+              minSize: 1,
+              maxSize: 1,
+              types: ["Shield"],
+              component: { id: "ms", name: "Module Shield", size: "1" },
+              hardpoints: [],
+            },
+          ],
+        },
+      ] as unknown as ModelModule[],
+    };
+    hullSlots.value = [
+      {
+        name: "hardpoint_module",
+        hardpointId: "hull-module",
+        category: "module",
+        types: ["Module"],
+        editable: true,
+        slots: [],
+      },
+    ];
+    const wrapper = await mountClosed(
+      vehicle(["m1"], { fitted: { hardpoint_module: "m1" } }),
+      { tab: "shields" },
+    );
+    await flushPromises();
+
+    expect(
+      socket(
+        wrapper,
+        "hardpoint_module/hardpoint_shield_generator_module",
+      ).text(),
+    ).toContain("Module Shield");
+
+    modules.value = saved;
+  });
+
   it("disables a category the ship has no slots for", async () => {
     const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
     await flushPromises();
