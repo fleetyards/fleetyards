@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.11.0](https://github.com/fleetyards/fleetyards/compare/v9.10.0...v9.11.0) (2026-10-17)
+
+
+### Features
+
+* **hangar:** list the buy-back ship names no model matches, and fix the ones it finds ([#5774](https://github.com/fleetyards/fleetyards/issues/5774)) ([5462a4c](https://github.com/fleetyards/fleetyards/commit/5462a4cb859f4199e2559214d2ef1dc250283743))
+
+
+### Bug Fixes
+
+* **hangar:** match buy-backs by RSI's ship names and upgraded pledges by their original ship ([#5769](https://github.com/fleetyards/fleetyards/issues/5769)) ([72d5d8a](https://github.com/fleetyards/fleetyards/commit/72d5d8ab8db6b70713042fcb1d5959a11bda3130))
+* **sc-data:** match ship views by game-file key and add a per-ship sync ([#5765](https://github.com/fleetyards/fleetyards/issues/5765)) ([3dc2836](https://github.com/fleetyards/fleetyards/commit/3dc2836f7399c98d4441b17b5fa6b0df40cd7f4f))
+* **sc-data:** say a hand upload is kept only over an imported render ([#5768](https://github.com/fleetyards/fleetyards/issues/5768)) ([ee76a45](https://github.com/fleetyards/fleetyards/commit/ee76a4514fe40b3a8ad5476350b6990f703a2b94))
+* **vehicles:** list the cheapest ways to get a ship first ([#5766](https://github.com/fleetyards/fleetyards/issues/5766)) ([2f93fc4](https://github.com/fleetyards/fleetyards/commit/2f93fc4f6f36e8d75b1f78fd1cf8325197aa8ab1))
+
 ## [9.10.0](https://github.com/fleetyards/fleetyards/compare/v9.9.0...v9.10.0) (2026-10-16)
 
 
