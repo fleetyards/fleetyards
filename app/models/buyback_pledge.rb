@@ -80,15 +80,21 @@ class BuybackPledge < ApplicationRecord
   # The pledges that would put this ship in the hangar: a ship or package that
   # contains it, or an upgrade that leads to it. The list names a pledge's
   # first ship in `contained`, as "Cutlass Black and 2 items", and the detail
-  # page every ship in `ship_names`; both are matched against the model's names
-  # at query time. The kind is read from the title's prefix, so a pledge titled
-  # without a known one, such as "Origin 325a Fighter", is `other` and may still
-  # hold a ship.
+  # page every ship in `ship_names`; both are matched against the model's names,
+  # and the names RSI gives it, at query time. The kind is read from the title's
+  # prefix, so a pledge titled without a known one, such as "Origin 325a
+  # Fighter", is `other` and may still hold a ship.
+  #
+  # An upgraded pledge lists the ship it was upgraded to, but buying it back
+  # returns the pledge as first bought. Only its title names that ship, as
+  # "Standalone Ship - Terrapin" or "Standalone Ship - Cutter plus Groundswell
+  # Paint"; a package's title names none, so an upgraded package matches no
+  # ship rather than the wrong one.
   def self.obtaining_model(slug)
     model = Model.find_by(slug:)
     return none unless model
 
-    names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
+    names = Rsi::ShipNames.aliases([model.name, model.rsi_name])
     ship = <<~SQL.squish
       lower(trim(regexp_replace(buyback_pledges.contained,
         '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
@@ -97,12 +103,20 @@ class BuybackPledge < ApplicationRecord
       EXISTS (SELECT 1 FROM unnest(buyback_pledges.ship_names) AS ship_name
         WHERE lower(trim(ship_name)) IN (?))
     SQL
+    titled = <<~SQL.squish
+      lower(trim(regexp_replace(
+        regexp_replace(buyback_pledges.name, '^Standalone Ships?[[:space:]]+-[[:space:]]+', '', 'i'),
+        '[[:space:]]+(-|–|plus)[[:space:]]+.*$', '', 'i')))
+    SQL
 
     containing = where(kind: %w[ship package other])
+    as_listed = containing.where(upgraded: false)
       .where(Arel.sql(ship).in(names).or(Arel::Nodes::Grouping.new(Arel.sql(listed))))
-    return containing if model.rsi_id.blank?
+    as_bought = containing.where(upgraded: true, kind: "ship").where(Arel.sql(titled).in(names))
+    matching = as_listed.or(as_bought)
+    return matching if model.rsi_id.blank?
 
-    containing.or(where(kind: "upgrade", upgrade_to_ship_id: model.rsi_id))
+    matching.or(where(kind: "upgrade", upgrade_to_ship_id: model.rsi_id))
   end
 
   INSURANCE_MONTHS = 1..9999
