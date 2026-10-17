@@ -34,8 +34,8 @@ class LoadoutSlots
       Array(facts.flags).none? { |flag| flag.to_s.casecmp?("uneditable") }
     end
 
-    def fits?(component)
-      LoadoutSlots.fits?(port, component, stock)
+    def fits?(component, ship_tags = nil)
+      LoadoutSlots.fits?(port, component, stock, ship_tags)
     end
   end
 
@@ -48,7 +48,7 @@ class LoadoutSlots
   # same, so a whole tree costs a query per kind of part rather than per slot.
   # `stock` is what the slot came with, which a port inside a part does not
   # know itself: the ship's copy of the port holds it.
-  def self.options(port, candidates = {}, stock: port.facts.component)
+  def self.options(port, candidates = {}, stock: port.facts.component, ship_tags: nil)
     facts = port.facts
     types = types_taken(facts, stock)
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
@@ -63,7 +63,7 @@ class LoadoutSlots
       .order(Component.fact_sql(:name))
       .to_a
 
-    distinct(candidates[kind].select { |component| fits?(port, component, stock) }, stock)
+    distinct(candidates[kind].select { |component| fits?(port, component, stock, ship_tags) }, stock)
   end
 
   # The game files carry one part several times over -- a gas-cloud-resistant
@@ -79,7 +79,7 @@ class LoadoutSlots
 
   # A port that names no types (68 life-support slots, among others) is matched
   # on the category the slot was filed under instead.
-  def self.fits?(port, component, stock = port.facts.component)
+  def self.fits?(port, component, stock = port.facts.component, ship_tags = nil)
     facts = port.facts
     types = types_taken(facts, stock)
     kind_matches = types.any? ? types.include?(component.component_type) : component.category == facts.category
@@ -90,7 +90,49 @@ class LoadoutSlots
     return false if facts.min_size && size < facts.min_size
     return false if facts.max_size && size > facts.max_size
 
-    facts.category != "controller" || same_blade_family?(stock, component)
+    component.id == stock&.id || tags_fit?(facts, component, stock, ship_tags)
+  end
+
+  # Tags the game puts on nearly everything, which say nothing about a fit.
+  GENERIC_TAGS = %w[flightReady].freeze
+
+  # The game's tag rules, both ways round.
+  #
+  # The port's required tags have to be on the part -- how a ship's flight
+  # blade port takes that ship's blades and no other's. A variant's port
+  # carries its base ship's tags while its stock part carries the variant's (a
+  # Vanguard Hoplite's blade port demands the Vanguard blade, its stock blade
+  # names the Hoplite's), so where the stock part does not meet the port's tags
+  # the stock part's own tags stand in for them.
+  #
+  # A part's required tags have to be met by the port or the ship: a Taurus
+  # tractor beam demands the Taurus's tag and fits no other ship's gun port.
+  # The game files name no ship's tags, so `ship_tags` are what its stock parts
+  # demand, which the game evidently meets; without them only the port's side
+  # is checked.
+  def self.tags_fit?(facts, component, stock, ship_tags)
+    required = Array(facts.required_tags).compact_blank
+    if stock && (required - Array(stock.tags)).any?
+      required = Array(stock.tags).compact_blank - GENERIC_TAGS
+    end
+    return false if (required - Array(component.tags)).any?
+    return true if ship_tags.nil?
+
+    (Array(component.required_tags).compact_blank - Array(facts.port_tags) - ship_tags.to_a).empty?
+  end
+
+  # What the ship provides a part, read off what its stock parts demand: every
+  # stock part fits in the game, so the tags they require are there to be met.
+  def self.ship_tags_for(model)
+    tags = Set.new
+    level = model.hardpoints.game_files.in_build.includes(PRELOAD).to_a
+    while level.any?
+      level.each { |hardpoint| tags.merge(Array(hardpoint.facts.component&.required_tags).compact_blank) }
+      level = Hardpoint.game_files.in_build
+        .where(parent_type: "Hardpoint", parent_id: level.map(&:id))
+        .includes(PRELOAD).to_a
+    end
+    tags
   end
 
   # A port naming a mount and a gun both takes the mount: the gun goes in the
@@ -102,14 +144,6 @@ class LoadoutSlots
     return types if stock.present? && stock.component_type != "Turret"
 
     ["Turret"]
-  end
-
-  # A flight blade is made for one ship: it names that ship's blade in its tags,
-  # and only blades sharing a tag with the one the slot came with fit. The
-  # port's own tags cannot say so -- a variant's port carries its base ship's
-  # tag while its blades carry the variant's.
-  def self.same_blade_family?(stock, component)
-    stock.present? && Array(stock.tags).intersect?(Array(component.tags))
   end
 
   # The hull slots a player fits: the systems, the weapons and what holds them,
@@ -136,6 +170,14 @@ class LoadoutSlots
     @ports = {}
     @candidates = {}
     @swappable = {}
+  end
+
+  def ship_tags
+    @ship_tags ||= LoadoutSlots.ship_tags_for(@model)
+  end
+
+  def fits?(slot, component)
+    slot.fits?(component, ship_tags)
   end
 
   def [](path)
@@ -171,7 +213,7 @@ class LoadoutSlots
     # different guns.
     key = [slot.port.id, slot.stock&.id]
     @swappable.fetch(key) do
-      @swappable[key] = LoadoutSlots.options(slot.port, @candidates, stock: slot.stock)
+      @swappable[key] = LoadoutSlots.options(slot.port, @candidates, stock: slot.stock, ship_tags:)
         .any? { |component| component.id != slot.stock&.id }
     end
   end

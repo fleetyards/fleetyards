@@ -147,7 +147,7 @@ class VehicleLoadout < ApplicationRecord
 
       component = loadout_slots.fitted(item[:slot_path])
       offered = component.present? && (component.id == slot.stock&.id || (!component.retired? && component.catalogued?))
-      next errors.add(:items, :component_not_in_slot) unless offered && slot.fits?(component)
+      next errors.add(:items, :component_not_in_slot) unless offered && loadout_slots.fits?(slot, component)
 
       errors.add(:items, :slot_not_editable) if !slot.editable? && component.id != slot.stock&.id
     end
