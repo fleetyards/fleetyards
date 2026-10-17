@@ -4392,6 +4392,7 @@
             "nothing_to_empty": "la ranura ya no tiene una pieza que quitar"
           }
         },
+        "againstStock": "Cambios respecto a la nave de serie",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "unavailableModule": "Módulo ya no disponible",

@@ -22,6 +22,8 @@ import {
   type LoadoutComponentRef,
   type LoadoutOption,
   type LoadoutSlot,
+  type VehicleLoadoutItem,
+  VehicleLoadoutItemTypeEnum,
 } from "@/services/fyApi";
 
 export interface ComponentTab {
@@ -60,6 +62,31 @@ export interface FittedSlot {
 
 // A slot whose stock part the loadout took out, in a fitting keyed by path.
 export const EMPTIED = "";
+
+type ItemValue = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
+
+// A saved loadout's items as a fitting holds them, by slot path: the modules,
+// and the parts in component slots, an emptied one holding EMPTIED.
+export const loadoutValues = (items: ItemValue[] = []) => {
+  const of = (type: VehicleLoadoutItemTypeEnum) =>
+    items.filter((item) => item.itemType === type);
+  const byPath = (list: ItemValue[], value: (item: ItemValue) => string) =>
+    Object.fromEntries(list.map((item) => [item.slotPath, value(item)]));
+
+  return {
+    modules: byPath(
+      of(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
+      (item) => item.itemId ?? EMPTIED,
+    ),
+    components: {
+      ...byPath(
+        of(VehicleLoadoutItemTypeEnum.COMPONENT),
+        (item) => item.itemId ?? EMPTIED,
+      ),
+      ...byPath(of(VehicleLoadoutItemTypeEnum.EMPTY), () => EMPTIED),
+    },
+  };
+};
 
 // Marks a stacked row's id, which is otherwise its first slot's path.
 export const GROUP_SUFFIX = "#stack";

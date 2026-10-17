@@ -4406,6 +4406,7 @@
             "nothing_to_empty": "the slot no longer holds a part to take out"
           }
         },
+        "againstStock": "Changes from the stock ship",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
         "unavailableModule": "Module no longer available",

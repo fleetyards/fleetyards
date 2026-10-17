@@ -4392,6 +4392,7 @@
             "nothing_to_empty": "此槽位已沒有可移除的部件"
           }
         },
+        "againstStock": "相對原廠飛船的變化",
         "owned": "已擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
         "unavailableModule": "模組已不可用",

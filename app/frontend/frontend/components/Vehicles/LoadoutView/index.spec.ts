@@ -19,11 +19,17 @@ const resolved = () => ({
 
 const loadoutSlots = ref<unknown[]>([]);
 const loadoutProblems = ref<unknown[]>([]);
+const hullSlots = ref<unknown[]>([]);
+const modelHardpoints = ref<unknown[]>([]);
+// Whether the cargo module is the one the ship comes with.
+const cargoStock = ref(false);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useVehicleLoadoutSlots: () => ({ data: loadoutSlots, ...resolved() }),
   useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
+  useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
+  useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
   useModelModules: () => ({
     data: ref({
       items: [
@@ -32,6 +38,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           name: "Cargo Module",
           slot: "hardpoint_front_module",
           metrics: { cargo: 32 },
+          stock: cargoStock.value,
         },
         { id: "m2", name: "Living Module", slot: "hardpoint_rear_module" },
         { id: "m3", name: "Spare Module", slot: "hardpoint_rear_module" },
@@ -100,6 +107,90 @@ describe("VehicleLoadoutView", () => {
     expect(fitted[0]).toContain("Cargo Module");
     expect(fitted[1]).toContain("Living Module");
     expect(wrapper.text()).not.toContain("Spare Module");
+  });
+
+  it("sums up what the modules change against the stock ship", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-changes-cargo']").text(),
+    ).toContain("+32");
+  });
+
+  it("counts no change for the module the ship comes with", async () => {
+    cargoStock.value = true;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout },
+    });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-changes-cargo']").exists(),
+    ).toBe(false);
+
+    cargoStock.value = false;
+  });
+
+  it("sums up what a swapped part changes, by the editor's figures, for the owner", async () => {
+    const shield = (id: string, name: string, maxHealth: number) => ({
+      id,
+      name,
+      size: "1",
+      category: "shieldgenerator",
+      type: "Shield",
+      typeData: { maxHealth, maxRegen: 100 },
+    });
+    const stock = shield("s1", "Stock Shield", 1000);
+    const better = shield("s2", "Better Shield", 3000);
+    const slot = {
+      name: "hardpoint_shield_generator",
+      hardpointId: "hull-shield",
+      category: "shieldgenerator",
+      minSize: 1,
+      maxSize: 1,
+      types: ["Shield"],
+      editable: true,
+      stock,
+      slots: [],
+    };
+    hullSlots.value = [slot];
+    loadoutSlots.value = [{ ...slot, fitted: better }];
+    modelHardpoints.value = [
+      {
+        id: "hp-shield",
+        name: "hardpoint_shield_generator",
+        category: "shieldgenerator",
+        component: stock,
+        hardpoints: [],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle,
+        loadout: {
+          ...loadout,
+          items: [
+            {
+              slotPath: "hardpoint_shield_generator",
+              itemType: "Component",
+              itemId: "s2",
+            },
+          ],
+        },
+        editable: true,
+      },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-changes-shieldHp']").text(),
+    ).toContain("+2");
+
+    hullSlots.value = [];
+    loadoutSlots.value = [];
+    modelHardpoints.value = [];
   });
 
   it("counts the fitted cargo in the ship's stats", async () => {

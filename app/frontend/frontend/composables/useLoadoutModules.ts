@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from "vue";
+import { CARGO, useModuleDiff } from "@/frontend/composables/useLoadoutDiff";
 import {
   type ModelModule,
   type VehicleLoadout,
@@ -38,11 +39,15 @@ export const useLoadoutModules = (
       .sort((a, b) => a.slotPath.localeCompare(b.slotPath));
   });
 
-  const moduleCargo = computed(() =>
-    moduleRows.value.reduce(
-      (total, row) => total + (row.module.metrics?.cargo || 0),
-      0,
-    ),
+  const { metrics } = useModuleDiff();
+
+  // What the modules carry, counted as the editor counts it.
+  const moduleCargo = computed(
+    () =>
+      metrics(
+        0,
+        moduleRows.value.map((row) => row.module),
+      ).get(CARGO) || 0,
   );
 
   return { moduleRows, moduleCargo };
