@@ -30914,9 +30914,24 @@ components:
         withValue:
           type: boolean
           description: Only items whose pledge melts for more than nothing
+        s:
+          "$ref": "#/components/schemas/HangarPledgeItemSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPledgeItemSortingEnum"
       additionalProperties: false
       example: {}
       title: HangarPledgeItemQuery
+    HangarPledgeItemSortingEnum:
+      type: string
+      enum:
+      - pledgeValue asc
+      - pledgeValue desc
+      x-enumNames:
+      - PLEDGE_VALUE_ASC
+      - PLEDGE_VALUE_DESC
+      title: HangarPledgeItemSortingEnum
     HangarPledgeItems:
       type: object
       properties:

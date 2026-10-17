@@ -10,6 +10,8 @@ class HangarPledgeItem < ApplicationRecord
 
   KINDS = %w[paint flair equipment ccu].freeze
 
+  ALLOWED_SORTING_PARAMS = ["pledgeValue asc", "pledgeValue desc"].freeze
+
   belongs_to :user
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
@@ -76,7 +78,7 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[meltable name]
+    %w[meltable name pledge_value]
   end
 
   def self.ransackable_scopes(_auth_object = nil)

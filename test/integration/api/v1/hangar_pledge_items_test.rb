@@ -216,6 +216,18 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/upgrades sorts by pledge value, cheapest first and unknown values last" do
+    user = create(:user)
+    pricey = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Hull C", pledge_value: 300)
+    unknown = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Cutter", pledge_value: nil)
+    cheap = create(:hangar_pledge_item, user:, kind: "ccu", name: "Upgrade - Aurora To Avenger", pledge_value: 15)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/upgrades", params: {q: {s: "pledgeValue asc"}} do
+      assert_equal [cheap.id, pricey.id, unknown.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar/upgrades needs a signed-in user" do
     assert_api_response :get, 401, api_path: "/hangar/upgrades"
   end
