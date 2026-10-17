@@ -19984,6 +19984,55 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/loadouts/{id}/problems":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Vehicle Loadout Problems
+      tags:
+      - VehicleLoadouts
+      operationId: vehicleLoadoutProblems
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoadoutItemProblemList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/{vehicle_id}/loadouts/{id}/slots":
     parameters:
     - name: vehicle_id
@@ -32909,6 +32958,31 @@ components:
       - id
       - name
       title: LoadoutComponentRef
+    LoadoutItemProblem:
+      type: object
+      properties:
+        slotPath:
+          type: string
+        itemType:
+          "$ref": "#/components/schemas/VehicleLoadoutItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        itemName:
+          type: string
+        code:
+          "$ref": "#/components/schemas/VehicleLoadoutItemProblemEnum"
+      additionalProperties: false
+      required:
+      - slotPath
+      - itemType
+      - code
+      title: LoadoutItemProblem
+    LoadoutItemProblemList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LoadoutItemProblem"
+      title: LoadoutItemProblemList
     LoadoutOption:
       type: object
       properties:
@@ -40784,6 +40858,23 @@ components:
       - slotPath
       - itemType
       title: VehicleLoadoutItemInput
+    VehicleLoadoutItemProblemEnum:
+      type: string
+      enum:
+      - parent_not_fitted
+      - module_not_in_slot
+      - slot_unknown
+      - component_not_in_slot
+      - slot_not_editable
+      - nothing_to_empty
+      x-enumNames:
+      - PARENT_NOT_FITTED
+      - MODULE_NOT_IN_SLOT
+      - SLOT_UNKNOWN
+      - COMPONENT_NOT_IN_SLOT
+      - SLOT_NOT_EDITABLE
+      - NOTHING_TO_EMPTY
+      title: VehicleLoadoutItemProblemEnum
     VehicleLoadoutItemTypeEnum:
       type: string
       enum:

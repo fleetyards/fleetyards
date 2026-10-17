@@ -6,13 +6,13 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },
-        only: %i[index show slots]
+        only: %i[index show slots problems]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: -> { warden.authenticate?(scope: :user) },
-        except: %i[index show slots]
+        except: %i[index show slots problems]
 
       before_action :set_vehicle
-      before_action :set_vehicle_loadout, only: %i[show update destroy activate slots]
+      before_action :set_vehicle_loadout, only: %i[show update destroy activate slots problems]
 
       def index
         authorize! with: VehicleLoadoutPolicy
@@ -56,6 +56,13 @@ module Api
 
       def slots
         @loadout_slots = @vehicle_loadout.slots
+      end
+
+      def problems
+        @item_problems = @vehicle_loadout.item_problems
+        ids = @item_problems.pluck(:item_id).compact
+        @item_names = Component.where(id: ids).pluck(:id, :name).to_h
+          .merge(ModelModule.where(id: ids).pluck(:id, :name).to_h)
       end
 
       private def set_vehicle
