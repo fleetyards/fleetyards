@@ -92,11 +92,11 @@ module ScData
       complete = true
 
       renders(store.listing(path), path).each do |field, name, md5|
-        next if md5s[field] == md5 && model.public_send(field).attached?
+        next if md5s[field] == md5 && stored?(model, field)
 
         # A render already on the model, through the folder upload or an
         # earlier import that predates the stored digests.
-        if current_checksum(model, field) == md5
+        if current_checksum(model, field) == md5 && stored?(model, field)
           md5s[field] = md5
           next
         end
@@ -151,6 +151,15 @@ module ScData
 
         candidates.first
       end
+    end
+
+    # The blob row, checksum included, is written before its bytes go up, so a
+    # worker killed in between leaves an attachment naming a file storage never
+    # received -- and a checksum that would otherwise say it is already here.
+    private def stored?(model, field)
+      blob = model.public_send(field).blob
+
+      blob.present? && blob.service.exist?(blob.key)
     end
 
     # ActiveStorage keeps the same MD5, base64-encoded.

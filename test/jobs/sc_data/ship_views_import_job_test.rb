@@ -165,6 +165,29 @@ module ScData
       assert_equal Digest::MD5.hexdigest(PNG), @model.ship_view_md5s["top_view"]
     end
 
+    test "fetches a render again whose file never reached storage" do
+      @model.top_view.attach(io: StringIO.new(PNG), filename: "flight_top.png")
+      @model.update!(ship_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      @model.top_view.blob.service.delete(@model.top_view.blob.key)
+      publish({"flight_top.png" => PNG})
+
+      perform(@model.id)
+
+      assert_includes fetched, "flight_top.png"
+      assert_equal PNG, @model.top_view.download
+    end
+
+    test "fetches a render again whose checksum matches but whose file is missing" do
+      @model.top_view.attach(io: StringIO.new(PNG), filename: "top.png")
+      @model.top_view.blob.service.delete(@model.top_view.blob.key)
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_includes fetched, "flight_top.png"
+      assert_equal PNG, @model.top_view.download
+    end
+
     test "replaces a render that changed" do
       @model.update!(ship_view_md5s: {"top_view" => "old"}, ship_views_digest: "listing-0")
       @model.top_view.attach(io: StringIO.new("old"), filename: "top.png")
