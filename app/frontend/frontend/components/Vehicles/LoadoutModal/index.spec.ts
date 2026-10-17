@@ -1036,6 +1036,51 @@ describe("VehicleLoadoutModal component tabs", () => {
     ]);
   });
 
+  it("re-picking the part a slot holds keeps what was fitted inside it", async () => {
+    componentOptions.value = [
+      { component: STOCK_GIMBAL, slots: [] },
+      { component: OTHER_GUN, slots: [] },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    await choose(wrapper, "hardpoint_gun_nose/hardpoint_class_2", "Other Gun");
+    await choose(wrapper, "hardpoint_gun_nose", "Stock Gimbal");
+    await save(wrapper);
+
+    expect(savedItems()).toEqual([
+      {
+        slotPath: "hardpoint_gun_nose/hardpoint_class_2",
+        itemType: "Component",
+        itemId: "gun2",
+      },
+    ]);
+  });
+
+  it("never stacks empty slots of one size that take different parts", async () => {
+    hullSlots.value = [
+      {
+        ...gunPort("hardpoint_gun_wing"),
+        category: "weapons",
+        types: ["WeaponGun"],
+      },
+      {
+        ...gunPort("hardpoint_turret_wing"),
+        category: "weapon_mounts",
+        types: ["Turret"],
+      },
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(socket(wrapper, "hardpoint_gun_wing").text()).toContain(
+      "labels.loadoutPicker.emptySocket",
+    );
+    expect(socket(wrapper, "hardpoint_turret_wing").text()).toContain(
+      "labels.loadoutPicker.emptySocket",
+    );
+  });
+
   it("picking the stock part again clears the slot", async () => {
     componentOptions.value = [
       { component: STOCK_GUN, slots: [] },
