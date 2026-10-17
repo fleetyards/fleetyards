@@ -635,6 +635,7 @@ const pickerBindings = computed(() => {
       clearable: true,
       // The previous slot's list stays in the query until this one's lands.
       loading: componentOptionsPending.value || componentOptionsStale.value,
+      facets: fitting.facets(),
     };
   }
 
@@ -645,6 +646,7 @@ const pickerBindings = computed(() => {
     sorts: pickerSorts.value,
     clearable: true,
     loading: false,
+    facets: [],
   };
 });
 
