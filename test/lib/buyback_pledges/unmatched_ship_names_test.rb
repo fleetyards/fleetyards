@@ -24,10 +24,10 @@ class BuybackPledges::UnmatchedShipNamesTest < ActiveSupport::TestCase
     assert_equal [["Cutter Scout", 2], ["Starlifter Hercules C2", 1]], BuybackPledges::UnmatchedShipNames.new.run
   end
 
-  test "skips upgraded pledges, which list the ship they were upgraded to" do
-    buyback(upgraded: true, contained: "Mercury Star Runner and 3 items", ship_names: ["Mercury Star Runner"])
+  test "reads an upgraded pledge's page, not the ship it is listed as upgraded to" do
+    buyback(upgraded: true, contained: "Mercury Star Runner and 3 items", ship_names: ["Cutter Scout"])
 
-    assert_empty BuybackPledges::UnmatchedShipNames.new.run
+    assert_equal [["Cutter Scout", 1]], BuybackPledges::UnmatchedShipNames.new.run
   end
 
   test "matches the names RSI gives ships it renamed or edition-named" do
