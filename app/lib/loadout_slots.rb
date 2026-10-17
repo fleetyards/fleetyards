@@ -39,6 +39,18 @@ class LoadoutSlots
     end
   end
 
+  # The catalogue components a port takes, best first by name. A port that names
+  # neither types nor a category has nothing to match on and takes nothing.
+  def self.options(port)
+    facts = port.facts
+    types = Array(facts.types).compact_blank
+    return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
+
+    scope = Component.current_version.named.order(:name)
+    scope = types.any? ? scope.where(component_type: types) : scope.where(category: facts.category)
+    scope.select { |component| fits?(port, component) }
+  end
+
   # A port that names no types (68 life-support slots, among others) is matched
   # on the category the slot was filed under instead.
   def self.fits?(port, component)
@@ -52,6 +64,18 @@ class LoadoutSlots
 
     (facts.min_size.nil? || size >= facts.min_size) && (facts.max_size.nil? || size <= facts.max_size)
   end
+
+  # The hull slots a player fits: the systems, the weapons and what holds them,
+  # and the module slots, whose own slots open up once a module is fitted.
+  # Doors, seats, thrusters and the rest are the shipwright's.
+  HULL_CATEGORIES = %w[
+    radar cooler lifesupport powerplant shieldgenerator quantumdrive controller
+    weapons weapon_mounts turret missile_racks module
+  ].freeze
+
+  # Shield, missile and weapon controllers are ship internals; the flight blade
+  # is the one controller a player swaps.
+  FITTED_CONTROLLER_TYPES = Component::CATALOGUED_CONTROLLER_TYPES
 
   # `items` are `{slot_path:, item_type:, item_id:}` hashes, as a loadout's
   # `item_list` holds them.
@@ -71,6 +95,16 @@ class LoadoutSlots
 
   def hull
     hull_slots.values
+  end
+
+  def fittable_hull
+    hull.select do |slot|
+      next false unless HULL_CATEGORIES.include?(slot.facts.category)
+      next true unless slot.facts.category == "controller"
+
+      FITTED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
+        Array(slot.facts.types).intersect?(FITTED_CONTROLLER_TYPES)
+    end
   end
 
   def children(slot)

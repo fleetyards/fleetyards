@@ -67,6 +67,11 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
+  # The saved fitting's slots, the stock parts it left in place included.
+  def slots
+    LoadoutSlots.new(vehicle.model, items.map { |item| item.slice(:slot_path, :item_type, :item_id).symbolize_keys })
+  end
+
   def url_source
     return if url.blank?
 
