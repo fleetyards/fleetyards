@@ -68,19 +68,23 @@ type ItemValue = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
 // A saved loadout's items as a fitting holds them, by slot path: the modules,
 // and the parts in component slots, an emptied one holding EMPTIED.
 export const loadoutValues = (items: ItemValue[] = []) => {
-  const of = (...types: VehicleLoadoutItemTypeEnum[]) =>
-    Object.fromEntries(
-      items
-        .filter((item) => types.includes(item.itemType))
-        .map((item) => [item.slotPath, item.itemId ?? EMPTIED]),
-    );
+  const of = (type: VehicleLoadoutItemTypeEnum) =>
+    items.filter((item) => item.itemType === type);
+  const byPath = (list: ItemValue[], value: (item: ItemValue) => string) =>
+    Object.fromEntries(list.map((item) => [item.slotPath, value(item)]));
 
   return {
-    modules: of(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
-    components: of(
-      VehicleLoadoutItemTypeEnum.COMPONENT,
-      VehicleLoadoutItemTypeEnum.EMPTY,
+    modules: byPath(
+      of(VehicleLoadoutItemTypeEnum.MODEL_MODULE),
+      (item) => item.itemId ?? EMPTIED,
     ),
+    components: {
+      ...byPath(
+        of(VehicleLoadoutItemTypeEnum.COMPONENT),
+        (item) => item.itemId ?? EMPTIED,
+      ),
+      ...byPath(of(VehicleLoadoutItemTypeEnum.EMPTY), () => EMPTIED),
+    },
   };
 };
 
