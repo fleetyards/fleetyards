@@ -6,7 +6,10 @@ import {
   useFittingDiff,
 } from "@/frontend/composables/useFittingDiff";
 import { moduleSlots } from "@/frontend/components/Vehicles/LoadoutModal/moduleSlots";
-import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
+import type {
+  LoadoutSocketGroup,
+  LoadoutSocketSlot,
+} from "@/frontend/components/Loadout/Socket/types";
 import type {
   LoadoutPickerOption,
   LoadoutPickerSort,
@@ -63,7 +66,13 @@ export const useModuleSockets = () => {
     {
       fittedOnly = false,
       saved,
-    }: { fittedOnly?: boolean; saved?: Record<string, string> } = {},
+      contents,
+    }: {
+      fittedOnly?: boolean;
+      saved?: Record<string, string>;
+      // What a module brings, shown under it: its slots and the parts in them.
+      contents?: (mod: ModelModule) => LoadoutSocketSlot[];
+    } = {},
   ): LoadoutSocketGroup[] => {
     const slots = moduleSlots(modules)
       .filter((slot) => !fittedOnly || !!fitted[slot])
@@ -94,6 +103,7 @@ export const useModuleSockets = () => {
           id: slot,
           label: slotLabel(slot),
           changed,
+          children: contents?.(mod),
           item: {
             id: mod.id,
             name: mod.name,

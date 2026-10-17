@@ -85,9 +85,7 @@ describe("LoadoutSocketBoard", () => {
     const panels = wrapper.findAll("[data-test='loadout-socket-board-active']");
     expect(panels).toHaveLength(1);
     expect(
-      panels[0].element.previousElementSibling
-        ?.querySelector(".loadout-socket")
-        ?.getAttribute("data-test"),
+      panels[0].element.previousElementSibling?.getAttribute("data-test"),
     ).toBe("loadout-socket-wing-left");
   });
 

@@ -59,6 +59,9 @@ export interface FittedSlot {
 // A slot whose stock part the loadout took out, in a fitting keyed by path.
 export const EMPTIED = "";
 
+// Marks a stacked row's id, which is otherwise its first slot's path.
+export const GROUP_SUFFIX = "#stack";
+
 export const slotName = (name: string) =>
   name
     .replace(/^hardpoint_/, "")
@@ -284,7 +287,13 @@ export const useComponentFitting = () => {
       types: hardpoint.types ?? [],
       editable: true,
       stock,
-      slots: (hardpoint.hardpoints ?? []).map(toSlot),
+      // A port inside a module names what sits in it through the part's own
+      // ports, as a ship page's hardpoint row reads them: a missile rack's
+      // missile slots are the rack's, not the module's.
+      slots: (hardpoint.hardpoints?.length
+        ? hardpoint.hardpoints
+        : (hardpoint.component?.hardpoints ?? [])
+      ).map(toSlot),
     };
   };
 
@@ -348,15 +357,31 @@ export const useComponentFitting = () => {
     return undefined;
   };
 
+  const glyphCategory = (
+    category: HardpointCategoryEnum | undefined,
+    part: LoadoutComponentRef,
+  ) =>
+    category && category !== HardpointCategoryEnum.UNKNOWN
+      ? category
+      : ((part.category as HardpointCategoryEnum | undefined) ?? category);
+
+  // The figures a ship page's hardpoint row shows beside its gold headline.
+  const rowStats = (
+    component: LoadoutComponentRef,
+    category?: HardpointCategoryEnum,
+  ) => stats(component, category).filter((stat) => !stat.primary);
+
   const socket = (
     entry: FittedSlot,
     fittedOnly: boolean,
     saved?: FittedSlot[],
   ): LoadoutSocketSlot | undefined => {
-    const children = entry.children
-      .filter(changeable)
-      .map((child) => socket(child, fittedOnly, saved))
-      .filter((child): child is LoadoutSocketSlot => !!child);
+    const children = grouped(
+      entry.children
+        .filter(changeable)
+        .map((child) => socket(child, fittedOnly, saved))
+        .filter((child): child is LoadoutSocketSlot => !!child),
+    );
 
     if (fittedOnly && !entry.content && !children.length) return undefined;
 
@@ -364,6 +389,7 @@ export const useComponentFitting = () => {
       id: entry.path,
       label: slotName(entry.slot.name),
       size: sizeLabel(entry.slot),
+      maxSize: entry.slot.maxSize,
       // Shown for what sits inside it, but nothing else fits it: the game locks
       // it, or the part it came with is the only one made for it.
       locked: !entry.slot.editable || entry.slot.swappable === false,
@@ -374,16 +400,77 @@ export const useComponentFitting = () => {
             id: entry.content.id,
             name: entry.content.name,
             figure: componentFigure(entry.content),
-            category: entry.slot.category,
+            // A port inside a part often names no category of its own; the part
+            // in it does.
+            category: glyphCategory(entry.slot.category, entry.content),
             headline: headlineOf(entry.content, entry.slot.category),
+            stats: rowStats(entry.content, entry.slot.category),
           }
         : undefined,
       children,
+      members: [entry.path],
     };
   };
 
-  // One group per hull slot, holding it and what sits inside it, nested the
-  // way the ship page nests a turret's guns under the turret.
+  // What makes two sibling slots the same row: the part in them, the room they
+  // offer, and the same again all the way down.
+  const signature = (slot: LoadoutSocketSlot): string =>
+    JSON.stringify([
+      slot.item?.id,
+      slot.size,
+      slot.locked,
+      (slot.children ?? []).map(signature),
+    ]);
+
+  // A slot the group stands for, under each member: what sits inside the first
+  // of them sits, by the same relative path, inside every other.
+  const across = (
+    slot: LoadoutSocketSlot,
+    from: string,
+    members: string[],
+  ): LoadoutSocketSlot => ({
+    ...slot,
+    members: members.flatMap((member) =>
+      (slot.members ?? [slot.id]).map(
+        (path) => `${member}${path.slice(from.length)}`,
+      ),
+    ),
+    children: slot.children?.map((child) => across(child, from, members)),
+    stack: slot.stack?.map((one) => across(one, from, members)),
+  });
+
+  /**
+   * Identical siblings as one row with a count, the way a ship page stacks
+   * identical mounts: a pick on it fills every one, and the slots stay one by
+   * one in its stack for fitting each alone.
+   */
+  const grouped = (slots: LoadoutSocketSlot[]): LoadoutSocketSlot[] => {
+    const bySignature = new Map<string, LoadoutSocketSlot[]>();
+    slots.forEach((slot) => {
+      const key = signature(slot);
+      bySignature.set(key, [...(bySignature.get(key) ?? []), slot]);
+    });
+
+    return [...bySignature.values()].map((same) => {
+      if (same.length === 1) return same[0];
+
+      const [first] = same;
+      const members = same.map((slot) => slot.id);
+
+      return {
+        ...across(first, first.id, members),
+        // Its own id: the first slot's path is also the first row of its stack,
+        // and the two have to be told apart while one of them is open.
+        id: `${first.id}${GROUP_SUFFIX}`,
+        changed: same.some((slot) => slot.changed),
+        stack: same,
+      };
+    });
+  };
+
+  // One group per tab, holding its hull slots and what sits inside them,
+  // nested the way the ship page nests a turret's guns under the turret, and
+  // identical slots stacked with a count.
   const groups = (
     tree: FittedSlot[],
     tab: ComponentTab,
@@ -391,12 +478,49 @@ export const useComponentFitting = () => {
       fittedOnly = false,
       saved,
     }: { fittedOnly?: boolean; saved?: FittedSlot[] } = {},
-  ): LoadoutSocketGroup[] =>
-    roots(tree, tab)
-      .filter(changeable)
-      .map((root) => socket(root, fittedOnly, saved))
-      .filter((slot): slot is LoadoutSocketSlot => !!slot)
-      .map((slot) => ({ key: slot.id, slots: [slot] }));
+  ): LoadoutSocketGroup[] => {
+    const slots = grouped(
+      roots(tree, tab)
+        .filter(changeable)
+        .map((root) => socket(root, fittedOnly, saved))
+        .filter((slot): slot is LoadoutSocketSlot => !!slot),
+    );
+
+    return slots.length ? [{ key: tab.id, slots }] : [];
+  };
+
+  /**
+   * What a module brings, as rows under it on the modules tab: its own slots
+   * and the parts it comes with, read the way the ship page reads them.
+   */
+  const moduleContents = (mod: ModelModule): LoadoutSocketSlot[] =>
+    grouped(
+      (mod.hardpoints ?? []).map(toSlot).map((slot) => {
+        const toRow = (port: LoadoutSlot, path: string): LoadoutSocketSlot => ({
+          id: path,
+          label: slotName(port.name),
+          size: sizeLabel(port),
+          maxSize: port.maxSize,
+          locked: true,
+          item: port.stock
+            ? {
+                id: port.stock.id,
+                name: port.stock.name,
+                figure: componentFigure(port.stock),
+                category: glyphCategory(port.category, port.stock),
+                headline: headlineOf(port.stock, port.category),
+                stats: rowStats(port.stock, port.category),
+              }
+            : undefined,
+          children: grouped(
+            port.slots.map((child) => toRow(child, `${path}/${child.name}`)),
+          ),
+          members: [path],
+        });
+
+        return toRow(slot, `${mod.slot}/${slot.name}`);
+      }),
+    );
 
   const hasSlots = (tree: FittedSlot[], tab: ComponentTab) =>
     roots(tree, tab).some(changeable);
@@ -602,6 +726,7 @@ export const useComponentFitting = () => {
   return {
     learn,
     learnModules,
+    moduleContents,
     learnOption,
     resolve,
     groups,
