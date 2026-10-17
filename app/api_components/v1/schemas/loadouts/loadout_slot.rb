@@ -16,6 +16,7 @@ module V1
             maxSize: {type: :integer},
             types: {type: :array, items: {type: :string}},
             editable: {type: :boolean, description: "False where the game locks the part in place"},
+            swappable: {type: :boolean, description: "Whether anything but the stock part fits"},
             stock: ::V1::Schemas::Loadouts::LoadoutComponentRef,
             fitted: ::V1::Schemas::Loadouts::LoadoutComponentRef,
             slots: {type: :array, items: ::V1::Schemas::Loadouts::LoadoutSlot}
