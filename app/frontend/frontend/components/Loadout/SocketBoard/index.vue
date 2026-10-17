@@ -31,7 +31,7 @@ const { t } = useI18n();
 
 // Compact or expanded, as the ship page's hardpoint list offers it, for a
 // board where some socket holds others.
-const density = ref<"compact" | "expanded">("compact");
+const density = ref<"compact" | "expanded">("expanded");
 provide("loadoutSocketDensity", density);
 
 const nests = computed(() =>
@@ -44,8 +44,9 @@ const root = ref<HTMLElement>();
 
 const sockets = () =>
   Array.from(
-    root.value?.querySelectorAll<HTMLButtonElement>("button.loadout-socket") ||
-      [],
+    root.value?.querySelectorAll<HTMLElement>(
+      "[data-loadout-socket][role='button']",
+    ) || [],
   );
 
 // Up and down walk the sockets the way they read, across groups, so a long
@@ -55,7 +56,7 @@ const onKeydown = (event: KeyboardEvent) => {
   if (!step || !props.editable) return;
 
   const all = sockets();
-  const index = all.indexOf(document.activeElement as HTMLButtonElement);
+  const index = all.indexOf(document.activeElement as HTMLElement);
   if (index < 0) return;
 
   event.preventDefault();

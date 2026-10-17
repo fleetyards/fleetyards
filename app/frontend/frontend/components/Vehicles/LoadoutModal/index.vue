@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
+import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -473,6 +474,7 @@ const socketGroups = computed(() =>
   moduleSockets.groups(modules.value, fittedModules.value || {}, {
     fittedOnly: !props.editable,
     saved: props.editable ? savedValues().fittedModules : undefined,
+    contents: fitting.moduleContents,
   }),
 );
 
@@ -512,6 +514,36 @@ const socketButton = (slot: string) =>
     `[data-test="loadout-socket-${slot}"]`,
   );
 
+const socketIn = (
+  slots: LoadoutSocketSlot[],
+  id: string,
+): LoadoutSocketSlot | undefined => {
+  for (const slot of slots) {
+    if (slot.id === id) return slot;
+    const inside = socketIn(
+      [...(slot.children ?? []), ...(slot.stack ?? [])],
+      id,
+    );
+    if (inside) return inside;
+  }
+
+  return undefined;
+};
+
+// The slots the open socket stands for: one, or every slot of a stacked row.
+const activeMembers = computed(() => {
+  const tab = activeTab.value && componentTabs.value[activeTab.value];
+  const slot =
+    tab && activeSlot.value
+      ? socketIn(
+          tab.groups.flatMap((group) => group.slots),
+          activeSlot.value,
+        )
+      : undefined;
+
+  return slot?.members ?? (activeSlot.value ? [activeSlot.value] : []);
+});
+
 const onSocketSelect = async (
   slot: string,
   kind: "module" | "component" = "module",
@@ -532,13 +564,21 @@ const onSocketSelect = async (
   }
 };
 
+// A stacked row is open on its first slot, which stands for the rest.
 const activeComponentSlot = computed(() =>
   activeKind.value === "component" && activeSlot.value
-    ? fitting.find(componentTree.value, activeSlot.value)
+    ? fitting.find(
+        componentTree.value,
+        activeMembers.value[0] ?? activeSlot.value,
+      )
     : undefined,
 );
 
-const { data: componentOptions } = useHardpointLoadoutOptions(
+const {
+  data: componentOptions,
+  isPending: componentOptionsPending,
+  isPlaceholderData: componentOptionsStale,
+} = useHardpointLoadoutOptions(
   () => activeComponentSlot.value?.slot.hardpointId ?? "",
   { query: { enabled: () => !!activeComponentSlot.value } },
 );
@@ -582,6 +622,8 @@ const pickerBindings = computed(() => {
       selectedId: component.content?.id,
       sorts: pickerSorts.value,
       clearable: true,
+      // The previous slot's list stays in the query until this one's lands.
+      loading: componentOptionsPending.value || componentOptionsStale.value,
     };
   }
 
@@ -591,6 +633,7 @@ const pickerBindings = computed(() => {
     selectedId: activeSlot.value ? fitted.value[activeSlot.value] : undefined,
     sorts: pickerSorts.value,
     clearable: true,
+    loading: false,
   };
 });
 
@@ -620,13 +663,15 @@ const onPick = (itemId: string | null) => {
     const option = componentOptions.value?.find(
       (entry) => entry.component.id === itemId,
     );
-    if (option) fitting.learnOption(component.path, option);
 
-    fittedComponents.value = fitting.pick(
-      fittedComponents.value || {},
-      component,
-      itemId,
-    );
+    // A stacked row stands for every identical slot: the pick fills them all.
+    fittedComponents.value = activeMembers.value.reduce((next, path) => {
+      const entry = fitting.find(componentTree.value, path);
+      if (!entry) return next;
+      if (option) fitting.learnOption(path, option);
+
+      return fitting.pick(next, entry, itemId);
+    }, fittedComponents.value || {});
 
     void closePicker();
     return;
