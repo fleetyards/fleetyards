@@ -28,12 +28,6 @@ import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
 import LoadoutMetrics from "./Metrics/index.vue";
-import {
-  type LoadoutMetric,
-  type LoadoutMetricsCard,
-  TAB_METRICS,
-  useLoadoutMetrics,
-} from "@/frontend/composables/useLoadoutMetrics";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -41,7 +35,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
-import { useFittingDiff } from "@/frontend/composables/useFittingDiff";
+import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
 import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
 import {
   COMPONENT_TABS,
@@ -63,8 +57,6 @@ import {
   getVehicleLoadoutsQueryKey,
   updateVehicleLoadout,
   useHardpointLoadoutOptions,
-  type ComponentController,
-  HardpointCategoryEnum,
   HardpointSourceEnum,
   useModelHardpoints,
   useModelLoadoutSlots,
@@ -359,8 +351,6 @@ const modulesHint = computed(() => {
     : t("labels.vehicleLoadout.unavailable.modules");
 });
 
-const { metrics, rows } = useFittingDiff();
-
 // The tab on show, as FormTabs settles it: the one asked for while it can be
 // opened, else the first that can.
 const pickedTab = ref<string | undefined>(props.tab);
@@ -390,148 +380,58 @@ const savedTree = computed(() =>
   }),
 );
 
-// The ship's hardpoints with the fitting in them, and with the saved one, for
-// the figures the ship page's metrics cards lead with.
-const fittedHardpoints = computed(() =>
-  fitting.graft(modelHardpoints.value ?? [], componentTree.value),
-);
-
-const savedHardpoints = computed(() =>
-  fitting.graft(modelHardpoints.value ?? [], savedTree.value),
-);
-
-// The flight blade a tree holds, whose speeds the flight figures read.
-const bladeIn = (tree: typeof componentTree.value) =>
-  tree.find((entry) => entry.slot.category === HardpointCategoryEnum.CONTROLLER)
-    ?.content?.typeData as ComponentController | undefined;
-
-const { measure, metrics: loadoutMetrics } = useLoadoutMetrics();
-
-const now = computed(() => ({
-  hardpoints: fittedHardpoints.value,
-  blade: bladeIn(componentTree.value),
-}));
-
-const saved = computed(() => ({
-  hardpoints: savedHardpoints.value,
-  blade: bladeIn(savedTree.value),
-}));
+const loadoutDiff = useLoadoutDiff(fitting);
 
 // Each fitting measured once, and the saved one only when it changes, rather
 // than both again for every card on every pick.
 const measuredNow = computed(() =>
-  measure(now.value, model.value?.metrics.weaponPoolSize),
+  loadoutDiff.measure({
+    hullCargo: hullCargo.value,
+    modules: modulesFor(fittedModuleIds.value),
+    hardpoints: modelHardpoints.value ?? [],
+    tree: componentTree.value,
+    weaponPoolSize: model.value?.metrics.weaponPoolSize,
+  }),
 );
 
 const measuredSaved = computed(() =>
-  measure(saved.value, model.value?.metrics.weaponPoolSize),
+  loadoutDiff.measure({
+    hullCargo: hullCargo.value,
+    modules: modulesFor(Object.values(savedValues().fittedModules)),
+    hardpoints: modelHardpoints.value ?? [],
+    tree: savedTree.value,
+    weaponPoolSize: model.value?.metrics.weaponPoolSize,
+  }),
 );
 
-const CARDS = [...new Set(Object.values(TAB_METRICS))];
-
-const allCardMetrics = computed(
-  () =>
-    Object.fromEntries(
-      CARDS.map((card) => [
-        card,
-        modelHardpoints.value?.length
-          ? loadoutMetrics(card, measuredNow.value, measuredSaved.value)
-          : [],
-      ]),
-    ) as Record<LoadoutMetricsCard, LoadoutMetric[]>,
+const figures = computed(() =>
+  loadoutDiff.diff(measuredSaved.value, measuredNow.value, COMPONENT_TABS),
 );
 
-const cardMetrics = (card: LoadoutMetricsCard) =>
-  allCardMetrics.value[card] ?? [];
-
-// The tabs whose parts' own figure no card leads with -- a radar's assist
-// range, a drive's speed -- which their tab shows ahead of the card's.
-const OWN_FIGURE_TABS = ["radar", "coolers", "lifeSupport", "quantumDrives"];
-
-// Draw and signatures are the power card's to show, summed for the whole ship.
-const CARD_FIGURES = new Set([
-  "powerConsumption",
-  "signatureEm",
-  "signatureIr",
-]);
-
-const ownFigures = (tabId: string): LoadoutMetric[] => {
-  const tab = componentTabs.value[tabId];
-  if (!tab || !OWN_FIGURE_TABS.includes(tabId)) return [];
-
-  return fitting
-    .tabFigures(componentTree.value, savedTree.value, tab)
-    .filter((figure) => !CARD_FIGURES.has(figure.key))
-    .map(({ key, label, value, deltaLabel, tone }) => ({
-      key,
-      label,
-      value,
-      deltaLabel,
-      tone,
-    }));
-};
-
-const openCard = computed(() =>
-  currentTab.value ? TAB_METRICS[currentTab.value] : undefined,
-);
-
-// The open tab's card, cut down to its leading figures, each with how far it
-// moved from the saved loadout.
+// The open tab's figures, each with how far it moved from the saved loadout.
 const tabMetrics = computed(() => {
   if (currentTab.value === VehicleLoadoutTabsEnum.MODULES) {
     return {
       title: t("labels.vehicleLoadout.tabs.modules"),
-      metrics: moduleMetrics.value,
+      metrics: figures.value.modules,
     };
   }
 
-  if (!currentTab.value || !openCard.value || !modelHardpoints.value?.length) {
-    return undefined;
-  }
+  const metrics = currentTab.value ? figures.value.tabs[currentTab.value] : [];
+  if (!currentTab.value || !metrics?.length) return undefined;
 
   return {
     title: t(`labels.vehicleLoadout.tabs.${currentTab.value}`),
-    metrics: [...ownFigures(currentTab.value), ...cardMetrics(openCard.value)],
+    metrics,
   };
 });
-
-const moduleFigures = computed(() =>
-  rows(
-    metrics(
-      hullCargo.value,
-      modulesFor(Object.values(savedValues().fittedModules)),
-    ),
-    metrics(hullCargo.value, modulesFor(fittedModuleIds.value)),
-  ),
-);
-
-const moduleMetrics = computed<LoadoutMetric[]>(() =>
-  moduleFigures.value.map((row) => ({
-    key: row.key,
-    label: row.label,
-    value: row.value,
-    deltaLabel: row.deltaLabel,
-    tone: row.delta?.tone,
-  })),
-);
 
 /**
  * Everything the changes moved against the saved loadout, on every tab: a
  * summary of all that was done, in the words the tiles use, so a swap is never
  * out of sight on the tab it was not made on.
  */
-const changedFigures = computed<LoadoutMetric[]>(() => {
-  const all = [
-    ...moduleMetrics.value,
-    ...CARDS.flatMap(cardMetrics),
-    ...OWN_FIGURE_TABS.flatMap(ownFigures),
-  ].filter((figure) => figure.deltaLabel);
-
-  return all.filter(
-    (figure, index) =>
-      all.findIndex((other) => other.key === figure.key) === index,
-  );
-});
+const changedFigures = computed(() => figures.value.changed);
 
 const slots = computed(() => moduleSlots(modules.value));
 

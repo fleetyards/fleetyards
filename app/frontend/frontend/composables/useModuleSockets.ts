@@ -2,9 +2,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import {
+  CARGO,
   type FittingRow,
-  useFittingDiff,
-} from "@/frontend/composables/useFittingDiff";
+  useLoadoutDiff,
+} from "@/frontend/composables/useLoadoutDiff";
 import { moduleSlots } from "@/frontend/components/Vehicles/LoadoutModal/moduleSlots";
 import type {
   LoadoutSocketGroup,
@@ -15,8 +16,6 @@ import type {
   LoadoutPickerSort,
 } from "@/frontend/components/Loadout/Picker/types";
 import type { ModelModule } from "@/services/fyApi";
-
-const CARGO = "cargo";
 
 /**
  * A hull's modules in the shape the loadout sockets and picker take: the slots
@@ -30,7 +29,7 @@ export const useModuleSockets = () => {
 
   const { slotLabel } = useLoadoutSlotLabel();
 
-  const { metrics, rows } = useFittingDiff();
+  const { metrics, rows } = useLoadoutDiff();
 
   // Only what the module itself brings: the hull's own cargo would make every
   // module read the same.

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ModelModule } from "@/services/fyApi";
-import { useFittingDiff } from "./useFittingDiff";
+import { useLoadoutDiff } from "./useLoadoutDiff";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
@@ -34,9 +34,9 @@ const medical = (tier: number, name: string, beds: number) =>
     hardpoints: [],
   }) as unknown as ModelModule;
 
-describe("useFittingDiff", () => {
+describe("useLoadoutDiff", () => {
   it("tells medical modules apart by their beds, tier by tier", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useLoadoutDiff();
 
     const byKey = Object.fromEntries(
       rows(
@@ -60,7 +60,7 @@ describe("useFittingDiff", () => {
   });
 
   it("adds the fitted modules to the hull's figures", () => {
-    const { metrics } = useFittingDiff();
+    const { metrics } = useLoadoutDiff();
 
     expect(Object.fromEntries(metrics(100, [cargo, torpedoes]))).toEqual({
       cargo: 132,
@@ -69,7 +69,7 @@ describe("useFittingDiff", () => {
   });
 
   it("reads a swap as the compare tool reads two ships", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useLoadoutDiff();
 
     const [cargoRow, torpedoRow] = rows(
       metrics(100, [torpedoes]),
@@ -95,7 +95,7 @@ describe("useFittingDiff", () => {
   });
 
   it("marks nothing for a swap that changes nothing", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useLoadoutDiff();
 
     expect(rows(metrics(100, [cargo]), metrics(100, [cargo]))).toEqual([
       expect.objectContaining({ key: "cargo", deltaLabel: undefined }),
