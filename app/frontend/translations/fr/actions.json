@@ -599,6 +599,8 @@
         "showPublic": "Journal de bord"
       },
       "vehicleLoadout": {
+        "swapModule": "Changer de module",
+        "removeModule": "Retirer le module",
         "editLoadout": "Modifier l’équipement",
         "newLoadout": "Nouvel équipement",
         "saveLoadout": "Enregistrer l’équipement",

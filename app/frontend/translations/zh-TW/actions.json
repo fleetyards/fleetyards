@@ -599,6 +599,8 @@
         "showPublic": "艦長日誌"
       },
       "vehicleLoadout": {
+        "swapModule": "更換模組",
+        "removeModule": "移除模組",
         "editLoadout": "編輯配置",
         "newLoadout": "新增配置",
         "saveLoadout": "儲存配置",
