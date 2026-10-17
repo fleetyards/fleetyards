@@ -319,6 +319,7 @@ zh-TW:
               slot_unknown: "必須指向艦船上存在的槽位"
               component_not_in_slot: "必須與所在槽位的類型和尺寸相符"
               slot_not_editable: "不能替換槽位鎖定的部件"
+              nothing_to_empty: "只能清空裝有部件的槽位"
         payout_entry:
           attributes:
             entry_type:

@@ -600,6 +600,8 @@ const {
   isPlaceholderData: componentOptionsStale,
 } = useHardpointLoadoutOptions(
   () => activeComponentSlot.value?.slot.hardpointId ?? "",
+  // What the slot came with, which a port inside a part cannot tell the server.
+  () => ({ stockId: activeComponentSlot.value?.slot.stock?.id }),
   { query: { enabled: () => !!activeComponentSlot.value } },
 );
 

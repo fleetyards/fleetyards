@@ -320,6 +320,7 @@ en:
               slot_unknown: "must each name a slot the ship has"
               component_not_in_slot: "must each match the type and size of their slot"
               slot_not_editable: "cannot replace a part the slot locks in place"
+              nothing_to_empty: "can only empty a slot that holds a part"
         fleet_subscription:
           attributes:
             ended_at:

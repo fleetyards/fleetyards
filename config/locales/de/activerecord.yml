@@ -319,6 +319,7 @@ de:
               slot_unknown: "müssen jeweils einen Slot des Schiffs benennen"
               component_not_in_slot: "müssen jeweils zu Typ und Größe ihres Slots passen"
               slot_not_editable: "können kein Teil ersetzen, das der Slot fest verbaut"
+              nothing_to_empty: "können nur einen Slot leeren, in dem ein Teil sitzt"
         payout_entry:
           attributes:
             entry_type:
