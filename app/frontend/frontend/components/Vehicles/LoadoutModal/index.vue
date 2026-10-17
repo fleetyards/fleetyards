@@ -611,17 +611,33 @@ const activeComponentSlot = computed(() =>
     : undefined,
 );
 
+// The ports above the active slot, whose tags a part in it may demand.
+const ancestorIds = computed(() => {
+  const path = activeComponentSlot.value?.path;
+  if (!path) return [];
+
+  const names = path.split("/");
+  return names
+    .slice(1)
+    .map((_, depth) =>
+      fitting.find(componentTree.value, names.slice(0, depth + 1).join("/")),
+    )
+    .map((above) => above?.slot.hardpointId)
+    .filter((id): id is string => !!id);
+});
+
 const {
   data: componentOptions,
   isPending: componentOptionsPending,
   isPlaceholderData: componentOptionsStale,
 } = useHardpointLoadoutOptions(
   () => activeComponentSlot.value?.slot.hardpointId ?? "",
-  // What the slot came with and the ship it is on, which a port inside a part
-  // cannot tell the server.
+  // What the slot came with, the ship it is on and the ports above it, which a
+  // port inside a part cannot tell the server.
   () => ({
     stockId: activeComponentSlot.value?.slot.stock?.id,
     modelSlug: model.value.slug,
+    ancestorIds: ancestorIds.value,
   }),
   { query: { enabled: () => !!activeComponentSlot.value } },
 );
