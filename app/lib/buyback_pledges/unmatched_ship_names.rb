@@ -6,9 +6,9 @@ module BuybackPledges
   # differently from one pledge page to the next, and a name missing here
   # belongs in `Rsi::ShipNames::MAPPING`.
   class UnmatchedShipNames
-    # "Cutlass Black and 2 items" names its first ship; "2 ships and 4 items"
-    # names none.
-    FIRST_SHIP = /\s+and\s+\d+\s.*\z/i
+    # "Cutlass Black and 2 items" or "ATLS GEO and Lifetime Insurance" names
+    # its first ship; "2 ships and 4 items" names none.
+    FIRST_SHIP = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
     COUNTED = /\A\d+\s+(ships?|items?)\b/i
 
     def run

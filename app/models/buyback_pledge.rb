@@ -97,7 +97,7 @@ class BuybackPledge < ApplicationRecord
     names = Rsi::ShipNames.aliases([model.name, model.rsi_name])
     ship = <<~SQL.squish
       lower(trim(regexp_replace(buyback_pledges.contained,
-        '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
+        '(?i)[[:space:]]+and[[:space:]]+([0-9]+[[:space:]]|lifetime[[:space:]]+insurance).*$', '')))
     SQL
     listed = sanitize_sql_array([<<~SQL.squish, names])
       EXISTS (SELECT 1 FROM unnest(buyback_pledges.ship_names) AS ship_name

@@ -35,6 +35,7 @@ class BuybackPledges::UnmatchedShipNamesTest < ActiveSupport::TestCase
     create(:model, name: "X1 Force", rsi_name: "X1 Force")
     buyback(contained: "Constellation Phoenix and 2 items")
     buyback(contained: "X1 - FORCE and 2 items")
+    buyback(contained: "Cutter and Lifetime Insurance")
 
     assert_empty BuybackPledges::UnmatchedShipNames.new.run
   end
