@@ -90,16 +90,29 @@ const swappedIn = (
     ];
   });
 
+// A tab's slots, as the editor lists them: the hull's of its categories, and
+// those inside a fitted module, under the module slot's path.
+const tabSlots = (
+  slots: LoadoutSlot[],
+  categories: HardpointCategoryEnum[],
+  parentPath?: string,
+): ComponentRow[] =>
+  slots.flatMap((slot) => {
+    const slotPath = parentPath ? `${parentPath}/${slot.name}` : slot.name;
+    if (slot.category === HardpointCategoryEnum.MODULE) {
+      return tabSlots(slot.slots, categories, slotPath);
+    }
+    if (!slot.category || !categories.includes(slot.category)) return [];
+
+    return swappedIn([slot], undefined, parentPath);
+  });
+
 const componentSections = computed(() =>
   COMPONENT_TABS.map((tab) => ({
     key: tab.id,
     label: t(`labels.vehicleLoadout.tabs.${tab.id}`),
     category: tab.categories[0],
-    rows: swappedIn(
-      (loadoutSlots.value ?? []).filter(
-        (slot) => slot.category && tab.categories.includes(slot.category),
-      ),
-    ),
+    rows: tabSlots(loadoutSlots.value ?? [], tab.categories),
   })),
 );
 

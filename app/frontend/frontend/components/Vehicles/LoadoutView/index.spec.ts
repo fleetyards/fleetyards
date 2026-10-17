@@ -213,4 +213,38 @@ describe("VehicleLoadoutView components", () => {
 
     loadoutSlots.value = [];
   });
+
+  it("lists a part swapped in inside a fitted module under its category", async () => {
+    loadoutSlots.value = [
+      {
+        name: "hardpoint_module",
+        hardpointId: "hull-module",
+        category: "module",
+        types: ["Module"],
+        editable: true,
+        slots: [
+          {
+            name: "hardpoint_shield_generator_module",
+            hardpointId: "module-shield",
+            category: "shieldgenerator",
+            types: ["Shield"],
+            editable: true,
+            stock: { id: "s1", name: "Module Shield" },
+            fitted: { id: "s2", name: "Better Shield", size: "1" },
+            slots: [],
+          },
+        ],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-shields']").text(),
+    ).toContain("Better Shield");
+
+    loadoutSlots.value = [];
+  });
 });
