@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { groupBy } from "@/shared/utils/Array";
 import { groupByHoldName } from "@/shared/utils/CargoHolds";
+import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
 import HardpointCargoItem from "@/frontend/components/Models/Hardpoints/CargoItem/index.vue";
 import HardpointFuelItem from "@/frontend/components/Models/Hardpoints/FuelItem/index.vue";
@@ -24,7 +25,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const groupedHardpoints = computed(() => {
-  return groupBy<Hardpoint>(props.hardpoints, "groupKey");
+  return groupIntoStacks(props.hardpoints);
 });
 
 type HoldGroupEntry = {

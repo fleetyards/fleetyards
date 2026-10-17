@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { groupBy } from "@/shared/utils/Array";
+import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 // eslint-disable-next-line import/no-self-import
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
@@ -147,7 +147,7 @@ const loadout = computed(() => {
 });
 
 const groupedLoadout = computed(() => {
-  return groupBy<Hardpoint>(loadout.value, "groupKey");
+  return groupIntoStacks(loadout.value);
 });
 
 const hardpointNames = computed(() => {
