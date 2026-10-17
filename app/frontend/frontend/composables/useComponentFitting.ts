@@ -181,6 +181,11 @@ const ADDITIVE = new Set([
   "signatureIr",
 ]);
 
+// What a slot takes, so an empty gun port and an empty turret port of one
+// size are never stacked into one row.
+const slotKind = (slot: LoadoutSlot) =>
+  [slot.category ?? "", ...[...slot.types].sort()].join(",");
+
 const sizeLabel = (slot: LoadoutSlot) => {
   if (slot.maxSize === undefined) return undefined;
 
@@ -448,6 +453,7 @@ export const useComponentFitting = () => {
       label: slotName(entry.slot.name),
       size: sizeLabel(entry.slot),
       maxSize: entry.slot.maxSize,
+      kind: slotKind(entry.slot),
       // Shown for what sits inside it, but nothing else fits it: the game locks
       // it, or the part it came with is the only one made for it.
       locked: !entry.slot.editable || entry.slot.swappable === false,
@@ -481,6 +487,7 @@ export const useComponentFitting = () => {
   const signature = (slot: LoadoutSocketSlot): string =>
     JSON.stringify([
       slot.item?.id,
+      slot.kind,
       slot.size,
       slot.locked,
       (slot.children ?? []).map((child) => [
@@ -584,6 +591,7 @@ export const useComponentFitting = () => {
             label: slotName(port.name),
             size: sizeLabel(port),
             maxSize: port.maxSize,
+            kind: slotKind(port),
             locked: true,
             item: port.stock
               ? {
