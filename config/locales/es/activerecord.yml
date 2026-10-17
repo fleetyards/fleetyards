@@ -312,10 +312,13 @@ es:
               not_flight_ready: "Las configuraciones solo están disponibles para naves listas para volar"
             items:
               not_fleetyards: "solo se pueden equipar en una configuración de Fleetyards"
-              slot_taken: "solo pueden tener un módulo por ranura"
+              slot_taken: "solo pueden tener una pieza por ranura"
               module_not_in_slot: "deben encajar en la ranura en la que se colocan"
-              item_type_not_supported: "por ahora solo admiten módulos"
+              item_type_not_supported: "solo pueden ser módulos o componentes"
               parent_not_fitted: "deben estar en una ranura equipada"
+              slot_unknown: "deben indicar una ranura que tenga la nave"
+              component_not_in_slot: "deben coincidir con el tipo y el tamaño de su ranura"
+              slot_not_editable: "no pueden sustituir una pieza que la ranura tiene fija"
         payout_entry:
           attributes:
             entry_type:

@@ -7,6 +7,7 @@ class Component < ApplicationRecord
   include SoldAtShop
   include KeyedSlug
   include ScDataVersioned
+  include LoadoutFittable
 
   paginates_per 48
   max_paginates_per 240

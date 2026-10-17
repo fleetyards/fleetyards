@@ -184,6 +184,11 @@ module ScData
 
           apply(hardpoint, update_params)
 
+          # A component's ports are read through the build like a ship's slots
+          # are: without a row for this build, `in_build` hides the port, and a
+          # loadout cannot find what a swapped-in mount takes.
+          apply_build(hardpoint, HardpointBuild.facts_from(hardpoint))
+
           hardpoint_ids << hardpoint.id
         end
 

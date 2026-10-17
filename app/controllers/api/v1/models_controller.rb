@@ -154,6 +154,13 @@ module Api
         render "api/v1/models/hardpoints"
       end
 
+      def loadout_slots
+        model = find_model_by_slug!
+        return if performed?
+
+        @loadout_slots = LoadoutSlots.new(model)
+      end
+
       def positions
         model = find_model_by_slug!
         return if performed?

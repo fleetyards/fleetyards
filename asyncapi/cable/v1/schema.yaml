@@ -5217,8 +5217,10 @@ components:
       type: string
       enum:
       - ModelModule
+      - Component
       x-enumNames:
       - MODEL_MODULE
+      - COMPONENT
     VehicleLoadoutKindEnum:
       type: string
       enum:

@@ -12425,6 +12425,35 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hardpoints/{id}/loadout-options":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Hardpoint id
+      required: true
+    get:
+      summary: Hardpoint Loadout Options
+      tags:
+      - Hardpoints
+      operationId: hardpointLoadoutOptions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoadoutOptionList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     get:
       summary: Images list
@@ -13996,6 +14025,34 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Images"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/loadout-slots":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Loadout Slots
+      tags:
+      - Models
+      operationId: modelLoadoutSlots
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoadoutSlotList"
         '404':
           description: not found
           content:
@@ -19886,6 +19943,55 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/loadouts/{id}/slots":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Vehicle Loadout Slots
+      tags:
+      - VehicleLoadouts
+      operationId: vehicleLoadoutSlots
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoadoutSlotList"
         '401':
           description: unauthorized
           content:
@@ -32719,6 +32825,97 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    LoadoutComponentRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ComponentTypeEnum"
+        subType:
+          type: string
+        size:
+          type: string
+        grade:
+          type: string
+        itemClass:
+          "$ref": "#/components/schemas/ComponentItemClassEnum"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: LoadoutComponentRef
+    LoadoutOption:
+      type: object
+      properties:
+        component:
+          "$ref": "#/components/schemas/LoadoutComponentRef"
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LoadoutSlot"
+      additionalProperties: false
+      required:
+      - component
+      - slots
+      title: LoadoutOption
+    LoadoutOptionList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LoadoutOption"
+      title: LoadoutOptionList
+    LoadoutSlot:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Hardpoint name; a slot path joins these from the hull down
+            with /
+        hardpointId:
+          type: string
+          format: uuid
+          description: The port whose rules decide what fits
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        types:
+          type: array
+          items:
+            type: string
+        editable:
+          type: boolean
+          description: False where the game locks the part in place
+        stock:
+          "$ref": "#/components/schemas/LoadoutComponentRef"
+        fitted:
+          "$ref": "#/components/schemas/LoadoutComponentRef"
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LoadoutSlot"
+      additionalProperties: false
+      required:
+      - name
+      - hardpointId
+      - types
+      - editable
+      - slots
+      title: LoadoutSlot
+    LoadoutSlotList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/LoadoutSlot"
+      title: LoadoutSlotList
     LoanerFilterEnum:
       type: string
       enum:
@@ -40524,8 +40721,10 @@ components:
       type: string
       enum:
       - ModelModule
+      - Component
       x-enumNames:
       - MODEL_MODULE
+      - COMPONENT
       title: VehicleLoadoutItemTypeEnum
     VehicleLoadoutKindEnum:
       type: string

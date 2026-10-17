@@ -2714,3 +2714,22 @@ PUT /vehicles/{id} removed the optional property `model/media/landedSideViewColo
 PUT /vehicles/{id} removed the optional property `model/media/sideView` from the response with the `200` status
 PUT /vehicles/{id} removed the optional property `model/media/sideViewColored` from the response with the `200` status
 PUT /vehicles/{id} removed the optional property `modulePackage/media/sideView` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles added the new `Component` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /hangar added the new `Component` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `Component` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Component` enum value to the `items/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Component` enum value to the `items/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/hangars/{username} added the new `Component` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `Component` enum value to the `activeLoadout/items/items/itemType` response property for the response status `200`
+GET /public/wishlists/{username} added the new `Component` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`
+POST /vehicles added the new `Component` enum value to the `activeLoadout/items/items/itemType` response property for the response status `201`
+DELETE /vehicles/{id} added the new `Component` enum value to the `activeLoadout/items/items/itemType` response property for the response status `200`
+GET /vehicles/{id} added the new `Component` enum value to the `activeLoadout/items/items/itemType` response property for the response status `200`
+PUT /vehicles/{id} added the new `Component` enum value to the `activeLoadout/items/items/itemType` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts added the new `Component` enum value to the `items/items/items/itemType` response property for the response status `200`
+POST /vehicles/{vehicle_id}/loadouts added the new `Component` enum value to the `items/items/itemType` response property for the response status `201`
+DELETE /vehicles/{vehicle_id}/loadouts/{id} added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id} added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id} added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate added the new `Component` enum value to the `items/items/itemType` response property for the response status `200`
+GET /wishlist added the new `Component` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`

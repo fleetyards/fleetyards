@@ -48,6 +48,21 @@ module ScData
         assert_equal ScData::Source.version, kept.reload.version
       end
 
+      test "#all writes a component's ports to this build" do
+        # A ship slot described by this build, as a models load leaves one:
+        # until the environment has any, `in_build` passes every slot through.
+        create(:hardpoint, :without_build, source: :game_files)
+          .builds.create!(environment: fixture_source.environment, version: fixture_source.version)
+
+        items_loader.all
+
+        mount = Component.find_by!(sc_key: "aegs_avenger_nose_s3")
+        port = mount.hardpoints.in_build(fixture_source).find_by!(sc_name: "hardpoint_class_2")
+
+        assert_equal ["WeaponGun"], port.facts.types
+        assert_equal [3, 3], [port.facts.min_size, port.facts.max_size]
+      end
+
       # A paint names no artwork itself -- the picture hangs off the record its
       # manufacturer_ref points at.
       test "#all attaches the colour swatch a paint reaches through its manufacturer" do

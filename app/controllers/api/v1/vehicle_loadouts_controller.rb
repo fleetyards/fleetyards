@@ -6,13 +6,13 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },
-        only: %i[index show]
+        only: %i[index show slots]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: -> { warden.authenticate?(scope: :user) },
-        except: %i[index show]
+        except: %i[index show slots]
 
       before_action :set_vehicle
-      before_action :set_vehicle_loadout, only: %i[show update destroy activate]
+      before_action :set_vehicle_loadout, only: %i[show update destroy activate slots]
 
       def index
         authorize! with: VehicleLoadoutPolicy
@@ -52,6 +52,10 @@ module Api
 
       def activate
         @vehicle_loadout.activate!
+      end
+
+      def slots
+        @loadout_slots = @vehicle_loadout.slots
       end
 
       private def set_vehicle

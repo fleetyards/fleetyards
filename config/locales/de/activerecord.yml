@@ -312,10 +312,13 @@ de:
               not_flight_ready: "Loadouts gibt es nur für flugbereite Schiffe"
             items:
               not_fleetyards: "können nur in einem Fleetyards-Loadout ausgerüstet werden"
-              slot_taken: "dürfen nur ein Modul pro Slot enthalten"
+              slot_taken: "dürfen nur ein Teil pro Slot enthalten"
               module_not_in_slot: "müssen jeweils in den Slot passen, in dem sie sitzen"
-              item_type_not_supported: "enthalten vorerst nur Module"
+              item_type_not_supported: "können nur Module oder Komponenten sein"
               parent_not_fitted: "müssen in einem ausgerüsteten Slot sitzen"
+              slot_unknown: "müssen jeweils einen Slot des Schiffs benennen"
+              component_not_in_slot: "müssen jeweils zu Typ und Größe ihres Slots passen"
+              slot_not_editable: "können kein Teil ersetzen, das der Slot fest verbaut"
         payout_entry:
           attributes:
             entry_type:

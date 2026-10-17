@@ -312,10 +312,13 @@ zh-TW:
               not_flight_ready: "只有可飛行的艦船才能使用配裝"
             items:
               not_fleetyards: "只能裝配在 Fleetyards 配裝中"
-              slot_taken: "每個槽位只能裝配一個模組"
+              slot_taken: "每個槽位只能裝配一個部件"
               module_not_in_slot: "必須與所在的槽位相符"
-              item_type_not_supported: "目前只能包含模組"
+              item_type_not_supported: "只能是模組或組件"
               parent_not_fitted: "必須位於已裝配的槽位中"
+              slot_unknown: "必須指向艦船上存在的槽位"
+              component_not_in_slot: "必須與所在槽位的類型和尺寸相符"
+              slot_not_editable: "不能替換槽位鎖定的部件"
         payout_entry:
           attributes:
             entry_type:
