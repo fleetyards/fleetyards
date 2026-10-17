@@ -77,12 +77,20 @@ class LoadoutSlots
     weapons weapon_mounts turret missile_racks module
   ].freeze
 
+  # What a slot reads: the port's build and the stock part, with the facts of
+  # that part.
+  PRELOAD = {
+    component: %i[build last_build],
+    build: {component: %i[build last_build]}
+  }.freeze
+
   # `items` are `{slot_path:, item_type:, item_id:}` hashes, as a loadout's
   # `item_list` holds them.
   def initialize(model, items = [])
     @model = model
     @items = items.index_by { |item| item[:slot_path] }
     @below = {}
+    @ports = {}
   end
 
   def [](path)
@@ -98,7 +106,7 @@ class LoadoutSlots
   end
 
   def fittable_hull
-    hull.select do |slot|
+    @fittable_hull ||= hull.select do |slot|
       next false unless HULL_CATEGORIES.include?(slot.facts.category)
       next true unless slot.facts.category == "controller"
 
@@ -106,7 +114,7 @@ class LoadoutSlots
       # blade is the one controller a player swaps, as in the catalogue.
       Component::CATALOGUED_CONTROLLER_TYPES.include?(slot.stock&.component_type) ||
         Array(slot.facts.types).intersect?(Component::CATALOGUED_CONTROLLER_TYPES)
-    end
+    end.tap { |slots| prefetch_below(slots) }
   end
 
   # Whether the slot at `path` hangs off a hull slot a player fits at all.
@@ -136,7 +144,7 @@ class LoadoutSlots
   end
 
   private def hull_slots
-    @hull_slots ||= @model.hardpoints.game_files.in_build.includes(Hardpoint::RENDERED)
+    @hull_slots ||= @model.hardpoints.game_files.in_build.includes(PRELOAD)
       .to_h { |hardpoint| [hardpoint.sc_name, slot_at(nil, hardpoint, hardpoint, hardpoint.facts.component)] }
   end
 
@@ -172,13 +180,38 @@ class LoadoutSlots
   end
 
   private def ports(owner)
-    owner.hardpoints.in_build.includes(Hardpoint::RENDERED).to_a
+    prefetch_ports([owner])
+    @ports[port_owner_key(owner)]
+  end
+
+  # A whole tree's ports, a level at a time: one query per kind of owner per
+  # level rather than two per slot.
+  private def prefetch_below(slots)
+    level = slots
+    while level.any?
+      prefetch_ports(level.flat_map { |slot| [fitted(slot.path), slot.stock, slot.instance] }.compact)
+      level = level.flat_map { |slot| children(slot) }
+    end
+  end
+
+  private def prefetch_ports(owners)
+    missing = owners.reject { |owner| @ports.key?(port_owner_key(owner)) }.uniq { |owner| port_owner_key(owner) }
+
+    missing.group_by { |owner| owner.class.base_class.name }.each do |type, list|
+      found = Hardpoint.in_build.where(parent_type: type, parent_id: list.map(&:id)).includes(PRELOAD).group_by(&:parent_id)
+      list.each { |owner| @ports[port_owner_key(owner)] = found.fetch(owner.id, []) }
+    end
+  end
+
+  private def port_owner_key(owner)
+    [owner.class.base_class.name, owner.id]
   end
 
   private def records
     @records ||= @items.values.group_by { |item| item[:item_type] }.to_h do |type, items|
       klass = VehicleLoadoutItem::ITEM_TYPES.include?(type) ? type.constantize : nil
-      found = klass ? klass.where(id: items.pluck(:item_id)).index_by(&:id) : {}
+      scope = (klass == Component) ? klass.includes(:build, :last_build) : klass
+      found = klass ? scope.where(id: items.pluck(:item_id)).index_by(&:id) : {}
       [type, found]
     end
   end
