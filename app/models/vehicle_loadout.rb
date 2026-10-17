@@ -46,7 +46,7 @@ class VehicleLoadout < ApplicationRecord
   def item_list=(list)
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
-      {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s}
+      {slot_path: item[:slot_path].to_s, item_type: item[:item_type].to_s, item_id: item[:item_id].to_s.downcase}
     end
     @loadout_slots = nil
   end

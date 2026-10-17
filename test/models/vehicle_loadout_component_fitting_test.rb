@@ -112,6 +112,12 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused fleetyards_loadout(fit(["hardpoint_power_plant", retired])), :component_not_in_slot
   end
 
+  test "reads an item id in any case" do
+    loadout = fleetyards_loadout([{slot_path: "hardpoint_power_plant", item_type: "Component", item_id: @plant.id.upcase}])
+
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+  end
+
   test "a component removed from the catalogue is unfitted with what sat inside it" do
     loadout = fleetyards_loadout(fit(
       ["hardpoint_power_plant", @plant],
