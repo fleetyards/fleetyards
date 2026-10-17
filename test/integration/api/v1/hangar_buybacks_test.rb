@@ -817,6 +817,30 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /hangar/sync-rsi-buybacks reads an upgraded pledge again for the ships it was bought with" do
+    user = create(:user)
+    buyback(user, rsi_pledge_id: "1", kind: "package", upgraded: true, contained: "Reclaimer and 5 items",
+      details_synced_at: 1.day.ago)
+    buyback(user, rsi_pledge_id: "2", kind: "package", upgraded: true, contained: "Reclaimer and 5 items",
+      details_synced_at: 1.day.ago, ship_names: ["Aurora MR"])
+    buyback(user, rsi_pledge_id: "3", upgraded: true, contained: "Mercury Star Runner and 3 items",
+      details_synced_at: 1.day.ago, ship_names: [])
+    sign_in user
+
+    body = {items: [
+      {id: "1", kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
+       contained: "Reclaimer and 5 items"},
+      {id: "2", kind: "package", name: "Package - Aurora MR Starter Pack", upgraded: true,
+       contained: "Reclaimer and 5 items"},
+      {id: "3", kind: "ship", name: "Standalone Ship - Terrapin", upgraded: true,
+       contained: "Mercury Star Runner and 3 items"}
+    ]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      assert_equal %w[1], parsed_body["detailsPending"]
+    end
+  end
+
   test "PUT /hangar/sync-rsi-buyback-details leaves somebody else's pledge alone" do
     user = create(:user)
     other = buyback(create(:user), rsi_pledge_id: "1")
