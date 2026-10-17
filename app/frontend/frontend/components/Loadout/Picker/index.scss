@@ -372,3 +372,25 @@
   flex-wrap: wrap;
   gap: 6px;
 }
+
+// The list's frame, so the count can float over its top corner.
+.loadout-picker__list {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.loadout-picker__list > .loadout-picker__count {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  z-index: 1;
+  margin: 0;
+  padding: 2px 8px;
+  white-space: nowrap;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: 999px;
+}
