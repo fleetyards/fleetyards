@@ -94,15 +94,11 @@ Check these in order. The first one that matches decides.
 
 When it is going in circles: **do not apply the circling change**. Stop and report both positions, the earlier change and the newly proposed one, so the user can pick.
 
-**Stop: settled.** The round produced no **fix** verdicts, or only cosmetic ones that you rejected with a reason. If a PR exists, also wait for the bot's review of the last push (see below) and look at its threads before calling it settled.
+**Stop: settled.** The round produced no **fix** verdicts, or only cosmetic ones that you rejected with a reason. Don't wait for a bot or human review of the last push: threads that already exist were triaged this round, and anything that arrives later is handled in a new run.
 
 **Stop: cap reached.** `--max-rounds` reached. Report what is still open.
 
 **Otherwise, run another round.** It reviews only the commits made since the last round, plus any new PR threads.
-
-### Waiting for the bot after a push
-
-Devin re-reviews after a push. Use `Monitor` with an until-loop (no foreground sleep). Watch for a new review on the PR, or for an unresolved thread that wasn't there before. Give it about 15 minutes. If nothing has arrived by then, treat the PR side as quiet and say so in the report. Don't keep polling.
 
 ---
 
