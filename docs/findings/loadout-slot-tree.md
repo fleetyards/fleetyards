@@ -19,7 +19,7 @@ level, two hardpoint trees describe the same slot:
 So a slot reads its rules from the part's port and its stock from the ship's
 copy, and the ship's copy only applies while the part above it is still the
 stock one. A rule that depends on the stock (a mount slot that came with a bare
-gun keeps taking guns; a flight blade's family) has to be told the stock: the
+gun keeps taking guns; a variant's port tags) has to be told the stock: the
 port alone never knows it.
 
 ## Build rows for component ports
@@ -36,10 +36,15 @@ needs an items re-load (not a re-parse) to get them.
   Conservative; left alone.
 - **`uneditable` ports** take only their stock part; what sits inside them stays
   fittable. 238 of 518 hull weapon mounts carry the flag.
-- **Port tags are not checked yet.** Tractor beams are typed `WeaponGun`, so a
-  type-and-size check offers them for gun ports. A variant's hull port carries
-  its base ship's tags while its parts carry the variant's, so a plain subset
-  check refuses stock parts on 45 hull slots.
+- **Port tags** follow the game's two rules: a port's `required_tags` must all
+  be on the part, and a part's `required_tags` must all be on the port's
+  `port_tags` or the ship. A variant's hull port carries its base ship's tags
+  while its parts carry the variant's, so a plain check refuses stock parts on
+  45 hull slots; where the stock part misses the port's tags, its own tags
+  (less `flightReady`) stand in. The game files hold no ship tags, so they are
+  taken as everything the ship's stock parts require. The stock part always
+  fits. Measured on six ships, no stock part is refused, and other ships'
+  bespoke guns, turrets, racks and Taurus tractor beams drop out.
 - **The game files repeat parts** under one name with identical figures (a
   gas-cloud-resistant AllStop, a gimbal mount per ship that uses it); a picker
   offers each once.

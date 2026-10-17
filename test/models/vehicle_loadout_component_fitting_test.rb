@@ -125,17 +125,75 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert loadout.save, loadout.errors.full_messages.to_sentence
   end
 
-  test "fits only a flight blade made for the ship's own" do
+  test "fits only a part whose tags the port and the ship meet" do
     own = create(:component, component_type: "FlightController", category: "controller", size: "1",
-      tags: ["RSI_Aurora_mk2_Blade"])
+      tags: ["RSI_Aurora_mk2_Blade"], required_tags: ["RSI_Aurora_mk2_Blade"])
     sibling = create(:component, component_type: "FlightController", category: "controller", size: "1",
-      tags: ["RSI_Aurora_mk2_Blade"])
+      tags: ["RSI_Aurora_mk2_Blade"], required_tags: ["RSI_Aurora_mk2_Blade"])
     foreign = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["ANVL_Hornet_F7C_Blade"], required_tags: ["ANVL_Hornet_F7C_Blade"])
+    untagged = create(:component, component_type: "FlightController", category: "controller", size: "1",
       tags: ["ANVL_Hornet_F7C_Blade"])
-    port(@model, "hardpoint_controller_flight", min_size: 1, max_size: 1, component: own)
+    port(@model, "hardpoint_controller_flight", min_size: 1, max_size: 1, component: own,
+      required_tags: ["RSI_Aurora_mk2_Blade"], port_tags: ["RSI_Aurora_mk2_Blade"])
 
     assert fleetyards_loadout(fit(["hardpoint_controller_flight", sibling])).save
     assert_refused fleetyards_loadout(fit(["hardpoint_controller_flight", foreign])), :component_not_in_slot
+    assert_refused fleetyards_loadout(fit(["hardpoint_controller_flight", untagged])), :component_not_in_slot
+  end
+
+  test "keeps the port's tags where the stock part has none worth reading" do
+    stock = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["flightReady"])
+    foreign = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["ANVL_Hornet_F7C_Blade"])
+    port(@model, "hardpoint_controller_flight", min_size: 1, max_size: 1, component: stock,
+      required_tags: ["DRAK_Cutlass_Steel_Blade"])
+
+    assert_refused fleetyards_loadout(fit(["hardpoint_controller_flight", foreign])), :component_not_in_slot
+  end
+
+  test "a tag a stock part's own port provides does not carry to the ship's other ports" do
+    beam = create(:component, component_type: "WeaponGun", category: "weapons", size: "2",
+      tags: ["Taurus_TractorBeam"], required_tags: ["Taurus_TractorBeam"])
+    port(@model, "hardpoint_tractor_beam", min_size: 2, max_size: 2, types: %w[WeaponGun], category: "weapons",
+      component: beam, port_tags: ["Taurus_TractorBeam"])
+    another_beam = create(:component, component_type: "WeaponGun", category: "weapons", size: "2",
+      required_tags: ["Taurus_TractorBeam"])
+
+    assert fleetyards_loadout(fit(["hardpoint_tractor_beam", another_beam])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", another_beam])),
+      :component_not_in_slot
+  end
+
+  test "a variant's port takes the parts its stock part's tags name" do
+    hoplite = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["AEGS_Vanguard_Hoplite_Blade"])
+    another_hoplite = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["AEGS_Vanguard_Hoplite_Blade"])
+    base = create(:component, component_type: "FlightController", category: "controller", size: "1",
+      tags: ["AEGS_Vanguard_Blade"])
+    port(@model, "hardpoint_controller_flight", min_size: 1, max_size: 1, component: hoplite,
+      required_tags: ["AEGS_Vanguard_Blade"])
+
+    assert fleetyards_loadout(fit(["hardpoint_controller_flight", another_hoplite])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_controller_flight", base])), :component_not_in_slot
+  end
+
+  test "refuses a part that demands another ship's tag" do
+    taurus_beam = create(:component, component_type: "WeaponGun", category: "weapons", size: "2",
+      tags: ["Taurus_TractorBeam"], required_tags: ["Taurus_TractorBeam"])
+
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", taurus_beam])),
+      :component_not_in_slot
+  end
+
+  test "takes a part that demands a tag the ship's own parts demand" do
+    @gun.update!(required_tags: ["ANVL_Hornet_Base"])
+    hornet_gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+      required_tags: ["ANVL_Hornet_Base"])
+
+    assert fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", hornet_gun])).save
   end
 
   test "a slot only its stock part fits is not offered as a choice" do
