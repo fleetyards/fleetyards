@@ -210,9 +210,13 @@ const { data: savedSlots } = useVehicleLoadoutSlots(
 
 watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
 watch(savedSlots, (slots) => fitting.learn(slots), { immediate: true });
+watch(modules, (list) => fitting.learnModules(list), { immediate: true });
 
 const componentTree = computed(() =>
-  fitting.resolve(hullSlots.value ?? [], fittedComponents.value || {}),
+  fitting.resolve(hullSlots.value ?? [], {
+    ...(fittedModules.value || {}),
+    ...(fittedComponents.value || {}),
+  }),
 );
 
 const SYSTEM_TAB_IDS = [
@@ -334,20 +338,11 @@ const { data: modelHardpoints } = useModelHardpoints(
 );
 
 const savedTree = computed(() =>
-  fitting.resolve(hullSlots.value ?? [], savedValues().fittedComponents),
+  fitting.resolve(hullSlots.value ?? [], {
+    ...savedValues().fittedModules,
+    ...savedValues().fittedComponents,
+  }),
 );
-
-// Power, cooling and signatures for the whole ship, worked out as the ship page
-// works them out, for the fitting as it stands and as saved.
-const simulate = (tree: typeof componentTree.value) =>
-  simulateLoadoutPower(
-    fitting.graft(modelHardpoints.value ?? [], tree),
-    model.value?.metrics.weaponPoolSize,
-  );
-
-const powerNow = computed(() => simulate(componentTree.value));
-
-const powerSaved = computed(() => simulate(savedTree.value));
 
 // The ship's hardpoints with the fitting in them, and with the saved one, for
 // the figures the ship page's metrics cards lead with.
