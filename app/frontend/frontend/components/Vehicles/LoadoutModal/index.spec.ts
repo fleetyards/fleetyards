@@ -392,10 +392,13 @@ describe("VehicleLoadoutModal", () => {
     const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
     await flushPromises();
 
+    await wrapper
+      .get("[data-test='vehicle-loadout-name'] input")
+      .setValue("Gunship II");
     await save(wrapper);
 
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
-      name: "Gunship",
+      name: "Gunship II",
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
         {
@@ -422,6 +425,39 @@ describe("VehicleLoadoutModal", () => {
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
       ],
     });
+  });
+
+  it("saves an opened loadout only once something changed", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Gunship",
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1", "m2"]), {
+      loadoutId: "l2",
+    });
+    await flushPromises();
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
+    ).toBe(false);
+
+    await pick(wrapper, 1);
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeUndefined();
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
+    ).toBe(true);
   });
 
   it("saves the fitting as a new loadout beside the one opened", async () => {
