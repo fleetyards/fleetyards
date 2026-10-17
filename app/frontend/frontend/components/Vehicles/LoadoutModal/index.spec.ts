@@ -1008,6 +1008,25 @@ describe("VehicleLoadoutModal component tabs", () => {
     );
   });
 
+  it("shows the ship page's card for the open tab", async () => {
+    const weapons = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(weapons.findComponent({ name: "ModelCombatMetrics" }).exists()).toBe(
+      true,
+    );
+
+    const modules = await mountClosed(vehicle(["m1"]), { tab: "modules" });
+    await flushPromises();
+
+    expect(modules.findComponent({ name: "ModelCombatMetrics" }).exists()).toBe(
+      false,
+    );
+    expect(
+      modules.find("[data-test='vehicle-loadout-figure-cargo']").exists(),
+    ).toBe(true);
+  });
+
   it("disables a category the ship has no slots for", async () => {
     const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
     await flushPromises();

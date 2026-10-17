@@ -134,6 +134,24 @@
     margin: 0;
   }
 
+  // The ship page's card for the open tab, read the way it reads there.
+  &__card {
+    text-align: left;
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__changes-title {
+    margin: 0;
+    color: var(--color-text-dim);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   &__figure {
     dt {
       color: var(--color-text-dim);
@@ -205,6 +223,10 @@
     &__panel {
       padding-right: 260px;
     }
+
+    &__ship {
+      width: 240px;
+    }
   }
 }
 
@@ -212,6 +234,11 @@
   .vehicle-loadout__panel {
     padding-right: 0;
     width: 62%;
+  }
+
+  // The rest of the width beside the panel, for the card.
+  .vehicle-loadout__ship {
+    width: calc(38% - 24px);
   }
 
   // A socket wider than this only stretches its name across the ship.
