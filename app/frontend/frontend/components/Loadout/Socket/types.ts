@@ -10,6 +10,9 @@ export interface LoadoutSocketItem {
   figure?: string;
   // The glyph shown where there is no image; a module's when left out.
   category?: HardpointCategoryEnum;
+  // The one figure the part is fitted for, set in gold at the socket's end the
+  // way a ship page's hardpoint row sets its headline.
+  headline?: { value: string; label: string };
 }
 
 export interface LoadoutSocketSlot {
