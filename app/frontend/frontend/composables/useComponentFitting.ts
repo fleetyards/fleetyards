@@ -2,7 +2,10 @@ import type {
   LoadoutSocketGroup,
   LoadoutSocketSlot,
 } from "@/frontend/components/Loadout/Socket/types";
-import type { LoadoutPickerOption } from "@/frontend/components/Loadout/Picker/types";
+import type {
+  LoadoutPickerOption,
+  LoadoutPickerSort,
+} from "@/frontend/components/Loadout/Picker/types";
 import type { CompareDeltaTone } from "@/frontend/components/Compare/delta";
 import {
   type HardpointStat,
@@ -507,10 +510,59 @@ export const useComponentFitting = () => {
           component.id !== fitted?.id && primary?.deltaLabel && primary.tone
             ? { label: primary.deltaLabel, tone: primary.tone }
             : undefined,
-        sortValues:
-          primary?.after !== undefined ? { primary: primary.after } : undefined,
+        sortValues: sortValues(component, slot.category),
       };
     });
+
+  const SIZE_SORT = "size";
+  const GRADE_SORT = "grade";
+
+  // Every figure a part is ranked on, then its size and grade; a grade sorts A
+  // first, as the letter reads.
+  const sortValues = (
+    component: LoadoutComponentRef,
+    category?: HardpointCategoryEnum,
+  ) => {
+    const values: Record<string, number> = Object.fromEntries(
+      stats(component, category).map((stat) => [stat.key, stat.raw as number]),
+    );
+    const size = Number(component.size);
+    if (Number.isFinite(size)) values[SIZE_SORT] = size;
+    if (component.gradeLabel) {
+      values[GRADE_SORT] = component.gradeLabel.charCodeAt(0);
+    }
+
+    return values;
+  };
+
+  /**
+   * The sorts a slot's parts offer: the figures the ship page ranks that kind
+   * of part on, its headline first so the list opens best first, then size and
+   * grade. A figure that reads better smaller sorts smallest first.
+   */
+  const sorts = (
+    candidates: LoadoutOption[],
+    slot: LoadoutSlot,
+  ): LoadoutPickerSort[] => {
+    const figures = new Map<string, string>();
+    candidates.forEach(({ component }) =>
+      stats(component, slot.category).forEach((stat) => {
+        if (stat.key && !figures.has(stat.key)) {
+          figures.set(stat.key, stat.label);
+        }
+      }),
+    );
+
+    return [
+      ...[...figures].map(([key, label]) => ({
+        key,
+        label,
+        ascending: lowerIsBetter(key),
+      })),
+      { key: SIZE_SORT, label: t("labels.hardpoint.size") },
+      { key: GRADE_SORT, label: t("labels.component.grade"), ascending: true },
+    ];
+  };
 
   /**
    * The fitting after a pick: the stock part, or nothing, clears the slot; and
@@ -552,6 +604,7 @@ export const useComponentFitting = () => {
     hasSlots,
     find,
     options,
+    sorts,
     pick,
     reachable,
     components,
