@@ -105,9 +105,22 @@ class VehicleLoadout < ApplicationRecord
   # The saved items the build in force refuses, each with the reason a save
   # would give: a loadout floats with the build, so one that fitted when it was
   # saved can stop fitting when a new build changes a slot.
+  #
+  # Taking a refused item out can strand what sat inside it -- a module's own
+  # slots, guns in ports the stock turret does not have -- so the check repeats
+  # on what a save would keep, as the editor's save does.
   def item_problems
     list = items.map { |item| item.slice(:slot_path, :item_type, :item_id).symbolize_keys }
-    refused_items(list, LoadoutSlots.new(vehicle.model, list))
+    problems = []
+    loop do
+      refused = refused_items(list, LoadoutSlots.new(vehicle.model, list))
+      break if refused.empty?
+
+      problems.concat(refused)
+      paths = refused.pluck(:slot_path).to_set
+      list = list.reject { |item| paths.include?(item[:slot_path]) }
+    end
+    problems.sort_by { |problem| problem[:slot_path] }.map { |problem| problem.except(:codes) }
   end
 
   private def item_list_fits
@@ -121,14 +134,14 @@ class VehicleLoadout < ApplicationRecord
       return errors.add(:items, :item_type_not_supported)
     end
 
-    refused_items(item_list, loadout_slots).pluck(:code).uniq.each { |code| errors.add(:items, code) }
+    refused_items(item_list, loadout_slots).flat_map { |item| item[:codes] }.uniq.each { |code| errors.add(:items, code) }
   end
 
-  # Every item that does not fit, as `{slot_path:, item_type:, item_id:, code:}`,
-  # one reason per item: the first check it fails.
+  # Every item that does not fit, as `{slot_path:, item_type:, item_id:, code:,
+  # codes:}`: every check it fails, and the first of them to show the owner.
   private def refused_items(list, slots)
-    reasons = {}
-    refuse = ->(item, code) { reasons[item] ||= code }
+    reasons = Hash.new { |hash, item| hash[item] = [] }
+    refuse = ->(item, code) { reasons[item] << code }
 
     # A hardpoint inside a module or a turret only exists while something sits
     # in it: fitted there, or, for a component slot, the stock part left in.
@@ -141,7 +154,7 @@ class VehicleLoadout < ApplicationRecord
     components_fit(list, slots, &refuse)
     empties_fit(list, slots, &refuse)
 
-    list.filter_map { |item| item.merge(code: reasons[item]) if reasons[item] }
+    list.filter_map { |item| item.merge(code: reasons[item].first, codes: reasons[item]) if reasons.key?(item) }
   end
 
   # A slot can be emptied where a part can be fitted and there is one to take
