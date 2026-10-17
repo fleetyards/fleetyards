@@ -435,6 +435,18 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks finds a pack by the name RSI gives a ship" do
+    user = create(:user)
+    c2 = create(:model, name: "C2 Hercules", rsi_name: "C2 Hercules")
+    pack = buyback(user, kind: "package", name: "Packs - 2951 Best in Show Pack",
+      contained: "4 ships and 8 items", ship_names: ["MPUV Cargo", "HERCULES STARLIFTER C2"])
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"modelSlugEq" => c2.slug}} do
+      assert_equal [pack.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar/buybacks requires a session or token" do
     assert_api_response :get, 401
   end

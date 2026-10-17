@@ -79,15 +79,15 @@ class BuybackPledge < ApplicationRecord
   # The pledges that would put this ship in the hangar: a ship or package that
   # contains it, or an upgrade that leads to it. The list names a pledge's
   # first ship in `contained`, as "Cutlass Black and 2 items", and the detail
-  # page every ship in `ship_names`; both are matched against the model's names
-  # at query time. The kind is read from the title's prefix, so a pledge titled
-  # without a known one, such as "Origin 325a Fighter", is `other` and may still
-  # hold a ship.
+  # page every ship in `ship_names`; both are matched against the model's names,
+  # and the names RSI gives it, at query time. The kind is read from the title's
+  # prefix, so a pledge titled without a known one, such as "Origin 325a
+  # Fighter", is `other` and may still hold a ship.
   def self.obtaining_model(slug)
     model = Model.find_by(slug:)
     return none unless model
 
-    names = [model.name, model.rsi_name].filter_map { |name| name.presence&.strip&.downcase }.uniq
+    names = Rsi::ShipNames.aliases([model.name, model.rsi_name])
     ship = <<~SQL.squish
       lower(trim(regexp_replace(buyback_pledges.contained,
         '(?i)[[:space:]]+and[[:space:]]+[0-9]+[[:space:]].*$', '')))
