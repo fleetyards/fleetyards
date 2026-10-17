@@ -74,8 +74,14 @@ const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
     }
   }
 
+  // The dividers are the gaps between tiles, over the grid's own translucent
+  // grey; here the ship shows behind the card, so the grey sits on the tiles'
+  // black instead of on whatever is behind it.
   .metrics-card__hero {
     margin: 0;
+    background:
+      linear-gradient(rgba($gray-light, 0.28), rgba($gray-light, 0.28)),
+      $gray-black;
   }
 
   .metrics-card__section-label {
