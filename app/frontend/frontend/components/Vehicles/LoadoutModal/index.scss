@@ -221,8 +221,10 @@
 
   // The picker takes the room: it holds the long list, the sockets only a
   // name each.
+  // The sockets keep the width they have with the picker shut, so opening it
+  // never rewraps them.
   .vehicle-loadout__category--picking {
-    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
   }
 
   // No taller than the modal's body below the tab strip: the modal's title and
