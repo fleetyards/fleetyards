@@ -48,7 +48,7 @@ class LoadoutSlots
   # same, so a whole tree costs a query per kind of part rather than per slot.
   def self.options(port, candidates = {})
     facts = port.facts
-    types = Array(facts.types).compact_blank
+    types = types_taken(facts)
     return [] if types.empty? && (facts.category.blank? || facts.category == "unknown")
 
     kind = types.any? ? [:component_type, types.sort] : [:category, facts.category]
@@ -68,7 +68,7 @@ class LoadoutSlots
   # on the category the slot was filed under instead.
   def self.fits?(port, component)
     facts = port.facts
-    types = Array(facts.types).compact_blank
+    types = types_taken(facts)
     kind_matches = types.any? ? types.include?(component.component_type) : component.category == facts.category
     return false unless kind_matches
 
@@ -78,6 +78,17 @@ class LoadoutSlots
     return false if facts.max_size && size > facts.max_size
 
     facts.category != "controller" || same_blade_family?(facts.component, component)
+  end
+
+  # A port naming a mount and a gun both takes the mount: the gun goes in the
+  # mount's own port. Only where the ship came with a bare gun there does the
+  # slot keep taking guns.
+  def self.types_taken(facts)
+    types = Array(facts.types).compact_blank
+    return types unless types.include?("Turret") && types.size > 1
+    return types if facts.component.present? && facts.component.component_type != "Turret"
+
+    ["Turret"]
   end
 
   # A flight blade is made for one ship: it names that ship's blade in its tags,

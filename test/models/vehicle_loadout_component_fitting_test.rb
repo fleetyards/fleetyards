@@ -85,6 +85,13 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused stale, :slot_unknown
   end
 
+  test "a mount slot takes mounts, not the guns that go inside them" do
+    assert_refused fleetyards_loadout(fit(["hardpoint_gun_nose", @gun])), :component_not_in_slot
+
+    port(@model, "hardpoint_gun_fixed", types: %w[Turret WeaponGun], min_size: 3, max_size: 3, component: @gun)
+    assert fleetyards_loadout(fit(["hardpoint_gun_fixed", @gun])).save
+  end
+
   test "a locked slot keeps its part but what sits inside it can change" do
     assert_refused fleetyards_loadout(fit(["hardpoint_gun_wing", @other_gimbal])), :slot_not_editable
     assert fleetyards_loadout(fit(["hardpoint_gun_wing", @gimbal])).save
