@@ -73,6 +73,7 @@ const upgrade = (
   standalone: true,
   meltable: true,
   pledgeValue: 85,
+  meltValue: 85,
   createdAt: NOW,
   updatedAt: NOW,
   ...overrides,
@@ -111,13 +112,16 @@ describe("VehicleOverviewAcquireCard", () => {
     expect(params.buybacks).toMatchObject({
       q: {
         modelSlugEq: "cutlass-black",
-        s: BuybackPledgeSortingEnum.PRICE_ASC,
+        sorts: [
+          BuybackPledgeSortingEnum.AVAILABLE_DESC,
+          BuybackPledgeSortingEnum.PRICE_ASC,
+        ],
       },
     });
     expect(params.upgrades).toMatchObject({
       q: {
         upgradeToModelSlugEq: "cutlass-black",
-        s: HangarPledgeItemSortingEnum.PLEDGE_VALUE_ASC,
+        s: HangarPledgeItemSortingEnum.MELT_VALUE_ASC,
       },
     });
   });
@@ -150,23 +154,17 @@ describe("VehicleOverviewAcquireCard", () => {
     upgrades.value = [];
   });
 
-  const sectionOrder = async () =>
-    (await mount())
-      .findAll("section")
-      .map((section) => section.attributes("data-test"));
+  it("puts the upgrades already in the hangar before the buy-backs", async () => {
+    buybacks.value = [buyback()];
+    upgrades.value = [upgrade()];
 
-  it("puts the section with the cheapest way to get the ship on top", async () => {
-    buybacks.value = [buyback({ price: 60 })];
-    upgrades.value = [upgrade({ pledgeValue: 85 })];
+    const wrapper = await mount();
 
-    expect(await sectionOrder()).toEqual([
-      "vehicle-overview-acquire-buybacks",
-      "vehicle-overview-acquire-upgrades",
-    ]);
-
-    upgrades.value = [upgrade({ pledgeValue: 40 })];
-
-    expect(await sectionOrder()).toEqual([
+    expect(
+      wrapper
+        .findAll("section")
+        .map((section) => section.attributes("data-test")),
+    ).toEqual([
       "vehicle-overview-acquire-upgrades",
       "vehicle-overview-acquire-buybacks",
     ]);
@@ -175,23 +173,25 @@ describe("VehicleOverviewAcquireCard", () => {
     upgrades.value = [];
   });
 
-  it("keeps the upgrades on top on a tie or a buy-back RSI no longer offers", async () => {
-    buybacks.value = [buyback({ price: 85 })];
-    upgrades.value = [upgrade({ pledgeValue: 85 })];
+  it("prices an upgrade by its own value, not the pledge it came in", async () => {
+    upgrades.value = [
+      upgrade({ id: "own", meltValue: 40, pledgeValue: 40 }),
+      upgrade({
+        id: "bundled",
+        standalone: false,
+        meltValue: undefined,
+        pledgeValue: 500,
+      }),
+    ];
 
-    expect(await sectionOrder()).toEqual([
-      "vehicle-overview-acquire-upgrades",
-      "vehicle-overview-acquire-buybacks",
-    ]);
+    const wrapper = await mount();
+    const rows = wrapper.findAll(
+      '[data-test="vehicle-overview-acquire-upgrade"]',
+    );
 
-    buybacks.value = [buyback({ price: 10, available: false })];
+    expect(rows[0].text()).toContain("40");
+    expect(rows[1].text()).not.toContain("500");
 
-    expect(await sectionOrder()).toEqual([
-      "vehicle-overview-acquire-upgrades",
-      "vehicle-overview-acquire-buybacks",
-    ]);
-
-    buybacks.value = [];
     upgrades.value = [];
   });
 
