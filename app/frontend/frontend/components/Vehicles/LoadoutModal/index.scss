@@ -176,8 +176,13 @@
     // so the ship has room behind the controls instead of an empty band below.
     min-height: calc(100dvh - 260px);
 
+    // As tall as the form is at its least, from the top, rather than as tall as
+    // the form: sized to the content, the ship slid and rescaled whenever a
+    // picker opened or a turret unfolded.
     &::before {
       display: block;
+      bottom: auto;
+      height: calc(100dvh - 260px);
     }
 
     // The ship's figures in the corner, over the backdrop, where the terminal
