@@ -408,8 +408,10 @@ const tabMetrics = computed(() => {
     };
   }
 
-  const metrics = currentTab.value ? figures.value.tabs[currentTab.value] : [];
-  if (!currentTab.value || !metrics?.length) return undefined;
+  // Until the ship's hardpoints are in, a card would show a tab's own figures
+  // and then grow its tiles under them.
+  const metrics = currentTab.value && figures.value.tabs[currentTab.value];
+  if (!metrics || !modelHardpoints.value?.length) return undefined;
 
   return {
     title: t(`labels.vehicleLoadout.tabs.${currentTab.value}`),
