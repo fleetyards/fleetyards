@@ -158,7 +158,7 @@ const stepDetail = (step: SyncProcessStep) => {
     }
 
     return t("labels.syncExtension.stepDetails.read", {
-      pages: props.currentPage,
+      pages: pagesRead.value,
       count: items.value.length,
     });
   }
@@ -194,6 +194,12 @@ const steps = computed<SyncStep[]>(() =>
     progress: stepProgress(step),
   })),
 );
+
+// The run learns the list has ended by asking for one page past it - RSI's
+// empty list, or its last page again - and stops there without counting it.
+// A run that failed stopped on the page it could not read. Either way, the
+// page it stands on is not one it read.
+const pagesRead = computed(() => Math.max(props.currentPage - 1, 0));
 
 const readingStarted = computed(() => {
   const status = props.processSteps.find(
@@ -406,7 +412,7 @@ const hasWarnings = computed(
           <span class="hangar-sync-result__summary-detail">
             {{
               t("labels.syncExtension.stepDetails.read", {
-                pages: currentPage,
+                pages: pagesRead,
                 count: items.length,
               })
             }}

@@ -343,6 +343,27 @@ describe("HangarSyncResult", () => {
     ).toBe("failed");
   });
 
+  // The page past the end, which only tells the run it is over, is not read.
+  it("counts the pages read without the one that ended the list", async () => {
+    const wrapper = await mountWithDefaults(HangarSyncResult, {
+      props: {
+        processSteps: [
+          { name: "fetchHangar", status: "success" },
+          { name: "submitData", status: "processing" },
+        ],
+        currentPage: 59,
+        totalPages: 58,
+        pledges: [],
+        finished: false,
+        finishedWithErrors: false,
+      },
+    });
+
+    expect(wrapper.get("[data-test='sync-step-fetchHangar']").text()).toContain(
+      "Pages read: 58",
+    );
+  });
+
   it("tells a cancelled run apart from a failed one", async () => {
     const wrapper = await mountWithDefaults(HangarSyncResult, {
       props: {
