@@ -12,6 +12,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
+import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -125,8 +126,8 @@ const { data: model } = useModel(() => vehicle.value?.model.slug ?? "", {
   query: { enabled: () => !!vehicle.value },
 });
 
-const { hardpoints } = useLoadoutFitting({
-  modelSlug: () => vehicle.value?.model.slug,
+const { hardpoints, changed, changesFromStock } = useLoadoutFitting({
+  model,
   loadoutSlots: () => (isOwner.value ? ownSlots.value : publicSlots.value),
   items: () => loadout.value?.items,
 });
@@ -227,10 +228,19 @@ const edit = () => {
               </Btn>
             </Teleport>
 
+            <LoadoutChanges
+              v-if="changesFromStock.length"
+              :title="t('labels.vehicleLoadout.againstStock')"
+              :figures="changesFromStock"
+              test-id="vehicle-loadout-page-changes"
+              class="loadout-page__changes"
+            />
+
             <Hardpoints
               v-if="model && hardpoints"
               :model="model"
               :fitting="hardpoints"
+              :changed="changed"
             />
           </template>
         </template>
@@ -238,3 +248,9 @@ const edit = () => {
     </template>
   </AsyncData>
 </template>
+
+<style lang="scss" scoped>
+.loadout-page__changes {
+  margin-bottom: 24px;
+}
+</style>

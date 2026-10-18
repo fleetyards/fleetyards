@@ -29,10 +29,8 @@ import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
   COMPONENT_TABS,
-  loadoutValues,
   slotName,
 } from "@/frontend/composables/useComponentFitting";
-import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import {
   HardpointCategoryEnum,
@@ -112,46 +110,14 @@ const flightReady = computed(
     model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
 );
 
-const { fitting, hullSlots, modelHardpoints, modelModules } = useLoadoutFitting(
-  {
-    modelSlug: () => model.value?.slug,
-    loadoutSlots,
-    items: () => props.loadout?.items,
-    enabled: () => props.editable && flightReady.value,
-  },
-);
+const { fitting, changesFromStock } = useLoadoutFitting({
+  model,
+  loadoutSlots,
+  items: () => props.loadout?.items,
+  enabled: () => props.editable && flightReady.value,
+});
 
 const { componentFigure } = fitting;
-
-const loadoutDiff = useLoadoutDiff(fitting);
-
-const changesFromStock = computed(() => {
-  const measure = (modules: ModelModule[], values: Record<string, string>) =>
-    loadoutDiff.measure({
-      hullCargo: model.value?.metrics.cargo || 0,
-      modules,
-      hardpoints: modelHardpoints.value ?? [],
-      tree: fitting.resolve(hullSlots.value ?? [], values),
-      weaponPoolSize: model.value?.metrics.weaponPoolSize,
-    });
-
-  const stockModules = modelModules.value.filter((mod) => mod.stock);
-  const { modules, components } = loadoutValues(props.loadout?.items);
-
-  return loadoutDiff.diff(
-    measure(
-      stockModules,
-      Object.fromEntries(
-        stockModules.flatMap((mod) => (mod.slot ? [[mod.slot, mod.id]] : [])),
-      ),
-    ),
-    measure(
-      moduleRows.value.map((row) => row.module),
-      { ...modules, ...components },
-    ),
-    COMPONENT_TABS,
-  ).changed;
-});
 
 type ComponentRow = { slotPath: string; label: string; slot: LoadoutSlot };
 

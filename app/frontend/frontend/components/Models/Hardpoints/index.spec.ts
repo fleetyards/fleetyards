@@ -61,4 +61,27 @@ describe("Hardpoints with a loadout's fitting", () => {
 
     wrapper.unmount();
   });
+
+  it("marks the rows the loadout fits differently from the stock ship", async () => {
+    const swapped = {
+      ...moduleSlot,
+      id: "rear",
+      name: "hardpoint_rear_module",
+      component: { id: "m2", name: "Living Module" },
+    } as unknown as Hardpoint;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        model,
+        fitting: [moduleSlot, swapped],
+        changed: new Set([swapped.id]),
+      },
+    });
+
+    const marked = wrapper.findAll("[data-changed]");
+    expect(marked).toHaveLength(1);
+    expect(marked[0].text()).toContain("Living Module");
+
+    wrapper.unmount();
+  });
 });

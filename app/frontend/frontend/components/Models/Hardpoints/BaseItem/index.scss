@@ -78,3 +78,10 @@
     opacity: 0.5;
   }
 }
+
+// What a loadout fits differently from the stock ship, in the frame the
+// loadout editor marks a changed slot with.
+.hardpoint-item--changed
+  > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
+  border-color: var(--color-warning, #{$warning});
+}

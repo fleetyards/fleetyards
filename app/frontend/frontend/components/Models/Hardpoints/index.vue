@@ -49,12 +49,20 @@ type Props = {
   // A loadout's fitting: the ship's game-files hardpoints with the loadout's
   // modules and parts grafted in. Shown read-only in place of the hull as built.
   fitting?: Hardpoint[];
+  // The ids of the fitting's hardpoints that differ from the stock ship.
+  changed?: Set<string>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   cargoHolds: () => [],
   fitting: undefined,
+  changed: undefined,
 });
+
+provide(
+  "hardpointsChanged",
+  computed(() => props.changed),
+);
 
 provide(
   "hardpointsReadOnly",

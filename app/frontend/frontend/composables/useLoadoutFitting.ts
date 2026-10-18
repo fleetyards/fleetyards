@@ -1,11 +1,16 @@
 import type { MaybeRefOrGetter } from "vue";
 import {
+  COMPONENT_TABS,
+  type FittedSlot,
   loadoutValues,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
+import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
 import {
+  type Hardpoint,
   HardpointSourceEnum,
   type LoadoutSlot,
+  type ModelModule,
   type VehicleLoadoutItem,
   useModelHardpoints,
   useModelLoadoutSlots,
@@ -14,19 +19,25 @@ import {
 
 type Item = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
 
+type FittedModel = {
+  slug: string;
+  metrics: { cargo?: number; weaponPoolSize?: number };
+};
+
 /**
  * A saved loadout fitted to its ship: the hull's slots, the parts the
  * loadout's own slot tree names, and the model's modules, resolved against the
  * loadout's items and grafted onto the ship's game-files hardpoints -- the
- * ship page's hardpoints and figures, for this fitting.
+ * ship page's hardpoints and figures, for this fitting, and how it differs
+ * from the stock ship.
  */
 export const useLoadoutFitting = ({
-  modelSlug,
+  model,
   loadoutSlots,
   items,
   enabled = true,
 }: {
-  modelSlug: MaybeRefOrGetter<string | undefined>;
+  model: MaybeRefOrGetter<FittedModel | undefined>;
   // The loadout's slot tree, which names the parts it fits.
   loadoutSlots: MaybeRefOrGetter<LoadoutSlot[] | undefined>;
   items: MaybeRefOrGetter<Item[] | undefined>;
@@ -35,7 +46,7 @@ export const useLoadoutFitting = ({
 }) => {
   const fitting = useComponentFitting();
 
-  const slug = () => toValue(modelSlug) ?? "";
+  const slug = () => toValue(model)?.slug ?? "";
 
   const wanted = () => toValue(enabled) && !!slug();
 
@@ -67,20 +78,89 @@ export const useLoadoutFitting = ({
     immediate: true,
   });
 
-  const tree = computed(() => {
-    const { modules, components } = loadoutValues(toValue(items));
+  const values = computed(() => loadoutValues(toValue(items)));
 
-    return fitting.resolve(hullSlots.value ?? [], {
-      ...modules,
-      ...components,
-    });
-  });
+  const tree = computed(() =>
+    fitting.resolve(hullSlots.value ?? [], {
+      ...values.value.modules,
+      ...values.value.components,
+    }),
+  );
 
   const hardpoints = computed(() =>
     modelHardpoints.value?.length
       ? fitting.graft(modelHardpoints.value, tree.value)
       : undefined,
   );
+
+  // The ship as the game files deliver it: the modules it comes with in their
+  // slots, and the stock part in every other one.
+  const stockModules = computed(() =>
+    modelModules.value.filter((mod) => mod.stock),
+  );
+
+  const stockTree = computed(() =>
+    fitting.resolve(
+      hullSlots.value ?? [],
+      Object.fromEntries(
+        stockModules.value.flatMap((mod) =>
+          mod.slot ? [[mod.slot, mod.id]] : [],
+        ),
+      ),
+    ),
+  );
+
+  const fittedModules = computed(() => {
+    const ids = new Set(Object.values(values.value.modules));
+
+    return modelModules.value.filter((mod) => ids.has(mod.id));
+  });
+
+  // The ids of every hardpoint the loadout fits differently from the stock
+  // ship: a part swapped in or taken out, another module.
+  const changed = computed(() => {
+    const marked = new Set<string>();
+
+    const walk = (
+      list: Hardpoint[],
+      entries: FittedSlot[],
+      stock: FittedSlot[],
+    ) =>
+      list.forEach((hardpoint) => {
+        const entry = entries.find((slot) => slot.slot.name === hardpoint.name);
+        if (!entry) return;
+
+        const was = stock.find((slot) => slot.slot.name === hardpoint.name);
+        if (entry.content?.id !== was?.content?.id) marked.add(hardpoint.id);
+
+        walk(hardpoint.hardpoints ?? [], entry.children, was?.children ?? []);
+      });
+
+    walk(hardpoints.value ?? [], tree.value, stockTree.value);
+
+    return marked;
+  });
+
+  const loadoutDiff = useLoadoutDiff(fitting);
+
+  // What the loadout changes against the stock ship, in the editor's words.
+  const changesFromStock = computed(() => {
+    const metrics = toValue(model)?.metrics;
+    const measure = (modules: ModelModule[], fitted: FittedSlot[]) =>
+      loadoutDiff.measure({
+        hullCargo: metrics?.cargo || 0,
+        modules,
+        hardpoints: modelHardpoints.value ?? [],
+        tree: fitted,
+        weaponPoolSize: metrics?.weaponPoolSize,
+      });
+
+    return loadoutDiff.diff(
+      measure(stockModules.value, stockTree.value),
+      measure(fittedModules.value, tree.value),
+      COMPONENT_TABS,
+    ).changed;
+  });
 
   return {
     fitting,
@@ -89,5 +169,7 @@ export const useLoadoutFitting = ({
     modelModules,
     tree,
     hardpoints,
+    changed,
+    changesFromStock,
   };
 };

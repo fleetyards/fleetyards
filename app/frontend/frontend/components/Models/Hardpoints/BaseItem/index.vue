@@ -69,6 +69,16 @@ const hardpoint = computed(() => {
   return props.hardpoints[0];
 });
 
+// On a loadout's page: a row the loadout fits differently from the stock ship.
+const changedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsChanged",
+  ref(undefined),
+);
+
+const changed = computed(() =>
+  props.hardpoints.some((hp) => changedHardpoints.value?.has(hp.id)),
+);
+
 const count = computed(() => {
   return props.hardpoints.length;
 });
@@ -162,7 +172,11 @@ const hardpointNames = computed(() => {
     v-show="!stackExpanded"
     :count="count"
     :intended="intended"
-    :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
+    :class="{
+      'hardpoint-item--clickable': isGroup || collapsible,
+      'hardpoint-item--changed': changed,
+    }"
+    :data-changed="changed || undefined"
     @click="onRowClick"
   >
     <template v-if="loadout.length" #actions>
