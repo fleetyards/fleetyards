@@ -1,6 +1,14 @@
 module ScData
   module Loader
     class ItemsLoader < ::ScData::Loader::BaseLoader
+      # The ore pods a mining ship carries are the only containers among the
+      # utility parts. A player buys and hauls them on their own, so they get a
+      # category of their own rather than hiding among 140 utility rows.
+      ORE_POD_TYPE = "Container"
+
+      # The template a pod is cloned from and the folded copy a ship shows when
+      # the pod is stowed: the same pod twice, under the same name.
+      ORE_POD_VARIANT = /_(template|collapsed)\z/
       def all
         exported = load_items("items")
         items = exported.reject { |item| item["category"] == "inventory" }
@@ -18,7 +26,7 @@ module ScData
             sc_key: normalized_key,
             sc_ref: item["ref"],
             hidden: true,
-            category: item["category"],
+            category: category(item),
             component_type: item["type"],
             component_sub_type: item["sub_type"],
             tags: item["tags"],
@@ -32,8 +40,12 @@ module ScData
             update_params[:name] = name
           end
 
-          if categories.include?(item["category"])
+          if categories.include?(update_params[:category])
             update_params[:hidden] = false
+          end
+
+          if update_params[:category] == "ore_pods" && ORE_POD_VARIANT.match?(normalized_key)
+            update_params[:hidden] = true
           end
 
           if item[:ammunition].present?
@@ -230,13 +242,19 @@ module ScData
         component
       end
 
+      private def category(item)
+        return "ore_pods" if item["category"] == "utility" && item["type"] == ORE_POD_TYPE
+
+        item["category"]
+      end
+
       private def categories
         %w[
           armor batteries computers missile_racks bombcompartments cooler module powerplant
           quantumdrive quantumenforcementdevice shieldgenerator turret utility weapon_mounts weapons
           lifesupport thrusters radar scanners fueltanks fuel_intakes countermeasures seat relay
           salvagemunching salvagefillerstation selfdestruct paints controller cargogrid jumpdrive
-          refuel_boom
+          refuel_boom ore_pods
         ]
       end
     end
