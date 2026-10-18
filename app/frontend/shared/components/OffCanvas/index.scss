@@ -16,12 +16,6 @@
       opacity: 1;
     }
 
-    // Still mounted while it fades out, and a tap on it then would close the
-    // panel a second time.
-    &:not(.in) {
-      pointer-events: none;
-    }
-
     &--dragging {
       transition: none;
     }

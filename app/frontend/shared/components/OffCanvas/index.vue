@@ -98,6 +98,14 @@ const close = () => {
   }, CLOSE_DURATION);
 };
 
+// Still mounted while it fades out, and still covering the page: a tap then
+// lands on it rather than on a control it dims, and must not close twice.
+const onBackdropClick = () => {
+  if (!isOpen.value) return;
+
+  close();
+};
+
 const onDocumentClick = (event: Event) => {
   if (!isOpen.value) return;
   if (panel.value?.contains(event.target as Node)) return;
@@ -150,7 +158,7 @@ const panelClasses = computed(() => {
         'off-canvas__backdrop--dragging': dragging,
       }"
       :style="backdropStyle"
-      @click="close"
+      @click="onBackdropClick"
     />
     <nav
       ref="panel"
