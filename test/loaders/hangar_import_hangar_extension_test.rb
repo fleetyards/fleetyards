@@ -86,6 +86,17 @@ class HangarImportHangarExtensionTest < ActiveSupport::TestCase
     assert Vehicle.exists?(user_id: @user.id, model: Model.find_by!(name: "Ursa"), loaner: false, bundled: false)
   end
 
+  test "imports a matrix name that names a paint as its hull, painted" do
+    paint = ModelPaint.find_by!(name: "Caterpillar Pirate Edition")
+    import = import_for([{matrix: "Caterpillar Pirate Edition", name: "Caterpillar Pirate Edition"}])
+
+    ::HangarImporter.new(import).run
+
+    vehicle = Vehicle.find_by!(user_id: @user.id)
+    assert_equal paint.model_id, vehicle.model_id
+    assert_equal [paint.id], vehicle.model_paint_ids
+  end
+
   test "prefers the matrix name over the export alias" do
     import = import_for([{matrix: "F7C-M Super Hornet Heartseeker Mk I", name: "F7C-M Super Hornet Heartseeker"}])
 
