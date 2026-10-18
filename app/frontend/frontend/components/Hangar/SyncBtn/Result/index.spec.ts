@@ -94,7 +94,7 @@ describe("HangarSyncResult", () => {
 
     expect(wrapper.text()).toContain("Pledge items: 5");
     expect(rows["Paints"]).toBe("1");
-    expect(rows["Hangar Flair"]).toBe("2");
+    expect(rows["Hangar flair"]).toBe("2");
   });
 
   it("marks paints and hangar flair the sync leaves out as not synced", async () => {
@@ -196,7 +196,7 @@ describe("HangarSyncResult", () => {
     });
 
     const text = wrapper.text();
-    expect(text).toContain("FPS Gear (not synced)");
+    expect(text).toContain("FPS gear (not synced)");
     expect(text).toContain("Other");
     expect(
       wrapper

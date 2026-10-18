@@ -92,9 +92,10 @@ const kind = (
 ): SyncResultTile => ({
   key,
   value: count,
-  label: t(
-    `labels.syncExtension.pledgeItems.${synced ? key : `${key}NotSynced`}`,
-  ),
+  // The kinds' names are the result tiles', so the two read as one list.
+  label: synced
+    ? t(`labels.syncExtension.resultKinds.${key}`)
+    : t(`labels.syncExtension.pledgeItems.${key}NotSynced`),
   skipped: !synced,
   labelTest: synced ? undefined : dataTest,
 });
@@ -119,7 +120,11 @@ const allReadCounts = computed<SyncResultTile[]>(() => [
   ),
   kind("ccus", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
   // Sorted into flair or equipment only once the server stores them.
-  kind("extras", rowsOf("extra")),
+  {
+    key: "extras",
+    value: rowsOf("extra"),
+    label: t("labels.syncExtension.pledgeItems.extras"),
+  },
 ]);
 
 const readCounts = computed(() =>

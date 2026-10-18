@@ -2953,11 +2953,11 @@
           "paints": "Paints",
           "hangarFlair": "Hangar Flair",
           "paintsNotSynced": "Paints (not synced)",
-          "hangarFlairNotSynced": "Hangar Flair (not synced)",
+          "hangarFlairNotSynced": "Hangar flair (not synced)",
           "equipment": "FPS Gear",
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (not synced)",
-          "equipmentNotSynced": "FPS Gear (not synced)",
+          "equipmentNotSynced": "FPS gear (not synced)",
           "extras": "Other"
         },
         "importedItems": {

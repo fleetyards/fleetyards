@@ -3009,9 +3009,9 @@
         "resultKinds": {
           "ships": "Navi",
           "components": "Moduli",
-          "upgrades": "Potenziamenti",
+          "upgrades": "Upgrade",
           "paints": "Verniciature",
-          "hangarFlair": "Decorazioni dell'hangar",
+          "hangarFlair": "Decorazioni per l'hangar",
           "equipment": "Equipaggiamento FPS",
           "ccus": "CCU"
         },
