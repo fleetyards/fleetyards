@@ -180,11 +180,13 @@ class HangarImporter
     HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
   end
 
-  # The first name the file gives the ship that its owner chose.
+  # `custom_name` comes only from older Fleetyards exports, so it is always the
+  # owner's; `ship_name` may be Hangar XPLORer's standard name.
   private def custom_name(item, model)
-    [item[:ship_name], item[:custom_name]].map { |name| name.to_s.squish }.find do |name|
-      name.present? && !hangar_xplor_standard_name?(item, model, name)
-    end
+    ship_name = item[:ship_name]
+    return ship_name if ship_name.present? && !hangar_xplor_standard_name?(item, model, ship_name)
+
+    item[:custom_name].presence
   end
 
   # Hangar XPLORer exports a ship's standard name in `ship_name` unless its
@@ -195,7 +197,7 @@ class HangarImporter
 
     [HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]], item[:name], model.name, model.rsi_name]
       .compact_blank
-      .any? { |standard_name| standard_name.squish.casecmp?(name) }
+      .any? { |standard_name| standard_name.squish.casecmp?(name.squish) }
   end
 
   private def stop_requested?(index)

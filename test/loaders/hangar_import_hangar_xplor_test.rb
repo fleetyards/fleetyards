@@ -75,6 +75,22 @@ class HangarImportHangarXplorTest < ActiveSupport::TestCase
     assert_equal "Aurora Mk I ES", Vehicle.find_by!(user_id: @user.id).name
   end
 
+  test "keeps a custom name even when it matches a standard name" do
+    import = import_for([xplor_row(name: "Aurora ES", ship_code: "RSI_Aurora_Mk_I_ES", ship_name: "Aurora Mk I ES", custom_name: "Aurora ES")])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "Aurora ES", Vehicle.find_by!(user_id: @user.id).name
+  end
+
+  test "keeps a name exactly as the file spells it" do
+    import = import_for([{name: "Aurora ES", ship_name: "The  Red  One"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "The  Red  One", Vehicle.find_by!(user_id: @user.id).name
+  end
+
   # The file the import modal offers as a download. A sample that stops
   # importing is worse than none, so it is imported here rather than trusted.
   test "the published example file imports cleanly" do
